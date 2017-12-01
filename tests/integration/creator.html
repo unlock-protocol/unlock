@@ -1,0 +1,84 @@
+<html>
+<head>
+  <title>Lorem Ipsum</title>
+</head>
+<body>
+  <style>
+  .container {
+    margin-top: 200px;
+    max-width: 30%;
+    min-width: 500px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  img {
+    max-width: 500px;
+  }
+  </style>
+
+  <div class="container">
+    <article class="article">
+      <header>
+        <h1>Jurassic Park</h1>
+      </header>
+      <section>
+        <h2>What is Lorem Ipsum?</h2>
+        <p class="summary">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        </p>
+        <h2>Where does it come from?</h2>
+        <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+        <img src="https://images.unsplash.com/photo-1436379597301-690adc63f244?auto=format&fit=crop&w=1350&q=60&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D">
+        <h2>Why do we use it?</h2>
+        <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+      </section>
+    </article>
+  </div>
+
+  <script>
+    // Let's delete the content of the article!
+    let articleNode = document.querySelector('article')
+
+    // We keep it for later
+    let unlocked = articleNode.cloneNode(true)
+
+    // Let's look at the bounding rect
+    let articleNodeBoundingRect = articleNode.getBoundingClientRect()
+
+    function clearNodeIfAfter(node, height) {
+      // Iterate on each children but from the bottom
+      while (node.lastElementChild && clearNodeIfAfter(node.lastElementChild, height)) {
+        // Nothing
+      }
+
+      // Once done, let's see if the node itself needs to be removed
+      let boundingClientRec = node.getBoundingClientRect()
+      if (boundingClientRec.top > height) {
+        // Delete  node because it starts too far already
+        node.parentNode.removeChild(node)
+        return true
+      }
+      return false
+    }
+
+    clearNodeIfAfter(articleNode, articleNodeBoundingRect.y + 500)
+    // And now, let's apply a blur overlay!
+
+    articleNode.appendChild(doc.createElement('div'))
+
+
+    // articleNode.children.forEach((child) => {
+    //   // We measure how much "further" from the top we are.
+    //   // less the 50px => keep it all
+    //   // 50 to 100px => Blur
+    //   // Everything beyond : clear!
+    //   console.log(child.nodeType)
+    //   debugger
+    //   // let childBoundingRect = child.getBoundingClientRect()
+
+    // })
+</script>
+
+
+
+</body>
+</html>
