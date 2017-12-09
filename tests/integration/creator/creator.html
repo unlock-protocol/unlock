@@ -17,7 +17,8 @@
   </style>
 
   <div class="container">
-    <article class="article">
+    <header>The Daily Telegram</header>
+    <article class="article" data-unlock-address="0x34D157D888566EEFCf9f86cE0826777B23bf412a" data-unlock-symbol="ETH" data-unlock-amount="0.01">
       <header>
         <h1>Jurassic Park</h1>
       </header>
@@ -34,51 +35,7 @@
     </article>
   </div>
 
-  <script>
-    // Let's delete the content of the article!
-    let articleNode = document.querySelector('article')
-
-    // We keep it for later
-    let unlocked = articleNode.cloneNode(true)
-
-    // Let's look at the bounding rect
-    let articleNodeBoundingRect = articleNode.getBoundingClientRect()
-
-    function clearNodeIfAfter(node, height) {
-      // Iterate on each children but from the bottom
-      while (node.lastElementChild && clearNodeIfAfter(node.lastElementChild, height)) {
-        // Nothing
-      }
-
-      // Once done, let's see if the node itself needs to be removed
-      let boundingClientRec = node.getBoundingClientRect()
-      if (boundingClientRec.top > height) {
-        // Delete  node because it starts too far already
-        node.parentNode.removeChild(node)
-        return true
-      }
-      return false
-    }
-
-    clearNodeIfAfter(articleNode, articleNodeBoundingRect.y + 500)
-    // And now, let's apply a blur overlay!
-
-    articleNode.appendChild(doc.createElement('div'))
-
-
-    // articleNode.children.forEach((child) => {
-    //   // We measure how much "further" from the top we are.
-    //   // less the 50px => keep it all
-    //   // 50 to 100px => Blur
-    //   // Everything beyond : clear!
-    //   console.log(child.nodeType)
-    //   debugger
-    //   // let childBoundingRect = child.getBoundingClientRect()
-
-    // })
-</script>
-
-
+  <script src="http://127.0.0.1:3030/button.js"></script>
 
 </body>
 </html>
