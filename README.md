@@ -1,11 +1,12 @@
 # Repositoty for the code to run Unlock
 
-4 steps to POC
+5 steps to POC
 
 1. Working JS snippet which can be embedded on a webpage and will erase the content of the page of the current user is not allowed to view it.
-2. Accept "slow" blockchain transaction to unlock content
-3. Fast payment channel to unlock content
-4. Accept CC payment
+2. Accept "slow" blockchain transaction to unlock content, maybe using Metamask.
+3. Replace Metamask with our own iframe.
+4. Fast payment channel to unlock content.
+5. Accept CC payment.
 
 
 ## Components
@@ -22,7 +23,7 @@ It behaves very similary to metamask.
 
 ### Main Website
 
-Under the same domain as the iframe, it shares the data and provides a useful UI that lets the user perform payments and view transasction history. This UI should also be used to "sync" data accross multiple user agents. Relies on WebRTC to achieve this.
+Under the same domain as the iframe (it's really the same app), it shares the data and provides a useful UI that lets the user perform payments and view transasction history. This UI should also be used to "sync" data accross multiple user agents. Relies on WebRTC to achieve this.
 
 ### Smart Contract
 
