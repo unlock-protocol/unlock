@@ -1,12 +1,19 @@
 # Unlock app
 
-This is a Single Page App with 2 entry points:
-
-* A web interface, accessible at `/`.
-* An API only interface, running at `/api`. This has no UI and should only be loaded inside an invisible iframe.
+This is a React app.
 
 This is intended at being a PWA for extremely fast loading (everything cached locally)
 In the first iterations this is serverless. Later, when we want to simplify user management we may store data on the server as well (password encrypted keys).
+
+We use docker to containerize the application in dev:
+1. Build: `docker build ./ -t unlock` (from the app directory, this builds using the local Dockerfile an image called _unlock_)
+2. Run: `docker run -it -p 3000:3000 -v src:/unlock/src unlock` (from the app directory, this starts the image, exposes 3000 on... 3000 and shares the `src` content with `/unlock/src` inside the container)
+
+For prod:
+1. Build: `docker build ./ --build-arg app_env=production -t unlock`
+2. Run `docker run -i -t -p 3000:3000 unlock` 
+
+---------------------------
 
 We use react:
 
