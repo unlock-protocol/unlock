@@ -4,9 +4,9 @@ ENV NPM_CONFIG_LOGLEVEL warn
 
 WORKDIR /unlock
 
-COPY package.json ./package.json
+COPY package.json .
 RUN npm install
-COPY . ./
+COPY . .
 
 RUN npm install -g http-server
 
