@@ -1,0 +1,20 @@
+version: '3'
+services:
+  button:
+    restart: always
+    build: 
+      context: ./button
+      dockerfile: ./Dockerfile
+    ports:
+     - "3001:80"
+    volumes:
+    - ./button:/usr/share/nginx/html
+  unlock:
+    restart: always
+    build: 
+      context: ./unlock
+      dockerfile: ./Dockerfile
+    ports:
+     - "3000:3000"
+    volumes:
+    - ./unlock/src:/unlock/src
