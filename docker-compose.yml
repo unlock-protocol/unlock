@@ -2,16 +2,18 @@ version: '3'
 services:
   button:
     restart: always
-    build: 
+    build:
       context: ./button
       dockerfile: ./Dockerfile
     ports:
      - "3001:80"
     volumes:
     - ./button:/usr/share/nginx/html
+    - ./tests/integration/creator:/usr/share/nginx/html/test
   unlock:
     restart: always
-    build: 
+    command: npm run start
+    build:
       context: ./unlock
       dockerfile: ./Dockerfile
     ports:
