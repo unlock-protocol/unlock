@@ -1,6 +1,13 @@
 version: '3'
 services:
+  ethereum:
+    image: trufflesuite/ganache-cli:latest
+    ports:
+     - "8545:8545"
+    command: "-a 10 --mnemonic 'unlock will rule rule the web'"
   button:
+    depends_on:
+      - unlock
     restart: always
     build:
       context: ./button
@@ -11,6 +18,8 @@ services:
     - ./button:/usr/share/nginx/html
     - ./tests/integration/creator:/usr/share/nginx/html/test
   unlock:
+    depends_on:
+      - ethereum
     restart: always
     command: npm run start
     build:
