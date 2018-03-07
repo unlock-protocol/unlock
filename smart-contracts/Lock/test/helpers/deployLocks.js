@@ -13,8 +13,9 @@ module.exports = function deployLocks (unlock) {
         filter.stopWatching() // Otherwise, node hangs!
         return reject(error)
       }
-      if (!locks[args.lockId]) {
-        locks[args.lockId] = Lock.at(args.newLockAddress)
+      let lockName = web3.toAscii(args.lockId).replace(/\0/g, '')
+      if (!locks[lockName]) {
+        locks[lockName] = Lock.at(args.newLockAddress)
         createdLocks += 1
         if (createdLocks === Locks.length) {
           filter.stopWatching() // Otherwise, node hangs!
@@ -24,8 +25,18 @@ module.exports = function deployLocks (unlock) {
     })
 
     // // Deploy all the locks!
-    return Promise.all(Locks.map(args => {
-      return unlock.createLock(args.lockId, args.keyReleaseMechanism, args.expirationDuration, args.expirationTimestamp, args.keyPriceCalculator, args.keyPrice, args.maxNumberOfKeys)
-    }))
+    return Promise.all(
+      Locks.map(args => {
+        return unlock.createLock(
+          args.lockId,
+          args.keyReleaseMechanism,
+          args.expirationDuration,
+          args.expirationTimestamp,
+          args.keyPriceCalculator,
+          args.keyPrice,
+          args.maxNumberOfKeys
+        )
+      })
+    )
   })
 }

@@ -6,7 +6,8 @@ module.exports = {
       "artifacts": true,
       "contract": true,
       "describe": true,
-      "before": true
+      "before": true,
+      "web3": true
   },
   rules: {
     "mocha/no-exclusive-tests": "error"

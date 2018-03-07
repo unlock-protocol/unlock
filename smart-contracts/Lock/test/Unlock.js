@@ -21,7 +21,7 @@ contract('Unlock', (accounts) => {
   })
 
   it('should create locks', () => {
-    let lock = locks['0x7075626c69630000000000000000000000000000000000000000000000000000']
+    let lock = locks['FIRST LOCK']
     return Promise.all([
       lock.beneficiary.call(),
       lock.unlockProtocol.call(),
@@ -46,6 +46,9 @@ contract('Unlock', (accounts) => {
 
   describe('Lock', () => {
     describe('purchase()', () => {
+      before(() => {
+      })
+
       describe('if the contract has a private key release', () => {
         it('should fail')
       })
