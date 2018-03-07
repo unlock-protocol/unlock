@@ -40,12 +40,15 @@ contract Lock {
   // Max number of keys sold if the keyReleaseMechanism is public
   uint public maxNumberOfKeys;
 
+  // Number of keys in circulation (expired or valid)
+  uint public totalSupply;
+
   // Keys
   // Each owner can have at most exactly one key
   mapping (address => Key) owners;
 
-  // If the keyReleaseMechanism is approved, we keep track of addresses who want to be approved
-  mapping (address => Key) pendingOwners;
+  // If the keyReleaseMechanism is approved, we keep track of addresses who have been approved
+  mapping (address => Key) approvedOwners;
 
   // Will be used with onlyBy(beneficiary) and onlyBy(unlockProtocol)
   modifier onlyBy(address _account) {
