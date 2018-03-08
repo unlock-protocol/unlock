@@ -8,7 +8,6 @@ contract Lock {
 
   // The struct for a key
   struct Key {
-    address owner;
     uint expirationTimestamp;
     string data; // This can be expensive
   }
@@ -45,10 +44,10 @@ contract Lock {
 
   // Keys
   // Each owner can have at most exactly one key
-  mapping (address => Key) owners;
+  mapping (address => Key) public owners;
 
   // If the keyReleaseMechanism is approved, we keep track of addresses who have been approved
-  mapping (address => Key) approvedOwners;
+  mapping (address => Key) public approvedOwners;
 
   // Will be used with onlyBy(owner) and onlyBy(unlockProtocol)
   modifier onlyBy(address _account) {
@@ -86,15 +85,46 @@ contract Lock {
 
   /**
   * @dev Purchase function: this lets user purchase keys from the lock.
+  * @param _data optional marker for the key
   * This will fail if
   *  - the keyReleaseMechanism is private
   *  - the keyReleaseMechanism is Approved and the user has not been previously approved
   *  - the amount value is smaller than the price
   *  - the sender already owns a key
   */
-  function purchase() public payable {
+  function purchase(string _data) public payable {
     require(keyReleaseMechanism != KeyReleaseMechanisms.Private);
 
+    owners[msg.sender] = Key({
+      expirationTimestamp: now + expirationDuration,
+      data: _data
+    });
+  }
+
+  /**
+  * @dev Returns the key for a given owner. Note: since web3 does not support struct yet, this
+  * @param _owner address of the user for whom we search the key
+  * method is not very useful for now.
+  * Check keyDataFor and keyExpirationTimestampFor
+  */
+  function keyFor(address _owner) public view returns (Lock.Key key) {
+    return owners[_owner];
+  }
+
+  /**
+  * @dev Returns the key's data field for a given owner.
+  * @param _owner address of the user for whom we search the key
+  */
+  function keyDataFor(address _owner) public view returns (string data) {
+    return owners[_owner].data;
+  }
+
+  /**
+  * @dev Returns the key's ExpirationTimestamp field for a given owner.
+  * @param _owner address of the user for whom we search the key
+  */
+  function keyExpirationTimestampFor(address _owner) public view returns (uint timestamp) {
+    return owners[_owner].expirationTimestamp;
   }
 
 }

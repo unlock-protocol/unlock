@@ -46,20 +46,50 @@ contract('Unlock', (accounts) => {
 
   describe('Lock', () => {
     describe('purchase()', () => {
-      before(() => {
-      })
-
       describe('if the contract has a private key release', () => {
-        it('should fail')
+        it('should fail', () => {
+          const lock = locks['PRIVATE LOCK']
+          return lock
+            .purchase('Julien')
+            .catch((error) => {
+              assert.equal(error.message, 'VM Exception while processing transaction: revert')
+              // Making sure we do not have a key set!
+              return lock.keyExpirationTimestampFor(accounts[0])
+            })
+            .then(expirationTimestamp => {
+              assert.equal(expirationTimestamp.toNumber(), 0)
+            })
+        })
       })
 
-      describe('if the contract has a public key release', () => {
+      describe('when the contract has a public key release', () => {
         it('should fail if the price is not enough')
         it('should fail if we reached the max number of keys')
         it('should fail if the account already owns a key')
-        describe('if the key was successfuly purchased', () => {
-          it('should show a key for the account as part of the owners')
-          it('should have the right expiration timestamp for the key')
+        describe('when the key was successfuly purchased', () => {
+          let lock
+
+          before(() => {
+            lock = locks['FIRST LOCK']
+            return lock.purchase('Julien')
+          })
+
+          it('should have the right data for the key', () => {
+            return lock.keyDataFor(accounts[0]).then(keyData => {
+              assert.equal(keyData, 'Julien')
+            })
+          })
+
+          it('should have the right expiration timestamp for the key', () => {
+            const now = parseInt(new Date().getTime() / 1000)
+            const lock = locks['FIRST LOCK']
+            return Promise.all([
+              lock.keyExpirationTimestampFor(accounts[0]),
+              lock.expirationDuration()
+            ]).then(([expirationTimestamp, expirationDuration]) => {
+              assert(expirationTimestamp.toNumber() >= now + expirationDuration.toNumber())
+            })
+          })
         })
       })
 
