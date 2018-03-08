@@ -13,8 +13,8 @@ contract Lock {
     string data; // This can be expensive
   }
 
-  // Lock Beneficiary
-  address public beneficiary;
+  // Lock owner
+  address public owner;
 
   // Unlock Protocol address
   address public unlockProtocol; // TODO
@@ -50,7 +50,7 @@ contract Lock {
   // If the keyReleaseMechanism is approved, we keep track of addresses who have been approved
   mapping (address => Key) approvedOwners;
 
-  // Will be used with onlyBy(beneficiary) and onlyBy(unlockProtocol)
+  // Will be used with onlyBy(owner) and onlyBy(unlockProtocol)
   modifier onlyBy(address _account) {
       require(msg.sender == _account);
       // Do not forget the "_;"! It will
@@ -66,7 +66,7 @@ contract Lock {
   }
 
   // Constructor
-  function Lock(address _beneficiary,
+  function Lock(address _owner,
     address _unlockProtocol,
     KeyReleaseMechanisms _keyReleaseMechanism,
     uint _expirationDuration,
@@ -74,7 +74,7 @@ contract Lock {
     address _keyPriceCalculator,
     uint _keyPrice,
     uint _maxNumberOfKeys) public {
-      beneficiary = _beneficiary;
+      owner = _owner;
       unlockProtocol = _unlockProtocol;
       keyReleaseMechanism = _keyReleaseMechanism;
       expirationDuration = _expirationDuration;

@@ -10,7 +10,7 @@ contract Unlock {
 
   // Events
   event NewLock(
-    address indexed lockBeneficiary,
+    address indexed lockOwner,
     bytes32 lockId,
     address indexed newLockAddress
   );
@@ -25,10 +25,10 @@ contract Unlock {
     uint _expirationTimestamp,
     address _keyPriceCalculator,
     uint _keyPrice,
-    uint _maxNumberOfKeys) public {
+    uint _maxNumberOfKeys) public returns (Lock lock){
 
     // create lock
-    Lock lock = new Lock(
+    Lock newLock = new Lock(
       msg.sender,
       address(this),
       _keyReleaseMechanism,
@@ -40,7 +40,10 @@ contract Unlock {
     );
 
     // trigger event
-    NewLock(msg.sender, _lockId, address(lock));
+    NewLock(msg.sender, _lockId, address(newLock));
+
+    // return the created lock
+    return newLock;
   }
 
 }
