@@ -23,7 +23,7 @@ contract('Unlock', (accounts) => {
   it('should create locks', () => {
     let lock = locks['FIRST LOCK']
     return Promise.all([
-      lock.beneficiary.call(),
+      lock.owner.call(),
       lock.unlockProtocol.call(),
       lock.keyReleaseMechanism.call(),
       lock.expirationDuration.call(),
@@ -31,9 +31,9 @@ contract('Unlock', (accounts) => {
       lock.keyPriceCalculator.call(),
       lock.keyPrice.call(),
       lock.maxNumberOfKeys.call()
-    ]).then(([beneficiary, unlockProtocol, keyReleaseMechanism,
+    ]).then(([owner, unlockProtocol, keyReleaseMechanism,
       expirationDuration, expirationTimestamp, keyPriceCalculator, keyPrice, maxNumberOfKeys]) => {
-      assert.strictEqual(beneficiary, accounts[0])
+      assert.strictEqual(owner, accounts[0])
       assert.strictEqual(unlockProtocol, unlock.address)
       assert.strictEqual(keyReleaseMechanism.toNumber(), 0)
       assert.strictEqual(expirationDuration.toNumber(), 60 * 60 * 24 * 30)
