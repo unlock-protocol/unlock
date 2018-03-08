@@ -40,7 +40,7 @@ contract Lock {
   uint public maxNumberOfKeys;
 
   // Number of keys in circulation (expired or valid)
-  uint public totalSupply;
+  uint public outstandingKeys;
 
   // Keys
   // Each owner can have at most exactly one key
@@ -81,6 +81,7 @@ contract Lock {
       keyPriceCalculator = _keyPriceCalculator;
       keyPrice = _keyPrice;
       maxNumberOfKeys = _maxNumberOfKeys;
+      outstandingKeys = 0;
   }
 
   /**
@@ -94,7 +95,11 @@ contract Lock {
   */
   function purchase(string _data) public payable {
     require(keyReleaseMechanism != KeyReleaseMechanisms.Private);
+    require(msg.value >= keyPrice); // We explicitly allow for greater amounts to allow "donations".
+    require(maxNumberOfKeys > outstandingKeys);
+    require(owners[msg.sender].expirationTimestamp < now); // User must not have a valid key already
 
+    outstandingKeys += 1; // Increment the number of keys
     owners[msg.sender] = Key({
       expirationTimestamp: now + expirationDuration,
       data: _data
