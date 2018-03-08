@@ -20,8 +20,8 @@ contract('Unlock', (accounts) => {
       })
   })
 
-  it('should create locks', () => {
-    let lock = locks['FIRST LOCK']
+  it('should have created locks', () => {
+    const lock = locks['FIRST']
     return Promise.all([
       lock.owner.call(),
       lock.unlockProtocol.call(),
@@ -30,25 +30,44 @@ contract('Unlock', (accounts) => {
       lock.expirationTimestamp.call(),
       lock.keyPriceCalculator.call(),
       lock.keyPrice.call(),
-      lock.maxNumberOfKeys.call()
-    ]).then(([owner, unlockProtocol, keyReleaseMechanism,
-      expirationDuration, expirationTimestamp, keyPriceCalculator, keyPrice, maxNumberOfKeys]) => {
-      assert.strictEqual(owner, accounts[0])
-      assert.strictEqual(unlockProtocol, unlock.address)
-      assert.strictEqual(keyReleaseMechanism.toNumber(), 0)
-      assert.strictEqual(expirationDuration.toNumber(), 60 * 60 * 24 * 30)
-      assert.strictEqual(expirationTimestamp.toNumber(), 0)
-      assert.strictEqual(keyPriceCalculator, zeroHex)
-      assert.strictEqual(Units.convert(keyPrice.toNumber(), 'wei', 'eth'), '0.01')
-      assert.strictEqual(maxNumberOfKeys.toNumber(), 10)
-    })
+      lock.maxNumberOfKeys.call(),
+      lock.outstandingKeys.call()
+    ]).then(
+      ([
+        owner,
+        unlockProtocol,
+        keyReleaseMechanism,
+        expirationDuration,
+        expirationTimestamp,
+        keyPriceCalculator,
+        keyPrice,
+        maxNumberOfKeys,
+        outstandingKeys
+      ]) => {
+        assert.strictEqual(owner, accounts[0])
+        assert.strictEqual(unlockProtocol, unlock.address)
+        assert.strictEqual(keyReleaseMechanism.toNumber(), 0)
+        assert.strictEqual(
+          expirationDuration.toNumber(),
+          60 * 60 * 24 * 30
+        )
+        assert.strictEqual(expirationTimestamp.toNumber(), 0)
+        assert.strictEqual(keyPriceCalculator, zeroHex)
+        assert.strictEqual(
+          Units.convert(keyPrice.toNumber(), 'wei', 'eth'),
+          '0.01'
+        )
+        assert.strictEqual(maxNumberOfKeys.toNumber(), 10)
+        assert.strictEqual(outstandingKeys.toNumber(), 0)
+      }
+    )
   })
 
   describe('Lock', () => {
     describe('purchase()', () => {
       describe('if the contract has a private key release', () => {
         it('should fail', () => {
-          const lock = locks['PRIVATE LOCK']
+          const lock = locks['PRIVATE']
           return lock
             .purchase('Julien')
             .catch((error) => {
@@ -63,32 +82,122 @@ contract('Unlock', (accounts) => {
       })
 
       describe('when the contract has a public key release', () => {
-        it('should fail if the price is not enough')
-        it('should fail if we reached the max number of keys')
-        it('should fail if the account already owns a key')
+        it('should fail if the price is not enough', () => {
+          return locks['FIRST']
+            .purchase('Julien', {
+              value: Units.convert('0.0001', 'eth', 'wei')
+            })
+            .catch(error => {
+              assert.equal(error.message, 'VM Exception while processing transaction: revert')
+              // Making sure we do not have a key set!
+              return locks['FIRST'].keyExpirationTimestampFor(accounts[0])
+            })
+            .then(expirationTimestamp => {
+              assert.equal(expirationTimestamp.toNumber(), 0)
+            })
+        })
+
+        it('should fail if we reached the max number of keys', () => {
+          return locks['SINGLE KEY']
+            .purchase('Julien', {
+              value: Units.convert('0.01', 'eth', 'wei')
+            })
+            .then(keyData => {
+              return locks['SINGLE KEY'].keyDataFor(accounts[0])
+            })
+            .then(keyData => {
+              assert.equal(keyData, 'Julien')
+              return locks['SINGLE KEY'].purchase('Satoshi', {
+                value: Units.convert('0.01', 'eth', 'wei'),
+                from: accounts[1]
+              })
+            })
+            .catch(error => {
+              assert.equal(error.message, 'VM Exception while processing transaction: revert')
+              return Promise.all([
+                locks['SINGLE KEY'].keyDataFor(accounts[0]),
+                locks['SINGLE KEY'].keyDataFor(accounts[1])
+              ])
+            })
+            .then(([keyDataFirst, keyDataSecond]) => {
+              assert.equal(keyDataFirst, 'Julien')
+              assert.equal(keyDataSecond, '') // No data, since there is no key.
+            })
+        })
+
+        it('should succeed if the account already owns a key but this key has expired')
+
+        it('should fail if the account already owns a key', () => {
+          return locks['FIRST']
+            .purchase('Satoshi', {
+              value: Units.convert('0.01', 'eth', 'wei'),
+              from: accounts[1]
+            })
+            .then(keyData => {
+              return locks['FIRST'].keyDataFor(accounts[1])
+            })
+            .then(keyData => {
+              assert.equal(keyData, 'Satoshi')
+              return locks['FIRST'].purchase('Satoshi', {
+                value: Units.convert('0.01', 'eth', 'wei'),
+                from: accounts[1]
+              })
+            })
+            .catch(error => {
+              assert.equal(error.message, 'VM Exception while processing transaction: revert')
+              return locks['FIRST'].keyDataFor(accounts[1])
+            })
+            .then(keyData => {
+              assert.equal(keyData, 'Satoshi')
+            })
+        })
+
         describe('when the key was successfuly purchased', () => {
-          let lock
+          let outstandingKeys, balance
 
           before(() => {
-            lock = locks['FIRST LOCK']
-            return lock.purchase('Julien')
+            balance = web3.eth.getBalance(locks['FIRST'].address)
+            return locks['FIRST'].outstandingKeys.call()
+              .then(_outstandingKeys => {
+                outstandingKeys = parseInt(_outstandingKeys)
+                return locks['FIRST'].purchase('Julien', {
+                  value: Units.convert('0.01', 'eth', 'wei')
+                })
+              })
           })
 
           it('should have the right data for the key', () => {
-            return lock.keyDataFor(accounts[0]).then(keyData => {
-              assert.equal(keyData, 'Julien')
-            })
+            return locks['FIRST']
+              .keyDataFor(accounts[0])
+              .then(keyData => {
+                assert.equal(keyData, 'Julien')
+              })
           })
 
           it('should have the right expiration timestamp for the key', () => {
             const now = parseInt(new Date().getTime() / 1000)
-            const lock = locks['FIRST LOCK']
             return Promise.all([
-              lock.keyExpirationTimestampFor(accounts[0]),
-              lock.expirationDuration()
+              locks['FIRST'].keyExpirationTimestampFor(accounts[0]),
+              locks['FIRST'].expirationDuration()
             ]).then(([expirationTimestamp, expirationDuration]) => {
               assert(expirationTimestamp.toNumber() >= now + expirationDuration.toNumber())
             })
+          })
+
+          it('should have added the funds to the contract', () => {
+            let newBalance = web3.eth.getBalance(locks['FIRST'].address)
+            assert.equal(parseFloat(Units.convert(newBalance, 'wei', 'eth')), parseFloat(Units.convert(balance, 'wei', 'eth')) + 0.01)
+          })
+
+          it('should have increased the number of outstanding keys', () => {
+            return locks['FIRST'].outstandingKeys
+              .call()
+              .then(_outstandingKeys => {
+                assert.equal(
+                  parseInt(_outstandingKeys),
+                  outstandingKeys + 1
+                )
+              })
           })
         })
       })

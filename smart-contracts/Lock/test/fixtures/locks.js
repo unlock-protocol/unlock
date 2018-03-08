@@ -13,10 +13,14 @@ let defaultLock = {
 // old. web3.fromAscii will fail when this is updated
 module.exports = [
   Object.assign({}, defaultLock, {
-    lockId: web3.fromAscii('FIRST LOCK')
+    lockId: web3.fromAscii('FIRST')
   }),
   Object.assign({}, defaultLock, {
-    lockId: web3.fromAscii('PRIVATE LOCK'),
+    lockId: web3.fromAscii('PRIVATE'),
     keyReleaseMechanism: 2 // KeyReleaseMechanisms.Private
+  }),
+  Object.assign({}, defaultLock, {
+    lockId: web3.fromAscii('SINGLE KEY'),
+    maxNumberOfKeys: 1
   })
 ]
