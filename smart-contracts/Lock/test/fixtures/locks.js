@@ -14,7 +14,7 @@ module.exports = [
   },
   {
     lockId: web3.fromAscii('PRIVATE LOCK'),
-    keyReleaseMechanism: 0, // KeyReleaseMechanisms.Public
+    keyReleaseMechanism: 2, // KeyReleaseMechanisms.Private
     expirationDuration: 60 * 60 * 24 * 30, // 30 days
     expirationTimestamp: 0, // Not used
     keyPriceCalculator: null, //
