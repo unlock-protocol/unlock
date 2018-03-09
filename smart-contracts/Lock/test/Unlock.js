@@ -127,6 +127,21 @@ contract('Unlock', (accounts) => {
 
         it('should succeed if the account already owns a key but this key has expired')
 
+        it('should trigger an event when successful', () => {
+          let filter = locks['FIRST'].SoldKey((error, { args }) => {
+            if (error) {
+              assert(false, error)
+            }
+            assert(args.owner, accounts[2])
+            filter.stopWatching()
+          })
+          return locks['FIRST']
+            .purchase('Vitalik', {
+              value: Units.convert('0.01', 'eth', 'wei'),
+              from: accounts[2]
+            })
+        })
+
         it('should fail if the account already owns a key', () => {
           return locks['FIRST']
             .purchase('Satoshi', {

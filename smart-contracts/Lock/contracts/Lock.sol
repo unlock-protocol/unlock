@@ -12,6 +12,11 @@ contract Lock {
     string data; // This can be expensive
   }
 
+  // Events
+  event SoldKey (
+    address indexed owner
+  );
+
   // Lock owner
   address public owner;
 
@@ -104,6 +109,9 @@ contract Lock {
       expirationTimestamp: now + expirationDuration,
       data: _data
     });
+
+    // trigger event
+    SoldKey(msg.sender);
   }
 
   /**
