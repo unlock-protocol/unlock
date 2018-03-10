@@ -9,7 +9,7 @@ module.exports = {
   networks: {
     development: {
       host: '127.0.0.1',
-      port: 9545,
+      port: 8545, // We use ganache-cli and this is its default port
       network_id: '*' // Match any network id
     }
   }
