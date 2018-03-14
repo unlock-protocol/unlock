@@ -5,7 +5,6 @@ class LockMakerForm extends React.Component {
   constructor (props, context) {
     super(props)
     this.state = {
-      lockId: web3.utils.randomHex(4), // LockId will likely be deprecate...
       keyReleaseMechanism: 0, // Public
       expirationDuration: 60 * 60 * 24 * 10, // 10 days (in seconds!)
       expirationTimestamp: 0, // for now 0 as we focus on duration based locks
