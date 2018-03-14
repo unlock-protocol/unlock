@@ -11,7 +11,6 @@ contract Unlock {
   // Events
   event NewLock(
     address indexed lockOwner,
-    bytes32 lockId,
     address indexed newLockAddress
   );
 
@@ -19,7 +18,6 @@ contract Unlock {
   * @dev Create lock
   */
   function createLock(
-    bytes32 _lockId, // Not stored. Used to identify created locks.
     Lock.KeyReleaseMechanisms _keyReleaseMechanism,
     uint _expirationDuration,
     uint _expirationTimestamp,
@@ -40,7 +38,7 @@ contract Unlock {
     );
 
     // trigger event
-    NewLock(msg.sender, _lockId, address(newLock));
+    NewLock(msg.sender, address(newLock));
 
     // return the created lock
     return newLock;

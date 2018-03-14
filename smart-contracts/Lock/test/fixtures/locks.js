@@ -9,18 +9,12 @@ let defaultLock = {
   maxNumberOfKeys: 10
 }
 
-// Note web3: the current version of web3 injected by Truffle is
-// old. web3.fromAscii will fail when this is updated
-module.exports = [
-  Object.assign({}, defaultLock, {
-    lockId: web3.fromAscii('FIRST')
-  }),
-  Object.assign({}, defaultLock, {
-    lockId: web3.fromAscii('PRIVATE'),
+module.exports = {
+  'FIRST': Object.assign({}, defaultLock, {}),
+  'PRIVATE': Object.assign({}, defaultLock, {
     keyReleaseMechanism: 2 // KeyReleaseMechanisms.Private
   }),
-  Object.assign({}, defaultLock, {
-    lockId: web3.fromAscii('SINGLE KEY'),
+  'SINGLE KEY': Object.assign({}, defaultLock, {
     maxNumberOfKeys: 1
   })
-]
+}
