@@ -1,14 +1,24 @@
+// Modules
 import React, { Component } from 'react'
 import { DrizzleProvider } from 'drizzle-react'
-import logo from './logo.svg'
+
+// Components
+import UnlockComponent from './components/Unlock'
+
+// Styles
 import './App.css'
 
 // Import Unlock contract
 import Unlock from './artifacts/contracts/Unlock.json'
 
+// Options
 const options = {
   contracts: [Unlock],
-  events: [],
+  events: {
+    Unlock: [
+      'NewLock'
+    ]
+  },
   web3: {
     block: false,
     fallback: {
@@ -21,15 +31,7 @@ class App extends Component {
   render () {
     return (
       <DrizzleProvider options={options}>
-        <div className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Welcome to React</h1>
-          </header>
-          <p className="App-intro">
-            To get started, edit <code>src/App.js</code> and save to reload.
-          </p>
-        </div>
+        <UnlockComponent />
       </DrizzleProvider>
     )
   }
