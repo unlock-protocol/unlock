@@ -4,33 +4,44 @@ import { drizzleConnect } from 'drizzle-react'
 
 import LockMakerTransaction from './LockMakerTransaction'
 import LockMakerForm from './LockMakerForm'
+import Locks from './Locks'
+
+import Lock from '../../artifacts/contracts/Lock.json'
 
 class LockMaker extends React.Component {
   constructor (props, context) {
     super(props)
 
-    this.unlock = context.drizzle.contracts['Unlock']
+    this.drizzle = context.drizzle
     this.createLock = this.createLock.bind(this)
-
     // Keeping track of the transaction to create a lock
-    this.stackId = null
+    this.stackId = -1
   }
 
   createLock (params) {
-    this.stackId = this.unlock.methods['createLock'].cacheSend(...Object.values(params), { gas: 89499 * 10})
+    this.props.unlock.methods['createLock'].cacheSend(...Object.values(params), { gas: 89499 * 10 })
   }
 
   render () {
     let transaction = null
 
-    if (this.stackId) {
+    if (this.stackId > -1) {
       const transactionHash = this.props.transactionStack[this.stackId]
       transaction = this.props.transactions[transactionHash]
     }
 
+    // Not a huge fan of this approach. There must be a better redux-like way!
+    if (this.props.newLockAddresses) {
+      this.props.newLockAddresses.forEach((newLockAddress) => {
+        const NewLock = Object.assign({}, Lock, {})
+        this.drizzle.addContract(NewLock, newLockAddress, [])
+      })
+    }
+
     return (<div>
       <LockMakerForm createLock={this.createLock} />
-      <LockMakerTransaction {...transaction}/>
+      <LockMakerTransaction {...transaction} />
+      <Locks locks={this.props.locks} />
     </div>)
   }
 }
@@ -41,12 +52,38 @@ LockMaker.contextTypes = {
 
 /*
  * Export connected component.
+ * pass everything
  */
 
 const mapStateToProps = state => {
+  // Unlock contract
+  const unlockAddress = Object.keys(state.contracts).find((address) => {
+    return state.contracts[address].name === 'Unlock'
+  })
+  const unlock = state.contracts[unlockAddress]
+
+  // Locks
+  const locks = {}
+  Object.keys(state.contracts).forEach((address) => {
+    if (state.contracts[address].name === 'Lock') {
+      locks[address] = state.contracts[address]
+    }
+  })
+
+  // newLocks
+  const newLockAddresses = []
+  unlock.events.forEach((event) => {
+    if (event.event === 'NewLock') {
+      if (!locks[event.returnValues.newLockAddress]) {
+        newLockAddresses.push(event.returnValues.newLockAddress)
+      }
+    }
+  })
+
   return {
-    transactions: state.transactions,
-    transactionStack: state.transactionStack
+    unlock,
+    locks: Object.values(locks),
+    newLockAddresses
   }
 }
 

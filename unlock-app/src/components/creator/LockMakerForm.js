@@ -1,4 +1,3 @@
-import web3 from 'web3'
 import React from 'react'
 
 class LockMakerForm extends React.Component {
