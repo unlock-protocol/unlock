@@ -72,13 +72,15 @@ const mapStateToProps = state => {
 
   // newLocks
   const newLockAddresses = []
-  unlock.events.forEach((event) => {
-    if (event.event === 'NewLock') {
-      if (!locks[event.returnValues.newLockAddress]) {
-        newLockAddresses.push(event.returnValues.newLockAddress)
+  if (unlock) {
+    unlock.events.forEach((event) => {
+      if (event.event === 'NewLock') {
+        if (!locks[event.returnValues.newLockAddress]) {
+          newLockAddresses.push(event.returnValues.newLockAddress)
+        }
       }
-    }
-  })
+    })
+  }
 
   return {
     unlock,

@@ -11,7 +11,7 @@ import './App.css'
 // Import Unlock contract
 import Unlock from './artifacts/contracts/Unlock.json'
 
-// Options
+// Drizzle options
 const options = {
   contracts: [Unlock],
   events: {
