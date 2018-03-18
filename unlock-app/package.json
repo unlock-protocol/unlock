@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bootstrap": "^4.0.0",
     "drizzle": "file:../../drizzle/",
     "drizzle-react": "^1.0.1",
     "drizzle-react-components": "^1.0.1",
@@ -12,6 +13,7 @@
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
     "react-scripts": "1.1.1",
+    "reactstrap": "^5.0.0-beta.2",
     "redux": "^3.7.2",
     "web3": "^1.0.0-beta.30"
   },
