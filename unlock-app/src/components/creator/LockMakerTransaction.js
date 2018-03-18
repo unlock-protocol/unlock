@@ -2,8 +2,14 @@ import React from 'react'
 
 class LockMakerTransaction extends React.Component {
   render () {
-    console.log(this.props)
-    return (<span>Transaction! {this.props.status}</span>)
+    // TODO: show confirmations?
+    if (!this.props.status) {
+      return (<span>&nbsp;</span>)
+    } else if (this.props.receipt) {
+      return (<span>CONFIRMED transaction...</span>)
+    } else {
+      return (<span>Confirming transaction...</span>)
+    }
   }
 }
 
