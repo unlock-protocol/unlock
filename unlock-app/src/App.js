@@ -6,6 +6,7 @@ import { DrizzleProvider } from 'drizzle-react'
 import UnlockComponent from './components/Unlock'
 
 // Styles
+import 'bootstrap/dist/css/bootstrap.css'
 import './App.css'
 
 // Import Unlock contract

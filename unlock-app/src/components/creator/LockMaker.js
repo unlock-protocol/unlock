@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { drizzleConnect } from 'drizzle-react'
 
+import { Row, Col } from 'reactstrap'
+
 import LockMakerTransaction from './LockMakerTransaction'
 import LockMakerForm from './LockMakerForm'
 import Locks from './Locks'
@@ -38,11 +40,14 @@ class LockMaker extends React.Component {
       })
     }
 
-    return (<div>
-      <LockMakerForm createLock={this.createLock} />
-      <LockMakerTransaction {...transaction} />
-      <Locks locks={this.props.locks} />
-    </div>)
+    return (<Row>
+      <Col>
+        <LockMakerForm createLock={this.createLock} />
+      </Col>
+      <Col>
+        <Locks locks={this.props.locks} />
+      </Col>
+    </Row>)
   }
 }
 
