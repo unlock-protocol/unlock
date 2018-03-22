@@ -1,14 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { drizzleConnect } from 'drizzle-react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import { Row, Col } from 'reactstrap'
 
-import LockMakerTransaction from './LockMakerTransaction'
 import LockMakerForm from './LockMakerForm'
 import Locks from './Locks'
+import Lock from './Lock'
 
-import Lock from '../../artifacts/contracts/Lock.json'
+import LockContract from '../../artifacts/contracts/Lock.json'
 
 class LockMaker extends React.Component {
   constructor (props, context) {
@@ -16,8 +17,6 @@ class LockMaker extends React.Component {
 
     this.drizzle = context.drizzle
     this.createLock = this.createLock.bind(this)
-    // Keeping track of the transaction to create a lock
-    this.stackId = -1
   }
 
   createLock (params) {
@@ -25,29 +24,32 @@ class LockMaker extends React.Component {
   }
 
   render () {
-    let transaction = null
-
-    if (this.stackId > -1) {
-      const transactionHash = this.props.transactionStack[this.stackId]
-      transaction = this.props.transactions[transactionHash]
-    }
-
     // Not a huge fan of this approach. There must be a better redux-like way!
     if (this.props.newLockAddresses) {
       this.props.newLockAddresses.forEach((newLockAddress) => {
-        const NewLock = Object.assign({}, Lock, {})
+        const NewLock = Object.assign({}, LockContract, {})
         this.drizzle.addContract(NewLock, newLockAddress, [])
       })
     }
 
-    return (<Row>
-      <Col>
-        <LockMakerForm createLock={this.createLock} />
-      </Col>
-      <Col>
-        <Locks locks={this.props.locks} />
-      </Col>
-    </Row>)
+    return (
+      <Router>
+        <Row>
+          <Col>
+            <LockMakerForm createLock={this.createLock} />
+          </Col>
+          <Col>
+            <Locks locks={this.props.locks} />
+          </Col>
+          <Col>
+            <Route exact={true} path="/" render={() => {
+              return (<p>...</p>)
+            }} />
+            <Route path="/lock/:lockAddress" component={Lock} />
+          </Col>
+        </Row>
+      </Router>
+    )
   }
 }
 
