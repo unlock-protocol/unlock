@@ -1,6 +1,8 @@
 // Modules
 import React, { Component } from 'react'
 import { DrizzleProvider } from 'drizzle-react'
+import { Container } from 'reactstrap'
+import { LoadingContainer } from 'drizzle-react-components'
 
 // Components
 import UnlockComponent from './components/Unlock'
@@ -32,7 +34,11 @@ class App extends Component {
   render () {
     return (
       <DrizzleProvider options={options}>
-        <UnlockComponent />
+        <Container>
+          <LoadingContainer>
+            <UnlockComponent />
+          </LoadingContainer>
+        </Container>
       </DrizzleProvider>
     )
   }
