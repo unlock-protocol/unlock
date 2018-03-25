@@ -1,11 +1,20 @@
 import React from 'react'
+import { Container, Navbar, Nav} from 'reactstrap'
 
+import Account from './Account'
 import LockMaker from './creator/LockMaker'
 
 class Unlock extends React.Component {
   render () {
     return (
-      <LockMaker />
+      <Container>
+        <Navbar>
+          <Nav>
+            <Account />
+          </Nav>
+        </Navbar>
+        <LockMaker />
+      </Container>
     )
   }
 }
