@@ -1,5 +1,6 @@
 import React from 'react'
 import { Container, Navbar, Nav} from 'reactstrap'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import Account from './Account'
 import LockMaker from './creator/LockMaker'
@@ -13,7 +14,9 @@ class Unlock extends React.Component {
             <Account />
           </Nav>
         </Navbar>
-        <LockMaker />
+        <Router>
+          <Route path="/creator" component={LockMaker} />
+        </Router>
       </Container>
     )
   }

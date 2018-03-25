@@ -4,7 +4,7 @@ import { ListGroupItem, ListGroup, Row, Col } from 'reactstrap'
 
 const LockInList = (props) => {
   return (<ListGroupItem>
-    <Link to={`/lock/${props.lock.address}`}>
+    <Link to={`/creator/lock/${props.lock.address}`}>
       {props.lock.address}
     </Link>
   </ListGroupItem>)
