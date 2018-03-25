@@ -2,41 +2,31 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { drizzleConnect } from 'drizzle-react'
 import { ListGroupItem, ListGroup, Row, Col } from 'reactstrap'
+import { loadLock } from '../../actions/loadLock'
 
-import LockContract from '../../artifacts/contracts/Lock.json'
+const LockProperty = (props) => {
+  const dataKey = props.lock.methods[props.property].cacheCall()
 
-class LockProperty extends React.Component {
-  constructor (props, context) {
-    super(props)
+  if (props.lock[props.property][dataKey]) {
+    return (<p>{props.label}: {props.lock[props.property][dataKey].value}</p>)
   }
-
-  render () {
-    this.dataKey = this.props.lock.methods[this.props.property].cacheCall()
-
-    if (this.props.lock[this.props.property][this.dataKey]) {
-      return (<p>{this.props.label}: {this.props.lock[this.props.property][this.dataKey].value}</p>)
-    }
-    return (<span>Loading</span>)
-  }
+  return (<span>Loading</span>)
 }
 
-class Lock extends React.Component {
-  constructor (props, context) {
-    super(props)
-  }
-
-  render () {
-    return (
-      <ListGroup>
-        <ListGroupItem>
-          <LockProperty lock={this.props.lock} property="keyPrice" label="Key Price" />
-        </ListGroupItem>
-        <ListGroupItem>
-          <LockProperty lock={this.props.lock} property="maxNumberOfKeys" label="Max number of keys" />
-        </ListGroupItem>
-      </ListGroup>
-    )
-  }
+const Lock = (props) => {
+  return (
+    <ListGroup>
+      <ListGroupItem>
+        <LockProperty lock={props.lock} property="keyPrice" label="Key Price" />
+      </ListGroupItem>
+      <ListGroupItem>
+        <LockProperty lock={props.lock} property="maxNumberOfKeys" label="Max number of keys" />
+      </ListGroupItem>
+      <ListGroupItem>
+        <LockProperty lock={props.lock} property="owner" label="Owner public key" />
+      </ListGroupItem>
+    </ListGroup>
+  )
 }
 
 class MaybeLock extends React.Component {
@@ -45,14 +35,18 @@ class MaybeLock extends React.Component {
     this.addContract = context.drizzle.addContract
   }
 
-  render () {
+  componentDidMount () {
+    // Here we may be initialized with a missing lock (direct link?)
     const lockAddress = this.props.match.params.lockAddress
-    const lock = this.props.locks[lockAddress]
 
+    if (!this.props.locks[lockAddress]) {
+      this.props.loadLock(lockAddress)
+    }
+  }
+
+  render () {
+    const lock = this.props.locks[this.props.match.params.lockAddress]
     if (!lock) {
-      // SAME ANTIPATTERN. WE SHOULD NOT CHANGE DATA FROM RENDER!
-      const NewLock = Object.assign({}, LockContract, {})
-      this.addContract(NewLock, lockAddress, [])
       return (<span>Nope</span>)
     } else {
       return (
@@ -81,8 +75,12 @@ const mapStateToProps = state => {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  loadLock: lockAddress => dispatch(loadLock(lockAddress))
+})
+
 MaybeLock.contextTypes = {
   drizzle: PropTypes.object
 }
 
-export default drizzleConnect(MaybeLock, mapStateToProps)
+export default drizzleConnect(MaybeLock, mapStateToProps, mapDispatchToProps)

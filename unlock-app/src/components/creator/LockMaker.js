@@ -9,8 +9,6 @@ import LockMakerForm from './LockMakerForm'
 import Locks from './Locks'
 import Lock from './Lock'
 
-import LockContract from '../../artifacts/contracts/Lock.json'
-
 class LockMaker extends React.Component {
   constructor (props, context) {
     super(props)
@@ -20,18 +18,13 @@ class LockMaker extends React.Component {
   }
 
   createLock (params) {
-    this.props.unlock.methods['createLock'].cacheSend(...Object.values(params), { gas: 89499 * 10 })
+    this.props.unlock.methods['createLock'].cacheSend(...Object.values(params), {
+      gas: 89499 * 10,
+      from: this.props.currentAccount
+    })
   }
 
   render () {
-    // Not a huge fan of this approach. There must be a better redux-like way!
-    if (this.props.newLockAddresses) {
-      this.props.newLockAddresses.forEach((newLockAddress) => {
-        const NewLock = Object.assign({}, LockContract, {})
-        this.drizzle.addContract(NewLock, newLockAddress, [])
-      })
-    }
-
     return (
       <Router>
         <Row>
@@ -43,7 +36,7 @@ class LockMaker extends React.Component {
           </Col>
           <Col>
             <Route exact={true} path="/" render={() => {
-              return (<p>...</p>)
+              return (<p></p>)
             }} />
             <Route path="/lock/:lockAddress" component={Lock} />
           </Col>
@@ -77,22 +70,10 @@ const mapStateToProps = state => {
     }
   })
 
-  // newLocks
-  const newLockAddresses = []
-  if (unlock) {
-    unlock.events.forEach((event) => {
-      if (event.event === 'NewLock') {
-        if (!locks[event.returnValues.newLockAddress]) {
-          newLockAddresses.push(event.returnValues.newLockAddress)
-        }
-      }
-    })
-  }
-
   return {
     unlock,
     locks: Object.values(locks),
-    newLockAddresses
+    currentAccount: state.currentAccount
   }
 }
 
