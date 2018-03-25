@@ -38,7 +38,7 @@ class LockMaker extends React.Component {
             <Route exact={true} path="/" render={() => {
               return (<p></p>)
             }} />
-            <Route path="/lock/:lockAddress" component={Lock} />
+            <Route path="/creator/lock/:lockAddress" component={Lock} />
           </Col>
         </Row>
       </Router>

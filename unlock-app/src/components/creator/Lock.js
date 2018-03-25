@@ -23,7 +23,10 @@ const Lock = (props) => {
         <LockProperty lock={props.lock} property="maxNumberOfKeys" label="Max number of keys" />
       </ListGroupItem>
       <ListGroupItem>
-        <LockProperty lock={props.lock} property="owner" label="Owner public key" />
+        <LockProperty lock={props.lock} property="owner" label="Owner" />
+      </ListGroupItem>
+      <ListGroupItem>
+        <LockProperty lock={props.lock} property="outstandingKeys" label="Keys" />
       </ListGroupItem>
     </ListGroup>
   )
