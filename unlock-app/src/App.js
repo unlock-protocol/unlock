@@ -1,8 +1,7 @@
 // Modules
 import React, { Component } from 'react'
 import { generateStore } from 'drizzle'
-import { DrizzleProvider } from 'drizzle-react'
-import { LoadingContainer } from 'drizzle-react-components'
+import { Provider } from 'react-redux'
 import { ConnectedRouter, routerReducer, routerMiddleware} from 'react-router-redux'
 import createHistory from 'history/createBrowserHistory'
 
@@ -69,13 +68,11 @@ class App extends Component {
 
   render () {
     return (
-      <DrizzleProvider options={this.drizzleOptions} store={this.store}>
-        <LoadingContainer>
-          <ConnectedRouter history={this.browserHistory} store={this.store}>
-            <UnlockComponent />
-          </ConnectedRouter>
-        </LoadingContainer>
-      </DrizzleProvider>
+      <Provider options={this.drizzleOptions} store={this.store}>
+        <ConnectedRouter history={this.browserHistory} store={this.store}>
+          <UnlockComponent store={this.store} />
+        </ConnectedRouter>
+      </Provider>
     )
   }
 }

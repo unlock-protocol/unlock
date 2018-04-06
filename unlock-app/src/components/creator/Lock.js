@@ -1,5 +1,5 @@
 import React from 'react'
-import { drizzleConnect } from 'drizzle-react'
+import { connect } from 'react-redux'
 import { ListGroupItem, ListGroup, Row, Col } from 'reactstrap'
 
 const LockProperty = (props) => {
@@ -49,4 +49,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default drizzleConnect(Lock, mapStateToProps)
+export default connect(mapStateToProps)(Lock)

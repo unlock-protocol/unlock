@@ -11,7 +11,7 @@ const Unlock = (props) => {
     <Container>
       <Navbar>
         <Nav>
-          <Account />
+          <Account store={props.store} />
         </Nav>
       </Navbar>
       <Router>

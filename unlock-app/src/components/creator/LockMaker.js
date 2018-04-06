@@ -1,5 +1,5 @@
 import React from 'react'
-import { drizzleConnect } from 'drizzle-react'
+import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
 
 import { Row, Col } from 'reactstrap'
@@ -25,7 +25,7 @@ class LockMaker extends React.Component {
     return (
       <Row>
         <Col>
-          <LockMakerForm createLock={this.createLock} />
+          <LockMakerForm createLock={this.createLock} store={this.props.store} />
         </Col>
         <Col>
           <Locks locks={this.props.locks} />
@@ -68,4 +68,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default drizzleConnect(LockMaker, mapStateToProps)
+export default connect(mapStateToProps)(LockMaker)
