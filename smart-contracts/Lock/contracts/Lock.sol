@@ -97,6 +97,7 @@ contract Lock {
   *  - the keyReleaseMechanism is Approved and the user has not been previously approved
   *  - the amount value is smaller than the price
   *  - the sender already owns a key
+  * TODO: next version of solidity will allow for message to be added to require.
   */
   function purchase(string _data) public payable {
     require(keyReleaseMechanism != KeyReleaseMechanisms.Private);

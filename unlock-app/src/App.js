@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import { generateStore } from 'drizzle'
 import { DrizzleProvider } from 'drizzle-react'
 import { LoadingContainer } from 'drizzle-react-components'
+import { ConnectedRouter, routerReducer, routerMiddleware} from 'react-router-redux'
+import createHistory from 'history/createBrowserHistory'
 
 // Components
 import UnlockComponent from './components/Unlock'
@@ -16,6 +18,7 @@ import Unlock from './artifacts/contracts/Unlock.json'
 
 // Reducers
 import accountReducer from './reducers/accountReducer'
+import lockReducer from './reducers/lockReducer'
 
 // Middlewares
 import lockMiddleware from './middlewares/lockMiddleware'
@@ -40,14 +43,24 @@ class App extends Component {
     }
 
     const reducers = {
-      currentAccount: accountReducer
+      route: routerReducer,
+      currentAccount: accountReducer,
+      currentLockAddress: lockReducer
     }
 
     const initialState = {
-      currentAccount: null
+      currentAccount: null,
+      currentLockAddress: null
     }
 
-    const middlewares = [lockMiddleware]
+    // Create a history of your choosing (we're using a browser history in this case)
+    this.browserHistory = createHistory()
+    const routeMiddleware = routerMiddleware(this.browserHistory)
+
+    const middlewares = [
+      routeMiddleware,
+      lockMiddleware
+    ]
 
     // create our own store!
     // We cannot use the default one built by the provider because we want to add our own state!
@@ -58,7 +71,9 @@ class App extends Component {
     return (
       <DrizzleProvider options={this.drizzleOptions} store={this.store}>
         <LoadingContainer>
-          <UnlockComponent />
+          <ConnectedRouter history={this.browserHistory} store={this.store}>
+            <UnlockComponent />
+          </ConnectedRouter>
         </LoadingContainer>
       </DrizzleProvider>
     )
