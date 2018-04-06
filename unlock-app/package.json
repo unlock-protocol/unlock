@@ -13,6 +13,7 @@
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
+    "react-router-redux": "^5.0.0-alpha.9",
     "react-scripts": "1.1.1",
     "reactstrap": "^5.0.0-beta.2",
     "redux": "^3.7.2",

@@ -1,30 +1,19 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { drizzleConnect } from 'drizzle-react'
 import { Input, FormGroup, Label } from 'reactstrap'
 import { setAccount } from '../actions/setAccount'
 
-class Account extends React.Component {
-  constructor (props, context) {
-    super(props)
-  }
-
-  render () {
-    return (
-      <FormGroup>
-        <Label>Account</Label>
-        <Input type="select" value={this.props.currentAccount} onChange={(event) => this.props.setAccount(event.target.value)}>
-          {Object.keys(this.props.accounts).map((i) => {
-            return (<option value={this.props.accounts[i]} key={i}>{this.props.accounts[i]}</option>)
-          })}
-        </Input>
-      </FormGroup>
-    )
-  }
-}
-
-Account.contextTypes = {
-  drizzle: PropTypes.object
+const Account = (props) => {
+  return (
+    <FormGroup>
+      <Label>Account</Label>
+      <Input type="select" value={props.currentAccount} onChange={(event) => props.setAccount(event.target.value)}>
+        {Object.keys(props.accounts).map((i) => {
+          return (<option value={props.accounts[i]} key={i}>{props.accounts[i]}</option>)
+        })}
+      </Input>
+    </FormGroup>
+  )
 }
 
 const mapStateToProps = state => {

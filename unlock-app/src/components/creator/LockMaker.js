@@ -1,7 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { drizzleConnect } from 'drizzle-react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 
 import { Row, Col } from 'reactstrap'
 
@@ -12,8 +11,6 @@ import Lock from './Lock'
 class LockMaker extends React.Component {
   constructor (props, context) {
     super(props)
-
-    this.drizzle = context.drizzle
     this.createLock = this.createLock.bind(this)
   }
 
@@ -26,28 +23,22 @@ class LockMaker extends React.Component {
 
   render () {
     return (
-      <Router>
-        <Row>
-          <Col>
-            <LockMakerForm createLock={this.createLock} />
-          </Col>
-          <Col>
-            <Locks locks={this.props.locks} />
-          </Col>
-          <Col>
-            <Route exact={true} path="/" render={() => {
-              return (<p></p>)
-            }} />
-            <Route path="/creator/lock/:lockAddress" component={Lock} />
-          </Col>
-        </Row>
-      </Router>
+      <Row>
+        <Col>
+          <LockMakerForm createLock={this.createLock} />
+        </Col>
+        <Col>
+          <Locks locks={this.props.locks} />
+        </Col>
+        <Col>
+          <Route exact={true} path="/" render={() => {
+            return (<p></p>)
+          }} />
+          <Route path="/creator/lock/:lockAddress" component={Lock} />
+        </Col>
+      </Row>
     )
   }
-}
-
-LockMaker.contextTypes = {
-  drizzle: PropTypes.object
 }
 
 /*

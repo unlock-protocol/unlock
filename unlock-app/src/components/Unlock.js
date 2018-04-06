@@ -4,22 +4,24 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import Account from './Account'
 import LockMaker from './creator/LockMaker'
+import Lock from './consumer/Lock'
 
-class Unlock extends React.Component {
-  render () {
-    return (
-      <Container>
-        <Navbar>
-          <Nav>
-            <Account />
-          </Nav>
-        </Navbar>
-        <Router>
+const Unlock = (props) => {
+  return (
+    <Container>
+      <Navbar>
+        <Nav>
+          <Account />
+        </Nav>
+      </Navbar>
+      <Router>
+        <div>
           <Route path="/creator" component={LockMaker} />
-        </Router>
-      </Container>
-    )
-  }
+          <Route path="/lock/:lockAddress" component={Lock} />
+        </div>
+      </Router>
+    </Container>
+  )
 }
 
 export default Unlock
