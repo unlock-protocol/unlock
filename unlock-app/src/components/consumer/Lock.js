@@ -1,5 +1,5 @@
 import React from 'react'
-import { drizzleConnect } from 'drizzle-react'
+import { connect } from 'react-redux'
 import { Row, Col, Button } from 'reactstrap'
 
 const LockProperty = (props) => {
@@ -75,4 +75,4 @@ class Lock extends React.Component {
   }
 }
 
-export default drizzleConnect(Lock, mapStateToProps)
+export default connect(mapStateToProps)(Lock)

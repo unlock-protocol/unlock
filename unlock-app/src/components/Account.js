@@ -1,5 +1,5 @@
 import React from 'react'
-import { drizzleConnect } from 'drizzle-react'
+import { connect } from 'react-redux'
 import { Input, FormGroup, Label } from 'reactstrap'
 import { setAccount } from '../actions/setAccount'
 
@@ -27,4 +27,4 @@ const mapDispatchToProps = dispatch => ({
   setAccount: account => dispatch(setAccount(account))
 })
 
-export default drizzleConnect(Account, mapStateToProps, mapDispatchToProps)
+export default connect(mapStateToProps, mapDispatchToProps)(Account)
