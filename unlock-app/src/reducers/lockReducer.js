@@ -1,11 +1,17 @@
+import { SET_LOCK, RESET_LOCK } from '../actions/lock'
+
 const initialState = {
 }
 
 const lockReducer = (state = initialState, action) => {
-  // We should pick the lock based on the path?
+  if (action.type === SET_LOCK) {
+    return action.lock
+  }
 
-  if (action.type === 'CONTRACT_INITIALIZED' && action.contract.name === 'Lock') {
-    return action.contract.address
+  if (action.type === RESET_LOCK) {
+    return {
+      ...(action.lock) // weird way to force redux to change its state
+    }
   }
 
   return state

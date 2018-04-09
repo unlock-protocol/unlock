@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.0.0",
-    "drizzle": "file:../../drizzle/",
     "eslint": "^4.18.2",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",

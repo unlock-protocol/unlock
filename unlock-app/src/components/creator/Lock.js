@@ -2,50 +2,38 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { ListGroupItem, ListGroup, Row, Col } from 'reactstrap'
 
-const LockProperty = (props) => {
-  const dataKey = props.lock.methods[props.property].cacheCall()
-
-  if (props.lock[props.property][dataKey]) {
-    return (<p>{props.label}: {props.lock[props.property][dataKey].value}</p>)
+const Lock = (props) => {
+  if (!props.lock) {
+    return (<span>Loading...</span>)
   }
-  return (<span>Loading</span>)
-}
-
-class Lock extends React.Component {
-  constructor (props, context) {
-    super(props)
-  }
-
-  render () {
-    return (
-      <Row>
-        <Col>
-          <h1>Details <span>Balance: </span></h1>
-          <ListGroup>
-            <ListGroupItem>
-              <LockProperty lock={this.props.lock} property="keyReleaseMechanism" label="Key Release Mechanism" />
-            </ListGroupItem>
-            <ListGroupItem>
-              <LockProperty lock={this.props.lock} property="keyPrice" label="Key Price" />
-            </ListGroupItem>
-            <ListGroupItem>
-              <LockProperty lock={this.props.lock} property="maxNumberOfKeys" label="Max number of keys" />
-            </ListGroupItem>
-            <ListGroupItem>
-              <LockProperty lock={this.props.lock} property="owner" label="Owner" />
-            </ListGroupItem>
-            <ListGroupItem>
-              <LockProperty lock={this.props.lock} property="outstandingKeys" label="Outstanding keys" />
-            </ListGroupItem>
-          </ListGroup>
-        </Col>
-      </Row>)
-  }
+  return (
+    <Row>
+      <Col>
+        <h1>Details <span>Balance: </span></h1>
+        <ListGroup>
+          <ListGroupItem>
+            <p>Key Release Mechanism: {props.lock.keyReleaseMechanism()}</p>
+          </ListGroupItem>
+          <ListGroupItem>
+            <p>Key Price: {props.lock.keyPrice()}</p>
+          </ListGroupItem>
+          <ListGroupItem>
+            <p>Max number of keys: {props.lock.maxNumberOfKeys()}</p>
+          </ListGroupItem>
+          <ListGroupItem>
+            <p>Owner: {props.lock.owner()}</p>
+          </ListGroupItem>
+          <ListGroupItem>
+            <p>Outstanding keys: {props.lock.outstandingKeys()}</p>
+          </ListGroupItem>
+        </ListGroup>
+      </Col>
+    </Row>)
 }
 
 const mapStateToProps = state => {
   return {
-    lock: state.contracts[state.currentLockAddress]
+    lock: state.currentLock
   }
 }
 

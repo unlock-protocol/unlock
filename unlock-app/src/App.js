@@ -1,23 +1,26 @@
 // Modules
 import React, { Component } from 'react'
-import { generateStore } from 'drizzle'
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import { Provider } from 'react-redux'
 import { ConnectedRouter, routerReducer, routerMiddleware} from 'react-router-redux'
 import createHistory from 'history/createBrowserHistory'
 
+// Services
+import { initWeb3Service } from './services/web3Service'
+
 // Components
-import UnlockComponent from './components/Unlock'
+import Unlock from './components/Unlock'
 
 // Styles
 import 'bootstrap/dist/css/bootstrap.css'
 import './App.css'
 
-// Import Unlock contract
-import Unlock from './artifacts/contracts/Unlock.json'
-
 // Reducers
+import accountsReducer from './reducers/accountsReducer'
 import accountReducer from './reducers/accountReducer'
 import lockReducer from './reducers/lockReducer'
+import locksReducer from './reducers/locksReducer'
+import currentKeyReducer from './reducers/currentKeyReducer'
 
 // Middlewares
 import lockMiddleware from './middlewares/lockMiddleware'
@@ -25,52 +28,53 @@ import lockMiddleware from './middlewares/lockMiddleware'
 class App extends Component {
   constructor (props, context) {
     super(props)
-    this.drizzleOptions = {
-      contracts: [Unlock],
-      events: {
-        Unlock: [
-          'NewLock'
-        ]
-      },
-      web3: {
-        block: false,
-        fallback: {
-          type: 'ws',
-          url: 'ws://127.0.0.1:8545'
-        }
-      }
-    }
 
     const reducers = {
-      route: routerReducer,
+      router: routerReducer,
+      accounts: accountsReducer,
       currentAccount: accountReducer,
-      currentLockAddress: lockReducer
+      locks: locksReducer,
+      currentLock: lockReducer,
+      currentKey: currentKeyReducer
     }
 
     const initialState = {
+      accounts: [],
       currentAccount: null,
-      currentLockAddress: null
+      locks: [],
+      currentLock: null,
+      currentKey: {
+        expiration: 0,
+        data: ''
+      } // no key set
     }
 
     // Create a history of your choosing (we're using a browser history in this case)
     this.browserHistory = createHistory()
-    const routeMiddleware = routerMiddleware(this.browserHistory)
 
     const middlewares = [
-      routeMiddleware,
+      routerMiddleware(this.browserHistory),
       lockMiddleware
     ]
 
     // create our own store!
-    // We cannot use the default one built by the provider because we want to add our own state!
-    this.store = generateStore(this.drizzleOptions, reducers, initialState, middlewares)
+    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+
+    this.store = createStore(
+      combineReducers(reducers),
+      initialState,
+      composeEnhancers(applyMiddleware(...middlewares))
+    )
+
+    // connects to the web3 endpoint
+    initWeb3Service(this.store.dispatch)
   }
 
   render () {
     return (
-      <Provider options={this.drizzleOptions} store={this.store}>
-        <ConnectedRouter history={this.browserHistory} store={this.store}>
-          <UnlockComponent store={this.store} />
+      <Provider store={this.store}>
+        <ConnectedRouter history={this.browserHistory}>
+          <Unlock />
         </ConnectedRouter>
       </Provider>
     )
