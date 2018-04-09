@@ -17,7 +17,7 @@ const Locks = (props) => {
       <Col>
         <h1>Locks</h1>
         <ListGroup>
-          {props.locks.map((lock, idx) => {
+          {[...props.locks].map((lock, idx) => {
             return (
               <LockInList lock={lock} key={idx} />
             )

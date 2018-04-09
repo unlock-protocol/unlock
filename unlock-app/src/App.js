@@ -41,7 +41,7 @@ class App extends Component {
     const initialState = {
       accounts: [],
       currentAccount: null,
-      locks: [],
+      locks: new Set(),
       currentLock: null,
       currentKey: {
         expiration: 0,
