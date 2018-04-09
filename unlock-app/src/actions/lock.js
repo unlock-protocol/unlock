@@ -4,7 +4,7 @@ export const NEW_LOCK = 'NEW_LOCK'
 export const SET_LOCK = 'SET_LOCK'
 export const RESET_LOCK = 'RESET_LOCK'
 export const PURCHASE_KEY = 'PURCHASE_KEY'
-export const SET_CURRENT_KEY = 'SET_CURRENT_KEY'
+export const SET_KEY = 'SET_KEY'
 
 export const createLock = (lock) => ({
   type: CREATE_LOCK,
@@ -32,7 +32,7 @@ export const purchaseKey = (lock, account) => ({
   account
 })
 
-export const setCurrentKey = (key) => ({
-  type: SET_CURRENT_KEY,
+export const setKey = (key) => ({
+  type: SET_KEY,
   key
 })

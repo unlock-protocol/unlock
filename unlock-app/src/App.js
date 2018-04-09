@@ -20,7 +20,7 @@ import accountsReducer from './reducers/accountsReducer'
 import accountReducer from './reducers/accountReducer'
 import lockReducer from './reducers/lockReducer'
 import locksReducer from './reducers/locksReducer'
-import currentKeyReducer from './reducers/currentKeyReducer'
+import keyReducer from './reducers/keyReducer'
 
 // Middlewares
 import lockMiddleware from './middlewares/lockMiddleware'
@@ -35,7 +35,7 @@ class App extends Component {
       currentAccount: accountReducer,
       locks: locksReducer,
       currentLock: lockReducer,
-      currentKey: currentKeyReducer
+      currentKey: keyReducer
     }
 
     const initialState = {

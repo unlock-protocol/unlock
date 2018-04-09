@@ -3,7 +3,7 @@ import LockContract from '../artifacts/contracts/Lock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 
 import { accountsFetched, setAccount } from '../actions/accounts'
-import { newLock, setLock, resetLock, setCurrentKey } from '../actions/lock'
+import { newLock, setLock, resetLock, setKey } from '../actions/lock'
 
 // web3 instance is shared
 const provider = new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545')
@@ -115,20 +115,20 @@ export const purchaseKey = (lockAddress, account, keyPrice, data) => {
   }).then(function (receipt) {
     // TODO: this will take a couple seconds on real blockchains... so we need to indicate that to the user!
     if (receipt.events.SoldKey) {
-      getCurrentKey(lockAddress, account)
+      getKey(lockAddress, account)
     } else {
       // WAT?
     }
   })
 }
 
-export const getCurrentKey = (lockAddress, currentAccount) => {
+export const getKey = (lockAddress, currentAccount) => {
   const lockContract = new web3.eth.Contract(LockContract.abi, lockAddress)
   const getKeyExpirationPromise = lockContract.methods.keyExpirationTimestampFor(currentAccount).call()
   const getKeyDataPromise = lockContract.methods.keyDataFor(currentAccount).call()
   Promise.all([getKeyExpirationPromise, getKeyDataPromise])
     .then(([expiration, data]) => {
-      dispatch(setCurrentKey({
+      dispatch(setKey({
         expiration: parseInt(expiration, 10),
         data
       }))
