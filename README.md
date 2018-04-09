@@ -1,13 +1,6 @@
-# Repositoty for the code to run Unlock
+# Unlock Protocol
 
-5 steps to POC
-
-1. Working JS snippet which can be embedded on a webpage and will erase the content of the page of the current user is not allowed to view it.
-2. Accept "slow" blockchain transaction to unlock content, maybe using Metamask.
-3. Replace Metamask with our own iframe.
-4. Fast payment channel to unlock content.
-5. Accept CC payment.
-
+This is the code repository for Unlock's full code.
 
 ## Components
 
