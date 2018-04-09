@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Navbar, Nav} from 'reactstrap'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { Route } from 'react-router'
 
 import Account from './Account'
 import LockMaker from './creator/LockMaker'
@@ -11,15 +11,13 @@ const Unlock = (props) => {
     <Container>
       <Navbar>
         <Nav>
-          <Account store={props.store} />
+          <Account />
         </Nav>
       </Navbar>
-      <Router>
-        <div>
-          <Route path="/creator" component={LockMaker} />
-          <Route path="/lock/:lockAddress" component={Lock} />
-        </div>
-      </Router>
+      <div>
+        <Route path="/creator" component={LockMaker} />
+        <Route path="/lock/:lockAddress" component={Lock} />
+      </div>
     </Container>
   )
 }

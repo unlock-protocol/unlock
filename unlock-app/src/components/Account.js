@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Input, FormGroup, Label } from 'reactstrap'
-import { setAccount } from '../actions/setAccount'
+import { setAccount } from '../actions/accounts'
 
 const Account = (props) => {
   return (
@@ -18,7 +18,7 @@ const Account = (props) => {
 
 const mapStateToProps = state => {
   return {
-    currentAccount: state.currentAccount,
+    currentAccount: state.currentAccount || '',
     accounts: state.accounts || {}
   }
 }

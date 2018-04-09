@@ -1,6 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
 import { Row, Col } from 'reactstrap'
+import { createLock } from '../../actions/lock'
 
 class LockMakerForm extends React.Component {
   constructor (props, context) {
@@ -64,4 +66,13 @@ class LockMakerForm extends React.Component {
   }
 }
 
-export default LockMakerForm
+const mapStateToProps = state => {
+  return {
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  createLock: lock => dispatch(createLock(lock))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(LockMakerForm)
