@@ -112,7 +112,7 @@ contract Lock {
     });
 
     // trigger event
-    SoldKey(msg.sender);
+    emit SoldKey(msg.sender);
   }
 
   /**
@@ -120,10 +120,10 @@ contract Lock {
   * @param _owner address of the user for whom we search the key
   * method is not very useful for now.
   * Check keyDataFor and keyExpirationTimestampFor
-  */
   function keyFor(address _owner) public view returns (Lock.Key key) {
     return owners[_owner];
   }
+  */
 
   /**
   * @dev Returns the key's data field for a given owner.
