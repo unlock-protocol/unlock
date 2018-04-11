@@ -38,7 +38,7 @@ contract Unlock {
     );
 
     // trigger event
-    NewLock(msg.sender, address(newLock));
+    emit NewLock(msg.sender, address(newLock));
 
     // return the created lock
     return newLock;
