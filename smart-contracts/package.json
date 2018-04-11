@@ -13,6 +13,8 @@
     "eslint": "^4.18.2",
     "ethereumjs-units": "^0.2.0",
     "ganache-core": "^2.1.0",
+    "truffle": "^4.1.5",
+    "truffle-contract": "^3.0.4",
     "zeppelin-solidity": "^1.7.0"
   },
   "devDependencies": {
