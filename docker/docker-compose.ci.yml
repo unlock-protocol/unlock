@@ -1,0 +1,14 @@
+version: '3'
+services:
+  ganache:
+    restart: always
+    image: trufflesuite/ganache-cli
+    expose:
+      - 8545
+  unlock:
+    build:
+      context: ..
+      dockerfile: ./docker/unlock.tests.dockerfile
+    depends_on:
+      - ganache
+
