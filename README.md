@@ -21,5 +21,5 @@ We deploy with docker/docker-compose:
 
 ```
 docker-compose -f docker/docker-compose.ci.yml build
-docker-compose -f docker/docker-compose.ci.yml -p ci up  --abort-on-container-exit
+docker-compose -f docker/docker-compose.ci.yml up --abort-on-container-exit
 ```
