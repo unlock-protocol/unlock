@@ -1,8 +1,9 @@
 import { LOCATION_CHANGE } from 'react-router-redux'
-import { CREATE_LOCK, NEW_LOCK, PURCHASE_KEY, SET_LOCK} from '../actions/lock'
+import { CREATE_LOCK, NEW_LOCK, PURCHASE_KEY, SET_LOCK, SET_KEY} from '../actions/lock'
 import { SET_ACCOUNT } from '../actions/accounts'
 
 import { createLock, getLock, purchaseKey, getKey } from '../services/web3Service'
+import { sendMessage } from '../services/iframeService'
 
 // this middleware listen to redux events and invokes the web3 service APIs.
 // TODO: remove reliance on getState by making each action "pure"
@@ -37,6 +38,8 @@ export default function lockMiddleware ({ getState }) {
         if (currentAccount) {
           getKey(action.lock.address, currentAccount)
         }
+      } else if (action.type === SET_KEY) {
+        sendMessage({key: action.key})
       }
 
       let returnValue = next(action)
