@@ -1,0 +1,20 @@
+---
+layout: default
+---
+{%- include header.html -%}
+
+<!-- Main -->
+<div id="main" unlock-lock="0x6374455ec1Be2935f0358345bA40bdEc3A64f7b0" >
+	<!-- Post -->
+	<article class="shade-two">
+	  <div class="container">
+			<header>
+				<h2>{{- page.title -}}</h2>
+				<p>{% if page.author %}{{ page.author }}, {% endif %}{{- page.date | date_to_long_string -}}</p>
+			</header>
+	    {{- content -}}
+	  </div>
+	</article>
+</div>
+
+<script src="http://0.0.0.0:3000/button.js"></script>
