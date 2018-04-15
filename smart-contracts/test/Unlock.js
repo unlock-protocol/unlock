@@ -132,7 +132,7 @@ contract('Unlock', (accounts) => {
             if (error) {
               assert(false, error)
             }
-            assert(args.owner, accounts[2])
+            assert.equal(args.owner, accounts[2])
             filter.stopWatching()
           })
           return locks['FIRST']
@@ -195,7 +195,7 @@ contract('Unlock', (accounts) => {
               locks['FIRST'].keyExpirationTimestampFor(accounts[0]),
               locks['FIRST'].expirationDuration()
             ]).then(([expirationTimestamp, expirationDuration]) => {
-              assert(expirationTimestamp.toNumber() >= now + expirationDuration.toNumber())
+              assert.equal(expirationTimestamp.toNumber(), now + expirationDuration.toNumber())
             })
           })
 
