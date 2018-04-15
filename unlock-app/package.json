@@ -5,14 +5,15 @@
   "dependencies": {
     "bootstrap": "^4.0.0",
     "eslint": "^4.18.2",
+    "mock-socket": "^7.1.0",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.9",
-    "react-scripts": "1.1.1",
-    "reactstrap": "^5.0.0-beta.2",
+    "react-scripts": "1.1.4",
+    "reactstrap": "^5.0.0",
     "redux": "^3.7.2",
     "truffle": "^4.1.5",
     "web3": "^1.0.0-beta.30"
