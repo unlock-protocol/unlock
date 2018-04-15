@@ -8,4 +8,5 @@ truffle test --network test
 
 # React tests
 cd /home/unlock/unlock-app
+npm install
 CI=1 npm test
