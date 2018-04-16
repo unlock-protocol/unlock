@@ -93,9 +93,13 @@ export const getLock = (address) => {
         } else {
           // we do not have the memod value... so let's return undefined and retrieve it!
           contract.methods[item.name](...args).call((error, result) => {
-            // set the memo
-            lock.memo[item.name][args] = result
-            dispatch(resetLock(lock))
+            if (error) {
+              // Something happened
+            } else {
+              // set the memo
+              lock.memo[item.name][args] = result
+              dispatch(resetLock(lock))
+            }
           })
           return undefined // By default we return undefined?
         }
