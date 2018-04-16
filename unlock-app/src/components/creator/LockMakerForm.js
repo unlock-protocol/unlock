@@ -13,7 +13,7 @@ class LockMakerForm extends React.Component {
       expirationTimestamp: 0, // for now 0 as we focus on duration based locks
       keyPriceCalculator: 0, // let's focus on fix prices
       keyPrice: 100000, // we should show a better UI to let creators set their price in eth!
-      maxNumberOfKeys: 10
+      maxNumberOfKeys: 10,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -67,7 +67,7 @@ class LockMakerForm extends React.Component {
 }
 
 LockMakerForm.propTypes = {
-  createLock: PropTypes.func
+  createLock: PropTypes.func,
 }
 
 const mapStateToProps = state => {
@@ -76,7 +76,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  createLock: lock => dispatch(createLock(lock))
+  createLock: lock => dispatch(createLock(lock)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LockMakerForm)

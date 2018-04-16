@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import UnlockPropTypes from '../../propTypes'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -6,14 +6,14 @@ import { ListGroupItem, ListGroup, Row, Col } from 'reactstrap'
 
 const LockInList = (props) => {
   return (<ListGroupItem>
-    <Link to={`/creator/lock/${props.lock}`}>
-      {props.lock}
+    <Link to={`/creator/lock/${props.lock.address}`}>
+      {props.lock.address}
     </Link>
   </ListGroupItem>)
 }
 
 LockInList.propTypes = {
-  lock: PropTypes.object
+  lock: UnlockPropTypes.lock,
 }
 
 const Locks = (props) => {
@@ -34,13 +34,13 @@ const Locks = (props) => {
 }
 
 Locks.propTypes = {
-  locks: PropTypes.array
+  locks: UnlockPropTypes.locks,
 }
 
 const mapStateToProps = state => {
   const locks = state.locks
   return {
-    locks
+    locks,
   }
 }
 

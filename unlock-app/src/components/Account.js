@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import UnlockPropTypes from '../propTypes'
 
 import React from 'react'
 import { connect } from 'react-redux'
@@ -18,21 +19,21 @@ const Account = (props) => {
   )
 }
 
-Account.PropTypes = {
-  currentAccount: PropTypes.object,
+Account.propTypes = {
+  currentAccount: UnlockPropTypes.account,
   setAccount: PropTypes.func,
-  accounts: PropTypes.array,
+  accounts: PropTypes.arrayOf(UnlockPropTypes.account),
 }
 
 const mapStateToProps = state => {
   return {
     currentAccount: state.currentAccount || '',
-    accounts: state.accounts || {}
+    accounts: state.accounts || {},
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  setAccount: account => dispatch(setAccount(account))
+  setAccount: account => dispatch(setAccount(account)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account)

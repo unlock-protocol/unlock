@@ -1,5 +1,5 @@
 import { LOCATION_CHANGE } from 'react-router-redux'
-import { CREATE_LOCK, NEW_LOCK, PURCHASE_KEY, SET_LOCK, SET_KEY } from '../actions/lock'
+import { CREATE_LOCK, PURCHASE_KEY, SET_LOCK, SET_KEY } from '../actions/lock'
 import { SET_ACCOUNT } from '../actions/accounts'
 
 import { createLock, getLock, purchaseKey, getKey } from '../services/web3Service'
@@ -14,9 +14,6 @@ export default function lockMiddleware ({ getState }) {
       if (action.type === CREATE_LOCK) {
         // Create a lock
         createLock(action.lock, getState().currentAccount)
-      } else if (action.type === NEW_LOCK) {
-        // When a lock has been created, let's retrieve it
-        getLock(action.lockAddress)
       } else if (action.type === PURCHASE_KEY) {
         // when a key has been purchased
         purchaseKey(action.lock.address, action.account, action.lock.keyPrice(), '') // TODO change data from ''

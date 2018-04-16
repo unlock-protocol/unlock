@@ -6,7 +6,7 @@ jest.mock('../services/web3Service', () => {
   return {
     initWeb3Service: () => {
 
-    }
+    },
   }
 })
 

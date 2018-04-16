@@ -10,7 +10,7 @@ const lockReducer = (state = initialState, action) => {
 
   if (action.type === RESET_LOCK) {
     return {
-      ...(action.lock) // weird way to force redux to change its state
+      ...(action.lock), // weird way to force redux to change its state
     }
   }
 
