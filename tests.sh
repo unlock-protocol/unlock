@@ -6,7 +6,9 @@ cd /home/unlock/smart-contracts
 npm install
 truffle test --network test
 
-# React tests
+# React tests && linting
 cd /home/unlock/unlock-app
 npm install
 CI=1 npm test
+npm run lint
+

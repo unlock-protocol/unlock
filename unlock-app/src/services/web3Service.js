@@ -1,9 +1,11 @@
+/* eslint no-console: 0 */  // TODO: remove me when this is clean
+
 import Web3 from 'web3'
 import LockContract from '../artifacts/contracts/Lock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 
 import { accountsFetched, setAccount } from '../actions/accounts'
-import { newLock, setLock, resetLock, setKey } from '../actions/lock'
+import { setLock, resetLock, setKey } from '../actions/lock'
 
 // web3 instance is shared
 const provider = new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545')
@@ -60,11 +62,11 @@ export const createLock = (lock, from) => {
   const tx = unlock.methods.createLock(...Object.values(lock))
   tx.send({
     gas: 89499 * 10,
-    from
+    from,
   }).then(function (receipt) {
     // TODO: this will take a couple seconds on real blockchains... so we need to indicate that to the user!
     if (receipt.events.NewLock) {
-      dispatch(newLock(receipt.events.NewLock.returnValues.newLockAddress))
+      getLock(receipt.events.NewLock.returnValues.newLockAddress)
     } else {
       // WAT?
     }
@@ -74,7 +76,7 @@ export const createLock = (lock, from) => {
 export const getLock = (address) => {
   let lock = {
     address,
-    memo: {} // This includes a memo
+    memo: {}, // This includes a memo
   }
 
   const contract = new web3.eth.Contract(LockContract.abi, address)
@@ -111,7 +113,7 @@ export const purchaseKey = (lockAddress, account, keyPrice, data) => {
   tx.send({
     gas: 89499 * 10, // how much gas?
     from: account,
-    value: keyPrice
+    value: keyPrice,
   }).then(function (receipt) {
     // TODO: this will take a couple seconds on real blockchains... so we need to indicate that to the user!
     if (receipt.events.SoldKey) {
@@ -130,7 +132,7 @@ export const getKey = (lockAddress, currentAccount) => {
     .then(([expiration, data]) => {
       dispatch(setKey({
         expiration: parseInt(expiration, 10),
-        data
+        data,
       }))
     })
 }

@@ -4,14 +4,14 @@ export const REQUEST_ACCOUNTS = 'REQUEST_ACCOUNTS'
 
 export const setAccount = account => ({
   type: SET_ACCOUNT,
-  account
+  account,
 })
 
 export const requestAccounts = account => ({
-  type: REQUEST_ACCOUNTS
+  type: REQUEST_ACCOUNTS,
 })
 
 export const accountsFetched = (accounts) => ({
   type: ACCOUNTS_FETCHED,
-  accounts
+  accounts,
 })

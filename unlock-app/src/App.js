@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import { Provider } from 'react-redux'
-import { ConnectedRouter, routerReducer, routerMiddleware} from 'react-router-redux'
+import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux'
 import createHistory from 'history/createBrowserHistory'
 
 // Services
@@ -35,7 +35,7 @@ class App extends Component {
       currentAccount: accountReducer,
       locks: locksReducer,
       currentLock: lockReducer,
-      currentKey: keyReducer
+      currentKey: keyReducer,
     }
 
     const initialState = {
@@ -45,8 +45,8 @@ class App extends Component {
       currentLock: null,
       currentKey: {
         expiration: 0,
-        data: ''
-      } // no key set
+        data: '',
+      }, // no key set
     }
 
     // Create a history of your choosing (we're using a browser history in this case)
@@ -54,7 +54,7 @@ class App extends Component {
 
     const middlewares = [
       routerMiddleware(this.browserHistory),
-      lockMiddleware
+      lockMiddleware,
     ]
 
     // create our own store!

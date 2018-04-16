@@ -1,7 +1,7 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
-import { Row, Col } from 'reactstrap'
+import { Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap'
 import { createLock } from '../../actions/lock'
 
 class LockMakerForm extends React.Component {
@@ -13,7 +13,7 @@ class LockMakerForm extends React.Component {
       expirationTimestamp: 0, // for now 0 as we focus on duration based locks
       keyPriceCalculator: 0, // let's focus on fix prices
       keyPrice: 100000, // we should show a better UI to let creators set their price in eth!
-      maxNumberOfKeys: 10
+      maxNumberOfKeys: 10,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -66,13 +66,17 @@ class LockMakerForm extends React.Component {
   }
 }
 
+LockMakerForm.propTypes = {
+  createLock: PropTypes.func,
+}
+
 const mapStateToProps = state => {
   return {
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  createLock: lock => dispatch(createLock(lock))
+  createLock: lock => dispatch(createLock(lock)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LockMakerForm)
