@@ -1,4 +1,3 @@
-const assert = require('assert')
 const Units = require('ethereumjs-units')
 
 const deployLocks = require('./helpers/deployLocks')
@@ -168,13 +167,14 @@ contract('Unlock', (accounts) => {
         })
 
         describe('when the key was successfuly purchased', () => {
-          let outstandingKeys, balance
+          let outstandingKeys, balance, now
 
           before(() => {
             balance = web3.eth.getBalance(locks['FIRST'].address)
             return locks['FIRST'].outstandingKeys.call()
               .then(_outstandingKeys => {
                 outstandingKeys = parseInt(_outstandingKeys)
+                now = parseInt(new Date().getTime() / 1000)
                 return locks['FIRST'].purchase('Julien', {
                   value: Units.convert('0.01', 'eth', 'wei')
                 })
@@ -190,12 +190,11 @@ contract('Unlock', (accounts) => {
           })
 
           it('should have the right expiration timestamp for the key', () => {
-            const now = parseInt(new Date().getTime() / 1000)
             return Promise.all([
               locks['FIRST'].keyExpirationTimestampFor(accounts[0]),
               locks['FIRST'].expirationDuration()
             ]).then(([expirationTimestamp, expirationDuration]) => {
-              assert.equal(expirationTimestamp.toNumber(), now + expirationDuration.toNumber())
+              assert.isAtLeast(expirationTimestamp.toNumber(), now + expirationDuration.toNumber())
             })
           })
 
