@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 import React from 'react'
 import { connect } from 'react-redux'
 import { Input, FormGroup, Label } from 'reactstrap'
@@ -14,6 +16,12 @@ const Account = (props) => {
       </Input>
     </FormGroup>
   )
+}
+
+Account.PropTypes = {
+  currentAccount: PropTypes.object,
+  setAccount: PropTypes.func,
+  accounts: PropTypes.array,
 }
 
 const mapStateToProps = state => {

@@ -1,7 +1,7 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
-import { Row, Col } from 'reactstrap'
+import { Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap'
 import { createLock } from '../../actions/lock'
 
 class LockMakerForm extends React.Component {
@@ -64,6 +64,10 @@ class LockMakerForm extends React.Component {
       </Col>
     </Row>)
   }
+}
+
+LockMakerForm.propTypes = {
+  createLock: PropTypes.func
 }
 
 const mapStateToProps = state => {

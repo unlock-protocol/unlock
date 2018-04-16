@@ -1,5 +1,5 @@
 import { LOCATION_CHANGE } from 'react-router-redux'
-import { CREATE_LOCK, NEW_LOCK, PURCHASE_KEY, SET_LOCK, SET_KEY} from '../actions/lock'
+import { CREATE_LOCK, NEW_LOCK, PURCHASE_KEY, SET_LOCK, SET_KEY } from '../actions/lock'
 import { SET_ACCOUNT } from '../actions/accounts'
 
 import { createLock, getLock, purchaseKey, getKey } from '../services/web3Service'

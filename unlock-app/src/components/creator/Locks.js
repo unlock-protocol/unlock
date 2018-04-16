@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -9,6 +10,10 @@ const LockInList = (props) => {
       {props.lock}
     </Link>
   </ListGroupItem>)
+}
+
+LockInList.propTypes = {
+  lock: PropTypes.object
 }
 
 const Locks = (props) => {
@@ -26,6 +31,10 @@ const Locks = (props) => {
       </Col>
     </Row>
   )
+}
+
+Locks.propTypes = {
+  locks: PropTypes.array
 }
 
 const mapStateToProps = state => {

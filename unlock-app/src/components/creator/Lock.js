@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
 import { ListGroupItem, ListGroup, Row, Col } from 'reactstrap'
@@ -29,6 +30,16 @@ const Lock = (props) => {
         </ListGroup>
       </Col>
     </Row>)
+}
+
+Lock.propTypes = {
+  lock: PropTypes.shape({
+    keyReleaseMechanism: PropTypes.number,
+    keyPrice: PropTypes.number,
+    maxNumberOfKeys: PropTypes.number,
+    owner: PropTypes.string,
+    outstandingKeys: PropTypes.number
+  }),
 }
 
 const mapStateToProps = state => {

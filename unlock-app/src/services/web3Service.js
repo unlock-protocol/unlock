@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */  // TODO: remove me when this is clean
+
 import Web3 from 'web3'
 import LockContract from '../artifacts/contracts/Lock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
