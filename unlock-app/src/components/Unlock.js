@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Navbar, Nav} from 'reactstrap'
+import { Container, Navbar, Nav } from 'reactstrap'
 import { Route } from 'react-router'
 
 import Account from './Account'

@@ -2,7 +2,7 @@ import { SET_KEY } from '../actions/lock'
 
 const initialState = {
   expiration: 0,
-  data: ''
+  data: '',
 }
 
 const key = (state = initialState, action) => {

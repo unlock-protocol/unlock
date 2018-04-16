@@ -1,3 +1,4 @@
+import UnlockPropTypes from '../../propTypes'
 import React from 'react'
 import { connect } from 'react-redux'
 import { ListGroupItem, ListGroup, Row, Col } from 'reactstrap'
@@ -31,9 +32,13 @@ const Lock = (props) => {
     </Row>)
 }
 
+Lock.propTypes = {
+  lock: UnlockPropTypes.lock,
+}
+
 const mapStateToProps = state => {
   return {
-    lock: state.currentLock
+    lock: state.currentLock,
   }
 }
 
