@@ -19,13 +19,13 @@ module.exports = [
       {
         "name": "output-file-name.png",
         "size": "800:",
-        "css": "svg{/*CustomCSSWithoutSpaces */}",
+        "css": "svg{/*CustomCSSWithoutSpaces*/}",
       },
       {
         "name": "additional-output-file-name.jpg",
         "size": "600:400",
         "quality": "60%",
-        "css": "svg{/*CustomCSSWithoutSpaces */}",
+        "css": "svg{/*CustomCSSWithoutSpaces*/}",
     ]
   }
 ]
