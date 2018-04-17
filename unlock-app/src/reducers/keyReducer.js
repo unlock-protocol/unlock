@@ -1,4 +1,4 @@
-import { SET_KEY } from '../actions/lock'
+import { SET_KEY } from '../actions/key'
 
 const initialState = {
   expiration: 0,

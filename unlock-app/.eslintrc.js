@@ -6,7 +6,6 @@ module.exports = {
   },
   globals: {},
   rules: {
-    "react/jsx-uses-vars": 2,
     "react/forbid-prop-types": 2,
     "comma-dangle": [2, "always-multiline"],
   }
