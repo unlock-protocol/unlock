@@ -33,4 +33,6 @@ module.exports = [
 
 Within each output object, only `name` is required. Note that the conversion tool will automatically convert to the format you specify as the file extension (`png` or `jpg`). `quality` is a JPG-only option.
 
-For information on the various options, see the [svgexport documentation](https://github.com/shakiba/svgexport).
+For information on the various options, see the [`svgexport` documentation](https://github.com/shakiba/svgexport).
+
+You can also run `svgexport` directly on your command line with `yarn run svgexport [options]`.
