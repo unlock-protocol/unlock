@@ -1,0 +1,13 @@
+{
+  "name": "unlock-branding",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Unlock",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "svgexport": "^0.3.2"
+  },
+  "scripts": {
+    "build": "node ./index.js"
+  }
+}
