@@ -14,28 +14,28 @@ const Lock = (props) => {
   const now = new Date().getTime() / 1000
   if (props.currentKey.expiration === 0) {
     return (<Row>
-        <Col>
+      <Col>
           You need a key to access this content! Purchase one for {props.lock.keyPrice()}.
-        </Col>
-        <Col>
-          <Button color="primary" onClick={() => { props.purchaseKey(props.lock, props.account) }}>Purchase</Button>
-        </Col>
-      </Row>)
+      </Col>
+      <Col>
+        <Button color="primary" onClick={() => { props.purchaseKey(props.lock, props.account) }}>Purchase</Button>
+      </Col>
+    </Row>)
   } else if (props.currentKey.expiration < now) {
     return (<Row>
-        <Col>
+      <Col>
           Your key has expired! Purchase a new one for {props.lock.keyPrice()}.
-        </Col>
-        <Col>
-          <Button color="primary" onClick={() => { props.purchaseKey(props.lock, props.account) }}>Purchase</Button>
-        </Col>
-      </Row>)
+      </Col>
+      <Col>
+        <Button color="primary" onClick={() => { props.purchaseKey(props.lock, props.account) }}>Purchase</Button>
+      </Col>
+    </Row>)
   } else {
     return (<Row>
-        <Col>
-          <p>Your key expires at {props.currentKey.expiration}</p>
-        </Col>
-      </Row>)
+      <Col>
+        <p>Your key expires at {props.currentKey.expiration}</p>
+      </Col>
+    </Row>)
   }
 }
 
