@@ -1,7 +1,6 @@
 import { ACCOUNTS_FETCHED } from '../actions/accounts'
 
-const initialState = {
-}
+const initialState = []
 
 const accountsReducer = (state = initialState, action) => {
   if (action.type === ACCOUNTS_FETCHED) {
