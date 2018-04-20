@@ -1,7 +1,6 @@
 import { createLock, setLock, resetLock, CREATE_LOCK, SET_LOCK, RESET_LOCK } from '../../actions/lock'
 
 describe('lock actions', () => {
-
   it('should create an action to create a lock', () => {
     const lock = {}
     const expectedAction = {
