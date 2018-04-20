@@ -6,6 +6,7 @@
     "bootstrap": "^4.0.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "jest-enzyme": "^6.0.0",
     "mock-socket": "^7.1.0",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
@@ -30,7 +31,8 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-react": "^7.7.0",
-    "eslint-plugin-standard": "^3.0.1"
+    "eslint-plugin-standard": "^3.0.1",
+    "redux-mock-store": "^1.5.1"
   },
   "scripts": {
     "start-app": "react-scripts start",

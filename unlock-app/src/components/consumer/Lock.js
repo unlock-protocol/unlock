@@ -7,7 +7,7 @@ import { Row, Col, Button } from 'reactstrap'
 
 import { purchaseKey } from '../../actions/key'
 
-const Lock = (props) => {
+export const Lock = (props) => {
   if (!props.account || !props.lock || !props.currentKey) {
     return (<span>Loading...</span>)
   }
