@@ -6,3 +6,6 @@ services:
 before_install:
   - docker-compose -f docker/docker-compose.ci.yml build
   - docker-compose -f docker/docker-compose.ci.yml up --abort-on-container-exit
+
+notifications:
+  slack: unlockhq:aGaUVUmxpWbHqoDS6z0oSpZW
