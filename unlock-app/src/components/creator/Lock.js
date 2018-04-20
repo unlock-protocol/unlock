@@ -25,6 +25,9 @@ const Lock = (props) => {
             <p>Owner: {props.lock.owner()}</p>
           </ListGroupItem>
           <ListGroupItem>
+            <p>Balance: {props.lock.balance()}</p>
+          </ListGroupItem>
+          <ListGroupItem>
             <p>Outstanding keys: {props.lock.outstandingKeys()}</p>
           </ListGroupItem>
         </ListGroup>
