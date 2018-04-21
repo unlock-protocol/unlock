@@ -6,9 +6,7 @@ import { SET_ACCOUNT } from '../actions/accounts'
 import { createLock, getLock, purchaseKey, getKey } from '../services/web3Service'
 import { sendMessage } from '../services/iframeService'
 
-// this middleware listen to redux events and invokes the web3 service APIs.
-// TODO: remove reliance on getState by making each action "pure"
-
+// This middleware listen to redux events and invokes the services APIs.
 export default function lockMiddleware ({ getState }) {
   return function (next) {
     return function (action) {
@@ -16,27 +14,30 @@ export default function lockMiddleware ({ getState }) {
         // Create a lock
         createLock(action.lock, getState().currentAccount)
       } else if (action.type === PURCHASE_KEY) {
-        // when a key has been purchased
+        // A key has been purchased
         purchaseKey(action.lock.address, action.account, action.lock.keyPrice(), '') // TODO change data from ''
       } else if (action.type === LOCATION_CHANGE) {
-        // When the location was changed, get the matching lock
+        // Location was changed, get the matching lock
         const match = action.payload.pathname.match(/\/lock\/(0x[a-fA-F0-9]{40})$/)
         if (match) {
           getLock(match[1])
         }
       } else if (action.type === SET_ACCOUNT) {
-        // When the account was changed, get the matching key
+        // Account was changed, get the matching key
         const currentLock = getState().currentLock
         if (currentLock) {
+          // TODO(julien): isn't currentLock always set anyway?
           getKey(currentLock.address, action.account)
         }
       } else if (action.type === SET_LOCK) {
-        // When the lock was changed, get the matching key
+        // Lock was changed, get the matching key
         const currentAccount = getState().currentAccount
         if (currentAccount) {
+          // TODO(julien): isn't currentAccount always set anyway?
           getKey(action.lock.address, currentAccount)
         }
       } else if (action.type === SET_KEY) {
+        // Key was set, ensure that we communicate this to other frames
         sendMessage({key: action.key})
       }
 
