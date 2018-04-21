@@ -5,7 +5,8 @@ import LockContract from '../artifacts/contracts/Lock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 
 import { accountsFetched, setAccount } from '../actions/accounts'
-import { setLock, resetLock, setKey } from '../actions/lock'
+import { setLock, resetLock } from '../actions/lock'
+import { setKey } from '../actions/key'
 
 // web3 instance is shared
 const provider = new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545')
@@ -101,6 +102,19 @@ export const getLock = (address) => {
       }
     }
   })
+
+  // Let's also add a method to get the balance!
+  lock.memo.balance = null
+  lock.balance = () => {
+    if (lock.memo.balance) {
+      return lock.memo.balance
+    }
+    web3.eth.getBalance(address, (error, balance) => {
+      console.log(error, balance)
+      lock.memo.balance = balance
+      dispatch(resetLock(lock))
+    })
+  }
 
   dispatch(setLock(lock))
   // TODO: methods, events, changes?
