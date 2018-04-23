@@ -5,6 +5,7 @@
 # s3_secret: YOUR_AWS_S3_SECRET_ACCESS_KEY
 s3_bucket: unlock-protocol.com
 cloudfront_distribution_id: E2W3RVRT2S3WSI
+profile: unlock
 
 # set session_token if using temporary credentials with a session token (eg: when assuming a role)
 # session_token: YOUR_AWS_S3_SESSION_TOKEN
