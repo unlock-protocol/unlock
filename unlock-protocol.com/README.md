@@ -23,4 +23,5 @@ npm run develop
 
 ## Deploy
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/gatsbyjs/gatsby-starter-default)
+1. Build with `npm run build`: this will put the static site into `public`
+2. Deploy with [s3_website](https://github.com/laurilehmijoki/s3_website). Check config in `s3_website.yml`. You need s3 credentials stored in `~/.aws/credentials`.

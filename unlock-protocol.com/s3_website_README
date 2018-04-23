@@ -1,3 +1,0 @@
-Deployed with [s3_website](https://github.com/laurilehmijoki/s3_website).
-Check config in `s3_website.yml`.
-You need s3 credentials stored in `~/.aws/credentials`.
