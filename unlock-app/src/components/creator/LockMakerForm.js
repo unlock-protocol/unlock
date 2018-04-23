@@ -42,6 +42,15 @@ class LockMakerForm extends React.Component {
           </FormGroup>
 
           <FormGroup>
+            <Label for="expirationDuration">Key Duration (seconds)</Label>
+            <Input
+              type="number"
+              id="expirationDuration"
+              value={this.state.expirationDuration}
+              onChange={this.handleChange} />
+          </FormGroup>
+
+          <FormGroup>
             <Label for="keyPrice">Key Price (Wei)</Label>
             <Input
               type="number"

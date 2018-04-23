@@ -15,7 +15,7 @@ export const Lock = (props) => {
   if (props.currentKey.expiration === 0) {
     return (<Row>
       <Col>
-          You need a key to access this content! Purchase one for {props.lock.keyPrice()}.
+        You need a key to access this content! Purchase one that is valid {props.lock.expirationDuration()} seconds for {props.lock.keyPrice()}.
       </Col>
       <Col>
         <Button color="primary" onClick={() => { props.purchaseKey(props.lock, props.account) }}>Purchase</Button>

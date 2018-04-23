@@ -16,6 +16,9 @@ const Lock = (props) => {
             <p>Key Release Mechanism: {props.lock.keyReleaseMechanism()}</p>
           </ListGroupItem>
           <ListGroupItem>
+            <p>Key Duration (seconds): {props.lock.expirationDuration()}</p>
+          </ListGroupItem>
+          <ListGroupItem>
             <p>Key Price: {props.lock.keyPrice()}</p>
           </ListGroupItem>
           <ListGroupItem>
