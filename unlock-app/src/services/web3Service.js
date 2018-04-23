@@ -110,7 +110,6 @@ export const getLock = (address) => {
       return lock.memo.balance
     }
     web3.eth.getBalance(address, (error, balance) => {
-      console.log(error, balance)
       lock.memo.balance = balance
       dispatch(resetLock(lock))
     })

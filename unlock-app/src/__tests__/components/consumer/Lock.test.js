@@ -14,10 +14,11 @@ describe('Lock Component', () => {
     expect(shallow(<Lock currentKey={currentKey} account={account} />).equals(<span>Loading...</span>)).toEqual(true)
   })
 
-  describe('whe the current key has an expiration date of 0 (no key was ever purchased)', () => {
+  describe('when the current key has an expiration date of 0 (no key was ever purchased)', () => {
     const account = '0xabc'
     const lock = {
       keyPrice: () => 100,
+      expirationDuration: () => 10,
     }
     const currentKey = {
       expiration: 0,
@@ -28,7 +29,7 @@ describe('Lock Component', () => {
     it('shows the purchase button', () => {
       // Check the text is right
       const wrapper = render(component)
-      const keyInfo = 'You need a key to access this content! Purchase one for 100'
+      const keyInfo = 'You need a key to access this content! Purchase one that is valid 10 seconds for 100'
       expect(wrapper.text()).toContain(keyInfo)
 
       // Make sure the button is right
@@ -44,10 +45,11 @@ describe('Lock Component', () => {
     })
   })
 
-  describe('whe the current key has an expiration date in the past', () => {
+  describe('when the current key has an expiration date in the past', () => {
     const account = '0xabc'
     const lock = {
       keyPrice: () => 100,
+      expirationDuration: () => 10,
     }
     const currentKey = {
       expiration: 1,
@@ -74,7 +76,7 @@ describe('Lock Component', () => {
     })
   })
 
-  describe('whe the current key has an expiration date in the future', () => {
+  describe('when the current key has an expiration date in the future', () => {
     const account = '0xabc'
     const lock = {
       keyPrice: () => 100,
