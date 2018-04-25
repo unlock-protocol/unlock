@@ -4,6 +4,7 @@ import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import { Provider } from 'react-redux'
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux'
 import createHistory from 'history/createBrowserHistory'
+import Web3 from 'web3'
 
 // Services
 import { initWeb3Service } from './services/web3Service'
@@ -67,7 +68,7 @@ class App extends Component {
     )
 
     // connects to the web3 endpoint
-    initWeb3Service(this.store.dispatch)
+    initWeb3Service(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545'), this.store.dispatch)
   }
 
   render () {

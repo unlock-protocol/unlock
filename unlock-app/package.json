@@ -19,7 +19,7 @@
     "reactstrap": "^5.0.0",
     "redux": "^3.7.2",
     "truffle": "^4.1.5",
-    "web3": "^1.0.0-beta.30"
+    "web3": "^1.0.0-beta.34"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
