@@ -8,13 +8,15 @@ import { accountsFetched, setAccount } from '../actions/accounts'
 import { setLock, resetLock } from '../actions/lock'
 import { setKey } from '../actions/key'
 
-// web3 instance is shared
-const provider = new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545')
-const web3 = new Web3(provider)
-let networkId, dispatch
+let web3, networkId, dispatch
 
-export const initWeb3Service = (_dispatch) => {
+/**
+ * This connects to the web3 service and listens to new blocks
+ * @param {function} _dispatch
+ */
+export const initWeb3Service = (_provider, _dispatch) => {
   dispatch = _dispatch
+  web3 = new Web3(_provider)
   web3.eth.getAccounts().then((accounts) => {
     dispatch(accountsFetched(accounts))
     dispatch(setAccount(accounts[0]))
@@ -58,6 +60,11 @@ export const initWeb3Service = (_dispatch) => {
   })
 }
 
+/**
+ * Creates a lock on behalf of the user `from`.
+ * @param {PropTypes.lock} lock
+ * @param {PropTypes.account} from
+ */
 export const createLock = (lock, from) => {
   const unlock = new web3.eth.Contract(UnlockContract.abi, UnlockContract.networks[networkId].address)
   const tx = unlock.methods.createLock(...Object.values(lock))
@@ -74,6 +81,10 @@ export const createLock = (lock, from) => {
   })
 }
 
+/**
+ * This gets the lock object from the stored data in the blockchain
+ * @param {PropTypes.adress} address
+ */
 export const getLock = (address) => {
   let lock = {
     address,
@@ -93,9 +104,13 @@ export const getLock = (address) => {
         } else {
           // we do not have the memod value... so let's return undefined and retrieve it!
           contract.methods[item.name](...args).call((error, result) => {
-            // set the memo
-            lock.memo[item.name][args] = result
-            dispatch(resetLock(lock))
+            if (error) {
+              // Something happened
+            } else {
+              // set the memo
+              lock.memo[item.name][args] = result
+              dispatch(resetLock(lock))
+            }
           })
           return undefined // By default we return undefined?
         }
@@ -120,6 +135,13 @@ export const getLock = (address) => {
   return lock
 }
 
+/**
+ * Purchase a key to a lock by account.
+ * @param {PropTypes.adress} lockAddress
+ * @param {PropTypes.account} account
+ * @param {PropTypes.number} keyPrice
+ * @param {PropTypes.string} data // This needs to maybe be less strict. (binary data)
+ */
 export const purchaseKey = (lockAddress, account, keyPrice, data) => {
   const lock = new web3.eth.Contract(LockContract.abi, lockAddress)
   const tx = lock.methods.purchase(data)
@@ -137,10 +159,15 @@ export const purchaseKey = (lockAddress, account, keyPrice, data) => {
   })
 }
 
-export const getKey = (lockAddress, currentAccount) => {
+/**
+ * Returns the key to the lockAddress by the account.
+ * @param {PropTypes.adress} lockAddress
+ * @param {PropTypes.account} account
+ */
+export const getKey = (lockAddress, account) => {
   const lockContract = new web3.eth.Contract(LockContract.abi, lockAddress)
-  const getKeyExpirationPromise = lockContract.methods.keyExpirationTimestampFor(currentAccount).call()
-  const getKeyDataPromise = lockContract.methods.keyDataFor(currentAccount).call()
+  const getKeyExpirationPromise = lockContract.methods.keyExpirationTimestampFor(account).call()
+  const getKeyDataPromise = lockContract.methods.keyDataFor(account).call()
   Promise.all([getKeyExpirationPromise, getKeyDataPromise])
     .then(([expiration, data]) => {
       dispatch(setKey({
@@ -148,4 +175,12 @@ export const getKey = (lockAddress, currentAccount) => {
         data,
       }))
     })
+}
+
+export default {
+  initWeb3Service,
+  createLock,
+  getKey,
+  purchaseKey,
+  getLock,
 }
