@@ -1,17 +1,14 @@
-// Note, we use name import to import the non connected version of the component for testing
-import web3Service from '../../services/web3Service'
-
 describe('Web3Service', () => {
 
   describe('initWeb3Service', () => {
+
     it('should handle new blocks')
+
   })
 
   describe('once initialized', () => {
     describe('createLock', () => {
-      it('should create a new lock with the params provided', () => {
-        web3Service.createLock()
-      })
+      it('should create a new lock with the params provided')
       it('should dispatch setLock once it has been successfuly created')
       it('should handle failures if the lock could not be created')
     })

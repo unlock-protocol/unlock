@@ -8,17 +8,15 @@ import { accountsFetched, setAccount } from '../actions/accounts'
 import { setLock, resetLock } from '../actions/lock'
 import { setKey } from '../actions/key'
 
-// web3 instance is shared
-const provider = new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545')
-const web3 = new Web3(provider)
-let networkId, dispatch
+let web3, networkId, dispatch
 
 /**
  * This connects to the web3 service and listens to new blocks
  * @param {function} _dispatch
  */
-export const initWeb3Service = (_dispatch) => {
+export const initWeb3Service = (_provider, _dispatch) => {
   dispatch = _dispatch
+  web3 = new Web3(_provider)
   web3.eth.getAccounts().then((accounts) => {
     dispatch(accountsFetched(accounts))
     dispatch(setAccount(accounts[0]))
@@ -177,4 +175,12 @@ export const getKey = (lockAddress, account) => {
         data,
       }))
     })
+}
+
+export default {
+  initWeb3Service,
+  createLock,
+  getKey,
+  purchaseKey,
+  getLock,
 }
