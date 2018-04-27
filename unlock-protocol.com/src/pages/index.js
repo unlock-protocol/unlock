@@ -5,7 +5,7 @@ import OptinForm from '../components/OptinForm'
 const IndexPage = () => (
   <section className="page__right">
     <div className="page__description">
-      <p>Unlock lets creators sell access to their creations. The price, scope and other terms are set by the creators themselves and the transactions happen on the blockchain, without middlemen.</p>
+      <p>Unlock is an <i>access control protocol</i> built on a blockchain. It enables creators to monetize their content or software without relying on a middleman. It lets consumers manage all of their subscriptions in a consistent way, as well as earn discounts when they share the best content and applications they use.</p>
     </div>
     <div className="page__form">
       <OptinForm />
