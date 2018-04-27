@@ -1,10 +1,12 @@
 pragma solidity ^0.4.18;
 
+import "zeppelin-solidity/contracts/ownership/Ownable.sol";
+
 /// @title The Lock contract
 /// @author Julien Genestoux (ouvre-boite.com)
 /// Evenually: implement ERC721
 
-contract Lock {
+contract Lock is Ownable {
 
   // The struct for a key
   struct Key {
@@ -16,9 +18,6 @@ contract Lock {
   event SoldKey (
     address indexed owner
   );
-
-  // Lock owner
-  address public owner;
 
   // Unlock Protocol address
   address public unlockProtocol; // TODO
@@ -53,15 +52,6 @@ contract Lock {
 
   // If the keyReleaseMechanism is approved, we keep track of addresses who have been approved
   mapping (address => Key) public approvedOwners;
-
-  // Will be used with onlyBy(owner) and onlyBy(unlockProtocol)
-  modifier onlyBy(address _account) {
-      require(msg.sender == _account);
-      // Do not forget the "_;"! It will
-      // be replaced by the actual function
-      // body when the modifier is used.
-      _;
-  }
 
   // Some functions are only allowed if the lock is public
   modifier onlyPublic() {
