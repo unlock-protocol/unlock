@@ -1,11 +1,12 @@
 import React from 'react'
 import { Container, Navbar, Nav } from 'reactstrap'
-import { Route } from 'react-router'
+import { Route, Switch } from 'react-router'
 
 import Account from './Account'
 import Network from './Network'
 import LockMaker from './creator/LockMaker'
 import Lock from './consumer/Lock'
+import Home from './Home'
 
 export const Unlock = () => {
   return (
@@ -16,10 +17,11 @@ export const Unlock = () => {
           <Account />
         </Nav>
       </Navbar>
-      <div>
+      <Switch>
         <Route path="/creator" component={LockMaker} />
         <Route path="/lock/:lockAddress" component={Lock} />
-      </div>
+        <Route path="*" component={Home} />
+      </Switch>
     </Container>
   )
 }
