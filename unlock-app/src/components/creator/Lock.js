@@ -44,7 +44,7 @@ Lock.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    lock: state.currentLock,
+    lock: state.lock,
   }
 }
 
