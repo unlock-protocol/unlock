@@ -3,14 +3,16 @@ import { Container, Navbar, Nav } from 'reactstrap'
 import { Route } from 'react-router'
 
 import Account from './Account'
+import Network from './Network'
 import LockMaker from './creator/LockMaker'
 import Lock from './consumer/Lock'
 
-export const Unlock = (props) => {
+export const Unlock = () => {
   return (
     <Container>
       <Navbar>
         <Nav>
+          <Network />
           <Account />
         </Nav>
       </Navbar>

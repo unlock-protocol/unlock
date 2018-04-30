@@ -3,13 +3,12 @@ import UnlockPropTypes from '../propTypes'
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Input, FormGroup, Label } from 'reactstrap'
+import { Input, FormGroup } from 'reactstrap'
 import { setAccount } from '../actions/accounts'
 
 const Account = (props) => {
   return (
     <FormGroup>
-      <Label>Account</Label>
       <Input type="select" value={props.account} onChange={(event) => props.setAccount(event.target.value)}>
         {Object.keys(props.accounts).map((i) => {
           return (<option value={props.accounts[i]} key={i}>{props.accounts[i]}</option>)

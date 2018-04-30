@@ -8,11 +8,11 @@ import { Row, Col, Button } from 'reactstrap'
 import { purchaseKey } from '../../actions/key'
 
 export const Lock = (props) => {
-  if (!props.account || !props.lock || !props.key) {
+  if (!props.account || !props.lock || !props.currentKey) {
     return (<span>Loading...</span>)
   }
   const now = new Date().getTime() / 1000
-  if (props.key.expiration === 0) {
+  if (props.currentKey.expiration === 0) {
     return (<Row>
       <Col>
         You need a key to access this content! Purchase one that is valid {props.lock.expirationDuration()} seconds for {props.lock.keyPrice()}.
@@ -21,7 +21,7 @@ export const Lock = (props) => {
         <Button color="primary" onClick={() => { props.purchaseKey(props.lock, props.account) }}>Purchase</Button>
       </Col>
     </Row>)
-  } else if (props.key.expiration < now) {
+  } else if (props.currentKey.expiration < now) {
     return (<Row>
       <Col>
           Your key has expired! Purchase a new one for {props.lock.keyPrice()}.
@@ -33,7 +33,7 @@ export const Lock = (props) => {
   } else {
     return (<Row>
       <Col>
-        <p>Your key expires at {props.key.expiration}</p>
+        <p>Your key expires at {props.currentKey.expiration}</p>
       </Col>
     </Row>)
   }
@@ -42,7 +42,7 @@ export const Lock = (props) => {
 Lock.propTypes = {
   account: PropTypes.string,
   lock: UnlockPropTypes.lock,
-  key: UnlockPropTypes.key,
+  currentKey: UnlockPropTypes.key,
   purchaseKey: PropTypes.func,
 }
 
@@ -52,7 +52,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => {
   return {
-    key: state.key,
+    currentKey: state.key, // key is a reserved props name
     account: state.account,
     lock: state.lock,
   }
