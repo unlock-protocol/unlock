@@ -14,6 +14,15 @@ describe('Unlock Component', () => {
     expect(nav.find('Connect(Account)')).toHaveLength(1)
   })
 
+  it('shows the network picker component', () => {
+    const unlock = shallow(<Unlock />)
+    expect(unlock.find('Navbar')).toHaveLength(1)
+    const navbar = unlock.find('Navbar')
+    expect(navbar.find('Nav')).toHaveLength(1)
+    const nav = navbar.find('Nav')
+    expect(nav.find('Connect(Component)')).toHaveLength(1) // Understand why it is named Connect(Component) and not Connect(Network)
+  })
+
   // TODO: find a way to test routes?
   it('shows the creators interface if the route matches /creator')
 
