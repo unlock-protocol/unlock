@@ -12,7 +12,7 @@ export default function lockMiddleware ({ getState }) {
     return function (action) {
       if (action.type === CREATE_LOCK) {
         // Create a lock
-        createLock(action.lock, getState().currentAccount)
+        createLock(action.lock, getState().account)
       } else if (action.type === PURCHASE_KEY) {
         // A key has been purchased
         purchaseKey(action.lock.address, action.account, action.lock.keyPrice(), '') // TODO change data from ''
@@ -24,17 +24,17 @@ export default function lockMiddleware ({ getState }) {
         }
       } else if (action.type === SET_ACCOUNT) {
         // Account was changed, get the matching key
-        const currentLock = getState().currentLock
-        if (currentLock) {
-          // TODO(julien): isn't currentLock always set anyway?
-          getKey(currentLock.address, action.account)
+        const lock = getState().lock
+        if (lock) {
+          // TODO(julien): isn't lock always set anyway?
+          getKey(lock.address, action.account)
         }
       } else if (action.type === SET_LOCK) {
         // Lock was changed, get the matching key
-        const currentAccount = getState().currentAccount
-        if (currentAccount) {
-          // TODO(julien): isn't currentAccount always set anyway?
-          getKey(action.lock.address, currentAccount)
+        const account = getState().account
+        if (account) {
+          // TODO(julien): isn't account always set anyway?
+          getKey(action.lock.address, account)
         }
       } else if (action.type === SET_KEY) {
         // Key was set, ensure that we communicate this to other frames

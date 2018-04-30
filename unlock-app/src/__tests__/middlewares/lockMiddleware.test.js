@@ -23,7 +23,7 @@ const key = {
   data: '',
 }
 const state = {
-  currentAccount: account,
+  account,
 }
 
 /**
@@ -75,7 +75,7 @@ describe('Lock middleware', () => {
     const { next, invoke } = create()
     const action = { type: CREATE_LOCK, lock }
     invoke(action)
-    expect(web3ServiceMock.createLock).toHaveBeenCalledWith(lock, state.currentAccount)
+    expect(web3ServiceMock.createLock).toHaveBeenCalledWith(lock, state.account)
     expect(next).toHaveBeenCalledWith(action)
   })
 
@@ -96,18 +96,18 @@ describe('Lock middleware', () => {
   })
 
   describe('when SET_ACCOUNT was called', () => {
-    it('should call getKey if the currentLock is set', () => {
+    it('should call getKey if the lock is set', () => {
       const { next, invoke } = create()
       const action = { type: SET_ACCOUNT, account }
-      state.currentLock = lock
+      state.lock = lock
       invoke(action)
       expect(web3ServiceMock.getKey).toHaveBeenCalledWith(lock.address, account)
       expect(next).toHaveBeenCalledWith(action)
     })
-    it('should not call getKey if the currentLock is not set', () => {
+    it('should not call getKey if the lock is not set', () => {
       const { next, invoke } = create()
       const action = { type: SET_ACCOUNT, account }
-      delete state.currentLock
+      delete state.lock
       invoke(action)
       expect(web3ServiceMock.getKey).toHaveBeenCalledTimes(0)
       expect(next).toHaveBeenCalledWith(action)
@@ -115,19 +115,19 @@ describe('Lock middleware', () => {
   })
 
   describe('when SET_LOCK was called', () => {
-    it('should call getKey if the currentAccount is set', () => {
+    it('should call getKey if the account is set', () => {
       const { next, invoke } = create()
       const action = { type: SET_LOCK, lock }
-      state.currentAccount = account
+      state.account = account
       invoke(action)
       expect(web3ServiceMock.getKey).toHaveBeenCalledWith(lock.address, account)
       expect(next).toHaveBeenCalledWith(action)
     })
 
-    it('should not call getKey if the currentAccount is not set', () => {
+    it('should not call getKey if the account is not set', () => {
       const { next, invoke } = create()
       const action = { type: SET_LOCK, lock }
-      delete state.currentAccount
+      delete state.account
       invoke(action)
       expect(web3ServiceMock.getKey).toHaveBeenCalledTimes(0)
       expect(next).toHaveBeenCalledWith(action)
