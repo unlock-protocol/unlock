@@ -15,12 +15,17 @@ export const lock = PropTypes.shape({
 
 export const locks = PropTypes.arrayOf(lock)
 
-export const key = PropTypes.shape({
-})
+export const key = PropTypes.shape({})
+
+export const network = PropTypes.string
+
+export const networks = PropTypes.shape({})
 
 export default {
   account,
   lock,
   locks,
   key,
+  network,
+  networks,
 }

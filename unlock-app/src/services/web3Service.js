@@ -12,14 +12,23 @@ let web3, networkId, dispatch
 
 /**
  * This connects to the web3 service and listens to new blocks
+ * @param {object} network
  * @param {function} _dispatch
  */
-export const initWeb3Service = (_provider, _dispatch) => {
+export const initWeb3Service = (network, _dispatch) => {
   dispatch = _dispatch
-  web3 = new Web3(_provider)
+  let provider
+  if (network.protocol === 'ws') {
+    provider = new Web3.providers.WebsocketProvider(network.url)
+  } else if (network.protocol === 'http') {
+    provider = new Web3.providers.HttpProvider(network.url)
+  }
+  web3 = new Web3(provider)
   web3.eth.getAccounts().then((accounts) => {
     dispatch(accountsFetched(accounts))
-    dispatch(setAccount(accounts[0]))
+    if (accounts[0]) {
+      dispatch(setAccount(accounts[0]))
+    }
   })
 
   web3.eth.net.getId().then((_networkId) => {
@@ -27,37 +36,37 @@ export const initWeb3Service = (_provider, _dispatch) => {
   })
 
   // TODO: listen to blocks and trigger events we may be interested in!
-  web3.eth.subscribe('newBlockHeaders', (error, result) => {
-    if (error) {
-      console.error('Error in block header subscription:')
-      console.error(error)
-    }
-  }).on('data', (blockHeader) => {
-    // If block isn't pending, check block txs for interation with observed contracts.
-    if (blockHeader.number !== null) {
-      // Check block txs for our contract txs, if contract involved, sync contract.
-      const blockNumber = blockHeader.number
+  // web3.eth.subscribe('newBlockHeaders', (error, result) => {
+  //   if (error) {
+  //     console.error('Error in block header subscription:')
+  //     console.error(error)
+  //   }
+  // }).on('data', (blockHeader) => {
+  //   // If block isn't pending, check block txs for interation with observed contracts.
+  //   if (blockHeader.number !== null) {
+  //     // Check block txs for our contract txs, if contract involved, sync contract.
+  //     const blockNumber = blockHeader.number
 
-      web3.eth.getBlock(blockNumber, true).then((block) => {
-        const txs = block.transactions
+  //     web3.eth.getBlock(blockNumber, true).then((block) => {
+  //       const txs = block.transactions
 
-        if (txs.length > 0) {
-          // Loop through txs looking for contract address
-          // for (var i = 0; i < txs.length; i++) {
-          //   if (contractAddresses.indexOf(txs[i].from) !== -1 || contractAddresses.indexOf(txs[i].to) !== -1) {
-          //     const index = contractAddresses.indexOf(txs[i].from) !== -1 ? contractAddresses.indexOf(txs[i].from) : contractAddresses.indexOf(txs[i].to)
-          //     const contractAddress = contractAddresses[index]
+  //       if (txs.length > 0) {
+  //         // Loop through txs looking for contract address
+  //         // for (var i = 0; i < txs.length; i++) {
+  //         //   if (contractAddresses.indexOf(txs[i].from) !== -1 || contractAddresses.indexOf(txs[i].to) !== -1) {
+  //         //     const index = contractAddresses.indexOf(txs[i].from) !== -1 ? contractAddresses.indexOf(txs[i].from) : contractAddresses.indexOf(txs[i].to)
+  //         //     const contractAddress = contractAddresses[index]
 
-          //     return this.store.dispatch({ type: 'CONTRACT_SYNCING', contract: this.contracts[contractAddress] })
-          //   }
-          // }
-        }
-      }).catch((error) => {
-        console.error('Error in block fetching:')
-        console.error(error)
-      })
-    }
-  })
+  //         //     return this.store.dispatch({ type: 'CONTRACT_SYNCING', contract: this.contracts[contractAddress] })
+  //         //   }
+  //         // }
+  //       }
+  //     }).catch((error) => {
+  //       console.error('Error in block fetching:')
+  //       console.error(error)
+  //     })
+  //   }
+  // })
 }
 
 /**
