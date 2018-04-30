@@ -33,18 +33,18 @@ class App extends Component {
     const reducers = {
       router: routerReducer,
       accounts: accountsReducer,
-      currentAccount: accountReducer,
+      account: accountReducer,
       locks: locksReducer,
-      currentLock: lockReducer,
-      currentKey: keyReducer,
+      lock: lockReducer,
+      key: keyReducer,
     }
 
     const initialState = {
       accounts: [],
-      currentAccount: null,
+      account: null,
       locks: [],
-      currentLock: null,
-      currentKey: {
+      lock: null,
+      key: {
         expiration: 0,
         data: '',
       }, // no key set

@@ -10,7 +10,7 @@ const Account = (props) => {
   return (
     <FormGroup>
       <Label>Account</Label>
-      <Input type="select" value={props.currentAccount} onChange={(event) => props.setAccount(event.target.value)}>
+      <Input type="select" value={props.account} onChange={(event) => props.setAccount(event.target.value)}>
         {Object.keys(props.accounts).map((i) => {
           return (<option value={props.accounts[i]} key={i}>{props.accounts[i]}</option>)
         })}
@@ -20,14 +20,14 @@ const Account = (props) => {
 }
 
 Account.propTypes = {
-  currentAccount: UnlockPropTypes.account,
+  account: UnlockPropTypes.account,
   setAccount: PropTypes.func,
   accounts: PropTypes.arrayOf(UnlockPropTypes.account),
 }
 
 const mapStateToProps = state => {
   return {
-    currentAccount: state.currentAccount || '',
+    account: state.account || '',
     accounts: state.accounts || {},
   }
 }
