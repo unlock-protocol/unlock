@@ -6,7 +6,7 @@ import Account from './Account'
 import LockMaker from './creator/LockMaker'
 import Lock from './consumer/Lock'
 
-const Unlock = (props) => {
+export const Unlock = (props) => {
   return (
     <Container>
       <Navbar>
