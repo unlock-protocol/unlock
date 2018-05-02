@@ -11,6 +11,20 @@ import { setKey } from '../actions/key'
 let web3, networkId, dispatch
 
 /**
+ * Method to retrieve accounts on the node...
+ * This will of course be removed soon since accounts are not managed on the node!
+ */
+export const getAccounts = () => {
+  // We should only do that when applicable (IE, we have no accounts)!
+  web3.eth.getAccounts().then((accounts) => {
+    dispatch(accountsFetched(accounts))
+    if (accounts[0]) {
+      dispatch(setAccount(accounts[0]))
+    }
+  })
+}
+
+/**
  * This connects to the web3 service and listens to new blocks
  * @param {object} network
  * @param {function} _dispatch
@@ -24,12 +38,6 @@ export const initWeb3Service = (network, _dispatch) => {
     provider = new Web3.providers.HttpProvider(network.url)
   }
   web3 = new Web3(provider)
-  web3.eth.getAccounts().then((accounts) => {
-    dispatch(accountsFetched(accounts))
-    if (accounts[0]) {
-      dispatch(setAccount(accounts[0]))
-    }
-  })
 
   web3.eth.net.getId().then((_networkId) => {
     networkId = _networkId
