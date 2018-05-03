@@ -1,0 +1,37 @@
+.button {
+	display: inline-block;
+	text-decoration: none;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	padding: 0.6em 0.9em;
+	font-size: 0.9em;
+	border-radius: 2px;
+	border-width: 1px;
+	border-style: solid;
+
+}
+
+	.button--default {
+		border-color: rgba(white, 0.7);
+
+		&:hover {
+			border-color: rgba(white, 1);
+		}
+	}
+
+	.button--action {
+		border-color: rgba(white, 0.5);
+		background: rgba(lighten(#006079, 30%), 0.3) linear-gradient( transparent 50%, rgba(black, 0.1) 50% );
+
+		&:hover {
+			border-color: rgba(white, 0.8);
+		}
+	}
+
+	.button--link {
+		border-color: transparent;
+
+		&[href]:hover {
+			text-decoration: underline;
+		}
+	}
