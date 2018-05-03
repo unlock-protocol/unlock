@@ -11,14 +11,14 @@ const ElementsPage = () => (
     <div className="page__description">
       <p>I am a generic Paragraph, followed by three types of buttons.</p>
 
-      <h2>Buttons</h2>
+      <h2 className="h">Buttons</h2>
       <p>
         <Button className="button--action" href="#" text="button--action" />&nbsp;
         <Button className="button--default" href="#" text="button--default" />&nbsp;
         <Button className="button--link" href="#" text="button--link" />
       </p>
 
-      <h2>Columns</h2>
+      <h2 className="h">Columns</h2>
       <Columns>
         <Column>
           <p>This is a column about Unlock</p>
@@ -47,7 +47,7 @@ const ElementsPage = () => (
     </div>
 
     <div className="page__form">
-      <h2>Optin Form</h2>
+      <h2 className="h">Optin Form</h2>
       <OptinForm />
     </div>
   </section>
