@@ -1,8 +1,13 @@
 import { SET_LOCK } from '../actions/lock'
+import { SET_ACCOUNT } from '../actions/accounts'
 
 const initialState = []
 
 const locksReducer = (state = initialState, action) => {
+  if (action.type === SET_ACCOUNT && action.account === null) {
+    return initialState
+  }
+
   if (action.type === SET_LOCK) {
     var newState = [...state]
     let included = newState.reduce((included, l) => {

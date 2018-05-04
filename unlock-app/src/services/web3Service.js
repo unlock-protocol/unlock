@@ -4,25 +4,11 @@ import Web3 from 'web3'
 import LockContract from '../artifacts/contracts/Lock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 
-import { accountsFetched, setAccount } from '../actions/accounts'
+import { setAccount } from '../actions/accounts'
 import { setLock, resetLock } from '../actions/lock'
 import { setKey } from '../actions/key'
 
 let web3, networkId, dispatch
-
-/**
- * Method to retrieve accounts on the node...
- * This will of course be removed soon since accounts are not managed on the node!
- */
-export const getAccounts = () => {
-  // We should only do that when applicable (IE, we have no accounts)!
-  web3.eth.getAccounts().then((accounts) => {
-    dispatch(accountsFetched(accounts))
-    if (accounts[0]) {
-      dispatch(setAccount(accounts[0]))
-    }
-  })
-}
 
 /**
  * This connects to the web3 service and listens to new blocks
@@ -43,38 +29,8 @@ export const initWeb3Service = (network, _dispatch) => {
     networkId = _networkId
   })
 
-  // TODO: listen to blocks and trigger events we may be interested in!
-  // web3.eth.subscribe('newBlockHeaders', (error, result) => {
-  //   if (error) {
-  //     console.error('Error in block header subscription:')
-  //     console.error(error)
-  //   }
-  // }).on('data', (blockHeader) => {
-  //   // If block isn't pending, check block txs for interation with observed contracts.
-  //   if (blockHeader.number !== null) {
-  //     // Check block txs for our contract txs, if contract involved, sync contract.
-  //     const blockNumber = blockHeader.number
-
-  //     web3.eth.getBlock(blockNumber, true).then((block) => {
-  //       const txs = block.transactions
-
-  //       if (txs.length > 0) {
-  //         // Loop through txs looking for contract address
-  //         // for (var i = 0; i < txs.length; i++) {
-  //         //   if (contractAddresses.indexOf(txs[i].from) !== -1 || contractAddresses.indexOf(txs[i].to) !== -1) {
-  //         //     const index = contractAddresses.indexOf(txs[i].from) !== -1 ? contractAddresses.indexOf(txs[i].from) : contractAddresses.indexOf(txs[i].to)
-  //         //     const contractAddress = contractAddresses[index]
-
-  //         //     return this.store.dispatch({ type: 'CONTRACT_SYNCING', contract: this.contracts[contractAddress] })
-  //         //   }
-  //         // }
-  //       }
-  //     }).catch((error) => {
-  //       console.error('Error in block fetching:')
-  //       console.error(error)
-  //     })
-  //   }
-  // })
+  // Listen to events on the Unlock smart contract to show newly created locks!
+  // We should only show the ones owned by the current user maybe?
 }
 
 /**
@@ -84,17 +40,62 @@ export const initWeb3Service = (network, _dispatch) => {
  */
 export const createLock = (lock, from) => {
   const unlock = new web3.eth.Contract(UnlockContract.abi, UnlockContract.networks[networkId].address)
-  const tx = unlock.methods.createLock(...Object.values(lock))
-  tx.send({
-    gas: 89499 * 10,
-    from,
-  }).then(function (receipt) {
-    // TODO: this will take a couple seconds on real blockchains... so we need to indicate that to the user!
-    if (receipt.events.NewLock) {
-      getLock(receipt.events.NewLock.returnValues.newLockAddress)
-    } else {
-      // WAT?
-    }
+  const data = unlock.methods.createLock(...Object.values(lock)).encodeABI()
+
+  // TODO: Race condition? What if another event is triggered at the same time?
+  // Actually, is that a problem? Probably not, but we should be listening to these events at all times.
+  unlock.once('NewLock', (error, event) => {
+    // TODO: reload user account balance to reflect the change!
+    getLock(event.returnValues.newLockAddress)
+    loadAccount(from.privateKey)
+  })
+
+  web3.eth.accounts.signTransaction({
+    to: UnlockContract.networks[networkId].address,
+    from: from.address,
+    data: data,
+    gas: 1000000,
+  }, from.privateKey).then((tx) => {
+    return web3.eth.sendSignedTransaction(tx.rawTransaction)
+      .once('transactionHash', function (hash) {
+        // console.log('hash', hash)
+      })
+      .once('receipt', function (receipt) {
+        // console.log('receipt', receipt)
+      })
+      .on('confirmation', function (confNumber, receipt) {
+        // console.log('confirmation', confNumber, receipt)
+      })
+      .on('error', function (error) {
+        console.log('error', error)
+      })
+      .then(function (receipt) {
+        // console.log('Mined!', receipt)
+      })
+  })
+}
+
+/**
+ * This loads the account matching the private key
+ * Returns the account
+ */
+export const loadAccount = (privateKey) => {
+  const account = web3.eth.accounts.privateKeyToAccount(privateKey)
+  web3.eth.getBalance(account.address, (error, balance) => {
+    account.balance = balance
+    dispatch(setAccount(account))
+  })
+}
+
+/**
+ * This creates an account on the current network.
+ * Returns the account
+ */
+export const createAccount = () => {
+  const account = web3.eth.accounts.create()
+  web3.eth.getBalance(account.address, (error, balance) => {
+    account.balance = balance
+    dispatch(setAccount(account))
   })
 }
 
@@ -157,22 +158,43 @@ export const getLock = (address) => {
  * @param {PropTypes.adress} lockAddress
  * @param {PropTypes.account} account
  * @param {PropTypes.number} keyPrice
- * @param {PropTypes.string} data // This needs to maybe be less strict. (binary data)
+ * @param {PropTypes.string} keyData // This needs to maybe be less strict. (binary data)
  */
-export const purchaseKey = (lockAddress, account, keyPrice, data) => {
+export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
   const lock = new web3.eth.Contract(LockContract.abi, lockAddress)
-  const tx = lock.methods.purchase(data)
-  tx.send({
-    gas: 89499 * 10, // how much gas?
-    from: account,
+  const data = lock.methods.purchase(keyData).encodeABI()
+
+  // Trigger an event when the key was sold!
+  // TODO: Filter by key owner
+  lock.once('SoldKey', {
+
+  }, (error, event) => {
+    getKey(lockAddress, account)
+  })
+
+  web3.eth.accounts.signTransaction({
+    to: lockAddress,
+    from: account.address,
+    data: data,
     value: keyPrice,
-  }).then(function (receipt) {
-    // TODO: this will take a couple seconds on real blockchains... so we need to indicate that to the user!
-    if (receipt.events.SoldKey) {
-      getKey(lockAddress, account)
-    } else {
-      // WAT?
-    }
+    gas: 1000000, // TODO: improve?
+  }, account.privateKey).then((tx) => {
+    return web3.eth.sendSignedTransaction(tx.rawTransaction)
+      .once('transactionHash', function (hash) {
+        // console.log('hash', hash)
+      })
+      .once('receipt', function (receipt) {
+        // console.log('receipt', receipt)
+      })
+      .on('confirmation', function (confNumber, receipt) {
+        // console.log('confirmation', confNumber, receipt)
+      })
+      .on('error', function (error) {
+        console.log('error', error)
+      })
+      .then(function (receipt) {
+        // console.log('Mined!', receipt)
+      })
   })
 }
 
@@ -182,9 +204,14 @@ export const purchaseKey = (lockAddress, account, keyPrice, data) => {
  * @param {PropTypes.account} account
  */
 export const getKey = (lockAddress, account) => {
+  if (!account) {
+    return dispatch(setKey({
+      expiration: 0,
+    }))
+  }
   const lockContract = new web3.eth.Contract(LockContract.abi, lockAddress)
-  const getKeyExpirationPromise = lockContract.methods.keyExpirationTimestampFor(account).call()
-  const getKeyDataPromise = lockContract.methods.keyDataFor(account).call()
+  const getKeyExpirationPromise = lockContract.methods.keyExpirationTimestampFor(account.address).call()
+  const getKeyDataPromise = lockContract.methods.keyDataFor(account.address).call()
   Promise.all([getKeyExpirationPromise, getKeyDataPromise])
     .then(([expiration, data]) => {
       dispatch(setKey({
