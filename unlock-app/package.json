@@ -36,7 +36,7 @@
   },
   "scripts": {
     "start-app": "react-scripts start",
-    "start-ganache": "ganache-cli &",
+    "start-ganache": "ganache-cli --deterministic &",
     "deploy-lock": "cd ../smart-contracts && truffle deploy",
     "prestart": "npm run start-ganache && npm run deploy-lock",
     "start": "react-scripts start",
