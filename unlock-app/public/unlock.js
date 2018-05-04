@@ -17,8 +17,7 @@ if (lockedNode) {
   const hiddenStyles = {
     height: '100%',
     overflow: 'hidden',
-    position: 'fixed',
-    '-webkit-filter': 'grayscale(0.3) blur(3px)',
+    '-webkit-filter': 'grayscale(0.1) blur(4px)',
   }
   const prevStyles = {
   }
@@ -26,6 +25,7 @@ if (lockedNode) {
   // Listens to message coming from iframe
   window.addEventListener('message', (event) => {
     if (event.data === 'locked') {
+
       // let's set the style for the iframe
       s.style.display = 'block'
       // and hide the content
