@@ -1,9 +1,12 @@
-import { accountsFetched, setAccount, SET_ACCOUNT, ACCOUNTS_FETCHED } from '../../actions/accounts'
+import { setAccount, createAccount, loadAccount, SET_ACCOUNT, CREATE_ACCOUNT, LOAD_ACCOUNT } from '../../actions/accounts'
 
 describe('accounts actions', () => {
 
   it('should create an action to set the account', () => {
-    const account = '0xabc'
+    const account = {
+      address: '0xabc',
+      privateKey: 'deadbeef',
+    }
     const expectedAction = {
       type: SET_ACCOUNT,
       account,
@@ -11,15 +14,21 @@ describe('accounts actions', () => {
     expect(setAccount(account)).toEqual(expectedAction)
   })
 
-  it('should create an action to indicate that accounts have been fetched', () => {
-    const accounts = [
-      '0xabc',
-      '0x123',
-    ]
+  it('should create an action to create an account', () => {
     const expectedAction = {
-      type: ACCOUNTS_FETCHED,
-      accounts,
+      type: CREATE_ACCOUNT,
     }
-    expect(accountsFetched(accounts)).toEqual(expectedAction)
+    expect(createAccount()).toEqual(expectedAction)
   })
+
+  it('should create an action to load and account', () => {
+    const privateKey = '0xabc'
+
+    const expectedAction = {
+      type: LOAD_ACCOUNT,
+      privateKey,
+    }
+    expect(loadAccount(privateKey)).toEqual(expectedAction)
+  })
+
 })

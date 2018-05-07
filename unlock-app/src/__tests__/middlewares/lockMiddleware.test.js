@@ -115,7 +115,7 @@ describe('Lock middleware', () => {
   })
 
   describe('when SET_LOCK was called', () => {
-    it('should call getKey if the account is set', () => {
+    it('should call getKey', () => {
       const { next, invoke } = create()
       const action = { type: SET_LOCK, lock }
       state.account = account
@@ -124,12 +124,12 @@ describe('Lock middleware', () => {
       expect(next).toHaveBeenCalledWith(action)
     })
 
-    it('should not call getKey if the account is not set', () => {
+    it('should call getKey if the account is not set', () => {
       const { next, invoke } = create()
       const action = { type: SET_LOCK, lock }
       delete state.account
       invoke(action)
-      expect(web3ServiceMock.getKey).toHaveBeenCalledTimes(0)
+      expect(web3ServiceMock.getKey).toHaveBeenCalledWith(lock.address, undefined)
       expect(next).toHaveBeenCalledWith(action)
     })
   })
