@@ -30,7 +30,7 @@ if (lockedNode) {
       s.style.display = 'block'
       // and hide the content
       Object.keys(hiddenStyles).forEach(function (k) {
-        prevStyles[k] = lockedNode.style[k]
+        prevStyles[k] = lockedNode.style[k] || ''
         lockedNode.style[k] = hiddenStyles[k]
       })
 
