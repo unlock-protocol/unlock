@@ -3,6 +3,23 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { ListGroupItem, ListGroup, Row, Col } from 'reactstrap'
 
+const KeyReleaseMechanism = (props) => {
+  if (props.mechanism === '0') {
+    return (<span>Public</span>)
+  }
+  if (props.mechanism === '1') {
+    return (<span>Permissioned</span>)
+  }
+  if (props.mechanism === '2') {
+    return (<span>Private</span>)
+  }
+  return (<span>&nbsp;</span>)
+}
+
+KeyReleaseMechanism.propTypes = {
+  mechanism: UnlockPropTypes.mechanism,
+}
+
 const Lock = (props) => {
   if (!props.lock) {
     return (<span>Loading...</span>)
@@ -13,7 +30,7 @@ const Lock = (props) => {
         <h1>Details</h1>
         <ListGroup>
           <ListGroupItem>
-            <p>Key Release Mechanism: {props.lock.keyReleaseMechanism()}</p>
+            <p>Key Release Mechanism: <KeyReleaseMechanism mechanism={ props.lock.keyReleaseMechanism() } /></p>
           </ListGroupItem>
           <ListGroupItem>
             <p>Key Duration (seconds): {props.lock.expirationDuration()}</p>
