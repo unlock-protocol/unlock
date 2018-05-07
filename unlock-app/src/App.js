@@ -6,7 +6,7 @@ import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-r
 import createHistory from 'history/createBrowserHistory'
 
 // Services
-import { initWeb3Service, getAccounts } from './services/web3Service'
+import { initWeb3Service } from './services/web3Service'
 import { saveState, loadState } from './services/localStorageService'
 
 // Components
@@ -17,7 +17,6 @@ import 'bootstrap/dist/css/bootstrap.css'
 import './App.css'
 
 // Reducers
-import accountsReducer from './reducers/accountsReducer'
 import accountReducer from './reducers/accountReducer'
 import lockReducer from './reducers/lockReducer'
 import locksReducer from './reducers/locksReducer'
@@ -46,7 +45,6 @@ class App extends Component {
 
     const reducers = {
       router: routerReducer,
-      accounts: accountsReducer,
       account: accountReducer,
       locks: locksReducer,
       lock: lockReducer,
@@ -58,7 +56,6 @@ class App extends Component {
     }
 
     const initialState = Object.assign({
-      accounts: [],
       account: null,
       locks: [],
       lock: null,
@@ -93,10 +90,6 @@ class App extends Component {
 
     // connects to the web3 endpoint
     initWeb3Service(initialState.networks[initialState.network], this.store.dispatch)
-    // get accounts... TODO: remove once accounts are not mananged on the local anymore.
-    if (!this.store.getState().accounts || this.store.getState().accounts.length === 0) {
-      getAccounts()
-    }
   }
 
   render () {

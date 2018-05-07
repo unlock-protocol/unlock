@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types'
 
-export const account = PropTypes.string
+export const account = PropTypes.shape({
+  address: PropTypes.string,
+  privateKey: PropTypes.string,
+  balance: PropTypes.string, // Too big to be a number
+})
 export const adress = PropTypes.string
 
 // All properties are functions.

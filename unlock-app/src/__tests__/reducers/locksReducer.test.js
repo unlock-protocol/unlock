@@ -1,5 +1,6 @@
 import reducer from '../../reducers/locksReducer'
 import { SET_LOCK } from '../../actions/lock'
+import { SET_ACCOUNT } from '../../actions/accounts'
 
 describe('locks reducer', () => {
 
@@ -24,6 +25,21 @@ describe('locks reducer', () => {
       lock,
     })).toEqual([lock])
 
+  })
+
+  it('should keep the locks when receiving SET_ACCOUNT with an account', () => {
+    const account = {}
+    expect(reducer([lock], {
+      type: SET_ACCOUNT,
+      account,
+    })).toEqual([lock])
+  })
+
+  it('should reset the locks when receiving SET_ACCOUNT with no account', () => {
+    expect(reducer([lock], {
+      type: SET_ACCOUNT,
+      account: null,
+    })).toEqual([])
   })
 
 })
