@@ -10,7 +10,7 @@ const Lock = (props) => {
   return (
     <Row>
       <Col>
-        <h1>Details <span>Balance: </span></h1>
+        <h1>Details</h1>
         <ListGroup>
           <ListGroupItem>
             <p>Key Release Mechanism: {props.lock.keyReleaseMechanism()}</p>

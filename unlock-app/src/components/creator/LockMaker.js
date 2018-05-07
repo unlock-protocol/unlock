@@ -16,20 +16,23 @@ export const LockMaker = (props) => {
   // let's rather show the login form if the user is not logged in!
   if (!props.account) {
     return (
-      <div className="row align-items-center justify-content-center">
-        <div className="col-4">
-          <Card>
-            <CardHeader>Authenticate</CardHeader>
-            <CardBody>
-              <Authenticate />
-            </CardBody>
-          </Card>
+      <div className="container">
+        <div className="row align-items-center justify-content-center" style={{ height: '300px' }}>
+          <div className="col align-items-center col-6 col-sm-12">
+            <Card>
+              <CardHeader>Authenticate</CardHeader>
+              <CardBody>
+                <Authenticate />
+              </CardBody>
+            </Card>
+          </div>
         </div>
-      </div>)
+      </div>
+    )
   }
   return (
 
-    <div>
+    <div className="container">
       <nav className="navbar navbar-expand-lg navbar-light">
         <form className="form-inline col-12">
           <Account />
