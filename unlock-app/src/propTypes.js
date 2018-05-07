@@ -17,6 +17,8 @@ export const lock = PropTypes.shape({
   outstandingKeys: PropTypes.func,
 })
 
+export const mechanism = PropTypes.oneOf(['0', '1', '2', undefined])
+
 export const locks = PropTypes.arrayOf(lock)
 
 export const key = PropTypes.shape({})
@@ -32,4 +34,5 @@ export default {
   key,
   network,
   networks,
+  mechanism,
 }
