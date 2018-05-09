@@ -14,30 +14,34 @@ import UnlockPropTypes from '../../propTypes'
 export const LockMaker = (props) => {
   // let's rather show the login form if the user is not logged in!
   if (!props.account) {
-    return (
-      <div className="container">
-        <div className="row align-items-center justify-content-center" style={{ height: '300px' }}>
-          <div className="col align-items-center col-6 col-sm-12">
-            <div className="card">
-              <div className="card-header">Authenticate</div>
-              <div className="card-body">
-                <Authenticate />
-              </div>
+    return (<div className="container">
+      <header className="masthead mb-auto">
+        <div className="inner">
+          <h3 className="masthead-brand">&nbsp;</h3>
+          <nav className="nav nav-masthead justify-content-center">
+          </nav>
+        </div>
+      </header>
+      <div className="row align-items-center justify-content-center" style={{ height: '300px' }}>
+        <div className="col align-items-center col-6 col-sm-12">
+          <div className="card">
+            <div className="card-header">Authenticate</div>
+            <div className="card-body">
+              <Authenticate />
             </div>
-
           </div>
         </div>
       </div>
+    </div>
     )
   }
   return (
-
-    <div className="container">
-      <nav className="navbar navbar-expand-lg navbar-light">
-        <form className="form-inline col-12">
+    <div>
+      <header className="masthead mb-auto">
+        <nav className="navbar navbar-expand-lg navbar-light inner col-12">
           <Account />
-        </form>
-      </nav>
+        </nav>
+      </header>
       <div className="row">
         <LockMakerForm />
         <Locks />
