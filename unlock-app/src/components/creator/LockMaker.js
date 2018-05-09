@@ -39,9 +39,7 @@ export const LockMaker = (props) => {
         </form>
       </nav>
       <Row>
-        <Col>
-          <LockMakerForm />
-        </Col>
+        <LockMakerForm />
         <Locks />
         <Col>
           <Route exact={true} path="/" render={() => {
