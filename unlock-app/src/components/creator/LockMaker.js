@@ -1,7 +1,6 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Row, Col, Card, CardHeader, CardBody } from 'reactstrap'
 
 import Authenticate from '../Authenticate'
 import Account from '../Account'
@@ -19,12 +18,13 @@ export const LockMaker = (props) => {
       <div className="container">
         <div className="row align-items-center justify-content-center" style={{ height: '300px' }}>
           <div className="col align-items-center col-6 col-sm-12">
-            <Card>
-              <CardHeader>Authenticate</CardHeader>
-              <CardBody>
+            <div className="card">
+              <div className="card-header">Authenticate</div>
+              <div className="card-body">
                 <Authenticate />
-              </CardBody>
-            </Card>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -38,14 +38,14 @@ export const LockMaker = (props) => {
           <Account />
         </form>
       </nav>
-      <Row>
+      <div className="row">
         <LockMakerForm />
         <Locks />
         <Route exact={true} path="/" render={() => {
           return (<p></p>)
         }} />
         <Route path="/creator/lock/:lockAddress" component={Lock} />
-      </Row>
+      </div>
     </div>
 
   )
