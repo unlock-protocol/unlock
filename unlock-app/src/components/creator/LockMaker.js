@@ -41,12 +41,10 @@ export const LockMaker = (props) => {
       <Row>
         <LockMakerForm />
         <Locks />
-        <Col>
-          <Route exact={true} path="/" render={() => {
-            return (<p></p>)
-          }} />
-          <Route path="/creator/lock/:lockAddress" component={Lock} />
-        </Col>
+        <Route exact={true} path="/" render={() => {
+          return (<p></p>)
+        }} />
+        <Route path="/creator/lock/:lockAddress" component={Lock} />
       </Row>
     </div>
 
