@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
-import { Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap'
 import { createLock } from '../../actions/lock'
 
 class LockMakerForm extends React.Component {
@@ -28,50 +27,50 @@ class LockMakerForm extends React.Component {
   }
 
   render () {
-    return (<Row>
-      <Col>
+    return (
+      <div className="col">
         <h1>New Lock</h1>
-        <Form>
-          <FormGroup>
-            <Label for="keyReleaseMechanism">Key Release Mechanism</Label>
-            <Input type="select" value={this.state.keyReleaseMechanism} onChange={this.handleChange} id="keyReleaseMechanism">
+        <form>
+
+          <div className="form-group">
+            <label htmlFor="keyReleaseMechanism">Key Release Mechanism</label>
+            <select className="form-control" value={this.state.keyReleaseMechanism} onChange={this.handleChange} id="keyReleaseMechanism">
               <option value="0">Public</option>
               <option value="1">Permissioned</option>
               <option value="2">Private</option>
-            </Input>
-          </FormGroup>
+            </select>
+          </div>
 
-          <FormGroup>
-            <Label for="expirationDuration">Key Duration (seconds)</Label>
-            <Input
+          <div className="form-group">
+            <label htmlFor="expirationDuration">Key Duration (seconds)</label>
+            <input className="form-control"
               type="number"
               id="expirationDuration"
               value={this.state.expirationDuration}
               onChange={this.handleChange} />
-          </FormGroup>
+          </div>
 
-          <FormGroup>
-            <Label for="keyPrice">Key Price (Wei)</Label>
-            <Input
+          <div className="form-group">
+            <label htmlFor="keyPrice">Key Price (Wei)</label>
+            <input className="form-control"
               type="number"
               id="keyPrice"
               value={this.state.keyPrice}
               onChange={this.handleChange} />
-          </FormGroup>
+          </div>
 
-          <FormGroup>
-            <Label for="maxNumberOfKeys">Max number of keys</Label>
-            <Input
+          <div className="form-group">
+            <label htmlFor="maxNumberOfKeys">Max number of keys</label>
+            <input className="form-control"
               type="number"
               id="maxNumberOfKeys"
               value={this.state.maxNumberOfKeys}
               onChange={this.handleChange} />
-          </FormGroup>
+          </div>
 
-          <Button key="submit" color="primary" onClick={this.handleSubmit}>Submit</Button>
-        </Form>
-      </Col>
-    </Row>)
+          <button type="button" className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
+        </form>
+      </div>)
   }
 }
 

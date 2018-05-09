@@ -33,9 +33,9 @@ describe('Network Component', () => {
   })
 
   it('invokes triggers the purchase action when the purchase button is clicked', () => {
-    wrapper.find('Input').simulate('change', { target: { value: 'rinkeby' } })
+    wrapper.find('input').simulate('change', { target: { value: 'rinkeby' } })
     expect(setNetwork).toBeCalledWith('rinkeby')
-    wrapper.find('Input').simulate('change', { target: { value: 'dev' } })
+    wrapper.find('input').simulate('change', { target: { value: 'dev' } })
     expect(setNetwork).toBeCalledWith('dev')
   })
 
