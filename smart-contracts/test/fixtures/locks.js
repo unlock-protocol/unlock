@@ -16,5 +16,7 @@ module.exports = {
   }),
   'SINGLE KEY': Object.assign({}, defaultLock, {
     maxNumberOfKeys: 1
-  })
+  }),
+  'OWNED': Object.assign({}, defaultLock, {})
+
 }
