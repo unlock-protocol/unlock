@@ -1,7 +1,6 @@
 import UnlockPropTypes from '../../propTypes'
 import React from 'react'
 import { connect } from 'react-redux'
-import { ListGroupItem, ListGroup, Row, Col } from 'reactstrap'
 
 const KeyReleaseMechanism = (props) => {
   if (props.mechanism === '0') {
@@ -25,34 +24,32 @@ const Lock = (props) => {
     return (<span>Loading...</span>)
   }
   return (
-    <Row>
-      <Col>
-        <h1>Details</h1>
-        <ListGroup>
-          <ListGroupItem>
-            <p>Key Release Mechanism: <KeyReleaseMechanism mechanism={ props.lock.keyReleaseMechanism() } /></p>
-          </ListGroupItem>
-          <ListGroupItem>
-            <p>Key Duration (seconds): {props.lock.expirationDuration()}</p>
-          </ListGroupItem>
-          <ListGroupItem>
-            <p>Key Price: {props.lock.keyPrice()}</p>
-          </ListGroupItem>
-          <ListGroupItem>
-            <p>Max number of keys: {props.lock.maxNumberOfKeys()}</p>
-          </ListGroupItem>
-          <ListGroupItem>
-            <p>Owner: {props.lock.owner()}</p>
-          </ListGroupItem>
-          <ListGroupItem>
-            <p>Balance: {props.lock.balance()}</p>
-          </ListGroupItem>
-          <ListGroupItem>
-            <p>Outstanding keys: {props.lock.outstandingKeys()}</p>
-          </ListGroupItem>
-        </ListGroup>
-      </Col>
-    </Row>)
+    <div className="col">
+      <h1>Details</h1>
+      <ul className="list-group">
+        <li className="list-group-item">
+          <p>Key Release Mechanism: <KeyReleaseMechanism mechanism={ props.lock.keyReleaseMechanism() } /></p>
+        </li>
+        <li className="list-group-item">
+          <p>Key Duration (seconds): {props.lock.expirationDuration()}</p>
+        </li>
+        <li className="list-group-item">
+          <p>Key Price: {props.lock.keyPrice()}</p>
+        </li>
+        <li className="list-group-item">
+          <p>Max number of keys: {props.lock.maxNumberOfKeys()}</p>
+        </li>
+        <li className="list-group-item">
+          <p>Owner: {props.lock.owner()}</p>
+        </li>
+        <li className="list-group-item">
+          <p>Balance: {props.lock.balance()}</p>
+        </li>
+        <li className="list-group-item">
+          <p>Outstanding keys: {props.lock.outstandingKeys()}</p>
+        </li>
+      </ul>
+    </div>)
 }
 
 Lock.propTypes = {

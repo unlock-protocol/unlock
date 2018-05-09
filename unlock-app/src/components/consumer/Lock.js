@@ -3,7 +3,6 @@ import UnlockPropTypes from '../../propTypes'
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Row, Col, Button, Card, CardBody, CardTitle, CardText, CardHeader } from 'reactstrap'
 
 import Authenticate from '../Authenticate'
 import Account from '../Account'
@@ -16,11 +15,11 @@ export const Lock = (props) => {
 
   const now = new Date().getTime() / 1000
   if (props.currentKey.expiration > now) {
-    return (<Row>
-      <Col>
+    return (<div className="row">
+      <div className="col">
         <p>Your key expires at {props.currentKey.expiration}</p>
-      </Col>
-    </Row>)
+      </div>
+    </div>)
   }
 
   let message = `You need a key to access this content! Purchase one that is valid ${props.lock.expirationDuration()} seconds for ${props.lock.keyPrice()}.`
@@ -28,23 +27,24 @@ export const Lock = (props) => {
     message = `Your key has expired! Purchase a new one for ${props.lock.keyPrice()}.`
   }
 
-  let action = (<Button color="primary" onClick={() => { props.purchaseKey(props.lock, props.account) }}>Purchase</Button>)
+  let action = (<button className="btn btn-primary" color="primary" onClick={() => { props.purchaseKey(props.lock, props.account) }}>Purchase</button>)
   if (!props.account) {
     action = (<Authenticate />)
   } else if (props.account && props.account.balance < props.lock.keyPrice()) {
     action = (<span>Your eth balance is too low. Do you want to use your credit card?</span>)
   }
 
-  return (<div>
-    <Card>
-      <CardHeader><Account /></CardHeader>
-      <CardBody>
-        <CardTitle>Members only</CardTitle>
-        <CardText>{message}</CardText>
+  return (
+    <div className="card">
+      <div className="card-header">
+        <Account />
+      </div>
+      <div className="card-body">
+        <h5 className="card-title">Members only</h5>
+        <p className="card-text">{message}</p>
         {action}
-      </CardBody>
-    </Card>
-  </div>)
+      </div>
+    </div>)
 }
 
 Lock.propTypes = {
