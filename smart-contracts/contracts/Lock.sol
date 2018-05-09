@@ -131,4 +131,16 @@ contract Lock is Ownable {
     return owners[_owner].expirationTimestamp;
   }
 
+  /**
+   * @dev Called by owner to wiwthdraw all funds from the lock.
+   * TODO: consider partial withdraws?
+   * TODO: check for re-entrency?
+   */
+   function withdraw() external onlyOwner {
+     uint256 balance = address(this).balance;
+     require(balance > 0);
+
+     owner.transfer(balance);
+   }
+
 }
