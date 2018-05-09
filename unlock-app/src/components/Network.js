@@ -3,16 +3,15 @@ import UnlockPropTypes from '../propTypes'
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Input } from 'reactstrap'
 import { setNetwork } from '../actions/network'
 
 export const Network = (props) => {
   return (
-    <Input type="select" value={props.network} onChange={(event) => props.setNetwork(event.target.value)}>
+    <input type="select" value={props.network} onChange={(event) => props.setNetwork(event.target.value)}>
       {Object.keys(props.networks).map((name, i) => {
         return (<option value={name} key={i}>{props.networks[name].name}</option>)
       })}
-    </Input>
+    </input>
   )
 }
 
