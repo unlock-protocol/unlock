@@ -49,9 +49,6 @@ class App extends Component {
       locks: locksReducer,
       lock: lockReducer,
       key: keyReducer,
-      networks: () => {
-        return networks
-      },
       network: networkReducer,
     }
 
@@ -59,8 +56,7 @@ class App extends Component {
       account: null,
       locks: [],
       lock: null,
-      network: 'dev', // default?
-      networks,
+      network: null, // default?
       key: {
         expiration: 0,
         data: '',
@@ -89,10 +85,13 @@ class App extends Component {
     })
 
     // connects to the web3 endpoint
-    initWeb3Service(initialState.networks[initialState.network], this.store.dispatch)
+    initWeb3Service({ network: networks.dev }, this.store.dispatch)
   }
 
   render () {
+    if (!this.store.getState().account) {
+      return(<span>Loading</span>)
+    }
     return (
       <Provider store={this.store}>
         <ConnectedRouter history={this.browserHistory}>

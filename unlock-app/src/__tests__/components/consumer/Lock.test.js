@@ -24,20 +24,20 @@ describe('Lock Component', () => {
     const purchaseKey = jest.fn()
     const component = (<Lock currentKey={currentKey} account={account} lock={lock} purchaseKey={purchaseKey} />)
 
-    it.only('shows the purchase button', () => {
+    it('shows the purchase button', () => {
       // Check the text is right
       const wrapper = shallow(component)
       const keyInfo = 'You need a key to access this content! Purchase one that is valid 10 seconds for 100'
-      expect(wrapper.find('CardText').html()).toContain(keyInfo)
+      expect(wrapper.find('.card-text').html()).toContain(keyInfo)
 
       // Make sure the button is right
-      expect(wrapper.find('Button').html()).toContain('Purchase')
+      expect(wrapper.find('button').html()).toContain('Purchase')
     })
 
     it('invokes triggers the purchase action when the purchase button is clicked', () => {
       const wrapper = shallow(component)
 
-      wrapper.find('Button').simulate('click')
+      wrapper.find('button').simulate('click')
       expect(purchaseKey).toBeCalledWith(lock, account)
     })
   })
@@ -70,7 +70,7 @@ describe('Lock Component', () => {
     it('invokes triggers the purchase action when the purchase button is clicked', () => {
       const wrapper = shallow(component)
 
-      wrapper.find('Button').simulate('click')
+      wrapper.find('button').simulate('click')
       expect(purchaseKey).toBeCalledWith(lock, account)
     })
   })
