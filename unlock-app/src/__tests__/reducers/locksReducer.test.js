@@ -35,11 +35,4 @@ describe('locks reducer', () => {
     })).toEqual([lock])
   })
 
-  it('should reset the locks when receiving SET_ACCOUNT with no account', () => {
-    expect(reducer([lock], {
-      type: SET_ACCOUNT,
-      account: null,
-    })).toEqual([])
-  })
-
 })
