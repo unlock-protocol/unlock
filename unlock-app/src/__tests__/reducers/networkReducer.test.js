@@ -6,14 +6,25 @@ describe('network reducer', () => {
   const network = 'dev'
 
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(null)
+    expect(reducer(undefined, {})).toEqual({
+      account: {
+        locks: [],
+      },
+      key: {
+        data: '',
+        expiration: 0,
+      },
+      lock: {
+
+      }, name: null,
+    })
   })
 
   it('should set the network accordingly when receiving SET_NETWORK', () => {
     expect(reducer(undefined, {
       type: SET_NETWORK,
       network,
-    })).toEqual(network)
+    })).toEqual({ name: network })
   })
 
 })
