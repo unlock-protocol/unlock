@@ -6,7 +6,7 @@ describe('account reducer', () => {
   const account = '0xabc'
 
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(null)
+    expect(reducer(undefined, {})).toEqual({ 'locks': [] })
   })
 
   it('should set the account accordingly when receiving SET_ACCOUNT', () => {
