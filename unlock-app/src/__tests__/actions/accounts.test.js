@@ -1,4 +1,4 @@
-import { setAccount, createAccount, loadAccount, SET_ACCOUNT, CREATE_ACCOUNT, LOAD_ACCOUNT } from '../../actions/accounts'
+import { setAccount, loadAccount, SET_ACCOUNT, LOAD_ACCOUNT } from '../../actions/accounts'
 
 describe('accounts actions', () => {
 
@@ -12,13 +12,6 @@ describe('accounts actions', () => {
       account,
     }
     expect(setAccount(account)).toEqual(expectedAction)
-  })
-
-  it('should create an action to create an account', () => {
-    const expectedAction = {
-      type: CREATE_ACCOUNT,
-    }
-    expect(createAccount()).toEqual(expectedAction)
   })
 
   it('should create an action to load and account', () => {
