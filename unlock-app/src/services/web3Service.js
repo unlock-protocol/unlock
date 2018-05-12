@@ -26,7 +26,7 @@ export const initWeb3Service = ({network, provider}, _dispatch) => {
   }
   web3 = new Web3(provider)
 
-  // Set the default account
+  // Set the default account (only if none is set?)
   createAccount()
 
   // Get the network id
@@ -53,7 +53,6 @@ export const createLock = (lock, from) => {
   unlock.once('NewLock', (error, event) => {
     // TODO: reload user account balance to reflect the change!
     getLock(event.returnValues.newLockAddress)
-    loadAccount(from.privateKey)
   })
 
   web3.eth.accounts.signTransaction({

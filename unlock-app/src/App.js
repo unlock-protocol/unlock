@@ -19,7 +19,6 @@ import './App.css'
 // Reducers
 import accountReducer from './reducers/accountReducer'
 import lockReducer from './reducers/lockReducer'
-import locksReducer from './reducers/locksReducer'
 import keyReducer from './reducers/keyReducer'
 import networkReducer from './reducers/networkReducer'
 
@@ -46,15 +45,13 @@ class App extends Component {
     const reducers = {
       router: routerReducer,
       account: accountReducer,
-      locks: locksReducer,
       lock: lockReducer,
       key: keyReducer,
       network: networkReducer,
     }
 
     const initialState = Object.assign({
-      account: null,
-      locks: [],
+      account: {},
       lock: null,
       network: null, // default?
       key: {
