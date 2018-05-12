@@ -5,35 +5,28 @@ import { Account } from '../../components/Account'
 
 describe('Account Component', () => {
 
-  describe('if an account is set', () => {
-    const account = {
-      address: '0xdeadbeef',
-      balance: '1000',
-    }
-    const setAccount = jest.fn()
-    const wrapper = shallow(<Account account={account} setAccount={setAccount} />)
+  const account = {
+    address: '0xdeadbeef',
+    balance: '1000',
+  }
+  const showAccountPicker = jest.fn()
+  const wrapper = shallow(<Account
+    account={account}
+    showAccountPicker={showAccountPicker} />)
 
-    it('shows the current account\'s public key', () => {
-      expect(wrapper.find('input').props().defaultValue).toEqual('0xdeadbeef')
-    })
-
-    it('shows the current account\'s balance', () => {
-      expect(wrapper.find('span').first().text()).toEqual('1000')
-    })
-
-    it('shows a button to logout', () => {
-      const button = wrapper.find('button')
-      expect(button.text()).toEqual('Sign out')
-      button.simulate('click')
-      expect(setAccount).toBeCalledWith(null)
-    })
+  it('shows the current account\'s public key', () => {
+    expect(wrapper.find('input').props().defaultValue).toEqual('0xdeadbeef')
   })
 
-  describe('if no account is set', () => {
-    it('shows a en empty span', () => {
-      const wrapper = shallow(<Account />)
-      expect(wrapper.html()).toEqual('<span></span>')
-    })
+  it('shows the current account\'s balance', () => {
+    expect(wrapper.find('span').first().text()).toEqual('1000')
+  })
+
+  it('shows a button to logout', () => {
+    const button = wrapper.find('button')
+    expect(button.text()).toEqual('Sign out')
+    button.simulate('click')
+    expect(showAccountPicker).toBeCalledWith()
   })
 
 })

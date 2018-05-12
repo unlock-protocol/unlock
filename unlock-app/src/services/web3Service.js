@@ -15,18 +15,24 @@ let web3, networkId, dispatch
  * @param {object} network
  * @param {function} _dispatch
  */
-export const initWeb3Service = (network, _dispatch) => {
+export const initWeb3Service = ({network, provider}, _dispatch) => {
   dispatch = _dispatch
-  let provider
-  if (network.protocol === 'ws') {
-    provider = new Web3.providers.WebsocketProvider(network.url)
-  } else if (network.protocol === 'http') {
-    provider = new Web3.providers.HttpProvider(network.url)
+  if (!provider) {
+    if (network.protocol === 'ws') {
+      provider = new Web3.providers.WebsocketProvider(network.url)
+    } else if (network.protocol === 'http') {
+      provider = new Web3.providers.HttpProvider(network.url)
+    }
   }
   web3 = new Web3(provider)
 
+  // Set the default account
+  createAccount()
+
+  // Get the network id
   web3.eth.net.getId().then((_networkId) => {
     networkId = _networkId
+    // TODO: set the account from the provider?
   })
 
   // Listen to events on the Unlock smart contract to show newly created locks!
