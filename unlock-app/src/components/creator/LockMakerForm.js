@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
 import { createLock } from '../../actions/lock'
+import UnlockPropTypes from '../../propTypes'
 
 class LockMakerForm extends React.Component {
   constructor (props, context) {
@@ -13,6 +14,7 @@ class LockMakerForm extends React.Component {
       keyPriceCalculator: 0, // let's focus on fix prices
       keyPrice: 100000, // we should show a better UI to let creators set their price in eth!
       maxNumberOfKeys: 10,
+      creator: props.account,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -76,10 +78,12 @@ class LockMakerForm extends React.Component {
 
 LockMakerForm.propTypes = {
   createLock: PropTypes.func,
+  account: UnlockPropTypes.account,
 }
 
 const mapStateToProps = state => {
   return {
+    account: state.network.account,
   }
 }
 

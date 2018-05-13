@@ -75,7 +75,7 @@ describe('Lock middleware', () => {
     const { next, invoke } = create()
     const action = { type: CREATE_LOCK, lock }
     invoke(action)
-    expect(web3ServiceMock.createLock).toHaveBeenCalledWith(lock, state.account)
+    expect(web3ServiceMock.createLock).toHaveBeenCalledWith(lock)
     expect(next).toHaveBeenCalledWith(action)
   })
 

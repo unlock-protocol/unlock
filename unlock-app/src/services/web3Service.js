@@ -15,7 +15,7 @@ let web3, networkId, dispatch
  * @param {object} network
  * @param {function} _dispatch
  */
-export const initWeb3Service = ({network, provider}, _dispatch) => {
+export const initWeb3Service = ({network, account, provider}, _dispatch) => {
   dispatch = _dispatch
   if (!provider) {
     if (network.protocol === 'ws') {
@@ -25,9 +25,9 @@ export const initWeb3Service = ({network, provider}, _dispatch) => {
     }
   }
   web3 = new Web3(provider)
-
-  // Set the default account (only if none is set?)
-  createAccount()
+  if (!account.address) {
+    createAccount()
+  }
 
   // Get the network id
   web3.eth.net.getId().then((_networkId) => {
@@ -44,9 +44,17 @@ export const initWeb3Service = ({network, provider}, _dispatch) => {
  * @param {PropTypes.lock} lock
  * @param {PropTypes.account} from
  */
-export const createLock = (lock, from) => {
+export const createLock = (lock) => {
   const unlock = new web3.eth.Contract(UnlockContract.abi, UnlockContract.networks[networkId].address)
-  const data = unlock.methods.createLock(...Object.values(lock)).encodeABI()
+
+  const data = unlock.methods.createLock(
+    lock.keyReleaseMechanism,
+    lock.expirationDuration,
+    lock.expirationTimestamp,
+    lock.keyPriceCalculator,
+    lock.keyPrice,
+    lock.maxNumberOfKeys
+  ).encodeABI()
 
   // TODO: Race condition? What if another event is triggered at the same time?
   // Actually, is that a problem? Probably not, but we should be listening to these events at all times.
@@ -57,10 +65,10 @@ export const createLock = (lock, from) => {
 
   web3.eth.accounts.signTransaction({
     to: UnlockContract.networks[networkId].address,
-    from: from.address,
+    from: lock.creator.address,
     data: data,
     gas: 1000000,
-  }, from.privateKey).then((tx) => {
+  }, lock.creator.privateKey).then((tx) => {
     return web3.eth.sendSignedTransaction(tx.rawTransaction)
       .once('transactionHash', function (hash) {
         // console.log('hash', hash)
