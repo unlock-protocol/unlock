@@ -17,9 +17,6 @@ import 'bootstrap/dist/css/bootstrap.css'
 import './App.css'
 
 // Reducers
-import accountReducer from './reducers/accountReducer'
-import lockReducer from './reducers/lockReducer'
-import keyReducer from './reducers/keyReducer'
 import networkReducer from './reducers/networkReducer'
 
 // Middlewares
@@ -44,20 +41,13 @@ class App extends Component {
 
     const reducers = {
       router: routerReducer,
-      account: accountReducer,
-      lock: lockReducer,
-      key: keyReducer,
       network: networkReducer,
     }
 
     const initialState = Object.assign({
-      account: {},
-      lock: null,
-      network: null, // default?
-      key: {
-        expiration: 0,
-        data: '',
-      }, // no key set
+      network: {
+
+      }, // default?
     }, loadState())
 
     // Create a history of your choosing (we're using a browser history in this case)
@@ -82,13 +72,13 @@ class App extends Component {
     })
 
     // connects to the web3 endpoint
-    initWeb3Service({ network: networks.dev }, this.store.dispatch)
+    initWeb3Service({
+      network: networks.dev,
+      account: this.store.getState().network.account,
+    }, this.store.dispatch)
   }
 
   render () {
-    if (!this.store.getState().account) {
-      return(<span>Loading</span>)
-    }
     return (
       <Provider store={this.store}>
         <ConnectedRouter history={this.browserHistory}>

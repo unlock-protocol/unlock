@@ -35,7 +35,7 @@ Locks.propTypes = {
 }
 
 const mapStateToProps = state => {
-  const locks = state.account.locks || []
+  const locks = state.network.account.locks || []
   return {
     locks,
   }
