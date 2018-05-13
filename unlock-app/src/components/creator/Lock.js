@@ -58,7 +58,7 @@ Lock.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    lock: state.lock,
+    lock: state.network.lock,
   }
 }
 

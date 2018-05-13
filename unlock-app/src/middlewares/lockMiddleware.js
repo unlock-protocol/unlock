@@ -14,11 +14,11 @@ export default function lockMiddleware ({ getState, dispatch }) {
       if (action.type === LOAD_ACCOUNT) {
         loadAccount(action.privateKey)
       } else if (action.type === SET_NETWORK) {
-        initWeb3Service(getState().networks[action.network], dispatch)
+        initWeb3Service(action.network, dispatch)
         // TODO: reset account!
       } else if (action.type === CREATE_LOCK) {
         // Create a lock
-        createLock(action.lock, getState().account)
+        createLock(action.lock)
       } else if (action.type === PURCHASE_KEY) {
         // A key has been purchased
         purchaseKey(action.lock.address, action.account, action.lock.keyPrice(), '') // TODO change data from ''
