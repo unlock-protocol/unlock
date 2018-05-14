@@ -5,7 +5,7 @@ export const account = PropTypes.shape({
   privateKey: PropTypes.string,
   balance: PropTypes.string, // Too big to be a number
 })
-export const adress = PropTypes.string
+export const address = PropTypes.string
 
 // All properties are functions.
 // TODO: change this because it is confusing.
@@ -23,7 +23,7 @@ export const locks = PropTypes.arrayOf(lock)
 
 export const key = PropTypes.shape({})
 
-export const network = PropTypes.string
+export const network = PropTypes.shape({})
 
 export const networks = PropTypes.shape({})
 
