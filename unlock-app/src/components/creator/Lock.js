@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 const LockOwner = connect((state) => {
   return {
-    account: state.account.address,
+    account: state.network.account.address,
   }
 })(({ account, owner }) => {
   if (account === owner) {

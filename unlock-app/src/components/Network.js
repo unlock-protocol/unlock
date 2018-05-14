@@ -5,26 +5,46 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { setNetwork } from '../actions/network'
 
-export const Network = (props) => {
-  return (
-    <input type="select" value={props.network} onChange={(event) => props.setNetwork(event.target.value)}>
-      {Object.keys(props.networks).map((name, i) => {
-        return (<option value={name} key={i}>{props.networks[name].name}</option>)
-      })}
-    </input>
-  )
+import { networks } from '../config'
+
+export const Network = ({ setNetwork, network }) => {
+
+  return (<div className="container">
+    <header className="masthead mb-auto">
+      <div className="inner">
+        <h3 className="masthead-brand">&nbsp;</h3>
+        <nav className="nav nav-masthead justify-content-center">
+        </nav>
+      </div>
+    </header>
+    <div className="row align-items-center justify-content-center" style={{ height: '300px' }}>
+      <div className="col align-items-center col-6 col-sm-12">
+        <div className="card">
+          <div className="card-header">
+            Network
+          </div>
+          <div className="card-body">
+            <select className="form-control" type="select" value={network.name} onChange={(event) => setNetwork(event.target.value)}>
+              {Object.keys(networks).map((name, i) => {
+                return (<option value={name} key={i}>{networks[name].name}</option>)
+              })}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>)
+
 }
 
 Network.propTypes = {
   network: UnlockPropTypes.network,
   setNetwork: PropTypes.func,
-  networks: UnlockPropTypes.networks,
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     network: state.network,
-    networks: state.networks,
   }
 }
 
