@@ -33,15 +33,14 @@ export default function lockMiddleware ({ getState, dispatch }) {
           getLock(match[1])
         }
       } else if (action.type === SET_ACCOUNT) {
-        const lock = getState().lock
+        const lock = getState().network.lock
         if (lock) {
           // TODO(julien): isn't lock always set anyway?
           getKey(lock.address, action.account)
         }
       } else if (action.type === SET_LOCK) {
         // Lock was changed, get the matching key
-        const account = getState().account
-        getKey(action.lock.address, account)
+        getKey(action.lock.address, getState().network.account)
       } else if (action.type === SET_KEY) {
         // Key was set, ensure that we communicate this to other frames
         sendMessage({key: action.key})
