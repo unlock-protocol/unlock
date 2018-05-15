@@ -44,7 +44,7 @@ export class Lock extends React.Component {
     let action = (<button className="btn btn-primary" color="primary" onClick={() => { this.props.purchaseKey(this.props.lock, this.props.account) }}>Purchase</button>)
 
     let account = (<Account showAccountPicker={this.toggleAccountPicker} />)
-    if (!this.state.accountPickerShown) {
+    if (this.state.accountPickerShown) {
       account = (<Authenticate hideAccountPicker={this.toggleAccountPicker} />)
     }
 
