@@ -14,8 +14,12 @@ export default function lockMiddleware ({ getState, dispatch }) {
       if (action.type === LOAD_ACCOUNT) {
         loadAccount(action.privateKey)
       } else if (action.type === SET_NETWORK) {
-        initWeb3Service(action.network, dispatch)
-        // TODO: reset account!
+        initWeb3Service({
+          network: {
+            name: action.network,
+            account: {},
+          },
+        }, dispatch)
       } else if (action.type === CREATE_LOCK) {
         // Create a lock
         createLock(action.lock)

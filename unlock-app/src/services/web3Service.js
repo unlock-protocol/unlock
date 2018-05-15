@@ -1,6 +1,8 @@
 /* eslint no-console: 0 */  // TODO: remove me when this is clean
 
 import Web3 from 'web3'
+import { networks } from '../config'
+
 import LockContract from '../artifacts/contracts/Lock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 
@@ -15,17 +17,17 @@ let web3, networkId, dispatch
  * @param {object} network
  * @param {function} _dispatch
  */
-export const initWeb3Service = ({network, account, provider}, _dispatch) => {
+export const initWeb3Service = ({network, provider}, _dispatch) => {
   dispatch = _dispatch
   if (!provider) {
-    if (network.protocol === 'ws') {
-      provider = new Web3.providers.WebsocketProvider(network.url)
-    } else if (network.protocol === 'http') {
-      provider = new Web3.providers.HttpProvider(network.url)
+    if (networks[network.name].protocol === 'ws') {
+      provider = new Web3.providers.WebsocketProvider(networks[network.name].url)
+    } else if (networks[network.name].protocol === 'http') {
+      provider = new Web3.providers.HttpProvider(networks[network.name].url)
     }
   }
   web3 = new Web3(provider)
-  if (!account.address) {
+  if (!network.account.address) {
     createAccount()
   }
 

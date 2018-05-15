@@ -5,7 +5,9 @@ import { Network } from '../../components/Network'
 
 describe('Network Component', () => {
 
-  const network = 'dev'
+  const network = {
+    name: 'dev',
+  }
   const networks = {
     dev: {
       url: 'ws://127.0.0.1:8545',
@@ -32,10 +34,10 @@ describe('Network Component', () => {
     </option>)).toEqual(true)
   })
 
-  it('invokes triggers the purchase action when the purchase button is clicked', () => {
-    wrapper.find('input').simulate('change', { target: { value: 'rinkeby' } })
+  it('triggers a change in the store when a different network is picked', () => {
+    wrapper.find('select').simulate('change', { target: { value: 'rinkeby' } })
     expect(setNetwork).toBeCalledWith('rinkeby')
-    wrapper.find('input').simulate('change', { target: { value: 'dev' } })
+    wrapper.find('select').simulate('change', { target: { value: 'dev' } })
     expect(setNetwork).toBeCalledWith('dev')
   })
 

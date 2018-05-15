@@ -26,19 +26,6 @@ class App extends Component {
   constructor (props, context) {
     super(props)
 
-    const networks = {
-      dev: {
-        url: 'ws://127.0.0.1:8545',
-        name: 'Development',
-        protocol: 'ws', // couldn't we extract that from url?
-      },
-      rinkeby: {
-        url: 'https://rinkeby.infura.io/DP8aTF8zko71UQIAe1NV ',
-        name: 'Rinkeby',
-        protocol: 'http', // couldn't we extract that from url?
-      },
-    }
-
     const reducers = {
       router: routerReducer,
       network: networkReducer,
@@ -46,8 +33,8 @@ class App extends Component {
 
     const initialState = Object.assign({
       network: {
-
-      }, // default?
+        name: 'dev', // default?
+      },
     }, loadState())
 
     // Create a history of your choosing (we're using a browser history in this case)
@@ -73,8 +60,7 @@ class App extends Component {
 
     // connects to the web3 endpoint
     initWeb3Service({
-      network: networks.dev,
-      account: this.store.getState().network.account,
+      network: this.store.getState().network,
     }, this.store.dispatch)
   }
 
