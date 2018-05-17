@@ -219,12 +219,13 @@ export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
  * @param {PropTypes.account} account
  */
 export const getKey = (lockAddress, account) => {
-  if (!account) {
+  if (!account || !lockAddress) {
     return dispatch(setKey({
       expiration: 0,
     }))
   }
   const lockContract = new web3.eth.Contract(LockContract.abi, lockAddress)
+
   const getKeyExpirationPromise = lockContract.methods.keyExpirationTimestampFor(account.address).call()
   const getKeyDataPromise = lockContract.methods.keyDataFor(account.address).call()
   Promise.all([getKeyExpirationPromise, getKeyDataPromise])
