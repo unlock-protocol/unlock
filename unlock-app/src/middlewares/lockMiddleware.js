@@ -26,7 +26,14 @@ export default function lockMiddleware ({ getState, dispatch }) {
       } else if (action.type === PURCHASE_KEY) {
         // A key has been purchased
         purchaseKey(action.lock.address, action.account, action.lock.keyPrice(), '') // TODO change data from ''
-      } else if (action.type === LOCATION_CHANGE) {
+      } else if (action.type === SET_KEY) {
+        // Key was set, ensure that we communicate this to other frames
+        sendMessage({key: action.key})
+      }
+
+      next(action)
+
+      if (action.type === LOCATION_CHANGE) {
         // Location was changed, get the matching lock
         const match = action.payload.pathname.match(/\/lock\/(0x[a-fA-F0-9]{40})$/)
         if (match) {
@@ -41,13 +48,8 @@ export default function lockMiddleware ({ getState, dispatch }) {
       } else if (action.type === SET_LOCK) {
         // Lock was changed, get the matching key
         getKey(action.lock.address, getState().network.account)
-      } else if (action.type === SET_KEY) {
-        // Key was set, ensure that we communicate this to other frames
-        sendMessage({key: action.key})
       }
 
-      let returnValue = next(action)
-      return returnValue
     }
   }
 }
