@@ -1,10 +1,10 @@
 import { LOCATION_CHANGE } from 'react-router-redux'
-import { CREATE_LOCK, SET_LOCK } from '../actions/lock'
+import { CREATE_LOCK, SET_LOCK, WITHDRAW_FROM_LOCK } from '../actions/lock'
 import { PURCHASE_KEY, SET_KEY } from '../actions/key'
 import { SET_ACCOUNT, LOAD_ACCOUNT } from '../actions/accounts'
 import { SET_NETWORK } from '../actions/network'
 
-import { initWeb3Service, loadAccount, createLock, getLock, purchaseKey, getKey } from '../services/web3Service'
+import { initWeb3Service, loadAccount, createLock, getLock, purchaseKey, getKey, withdrawFromLock } from '../services/web3Service'
 import { sendMessage } from '../services/iframeService'
 
 // This middleware listen to redux events and invokes the services APIs.
@@ -29,6 +29,8 @@ export default function lockMiddleware ({ getState, dispatch }) {
       } else if (action.type === SET_KEY) {
         // Key was set, ensure that we communicate this to other frames
         sendMessage({key: action.key})
+      } else if (action.type === WITHDRAW_FROM_LOCK) {
+        withdrawFromLock(action.lock, getState().network.account)
       }
 
       next(action)

@@ -1,4 +1,4 @@
-import { createLock, setLock, resetLock, CREATE_LOCK, SET_LOCK, RESET_LOCK } from '../../actions/lock'
+import { createLock, setLock, resetLock, withdrawFromLock, CREATE_LOCK, SET_LOCK, RESET_LOCK, WITHDRAW_FROM_LOCK } from '../../actions/lock'
 
 describe('lock actions', () => {
   it('should create an action to create a lock', () => {
@@ -27,4 +27,14 @@ describe('lock actions', () => {
     }
     expect(setLock(lock)).toEqual(expectedAction)
   })
+
+  it('should create an action to withdraw from the lock', () => {
+    const lock = {}
+    const expectedAction = {
+      type: WITHDRAW_FROM_LOCK,
+      lock,
+    }
+    expect(withdrawFromLock(lock)).toEqual(expectedAction)
+  })
+
 })

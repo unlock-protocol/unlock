@@ -1,6 +1,6 @@
 import lockMiddleware from '../../middlewares/lockMiddleware'
 import { LOCATION_CHANGE } from 'react-router-redux'
-import { CREATE_LOCK, SET_LOCK } from '../../actions/lock'
+import { CREATE_LOCK, SET_LOCK, WITHDRAW_FROM_LOCK } from '../../actions/lock'
 import { PURCHASE_KEY, SET_KEY } from '../../actions/key'
 import { SET_ACCOUNT, LOAD_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
@@ -58,6 +58,7 @@ jest.mock('../../services/web3Service', () => {
     getLock: null,
     getKey: null,
     loadAccount: null,
+    withdrawFromLock: null,
   }
 })
 jest.mock('../../services/iframeService', () => {
@@ -167,6 +168,14 @@ describe('Lock middleware', () => {
     const action = { type: SET_KEY, key }
     invoke(action)
     expect(iframeServiceMock.sendMessage).toHaveBeenCalledWith({ key })
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it('should handle SET_KEY by calling sendMessage from iframeService', () => {
+    const { next, invoke, store } = create()
+    const action = { type: WITHDRAW_FROM_LOCK, lock }
+    invoke(action)
+    expect(web3ServiceMock.withdrawFromLock).toHaveBeenCalledWith(lock, store.getState().network.account)
     expect(next).toHaveBeenCalledWith(action)
   })
 })
