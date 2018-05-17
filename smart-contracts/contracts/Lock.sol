@@ -133,6 +133,7 @@ contract Lock is Ownable {
 
   /**
    * @dev Called by owner to wiwthdraw all funds from the lock.
+   * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
    * TODO: consider partial withdraws?
    * TODO: check for re-entrency?
    */

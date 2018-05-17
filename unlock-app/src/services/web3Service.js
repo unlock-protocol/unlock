@@ -85,6 +85,7 @@ export const createLock = (lock) => {
         console.log('error', error)
       })
       .then(function (receipt) {
+        // TODO: refresh the account's balance
         // console.log('Mined!', receipt)
       })
   })
@@ -208,6 +209,7 @@ export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
         console.log('error', error)
       })
       .then(function (receipt) {
+        // TODO: refresh the account's balance
         // console.log('Mined!', receipt)
       })
   })
@@ -237,10 +239,47 @@ export const getKey = (lockAddress, account) => {
     })
 }
 
+/**
+ * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
+ * @param {PropTypes.lock}
+ * @param {PropTypes.account} account
+*/
+export const withdrawFromLock = (lock, account) => {
+  const lockContract = new web3.eth.Contract(LockContract.abi, lock.address)
+  const data = lockContract.methods.withdraw().encodeABI()
+
+  web3.eth.accounts.signTransaction({
+    to: lock.address,
+    from: account.address,
+    data: data,
+    gas: 1000000, // TODO: improve?
+  }, account.privateKey).then((tx) => {
+    return web3.eth.sendSignedTransaction(tx.rawTransaction)
+      .once('transactionHash', function (hash) {
+        console.log('hash', hash)
+      })
+      .once('receipt', function (receipt) {
+        console.log('receipt', receipt)
+      })
+      .on('confirmation', function (confNumber, receipt) {
+        console.log('confirmation', confNumber, receipt)
+      })
+      .on('error', function (error) {
+        console.log('error', error)
+      })
+      .then(function (receipt) {
+        // TODO: refresh the account's balance
+        console.log('Mined!', receipt)
+      })
+  })
+
+}
+
 export default {
   initWeb3Service,
   createLock,
   getKey,
   purchaseKey,
   getLock,
+  withdrawFromLock,
 }
