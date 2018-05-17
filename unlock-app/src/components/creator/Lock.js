@@ -1,17 +1,20 @@
+import PropTypes from 'prop-types'
 import UnlockPropTypes from '../../propTypes'
 import React from 'react'
 import { connect } from 'react-redux'
+import { withdrawFromLock } from '../../actions/lock'
 
-const LockOwner = connect((state) => {
-  return {
-    account: state.network.account.address,
-  }
-})(({ account, owner }) => {
-  if (account === owner) {
+const LockOwner = ({ account, owner }) => {
+  if (account.address === owner) {
     return (<span>  <span className="badge badge-secondary">Me</span> {owner} </span>)
   }
   return (<span>{owner}</span>)
-})
+}
+
+LockOwner.propTypes = {
+  owner: PropTypes.string,
+  account: UnlockPropTypes.account,
+}
 
 const KeyReleaseMechanism = ({ mechanism }) => {
   if (mechanism === '0') {
@@ -30,7 +33,7 @@ KeyReleaseMechanism.propTypes = {
   mechanism: UnlockPropTypes.mechanism,
 }
 
-const Lock = ({ lock }) => {
+const Lock = ({ lock, account, withdrawFromLock }) => {
   if (!lock) {
     return (<span>Loading...</span>)
   }
@@ -51,10 +54,10 @@ const Lock = ({ lock }) => {
           <p>Max number of keys: {lock.maxNumberOfKeys()}</p>
         </li>
         <li className="list-group-item">
-          <p>Owner: <LockOwner owner={ lock.owner() } /></p>
+          <p>Owner: <LockOwner account={account} owner={ lock.owner() } /></p>
         </li>
         <li className="list-group-item">
-          <p>Balance: {lock.balance()}</p>
+          <p>Balance: {lock.balance()} <button className="btn btn-primary btn-sm" onClick={() => withdrawFromLock(lock)}>Withdraw</button></p>
         </li>
         <li className="list-group-item">
           <p>Outstanding keys: {lock.outstandingKeys()}</p>
@@ -65,12 +68,19 @@ const Lock = ({ lock }) => {
 
 Lock.propTypes = {
   lock: UnlockPropTypes.lock,
+  account: UnlockPropTypes.account,
+  withdrawFromLock: PropTypes.func,
 }
 
 const mapStateToProps = state => {
   return {
     lock: state.network.lock,
+    account: state.network.account,
   }
 }
 
-export default connect(mapStateToProps)(Lock)
+const mapDispatchToProps = dispatch => ({
+  withdrawFromLock: lock => dispatch(withdrawFromLock(lock)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Lock)
