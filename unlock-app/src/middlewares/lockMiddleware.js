@@ -25,7 +25,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
         createLock(action.lock)
       } else if (action.type === PURCHASE_KEY) {
         // A key has been purchased
-        purchaseKey(action.lock.address, action.account, action.lock.keyPrice(), '') // TODO change data from ''
+        purchaseKey(action.lock.address, action.account, action.lock.keyPrice, '') // TODO change data from ''
       } else if (action.type === SET_KEY) {
         // Key was set, ensure that we communicate this to other frames
         sendMessage({key: action.key})

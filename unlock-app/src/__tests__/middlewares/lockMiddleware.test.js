@@ -17,7 +17,7 @@ import iframeServiceMock from '../../services/iframeService'
 const account = '0xabc'
 const lock = {
   address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
-  keyPrice: () => 100,
+  keyPrice: '100',
 }
 const key = {
   expiration: '1337',
@@ -112,7 +112,7 @@ describe('Lock middleware', () => {
     const { next, invoke } = create()
     const action = { type: PURCHASE_KEY, lock, account }
     invoke(action)
-    expect(web3ServiceMock.purchaseKey).toHaveBeenCalledWith(lock.address, account, 100, '')
+    expect(web3ServiceMock.purchaseKey).toHaveBeenCalledWith(lock.address, account, '100', '')
     expect(next).toHaveBeenCalledWith(action)
   })
 

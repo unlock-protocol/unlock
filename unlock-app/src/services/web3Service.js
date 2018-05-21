@@ -122,47 +122,56 @@ export const createAccount = () => {
 export const getLock = (address) => {
   let lock = {
     address,
-    memo: {}, // This includes a memo
+    memo: {}, // This includes a memo for functions
   }
 
   const contract = new web3.eth.Contract(LockContract.abi, address)
 
   LockContract.abi.forEach((item) => {
     if (item.constant) {
-      lock[item.name] = function (...args) {
-        if (!lock.memo[item.name]) {
-          lock.memo[item.name] = {} // create the memo
-        }
-        if (lock.memo[item.name][args]) {
-          return lock.memo[item.name][args]
-        } else {
-          // we do not have the memod value... so let's return undefined and retrieve it!
-          contract.methods[item.name](...args).call((error, result) => {
+      if (item.inputs.length === 0) {
+        if (!lock[item.name]) {
+          contract.methods[item.name]().call((error, result) => {
             if (error) {
               // Something happened
             } else {
-              // set the memo
-              lock.memo[item.name][args] = result
-              dispatch(resetLock(lock))
+              lock[item.name] = result
+              dispatch(resetLock(lock)) // update the value
             }
           })
-          return undefined // By default we return undefined?
+        }
+        lock[item.name] = undefined
+      } else {
+        lock[item.name] = function (...args) {
+          if (!lock.memo[item.name]) {
+            lock.memo[item.name] = {} // create the memo
+          }
+          if (lock.memo[item.name][args]) {
+            return lock.memo[item.name][args]
+          } else {
+            // we do not have the memod value... so let's return undefined and retrieve it!
+            contract.methods[item.name](...args).call((error, result) => {
+              if (error) {
+                // Something happened
+              } else {
+                // set the memo
+                lock.memo[item.name][args] = result
+                dispatch(resetLock(lock))
+              }
+            })
+            return undefined // By default we return undefined?
+          }
         }
       }
     }
   })
 
-  // Let's also add a method to get the balance!
-  lock.memo.balance = null
-  lock.balance = () => {
-    if (lock.memo.balance) {
-      return lock.memo.balance
-    }
-    web3.eth.getBalance(address, (error, balance) => {
-      lock.memo.balance = balance
-      dispatch(resetLock(lock))
-    })
-  }
+  // TODO: handle changes!
+  lock.balance = null
+  web3.eth.getBalance(address, (error, balance) => {
+    lock.balance = balance
+    dispatch(resetLock(lock))
+  })
 
   dispatch(setLock(lock))
   // TODO: methods, events, changes?
