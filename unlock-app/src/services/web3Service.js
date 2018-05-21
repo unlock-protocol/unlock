@@ -26,6 +26,7 @@ export const initWeb3Service = ({network, provider}, _dispatch) => {
       provider = new Web3.providers.HttpProvider(networks[network.name].url)
     }
   }
+
   web3 = new Web3(provider)
   if (!network.account.address) {
     createAccount()
