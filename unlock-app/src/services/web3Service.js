@@ -6,7 +6,7 @@ import { networks } from '../config'
 import LockContract from '../artifacts/contracts/Lock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 
-import { setAccount } from '../actions/accounts'
+import { setAccount, resetAccountBalance } from '../actions/accounts'
 import { setLock, resetLock } from '../actions/lock'
 import { setKey } from '../actions/key'
 
@@ -64,6 +64,9 @@ export const createLock = (lock) => {
   unlock.once('NewLock', (error, event) => {
     // TODO: reload user account balance to reflect the change!
     getLock(event.returnValues.newLockAddress)
+    getAddressBalance(lock.creator.address, (balance) => {
+      dispatch(resetAccountBalance(balance))
+    })
   })
 
   web3.eth.accounts.signTransaction({
@@ -93,12 +96,22 @@ export const createLock = (lock) => {
 }
 
 /**
+ * This loads the account's balance
+ * Returns the account
+ */
+export const getAddressBalance = (address, callback) => {
+  web3.eth.getBalance(address, (error, balance) => {
+    callback(balance)
+  })
+}
+
+/**
  * This loads the account matching the private key
  * Returns the account
  */
 export const loadAccount = (privateKey) => {
   const account = web3.eth.accounts.privateKeyToAccount(privateKey)
-  web3.eth.getBalance(account.address, (error, balance) => {
+  getAddressBalance(account.address, (balance) => {
     account.balance = balance
     dispatch(setAccount(account))
   })
@@ -110,7 +123,7 @@ export const loadAccount = (privateKey) => {
  */
 export const createAccount = () => {
   const account = web3.eth.accounts.create()
-  web3.eth.getBalance(account.address, (error, balance) => {
+  getAddressBalance(account.address, (balance) => {
     account.balance = balance
     dispatch(setAccount(account))
   })
@@ -196,6 +209,9 @@ export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
 
   }, (error, event) => {
     getKey(lockAddress, account)
+    getAddressBalance(account.address, (balance) => {
+      dispatch(resetAccountBalance(balance))
+    })
   })
 
   web3.eth.accounts.signTransaction({
@@ -279,6 +295,13 @@ export const withdrawFromLock = (lock, account) => {
       })
       .then(function (receipt) {
         // TODO: refresh the account's balance
+        getAddressBalance(account.address, (balance) => {
+          dispatch(resetAccountBalance(balance))
+        })
+        getAddressBalance(lock.address, (balance) => {
+          lock.balance = balance
+          dispatch(resetLock(lock))
+        })
         console.log('Mined!', receipt)
       })
   })
