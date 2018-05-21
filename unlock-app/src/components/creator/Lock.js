@@ -42,25 +42,25 @@ const Lock = ({ lock, account, withdrawFromLock }) => {
       <h1>Details</h1>
       <ul className="list-group">
         <li className="list-group-item">
-          <p>Key Release Mechanism: <KeyReleaseMechanism mechanism={ lock.keyReleaseMechanism() } /></p>
+          <p>Key Release Mechanism: <KeyReleaseMechanism mechanism={ lock.keyReleaseMechanism } /></p>
         </li>
         <li className="list-group-item">
-          <p>Key Duration (seconds): {lock.expirationDuration()}</p>
+          <p>Key Duration (seconds): {lock.expirationDuration}</p>
         </li>
         <li className="list-group-item">
-          <p>Key Price: {lock.keyPrice()}</p>
+          <p>Key Price: {lock.keyPrice}</p>
         </li>
         <li className="list-group-item">
-          <p>Max number of keys: {lock.maxNumberOfKeys()}</p>
+          <p>Max number of keys: {lock.maxNumberOfKeys}</p>
         </li>
         <li className="list-group-item">
-          <p>Owner: <LockOwner account={account} owner={ lock.owner() } /></p>
+          <p>Owner: <LockOwner account={account} owner={ lock.owner } /></p>
         </li>
         <li className="list-group-item">
-          <p>Balance: {lock.balance()} <button className="btn btn-primary btn-sm" onClick={() => withdrawFromLock(lock)}>Withdraw</button></p>
+          <p>Balance: {lock.balance} <button className="btn btn-primary btn-sm" onClick={() => withdrawFromLock(lock)}>Withdraw</button></p>
         </li>
         <li className="list-group-item">
-          <p>Outstanding keys: {lock.outstandingKeys()}</p>
+          <p>Outstanding keys: {lock.outstandingKeys}</p>
         </li>
       </ul>
     </div>)

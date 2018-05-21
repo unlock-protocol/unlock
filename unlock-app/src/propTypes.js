@@ -7,14 +7,12 @@ export const account = PropTypes.shape({
 })
 export const address = PropTypes.string
 
-// All properties are functions.
-// TODO: change this because it is confusing.
 export const lock = PropTypes.shape({
-  keyReleaseMechanism: PropTypes.func,
-  keyPrice: PropTypes.func,
-  maxNumberOfKeys: PropTypes.func,
-  owner: PropTypes.func,
-  outstandingKeys: PropTypes.func,
+  keyReleaseMechanism: PropTypes.string,
+  keyPrice: PropTypes.string,
+  maxNumberOfKeys: PropTypes.string,
+  owner: PropTypes.string,
+  outstandingKeys: PropTypes.string,
 })
 
 export const mechanism = PropTypes.oneOf(['0', '1', '2', undefined])
