@@ -36,9 +36,9 @@ export class Lock extends React.Component {
       </div>)
     }
 
-    let message = `You need a key to access this content! Purchase one that is valid ${this.props.lock.expirationDuration()} seconds for ${this.props.lock.keyPrice()}.`
+    let message = `You need a key to access this content! Purchase one that is valid ${this.props.lock.expirationDuration} seconds for ${this.props.lock.keyPrice}.`
     if (this.props.currentKey.expiration !== 0) {
-      message = `Your key has expired! Purchase a new one for ${this.props.lock.keyPrice()}.`
+      message = `Your key has expired! Purchase a new one for ${this.props.lock.keyPrice}.`
     }
 
     let action = (<button className="btn btn-primary" color="primary" onClick={() => { this.props.purchaseKey(this.props.lock, this.props.account) }}>Purchase</button>)
@@ -48,7 +48,7 @@ export class Lock extends React.Component {
       account = (<Authenticate hideAccountPicker={this.toggleAccountPicker} />)
     }
 
-    if (this.props.account && this.props.account.balance < this.props.lock.keyPrice()) {
+    if (this.props.account && this.props.account.balance < this.props.lock.keyPrice) {
       action = (<span>Your eth balance is too low. Do you want to use your credit card?</span>)
     }
 

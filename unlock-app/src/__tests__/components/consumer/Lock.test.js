@@ -14,8 +14,8 @@ describe('Lock Component', () => {
       address: '0xabc',
     }
     const lock = {
-      keyPrice: () => 100,
-      expirationDuration: () => 10,
+      keyPrice: '100',
+      expirationDuration: '10',
     }
 
     const currentKey = {
@@ -47,8 +47,8 @@ describe('Lock Component', () => {
       address: '0xabc',
     }
     const lock = {
-      keyPrice: () => 100,
-      expirationDuration: () => 10,
+      keyPrice: '100',
+      expirationDuration: '10',
     }
     const currentKey = {
       expiration: 1,
@@ -80,7 +80,7 @@ describe('Lock Component', () => {
       address: '0xabc',
     }
     const lock = {
-      keyPrice: () => 100,
+      keyPrice: '100',
     }
     const currentKey = {
       expiration: (new Date().getTime() + 1000 * 60 * 60 * 24) / 1000, // tomorrow
