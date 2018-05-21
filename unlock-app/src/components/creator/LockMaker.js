@@ -51,10 +51,8 @@ export class LockMaker extends React.Component {
     }
     return (
       <div>
-        <header className="masthead mb-auto">
-          <nav className="navbar navbar-expand-lg navbar-light inner col-12">
-            <Account showAccountPicker={this.toggleAccountPicker} />
-          </nav>
+        <header className="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+          <Account showAccountPicker={this.toggleAccountPicker} />
         </header>
         <div className="row">
           <LockMakerForm />
