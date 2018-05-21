@@ -1,4 +1,4 @@
-import { setAccount, loadAccount, SET_ACCOUNT, LOAD_ACCOUNT } from '../../actions/accounts'
+import { setAccount, loadAccount, resetAccountBalance, SET_ACCOUNT, LOAD_ACCOUNT, RESET_ACCOUNT_BALANCE } from '../../actions/accounts'
 
 describe('accounts actions', () => {
 
@@ -22,6 +22,16 @@ describe('accounts actions', () => {
       privateKey,
     }
     expect(loadAccount(privateKey)).toEqual(expectedAction)
+  })
+
+  it('should create an action to update an account\'s balance', () => {
+    const balance = '1337'
+
+    const expectedAction = {
+      type: RESET_ACCOUNT_BALANCE,
+      balance,
+    }
+    expect(resetAccountBalance(balance)).toEqual(expectedAction)
   })
 
 })
