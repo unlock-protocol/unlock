@@ -15,11 +15,11 @@ describe('Account Component', () => {
     showAccountPicker={showAccountPicker} />)
 
   it('shows the current account\'s public key', () => {
-    expect(wrapper.find('input').props().defaultValue).toEqual('0xdeadbeef')
+    expect(wrapper.find('span').first().text()).toEqual('0xdeadbeef')
   })
 
   it('shows the current account\'s balance', () => {
-    expect(wrapper.find('span').first().text()).toEqual('1000')
+    expect(wrapper.find('span').at(1).text()).toEqual('Ξ 1000')
   })
 
   it('shows a button to logout', () => {
