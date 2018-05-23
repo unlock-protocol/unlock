@@ -7,8 +7,11 @@ import Authenticate from '../Authenticate'
 import Account from '../Account'
 
 import LockMakerForm from './LockMakerForm'
+import TransactionModal from './TransactionModal'
 import Locks from './Locks'
 import Lock from './Lock'
+
+import { setTransaction } from '../../actions/transaction'
 
 export class LockMaker extends React.Component {
 
@@ -16,8 +19,17 @@ export class LockMaker extends React.Component {
     super(props)
     this.state = {
       accountPickerShown: false,
+      transactionModalShown: false,
     }
     this.toggleAccountPicker = this.toggleAccountPicker.bind(this)
+    this.toggleTransactionModal = this.toggleTransactionModal.bind(this)
+  }
+
+  toggleTransactionModal() {
+    if (this.state.transactionModalShown) {
+      // this.props.setTransaction(null)
+    }
+    this.setState({ transactionModalShown: !this.state.transactionModalShown })
   }
 
   toggleAccountPicker () {
@@ -49,13 +61,18 @@ export class LockMaker extends React.Component {
       </div>
       )
     }
+
+    if (this.state.transactionModalShown) {
+      return (<TransactionModal hideTransactionModal={this.toggleTransactionModal} />)
+    }
+
     return (
       <div>
         <header className="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
           <Account showAccountPicker={this.toggleAccountPicker} />
         </header>
         <div className="row">
-          <LockMakerForm />
+          <LockMakerForm showTransactionModal={this.toggleTransactionModal} />
           <Locks />
           <Route exact={true} path="/" render={() => {
             return (<p></p>)
@@ -69,10 +86,15 @@ export class LockMaker extends React.Component {
 
 LockMaker.propTypes = {
   accountPickerShown: PropTypes.bool,
+  setTransaction: PropTypes.func,
 }
 
 const mapStateToProps = state => {
   return {}
 }
 
-export default connect(mapStateToProps)(LockMaker)
+const mapDispatchToProps = dispatch => ({
+  setTransaction: (transaction) => dispatch(setTransaction(transaction)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(LockMaker)
