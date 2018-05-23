@@ -15,6 +15,10 @@ export const lock = PropTypes.shape({
   outstandingKeys: PropTypes.string,
 })
 
+export const transaction = PropTypes.shape({
+  status: PropTypes.string,
+})
+
 export const mechanism = PropTypes.oneOf(['0', '1', '2', undefined])
 
 export const locks = PropTypes.arrayOf(lock)
