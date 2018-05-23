@@ -16,7 +16,9 @@ describe('network reducer', () => {
       },
       lock: {
 
-      }, name: null,
+      },
+      name: null,
+      transaction: null,
     })
   })
 

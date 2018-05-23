@@ -26,6 +26,7 @@ class LockMakerForm extends React.Component {
 
   handleSubmit () {
     this.props.createLock(this.state)
+    this.props.showTransactionModal()
   }
 
   render () {
@@ -79,6 +80,7 @@ class LockMakerForm extends React.Component {
 LockMakerForm.propTypes = {
   createLock: PropTypes.func,
   account: UnlockPropTypes.account,
+  showTransactionModal: PropTypes.func,
 }
 
 const mapStateToProps = state => {

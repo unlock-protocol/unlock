@@ -9,6 +9,7 @@ import UnlockContract from '../artifacts/contracts/Unlock.json'
 import { setAccount, resetAccountBalance } from '../actions/accounts'
 import { setLock, resetLock } from '../actions/lock'
 import { setKey } from '../actions/key'
+import { setTransaction } from '../actions/transaction'
 
 let web3, networkId, dispatch
 
@@ -59,14 +60,22 @@ export const createLock = (lock) => {
     lock.maxNumberOfKeys
   ).encodeABI()
 
+  // The transaction object!
+  const transaction = {
+    status: 'pending',
+    confirmations: 0,
+    createdAt: new Date().getTime(),
+  }
+
   // TODO: Race condition? What if another event is triggered at the same time?
   // Actually, is that a problem? Probably not, but we should be listening to these events at all times.
   unlock.once('NewLock', (error, event) => {
     // TODO: reload user account balance to reflect the change!
-    getLock(event.returnValues.newLockAddress)
+    transaction.lock = getLock(event.returnValues.newLockAddress)
     getAddressBalance(lock.creator.address, (balance) => {
       dispatch(resetAccountBalance(balance))
     })
+    dispatch(setTransaction(transaction))
   })
 
   web3.eth.accounts.signTransaction({
@@ -77,20 +86,20 @@ export const createLock = (lock) => {
   }, lock.creator.privateKey).then((tx) => {
     return web3.eth.sendSignedTransaction(tx.rawTransaction)
       .once('transactionHash', function (hash) {
-        // console.log('hash', hash)
-      })
-      .once('receipt', function (receipt) {
-        // console.log('receipt', receipt)
+        transaction.hash = hash
+        transaction.status = 'submitted'
+        dispatch(setTransaction(transaction))
       })
       .on('confirmation', function (confNumber, receipt) {
-        // console.log('confirmation', confNumber, receipt)
+        transaction.confirmations += 1
+        dispatch(setTransaction(transaction))
       })
       .on('error', function (error) {
         console.log('error', error)
       })
       .then(function (receipt) {
-        // TODO: refresh the account's balance
-        // console.log('Mined!', receipt)
+        transaction.status = 'mined'
+        dispatch(setTransaction(transaction))
       })
   })
 }
