@@ -63,7 +63,7 @@ jest.mock('../../services/web3Service', () => {
 })
 jest.mock('../../services/iframeService', () => {
   return {
-    sendMessage: null,
+    lockUnlessKeyIsValid: null,
   }
 })
 
@@ -163,15 +163,15 @@ describe('Lock middleware', () => {
     })
   })
 
-  it('should handle SET_KEY by calling sendMessage from iframeService', () => {
+  it('should handle SET_KEY by calling lockUnlessKeyIsValid from iframeService', () => {
     const { next, invoke } = create()
     const action = { type: SET_KEY, key }
     invoke(action)
-    expect(iframeServiceMock.sendMessage).toHaveBeenCalledWith({ key })
+    expect(iframeServiceMock.lockUnlessKeyIsValid).toHaveBeenCalledWith({ key })
     expect(next).toHaveBeenCalledWith(action)
   })
 
-  it('should handle SET_KEY by calling sendMessage from iframeService', () => {
+  it('should handle WITHDRAW_FROM_LOCK by calling withdrawFromLock from web3Service', () => {
     const { next, invoke, store } = create()
     const action = { type: WITHDRAW_FROM_LOCK, lock }
     invoke(action)
