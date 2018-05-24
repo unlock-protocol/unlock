@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import React from 'react'
 
-export const TransactionModal = ({ hideTransactionModal, transaction }) => {
+export function TransactionModal({ hideTransactionModal, transaction }) {
   if (!transaction) {
     return null
   }

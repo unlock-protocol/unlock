@@ -6,7 +6,7 @@ import Lock from './consumer/Lock'
 import Home from './Home'
 import Network from './Network'
 
-export const Unlock = () => {
+export function Unlock() {
   return (
     <div className="container">
       <Switch>

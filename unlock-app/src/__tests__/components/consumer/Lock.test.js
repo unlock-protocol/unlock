@@ -3,8 +3,6 @@ import { shallow } from 'enzyme'
 // Note, we use name import to import the non connected version of the component for testing
 import { Lock } from '../../../components/consumer/Lock'
 
-import iframeServiceMock from '../../../services/iframeService'
-
 jest.mock('../../../services/iframeService', () => {
   return {
     unlockIfKeyIsValid: jest.fn(),
@@ -32,22 +30,17 @@ describe('Lock Component', () => {
     const purchaseKey = jest.fn()
     const component = (<Lock currentKey={currentKey} account={account} lock={lock} purchaseKey={purchaseKey} />)
 
-    it('shows the purchase button', () => {
+    it('shows NonValidKey component', () => {
       // Check the text is right
       const wrapper = shallow(component)
-      const keyInfo = 'You need a key to access this content! Purchase one that is valid 10 seconds for 100'
-      expect(wrapper.find('.card-text').html()).toContain(keyInfo)
-
-      // Make sure the button is right
-      expect(wrapper.find('button').html()).toContain('Purchase')
+      expect(wrapper.find('NonValidKey').props()).toEqual({
+        account,
+        lock,
+        currentKey,
+        purchaseKey,
+      })
     })
 
-    it('invokes triggers the purchase action when the purchase button is clicked', () => {
-      const wrapper = shallow(component)
-
-      wrapper.find('button').simulate('click')
-      expect(purchaseKey).toBeCalledWith(lock, account)
-    })
   })
 
   describe('when the current key has an expiration date in the past', () => {
@@ -64,22 +57,15 @@ describe('Lock Component', () => {
     const purchaseKey = jest.fn()
     const component = (<Lock currentKey={currentKey} account={account} lock={lock} purchaseKey={purchaseKey} />)
 
-    it('shows the purchase button', () => {
+    it('shows NonValidKey component', () => {
       // Check the text is right
       const wrapper = shallow(component)
-      const keyInfo = 'Your key has expired! Purchase a new one for 100.'
-      expect(wrapper.text()).toContain(keyInfo)
-
-      // Make sure the button is right
-      const button = wrapper.find('button').first()
-      expect(button.text()).toEqual('Purchase')
-    })
-
-    it('invokes triggers the purchase action when the purchase button is clicked', () => {
-      const wrapper = shallow(component)
-
-      wrapper.find('button').simulate('click')
-      expect(purchaseKey).toBeCalledWith(lock, account)
+      expect(wrapper.find('NonValidKey').props()).toEqual({
+        account,
+        lock,
+        currentKey,
+        purchaseKey,
+      })
     })
   })
 
@@ -96,16 +82,12 @@ describe('Lock Component', () => {
     const purchaseKey = jest.fn()
     const component = (<Lock currentKey={currentKey} account={account} lock={lock} purchaseKey={purchaseKey} />)
 
-    it('shows an indication that the key is valid and no purchase button', () => {
+    it('shows Key component', () => {
       // Check the text is right
       const wrapper = shallow(component)
-      const keyInfo = 'Your key expires at'
-      expect(wrapper.text()).toContain(keyInfo)
-
-      // Make sure there is no purchase button, but a close button
-      expect(wrapper.find('button').length).toBe(1)
-      wrapper.find('button').simulate('click')
-      expect(iframeServiceMock.unlockIfKeyIsValid).toHaveBeenCalledWith({ key: currentKey })
+      expect(wrapper.find('Key').props()).toEqual({
+        currentKey,
+      })
     })
 
   })
