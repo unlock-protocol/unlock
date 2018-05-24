@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import Authenticate from '../Authenticate'
 import Account from '../Account'
 import { purchaseKey } from '../../actions/key'
+import { unlockIfKeyIsValid } from '../../services/iframeService'
 
 export class Lock extends React.Component {
 
@@ -27,29 +28,39 @@ export class Lock extends React.Component {
       return (<span>Loading...</span>)
     }
 
-    const now = new Date().getTime() / 1000
-    if (this.props.currentKey.expiration > now) {
-      return (<div className="row">
-        <div className="col">
-          <p>Your key expires at {this.props.currentKey.expiration}</p>
-        </div>
-      </div>)
-    }
-
-    let message = `You need a key to access this content! Purchase one that is valid ${this.props.lock.expirationDuration} seconds for ${this.props.lock.keyPrice}.`
-    if (this.props.currentKey.expiration !== 0) {
-      message = `Your key has expired! Purchase a new one for ${this.props.lock.keyPrice}.`
-    }
-
-    let action = (<button className="btn btn-primary" color="primary" onClick={() => { this.props.purchaseKey(this.props.lock, this.props.account) }}>Purchase</button>)
-
     let account = (<Account showAccountPicker={this.toggleAccountPicker} />)
     if (this.state.accountPickerShown) {
       account = (<Authenticate hideAccountPicker={this.toggleAccountPicker} />)
     }
 
-    if (this.props.account && this.props.account.balance < this.props.lock.keyPrice) {
-      action = (<span>Your eth balance is too low. Do you want to use your credit card?</span>)
+    const now = new Date().getTime() / 1000
+    let cardBody = null
+    if (this.props.currentKey.expiration > now) {
+      cardBody = (
+        <div className="card-body">
+          <h5 className="card-title">Members only</h5>
+          <p className="card-text">Your key expires at {this.props.currentKey.expiration}</p>
+          <button className="btn btn-primary" color="primary" onClick={() => { unlockIfKeyIsValid({ key: this.props.currentKey }) }}>Close</button>
+        </div>
+      )
+    } else {
+      let message = `You need a key to access this content! Purchase one that is valid ${this.props.lock.expirationDuration} seconds for ${this.props.lock.keyPrice}.`
+      if (this.props.currentKey.expiration !== 0) {
+        message = `Your key has expired! Purchase a new one for ${this.props.lock.keyPrice}.`
+      }
+
+      let action = (<button className="btn btn-primary" color="primary" onClick={() => { this.props.purchaseKey(this.props.lock, this.props.account) }}>Purchase</button>)
+
+      if (this.props.account && this.props.account.balance < this.props.lock.keyPrice) {
+        action = (<span>Your eth balance is too low. Do you want to use your credit card?</span>)
+      }
+      cardBody = (
+        <div className="card-body">
+          <h5 className="card-title">Members only</h5>
+          <p className="card-text">{message}</p>
+          {action}
+        </div>
+      )
     }
 
     return (
@@ -57,11 +68,7 @@ export class Lock extends React.Component {
         <div className="card-header">
           {account}
         </div>
-        <div className="card-body">
-          <h5 className="card-title">Members only</h5>
-          <p className="card-text">{message}</p>
-          {action}
-        </div>
+        {cardBody}
       </div>)
   }
 }

@@ -3,6 +3,14 @@ import { shallow } from 'enzyme'
 // Note, we use name import to import the non connected version of the component for testing
 import { Lock } from '../../../components/consumer/Lock'
 
+import iframeServiceMock from '../../../services/iframeService'
+
+jest.mock('../../../services/iframeService', () => {
+  return {
+    unlockIfKeyIsValid: jest.fn(),
+  }
+})
+
 describe('Lock Component', () => {
 
   it('shows that it is loading if lock or currentKey is not set', () => {
@@ -94,8 +102,10 @@ describe('Lock Component', () => {
       const keyInfo = 'Your key expires at'
       expect(wrapper.text()).toContain(keyInfo)
 
-      // Make sure there is no button
-      expect(wrapper.find('button').length).toBe(0)
+      // Make sure there is no purchase button, but a close button
+      expect(wrapper.find('button').length).toBe(1)
+      wrapper.find('button').simulate('click')
+      expect(iframeServiceMock.unlockIfKeyIsValid).toHaveBeenCalledWith({ key: currentKey })
     })
 
   })
