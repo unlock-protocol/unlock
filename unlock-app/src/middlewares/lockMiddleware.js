@@ -5,7 +5,7 @@ import { SET_ACCOUNT, LOAD_ACCOUNT } from '../actions/accounts'
 import { SET_NETWORK } from '../actions/network'
 
 import { initWeb3Service, loadAccount, createLock, getLock, purchaseKey, getKey, withdrawFromLock } from '../services/web3Service'
-import { sendMessage } from '../services/iframeService'
+import { lockUnlessKeyIsValid } from '../services/iframeService'
 
 // This middleware listen to redux events and invokes the services APIs.
 export default function lockMiddleware ({ getState, dispatch }) {
@@ -27,8 +27,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
         // A key has been purchased
         purchaseKey(action.lock.address, action.account, action.lock.keyPrice, '') // TODO change data from ''
       } else if (action.type === SET_KEY) {
-        // Key was set, ensure that we communicate this to other frames
-        sendMessage({key: action.key})
+        lockUnlessKeyIsValid({key: action.key})
       } else if (action.type === WITHDRAW_FROM_LOCK) {
         withdrawFromLock(action.lock, getState().network.account)
       }
