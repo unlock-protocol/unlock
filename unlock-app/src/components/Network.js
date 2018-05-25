@@ -7,7 +7,7 @@ import { setNetwork } from '../actions/network'
 
 import { networks } from '../config'
 
-export const Network = ({ setNetwork, network }) => {
+export function Network({ setNetwork, networks, network }) {
 
   return (<div className="container">
     <header className="masthead mb-auto">
@@ -40,11 +40,13 @@ export const Network = ({ setNetwork, network }) => {
 Network.propTypes = {
   network: UnlockPropTypes.network,
   setNetwork: PropTypes.func,
+  networks: PropTypes.arrayOf(UnlockPropTypes.network),
 }
 
 const mapStateToProps = (state) => {
   return {
     network: state.network,
+    networks,
   }
 }
 

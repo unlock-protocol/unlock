@@ -4,7 +4,7 @@ import UnlockPropTypes from '../propTypes'
 import React from 'react'
 import { connect } from 'react-redux'
 
-export const Account = ({ account, showAccountPicker }) => {
+export function Account({ account, showAccountPicker }) {
   return (
     <div className="container">
       <div className="row align-items-center">

@@ -6,8 +6,11 @@ import { connect } from 'react-redux'
 
 import Authenticate from '../Authenticate'
 import Account from '../Account'
+
+import { Key }  from './Key'
+import { NonValidKey } from './NonValidKey'
+
 import { purchaseKey } from '../../actions/key'
-import { unlockIfKeyIsValid } from '../../services/iframeService'
 
 export class Lock extends React.Component {
 
@@ -24,43 +27,21 @@ export class Lock extends React.Component {
   }
 
   render () {
-    if (!this.props.lock) {
+    if (!this.props.lock || !this.props.currentKey) {
       return (<span>Loading...</span>)
     }
 
+    const now = new Date().getTime() / 1000
+    let cardBody = null
     let account = (<Account showAccountPicker={this.toggleAccountPicker} />)
     if (this.state.accountPickerShown) {
       account = (<Authenticate hideAccountPicker={this.toggleAccountPicker} />)
     }
 
-    const now = new Date().getTime() / 1000
-    let cardBody = null
     if (this.props.currentKey.expiration > now) {
-      cardBody = (
-        <div className="card-body">
-          <h5 className="card-title">Members only</h5>
-          <p className="card-text">Your key expires at {this.props.currentKey.expiration}</p>
-          <button className="btn btn-primary" color="primary" onClick={() => { unlockIfKeyIsValid({ key: this.props.currentKey }) }}>Close</button>
-        </div>
-      )
+      cardBody = (<Key currentKey={this.props.currentKey} />)
     } else {
-      let message = `You need a key to access this content! Purchase one that is valid ${this.props.lock.expirationDuration} seconds for ${this.props.lock.keyPrice}.`
-      if (this.props.currentKey.expiration !== 0) {
-        message = `Your key has expired! Purchase a new one for ${this.props.lock.keyPrice}.`
-      }
-
-      let action = (<button className="btn btn-primary" color="primary" onClick={() => { this.props.purchaseKey(this.props.lock, this.props.account) }}>Purchase</button>)
-
-      if (this.props.account && this.props.account.balance < this.props.lock.keyPrice) {
-        action = (<span>Your eth balance is too low. Do you want to use your credit card?</span>)
-      }
-      cardBody = (
-        <div className="card-body">
-          <h5 className="card-title">Members only</h5>
-          <p className="card-text">{message}</p>
-          {action}
-        </div>
-      )
+      cardBody = (<NonValidKey currentKey={this.props.currentKey} account={this.props.account} lock={this.props.lock} purchaseKey={this.props.purchaseKey} transaction={this.props.transaction} />)
     }
 
     return (
@@ -78,6 +59,7 @@ Lock.propTypes = {
   lock: UnlockPropTypes.lock,
   currentKey: UnlockPropTypes.key,
   purchaseKey: PropTypes.func,
+  transaction: UnlockPropTypes.transaction,
 }
 
 const mapDispatchToProps = dispatch => ({
@@ -89,6 +71,7 @@ const mapStateToProps = state => {
     currentKey: state.network.key, // key is a reserved props name
     account: state.network.account,
     lock: state.network.lock,
+    transaction: state.network.account.transaction,
   }
 }
 
