@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export const Home = () => {
+export function Home() {
   return (
     <div>
       <header className="masthead mb-auto">

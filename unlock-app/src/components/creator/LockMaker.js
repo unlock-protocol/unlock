@@ -27,7 +27,7 @@ export class LockMaker extends React.Component {
 
   toggleTransactionModal() {
     if (this.state.transactionModalShown) {
-      // this.props.setTransaction(null)
+      this.props.setTransaction(null) // Reset the transaction when closing!
     }
     this.setState({ transactionModalShown: !this.state.transactionModalShown })
   }

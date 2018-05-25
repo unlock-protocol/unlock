@@ -37,4 +37,5 @@ export default {
   network,
   networks,
   mechanism,
+  transaction,
 }

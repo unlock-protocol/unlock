@@ -92,14 +92,11 @@ export const createLock = (lock) => {
       })
       .on('confirmation', function (confNumber, receipt) {
         transaction.confirmations += 1
+        transaction.status = 'mined'
         dispatch(setTransaction(transaction))
       })
       .on('error', function (error) {
         console.log('error', error)
-      })
-      .then(function (receipt) {
-        transaction.status = 'mined'
-        dispatch(setTransaction(transaction))
       })
   })
 }
@@ -212,12 +209,24 @@ export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
   const lock = new web3.eth.Contract(LockContract.abi, lockAddress)
   const data = lock.methods.purchase(keyData).encodeABI()
 
+  // The transaction object (conflict if other transactions have not been confirmed yet?)
+  // TODO: We have a race condition because this will keep emitting even after
+  // confirmation... which is a problem if we trigger other transaction
+  const transaction = {
+    status: 'pending',
+    confirmations: 0,
+    createdAt: new Date().getTime(),
+  }
+
   // Trigger an event when the key was sold!
   // TODO: Filter by key owner
   lock.once('SoldKey', {
 
   }, (error, event) => {
-    getKey(lockAddress, account)
+    getKey(lockAddress, account, (key) => {
+      transaction.key = key
+      dispatch(setTransaction(transaction))
+    })
     getAddressBalance(account.address, (balance) => {
       dispatch(resetAccountBalance(balance))
     })
@@ -232,20 +241,17 @@ export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
   }, account.privateKey).then((tx) => {
     return web3.eth.sendSignedTransaction(tx.rawTransaction)
       .once('transactionHash', function (hash) {
-        // console.log('hash', hash)
-      })
-      .once('receipt', function (receipt) {
-        // console.log('receipt', receipt)
+        transaction.status = 'submitted'
+        transaction.hash = hash
+        dispatch(setTransaction(transaction))
       })
       .on('confirmation', function (confNumber, receipt) {
-        // console.log('confirmation', confNumber, receipt)
+        transaction.status = 'mined'
+        transaction.confirmations += 1
+        dispatch(setTransaction(transaction))
       })
       .on('error', function (error) {
-        console.log('error', error)
-      })
-      .then(function (receipt) {
-        // TODO: refresh the account's balance
-        // console.log('Mined!', receipt)
+        console.error('error', error)
       })
   })
 }
@@ -254,8 +260,9 @@ export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
  * Returns the key to the lockAddress by the account.
  * @param {PropTypes.adress} lockAddress
  * @param {PropTypes.account} account
+ * @param {PropTypes.func} callback
  */
-export const getKey = (lockAddress, account) => {
+export const getKey = (lockAddress, account, callback) => {
   if (!account || !lockAddress) {
     return dispatch(setKey({
       expiration: 0,
@@ -267,10 +274,14 @@ export const getKey = (lockAddress, account) => {
   const getKeyDataPromise = lockContract.methods.keyDataFor(account.address).call()
   Promise.all([getKeyExpirationPromise, getKeyDataPromise])
     .then(([expiration, data]) => {
-      dispatch(setKey({
+      const key = {
         expiration: parseInt(expiration, 10),
         data,
-      }))
+      }
+      if (callback) {
+        callback(key)
+      }
+      dispatch(setKey(key))
     })
 }
 
