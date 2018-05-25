@@ -2,7 +2,6 @@ import { SET_NETWORK } from '../actions/network'
 import accountReducer from './accountReducer'
 import lockReducer from './lockReducer'
 import keyReducer from './keyReducer'
-import transactionReducer from './transactionReducer'
 
 const initialState = {
   name: null,
@@ -20,7 +19,6 @@ const networkReducer = (state = initialState, action) => {
     account: accountReducer(state.account, action),
     lock: lockReducer(state.lock, action),
     key: keyReducer(state.key, action),
-    transaction: transactionReducer(state.transaction, action),
   }
 
 }

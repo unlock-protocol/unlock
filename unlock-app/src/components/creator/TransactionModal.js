@@ -38,7 +38,7 @@ TransactionModal.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    transaction: state.network.transaction,
+    transaction: state.network.account.transaction,
   }
 }
 
