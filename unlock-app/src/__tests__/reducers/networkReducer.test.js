@@ -9,6 +9,7 @@ describe('network reducer', () => {
     expect(reducer(undefined, {})).toEqual({
       account: {
         locks: [],
+        transaction: null,
       },
       key: {
         data: '',
@@ -18,7 +19,6 @@ describe('network reducer', () => {
 
       },
       name: null,
-      transaction: null,
     })
   })
 
