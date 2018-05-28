@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import web3 from 'web3'
+import Web3Utils from 'web3-utils'
 
 /**
  * Component which shows a balance in Eth
@@ -8,8 +8,8 @@ import web3 from 'web3'
  * @param {string} unit: the unit of the amount to convert to Eth
  */
 export function Balance({ amount, unit = 'wei' }) {
-  const inWei = web3.utils.toWei(amount || '0', unit)
-  const inEth = web3.utils.fromWei(inWei, 'ether')
+  const inWei = Web3Utils.toWei(amount || '0', unit)
+  const inEth = Web3Utils.fromWei(inWei, 'ether')
   return (<span>Ξ {inEth}</span>)
 }
 
