@@ -23,8 +23,13 @@ describe('NonValidKey Component', () => {
 
     it('shows the purchase button', () => {
       // Check the text is right
-      const keyInfo = 'You need a key to access this content! Purchase one that is valid 10 seconds for 100'
+      const keyInfo = 'You need a key to access this content! Purchase one that is valid 10 seconds for'
       expect(wrapper.find('.card-text').html()).toContain(keyInfo)
+
+      // Check that the balance is righ
+      expect(wrapper.find('Balance').first().props()).toEqual({
+        amount: '100',
+      })
 
       // Make sure the button is right
       expect(wrapper.find('button').html()).toContain('Purchase')
@@ -49,8 +54,13 @@ describe('NonValidKey Component', () => {
     it('shows the purchase button', () => {
       // Check the text is right
       const wrapper = shallow(component)
-      const keyInfo = 'Your key has expired! Purchase a new one for 100.'
+      const keyInfo = 'Your key has expired! Purchase a new one for'
       expect(wrapper.text()).toContain(keyInfo)
+
+      // Check that the balance is righ
+      expect(wrapper.find('Balance').first().props()).toEqual({
+        amount: '100',
+      })
 
       // Make sure the button is right
       const button = wrapper.find('button').first()
