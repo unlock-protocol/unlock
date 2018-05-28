@@ -5,9 +5,12 @@ const initialState = null
 const transactionReducer = (state = initialState, action) => {
 
   if (action.type === SET_TRANSACTION) {
-    return {
-      ...action.transaction,
+    if (action.transaction) {
+      return {
+        ...action.transaction,
+      }
     }
+    return null
   }
 
   return state
