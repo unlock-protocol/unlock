@@ -3,6 +3,7 @@ import UnlockPropTypes from '../../propTypes'
 import React from 'react'
 import { connect } from 'react-redux'
 import { withdrawFromLock } from '../../actions/lock'
+import Balance from '../helpers/Balance'
 
 const LockOwner = ({ account, owner }) => {
   if (account.address === owner) {
@@ -48,7 +49,7 @@ const Lock = ({ lock, account, withdrawFromLock }) => {
           <p>Key Duration (seconds): {lock.expirationDuration}</p>
         </li>
         <li className="list-group-item">
-          <p>Key Price: {lock.keyPrice}</p>
+          <p>Key Price: <Balance amount={lock.keyPrice} /></p>
         </li>
         <li className="list-group-item">
           <p>Max number of keys: {lock.maxNumberOfKeys}</p>
@@ -57,7 +58,7 @@ const Lock = ({ lock, account, withdrawFromLock }) => {
           <p>Owner: <LockOwner account={account} owner={ lock.owner } /></p>
         </li>
         <li className="list-group-item">
-          <p>Balance: {lock.balance} <button className="btn btn-primary btn-sm" onClick={() => withdrawFromLock(lock)}>Withdraw</button></p>
+          <p>Balance: <Balance amount={lock.balance} /> <button className="btn btn-primary btn-sm" onClick={() => withdrawFromLock(lock)}>Withdraw</button></p>
         </li>
         <li className="list-group-item">
           <p>Outstanding keys: {lock.outstandingKeys}</p>
