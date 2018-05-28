@@ -3,6 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { createLock } from '../../actions/lock'
 import UnlockPropTypes from '../../propTypes'
+import Web3Utils from 'web3-utils'
 
 class LockMakerForm extends React.Component {
   constructor (props, context) {
@@ -12,9 +13,9 @@ class LockMakerForm extends React.Component {
       expirationDuration: 60 * 60 * 24 * 10, // 10 days (in seconds!)
       expirationTimestamp: 0, // for now 0 as we focus on duration based locks
       keyPriceCalculator: 0, // let's focus on fix prices
-      keyPrice: 100000, // we should show a better UI to let creators set their price in eth!
+      keyPrice: 0.01,
+      keyPriceCurrency: 'ether',
       maxNumberOfKeys: 10,
-      creator: props.account,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -25,7 +26,16 @@ class LockMakerForm extends React.Component {
   }
 
   handleSubmit () {
-    this.props.createLock(this.state)
+    const lockParams = {
+      keyReleaseMechanism: this.state.keyReleaseMechanism,
+      expirationDuration: this.state.expirationDuration,
+      expirationTimestamp: this.state.expirationTimestamp,
+      keyPriceCalculator: this.state.keyPriceCalculator,
+      keyPrice: Web3Utils.toWei(this.state.keyPrice.toString(10), this.state.keyPriceCurrency),
+      maxNumberOfKeys: this.state.maxNumberOfKeys,
+      creator: this.props.account,
+    }
+    this.props.createLock(lockParams)
     this.props.showTransactionModal()
   }
 
@@ -54,12 +64,19 @@ class LockMakerForm extends React.Component {
           </div>
 
           <div className="form-group">
-            <label htmlFor="keyPrice">Key Price (Wei)</label>
-            <input className="form-control"
-              type="number"
-              id="keyPrice"
-              value={this.state.keyPrice}
-              onChange={this.handleChange} />
+            <label htmlFor="keyPrice">Key Price</label>
+            <div className="input-group">
+              <input className="input-group-prepend form-control"
+                step="0.01"
+                type="number"
+                id="keyPrice"
+                value={this.state.keyPrice}
+                onChange={this.handleChange} />
+              <select className="custom-select" value={this.state.keyPriceCurrency} onChange={this.handleChange} id="keyPriceCurrency">
+                <option value="ether">Ether</option>
+              </select>
+            </div>
+
           </div>
 
           <div className="form-group">
