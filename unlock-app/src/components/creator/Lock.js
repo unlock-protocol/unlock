@@ -4,6 +4,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withdrawFromLock } from '../../actions/lock'
 import Balance from '../helpers/Balance'
+import Duration from '../helpers/Duration'
 
 const LockOwner = ({ account, owner }) => {
   if (account.address === owner) {
@@ -46,7 +47,7 @@ const Lock = ({ lock, account, withdrawFromLock }) => {
           <p>Key Release Mechanism: <KeyReleaseMechanism mechanism={ lock.keyReleaseMechanism } /></p>
         </li>
         <li className="list-group-item">
-          <p>Key Duration (seconds): {lock.expirationDuration}</p>
+          <p>Key Duration: <Duration seconds={lock.expirationDuration} /></p>
         </li>
         <li className="list-group-item">
           <p>Key Price: <Balance amount={lock.keyPrice} /></p>
