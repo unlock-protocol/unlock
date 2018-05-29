@@ -10,7 +10,8 @@ class LockMakerForm extends React.Component {
     super(props)
     this.state = {
       keyReleaseMechanism: 0, // Public
-      expirationDuration: 60 * 60 * 24 * 10, // 10 days (in seconds!)
+      expirationDuration: 30,
+      expirationDurationUnit: 86400, // Days
       expirationTimestamp: 0, // for now 0 as we focus on duration based locks
       keyPriceCalculator: 0, // let's focus on fix prices
       keyPrice: 0.01,
@@ -28,7 +29,7 @@ class LockMakerForm extends React.Component {
   handleSubmit () {
     const lockParams = {
       keyReleaseMechanism: this.state.keyReleaseMechanism,
-      expirationDuration: this.state.expirationDuration,
+      expirationDuration: this.state.expirationDuration * this.state.expirationDurationUnit,
       expirationTimestamp: this.state.expirationTimestamp,
       keyPriceCalculator: this.state.keyPriceCalculator,
       keyPrice: Web3Utils.toWei(this.state.keyPrice.toString(10), this.state.keyPriceCurrency),
@@ -56,11 +57,17 @@ class LockMakerForm extends React.Component {
 
           <div className="form-group">
             <label htmlFor="expirationDuration">Key Duration (seconds)</label>
-            <input className="form-control"
-              type="number"
-              id="expirationDuration"
-              value={this.state.expirationDuration}
-              onChange={this.handleChange} />
+            <div className="input-group">
+              <input className="form-control"
+                type="number"
+                id="expirationDuration"
+                value={this.state.expirationDuration}
+                onChange={this.handleChange} />
+              <select className="custom-select" value={this.state.expirationDurationUnit} onChange={this.handleChange} id="expirationDurationUnit">
+                <option value="3600">Hours</option>
+                <option value="86400">Days</option>
+              </select>
+            </div>
           </div>
 
           <div className="form-group">
