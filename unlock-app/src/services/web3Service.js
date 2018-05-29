@@ -29,8 +29,29 @@ export const initWeb3Service = ({network, provider}, _dispatch) => {
   }
 
   web3 = new Web3(provider)
+
+  // retrieve the account
   if (!network.account.address) {
-    createAccount()
+    web3.eth.getAccounts().then((accounts) => {
+      if(accounts.length == 0) {
+        createAccount()
+      } else {
+        const accountAddress = accounts[0] // take the first one!
+        getAddressBalance(accountAddress, (balance) => {
+          const account = {
+            address: accountAddress,
+            balance,
+          }
+          dispatch(setAccount(account))
+        })
+      }
+    })
+  } else {
+    // Let's refresh the account balance
+    getAddressBalance(network.account.address, (balance) => {
+      network.account.balance = balance
+      dispatch(setAccount(network.account))
+    })
   }
 
   // Get the network id
