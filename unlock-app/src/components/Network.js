@@ -40,7 +40,7 @@ export function Network({ setNetwork, networks, network }) {
 Network.propTypes = {
   network: UnlockPropTypes.network,
   setNetwork: PropTypes.func,
-  networks: PropTypes.arrayOf(UnlockPropTypes.network),
+  networks: PropTypes.objectOf(UnlockPropTypes.network),
 }
 
 const mapStateToProps = (state) => {
