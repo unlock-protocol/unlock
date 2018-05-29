@@ -38,7 +38,7 @@ export class Authenticate extends React.Component {
         </div>
 
         <div className="form-group">
-          <button className="btn btn-outline-secondary" type="button" onClick={() => { { this.props.hideAccountPicker() } }}>Cancel</button>
+          <button className="btn btn-outline-secondary" type="button" onClick={() => { this.props.hideAccountPicker() } }>Cancel</button>
         </div>
       </form>
 
