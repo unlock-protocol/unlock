@@ -18,22 +18,23 @@ let web3, networkId, dispatch
  * @param {object} network
  * @param {function} _dispatch
  */
-export const initWeb3Service = ({network, provider}, _dispatch) => {
+export const initWeb3Service = ({network}, _dispatch) => {
   dispatch = _dispatch
-  if (!provider) {
-    if (networks[network.name].protocol === 'ws') {
-      provider = new Web3.providers.WebsocketProvider(networks[network.name].url)
-    } else if (networks[network.name].protocol === 'http') {
-      provider = new Web3.providers.HttpProvider(networks[network.name].url)
+  const conf = networks[network.name]
+
+  if (!conf.provider) {
+    if (conf.protocol === 'ws') {
+      conf.provider = new Web3.providers.WebsocketProvider(conf.url)
+    } else if (conf.protocol === 'http') {
+      conf.provider = new Web3.providers.HttpProvider(conf.url)
     }
   }
 
-  web3 = new Web3(provider)
-
-  // retrieve the account
+  web3 = new Web3(conf.provider)
   if (!network.account.address) {
     web3.eth.getAccounts().then((accounts) => {
-      if(accounts.length == 0) {
+      console.log(accounts)
+      if(accounts.length === 0) {
         createAccount()
       } else {
         const accountAddress = accounts[0] // take the first one!
