@@ -13,16 +13,31 @@ import { setTransaction } from '../actions/transaction'
 
 let web3, networkId, dispatch
 
-function sendTransaction({ to, from, data, value, gas, privateKey }) {
+/**
+ * This helper function signs a transaction
+ * and sends it.
+ * @param {*} param0
+ */
+function sendTransaction({ to, from, data, value, gas, privateKey }, callback) {
   return web3.eth.accounts.signTransaction({
     to,
     from,
     value,
     data,
     gas,
-  }, privateKey).then((tx) => {
-    return web3.eth.sendSignedTransaction(tx.rawTransaction)
-  })
+  }, privateKey)
+    .then((tx) => {
+      return web3.eth.sendSignedTransaction(tx.rawTransaction)
+        .once('transactionHash', function (hash) {
+          callback(null, { event: 'transactionHash', hash })
+        }).on('confirmation', function (confNumber, receipt) {
+          callback(null, {event: 'confirmation', confNumber, receipt})
+        }).once('receipt', function (receipt) {
+          callback(null, {event: 'receipt', receipt})
+        }).on('error', function (error) {
+          callback(error)
+        })
+    })
 }
 
 /**
@@ -117,19 +132,22 @@ export const createLock = (lock) => {
     data: data,
     gas: 1000000,
     privateKey: lock.creator.privateKey,
-  }).once('transactionHash', function (hash) {
-    transaction.hash = hash
-    transaction.status = 'submitted'
-    dispatch(setTransaction(transaction))
-  })
-    .on('confirmation', function (confNumber, receipt) {
-      transaction.confirmations += 1
-      transaction.status = 'mined'
+  }, (error, { event, hash }) => {
+    if (error) {
+      console.error(error)
+    }
+    if (event === 'transactionHash') {
+      transaction.hash = hash
+      transaction.status = 'submitted'
       dispatch(setTransaction(transaction))
-    })
-    .on('error', function (error) {
-      console.log('error', error)
-    })
+    } else if (event === 'confirmation') {
+      transaction.status = 'mined'
+      transaction.confirmations += 1
+      dispatch(setTransaction(transaction))
+    } else if (event === 'receipt') {
+      // DO NO THING
+    }
+  })
 }
 
 /**
@@ -270,16 +288,19 @@ export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
     gas: 1000000,
     value: keyPrice,
     privateKey: account.privateKey,
-  }).once('transactionHash', function (hash) {
-    transaction.status = 'submitted'
-    transaction.hash = hash
-    dispatch(setTransaction(transaction))
-  }).on('confirmation', function (confNumber, receipt) {
-    transaction.status = 'mined'
-    transaction.confirmations += 1
-    dispatch(setTransaction(transaction))
-  }).on('error', function (error) {
-    console.error('error', error)
+  }, (error, { event, hash }) => {
+    if (error) {
+      console.error(error)
+    }
+    if (event === 'transactionHash') {
+      transaction.hash = hash
+      transaction.status = 'submitted'
+      dispatch(setTransaction(transaction))
+    } else if (event === 'confirmation') {
+      transaction.status = 'mined'
+      transaction.confirmations += 1
+      dispatch(setTransaction(transaction))
+    }
   })
 }
 
@@ -327,24 +348,19 @@ export const withdrawFromLock = (lock, account) => {
     data: data,
     gas: 1000000,
     privateKey: account.privateKey,
-  }).once('transactionHash', function (hash) {
-    console.log('hash', hash)
-  }).once('receipt', function (receipt) {
-    console.log('receipt', receipt)
-  }).on('confirmation', function (confNumber, receipt) {
-    console.log('confirmation', confNumber, receipt)
-  }).on('error', function (error) {
-    console.log('error', error)
-  }).then(function (receipt) {
-    // TODO: refresh the account's balance
-    getAddressBalance(account.address, (balance) => {
-      dispatch(resetAccountBalance(balance))
-    })
-    getAddressBalance(lock.address, (balance) => {
-      lock.balance = balance
-      dispatch(resetLock(lock))
-    })
-    console.log('Mined!', receipt)
+  }, (error, { event, receipt }) => {
+    if (error) {
+      console.error(error)
+    }
+    if (event === 'receipt') {
+      getAddressBalance(account.address, (balance) => {
+        dispatch(resetAccountBalance(balance))
+      })
+      getAddressBalance(lock.address, (balance) => {
+        lock.balance = balance
+        dispatch(resetLock(lock))
+      })
+    }
   })
 }
 
