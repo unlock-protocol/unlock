@@ -12,13 +12,16 @@ jest.mock('../../../services/iframeService', () => {
 describe('Key Component', () => {
 
   const currentKey = {
-    expiration: '10',
+    expiration: Math.floor(new Date().getTime()/1000) + 1000,
   }
 
   const wrapper = shallow(<Key currentKey={currentKey} />)
 
   it('shows the current key expiratin date', () => {
-    expect(wrapper.text()).toContain(`Your key expires at ${currentKey.expiration}.`)
+    expect(wrapper.text()).toContain('Your key expires in')
+    expect(wrapper.find('Duration').props()).toEqual({
+      seconds: '1000',
+    })
   })
 
   it('shows a button which closes the modal', () => {

@@ -23,7 +23,11 @@ describe('NonValidKey Component', () => {
 
     it('shows the purchase button', () => {
       // Check the text is right
-      const keyInfo = 'You need a key to access this content! Purchase one that is valid 10 seconds for'
+      const keyInfo = 'You need a key to access this content! Purchase one that is valid'
+      expect(wrapper.find('Duration').props()).toEqual({
+        seconds: '10',
+      })
+
       expect(wrapper.find('.card-text').html()).toContain(keyInfo)
 
       // Check that the balance is righ
