@@ -2,10 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import UnlockPropTypes from '../../propTypes'
 import Balance from '../helpers/Balance'
+import Duration from '../helpers/Duration'
 
 export function NonValidKey({ account, lock, currentKey, transaction, purchaseKey }) {
 
-  let message = (<p className="card-text">You need a key to access this content! Purchase one that is valid {lock.expirationDuration} seconds for <Balance amount={lock.keyPrice} />.</p>)
+  let message = (<p className="card-text">You need a key to access this content! Purchase one that is valid <Duration seconds={lock.expirationDuration} /> for <Balance amount={lock.keyPrice} />.</p>)
   if (currentKey.expiration !== 0) {
     message = (<p className="card-text">Your key has expired! Purchase a new one for <Balance amount={lock.keyPrice} />.</p>)
   }
