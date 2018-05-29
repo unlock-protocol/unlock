@@ -13,6 +13,18 @@ import { setTransaction } from '../actions/transaction'
 
 let web3, networkId, dispatch
 
+function sendTransaction({ to, from, data, value, gas, privateKey }) {
+  return web3.eth.accounts.signTransaction({
+    to,
+    from,
+    value,
+    data,
+    gas,
+  }, privateKey).then((tx) => {
+    return web3.eth.sendSignedTransaction(tx.rawTransaction)
+  })
+}
+
 /**
  * This connects to the web3 service and listens to new blocks
  * @param {object} network
@@ -33,7 +45,7 @@ export const initWeb3Service = ({network, provider}, _dispatch) => {
   // retrieve the account
   if (!network.account.address) {
     web3.eth.getAccounts().then((accounts) => {
-      if(accounts.length == 0) {
+      if(accounts.length === 0) {
         createAccount()
       } else {
         const accountAddress = accounts[0] // take the first one!
@@ -99,27 +111,25 @@ export const createLock = (lock) => {
     dispatch(setTransaction(transaction))
   })
 
-  web3.eth.accounts.signTransaction({
+  return sendTransaction({
     to: UnlockContract.networks[networkId].address,
     from: lock.creator.address,
     data: data,
     gas: 1000000,
-  }, lock.creator.privateKey).then((tx) => {
-    return web3.eth.sendSignedTransaction(tx.rawTransaction)
-      .once('transactionHash', function (hash) {
-        transaction.hash = hash
-        transaction.status = 'submitted'
-        dispatch(setTransaction(transaction))
-      })
-      .on('confirmation', function (confNumber, receipt) {
-        transaction.confirmations += 1
-        transaction.status = 'mined'
-        dispatch(setTransaction(transaction))
-      })
-      .on('error', function (error) {
-        console.log('error', error)
-      })
+    privateKey: lock.creator.privateKey,
+  }).once('transactionHash', function (hash) {
+    transaction.hash = hash
+    transaction.status = 'submitted'
+    dispatch(setTransaction(transaction))
   })
+    .on('confirmation', function (confNumber, receipt) {
+      transaction.confirmations += 1
+      transaction.status = 'mined'
+      dispatch(setTransaction(transaction))
+    })
+    .on('error', function (error) {
+      console.log('error', error)
+    })
 }
 
 /**
@@ -253,27 +263,23 @@ export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
     })
   })
 
-  web3.eth.accounts.signTransaction({
+  return sendTransaction({
     to: lockAddress,
     from: account.address,
     data: data,
+    gas: 1000000,
     value: keyPrice,
-    gas: 1000000, // TODO: improve?
-  }, account.privateKey).then((tx) => {
-    return web3.eth.sendSignedTransaction(tx.rawTransaction)
-      .once('transactionHash', function (hash) {
-        transaction.status = 'submitted'
-        transaction.hash = hash
-        dispatch(setTransaction(transaction))
-      })
-      .on('confirmation', function (confNumber, receipt) {
-        transaction.status = 'mined'
-        transaction.confirmations += 1
-        dispatch(setTransaction(transaction))
-      })
-      .on('error', function (error) {
-        console.error('error', error)
-      })
+    privateKey: account.privateKey,
+  }).once('transactionHash', function (hash) {
+    transaction.status = 'submitted'
+    transaction.hash = hash
+    dispatch(setTransaction(transaction))
+  }).on('confirmation', function (confNumber, receipt) {
+    transaction.status = 'mined'
+    transaction.confirmations += 1
+    dispatch(setTransaction(transaction))
+  }).on('error', function (error) {
+    console.error('error', error)
   })
 }
 
@@ -315,38 +321,31 @@ export const withdrawFromLock = (lock, account) => {
   const lockContract = new web3.eth.Contract(LockContract.abi, lock.address)
   const data = lockContract.methods.withdraw().encodeABI()
 
-  web3.eth.accounts.signTransaction({
+  return sendTransaction({
     to: lock.address,
     from: account.address,
     data: data,
-    gas: 1000000, // TODO: improve?
-  }, account.privateKey).then((tx) => {
-    return web3.eth.sendSignedTransaction(tx.rawTransaction)
-      .once('transactionHash', function (hash) {
-        console.log('hash', hash)
-      })
-      .once('receipt', function (receipt) {
-        console.log('receipt', receipt)
-      })
-      .on('confirmation', function (confNumber, receipt) {
-        console.log('confirmation', confNumber, receipt)
-      })
-      .on('error', function (error) {
-        console.log('error', error)
-      })
-      .then(function (receipt) {
-        // TODO: refresh the account's balance
-        getAddressBalance(account.address, (balance) => {
-          dispatch(resetAccountBalance(balance))
-        })
-        getAddressBalance(lock.address, (balance) => {
-          lock.balance = balance
-          dispatch(resetLock(lock))
-        })
-        console.log('Mined!', receipt)
-      })
+    gas: 1000000,
+    privateKey: account.privateKey,
+  }).once('transactionHash', function (hash) {
+    console.log('hash', hash)
+  }).once('receipt', function (receipt) {
+    console.log('receipt', receipt)
+  }).on('confirmation', function (confNumber, receipt) {
+    console.log('confirmation', confNumber, receipt)
+  }).on('error', function (error) {
+    console.log('error', error)
+  }).then(function (receipt) {
+    // TODO: refresh the account's balance
+    getAddressBalance(account.address, (balance) => {
+      dispatch(resetAccountBalance(balance))
+    })
+    getAddressBalance(lock.address, (balance) => {
+      lock.balance = balance
+      dispatch(resetLock(lock))
+    })
+    console.log('Mined!', receipt)
   })
-
 }
 
 export default {
