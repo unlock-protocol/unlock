@@ -13,43 +13,7 @@ import { setTransaction } from '../actions/transaction'
 
 let web3, networkId, dispatch
 
-/**
- * This helper function signs a transaction
- * and sends it.
- * @param {*} param0
- */
-function sendTransaction({ to, from, data, value, gas, privateKey, contractAbi = [] }, callback) {
-
-  // Home made event handling since this is not handled correctly by web3 :/
-  const abiEvents = contractAbi.filter((item) => {
-    return item.type === 'event'
-  })
-
-  let sentTransaction
-  if (!privateKey) {
-    // We are using a third party provider so we do not have a privateKey for the user...
-    // We assume this will support sentTransaction
-    sentTransaction = web3.eth.sendTransaction({
-      to,
-      from,
-      value,
-      data,
-      gas,
-    })
-
-  } else {
-    sentTransaction = web3.eth.accounts.signTransaction({
-      to,
-      from,
-      value,
-      data,
-      gas,
-    }, privateKey)
-      .then((tx) => {
-        return web3.eth.sendSignedTransaction(tx.rawTransaction)
-      })
-  }
-
+function handleTransaction(sentTransaction, abiEvents, callback) {
   sentTransaction.once('transactionHash', function (hash) {
     callback(null, { event: 'transactionHash', args: { hash } })
   }).on('confirmation', function (confNumber, receipt) {
@@ -76,7 +40,45 @@ function sendTransaction({ to, from, data, value, gas, privateKey, contractAbi =
   }).on('error', function (error) {
     callback(error)
   })
+}
 
+/**
+ * This helper function signs a transaction
+ * and sends it.
+ * @param {*} param0
+ */
+function sendTransaction({ to, from, data, value, gas, privateKey, contractAbi = [] }, callback) {
+
+  // Home made event handling since this is not handled correctly by web3 :/
+  const abiEvents = contractAbi.filter((item) => {
+    return item.type === 'event'
+  })
+
+  if (!privateKey) {
+    // We are using a third party provider so we do not have a privateKey for the user...
+    // We assume this will support sentTransaction
+    return handleTransaction(web3.eth.sendTransaction({
+      to,
+      from,
+      value,
+      data,
+      gas,
+    }), abiEvents, callback)
+  } else {
+    // We process transactions ourselves...
+    // Sign first
+    web3.eth.accounts.signTransaction({
+      to,
+      from,
+      value,
+      data,
+      gas,
+    }, privateKey)
+      .then((tx) => {
+        // and send the signature!
+        return handleTransaction(web3.eth.sendSignedTransaction(tx.rawTransaction), abiEvents, callback)
+      })
+  }
 }
 
 /**
