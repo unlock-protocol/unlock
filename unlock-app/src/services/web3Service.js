@@ -18,26 +18,65 @@ let web3, networkId, dispatch
  * and sends it.
  * @param {*} param0
  */
-function sendTransaction({ to, from, data, value, gas, privateKey }, callback) {
-  return web3.eth.accounts.signTransaction({
-    to,
-    from,
-    value,
-    data,
-    gas,
-  }, privateKey)
-    .then((tx) => {
-      return web3.eth.sendSignedTransaction(tx.rawTransaction)
-        .once('transactionHash', function (hash) {
-          callback(null, { event: 'transactionHash', hash })
-        }).on('confirmation', function (confNumber, receipt) {
-          callback(null, {event: 'confirmation', confNumber, receipt})
-        }).once('receipt', function (receipt) {
-          callback(null, {event: 'receipt', receipt})
-        }).on('error', function (error) {
-          callback(error)
-        })
+function sendTransaction({ to, from, data, value, gas, privateKey, contractAbi = [] }, callback) {
+
+  // Home made event handling since this is not handled correctly by web3 :/
+  const abiEvents = contractAbi.filter((item) => {
+    return item.type === 'event'
+  })
+
+  let sentTransaction
+  if (!privateKey) {
+    // We are using a third party provider so we do not have a privateKey for the user...
+    // We assume this will support sentTransaction
+    sentTransaction = web3.eth.sendTransaction({
+      to,
+      from,
+      value,
+      data,
+      gas,
     })
+
+  } else {
+    sentTransaction = web3.eth.accounts.signTransaction({
+      to,
+      from,
+      value,
+      data,
+      gas,
+    }, privateKey)
+      .then((tx) => {
+        return web3.eth.sendSignedTransaction(tx.rawTransaction)
+      })
+  }
+
+  sentTransaction.once('transactionHash', function (hash) {
+    callback(null, { event: 'transactionHash', args: { hash } })
+  }).on('confirmation', function (confNumber, receipt) {
+    callback(null, { event: 'confirmation', args: { confNumber, receipt } })
+  }).once('receipt', function (receipt) {
+    callback(null, { event: 'receipt', args: { receipt } })
+    receipt.logs.forEach((log) => {
+      // For each event, let's look at the inputs
+      abiEvents.forEach((event) => {
+        let topics = log.topics
+        if (event.name) {
+          // https://web3js.readthedocs.io/en/1.0/web3-eth-abi.html#decodelog
+          // topics - Array: An array with the index parameter topics of the log, without the topic[0] if its a non-anonymous event, otherwise with topic[0].
+          topics = log.topics.slice(1)
+        }
+        const decoded = web3.eth.abi.decodeLog(event.inputs, log.data, topics)
+        const args = event.inputs.reduce((args, input) => {
+          args[input.name] = decoded[input.name]
+          return args
+        }, {})
+        callback(null, { event: event.name, args })
+      })
+    })
+  }).on('error', function (error) {
+    callback(error)
+  })
+
 }
 
 /**
@@ -45,19 +84,19 @@ function sendTransaction({ to, from, data, value, gas, privateKey }, callback) {
  * @param {object} network
  * @param {function} _dispatch
  */
-export const initWeb3Service = ({network, provider}, _dispatch) => {
+export const initWeb3Service = ({network}, _dispatch) => {
   dispatch = _dispatch
-  if (!provider) {
-    if (networks[network.name].protocol === 'ws') {
-      provider = new Web3.providers.WebsocketProvider(networks[network.name].url)
-    } else if (networks[network.name].protocol === 'http') {
-      provider = new Web3.providers.HttpProvider(networks[network.name].url)
+  const conf = networks[network.name]
+
+  if (!conf.provider) {
+    if (conf.protocol === 'ws') {
+      conf.provider = new Web3.providers.WebsocketProvider(conf.url)
+    } else if (conf.protocol === 'http') {
+      conf.provider = new Web3.providers.HttpProvider(conf.url)
     }
   }
 
-  web3 = new Web3(provider)
-
-  // retrieve the account
+  web3 = new Web3(conf.provider)
   if (!network.account.address) {
     web3.eth.getAccounts().then((accounts) => {
       if(accounts.length === 0) {
@@ -115,37 +154,31 @@ export const createLock = (lock) => {
     createdAt: new Date().getTime(),
   }
 
-  // TODO: Race condition? What if another event is triggered at the same time?
-  // Actually, is that a problem? Probably not, but we should be listening to these events at all times.
-  unlock.once('NewLock', (error, event) => {
-    // TODO: reload user account balance to reflect the change!
-    transaction.lock = getLock(event.returnValues.newLockAddress)
-    getAddressBalance(lock.creator.address, (balance) => {
-      dispatch(resetAccountBalance(balance))
-    })
-    dispatch(setTransaction(transaction))
-  })
-
   return sendTransaction({
     to: UnlockContract.networks[networkId].address,
     from: lock.creator.address,
     data: data,
     gas: 1000000,
     privateKey: lock.creator.privateKey,
-  }, (error, { event, hash }) => {
+    contractAbi: UnlockContract.abi,
+  }, (error, { event, args }) => {
     if (error) {
       console.error(error)
     }
     if (event === 'transactionHash') {
-      transaction.hash = hash
+      transaction.hash = args.hash
       transaction.status = 'submitted'
       dispatch(setTransaction(transaction))
     } else if (event === 'confirmation') {
       transaction.status = 'mined'
       transaction.confirmations += 1
       dispatch(setTransaction(transaction))
-    } else if (event === 'receipt') {
-      // DO NO THING
+    } else if (event === 'NewLock' ) {
+      transaction.lock = getLock(args.newLockAddress)
+      getAddressBalance(lock.creator.address, (balance) => {
+        dispatch(resetAccountBalance(balance))
+      })
+      dispatch(setTransaction(transaction))
     }
   })
 }
@@ -267,20 +300,6 @@ export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
     createdAt: new Date().getTime(),
   }
 
-  // Trigger an event when the key was sold!
-  // TODO: Filter by key owner
-  lock.once('SoldKey', {
-
-  }, (error, event) => {
-    getKey(lockAddress, account, (key) => {
-      transaction.key = key
-      dispatch(setTransaction(transaction))
-    })
-    getAddressBalance(account.address, (balance) => {
-      dispatch(resetAccountBalance(balance))
-    })
-  })
-
   return sendTransaction({
     to: lockAddress,
     from: account.address,
@@ -288,18 +307,27 @@ export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
     gas: 1000000,
     value: keyPrice,
     privateKey: account.privateKey,
-  }, (error, { event, hash }) => {
+    contractAbi: LockContract.abi,
+  }, (error, { event, args }) => {
     if (error) {
       console.error(error)
     }
     if (event === 'transactionHash') {
-      transaction.hash = hash
+      transaction.hash = args.hash
       transaction.status = 'submitted'
       dispatch(setTransaction(transaction))
     } else if (event === 'confirmation') {
       transaction.status = 'mined'
       transaction.confirmations += 1
       dispatch(setTransaction(transaction))
+    } else if (event === 'SoldKey') {
+      getKey(lockAddress, account, (key) => {
+        transaction.key = key
+        dispatch(setTransaction(transaction))
+      })
+      getAddressBalance(account.address, (balance) => {
+        dispatch(resetAccountBalance(balance))
+      })
     }
   })
 }
@@ -348,7 +376,8 @@ export const withdrawFromLock = (lock, account) => {
     data: data,
     gas: 1000000,
     privateKey: account.privateKey,
-  }, (error, { event, receipt }) => {
+    contractAbi: LockContract.abi,
+  }, (error, { event, args }) => {
     if (error) {
       console.error(error)
     }
