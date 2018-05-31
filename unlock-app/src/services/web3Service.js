@@ -9,7 +9,7 @@ import UnlockContract from '../artifacts/contracts/Unlock.json'
 import { setAccount, resetAccountBalance } from '../actions/accounts'
 import { setLock, resetLock } from '../actions/lock'
 import { setKey } from '../actions/key'
-import { setTransaction } from '../actions/transaction'
+import { setTransaction, updateTransaction } from '../actions/transaction'
 
 let web3, networkId, dispatch
 
@@ -155,6 +155,7 @@ export const createLock = (lock) => {
     confirmations: 0,
     createdAt: new Date().getTime(),
   }
+  dispatch(setTransaction(transaction))
 
   return sendTransaction({
     to: UnlockContract.networks[networkId].address,
@@ -170,17 +171,17 @@ export const createLock = (lock) => {
     if (event === 'transactionHash') {
       transaction.hash = args.hash
       transaction.status = 'submitted'
-      dispatch(setTransaction(transaction))
+      dispatch(updateTransaction(transaction))
     } else if (event === 'confirmation') {
       transaction.status = 'mined'
       transaction.confirmations += 1
-      dispatch(setTransaction(transaction))
+      dispatch(updateTransaction(transaction))
     } else if (event === 'NewLock' ) {
       transaction.lock = getLock(args.newLockAddress)
       getAddressBalance(lock.creator.address, (balance) => {
         dispatch(resetAccountBalance(balance))
       })
-      dispatch(setTransaction(transaction))
+      dispatch(updateTransaction(transaction))
     }
   })
 }
@@ -301,6 +302,7 @@ export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
     confirmations: 0,
     createdAt: new Date().getTime(),
   }
+  dispatch(setTransaction(transaction))
 
   return sendTransaction({
     to: lockAddress,
@@ -317,15 +319,15 @@ export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
     if (event === 'transactionHash') {
       transaction.hash = args.hash
       transaction.status = 'submitted'
-      dispatch(setTransaction(transaction))
+      dispatch(updateTransaction(transaction))
     } else if (event === 'confirmation') {
       transaction.status = 'mined'
       transaction.confirmations += 1
-      dispatch(setTransaction(transaction))
+      dispatch(updateTransaction(transaction))
     } else if (event === 'SoldKey') {
       getKey(lockAddress, account, (key) => {
         transaction.key = key
-        dispatch(setTransaction(transaction))
+        dispatch(updateTransaction(transaction))
       })
       getAddressBalance(account.address, (balance) => {
         dispatch(resetAccountBalance(balance))
