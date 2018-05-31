@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import UnlockPropTypes from '../propTypes'
 
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { setNetwork } from '../actions/network'
 
@@ -24,11 +25,20 @@ export function Network({ setNetwork, networks, network }) {
             Network
           </div>
           <div className="card-body">
-            <select className="form-control" type="select" value={network.name} onChange={(event) => setNetwork(event.target.value)}>
-              {Object.keys(networks).map((name, i) => {
-                return (<option value={name} key={i}>{networks[name].name}</option>)
-              })}
-            </select>
+
+            <div className="input-group mb-3">
+              <select className="custom-select" type="select" value={network.name} onChange={(event) => setNetwork(event.target.value)}>
+                {Object.keys(networks).map((name, i) => {
+                  return (<option value={name} key={i}>{networks[name].name}</option>)
+                })}
+              </select>
+              <div className="input-group-append">
+                <Link to={'/'} className="fa fa-home btn btn-outline-secondary">
+                  Home
+                </Link>
+
+              </div>
+            </div>
           </div>
         </div>
       </div>
