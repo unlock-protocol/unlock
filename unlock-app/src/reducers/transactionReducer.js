@@ -1,4 +1,4 @@
-import { SET_TRANSACTION } from '../actions/transaction'
+import { SET_TRANSACTION, UPDATE_TRANSACTION } from '../actions/transaction'
 
 const initialState = null
 
@@ -11,6 +11,15 @@ const transactionReducer = (state = initialState, action) => {
       }
     }
     return null
+  }
+
+  if (action.type === UPDATE_TRANSACTION) {
+    // Only change the transaction if it is the same as before
+    if (action.transaction.createdAt === state.createdAt ) {
+      return {
+        ...action.transaction,
+      }
+    }
   }
 
   return state
