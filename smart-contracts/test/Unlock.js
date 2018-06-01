@@ -222,6 +222,25 @@ contract('Unlock', (accounts) => {
       })
     })
 
+    describe('balanceOf', () => {
+      it('should return 0 if the user has no key', () => {
+        return locks['FIRST']
+          .balanceOf(accounts[3])
+          .then(balance => {
+            assert.equal(balance.toNumber(), 0)
+          })
+      })
+      it('should return 1 if the user has a non expired key', () => {
+        return locks['FIRST']
+          .balanceOf(accounts[2])
+          .then(balance => {
+            assert.equal(balance.toNumber(), 1)
+          })
+      })
+
+      it('should return 1 if the user has an expired key')
+    })
+
     describe('withdraw', () => {
       let owner
       let price = Units.convert('0.01', 'eth', 'wei')

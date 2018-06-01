@@ -1,33 +1,45 @@
 pragma solidity ^0.4.18;
 
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
+// import "zeppelin-solidity/contracts/token/ERC721/ERC721Basic.sol";
 
-/// @title The Lock contract
-/// @author Julien Genestoux (ouvre-boite.com)
-/// Evenually: implement ERC721
+/**
+ * @title The Lock contract
+ * @author Julien Genestoux (ouvre-boite.com)
+ * Eventually: implement ERC721.
+ * @dev The Lock smart contract is an ERC721 compatible smart contract.
+ *  However, is has some specificities:
+ *  - Each address owns at most one single key (ERC721 allows for multiple owned NFTs)
+ *  - Since each address owns at most one single key, the tokenId is equal to the owner
+ */
 
 contract Lock is Ownable {
 
   // The struct for a key
   struct Key {
     uint expirationTimestamp;
-    string data; // This can be expensive
+    string data; // Note: This can be expensive?
   }
 
   // Events
-  /// @dev This emits when ownership of any NFT changes by any mechanism.
-  ///  This event emits when NFTs are created (`from` == 0) and destroyed
-  ///  (`to` == 0). Exception: during contract creation, any number of NFTs
-  ///  may be created and assigned without emitting Transfer. At the time of
-  ///  any transfer, the approved address for that NFT (if any) is reset to none.
+
+  /**
+   * @dev This emits when ownership of any NFT changes by any mechanism.
+   *  This event emits when NFTs are created (`from` == 0) and destroyed
+   *  (`to` == 0). Exception: during contract creation, any number of NFTs
+   *  may be created and assigned without emitting Transfer. At the time of
+   *  any transfer, the approved address for that NFT (if any) is reset to none.
+   */
   event Transfer (
     address indexed _from,
     address indexed _to,
     address indexed _tokenId
   );
 
+  // Fields
+
   // Unlock Protocol address
-  address public unlockProtocol; // TODO
+  address internal unlockProtocol;
 
   // Key release mechanism
   enum KeyReleaseMechanisms { Public, Approved, Private }
@@ -55,10 +67,10 @@ contract Lock is Ownable {
 
   // Keys
   // Each owner can have at most exactly one key
-  mapping (address => Key) public owners;
+  mapping (address => Key) internal owners;
 
   // If the keyReleaseMechanism is approved, we keep track of addresses who have been approved
-  mapping (address => Key) public approvedOwners;
+  mapping (address => Key) internal approvedOwners;
 
   // Some functions are only allowed if the lock is public
   modifier onlyPublic() {
@@ -153,5 +165,19 @@ contract Lock is Ownable {
 
      owner.transfer(balance);
    }
+
+  /**
+   * @notice ERC721: Count all NFTs assigned to an owner.
+   * In the specific case of a Lock, each owner can own only at most 1 key.
+
+   * @dev NFTs assigned to the zero address are considered invalid, and this
+    function throws for queries about the zero address.
+   * @param _owner An address for whom to query the balance
+   * @return The number of NFTs owned by `_owner`, either 0 or 1.
+  */
+  function balanceOf(address _owner) public view returns (uint256) {
+    require(_owner != address(0));
+    return owners[_owner].expirationTimestamp > 0 ? 1 : 0;
+  }
 
 }
