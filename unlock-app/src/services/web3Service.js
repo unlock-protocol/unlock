@@ -38,7 +38,7 @@ function handleTransaction(sentTransaction, abiEvents, callback) {
       })
     })
   }).on('error', function (error) {
-    callback(error)
+    callback(error, {})
   })
 }
 
