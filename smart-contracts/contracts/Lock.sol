@@ -124,7 +124,7 @@ contract Lock is Ownable {
     emit Transfer(
       0, // This is a creation.
       msg.sender,
-      0); // TODO: add tokenIds
+      msg.sender); // Note: since each user can own a single token, we use the current owner (new!) for the token id
   }
 
   /**
@@ -180,4 +180,16 @@ contract Lock is Ownable {
     return owners[_owner].expirationTimestamp > 0 ? 1 : 0;
   }
 
+  /**
+   * @notice ERC721: Find the owner of an NFT
+   * @dev NFTs assigned to zero address are considered invalid, and queries
+   *  about them do throw.
+   * @param _tokenId The identifier for an NFT
+   * @return The address of the owner of the NFT
+  */
+  function ownerOf(uint256 _tokenId) external view returns (address) {
+    Key key = owners[address(_tokenId)];
+    require(key.expirationTimestamp > 0);
+    return address(_tokenId);
+  }
 }

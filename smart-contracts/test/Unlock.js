@@ -241,6 +241,27 @@ contract('Unlock', (accounts) => {
       it('should return 1 if the user has an expired key')
     })
 
+    describe('ownerOf', () => {
+      it('should abort when the key has no owner', () => {
+        return locks['FIRST']
+          .ownerOf(accounts[3])
+          .then(balance => {
+            assert(false)
+          })
+          .catch(error => {
+            assert.equal(error.message, 'VM Exception while processing transaction: revert')
+          })
+      })
+
+      it('should return the owner of the key', () => {
+        return locks['FIRST']
+          .ownerOf(accounts[2])
+          .then(address => {
+            assert.equal(address, accounts[2])
+          })
+      })
+    })
+
     describe('withdraw', () => {
       let owner
       let price = Units.convert('0.01', 'eth', 'wei')
