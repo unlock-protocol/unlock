@@ -15,8 +15,15 @@ contract Lock is Ownable {
   }
 
   // Events
-  event SoldKey (
-    address indexed owner
+  /// @dev This emits when ownership of any NFT changes by any mechanism.
+  ///  This event emits when NFTs are created (`from` == 0) and destroyed
+  ///  (`to` == 0). Exception: during contract creation, any number of NFTs
+  ///  may be created and assigned without emitting Transfer. At the time of
+  ///  any transfer, the approved address for that NFT (if any) is reset to none.
+  event Transfer (
+    address indexed _from,
+    address indexed _to,
+    address indexed _tokenId
   );
 
   // Unlock Protocol address
@@ -102,7 +109,10 @@ contract Lock is Ownable {
     });
 
     // trigger event
-    emit SoldKey(msg.sender);
+    emit Transfer(
+      0, // This is a creation.
+      msg.sender,
+      0); // TODO: add tokenIds
   }
 
   /**
