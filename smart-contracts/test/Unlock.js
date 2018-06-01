@@ -127,11 +127,11 @@ contract('Unlock', (accounts) => {
         it('should succeed if the account already owns a key but this key has expired')
 
         it('should trigger an event when successful', () => {
-          let filter = locks['FIRST'].SoldKey((error, { args }) => {
+          let filter = locks['FIRST'].Transfer((error, { args }) => {
             if (error) {
               assert(false, error)
             }
-            assert.equal(args.owner, accounts[2])
+            assert.equal(args._to, accounts[2])
             filter.stopWatching()
           })
           return locks['FIRST']
