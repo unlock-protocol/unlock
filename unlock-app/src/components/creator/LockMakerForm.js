@@ -56,7 +56,7 @@ class LockMakerForm extends React.Component {
           </div>
 
           <div className="form-group">
-            <label htmlFor="expirationDuration">Key Duration (seconds)</label>
+            <label htmlFor="expirationDuration">Key Duration</label>
             <div className="input-group">
               <input className="form-control"
                 type="number"
