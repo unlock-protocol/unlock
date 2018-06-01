@@ -20,13 +20,18 @@ describe('account reducer', () => {
     })).toEqual(account)
   })
 
-  it('should update the balance of an account accordingly when receiving SET_ACCOUNT', () => {
+  it('should update the balance of an account accordingly when receiving RESET_ACCOUNT_BALANCE', () => {
     expect(reducer(account, {
       type: RESET_ACCOUNT_BALANCE,
       balance,
     })).toEqual({
       address: account.address,
       balance,
+    })
+    // ensure that we actually return a new object rather than mutate the previous one
+    expect(account).toEqual({
+      address: account.address,
+      balance: 0,
     })
   })
 
