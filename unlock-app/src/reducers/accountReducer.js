@@ -10,8 +10,11 @@ const accountReducer = (state = initialState, action) => {
   }
 
   if (action.type === RESET_ACCOUNT_BALANCE) {
-    state.balance = action.balance
-    return state
+    const account = {
+      ...state,
+    }
+    account.balance = action.balance
+    return account
   }
 
   return {
