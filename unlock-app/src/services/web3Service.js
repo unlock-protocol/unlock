@@ -324,7 +324,7 @@ export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
       transaction.status = 'mined'
       transaction.confirmations += 1
       dispatch(updateTransaction(transaction))
-    } else if (event === 'SoldKey') {
+    } else if (event === 'Transfer') {
       getKey(lockAddress, account, (key) => {
         transaction.key = key
         dispatch(updateTransaction(transaction))
