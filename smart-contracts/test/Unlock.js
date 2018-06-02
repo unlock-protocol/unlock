@@ -249,6 +249,7 @@ contract('Unlock', (accounts) => {
             assert(false)
           })
           .catch(error => {
+            console.log(error)
             assert.equal(error.message, 'VM Exception while processing transaction: revert')
           })
       })
