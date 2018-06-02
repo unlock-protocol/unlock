@@ -1,7 +1,7 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.23;
 
-import "zeppelin-solidity/contracts/ownership/Ownable.sol";
-// import "zeppelin-solidity/contracts/token/ERC721/ERC721Basic.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+// import "openzeppelin-solidity/contracts/token/ERC721/ERC721Basic.sol";
 
 /**
  * @title The Lock contract
@@ -74,12 +74,12 @@ contract Lock is Ownable {
 
   // Some functions are only allowed if the lock is public
   modifier onlyPublic() {
-      require(keyReleaseMechanism == KeyReleaseMechanisms.Public);
+      require(keyReleaseMechanism == KeyReleaseMechanisms.Public, 'Only allowed on public Lock');
       _;
   }
 
   // Constructor
-  function Lock(address _owner,
+  constructor(address _owner,
     address _unlockProtocol,
     KeyReleaseMechanisms _keyReleaseMechanism,
     uint _expirationDuration,
@@ -109,10 +109,10 @@ contract Lock is Ownable {
   * TODO: next version of solidity will allow for message to be added to require.
   */
   function purchase(string _data) public payable {
-    require(keyReleaseMechanism != KeyReleaseMechanisms.Private);
-    require(msg.value >= keyPrice); // We explicitly allow for greater amounts to allow "donations".
-    require(maxNumberOfKeys > outstandingKeys);
-    require(owners[msg.sender].expirationTimestamp < now); // User must not have a valid key already
+    require(keyReleaseMechanism != KeyReleaseMechanisms.Private, 'Only allowed on public or permissioned Lock');
+    require(msg.value >= keyPrice, 'Insufficient funds'); // We explicitly allow for greater amounts to allow "donations".
+    require(maxNumberOfKeys > outstandingKeys, 'Maximum number of keys already sold');
+    require(owners[msg.sender].expirationTimestamp < now, 'Valid key already exists'); // User must not have a valid key already
 
     outstandingKeys += 1; // Increment the number of keys
     owners[msg.sender] = Key({
@@ -161,7 +161,7 @@ contract Lock is Ownable {
    */
    function withdraw() external onlyOwner {
      uint256 balance = address(this).balance;
-     require(balance > 0);
+     require(balance > 0, 'Not enough funds');
 
      owner.transfer(balance);
    }
@@ -176,7 +176,7 @@ contract Lock is Ownable {
    * @return The number of NFTs owned by `_owner`, either 0 or 1.
   */
   function balanceOf(address _owner) public view returns (uint256) {
-    require(_owner != address(0));
+    require(_owner != address(0), 'No such key');
     return owners[_owner].expirationTimestamp > 0 ? 1 : 0;
   }
 
@@ -188,8 +188,8 @@ contract Lock is Ownable {
    * @return The address of the owner of the NFT
   */
   function ownerOf(uint256 _tokenId) external view returns (address) {
-    Key key = owners[address(_tokenId)];
-    require(key.expirationTimestamp > 0);
+    Key storage key = owners[address(_tokenId)];
+    require(key.expirationTimestamp > 0, 'No such key');
     return address(_tokenId);
   }
 }
