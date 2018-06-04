@@ -21,7 +21,7 @@ export function NonValidKey({ account, lock, currentKey, transaction, purchaseKe
     </div>)
   }
 
-  if (account && account.balance < lock.keyPrice) {
+  if (account && account.balance/lock.keyPrice < 1) {
     action = (<span>Your eth balance is too low. Do you want to use your credit card?</span>)
   }
   return (
