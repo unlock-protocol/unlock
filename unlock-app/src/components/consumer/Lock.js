@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import Authenticate from '../Authenticate'
 import Account from '../Account'
 
-import { Key }  from './Key'
+import Key from './Key'
 import { NonValidKey } from './NonValidKey'
 
 import { purchaseKey } from '../../actions/key'
