@@ -161,7 +161,7 @@ export const createLock = (lock) => {
     to: UnlockContract.networks[networkId].address,
     from: lock.creator.address,
     data: data,
-    gas: 1000000,
+    gas: 1500000,
     privateKey: lock.creator.privateKey,
     contractAbi: UnlockContract.abi,
   }, (error, { event, args }) => {
