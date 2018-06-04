@@ -332,7 +332,15 @@ export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
         dispatch(resetAccountBalance(balance))
       })
     } else if (event === 'Transfer') {
-      // Let's ignore this for now and and use confirmations to pull the key?
+      // Take this into account as well.
+      dispatch(updateTransaction(transaction))
+      getKey(lockAddress, account, (key) => {
+        transaction.key = key
+        dispatch(updateTransaction(transaction))
+      })
+      getAddressBalance(account.address, (balance) => {
+        dispatch(resetAccountBalance(balance))
+      })
     }
   })
 }
