@@ -15,7 +15,9 @@ describe('Key Component', () => {
     expiration: Math.floor(new Date().getTime()/1000) + 1000,
   }
 
-  const wrapper = shallow(<Key currentKey={currentKey} />)
+  const setTransaction = jest.fn()
+
+  const wrapper = shallow(<Key currentKey={currentKey} setTransaction={setTransaction} />)
 
   it('shows the current key expiratin date', () => {
     expect(wrapper.text()).toContain('Your key expires in')
@@ -33,5 +35,11 @@ describe('Key Component', () => {
     const closeButton = wrapper.find('button')
     closeButton.simulate('click')
     expect(iframeServiceMock.unlockIfKeyIsValid).toHaveBeenCalledWith({ key: currentKey })
+  })
+
+  it('unsets the transaction when closed', () => {
+    const closeButton = wrapper.find('button')
+    closeButton.simulate('click')
+    expect(setTransaction).toHaveBeenCalledWith(null)
   })
 })

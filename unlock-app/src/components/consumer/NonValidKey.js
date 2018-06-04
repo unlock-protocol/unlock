@@ -12,6 +12,7 @@ export function NonValidKey({ account, lock, currentKey, transaction, purchaseKe
   }
 
   let action = (<button className="btn btn-primary" color="primary" onClick={() => { purchaseKey(lock, account) }}>Purchase</button>)
+
   if (transaction) {
     // We actually want to disable the button
     action = (<div className="form-group">

@@ -85,7 +85,7 @@ describe('Lock Component', () => {
     it('shows Key component', () => {
       // Check the text is right
       const wrapper = shallow(component)
-      expect(wrapper.find('Key').props()).toEqual({
+      expect(wrapper.find('Connect(Key)').props()).toEqual({
         currentKey,
       })
     })
