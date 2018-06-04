@@ -324,7 +324,6 @@ export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
       transaction.status = 'mined'
       transaction.confirmations += 1
       dispatch(updateTransaction(transaction))
-    } else if (event === 'Transfer') {
       getKey(lockAddress, account, (key) => {
         transaction.key = key
         dispatch(updateTransaction(transaction))
@@ -332,6 +331,8 @@ export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
       getAddressBalance(account.address, (balance) => {
         dispatch(resetAccountBalance(balance))
       })
+    } else if (event === 'Transfer') {
+      // Let's ignore this for now and and use confirmations to pull the key?
     }
   })
 }

@@ -37,7 +37,6 @@ export class Lock extends React.Component {
     if (this.state.accountPickerShown) {
       account = (<Authenticate hideAccountPicker={this.toggleAccountPicker} />)
     }
-
     if (this.props.currentKey.expiration > now) {
       cardBody = (<Key currentKey={this.props.currentKey} />)
     } else {
