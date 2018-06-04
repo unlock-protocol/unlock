@@ -22,10 +22,12 @@ if (lockedNode) {
   const prevStyles = {
   }
 
+  // locked is a mutex to prevent double locking (if we double lock, prevStyles are wrong)
+  let locked = false
   // Listens to message coming from iframe
   window.addEventListener('message', (event) => {
-    if (event.data === 'locked') {
-
+    if (event.data === 'locked' && !locked) {
+      locked = true
       // let's set the style for the iframe
       s.style.display = 'block'
       // and hide the content
@@ -33,10 +35,10 @@ if (lockedNode) {
         prevStyles[k] = lockedNode.style[k] || ''
         lockedNode.style[k] = hiddenStyles[k]
       })
-
     }
 
     if (event.data === 'unlocked') {
+      locked = false
       // let's remove the iframe!
       document.getElementsByTagName('body')[0].removeChild(s)
 
