@@ -23,7 +23,6 @@ contract('Unlock', (accounts) => {
     const lock = locks['FIRST']
     return Promise.all([
       lock.owner.call(),
-      lock.unlockProtocol.call(),
       lock.keyReleaseMechanism.call(),
       lock.expirationDuration.call(),
       lock.expirationTimestamp.call(),
@@ -34,7 +33,6 @@ contract('Unlock', (accounts) => {
     ]).then(
       ([
         owner,
-        unlockProtocol,
         keyReleaseMechanism,
         expirationDuration,
         expirationTimestamp,
@@ -44,7 +42,6 @@ contract('Unlock', (accounts) => {
         outstandingKeys
       ]) => {
         assert.strictEqual(owner, accounts[0])
-        assert.strictEqual(unlockProtocol, unlock.address)
         assert.strictEqual(keyReleaseMechanism.toNumber(), 0)
         assert.strictEqual(
           expirationDuration.toNumber(),
@@ -249,7 +246,6 @@ contract('Unlock', (accounts) => {
             assert(false)
           })
           .catch(error => {
-            console.log(error)
             assert.equal(error.message, 'VM Exception while processing transaction: revert')
           })
       })

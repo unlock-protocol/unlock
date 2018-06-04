@@ -79,7 +79,8 @@ contract Lock is Ownable {
   }
 
   // Constructor
-  constructor(address _owner,
+  constructor(
+    address _owner,
     address _unlockProtocol,
     KeyReleaseMechanisms _keyReleaseMechanism,
     uint _expirationDuration,
