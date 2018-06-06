@@ -11,6 +11,11 @@ import { setLock, resetLock } from '../actions/lock'
 import { setKey } from '../actions/key'
 import { setTransaction, updateTransaction } from '../actions/transaction'
 
+import Account from '../models/account'
+import Lock from '../models/lock'
+import Key from '../models/key'
+import Transaction from '../models/transaction'
+
 let web3, networkId, dispatch
 
 function handleTransaction(sentTransaction, abiEvents, callback) {
@@ -106,10 +111,10 @@ export const initWeb3Service = ({network}, _dispatch) => {
       } else {
         const accountAddress = accounts[0] // take the first one!
         getAddressBalance(accountAddress, (balance) => {
-          const account = {
+          const account = new Account({
             address: accountAddress,
             balance,
-          }
+          })
           dispatch(setAccount(account))
         })
       }
@@ -150,11 +155,11 @@ export const createLock = (lock) => {
   ).encodeABI()
 
   // The transaction object!
-  const transaction = {
+  const transaction = new Transaction({
     status: 'pending',
     confirmations: 0,
     createdAt: new Date().getTime(),
-  }
+  })
   dispatch(setTransaction(transaction))
 
   return sendTransaction({
@@ -201,7 +206,7 @@ export const getAddressBalance = (address, callback) => {
  * Returns the account
  */
 export const loadAccount = (privateKey) => {
-  const account = web3.eth.accounts.privateKeyToAccount(privateKey)
+  const account = new Account(web3.eth.accounts.privateKeyToAccount(privateKey))
   getAddressBalance(account.address, (balance) => {
     account.balance = balance
     dispatch(setAccount(account))
@@ -213,7 +218,7 @@ export const loadAccount = (privateKey) => {
  * Returns the account
  */
 export const createAccount = () => {
-  const account = web3.eth.accounts.create()
+  const account = new Account(web3.eth.accounts.create())
   getAddressBalance(account.address, (balance) => {
     account.balance = balance
     dispatch(setAccount(account))
@@ -222,52 +227,25 @@ export const createAccount = () => {
 
 /**
  * This gets the lock object from the stored data in the blockchain
+ * TODO: self update?
  * @param {PropTypes.adress} address
  */
 export const getLock = (address) => {
-  let lock = {
+  const lock = new Lock({
     address,
-    memo: {}, // This includes a memo for functions
-  }
-
+  })
   const contract = new web3.eth.Contract(LockContract.abi, address)
 
   LockContract.abi.forEach((item) => {
-    if (item.constant) {
-      if (item.inputs.length === 0) {
-        if (!lock[item.name]) {
-          contract.methods[item.name]().call((error, result) => {
-            if (error) {
-              // Something happened
-            } else {
-              lock[item.name] = result
-              dispatch(resetLock(lock)) // update the value
-            }
-          })
+    if (item.constant && item.inputs.length === 0) {
+      contract.methods[item.name]().call((error, result) => {
+        if (error) {
+          // Something happened
+        } else {
+          lock[item.name] = result
+          dispatch(resetLock(lock)) // update the value
         }
-        lock[item.name] = undefined
-      } else {
-        lock[item.name] = function (...args) {
-          if (!lock.memo[item.name]) {
-            lock.memo[item.name] = {} // create the memo
-          }
-          if (lock.memo[item.name][args]) {
-            return lock.memo[item.name][args]
-          } else {
-            // we do not have the memod value... so let's return undefined and retrieve it!
-            contract.methods[item.name](...args).call((error, result) => {
-              if (error) {
-                // Something happened
-              } else {
-                // set the memo
-                lock.memo[item.name][args] = result
-                dispatch(resetLock(lock))
-              }
-            })
-            return undefined // By default we return undefined?
-          }
-        }
-      }
+      })
     }
   })
 
@@ -291,17 +269,16 @@ export const getLock = (address) => {
  * @param {PropTypes.string} keyData // This needs to maybe be less strict. (binary data)
  */
 export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
-  const lock = new web3.eth.Contract(LockContract.abi, lockAddress)
-  const data = lock.methods.purchase(keyData).encodeABI()
+  const lockContract = new web3.eth.Contract(LockContract.abi, lockAddress)
+  const data = lockContract.methods.purchase(keyData).encodeABI()
 
   // The transaction object (conflict if other transactions have not been confirmed yet?)
   // TODO: We have a race condition because this will keep emitting even after
   // confirmation... which is a problem if we trigger other transaction
-  const transaction = {
+  const transaction = new Transaction({
     status: 'pending',
     confirmations: 0,
-    createdAt: new Date().getTime(),
-  }
+  })
   dispatch(setTransaction(transaction))
 
   return sendTransaction({
@@ -363,10 +340,10 @@ export const getKey = (lockAddress, account, callback) => {
   const getKeyDataPromise = lockContract.methods.keyDataFor(account.address).call()
   Promise.all([getKeyExpirationPromise, getKeyDataPromise])
     .then(([expiration, data]) => {
-      const key = {
+      const key = new Key({
         expiration: parseInt(expiration, 10),
         data,
-      }
+      })
       if (callback) {
         callback(key)
       }
