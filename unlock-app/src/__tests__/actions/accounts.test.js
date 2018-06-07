@@ -1,4 +1,4 @@
-import { setAccount, loadAccount, resetAccountBalance, SET_ACCOUNT, LOAD_ACCOUNT, RESET_ACCOUNT_BALANCE } from '../../actions/accounts'
+import { setAccount, loadAccount, resetAccountBalance, createAccount, SET_ACCOUNT, LOAD_ACCOUNT, RESET_ACCOUNT_BALANCE, CREATE_ACCOUNT } from '../../actions/accounts'
 
 describe('accounts actions', () => {
 
@@ -32,6 +32,13 @@ describe('accounts actions', () => {
       balance,
     }
     expect(resetAccountBalance(balance)).toEqual(expectedAction)
+  })
+
+  it('should create an action to create an account', () => {
+    const expectedAction = {
+      type: CREATE_ACCOUNT,
+    }
+    expect(createAccount()).toEqual(expectedAction)
   })
 
 })
