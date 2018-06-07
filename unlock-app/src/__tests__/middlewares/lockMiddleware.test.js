@@ -2,7 +2,7 @@ import lockMiddleware from '../../middlewares/lockMiddleware'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { CREATE_LOCK, SET_LOCK, WITHDRAW_FROM_LOCK } from '../../actions/lock'
 import { PURCHASE_KEY, SET_KEY } from '../../actions/key'
-import { SET_ACCOUNT, LOAD_ACCOUNT } from '../../actions/accounts'
+import { SET_ACCOUNT, LOAD_ACCOUNT, CREATE_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 
 /**
@@ -56,6 +56,7 @@ jest.mock('../../services/web3Service', () => {
     createLock: null,
     purchaseKey: null,
     getLock: null,
+    createAccount: null,
     getKey: null,
     loadAccount: null,
     withdrawFromLock: null,
@@ -121,6 +122,14 @@ describe('Lock middleware', () => {
     const action = { type: LOCATION_CHANGE, payload: { pathname: `/lock/${lock.address}` } }
     invoke(action)
     expect(web3ServiceMock.getLock).toHaveBeenCalledWith(lock.address)
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it('should handle CREATE_ACCOUNT by calling web3Service\'s createAccount', () => {
+    const { next, invoke } = create()
+    const action = { type: CREATE_ACCOUNT }
+    invoke(action)
+    expect(web3ServiceMock.createAccount).toHaveBeenCalledWith()
     expect(next).toHaveBeenCalledWith(action)
   })
 

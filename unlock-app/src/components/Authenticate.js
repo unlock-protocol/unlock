@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import React from 'react'
 
-import { loadAccount } from '../actions/accounts'
+import { loadAccount, createAccount } from '../actions/accounts'
 
 export class Authenticate extends React.Component {
   constructor(props) {
@@ -13,6 +13,7 @@ export class Authenticate extends React.Component {
     }
     this.handleChange = this.handleChange.bind(this)
     this.loadAccount = this.loadAccount.bind(this)
+    this.createAccount = this.createAccount.bind(this)
   }
 
   handleChange(event) {
@@ -21,6 +22,11 @@ export class Authenticate extends React.Component {
 
   loadAccount() {
     this.props.loadAccount(this.state.privateKey)
+    this.props.hideAccountPicker()
+  }
+
+  createAccount() {
+    this.props.createAccount()
     this.props.hideAccountPicker()
   }
 
@@ -37,6 +43,10 @@ export class Authenticate extends React.Component {
           </div>
         </div>
 
+        <div className="form-group mx-sm-3 w-auto">
+          <button className="btn btn-outline-secondary" type="button" onClick={this.createAccount}>Create account</button>
+        </div>
+
         <div className="form-group">
           <button className="btn btn-outline-secondary" type="button" onClick={() => { this.props.hideAccountPicker() } }>Cancel</button>
         </div>
@@ -48,6 +58,7 @@ export class Authenticate extends React.Component {
 
 Authenticate.propTypes = {
   loadAccount: PropTypes.func,
+  createAccount: PropTypes.func,
   hideAccountPicker: PropTypes.func,
 }
 
@@ -57,6 +68,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   loadAccount: account => dispatch(loadAccount(account)),
+  createAccount: account => dispatch(createAccount(account)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Authenticate)

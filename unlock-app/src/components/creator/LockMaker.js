@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
-
+import UnlockPropTypes from '../../propTypes'
 import Authenticate from '../Authenticate'
 import Account from '../Account'
 
@@ -37,6 +37,10 @@ export class LockMaker extends React.Component {
   }
 
   render() {
+    if (!this.props.account) {
+      return null //loading
+    }
+
     if (this.state.accountPickerShown) {
       return (<div className="container">
         <header className="masthead mb-auto">
@@ -87,10 +91,13 @@ export class LockMaker extends React.Component {
 LockMaker.propTypes = {
   accountPickerShown: PropTypes.bool,
   setTransaction: PropTypes.func,
+  account: UnlockPropTypes.account,
 }
 
 const mapStateToProps = state => {
-  return {}
+  return {
+    account: state.network.account,
+  }
 }
 
 const mapDispatchToProps = dispatch => ({

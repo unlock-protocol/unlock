@@ -7,11 +7,19 @@ describe('Authenticate Component', () => {
 
   const loadAccount = jest.fn()
   const hideAccountPicker = jest.fn()
+  const createAccount = jest.fn()
 
-  const wrapper = shallow(<Authenticate loadAccount={loadAccount} hideAccountPicker={hideAccountPicker} />)
+  const wrapper = shallow(<Authenticate createAccount={createAccount} loadAccount={loadAccount} hideAccountPicker={hideAccountPicker} />)
+
+  it('shows a button to create an account', () => {
+    const closeButton = wrapper.find('button').at(1)
+    expect(closeButton.text()).toEqual('Create account')
+    closeButton.simulate('click')
+    expect(createAccount).toBeCalledWith()
+  })
 
   it('shows a button to close', () => {
-    const closeButton = wrapper.find('button').at(1)
+    const closeButton = wrapper.find('button').at(2)
     expect(closeButton.text()).toEqual('Cancel')
     closeButton.simulate('click')
     expect(hideAccountPicker).toBeCalledWith()

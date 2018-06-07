@@ -19,11 +19,13 @@ let defaultNetworks = {
   },
 }
 
+let metamaskAvailable = false
 // Let's see if web3 is defined thru metamask
 // and eventually add that as an option!
 if (typeof window.web3 !== 'undefined') {
   const provider = window.web3.currentProvider
   if (provider.isMetaMask) {
+    metamaskAvailable = true
     defaultNetworks.metamask = {
       name: 'Metamask',
       provider,
@@ -32,3 +34,6 @@ if (typeof window.web3 !== 'undefined') {
 }
 
 export const networks = defaultNetworks
+export {
+  metamaskAvailable,
+}
