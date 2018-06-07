@@ -10,6 +10,8 @@ describe('Account Component', () => {
     balance: '1000',
   }
   const showAccountPicker = jest.fn()
+  const useMetamask = jest.fn()
+
   const wrapper = shallow(<Account
     account={account}
     showAccountPicker={showAccountPicker} />)
@@ -17,17 +19,66 @@ describe('Account Component', () => {
   it('shows the current account\'s public key', () => {
     expect(wrapper.find('span').first().text()).toEqual('0xdeadbeef')
   })
+
   it('shows the current account\'s balance', () => {
     expect(wrapper.find('Balance').first().props()).toEqual({
       amount: '1000',
     })
-
   })
-  it('shows a button to logout', () => {
-    const button = wrapper.find('button')
-    expect(button.text()).toEqual('Sign out')
-    button.simulate('click')
-    expect(showAccountPicker).toBeCalledWith()
+
+  describe('when metamask is available', () => {
+    describe('when metamask is being used', () => {
+      const metamaskUsedWrapper = shallow(<Account
+        metamaskAvailable={true}
+        isMetamask={true}
+        account={account}
+        showAccountPicker={showAccountPicker} />)
+
+      it('should not show a switch account button', () => {
+        const button = metamaskUsedWrapper.find('button.js-accountSwitch')
+        expect(button.exists()).toEqual(false)
+      })
+    })
+
+    describe('when metamask is not being used', () => {
+      const wrapperMetamaskNotUsed = shallow(<Account
+        useMetamask={useMetamask}
+        metamaskAvailable={true}
+        isMetamask={false}
+        account={account}
+        showAccountPicker={showAccountPicker} />)
+
+      it('shows a button to use metamask', () => {
+        const button = wrapperMetamaskNotUsed.find('button.js-accountUseMetamask')
+        expect(button.text()).toEqual('Use metamask')
+        button.simulate('click')
+        expect(useMetamask).toBeCalledWith()
+      })
+
+      it('shows a button to switch accounts', () => {
+        const button = wrapperMetamaskNotUsed.find('button.js-accountSwitch')
+        expect(button.text()).toEqual('Switch')
+        button.simulate('click')
+        expect(showAccountPicker).toBeCalledWith()
+      })
+    })
+  })
+
+  describe('when metamask is not available', () => {
+    const wrapperMetamaskNotAvailable = shallow(<Account
+      metamaskAvailable={false}
+      account={account}
+      showAccountPicker={showAccountPicker} />)
+
+    it('shows no metamask button')
+
+    it('shows a button to switch accounts', () => {
+      const button = wrapperMetamaskNotAvailable.find('button.js-accountSwitch')
+      expect(button.text()).toEqual('Switch')
+      button.simulate('click')
+      expect(showAccountPicker).toBeCalledWith()
+    })
+
   })
 
 })

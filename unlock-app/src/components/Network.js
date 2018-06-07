@@ -61,7 +61,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  setNetwork: account => dispatch(setNetwork(account)),
+  setNetwork: network => dispatch(setNetwork(network)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Network)
