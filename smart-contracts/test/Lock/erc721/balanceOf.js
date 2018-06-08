@@ -18,11 +18,14 @@ contract('Lock ERC721', (accounts) => {
   })
 
   describe('balanceOf', () => {
-    it('should return 0 if the user has no key', () => {
+    it('should fail if the user has no key', () => {
       return locks['FIRST']
         .balanceOf(accounts[3])
         .then(balance => {
-          assert.equal(balance.toNumber(), 0)
+          assert(false)
+        })
+        .catch(error => {
+          assert.equal(error.message, 'VM Exception while processing transaction: revert')
         })
     })
 

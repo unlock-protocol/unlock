@@ -1,5 +1,6 @@
 
 const Units = require('ethereumjs-units')
+const Web3Utils = require('web3-utils')
 
 const deployLocks = require('../helpers/deployLocks')
 const Unlock = artifacts.require('../Unlock.sol')
@@ -29,9 +30,9 @@ contract('Lock', (accounts) => {
             assert.equal(error.message, 'VM Exception while processing transaction: revert')
             // Making sure we do not have a key set!
             return lock.keyExpirationTimestampFor(accounts[0])
-          })
-          .then(expirationTimestamp => {
-            assert.equal(expirationTimestamp.toNumber(), 0)
+              .catch(error => {
+                assert.equal(error.message, 'VM Exception while processing transaction: revert')
+              })
           })
       })
     })
@@ -46,9 +47,9 @@ contract('Lock', (accounts) => {
             assert.equal(error.message, 'VM Exception while processing transaction: revert')
             // Making sure we do not have a key set!
             return locks['FIRST'].keyExpirationTimestampFor(accounts[0])
-          })
-          .then(expirationTimestamp => {
-            assert.equal(expirationTimestamp.toNumber(), 0)
+              .catch(error => {
+                assert.equal(error.message, 'VM Exception while processing transaction: revert')
+              })
           })
       })
 
@@ -61,7 +62,7 @@ contract('Lock', (accounts) => {
             return locks['SINGLE KEY'].keyDataFor(accounts[0])
           })
           .then(keyData => {
-            assert.equal(keyData, 'Julien')
+            assert.equal(Web3Utils.toUtf8(keyData), 'Julien')
             return locks['SINGLE KEY'].purchase('Satoshi', {
               value: Units.convert('0.01', 'eth', 'wei'),
               from: accounts[1]
@@ -69,14 +70,10 @@ contract('Lock', (accounts) => {
           })
           .catch(error => {
             assert.equal(error.message, 'VM Exception while processing transaction: revert')
-            return Promise.all([
-              locks['SINGLE KEY'].keyDataFor(accounts[0]),
-              locks['SINGLE KEY'].keyDataFor(accounts[1])
-            ])
-          })
-          .then(([keyDataFirst, keyDataSecond]) => {
-            assert.equal(keyDataFirst, 'Julien')
-            assert.equal(keyDataSecond, '') // No data, since there is no key.
+            return locks['SINGLE KEY'].keyDataFor(accounts[1])
+              .catch(error => {
+                assert.equal(error.message, 'VM Exception while processing transaction: revert')
+              })
           })
       })
 
@@ -107,7 +104,7 @@ contract('Lock', (accounts) => {
             return locks['FIRST'].keyDataFor(accounts[1])
           })
           .then(keyData => {
-            assert.equal(keyData, 'Satoshi')
+            assert.equal(Web3Utils.toUtf8(keyData), 'Satoshi')
             return locks['FIRST'].purchase('Satoshi', {
               value: Units.convert('0.01', 'eth', 'wei'),
               from: accounts[1]
@@ -118,7 +115,7 @@ contract('Lock', (accounts) => {
             return locks['FIRST'].keyDataFor(accounts[1])
           })
           .then(keyData => {
-            assert.equal(keyData, 'Satoshi')
+            assert.equal(Web3Utils.toUtf8(keyData), 'Satoshi')
           })
       })
 
@@ -141,7 +138,7 @@ contract('Lock', (accounts) => {
           return locks['FIRST']
             .keyDataFor(accounts[0])
             .then(keyData => {
-              assert.equal(keyData, 'Julien')
+              assert.equal(Web3Utils.toUtf8(keyData), 'Julien')
             })
         })
 
