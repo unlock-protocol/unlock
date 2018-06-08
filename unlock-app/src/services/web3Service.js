@@ -372,6 +372,16 @@ export const getKey = (lockAddress, account, callback) => {
       }
       dispatch(setKey(key))
     })
+    .catch(() => {
+      // TODO: be smarter about that error!
+      const key = {
+        expiration: 0,
+      }
+      if (callback) {
+        callback(key)
+      }
+      dispatch(setKey(key))
+    })
 }
 
 /**
