@@ -14,6 +14,9 @@ module.exports = {
   'PRIVATE': Object.assign({}, defaultLock, {
     keyReleaseMechanism: 2 // KeyReleaseMechanisms.Private
   }),
+  'RESTRICTED': Object.assign({}, defaultLock, {
+    keyReleaseMechanism: 1 // KeyReleaseMechanisms.Restricted
+  }),
   'SINGLE KEY': Object.assign({}, defaultLock, {
     maxNumberOfKeys: 1
   }),
