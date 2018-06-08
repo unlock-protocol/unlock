@@ -25,5 +25,15 @@ module.exports = {
       port: 8545, // We use ganache-cli and this is its default port
       network_id: '*' // Match any network id
     }
+  },
+  solc: {
+    optimizer: {
+      enabled: true,
+      runs: 200
+    }
+  },
+  mocha: {
+    useColors: true
   }
+
 }

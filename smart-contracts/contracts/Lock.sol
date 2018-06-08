@@ -1,7 +1,11 @@
 pragma solidity ^0.4.23;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
-// import "openzeppelin-solidity/contracts/token/ERC721/ERC721Basic.sol";
+import "./ERC721.sol";
+
+/**
+ * TODO: consider error codes rather than strings
+ */
 
 /**
  * @title The Lock contract
@@ -11,30 +15,17 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
  *  However, is has some specificities:
  *  - Each address owns at most one single key (ERC721 allows for multiple owned NFTs)
  *  - Since each address owns at most one single key, the tokenId is equal to the owner
+ *  TODO: consider using a _private version for each method that is being invoked by the
+ * public one as this seems to be a pattern.
  */
 
-contract Lock is Ownable {
+contract Lock is Ownable, ERC721 {
 
   // The struct for a key
   struct Key {
     uint expirationTimestamp;
-    string data; // Note: This can be expensive?
+    bytes data; // Note: This can be expensive?
   }
-
-  // Events
-
-  /**
-   * @dev This emits when ownership of any NFT changes by any mechanism.
-   *  This event emits when NFTs are created (`from` == 0) and destroyed
-   *  (`to` == 0). Exception: during contract creation, any number of NFTs
-   *  may be created and assigned without emitting Transfer. At the time of
-   *  any transfer, the approved address for that NFT (if any) is reset to none.
-   */
-  event Transfer (
-    address indexed _from,
-    address indexed _to,
-    address indexed _tokenId
-  );
 
   // Fields
 
@@ -42,7 +33,7 @@ contract Lock is Ownable {
   address internal unlockProtocol;
 
   // Key release mechanism
-  enum KeyReleaseMechanisms { Public, Approved, Private }
+  enum KeyReleaseMechanisms { Public, Restricted, Private }
   KeyReleaseMechanisms public keyReleaseMechanism;
 
   // Duration in seconds for which the keys are valid, after creation
@@ -69,13 +60,72 @@ contract Lock is Ownable {
   // Each owner can have at most exactly one key
   mapping (address => Key) internal owners;
 
-  // If the keyReleaseMechanism is approved, we keep track of addresses who have been approved
-  mapping (address => Key) internal approvedOwners;
+  // Keeping track of approved transfers
+  mapping (address => address) internal approvedForTransfer;
 
-  // Some functions are only allowed if the lock is public
+  // Keeping track of approved purchases.
+  // the mapped value is the timestamp until which the approval is valid
+  mapping (address => uint) internal approvedForPurchase;
+
+  /**
+   * MODIFIERS
+   */
+
+  // Ensure the lock is public
   modifier onlyPublic() {
-      require(keyReleaseMechanism == KeyReleaseMechanisms.Public, 'Only allowed on public Lock');
+      require(keyReleaseMechanism == KeyReleaseMechanisms.Public, 'Only allowed on public locks');
       _;
+  }
+
+  // Ensure the lock is public or permissioned
+  modifier onlyPublicOrRestricted() {
+      require(
+        keyReleaseMechanism == KeyReleaseMechanisms.Public
+        || keyReleaseMechanism == KeyReleaseMechanisms.Restricted, 'Only allowed on public or restricted locks');
+      _;
+  }
+
+  // Ensures that an owner has a key
+  modifier hasKey(
+    address _owner
+  ) {
+    Key storage key = owners[_owner];
+    require(
+      key.expirationTimestamp > 0, 'No such key'
+    );
+    _;
+  }
+
+  // Ensures that an owner has a valid key
+  modifier hasValidKey(
+    address _owner
+  ) {
+    Key storage key = owners[_owner];
+    require(
+      key.expirationTimestamp > now + expirationDuration, 'Key is not valid'
+    );
+    _;
+  }
+
+  // Ensure that the caller owns the token
+  modifier onlyTokenOwner(
+    uint256 _tokenId
+  ) {
+    require(
+      address(_tokenId) == msg.sender
+    );
+    _;
+  }
+
+  // Ensure that the caller has
+  modifier onlyTokenOwnerOrApprovedForTransfer(
+    uint256 _tokenId
+  ) {
+    require(
+      address(_tokenId) == msg.sender
+      || _getApproved(_tokenId) == msg.sender
+    );
+    _;
   }
 
   // Constructor
@@ -87,7 +137,10 @@ contract Lock is Ownable {
     uint _expirationTimestamp,
     address _keyPriceCalculator,
     uint _keyPrice,
-    uint _maxNumberOfKeys) public {
+    uint _maxNumberOfKeys
+  )
+    public
+  {
       owner = _owner;
       unlockProtocol = _unlockProtocol;
       keyReleaseMechanism = _keyReleaseMechanism;
@@ -109,8 +162,13 @@ contract Lock is Ownable {
   *  - the sender already owns a key
   * TODO: next version of solidity will allow for message to be added to require.
   */
-  function purchase(string _data) public payable {
-    require(keyReleaseMechanism != KeyReleaseMechanisms.Private, 'Only allowed on public or permissioned Lock');
+  function purchase(
+    bytes _data
+  )
+    public
+    payable
+    onlyPublicOrRestricted()
+  {
     require(msg.value >= keyPrice, 'Insufficient funds'); // We explicitly allow for greater amounts to allow "donations".
     require(maxNumberOfKeys > outstandingKeys, 'Maximum number of keys already sold');
     require(owners[msg.sender].expirationTimestamp < now, 'Valid key already exists'); // User must not have a valid key already
@@ -125,24 +183,22 @@ contract Lock is Ownable {
     emit Transfer(
       0, // This is a creation.
       msg.sender,
-      msg.sender); // Note: since each user can own a single token, we use the current owner (new!) for the token id
+      uint256(msg.sender) // Note: since each user can own a single token, we use the current owner (new!) for the token id
+    );
   }
-
-  /**
-  * @dev Returns the key for a given owner. Note: since web3 does not support struct yet, this
-  * @param _owner address of the user for whom we search the key
-  * method is not very useful for now.
-  * Check keyDataFor and keyExpirationTimestampFor
-  function keyFor(address _owner) public view returns (Lock.Key key) {
-    return owners[_owner];
-  }
-  */
 
   /**
   * @dev Returns the key's data field for a given owner.
   * @param _owner address of the user for whom we search the key
   */
-  function keyDataFor(address _owner) public view returns (string data) {
+  function keyDataFor(
+    address _owner
+  )
+    public
+    view
+    hasKey(_owner)
+    returns (bytes data)
+  {
     return owners[_owner].data;
   }
 
@@ -150,7 +206,14 @@ contract Lock is Ownable {
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
   * @param _owner address of the user for whom we search the key
   */
-  function keyExpirationTimestampFor(address _owner) public view returns (uint timestamp) {
+  function keyExpirationTimestampFor(
+    address _owner
+  )
+    public
+    view
+    hasKey(_owner)
+    returns (uint timestamp)
+  {
     return owners[_owner].expirationTimestamp;
   }
 
@@ -160,37 +223,111 @@ contract Lock is Ownable {
    * TODO: consider partial withdraws?
    * TODO: check for re-entrency?
    */
-   function withdraw() external onlyOwner {
+  function withdraw(
+  )
+    external
+    onlyOwner
+  {
      uint256 balance = address(this).balance;
      require(balance > 0, 'Not enough funds');
-
      owner.transfer(balance);
-   }
+  }
 
   /**
-   * @notice ERC721: Count all NFTs assigned to an owner.
    * In the specific case of a Lock, each owner can own only at most 1 key.
-
-   * @dev NFTs assigned to the zero address are considered invalid, and this
-    function throws for queries about the zero address.
-   * @param _owner An address for whom to query the balance
    * @return The number of NFTs owned by `_owner`, either 0 or 1.
   */
-  function balanceOf(address _owner) public view returns (uint256) {
-    require(_owner != address(0), 'No such key');
+  function balanceOf(
+    address _owner
+  )
+    external
+    view
+    hasKey(_owner)
+    returns (uint256)
+  {
     return owners[_owner].expirationTimestamp > 0 ? 1 : 0;
   }
 
   /**
    * @notice ERC721: Find the owner of an NFT
-   * @dev NFTs assigned to zero address are considered invalid, and queries
-   *  about them do throw.
-   * @param _tokenId The identifier for an NFT
-   * @return The address of the owner of the NFT
+   * @return The address of the owner of the NFT, if applicable
   */
-  function ownerOf(uint256 _tokenId) external view returns (address) {
-    Key storage key = owners[address(_tokenId)];
-    require(key.expirationTimestamp > 0, 'No such key');
+  function ownerOf(
+    uint256 _tokenId
+  )
+    external
+    view
+    hasKey(address(_tokenId))
+    returns (address)
+  {
     return address(_tokenId);
   }
+
+  function approve(
+    address _approved,
+    uint256 _tokenId
+  )
+    external
+    payable
+    onlyPublic()
+    hasKey(address(_tokenId))
+    onlyTokenOwner(_tokenId)
+  {
+    // Cannot self approve
+    require(_approved != address(_tokenId));
+
+    approvedForTransfer[address(_tokenId)] = _approved;
+    emit Approval(address(_tokenId), _approved, _tokenId);
+  }
+
+  /**
+   * Will only allow transfer of keys on public locks.
+   * Checks that the key actually exists
+   * and that will return its approved recipient
+   */
+  function _getApproved(
+    uint256 _tokenId
+  )
+    internal
+    view
+    hasKey(address(_tokenId))
+    onlyPublic()
+    returns (address)
+  {
+    address approvedRecipient = approvedForTransfer[address(_tokenId)];
+    require(approvedRecipient != address(0));
+    return approvedRecipient;
+  }
+
+  /**
+   * external version
+   */
+  function getApproved(
+    uint256 _tokenId
+  )
+    external
+    view
+    returns (address)
+  {
+    return _getApproved(_tokenId);
+  }
+
+  /**
+   * TODO: allow lock owner to take a cut from transaction (either has fixed or %age)
+   */
+  // function safeTransferFrom(
+  //   address _from,
+  //   address _to,
+  //   uint256 _tokenId,
+  //   bytes data
+  // )
+  //   external
+  //   payable
+  //   onlyPublic()
+  //   onlyTokenOwnerOrApprovedForTransfer(_tokenId)
+  // {
+  //   // Do the thing!
+  // }
+
+
 }
