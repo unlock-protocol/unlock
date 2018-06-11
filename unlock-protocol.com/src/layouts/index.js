@@ -11,6 +11,7 @@ const Layout = ({ children, data }) => (
   <div className="page">
     <Helmet>
       <title>{data.site.siteMetadata.title}</title>
+      <script src='https://www.google.com/recaptcha/api.js'></script>
     </Helmet>
     <Header siteTitle={data.site.siteMetadata.title} />
     {children()}
