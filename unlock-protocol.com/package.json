@@ -9,6 +9,8 @@
     "gatsby-plugin-favicon": "^2.1.1",
     "gatsby-plugin-react-helmet": "^2.0.10",
     "normalize.css": "^8.0.0",
+    "react-async-script": "^0.9.1",
+    "react-google-recaptcha": "^0.11.1",
     "react-helmet": "^5.2.0"
   },
   "keywords": [

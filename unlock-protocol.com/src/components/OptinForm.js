@@ -1,14 +1,65 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Link from 'gatsby-link'
+import ReCAPTCHA from 'react-google-recaptcha'
 
-const OptinForm = () => (
-  <div>
-    <form id="subForm" action="/" className="subscribe js-cm-form" action="https://www.createsend.com/t/subscribeerror?description=" method="post" data-id="A61C50BEC994754B1D79C5819EC1255C24DC9BD24F2D62D9FE1BE9C2DC3506D10407F5BF6B525B95AC41E626C05091706888A584548167E6B31CDBA36E66DB9D">
-      <input id="fieldEmail" name="cm-skyhlr-skyhlr" type="email" className="subscribe__input js-cm-email-input" placeholder="Subscribe to be notified when we launch" required />
-      <input type="submit" className="subscribe__button js-cm-submit-button" value="" />
-    </form>
-    <script type="text/javascript" src="https://js.createsend1.com/javascript/copypastesubscribeformlogic.js"></script>
-  </div>
-)
+class OptinForm extends Component {
+
+  constructor(props, context) {
+    super(props)
+    this.state = {
+      email: '',
+      recaptcha: null,
+      form: null
+    }
+    this.handleChange = this.handleChange.bind(this)
+    this.submitEmail = this.submitEmail.bind(this)
+    this.verifyCallback = this.verifyCallback.bind(this)
+    this.setRecaptcha = this.setRecaptcha.bind(this)
+  }
+
+  setRecaptcha(target) {
+    this.setState({ recaptcha: target })
+  }
+
+  handleChange(event) {
+    this.setState({ email: event.target.value });
+  }
+
+  submitEmail(event) {
+    event.preventDefault()
+    this.setState({form: event.target})
+    this.state.recaptcha.execute()
+  }
+
+  verifyCallback() {
+    this.state.form.submit()
+  }
+
+ render() {
+   return (<div>
+     <ReCAPTCHA
+       ref={this.setRecaptcha}
+       size="invisible"
+       sitekey="6LfuZF4UAAAAANz9dvVjCxzX-i2w7HOuV5_hq_Ir"
+       onChange={this.verifyCallback}
+     />
+
+     <form action="https://unlock-protocol.us17.list-manage.com/subscribe/post?u=557de63fe04b1fc4212f4ffab&amp;id=6764cd60ef" method="post" className="subscribe" onSubmit={this.submitEmail}>
+        <input
+          type="email"
+          className="subscribe__input"
+          placeholder="Subscribe to be notified when we launch"
+          value={this.state.email}
+          onChange={this.handleChange}
+          id="mce-EMAIL"
+         name="EMAIL"
+          required
+        />
+        <input type="submit" className="subscribe__button js-cm-submit-button" value="" />
+
+      </form>
+    </div>)
+ }
+}
 
 export default OptinForm
