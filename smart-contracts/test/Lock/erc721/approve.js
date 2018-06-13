@@ -20,7 +20,7 @@ contract('Lock ERC721', (accounts) => {
       })
   })
 
-  describe.only('approve', () => {
+  describe('approve', () => {
     describe('when the lock is private', () => {
       it('should fail', () => {
         return locks['PRIVATE']
