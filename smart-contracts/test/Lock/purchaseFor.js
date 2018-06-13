@@ -20,7 +20,7 @@ contract('Lock', (accounts) => {
       })
   })
 
-  describe('purchase', () => {
+  describe('purchaseFor', () => {
     describe('if the contract has a private key release', () => {
       it('should fail', () => {
         const lock = locks['PRIVATE']
