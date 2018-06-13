@@ -65,11 +65,13 @@ contract Lock is Ownable, ERC721 {
   mapping (address => Key) internal owners;
 
   // Keeping track of approved transfers
-  mapping (address => address) internal approvedForTransfer;
-
-  // Keeping track of approved purchases.
-  // the mapped value is the timestamp until which the approval is valid
-  mapping (address => uint) internal approvedForPurchase;
+  // This is a mapping of addresses which have approved
+  // the transfer of a key to another address where their key can be transfered
+  // Note: the approver may actually NOT have a key... and there can only
+  // be a single approved beneficiary
+  // Note 2: for transfer, both addresses will be different
+  // Note 3: for sales (new keys on restricted locks), both addresses will be the same
+  mapping (address => address) internal approved;
 
   /**
    * MODIFIERS
@@ -79,6 +81,19 @@ contract Lock is Ownable, ERC721 {
   modifier onlyPublic() {
       require(keyReleaseMechanism == KeyReleaseMechanisms.Public, 'Only allowed on public locks');
       _;
+  }
+
+  // Ensure that the sender is either the lock owner or the key owner on a public lock
+  modifier onlyLockOwnerOnRestrictedOrKeyOwnerInPublic(
+    uint256 _tokenId
+  ) {
+    require(keyReleaseMechanism != KeyReleaseMechanisms.Private, 'Only allowed on public or restricted locks');
+
+    require(
+      owner == msg.sender ||
+      (address(_tokenId) == msg.sender && keyReleaseMechanism == KeyReleaseMechanisms.Public)
+    );
+    _;
   }
 
   // Ensure the lock is public or permissioned
@@ -131,8 +146,25 @@ contract Lock is Ownable, ERC721 {
     _;
   }
 
-  // Ensure that the caller has
-  modifier onlyKeyOwnerOrApprovedForTransfer(
+
+
+  // Ensures that the lock is public
+  // or that the sender has been approved on restricted locks
+  modifier onlyPublicOrApproved(
+    address _recipient
+  ) {
+      require(
+        keyReleaseMechanism == KeyReleaseMechanisms.Public ||
+        (keyReleaseMechanism == KeyReleaseMechanisms.Restricted
+          && _getApproved(uint256(_recipient)) == _recipient),
+          'Only public locks or restriced with an approved recipient');
+      _;
+  }
+
+  // Ensure that the caller has a key
+  // or that the caller has been approved
+  // for ownership of that key
+  modifier onlyKeyOwnerOrApproved(
     uint256 _tokenId
   ) {
     require(
@@ -167,28 +199,30 @@ contract Lock is Ownable, ERC721 {
   }
 
   /**
-  * @dev Purchase function: this lets user purchase keys from the lock.
+  * @dev Purchase function: this lets a user purchase a key from the lock for another user
+  * @param _recipient address of the recipient of the purchased key
   * @param _data optional marker for the key
   * This will fail if
   *  - the keyReleaseMechanism is private
-  *  - the keyReleaseMechanism is Approved and the user has not been previously approved
+  *  - the keyReleaseMechanism is Approved and the recipient has not been previously approved
   *  - the amount value is smaller than the price
-  *  - the sender already owns a key
+  *  - the recipient already owns a key
   * TODO: next version of solidity will allow for message to be added to require.
   */
-  function purchase(
+  function purchaseFor(
+    address _recipient,
     bytes _data
   )
     public
     payable
-    onlyPublicOrRestricted()
-    hasNoValidKey(msg.sender)
+    onlyPublicOrApproved(_recipient)
+    hasNoValidKey(_recipient)
   {
-    require(msg.value >= keyPrice, 'Insufficient funds'); // We explicitly allow for greater amounts to allow "donations".
+    require(msg.value >= keyPrice, 'Insufficient funds'); // We explicitly allow for greater amounts to allow "donations" or partial refunds after discounts (TODO implement partial refunds )
     require(maxNumberOfKeys > outstandingKeys, 'Maximum number of keys already sold');
 
     outstandingKeys += 1; // Increment the number of keys
-    owners[msg.sender] = Key({
+    owners[_recipient] = Key({
       expirationTimestamp: now + expirationDuration,
       data: _data
     });
@@ -196,9 +230,23 @@ contract Lock is Ownable, ERC721 {
     // trigger event
     emit Transfer(
       0, // This is a creation.
-      msg.sender,
-      uint256(msg.sender) // Note: since each user can own a single token, we use the current owner (new!) for the token id
+      _recipient,
+      uint256(_recipient) // Note: since each user can own a single token, we use the current owner (new!) for the token id
     );
+  }
+
+  /**
+  * @dev Purchase function: this lets user purchase keys from the lock for themselves.
+  * This calls purchaseFor with the recipient value assigned to be the sender's
+  * @param _data optional marker for the key
+  */
+  function purchase(
+    bytes _data
+  )
+    public
+    payable
+  {
+    purchaseFor(msg.sender, _data);
   }
 
   /**
@@ -277,44 +325,45 @@ contract Lock is Ownable, ERC721 {
     return address(_tokenId);
   }
 
+  /**
+   * This approves _approved to get ownership of _tokenId.
+   * Note: that since this is used for both purchase and transfer approvals
+   * the approved token may not exist.
+   */
   function approve(
     address _approved,
     uint256 _tokenId
   )
     external
     payable
-    onlyPublic()
-    hasKey(address(_tokenId))
-    onlyKeyOwner(_tokenId)
+    onlyLockOwnerOnRestrictedOrKeyOwnerInPublic(_tokenId)
   {
-    // Cannot self approve
-    require(_approved != address(_tokenId));
+    require(_approved != address(0));
 
-    approvedForTransfer[address(_tokenId)] = _approved;
+    approved[address(_tokenId)] = _approved;
     emit Approval(address(_tokenId), _approved, _tokenId);
   }
 
   /**
-   * Will only allow transfer of keys on public locks.
-   * Checks that the key actually exists
-   * and that will return its approved recipient
+   * Will return the approved recipient for a key transfer or ownership.
+   * Note: this does not check that a corresponding key
+   * actually exists.
    */
   function _getApproved(
     uint256 _tokenId
   )
     internal
     view
-    hasKey(address(_tokenId))
-    onlyPublic()
     returns (address)
   {
-    address approvedRecipient = approvedForTransfer[address(_tokenId)];
+    address approvedRecipient = approved[address(_tokenId)];
     require(approvedRecipient != address(0));
     return approvedRecipient;
   }
 
   /**
    * external version
+   * Will return the approved recipient for a key, if any.
    */
   function getApproved(
     uint256 _tokenId
@@ -339,7 +388,7 @@ contract Lock is Ownable, ERC721 {
     payable
     hasKey(address(_tokenId))
     hasNoValidKey(_to)
-    onlyKeyOwnerOrApprovedForTransfer(_tokenId)
+    onlyKeyOwnerOrApproved(_tokenId)
     onlyPublic()
   {
     require(_to != address(0));
@@ -366,7 +415,7 @@ contract Lock is Ownable, ERC721 {
   //   external
   //   payable
   //   onlyPublic()
-  //   onlyKeyOwnerOrApprovedForTransfer(_tokenId)
+  //   onlyKeyOwnerOrApproved(_tokenId)
   // {
   //   // Do the thing!
   // }
