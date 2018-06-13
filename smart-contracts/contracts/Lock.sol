@@ -33,7 +33,8 @@ contract Lock is Ownable, ERC721 {
   // Fields
 
   // Unlock Protocol address
-  address internal unlockProtocol;
+  // TODO: should we make that private/internal?
+  address public unlockProtocol;
 
   // Key release mechanism
   enum KeyReleaseMechanisms { Public, Restricted, Private }
