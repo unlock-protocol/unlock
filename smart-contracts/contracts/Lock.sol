@@ -15,6 +15,9 @@ import "./ERC721.sol";
  *  However, is has some specificities:
  *  - Each address owns at most one single key (ERC721 allows for multiple owned NFTs)
  *  - Since each address owns at most one single key, the tokenId is equal to the owner
+ *  - When transfering the key, we actually reset the expiration date on the transfered key to now
+ *    and assign its previous expiration date to the new owner. This is important because it prevents
+ *    some abuse around referrals.
  *  TODO: consider using a _private version for each method that is being invoked by the
  * public one as this seems to be a pattern.
  */
@@ -96,6 +99,16 @@ contract Lock is Ownable, ERC721 {
     _;
   }
 
+  modifier hasNoValidKey(
+    address _owner
+  ) {
+    Key storage key = owners[_owner];
+    require(
+      key.expirationTimestamp < now
+    );
+    _;
+  }
+
   // Ensures that an owner has a valid key
   modifier hasValidKey(
     address _owner
@@ -108,7 +121,7 @@ contract Lock is Ownable, ERC721 {
   }
 
   // Ensure that the caller owns the token
-  modifier onlyTokenOwner(
+  modifier onlyKeyOwner(
     uint256 _tokenId
   ) {
     require(
@@ -118,7 +131,7 @@ contract Lock is Ownable, ERC721 {
   }
 
   // Ensure that the caller has
-  modifier onlyTokenOwnerOrApprovedForTransfer(
+  modifier onlyKeyOwnerOrApprovedForTransfer(
     uint256 _tokenId
   ) {
     require(
@@ -168,10 +181,10 @@ contract Lock is Ownable, ERC721 {
     public
     payable
     onlyPublicOrRestricted()
+    hasNoValidKey(msg.sender)
   {
     require(msg.value >= keyPrice, 'Insufficient funds'); // We explicitly allow for greater amounts to allow "donations".
     require(maxNumberOfKeys > outstandingKeys, 'Maximum number of keys already sold');
-    require(owners[msg.sender].expirationTimestamp < now, 'Valid key already exists'); // User must not have a valid key already
 
     outstandingKeys += 1; // Increment the number of keys
     owners[msg.sender] = Key({
@@ -271,7 +284,7 @@ contract Lock is Ownable, ERC721 {
     payable
     onlyPublic()
     hasKey(address(_tokenId))
-    onlyTokenOwner(_tokenId)
+    onlyKeyOwner(_tokenId)
   {
     // Cannot self approve
     require(_approved != address(_tokenId));
@@ -313,6 +326,34 @@ contract Lock is Ownable, ERC721 {
   }
 
   /**
+   * This is payable because at some point we want to allow the LOCK to capture a fee on 2ndary
+   * market transactions...
+   */
+  function transferFrom(
+    address _from,
+    address _to,
+    uint256 _tokenId
+  )
+    external
+    payable
+    hasKey(address(_tokenId))
+    hasNoValidKey(_to)
+    onlyKeyOwnerOrApprovedForTransfer(_tokenId)
+    onlyPublic()
+  {
+    require(_to != address(0));
+
+    Key storage key = owners[_from];
+
+    owners[_to] = Key({
+      expirationTimestamp: key.expirationTimestamp,
+      data: key.data
+    });
+
+    key.expirationTimestamp = now; // Effectively expiring the key
+  }
+
+  /**
    * TODO: allow lock owner to take a cut from transaction (either has fixed or %age)
    */
   // function safeTransferFrom(
@@ -324,7 +365,7 @@ contract Lock is Ownable, ERC721 {
   //   external
   //   payable
   //   onlyPublic()
-  //   onlyTokenOwnerOrApprovedForTransfer(_tokenId)
+  //   onlyKeyOwnerOrApprovedForTransfer(_tokenId)
   // {
   //   // Do the thing!
   // }

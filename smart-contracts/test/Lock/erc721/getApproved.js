@@ -89,6 +89,8 @@ contract('Lock ERC721', (accounts) => {
                   })
               })
           })
+
+          it('should fail if the ownership of the key changed after approval')
         })
 
         describe('when the key has not been approved for transfer', () => {
