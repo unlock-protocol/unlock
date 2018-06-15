@@ -63,7 +63,7 @@ contract('Lock ERC721', (accounts) => {
             })
             .then(() => {
               // accounts[2] purchases a key
-              return locks['RESTRICTED'].purchase('Julien', {
+              return locks['RESTRICTED'].purchaseFor(accounts[2], 'Julien', {
                 value: locks['RESTRICTED'].params.keyPrice,
                 from: accounts[2]
               })
@@ -109,7 +109,7 @@ contract('Lock ERC721', (accounts) => {
             })
             .then(() => {
               // accounts[5] purchases a key
-              return locks['RESTRICTED'].purchase('Julien', {
+              return locks['RESTRICTED'].purchaseFor(accounts[5], 'Julien', {
                 value: locks['RESTRICTED'].params.keyPrice,
                 from: accounts[5]
               })
@@ -136,7 +136,7 @@ contract('Lock ERC721', (accounts) => {
             })
             .then(() => {
               // accounts[5] purchases a key
-              return locks['RESTRICTED'].purchase('Julien', {
+              return locks['RESTRICTED'].purchaseFor(accounts[5], 'Julien', {
                 value: locks['RESTRICTED'].params.keyPrice,
                 from: accounts[5]
               })
@@ -185,7 +185,7 @@ contract('Lock ERC721', (accounts) => {
 
     describe('when the key exists', () => {
       before(() => {
-        return locks['FIRST'].purchase('Satoshi', {
+        return locks['FIRST'].purchaseFor(accounts[1], 'Satoshi', {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: accounts[1]
         })
