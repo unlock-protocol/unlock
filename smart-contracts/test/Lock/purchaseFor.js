@@ -25,7 +25,7 @@ contract('Lock', (accounts) => {
       it('should fail', () => {
         const lock = locks['PRIVATE']
         return lock
-          .purchase('Julien')
+          .purchaseFor(accounts[0], 'Julien')
           .catch((error) => {
             assert.equal(error.message, 'VM Exception while processing transaction: revert')
             // Making sure we do not have a key set!
@@ -40,7 +40,7 @@ contract('Lock', (accounts) => {
     describe('when the contract has a public key release', () => {
       it('should fail if the price is not enough', () => {
         return locks['FIRST']
-          .purchase('Julien', {
+          .purchaseFor(accounts[0], 'Julien', {
             value: Units.convert('0.0001', 'eth', 'wei')
           })
           .catch(error => {
@@ -55,7 +55,7 @@ contract('Lock', (accounts) => {
 
       it('should fail if we reached the max number of keys', () => {
         return locks['SINGLE KEY']
-          .purchase('Julien', {
+          .purchaseFor(accounts[0], 'Julien', {
             value: Units.convert('0.01', 'eth', 'wei')
           })
           .then(keyData => {
@@ -63,7 +63,7 @@ contract('Lock', (accounts) => {
           })
           .then(keyData => {
             assert.equal(Web3Utils.toUtf8(keyData), 'Julien')
-            return locks['SINGLE KEY'].purchase('Satoshi', {
+            return locks['SINGLE KEY'].purchaseFor(accounts[1], 'Satoshi', {
               value: Units.convert('0.01', 'eth', 'wei'),
               from: accounts[1]
             })
@@ -88,26 +88,23 @@ contract('Lock', (accounts) => {
           filter.stopWatching()
         })
         return locks['FIRST']
-          .purchase('Vitalik', {
-            value: Units.convert('0.01', 'eth', 'wei'),
-            from: accounts[2]
+          .purchaseFor(accounts[2], 'Vitalik', {
+            value: Units.convert('0.01', 'eth', 'wei')
           })
       })
 
       it('should fail if the account already owns a key', () => {
         return locks['FIRST']
-          .purchase('Satoshi', {
-            value: Units.convert('0.01', 'eth', 'wei'),
-            from: accounts[1]
+          .purchaseFor(accounts[1], 'Satoshi', {
+            value: Units.convert('0.01', 'eth', 'wei')
           })
           .then(keyData => {
             return locks['FIRST'].keyDataFor(accounts[1])
           })
           .then(keyData => {
             assert.equal(Web3Utils.toUtf8(keyData), 'Satoshi')
-            return locks['FIRST'].purchase('Satoshi', {
-              value: Units.convert('0.01', 'eth', 'wei'),
-              from: accounts[1]
+            return locks['FIRST'].purchaseFor(accounts[1], 'Satoshi', {
+              value: Units.convert('0.01', 'eth', 'wei')
             })
           })
           .catch(error => {
@@ -128,7 +125,7 @@ contract('Lock', (accounts) => {
             .then(_outstandingKeys => {
               outstandingKeys = parseInt(_outstandingKeys)
               now = parseInt(new Date().getTime() / 1000)
-              return locks['FIRST'].purchase('Julien', {
+              return locks['FIRST'].purchaseFor(accounts[0], 'Julien', {
                 value: Units.convert('0.01', 'eth', 'wei')
               })
             })
@@ -169,9 +166,45 @@ contract('Lock', (accounts) => {
       })
     })
 
-    describe('if the contract has an approved key release', () => {
-      it('should fail if the sending account was not pre-approved')
-      it('should succeed if the sending account was pre-approved')
+    describe('if the contract has a restricted key release', () => {
+      let owner
+
+      before(() => {
+        return locks['RESTRICTED'].owner().then((_owner) => {
+          owner = _owner
+        })
+      })
+
+      it('should fail if the sending account was not pre-approved', () => {
+        return locks['RESTRICTED']
+          .purchaseFor(accounts[1], 'Satoshi', {
+            value: Units.convert('0.01', 'eth', 'wei')
+          })
+          .then(() => {
+            assert(false, 'this should fail')
+          })
+          .catch(error => {
+            assert.equal(error.message, 'VM Exception while processing transaction: revert')
+          })
+      })
+
+      it('should succeed if the sending account was pre-approved', () => {
+        return locks['RESTRICTED']
+          .approve(accounts[3], accounts[3], {
+            from: owner
+          })
+          .then(() => {
+            locks['RESTRICTED'].purchaseFor(accounts[3], 'Szabo', {
+              value: Units.convert('0.01', 'eth', 'wei')
+            })
+          })
+          .then(() => {
+            return locks['RESTRICTED'].keyDataFor(accounts[3])
+          })
+          .then(keyData => {
+            assert.equal(Web3Utils.toUtf8(keyData), 'Szabo')
+          })
+      })
     })
   })
 })
