@@ -47,7 +47,7 @@ describe('transaction reducer', () => {
       }).status).toEqual('mined')
     })
 
-    it.only('should not update the transaction if the previous one is different', () => {
+    it('should not update the transaction if the previous one is different', () => {
       const transaction = {
         status: 'pending',
         confirmations: 0,

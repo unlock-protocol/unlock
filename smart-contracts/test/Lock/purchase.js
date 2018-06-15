@@ -169,9 +169,47 @@ contract('Lock', (accounts) => {
       })
     })
 
-    describe('if the contract has an approved key release', () => {
-      it('should fail if the sending account was not pre-approved')
-      it('should succeed if the sending account was pre-approved')
+    describe('if the contract has a restricted key release', () => {
+      let owner
+
+      before(() => {
+        return locks['RESTRICTED'].owner().then((_owner) => {
+          owner = _owner
+        })
+      })
+
+      it('should fail if the sending account was not pre-approved', () => {
+        return locks['RESTRICTED']
+          .purchase('Satoshi', {
+            value: Units.convert('0.01', 'eth', 'wei'),
+            from: accounts[1]
+          })
+          .then(() => {
+            assert(false, 'this should fail')
+          })
+          .catch(error => {
+            assert.equal(error.message, 'VM Exception while processing transaction: revert')
+          })
+      })
+
+      it('should succeed if the sending account was pre-approved', () => {
+        return locks['RESTRICTED']
+          .approve(accounts[3], accounts[3], {
+            from: owner
+          })
+          .then(() => {
+            locks['RESTRICTED'].purchase('Szabo', {
+              value: Units.convert('0.01', 'eth', 'wei'),
+              from: accounts[3]
+            })
+          })
+          .then(() => {
+            return locks['RESTRICTED'].keyDataFor(accounts[3])
+          })
+          .then(keyData => {
+            assert.equal(Web3Utils.toUtf8(keyData), 'Szabo')
+          })
+      })
     })
   })
 })
