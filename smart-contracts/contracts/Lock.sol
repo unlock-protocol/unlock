@@ -221,6 +221,10 @@ contract Lock is Ownable, ERC721 {
     require(msg.value >= keyPrice, 'Insufficient funds'); // We explicitly allow for greater amounts to allow "donations" or partial refunds after discounts (TODO implement partial refunds )
     require(maxNumberOfKeys > outstandingKeys, 'Maximum number of keys already sold');
 
+    // Let's get the actual price for the key from the Unlock smart contract
+
+    // TODO: If there is more, then let's return some of it (CAREFUL: re-entrency!)
+
     outstandingKeys += 1; // Increment the number of keys
     owners[_recipient] = Key({
       expirationTimestamp: now + expirationDuration,
@@ -233,20 +237,6 @@ contract Lock is Ownable, ERC721 {
       _recipient,
       uint256(_recipient) // Note: since each user can own a single token, we use the current owner (new!) for the token id
     );
-  }
-
-  /**
-  * @dev Purchase function: this lets user purchase keys from the lock for themselves.
-  * This calls purchaseFor with the recipient value assigned to be the sender's
-  * @param _data optional marker for the key
-  */
-  function purchase(
-    bytes _data
-  )
-    public
-    payable
-  {
-    purchaseFor(msg.sender, _data);
   }
 
   /**
