@@ -26,7 +26,7 @@ contract('Lock', (accounts) => {
 
     before(() => {
       const purchases = [accounts[1], accounts[2]].map((account) => {
-        return locks['OWNED'].purchase('', {
+        return locks['OWNED'].purchaseFor(account, '', {
           value: price,
           from: account
         })

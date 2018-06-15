@@ -293,7 +293,7 @@ export const getLock = (address) => {
  */
 export const purchaseKey = (lockAddress, account, keyPrice, keyData) => {
   const lock = new web3.eth.Contract(LockContract.abi, lockAddress)
-  const data = lock.methods.purchase(Web3Utils.utf8ToHex(keyData)).encodeABI()
+  const data = lock.methods.purchaseFor(account.address, Web3Utils.utf8ToHex(keyData)).encodeABI()
 
   // The transaction object (conflict if other transactions have not been confirmed yet?)
   // TODO: We have a race condition because this will keep emitting even after

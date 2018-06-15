@@ -33,15 +33,15 @@ contract('Lock ERC721', (accounts) => {
 
     before(() => {
       return Promise.all([
-        locks['FIRST'].purchase('Satoshi', {
+        locks['FIRST'].purchaseFor(accountWithKey, 'Satoshi', {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: accountWithKey
         }),
-        locks['FIRST'].purchase('Julien', {
+        locks['FIRST'].purchaseFor(from, 'Julien', {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: from
         }),
-        locks['FIRST'].purchase('Ben', {
+        locks['FIRST'].purchaseFor(accountWithKeyApproved, 'Ben', {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: accountWithKeyApproved
         })

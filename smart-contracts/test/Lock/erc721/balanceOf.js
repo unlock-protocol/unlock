@@ -30,7 +30,7 @@ contract('Lock ERC721', (accounts) => {
     })
 
     it('should return 1 if the user has a non expired key', () => {
-      return locks['FIRST'].purchase('Satoshi', {
+      return locks['FIRST'].purchaseFor(accounts[1], 'Satoshi', {
         value: Units.convert('0.01', 'eth', 'wei'),
         from: accounts[1]
       }).then(() => {
