@@ -23,4 +23,12 @@ contract('Unlock', (accounts) => {
         assert.equal(unlockProtocol, unlock.address)
       })
   })
+
+  it('should have kept track of the Lock inside Unlock with the right balances', () => {
+    // This is a bit of a dumb test because when the lock is missing, the value are 0 anyway...
+    return unlock.locks(locks['FIRST'].address).then(([totalSales, yieldedDiscountTokens]) => {
+      assert.equal(totalSales.toNumber(), 0)
+      assert.equal(yieldedDiscountTokens.toNumber(), 0)
+    })
+  })
 })
