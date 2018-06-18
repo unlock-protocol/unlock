@@ -28,6 +28,7 @@ contract('Lock ERC721', (accounts) => {
     const accountWithKeyApproved = accounts[5]
     const accountNotApproved = accounts[6]
     const accountApproved = accounts[7]
+    const anotherFrom = accounts[8]
     const tokenId = from
     let keyExpiration
 
@@ -40,6 +41,10 @@ contract('Lock ERC721', (accounts) => {
         locks['FIRST'].purchaseFor(from, 'Julien', {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: from
+        }),
+        locks['FIRST'].purchaseFor(anotherFrom, 'Nick', {
+          value: Units.convert('0.01', 'eth', 'wei'),
+          from: anotherFrom
         }),
         locks['FIRST'].purchaseFor(accountWithKeyApproved, 'Ben', {
           value: Units.convert('0.01', 'eth', 'wei'),
@@ -114,21 +119,32 @@ contract('Lock ERC721', (accounts) => {
           })
       })
 
-      it('should abort if the recipient already has a key', () => {
-        return locks['FIRST']
-          .transferFrom(from, accountWithKey, from, {
-            from
-          })
-          .then(() => {
-            assert(false, 'This should not succeed')
-          })
-          .catch(error => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert')
-            // Ensuring that ownership of the key did not change
-            return locks['FIRST'].keyExpirationTimestampFor(from)
+      describe('when the receipient already has an expired key', () => {
+        it('should transfer the key validity without extending it')
+      })
+
+      describe('when the recipient already has a non expired key', () => {
+        it('should expand the key\'s validity', () => {
+          // First let's get the current expiration
+          let previousExpirationTimestamp, transferedKeyTimestamp
+          return Promise.all([
+            locks['FIRST'].keyExpirationTimestampFor(anotherFrom),
+            locks['FIRST'].keyExpirationTimestampFor(accounts[1])
+          ]).then(([_transferedKeyTimestamp, _previousExpirationTimestamp]) => {
+            transferedKeyTimestamp = _transferedKeyTimestamp.toNumber()
+            previousExpirationTimestamp = _previousExpirationTimestamp.toNumber()
+            return locks['FIRST'].transferFrom(anotherFrom, accountWithKey, anotherFrom, {
+              from: anotherFrom
+            })
+          }).then(() => {
+            return locks['FIRST'].keyExpirationTimestampFor(accountWithKey)
           }).then((expirationTimestamp) => {
-            assert.equal(keyExpiration, expirationTimestamp.toNumber())
+            const now = Math.floor(new Date().getTime() / 1000)
+            assert.equal(expirationTimestamp.toNumber(), previousExpirationTimestamp + transferedKeyTimestamp - now)
           })
+        })
+
+        it('should expire the previous owner\'s key')
       })
 
       describe('when the key owner is not the sender', () => {
