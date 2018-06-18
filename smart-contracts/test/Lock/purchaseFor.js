@@ -77,8 +77,6 @@ contract('Lock', (accounts) => {
           })
       })
 
-      it('should succeed if the account already owns a key but this key has expired')
-
       it('should trigger an event when successful', () => {
         let filter = locks['FIRST'].Transfer((error, { args }) => {
           if (error) {
@@ -93,27 +91,41 @@ contract('Lock', (accounts) => {
           })
       })
 
-      it('should fail if the account already owns a key', () => {
-        return locks['FIRST']
-          .purchaseFor(accounts[1], 'Satoshi', {
+      describe('when the user already owns an expired key', () => {
+        it('should expand the validity by the default key duration')
+      })
+
+      describe('when the user already owns a non expired key', () => {
+        it('should expand the validity by the default key duration', () => {
+          let firstExpiration
+          return locks['FIRST'].purchaseFor(accounts[1], 'Satoshi', {
             value: Units.convert('0.01', 'eth', 'wei')
           })
-          .then(keyData => {
-            return locks['FIRST'].keyDataFor(accounts[1])
-          })
-          .then(keyData => {
-            assert.equal(Web3Utils.toUtf8(keyData), 'Satoshi')
-            return locks['FIRST'].purchaseFor(accounts[1], 'Satoshi', {
-              value: Units.convert('0.01', 'eth', 'wei')
+            .then(() => {
+              return Promise.all([
+                locks['FIRST'].keyDataFor(accounts[1]),
+                locks['FIRST'].keyExpirationTimestampFor(accounts[1])
+              ])
             })
-          })
-          .catch(error => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert')
-            return locks['FIRST'].keyDataFor(accounts[1])
-          })
-          .then(keyData => {
-            assert.equal(Web3Utils.toUtf8(keyData), 'Satoshi')
-          })
+            .then(([keyData, expirationTimestamp]) => {
+              assert.equal(Web3Utils.toUtf8(keyData), 'Satoshi')
+              firstExpiration = expirationTimestamp.toNumber()
+              assert(firstExpiration > 0)
+              return locks['FIRST'].purchaseFor(accounts[1], 'Szabo', {
+                value: Units.convert('0.01', 'eth', 'wei')
+              })
+            })
+            .then(() => {
+              return Promise.all([
+                locks['FIRST'].keyDataFor(accounts[1]),
+                locks['FIRST'].keyExpirationTimestampFor(accounts[1])
+              ])
+            })
+            .then(([keyData, expirationTimestamp]) => {
+              assert.equal(Web3Utils.toUtf8(keyData), 'Szabo')
+              assert.equal(expirationTimestamp.toNumber(), firstExpiration + locks['FIRST'].params.expirationDuration)
+            })
+        })
       })
 
       describe('when the key was successfuly purchased', () => {
