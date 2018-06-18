@@ -89,7 +89,9 @@ contract Unlock {
   function recordKeyPurchase(
     uint _value,
     address _referrer
-  ) {
+  )
+    public
+  {
     // TODO: implement me
   }
 
@@ -100,7 +102,9 @@ contract Unlock {
    * It will also grant discount tokens to the creator of the lock on which the discount was consumed
    * This function is invoked by a previously deployed lock only.
    */
-  function recordConsumedDiscount() {
+  function recordConsumedDiscount()
+    public
+  {
     // TODO: implement me
   }
 

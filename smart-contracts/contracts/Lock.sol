@@ -13,8 +13,8 @@ import "./ERC721.sol";
  * Eventually: implement ERC721.
  * @dev The Lock smart contract is an ERC721 compatible smart contract.
  *  However, is has some specificities:
- *  - Each address owns at most one single key (ERC721 allows for multiple owned NFTs)
  *  - Since each address owns at most one single key, the tokenId is equal to the owner
+ *  - Each address owns at most one single key (ERC721 allows for multiple owned NFTs)
  *  - When transfering the key, we actually reset the expiration date on the transfered key to now
  *    and assign its previous expiration date to the new owner. This is important because it prevents
  *    some abuse around referrals.
@@ -57,12 +57,15 @@ contract Lock is Ownable, ERC721 {
   // Max number of keys sold if the keyReleaseMechanism is public
   uint public maxNumberOfKeys;
 
-  // Number of keys in circulation (expired or valid)
-  uint public outstandingKeys;
-
   // Keys
   // Each owner can have at most exactly one key
-  mapping (address => Key) internal owners;
+  // TODO: could we use public here? (this could be confusing though because it getter will
+  // return 0 values when missing a key)
+  mapping (address => Key) internal keyByOwner;
+
+  // Addresses of owners are also stored in an array.
+  // Addresses are never removed by design to avoid abuses around referals
+  address[] public owners;
 
   // Keeping track of approved transfers
   // This is a mapping of addresses which have approved
@@ -108,19 +111,9 @@ contract Lock is Ownable, ERC721 {
   modifier hasKey(
     address _owner
   ) {
-    Key storage key = owners[_owner];
+    Key storage key = keyByOwner[_owner];
     require(
       key.expirationTimestamp > 0, 'No such key'
-    );
-    _;
-  }
-
-  modifier hasNoValidKey(
-    address _owner
-  ) {
-    Key storage key = owners[_owner];
-    require(
-      key.expirationTimestamp < now
     );
     _;
   }
@@ -129,7 +122,7 @@ contract Lock is Ownable, ERC721 {
   modifier hasValidKey(
     address _owner
   ) {
-    Key storage key = owners[_owner];
+    Key storage key = keyByOwner[_owner];
     require(
       key.expirationTimestamp > now + expirationDuration, 'Key is not valid'
     );
@@ -170,7 +163,12 @@ contract Lock is Ownable, ERC721 {
     require(
       address(_tokenId) == msg.sender
       || _getApproved(_tokenId) == msg.sender
-    );
+    , 'Only key owner or approved owner');
+    _;
+  }
+
+  modifier notSoldOut() {
+    require(maxNumberOfKeys > owners.length, 'Maximum number of keys already sold');
     _;
   }
 
@@ -195,7 +193,6 @@ contract Lock is Ownable, ERC721 {
       keyPriceCalculator = _keyPriceCalculator;
       keyPrice = _keyPrice;
       maxNumberOfKeys = _maxNumberOfKeys;
-      outstandingKeys = 0;
   }
 
   /**
@@ -213,29 +210,75 @@ contract Lock is Ownable, ERC721 {
     address _recipient,
     bytes _data
   )
-    public
+    external
     payable
+    notSoldOut()
     onlyPublicOrApproved(_recipient)
-    hasNoValidKey(_recipient)
   {
+    require(_recipient != address(0));
     require(msg.value >= keyPrice, 'Insufficient funds'); // We explicitly allow for greater amounts to allow "donations" or partial refunds after discounts (TODO implement partial refunds )
-    require(maxNumberOfKeys > outstandingKeys, 'Maximum number of keys already sold');
 
     // Let's get the actual price for the key from the Unlock smart contract
+    // TODO: If there is more than the required price, then let's return some of it (CAREFUL: re-entrency!)
 
-    // TODO: If there is more, then let's return some of it (CAREFUL: re-entrency!)
+    uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
 
-    outstandingKeys += 1; // Increment the number of keys
-    owners[_recipient] = Key({
-      expirationTimestamp: now + expirationDuration,
-      data: _data
-    });
+    if (previousExpiration < now) {
+      owners.push(_recipient);
+      keyByOwner[_recipient].expirationTimestamp = now + expirationDuration;
+    } else {
+      // This is an existing owner trying to extend their key
+      keyByOwner[_recipient].expirationTimestamp = previousExpiration + expirationDuration;
+    }
+    // Overwite data in all cases
+    keyByOwner[_recipient].data = _data;
 
     // trigger event
     emit Transfer(
       0, // This is a creation.
       _recipient,
       uint256(_recipient) // Note: since each user can own a single token, we use the current owner (new!) for the token id
+    );
+  }
+
+  /**
+   * This is payable because at some point we want to allow the LOCK to capture a fee on 2ndary
+   * market transactions...
+   */
+  function transferFrom(
+    address _from,
+    address _recipient,
+    uint256 _tokenId
+  )
+    external
+    payable
+    notSoldOut()
+    onlyPublic()
+    hasKey(address(_tokenId))
+    onlyKeyOwnerOrApproved(_tokenId)
+  {
+    require(_recipient != address(0));
+
+    uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
+
+    if (previousExpiration < now) {
+      owners.push(_recipient);
+      keyByOwner[_recipient].expirationTimestamp = keyByOwner[_from].expirationTimestamp;
+    } else {
+      // This is an existing owner trying to extend their key
+      keyByOwner[_recipient].expirationTimestamp = keyByOwner[_from].expirationTimestamp + previousExpiration - now;
+    }
+    // Overwite data in all cases
+    keyByOwner[_recipient].data = keyByOwner[_from].data;
+
+    // Effectively expiring the key for the previous owner
+    keyByOwner[_from].expirationTimestamp = now;
+
+    // trigger event
+    emit Transfer(
+      _from,
+      _recipient,
+      _tokenId
     );
   }
 
@@ -251,7 +294,7 @@ contract Lock is Ownable, ERC721 {
     hasKey(_owner)
     returns (bytes data)
   {
-    return owners[_owner].data;
+    return keyByOwner[_owner].data;
   }
 
   /**
@@ -266,7 +309,7 @@ contract Lock is Ownable, ERC721 {
     hasKey(_owner)
     returns (uint timestamp)
   {
-    return owners[_owner].expirationTimestamp;
+    return keyByOwner[_owner].expirationTimestamp;
   }
 
   /**
@@ -297,7 +340,7 @@ contract Lock is Ownable, ERC721 {
     hasKey(_owner)
     returns (uint256)
   {
-    return owners[_owner].expirationTimestamp > 0 ? 1 : 0;
+    return keyByOwner[_owner].expirationTimestamp > 0 ? 1 : 0;
   }
 
   /**
@@ -366,31 +409,14 @@ contract Lock is Ownable, ERC721 {
   }
 
   /**
-   * This is payable because at some point we want to allow the LOCK to capture a fee on 2ndary
-   * market transactions...
+   * Public function which returns the total number of keys (both expired and valid)
    */
-  function transferFrom(
-    address _from,
-    address _to,
-    uint256 _tokenId
-  )
-    external
-    payable
-    hasKey(address(_tokenId))
-    hasNoValidKey(_to)
-    onlyKeyOwnerOrApproved(_tokenId)
-    onlyPublic()
+  function outstandingKeys()
+    public
+    view
+    returns (uint)
   {
-    require(_to != address(0));
-
-    Key storage key = owners[_from];
-
-    owners[_to] = Key({
-      expirationTimestamp: key.expirationTimestamp,
-      data: key.data
-    });
-
-    key.expirationTimestamp = now; // Effectively expiring the key
+    return owners.length;
   }
 
   /**
