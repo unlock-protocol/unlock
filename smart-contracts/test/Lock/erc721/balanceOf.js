@@ -40,6 +40,19 @@ contract('Lock ERC721', (accounts) => {
       })
     })
 
-    it('should return 1 if the user has an expired key')
+    it('should return 1 if the user has an expired key', () => {
+      return locks['FIRST'].purchaseFor(accounts[5], 'Satoshi', {
+        value: Units.convert('0.01', 'eth', 'wei'),
+        from: accounts[5]
+      }).then(() => {
+        return locks['FIRST'].expireKeyFor(accounts[5], {
+          from: accounts[0]
+        })
+      }).then(() => {
+        return locks['FIRST'].balanceOf(accounts[5])
+      }).then(balance => {
+        assert.equal(balance.toNumber(), 1)
+      })
+    })
   })
 })
