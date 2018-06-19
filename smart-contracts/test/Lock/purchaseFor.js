@@ -92,7 +92,27 @@ contract('Lock', (accounts) => {
       })
 
       describe('when the user already owns an expired key', () => {
-        it('should expand the validity by the default key duration')
+        it('should expand the validity by the default key duration', () => {
+          return locks['SECOND'].purchaseFor(accounts[4], 'Satoshi', {
+            value: Units.convert('0.01', 'eth', 'wei')
+          }).then(() => {
+            // let's now expire the key
+            return locks['SECOND'].expireKeyFor(accounts[4])
+          }).then(() => {
+            // Purchase a new one
+            return locks['SECOND'].purchaseFor(accounts[4], 'Satoshi', {
+              value: Units.convert('0.01', 'eth', 'wei')
+            })
+          }).then(() => {
+            // And check the expiration which shiuld be exactly now + keyDuration
+            return locks['SECOND'].keyExpirationTimestampFor(accounts[4])
+          }).then((expirationTimestamp) => {
+            const now = parseInt(new Date().getTime() / 1000)
+            // we check +/- 10 seconds to fix for now being different inside the EVM and here... :(
+            assert(expirationTimestamp.toNumber() > now + locks['SECOND'].params.expirationDuration - 10)
+            assert(expirationTimestamp.toNumber() < now + locks['SECOND'].params.expirationDuration + 10)
+          })
+        })
       })
 
       describe('when the user already owns a non expired key', () => {
@@ -133,7 +153,7 @@ contract('Lock', (accounts) => {
 
         before(() => {
           balance = web3.eth.getBalance(locks['FIRST'].address)
-          return locks['FIRST'].outstandingKeys.call()
+          return locks['FIRST'].outstandingKeys()
             .then(_outstandingKeys => {
               outstandingKeys = parseInt(_outstandingKeys)
               now = parseInt(new Date().getTime() / 1000)
