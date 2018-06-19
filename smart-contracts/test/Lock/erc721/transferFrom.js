@@ -28,7 +28,7 @@ contract('Lock ERC721', (accounts) => {
     const accountWithKeyApproved = accounts[5]
     const accountNotApproved = accounts[6]
     const accountApproved = accounts[7]
-    const anotherFrom = accounts[8]
+    const accountWithExpiredKey = accounts[8]
     const tokenId = from
     let keyExpiration
 
@@ -40,11 +40,11 @@ contract('Lock ERC721', (accounts) => {
         }),
         locks['FIRST'].purchaseFor(from, 'Julien', {
           value: Units.convert('0.01', 'eth', 'wei'),
-          from: from
+          from
         }),
-        locks['FIRST'].purchaseFor(anotherFrom, 'Nick', {
+        locks['FIRST'].purchaseFor(accountWithExpiredKey, 'Finley', {
           value: Units.convert('0.01', 'eth', 'wei'),
-          from: anotherFrom
+          from: accountWithExpiredKey
         }),
         locks['FIRST'].purchaseFor(accountWithKeyApproved, 'Ben', {
           value: Units.convert('0.01', 'eth', 'wei'),
@@ -119,41 +119,84 @@ contract('Lock ERC721', (accounts) => {
           })
       })
 
-      describe('when the receipient already has an expired key', () => {
-        it('should transfer the key validity without extending it')
+      describe('when the recipient already has an expired key', () => {
+        it('should transfer the key validity without extending it', () => {
+          // First let's make sure from has a key!
+          let fromExpirationTimestamp
+          return locks['FIRST'].purchaseFor(from, 'Julien', {
+            value: Units.convert('0.01', 'eth', 'wei'),
+            from
+          }).then(() => {
+            // Let's check the expiration date for that key
+            return locks['FIRST'].keyExpirationTimestampFor(from)
+          }).then((_fromExpirationTimestamp) => {
+            fromExpirationTimestamp = _fromExpirationTimestamp
+            // Then let's expire the key for accountWithExpiredKey
+            return locks['FIRST'].expireKeyFor(accountWithExpiredKey)
+          }).then(() => {
+            return locks['FIRST'].transferFrom(from, accountWithExpiredKey, from, {
+              from
+            })
+          }).then(() => {
+            return locks['FIRST'].keyExpirationTimestampFor(accountWithExpiredKey)
+          }).then((expirationTimestamp) => {
+            assert.equal(expirationTimestamp.toNumber(), fromExpirationTimestamp)
+          })
+        })
       })
 
       describe('when the recipient already has a non expired key', () => {
-        it('should expand the key\'s validity', () => {
-          // First let's get the current expiration
-          let previousExpirationTimestamp, transferedKeyTimestamp
-          return Promise.all([
-            locks['FIRST'].keyExpirationTimestampFor(anotherFrom),
-            locks['FIRST'].keyExpirationTimestampFor(accounts[1])
-          ]).then(([_transferedKeyTimestamp, _previousExpirationTimestamp]) => {
+        before(() => {
+          return locks['FIRST'].purchaseFor(from, 'Julien', {
+            value: Units.convert('0.01', 'eth', 'wei'),
+            from
+          }).then(() => {
+            // First let's get the current expiration
+            let previousExpirationTimestamp, transferedKeyTimestamp
+            return Promise.all([
+              locks['FIRST'].keyExpirationTimestampFor(from),
+              locks['FIRST'].keyExpirationTimestampFor(accounts[1])
+            ])
+          }).then(([_transferedKeyTimestamp, _previousExpirationTimestamp]) => {
             transferedKeyTimestamp = _transferedKeyTimestamp.toNumber()
             previousExpirationTimestamp = _previousExpirationTimestamp.toNumber()
-            return locks['FIRST'].transferFrom(anotherFrom, accountWithKey, anotherFrom, {
-              from: anotherFrom
+            return locks['FIRST'].transferFrom(from, accountWithKey, from, {
+              from
             })
-          }).then(() => {
-            return locks['FIRST'].keyExpirationTimestampFor(accountWithKey)
-          }).then((expirationTimestamp) => {
-            const now = Math.floor(new Date().getTime() / 1000)
-            assert.equal(expirationTimestamp.toNumber(), previousExpirationTimestamp + transferedKeyTimestamp - now)
           })
         })
 
-        it('should expire the previous owner\'s key')
+        it('should expand the key\'s validity', () => {
+          return locks['FIRST'].keyExpirationTimestampFor(accountWithKey)
+            .then((expirationTimestamp) => {
+              const now = Math.floor(new Date().getTime() / 1000)
+              // Check +/- 10 seconds
+              assert(expirationTimestamp.toNumber() > previousExpirationTimestamp + transferedKeyTimestamp - now - 10)
+              assert(expirationTimestamp.toNumber() < previousExpirationTimestamp + transferedKeyTimestamp - now + 10)
+            })
+        })
+
+        it('should expire the previous owner\'s key', () => {
+          return locks['FIRST'].keyExpirationTimestampFor(from)
+            .then((expirationTimestamp) => {
+              const now = Math.floor(new Date().getTime() / 1000)
+              // Check only 10 seconds in the future to ensure deterministic test
+              assert(expirationTimestamp.toNumber() < now + 10)
+            })
+        })
       })
 
       describe('when the key owner is not the sender', () => {
         it('should fail if the sender has not been approved for that key', () => {
-          return locks['FIRST']
-            .transferFrom(from, accountNotApproved, from, {
-              from: accountNotApproved
-            })
-            .then(() => {
+          let previousExpirationTimestamp
+          return locks['FIRST'].keyExpirationTimestampFor(from)
+            .then((_expirationTimestamp) => {
+              previousExpirationTimestamp = _expirationTimestamp
+              return locks['FIRST']
+                .transferFrom(from, accountNotApproved, from, {
+                  from: accountNotApproved
+                })
+            }).then(() => {
               assert(false, 'This should not succeed')
             })
             .catch(error => {
@@ -161,7 +204,7 @@ contract('Lock ERC721', (accounts) => {
               // Ensuring that ownership of the key did not change
               return locks['FIRST'].keyExpirationTimestampFor(from)
             }).then((expirationTimestamp) => {
-              assert.equal(keyExpiration, expirationTimestamp.toNumber())
+              assert.equal(previousExpirationTimestamp.toNumber(), expirationTimestamp.toNumber())
             })
         })
 
@@ -187,8 +230,18 @@ contract('Lock ERC721', (accounts) => {
 
       describe('when the key owner is the sender', () => {
         before(() => {
-          return locks['FIRST'].transferFrom(from, to, from, {
+          // first, let's purchase a brand new key that we can transfer
+          return locks['FIRST'].purchaseFor(from, 'Julien', {
+            value: Units.convert('0.01', 'eth', 'wei'),
             from
+          }).then(() => {
+            return locks['FIRST'].keyExpirationTimestampFor(from)
+              .then((expirationTimestamp) => {
+                keyExpiration = expirationTimestamp.toNumber()
+                return locks['FIRST'].transferFrom(from, to, from, {
+                  from
+                })
+              })
           })
         })
 

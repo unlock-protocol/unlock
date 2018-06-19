@@ -11,6 +11,7 @@ let defaultLock = {
 
 module.exports = {
   'FIRST': Object.assign({}, defaultLock, {}),
+  'SECOND': Object.assign({}, defaultLock, {}),
   'PRIVATE': Object.assign({}, defaultLock, {
     keyReleaseMechanism: 2 // KeyReleaseMechanisms.Private
   }),

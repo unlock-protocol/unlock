@@ -124,7 +124,7 @@ contract Lock is Ownable, ERC721 {
   ) {
     Key storage key = keyByOwner[_owner];
     require(
-      key.expirationTimestamp > now + expirationDuration, 'Key is not valid'
+      key.expirationTimestamp > now, 'Key is not valid'
     );
     _;
   }
@@ -261,11 +261,16 @@ contract Lock is Ownable, ERC721 {
 
     uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
 
-    if (previousExpiration < now) {
+    if (previousExpiration == 0) {
+      // The recipient did not have a key previously
       owners.push(_recipient);
+    }
+
+    if (previousExpiration <= now) {
+      // The recipient did not have a key, or had a key but it expired. The new expiration is the sender's key expiration
       keyByOwner[_recipient].expirationTimestamp = keyByOwner[_from].expirationTimestamp;
     } else {
-      // This is an existing owner trying to extend their key
+      // The recipient has a non expired key. We just add them the corresponding remaining time
       keyByOwner[_recipient].expirationTimestamp = keyByOwner[_from].expirationTimestamp + previousExpiration - now;
     }
     // Overwite data in all cases
@@ -417,6 +422,19 @@ contract Lock is Ownable, ERC721 {
     returns (uint)
   {
     return owners.length;
+  }
+
+  /**
+   * A function which lets the owner of the lock expire a users' key.
+   */
+  function expireKeyFor(
+    address _owner
+  )
+    public
+    onlyOwner
+    hasValidKey(_owner)
+  {
+    keyByOwner[_owner].expirationTimestamp = now; // Effectively expiring the key
   }
 
   /**
