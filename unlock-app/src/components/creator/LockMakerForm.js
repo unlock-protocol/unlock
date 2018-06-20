@@ -12,8 +12,6 @@ class LockMakerForm extends React.Component {
       keyReleaseMechanism: 0, // Public
       expirationDuration: 30,
       expirationDurationUnit: 86400, // Days
-      expirationTimestamp: 0, // for now 0 as we focus on duration based locks
-      keyPriceCalculator: 0, // let's focus on fix prices
       keyPrice: 0.01,
       keyPriceCurrency: 'ether',
       maxNumberOfKeys: 10,
@@ -30,8 +28,6 @@ class LockMakerForm extends React.Component {
     const lockParams = {
       keyReleaseMechanism: this.state.keyReleaseMechanism,
       expirationDuration: this.state.expirationDuration * this.state.expirationDurationUnit,
-      expirationTimestamp: this.state.expirationTimestamp,
-      keyPriceCalculator: this.state.keyPriceCalculator,
       keyPrice: Web3Utils.toWei(this.state.keyPrice.toString(10), this.state.keyPriceCurrency),
       maxNumberOfKeys: this.state.maxNumberOfKeys,
       creator: this.props.account,
