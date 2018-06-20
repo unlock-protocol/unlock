@@ -26,8 +26,6 @@ contract('Lock', (accounts) => {
       lock.owner.call(),
       lock.keyReleaseMechanism.call(),
       lock.expirationDuration.call(),
-      lock.expirationTimestamp.call(),
-      lock.keyPriceCalculator.call(),
       lock.keyPrice.call(),
       lock.maxNumberOfKeys.call(),
       lock.outstandingKeys.call()
@@ -36,8 +34,6 @@ contract('Lock', (accounts) => {
         owner,
         keyReleaseMechanism,
         expirationDuration,
-        expirationTimestamp,
-        keyPriceCalculator,
         keyPrice,
         maxNumberOfKeys,
         outstandingKeys
@@ -48,8 +44,6 @@ contract('Lock', (accounts) => {
           expirationDuration.toNumber(),
           60 * 60 * 24 * 30
         )
-        assert.strictEqual(expirationTimestamp.toNumber(), 0)
-        assert.strictEqual(keyPriceCalculator, zeroHex)
         assert.strictEqual(
           Units.convert(keyPrice.toNumber(), 'wei', 'eth'),
           '0.01'
