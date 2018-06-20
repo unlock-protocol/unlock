@@ -14,6 +14,10 @@ contract Unlock {
     uint yieldedDiscountTokens;
   }
 
+  uint public grossNetworkProduct;
+
+  uint public totalDiscountGranted;
+
   // We keep track of deployed locks to ensure that callers are all deployed locks.
   mapping (address => LockBalances) public locks;
 
@@ -30,8 +34,6 @@ contract Unlock {
   function createLock(
     Lock.KeyReleaseMechanisms _keyReleaseMechanism,
     uint _expirationDuration,
-    uint _expirationTimestamp,
-    address _keyPriceCalculator,
     uint _keyPrice,
     uint _maxNumberOfKeys
   )
@@ -42,11 +44,8 @@ contract Unlock {
     // create lock
     Lock newLock = new Lock(
       msg.sender,
-      address(this),
       _keyReleaseMechanism,
       _expirationDuration,
-      _expirationTimestamp,
-      _keyPriceCalculator,
       _keyPrice,
       _maxNumberOfKeys
     );
