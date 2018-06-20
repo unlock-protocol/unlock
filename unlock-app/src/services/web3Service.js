@@ -144,8 +144,6 @@ export const createLock = (lock) => {
   const data = unlock.methods.createLock(
     lock.keyReleaseMechanism,
     lock.expirationDuration,
-    lock.expirationTimestamp,
-    lock.keyPriceCalculator,
     lock.keyPrice,
     lock.maxNumberOfKeys
   ).encodeABI()

@@ -9,8 +9,6 @@ module.exports = function deployLocks (unlock) {
       return unlock.createLock(
         Locks[name].keyReleaseMechanism,
         Locks[name].expirationDuration,
-        Locks[name].expirationTimestamp,
-        Locks[name].keyPriceCalculator,
         Locks[name].keyPrice,
         Locks[name].maxNumberOfKeys
       ).then((tx) => {

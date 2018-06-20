@@ -42,16 +42,11 @@ contract Lock is Ownable, ERC721 {
 
   // Duration in seconds for which the keys are valid, after creation
   // should we take a smaller type use less gas?
+  // TODO: add support for a timestamp instead of duration
   uint public expirationDuration;
 
-  // Date at which keys expire
-  // (only if expirationDuration is 0)
-  uint public expirationTimestamp;
-
-  // Address of the contract which computes the price of the next key
-  address public keyPriceCalculator;
-
-  // price in wei of the next key, only if keyPriceCalculator is null
+  // price in wei of the next key
+  // TODO: allow support for a keyPriceCalculator which could set prices dynamically
   uint public keyPrice;
 
   // Max number of keys sold if the keyReleaseMechanism is public
@@ -175,22 +170,17 @@ contract Lock is Ownable, ERC721 {
   // Constructor
   constructor(
     address _owner,
-    address _unlockProtocol,
     KeyReleaseMechanisms _keyReleaseMechanism,
     uint _expirationDuration,
-    uint _expirationTimestamp,
-    address _keyPriceCalculator,
     uint _keyPrice,
     uint _maxNumberOfKeys
   )
     public
   {
+      unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract. (TODO: handle upgrades?)
       owner = _owner;
-      unlockProtocol = _unlockProtocol;
       keyReleaseMechanism = _keyReleaseMechanism;
       expirationDuration = _expirationDuration;
-      expirationTimestamp = _expirationTimestamp;
-      keyPriceCalculator = _keyPriceCalculator;
       keyPrice = _keyPrice;
       maxNumberOfKeys = _maxNumberOfKeys;
   }
