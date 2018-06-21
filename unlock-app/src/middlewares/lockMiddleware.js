@@ -12,6 +12,7 @@ import { lockUnlessKeyIsValid } from '../services/iframeService'
 export default function lockMiddleware ({ getState, dispatch }) {
 
   const web3Service = new Web3Service(dispatch)
+
   web3Service.connect({
     network: getState().network,
   })

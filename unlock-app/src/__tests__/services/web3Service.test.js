@@ -13,11 +13,11 @@ const defaultState = {
 let rpcRequestId = 0
 
 // net_version
-const netVersion = () => {
+const netVersionAndYield = (netVersion) => {
   rpcRequestId += 1
   nock('http://127.0.0.1:8545', { 'encodedQueryParams': true })
     .post('/', { 'jsonrpc': '2.0', 'id': rpcRequestId, 'method': 'net_version', 'params': [] })
-    .reply(200, { 'id': rpcRequestId, 'jsonrpc': '2.0', 'result': '1529533188035' }) //.log(console.log)
+    .reply(200, { 'id': rpcRequestId, 'jsonrpc': '2.0', 'result': netVersion }) //.log(console.log)
 }
 
 // eth_getBalance
@@ -37,7 +37,6 @@ const accountsAndYield = (accounts) => {
 }
 
 const nockRequests = (requests) => {
-  netVersion()
   requests()
 }
 
@@ -55,6 +54,7 @@ describe('Web3Service', () => {
   })
 
   describe('connect', () => {
+
     describe('when there is no account setup', () => {
 
       describe('when there is an account unlocked on the node', () => {
@@ -65,9 +65,8 @@ describe('Web3Service', () => {
           const state = Object.assign({}, defaultState)
           state.network.account.address = '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1'
 
-          nockRequests(() => {
-            getBalanceForAccountAndYieldBalance(state.network.account.address, '0xdeadbeef')
-          })
+          netVersionAndYield(1337)
+          getBalanceForAccountAndYieldBalance(state.network.account.address, '0xdeadbeef')
 
           return web3Service.connect(state).then(() => {
             const action = setAccount({
@@ -83,7 +82,6 @@ describe('Web3Service', () => {
         it('should create an account and dispatch it with a balance 0', () => {
           const dispatch = jest.fn()
           const web3Service = new Web3Service(dispatch)
-          // nock.recorder.rec()
 
           const state = Object.assign({}, defaultState)
           state.network.account = {}
@@ -96,10 +94,9 @@ describe('Web3Service', () => {
             return Promise.resolve(newAccount)
           })
 
-          nockRequests(() => {
-            accountsAndYield([])
-            getBalanceForAccountAndYieldBalance(newAccount.address, '0x0')
-          })
+          netVersionAndYield(1337)
+          accountsAndYield([])
+          getBalanceForAccountAndYieldBalance(newAccount.address, '0x0')
 
           return web3Service.connect(state).then(() => {
             const action = setAccount({
@@ -117,26 +114,40 @@ describe('Web3Service', () => {
       it('should refresh that account\'s balance and dispatch it', () => {
         const dispatch = jest.fn()
         const web3Service = new Web3Service(dispatch)
-        // nock.recorder.rec()
 
         const state = Object.assign({}, defaultState)
         state.network.account = {}
 
-        const newAccount = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
-        nockRequests(() => {
-          accountsAndYield([newAccount])
-          getBalanceForAccountAndYieldBalance(newAccount, '0x0')
-        })
+        const nodeAccountAddress = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
+
+        netVersionAndYield(1337)
+        accountsAndYield([nodeAccountAddress])
+        getBalanceForAccountAndYieldBalance(nodeAccountAddress, '0x0')
 
         return web3Service.connect(state).then(() => {
           const action = setAccount({
-            address: newAccount,
+            address: nodeAccountAddress,
             balance: '0',
           })
           expect(dispatch).toHaveBeenCalledWith(action)
         })
 
       })
+    })
+
+    it.only('should get the network id', () => {
+      const web3Service = new Web3Service(jest.fn())
+      const nodeAccountAddress = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
+      const netVersion = Math.floor(Math.random(100000))
+
+      netVersionAndYield(netVersion)
+      accountsAndYield([nodeAccountAddress])
+      getBalanceForAccountAndYieldBalance(nodeAccountAddress, '0x0')
+
+      return web3Service.connect(Object.assign({}, defaultState)).then(() => {
+        expect(web3Service.networkId).toEqual(netVersion)
+      })
+
     })
 
   })
