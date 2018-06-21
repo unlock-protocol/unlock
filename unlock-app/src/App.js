@@ -6,7 +6,6 @@ import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-r
 import createHistory from 'history/createBrowserHistory'
 
 // Services
-import { initWeb3Service } from './services/web3Service'
 import { saveState, loadState } from './services/localStorageService'
 
 // Components
@@ -58,10 +57,6 @@ class App extends Component {
       saveState(this.store.getState())
     })
 
-    // connects to the web3 endpoint
-    initWeb3Service({
-      network: this.store.getState().network,
-    }, this.store.dispatch)
   }
 
   render () {

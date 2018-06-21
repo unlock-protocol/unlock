@@ -13,11 +13,11 @@ jest.mock('web3', () => {
 
 // Mock the service
 jest.mock('../services/web3Service', () => {
-  return {
-    initWeb3Service: () => {
-
-    },
-  }
+  return (function() {
+    return {
+      connect: () => {},
+    }
+  })
 })
 
 it('renders without crashing', () => {
