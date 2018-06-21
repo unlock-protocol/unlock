@@ -5,6 +5,12 @@ let defaultNetworks = {
     protocol: 'ws', // couldn't we extract that from url?
     unlock: '',
   },
+  test: {
+    url: 'http://127.0.0.1:8545',
+    name: 'Test',
+    protocol: 'http', // couldn't we extract that from url?
+    unlock: '',
+  },
   ganache: {
     url: 'ws://127.0.0.1:8546',
     name: 'Ganache',
