@@ -135,7 +135,7 @@ describe('Web3Service', () => {
       })
     })
 
-    it.only('should get the network id', () => {
+    it('should get the network id', () => {
       const web3Service = new Web3Service(jest.fn())
       const nodeAccountAddress = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
       const netVersion = Math.floor(Math.random(100000))
