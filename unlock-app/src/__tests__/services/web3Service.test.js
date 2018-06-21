@@ -36,10 +36,6 @@ const accountsAndYield = (accounts) => {
     .reply(200, { 'id': rpcRequestId, 'jsonrpc': '2.0', 'result': accounts }) //.log(console.log)
 }
 
-const nockRequests = (requests) => {
-  requests()
-}
-
 describe('Web3Service', () => {
 
   describe('handleTransaction', () => {

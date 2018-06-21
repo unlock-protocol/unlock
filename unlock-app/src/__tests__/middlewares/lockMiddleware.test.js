@@ -8,7 +8,7 @@ import { SET_NETWORK } from '../../actions/network'
 /**
  * This is to use a mock for web3Service
  */
-import Web3Service from '../../services/web3Service'
+// import Web3Service from '../../services/web3Service'
 import iframeServiceMock from '../../services/iframeService'
 
 /**
@@ -94,7 +94,7 @@ describe('Lock middleware', () => {
   })
 
   it('should handle SET_NETWORK and reset the whole state', () => {
-    const { next, invoke, store } = create()
+    const { next, invoke } = create()
     const action = { type: SET_NETWORK, network }
     invoke(action)
     expect(mockWeb3Service.connect).toHaveBeenCalledWith({
