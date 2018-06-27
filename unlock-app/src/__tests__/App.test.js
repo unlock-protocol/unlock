@@ -15,7 +15,11 @@ jest.mock('web3', () => {
 jest.mock('../services/web3Service', () => {
   return (function() {
     return {
-      connect: () => {},
+      connect: () => {
+        return new Promise((resolve, reject) => {
+          return resolve()
+        })
+      },
     }
   })
 })

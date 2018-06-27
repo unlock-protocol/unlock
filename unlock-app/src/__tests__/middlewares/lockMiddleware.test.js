@@ -11,23 +11,29 @@ import { SET_NETWORK } from '../../actions/network'
 // import Web3Service from '../../services/web3Service'
 import iframeServiceMock from '../../services/iframeService'
 
+// TODO: check that dispatch is invoked correctly when web3Services promises resolve!
+
 /**
  * Fake state
  */
-const account = '0xabc'
-const lock = {
+let account = {
+  address: '0xabc',
+}
+let lock = {
   address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
   keyPrice: '100',
+  creator: account,
 }
-const key = {
+let key = {
   expiration: '1337',
   data: '',
 }
-const state = {
+let state = {
   network: {
     account,
   },
 }
+
 const privateKey = '0xdeadbeef'
 const network = 'test'
 
@@ -44,22 +50,24 @@ const create = () => {
 
   const invoke = (action) => lockMiddleware(store)(next)(action)
 
-  return { store, next, invoke }
+  return { next, invoke }
 }
 
 /**
  * Mocking web3Service
+ * Default objects yielded by promises
  */
 
 let mockWeb3Service = {
-  connect: jest.fn(),
-  createLock: jest.fn(),
-  purchaseKey: jest.fn(),
-  getLock: jest.fn(),
-  createAccount: jest.fn(),
-  getKey: jest.fn(),
-  loadAccount: jest.fn(),
-  withdrawFromLock: jest.fn(),
+  connect: true,
+  createLock: true,
+  purchaseKey: true,
+  getLock: true,
+  createAccount: true,
+  getKey: true,
+  loadAccount: true,
+  withdrawFromLock: true,
+  getAddressBalance: true,
 }
 
 jest.mock('../../services/web3Service', () => {
@@ -76,11 +84,31 @@ jest.mock('../../services/iframeService', () => {
 beforeEach(() => {
   // Making sure all mocks are fresh and reset before each test
   Object.keys(mockWeb3Service).forEach((key) => {
-    mockWeb3Service[key] = jest.fn()
+    mockWeb3Service[key] = jest.fn().mockReturnValue(new Promise((resolve, reject) => {return resolve()}))
   })
   Object.keys(iframeServiceMock).forEach((key) => {
     iframeServiceMock[key] = jest.fn()
   })
+
+  // Reset state!
+  account = {
+    address: '0xabc',
+  }
+  lock = {
+    address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
+    keyPrice: '100',
+    creator: account,
+  }
+  key = {
+    expiration: '1337',
+    data: '',
+  }
+  state = {
+    network: {
+      account,
+    },
+  }
+
 })
 
 describe('Lock middleware', () => {
@@ -88,6 +116,8 @@ describe('Lock middleware', () => {
   it('should handle LOAD_ACCOUNT by calling web3Service', () => {
     const { next, invoke } = create()
     const action = { type: LOAD_ACCOUNT, privateKey }
+    // const account = {} // mock
+    // mockWeb3Service.loadAccount = jest.fn().mockReturnValue(new Promise((resolve, reject) => { return resolve(account) }))
     invoke(action)
     expect(mockWeb3Service.loadAccount).toHaveBeenCalledWith(privateKey)
     expect(next).toHaveBeenCalledWith(action)
@@ -110,7 +140,7 @@ describe('Lock middleware', () => {
     const { next, invoke } = create()
     const action = { type: CREATE_LOCK, lock }
     invoke(action)
-    expect(mockWeb3Service.createLock).toHaveBeenCalledWith(lock)
+    expect(mockWeb3Service.createLock).toHaveBeenCalledWith(lock, expect.anything()) // TODO: Can we be more specific? (this is a function)
     expect(next).toHaveBeenCalledWith(action)
   })
 
@@ -118,7 +148,7 @@ describe('Lock middleware', () => {
     const { next, invoke } = create()
     const action = { type: PURCHASE_KEY, lock, account }
     invoke(action)
-    expect(mockWeb3Service.purchaseKey).toHaveBeenCalledWith(lock.address, account, '100', '')
+    expect(mockWeb3Service.purchaseKey).toHaveBeenCalledWith(lock.address, account, '100', '', expect.anything()) // TODO: Can we be more specific? (this is a function)
     expect(next).toHaveBeenCalledWith(action)
   })
 
