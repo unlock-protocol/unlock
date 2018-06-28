@@ -50,7 +50,7 @@ const create = () => {
 
   const invoke = (action) => lockMiddleware(store)(next)(action)
 
-  return { next, invoke }
+  return { next, invoke, store }
 }
 
 /**
@@ -215,10 +215,11 @@ describe('Lock middleware', () => {
     expect(next).toHaveBeenCalledWith(action)
   })
 
-  it('should handle WITHDRAW_FROM_LOCK by calling withdrawFromLock from web3Service', () => {
+  it.only('should handle WITHDRAW_FROM_LOCK by calling withdrawFromLock from web3Service', () => {
     const { next, invoke, store } = create()
     const action = { type: WITHDRAW_FROM_LOCK, lock }
     invoke(action)
+
     expect(mockWeb3Service.withdrawFromLock).toHaveBeenCalledWith(lock, store.getState().network.account)
     expect(next).toHaveBeenCalledWith(action)
   })
