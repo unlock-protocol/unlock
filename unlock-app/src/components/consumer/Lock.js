@@ -27,7 +27,7 @@ export class Lock extends React.Component {
   }
 
   render () {
-    if (!this.props.lock || !this.props.currentKey) {
+    if (!this.props.account || !this.props.lock || !this.props.currentKey) {
       return (<span>Loading...</span>)
     }
 
