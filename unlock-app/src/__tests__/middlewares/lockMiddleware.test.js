@@ -215,7 +215,7 @@ describe('Lock middleware', () => {
     expect(next).toHaveBeenCalledWith(action)
   })
 
-  it.only('should handle WITHDRAW_FROM_LOCK by calling withdrawFromLock from web3Service', () => {
+  it('should handle WITHDRAW_FROM_LOCK by calling withdrawFromLock from web3Service', () => {
     const { next, invoke, store } = create()
     const action = { type: WITHDRAW_FROM_LOCK, lock }
     invoke(action)
