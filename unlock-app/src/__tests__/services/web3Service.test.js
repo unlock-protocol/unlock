@@ -463,7 +463,7 @@ describe('Web3Service', () => {
     })
 
     describe('withdrawFromLock', () => {
-      it.only('should send a transaction to withdraw from the lock', () => {
+      it('should send a transaction to withdraw from the lock', () => {
         const lock = {
           address: '0xlock',
         }
