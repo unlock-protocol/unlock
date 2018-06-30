@@ -1,7 +1,8 @@
 pragma solidity ^0.4.23;
 
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
-import "./ERC721.sol";
+import 'openzeppelin-solidity/contracts/ownership/Ownable.sol';
+import './ERC721.sol';
+import './Unlock.sol';
 
 /**
  * TODO: consider error codes rather than strings
@@ -9,7 +10,7 @@ import "./ERC721.sol";
 
 /**
  * @title The Lock contract
- * @author Julien Genestoux (ouvre-boite.com)
+ * @author Julien Genestoux (unlock-protocol.com)
  * Eventually: implement ERC721.
  * @dev The Lock smart contract is an ERC721 compatible smart contract.
  *  However, is has some specificities:
@@ -196,23 +197,35 @@ contract Lock is Ownable, ERC721 {
   *  - the recipient already owns a key
   * TODO: next version of solidity will allow for message to be added to require.
   */
-  function purchaseFor(
+  function _purchaseFor(
     address _recipient,
+    address _referrer,
     bytes _data
   )
-    external
-    payable
+    internal
     notSoldOut()
     onlyPublicOrApproved(_recipient)
   {
     require(_recipient != address(0));
-    require(msg.value >= keyPrice, 'Insufficient funds'); // We explicitly allow for greater amounts to allow "donations" or partial refunds after discounts (TODO implement partial refunds )
 
     // Let's get the actual price for the key from the Unlock smart contract
-    // TODO: If there is more than the required price, then let's return some of it (CAREFUL: re-entrency!)
+    Unlock unlock = Unlock(unlockProtocol);
+    uint discount;
+    uint tokens;
+    (discount, tokens) = unlock.computeAvailableDiscountFor(_recipient, keyPrice);
+    uint netPrice = keyPrice;
+    if (discount > keyPrice) {
+        netPrice = 0;
+    } else {
+        netPrice = keyPrice - discount;
+    }
 
+    // We explicitly allow for greater amounts to allow "donations" or partial refunds after discounts (TODO implement partial refunds)
+    require(msg.value >= netPrice, 'Insufficient funds');
+    // TODO: If there is more than the required price, then let's return whatever is extra extra (CAREFUL: re-entrency!)
+
+    // Assign the key
     uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
-
     if (previousExpiration < now) {
       owners.push(_recipient);
       keyByOwner[_recipient].expirationTimestamp = now + expirationDuration;
@@ -223,12 +236,51 @@ contract Lock is Ownable, ERC721 {
     // Overwite data in all cases
     keyByOwner[_recipient].data = _data;
 
+    if (discount > 0) {
+        unlock.recordConsumedDiscount(discount, tokens);
+    }
+
+    unlock.recordKeyPurchase(netPrice, _referrer);
+
     // trigger event
     emit Transfer(
       0, // This is a creation.
       _recipient,
       uint256(_recipient) // Note: since each user can own a single token, we use the current owner (new!) for the token id
     );
+  }
+
+  /**
+  * @dev Purchase function, public version, with no referrer.
+  * @param _recipient address of the recipient of the purchased key
+  * @param _data optional marker for the key
+  */
+  function purchaseFor(
+    address _recipient,
+    bytes _data
+  )
+    payable
+    external
+  {
+    return _purchaseFor(_recipient, address(0), _data);
+  }
+
+  /**
+  * @dev Purchase function, public version, with referrer.
+  * @param _recipient address of the recipient of the purchased key
+  * @param _referrer address of the user making the referral
+  * @param _data optional marker for the key
+  */
+  function purchaseForFrom(
+    address _recipient,
+    address _referrer,
+    bytes _data
+  )
+    payable
+    external
+    hasValidKey(_referrer)
+  {
+    return _purchaseFor(_recipient, _referrer, _data);
   }
 
   /**
