@@ -5,10 +5,8 @@ const deployLocks = require('../helpers/deployLocks')
 const Unlock = artifacts.require('../Unlock.sol')
 
 let unlock, locks
-const zeroHex = '0x0000000000000000000000000000000000000000'
 
 contract('Lock', (accounts) => {
-  // Let's build the locks
   before(() => {
     return Unlock.deployed()
       .then(_unlock => {
