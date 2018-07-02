@@ -95,14 +95,6 @@ contract Lock is Ownable, ERC721 {
     _;
   }
 
-  // Ensure the lock is public or permissioned
-  modifier onlyPublicOrRestricted() {
-      require(
-        keyReleaseMechanism == KeyReleaseMechanisms.Public
-        || keyReleaseMechanism == KeyReleaseMechanisms.Restricted, 'Only allowed on public or restricted locks');
-      _;
-  }
-
   // Ensures that an owner has a key
   modifier hasKey(
     address _owner
@@ -163,6 +155,7 @@ contract Lock is Ownable, ERC721 {
     _;
   }
 
+  // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
     require(maxNumberOfKeys > owners.length, 'Maximum number of keys already sold');
     _;
