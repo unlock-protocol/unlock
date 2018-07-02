@@ -10,6 +10,12 @@ contract('Unlock', (accounts) => {
       })
   })
 
+  it('should have an owner', () => {
+    return unlock.owner().then((owner) => {
+      assert.equal(owner, accounts[0])
+    })
+  })
+
   it('should have initialized grossNetworkProduct', () => {
     return unlock.grossNetworkProduct().then((grossNetworkProduct) => {
       assert.equal(grossNetworkProduct.toNumber(), 0)
