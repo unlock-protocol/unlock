@@ -110,7 +110,7 @@ contract Unlock is Ownable {
    */
   function computeAvailableDiscountFor(
     address _purchaser,
-    uint keyPrice
+    uint _keyPrice
   )
     public
     pure
