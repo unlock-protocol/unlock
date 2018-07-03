@@ -1,4 +1,5 @@
 .button {
+	text-align: center;
 	display: inline-block;
 	text-decoration: none;
 	text-transform: uppercase;
@@ -9,29 +10,37 @@
 	border-width: 1px;
 	border-style: solid;
 
+	.icon {
+		position: relative;
+		top: -1px;
+		display: inline-block;
+		line-height: 1;
+		margin-right: 6px;
+		margin-left: -3px;
+	}
 }
 
-	.button--default {
-		border-color: rgba(white, 0.7);
+.button--default {
+	border-color: rgba(white, 0.7);
 
-		&:hover {
-			border-color: rgba(white, 1);
-		}
+	&:hover {
+		border-color: rgba(white, 1);
 	}
+}
 
-	.button--action {
-		border-color: rgba(white, 0.5);
-		background: rgba(lighten(#006079, 30%), 0.3) linear-gradient( transparent 50%, rgba(black, 0.1) 50% );
+.button--action {
+	border-color: rgba(white, 0.5);
+	background: rgba(lighten(#006079, 30%), 0.3) linear-gradient( transparent 50%, rgba(black, 0.1) 50% );
 
-		&:hover {
-			border-color: rgba(white, 0.8);
-		}
+	&:hover {
+		border-color: rgba(white, 0.8);
 	}
+}
 
-	.button--link {
-		border-color: transparent;
+.button--link {
+	border-color: transparent;
 
-		&[href]:hover {
-			text-decoration: underline;
-		}
+	&[href]:hover {
+		text-decoration: underline;
 	}
+}
