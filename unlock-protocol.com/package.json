@@ -11,7 +11,8 @@
     "normalize.css": "^8.0.0",
     "react-async-script": "^0.9.1",
     "react-google-recaptcha": "^0.11.1",
-    "react-helmet": "^5.2.0"
+    "react-helmet": "^5.2.0",
+    "react-icons": "^2.2.7"
   },
   "keywords": [
     "gatsby"
