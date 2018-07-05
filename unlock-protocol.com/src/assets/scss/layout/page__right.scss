@@ -23,6 +23,8 @@
 			margin-top: 0;
 		}
 
+		.page__description > :first-child { margin-top: 0 !important; margin-left: 0 !important; }
+
 	.page__form {
 		margin-top: 5rem;
 	}
