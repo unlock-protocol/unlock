@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity 0.4.24;
 
 /**
  * @title The Unlock contract
@@ -10,35 +10,43 @@ pragma solidity ^0.4.18;
  *  a. Deployed locks addresses and balances of discount tokens granted by each lock.
  *  b. The total network product (sum of all key sales, net of discounts)
  *  c. Total of discounts granted
- *  d. Balances of discount tokens, including "frozen" tokens (which have been used to claim discounts and cannot be used/transfered for a given period)
+ *  d. Balances of discount tokens, including "frozen" tokens (which have been used to claim
+ * discounts and cannot be used/transfered for a given period)
  *  e. Growth rate of Network Product
  *  f. Growth rate of Discount tokens supply
  * The smart contract has an owner who only can perform the following
  *  - Upgrades
- *  - Change in golden rules (20% of GDP available in discounts, and supply growth rate is at most 50% of GNP growth rate)
- * NOTE: This smart contract is partially implemented for now until enough Locks are deployed and in the wild.
+ *  - Change in golden rules (20% of GDP available in discounts, and supply growth rate is at most
+ * 50% of GNP growth rate)
+ * NOTE: This smart contract is partially implemented for now until enough Locks are deployed and
+ * in the wild.
  * The partial implementation includes the following features:
  *  a. Keeping track of deployed locks
  *  b. Keeping track of GNP
  */
 
-import 'openzeppelin-solidity/contracts/ownership/Ownable.sol';
-import './Lock.sol';
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "./Lock.sol";
+
 
 contract Unlock is Ownable {
 
-  // The struct for a lock
+  /**
+   * The struct for a lock
+   * We use deployed to keep track of deployments.
+   * This is required because both totalSales and yieldedDiscountTokens are 0 when initialized,
+   * which would be the same values when the lock is not set.
+   */
   struct LockBalances {
-    bool deployed; // keeping track of deployments. This is required because both totalSales and yieldedDiscountTokens are 0 when initialized, which would be the same values when the lock is not set.
+    bool deployed;
     uint totalSales; // This is in wei
     uint yieldedDiscountTokens;
   }
 
   modifier onlyFromDeployedLock() {
-    require(locks[msg.sender].deployed, 'Only from previously deployed locks');
+    require(locks[msg.sender].deployed, "Only from previously deployed locks");
     _;
   }
-
 
   uint public grossNetworkProduct;
 
@@ -56,13 +64,11 @@ contract Unlock is Ownable {
   constructor(
     address _owner
   )
-    public
-  {
+    public {
       owner = _owner;
       grossNetworkProduct = 0;
       totalDiscountGranted = 0;
-  }
-
+    }
 
   /**
   * @dev Create lock
@@ -109,8 +115,8 @@ contract Unlock is Ownable {
    * TODO: actually implement this.
    */
   function computeAvailableDiscountFor(
-    address _purchaser,
-    uint _keyPrice
+    address _purchaser, // solhint-disable-line no-unused-vars
+    uint _keyPrice // solhint-disable-line no-unused-vars
   )
     public
     pure
@@ -130,7 +136,7 @@ contract Unlock is Ownable {
    */
   function recordKeyPurchase(
     uint _value,
-    address _referrer
+    address _referrer // solhint-disable-line no-unused-vars
   )
     public
     onlyFromDeployedLock()
@@ -148,7 +154,7 @@ contract Unlock is Ownable {
    */
   function recordConsumedDiscount(
     uint _discount,
-    uint _tokens
+    uint _tokens // solhint-disable-line no-unused-vars
   )
     public
     onlyFromDeployedLock()
