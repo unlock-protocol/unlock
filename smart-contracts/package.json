@@ -28,7 +28,7 @@
   },
   "scripts": {
     "test": "truffle test",
-    "lint": "./node_modules/.bin/eslint . --fix"
+    "lint": "solhint contracts/**/*.sol"
   },
   "author": "",
   "license": "ISC"
