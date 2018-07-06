@@ -1,4 +1,4 @@
-pragma solidity ^0.4.23;
+pragma solidity 0.4.24;
 
 /*
 * @title ERC721 interface (http://erc721.org/)
@@ -21,20 +21,6 @@ contract ERC721 {
   /// @dev This emits when an operator is enabled or disabled for an owner.
   ///  The operator can manage all NFTs of the owner.
   event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
-
-  /// @notice Count all NFTs assigned to an owner
-  /// @dev NFTs assigned to the zero address are considered invalid, and this
-  ///  function throws for queries about the zero address.
-  /// @param _owner An address for whom to query the balance
-  /// @return The number of NFTs owned by `_owner`, possibly zero
-  function balanceOf(address _owner) external view returns (uint256);
-
-  /// @notice Find the owner of an NFT
-  /// @param _tokenId The identifier for an NFT
-  /// @dev NFTs assigned to zero address are considered invalid, and queries
-  ///  about them do throw.
-  /// @return The address of the owner of the NFT
-  function ownerOf(uint256 _tokenId) external view returns (address);
 
   /// @notice Transfers the ownership of an NFT from one address to another address
   /// @dev Throws unless `msg.sender` is the current owner, [TODO: an authorized
@@ -77,6 +63,20 @@ contract ERC721 {
   /// @param _approved The new approved NFT controller
   /// @param _tokenId The NFT to approve
   function approve(address _approved, uint256 _tokenId) external payable;
+
+  /// @notice Count all NFTs assigned to an owner
+  /// @dev NFTs assigned to the zero address are considered invalid, and this
+  ///  function throws for queries about the zero address.
+  /// @param _owner An address for whom to query the balance
+  /// @return The number of NFTs owned by `_owner`, possibly zero
+  function balanceOf(address _owner) external view returns (uint256);
+
+  /// @notice Find the owner of an NFT
+  /// @param _tokenId The identifier for an NFT
+  /// @dev NFTs assigned to zero address are considered invalid, and queries
+  ///  about them do throw.
+  /// @return The address of the owner of the NFT
+  function ownerOf(uint256 _tokenId) external view returns (address);
 
   /// @notice Enable or disable approval for a third party ("operator") to manage
   ///  all of `msg.sender`'s assets.

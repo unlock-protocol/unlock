@@ -1,8 +1,8 @@
-pragma solidity ^0.4.23;
+pragma solidity 0.4.24;
 
-import 'openzeppelin-solidity/contracts/ownership/Ownable.sol';
-import './ERC721.sol';
-import './Unlock.sol';
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "./ERC721.sol";
+import "./Unlock.sol";
 
 /**
  * TODO: consider error codes rather than strings
@@ -22,7 +22,6 @@ import './Unlock.sol';
  *  TODO: consider using a _private version for each method that is being invoked by the
  * public one as this seems to be a pattern.
  */
-
 contract Lock is Ownable, ERC721 {
 
   // The struct for a key
@@ -32,7 +31,6 @@ contract Lock is Ownable, ERC721 {
   }
 
   // Fields
-
   // Unlock Protocol address
   // TODO: should we make that private/internal?
   address public unlockProtocol;
@@ -75,18 +73,17 @@ contract Lock is Ownable, ERC721 {
   /**
    * MODIFIERS
    */
-
   // Ensure the lock is public
   modifier onlyPublic() {
-      require(keyReleaseMechanism == KeyReleaseMechanisms.Public, 'Only allowed on public locks');
-      _;
+    require(keyReleaseMechanism == KeyReleaseMechanisms.Public, "Only allowed on public locks");
+    _;
   }
 
   // Ensure that the sender is either the lock owner or the key owner on a public lock
   modifier onlyLockOwnerOnRestrictedOrKeyOwnerInPublic(
     uint256 _tokenId
   ) {
-    require(keyReleaseMechanism != KeyReleaseMechanisms.Private, 'Only allowed on public or restricted locks');
+    require(keyReleaseMechanism != KeyReleaseMechanisms.Private, "Only allowed on public or restricted locks");
 
     require(
       owner == msg.sender ||
@@ -101,7 +98,7 @@ contract Lock is Ownable, ERC721 {
   ) {
     Key storage key = keyByOwner[_owner];
     require(
-      key.expirationTimestamp > 0, 'No such key'
+      key.expirationTimestamp > 0, "No such key"
     );
     _;
   }
@@ -112,7 +109,7 @@ contract Lock is Ownable, ERC721 {
   ) {
     Key storage key = keyByOwner[_owner];
     require(
-      key.expirationTimestamp > now, 'Key is not valid'
+      key.expirationTimestamp > now, "Key is not valid"
     );
     _;
   }
@@ -127,19 +124,16 @@ contract Lock is Ownable, ERC721 {
     _;
   }
 
-
-
   // Ensures that the lock is public
   // or that the sender has been approved on restricted locks
   modifier onlyPublicOrApproved(
     address _recipient
   ) {
-      require(
-        keyReleaseMechanism == KeyReleaseMechanisms.Public ||
-        (keyReleaseMechanism == KeyReleaseMechanisms.Restricted
-          && _getApproved(uint256(_recipient)) == _recipient),
-          'Only public locks or restriced with an approved recipient');
-      _;
+    require(keyReleaseMechanism == KeyReleaseMechanisms.Public ||
+      (keyReleaseMechanism == KeyReleaseMechanisms.Restricted
+        && _getApproved(uint256(_recipient)) == _recipient),
+        "Only public locks or restriced with an approved recipient");
+    _;
   }
 
   // Ensure that the caller has a key
@@ -151,13 +145,13 @@ contract Lock is Ownable, ERC721 {
     require(
       address(_tokenId) == msg.sender
       || _getApproved(_tokenId) == msg.sender
-    , 'Only key owner or approved owner');
+    , "Only key owner or approved owner");
     _;
   }
 
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
-    require(maxNumberOfKeys > owners.length, 'Maximum number of keys already sold');
+    require(maxNumberOfKeys > owners.length, "Maximum number of keys already sold");
     _;
   }
 
@@ -169,79 +163,14 @@ contract Lock is Ownable, ERC721 {
     uint _keyPrice,
     uint _maxNumberOfKeys
   )
-    public
-  {
+    public {
       unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract. (TODO: handle upgrades?)
       owner = _owner;
       keyReleaseMechanism = _keyReleaseMechanism;
       expirationDuration = _expirationDuration;
       keyPrice = _keyPrice;
       maxNumberOfKeys = _maxNumberOfKeys;
-  }
-
-  /**
-  * @dev Purchase function: this lets a user purchase a key from the lock for another user
-  * @param _recipient address of the recipient of the purchased key
-  * @param _data optional marker for the key
-  * This will fail if
-  *  - the keyReleaseMechanism is private
-  *  - the keyReleaseMechanism is Approved and the recipient has not been previously approved
-  *  - the amount value is smaller than the price
-  *  - the recipient already owns a key
-  * TODO: next version of solidity will allow for message to be added to require.
-  */
-  function _purchaseFor(
-    address _recipient,
-    address _referrer,
-    bytes _data
-  )
-    internal
-    notSoldOut()
-    onlyPublicOrApproved(_recipient)
-  {
-    require(_recipient != address(0));
-
-    // Let's get the actual price for the key from the Unlock smart contract
-    Unlock unlock = Unlock(unlockProtocol);
-    uint discount;
-    uint tokens;
-    (discount, tokens) = unlock.computeAvailableDiscountFor(_recipient, keyPrice);
-    uint netPrice = keyPrice;
-    if (discount > keyPrice) {
-        netPrice = 0;
-    } else {
-        netPrice = keyPrice - discount;
     }
-
-    // We explicitly allow for greater amounts to allow "donations" or partial refunds after discounts (TODO implement partial refunds)
-    require(msg.value >= netPrice, 'Insufficient funds');
-    // TODO: If there is more than the required price, then let's return whatever is extra extra (CAREFUL: re-entrency!)
-
-    // Assign the key
-    uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
-    if (previousExpiration < now) {
-      owners.push(_recipient);
-      keyByOwner[_recipient].expirationTimestamp = now + expirationDuration;
-    } else {
-      // This is an existing owner trying to extend their key
-      keyByOwner[_recipient].expirationTimestamp = previousExpiration + expirationDuration;
-    }
-    // Overwite data in all cases
-    keyByOwner[_recipient].data = _data;
-
-    if (discount > 0) {
-        unlock.recordConsumedDiscount(discount, tokens);
-    }
-
-    unlock.recordKeyPurchase(netPrice, _referrer);
-
-    // trigger event
-    emit Transfer(
-      0, // This is a creation.
-      _recipient,
-      uint256(_recipient) // Note: since each user can own a single token, we use the current owner (new!) for the token id
-    );
-  }
 
   /**
   * @dev Purchase function, public version, with no referrer.
@@ -252,8 +181,8 @@ contract Lock is Ownable, ERC721 {
     address _recipient,
     bytes _data
   )
-    payable
     external
+    payable
   {
     return _purchaseFor(_recipient, address(0), _data);
   }
@@ -269,8 +198,8 @@ contract Lock is Ownable, ERC721 {
     address _referrer,
     bytes _data
   )
-    payable
     external
+    payable
     hasValidKey(_referrer)
   {
     return _purchaseFor(_recipient, _referrer, _data);
@@ -302,11 +231,13 @@ contract Lock is Ownable, ERC721 {
     }
 
     if (previousExpiration <= now) {
-      // The recipient did not have a key, or had a key but it expired. The new expiration is the sender's key expiration
+      // The recipient did not have a key, or had a key but it expired. The new expiration is the
+      // sender's key expiration
       keyByOwner[_recipient].expirationTimestamp = keyByOwner[_from].expirationTimestamp;
     } else {
       // The recipient has a non expired key. We just add them the corresponding remaining time
-      keyByOwner[_recipient].expirationTimestamp = keyByOwner[_from].expirationTimestamp + previousExpiration - now;
+      keyByOwner[_recipient].expirationTimestamp =
+        keyByOwner[_from].expirationTimestamp + previousExpiration - now;
     }
     // Overwite data in all cases
     keyByOwner[_recipient].data = keyByOwner[_from].data;
@@ -323,36 +254,6 @@ contract Lock is Ownable, ERC721 {
   }
 
   /**
-  * @dev Returns the key's data field for a given owner.
-  * @param _owner address of the user for whom we search the key
-  */
-  function keyDataFor(
-    address _owner
-  )
-    public
-    view
-    hasKey(_owner)
-    returns (bytes data)
-  {
-    return keyByOwner[_owner].data;
-  }
-
-  /**
-  * @dev Returns the key's ExpirationTimestamp field for a given owner.
-  * @param _owner address of the user for whom we search the key
-  */
-  function keyExpirationTimestampFor(
-    address _owner
-  )
-    public
-    view
-    hasKey(_owner)
-    returns (uint timestamp)
-  {
-    return keyByOwner[_owner].expirationTimestamp;
-  }
-
-  /**
    * @dev Called by owner to wiwthdraw all funds from the lock.
    * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
    * TODO: consider partial withdraws?
@@ -363,9 +264,28 @@ contract Lock is Ownable, ERC721 {
     external
     onlyOwner
   {
-     uint256 balance = address(this).balance;
-     require(balance > 0, 'Not enough funds');
-     owner.transfer(balance);
+    uint256 balance = address(this).balance;
+    require(balance > 0, "Not enough funds");
+    owner.transfer(balance);
+  }
+
+  /**
+   * This approves _approved to get ownership of _tokenId.
+   * Note: that since this is used for both purchase and transfer approvals
+   * the approved token may not exist.
+   */
+  function approve(
+    address _approved,
+    uint256 _tokenId
+  )
+    external
+    payable
+    onlyLockOwnerOnRestrictedOrKeyOwnerInPublic(_tokenId)
+  {
+    require(_approved != address(0));
+
+    approved[address(_tokenId)] = _approved;
+    emit Approval(address(_tokenId), _approved, _tokenId);
   }
 
   /**
@@ -396,42 +316,6 @@ contract Lock is Ownable, ERC721 {
     returns (address)
   {
     return address(_tokenId);
-  }
-
-  /**
-   * This approves _approved to get ownership of _tokenId.
-   * Note: that since this is used for both purchase and transfer approvals
-   * the approved token may not exist.
-   */
-  function approve(
-    address _approved,
-    uint256 _tokenId
-  )
-    external
-    payable
-    onlyLockOwnerOnRestrictedOrKeyOwnerInPublic(_tokenId)
-  {
-    require(_approved != address(0));
-
-    approved[address(_tokenId)] = _approved;
-    emit Approval(address(_tokenId), _approved, _tokenId);
-  }
-
-  /**
-   * Will return the approved recipient for a key transfer or ownership.
-   * Note: this does not check that a corresponding key
-   * actually exists.
-   */
-  function _getApproved(
-    uint256 _tokenId
-  )
-    internal
-    view
-    returns (address)
-  {
-    address approvedRecipient = approved[address(_tokenId)];
-    require(approvedRecipient != address(0));
-    return approvedRecipient;
   }
 
   /**
@@ -473,21 +357,117 @@ contract Lock is Ownable, ERC721 {
   }
 
   /**
-   * TODO: allow lock owner to take a cut from transaction (either has fixed or %age)
-   */
-  // function safeTransferFrom(
-  //   address _from,
-  //   address _to,
-  //   uint256 _tokenId,
-  //   bytes data
-  // )
-  //   external
-  //   payable
-  //   onlyPublic()
-  //   onlyKeyOwnerOrApproved(_tokenId)
-  // {
-  //   // Do the thing!
-  // }
+  * @dev Returns the key's data field for a given owner.
+  * @param _owner address of the user for whom we search the key
+  */
+  function keyDataFor(
+    address _owner
+  )
+    public
+    view
+    hasKey(_owner)
+    returns (bytes data)
+  {
+    return keyByOwner[_owner].data;
+  }
 
+  /**
+  * @dev Returns the key's ExpirationTimestamp field for a given owner.
+  * @param _owner address of the user for whom we search the key
+  */
+  function keyExpirationTimestampFor(
+    address _owner
+  )
+    public
+    view
+    hasKey(_owner)
+    returns (uint timestamp)
+  {
+    return keyByOwner[_owner].expirationTimestamp;
+  }
+
+  /**
+  * @dev Purchase function: this lets a user purchase a key from the lock for another user
+  * @param _recipient address of the recipient of the purchased key
+  * @param _data optional marker for the key
+  * This will fail if
+  *  - the keyReleaseMechanism is private
+  *  - the keyReleaseMechanism is Approved and the recipient has not been previously approved
+  *  - the amount value is smaller than the price
+  *  - the recipient already owns a key
+  * TODO: next version of solidity will allow for message to be added to require.
+  */
+  function _purchaseFor(
+    address _recipient,
+    address _referrer,
+    bytes _data
+  )
+    internal
+    notSoldOut()
+    onlyPublicOrApproved(_recipient)
+  {
+    require(_recipient != address(0));
+
+    // Let's get the actual price for the key from the Unlock smart contract
+    Unlock unlock = Unlock(unlockProtocol);
+    uint discount;
+    uint tokens;
+    (discount, tokens) = unlock.computeAvailableDiscountFor(_recipient, keyPrice);
+    uint netPrice = keyPrice;
+    if (discount > keyPrice) {
+      netPrice = 0;
+    } else {
+      netPrice = keyPrice - discount;
+    }
+
+    // We explicitly allow for greater amounts to allow "donations" or partial refunds after
+    // discounts (TODO implement partial refunds)
+    require(msg.value >= netPrice, "Insufficient funds");
+    // TODO: If there is more than the required price, then let's return whatever is extra
+    // extra (CAREFUL: re-entrency!)
+
+    // Assign the key
+    uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
+    if (previousExpiration < now) {
+      owners.push(_recipient);
+      keyByOwner[_recipient].expirationTimestamp = now + expirationDuration;
+    } else {
+      // This is an existing owner trying to extend their key
+      keyByOwner[_recipient].expirationTimestamp = previousExpiration + expirationDuration;
+    }
+    // Overwite data in all cases
+    keyByOwner[_recipient].data = _data;
+
+    if (discount > 0) {
+      unlock.recordConsumedDiscount(discount, tokens);
+    }
+
+    unlock.recordKeyPurchase(netPrice, _referrer);
+
+    // trigger event
+    emit Transfer(
+      0, // This is a creation.
+      _recipient,
+      uint256(_recipient) // Note: since each user can own a single token, we use the current
+      // owner (new!) for the token id
+    );
+  }
+
+  /**
+   * Will return the approved recipient for a key transfer or ownership.
+   * Note: this does not check that a corresponding key
+   * actually exists.
+   */
+  function _getApproved(
+    uint256 _tokenId
+  )
+    internal
+    view
+    returns (address)
+  {
+    address approvedRecipient = approved[address(_tokenId)];
+    require(approvedRecipient != address(0));
+    return approvedRecipient;
+  }
 
 }
