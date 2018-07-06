@@ -1,0 +1,10 @@
+{
+  "extends": "default",
+  "rules": {
+    "indent": [
+      "warn",
+      2
+    ],
+    "not-rely-on-time": false
+  }
+}
