@@ -37,7 +37,7 @@ const JobsPage = () => (
         <li>Initial chat conversation with our founder Julien (find him in our <a href="https://t.me/unlockprotocol">Telegram group</a>!).</li>
         <li>Open Source Bounty assignment: all of <a href="https://github.com/unlock-protocol/unlock">Unlock's code is public</a>. We'll ask you to submit a pull request for one of the issues which has a bounty.</li>
         <li>Once your Pull Request has been merged, we'll invite you for a second round of interviews (expect 3 or 4) with the team.</li>
-        <li>Reference checks.</li>
+        <li>Reference checks (please have your resumé ready and updated too!)</li>
       </ol>
       <p>We thrive to be respectful of your time and effort by providing you feedback early and often.</p>
 
@@ -74,7 +74,7 @@ const JobsPage = () => (
         <li>You ship high quality, well tested and documented code to meet the needs of users customers and colleagues</li>
         <li>High degree of autonomy and extensive communication skills to ensure that efficient collaboration with other team members</li>
         <li>Be a steward and influencer of our early engineering culture</li>
-        <li>In NYC or willing to relocated</li>
+        <li>In NYC or willing to relocate</li>
         </ul>
       <h2 className="h">Great to have</h2>
       <ul>
@@ -82,8 +82,9 @@ const JobsPage = () => (
         <li>Passion of cryptography and cyber security</li>
         <li>Interest for user experience and visual arts</li>
       </ul>
+      <h3 className="h">Compensation : $110K – $140K, stock options</h3>
       <h2 className="h h--alt">Applications</h2>
-      <p>If you are interested in applying for this position, please send an email containing your resume, Github, and Linkedin to <a href="mailto:julien@unlock-protocol.com">julien@unlock-protocol.com</a>.</p>
+      <p>If you are interested in applying for this position, please send an email containing your resume, Github, and Linkedin to <a href="mailto:julien@unlock-protocol.com">julien@unlock-protocol.com</a>, and reach out to Julien in our <a href="https://t.me/unlockprotocol">Telegram group</a>!).</p>
 
       {/* <h1 className="h" id="solidity-engineer">Solitidy Engineer</h1>
       <p><code>New York</code>&nbsp;&mdash;&nbsp;<code>Engineering</code>&nbsp;&mdash;&nbsp;<code>Full Time</code></p>
