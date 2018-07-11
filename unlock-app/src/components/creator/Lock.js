@@ -8,7 +8,7 @@ import Duration from '../helpers/Duration'
 
 export function LockOwner({ account, owner }) {
   if (account.address === owner) {
-    return (<span>  <span className="badge badge-secondary">Me</span> {owner} </span>)
+    return (<span><span className="badge badge-secondary">Me</span> {owner}</span>)
   }
   return (<span>{owner}</span>)
 }
@@ -31,7 +31,7 @@ WithdrawButton.propTypes = {
   withdrawFromLock: PropTypes.func,
 }
 
-export function  KeyReleaseMechanism({ mechanism }) {
+export function KeyReleaseMechanism({ mechanism }) {
   if (mechanism === '0') {
     return (<span>Public</span>)
   }
