@@ -44,6 +44,7 @@
     "deploy-lock": "cd ../smart-contracts && truffle deploy",
     "prestart": "npm run start-ganache && npm run deploy-lock",
     "start": "react-scripts start",
+    "deploy-app-to-s3": "npm run build && aws s3 sync build/ s3://staging.unlock-protocol.com --profile unlock",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
