@@ -21,8 +21,8 @@ export function Account({ account, isMetamask, showAccountPicker, useMetamask, m
         </span>
         }
         {!isMetamask && metamaskAvailable &&
-          <span className="col-2">
-            <button className="btn btn-small btn-outline-secondary js-accountUseMetamask" onClick={(event) => useMetamask()} type="button">Use metamask</button>
+          <span className="col-1 text-right">
+            <a className="js-accountUseMetamask" onClick={(event) => useMetamask()}><img src="/images/icons/icon-metamask.png" className="icon" /></a>
           </span>
 
         }
