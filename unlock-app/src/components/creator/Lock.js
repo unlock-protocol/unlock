@@ -6,7 +6,7 @@ import { withdrawFromLock } from '../../actions/lock'
 import Balance from '../helpers/Balance'
 import Duration from '../helpers/Duration'
 
-const LockOwner = ({ account, owner }) => {
+export function LockOwner({ account, owner }) {
   if (account.address === owner) {
     return (<span>  <span className="badge badge-secondary">Me</span> {owner} </span>)
   }
@@ -18,7 +18,20 @@ LockOwner.propTypes = {
   account: UnlockPropTypes.account,
 }
 
-const KeyReleaseMechanism = ({ mechanism }) => {
+export function WithdrawButton({ account, lock, withdrawFromLock }) {
+  if (account.address === lock.owner) {
+    return (<button className="btn btn-primary btn-sm" onClick={() => { withdrawFromLock(lock) }}>Withdraw</button>)
+  }
+  return null
+}
+
+WithdrawButton.propTypes = {
+  lock: UnlockPropTypes.lock,
+  account: UnlockPropTypes.account,
+  withdrawFromLock: PropTypes.func,
+}
+
+export function  KeyReleaseMechanism({ mechanism }) {
   if (mechanism === '0') {
     return (<span>Public</span>)
   }
@@ -58,8 +71,11 @@ const Lock = ({ lock, account, withdrawFromLock }) => {
         <li className="list-group-item">
           <p>Owner: <LockOwner account={account} owner={ lock.owner } /></p>
         </li>
+
         <li className="list-group-item">
-          <p>Balance: <Balance amount={lock.balance} /> <button className="btn btn-primary btn-sm" onClick={() => withdrawFromLock(lock)}>Withdraw</button></p>
+          <p>Balance: <Balance amount={lock.balance} />
+            <WithdrawButton lock={lock} account={account} withdrawFromLock={withdrawFromLock} />
+          </p>
         </li>
         <li className="list-group-item">
           <p>Outstanding keys: {lock.outstandingKeys}</p>
