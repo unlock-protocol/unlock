@@ -49,8 +49,11 @@ describe('Account Component', () => {
         showAccountPicker={showAccountPicker} />)
 
       it('shows a button to use metamask', () => {
-        const button = wrapperMetamaskNotUsed.find('button.js-accountUseMetamask')
-        expect(button.text()).toEqual('Use metamask')
+        const button = wrapperMetamaskNotUsed.find('a.js-accountUseMetamask')
+        expect(button).toExist()
+
+        expect(button.contains(<img src="/images/icons/icon-metamask.png" className="icon" />)).toBe(true)
+
         button.simulate('click')
         expect(useMetamask).toBeCalledWith()
       })
