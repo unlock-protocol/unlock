@@ -413,15 +413,15 @@ describe('Web3Service', () => {
 
       describe('when the private key is valid', () => {
         it('should yield that account with the right balance', () => {
-          const privateKey = '0xabc' //
-          getBalanceForAccountAndYieldBalance('0x07748403082b29a45abD6C124A37E6B14e6B1803', '0x100')
+          const privateKey = '0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d' //
+          getBalanceForAccountAndYieldBalance('0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1', '0x100')
 
-          return web3Service.loadAccount('0xabc')
+          return web3Service.loadAccount(privateKey)
             .then((account) => {
               expect(account).toMatchObject({
                 balance: '256',
                 privateKey,
-                address: '0x07748403082b29a45abD6C124A37E6B14e6B1803',
+                address: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
               })
             })
         })
