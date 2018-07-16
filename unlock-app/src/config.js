@@ -39,7 +39,14 @@ if (typeof window.web3 !== 'undefined') {
   }
 }
 
+let metamaskRequired = true
+// Let's see if metamask is required.
+if (window.location.hostname === 'staging.unlock-protocol.com') {
+  metamaskRequired = true
+}
+
 export const networks = defaultNetworks
 export {
   metamaskAvailable,
+  metamaskRequired,
 }

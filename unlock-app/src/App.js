@@ -17,6 +17,9 @@ import './App.css'
 // Store
 import createUnlockStore from './createUnlockStore'
 
+// Config
+import { metamaskRequired, metamaskAvailable } from './config'
+
 class App extends Component {
   constructor (props, context) {
     super(props)
@@ -36,7 +39,7 @@ class App extends Component {
       <Provider store={this.store}>
         <ConnectedRouter history={this.browserHistory}>
           <div className="container">
-            <Unlock />
+            <Unlock metamaskRequired={metamaskRequired} metamaskAvailable={metamaskAvailable} />
           </div>
         </ConnectedRouter>
       </Provider>
