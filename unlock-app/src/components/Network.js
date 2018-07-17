@@ -5,11 +5,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { setNetwork } from '../actions/network'
+import { withConfig } from '../utils/withConfig'
 
-import { networks } from '../config'
-
-export function Network({ setNetwork, networks, network }) {
-
+export function Network({ setNetwork, config, network }) {
   return (<div className="container">
     <header className="masthead mb-auto">
       <div className="inner">
@@ -28,8 +26,8 @@ export function Network({ setNetwork, networks, network }) {
 
             <div className="input-group mb-3">
               <select className="custom-select" type="select" value={network.name} onChange={(event) => setNetwork(event.target.value)}>
-                {Object.keys(networks).map((name, i) => {
-                  return (<option value={name} key={i}>{networks[name].name}</option>)
+                {Object.keys(config.networks).map((name, i) => {
+                  return (<option value={name} key={i}>{config.networks[name].name}</option>)
                 })}
               </select>
               <div className="input-group-append">
@@ -50,13 +48,12 @@ export function Network({ setNetwork, networks, network }) {
 Network.propTypes = {
   network: UnlockPropTypes.network,
   setNetwork: PropTypes.func,
-  networks: PropTypes.objectOf(UnlockPropTypes.network),
+  config: UnlockPropTypes.configuration,
 }
 
 const mapStateToProps = (state) => {
   return {
     network: state.network,
-    networks,
   }
 }
 
@@ -64,4 +61,4 @@ const mapDispatchToProps = dispatch => ({
   setNetwork: network => dispatch(setNetwork(network)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Network)
+export default withConfig(connect(mapStateToProps, mapDispatchToProps)(Network))
