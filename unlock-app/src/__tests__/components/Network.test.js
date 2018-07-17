@@ -20,8 +20,11 @@ describe('Network Component', () => {
     name: 'dev',
   }
   const setNetwork = jest.fn()
+  const config = {
+    networks,
+  }
 
-  const component = (<Network network={network} networks={networks} setNetwork={setNetwork} />)
+  const component = (<Network network={network} setNetwork={setNetwork} config={config} />)
   const wrapper = shallow(component)
 
   it('shows the network picker', () => {
