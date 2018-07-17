@@ -9,7 +9,7 @@ import Web3Service from '../services/web3Service'
 import { lockUnlessKeyIsValid } from '../services/iframeService'
 
 // This middleware listen to redux events and invokes the services APIs.
-export default function lockMiddleware ({ getState, dispatch, fuck }) {
+export default function lockMiddleware ({ getState, dispatch }) {
 
   const web3Service = new Web3Service()
 

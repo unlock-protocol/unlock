@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export function Home() {
   return (
-    <div>
+    <div className="container">
       <header className="masthead mb-auto">
         <div className="inner">
           <h3 className="masthead-brand">&nbsp;</h3>

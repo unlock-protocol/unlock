@@ -18,7 +18,10 @@ import './App.css'
 import createUnlockStore from './createUnlockStore'
 
 // Config
-import { metamaskRequired, metamaskAvailable } from './config'
+import configure from './config'
+
+const config = configure(global)
+const ConfigContext = React.createContext(config)
 
 class App extends Component {
   constructor (props, context) {
@@ -26,7 +29,7 @@ class App extends Component {
 
     this.browserHistory = createHistory()
 
-    this.store = createUnlockStore(this.browserHistory)
+    this.store = createUnlockStore(config.defaultNetwork, this.browserHistory)
 
     this.store.subscribe(() => {
       saveState(this.store.getState())
@@ -38,9 +41,9 @@ class App extends Component {
     return (
       <Provider store={this.store}>
         <ConnectedRouter history={this.browserHistory}>
-          <div className="container">
-            <Unlock metamaskRequired={metamaskRequired} metamaskAvailable={metamaskAvailable} />
-          </div>
+          <ConfigContext.Provider value={config}>
+            <Unlock />
+          </ConfigContext.Provider>
         </ConnectedRouter>
       </Provider>
     )

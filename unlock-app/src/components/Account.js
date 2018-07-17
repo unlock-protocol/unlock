@@ -7,9 +7,9 @@ import Balance from './helpers/Balance'
 
 import { setNetwork } from '../actions/network'
 
-import { metamaskAvailable } from '../config'
+import { withConfig } from '../utils/withConfig'
 
-export function Account({ account, isMetamask, showAccountPicker, useMetamask, metamaskAvailable }) {
+export function Account({ account, isMetamask, showAccountPicker, useMetamask, config }) {
   return (
     <div className="container">
       <div className="row align-items-center">
@@ -20,7 +20,7 @@ export function Account({ account, isMetamask, showAccountPicker, useMetamask, m
           <button className="btn btn-small btn-outline-secondary js-accountSwitch" onClick={(event) => showAccountPicker()} type="button">Switch</button>
         </span>
         }
-        {!isMetamask && metamaskAvailable &&
+        {!isMetamask && config.metamaskAvailable &&
           <span className="col-1 text-right">
             <a className="js-accountUseMetamask" onClick={(event) => useMetamask()}><img src="/images/icons/icon-metamask.png" className="icon" /></a>
           </span>
@@ -36,12 +36,11 @@ Account.propTypes = {
   showAccountPicker: PropTypes.func,
   isMetamask: PropTypes.bool,
   useMetamask: PropTypes.func,
-  metamaskAvailable: PropTypes.bool,
+  config: UnlockPropTypes.configuration,
 }
 
 const mapStateToProps = state => {
   return {
-    metamaskAvailable,
     isMetamask: state.network.name === 'metamask',
     account: state.network.account,
   }
@@ -51,4 +50,4 @@ const mapDispatchToProps = dispatch => ({
   useMetamask: account => dispatch(setNetwork('metamask')),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Account)
+export default withConfig(connect(mapStateToProps, mapDispatchToProps)(Account))
