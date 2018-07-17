@@ -2,10 +2,12 @@
 
 import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
-import { networks } from '../config'
 
 import LockContract from '../artifacts/contracts/Lock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
+import configure from '../config'
+
+const { networks } = configure(global)
 
 /**
  * This service interacts with the web3 RPC endpoint.

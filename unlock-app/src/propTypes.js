@@ -19,6 +19,10 @@ export const transaction = PropTypes.shape({
   status: PropTypes.string,
 })
 
+// TODO
+export const configuration = PropTypes.shape({
+})
+
 export const mechanism = PropTypes.oneOf(['0', '1', '2', undefined])
 
 export const locks = PropTypes.arrayOf(lock)
@@ -31,6 +35,7 @@ export const networks = PropTypes.shape({})
 
 export default {
   account,
+  configuration,
   lock,
   locks,
   key,

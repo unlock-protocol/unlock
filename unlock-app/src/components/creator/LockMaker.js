@@ -71,7 +71,7 @@ export class LockMaker extends React.Component {
     }
 
     return (
-      <div>
+      <div className="container">
         <header className="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
           <Account showAccountPicker={this.toggleAccountPicker} />
         </header>

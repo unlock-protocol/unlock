@@ -5,10 +5,6 @@
   "dependencies": {
     "bn.js": "^4.11.8",
     "bootstrap": "^4.0.0",
-    "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
-    "jest-enzyme": "^6.0.0",
-    "mock-socket": "^7.1.0",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -23,6 +19,9 @@
     "web3-utils": "^1.0.0-beta.34"
   },
   "devDependencies": {
+    "enzyme": "^3.3.0",
+    "jest-enzyme": "^6.0.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-standard": "^11.0.0",

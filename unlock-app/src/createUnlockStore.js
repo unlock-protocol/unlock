@@ -8,7 +8,7 @@ import networkReducer from './reducers/networkReducer'
 // Middlewares
 import lockMiddleware from './middlewares/lockMiddleware'
 
-export default function createUnlockStore(browserHistory) {
+export default function createUnlockStore(defaultNetwork, browserHistory) {
 
   const reducers = {
     router: routerReducer,
@@ -19,7 +19,7 @@ export default function createUnlockStore(browserHistory) {
 
   const initialState = Object.assign({
     network: {
-      name: 'dev', // default?
+      name: defaultNetwork,
     },
   }, loadState())
 

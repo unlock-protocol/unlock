@@ -11,10 +11,14 @@ describe('Account Component', () => {
   }
   const showAccountPicker = jest.fn()
   const useMetamask = jest.fn()
+  const config = {
+    metamaskAvailable: true,
+  }
 
   const wrapper = shallow(<Account
     account={account}
-    showAccountPicker={showAccountPicker} />)
+    showAccountPicker={showAccountPicker}
+    config={config} />)
 
   it('shows the current account\'s public key', () => {
     expect(wrapper.find('span').first().text()).toEqual('0xdeadbeef')
@@ -28,8 +32,9 @@ describe('Account Component', () => {
 
   describe('when metamask is available', () => {
     describe('when metamask is being used', () => {
+      const config = { metamaskAvailable: true }
       const metamaskUsedWrapper = shallow(<Account
-        metamaskAvailable={true}
+        config={config}
         isMetamask={true}
         account={account}
         showAccountPicker={showAccountPicker} />)
@@ -41,9 +46,10 @@ describe('Account Component', () => {
     })
 
     describe('when metamask is not being used', () => {
+      const config = { metamaskAvailable: true }
       const wrapperMetamaskNotUsed = shallow(<Account
         useMetamask={useMetamask}
-        metamaskAvailable={true}
+        config={config}
         isMetamask={false}
         account={account}
         showAccountPicker={showAccountPicker} />)
@@ -68,8 +74,9 @@ describe('Account Component', () => {
   })
 
   describe('when metamask is not available', () => {
+    const config = { metamaskAvailable: true }
     const wrapperMetamaskNotAvailable = shallow(<Account
-      metamaskAvailable={false}
+      config={config}
       account={account}
       showAccountPicker={showAccountPicker} />)
 

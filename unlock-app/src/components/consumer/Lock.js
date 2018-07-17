@@ -44,11 +44,13 @@ export class Lock extends React.Component {
     }
 
     return (
-      <div className="card">
-        <div className="card-header">
-          {account}
+      <div className="container">
+        <div className="card">
+          <div className="card-header">
+            {account}
+          </div>
+          {cardBody}
         </div>
-        {cardBody}
       </div>)
   }
 }
