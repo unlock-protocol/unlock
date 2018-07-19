@@ -20,7 +20,6 @@
   },
   "devDependencies": {
     "enzyme": "^3.3.0",
-    "jest-enzyme": "^6.0.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
@@ -33,6 +32,7 @@
     "eslint-plugin-react": "^7.7.0",
     "eslint-plugin-standard": "^3.0.1",
     "expect-enzyme": "^1.3.0",
+    "jest-enzyme": "^6.0.0",
     "nock": "^9.3.3",
     "react-router-test-context": "^0.1.0",
     "redux-mock-store": "^1.5.1"
@@ -43,8 +43,9 @@
     "deploy-lock": "cd ../smart-contracts && truffle deploy",
     "prestart": "npm run start-ganache && npm run deploy-lock",
     "start": "react-scripts start",
-    "deploy-app-to-s3": "npm run build && aws s3 sync build/ s3://staging.unlock-protocol.com --profile unlock",
+    "deploy-staging": "npm run build && TARGET=staging npm run build-unlockjs && aws s3 sync build/ s3://staging.unlock-protocol.com --profile unlock --no-progress | awk '{print $2;}' | cut -d'/' -f2- | awk '{print \"/\"$0}' | xargs aws cloudfront create-invalidation --distribution-id E1ZWU0E90B9EBN --paths --profile unlock",
     "build": "react-scripts build",
+    "build-unlockjs": "./node_modules/webpack/bin/webpack.js --config webpack-unlockjs.config.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "./node_modules/eslint/bin/eslint.js ."
