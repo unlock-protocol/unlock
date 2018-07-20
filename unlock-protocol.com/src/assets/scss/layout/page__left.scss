@@ -1,7 +1,4 @@
 .page__left {
-	background-image: url('../images/background-white.jpg');
-	background-size: cover;
-	box-shadow: 30px 0 59px 0 rgba(0,0,0,0.57);
 	text-align: center;
 	padding: 5rem;
 }
@@ -13,7 +10,6 @@
 @media only screen and (max-width: 1000px) {
 	.page__left {
 		width: 100%;
-		box-shadow: 0 30px 59px 0 rgba(0,0,0,0.57);
 		padding: 2.5rem 0;
 	}
 }

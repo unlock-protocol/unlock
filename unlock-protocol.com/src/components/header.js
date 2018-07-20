@@ -4,7 +4,9 @@ import logo from './../assets/images/logo.svg'
 
 const Header = ({ siteTitle }) => (
   <section className="page__left">
-    <img src={logo} alt={siteTitle} className="logo" />
+    <a href="/">
+      <img src={logo} alt={siteTitle} className="logo" />
+    </a>
   </section>
 )
 

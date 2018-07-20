@@ -21,19 +21,19 @@
 }
 
 .button--default {
-	border-color: rgba(white, 0.7);
+	border-color: rgba($primary-text-color, 0.7);
 
 	&:hover {
-		border-color: rgba(white, 1);
+		border-color: rgba($primary-text-color, 1);
 	}
 }
 
 .button--action {
-	border-color: rgba(white, 0.5);
+	border-color: rgba($primary-text-color, 0.5);
 	background: rgba(lighten(#006079, 30%), 0.3) linear-gradient( transparent 50%, rgba(black, 0.1) 50% );
 
 	&:hover {
-		border-color: rgba(white, 0.8);
+		border-color: rgba($primary-text-color, 0.8);
 	}
 }
 

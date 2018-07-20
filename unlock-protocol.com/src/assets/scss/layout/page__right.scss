@@ -6,12 +6,12 @@
 	display: flex;
 	flex-direction: column;
 
-	color: white;
-	font-size: 1.125rem;
+	color: $primary-text-color;
+	font-size: 1.3rem;
 	line-height: 1.5;
 
 	a {
-		color: white;
+		color: $primary-text-color;
 	}
 }
 
@@ -21,6 +21,10 @@
 
 		.page__description p {
 			margin-top: 0;
+
+			&.page__hero {
+				font-size: 2.0rem;
+			}
 		}
 
 		.page__description > :first-child { margin-top: 0 !important; margin-left: 0 !important; }

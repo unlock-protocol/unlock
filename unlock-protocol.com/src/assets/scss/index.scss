@@ -1,24 +1,16 @@
-@font-face {
-	font-family: 'Noir Pro';
-	src:  	url('../fonts/NoirPro-Light.woff2') format('woff2'),
-			url('../fonts/NoirPro-Light.woff') format('woff'),
-			url('../fonts/NoirPro-Light.eot') format('eot');
-			font-style: normal;
-			font-weight: 300;
-}
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700');
 
 * {
 	box-sizing: border-box;
 }
 
 body {
-	font-family: "Noir Pro";
+	font-family: 'IBM Plex Sans','Helvetica Neue', Arial, sans-serif;
+	font-size: 2rem;
 }
 
 .page {
 	min-height: 100vh;
-	background-image: url('../images/background-colored.jpg');
-	background-size: cover;
 	display: flex;
 	flex-direction: row;
 	align-items: stretch;
@@ -32,6 +24,7 @@ body {
 }
 
 @import "utilities";
+@import "colors";
 
 @import "layout/headings";
 @import "layout/page__left";
