@@ -23,6 +23,7 @@ export default class Web3Service {
    * @return {Promise}
    */
   connect({ network }) {
+    this.ready = false
     const conf = networks[network.name]
 
     if (!conf.provider) {
@@ -65,6 +66,7 @@ export default class Web3Service {
       getNetworkIdPromise,
     ]).then(([account, networkId]) => {
       this.networkId = networkId
+      this.ready = true
       return account
     })
   }
