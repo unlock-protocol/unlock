@@ -152,11 +152,21 @@ describe('Lock middleware', () => {
     expect(next).toHaveBeenCalledWith(action)
   })
 
-  it('should handle LOCATION_CHANGE by calling web3Service\'s getLock', () => {
+  it('should handle LOCATION_CHANGE by calling web3Service\'s getLock if web3Service is ready', () => {
     const { next, invoke } = create()
     const action = { type: LOCATION_CHANGE, payload: { pathname: `/lock/${lock.address}` } }
+    mockWeb3Service.ready = true
     invoke(action)
     expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock.address)
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it('should handle LOCATION_CHANGE but not call web3Service\'s getLock if web3Service is not ready', () => {
+    const { next, invoke } = create()
+    mockWeb3Service.ready = false
+    const action = { type: LOCATION_CHANGE, payload: { pathname: `/lock/${lock.address}` } }
+    invoke(action)
+    expect(mockWeb3Service.getLock).not.toHaveBeenCalled()
     expect(next).toHaveBeenCalledWith(action)
   })
 
