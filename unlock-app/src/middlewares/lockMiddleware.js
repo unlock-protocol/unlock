@@ -80,7 +80,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
 
       next(action)
 
-      if (action.type === LOCATION_CHANGE) {
+      if (action.type === LOCATION_CHANGE && web3Service.ready) {
         // Location was changed, get the matching lock
         const match = action.payload.pathname.match(/\/lock\/(0x[a-fA-F0-9]{40})$/)
         if (match) {

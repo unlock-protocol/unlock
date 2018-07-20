@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import UnlockPropTypes from '../propTypes'
 import React from 'react'
 import { Route, Switch } from 'react-router'
 
@@ -6,9 +6,10 @@ import LockMaker from './creator/LockMaker'
 import Lock from './consumer/Lock'
 import Home from './Home'
 import Network from './Network'
+import { withConfig } from '../utils/withConfig'
 
-export function Unlock({metamaskAvailable, metamaskRequired}) {
-  if (metamaskRequired && !metamaskAvailable) {
+export function Unlock({ config }) {
+  if (config.metamaskRequired && !config.metamaskAvailable) {
     return (<div>
       <div className="modal-dialog" role="document">
         <div className="modal-content">
@@ -33,8 +34,7 @@ export function Unlock({metamaskAvailable, metamaskRequired}) {
 }
 
 Unlock.propTypes = {
-  metamaskAvailable: PropTypes.bool,
-  metamaskRequired: PropTypes.bool,
+  config: UnlockPropTypes.configuration,
 }
 
-export default Unlock
+export default withConfig(Unlock)
