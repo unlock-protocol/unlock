@@ -11,8 +11,8 @@ import * as FontAwesome from 'react-icons/lib/fa'
 const IndexPage = () => (
   <section className="page__right">
     <div className="page__description">
-      <p>
-        Unlock is an <i>access control protocol</i> built on a blockchain. It enables creators to monetize their content or software without relying on a middleman. It lets consumers manage all of their subscriptions in a consistent way, as well as earn discounts when they share the best content and applications they use.
+      <p className="page__hero" >
+        Unlock is an <strong>access control protocol</strong> built on a blockchain. It enables creators to monetize their content or software without relying on a middleman. It lets consumers manage all of their subscriptions in a consistent way, as well as earn discounts when they share the best content and applications they use.
       </p>
       <Buttons>
         <Button className="button--default" href="https://medium.com/@julien51/its-time-to-unlock-the-web-b98e9b94add1" text="Learn more..." />
