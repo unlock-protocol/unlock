@@ -1,10 +1,12 @@
 .button {
+	flex-grow: 1;
+  flex-flow: row wrap;
 	text-align: center;
-	display: inline-block;
 	text-decoration: none;
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	padding: 0.6em 0.9em;
+	margin: 10px;
 	font-size: 0.9em;
 	border-radius: 2px;
 	border-width: 1px;

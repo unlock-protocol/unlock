@@ -1,5 +1,5 @@
 .buttons {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, 200px);
-	grid-gap: 1rem;
+	display: flex;
+	margin:0 -10px;
+	flex-wrap: wrap;
 }
