@@ -9,7 +9,6 @@ import OptinForm from '../components/OptinForm'
 import * as FontAwesome from 'react-icons/lib/fa'
 
 const IndexPage = () => (
-  <section className="page__right">
     <div className="page__description">
       <p className="page__hero" >
         Unlock is an <strong>access control protocol</strong> built on a blockchain. It enables creators to monetize their content or software without relying on a middleman. It lets consumers manage all of their subscriptions in a consistent way, as well as earn discounts when they share the best content and applications they use.
@@ -23,12 +22,11 @@ const IndexPage = () => (
           <FontAwesome.FaPaperPlane />
         </Button>
       </Buttons>
+      <div className="page__form">
+        <OptinForm />
+      </div>
     </div>
 
-    <div className="page__form">
-      <OptinForm />
-    </div>
-  </section>
 )
 
 export default IndexPage
