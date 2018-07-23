@@ -24,51 +24,60 @@ export default class Web3Service {
    */
   connect({ network }) {
     this.ready = false
-    const conf = networks[network.name]
 
-    if (!conf.provider) {
-      if (conf.protocol === 'ws') {
-        conf.provider = new Web3.providers.WebsocketProvider(conf.url)
-      } else if (conf.protocol === 'http') {
-        conf.provider = new Web3.providers.HttpProvider(conf.url)
+    return new Promise((resolve, reject) => {
+      const conf = networks[network.name]
+
+      // We fail: it appears that we are trying to connect to a network which does not exist.
+      if(!conf) {
+        return reject()
       }
-    }
-    this.web3 = new Web3(conf.provider)
 
-    // Get the network id
-    const getNetworkIdPromise = this.web3.eth.net.getId()
-
-    let getAccountPromise
-    if (!network.account.address) {
-      getAccountPromise = this.web3.eth.getAccounts().then((accounts) => {
-        if (accounts.length === 0) {
-          return this.createAccount() // TODO: make it a promise which returns an account!
-        } else {
-          return Promise.resolve({
-            address: accounts[0], // take the first one by default
-          })
+      if (!conf.provider) {
+        if (conf.protocol === 'ws') {
+          conf.provider = new Web3.providers.WebsocketProvider(conf.url)
+        } else if (conf.protocol === 'http') {
+          conf.provider = new Web3.providers.HttpProvider(conf.url)
         }
-      })
-    } else {
-      getAccountPromise = Promise.resolve(network.account)
-    }
+      }
+      this.web3 = new Web3(conf.provider)
 
-    // Once we have the account, let's refresh it!
-    const refreshAccountPromise = getAccountPromise.then((account) => {
-      return this.getAddressBalance(account.address).then((balance) => {
-        account.balance = balance
-        return account
+      // Get the network id
+      const getNetworkIdPromise = this.web3.eth.net.getId()
+
+      let getAccountPromise
+      if (!network.account.address) {
+        getAccountPromise = this.web3.eth.getAccounts().then((accounts) => {
+          if (accounts.length === 0) {
+            return this.createAccount() // TODO: make it a promise which returns an account!
+          } else {
+            return Promise.resolve({
+              address: accounts[0], // take the first one by default
+            })
+          }
+        })
+      } else {
+        getAccountPromise = Promise.resolve(network.account)
+      }
+
+      // Once we have the account, let's refresh it!
+      const refreshAccountPromise = getAccountPromise.then((account) => {
+        return this.getAddressBalance(account.address).then((balance) => {
+          account.balance = balance
+          return account
+        })
+      })
+
+      return Promise.all([
+        refreshAccountPromise,
+        getNetworkIdPromise,
+      ]).then(([account, networkId]) => {
+        this.networkId = networkId
+        this.ready = true
+        return resolve(account)
       })
     })
 
-    return Promise.all([
-      refreshAccountPromise,
-      getNetworkIdPromise,
-    ]).then(([account, networkId]) => {
-      this.networkId = networkId
-      this.ready = true
-      return account
-    })
   }
 
   /**

@@ -38,11 +38,7 @@ export default function config(environment) {
     defaultNetwork = 'metamask'
   }
 
-  let metamaskRequired = false
-  // Let's see if metamask is required.
-  if (environment.location.hostname === 'staging.unlock-protocol.com') {
-    metamaskRequired = true
-  }
+  let metamaskRequired = (defaultNetwork === 'metamask')
 
   return {
     networks: defaultNetworks,
