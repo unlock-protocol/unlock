@@ -5,7 +5,7 @@ let url = 'https://unlock-protocol.com'
 if (process.env.TARGET == 'staging') {
   url = 'https://staging.unlock-protocol.com'
 } else if (process.env.TARGET == 'dev') {
-  url = 'http://0.0.0.0:3000'
+  url = 'http://localhost:3000'
 }
 
 module.exports = {
