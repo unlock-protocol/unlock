@@ -4,7 +4,7 @@ const lockedNode = document.querySelector('[unlock-lock]')
 
 // If there is no lock, do nothing!
 if (lockedNode) {
-  var src = UNLOCK_URL || 'http://0.0.0.0:3000'
+  var src = UNLOCK_URL || 'http://localhost:3000'
 
   var s = document.createElement('iframe')
   src += `/lock/${lockedNode.getAttribute('unlock-lock')}`
