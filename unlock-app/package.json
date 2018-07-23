@@ -41,11 +41,12 @@
     "start-app": "react-scripts start",
     "start-ganache": "ganache-cli --deterministic &",
     "deploy-lock": "cd ../smart-contracts && truffle deploy",
-    "prestart": "npm run start-ganache && npm run deploy-lock",
+    "prestart": "npm run start-ganache && npm run deploy-lock && npm run serve-unlockjs",
     "start": "react-scripts start",
     "deploy-staging": "npm run build && TARGET=staging npm run build-unlockjs && aws s3 sync build/ s3://staging.unlock-protocol.com --profile unlock --no-progress | awk '{print $2;}' | cut -d'/' -f2- | awk '{print \"/\"$0}' | xargs aws cloudfront create-invalidation --distribution-id E1ZWU0E90B9EBN --paths --profile unlock",
     "build": "react-scripts build",
     "build-unlockjs": "./node_modules/webpack/bin/webpack.js --config webpack-unlockjs.config.js",
+    "serve-unlockjs": "TARGET=dev node_modules/.bin/webpack-dev-server --config webpack-unlockjs.config.js &",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "./node_modules/eslint/bin/eslint.js ."
