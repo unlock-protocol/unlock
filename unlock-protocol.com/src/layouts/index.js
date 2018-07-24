@@ -5,6 +5,7 @@ import Helmet from 'react-helmet'
 import 'normalize.css'
 
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import './../assets/scss/index.scss'
 
 const Layout = ({ children, data }) => (
@@ -14,7 +15,10 @@ const Layout = ({ children, data }) => (
       <script src='https://www.google.com/recaptcha/api.js'></script>
     </Helmet>
     <Header siteTitle={data.site.siteMetadata.title} />
-    {children()}
+    <section className="page__right">
+      {children()}
+      <Footer />
+    </section>
   </div>
 )
 

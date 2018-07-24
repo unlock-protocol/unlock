@@ -22,10 +22,11 @@ body {
 	}
 }
 
-@import "utilities";
 @import "colors";
+@import "utilities";
 
 @import "layout/headings";
+@import "layout/footer";
 @import "layout/page__left";
 @import "layout/page__right";
 
