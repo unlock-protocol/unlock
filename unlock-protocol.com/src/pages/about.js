@@ -9,7 +9,6 @@ import Columns from '../components/Columns'
 import OptinForm from '../components/OptinForm'
 
 const AboutPage = () => (
-  <section className="page__right">
     <div className="page__description">
       <h1 className="h">About Unlock</h1>
       <p>At Unlock, we believe the web needs a <a href="https://medium.com/unlock-protocol/its-time-to-unlock-the-web-b98e9b94add1">new business model</a>. We believe the decentralization promise of the web cannot be achieved if economic incentives are not aligned between consumers and creators. For this, we're building a protocol which lets anyone restrict access to their creations and for consumers to earn points when they discover and promote the best creations.
@@ -35,7 +34,6 @@ const AboutPage = () => (
 
 
     </div>
-  </section>
 )
 
 export default AboutPage

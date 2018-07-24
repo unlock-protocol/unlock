@@ -9,7 +9,6 @@ import Columns from '../components/Columns'
 import OptinForm from '../components/OptinForm'
 
 const JobsPage = () => (
-  <section className="page__right">
     <div className="page__description">
       <h1 className="h">Work at Unlock</h1>
       <p>Unlock is an <i>access control protocol</i> built on Ethereum. We enable creators to monetize their content or software without relying on a middleman. We are looking for software engineers to help us build the protocol, its reference applications (ÐApps), as well as learn and pave the way for best practices around blockchain development.</p>
@@ -99,7 +98,6 @@ const JobsPage = () => (
       <p>If you are interested in applying for this position, please send an email containing your resume, Github, and Linkedin to julien@unlock-protocol.com.</p> */}
 
     </div>
-  </section>
 )
 
 export default JobsPage

@@ -23,6 +23,7 @@
 	margin-top: 0;
 
 	&.page__hero {
+		font-size: 2.0rem;
 	}
 }
 
@@ -41,7 +42,6 @@
 		font-size: 2.0rem;
 	}
 }
-
 
 @media only screen and (max-width: 1000px) {
 	.page__right {
