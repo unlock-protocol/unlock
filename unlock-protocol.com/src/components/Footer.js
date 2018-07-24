@@ -7,6 +7,9 @@ const Footer = ({ siteTitle }) => (
   <footer className="footer">
     <p>© 2018 Unlock Inc</p>
     <ul>
+      <li><a href="https://twitter.com/UnlockProtocol" alt="Twitter">
+        <FontAwesome.FaTwitter /> Follow us
+      </a></li>
       <li><a href="https://github.com/unlock-protocol" alt="Source Code">
         <FontAwesome.FaGithub /> Source Code
       </a></li>
