@@ -7,7 +7,6 @@ import Columns from '../components/Columns'
 import OptinForm from '../components/OptinForm'
 
 const ElementsPage = () => (
-  <section className="page__right">
     <div className="page__description">
       <p>I am a generic Paragraph, followed by three types of buttons.</p>
 
@@ -44,13 +43,13 @@ const ElementsPage = () => (
       <h4 className="h h--alt">These are headings</h4>
       <h5 className="h h--alt">These are headings</h5>
       <h6 className="h h--alt">These are headings</h6>
+
+      <div className="page__form">
+        <h2 className="h">Optin Form</h2>
+        <OptinForm />
+      </div>
     </div>
 
-    <div className="page__form">
-      <h2 className="h">Optin Form</h2>
-      <OptinForm />
-    </div>
-  </section>
 )
 
 export default ElementsPage
