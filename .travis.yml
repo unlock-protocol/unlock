@@ -1,11 +1,9 @@
 language: generic
-
 services:
-  - docker
-
+- docker
 before_install:
-  - docker-compose -f docker/docker-compose.ci.yml build
-  - docker-compose -f docker/docker-compose.ci.yml up --abort-on-container-exit
-
+- docker-compose -f docker/docker-compose.ci.yml build
+- docker-compose -f docker/docker-compose.ci.yml up --abort-on-container-exit
 notifications:
-  slack: unlockhq:aGaUVUmxpWbHqoDS6z0oSpZW
+  slack:
+    secure: q4BMSH3FifcaoPwQ2QFocbv8OuNT4JWgeJuE7jxppw86rCJHOyp6SdLpzp4944cWTlEGFdbQsp83OE2fx99i9OncvlJM5Is1IQgIDUfOD2l8mKx+HPlWvuBLaRB5j7vdamzODaHU2NlS+XSU7I0ytxp39x5arYY5hR9yqETvkyjAsSWBjY74Vv+eED+ALtQD9HKoH3xaxgV5rolujR3MEzdMSoNpenivz+BIfKhGQlOHyEN0FOsZtBkCmJTZ9mQbPApu2NKQZRU2cTn7h4Pp4Gpy6mVPWtesUd9OtblsA658qw9Sn/C9hIO1uKgGb4G1PJrKaa/qs2WeMj3VNQ0CkubXYNUS+OfnRb0CT+eTRCndnhFsDdt0zgIBtFeG2FT83OD0sT1SHduY69uETxxstTJw6F8+q/n4JNImBT7klBn2tLrS8kOpk2dqIkpQsvKst67UaYVNa4x2wOcbBxwE+RXP3i3Hs+NpNW/3W9IJOXA2Twx6Q70ORlg3Lnfw28gTDOnh3ZYx48b8y17U4J4KJgEu7aaQCUtoPK/dSwGl0atMQn/FRwEHvIs7zIh/PqyWYRA+y0V3VAe2bAuLf5WTjUijN5w+wfHDGjo6fxZ6dPwBXhhbeFWl4Tz6GEiOGJsebJTtDKWYD/uItNqb3uFiEwEeUEFJCY1zVU5jT8NL3TY=
