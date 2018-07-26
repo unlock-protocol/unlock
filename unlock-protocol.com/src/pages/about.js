@@ -27,7 +27,7 @@ const AboutPage = () => (
       <p>
         He created his first company, <a href="https://jobetudiant.net/">Jobetudiant</a> while still in school. After more than 15 years, Jobetudiant is still the largest job board for students in France.</p>
 
-      <p>Julien is also a strong open web advocate. He co-authored the W3C <a href="https://www.w3.org/TR/websub/">WebSub</a> protocol and spoke at numerous international conferences and events such as Google IO, LeWeb, Blend WebMix, JSConf EU. He also co-organized the Realtime Conf in the US and Europe.ee</p>
+      <p>Julien is also a strong open web advocate. He co-authored the W3C <a href="https://www.w3.org/TR/websub/">WebSub</a> protocol and spoke at numerous international conferences and events such as Google IO, LeWeb, Blend WebMix, JSConf EU. He also co-organized the Realtime Conf in the US and Europe.</p>
 
       <h2 className="h">Investors</h2>
       <p>In June 2018, we received $1.7M in funding from the following investors: <a href="https://www.generalcatalyst.com/">General Catalyst</a> and by <a href="http://www.cherry.vc/">Cherry Ventures</a> and with participations from <a href="https://consensys.net/ventures/">Consensys Ventures</a>, <a href="https://kindredvc.com/">Kindred Ventures</a>, <a href="https://betaworks.com/">Betaworks</a>, <a href="https://122west.vc/">122 West</a>, <a href="https://www.lafamiglia.vc/">La Famiglia</a>, <a href="https://ventures.coinbase.com/">Coinbase Ventures</a> and a group of stellar business angels.</p>
