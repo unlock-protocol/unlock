@@ -2,9 +2,10 @@ version: '3'
 services:
   ganache:
     restart: always
-    image: trufflesuite/ganache-cli
+    image: trufflesuite/ganache-cli:v6.1.6
     expose:
       - 8545
+    command: ["-h=0.0.0.0"]
   unlock:
     build:
       context: ..
