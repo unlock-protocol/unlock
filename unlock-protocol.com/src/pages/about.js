@@ -23,7 +23,7 @@ const AboutPage = () => (
       </p>
       <p>Previously, Julien was a Lead Engineer at Medium after he sold his previous company, <a href="https://superfeedr.com/">Superfeedr</a>. Superfeedr is the leading RSS feed API for publishers and subscribers.</p>
 
-      <p>At Medium he lead the SEO effort and quadrupled the share of traffic Medium receives from search in 9 months. He also successfuly implemented syndication protocols such as Google’s Accelerated Mobile Pages and Facebook’s Intant Articles.</p>
+      <p>At Medium he lead the SEO effort and quadrupled the share of traffic Medium receives from search in 9 months. He also successfuly implemented syndication protocols such as Google’s Accelerated Mobile Pages and Facebook’s Instant Articles.</p>
       <p>
         He created his first company, <a href="https://jobetudiant.net/">Jobetudiant</a> while still in school. After more than 15 years, Jobetudiant is still the largest job board for students in France.</p>
 
