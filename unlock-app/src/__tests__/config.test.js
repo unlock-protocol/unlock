@@ -64,10 +64,6 @@ describe('config', () => {
       expect(config.defaultNetwork).toEqual('metamask')
     })
 
-    it('should require metamask', () => {
-      expect(config.metamaskRequired).toEqual(true)
-    })
-
   })
 
 })
