@@ -9,12 +9,12 @@ import Network from './Network'
 import { withConfig } from '../utils/withConfig'
 
 export function Unlock({ config }) {
-  if (config.metamaskRequired && !config.metamaskAvailable) {
+  if (!config.web3Available) {
     return (<div>
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Metamask is required</h5>
+            <h5 className="modal-title">A Web3 provider is required</h5>
           </div>
           <div className="modal-body">
             <p>This early version of Unlock requires you to use an injected Web3 provider such as <a href="https://metamask.io/">Metamask</a>. </p>
