@@ -15,6 +15,21 @@ export default function lockMiddleware ({ getState, dispatch }) {
 
   return function (next) {
     return function (action) {
+
+      if (!web3Service.ready) {
+        // We return to make sure other middleware actions are not processed
+        return web3Service.connect({
+          network: getState().network,
+        }).then((account) => {
+          // we dispatch again!
+          dispatch(action)
+          dispatch(setAccount(account))
+        }).catch(() => {
+          // we could not connect
+          // TODO: show error to user
+        })
+      }
+
       if (action.type === LOAD_ACCOUNT) {
         web3Service.loadAccount(action.privateKey)
           .then((account) => {
@@ -78,23 +93,11 @@ export default function lockMiddleware ({ getState, dispatch }) {
       next(action)
 
       if (action.type === LOCATION_CHANGE) {
-        if (web3Service.ready) {
-          // Location was changed, get the matching lock
-          const match = action.payload.pathname.match(/\/lock\/(0x[a-fA-F0-9]{40})$/)
-          if (match) {
-            web3Service.getLock(match[1]).then((lock) => {
-              dispatch(resetLock(lock)) // update the lock
-            })
-          }
-        } else {
-          // Location was changed but web3Service is not ready... so let's connect!
-          web3Service.connect({
-            network: getState().network,
-          }).then((account) => {
-            dispatch(setAccount(account))
-          }).catch(() => {
-            // we could not connect
-            // TODO: show error to user
+        // Location was changed, get the matching lock
+        const match = action.payload.pathname.match(/\/lock\/(0x[a-fA-F0-9]{40})$/)
+        if (match) {
+          web3Service.getLock(match[1]).then((lock) => {
+            dispatch(resetLock(lock)) // update the lock
           })
         }
       } else if (action.type === SET_ACCOUNT) {
