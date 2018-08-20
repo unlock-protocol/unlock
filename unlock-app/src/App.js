@@ -29,7 +29,7 @@ class App extends Component {
 
     this.browserHistory = createHistory()
 
-    this.store = createUnlockStore(config.defaultNetwork, this.browserHistory)
+    this.store = createUnlockStore(config, this.browserHistory)
 
     this.store.subscribe(() => {
       saveState(this.store.getState())
