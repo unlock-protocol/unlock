@@ -12,7 +12,7 @@ describe('Account Component', () => {
   const showAccountPicker = jest.fn()
   const useMetamask = jest.fn()
   const config = {
-    metamaskAvailable: true,
+    web3Available: true,
   }
 
   const wrapper = shallow(<Account
@@ -32,7 +32,7 @@ describe('Account Component', () => {
 
   describe('when metamask is available', () => {
     describe('when metamask is being used', () => {
-      const config = { metamaskAvailable: true }
+      const config = { web3Available: true }
       const metamaskUsedWrapper = shallow(<Account
         config={config}
         isMetamask={true}
@@ -46,7 +46,7 @@ describe('Account Component', () => {
     })
 
     describe('when metamask is not being used', () => {
-      const config = { metamaskAvailable: true }
+      const config = { web3Available: true }
       const wrapperMetamaskNotUsed = shallow(<Account
         useMetamask={useMetamask}
         config={config}
@@ -74,7 +74,7 @@ describe('Account Component', () => {
   })
 
   describe('when metamask is not available', () => {
-    const config = { metamaskAvailable: true }
+    const config = { web3Available: true }
     const wrapperMetamaskNotAvailable = shallow(<Account
       config={config}
       account={account}
