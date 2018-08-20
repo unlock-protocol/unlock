@@ -40,7 +40,7 @@ describe('config', () => {
         },
       })
 
-      expect(config.networks.metamask).toEqual({
+      expect(config.networks.Metamask).toEqual({
         name: 'Metamask',
         provider: {
           isMetaMask: true,
@@ -61,7 +61,7 @@ describe('config', () => {
     })
 
     it('should have the right default network', () => {
-      expect(config.defaultNetwork).toEqual('metamask')
+      expect(config.defaultNetwork).toEqual('rinkeby')
     })
 
   })

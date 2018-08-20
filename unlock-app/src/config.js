@@ -64,6 +64,11 @@ export default function config(environment) {
     defaultNetwork = requiredNetwork = 'rinkeby'
   }
 
+  if (defaultNetwork === 'dev') {
+    // In dev, we do not need a web3 provider because the local ethereum node has unlocked accounts... so we fake it!
+    web3Available = true
+  }
+
   return {
     networks: defaultNetworks,
     web3Available,

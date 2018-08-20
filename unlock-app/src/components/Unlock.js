@@ -9,6 +9,7 @@ import Network from './Network'
 import { withConfig } from '../utils/withConfig'
 
 export function Unlock({ config }) {
+
   if (!config.web3Available) {
     return (<div>
       <div className="modal-dialog" role="document">
