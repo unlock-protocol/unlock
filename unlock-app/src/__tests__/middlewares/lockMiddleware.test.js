@@ -59,6 +59,7 @@ const create = () => {
  */
 
 let mockWeb3Service = {
+  ready: true,
   connect: true,
   createLock: true,
   purchaseKey: true,
@@ -113,6 +114,19 @@ beforeEach(() => {
 
 describe('Lock middleware', () => {
 
+  describe('when web3Service is not ready', () => {
+
+    it('should connect on any action and stop further execution', () => {
+      mockWeb3Service.ready = false
+      const { next, invoke } = create()
+      const action = { type: SET_NETWORK, network }
+      invoke(action)
+      expect(mockWeb3Service.connect).toHaveBeenCalledWith(state)
+      expect(next).toHaveBeenCalledTimes(0) // ensures that execution was stopped
+    })
+
+  })
+
   it('should handle LOAD_ACCOUNT by calling web3Service', () => {
     const { next, invoke } = create()
     const action = { type: LOAD_ACCOUNT, privateKey }
@@ -152,21 +166,11 @@ describe('Lock middleware', () => {
     expect(next).toHaveBeenCalledWith(action)
   })
 
-  it('should handle LOCATION_CHANGE by calling web3Service\'s getLock if web3Service is ready', () => {
+  it('should handle LOCATION_CHANGE by calling web3Service\'s getLock', () => {
     const { next, invoke } = create()
     const action = { type: LOCATION_CHANGE, payload: { pathname: `/lock/${lock.address}` } }
-    mockWeb3Service.ready = true
     invoke(action)
     expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock.address)
-    expect(next).toHaveBeenCalledWith(action)
-  })
-
-  it('should handle LOCATION_CHANGE but not call web3Service\'s getLock if web3Service is not ready', () => {
-    const { next, invoke } = create()
-    mockWeb3Service.ready = false
-    const action = { type: LOCATION_CHANGE, payload: { pathname: `/lock/${lock.address}` } }
-    invoke(action)
-    expect(mockWeb3Service.getLock).not.toHaveBeenCalled()
     expect(next).toHaveBeenCalledWith(action)
   })
 
