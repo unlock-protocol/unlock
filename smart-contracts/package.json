@@ -6,6 +6,10 @@
   "directories": {
     "test": "test"
   },
+  "engines": {
+    "node": "=8.11.4"
+  },
+  "engineStrict": true,
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
@@ -25,7 +29,7 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
-    "solhint":"^1.2.1"
+    "solhint": "^1.2.1"
   },
   "scripts": {
     "test": "truffle test",
