@@ -10558,9 +10558,9 @@
       }
     },
     "react": {
-      "version": "16.2.0",
-      "resolved": "https://registry.npmjs.org/react/-/react-16.2.0.tgz",
-      "integrity": "sha512-ZmIomM7EE1DvPEnSFAHZn9Vs9zJl5A9H7el0EGTE6ZbW9FKe/14IYAlPbC8iH25YarEQxZL+E8VW7Mi7kfQrDQ==",
+      "version": "16.4.2",
+      "resolved": "https://registry.npmjs.org/react/-/react-16.4.2.tgz",
+      "integrity": "sha512-dMv7YrbxO4y2aqnvA7f/ik9ibeLSHQJTI6TrYAenPSaQ6OXfb+Oti+oJiy8WBxgRzlKatYqtCjphTgDSCEiWFg==",
       "requires": {
         "fbjs": "0.8.16",
         "loose-envify": "1.3.1",
@@ -10600,9 +10600,9 @@
       "dev": true
     },
     "react-dom": {
-      "version": "16.2.0",
-      "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-16.2.0.tgz",
-      "integrity": "sha512-zpGAdwHVn9K0091d+hr+R0qrjoJ84cIBFL2uU60KvWBPfZ7LPSrfqviTxGHWN0sjPZb2hxWzMexwrvJdKePvjg==",
+      "version": "16.4.2",
+      "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-16.4.2.tgz",
+      "integrity": "sha512-Usl73nQqzvmJN+89r97zmeUpQDKDlh58eX6Hbs/ERdDHzeBzWy+ENk7fsGQ+5KxArV1iOFPT46/VneklK9zoWw==",
       "requires": {
         "fbjs": "0.8.16",
         "loose-envify": "1.3.1",
@@ -12759,6 +12759,14 @@
       "resolved": "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz",
       "integrity": "sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c="
     },
+    "typedarray-to-buffer": {
+      "version": "3.1.5",
+      "resolved": "https://registry.npmjs.org/typedarray-to-buffer/-/typedarray-to-buffer-3.1.5.tgz",
+      "integrity": "sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==",
+      "requires": {
+        "is-typedarray": "1.0.0"
+      }
+    },
     "ua-parser-js": {
       "version": "0.7.17",
       "resolved": "https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-0.7.17.tgz",
@@ -13496,7 +13504,9 @@
           "version": "git://github.com/frozeman/WebSocket-Node.git#6c72925e3f8aaaea8dc8450f97627e85263999f2",
           "requires": {
             "debug": "2.6.9",
-            "nan": "2.9.2"
+            "nan": "2.9.2",
+            "typedarray-to-buffer": "3.1.5",
+            "yaeti": "0.0.6"
           }
         }
       }
@@ -14144,6 +14154,11 @@
       "version": "3.2.1",
       "resolved": "https://registry.npmjs.org/y18n/-/y18n-3.2.1.tgz",
       "integrity": "sha1-bRX7qITAhnnA136I53WegR4H+kE="
+    },
+    "yaeti": {
+      "version": "0.0.6",
+      "resolved": "https://registry.npmjs.org/yaeti/-/yaeti-0.0.6.tgz",
+      "integrity": "sha1-8m9ITXJoTPQr7ft2lwqhYI+/lXc="
     },
     "yallist": {
       "version": "2.1.2",
