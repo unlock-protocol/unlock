@@ -7,7 +7,7 @@
     "bootstrap": "^4.0.0",
     "prop-types": "^15.6.1",
     "react": "^16.4.2",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.9",
@@ -37,6 +37,10 @@
     "react-router-test-context": "^0.1.0",
     "redux-mock-store": "^1.5.1"
   },
+  "engines": {
+    "node": "=8.11.4"
+  },
+  "engineStrict": true,
   "scripts": {
     "start-app": "react-scripts start",
     "start-ganache": "ganache-cli --deterministic &",
