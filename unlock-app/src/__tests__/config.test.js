@@ -2,68 +2,71 @@ import configure from '../config'
 
 describe('config', () => {
 
-  it('should include all networks', () => {
+  it('should have the right keys in dev', () => {
     let config = configure(global)
-    expect(config.networks).toEqual({
-      dev:
-      {
-        url: 'ws://127.0.0.1:8545',
-        name: 'Development',
-        protocol: 'ws',
-      },
-      test:
-      {
-        url: 'http://127.0.0.1:8545',
-        name: 'Test',
-        protocol: 'http',
-      },
-      ganache:
-      {
-        url: 'ws://127.0.0.1:8546',
-        name: 'Ganache',
-        protocol: 'ws',
+    expect(config.requiredNetwork).toEqual(false)
+    expect(config.providers).toEqual({
+      HTTP: {
+        connected: false,
+        headers: undefined,
+        host: 'http://127.0.0.1:8545',
+        timeout: 0,
       },
     })
   })
 
-  describe('when metamask is available', () => {
-
-    it('should include the metamask provider', () => {
-      let config = configure({
-        web3: {
-          currentProvider: {
-            isMetaMask: true,
-          },
-        },
-        location: {
-          hostname: 'staging.unlock-protocol.com',
-        },
-      })
-
-      expect(config.networks.Metamask).toEqual({
-        name: 'Metamask',
-        provider: {
+  it('should have the right keys in dev when there is a web3 provider', () => {
+    let config = configure({
+      web3: {
+        currentProvider: {
           isMetaMask: true,
         },
-      })
+      },
+      location: {
+        hostname: 'localhost',
+      },
     })
-
+    expect(config.requiredNetwork).toEqual(false)
+    expect(config.providers).toEqual({
+      HTTP: {
+        connected: false,
+        headers: undefined,
+        host: 'http://127.0.0.1:8545',
+        timeout: 0,
+      },
+      Metamask: {
+        isMetaMask: true,
+      },
+    })
   })
 
-  describe('staging', () => {
-    let config
-    beforeEach(() => {
-      config = configure({
-        location: {
-          hostname: 'staging.unlock-protocol.com',
+  it('should have the right keys in staging', () => {
+    let config = configure({
+      web3: {
+        currentProvider: {
+          isMetaMask: true,
         },
-      })
+      },
+      location: {
+        hostname: 'staging.unlock-protocol.com',
+      },
     })
-
-    it('should have the right default network', () => {
-      expect(config.defaultNetwork).toEqual('rinkeby')
+    expect(config.requiredNetwork).toEqual(4) // Rinkeby
+    expect(config.providers).toEqual({
+      Metamask: {
+        isMetaMask: true,
+      },
     })
+  })
 
+  it('should have the right keys in production', () => {
+    let config = configure({
+      location: {
+        hostname: 'unlock-protocol.com',
+      },
+    })
+    expect(config.requiredNetwork).toEqual(1) // main net
+    expect(config.providers).toEqual({}) // We miss a web3 provider!
   })
 
 })

@@ -10,7 +10,7 @@ import { withConfig } from '../utils/withConfig'
 
 export function Unlock({ config }) {
 
-  if (!config.web3Available) {
+  if (Object.keys(config.providers).length == 0 ) {
     return (<div>
       <div className="modal-dialog" role="document">
         <div className="modal-content">

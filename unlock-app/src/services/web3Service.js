@@ -7,7 +7,7 @@ import LockContract from '../artifacts/contracts/Lock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
 
-const { networks } = configure(global)
+const { providers } = configure(global)
 
 /**
  * This service interacts with the web3 RPC endpoint.
@@ -22,25 +22,17 @@ export default class Web3Service {
    * @param {object} network
    * @return {Promise}
    */
-  connect({ network }) {
+  connect({ provider, network }) {
     this.ready = false
 
     return new Promise((resolve, reject) => {
-      const conf = networks[network.name]
 
-      // We fail: it appears that we are trying to connect to a network which does not exist.
-      if(!conf) {
+      // We fail: it appears that we are trying to connect but do not have a provider available...
+      if (!providers[provider]) {
         return reject()
       }
 
-      if (!conf.provider) {
-        if (conf.protocol === 'ws') {
-          conf.provider = new Web3.providers.WebsocketProvider(conf.url)
-        } else if (conf.protocol === 'http') {
-          conf.provider = new Web3.providers.HttpProvider(conf.url)
-        }
-      }
-      this.web3 = new Web3(conf.provider)
+      this.web3 = new Web3(providers[provider])
 
       // Get the network id
       const getNetworkIdPromise = this.web3.eth.net.getId()
