@@ -8,7 +8,10 @@ export class MainLayout extends React.Component {
     if (props.config.defaultNetwork && props.config.networks[props.config.defaultNetwork]) {
       this.networkName = props.config.networks[props.config.defaultNetwork].name
       this.networkClassName = props.config.defaultNetwork
-    } else this.networkName = 'Unknown'
+    } else {
+      this.networkName = 'Unknown'
+      this.networkClassName = ''
+    }
   }
 
   render() {
