@@ -1,13 +1,14 @@
 import React from 'react'
-import { withConfig } from '../../utils/withConfig'
+import {withConfig} from '../../utils/withConfig'
 
 export class MainLayout extends React.Component {
   constructor(props) {
     super(props)
     this.children = props.children
-    if (props.config.defaultNetwork && props.config.networks[props.config.defaultNetwork]) {
-      this.networkName = props.config.networks[props.config.defaultNetwork].name
-      this.networkClassName = props.config.defaultNetwork
+    let config = props.config
+    if (config.defaultNetwork && config.networks[config.defaultNetwork]) {
+      this.networkName = config.networks[config.defaultNetwork].name
+      this.networkClassName = config.defaultNetwork
     } else {
       this.networkName = 'Unknown'
       this.networkClassName = ''
@@ -16,10 +17,10 @@ export class MainLayout extends React.Component {
 
   render() {
     return (
-    <div className="layout-main">
-      <div id="network" className={this.networkClassName}>{this.networkName}</div>
-      {this.children}
-    </div>
+      <div className="layout-main">
+        <div id="network" className={this.networkClassName}>{this.networkName}</div>
+        {this.children}
+      </div>
     )
   }
 }

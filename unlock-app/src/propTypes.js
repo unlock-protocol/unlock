@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import React from 'react'
 
 export const account = PropTypes.shape({
   address: PropTypes.string,
@@ -19,11 +20,17 @@ export const transaction = PropTypes.shape({
   status: PropTypes.string,
 })
 
+export const children = PropTypes.arrayOf(PropTypes.element)
+
+export const component = PropTypes.element
+
 // TODO
 export const configuration = PropTypes.shape({
 })
 
 export const mechanism = PropTypes.oneOf(['0', '1', '2', undefined])
+
+export const layout = PropTypes.instanceOf(React.Component)
 
 export const locks = PropTypes.arrayOf(lock)
 
@@ -35,7 +42,9 @@ export const networks = PropTypes.shape({})
 
 export default {
   account,
+  component,
   configuration,
+  layout,
   lock,
   locks,
   key,
