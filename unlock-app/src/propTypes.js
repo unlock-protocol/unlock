@@ -42,6 +42,7 @@ export const networks = PropTypes.shape({})
 
 export default {
   account,
+  children,
   component,
   configuration,
   layout,

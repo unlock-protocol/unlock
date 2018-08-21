@@ -1,5 +1,6 @@
 import React from 'react'
 import {withConfig} from '../../utils/withConfig'
+import UnlockPropTypes from '../../propTypes'
 
 export class MainLayout extends React.Component {
   constructor(props) {
@@ -23,6 +24,11 @@ export class MainLayout extends React.Component {
       </div>
     )
   }
+}
+
+MainLayout.propTypes = {
+  children: UnlockPropTypes.children,
+  config: UnlockPropTypes.configuration,
 }
 
 export default withConfig(MainLayout)

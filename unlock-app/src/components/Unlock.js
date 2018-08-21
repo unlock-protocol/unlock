@@ -11,13 +11,17 @@ import { withConfig } from '../utils/withConfig'
 import MainLayout from './layout/MainLayout'
 import BlankLayout from './layout/BlankLayout'
 
-const UnlockRoute = ({ component: Component, layout: Layout, ...rest }) => (
+let UnlockRoute = ({ component: Component, layout: Layout, ...rest }) => (
   <Route {...rest} render={props => (
     <Layout>
       <Component {...props} />
     </Layout>
   )} />
 )
+UnlockRoute.propTypes = {
+  component: UnlockPropTypes.component,
+  layout: UnlockPropTypes.layout,
+}
 
 export function Unlock({ config }) {
 
@@ -46,7 +50,9 @@ export function Unlock({ config }) {
 }
 
 Unlock.propTypes = {
+  component: UnlockPropTypes.component,
   config: UnlockPropTypes.configuration,
+  layout: UnlockPropTypes.layout,
 }
 
 export default withConfig(Unlock)
