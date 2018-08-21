@@ -19,6 +19,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
       if (!web3Service.ready) {
         // We return to make sure other middleware actions are not processed
         return web3Service.connect({
+          provider: 'HTTP',
           network: getState().network,
         }).then((account) => {
           // we dispatch again!
@@ -42,6 +43,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
           })
       } else if (action.type === SET_NETWORK) {
         web3Service.connect({
+          provider: 'HTTP',
           network: {
             name: action.network,
             account: {},
