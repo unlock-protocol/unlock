@@ -121,7 +121,7 @@ describe('Lock middleware', () => {
       const { next, invoke } = create()
       const action = { type: SET_NETWORK, network }
       invoke(action)
-      expect(mockWeb3Service.connect).toHaveBeenCalledWith(state)
+      expect(mockWeb3Service.connect).toHaveBeenCalledWith({...state, provider: 'HTTP'})
       expect(next).toHaveBeenCalledTimes(0) // ensures that execution was stopped
     })
 
@@ -146,6 +146,7 @@ describe('Lock middleware', () => {
         'account': {}, // account has been reset
         'name': network,
       },
+      'provider': 'HTTP',
     })
     expect(next).toHaveBeenCalledWith(action)
   })
