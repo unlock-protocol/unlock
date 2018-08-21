@@ -19,7 +19,7 @@ export function TransactionModal({ hideTransactionModal, transaction }) {
           </button>
         </div>
         <div className="modal-body">
-          <p>Your lock is being deployed on the blockchain. It may take up to a couple minutes to deploy your lock on all Ethereum nodes. We also recommend that you wait for 12 confirmation if you want to have a very strong confidence that your lock has been deployed.</p>
+          <p>Your lock is being deployed on the blockchain. It may take up to a couple of minutes to deploy your lock on all Ethereum nodes. We also recommend that you wait for 12 confirmations if you want to have a very strong confidence that your lock has been deployed.</p>
           <p>State: {transaction.status}</p>
           <p>Confirmations: {transaction.confirmations}</p>
           {transaction.lock &&
