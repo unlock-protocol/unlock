@@ -10,6 +10,7 @@ const defaultState = {
     account: {
     },
   },
+  provider: 'HTTP',
 }
 
 const nodeAccounts = [
