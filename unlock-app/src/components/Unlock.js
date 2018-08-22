@@ -8,6 +8,21 @@ import Home from './Home'
 import Network from './Network'
 import { withConfig } from '../utils/withConfig'
 
+import MainLayout from './layout/MainLayout'
+import BlankLayout from './layout/BlankLayout'
+
+let UnlockRoute = ({ component: Component, layout: Layout, ...rest }) => (
+  <Route {...rest} render={props => (
+    <Layout>
+      <Component {...props} />
+    </Layout>
+  )} />
+)
+UnlockRoute.propTypes = {
+  component: UnlockPropTypes.component,
+  layout: UnlockPropTypes.layout,
+}
+
 export function Unlock({ config }) {
 
   if (Object.keys(config.providers).length == 0 ) {
@@ -26,16 +41,18 @@ export function Unlock({ config }) {
   }
   return (
     <Switch>
-      <Route path="/network" component={Network} />
-      <Route path="/creator" component={LockMaker} />
-      <Route path="/lock/:lockAddress" component={Lock} />
-      <Route path="*" component={Home} />
+      <UnlockRoute path="/network" layout={BlankLayout} component={Network} />
+      <UnlockRoute path="/creator" layout={MainLayout} component={LockMaker} />
+      <UnlockRoute path="/lock/:lockAddress" layout={MainLayout} component={Lock} />
+      <UnlockRoute path="*" layout={BlankLayout} component={Home} />
     </Switch>
   )
 }
 
 Unlock.propTypes = {
+  component: UnlockPropTypes.component,
   config: UnlockPropTypes.configuration,
+  layout: UnlockPropTypes.layout,
 }
 
 export default withConfig(Unlock)
