@@ -4,6 +4,7 @@ import { CREATE_LOCK, SET_LOCK, WITHDRAW_FROM_LOCK } from '../../actions/lock'
 import { PURCHASE_KEY, SET_KEY } from '../../actions/key'
 import { SET_ACCOUNT, LOAD_ACCOUNT, CREATE_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
+import { SET_PROVIDER } from '../../actions/provider'
 
 /**
  * This is to use a mock for web3Service
@@ -32,10 +33,12 @@ let state = {
   network: {
     account,
   },
+  provider: 'HTTP',
 }
 
 const privateKey = '0xdeadbeef'
 const network = 'test'
+const provider = 'Toshi'
 
 /**
  * This is a "fake" middleware caller
@@ -108,6 +111,7 @@ beforeEach(() => {
     network: {
       account,
     },
+    provider: 'HTTP',
   }
 
 })
@@ -134,6 +138,20 @@ describe('Lock middleware', () => {
     // mockWeb3Service.loadAccount = jest.fn().mockReturnValue(new Promise((resolve, reject) => { return resolve(account) }))
     invoke(action)
     expect(mockWeb3Service.loadAccount).toHaveBeenCalledWith(privateKey)
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it('should handle SET_PROVIDER and reset the whole state', () => {
+    const { next, invoke } = create()
+    const action = { type: SET_PROVIDER, provider }
+    invoke(action)
+    expect(mockWeb3Service.connect).toHaveBeenCalledWith({
+      'network': {
+        'account': {}, // account has been reset
+        'name': 'Unknown',
+      },
+      'provider': provider,
+    })
     expect(next).toHaveBeenCalledWith(action)
   })
 
