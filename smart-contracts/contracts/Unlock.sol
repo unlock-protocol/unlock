@@ -61,13 +61,17 @@ contract Unlock is Ownable {
     address indexed newLockAddress
   );
 
-  constructor(
+  bool internal initialized;
+
+  function initialize(
     address _owner
   )
     public {
+      require(!initialized);
       owner = _owner;
       grossNetworkProduct = 0;
       totalDiscountGranted = 0;
+      initialized = true;
     }
 
   /**
