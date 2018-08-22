@@ -31,3 +31,18 @@ html, body {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+#network {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 5px;
+  background-color: #eee;
+  font-size: 0.75em;
+  z-index: 1000;
+}
+
+#network.test,
+#network.dev {
+  background-color: #ccffcc;
+}
