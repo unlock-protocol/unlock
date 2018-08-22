@@ -1,12 +1,14 @@
 import React from 'react'
 import {withConfig} from '../../utils/withConfig'
 import UnlockPropTypes from '../../propTypes'
+import { connect } from 'react-redux'
 
 export class MainLayout extends React.Component {
   constructor(props) {
     super(props)
     this.children = props.children
     let config = props.config
+    console.log(config)
     if (config.defaultNetwork && config.networks[config.defaultNetwork]) {
       this.networkName = config.networks[config.defaultNetwork].name
       this.networkClassName = config.defaultNetwork
@@ -29,6 +31,13 @@ export class MainLayout extends React.Component {
 MainLayout.propTypes = {
   children: UnlockPropTypes.children,
   config: UnlockPropTypes.configuration,
+  network: UnlockPropTypes.network,
 }
 
-export default withConfig(MainLayout)
+const mapStateToProps = (state) => {
+  return {
+    network: state.network,
+  }
+}
+
+export default withConfig(connect(mapStateToProps)(MainLayout))
