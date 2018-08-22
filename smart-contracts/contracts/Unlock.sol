@@ -27,9 +27,9 @@ pragma solidity 0.4.24;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./Lock.sol";
+import "zos-lib/contracts/migrations/Migratable.sol";
 
-
-contract Unlock is Ownable {
+contract Unlock is Ownable, Migratable {
 
   /**
    * The struct for a lock
@@ -61,9 +61,10 @@ contract Unlock is Ownable {
     address indexed newLockAddress
   );
 
-  constructor(
+  function initialize(
     address _owner
   )
+    isInitializer("Unlock", "0")
     public {
       owner = _owner;
       grossNetworkProduct = 0;
