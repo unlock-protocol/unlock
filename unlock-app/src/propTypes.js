@@ -20,9 +20,9 @@ export const transaction = PropTypes.shape({
   status: PropTypes.string,
 })
 
-export const children = PropTypes.arrayOf(PropTypes.element)
+export const children = PropTypes.shape({})
 
-export const component = PropTypes.element
+export const component = PropTypes.func
 
 // TODO
 export const configuration = PropTypes.shape({
@@ -30,7 +30,7 @@ export const configuration = PropTypes.shape({
 
 export const mechanism = PropTypes.oneOf(['0', '1', '2', undefined])
 
-export const layout = PropTypes.instanceOf(React.Component)
+export const layout = PropTypes.instanceOf(Function) //PropTypes.instanceOf(React.Component)
 
 export const locks = PropTypes.arrayOf(lock)
 

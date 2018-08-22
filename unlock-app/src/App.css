@@ -39,6 +39,7 @@ html, body {
   padding: 5px;
   background-color: #eee;
   font-size: 0.75em;
+  z-index: 1000;
 }
 
 #network.test,
