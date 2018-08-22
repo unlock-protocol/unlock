@@ -61,12 +61,9 @@ contract Unlock is Ownable, Migratable {
     address indexed newLockAddress
   );
 
-  function initialize(
-    address _owner
-  )
+  function initialize()
     isInitializer("Unlock", "0")
     public {
-      owner = _owner;
       grossNetworkProduct = 0;
       totalDiscountGranted = 0;
     }
