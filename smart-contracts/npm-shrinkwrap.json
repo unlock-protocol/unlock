@@ -2132,6 +2132,29 @@
       "resolved": "https://registry.npmjs.org/ethereum-common/-/ethereum-common-0.0.16.tgz",
       "integrity": "sha1-mh4Wnq00q3XgifUMpRK/0PvRJlU="
     },
+    "ethereumjs-abi": {
+      "version": "0.6.5",
+      "resolved": "https://registry.npmjs.org/ethereumjs-abi/-/ethereumjs-abi-0.6.5.tgz",
+      "integrity": "sha1-WmN+8Wq0NHP6cqKa2QhxQFs/UkE=",
+      "requires": {
+        "bn.js": "^4.10.0",
+        "ethereumjs-util": "^4.3.0"
+      },
+      "dependencies": {
+        "ethereumjs-util": {
+          "version": "4.5.0",
+          "resolved": "https://registry.npmjs.org/ethereumjs-util/-/ethereumjs-util-4.5.0.tgz",
+          "integrity": "sha1-PpQosxfuvaPXJg2FT93alUsfG8Y=",
+          "requires": {
+            "bn.js": "^4.8.0",
+            "create-hash": "^1.1.2",
+            "keccakjs": "^0.2.0",
+            "rlp": "^2.0.0",
+            "secp256k1": "^3.0.1"
+          }
+        }
+      }
+    },
     "ethereumjs-account": {
       "version": "2.0.4",
       "resolved": "https://registry.npmjs.org/ethereumjs-account/-/ethereumjs-account-2.0.4.tgz",
@@ -2294,6 +2317,16 @@
             "secp256k1": "^3.0.1"
           }
         }
+      }
+    },
+    "ethjs-abi": {
+      "version": "0.1.8",
+      "resolved": "https://registry.npmjs.org/ethjs-abi/-/ethjs-abi-0.1.8.tgz",
+      "integrity": "sha1-zSiFg+1ijN+tr4re+juh28vKbBg=",
+      "requires": {
+        "bn.js": "4.11.6",
+        "js-sha3": "0.5.5",
+        "number-to-bn": "1.7.0"
       }
     },
     "ethjs-unit": {
@@ -3738,7 +3771,6 @@
       "version": "2.0.0",
       "resolved": "https://registry.npmjs.org/locate-path/-/locate-path-2.0.0.tgz",
       "integrity": "sha1-K1aLJl7slExtnA3pw9u7ygNUzY4=",
-      "dev": true,
       "requires": {
         "p-locate": "^2.0.0",
         "path-exists": "^3.0.0"
@@ -3747,8 +3779,7 @@
         "path-exists": {
           "version": "3.0.0",
           "resolved": "https://registry.npmjs.org/path-exists/-/path-exists-3.0.0.tgz",
-          "integrity": "sha1-zg6+ql94yxiSXqfYENe1mwEP1RU=",
-          "dev": true
+          "integrity": "sha1-zg6+ql94yxiSXqfYENe1mwEP1RU="
         }
       }
     },
@@ -4353,7 +4384,6 @@
       "version": "1.2.0",
       "resolved": "https://registry.npmjs.org/p-limit/-/p-limit-1.2.0.tgz",
       "integrity": "sha512-Y/OtIaXtUPr4/YpMv1pCL5L5ed0rumAaAeBSj12F+bSlMdys7i8oQF/GUJmfpTS/QoaRrS/k6pma29haJpsMng==",
-      "dev": true,
       "requires": {
         "p-try": "^1.0.0"
       }
@@ -4362,7 +4392,6 @@
       "version": "2.0.0",
       "resolved": "https://registry.npmjs.org/p-locate/-/p-locate-2.0.0.tgz",
       "integrity": "sha1-IKAQOyIqcMj9OcwuWAaA893l7EM=",
-      "dev": true,
       "requires": {
         "p-limit": "^1.1.0"
       }
@@ -4378,8 +4407,7 @@
     "p-try": {
       "version": "1.0.0",
       "resolved": "https://registry.npmjs.org/p-try/-/p-try-1.0.0.tgz",
-      "integrity": "sha1-y8ec26+P1CKOE/Yh8rGiN8GyB7M=",
-      "dev": true
+      "integrity": "sha1-y8ec26+P1CKOE/Yh8rGiN8GyB7M="
     },
     "parse-asn1": {
       "version": "5.1.0",
@@ -6159,6 +6187,38 @@
       "resolved": "https://registry.npmjs.org/truffle-blockchain-utils/-/truffle-blockchain-utils-0.0.4.tgz",
       "integrity": "sha512-wgRrhwqh0aea08Hz28hUV4tuF2uTVQH/e9kBou+WK04cqrutB5cxQVQ6HGjeZLltxBYOFvhrGOOq4l3WJFnPEA=="
     },
+    "truffle-config": {
+      "version": "1.0.6",
+      "resolved": "https://registry.npmjs.org/truffle-config/-/truffle-config-1.0.6.tgz",
+      "integrity": "sha1-GB2n0xnAxV6yeB1cGIapx/MvpHA=",
+      "requires": {
+        "find-up": "^2.1.0",
+        "lodash": "4.17.10",
+        "original-require": "1.0.1",
+        "truffle-error": "^0.0.3",
+        "truffle-provider": "^0.0.6"
+      },
+      "dependencies": {
+        "find-up": {
+          "version": "2.1.0",
+          "resolved": "https://registry.npmjs.org/find-up/-/find-up-2.1.0.tgz",
+          "integrity": "sha1-RdG35QbHF93UgndaK3eSCjwMV6c=",
+          "requires": {
+            "locate-path": "^2.0.0"
+          }
+        },
+        "lodash": {
+          "version": "4.17.10",
+          "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.17.10.tgz",
+          "integrity": "sha512-UejweD1pDoXu+AD825lWwp4ZGtSwgnpZxb3JDViD7StjQz+Nb/6l093lx4OQ0foGWNRoc19mWy7BzL+UAK2iVg=="
+        },
+        "truffle-error": {
+          "version": "0.0.3",
+          "resolved": "https://registry.npmjs.org/truffle-error/-/truffle-error-0.0.3.tgz",
+          "integrity": "sha1-S/VSQuFN7uHHGUkycJGC3v8sl8o="
+        }
+      }
+    },
     "truffle-contract": {
       "version": "3.0.4",
       "resolved": "https://registry.npmjs.org/truffle-contract/-/truffle-contract-3.0.4.tgz",
@@ -6228,6 +6288,48 @@
       "version": "0.0.2",
       "resolved": "https://registry.npmjs.org/truffle-error/-/truffle-error-0.0.2.tgz",
       "integrity": "sha1-AbGJt4UFVmrhaJwjnHyi3RIc/kw="
+    },
+    "truffle-provider": {
+      "version": "0.0.6",
+      "resolved": "https://registry.npmjs.org/truffle-provider/-/truffle-provider-0.0.6.tgz",
+      "integrity": "sha1-caku1nY2raXniQVpDXLqkirUphM=",
+      "requires": {
+        "truffle-error": "^0.0.3",
+        "web3": "0.20.6"
+      },
+      "dependencies": {
+        "bignumber.js": {
+          "version": "git+https://github.com/frozeman/bignumber.js-nolookahead.git#57692b3ecfc98bbdd6b3a516cb2353652ea49934",
+          "from": "git+https://github.com/frozeman/bignumber.js-nolookahead.git"
+        },
+        "crypto-js": {
+          "version": "3.1.8",
+          "resolved": "https://registry.npmjs.org/crypto-js/-/crypto-js-3.1.8.tgz",
+          "integrity": "sha1-cV8HC/YBTyrpkqmLOSkli3E/CNU="
+        },
+        "truffle-error": {
+          "version": "0.0.3",
+          "resolved": "https://registry.npmjs.org/truffle-error/-/truffle-error-0.0.3.tgz",
+          "integrity": "sha1-S/VSQuFN7uHHGUkycJGC3v8sl8o="
+        },
+        "web3": {
+          "version": "0.20.6",
+          "resolved": "https://registry.npmjs.org/web3/-/web3-0.20.6.tgz",
+          "integrity": "sha1-PpcwauAk+yThCj11yIQwJWIhUSA=",
+          "requires": {
+            "bignumber.js": "git+https://github.com/frozeman/bignumber.js-nolookahead.git#57692b3ecfc98bbdd6b3a516cb2353652ea49934",
+            "crypto-js": "^3.1.4",
+            "utf8": "^2.1.1",
+            "xhr2": "*",
+            "xmlhttprequest": "*"
+          }
+        }
+      }
+    },
+    "truffle-provisioner": {
+      "version": "0.1.1",
+      "resolved": "https://registry.npmjs.org/truffle-provisioner/-/truffle-provisioner-0.1.1.tgz",
+      "integrity": "sha1-WoMn1iUR7yPJUNOqhiYQp8N34qo="
     },
     "tunnel-agent": {
       "version": "0.6.0",
@@ -7230,6 +7332,145 @@
       "requires": {
         "buffer-crc32": "~0.2.3",
         "fd-slicer": "~1.0.1"
+      }
+    },
+    "zos-lib": {
+      "version": "1.4.0",
+      "resolved": "https://registry.npmjs.org/zos-lib/-/zos-lib-1.4.0.tgz",
+      "integrity": "sha512-MEGg4fH2jXFCL7BJXqCC1nHaKAPNlANpW6RI0JAYBn7yLmA0oFdaK77gbJjH2j+WyUEn3xO1zjs1GCtdduTZgQ==",
+      "requires": {
+        "bignumber.js": "^7.2.0",
+        "chalk": "^2.4.1",
+        "ethereumjs-abi": "^0.6.5",
+        "openzeppelin-solidity": "~1.10.0",
+        "truffle-config": "^1.0.6",
+        "truffle-contract": "^3.0.6",
+        "truffle-provisioner": "^0.1.1",
+        "web3": "^0.18.4"
+      },
+      "dependencies": {
+        "ansi-styles": {
+          "version": "3.2.1",
+          "resolved": "https://registry.npmjs.org/ansi-styles/-/ansi-styles-3.2.1.tgz",
+          "integrity": "sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA==",
+          "requires": {
+            "color-convert": "^1.9.0"
+          }
+        },
+        "bignumber.js": {
+          "version": "7.2.1",
+          "resolved": "https://registry.npmjs.org/bignumber.js/-/bignumber.js-7.2.1.tgz",
+          "integrity": "sha512-S4XzBk5sMB+Rcb/LNcpzXr57VRTxgAvaAEDAl1AwRx27j00hT84O6OkteE7u8UB3NuaaygCRrEpqox4uDOrbdQ=="
+        },
+        "chalk": {
+          "version": "2.4.1",
+          "resolved": "https://registry.npmjs.org/chalk/-/chalk-2.4.1.tgz",
+          "integrity": "sha512-ObN6h1v2fTJSmUXoS3nMQ92LbDK9be4TV+6G+omQlGJFdcUX5heKi1LZ1YnRMIgwTLEj3E24bT6tYni50rlCfQ==",
+          "requires": {
+            "ansi-styles": "^3.2.1",
+            "escape-string-regexp": "^1.0.5",
+            "supports-color": "^5.3.0"
+          }
+        },
+        "debug": {
+          "version": "3.1.0",
+          "resolved": "https://registry.npmjs.org/debug/-/debug-3.1.0.tgz",
+          "integrity": "sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==",
+          "requires": {
+            "ms": "2.0.0"
+          }
+        },
+        "openzeppelin-solidity": {
+          "version": "1.10.0",
+          "resolved": "https://registry.npmjs.org/openzeppelin-solidity/-/openzeppelin-solidity-1.10.0.tgz",
+          "integrity": "sha512-igkrumQQ2lrN2zjeQV4Dnb0GpTBj1fzMcd8HPyBUqwI0hhuscX/HzXiqKT6gFQl1j9Wy/ppVVs9fqL/foF7Gmg=="
+        },
+        "supports-color": {
+          "version": "5.5.0",
+          "resolved": "https://registry.npmjs.org/supports-color/-/supports-color-5.5.0.tgz",
+          "integrity": "sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==",
+          "requires": {
+            "has-flag": "^3.0.0"
+          }
+        },
+        "truffle-blockchain-utils": {
+          "version": "0.0.5",
+          "resolved": "https://registry.npmjs.org/truffle-blockchain-utils/-/truffle-blockchain-utils-0.0.5.tgz",
+          "integrity": "sha1-pOXAZNrdafeCoTfz0nbSEJXaekc="
+        },
+        "truffle-contract": {
+          "version": "3.0.6",
+          "resolved": "https://registry.npmjs.org/truffle-contract/-/truffle-contract-3.0.6.tgz",
+          "integrity": "sha1-Lvb8Mtf6r6n0rtjlAAGp/eo0IZI=",
+          "requires": {
+            "ethjs-abi": "0.1.8",
+            "truffle-blockchain-utils": "^0.0.5",
+            "truffle-contract-schema": "^2.0.1",
+            "truffle-error": "^0.0.3",
+            "web3": "0.20.6"
+          },
+          "dependencies": {
+            "bignumber.js": {
+              "version": "git+https://github.com/frozeman/bignumber.js-nolookahead.git#57692b3ecfc98bbdd6b3a516cb2353652ea49934",
+              "from": "git+https://github.com/frozeman/bignumber.js-nolookahead.git"
+            },
+            "crypto-js": {
+              "version": "3.1.8",
+              "resolved": "https://registry.npmjs.org/crypto-js/-/crypto-js-3.1.8.tgz",
+              "integrity": "sha1-cV8HC/YBTyrpkqmLOSkli3E/CNU="
+            },
+            "web3": {
+              "version": "0.20.6",
+              "resolved": "https://registry.npmjs.org/web3/-/web3-0.20.6.tgz",
+              "integrity": "sha1-PpcwauAk+yThCj11yIQwJWIhUSA=",
+              "requires": {
+                "bignumber.js": "git+https://github.com/frozeman/bignumber.js-nolookahead.git#57692b3ecfc98bbdd6b3a516cb2353652ea49934",
+                "crypto-js": "^3.1.4",
+                "utf8": "^2.1.1",
+                "xhr2": "*",
+                "xmlhttprequest": "*"
+              }
+            }
+          }
+        },
+        "truffle-contract-schema": {
+          "version": "2.0.1",
+          "resolved": "https://registry.npmjs.org/truffle-contract-schema/-/truffle-contract-schema-2.0.1.tgz",
+          "integrity": "sha1-m/gh0y4m5nS6FetdQPlrELHJ1Wg=",
+          "requires": {
+            "ajv": "^5.1.1",
+            "crypto-js": "^3.1.9-1",
+            "debug": "^3.1.0"
+          }
+        },
+        "truffle-error": {
+          "version": "0.0.3",
+          "resolved": "https://registry.npmjs.org/truffle-error/-/truffle-error-0.0.3.tgz",
+          "integrity": "sha1-S/VSQuFN7uHHGUkycJGC3v8sl8o="
+        },
+        "web3": {
+          "version": "0.18.4",
+          "resolved": "https://registry.npmjs.org/web3/-/web3-0.18.4.tgz",
+          "integrity": "sha1-gewXhBRUkfLqqJVbMcBgSeB8Xn0=",
+          "requires": {
+            "bignumber.js": "git+https://github.com/debris/bignumber.js.git#94d7146671b9719e00a09c29b01a691bc85048c2",
+            "crypto-js": "^3.1.4",
+            "utf8": "^2.1.1",
+            "xhr2": "*",
+            "xmlhttprequest": "*"
+          },
+          "dependencies": {
+            "bignumber.js": {
+              "version": "git+https://github.com/debris/bignumber.js.git#94d7146671b9719e00a09c29b01a691bc85048c2",
+              "from": "git+https://github.com/debris/bignumber.js.git#94d7146671b9719e00a09c29b01a691bc85048c2"
+            },
+            "crypto-js": {
+              "version": "3.1.8",
+              "resolved": "https://registry.npmjs.org/crypto-js/-/crypto-js-3.1.8.tgz",
+              "integrity": "sha1-cV8HC/YBTyrpkqmLOSkli3E/CNU="
+            }
+          }
+        }
       }
     }
   }
