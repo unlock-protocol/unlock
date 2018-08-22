@@ -2,9 +2,9 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import App from '../App'
 import MainLayout from '../components/layout/MainLayout'
-import createRouterContext from "react-router-test-context";
-import createUnlockStore from "../createUnlockStore";
-import PropTypes from "prop-types";
+import createRouterContext from 'react-router-test-context'
+import createUnlockStore from '../createUnlockStore'
+import PropTypes from 'prop-types'
 
 // Mock the service
 jest.mock('../services/web3Service', () => {
