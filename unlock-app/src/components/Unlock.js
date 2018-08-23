@@ -22,7 +22,7 @@ UnlockRoute.propTypes = {
 
 export function Unlock({ config }) {
 
-  if (Object.keys(config.providers).length == 0 ) {
+  if (Object.keys(config.providers).length === 0 ) {
     return (<div>
       <div className="modal-dialog" role="document">
         <div className="modal-content">
