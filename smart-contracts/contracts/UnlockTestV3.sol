@@ -13,7 +13,7 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./Lock.sol";
 
 
-contract UnlockTestV2 is Ownable {
+contract UnlockTestV3 is Ownable {
 
   struct LockBalances {
     bool deployed;
@@ -40,7 +40,7 @@ contract UnlockTestV2 is Ownable {
   bool internal initialized;
 
   // Example new data (which must come after the original data)
-  bool internal initializedV2;
+  bool internal initializedV3;
   uint public exampleData;
 
   function initialize(
@@ -50,63 +50,22 @@ contract UnlockTestV2 is Ownable {
   {
     require(!initialized);
     owner = _owner;
-    grossNetworkProduct = 0;
-    totalDiscountGranted = 0;
     exampleData = 42;
     initialized = true;
   }
 
-  // Adding a second initialize for the new data as 'initialized' is already true when v2 is deployed.
-  function initializeV2()
+  // Adding a second initialize for the new data as 'initialized' is already true when v3 is deployed.
+  function initializeV3()
     public 
   {
-    require(!initializedV2);
+    require(!initializedV3);
     exampleData = 42;
-    initializedV2 = true;
+    initializedV3 = true;
   }
 
-  function createLock(
-    Lock.KeyReleaseMechanisms _keyReleaseMechanism,
-    uint _expirationDuration,
-    uint _keyPrice,
-    uint _maxNumberOfKeys
-  )
-    public
-    returns (Lock lock)
-  {
+  // Removed most existing methods
 
-    Lock newLock = new Lock(
-      msg.sender,
-      _keyReleaseMechanism,
-      _expirationDuration,
-      _keyPrice,
-      _maxNumberOfKeys
-    );
-
-    locks[address(newLock)] = LockBalances({
-      deployed: true,
-      totalSales: 0,
-      yieldedDiscountTokens: 0
-    });
-
-    emit NewLock(msg.sender, address(newLock));
-
-    return newLock;
-  }
-
-  function computeAvailableDiscountFor(
-    address _purchaser,
-    uint _keyPrice
-  )
-    public
-    pure
-    returns (uint discount, uint tokens)
-  {
-    // an example modification
-    return (42, 42);
-  }
-
-  // an example new method
+  // Example new method
   function testNewMethod()
     public
     view
@@ -115,23 +74,11 @@ contract UnlockTestV2 is Ownable {
     return grossNetworkProduct + totalDiscountGranted + exampleData;
   }
 
-  function recordKeyPurchase(
-    uint _value,
-    address _referrer
-  )
-    public
-    onlyFromDeployedLock()
-  {
-    grossNetworkProduct += _value;
-    return;
-  }
-
+  // Changing the method signature and removing modifier
   function recordConsumedDiscount(
-    uint _discount,
-    uint _tokens 
+    uint _discount
   )
     public
-    onlyFromDeployedLock()
   {
     totalDiscountGranted += _discount;
     return;
