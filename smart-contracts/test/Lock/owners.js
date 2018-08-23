@@ -54,7 +54,7 @@ contract('Lock ERC721', (accounts) => {
         lock.owners(2),
         lock.owners(3)
       ]).then((owners) => {
-        assert.deepEqual(owners, accounts.slice(1, 5))
+        assert.deepEqual(owners.sort(), accounts.slice(1, 5).sort())
       })
     })
 
