@@ -63,16 +63,18 @@ contract Unlock is Ownable {
 
   bool internal initialized;
 
+  // Use initialize instead of a constructor to support proxies (for upgradeability).
   function initialize(
     address _owner
   )
-    public {
-      require(!initialized);
-      owner = _owner;
-      grossNetworkProduct = 0;
-      totalDiscountGranted = 0;
-      initialized = true;
-    }
+    public 
+  {
+    require(!initialized);
+    owner = _owner;
+    grossNetworkProduct = 0;
+    totalDiscountGranted = 0;
+    initialized = true;
+  }
 
   /**
   * @dev Create lock
