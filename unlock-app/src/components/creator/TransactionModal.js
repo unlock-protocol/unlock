@@ -4,12 +4,14 @@ import UnlockPropTypes from '../../propTypes'
 import { connect } from 'react-redux'
 
 import React from 'react'
+import NetworkBadge from '../interface/NetworkBadge'
 
 export function TransactionModal({ hideTransactionModal, transaction }) {
   if (!transaction) {
     return null
   }
   return (<div>
+    <NetworkBadge/>
     <div className="modal-dialog" role="document">
       <div className="modal-content">
         <div className="modal-header">

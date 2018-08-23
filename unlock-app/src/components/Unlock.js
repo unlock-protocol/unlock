@@ -8,9 +8,6 @@ import Home from './Home'
 import Network from './Network'
 import { withConfig } from '../utils/withConfig'
 
-import MainLayout from './layout/MainLayout'
-import BlankLayout from './layout/BlankLayout'
-
 let UnlockRoute = ({ component: Component, layout: Layout, ...rest }) => (
   <Route {...rest} render={props => (
     <Layout>
@@ -41,10 +38,10 @@ export function Unlock({ config }) {
   }
   return (
     <Switch>
-      <UnlockRoute path="/network" layout={BlankLayout} component={Network} />
-      <UnlockRoute path="/creator" layout={MainLayout} component={LockMaker} />
-      <UnlockRoute path="/lock/:lockAddress" layout={MainLayout} component={Lock} />
-      <UnlockRoute path="*" layout={BlankLayout} component={Home} />
+      <Route path="/network" component={Network} />
+      <Route path="/creator" component={LockMaker} />
+      <Route path="/lock/:lockAddress" component={Lock} />
+      <Route path="*" component={Home} />
     </Switch>
   )
 }

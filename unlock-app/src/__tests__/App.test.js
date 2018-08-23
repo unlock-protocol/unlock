@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import App from '../App'
-import MainLayout from '../components/layout/MainLayout'
+import NetworkBadge from '../components/interface/NetworkBadge'
 import createRouterContext from 'react-router-test-context'
 import createUnlockStore from '../createUnlockStore'
 import PropTypes from 'prop-types'
@@ -31,6 +31,6 @@ it('displays the correct network in the user interface when using MainLayout', (
     store: PropTypes.object,
   }
 
-  const wrapper = shallow(<MainLayout />, { context, childContextTypes })
+  const wrapper = shallow(<NetworkBadge />, { context, childContextTypes })
   expect(wrapper.contains(<div id="network" className="dev">Development</div>))
 })

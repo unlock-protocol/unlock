@@ -1,9 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import NetworkBadge from './interface/NetworkBadge'
 
 export function Home() {
   return (
     <div className="container">
+      <NetworkBadge/>
       <header className="masthead mb-auto">
         <div className="inner">
           <h3 className="masthead-brand">&nbsp;</h3>

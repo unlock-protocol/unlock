@@ -12,6 +12,7 @@ import Locks from './Locks'
 import Lock from './Lock'
 
 import { setTransaction } from '../../actions/transaction'
+import NetworkBadge from '../interface/NetworkBadge'
 
 export class LockMaker extends React.Component {
 
@@ -43,6 +44,7 @@ export class LockMaker extends React.Component {
 
     if (this.state.accountPickerShown) {
       return (<div className="container">
+        <NetworkBadge/>
         <header className="masthead mb-auto">
           <div className="inner">
             <h3 className="masthead-brand">&nbsp;</h3>
@@ -72,6 +74,7 @@ export class LockMaker extends React.Component {
 
     return (
       <div className="container">
+        <NetworkBadge/>
         <header className="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
           <Account showAccountPicker={this.toggleAccountPicker} />
         </header>
