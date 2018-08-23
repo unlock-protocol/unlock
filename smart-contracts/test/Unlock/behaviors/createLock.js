@@ -4,7 +4,7 @@ const Lock = artifacts.require('../../Lock.sol')
 exports.shouldCreateLock = function (accounts) {
   describe('createLock', function () {
     let transaction
-    before(async function () {
+    beforeEach(async function () {
       transaction = await this.unlock.createLock(
         0, // keyReleaseMechanism: KeyReleaseMechanisms.Public
         60 * 60 * 24 * 30, // expirationDuration: 30 days

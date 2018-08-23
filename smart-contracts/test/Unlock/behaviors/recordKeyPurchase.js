@@ -5,7 +5,7 @@ exports.shouldRecordKeyPurchase = function () {
   describe('recordKeyPurchase', function () {
     let locks
 
-    before(async function () {
+    beforeEach(async function () {
       locks = await deployLocks(this.unlock)
     })
 

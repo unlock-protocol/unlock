@@ -4,7 +4,7 @@ exports.shouldRecordConsumedDiscount = function () {
   describe('recordConsumedDiscount', function () {
     let locks
 
-    before(async function () {
+    beforeEach(async function () {
       locks = await deployLocks(this.unlock)
     })
 

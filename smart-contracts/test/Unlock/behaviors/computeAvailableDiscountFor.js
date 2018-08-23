@@ -4,7 +4,7 @@ exports.shouldComputeAvailableDiscountFor = function () {
   describe('computeAvailableDiscountFor', function () {
     let locks
 
-    before(async function () {
+    beforeEach(async function () {
       locks = await deployLocks(this.unlock)
     })
 
