@@ -1,7 +1,6 @@
 import React from 'react'
 import {withConfig} from '../../utils/withConfig'
 import UnlockPropTypes from '../../propTypes'
-import { connect } from 'react-redux'
 
 export class NetworkBadge extends React.Component {
   constructor(props) {
@@ -18,7 +17,7 @@ export class NetworkBadge extends React.Component {
 
   render() {
     return (
-        <div id="network" className={this.networkClassName}>{this.networkName}</div>
+      <div id="network" className={this.networkClassName}>{this.networkName}</div>
     )
   }
 }
