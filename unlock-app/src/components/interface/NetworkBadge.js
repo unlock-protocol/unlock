@@ -2,10 +2,9 @@ import React from 'react'
 import {withConfig} from '../../utils/withConfig'
 import UnlockPropTypes from '../../propTypes'
 
-export class MainLayout extends React.Component {
+export class NetworkBadge extends React.Component {
   constructor(props) {
     super(props)
-    this.children = props.children
     let config = props.config
     if (config.defaultNetwork && config.networks[config.defaultNetwork]) {
       this.networkName = config.networks[config.defaultNetwork].name
@@ -18,17 +17,14 @@ export class MainLayout extends React.Component {
 
   render() {
     return (
-      <div className="layout-main">
-        <div id="network" className={this.networkClassName}>{this.networkName}</div>
-        {this.children}
-      </div>
+      <div id="network" className={this.networkClassName}>{this.networkName}</div>
     )
   }
 }
 
-MainLayout.propTypes = {
-  children: UnlockPropTypes.children,
+NetworkBadge.propTypes = {
   config: UnlockPropTypes.configuration,
+  network: UnlockPropTypes.network,
 }
 
-export default withConfig(MainLayout)
+export default withConfig(NetworkBadge)
