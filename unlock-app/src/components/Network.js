@@ -26,9 +26,6 @@ export function Network({ setNetwork, config, network }) {
 
             <div className="input-group mb-3">
               <select className="custom-select" type="select" value={network.name} onChange={(event) => setNetwork(event.target.value)}>
-                {Object.keys(config.networks).map((name, i) => {
-                  return (<option value={name} key={i}>{config.networks[name].name}</option>)
-                })}
               </select>
               <div className="input-group-append">
                 <Link to={'/'} className="fa fa-home btn btn-outline-secondary">
