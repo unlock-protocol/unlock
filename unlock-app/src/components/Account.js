@@ -22,7 +22,7 @@ export function Account({ account, isMetamask, showAccountPicker, useMetamask, c
         }
         {!isMetamask && config.web3Available &&
           <span className="col-1 text-right">
-            <a className="js-accountUseMetamask" onClick={(event) => useMetamask()}><img src="/images/icons/icon-metamask.png" className="icon" alt="" /></a>
+            <a className="js-accountUseMetamask" onClick={(event) => useMetamask()}><img src="/images/icons/icon-metamask.png" className="icon" /></a>
           </span>
 
         }

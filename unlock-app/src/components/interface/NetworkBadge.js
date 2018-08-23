@@ -28,10 +28,4 @@ NetworkBadge.propTypes = {
   network: UnlockPropTypes.network,
 }
 
-const mapStateToProps = (state) => {
-  return {
-    network: state.network,
-  }
-}
-
-export default withConfig(connect(mapStateToProps)(NetworkBadge))
+export default withConfig(NetworkBadge)
