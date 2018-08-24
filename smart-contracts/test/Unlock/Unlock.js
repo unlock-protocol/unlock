@@ -5,7 +5,7 @@ contract('Unlock', (accounts) => {
   const unlockOwner = accounts[2]
   describe('Standard Unlock contract', function () {
     beforeEach(async function () {
-      this.unlock = await Unlock.deployed()
+      this.unlock = await Unlock.new()
       await this.unlock.initialize(unlockOwner)
     })
 
