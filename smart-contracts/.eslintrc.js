@@ -7,7 +7,9 @@ module.exports = {
       "contract": true,
       "describe": true,
       "before": true,
-      "web3": true
+      "beforeEach": true,
+      "web3": true,
+      "assert": true
   },
   rules: {
     "mocha/no-exclusive-tests": "error"
