@@ -1,30 +1,14 @@
 const Unlock = artifacts.require('./Unlock.sol')
+const shared = require('./behaviors/shared')
 
 contract('Unlock', (accounts) => {
-  let unlock
-
-  before(() => {
-    return Unlock.deployed()
-      .then(_unlock => {
-        unlock = _unlock
-      })
-  })
-
-  it('should have an owner', () => {
-    return unlock.owner().then((owner) => {
-      assert.equal(owner, accounts[0])
+  const unlockOwner = accounts[2]
+  describe('Standard Unlock contract', function () {
+    beforeEach(async function () {
+      this.unlock = await Unlock.new()
+      await this.unlock.initialize(unlockOwner)
     })
-  })
 
-  it('should have initialized grossNetworkProduct', () => {
-    return unlock.grossNetworkProduct().then((grossNetworkProduct) => {
-      assert.equal(grossNetworkProduct.toNumber(), 0)
-    })
-  })
-
-  it('should have initialized totalDiscountGranted', () => {
-    return unlock.totalDiscountGranted().then((totalDiscountGranted) => {
-      assert.equal(totalDiscountGranted.toNumber(), 0)
-    })
+    shared.shouldBehaveLikeV1(accounts, unlockOwner)
   })
 })
