@@ -4,7 +4,7 @@ pragma solidity 0.4.24;
  * @title Example upgrade of the Unlock contract
  * @author Julien Genestoux (unlock-protocol.com)
  * @author HardlyDifficult
- * 
+ *
  * This inherits from the previous version, adds data and modifies logic.
  */
 
@@ -19,7 +19,7 @@ contract UnlockTestV2 is Unlock {
 
   // Adding a second initialize for the new data as 'initialized' is already true when v2 is deployed.
   function initializeV2()
-    public 
+    public
   {
     require(!initializedV2);
     exampleData = 42;
@@ -27,8 +27,8 @@ contract UnlockTestV2 is Unlock {
   }
 
   function computeAvailableDiscountFor(
-    address _purchaser,
-    uint _keyPrice
+    address _purchaser, // solhint-disable-line no-unused-vars
+    uint _keyPrice // solhint-disable-line no-unused-vars
   )
     public
     pure
