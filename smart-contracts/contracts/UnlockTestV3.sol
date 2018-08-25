@@ -4,7 +4,7 @@ pragma solidity 0.4.24;
  * @title Example upgrade of the Unlock contract
  * @author Julien Genestoux (unlock-protocol.com)
  * @author HardlyDifficult
- * 
+ *
  * This is a copy paste of the current Unlock contract, with comments removed.
  * Then a few small changes have been made, higlighted with comments.
  */
@@ -17,7 +17,7 @@ contract UnlockTestV3 is Ownable {
 
   struct LockBalances {
     bool deployed;
-    uint totalSales; 
+    uint totalSales;
     uint yieldedDiscountTokens;
   }
 
@@ -46,7 +46,7 @@ contract UnlockTestV3 is Ownable {
   function initialize(
     address _owner
   )
-    public 
+    public
   {
     require(!initialized);
     owner = _owner;
@@ -56,7 +56,7 @@ contract UnlockTestV3 is Ownable {
 
   // Adding a second initialize for the new data as 'initialized' is already true when v3 is deployed.
   function initializeV3()
-    public 
+    public
   {
     require(!initializedV3);
     exampleData = 42;
@@ -64,7 +64,6 @@ contract UnlockTestV3 is Ownable {
   }
 
   // Removed most existing methods
-
   // Example new method
   function testNewMethod()
     public
