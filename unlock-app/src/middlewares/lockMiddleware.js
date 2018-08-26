@@ -3,6 +3,7 @@ import { CREATE_LOCK, SET_LOCK, WITHDRAW_FROM_LOCK, setLock, resetLock } from '.
 import { PURCHASE_KEY, SET_KEY, setKey } from '../actions/key'
 import { SET_ACCOUNT, LOAD_ACCOUNT, CREATE_ACCOUNT, setAccount, resetAccountBalance } from '../actions/accounts'
 import { SET_NETWORK } from '../actions/network'
+import { SET_PROVIDER } from '../actions/provider'
 import { setTransaction } from '../actions/transaction'
 
 import Web3Service from '../services/web3Service'
@@ -17,9 +18,10 @@ export default function lockMiddleware ({ getState, dispatch }) {
     return function (action) {
 
       if (!web3Service.ready) {
+
         // We return to make sure other middleware actions are not processed
         return web3Service.connect({
-          provider: 'HTTP',
+          provider: getState().provider,
           network: getState().network,
         }).then((account) => {
           // we dispatch again!
@@ -41,9 +43,22 @@ export default function lockMiddleware ({ getState, dispatch }) {
           .then((account) => {
             return dispatch(setAccount(account))
           })
+      } else if (action.type === SET_PROVIDER) {
+        web3Service.connect({
+          provider: action.provider,
+          network: {
+            name: 'Unknown',
+            account: {},
+          },
+        }).then((account) => {
+          return dispatch(setAccount(account))
+        }).catch(() => {
+          // we could not connect
+          // TODO: show error to user
+        })
       } else if (action.type === SET_NETWORK) {
         web3Service.connect({
-          provider: 'HTTP',
+          provider: getState().provider,
           network: {
             name: action.network,
             account: {},
