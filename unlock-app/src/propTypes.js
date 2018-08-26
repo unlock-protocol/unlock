@@ -37,6 +37,8 @@ export const key = PropTypes.shape({})
 
 export const network = PropTypes.shape({})
 
+export const provider = PropTypes.string
+
 export const networks = PropTypes.shape({})
 
 export default {
@@ -51,5 +53,6 @@ export default {
   network,
   networks,
   mechanism,
+  provider,
   transaction,
 }

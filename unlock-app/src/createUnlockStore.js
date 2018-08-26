@@ -4,6 +4,7 @@ import { routerReducer, routerMiddleware } from 'react-router-redux'
 
 // Reducers
 import networkReducer from './reducers/networkReducer'
+import providerReducer from './reducers/providerReducer'
 
 // Middlewares
 import lockMiddleware from './middlewares/lockMiddleware'
@@ -12,6 +13,7 @@ export default function createUnlockStore(config, browserHistory) {
 
   const reducers = {
     router: routerReducer,
+    provider: providerReducer,
     network: networkReducer,
   }
 

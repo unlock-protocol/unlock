@@ -6,6 +6,7 @@ import LockMaker from './creator/LockMaker'
 import Lock from './consumer/Lock'
 import Home from './Home'
 import Network from './Network'
+import Provider from './Provider'
 import { withConfig } from '../utils/withConfig'
 
 let UnlockRoute = ({ component: Component, layout: Layout, ...rest }) => (
@@ -38,6 +39,7 @@ export function Unlock({ config }) {
   }
   return (
     <Switch>
+      <Route path="/provider" component={Provider} />
       <Route path="/network" component={Network} />
       <Route path="/creator" component={LockMaker} />
       <Route path="/lock/:lockAddress" component={Lock} />
