@@ -5,7 +5,6 @@ import { Route, Switch } from 'react-router'
 import LockMaker from './creator/LockMaker'
 import Lock from './consumer/Lock'
 import Home from './Home'
-import Network from './Network'
 import Provider from './Provider'
 import { withConfig } from '../utils/withConfig'
 
@@ -40,7 +39,6 @@ export function Unlock({ config }) {
   return (
     <Switch>
       <Route path="/provider" component={Provider} />
-      <Route path="/network" component={Network} />
       <Route path="/creator" component={LockMaker} />
       <Route path="/lock/:lockAddress" component={Lock} />
       <Route path="*" component={Home} />
