@@ -33,7 +33,7 @@
     "solhint": "^1.2.1"
   },
   "scripts": {
-    "test": "NODE_ENV=test && truffle test",
+    "test": "truffle test",
     "lint": "solhint contracts/**/*.sol"
   },
   "author": "",
