@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test'
+
 const Unlock = artifacts.require('./Unlock.sol')
 const shared = require('./behaviors/shared')
 
