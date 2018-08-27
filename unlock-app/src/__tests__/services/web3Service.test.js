@@ -79,7 +79,7 @@ describe('Web3Service', () => {
           netVersionAndYield(1337)
           getBalanceForAccountAndYieldBalance(state.network.account.address, '0xdeadbeef')
 
-          return web3Service.connect(state).then((account) => {
+          return web3Service.connect(state).then(([networkId, account]) => {
             expect(account).toEqual({
               address: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
               balance: '3735928559',
@@ -107,7 +107,7 @@ describe('Web3Service', () => {
           accountsAndYield([])
           getBalanceForAccountAndYieldBalance(newAccount.address, '0x0')
 
-          return web3Service.connect(state).then((account) => {
+          return web3Service.connect(state).then(([networkId, account]) => {
             expect(account).toEqual({
               address: newAccount.address,
               balance: '0',
@@ -131,7 +131,7 @@ describe('Web3Service', () => {
         accountsAndYield([nodeAccountAddress])
         getBalanceForAccountAndYieldBalance(nodeAccountAddress, '0x0')
 
-        return web3Service.connect(state).then((account) => {
+        return web3Service.connect(state).then(([networkId, account]) => {
           expect(account).toEqual({
             address: nodeAccountAddress,
             balance: '0',
