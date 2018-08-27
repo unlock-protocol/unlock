@@ -1,4 +1,7 @@
+import PropTypes from 'prop-types'
 import UnlockPropTypes from '../propTypes'
+import { ETHEREUM_NETWORKS_NAMES } from '../constants'
+
 import React from 'react'
 import { Route, Switch } from 'react-router'
 
@@ -7,6 +10,7 @@ import Lock from './consumer/Lock'
 import Home from './Home'
 import Provider from './Provider'
 import { withConfig } from '../utils/withConfig'
+import { connect } from 'react-redux'
 
 let UnlockRoute = ({ component: Component, layout: Layout, ...rest }) => (
   <Route {...rest} render={props => (
@@ -20,8 +24,9 @@ UnlockRoute.propTypes = {
   layout: UnlockPropTypes.layout,
 }
 
-export function Unlock({ config }) {
+export function Unlock({ network, config, path }) {
 
+  // Ensuring that we have at least a provider
   if (Object.keys(config.providers).length === 0 ) {
     return (<div>
       <div className="modal-dialog" role="document">
@@ -36,6 +41,23 @@ export function Unlock({ config }) {
       </div>
     </div>)
   }
+
+  // Ensuring that the provider is using the right network!
+  if (path !== '/provider' && config.isRequiredNetwork && !config.isRequiredNetwork(network.name)) {
+    return (<div>
+      <div className="modal-dialog" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Wrong network</h5>
+          </div>
+          <div className="modal-body">
+            <p>This early version of Unlock requires you to use the {config.requiredNetwork} network (you are currently connected to {ETHEREUM_NETWORKS_NAMES[network.name][0]}). Please swicth your provider to use {config.requiredNetwork}. </p>
+          </div>
+        </div>
+      </div>
+    </div>)
+  }
+
   return (
     <Switch>
       <Route path="/provider" component={Provider} />
@@ -47,9 +69,16 @@ export function Unlock({ config }) {
 }
 
 Unlock.propTypes = {
-  component: UnlockPropTypes.component,
   config: UnlockPropTypes.configuration,
-  layout: UnlockPropTypes.layout,
+  network: UnlockPropTypes.network,
+  path: PropTypes.string,
 }
 
-export default withConfig(Unlock)
+const mapStateToProps = state => {
+  return {
+    network: state.network,
+    path: state.router && state.router.location && state.router.location.pathname,
+  }
+}
+
+export default withConfig(connect(mapStateToProps)(Unlock))
