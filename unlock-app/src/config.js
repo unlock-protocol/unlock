@@ -1,4 +1,5 @@
 import Web3 from 'web3'
+import { ETHEREUM_NETWORKS_NAMES } from './constants'
 
 // There is no standard way to detect the provider name...
 export function getCurrentProvider(environment) {
@@ -47,7 +48,8 @@ export default function configure(environment) {
   }
 
   let providers = {}
-  let requiredNetwork = false
+  let isRequiredNetwork = () => false
+  let requiredNetwork = 'Dev'
 
   if (env === 'dev') {
     // In dev, we assume there is a running local ethereum node with unlocked accounts listening to the HTTP endpoint. We can add more providers (Websockets...) if needed.
@@ -60,8 +62,8 @@ export default function configure(environment) {
       providers[getCurrentProvider(environment)] = environment.web3.currentProvider
     }
 
-    // In dev, the network can be anything
-    requiredNetwork = false
+    // In dev, the network can be anything above 100
+    isRequiredNetwork = (networkId) => networkId > 100
   }
 
   if (env === 'staging') {
@@ -70,8 +72,9 @@ export default function configure(environment) {
       providers[getCurrentProvider(environment)] = environment.web3.currentProvider
     }
 
-    // In dev, the network can only be rinkeby
-    requiredNetwork = 4 // Rinkeby
+    // In staging, the network can only be rinkeby
+    isRequiredNetwork = (networkId) => networkId === 4
+    requiredNetwork = ETHEREUM_NETWORKS_NAMES[4][0]
   }
 
   if (env === 'prod') {
@@ -80,12 +83,14 @@ export default function configure(environment) {
       providers[getCurrentProvider(environment)] = environment.web3.currentProvider
     }
 
-    // In dev, the network can only be mainnet
-    requiredNetwork = 1 // Rinkeby
+    // In prod, the network can only be mainnet
+    isRequiredNetwork = (networkId) => networkId === 1
+    requiredNetwork = ETHEREUM_NETWORKS_NAMES[1][0]
   }
 
   return {
     providers,
+    isRequiredNetwork,
     requiredNetwork,
   }
 }
