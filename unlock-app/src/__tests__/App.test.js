@@ -25,7 +25,9 @@ it('renders without crashing', () => {
 
 it('displays the correct network in the user interface when using MainLayout', () => {
   const context = createRouterContext({ location: { pathname: '/creator' } })
-  context.store = createUnlockStore({defaultNetwork: 'dev'})
+  context.store = createUnlockStore({
+
+  })
   const childContextTypes = {
     router: PropTypes.object,
     store: PropTypes.object,

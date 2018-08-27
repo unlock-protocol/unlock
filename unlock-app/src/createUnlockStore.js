@@ -21,7 +21,7 @@ export default function createUnlockStore(config, browserHistory) {
 
   const initialState = Object.assign({
     network: {
-      name: config.requiredNetwork || config.defaultNetwork,
+      name: 0,
     },
   }, loadState())
 

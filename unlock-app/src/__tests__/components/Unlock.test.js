@@ -1,64 +1,57 @@
-import createRouterContext from 'react-router-test-context'
-import createUnlockStore from '../../createUnlockStore'
-import PropTypes from 'prop-types'
 import React from 'react'
-import { mount } from 'enzyme'
-import Unlock from '../../components/Unlock'
+import { shallow } from 'enzyme'
+import { Unlock } from '../../components/Unlock'
 
-// Mock the service
-jest.mock('../../services/web3Service', () => {
-  return (function () {
-    return {
-      connect: () => {
-        return new Promise((resolve, reject) => {
-          return resolve()
-        })
-      },
-    }
-  })
-})
+let config, network
 
-/**
- * TODO: unskip tests when https://github.com/airbnb/enzyme/issues/1509 has been published...
- */
 describe('Unlock Component', () => {
 
-  it('shows the home page when going to /', () => {
-    const context = createRouterContext({ location: { pathname: '/' } })
-    context.store = createUnlockStore({defaultNetwork: 'dev'})
-    const component = (<Unlock />)
-    const childContextTypes = {
-      router: PropTypes.object,
-      store: PropTypes.object,
+  beforeEach(() => {
+    config = {
+      providers: {},
+      isRequiredNetwork: () => true,
+      requiredNetwork: 'dev',
     }
-
-    const wrapper = mount(component, { context, childContextTypes })
-    expect(wrapper.find('Home')).toExist()
+    network = {
+      name: 4,
+    }
   })
 
-  it('shows the creators interface if the route matches /creator', () => {
-    const context = createRouterContext({ location: { pathname: '/creator' } })
-    context.store = createUnlockStore({defaultNetwork: 'dev'})
-    const component = (<Unlock />)
-    const childContextTypes = {
-      router: PropTypes.object,
-      store: PropTypes.object,
-    }
-
-    const wrapper = mount(component, { context, childContextTypes })
-    expect(wrapper.find('LockMaker')).toExist()
+  describe('when there are no providers', () => {
+    it('should show a message indicating that a provider is required', () => {
+      config.providers = {}
+      const component = (<Unlock network={network} config={config} path={'/'} />)
+      const wrapper = shallow(component)
+      expect(wrapper.text()).toContain('A Web3 provider is required')
+    })
   })
 
-  it('shows the lock consumer interface if the route matches /lock/:lockAddress', () => {
-    const context = createRouterContext({ location: { pathname: '/lock/0xE3984638f8E8647D4603A4D42370EBe7463720Ec' } })
-    context.store = createUnlockStore({defaultNetwork: 'dev'})
-    const component = (<Unlock />)
-    const childContextTypes = {
-      router: PropTypes.object,
-      store: PropTypes.object,
-    }
-    const wrapper = mount(component, { context, childContextTypes })
-    expect(wrapper.find('Lock')).toExist()
+  describe('when there is at least one provider', () => {
+    describe('when the current network is one of the required networks', () => {
+
+      it('shows the router', () => {
+        config.providers = {
+          HTTP: {},
+        }
+        const component = (<Unlock network={network} config={config} path={'/'} />)
+        const wrapper = shallow(component)
+        expect(wrapper.find('Switch')).toExist()
+      })
+
+    })
+
+    describe('when the current network is not in the list of required networks', () => {
+      it.only('should show a message indicating that the network needs to be changed', () => {
+        config.providers = {
+          HTTP: {},
+        }
+        config.isRequiredNetwork = () => false
+        const component = (<Unlock network={network} config={config} path={'/'} />)
+        const wrapper = shallow(component)
+        expect(wrapper.text()).toContain('Wrong network')
+        expect(wrapper.text()).toContain('This early version of Unlock requires you to use the dev network (you are currently connected to Rinkeby). Please swicth your provider to use dev.')
+      })
+    })
   })
 
 })
