@@ -66,7 +66,7 @@ export default class Web3Service {
       ]).then(([account, networkId]) => {
         this.networkId = networkId
         this.ready = true
-        return resolve(account)
+        return resolve([networkId, account])
       })
     })
 

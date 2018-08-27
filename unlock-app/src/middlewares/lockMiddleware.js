@@ -2,7 +2,7 @@ import { LOCATION_CHANGE } from 'react-router-redux'
 import { CREATE_LOCK, SET_LOCK, WITHDRAW_FROM_LOCK, setLock, resetLock } from '../actions/lock'
 import { PURCHASE_KEY, SET_KEY, setKey } from '../actions/key'
 import { SET_ACCOUNT, LOAD_ACCOUNT, CREATE_ACCOUNT, setAccount, resetAccountBalance } from '../actions/accounts'
-import { SET_NETWORK } from '../actions/network'
+import { setNetwork } from '../actions/network'
 import { SET_PROVIDER } from '../actions/provider'
 import { setTransaction } from '../actions/transaction'
 
@@ -23,9 +23,10 @@ export default function lockMiddleware ({ getState, dispatch }) {
         return web3Service.connect({
           provider: getState().provider,
           network: getState().network,
-        }).then((account) => {
+        }).then(([networkId, account]) => {
           // we dispatch again!
           dispatch(action)
+          dispatch(setNetwork(networkId))
           dispatch(setAccount(account))
         }).catch(() => {
           // we could not connect
@@ -50,20 +51,8 @@ export default function lockMiddleware ({ getState, dispatch }) {
             name: 'Unknown',
             account: {},
           },
-        }).then((account) => {
-          return dispatch(setAccount(account))
-        }).catch(() => {
-          // we could not connect
-          // TODO: show error to user
-        })
-      } else if (action.type === SET_NETWORK) {
-        web3Service.connect({
-          provider: getState().provider,
-          network: {
-            name: action.network,
-            account: {},
-          },
-        }).then((account) => {
+        }).then(([networkId, account]) => {
+          dispatch(setNetwork(networkId))
           return dispatch(setAccount(account))
         }).catch(() => {
           // we could not connect
