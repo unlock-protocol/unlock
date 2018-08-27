@@ -1,25 +1,31 @@
 import React from 'react'
-import {withConfig} from '../../utils/withConfig'
+import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
 
-export class NetworkBadge extends React.Component {
-  constructor(props) {
-    super(props)
-    let config = props.config
-    if (config.defaultNetwork && config.networks[config.defaultNetwork]) {
-      this.networkName = config.networks[config.defaultNetwork].name
-      this.networkClassName = config.defaultNetwork
-    } else {
-      this.networkName = 'Unknown'
-      this.networkClassName = ''
-    }
+/**
+ * Pair of network name and 'class' (dev, test, staging, main)
+ * Taken from https://ethereum.stackexchange.com/questions/17051/how-to-select-a-network-id-or-is-there-a-list-of-network-ids
+ */
+const NETWORKS_NAMES = {
+  0: ['Olympic', 'main'],
+  1: ['Mainnet', 'main'],
+  2: ['Morden', 'staging'],
+  3: ['Ropsten', 'staging'],
+  4: ['Rinkeby', 'staging'],
+}
+
+export function NetworkBadge({network}) {
+
+  let networkName = 'Unknown'
+  let networkClassName = 'dev'
+
+  if (network && network.name && NETWORKS_NAMES[network.name]) {
+    [ networkName, networkClassName ] = NETWORKS_NAMES[network.name]
   }
 
-  render() {
-    return (
-      <div id="network" className={this.networkClassName}>{this.networkName}</div>
-    )
-  }
+  return (
+    <div id="network" className={networkClassName}>{networkName}</div>
+  )
 }
 
 NetworkBadge.propTypes = {
@@ -27,4 +33,10 @@ NetworkBadge.propTypes = {
   network: UnlockPropTypes.network,
 }
 
-export default withConfig(NetworkBadge)
+const mapStateToProps = state => {
+  return {
+    network: state.network,
+  }
+}
+
+export default connect(mapStateToProps)(NetworkBadge)

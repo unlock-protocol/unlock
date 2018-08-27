@@ -46,3 +46,11 @@ html, body {
 #network.dev {
   background-color: #ccffcc;
 }
+
+#network.main {
+  background-color: lightpink;
+}
+
+#network.staging {
+  background-color: lightcyan;
+}
