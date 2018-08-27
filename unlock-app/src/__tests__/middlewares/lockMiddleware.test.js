@@ -155,20 +155,6 @@ describe('Lock middleware', () => {
     expect(next).toHaveBeenCalledWith(action)
   })
 
-  it('should handle SET_NETWORK and reset the whole state', () => {
-    const { next, invoke } = create()
-    const action = { type: SET_NETWORK, network }
-    invoke(action)
-    expect(mockWeb3Service.connect).toHaveBeenCalledWith({
-      'network': {
-        'account': {}, // account has been reset
-        'name': network,
-      },
-      'provider': 'HTTP',
-    })
-    expect(next).toHaveBeenCalledWith(action)
-  })
-
   it('should handle CREATE_LOCK by calling web3Service\'s createLock', () => {
     const { next, invoke } = create()
     const action = { type: CREATE_LOCK, lock }
