@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,500,600,700');
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:200,500');
+
+:root {
+  --red: #ed663a;
+  --grey: #a6a6a6;
+  --darkgrey: #4a4a4a;
+}
+
+body {
+  font-family: 'IBM Plex Sans' ,'Helvetica Neue', Arial, sans-serif;
+  color: var(--grey);
+}
+
+.data {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr minmax(300px, 70%) 1fr;
+}
+
+.content {
+  display: grid;
+  row-gap: 20px;
+}
+
+.top {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: 1fr;
+  grid-auto-flow: column;
+  align-items: center;
+  height: 72px;
+}
+
+.account {
+  display: grid;
+}
+
+.account__head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  grid-gap: 8px;
+}
+
+.list__head {
+  display: grid;
+  grid-template-columns: auto repeat(5, 1fr);
+  align-items: center;
+  grid-gap: 16px;
+}
+
+
+.locks {
+  display: grid;
+  grid-gap: 32px;
+}
+
+.lock {
+  box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.08);
+  display: grid;
+  grid-gap: 8px;
+  grid-template-columns: repeat(10, 1fr);
+}
+
+.account__details {
+  display: grid;
+  row-gap: 8px;
+  column-gap: 16px;
+  grid-template-columns: 40px 200px repeat(2, 100px) repeat(3, 24px) 1fr;
+}
+
+.account__details .icon {
+  height: 40px;
+  width:40px;
+  grid-row: span 2;
+  align-self: center;
+}
+
+.label {
+    font-weight: 100;
+  text-transform: uppercase;
+    letter-spacing: 1px;
+
+  font-size: 8px;
+}
+
+.account__details .address {
+  font-size: 10px;
+  width: 128px;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.account__details .numeric {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--darkgrey);
+
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.network_info {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--red);
+}
+
