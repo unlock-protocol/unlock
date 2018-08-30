@@ -81,10 +81,9 @@ body {
 }
 
 .label {
-    font-weight: 100;
+  font-weight: 100;
   text-transform: uppercase;
-    letter-spacing: 1px;
-
+  letter-spacing: 1px;
   font-size: 8px;
 }
 
@@ -99,7 +98,6 @@ body {
   font-size: 16px;
   font-weight: 500;
   color: var(--darkgrey);
-
 }
 
 h1 {
