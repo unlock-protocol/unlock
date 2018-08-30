@@ -76,6 +76,11 @@ body {
   padding-left: 5px;
 }
 
+.lock .icon-bar {
+  text-align: right;
+  padding-right: 10px;
+}
+
 .lock .icon {
   display: inline-block;
 }
