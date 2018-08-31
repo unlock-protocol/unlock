@@ -111,12 +111,20 @@ h2 {
   border-radius: 4px;
   display: grid;
   grid-gap: 8px;
-  grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr 2fr;
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
   font-weight: 200;
   color: #333;
   padding: 10px 0 10px 0;
   height: 64px;
+}
+
+.lock.saved {
+  grid-template-columns: 1fr 2fr repeat(4, 1fr) 2fr;
+}
+
+.lock.editing,
+.lock.pending {
+  grid-template-columns: 1fr 2fr repeat(3, 1fr) 2fr 1fr;
 }
 
 .lock-icon {
@@ -126,10 +134,68 @@ h2 {
 .lock .icon-bar {
   text-align: right;
   padding-right: 10px;
+  display: none;
+}
+
+.lock:hover .icon-bar {
+  display: block;
 }
 
 .lock .icon {
   display: inline-block;
+  cursor: pointer;
+}
+
+.lock.saved .name {
+  color: #4d8be8;
+  font-weight: 600;
+}
+
+.lock .name .lock-id {
+  color: #a6a6a6;
+  font-weight: 200;
+  font-size: 0.75em;
+}
+
+.lock .editable {
+  display: inline-block;
+  width: 40px;
+  height: 26px;
+  border-radius: 4px;
+  background-color: #f6f6f6;
+  text-align: right;
+}
+
+.lock .editable-long {
+  width: 150px;
+  text-align: left;
+}
+
+.lock .action {
+  background-color: #000;
+  padding: -10px;
+  margin: 0;
+  margin-top: -10px;
+  margin-bottom: -10px;
+  background-color: #eee;
+  text-align: center;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 200;
+  color: #a6a6a6;
+}
+
+.lock .action div {
+  cursor: pointer;
+}
+
+.lock .action .submit,
+.lock .action .pending {
+  margin-top: 20px;
+}
+
+.lock .action .subaction {
+  font-size: 0.75em;
+  margin-top: 0.75em;
 }
 
 .network_info {
