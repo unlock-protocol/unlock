@@ -6,6 +6,7 @@
   --red: #ed663a;
   --grey: #a6a6a6;
   --darkgrey: #4a4a4a;
+  --green: #74ce63;
 }
 
 body {
@@ -91,6 +92,21 @@ h2 {
   font-size: 16px;
   font-weight: 500;
   color: var(--darkgrey);
+}
+
+.create {
+  width: 120px;
+  height: 40px;
+  background-color: var(--green);
+  border: none;
+  border-radius: 5px;
+  color: var(--darkgrey);
+  font-size: 16px;
+  justify-self: end;
+}
+
+.list {
+  display: grid;
 }
 
 .list__head {
