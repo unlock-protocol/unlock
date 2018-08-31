@@ -119,12 +119,12 @@ h2 {
 }
 
 .lock.saved {
-  grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr 2fr;
+  grid-template-columns: 1fr 2fr repeat(4, 1fr) 2fr;
 }
 
 .lock.editing,
 .lock.pending {
-  grid-template-columns: 1fr 2fr 1fr 1fr 1fr 2fr 1fr;
+  grid-template-columns: 1fr 2fr repeat(3, 1fr) 2fr 1fr;
 }
 
 .lock-icon {
