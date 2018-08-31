@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,500,600,700');
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:200,500');
-@import url('https://fonts.googleapis.com/css?family=Anonymous+Pro');
 
 :root {
   --red: #ed663a;
@@ -224,8 +223,11 @@ h2 {
 }
 
 .value-eth:before {
-  font-family: 'Monaco', 'Anonymous Pro';
-  content: "Ξ ";
+  content: url(images/icons/eth.svg) " ";
+}
+
+.value-sub.value-eth:before {
+  content: url(images/icons/eth-sub.svg) " ";
 }
 
 .value-usd:before {
@@ -238,6 +240,6 @@ h2 {
 
 .value-sub {
   font-size: 0.6em;
-  color: var(--lightgrey);
+  color: var(--grey);
   margin-top: 5px;
 }
