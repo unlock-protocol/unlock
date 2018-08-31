@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,500,600,700');
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:200,500');
+@import url('https://fonts.googleapis.com/css?family=Anonymous+Pro');
 
 :root {
   --red: #ed663a;
@@ -10,6 +11,16 @@
 body {
   font-family: 'IBM Plex Sans' ,'Helvetica Neue', Arial, sans-serif;
   color: var(--grey);
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .data {
@@ -35,35 +46,17 @@ body {
   height: 72px;
 }
 
-.account {
-  display: grid;
+.unlock {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
 }
 
 .account__head {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 1fr 1fr;
   align-items: center;
   grid-gap: 8px;
-}
-
-.list__head {
-  display: grid;
-  grid-template-columns: auto repeat(5, 1fr);
-  align-items: center;
-  grid-gap: 16px;
-}
-
-
-.locks {
-  display: grid;
-  grid-gap: 32px;
-}
-
-.lock {
-  box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.08);
-  display: grid;
-  grid-gap: 8px;
-  grid-template-columns: repeat(10, 1fr);
 }
 
 .account__details {
@@ -81,10 +74,9 @@ body {
 }
 
 .label {
-    font-weight: 100;
+  font-weight: 100;
   text-transform: uppercase;
-    letter-spacing: 1px;
-
+  letter-spacing: 1px;
   font-size: 8px;
 }
 
@@ -99,17 +91,45 @@ body {
   font-size: 16px;
   font-weight: 500;
   color: var(--darkgrey);
-
 }
 
-h1 {
-  font-size: 24px;
-  font-weight: 600;
+.list__head {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr 2fr;
+  align-items: center;
+  grid-gap: 8px;
+  height: 27px;
 }
 
-h2 {
-  font-size: 15px;
-  font-weight: 500;
+.locks {
+  display: grid;
+  grid-gap: 32px;
+}
+
+.lock {
+  box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  display: grid;
+  grid-gap: 8px;
+  grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr 2fr;
+  font-family: 'IBM Plex Mono', 'Courier New', Serif;
+  font-weight: 200;
+  color: #333;
+  padding: 10px 0 10px 0;
+  height: 64px;
+}
+
+.lock-icon {
+  padding-left: 5px;
+}
+
+.lock .icon-bar {
+  text-align: right;
+  padding-right: 10px;
+}
+
+.lock .icon {
+  display: inline-block;
 }
 
 .network_info {
@@ -118,3 +138,21 @@ h2 {
   color: var(--red);
 }
 
+.value-eth:before {
+  font-family: 'Monaco', 'Anonymous Pro';
+  content: "Ξ ";
+}
+
+.value-usd:before {
+  content: "$ ";
+}
+
+.value-main {
+  font-weight: bold;
+}
+
+.value-sub {
+  font-size: 0.6em;
+  color: #a6a6a6;
+  margin-top: 5px;
+}
