@@ -20,6 +20,8 @@
     "web3-utils": "^1.0.0-beta.34"
   },
   "devDependencies": {
+    "@storybook/react": "^3.4.10",
+    "babel-core": "^6.26.3",
     "enzyme": "^3.4.0",
     "enzyme-adapter-react-16": "^1.2.0",
     "eslint": "^4.19.1",
@@ -54,6 +56,7 @@
     "serve-unlockjs": "TARGET=dev node_modules/.bin/webpack-dev-server --config webpack-unlockjs.config.js &",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "lint": "./node_modules/eslint/bin/eslint.js ."
+    "lint": "./node_modules/eslint/bin/eslint.js .",
+    "storybook": "start-storybook -p 9001 -c .storybook"
   }
 }
