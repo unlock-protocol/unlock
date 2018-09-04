@@ -22,7 +22,7 @@ const IndexPage = () => (
         </p>
       </div>
       <Buttons>
-        <Button className="button--default" href="/about" text="Learn more..." />
+        <Button className="button--default" href="/about" text="Learn more" />
         <Button className="button--default" href="/jobs" text="We're hiring!" />
       </Buttons>
       <div className="page__form">
