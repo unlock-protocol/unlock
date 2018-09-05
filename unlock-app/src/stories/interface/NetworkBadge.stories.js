@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { NetworkBadge } from '../components/interface/NetworkBadge'
+import { NetworkBadge } from '../../components/interface/NetworkBadge'
 
 storiesOf('NetworkBadge')
   .add('with dev network', () => {
