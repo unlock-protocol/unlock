@@ -10,7 +10,7 @@ It's all built on a blockchain, so it's decentralized and free to use forever.
 
 ## Using Unlock
 
-* [Installing Unlock](installation/index.md)
+* Installing Unlock (forthcoming)
 
 ## Contributing to Unlock
 
