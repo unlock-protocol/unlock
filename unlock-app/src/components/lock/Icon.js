@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import ColorScheme from 'color-scheme'
 
@@ -9,23 +10,24 @@ import UnlockPropTypes from '../../propTypes'
  * @todo Customize position of circles
  * @body In order to get more unique lock icons we should also position (x, y and z) the inner circles
  * more uniquely based on the lock address... the challenge is to not have any white space.
- * @param {lock} lock
+ * @param {UnlockPropTypes.address} address
  */
-const Icon = ({ lock }) => {
-  const mainColor = lock.address.substring(2, 8).toUpperCase()
+export function Icon({ address, size }) {
+  const mainColor = address.substring(2, 8).toUpperCase()
   const scheme = new ColorScheme()
   scheme.from_hex(mainColor)
     .scheme('triade')
     .variation('light')
 
   const colors = scheme.colors().map((c) => `#${c}`)
+  const emSize = `${parseInt(size, 10) || '1'}em`
 
   return (
     <svg
       viewBox="0 0 216 216"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width="1em"
-      height="1em">
+      width={emSize}
+      height={emSize}>
       <defs>
         <circle id="a" cx={108} cy={108} r={108} />
         <circle id="c" cx={108} cy={108} r={60.75} />
@@ -52,6 +54,7 @@ const Icon = ({ lock }) => {
 }
 
 Icon.propTypes = {
-  lock: UnlockPropTypes.lock,
+  address: UnlockPropTypes.address,
+  size: PropTypes.string,
 }
 export default Icon
