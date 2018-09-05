@@ -9,3 +9,12 @@ export const ETHEREUM_NETWORKS_NAMES = {
   3: ['Ropsten', 'staging'],
   4: ['Rinkeby', 'staging'],
 }
+
+/**
+ * Links to all icon files are available as GLYPHS
+ */
+const req = require.context('../public/images/icons', false, /^\.\/.*\.svg$/)
+export const GLYPHS = (req.keys()).reduce((glyphs, key) => {
+  const filename = key.match(new RegExp(/[^/]+(?=\.svg$)/))[0]
+  return Object.assign({}, glyphs, { [filename]: req(key) })
+}, {})
