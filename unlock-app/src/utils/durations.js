@@ -41,7 +41,7 @@ export function durations(seconds, intervals) {
 export function durationsAsTextFromSeconds(seconds) {
   const d = durations(seconds, {})
   const asArrayOfValues = Object.keys(d).map(duration => {
-    if (d[duration] > 1) {
+    if (d[duration] != 1) { // Singular should only be used when there is exactly 1; otherwise plural is needed
       return `${d[duration]} ${duration}`
     }
     return `${d[duration]} ${duration.slice(0, -1)}` // remove the s!
