@@ -1,6 +1,5 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { Icon } from '../../components/creator/Lock'
 import { Lock } from '../../components/consumer/Lock'
 import { Provider } from 'react-redux'
 import createUnlockStore from '../../createUnlockStore'
@@ -36,7 +35,7 @@ storiesOf('Lock')
       expiration: 0,
     }
     return (
-    <Lock currentKey={currentKey} account={account} lock={lock} />
+      <Lock currentKey={currentKey} account={account} lock={lock} />
     )
   })
   .add('With a valid key', () => {
@@ -51,7 +50,7 @@ storiesOf('Lock')
       expiration: (new Date().getTime() + 1000 * 60 * 60 * 24) / 1000,
     }
     return (
-    <Lock currentKey={currentKey} account={account} lock={lock} />
+      <Lock currentKey={currentKey} account={account} lock={lock} />
     )
   })
   .add('With an expired key', () => {
@@ -66,7 +65,7 @@ storiesOf('Lock')
       expiration: 1,
     }
     return (
-    <Lock currentKey={currentKey} account={account} lock={lock} />
+      <Lock currentKey={currentKey} account={account} lock={lock} />
     )
   })
   .add('With no lock', () => {
