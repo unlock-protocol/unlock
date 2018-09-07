@@ -40,6 +40,7 @@ describe('durations', () => {
   it('should return the right durations in English', () => {
     expect(durationsAsTextFromSeconds(0)).toEqual('')
     expect(durationsAsTextFromSeconds(1)).toEqual('1 second')
+    expect(durationsAsTextFromSeconds(0.5)).toEqual('0.5 seconds')
     expect(durationsAsTextFromSeconds(123)).toEqual('2 minutes and 3 seconds')
     expect(durationsAsTextFromSeconds(60*60)).toEqual('1 hour')
     expect(durationsAsTextFromSeconds(60 * 60 * 24 * 265 + 60 * 60 * 27 + 60 * 58 + 8797)).toEqual('266 days, 6 hours, 24 minutes and 37 seconds')
