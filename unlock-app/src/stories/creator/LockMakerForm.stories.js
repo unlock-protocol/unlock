@@ -7,9 +7,9 @@ import LockMakerForm from '../../components/creator/LockMakerForm'
 let store = createUnlockStore()
 
 storiesOf('LockMakerForm')
-.addDecorator(story => <Provider store={store}>{story()}</Provider>)
-.add('Default settings', () => {
-  return (
-    <LockMakerForm />
-  )
-})
+  .addDecorator(story => <Provider store={store}>{story()}</Provider>)
+  .add('Default settings', () => {
+    return (
+      <LockMakerForm />
+    )
+  })

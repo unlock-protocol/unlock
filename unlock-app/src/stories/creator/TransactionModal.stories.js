@@ -7,25 +7,25 @@ import { TransactionModal } from '../../components/creator/TransactionModal'
 let store = createUnlockStore()
 
 storiesOf('TransactionModal')
-.addDecorator(story => <Provider store={store}>{story()}</Provider>)
-.add('With transaction in progress', () => {
-  const transaction = {
-    status: 'pending',
-    confirmations: 3,
-  }
-  return (
-    <TransactionModal transaction={transaction} />
-  )
-})
-.add('With deployed lock', () => {
-  const transaction = {
-    status: 'mined',
-    confirmations: 14,
-    lock: {
-      address: '0xabc',
+  .addDecorator(story => <Provider store={store}>{story()}</Provider>)
+  .add('With transaction in progress', () => {
+    const transaction = {
+      status: 'pending',
+      confirmations: 3,
     }
-  }
-  return (
-    <TransactionModal transaction={transaction} />
-  )
-})
+    return (
+      <TransactionModal transaction={transaction} />
+    )
+  })
+  .add('With deployed lock', () => {
+    const transaction = {
+      status: 'mined',
+      confirmations: 14,
+      lock: {
+        address: '0xabc',
+      },
+    }
+    return (
+      <TransactionModal transaction={transaction} />
+    )
+  })
