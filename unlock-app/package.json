@@ -21,6 +21,7 @@
     "web3-utils": "^1.0.0-beta.34"
   },
   "devDependencies": {
+    "@svgr/cli": "^2.3.0",
     "@storybook/react": "^3.4.10",
     "babel-core": "^6.26.3",
     "enzyme": "^3.4.0",
@@ -59,6 +60,7 @@
     "eject": "react-scripts eject",
     "lint": "./node_modules/eslint/bin/eslint.js .",
     "storybook": "start-storybook -p 9001 -c .storybook",
-    "svg-sprite": "./node_modules/svg-sprite/bin/svg-sprite.js --dest public/ public/images/icons/*.svg --defs"
+    "svg-sprite": "./node_modules/svg-sprite/bin/svg-sprite.js --dest public/ public/images/icons/*.svg --defs",
+    "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --icon -d src/components/interface/icons/ public/images/icons/"
   }
 }
