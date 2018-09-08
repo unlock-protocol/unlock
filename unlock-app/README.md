@@ -1,17 +1,3 @@
-# SVG considerations
-
-We try to use SVGs as much as possible when it comes to icons and logos.
-However, in order to make loading these efficient, we combine them in a sprite which is then loaded
-by the app and for which we pick the required subset.
-We should consider adding that to the webpack build... but that would require ejecting the react application which comes with a lot of bagage and needs to be considered more thoroughly.
-For now, when adding new icons, make sure you also generate the sprite:
-
-` ./node_modules/svg-sprite/bin/svg-sprite.js --dest public/ public/images/icons/*.svg --defs`
-
-(this will update the svg sprite file in `/public/defs/` )
-
-------
-
 ## Default accounts for testing (set up thru ganach-cli)
 
 Available Accounts
