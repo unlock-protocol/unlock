@@ -15,7 +15,6 @@
     "react-scripts": "1.1.4",
     "react-test-renderer": "^16.3.2",
     "redux": "^3.7.2",
-    "svg-sprite": "^1.4.0",
     "truffle": "^4.1.11",
     "web3": "^1.0.0-beta.34",
     "web3-utils": "^1.0.0-beta.34"
@@ -60,7 +59,6 @@
     "eject": "react-scripts eject",
     "lint": "./node_modules/eslint/bin/eslint.js .",
     "storybook": "start-storybook -p 9001 -c .storybook",
-    "svg-sprite": "./node_modules/svg-sprite/bin/svg-sprite.js --dest public/ public/images/icons/*.svg --defs",
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --icon -d src/components/interface/icons/ public/images/icons/"
   }
 }
