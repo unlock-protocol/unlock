@@ -34,5 +34,8 @@ module.exports = {
     "brace-style": [2, "1tbs", { "allowSingleLine": true }],
     "react/forbid-prop-types": 2,
     "comma-dangle": [2, "always-multiline"],
+    "eol-last": [
+      "error"
+    ]
   }
 };
