@@ -14,22 +14,22 @@
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
     "bignumber.js": "^6.0.0",
-    "eslint": "^4.18.2",
+    "eslint": "^4.19.1",
     "ethereumjs-units": "^0.2.0",
-    "ganache-core": "^2.1.0",
-    "openzeppelin-solidity": "1.9.0",
-    "truffle": "^4.1.11",
-    "truffle-contract": "^3.0.4",
-    "web3-utils": "^1.0.0-beta.34",
-    "zos-lib": "^1.4.0"
+    "ganache-core": "^2.2.1",
+    "openzeppelin-solidity": "^1.12.0",
+    "truffle": "^4.1.14",
+    "truffle-contract": "^3.0.6",
+    "web3-utils": "^1.0.0-beta.36",
+    "zos-lib": "^1.4.1"
   },
   "devDependencies": {
     "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-mocha": "^4.12.1",
     "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.6.0",
-    "eslint-plugin-standard": "^3.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0",
     "solhint": "^1.2.1"
   },
   "scripts": {
