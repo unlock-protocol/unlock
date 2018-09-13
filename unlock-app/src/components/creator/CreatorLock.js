@@ -1,7 +1,6 @@
 import React from 'react'
 import UnlockPropTypes from '../../propTypes'
 import {CreatorLockSaved} from './lock/CreatorLockSaved'
-
 import CreatorLockConfirming from './lock/CreatorLockConfirming'
 
 export function CreatorLock({ lock, status = 'deployed' }) {

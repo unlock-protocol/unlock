@@ -6,7 +6,7 @@ import Duration from '../../helpers/Duration'
 import Icons from '../../interface/icons'
 import Balance from '../../helpers/Balance'
 import {
-  LockRow
+  LockRow,
   LockIcon,
   LockName,
   LockAddress,
