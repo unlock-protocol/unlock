@@ -1,7 +1,7 @@
 pragma solidity 0.4.24;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
-import "./ERC721.sol";
+import "openzeppelin-solidity/contracts/token/ERC721/ERC721Basic.sol";
 import "./Unlock.sol";
 
 /**
@@ -22,7 +22,7 @@ import "./Unlock.sol";
  *  TODO: consider using a _private version for each method that is being invoked by the
  * public one as this seems to be a pattern.
  */
-contract Lock is Ownable, ERC721 {
+contract Lock is Ownable, ERC721Basic {
 
   // The struct for a key
   struct Key {
@@ -96,10 +96,7 @@ contract Lock is Ownable, ERC721 {
   modifier hasKey(
     address _owner
   ) {
-    Key storage key = keyByOwner[_owner];
-    require(
-      key.expirationTimestamp > 0, "No such key"
-    );
+    _hasKey(_owner);
     _;
   }
 
@@ -206,7 +203,7 @@ contract Lock is Ownable, ERC721 {
   }
 
   /**
-   * This is payable because at some point we want to allow the LOCK to capture a fee on 2ndary
+   * TODO We need to make this is payable because at some point we want to allow the LOCK to capture a fee on 2ndary
    * market transactions...
    */
   function transferFrom(
@@ -214,8 +211,7 @@ contract Lock is Ownable, ERC721 {
     address _recipient,
     uint256 _tokenId
   )
-    external
-    payable
+    public
     notSoldOut()
     onlyPublic()
     hasKey(address(_tokenId))
@@ -278,8 +274,7 @@ contract Lock is Ownable, ERC721 {
     address _approved,
     uint256 _tokenId
   )
-    external
-    payable
+    public
     onlyLockOwnerOnRestrictedOrKeyOwnerInPublic(_tokenId)
   {
     require(_approved != address(0));
@@ -295,7 +290,6 @@ contract Lock is Ownable, ERC721 {
   function balanceOf(
     address _owner
   )
-    external
     view
     hasKey(_owner)
     returns (uint256)
@@ -310,12 +304,21 @@ contract Lock is Ownable, ERC721 {
   function ownerOf(
     uint256 _tokenId
   )
-    external
     view
     hasKey(address(_tokenId))
     returns (address)
   {
     return address(_tokenId);
+  }
+
+  function exists(
+    uint256 _tokenId
+  )
+    public
+    view
+    returns (bool)
+  {
+    return _hasKey(address(_tokenId));
   }
 
   /**
@@ -325,7 +328,7 @@ contract Lock is Ownable, ERC721 {
   function getApproved(
     uint256 _tokenId
   )
-    external
+    public
     view
     returns (address)
   {
@@ -385,6 +388,24 @@ contract Lock is Ownable, ERC721 {
   {
     return keyByOwner[_owner].expirationTimestamp;
   }
+
+  /**
+   * @dev Returns true if the owner has a key
+   * @param _owner address of the user for whom we search the key
+   */
+  function _hasKey(
+    address _owner
+  )
+    internal
+    returns (bool)
+  {
+    Key storage key = keyByOwner[_owner];
+    require(
+      key.expirationTimestamp > 0, "No such key"
+    );
+    return true;
+  }
+
 
   /**
   * @dev Purchase function: this lets a user purchase a key from the lock for another user
@@ -468,6 +489,59 @@ contract Lock is Ownable, ERC721 {
     address approvedRecipient = approved[address(_tokenId)];
     require(approvedRecipient != address(0));
     return approvedRecipient;
+  }
+
+  /**
+   * Implemented to comply with ERC721 but does not do anything
+   */
+  function setApprovalForAll(
+    address _operator,
+    bool _approved
+  )
+    public
+  {
+
+  }
+
+  /**
+   * Implemented to comply with ERC721 but does not do anything
+   */
+  function isApprovedForAll(
+    address _owner,
+    address _operator
+  )
+    public
+    view
+    returns (bool)
+  {
+    return false;
+  }
+
+  /**
+   * Implemented to comply with ERC721 but only calls transferFrom
+   */
+  function safeTransferFrom(
+    address _from,
+    address _to,
+    uint256 _tokenId
+  )
+    public
+  {
+    return transferFrom(_from, _to, _tokenId);
+  }
+
+  /**
+   * Implemented to comply with ERC721 but only calls transferFrom (data field is ignored)
+   */
+  function safeTransferFrom(
+    address _from,
+    address _to,
+    uint256 _tokenId,
+    bytes _data
+  )
+    public
+  {
+    return transferFrom(_from, _to, _tokenId);
   }
 
 }
