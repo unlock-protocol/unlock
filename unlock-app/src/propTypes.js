@@ -42,6 +42,8 @@ export const provider = PropTypes.string
 
 export const networks = PropTypes.shape({})
 
+export const status = PropTypes.string
+
 export default {
   account,
   address,
@@ -57,4 +59,5 @@ export default {
   mechanism,
   provider,
   transaction,
+  status,
 }
