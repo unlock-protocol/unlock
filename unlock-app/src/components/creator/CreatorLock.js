@@ -10,7 +10,6 @@ import Icons from '../interface/icons'
 export function CreatorLock({ lock, status = 'deployed' }) {
   // Some sanitization of strings to display
   let name = lock.name || 'New Lock'
-  let displayAddress = lock.address ? lock.address.substr(0, 16) : ''
   let outstandingKeys = lock.maxNumberOfKeys - lock.outstandingKeys || 0
 
   if (status === 'deployed') { // the transaction was mined and confirmed at least 12 times
@@ -22,17 +21,17 @@ export function CreatorLock({ lock, status = 'deployed' }) {
           <CreatorLockIcon><Icon lock={lock} address={lock.address} size={'3'} /></CreatorLockIcon>
           <CreatorLockName>
             {name}
-            <CreatorLockAddress>{displayAddress} &hellip;</CreatorLockAddress>
+            <CreatorLockAddress>{lock.address}</CreatorLockAddress>
           </CreatorLockName>
           <CreatorLockDuration>
             <Duration seconds={lock.expirationDuration} />
           </CreatorLockDuration>
           <CreatorLockKeys>{outstandingKeys} / {lock.maxNumberOfKeys}</CreatorLockKeys>
           <CreatorLockValue>
-            <CreatorLockValueEth><Icons.Eth /> <Balance amount={lock.keyPrice} symbol={false} /></CreatorLockValueEth>
+            <CreatorLockValueEth><LockCurrency><Icons.Eth /></LockCurrency> <Balance amount={lock.keyPrice} symbol={false} /></CreatorLockValueEth>
           </CreatorLockValue>
           <CreatorLockValue>
-            <CreatorLockValueMain><CreatorLockValueEth><Icons.Eth /> <Balance amount={lock.balance} symbol={false} /></CreatorLockValueEth></CreatorLockValueMain>
+            <CreatorLockValueMain><CreatorLockValueEth><LockCurrency><Icons.Eth /></LockCurrency> <Balance amount={lock.balance} symbol={false} /></CreatorLockValueEth></CreatorLockValueMain>
           </CreatorLockValue>
           <CreatorLockIconBar>
             <CreatorLockIconBarIcon>
@@ -59,17 +58,17 @@ export function CreatorLock({ lock, status = 'deployed' }) {
           <CreatorLockIcon><Icon lock={lock} address={lock.address} size={'3'} /></CreatorLockIcon>
           <CreatorLockName>
             {name}
-            <CreatorLockAddress>{displayAddress} &hellip;</CreatorLockAddress>
+            <CreatorLockAddress>{lock.address}</CreatorLockAddress>
           </CreatorLockName>
           <CreatorLockDuration>
             <Duration seconds={lock.expirationDuration} />
           </CreatorLockDuration>
           <CreatorLockKeys>{outstandingKeys} / {lock.maxNumberOfKeys}</CreatorLockKeys>
           <CreatorLockValue>
-            <CreatorLockValueEth><Icons.Eth /> <Balance amount={lock.keyPrice} symbol={false} /></CreatorLockValueEth>
+            <CreatorLockValueEth><LockCurrency><Icons.Eth /></LockCurrency> <Balance amount={lock.keyPrice} symbol={false} /></CreatorLockValueEth>
           </CreatorLockValue>
           <CreatorLockValue>
-            <CreatorLockValueMain><CreatorLockValueEth><Icons.Eth /> <Balance amount={lock.balance} symbol={false} /></CreatorLockValueEth></CreatorLockValueMain>
+            <CreatorLockValueMain><CreatorLockValueEth><LockCurrency><Icons.Eth /></LockCurrency> <Balance amount={lock.balance} symbol={false} /></CreatorLockValueEth></CreatorLockValueMain>
           </CreatorLockValue>
           <CreatorLockStatus>
             <CreatorLockStatusLabel>
@@ -123,6 +122,10 @@ const CreatorLockAddress = styled.div`
   color: var(--grey);
   font-weight: 200;
   font-size: 0.75em;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const CreatorLockDuration = styled.div`
@@ -156,6 +159,10 @@ const CreatorLockValueUsd = styled.div`
   }
 `
 */
+
+const LockCurrency = styled.span`
+  font-size: 0.7em;
+`
 
 const CreatorLockIconBar = styled.div`
   text-align: right;

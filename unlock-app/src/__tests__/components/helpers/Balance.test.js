@@ -12,8 +12,17 @@ describe('Balance Component', () => {
     amount={amount}
     unit={unit} />)
 
+  const wrapperNoSymbol = shallow(<Balance
+  amount={amount}
+  unit={unit}
+  symbol={false} />)
+
   it('shows the balance in Eth', () => {
     expect(wrapper.text()).toEqual('Ξ 100')
+  })
+
+  it('respects request to hide Eth symbol', () => {
+    expect(wrapperNoSymbol.text()).toEqual('100')
   })
 
 })
