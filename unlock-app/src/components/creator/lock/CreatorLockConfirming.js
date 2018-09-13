@@ -6,6 +6,7 @@ import Duration from '../../helpers/Duration'
 import Icons from '../../interface/icons'
 import Balance from '../../helpers/Balance'
 import {
+  LockRow,
   LockIcon,
   LockName,
   LockAddress,
@@ -24,28 +25,30 @@ export function CreatorLockConfirming({ lock }) {
   let outstandingKeys = lock.maxNumberOfKeys - lock.outstandingKeys || 0
 
   return (
-    <LockConfirming>
-      <LockIcon><Icon lock={lock} address={lock.address} size={'3'} /></LockIcon>
-      <LockName>
-        {name}
-        <LockAddress>{lock.address}</LockAddress>
-      </LockName>
-      <LockDuration>
-        <Duration seconds={lock.expirationDuration} />
-      </LockDuration>
-      <LockKeys>{outstandingKeys} / {lock.maxNumberOfKeys}</LockKeys>
-      <LockValue>
-        <LockValueEth><LockCurrency><Icons.Eth /></LockCurrency> <Balance amount={lock.keyPrice} symbol={false} /></LockValueEth>
-      </LockValue>
-      <LockValue>
-        <LockValueMain><LockValueEth><LockCurrency><Icons.Eth /></LockCurrency> <Balance amount={lock.balance} symbol={false} /></LockValueEth></LockValueMain>
-      </LockValue>
-      <LockStatus>
-        <LockStatusLabel>
-          Pending
-        </LockStatusLabel>
-      </LockStatus>
-    </LockConfirming>)
+    <LockRow>
+      <LockConfirming>
+        <LockIcon><Icon lock={lock} address={lock.address} size={'3'} /></LockIcon>
+        <LockName>
+          {name}
+          <LockAddress>{lock.address}</LockAddress>
+        </LockName>
+        <LockDuration>
+          <Duration seconds={lock.expirationDuration} />
+        </LockDuration>
+        <LockKeys>{outstandingKeys} / {lock.maxNumberOfKeys}</LockKeys>
+        <LockValue>
+          <LockValueEth><LockCurrency><Icons.Eth /></LockCurrency> <Balance amount={lock.keyPrice} symbol={false} /></LockValueEth>
+        </LockValue>
+        <LockValue>
+          <LockValueMain><LockValueEth><LockCurrency><Icons.Eth /></LockCurrency> <Balance amount={lock.balance} symbol={false} /></LockValueEth></LockValueMain>
+        </LockValue>
+        <LockStatus>
+          <LockStatusLabel>
+            Pending
+          </LockStatusLabel>
+        </LockStatus>
+      </LockConfirming>
+    </LockRow>)
 }
 
 CreatorLockConfirming.propTypes = {

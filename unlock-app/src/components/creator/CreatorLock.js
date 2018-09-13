@@ -2,7 +2,6 @@ import React from 'react'
 import UnlockPropTypes from '../../propTypes'
 import {CreatorLockSaved} from './lock/CreatorLockSaved'
 
-import { LockRow } from './lock/styles'
 import CreatorLockConfirming from './lock/CreatorLockConfirming'
 
 export function CreatorLock({ lock, status = 'deployed' }) {
@@ -10,16 +9,12 @@ export function CreatorLock({ lock, status = 'deployed' }) {
     // TODO add USD values to lock
     // TODO add all-time balance to lock
     return (
-      <LockRow>
-        <CreatorLockSaved lock={lock}/>
-      </LockRow>
+      <CreatorLockSaved lock={lock}/>
     )
   }
   if (status === 'confirming') { // the transaction was mined but hasn't yet been confirmed at least 12 times
     return (
-      <LockRow>
-        <CreatorLockConfirming lock={lock}/>
-      </LockRow>
+      <CreatorLockConfirming lock={lock}/>
     )
   }
 }

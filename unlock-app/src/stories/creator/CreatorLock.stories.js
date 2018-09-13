@@ -1,6 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { CreatorLock } from '../../components/creator/CreatorLock'
+import CreatorLockSaved from '../../components/creator/lock/CreatorLockSaved'
 
 storiesOf('CreatorLock')
   .add('Deployed', () => {
@@ -13,7 +14,7 @@ storiesOf('CreatorLock')
     }
     const status = 'deployed'
     return (
-      <CreatorLock lock={lock} status={status} />
+      <CreatorLockSaved lock={lock} />
     )
   })
   .add('Confirming', () => {
@@ -26,6 +27,6 @@ storiesOf('CreatorLock')
     }
     const status = 'confirming'
     return (
-      <CreatorLock lock={lock} status={status} />
+      <CreatorLockConfirming lock={lock} />
     )
   })
