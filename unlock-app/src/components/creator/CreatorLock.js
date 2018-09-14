@@ -1,6 +1,6 @@
 import React from 'react'
 import UnlockPropTypes from '../../propTypes'
-import {CreatorLockSaved} from './lock/CreatorLockSaved'
+import CreatorLockSaved from './lock/CreatorLockSaved'
 import CreatorLockConfirming from './lock/CreatorLockConfirming'
 import Icon from '../lock/Icon'
 import Duration from '../helpers/Duration'
@@ -52,14 +52,6 @@ CreatorLock.propTypes = {
 
 export default CreatorLock
 
-const gridLayout = ({ status }) => {
-  if (status == 'confirming') {
-    return 'grid-template-columns: 1fr 2fr repeat(3, 1fr) 2fr 1fr;'
-  } else {
-    return 'grid-template-columns: 1fr 2fr repeat(4, 1fr) 2fr;'
-  }
-}
-
 const LockRow = styled.div`
   box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.08);
   border-radius: 4px;
@@ -70,7 +62,13 @@ const LockRow = styled.div`
   padding: 10px 0 10px 0;
   height: 64px;
   display: grid;
-  ${gridLayout}
+  ${(props) => {
+    if (props.status == 'confirming') {
+      return 'grid-template-columns: 1fr 2fr repeat(3, 1fr) 2fr 1fr;'
+    } else {
+      return 'grid-template-columns: 1fr 2fr repeat(4, 1fr) 2fr;'
+    }
+  }}
 `
 
 const LockIcon = styled.div`
