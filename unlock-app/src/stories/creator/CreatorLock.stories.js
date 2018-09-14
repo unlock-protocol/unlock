@@ -1,7 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import CreatorLockSaved from '../../components/creator/lock/CreatorLockSaved'
-import CreatorLockConfirming from '../../components/creator/lock/CreatorLockConfirming'
+import CreatorLock from '../../components/creator/CreatorLock'
 
 storiesOf('CreatorLock')
   .add('Deployed', () => {
@@ -13,7 +12,7 @@ storiesOf('CreatorLock')
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
     }
     return (
-      <CreatorLockSaved lock={lock} />
+      <CreatorLock lock={lock} status={'deployed'}/>
     )
   })
   .add('Confirming', () => {
@@ -25,6 +24,6 @@ storiesOf('CreatorLock')
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
     }
     return (
-      <CreatorLockConfirming lock={lock} />
+      <CreatorLock lock={lock} status={'confirming'}/>
     )
   })
