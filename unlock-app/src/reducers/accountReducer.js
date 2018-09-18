@@ -20,7 +20,7 @@ const accountReducer = (state = initialState, action) => {
   return {
     ...state,
     locks: locksReducer(state.locks, action),
-    transaction: transactionReducer(state.transaction, action),
+    transactions: transactionReducer(state.transactions, action),
   }
 }
 

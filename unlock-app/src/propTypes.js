@@ -18,6 +18,10 @@ export const lock = PropTypes.shape({
 
 export const transaction = PropTypes.shape({
   status: PropTypes.string,
+  confirmations: PropTypes.number,
+  createdAt: PropTypes.number,
+  hash: PropTypes.string,
+  lock: PropTypes.shape({}),
 })
 
 export const children = PropTypes.shape({})
