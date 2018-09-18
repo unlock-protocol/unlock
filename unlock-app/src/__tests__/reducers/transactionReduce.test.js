@@ -4,28 +4,33 @@ import { SET_TRANSACTION, UPDATE_TRANSACTION } from '../../actions/transaction'
 describe('transaction reducer', () => {
 
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(null)
+    expect(reducer(undefined, {})).toEqual({all: {}, lastUpdated: 0, latest: null})
   })
 
   describe('when receiving SET_TRANSACTION', () => {
 
     it('should set the transaction accordingly', () => {
-      const transaction = {
-        status: 'pending',
-        confirmations: 0,
-        createdAt: new Date().getTime(),
+      const transactions = {
+        all: {},
+        lastUpdated: 0,
+        latest: {
+          status: 'pending',
+          confirmations: 0,
+          createdAt: new Date().getTime(),
+        },
       }
 
       expect(reducer(undefined, {
         type: SET_TRANSACTION,
-        transaction,
-      })).toEqual(transaction)
+        transactions,
+      })).toEqual(transactions)
     })
 
     it('should unset the transaction with no transaction', () => {
-      expect(reducer(undefined, {
+      let transactions = reducer(undefined, {
         type: SET_TRANSACTION,
-      })).toEqual(null)
+      })
+      expect(transactions.latest).toEqual(null)
     })
   })
 

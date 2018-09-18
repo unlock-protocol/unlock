@@ -8,9 +8,17 @@ const initialState = {
 
 const transactionReducer = (transactions = initialState, action) => {
   let newTransactions = Object.assign({}, transactions)
+
+  if (action.type === SET_TRANSACTION) {
+    if (action.transaction) {
+      newTransactions.latest = Object.assign({}, action.transaction)
+      if (action.transaction.hash) newTransactions.all[action.transaction.hash] = Object.assign({}, action.transaction)
+    } else {
+      newTransactions.latest = null // Unset the latest transaction if SET_TRANSACTION was called with no transaction
+    }
+  }
   if (action.transaction) {
-    if (action.type === SET_TRANSACTION ||
-      (action.type === UPDATE_TRANSACTION && action.transaction.createdAt === transactions.latest.createdAt)) {
+    if  (action.type === UPDATE_TRANSACTION && action.transaction.createdAt === transactions.latest.createdAt) {
       newTransactions.latest = Object.assign({}, action.transaction)
       if (action.transaction.hash) newTransactions.all[action.transaction.hash] = Object.assign({}, action.transaction)
     }

@@ -10,7 +10,7 @@ describe('account reducer', () => {
   const balance = '1337'
 
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual({ 'locks': [], transaction: null })
+    expect(reducer(undefined, {})).toEqual({ 'locks': [], transactions: {all: {}, lastUpdated: 0, latest: null} })
   })
 
   it('should set the account accordingly when receiving SET_ACCOUNT', () => {
