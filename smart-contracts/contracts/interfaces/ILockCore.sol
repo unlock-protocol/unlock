@@ -2,6 +2,7 @@ pragma solidity 0.4.24;
 
 import "./ERC721.sol";
 
+
 /**
  * @title The Lock interface core methods for a Lock
  * @author Julien Genestoux (unlock-protocol.com)
@@ -35,6 +36,21 @@ interface ILockCore {
     payable;
 
   /**
+   * @dev Called by owner to wiwthdraw all funds from the lock.
+   */
+  function withdraw(
+  )
+    external;
+
+  /**
+   * A function which lets the owner of the lock expire a users' key.
+   */
+  function expireKeyFor(
+    address _owner
+  )
+    external;
+
+  /**
    * Public function which returns the total number of keys (both expired and valid)
    */
   function outstandingKeys()
@@ -63,20 +79,4 @@ interface ILockCore {
     external
     view
     returns (uint timestamp);
-
-  /**
-   * @dev Called by owner to wiwthdraw all funds from the lock.
-   */
-  function withdraw(
-  )
-    external;
-
-  /**
-   * A function which lets the owner of the lock expire a users' key.
-   */
-  function expireKeyFor(
-    address _owner
-  )
-    external;
-
 }

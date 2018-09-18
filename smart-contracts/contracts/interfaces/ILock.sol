@@ -4,6 +4,7 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./ERC721.sol";
 import "./ILockCore.sol";
 
+
 /**
  * @title The Lock interface
  * @author Julien Genestoux (unlock-protocol.com)
@@ -15,8 +16,5 @@ import "./ILockCore.sol";
  *    and assign its previous expiration date to the new owner. This is important because it prevents
  *    some abuse around referrals.
  */
-contract ILock is 
-  ILockCore, 
-  ERC721,
-  Ownable
-{}
+contract ILock is ILockCore, ERC721, Ownable {
+}
