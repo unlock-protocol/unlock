@@ -74,7 +74,7 @@ const mapStateToProps = state => {
     currentKey: state.network.key, // key is a reserved props name
     account: state.network.account,
     lock: state.network.lock,
-    transaction: state.network.account && state.network.account.transactions.latest,
+    transaction: state.network.account && state.transactions.latest,
   }
 }
 

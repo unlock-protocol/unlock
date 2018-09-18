@@ -7,10 +7,7 @@ describe('network reducer', () => {
 
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual({
-      account: {
-        locks: [],
-        transactions: {all: {}, lastUpdated: 0, latest: null},
-      },
+      account: {},
       key: {
         data: '',
         expiration: 0,
