@@ -1,7 +1,6 @@
 pragma solidity 0.4.24;
 
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
-import "./ERC721.sol";
+import "./interfaces/ILock.sol";
 import "./Unlock.sol";
 
 /**
@@ -12,17 +11,10 @@ import "./Unlock.sol";
  * @title The Lock contract
  * @author Julien Genestoux (unlock-protocol.com)
  * Eventually: implement ERC721.
- * @dev The Lock smart contract is an ERC721 compatible smart contract.
- *  However, is has some specificities:
- *  - Since each address owns at most one single key, the tokenId is equal to the owner
- *  - Each address owns at most one single key (ERC721 allows for multiple owned NFTs)
- *  - When transfering the key, we actually reset the expiration date on the transfered key to now
- *    and assign its previous expiration date to the new owner. This is important because it prevents
- *    some abuse around referrals.
  *  TODO: consider using a _private version for each method that is being invoked by the
  * public one as this seems to be a pattern.
  */
-contract Lock is Ownable, ERC721 {
+contract Lock is ILock {
 
   // The struct for a key
   struct Key {
