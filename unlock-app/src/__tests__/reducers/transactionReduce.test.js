@@ -10,19 +10,21 @@ describe('transaction reducer', () => {
   describe('when receiving SET_TRANSACTION', () => {
 
     it('should set the transaction accordingly', () => {
+      const transaction = {
+        status: 'pending',
+        confirmations: 0,
+        createdAt: new Date().getTime(),
+      }
+
       const transactions = {
         all: {},
         lastUpdated: 0,
-        latest: {
-          status: 'pending',
-          confirmations: 0,
-          createdAt: new Date().getTime(),
-        },
+        latest: transaction,
       }
 
       expect(reducer(undefined, {
         type: SET_TRANSACTION,
-        transactions,
+        transaction,
       })).toEqual(transactions)
     })
 
@@ -43,13 +45,21 @@ describe('transaction reducer', () => {
         createdAt: new Date().getTime(),
       }
 
+      const transactions = {
+        all: {},
+        lastUpdated: 0,
+        latest: transaction,
+      }
+
       const updatedTransaction = Object.assign({}, transaction)
       updatedTransaction.status = 'mined'
 
-      expect(reducer(transaction, {
+      let transactionsResponse = reducer(transaction, {
         type: UPDATE_TRANSACTION,
         transaction: updatedTransaction,
-      }).status).toEqual('mined')
+      })
+
+      expect(transactionsResponse.latest.status).toEqual('mined')
     })
 
     it('should not update the transaction if the previous one is different', () => {
@@ -59,14 +69,22 @@ describe('transaction reducer', () => {
         createdAt: new Date().getTime(),
       }
 
+      const transactions = {
+        all: {},
+        lastUpdated: 0,
+        latest: transaction,
+      }
+
       const updatedTransaction = Object.assign({}, transaction)
       updatedTransaction.status = 'mined'
       updatedTransaction.createdAt = transaction.createdAt + 100
 
-      expect(reducer(transaction, {
+      let transactionsResponse = reducer(transaction, {
         type: UPDATE_TRANSACTION,
         transaction: updatedTransaction,
-      }).status).toEqual('pending')
+      })
+
+      expect(transactionsResponse.latest.status).toEqual('pending')
     })
   })
 
