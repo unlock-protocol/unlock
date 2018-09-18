@@ -54,7 +54,7 @@ describe('transaction reducer', () => {
       const updatedTransaction = Object.assign({}, transaction)
       updatedTransaction.status = 'mined'
 
-      let transactionsResponse = reducer(transaction, {
+      let transactionsResponse = reducer(transactions, {
         type: UPDATE_TRANSACTION,
         transaction: updatedTransaction,
       })
