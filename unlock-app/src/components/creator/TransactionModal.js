@@ -35,12 +35,12 @@ export function TransactionModal({ hideTransactionModal, transaction }) {
 
 TransactionModal.propTypes = {
   hideTransactionModal: PropTypes.func,
-  transaction: UnlockPropTypes.account,
+  transaction: UnlockPropTypes.transaction,
 }
 
 const mapStateToProps = state => {
   return {
-    transaction: state.network.account.transaction,
+    transaction: state.network.account.transactions.latest,
   }
 }
 

@@ -1,28 +1,21 @@
 import { SET_TRANSACTION, UPDATE_TRANSACTION } from '../actions/transaction'
 
-const initialState = null
+const initialState = {
+  latest: null,
+  all: {},
+  lastUpdated: 0,
+}
 
-const transactionReducer = (state = initialState, action) => {
-
-  if (action.type === SET_TRANSACTION) {
-    if (action.transaction) {
-      return {
-        ...action.transaction,
-      }
-    }
-    return null
-  }
-
-  if (action.type === UPDATE_TRANSACTION) {
-    // Only change the transaction if it is the same as before
-    if (action.transaction.createdAt === state.createdAt ) {
-      return {
-        ...action.transaction,
-      }
+const transactionReducer = (transactions = initialState, action) => {
+  let newTransactions = Object.assign({}, transactions)
+  if (action.transaction) {
+    if (action.type === SET_TRANSACTION ||
+      (action.type === UPDATE_TRANSACTION && action.transaction.createdAt === transactions.latest.createdAt)) {
+      newTransactions.latest = Object.assign({}, action.transaction)
+      if (action.transaction.hash) newTransactions.all[action.transaction.hash] = Object.assign({}, action.transaction)
     }
   }
-
-  return state
+  return newTransactions
 }
 
 export default transactionReducer
