@@ -3,7 +3,6 @@ pragma solidity 0.4.24;
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./ERC721.sol";
 import "./ILockCore.sol";
-import "./ILockOwner.sol";
 
 /**
  * @title The Lock interface
@@ -18,7 +17,6 @@ import "./ILockOwner.sol";
  */
 contract ILock is 
   ILockCore, 
-  ILockOwner, 
   ERC721,
   Ownable
 {}

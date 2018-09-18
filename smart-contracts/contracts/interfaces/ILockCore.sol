@@ -64,4 +64,19 @@ interface ILockCore {
     view
     returns (uint timestamp);
 
+  /**
+   * @dev Called by owner to wiwthdraw all funds from the lock.
+   */
+  function withdraw(
+  )
+    external;
+
+  /**
+   * A function which lets the owner of the lock expire a users' key.
+   */
+  function expireKeyFor(
+    address _owner
+  )
+    external;
+
 }
