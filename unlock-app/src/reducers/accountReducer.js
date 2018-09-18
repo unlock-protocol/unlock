@@ -1,6 +1,4 @@
 import { SET_ACCOUNT, RESET_ACCOUNT_BALANCE } from '../actions/accounts'
-import locksReducer from './locksReducer'
-import transactionReducer from './transactionReducer'
 
 const initialState = {}
 
@@ -19,8 +17,6 @@ const accountReducer = (state = initialState, action) => {
 
   return {
     ...state,
-    locks: locksReducer(state.locks, action),
-    transactions: transactionReducer(state.transactions, action),
   }
 }
 
