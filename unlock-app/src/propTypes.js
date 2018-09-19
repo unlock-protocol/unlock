@@ -38,6 +38,8 @@ export const layout = PropTypes.instanceOf(Function) //PropTypes.instanceOf(Reac
 
 export const locks = PropTypes.arrayOf(lock)
 
+export const transactions = PropTypes.shape({})
+
 export const key = PropTypes.shape({})
 
 export const network = PropTypes.shape({})
@@ -63,5 +65,6 @@ export default {
   mechanism,
   provider,
   transaction,
+  transactions,
   status,
 }
