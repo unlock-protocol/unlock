@@ -3,8 +3,13 @@ import { storiesOf } from '@storybook/react'
 import Layout from '../../components/interface/Layout'
 
 storiesOf('Layout')
-  .add('the layout', () => {
+  .add('the layout for the dashboard', () => {
     return (
-      <Layout title="The story of Unlock" />
+      <Layout title="Unlock Dashboard" />
+    )
+  })
+  .add('the layout for the content page', () => {
+    return (
+      <Layout forContent={true} title="About Unlock" />
     )
   })
