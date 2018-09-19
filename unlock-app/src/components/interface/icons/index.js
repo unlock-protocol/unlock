@@ -11,6 +11,7 @@ import Github from './Github'
 import Infinity from './Infinity'
 import Jobs from './Jobs'
 import Unlock from './Unlock'
+import UnlockWordMark from './UnlockWordMark'
 import Upload from './Upload'
 import Withdraw from './Withdraw'
 
@@ -28,6 +29,7 @@ export default {
   Infinity,
   Jobs,
   Unlock,
+  UnlockWordMark,
   Upload,
   Withdraw,
 }
