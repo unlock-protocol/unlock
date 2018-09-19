@@ -1,7 +1,5 @@
 pragma solidity 0.4.24;
 
-import "./ERC721.sol";
-
 
 /**
  * @title The Lock interface core methods for a Lock
