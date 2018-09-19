@@ -11,7 +11,7 @@ describe('lockHelpers', () => {
           hash: 'notTheTransactionWereLookingFor',
           confirmations: 24,
           lock: {
-            address: '0x0987654321'
+            address: '0x0987654321',
           },
         },
         theTransactionWereLookingFor: {
@@ -24,7 +24,7 @@ describe('lockHelpers', () => {
       },
     }
 
-    expect(getlockTransaction(transactions, Lock.address).hash).toEqual('theTransactionWereLookingFor')
+    expect(getLockTransaction(transactions, Lock.address).hash).toEqual('theTransactionWereLookingFor')
   })
   it ('should not retrieve a transaction from a lock when no match exists', () => {
     const Lock = {
@@ -36,7 +36,7 @@ describe('lockHelpers', () => {
           hash: 'notTheTransactionWereLookingFor',
           confirmations: 24,
           lock: {
-            address: '0x0987654321'
+            address: '0x0987654321',
           },
         },
         theTransactionWereLookingFor: {
@@ -49,7 +49,7 @@ describe('lockHelpers', () => {
       },
     }
 
-    expect(getlockTransaction(transactions, Lock.address).hash).toEqual(null)
+    expect(getLockTransaction(transactions, Lock.address).hash).toEqual(null)
   })
   it ('should retrieve confirmations from a lock when a match exists', () => {
     const Lock = {
@@ -61,7 +61,7 @@ describe('lockHelpers', () => {
           hash: 'notTheTransactionWereLookingFor',
           confirmations: 24,
           lock: {
-            address: '0x0987654321'
+            address: '0x0987654321',
           },
         },
         theTransactionWereLookingFor: {
@@ -86,7 +86,7 @@ describe('lockHelpers', () => {
           hash: 'notTheTransactionWereLookingFor',
           confirmations: 24,
           lock: {
-            address: '0x0987654321'
+            address: '0x0987654321',
           },
         },
         theTransactionWereLookingFor: {

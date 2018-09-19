@@ -16,6 +16,7 @@ const LockInList = (props) => {
 
 LockInList.propTypes = {
   lock: UnlockPropTypes.lock,
+  transactions: UnlockPropTypes.transactions,
 }
 
 const Locks = (props) => {
