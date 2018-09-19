@@ -5,7 +5,7 @@ import "./ERC721.sol";
 
 /**
  * @title The Lock interface core methods for a Lock
- * @author Julien Genestoux (unlock-protocol.com)
+ * @author HardlyDifficult (unlock-protocol.com)
  */
 interface ILockCore {
 

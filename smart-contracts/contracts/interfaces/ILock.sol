@@ -7,7 +7,7 @@ import "./ILockCore.sol";
 
 /**
  * @title The Lock interface
- * @author Julien Genestoux (unlock-protocol.com)
+ * @author HardlyDifficult (unlock-protocol.com)
  * @dev Lock smart contracts are ERC721 compatible smart contracts.
  *  However, they have some specificities:
  *  - Since each address owns at most one single key, the tokenId is equal to the owner
