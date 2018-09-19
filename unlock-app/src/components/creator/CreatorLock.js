@@ -1,10 +1,9 @@
 import React from 'react'
 import UnlockPropTypes from '../../propTypes'
-import CreatorLockSaved from './lock/CreatorLockSaved'
+import LockIconBar from './lock/LockIconBar'
 import CreatorLockConfirming from './lock/CreatorLockConfirming'
 import Icon from '../lock/Icon'
 import Duration from '../helpers/Duration'
-import Icons from '../interface/icons'
 import Balance from '../helpers/Balance'
 import styled from 'styled-components'
 
@@ -15,7 +14,7 @@ export function CreatorLock({ lock, status = 'deployed' }) {
   let lockComponentStatusBlock
 
   if (status === 'deployed') { // the transaction was mined and confirmed at least 12 times
-    lockComponentStatusBlock = <CreatorLockSaved lock={lock} />
+    lockComponentStatusBlock = <LockIconBar lock={lock} />
   }
   if (status === 'confirming') { // the transaction was mined but hasn't yet been confirmed at least 12 times
     lockComponentStatusBlock = <CreatorLockConfirming lock={lock} />
@@ -25,7 +24,7 @@ export function CreatorLock({ lock, status = 'deployed' }) {
   // TODO add all-time balance to lock
   return (
     <LockRow status={status}>
-      <LockIcon><Icon lock={lock} address={lock.address} size={'3'} /></LockIcon>
+      <Icon lock={lock} address={lock.address} />
       <LockName>
         {name}
         <LockAddress>{lock.address}</LockAddress>
@@ -33,13 +32,9 @@ export function CreatorLock({ lock, status = 'deployed' }) {
       <LockDuration>
         <Duration seconds={lock.expirationDuration} />
       </LockDuration>
-      <LockKeys>{outstandingKeys} / {lock.maxNumberOfKeys}</LockKeys>
-      <LockValue>
-        <LockValueEth><LockCurrency><Icons.Eth /></LockCurrency> <Balance amount={lock.keyPrice} symbol={false} /></LockValueEth>
-      </LockValue>
-      <LockValue>
-        <LockValueMain><LockValueEth><LockCurrency><Icons.Eth /></LockCurrency> <Balance amount={lock.balance} symbol={false} /></LockValueEth></LockValueMain>
-      </LockValue>
+      <LockKeys>{outstandingKeys}/{lock.maxNumberOfKeys}</LockKeys>
+      <Balance amount={lock.keyPrice} />
+      <Balance amount={lock.balance} />
       {lockComponentStatusBlock}
     </LockRow>
   )
@@ -53,26 +48,18 @@ CreatorLock.propTypes = {
 export default CreatorLock
 
 const LockRow = styled.div`
-  box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.08);
-  border-radius: 4px;
-  grid-gap: 8px;
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
   font-weight: 200;
+  min-height: 60px;
+  padding-left: 8px;
   color: var(--slate);
-  padding: 10px 0 10px 0;
-  height: 64px;
+  font-size: 14px;
+  box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
   display: grid;
-  ${(props) => {
-    if (props.status == 'confirming') {
-      return 'grid-template-columns: 1fr 2fr repeat(3, 1fr) 2fr 1fr;'
-    } else {
-      return 'grid-template-columns: 1fr 2fr repeat(4, 1fr) 2fr;'
-    }
-  }}
-`
-
-const LockIcon = styled.div`
-  padding-left: 5px;
+  grid-gap: 16px;
+  grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);
+  align-items: center;
 `
 
 const LockName = styled.div`
@@ -83,9 +70,8 @@ const LockName = styled.div`
 const LockAddress = styled.div`
   color: var(--grey);
   font-weight: 200;
-  font-size: 0.75em;
-  max-width: 150px;
   white-space: nowrap;
+  font-size: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
 `
@@ -96,9 +82,6 @@ const LockDuration = styled.div`
 const LockKeys = styled.div`
 `
 
-const LockValue = styled.div`
-`
-
 /* Saving for use with sub-values that need to be added in a future PR
 const LockValueSub = styled.div`
   font-size: 0.6em;
@@ -107,13 +90,6 @@ const LockValueSub = styled.div`
 `
 */
 
-const LockValueMain = styled.div`
-  font-weight: bold;
-`
-
-const LockValueEth = styled.div`
-`
-
 /* Saving for use with sub-values that need to be added in a future PR
 const LockValueUsd = styled.div`
   &:before {
@@ -121,7 +97,3 @@ const LockValueUsd = styled.div`
   }
 `
 */
-
-const LockCurrency = styled.span`
-  font-size: 0.7em;
-`

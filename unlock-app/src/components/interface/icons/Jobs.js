@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Jobs = props => (
-  <svg viewBox="0 0 24 24" width="1em" height="1em" {...props}>
+  <svg {...props}>
     <path
       fill="#A6A6A6"
       fillRule="evenodd"

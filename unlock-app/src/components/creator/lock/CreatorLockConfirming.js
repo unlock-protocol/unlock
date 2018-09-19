@@ -5,9 +5,7 @@ import UnlockPropTypes from '../../../propTypes'
 export function CreatorLockConfirming({ lock }) {
   return (
     <LockStatus>
-      <LockStatusLabel>
-        Pending
-      </LockStatusLabel>
+      Pending
     </LockStatus>
   )
 }
@@ -19,17 +17,12 @@ CreatorLockConfirming.propTypes = {
 export default CreatorLockConfirming
 
 const LockStatus = styled.div`
-  padding: -10px;
-  margin: 0;
-  margin-top: -10px;
-  margin-bottom: -10px;
+  align-self: stretch;
+  justify-content: center;
+  align-content: center;
+  display: grid;
   background-color: var(--lightgrey);
-  text-align: center;
   font-family: "IBM Plex Sans", sans-serif;
   font-weight: 200;
   color: var(--grey);
-`
-
-const LockStatusLabel = styled.div`
-  margin-top: 30px;
 `
