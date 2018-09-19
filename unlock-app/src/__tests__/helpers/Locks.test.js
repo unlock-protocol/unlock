@@ -49,7 +49,7 @@ describe('lockHelpers', () => {
       },
     }
 
-    expect(getLockTransaction(transactions, Lock.address).hash).toEqual(null)
+    expect(getLockTransaction(transactions, Lock.address)).toEqual(null)
   })
   it ('should retrieve confirmations from a lock when a match exists', () => {
     const Lock = {
@@ -74,7 +74,7 @@ describe('lockHelpers', () => {
       },
     }
 
-    expect(getLockConfirmations(transactions, Lock.address).hash).toEqual(12)
+    expect(getLockConfirmations(transactions, Lock.address)).toEqual(12)
   })
   it ('should retrieve no confirmations from a lock when no match exists', () => {
     const Lock = {
@@ -99,6 +99,6 @@ describe('lockHelpers', () => {
       },
     }
 
-    expect(getLockConfirmations(transactions, Lock.address).hash).toEqual(null)
+    expect(getLockConfirmations(transactions, Lock.address)).toEqual(null)
   })
 })
