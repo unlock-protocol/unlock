@@ -1,23 +1,29 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Icons from './icons'
 
-export default class Header extends Component {
-  render() {
-    return (
-      <TopHeader>
-        <h1>{this.props.title}</h1>
-        <Button><Icons.About /></Button>
-        <Button><Icons.Jobs /></Button>
-        <Button><Icons.Github /></Button>
-      </TopHeader>
-    )
-  }
+export default function Header({ forContent, title }) {
+  return (
+    <TopHeader>
+      {!forContent &&
+        <h1>{title}</h1>
+      }
+      {!!forContent &&
+        <Logo>
+          <Icons.UnlockWordMark />
+        </Logo>
+      }
+      <Button><Icons.About /></Button>
+      <Button><Icons.Jobs /></Button>
+      <Button><Icons.Github /></Button>
+    </TopHeader>
+  )
 }
 
 Header.propTypes = {
   title: PropTypes.string,
+  forContent: PropTypes.bool,
 }
 
 const TopHeader = styled.header`
@@ -28,6 +34,12 @@ const TopHeader = styled.header`
   align-items: center;
   font-size: 24px;
 `
+
+const Logo = styled.span`
+  font-size: 6em;
+  display: grid;
+  align-items: center;
+  `
 
 const Button = styled.a`
   display: grid;
