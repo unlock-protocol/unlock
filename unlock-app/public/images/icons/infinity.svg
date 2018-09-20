@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="11" viewBox="0 0 16 11">
+<svg width="16" height="11" xmlns="http://www.w3.org/2000/svg">
     <text fill="#333" fill-rule="evenodd" font-family="IBMPlexMono-Light, IBM Plex Mono Light" font-size="16" letter-spacing="-3.2">
         <tspan x=".044" y="10">o</tspan> <tspan x="6.444" y="10" letter-spacing="-.044">o</tspan>
     </text>

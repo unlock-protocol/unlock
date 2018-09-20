@@ -20,7 +20,7 @@ export function CreatorAccount({ account, network }) {
         <NetworkInfo>{networkName}</NetworkInfo>
       </AccountHead>
 
-      <AccountDetails className="account__details">
+      <AccountDetails>
         <DoubleHeightCell>
           <Jazzicon diameter={40} seed={iconSeed} />
         </DoubleHeightCell>
@@ -28,13 +28,19 @@ export function CreatorAccount({ account, network }) {
         <Label>Balance</Label>
         <Label>Earning</Label>
         <DoubleHeightCell>
-          <Icons.Upload />
+          <Button>
+            <Icons.Upload fill={'#a6a6a6'} />
+          </Button>
         </DoubleHeightCell>
         <DoubleHeightCell>
-          <Icons.Download />
+          <Button>
+            <Icons.Download fill={'#a6a6a6'} />
+          </Button>
         </DoubleHeightCell>
         <DoubleHeightCell>
-          <Icons.Etherscan />
+          <Button>
+            <Icons.Etherscan fill={'#a6a6a6'} />
+          </Button>
         </DoubleHeightCell>
         <DoubleHeightCell />
         <Address>{account.address}</Address>
@@ -79,13 +85,19 @@ const AccountDetails = styled.div`
 const DoubleHeightCell = styled.div`
   display: grid;
   height: 40px;
-  width: 40px;
   grid-row: span 2;
   align-self: center;
   font-size: 24px;
-  align-content: center
-
+  align-content: center;
 `
+
+const Button = styled.a`
+  background-color: var(--lightgrey);
+  border-radius: 50%;
+  height: 24px;
+  display: grid;
+`
+
 const Label = styled.div `
   font-weight: 100;
   text-transform: uppercase;
