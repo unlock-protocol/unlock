@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Unlock = props => (
-  <svg viewBox="0 0 56 56" width="1em" height="1em" {...props}>
+  <svg {...props}>
     <g fill="none" fillRule="evenodd">
       <rect width={56} height={56} fill="#ED6E82" rx={28} />
       <path
