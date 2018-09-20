@@ -10,9 +10,7 @@ export default function Header({ forContent, title }) {
         <h1>{title}</h1>
       }
       {!!forContent &&
-        <Logo>
-          <Icons.UnlockWordMark />
-        </Logo>
+        <Icons.UnlockWordMark height={'28px'} />
       }
       <Button><Icons.About fill={'white'} /></Button>
       <Button><Icons.Jobs fill={'white'} /></Button>
@@ -32,13 +30,8 @@ const TopHeader = styled.header`
   grid-template-columns: 1fr repeat(3, 24px);
   grid-auto-flow: column;
   align-items: center;
+  height: 70px;
 `
-
-const Logo = styled.span`
-  font-size: 6em;
-  display: grid;
-  align-items: center;
-  `
 
 const Button = styled.a`
   background-color: var(--grey);
