@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import Header from './Header'
+import Footer from './Footer'
 import Unlock from './icons/Unlock'
 
 export default function Layout({ forContent, title, children }) {
@@ -15,6 +16,9 @@ export default function Layout({ forContent, title, children }) {
       <Content>
         <Header forContent={forContent} title={title} />
         {children}
+        {forContent &&
+          <Footer />
+        }
       </Content>
       <Right />
     </Container>
