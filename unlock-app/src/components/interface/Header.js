@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import Icons from './icons'
+import Buttons from './buttons'
 
 export default function Header({ forContent, title }) {
   return (
@@ -12,9 +13,9 @@ export default function Header({ forContent, title }) {
       {!!forContent &&
         <Icons.UnlockWordMark height={'28px'} />
       }
-      <Button><Icons.About fill={'white'} /></Button>
-      <Button><Icons.Jobs fill={'white'} /></Button>
-      <Button><Icons.Github fill={'white'} /></Button>
+      <Buttons.About />
+      <Buttons.Jobs />
+      <Buttons.Github />
     </TopHeader>
   )
 }
@@ -31,11 +32,4 @@ const TopHeader = styled.header`
   grid-auto-flow: column;
   align-items: center;
   height: 70px;
-`
-
-const Button = styled.a`
-  background-color: var(--grey);
-  border-radius: 50%;
-  height: 24px;
-  display: grid;
 `
