@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Infinity = props => (
-  <svg viewBox="0 0 16 11" width="1em" height="1em" {...props}>
+  <svg {...props}>
     <text
       fill="#333"
       fillRule="evenodd"

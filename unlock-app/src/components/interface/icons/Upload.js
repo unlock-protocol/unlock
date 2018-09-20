@@ -1,13 +1,7 @@
 import React from 'react'
 
 const Upload = props => (
-  <svg
-    xmlnsXlink="http://www.w3.org/1999/xlink"
-    viewBox="0 0 24 24"
-    width="1em"
-    height="1em"
-    {...props}
-  >
+  <svg xmlnsXlink="http://www.w3.org/1999/xlink" {...props}>
     <defs>
       <circle id="a" cx={12} cy={12} r={12} />
     </defs>
