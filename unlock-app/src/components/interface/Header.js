@@ -14,9 +14,9 @@ export default function Header({ forContent, title }) {
           <Icons.UnlockWordMark />
         </Logo>
       }
-      <Button><Icons.About /></Button>
-      <Button><Icons.Jobs /></Button>
-      <Button><Icons.Github /></Button>
+      <Button><Icons.About fill={'white'} /></Button>
+      <Button><Icons.Jobs fill={'white'} /></Button>
+      <Button><Icons.Github fill={'white'} /></Button>
     </TopHeader>
   )
 }
@@ -41,6 +41,8 @@ const Logo = styled.span`
   `
 
 const Button = styled.a`
+  background-color: var(--grey);
+  border-radius: 50%;
   height: 24px;
   display: grid;
 `

@@ -7,16 +7,16 @@ export function LockIconBar({ lock }) {
   return (
     <IconBar>
       <Button>
-        <Icons.Withdraw width="100%" height="100%" />
+        <Icons.Withdraw fill={'#a6a6a6'} />
       </Button>
       <Button>
-        <Icons.Edit width="100%" height="100%" />
+        <Icons.Edit fill={'#a6a6a6'} />
       </Button>
       <Button>
-        <Icons.Download width="100%" height="100%" />
+        <Icons.Export fill={'#a6a6a6'} />
       </Button>
       <Button>
-        <Icons.Code width="100%" height="100%" />
+        <Icons.Code fill={'#a6a6a6'} />
       </Button>
     </IconBar>
   )
@@ -35,6 +35,8 @@ const IconBar = styled.div`
 `
 
 const Button = styled.a`
+  background-color: var(--lightgrey);
+  border-radius: 50%;
   height: 24px;
   display: grid;
 `
