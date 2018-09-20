@@ -29,10 +29,9 @@ Header.propTypes = {
 const TopHeader = styled.header`
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr repeat(3, 24px);
   grid-auto-flow: column;
   align-items: center;
-  font-size: 24px;
 `
 
 const Logo = styled.span`
@@ -42,6 +41,6 @@ const Logo = styled.span`
   `
 
 const Button = styled.a`
+  height: 24px;
   display: grid;
-  align-items: center;
 `

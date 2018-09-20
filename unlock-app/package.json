@@ -62,6 +62,6 @@
     "eject": "react-scripts eject",
     "lint": "./node_modules/eslint/bin/eslint.js .",
     "storybook": "start-storybook -p 9001 -c .storybook",
-    "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --icon -d src/components/interface/icons/ public/images/icons/"
+    "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --no-dimensions -d src/components/interface/icons/ public/images/icons/"
   }
 }

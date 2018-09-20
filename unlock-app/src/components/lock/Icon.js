@@ -12,7 +12,7 @@ import UnlockPropTypes from '../../propTypes'
  * more uniquely based on the lock address... the challenge is to not have any white space.
  * @param {UnlockPropTypes.address} address
  */
-export function Icon({ address, size }) {
+export function Icon({ address }) {
   const mainColor = address.substring(2, 8).toUpperCase()
   const scheme = new ColorScheme()
   scheme.from_hex(mainColor)
@@ -20,14 +20,13 @@ export function Icon({ address, size }) {
     .variation('light')
 
   const colors = scheme.colors().map((c) => `#${c}`)
-  const emSize = `${parseInt(size, 10) || '1'}em`
 
   return (
     <svg
       viewBox="0 0 216 216"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width={emSize}
-      height={emSize}>
+      width="100%"
+      height="100%">
       <defs>
         <circle id="a" cx={108} cy={108} r={108} />
         <circle id="c" cx={108} cy={108} r={60.75} />
