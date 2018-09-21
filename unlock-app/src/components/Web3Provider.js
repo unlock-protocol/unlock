@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { setProvider } from '../actions/provider'
 import { withConfig } from '../utils/withConfig'
 
-export function Provider({ setProvider, config, provider }) {
+export function Web3Provider({ setProvider, config, provider }) {
   return (<div className="container">
     <header className="masthead mb-auto">
       <div className="inner">
@@ -45,7 +45,7 @@ export function Provider({ setProvider, config, provider }) {
 
 }
 
-Provider.propTypes = {
+Web3Provider.propTypes = {
   provider: UnlockPropTypes.provider,
   setProvider: PropTypes.func,
   config: UnlockPropTypes.configuration,
@@ -61,4 +61,4 @@ const mapDispatchToProps = dispatch => ({
   setProvider: provider => dispatch(setProvider(provider)),
 })
 
-export default withConfig(connect(mapStateToProps, mapDispatchToProps)(Provider))
+export default withConfig(connect(mapStateToProps, mapDispatchToProps)(Web3Provider))
