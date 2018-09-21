@@ -19,6 +19,7 @@ Footer.propTypes = {
 }
 
 const Container = styled.footer`
+  margin-top: 24px;
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(3, 24px) 1fr;
