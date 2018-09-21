@@ -8,7 +8,7 @@ import { Route, Switch } from 'react-router'
 import LockMaker from './creator/LockMaker'
 import Lock from './consumer/Lock'
 import Home from './Home'
-import Provider from './Provider'
+import Provider from './Web3Provider'
 import { withConfig } from '../utils/withConfig'
 import { connect } from 'react-redux'
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 // Note, we use name import to import the non connected version of the component for testing
-import { Provider } from '../../components/Provider'
+import { Web3Provider } from '../../components/Web3Provider'
 
 const providers = {
   alpha: {},
@@ -17,7 +17,7 @@ describe('Provider Component', () => {
     providers,
   }
 
-  const component = (<Provider provider={provider} setProvider={setProvider} config={config} />)
+  const component = (<Web3Provider provider={provider} setProvider={setProvider} config={config} />)
   const wrapper = shallow(component)
 
   it('shows the provider picker', () => {
