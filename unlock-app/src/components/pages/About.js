@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React, { PureComponent } from 'react'
 import Layout from '../interface/Layout'
+import { Section, Title, Headline, SubTitle, CallToAction } from './Components'
 
 export default class About extends PureComponent {
   render() {
@@ -52,32 +53,6 @@ export default class About extends PureComponent {
   }
 }
 
-const Section = styled.section`
-  margin-top: 30px;
-  &:before {
-    display: block;
-    content: "";
-    width: 87px;
-    height: 3px;
-    background-color: var(--silver);
-    margin-bottom: 16px;
-  }
-`
-
-const Title = styled.h1`
-  margin-top: 0px;
-  color: var(--dimgrey);
-  font-size: 36px;
-  font-weight: 700;
-`
-
-const Headline = styled.p`
-  font-size: 32px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Serif', serif;
-  font-weight: 300;
-`
-
 const TwoColumns = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -113,17 +88,5 @@ const ThreeColumns = styled.div`
   justify-content: center;
 `
 
-const SubTitle = styled.h2`
-  font-family: 'IBM Plex Sans' ,'Helvetica Neue', Arial, sans-serif;
-  font-weight: 500;
-  font-size: 24px;
-`
-
 const Column = styled.div`
-`
-const CallToAction = styled.div`
-  font-size: 32px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Serif', serif;
-  font-weight: 300;
 `
