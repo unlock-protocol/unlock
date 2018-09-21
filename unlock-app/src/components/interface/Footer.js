@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
-import Icons from './icons'
+import Buttons from './buttons'
 
 export default class Footer extends PureComponent {
   render() {
     return (
       <Container>
-        <Button><Icons.About fill={'white'} /></Button>
-        <Button><Icons.Jobs fill={'white'} /></Button>
-        <Button><Icons.Github fill={'white'} /></Button>
+        <Buttons.About />
+        <Buttons.Jobs />
+        <Buttons.Github />
         <Colophon>Made with passion in Brooklyn, NY</Colophon>
       </Container>
     )
@@ -24,13 +24,6 @@ const Container = styled.footer`
   grid-template-columns: repeat(3, 24px) 1fr;
   grid-auto-flow: column;
   align-items: center;
-`
-
-const Button = styled.a`
-  background-color: var(--grey);
-  border-radius: 50%;
-  height: 24px;
-  display: grid;
 `
 
 const Colophon = styled.span`
