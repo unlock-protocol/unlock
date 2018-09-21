@@ -1,3 +1,5 @@
+# Getting Started
+
 ## How to contribute to Unlock
 
 Thanks for your interest in contributing to [Unlock](https://unlock-protocol.com/)! We're excited you're here. There are a variety of ways to contribute to the project.
