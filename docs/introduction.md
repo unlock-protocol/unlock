@@ -10,9 +10,10 @@ they share the best content and applications they use.
 
 Unlock is an open _protocol_ for payments on the web.
 
-Creators place a _lock_ on their content. (This could be an article, or a software app, a whole site, or a mailing list.)
-Consumers can then purchase a _key_ to access that content. Creators can decide how expensive keys to their locks are,
-how many keys can exist, and how long they last for. Creators can create an unlimited number of locks.
+Creators place a _lock_ on their content. (This could be an article, or a software app, a whole site, a mailing list,
+or anything where taking a payment could be appropriate.) Consumers can then purchase a _key_ to access that content. 
+Creators can decide how expensive keys to their locks are, how many keys can exist, and how long they last for. 
+Creators can create an unlimited number of locks.
 
 The blockchain allows us to store the ledger of who owns a lock and who owns keys in a decentralized place that nobody
 owns. It also allows creators to prove that they own a particular lock, and consumers to prove that they own a key for
