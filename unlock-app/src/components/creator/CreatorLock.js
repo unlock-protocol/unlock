@@ -60,6 +60,7 @@ const LockRow = styled.div`
   grid-gap: 16px;
   grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);
   align-items: center;
+  margin-bottom: 32px;
 `
 
 const LockName = styled.div`
