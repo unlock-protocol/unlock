@@ -110,6 +110,7 @@ describe('lockHelpers', () => {
         theTransactionWereLookingFor: {
           hash: 'theTransactionWereLookingFor',
           confirmations: 12,
+          status: 'mined',
           lock: {
             address: '0x1234567890',
           },
@@ -128,6 +129,7 @@ describe('lockHelpers', () => {
         theTransactionWereLookingFor: {
           hash: 'theTransactionWereLookingFor',
           confirmations: 4,
+          status: 'mined',
           lock: {
             address: '0x1234567890',
           },
