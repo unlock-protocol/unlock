@@ -7,12 +7,12 @@ import CreatorLock from './CreatorLock'
 export default class CreatorLocks extends Component {
   render() {
     return (
-      <div>
+      <React.Fragment>
         {Object.values(this.props.locks).map((lock, index) => {
           let lockStatus = getLockStatusString(this.props.transactions, lock.address)
           return(<CreatorLock key={index} lock={lock} status={lockStatus}/>)
         })}
-      </div>
+      </React.Fragment>
     )
   }
 }
