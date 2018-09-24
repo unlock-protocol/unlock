@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { PureComponent } from 'react'
 import Layout from '../interface/Layout'
-import { Section, Title, Headline, SubTitle, CallToAction } from './Components'
+import { Section, Title, Headline, SubTitle, CallToAction, ThreeColumns, Column, TwoColumns } from './Components'
 
 export default class About extends PureComponent {
   render() {
@@ -53,17 +53,6 @@ export default class About extends PureComponent {
   }
 }
 
-const TwoColumns = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 42px;
-  font-family: 'IBM Plex Serif', serif;
-  font-weight: 300;
-  fonts-size: 22px;
-  line-height: 1.5;
-  color: var(--darkgrey);
-`
-
 const News = styled.div`
   display: grid;
   grid-template-columns: 1fr 3fr;
@@ -73,20 +62,4 @@ const News = styled.div`
   fonts-size: 22px;
   line-height: 1.5;
   color: var(--darkgrey);
-`
-
-const ThreeColumns = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 24px;
-  font-family: 'IBM Plex Serif', serif;
-  font-weight: 300;
-  fonts-size: 22px;
-  line-height: 1.5;
-  color: var(--darkgrey);
-  align-items: start;
-  justify-content: center;
-`
-
-const Column = styled.div`
 `
