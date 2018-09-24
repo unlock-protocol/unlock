@@ -46,6 +46,7 @@ const Right = styled.div`
 `
 
 const Content = styled.div`
+  color: var(--darkgrey);
   display: grid;
-  row-gap: 20px;
+  row-gap: 24px;
 `
