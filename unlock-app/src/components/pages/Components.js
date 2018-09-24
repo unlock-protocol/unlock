@@ -4,7 +4,6 @@ export const Section = styled.section.attrs({
   id: props => props.anchor,
 })`
   margin-top: 30px;
-  color: var(--darkgrey);
 
   &:before {
     display: block;
@@ -27,6 +26,7 @@ export const Headline = styled.p`
   font-size: 32px;
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
+  margin-top: 0px
 `
 
 export const CallToAction = styled.div`
@@ -61,4 +61,34 @@ export const ListItem = styled.li`
   font-family: 'IBM Plex Serif', serif;
   font-size: 16px;
   font-weight: 300;
+`
+
+export const TwoColumns = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 42px;
+  font-family: 'IBM Plex Serif', serif;
+  font-weight: 300;
+  fonts-size: 22px;
+  line-height: 1.5;
+  color: var(--darkgrey);
+`
+
+export const ThreeColumns = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 24px;
+  font-family: 'IBM Plex Serif', serif;
+  font-weight: 300;
+  fonts-size: 22px;
+  line-height: 1.5;
+  color: var(--darkgrey);
+  align-items: start;
+  justify-content: center;
+  text-align center;
+`
+
+export const Column = styled.div`
+  display: grid;
+  justify-items: center;
 `
