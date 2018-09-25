@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Icons from '../../components/interface/icons'
 
-storiesOf('Icons')
+storiesOf('Icons', Icons)
   .add('with the About', () => {
     return (
       <Icons.About />

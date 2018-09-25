@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import LockIconBar from '../../components/creator/lock/LockIconBar'
 
-storiesOf('LockIconBar')
+storiesOf('LockIconBar', LockIconBar)
   .add('LockIconBar', () => {
     const lock = {
       keyPrice: '10000000000000000000',

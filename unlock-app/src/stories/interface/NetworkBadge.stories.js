@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { NetworkBadge } from '../../components/interface/NetworkBadge'
 
-storiesOf('NetworkBadge')
+storiesOf('NetworkBadge', NetworkBadge)
   .add('with dev network', () => {
     const network = {
       name: '7331',

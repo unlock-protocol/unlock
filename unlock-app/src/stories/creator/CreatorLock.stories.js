@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import CreatorLock from '../../components/creator/CreatorLock'
 
-storiesOf('CreatorLock')
+storiesOf('CreatorLock', CreatorLock)
   .add('Deployed', () => {
     const lock = {
       keyPrice: '10000000000000000000',

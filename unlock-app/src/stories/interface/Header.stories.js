@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Header from '../../components/interface/Header'
 
-storiesOf('Header')
+storiesOf('Header', Header)
   .add('the header without a title', () => {
     return (
       <Header />

@@ -6,7 +6,7 @@ import { TransactionModal } from '../../components/creator/TransactionModal'
 
 let store = createUnlockStore()
 
-storiesOf('TransactionModal')
+storiesOf('TransactionModal', TransactionModal)
   .addDecorator(story => <Provider store={store}>{story()}</Provider>)
   .add('With transaction in progress', () => {
     const transaction = {

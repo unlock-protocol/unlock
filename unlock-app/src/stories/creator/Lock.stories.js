@@ -6,7 +6,7 @@ import createUnlockStore from '../../createUnlockStore'
 
 let store = createUnlockStore()
 
-storiesOf('Lock')
+storiesOf('Lock', Lock)
   .addDecorator(story => <Provider store={store}>{story()}</Provider>)
   .add('With no key purchased', () => {
     const account = {

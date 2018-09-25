@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Layout from '../../components/interface/Layout'
 
-storiesOf('Layout')
+storiesOf('Layout', Layout)
   .add('the layout for the dashboard', () => {
     return (
       <Layout title="Unlock Dashboard" />

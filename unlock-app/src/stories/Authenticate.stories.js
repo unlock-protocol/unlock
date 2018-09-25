@@ -6,7 +6,7 @@ let dummyFunction = () => {
   return false // We don't need this to do anything in the storybook context
 }
 
-storiesOf('Authenticate')
+storiesOf('Authenticate', Authenticate)
   .add('Default', () => {
     return (
       <Authenticate hideAccountPicker={dummyFunction} loadAccount={dummyFunction} />
