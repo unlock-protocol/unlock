@@ -75,9 +75,34 @@ describe('transaction reducer', () => {
         latest: transaction,
       }
 
-      let updatedTransaction = Object.assign({}, transaction)
+      const updatedTransaction = Object.assign({}, transaction)
       updatedTransaction.status = 'mined'
       updatedTransaction.createdAt = transaction.createdAt + 100
+
+      let transactionsResponse = reducer(transactions, {
+        type: UPDATE_TRANSACTION,
+        transaction: updatedTransaction,
+      })
+
+      expect(transactionsResponse.latest.status).toEqual('pending')
+    })
+
+    it('should not update latest transaction if new transaction was created earlier', () => {
+      const transaction = {
+        status: 'pending',
+        confirmations: 0,
+        createdAt: new Date().getTime(),
+      }
+
+      const transactions = {
+        all: {},
+        lastUpdated: 0,
+        latest: transaction,
+      }
+
+      const updatedTransaction = Object.assign({}, transaction)
+      updatedTransaction.status = 'mined'
+      updatedTransaction.createdAt = transaction.createdAt - 100
 
       let transactionsResponse = reducer(transactions, {
         type: UPDATE_TRANSACTION,

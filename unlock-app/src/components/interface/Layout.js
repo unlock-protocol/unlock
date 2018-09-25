@@ -1,47 +1,52 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Header from './Header'
+import Footer from './Footer'
 import Unlock from './icons/Unlock'
 
-export default class Layout extends Component {
-  render() {
-    return (
-      <Container>
-        <Left>
+export default function Layout({ forContent, title, children }) {
+  return (
+    <Container>
+      <Left>
+        {!forContent &&
           <Unlock />
-        </Left>
-        <Content>
-          <Header title={this.props.title} />
-          {this.props.children}
-        </Content>
-        <Right />
-      </Container>
-    )
-  }
+        }
+      </Left>
+      <Content>
+        <Header forContent={forContent} title={title} />
+        {children}
+        {forContent &&
+          <Footer />
+        }
+      </Content>
+      <Right />
+    </Container>
+  )
 }
 
 Layout.propTypes = {
   title: PropTypes.string,
   children: PropTypes.Component,
+  forContent: PropTypes.bool,
 }
 
 const Container = styled.div`
   display: grid;
-  padding: 16px;
   grid-template-columns: 1fr minmax(300px, 65%) 1fr;
 `
 
 const Left = styled.div`
   display: grid;
-  font-size: 56px;
-  align-items: top;
+  align-items: start;
+  height: 24px;
 `
 
 const Right = styled.div`
 `
 
 const Content = styled.div`
+  color: var(--darkgrey);
   display: grid;
-  row-gap: 20px;
+  row-gap: 24px;
 `

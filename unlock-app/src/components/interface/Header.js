@@ -1,35 +1,35 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Icons from './icons'
+import Buttons from './buttons'
 
-export default class Header extends Component {
-  render() {
-    return (
-      <TopHeader>
-        <h1>{this.props.title}</h1>
-        <Button><Icons.About /></Button>
-        <Button><Icons.Jobs /></Button>
-        <Button><Icons.Github /></Button>
-      </TopHeader>
-    )
-  }
+export default function Header({ forContent, title }) {
+  return (
+    <TopHeader>
+      {!forContent &&
+        <h1>{title}</h1>
+      }
+      {!!forContent &&
+        <Icons.UnlockWordMark height={'28px'} />
+      }
+      <Buttons.About />
+      <Buttons.Jobs />
+      <Buttons.Github />
+    </TopHeader>
+  )
 }
 
 Header.propTypes = {
   title: PropTypes.string,
+  forContent: PropTypes.bool,
 }
 
 const TopHeader = styled.header`
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr repeat(3, 24px);
   grid-auto-flow: column;
   align-items: center;
-  font-size: 24px;
-`
-
-const Button = styled.a`
-  display: grid;
-  align-items: center;
+  height: 70px;
 `
