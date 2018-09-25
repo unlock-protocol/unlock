@@ -11,8 +11,7 @@ import { saveState } from './services/localStorageService'
 import Unlock from './components/Unlock'
 
 // Styles
-import 'bootstrap/dist/css/bootstrap.css'
-import './App.css'
+import './theme/globalStyle'
 
 // Store
 import createUnlockStore from './createUnlockStore'

@@ -7,7 +7,9 @@ import { Route, Switch } from 'react-router'
 
 import LockMaker from './creator/LockMaker'
 import Lock from './consumer/Lock'
-import Home from './Home'
+import Index from './pages/Index'
+import Jobs from './pages/Jobs'
+import About from './pages/About'
 import Provider from './Web3Provider'
 import { withConfig } from '../utils/withConfig'
 import { connect } from 'react-redux'
@@ -63,7 +65,9 @@ export function Unlock({ network, config, path }) {
       <Route path="/provider" component={Provider} />
       <Route path="/creator" component={LockMaker} />
       <Route path="/lock/:lockAddress" component={Lock} />
-      <Route path="*" component={Home} />
+      <Route path="/jobs" component={Jobs} />
+      <Route path="/about" component={About} />
+      <Route path="*" component={Index} />
     </Switch>
   )
 }
