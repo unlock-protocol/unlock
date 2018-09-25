@@ -27,7 +27,7 @@ export default function Layout({ forContent, title, children }) {
 
 Layout.propTypes = {
   title: PropTypes.string,
-  children: PropTypes.Component,
+  children: PropTypes.node,
   forContent: PropTypes.bool,
 }
 

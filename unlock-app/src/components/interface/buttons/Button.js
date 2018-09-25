@@ -10,7 +10,7 @@ export const LayoutButton = ({href, title, children}) => (
 )
 
 LayoutButton.propTypes = {
-  href: PropTypes.account,
+  href: PropTypes.string,
   title: PropTypes.string,
   children: PropTypes.node,
 }
