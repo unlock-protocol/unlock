@@ -6,7 +6,7 @@ let accountPicker = () => {
   return false // We don't need this to do anything in the storybook context
 }
 
-storiesOf('Account')
+storiesOf('Account', Account)
   .add('With address and balance', () => {
     let account = {
       address: '0xabc',
