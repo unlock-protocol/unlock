@@ -65,6 +65,7 @@ const Hero = styled.h1`
   margin-top: 30px;
   margin-bottom: 0px;
   color: var(--darkgrey);
+  font-weight: 700;
 `
 
 const Action = styled.div`
