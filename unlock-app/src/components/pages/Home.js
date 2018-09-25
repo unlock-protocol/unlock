@@ -92,4 +92,5 @@ const Paragraph = styled.p`
 
 const HomepageButton = styled(ActionButton)`
   padding: 20px;
+  grid-column: 2;
 `
