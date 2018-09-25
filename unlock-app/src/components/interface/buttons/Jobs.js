@@ -5,7 +5,7 @@ import { LayoutButton } from './Button'
 export default class Jobs extends PureComponent {
   render() {
     return (
-      <LayoutButton href="/jobs">
+      <LayoutButton href="/jobs" title="Join us">
         <Icons.Jobs fill={'white'} />
       </LayoutButton>
     )
