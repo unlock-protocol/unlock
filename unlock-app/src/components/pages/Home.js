@@ -14,7 +14,7 @@ export default class Home extends PureComponent {
         </Headline>
 
         <Action>
-          <ActionButton><HomepageButton>Go to Your Dashboard</HomepageButton></ActionButton>
+          <HomepageButton>Go to Your Dashboard</HomepageButton>
           <ButtonLabel>Requires a browser with an Ethereum wallet</ButtonLabel>
         </Action>
 
@@ -90,6 +90,6 @@ const Paragraph = styled.p`
   font-size: 20px;
 `
 
-const HomepageButton = styled.div`
+const HomepageButton = styled(ActionButton)`
   padding: 20px;
 `
