@@ -2,7 +2,7 @@ import UnlockPropTypes from '../../propTypes'
 
 import React, { Component } from 'react'
 import { getLockStatusString } from '../../helpers/Locks'
-import CreatorLock from './CreatorLock'
+import CreatorLock, { LockRowGrid } from './CreatorLock'
 import styled from 'styled-components'
 
 export default class CreatorLocks extends Component {
@@ -39,7 +39,7 @@ const LockHeaderRow = styled.div`
   font-size: 14px;
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);
+  ${LockRowGrid}
   align-items: center;
 `
 
