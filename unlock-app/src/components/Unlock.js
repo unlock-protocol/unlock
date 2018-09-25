@@ -7,7 +7,7 @@ import { Route, Switch } from 'react-router'
 
 import LockMaker from './creator/LockMaker'
 import Lock from './consumer/Lock'
-import Index from './pages/Index'
+import Home from './pages/Home'
 import Jobs from './pages/Jobs'
 import About from './pages/About'
 import Provider from './Web3Provider'
@@ -67,7 +67,7 @@ export function Unlock({ network, config, path }) {
       <Route path="/lock/:lockAddress" component={Lock} />
       <Route path="/jobs" component={Jobs} />
       <Route path="/about" component={About} />
-      <Route path="*" component={Index} />
+      <Route path="*" component={Home} />
     </Switch>
   )
 }
