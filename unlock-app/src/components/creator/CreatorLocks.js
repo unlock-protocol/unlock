@@ -16,7 +16,11 @@ export default class CreatorLocks extends Component {
           <LockMinorHeader>Quantity</LockMinorHeader>
           <LockMinorHeader>Price</LockMinorHeader>
           <LockMinorHeader>Balance / Earnings</LockMinorHeader>
-          <LockHeaderButton>&nbsp;</LockHeaderButton>
+          <LockHeaderButton>
+            <LockHeaderButtonContainer>
+              <ActionButton><CreateButton>Create Lock</CreateButton></ActionButton>
+            </LockHeaderButtonContainer>
+          </LockHeaderButton>
         </LockHeaderRow>
         {Object.values(this.props.locks).map((lock, index) => {
           let lockStatus = getLockStatusString(this.props.transactions, lock.address)
@@ -66,5 +70,25 @@ const LockMinorHeader = styled.div`
   color: var(--darkgrey);
 `
 
-const LockHeaderButton = styled.div`
+const LockHeaderButton = styled.div``
+
+const LockHeaderButtonContainer = styled.div`
+  max-height: 25px;
+  float: right;
+`
+
+export const ActionButton = styled.button`
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--darkgrey);
+  font-family: "IBM Plex Sans", sans-serif;
+  border-radius: 4px;
+  grid-column: 2;
+  justify-self: stretch;
+  cursor: pointer;
+`
+
+const CreateButton = styled.div`
+  padding: 5px;
 `
