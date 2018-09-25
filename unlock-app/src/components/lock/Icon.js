@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import ColorScheme from 'color-scheme'
 
@@ -54,6 +53,6 @@ export function Icon({ address }) {
 
 Icon.propTypes = {
   address: UnlockPropTypes.address,
-  size: PropTypes.string,
 }
+
 export default Icon

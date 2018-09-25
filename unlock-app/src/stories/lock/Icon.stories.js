@@ -15,9 +15,3 @@ storiesOf('Icon')
       <Icon address={address} />
     )
   })
-  .add('with a 3rd lock address on a larger size', () => {
-    const address = '0x328111e735807be2843e6eff619d5d6e00e2b3bc'
-    return (
-      <Icon address={address} size={3} />
-    )
-  })
