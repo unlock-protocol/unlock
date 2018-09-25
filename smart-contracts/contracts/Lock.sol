@@ -347,6 +347,18 @@ contract Lock is ILock {
   {
     keyByOwner[_owner].expirationTimestamp = now; // Effectively expiring the key
   }
+  
+  /**
+   * A function which lets the owner of the lock to change the price for future purchases.
+   */
+  function updateKeyPrice(
+    uint _keyPrice
+  )
+    external
+    onlyOwner
+  {
+    keyPrice = _keyPrice;
+  }
 
   /**
   * @dev Returns the key's data field for a given owner.

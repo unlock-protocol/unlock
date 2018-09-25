@@ -49,6 +49,14 @@ interface ILockCore {
     external;
 
   /**
+   * A function which lets the owner of the lock to change the price for future purchases.
+   */
+  function updateKeyPrice(
+    uint _keyPrice
+  )
+    external;
+
+  /**
    * Public function which returns the total number of keys (both expired and valid)
    */
   function outstandingKeys()
