@@ -47,6 +47,8 @@ CreatorLock.propTypes = {
 
 export default CreatorLock
 
+export const LockRowGrid = 'grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
+
 const LockRow = styled.div`
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
   font-weight: 200;
@@ -58,7 +60,7 @@ const LockRow = styled.div`
   border-radius: 4px;
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);
+  ${LockRowGrid}
   align-items: center;
   margin-bottom: 32px;
 `
