@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Buttons from '../../components/interface/buttons'
 
-storiesOf('Button')
+storiesOf('Buttons', Buttons)
   .add('Github', () => {
     return (
       <Buttons.Github />

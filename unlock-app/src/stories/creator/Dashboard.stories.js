@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Dashboard from '../../components/creator/Dashboard'
 
-storiesOf('Dashboard')
+storiesOf('Dashboard', Dashboard)
   .add('the dashboard', () => {
     const account = {
       address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
