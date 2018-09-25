@@ -37,7 +37,6 @@ const Amount = styled.span``
 const Unit = styled.span`
   display: grid;
   align-items: end;
-  justify-items: end;
 `
 
 export default Balance
