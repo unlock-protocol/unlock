@@ -74,10 +74,10 @@ describe('Web3Service', () => {
           const web3Service = new Web3Service()
 
           const state = Object.assign({}, defaultState)
-          state.account.address = '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1'
+          state.network.account.address = '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1'
 
           netVersionAndYield(1337)
-          getBalanceForAccountAndYieldBalance(state.account.address, '0xdeadbeef')
+          getBalanceForAccountAndYieldBalance(state.network.account.address, '0xdeadbeef')
 
           return web3Service.connect(state).then(([networkId, account]) => {
             expect(account).toEqual({
@@ -93,7 +93,7 @@ describe('Web3Service', () => {
           const web3Service = new Web3Service()
 
           const state = Object.assign({}, defaultState)
-          state.account = {}
+          state.network.account = {}
 
           const newAccount = {
             address: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
@@ -123,7 +123,7 @@ describe('Web3Service', () => {
         const web3Service = new Web3Service()
 
         const state = Object.assign({}, defaultState)
-        state.account = {}
+        state.network.account = {}
 
         const nodeAccountAddress = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 
@@ -465,7 +465,7 @@ describe('Web3Service', () => {
     })
 
     describe('withdrawFromLock', () => {
-      it.only('should send a transaction to withdraw from the lock', () => {
+      it('should send a transaction to withdraw from the lock', () => {
         const lock = {
           address: '0xlock',
         }
