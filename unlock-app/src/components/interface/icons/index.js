@@ -8,7 +8,7 @@ import Etherscan from './Etherscan'
 import EthSub from './EthSub'
 import Export from './Export'
 import Github from './Github'
-import Infinity from './Infinity'
+import Lemniscate from './Lemniscate'
 import Jobs from './Jobs'
 import Unlock from './Unlock'
 import UnlockWordMark from './UnlockWordMark'
@@ -26,7 +26,7 @@ export default {
   EthSub,
   Export,
   Github,
-  Infinity,
+  Lemniscate,
   Jobs,
   Unlock,
   UnlockWordMark,
