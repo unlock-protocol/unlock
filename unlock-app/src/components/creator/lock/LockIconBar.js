@@ -39,4 +39,5 @@ const Button = styled.a`
   border-radius: 50%;
   height: 24px;
   display: grid;
+  cursor: pointer;
 `
