@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Infinity = props => (
+const Lemniscate = props => (
   <svg {...props}>
     <text
       fill="#333"
@@ -19,4 +19,4 @@ const Infinity = props => (
   </svg>
 )
 
-export default Infinity
+export default Lemniscate
