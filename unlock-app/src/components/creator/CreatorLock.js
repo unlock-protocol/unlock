@@ -14,7 +14,7 @@ export function CreatorLock({ lock, status = 'deployed' }) {
   let lockComponentStatusBlock
 
   if (status === 'deployed') { // the transaction was mined and confirmed at least 12 times
-    lockComponentStatusBlock = <LockIconBar lock={lock} className={'lock-icons'} />
+    lockComponentStatusBlock = <LockIconBarContainer><LockIconBar lock={lock} className={'lock-icons'} /></LockIconBarContainer>
   }
   if (status === 'confirming') { // the transaction was mined but hasn't yet been confirmed at least 12 times
     lockComponentStatusBlock = <CreatorLockConfirming lock={lock} />
@@ -49,9 +49,13 @@ export default CreatorLock
 
 export const LockRowGrid = 'grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
 
+const LockIconBarContainer = styled.div`
+  visibility: hidden;
+`
+
 const LockRow = styled.div`
   &:hover {
-    .lock-icons {
+    ${LockIconBarContainer} {
       visibility: visible;
     }
   }

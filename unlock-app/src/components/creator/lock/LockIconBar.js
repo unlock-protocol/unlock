@@ -5,7 +5,7 @@ import Icons from '../../interface/icons'
 
 export function LockIconBar({ lock }) {
   return (
-    <IconBar className={'lock-icons'}>
+    <IconBar>
       <Button>
         <Icons.Withdraw fill={'#a6a6a6'} />
       </Button>
@@ -32,7 +32,6 @@ const IconBar = styled.div`
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(4, 24px);
-  visibility: hidden;
 `
 
 const Button = styled.a`
