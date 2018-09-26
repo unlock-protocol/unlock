@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { PureComponent } from 'react'
 import Layout from '../interface/Layout'
 import { Section, Headline, SubTitle, CallToAction, ThreeColumns, Column } from './Components'
+import { ActionButton } from '../creator/CreatorLocks'
 
 export default class Home extends PureComponent {
   render() {
@@ -13,7 +14,7 @@ export default class Home extends PureComponent {
         </Headline>
 
         <Action>
-          <DashboardButton>Go to Your Dashboard</DashboardButton>
+          <HomepageButton>Go to Your Dashboard</HomepageButton>
           <ButtonLabel>Requires a browser with an Ethereum wallet</ButtonLabel>
         </Action>
 
@@ -76,19 +77,6 @@ const Action = styled.div`
   margin-bottom: 50px;
 `
 
-const DashboardButton = styled.button`
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  padding: 20px;
-  color: var(--darkgrey);
-  font-family: "IBM Plex Sans", sans-serif;
-  border-radius: 4px;
-  grid-column: 2;
-  justify-self: stretch;
-
-`
-
 const ButtonLabel = styled.small`
   grid-column: 2;
   font-size: 12px;
@@ -96,8 +84,13 @@ const ButtonLabel = styled.small`
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
 `
 
-const Paragraph =styled.p`
+const Paragraph = styled.p`
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
   font-size: 20px;
+`
+
+const HomepageButton = styled(ActionButton)`
+  padding: 20px;
+  grid-column: 2;
 `
