@@ -72,9 +72,9 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => {
   return {
     currentKey: state.network.key, // key is a reserved props name
-    account: state.network.account,
+    account: state.account,
     lock: state.network.lock,
-    transaction: state.network.account && state.transactions.latest,
+    transaction: state.account && state.transactions.latest,
   }
 }
 
