@@ -53,9 +53,9 @@ storiesOf('Icons', Icons)
       <Icons.Github />
     )
   })
-  .add('with the Infinity', () => {
+  .add('with the Lemniscate', () => {
     return (
-      <Icons.Infinity />
+      <Icons.Lemniscate />
     )
   })
   .add('with the Jobs', () => {
