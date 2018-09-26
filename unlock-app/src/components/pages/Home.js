@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import React, { PureComponent } from 'react'
+import UnlockPropTypes from '../../propTypes'
 import Layout from '../interface/Layout'
 import { Section, Headline, SubTitle, CallToAction, ThreeColumns, Column } from './Components'
 import { ActionButton } from '../creator/CreatorLocks'
@@ -7,11 +8,11 @@ import { ActionButton } from '../creator/CreatorLocks'
 export default class Home extends PureComponent {
   constructor(props) {
     super(props)
-    this.dashboardClick = this.dashboardClick.bind(this);
+    this.dashboardClick = this.dashboardClick.bind(this)
   }
 
   dashboardClick() {
-    this.props.history.push('/dashboard');
+    this.props.history.push('/dashboard')
   }
 
   render() {
@@ -58,6 +59,10 @@ export default class Home extends PureComponent {
       </Layout>
     )
   }
+}
+
+Home.propTypes = {
+  history: UnlockPropTypes.Object,
 }
 
 const ImageWithHover = styled.div`
