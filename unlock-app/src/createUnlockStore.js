@@ -4,7 +4,6 @@ import { routerReducer, routerMiddleware } from 'react-router-redux'
 
 // Reducers
 import networkReducer from './reducers/networkReducer'
-import accountReducer from './reducers/accountReducer'
 import providerReducer from './reducers/providerReducer'
 import transactionReducer  from './reducers/transactionReducer'
 import locksReducer  from './reducers/locksReducer'
@@ -18,7 +17,6 @@ export default function createUnlockStore(config, browserHistory) {
     router: routerReducer,
     provider: providerReducer,
     network: networkReducer,
-    account: accountReducer,
     transactions: transactionReducer,
     locks: locksReducer,
   }
@@ -29,7 +27,6 @@ export default function createUnlockStore(config, browserHistory) {
     network: {
       name: 0,
     },
-    account: null,
     transactions: {
       latest: null,
       all: {},

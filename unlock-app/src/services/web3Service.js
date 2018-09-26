@@ -22,7 +22,7 @@ export default class Web3Service {
    * @param {object} network
    * @return {Promise}
    */
-  connect({ provider, network, account }) {
+  connect({ provider, network }) {
     this.ready = false
 
     return new Promise((resolve, reject) => {
@@ -38,7 +38,7 @@ export default class Web3Service {
       const getNetworkIdPromise = this.web3.eth.net.getId()
 
       let getAccountPromise
-      if (!account) {
+      if (!network.account.address) {
         getAccountPromise = this.web3.eth.getAccounts().then((accounts) => {
           if (accounts.length === 0) {
             return this.createAccount() // TODO: make it a promise which returns an account!
@@ -49,7 +49,7 @@ export default class Web3Service {
           }
         })
       } else {
-        getAccountPromise = Promise.resolve(account)
+        getAccountPromise = Promise.resolve(network.account)
       }
 
       // Once we have the account, let's refresh it!
