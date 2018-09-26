@@ -6,6 +6,7 @@ import React from 'react'
 import { Route, Switch } from 'react-router'
 
 import LockMaker from './creator/LockMaker'
+import Dashboard from './creator/Dashboard'
 import Lock from './consumer/Lock'
 import Home from './pages/Home'
 import Jobs from './pages/Jobs'
@@ -63,6 +64,7 @@ export function Unlock({ network, config, path }) {
   return (
     <Switch>
       <Route path="/provider" component={Provider} />
+      <Route path="/dashboard" component={Dashboard} />
       <Route path="/creator" component={LockMaker} />
       <Route path="/lock/:lockAddress" component={Lock} />
       <Route path="/jobs" component={Jobs} />
