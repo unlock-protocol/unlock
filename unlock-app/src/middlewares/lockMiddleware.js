@@ -23,6 +23,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
         return web3Service.connect({
           provider: getState().provider,
           network: getState().network,
+          account: getState().account,
         }).then(([networkId, account]) => {
           // we dispatch again!
           dispatch(action)
@@ -49,8 +50,8 @@ export default function lockMiddleware ({ getState, dispatch }) {
           provider: action.provider,
           network: {
             name: 'Unknown',
-            account: {},
           },
+          account: null, // we will reset the account
         }).then(([networkId, account]) => {
           dispatch(setNetwork(networkId))
           return dispatch(setAccount(account))
@@ -81,7 +82,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
       } else if (action.type === SET_KEY) {
         lockUnlessKeyIsValid({key: action.key})
       } else if (action.type === WITHDRAW_FROM_LOCK) {
-        const account = getState().network.account
+        const account = getState().account
         web3Service.withdrawFromLock(action.lock, account)
           .then((lock) => {
             return Promise.all([
@@ -117,7 +118,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
         }
       } else if (action.type === SET_LOCK) {
         // Lock was changed, get the matching key
-        web3Service.getKey(action.lock.address, getState().network.account)
+        web3Service.getKey(action.lock.address, getState().account)
           .then((key) => {
             dispatch(setKey(key))
           })

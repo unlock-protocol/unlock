@@ -15,26 +15,9 @@ import iframeServiceMock from '../../services/iframeService'
 // TODO: check that dispatch is invoked correctly when web3Services promises resolve!
 
 /**
- * Fake state
+ * Fake state (will be reset in beforeEach)
  */
-let account = {
-  address: '0xabc',
-}
-let lock = {
-  address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
-  keyPrice: '100',
-  creator: account,
-}
-let key = {
-  expiration: '1337',
-  data: '',
-}
-let state = {
-  network: {
-    account,
-  },
-  provider: 'HTTP',
-}
+let account , lock , key, state
 
 const privateKey = '0xdeadbeef'
 const network = 'test'
@@ -108,9 +91,8 @@ beforeEach(() => {
     data: '',
   }
   state = {
-    network: {
-      account,
-    },
+    network: {},
+    account,
     provider: 'HTTP',
   }
 
@@ -125,7 +107,7 @@ describe('Lock middleware', () => {
       const { next, invoke } = create()
       const action = { type: SET_NETWORK, network }
       invoke(action)
-      expect(mockWeb3Service.connect).toHaveBeenCalledWith({...state, provider: 'HTTP'})
+      expect(mockWeb3Service.connect).toHaveBeenCalledWith({network: {}, provider: 'HTTP', account})
       expect(next).toHaveBeenCalledTimes(0) // ensures that execution was stopped
     })
 
@@ -147,10 +129,10 @@ describe('Lock middleware', () => {
     invoke(action)
     expect(mockWeb3Service.connect).toHaveBeenCalledWith({
       'network': {
-        'account': {}, // account has been reset
         'name': 'Unknown',
       },
       'provider': provider,
+      account: null, // This is important because when we change provider, we want to reset the account
     })
     expect(next).toHaveBeenCalledWith(action)
   })
@@ -210,7 +192,7 @@ describe('Lock middleware', () => {
     it('should call getKey', () => {
       const { next, invoke } = create()
       const action = { type: SET_LOCK, lock }
-      state.network.account = account
+      state.account = account
       invoke(action)
       expect(mockWeb3Service.getKey).toHaveBeenCalledWith(lock.address, account)
       expect(next).toHaveBeenCalledWith(action)
@@ -219,7 +201,7 @@ describe('Lock middleware', () => {
     it('should call getKey if the account is not set', () => {
       const { next, invoke } = create()
       const action = { type: SET_LOCK, lock }
-      delete state.network.account
+      delete state.account
       invoke(action)
       expect(mockWeb3Service.getKey).toHaveBeenCalledWith(lock.address, undefined)
       expect(next).toHaveBeenCalledWith(action)
@@ -239,7 +221,7 @@ describe('Lock middleware', () => {
     const action = { type: WITHDRAW_FROM_LOCK, lock }
     invoke(action)
 
-    expect(mockWeb3Service.withdrawFromLock).toHaveBeenCalledWith(lock, store.getState().network.account)
+    expect(mockWeb3Service.withdrawFromLock).toHaveBeenCalledWith(lock, store.getState().account)
     expect(next).toHaveBeenCalledWith(action)
   })
 })
