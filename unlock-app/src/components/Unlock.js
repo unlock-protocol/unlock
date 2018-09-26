@@ -29,7 +29,7 @@ UnlockRoute.propTypes = {
 export function Unlock({ network, config, path }) {
 
   // Ensuring that we have at least a provider
-  if (Object.keys(config.providers).length === 0 ) {
+  if (Object.keys(config.providers).length <= 1 ) { // The HttpProvider is always present, so this isn't 0
     return (<div>
       <div className="modal-dialog" role="document">
         <div className="modal-content">
@@ -53,7 +53,7 @@ export function Unlock({ network, config, path }) {
             <h5 className="modal-title">Wrong network</h5>
           </div>
           <div className="modal-body">
-            <p>This early version of Unlock requires you to use the {config.requiredNetwork} network (you are currently connected to {ETHEREUM_NETWORKS_NAMES[network.name][0]}). Please swicth your provider to use {config.requiredNetwork}. </p>
+            <p>This early version of Unlock requires you to use the {config.requiredNetwork} network (you are currently connected to {ETHEREUM_NETWORKS_NAMES[network.name][0]}). Please switch your provider to use {config.requiredNetwork}. </p>
           </div>
         </div>
       </div>
