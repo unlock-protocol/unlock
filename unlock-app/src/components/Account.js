@@ -26,7 +26,7 @@ Account.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    account: state.network.account,
+    account: state.account,
   }
 }
 
