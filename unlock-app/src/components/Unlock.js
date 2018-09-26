@@ -29,7 +29,7 @@ UnlockRoute.propTypes = {
 export function Unlock({ network, config, path }) {
 
   // Ensuring that we have at least a provider
-  if (Object.keys(config.providers).length <= 1 ) { // The HttpProvider is always present, so this isn't 0
+  if (Object.keys(config.providers).length === 0 ) {
     return (<div>
       <div className="modal-dialog" role="document">
         <div className="modal-content">
