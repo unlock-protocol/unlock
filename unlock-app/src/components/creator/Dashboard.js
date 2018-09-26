@@ -5,7 +5,7 @@ import Layout from '../interface/Layout'
 import CreatorAccount from './CreatorAccount'
 import CreatorLocks from './CreatorLocks'
 import {setTransaction} from '../../actions/transaction'
-import connect from 'react-redux/es/connect/connect'
+import { connect } from 'react-redux'
 
 export class Dashboard extends Component {
   render() {
