@@ -1,11 +1,10 @@
 import UnlockPropTypes from '../../propTypes'
 
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import Layout from '../interface/Layout'
 import CreatorAccount from './CreatorAccount'
 import CreatorLocks from './CreatorLocks'
-import {setTransaction} from '../../actions/transaction'
-import { connect } from 'react-redux'
 
 export class Dashboard extends Component {
   render() {
