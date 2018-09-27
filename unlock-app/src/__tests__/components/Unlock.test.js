@@ -49,7 +49,7 @@ describe('Unlock Component', () => {
         const component = (<Unlock network={network} config={config} path={'/'} />)
         const wrapper = shallow(component)
         expect(wrapper.text()).toContain('Wrong network')
-        expect(wrapper.text()).toContain('This early version of Unlock requires you to use the dev network (you are currently connected to Rinkeby). Please swicth your provider to use dev.')
+        expect(wrapper.text()).toContain('This early version of Unlock requires you to use the dev network (you are currently connected to Rinkeby). Please switch your provider to use dev.')
       })
     })
   })
