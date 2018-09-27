@@ -8,7 +8,7 @@ export default function Header({ forContent, title }) {
   return (
     <TopHeader>
       {!forContent &&
-        <h1>{title}</h1>
+        <Title>{title}</Title>
       }
       {!!forContent &&
         <Icons.UnlockWordMark height={'28px'} />
@@ -32,4 +32,8 @@ const TopHeader = styled.header`
   grid-auto-flow: column;
   align-items: center;
   height: 70px;
+`
+
+const Title = styled.h1`
+  color: var(--grey);
 `
