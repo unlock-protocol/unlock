@@ -55,10 +55,6 @@ export default class Home extends PureComponent {
   }
 }
 
-Home.propTypes = {
-  history: UnlockPropTypes.Object,
-}
-
 const ImageWithHover = styled.div`
   border-style: none;
   background: url(${props => (`/images/pages/png/${props.base}.png`)}) no-repeat center/contain;
