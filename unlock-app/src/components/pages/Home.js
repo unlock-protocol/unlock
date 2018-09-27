@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
-import UnlockPropTypes from '../../propTypes'
 import Layout from '../interface/Layout'
 import { Section, Headline, SubTitle, CallToAction, ThreeColumns, Column } from './Components'
 import { ActionButton } from '../creator/CreatorLocks'
