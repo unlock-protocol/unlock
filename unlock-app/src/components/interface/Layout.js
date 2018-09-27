@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Header from './Header'
 import Footer from './Footer'
-import Unlock from './icons/Unlock'
+import Unlock from './svg/Unlock'
 
 export default function Layout({ forContent, title, children }) {
   return (
