@@ -1,7 +1,6 @@
-import styled from 'styled-components'
 import React, { PureComponent } from 'react'
 import Layout from '../interface/Layout'
-import { Section, Title, Headline, SubTitle, CallToAction, Paragraph, UnorderedList, OrderedList, ListItem } from './Components'
+import { Section, Title, Headline, SubTitle, CallToAction, Paragraph, UnorderedList, OrderedList, ListItem, ShortColumn } from './Components'
 
 export default class Jobs extends PureComponent {
   render() {
@@ -98,8 +97,3 @@ export default class Jobs extends PureComponent {
     )
   }
 }
-
-const ShortColumn = styled.div`
-  width: 66%;
-  max-width: 560px;
-`
