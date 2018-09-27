@@ -26,7 +26,7 @@ export const Headline = styled.p`
   font-size: 32px;
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
-  margin-top: 0px
+  margin-top: 0px;
 `
 
 export const CallToAction = styled.div`
@@ -44,7 +44,7 @@ export const SubTitle = styled.h2`
 export const Paragraph = styled.p`
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
-  line-height: 22px;
+  line-height: 28px;
 `
 
 export const UnorderedList = styled.ul`
@@ -69,7 +69,7 @@ export const TwoColumns = styled.div`
   grid-gap: 42px;
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
-  fonts-size: 22px;
+  font-size: 22px;
   line-height: 1.5;
   color: var(--darkgrey);
 `
@@ -91,4 +91,9 @@ export const ThreeColumns = styled.div`
 export const Column = styled.div`
   display: grid;
   justify-items: center;
+`
+
+export const ShortColumn = styled.div`
+  width: 66%;
+  max-width: 560px;
 `
