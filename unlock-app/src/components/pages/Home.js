@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import React, { PureComponent } from 'react'
+import { Link } from 'react-router-dom'
 import Layout from '../interface/Layout'
 import { Section, Headline, SubTitle, CallToAction, ThreeColumns, Column } from './Components'
 import { ActionButton } from '../creator/CreatorLocks'
@@ -13,10 +14,12 @@ export default class Home extends PureComponent {
           Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.
         </Headline>
 
-        <Action>
-          <HomepageButton>Go to Your Dashboard</HomepageButton>
-          <ButtonLabel>Requires a browser with an Ethereum wallet</ButtonLabel>
-        </Action>
+        <Link to={'/dashboard'}>
+          <Action>
+            <HomepageButton>Go to Your Dashboard</HomepageButton>
+            <ButtonLabel>Requires a browser with an Ethereum wallet</ButtonLabel>
+          </Action>
+        </Link>
 
         <ThreeColumns>
           <Column>
@@ -82,6 +85,7 @@ const ButtonLabel = styled.small`
   font-size: 12px;
   font-weight: 200;
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
+  color: var(--darkgrey);
 `
 
 const Paragraph = styled.p`
