@@ -3,7 +3,13 @@ import React from 'react'
 import styled from 'styled-components'
 
 export const LayoutButton = ({href, title, children}) => (
-  <Button href={href}>
+  <Button
+    href={href}
+    backgroundColor={'var(--grey)'}
+    fillColor={'white'}
+    backgroundHoverColor={'var(--link)'}
+    fillHoverColor={'white'}
+  >
     {children}
     <Label>{title}</Label>
   </Button>
@@ -13,19 +19,54 @@ LayoutButton.propTypes = {
   href: PropTypes.string,
   title: PropTypes.string,
   children: PropTypes.node,
+  backgroundColor: PropTypes.string,
+  backgroundHoverColor: PropTypes.string,
+  fillColor: PropTypes.string,
+  fillHoverColor: PropTypes.string,
+}
+
+export const LockButton = ({ href, children }) => (
+  <Button
+    href={href}
+    backgroundColor={'var(--lightgrey)'}
+    fillColor={'var(--grey)'}
+    backgroundHoverColor={'var(--link)'}
+    fillHoverColor={'white'}
+  >
+    {children}
+  </Button>
+)
+
+LockButton.propTypes = {
+  href: PropTypes.string,
+  children: PropTypes.node,
+  backgroundColor: PropTypes.string,
+  backgroundHoverColor: PropTypes.string,
+  fillColor: PropTypes.string,
+  fillHoverColor: PropTypes.string,
 }
 
 export const Button = styled.a`
-  background-color: var(--grey);
+  background-color: ${props => props.backgroundColor || 'var(--grey)'};
+  cursor: pointer;
   border-radius: 50%;
   height: 24px;
   width: 24px;
   display: grid;
 
+  > svg {
+    fill: ${props => props.fillColor || 'white'};
+  }
+
   &:hover {
-    background-color: var(--link);
+    background-color: ${props => props.backgroundHoverColor || 'var(--link)'};
+
+    > svg {
+      fill: ${props => props.fillHoverColor || 'white'};
+    }
   }
 `
+
 export const Label = styled.small`
   display: none;
   position: relative;
