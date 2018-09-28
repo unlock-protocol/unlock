@@ -1,12 +1,12 @@
-import Icons from '../icons'
+import Svg from '../../svg'
 import React, { PureComponent } from 'react'
-import { LayoutButton } from './Button'
+import { LayoutButton } from '../Button'
 
 export default class Jobs extends PureComponent {
   render() {
     return (
       <LayoutButton href="/jobs" title="Join us">
-        <Icons.Jobs fill={'white'} />
+        <Svg.Jobs fill={'white'} />
       </LayoutButton>
     )
   }

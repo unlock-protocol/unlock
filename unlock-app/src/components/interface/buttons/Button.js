@@ -15,6 +15,14 @@ LayoutButton.propTypes = {
   children: PropTypes.node,
 }
 
+export const LockButton = ({ href }) => (
+  <Button href={href} />
+)
+
+LockButton.propTypes = {
+  href: PropTypes.string,
+}
+
 export const Button = styled.a`
   background-color: var(--grey);
   border-radius: 50%;
