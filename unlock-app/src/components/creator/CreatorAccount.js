@@ -5,7 +5,7 @@ import Jazzicon from 'react-jazzicon'
 import UnlockPropTypes from '../../propTypes'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
 
-import Svg from '../interface/svg'
+import Buttons from '../interface/buttons/lock'
 
 export function CreatorAccount({ account, network }) {
   const networkName = ETHEREUM_NETWORKS_NAMES[network.name[0]] || 'Unknown Network'
@@ -28,19 +28,13 @@ export function CreatorAccount({ account, network }) {
         <Label>Balance</Label>
         <Label>Earning</Label>
         <DoubleHeightCell>
-          <Button>
-            <Svg.Upload fill={'#a6a6a6'} />
-          </Button>
+          <Buttons.Upload />
         </DoubleHeightCell>
         <DoubleHeightCell>
-          <Button>
-            <Svg.Download fill={'#a6a6a6'} />
-          </Button>
+          <Buttons.Download />
         </DoubleHeightCell>
         <DoubleHeightCell>
-          <Button>
-            <Svg.Etherscan fill={'#a6a6a6'} />
-          </Button>
+          <Buttons.Etherscan />
         </DoubleHeightCell>
         <DoubleHeightCell />
         <Address>{account.address}</Address>
@@ -89,13 +83,6 @@ const DoubleHeightCell = styled.div`
   align-self: center;
   font-size: 24px;
   align-content: center;
-`
-
-const Button = styled.a`
-  background-color: var(--lightgrey);
-  border-radius: 50%;
-  height: 24px;
-  display: grid;
 `
 
 const Label = styled.div `
