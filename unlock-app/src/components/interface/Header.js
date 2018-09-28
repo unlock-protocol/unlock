@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
-import Icons from './icons'
-import Buttons from './buttons'
+import Svg from './svg'
+import Buttons from './buttons/layout'
 
 export default function Header({ forContent, title }) {
   return (
@@ -11,7 +11,7 @@ export default function Header({ forContent, title }) {
         <Title>{title}</Title>
       }
       {!!forContent &&
-        <Icons.UnlockWordMark height={'28px'} />
+        <Svg.UnlockWordMark height={'28px'} />
       }
       <Buttons.About />
       <Buttons.Jobs />

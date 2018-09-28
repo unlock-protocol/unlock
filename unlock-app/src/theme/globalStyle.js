@@ -5,11 +5,12 @@ import { injectGlobal } from 'styled-components'
  */
 
 injectGlobal`
-  @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,500,600,700');
+  @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,400,500,600,700');
   @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:200i,200,500');
   @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Serif:300,400');
 
   :root {
+    --white: #ffffff;
     --red: #ed663a;
     --offwhite: #f6f6f6;
     --lightgrey: #eeeeee;
@@ -20,6 +21,7 @@ injectGlobal`
     --slate: #333333;
     --link: #4d8be8;
     --green: #74ce63;
+    --pink: #ed6e82;
   }
 
   body {

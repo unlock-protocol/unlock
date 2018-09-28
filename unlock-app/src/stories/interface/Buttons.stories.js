@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import Buttons from '../../components/interface/buttons'
+import Buttons from '../../components/interface/buttons/layout'
 
 storiesOf('Buttons', Buttons)
   .add('Github', () => {
