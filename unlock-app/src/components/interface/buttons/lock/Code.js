@@ -6,7 +6,7 @@ export default class Code extends PureComponent {
   render() {
     return (
       <LockButton>
-        <Svg.Code fill={'var(--grey)'} />
+        <Svg.Code />
       </LockButton>
     )
   }

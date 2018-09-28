@@ -6,7 +6,7 @@ export default class Etherscan extends PureComponent {
   render() {
     return (
       <LockButton>
-        <Svg.Etherscan fill={'var(--grey)'} />
+        <Svg.Etherscan />
       </LockButton>
     )
   }

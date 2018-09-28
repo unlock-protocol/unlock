@@ -6,7 +6,7 @@ export default class About extends PureComponent {
   render() {
     return (
       <LayoutButton href="/about" title="About">
-        <Svg.About fill={'white'} />
+        <Svg.About />
       </LayoutButton>
     )
   }

@@ -6,7 +6,7 @@ export default class Jobs extends PureComponent {
   render() {
     return (
       <LayoutButton href="/jobs" title="Join us">
-        <Svg.Jobs fill={'white'} />
+        <Svg.Jobs />
       </LayoutButton>
     )
   }

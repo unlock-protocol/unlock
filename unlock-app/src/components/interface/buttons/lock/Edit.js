@@ -6,7 +6,7 @@ export default class Edit extends PureComponent {
   render() {
     return (
       <LockButton>
-        <Svg.Edit fill={'var(--grey)'} />
+        <Svg.Edit />
       </LockButton>
     )
   }

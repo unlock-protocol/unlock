@@ -6,7 +6,7 @@ export default class Withdraw extends PureComponent {
   render() {
     return (
       <LockButton>
-        <Svg.Withdraw fill={'var(--grey)'} />
+        <Svg.Withdraw />
       </LockButton>
     )
   }

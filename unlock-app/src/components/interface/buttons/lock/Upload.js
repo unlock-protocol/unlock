@@ -6,7 +6,7 @@ export default class Upload extends PureComponent {
   render() {
     return (
       <LockButton>
-        <Svg.Upload fill={'var(--grey)'} />
+        <Svg.Upload />
       </LockButton>
     )
   }

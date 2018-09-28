@@ -6,7 +6,7 @@ export default class Download extends PureComponent {
   render() {
     return (
       <LockButton>
-        <Svg.Download fill={'var(--grey)'} />
+        <Svg.Download />
       </LockButton>
     )
   }

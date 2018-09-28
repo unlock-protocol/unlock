@@ -40,9 +40,6 @@ Overlay.propTypes = {
 
 export default Overlay
 
-const Circle = styled.div`
-`
-
 const FullPage = styled.div`
   position: fixed; /* Sit on top of the page content */
   width: 100%; /* Full width (cover the whole page) */

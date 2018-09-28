@@ -6,7 +6,7 @@ export default class ExportLock extends PureComponent {
   render() {
     return (
       <LockButton>
-        <Svg.Export fill={'var(--grey)'} />
+        <Svg.Export />
       </LockButton>
     )
   }
