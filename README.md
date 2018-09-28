@@ -2,41 +2,41 @@
 
 ---
 
-Este repositorio incluye todo el código implementado por Unlock, incluyendo los contratos inteligentes y la aplicación web que se encuentra en https://unlock-protocol.com.
+This repository is includes all the code deployed deployed by Unlock, including smart contracts and the web app running at https://unlock-protocol.com.
 
-> Unlock es un protocolo de control de acceso construido sobre la blockchain. Permite a los consumidores gestionar todas sus suscripciones de forma coherente, así como obtener descuentos cuando comparten buen contenido y las aplicaciones que utilizan.
+> Unlock is an access control protocol built on a blockchain. It enables creators to monetize their content or software without relying on a middleman. It lets consumers manage all of their subscriptions in a consistent way, as well as earn discounts when they share the best content and applications they use.
 
-Lea más sobre [por qué estamos construyendo Unlock](https://medium.com/unlock-protocol/its-time-to-unlock-the-web-b98e9b94add1).
+Read more about [why we're building Unlock](https://medium.com/unlock-protocol/its-time-to-unlock-the-web-b98e9b94add1).
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://travis-ci.com/unlock-protocol/unlock.svg?branch=master)](https://travis-ci.com/unlock-protocol/unlock)
 
 ## Demo
 
-Grabamos un ejemplo de uso para mostrar cómo funciona Unlock para un paywall.
+We recorded a screencast to show how Unlock works for a paywall.
 
 [![Demo Unlock](https://img.youtube.com/vi/wktotzmea0E/0.jpg)](https://www.youtube.com/watch?v=wktotzmea0E)
 
-## Contribución
+## Contributing
 
-Recomendamos encarecidamente que la comunidad nos ayude a hacer mejoras y determinar la dirección del proyecto. Para reportar errores dentro de este proyecto, por favor cree una issue en el repositorio
+We strongly recommend that the community help us make improvements and determine the future direction of the protocol. To report bugs within this package, please create an issue in this repository.
 
-## Código
+## Code
 
 ### Smart Contract
 
-Incluye el código para los contratos inteligentes: Bloquear y desbloquear.
+Includes the code for smart contracts: Lock and Unlock.
 
 ### unlock-protocol.com
 
-Un sitio web estático para unlock-protocol.com. Eventualmente estará obsoleto a favor del código desplegado desde unlock-app.
+A static site for unlock-protocol.com. Will eventually be deprecated un favor of code deployed from unlock-app.
 
 ### unlock-app
 
-El código para la aplicación React, que interactúa con los contratos inteligentes desplegados. 
+The code for the React app which interfaces with the deployed smart contracts.
 
-## Ejecutando tests/ci
+## Running tests/ci
 
-Despliegue con docker/docker-compose:
+We deploy with docker/docker-compose:
 
 ```
 docker-compose -f docker/docker-compose.ci.yml build
