@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React from 'react'
 import PropTypes from 'prop-types'
 import Web3Utils from 'web3-utils'
-import Icons from '../interface/icons'
+import Svg from '../interface/svg'
 
 /**
  * Component which shows a balance in Eth
@@ -14,7 +14,7 @@ export function Balance({ amount, unit = 'wei' }) {
   let inEth = Web3Utils.fromWei(inWei, 'ether')
   return (<BalanceWithUnit>
     <Unit>
-      <Icons.Eth width="1em" height="1em" />
+      <Svg.Eth width="1em" height="1em" />
     </Unit>
     <Amount>{inEth}</Amount>
   </BalanceWithUnit>)
