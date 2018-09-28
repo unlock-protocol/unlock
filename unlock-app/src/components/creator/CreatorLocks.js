@@ -1,31 +1,28 @@
 import UnlockPropTypes from '../../propTypes'
 
-import React, { Component } from 'react'
+import React from 'react'
 import { getLockStatusString } from '../../helpers/Locks'
 import CreatorLock, { LockRowGrid } from './CreatorLock'
 import styled from 'styled-components'
 
-export default class CreatorLocks extends Component {
-  render() {
-    return (
-      <React.Fragment>
-        <LockHeaderRow>
-          <LockHeader>Locks</LockHeader>
-          <LockMinorHeader>Name / Address</LockMinorHeader>
-          <LockMinorHeader>Duration</LockMinorHeader>
-          <LockMinorHeader>Quantity</LockMinorHeader>
-          <LockMinorHeader>Price</LockMinorHeader>
-          <LockMinorHeader>Balance / Earnings</LockMinorHeader>
-          <CreateButton>Create Lock</CreateButton>
-        </LockHeaderRow>
-        {Object.values(this.props.locks).map((lock, index) => {
-          let lockStatus = getLockStatusString(this.props.transactions, lock.address)
-          return(<CreatorLock key={index} lock={lock} status={lockStatus}/>)
-        })}
-      </React.Fragment>
-    )
-  }
-}
+export const CreatorLocks = ({locks, transactions}) => (
+  <React.Fragment>
+    <LockHeaderRow>
+      <LockHeader>Locks</LockHeader>
+      <LockMinorHeader>Name / Address</LockMinorHeader>
+      <LockMinorHeader>Duration</LockMinorHeader>
+      <LockMinorHeader>Quantity</LockMinorHeader>
+      <LockMinorHeader>Price</LockMinorHeader>
+      <LockMinorHeader>Balance / Earnings</LockMinorHeader>
+      <CreateButton>Create Lock</CreateButton>
+    </LockHeaderRow>
+    {Object.values(locks).map((lock, index) => {
+      let lockStatus = getLockStatusString(transactions, lock.address)
+      return (<CreatorLock key={index} lock={lock} status={lockStatus} />)
+    })}
+  </React.Fragment>
+
+)
 
 CreatorLocks.propTypes = {
   transactions: UnlockPropTypes.transactions,
