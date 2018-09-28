@@ -5,7 +5,7 @@ import Jazzicon from 'react-jazzicon'
 import UnlockPropTypes from '../../propTypes'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
 
-import Icons from '../interface/icons'
+import Svg from '../interface/svg'
 
 export function CreatorAccount({ account, network }) {
   const networkName = ETHEREUM_NETWORKS_NAMES[network.name[0]] || 'Unknown Network'
@@ -29,17 +29,17 @@ export function CreatorAccount({ account, network }) {
         <Label>Earning</Label>
         <DoubleHeightCell>
           <Button>
-            <Icons.Upload fill={'#a6a6a6'} />
+            <Svg.Upload fill={'#a6a6a6'} />
           </Button>
         </DoubleHeightCell>
         <DoubleHeightCell>
           <Button>
-            <Icons.Download fill={'#a6a6a6'} />
+            <Svg.Download fill={'#a6a6a6'} />
           </Button>
         </DoubleHeightCell>
         <DoubleHeightCell>
           <Button>
-            <Icons.Etherscan fill={'#a6a6a6'} />
+            <Svg.Etherscan fill={'#a6a6a6'} />
           </Button>
         </DoubleHeightCell>
         <DoubleHeightCell />

@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 export const LayoutButton = ({href, title, children}) => (
-  <Button href={href}>
+  <Button href={href} backgroundColor={'var(--grey)'} hoverColor={'var(--link)'} >
     {children}
     <Label>{title}</Label>
   </Button>
@@ -15,23 +15,27 @@ LayoutButton.propTypes = {
   children: PropTypes.node,
 }
 
-export const LockButton = ({ href }) => (
-  <Button href={href} />
+export const LockButton = ({ href, children }) => (
+  <Button href={href} backgroundColor={'var(--lightgrey)'} hoverColor={'var(--link)'}>
+    {children}
+  </Button>
 )
 
 LockButton.propTypes = {
   href: PropTypes.string,
+  children: PropTypes.node,
 }
 
 export const Button = styled.a`
-  background-color: var(--grey);
+  background-color: ${props => props.backgroundColor};
+  cursor: pointer;
   border-radius: 50%;
   height: 24px;
   width: 24px;
   display: grid;
 
   &:hover {
-    background-color: var(--link);
+    background-color: ${props => props.hoverColor};
   }
 `
 export const Label = styled.small`

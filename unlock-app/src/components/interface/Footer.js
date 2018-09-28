@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
-import Buttons from './buttons'
+import Buttons from './buttons/layout'
 
 export default class Footer extends PureComponent {
   render() {
