@@ -93,3 +93,5 @@ export const Jobs = () => (
 
   </Layout>
 )
+
+export default Jobs
