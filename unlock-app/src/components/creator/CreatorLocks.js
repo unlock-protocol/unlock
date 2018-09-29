@@ -78,3 +78,5 @@ const CreateButton = styled(ActionButton)`
   padding: 10px;
   align-self: end;
 `
+
+export default CreatorLocks
