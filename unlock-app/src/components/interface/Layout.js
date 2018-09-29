@@ -3,14 +3,14 @@ import React from 'react'
 import styled from 'styled-components'
 import Header from './Header'
 import Footer from './Footer'
-import Unlock from './svg/Unlock'
+import Logo from './Logo'
 
 export default function Layout({ forContent, title, children }) {
   return (
     <Container>
       <Left>
         {!forContent &&
-          <Unlock />
+          <Logo />
         }
       </Left>
       <Content>
