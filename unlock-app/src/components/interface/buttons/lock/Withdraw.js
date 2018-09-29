@@ -1,13 +1,11 @@
 import Svg from '../../svg'
-import React, { PureComponent } from 'react'
+import React from 'react'
 import { LockButton } from '../Button'
 
-export default class Withdraw extends PureComponent {
-  render() {
-    return (
-      <LockButton>
-        <Svg.Withdraw />
-      </LockButton>
-    )
-  }
+const Withdraw = () => {
+  <LockButton>
+    <Svg.Withdraw />
+  </LockButton>
 }
+
+export default Withdraw

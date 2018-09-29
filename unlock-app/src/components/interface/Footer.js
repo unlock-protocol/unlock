@@ -1,22 +1,17 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Buttons from './buttons/layout'
 
-export default class Footer extends PureComponent {
-  render() {
-    return (
-      <Container>
-        <Buttons.About />
-        <Buttons.Jobs />
-        <Buttons.Github />
-        <Colophon>Made with passion in Brooklyn, NY</Colophon>
-      </Container>
-    )
-  }
-}
+const Footer = () => (
+  <Container>
+    <Buttons.About />
+    <Buttons.Jobs />
+    <Buttons.Github />
+    <Colophon>Made with passion in Brooklyn, NY</Colophon>
+  </Container>
+)
 
-Footer.propTypes = {
-}
+export default Footer
 
 const Container = styled.footer`
   margin-top: 24px;

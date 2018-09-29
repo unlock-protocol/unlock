@@ -1,13 +1,11 @@
 import Svg from '../../svg'
-import React, { PureComponent } from 'react'
+import React from 'react'
 import { LayoutButton } from '../Button'
 
-export default class About extends PureComponent {
-  render() {
-    return (
-      <LayoutButton href="/about" title="About">
-        <Svg.About />
-      </LayoutButton>
-    )
-  }
+const About = () => {
+  <LayoutButton href="/about" title="About">
+    <Svg.About />
+  </LayoutButton>
 }
+
+export default About

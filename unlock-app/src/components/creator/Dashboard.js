@@ -1,24 +1,22 @@
 import UnlockPropTypes from '../../propTypes'
 
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import Layout from '../interface/Layout'
 import CreatorAccount from './CreatorAccount'
 import CreatorLocks from './CreatorLocks'
 
-export class Dashboard extends Component {
-  render() {
-    if (!this.props.account) {
-      return null //loading
-    }
-
-    return (
-      <Layout title="Creator Dashboard">
-        <CreatorAccount network={this.props.network} account={this.props.account} />
-        <CreatorLocks transactions={this.props.transactions} locks={this.props.locks} />
-      </Layout>
-    )
+export const Dashboard = ({account, network, transactions, locks}) => {
+  if (!account) {
+    return null //loading
   }
+
+  return (
+    <Layout title="Creator Dashboard">
+      <CreatorAccount network={network} account={account} />
+      <CreatorLocks transactions={transactions} locks={locks} />
+    </Layout>
+  )
 }
 
 Dashboard.propTypes = {
