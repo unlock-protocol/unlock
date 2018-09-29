@@ -1,13 +1,11 @@
 import Svg from '../../svg'
-import React, { PureComponent } from 'react'
+import React from 'react'
 import { LockButton } from '../Button'
 
-export default class Etherscan extends PureComponent {
-  render() {
-    return (
-      <LockButton>
-        <Svg.Etherscan />
-      </LockButton>
-    )
-  }
+const Etherscan = () => {
+  <LockButton>
+    <Svg.Etherscan />
+  </LockButton>
 }
+
+export default Etherscan

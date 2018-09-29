@@ -8,6 +8,7 @@ module.exports = {
   },
   globals: {},
   rules: {
+    "react/prefer-stateless-function": [2],
     "indent": [
       "error",
       2
