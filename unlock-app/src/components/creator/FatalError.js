@@ -5,20 +5,17 @@ import styled from 'styled-components'
 
 import Layout from '../interface/Layout'
 
-export const FatalError = ({ title = 'Fatal Error', message = 'There was a fatal error.', illustration }) => {
-
-  return (
-    <Layout title="Creator Dashboard">
-      <Container>
-        <Image src={illustration} />
-        <Message>
-          <h1>{title}</h1>
-          <p>{message}</p>
-        </Message>
-      </Container>
-    </Layout>
-  )
-}
+export const FatalError = ({ title = 'Fatal Error', message = 'There was a fatal error.', illustration = '' }) => (
+  <Layout title="Creator Dashboard">
+    <Container>
+      <Image src={illustration} />
+      <Message>
+        <h1>{title}</h1>
+        <p>{message}</p>
+      </Message>
+    </Container>
+  </Layout>
+)
 
 FatalError.propTypes = {
   illustration: PropTypes.string,
@@ -58,5 +55,28 @@ const Message = styled.div`
     font-size: 16px;
       color: var(--dimgrey);
   }
-
 `
+
+export const WrongNetwork = ({currentNetwork, requiredNetwork}) => (
+  <FatalError
+    title="Network mismatch"
+    message={`You’re currently on the ${currentNetwork} network but you need to be on the ${requiredNetwork} network. Please switch to ${requiredNetwork}.`}
+    illustration={'/images/illustrations/network.svg'}
+  />)
+WrongNetwork.propTypes = {
+  currentNetwork: PropTypes.string,
+  requiredNetwork: PropTypes.string,
+}
+
+const LinkToMetamask = (<a href='https://metamask.io/'>Metamask</a>)
+export const MissingProvider= () => (
+  <FatalError
+    title="Wallet missing"
+    message={['It looks like you’re using an incompatible browser or are missig a crypto wallet. If you’re using Chrome or Firefox you can install ', LinkToMetamask, '.']}
+    illustration={'images/illustrations/wallet.svg'}
+  />)
+
+export default {
+  WrongNetwork,
+  MissingProvider,
+}
