@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import UnlockPropTypes from '../propTypes'
-import { ETHEREUM_NETWORKS_NAMES } from '../constants'
 
 import React from 'react'
 import { Route, Switch } from 'react-router'
@@ -14,6 +13,8 @@ import About from './pages/About'
 import Provider from './Web3Provider'
 import { withConfig } from '../utils/withConfig'
 import { connect } from 'react-redux'
+import { WrongNetwork, MissingProvider } from './creator/FatalError'
+import { ETHEREUM_NETWORKS_NAMES } from '../constants'
 
 let UnlockRoute = ({ component: Component, layout: Layout, ...rest }) => (
   <Route {...rest} render={props => (
@@ -31,34 +32,12 @@ export function Unlock({ network, config, path }) {
 
   // Ensuring that we have at least a provider
   if (Object.keys(config.providers).length === 0 ) {
-    return (<div>
-      <div className="modal-dialog" role="document">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">A Web3 provider is required</h5>
-          </div>
-          <div className="modal-body">
-            <p>This early version of Unlock requires you to use an injected Web3 provider such as <a href="https://metamask.io/">Metamask</a>. </p>
-          </div>
-        </div>
-      </div>
-    </div>)
+    return (<MissingProvider />)
   }
 
   // Ensuring that the provider is using the right network!
   if (path !== '/provider' && config.isRequiredNetwork && !config.isRequiredNetwork(network.name)) {
-    return (<div>
-      <div className="modal-dialog" role="document">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">Wrong network</h5>
-          </div>
-          <div className="modal-body">
-            <p>This early version of Unlock requires you to use the {config.requiredNetwork} network (you are currently connected to {ETHEREUM_NETWORKS_NAMES[network.name][0]}). Please switch your provider to use {config.requiredNetwork}. </p>
-          </div>
-        </div>
-      </div>
-    </div>)
+    return (<WrongNetwork currentNetwork={ETHEREUM_NETWORKS_NAMES[network.name][0]} requiredNetwork={config.requiredNetwork} />)
   }
 
   return (
