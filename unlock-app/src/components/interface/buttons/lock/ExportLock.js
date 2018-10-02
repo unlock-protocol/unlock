@@ -4,7 +4,7 @@ import { LockButton } from '../Button'
 
 const ExportLock = () => (
   <LockButton>
-    <Svg.ExportLock />
+    <Svg.Export />
   </LockButton>
 )
 
