@@ -5,22 +5,24 @@ import styled from 'styled-components'
 
 import Layout from '../interface/Layout'
 
-export const FatalError = ({ title = 'Fatal Error', message = 'There was a fatal error.', illustration = '' }) => (
+const defaultError = (<p>This is a generic error because something just broke but we’re not sure what.</p>)
+
+export const DefaultError = ({ title = 'Fatal Error', children = defaultError, illustration = 'images/illustrations/error.svg' }) => (
   <Layout title="Creator Dashboard">
     <Container>
       <Image src={illustration} />
       <Message>
         <h1>{title}</h1>
-        <p>{message}</p>
+        {children}
       </Message>
     </Container>
   </Layout>
 )
 
-FatalError.propTypes = {
+DefaultError.propTypes = {
   illustration: PropTypes.string,
-  message: PropTypes.string,
   title: PropTypes.string,
+  children: PropTypes.node,
 }
 
 const Container = styled.section`
@@ -58,25 +60,27 @@ const Message = styled.div`
 `
 
 export const WrongNetwork = ({currentNetwork, requiredNetwork}) => (
-  <FatalError
+  <DefaultError
     title="Network mismatch"
-    message={`You’re currently on the ${currentNetwork} network but you need to be on the ${requiredNetwork} network. Please switch to ${requiredNetwork}.`}
-    illustration={'/images/illustrations/network.svg'}
-  />)
+    illustration={'/images/illustrations/network.svg'}>
+    <p>You’re currently on the {currentNetwork} network but you need to be on the {requiredNetwork} network. Please switch to {requiredNetwork}.</p>
+  </DefaultError>)
 WrongNetwork.propTypes = {
   currentNetwork: PropTypes.string,
   requiredNetwork: PropTypes.string,
 }
 
-const LinkToMetamask = (<a href='https://metamask.io/'>Metamask</a>)
 export const MissingProvider= () => (
-  <FatalError
+  <DefaultError
     title="Wallet missing"
-    message={['It looks like you’re using an incompatible browser or are missig a crypto wallet. If you’re using Chrome or Firefox you can install ', LinkToMetamask, '.']}
-    illustration={'images/illustrations/wallet.svg'}
-  />)
+    illustration={'images/illustrations/wallet.svg'}>
+    <p>
+      It looks like you’re using an incompatible browser or are missig a crypto wallet. If you’re using Chrome or Firefox you can install <a href='https://metamask.io/'>Metamask</a>.
+    </p>
+  </DefaultError>)
 
 export default {
+  DefaultError,
   WrongNetwork,
   MissingProvider,
 }
