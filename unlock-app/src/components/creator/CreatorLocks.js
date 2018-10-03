@@ -6,7 +6,7 @@ import CreatorLock, { LockRowGrid } from './CreatorLock'
 import styled from 'styled-components'
 
 export const CreatorLocks = ({locks, transactions}) => (
-  <React.Fragment>
+  <Locks>
     <LockHeaderRow>
       <LockHeader>Locks</LockHeader>
       <LockMinorHeader>Name / Address</LockMinorHeader>
@@ -20,7 +20,7 @@ export const CreatorLocks = ({locks, transactions}) => (
       let lockStatus = getLockStatusString(transactions, lock.address)
       return (<CreatorLock key={index} lock={lock} status={lockStatus} />)
     })}
-  </React.Fragment>
+  </Locks>
 
 )
 
@@ -28,6 +28,11 @@ CreatorLocks.propTypes = {
   transactions: UnlockPropTypes.transactions,
   locks: UnlockPropTypes.locks,
 }
+
+const Locks = styled.section`
+  display: grid;
+  grid-gap: 32px;
+`
 
 const LockHeaderRow = styled.div`
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
