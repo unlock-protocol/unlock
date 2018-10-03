@@ -6,6 +6,7 @@ import UnlockPropTypes from '../../propTypes'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
 
 import Buttons from '../interface/buttons/lock'
+import Balance from '../helpers/Balance'
 
 export function CreatorAccount({ account, network }) {
   const networkName = ETHEREUM_NETWORKS_NAMES[network.name[0]] || 'Unknown Network'
@@ -38,8 +39,8 @@ export function CreatorAccount({ account, network }) {
         </DoubleHeightCell>
         <DoubleHeightCell />
         <Address>{account.address}</Address>
-        <Value>0.02</Value>
-        <Value>0.02</Value>
+        <Value><Balance amount={account.balance} /></Value>
+        <Value>0.00</Value>
       </AccountDetails>
     </Account>
   )
