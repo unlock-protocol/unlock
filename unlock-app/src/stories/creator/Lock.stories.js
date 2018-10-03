@@ -39,6 +39,7 @@ storiesOf('Lock', Lock)
     )
   })
   .add('With a valid key', () => {
+    const expirationDate = parseInt((new Date().getTime() + 1000 * 60 * 60 * 24) / 1000)
     const account = {
       address: '0xabc',
     }
@@ -47,7 +48,7 @@ storiesOf('Lock', Lock)
       expirationDuration: '10',
     }
     const currentKey = {
-      expiration: (new Date().getTime() + 1000 * 60 * 60 * 24) / 1000,
+      expiration: expirationDate,
     }
     return (
       <Lock currentKey={currentKey} account={account} lock={lock} />
