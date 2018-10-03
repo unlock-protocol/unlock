@@ -4,6 +4,7 @@ import React from 'react'
 import { getLockStatusString } from '../../helpers/Locks'
 import CreatorLock, { LockRowGrid } from './CreatorLock'
 import styled from 'styled-components'
+import CreatorLockForm from './CreatorLockForm'
 
 export const CreatorLocks = ({locks, transactions}) => (
   <Locks>
@@ -16,6 +17,7 @@ export const CreatorLocks = ({locks, transactions}) => (
       <LockMinorHeader>Balance / Earnings</LockMinorHeader>
       <CreateButton>Create Lock</CreateButton>
     </LockHeaderRow>
+    <CreatorLockForm />
     {Object.values(locks).map((lock, index) => {
       let lockStatus = getLockStatusString(transactions, lock.address)
       return (<CreatorLock key={index} lock={lock} status={lockStatus} />)
