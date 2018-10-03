@@ -71,7 +71,6 @@ const LockRow = styled.div`
   grid-gap: 16px;
   ${LockRowGrid}
   align-items: center;
-  margin-bottom: 32px;
 `
 
 const LockName = styled.div`
