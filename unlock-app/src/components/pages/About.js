@@ -21,15 +21,21 @@ export const About = () => (
       <ThreeColumns>
         <Column>
           <SubTitle>Julien Genestoux</SubTitle>
+          <Photo src="images/illustrations/julien.jpg" />
           <p>I am an entrepreneur and a software engineer. I am a vocal web advocate who co-authored the W3C WebSub protocol. I sold my previous company, Superfeedr, an RSS feed API, to Medium. Born in France, I currently live in Brooklyn with my wife and our two young kids.</p>
+          <small><a href="https://www.ouvre-boite.com/">Personal site</a> - <a href="https://www.linkedin.com/in/juliengenestoux/">LinkedIn</a></small>
         </Column>
         <Column>
           <SubTitle>Ben Werdmuller</SubTitle>
+          <Photo src="images/illustrations/ben.jpg" />
           <p>I work at the intersection of technology, media, and democracy. I co-founded Elgg and Known, worked on Medium and Latakoo, and invested in innovative media startups to support a stronger democracy at Matter.</p>
+          <small><a href="https://benwerd.com/">Personal site</a> - <a href="https://www.linkedin.com/in/benwerd/">LinkedIn</a></small>
         </Column>
         <Column>
           <SubTitle>Sascha Mombartz</SubTitle>
+          <Photo src="images/illustrations/sascha.jpg" />
           <p>I am an artist and designer from no particular place. My work – multidisciplinary, spanning digital to physical – deals with the interaction between people and objects and questions our relationship with progress.</p>
+          <small><a href="http://mombartz.com/">Personal site</a> - <a href="https://www.linkedin.com/in/smombartz/">LinkedIn</a></small>
         </Column>
       </ThreeColumns>
     </Section>
@@ -50,6 +56,11 @@ export const About = () => (
 )
 
 export default About
+
+const Photo = styled.img`
+  width: 160px;
+  border-radius: 4px;
+`
 
 const News = styled.div`
   display: grid;
