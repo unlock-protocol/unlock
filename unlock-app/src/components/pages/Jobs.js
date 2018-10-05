@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import React from 'react'
 import Layout from '../interface/Layout'
 import { Section, Title, Headline, SubTitle, CallToAction, Paragraph, UnorderedList, OrderedList, ListItem, ShortColumn } from './Components'
@@ -9,15 +10,32 @@ export const Jobs = () => (
       <UnorderedList>
         <ListItem><a href="#front-end-engineer">Senior Frontend Engineer</a></ListItem>
       </UnorderedList>
+
+      <SubTitle>People first</SubTitle>
+      <ShortColumn>
+
+        <Paragraph>We thrive to provide an environment where you can do your best work. This includes (but is not limited to):</Paragraph>
+        <UnorderedList>
+          <ListItem>Comprehensive health care (including dental and vision) for you 100% paid by Unlock (75% for your dependents). </ListItem>
+          <ListItem>Unlimited personal and vacation days.</ListItem>
+          <ListItem>Learning and development budget for each employee.</ListItem>
+          <ListItem>Monthly wellness stipend that can be used for a gym membership, nutrition counseling, yoga or meditation classes, or any other wellness activity of your choice. </ListItem>
+          <ListItem>Your choice of technical setup (laptop, monitors and software licenses).</ListItem>
+          <ListItem>Catered lunch ever day in the office.</ListItem>
+          <ListItem>Citibike membership.</ListItem>
+          <ListItem>Flexible work from home policy.</ListItem>
+        </UnorderedList>
+      </ShortColumn>
+
     </Section>
 
     <Section>
       <Title>Interview Process</Title>
-      <Headline>We think that an explicit process will let us evaluate your skills in the most fair way, as well as will let you prepare adequately.</Headline>
+      <Headline>We trust that an explicit process will let us evaluate your skills in the most fair way, as well as will let you prepare adequately.</Headline>
       <ShortColumn>
         <OrderedList>
-          <ListItem>Initial chat conversation with our founder Julien (find him in our Telegram group!).</ListItem>
-          <ListItem>Open Source Bounty assignment: all of Unlock&#39;s code is public. We&#39;ll ask you to submit a pull request for one of the issues which has a bounty.</ListItem>
+          <ListItem>Initial chat conversation with our founder Julien (find him in our <a href="https://t.me/unlockprotocol">Telegram group</a>!).</ListItem>
+          <ListItem>Open Source Bounty assignment: all of Unlock&#39;s code is public. We&#39;ll ask you to submit a pull request for <a href="https://github.com/unlock-protocol/unlock/issues">one of the issues</a> which has a bounty (look for the <Gitcoin>💰gitcoin</Gitcoin> label).</ListItem>
           <ListItem>Once your Pull Request has been merged, we&#39;ll invite you for a second round of interviews (expect 3 or 4) with the team.</ListItem>
           <ListItem>Reference checks (please have your resumé ready and updated too!)</ListItem>
         </OrderedList>
@@ -28,10 +46,11 @@ export const Jobs = () => (
     <ShortColumn>
       <Section anchor="front-end-engineer">
         <Title>Senior Frontend Engineer</Title>
+        <JobDetails>New York — Engineering — Full Time</JobDetails>
         <SubTitle>About You</SubTitle>
 
         <Paragraph>
-              Do you think that the web&#39;s original sin is its lack of business model? Do you think that individuals, democracies and the web, deserve better than click-bait, information overload or fake news?
+          Do you think that the web&#39;s <a href="https://www.theatlantic.com/technology/archive/2014/08/advertising-is-the-internets-original-sin/376041/">original sin</a> is its lack of business model? Do you think that individuals, democracies and the web, deserve better than click-bait, information overload or fake news?
         </Paragraph>
         <Paragraph>
               Are you excited about empowering creators by building the tools and interfaces which will let them monetize their creations without gate keepers?
@@ -61,7 +80,7 @@ export const Jobs = () => (
         <SubTitle>Requirements</SubTitle>
         <UnorderedList>
           <ListItem>4+ years of experience in software engineering</ListItem>
-          <ListItem>Deep working knowledge/expertise with modern JS applications and frameworks (React, Redux, SASS...) </ListItem>
+          <ListItem>Deep working knowledge/expertise with modern client side JavaScript applications and frameworks (React, Redux, SASS...) </ListItem>
           <ListItem>Advanced knowledge of the web stack and standards (ES6/7, PWA...)</ListItem>
           <ListItem>You ship high quality, well tested and documented code to meet the needs of users customers and colleagues</ListItem>
           <ListItem>High degree of autonomy and extensive communication skills to ensure that efficient collaboration with other team members</ListItem>
@@ -93,5 +112,22 @@ export const Jobs = () => (
 
   </Layout>
 )
+
+const JobDetails = styled.div`
+  font-family: 'IBM Plex Serif', serif;
+`
+
+const Gitcoin = styled.span`
+  background-color: #fbca04;
+  color: #000000;
+  height: 20px;
+  padding: 0.15em 4px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 15px;
+  border-radius: 2px;
+  box-shadow: inset 0 -1px 0 rgba(27,31,35,0.12);
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+`
 
 export default Jobs

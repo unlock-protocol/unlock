@@ -56,6 +56,7 @@ export const OrderedList = styled.ol`
 `
 
 export const ListItem = styled.li`
+  line-height: 28px;
   margin: 4px 0px 12px 4px;
   padding-left: 16px;
   font-family: 'IBM Plex Serif', serif;
