@@ -4,13 +4,16 @@ import styled from 'styled-components'
 import Header from './Header'
 import Footer from './Footer'
 import Logo from './Logo'
+import { Link } from 'react-router-dom'
 
 export default function Layout({ forContent, title, children }) {
   return (
     <Container>
       <Left>
         {!forContent &&
-          <Logo />
+          <Link to={'/'}>
+            <Logo />
+          </Link>
         }
       </Left>
       <Content>
