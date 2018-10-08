@@ -1,4 +1,7 @@
 import {getLockTransaction, getLockConfirmations, getLockStatusString} from '../../helpers/Locks'
+import configure from '../../config'
+
+const config = configure(global)
 
 describe('lockHelpers', () => {
   it ('should retrieve a transaction from a lock when a match exists', () => {
@@ -101,7 +104,8 @@ describe('lockHelpers', () => {
 
     expect(getLockConfirmations(transactions, Lock.address)).toEqual(null)
   })
-  it ('should return the status "deployed" for locks with mined transactions and at least 12 confirmations', () => {
+
+  it ('should return the status "deployed" for locks with mined transactions and at least the number of required confirmations', () => {
     const Lock = {
       address: '0x1234567890',
     }
@@ -109,7 +113,7 @@ describe('lockHelpers', () => {
       all: {
         theTransactionWereLookingFor: {
           hash: 'theTransactionWereLookingFor',
-          confirmations: 12,
+          confirmations: config.requiredConfirmations,
           status: 'mined',
           lock: {
             address: '0x1234567890',
@@ -120,7 +124,8 @@ describe('lockHelpers', () => {
 
     expect(getLockStatusString(transactions, Lock.address)).toEqual('deployed')
   })
-  it ('should return the status "confirming" for locks with mined transactions and under 12 confirmations', () => {
+
+  it ('should return the status "confirming" for locks with mined transactions and under the required number of confirmations', () => {
     const Lock = {
       address: '0x1234567890',
     }
@@ -128,7 +133,7 @@ describe('lockHelpers', () => {
       all: {
         theTransactionWereLookingFor: {
           hash: 'theTransactionWereLookingFor',
-          confirmations: 4,
+          confirmations: config.requiredConfirmations-1,
           status: 'mined',
           lock: {
             address: '0x1234567890',
