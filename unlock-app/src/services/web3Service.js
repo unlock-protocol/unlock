@@ -19,6 +19,7 @@ export default class Web3Service {
 
   /**
    * This connects to the web3 service and listens to new blocks
+   * TODO consider pulling the account logic away from that method into the promise listener
    * @param {object} network
    * @return {Promise}
    */
@@ -230,6 +231,23 @@ export default class Web3Service {
           account.balance = balance
           return account
         })
+    })
+  }
+
+  /**
+   * This refreshes a transaction by its hash
+   * @param {Transaction} transaction
+   * @return Promise<Transaction>
+   */
+  refreshTransaction(transaction) {
+    return new Promise((resolve, reject) => {
+      return Promise.all([
+        this.web3.eth.getBlockNumber(),
+        this.web3.eth.getTransaction(transaction.hash),
+      ]).then(([blockNumber, blockTransaction]) => {
+        transaction.confirmations = blockNumber - blockTransaction.blockNumber
+        return resolve(transaction)
+      })
     })
   }
 
