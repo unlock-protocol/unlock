@@ -4,7 +4,7 @@ import { PURCHASE_KEY, SET_KEY, setKey } from '../actions/key'
 import { SET_ACCOUNT, LOAD_ACCOUNT, CREATE_ACCOUNT, setAccount, resetAccountBalance } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
 import { SET_PROVIDER } from '../actions/provider'
-import { setTransaction } from '../actions/transaction'
+import { REFRESH_TRANSACTION, setTransaction, refreshTransaction, updateTransaction } from '../actions/transaction'
 
 import Web3Service from '../services/web3Service'
 import { lockUnlessKeyIsValid } from '../services/iframeService'
@@ -24,10 +24,14 @@ export default function lockMiddleware ({ getState, dispatch }) {
           provider: getState().provider,
           network: getState().network,
         }).then(([networkId, account]) => {
-          // we dispatch again!
+          // we dispatch again first.
           dispatch(action)
+          // We then set the network
           dispatch(setNetwork(networkId))
+          // And set the account
           dispatch(setAccount(account))
+          // We refresh transactions
+          Object.values(getState().transactions.all).forEach((transaction) => dispatch(refreshTransaction(transaction)))
         }).catch(() => {
           // we could not connect
           // TODO: show error to user
@@ -78,6 +82,11 @@ export default function lockMiddleware ({ getState, dispatch }) {
         }).then((balance) => {
           dispatch(resetAccountBalance(balance))
         })
+      } else if (action.type === REFRESH_TRANSACTION) {
+        web3Service.refreshTransaction(action.transaction)
+          .then((transaction) => {
+            dispatch(updateTransaction(transaction))
+          })
       } else if (action.type === SET_KEY) {
         lockUnlessKeyIsValid({key: action.key})
       } else if (action.type === WITHDRAW_FROM_LOCK) {

@@ -5,6 +5,7 @@ import { PURCHASE_KEY, SET_KEY } from '../../actions/key'
 import { SET_ACCOUNT, LOAD_ACCOUNT, CREATE_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { SET_PROVIDER } from '../../actions/provider'
+import { REFRESH_TRANSACTION } from '../../actions/transaction'
 
 /**
  * This is to use a mock for web3Service
@@ -37,6 +38,9 @@ let state = {
 }
 
 const privateKey = '0xdeadbeef'
+const transaction = {
+  hash: '0xf21e9820af34282c8bebb3a191cf615076ca06026a144c9c28e9cb762585472e',
+}
 const network = 'test'
 const provider = 'Toshi'
 
@@ -72,6 +76,7 @@ let mockWeb3Service = {
   loadAccount: true,
   withdrawFromLock: true,
   getAddressBalance: true,
+  refreshTransaction: true,
 }
 
 jest.mock('../../services/web3Service', () => {
@@ -129,6 +134,14 @@ describe('Lock middleware', () => {
       expect(next).toHaveBeenCalledTimes(0) // ensures that execution was stopped
     })
 
+  })
+
+  it('should handle REFRESH_TRANSACTION by calling web3Service', () => {
+    const { next, invoke } = create()
+    const action = { type: REFRESH_TRANSACTION, transaction }
+    invoke(action)
+    expect(mockWeb3Service.refreshTransaction).toHaveBeenCalledWith(transaction)
+    expect(next).toHaveBeenCalledWith(action)
   })
 
   it('should handle LOAD_ACCOUNT by calling web3Service', () => {

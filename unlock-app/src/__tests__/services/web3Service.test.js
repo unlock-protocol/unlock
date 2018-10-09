@@ -18,6 +18,12 @@ const nodeAccounts = [
   '0xaca94ef8bd5ffee41947b4585a84bda5a3d3da6e',
 ]
 
+const transaction = {
+  status: 'mined',
+  createdAt: new Date().getTime(),
+  hash: '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
+}
+
 const nockScope = nock('http://127.0.0.1:8545', { 'encodedQueryParams': true })
 
 let rpcRequestId = 0
@@ -52,6 +58,16 @@ const accountsAndYield = (accounts) => {
 // eth_call
 const ethCallAndYield = (data, to, result) => {
   return jsonRpcRequest('eth_call', [{ data, to }, 'latest'], result)
+}
+
+// eth_blockNumber
+const ethBlockNumber = (result) => {
+  return jsonRpcRequest('eth_blockNumber', [], result)
+}
+
+// eth_getTransactionByHash
+const ethGetTransactionByHash = (hash, result) => {
+  return jsonRpcRequest('eth_getTransactionByHash', [hash], result)
 }
 
 const ethCallAndFail = (data, to, error) => {
@@ -171,6 +187,29 @@ describe('Web3Service', () => {
       return web3Service.connect(defaultState).then(() => {
         // Clean all matchers
         nock.cleanAll()
+      })
+    })
+
+    describe('refreshTransaction', () => {
+      it('should update the number of confirmation based on number of blocks since the transaction', () => {
+
+        ethBlockNumber(`0x${(29).toString('16')}`)
+        ethGetTransactionByHash(transaction.hash, {
+          hash: '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
+          nonce: '0x04',
+          blockHash: '0xdc7c95899e030f3104871a597866767ec296e948a24e99b12e0b251011d11c36',
+          blockNumber: `0x${(14).toString('16')}`,
+          transactionIndex: '0x00',
+          from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+          to: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
+          value: '0x0',
+          gas: '0x16e360',
+          gasPrice: '0x04a817c800',
+          input: '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a' })
+
+        return web3Service.refreshTransaction(transaction).then((_transaction) => {
+          expect(_transaction.confirmations).toEqual(15) //29-14
+        })
       })
     })
 
