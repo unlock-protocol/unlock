@@ -13,7 +13,7 @@ export default function Header({ forContent, title }) {
       }
       {!!forContent &&
         <Link to={'/'}>
-          <Svg.UnlockWordMark height={'28px'} />
+          <Svg.UnlockWordMark height={'28px'} width={'100%'} />
         </Link>
       }
       <Buttons.About />
