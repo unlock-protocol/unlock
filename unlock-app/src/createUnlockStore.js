@@ -32,7 +32,7 @@ export default function createUnlockStore(config, browserHistory) {
       all: {},
       lastUpdated: 0,
     },
-    locks: [],
+    locks: {},
   }, loadState())
 
   const middlewares = [
