@@ -66,7 +66,7 @@ export const ListItem = styled.li`
 
 export const TwoColumns = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: 42px;
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
@@ -77,16 +77,16 @@ export const TwoColumns = styled.div`
 
 export const ThreeColumns = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-gap: 24px;
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
-  fonts-size: 22px;
+  font-size: 22px;
   line-height: 1.5;
   color: var(--darkgrey);
   align-items: start;
   justify-content: center;
-  text-align center;
+  text-align: center;
 `
 
 export const Column = styled.div`
@@ -95,6 +95,6 @@ export const Column = styled.div`
 `
 
 export const ShortColumn = styled.div`
-  width: 66%;
+  width: minmax(300px, 66%);
   max-width: 560px;
 `

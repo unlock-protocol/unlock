@@ -72,7 +72,7 @@ const Hero = styled.h1`
 const Action = styled.div`
   display: grid;
   justify-items: center;
-  grid-template-columns: 25% 1fr 25%;
+  grid-template-columns: 1fr minmax(250px, 2fr) 1fr;
   grid-gap: 16px;
   margin-bottom: 50px;
 `
@@ -83,6 +83,9 @@ const ButtonLabel = styled.small`
   font-weight: 200;
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
   color: var(--darkgrey);
+  display: grid;
+  justify-content: center;
+  text-align: center;
 `
 
 const Paragraph = styled.p`
