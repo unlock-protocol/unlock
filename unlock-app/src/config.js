@@ -50,6 +50,7 @@ export default function configure(environment) {
   let providers = {}
   let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
+  let requiredConfirmations = 12
 
   if (env === 'dev') {
     // In dev, we assume there is a running local ethereum node with unlocked accounts listening to the HTTP endpoint. We can add more providers (Websockets...) if needed.
@@ -64,6 +65,9 @@ export default function configure(environment) {
 
     // In dev, the network can be anything above 100
     isRequiredNetwork = (networkId) => networkId > 100
+
+    // In dev, we only require 0 confirmation because we only mine when there are pending transactions
+    requiredConfirmations = 0
   }
 
   if (env === 'staging') {
@@ -92,5 +96,6 @@ export default function configure(environment) {
     providers,
     isRequiredNetwork,
     requiredNetwork,
+    requiredConfirmations,
   }
 }
