@@ -20,6 +20,27 @@ We recorded a screencast to show how Unlock works for a paywall.
 
 We strongly recommend that the community help us make improvements and determine the future direction of the protocol. To report bugs within this package, please create an issue in this repository.
 
+## Getting started
+
+1. Checkout the code from this repository
+
+```
+git clone https://github.com/unlock-protocol/unlock
+```
+
+2. Install all deps for the app
+
+```
+cd unlock/unlock-app && npm install
+```
+
+
+3. Run the app (this should also compile and deploy the smart contract to a local truffle node)
+
+```
+npm start
+```
+
 ## Code
 
 ### Smart Contract
