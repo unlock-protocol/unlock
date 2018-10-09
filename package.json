@@ -1,0 +1,27 @@
+{
+  "name": "unlock",
+  "version": "1.0.0",
+  "description": "Unlock is a protocol for decentralized access control",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "eslint-plugin-jest": "^21.22.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install-deps": "cd smart-contracts && npm install && cd ../unlock-app && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unlock-protocol/unlock.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/unlock-protocol/unlock/issues"
+  },
+  "homepage": "https://github.com/unlock-protocol/unlock#readme"
+}
