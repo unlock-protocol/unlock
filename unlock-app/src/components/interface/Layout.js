@@ -36,10 +36,11 @@ Layout.propTypes = {
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 1fr minmax(300px, 65%) 1fr;
+  grid-template-columns: 1fr minmax(300px, 4fr) 1fr;
 `
 
 const Left = styled.div`
+  padding: 8px;
   display: grid;
   align-items: start;
   height: 24px;
