@@ -6,7 +6,7 @@ import Layout from '../interface/Layout'
 import CreatorAccount from './CreatorAccount'
 import CreatorLocks from './CreatorLocks'
 
-export const Dashboard = ({account, network, transactions, locks}) => {
+export const Dashboard = ({account, network, transactions, locks, showForm}) => {
   if (!account) {
     return null //loading
   }
@@ -14,7 +14,7 @@ export const Dashboard = ({account, network, transactions, locks}) => {
   return (
     <Layout title="Creator Dashboard">
       <CreatorAccount network={network} account={account} />
-      <CreatorLocks transactions={transactions} locks={locks} />
+      <CreatorLocks transactions={transactions} locks={locks} showForm={showForm} />
     </Layout>
   )
 }
@@ -24,6 +24,7 @@ Dashboard.propTypes = {
   network: UnlockPropTypes.network,
   transactions: UnlockPropTypes.transactions,
   locks: UnlockPropTypes.locks,
+  showForm: UnlockPropTypes.showDashboardForm,
 }
 
 const mapStateToProps = state => {
@@ -32,6 +33,7 @@ const mapStateToProps = state => {
     network: state.network,
     transactions: state.transactions,
     locks: state.locks,
+    showForm: state.showDashboardForm,
   }
 }
 

@@ -46,6 +46,7 @@ export class CreatorLocks extends React.Component {
 CreatorLocks.propTypes = {
   transactions: UnlockPropTypes.transactions,
   locks: UnlockPropTypes.locks,
+  showForm: UnlockPropTypes.showDashboardForm,
 }
 
 export default CreatorLocks
@@ -104,5 +105,3 @@ const CreateButton = styled(ActionButton)`
   padding: 10px;
   align-self: end;
 `
-
-export default CreatorLocks
