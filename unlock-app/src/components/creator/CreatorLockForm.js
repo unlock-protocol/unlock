@@ -9,7 +9,7 @@ import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockConfirming'
 import Svg from '../interface/svg'
 import Web3Utils from 'web3-utils'
-import {createLock} from '../../actions/lock'
+import { createLock } from '../../actions/lock'
 import connect from 'react-redux/es/connect/connect'
 
 class CreatorLockForm extends React.Component {
@@ -49,19 +49,19 @@ class CreatorLockForm extends React.Component {
       <FormLockRow>
         <Icon address={'00000000000000'} />
         <FormLockName>
-          <input type={'text'} id={'name'} onChange={this.handleChange} defaultValue={this.state.name} />
+          <input type="text" id="name" onChange={this.handleChange} defaultValue={this.state.name} />
         </FormLockName>
         <FormLockDuration>
-          <input type={'text'} id={'expirationDuration'} onChange={this.handleChange} defaultValue={this.state.expirationDuration} /> days
+          <input type="text" id="expirationDuration" onChange={this.handleChange} defaultValue={this.state.expirationDuration} /> days
         </FormLockDuration>
         <FormLockKeys>
-          <input type={'text'} id={'maxNumberOfKeys'} onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
+          <input type="text" id="maxNumberOfKeys" onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
         </FormLockKeys>
         <FormBalanceWithUnit>
           <Unit>
             <Svg.Eth width="1em" height="1em" />
           </Unit>
-          <input type={'text'} id={'keyPrice'} onChange={this.handleChange} defaultValue={this.state.keyPrice} />
+          <input type="text" id="keyPrice" onChange={this.handleChange} defaultValue={this.state.keyPrice} />
         </FormBalanceWithUnit>
         <div></div>
         <LockSubmit onClick={this.handleSubmit}>
