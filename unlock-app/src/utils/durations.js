@@ -54,3 +54,12 @@ export function durationsAsTextFromSeconds(seconds) {
   }
   return asArrayOfValues.slice(0, -1).join(', ') + ' and ' + asArrayOfValues.slice(-1)
 }
+
+/**
+ * Given a number of seconds, returns an integer number of days (rounding up)
+ * @param seconds
+ * @returns {number}
+ */
+export function secondsAsDays(seconds) {
+  return Math.ceil(seconds / 86400).toString()
+}

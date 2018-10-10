@@ -26,7 +26,7 @@ Balance.propTypes = {
   symbol: PropTypes.bool,
 }
 
-const BalanceWithUnit = styled.div`
+export const BalanceWithUnit = styled.div`
   display: grid;
   align-content: stretch;
   grid-auto-flow: column;
@@ -34,7 +34,7 @@ const BalanceWithUnit = styled.div`
 
 const Amount = styled.span``
 
-const Unit = styled.span`
+export const Unit = styled.span`
   display: grid;
   align-items: end;
 `

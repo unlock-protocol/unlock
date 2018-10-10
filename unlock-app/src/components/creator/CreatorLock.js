@@ -23,7 +23,7 @@ export function CreatorLock({ lock, status = 'deployed' }) {
   // TODO add USD values to lock
   // TODO add all-time balance to lock
   return (
-    <LockRow status={status}>
+    <LockRow>
       <Icon lock={lock} address={lock.address} />
       <LockName>
         {name}
@@ -53,7 +53,7 @@ const LockIconBarContainer = styled.div`
   visibility: hidden;
 `
 
-const LockRow = styled.div`
+export const LockRow = styled.div`
   &:hover {
     ${LockIconBarContainer} {
       visibility: visible;
@@ -73,12 +73,12 @@ const LockRow = styled.div`
   align-items: center;
 `
 
-const LockName = styled.div`
+export const LockName = styled.div`
   color: var(--link);
   font-weight: 600;
 `
 
-const LockAddress = styled.div`
+export const LockAddress = styled.div`
   color: var(--grey);
   font-weight: 200;
   white-space: nowrap;
@@ -87,10 +87,10 @@ const LockAddress = styled.div`
   text-overflow: ellipsis;
 `
 
-const LockDuration = styled.div`
+export const LockDuration = styled.div`
 `
 
-const LockKeys = styled.div`
+export const LockKeys = styled.div`
 `
 
 /* Saving for use with sub-values that need to be added in a future PR
