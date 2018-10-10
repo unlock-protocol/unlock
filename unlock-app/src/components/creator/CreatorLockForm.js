@@ -11,8 +11,8 @@ import Svg from '../interface/svg'
 import Web3Utils from 'web3-utils'
 import {secondsAsDays} from '../../utils/durations'
 
-export const CreatorLockForm = (lock) => {
-  if (!lock.name) lock = { // Set default values if we haven't been given a lock
+export const CreatorLockForm = (props) => {
+  let lock = props.lock || { // Set default values if we haven't been given a lock
     address: '00000000000000', // For icon generation
     name: 'New Lock',
     expirationDuration: '2592000', // 30 days
@@ -25,21 +25,21 @@ export const CreatorLockForm = (lock) => {
     <FormLockRow>
       <Icon lock={lock} address={lock.address} />
       <FormLockName>
-        <input type={'text'} name={'name'} defaultValue={lock.name} />
+        <input type="text" name="name" defaultValue={lock.name} />
       </FormLockName>
       <FormLockDuration>
-        <input type={'text'} name={'duration'} defaultValue={secondsAsDays(lock.expirationDuration)} /> days
+        <input type="text" name="duration" defaultValue={secondsAsDays(lock.expirationDuration)} /> days
       </FormLockDuration>
       <FormLockKeys>
-        <input type={'text'} name={'keys'} defaultValue={lock.maxNumberOfKeys} />
+        <input type="text" name="keys" defaultValue={lock.maxNumberOfKeys} />
       </FormLockKeys>
       <FormBalanceWithUnit>
         <Unit>
           <Svg.Eth width="1em" height="1em" />
         </Unit>
-        <input type={'text'} name={'amount'} defaultValue={inEth} />
+        <input type="text" name="amount" defaultValue={inEth} />
       </FormBalanceWithUnit>
-      <div></div>
+      <div>-</div>
       <LockSubmit>
         Submit
       </LockSubmit>
