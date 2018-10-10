@@ -9,7 +9,7 @@ import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockConfirming'
 import Svg from '../interface/svg'
 import Web3Utils from 'web3-utils'
-import {secondsAsDays} from '../../utils/durations'
+import { secondsAsDays } from '../../utils/durations'
 
 export const CreatorLockForm = (props) => {
   let lock = props.lock || { // Set default values if we haven't been given a lock
