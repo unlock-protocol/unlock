@@ -1,3 +1,6 @@
+import PropTypes from 'prop-types'
+import UnlockPropTypes from '../../propTypes'
+
 import React from 'react'
 import styled from 'styled-components'
 import Icon from '../lock/Icon'
@@ -39,10 +42,14 @@ export const CreatorLockForm = (lock) => {
       <div></div>
       <LockSubmit>
         Submit
-        <LockCancel>Cancel</LockCancel>
       </LockSubmit>
     </FormLockRow>
   )
+}
+
+CreatorLockForm.propTypes = {
+  lock: UnlockPropTypes.lock,
+  cancelAction: PropTypes.func,
 }
 
 const FormLockRow = styled(LockRow)`
@@ -85,12 +92,6 @@ const FormBalanceWithUnit = styled(BalanceWithUnit)`
 
 const LockSubmit = styled(LockStatus)`
   cursor: pointer;
-  text-align: center;
-`
-
-const LockCancel = styled.div`
-  font-size: 10px;
-  margin-top: 5px;
   text-align: center;
 `
 

@@ -50,6 +50,8 @@ export const networks = PropTypes.shape({})
 
 export const status = PropTypes.string
 
+export const showDashboardForm = PropTypes.bool
+
 export default {
   account,
   address,
@@ -67,4 +69,5 @@ export default {
   transaction,
   transactions,
   status,
+  showDashboardForm,
 }
