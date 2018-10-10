@@ -23,7 +23,6 @@ export const CreatorLocks = ({locks, transactions}) => (
       return (<CreatorLock key={index} lock={lock} status={lockStatus} />)
     })}
   </Locks>
-
 )
 
 CreatorLocks.propTypes = {
