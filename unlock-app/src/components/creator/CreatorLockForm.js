@@ -22,7 +22,7 @@ class CreatorLockForm extends React.Component {
       keyPrice: '0.01',
       keyPriceCurrency: 'ether',
       maxNumberOfKeys: 10,
-      name: 'New Lock'
+      name: 'New Lock',
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -74,7 +74,9 @@ class CreatorLockForm extends React.Component {
 
 CreatorLockForm.propTypes = {
   lock: UnlockPropTypes.lock,
+  account: UnlockPropTypes.account,
   hideAction: PropTypes.func,
+  createLock: PropTypes.func,
 }
 
 const mapStateToProps = state => {
@@ -88,7 +90,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreatorLockForm)
-
 
 const FormLockRow = styled(LockRow)`
   grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);
