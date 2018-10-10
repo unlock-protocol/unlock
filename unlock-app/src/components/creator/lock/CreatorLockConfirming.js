@@ -16,7 +16,7 @@ CreatorLockConfirming.propTypes = {
 
 export default CreatorLockConfirming
 
-const LockStatus = styled.div`
+export const LockStatus = styled.div`
   align-self: stretch;
   justify-content: center;
   align-content: center;

@@ -4,30 +4,52 @@ import React from 'react'
 import { getLockStatusString } from '../../helpers/Locks'
 import CreatorLock, { LockRowGrid } from './CreatorLock'
 import styled from 'styled-components'
+import CreatorLockForm from './CreatorLockForm'
 
-export const CreatorLocks = ({locks, transactions}) => (
-  <Locks>
-    <LockHeaderRow>
-      <LockHeader>Locks</LockHeader>
-      <LockMinorHeader>Name / Address</LockMinorHeader>
-      <LockMinorHeader>Duration</LockMinorHeader>
-      <LockMinorHeader>Quantity</LockMinorHeader>
-      <LockMinorHeader>Price</LockMinorHeader>
-      <LockMinorHeader>Balance / Earnings</LockMinorHeader>
-      <CreateButton>Create Lock</CreateButton>
-    </LockHeaderRow>
-    {Object.values(locks).map((lock, index) => {
-      let lockStatus = getLockStatusString(transactions, lock.address)
-      return (<CreatorLock key={index} lock={lock} status={lockStatus} />)
-    })}
-  </Locks>
+export class CreatorLocks extends React.Component {
+  constructor (props, context) {
+    super(props)
+    this.state = {
+      showDashboardForm: !!this.props.showForm,
+    }
+    this.toggleForm = this.toggleForm.bind(this)
+  }
 
-)
+  toggleForm() { // TODO add cancel action to form
+    this.setState({
+      showDashboardForm: !this.state.showDashboardForm,
+    })
+  }
+
+  render() {
+    return (
+      <Locks>
+        <LockHeaderRow>
+          <LockHeader>Locks</LockHeader>
+          <LockMinorHeader>Name / Address</LockMinorHeader>
+          <LockMinorHeader>Duration</LockMinorHeader>
+          <LockMinorHeader>Quantity</LockMinorHeader>
+          <LockMinorHeader>Price</LockMinorHeader>
+          <LockMinorHeader>Balance / Earnings</LockMinorHeader>
+          <CreateButton onClick={this.toggleForm}>Create Lock</CreateButton>
+        </LockHeaderRow>
+        {this.state.showDashboardForm && <CreatorLockForm />}
+        {Object.values(this.props.locks).map((lock, index) => {
+          let lockStatus = getLockStatusString(this.props.transactions, lock.address)
+          return (<CreatorLock key={index} lock={lock} status={lockStatus} />)
+        })}
+      </Locks>
+    )
+  }
+}
 
 CreatorLocks.propTypes = {
   transactions: UnlockPropTypes.transactions,
   locks: UnlockPropTypes.locks,
+  showForm: UnlockPropTypes.showDashboardForm,
 }
+
+export default CreatorLocks
 
 const Locks = styled.section`
   display: grid;
@@ -83,5 +105,3 @@ const CreateButton = styled(ActionButton)`
   padding: 10px;
   align-self: end;
 `
-
-export default CreatorLocks
