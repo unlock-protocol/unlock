@@ -9,48 +9,86 @@ import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockConfirming'
 import Svg from '../interface/svg'
 import Web3Utils from 'web3-utils'
-import {secondsAsDays} from '../../utils/durations'
+import {createLock} from '../../actions/lock'
+import connect from 'react-redux/es/connect/connect'
 
-export const CreatorLockForm = (lock) => {
-  if (!lock.name) lock = { // Set default values if we haven't been given a lock
-    address: '00000000000000', // For icon generation
-    name: 'New Lock',
-    expirationDuration: '2592000', // 30 days
-    maxNumberOfKeys: '10',
-    keyPrice: '10000000000000000000', // 10 eth
+class CreatorLockForm extends React.Component {
+  constructor (props, context) {
+    super(props)
+    this.state = {
+      keyReleaseMechanism: 0, // Public
+      expirationDuration: 30,
+      expirationDurationUnit: 86400, // Days
+      keyPrice: '0.01',
+      keyPriceCurrency: 'ether',
+      maxNumberOfKeys: 10,
+      name: 'New Lock'
+    }
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
-  let inWei = Web3Utils.toWei(lock.keyPrice || '0', 'wei')
-  let inEth = Web3Utils.fromWei(inWei, 'ether')
-  return (
-    <FormLockRow>
-      <Icon lock={lock} address={lock.address} />
-      <FormLockName>
-        <input type={'text'} name={'name'} defaultValue={lock.name} />
-      </FormLockName>
-      <FormLockDuration>
-        <input type={'text'} name={'duration'} defaultValue={secondsAsDays(lock.expirationDuration)} /> days
-      </FormLockDuration>
-      <FormLockKeys>
-        <input type={'text'} name={'keys'} defaultValue={lock.maxNumberOfKeys} />
-      </FormLockKeys>
-      <FormBalanceWithUnit>
-        <Unit>
-          <Svg.Eth width="1em" height="1em" />
-        </Unit>
-        <input type={'text'} name={'amount'} defaultValue={inEth} />
-      </FormBalanceWithUnit>
-      <div></div>
-      <LockSubmit>
-        Submit
-      </LockSubmit>
-    </FormLockRow>
-  )
+
+  handleChange (event) {
+    this.setState({ [event.target.id]: event.target.value })
+  }
+
+  handleSubmit () { // TODO save name to the redux store
+    const lockParams = {
+      keyReleaseMechanism: this.state.keyReleaseMechanism,
+      expirationDuration: this.state.expirationDuration * this.state.expirationDurationUnit,
+      keyPrice: Web3Utils.toWei(this.state.keyPrice.toString(10), this.state.keyPriceCurrency),
+      maxNumberOfKeys: this.state.maxNumberOfKeys,
+      creator: this.props.account,
+    }
+    this.props.createLock(lockParams)
+    if (this.props.hideAction) this.props.hideAction()
+  }
+
+  render() {
+    return (
+      <FormLockRow>
+        <Icon address={'00000000000000'} />
+        <FormLockName>
+          <input type={'text'} id={'name'} onChange={this.handleChange} defaultValue={this.state.name} />
+        </FormLockName>
+        <FormLockDuration>
+          <input type={'text'} id={'expirationDuration'} onChange={this.handleChange} defaultValue={this.state.expirationDuration} /> days
+        </FormLockDuration>
+        <FormLockKeys>
+          <input type={'text'} id={'maxNumberOfKeys'} onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
+        </FormLockKeys>
+        <FormBalanceWithUnit>
+          <Unit>
+            <Svg.Eth width="1em" height="1em" />
+          </Unit>
+          <input type={'text'} id={'keyPrice'} onChange={this.handleChange} defaultValue={this.state.keyPrice} />
+        </FormBalanceWithUnit>
+        <div></div>
+        <LockSubmit onClick={this.handleSubmit}>
+          Submit
+        </LockSubmit>
+      </FormLockRow>
+    )
+  }
 }
 
 CreatorLockForm.propTypes = {
   lock: UnlockPropTypes.lock,
-  cancelAction: PropTypes.func,
+  hideAction: PropTypes.func,
 }
+
+const mapStateToProps = state => {
+  return {
+    account: state.network.account,
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  createLock: lock => dispatch(createLock(lock)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreatorLockForm)
+
 
 const FormLockRow = styled(LockRow)`
   grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);
@@ -94,5 +132,3 @@ const LockSubmit = styled(LockStatus)`
   cursor: pointer;
   text-align: center;
 `
-
-export default CreatorLockForm
