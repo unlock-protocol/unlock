@@ -11,7 +11,6 @@ import Svg from '../interface/svg'
 import Web3Utils from 'web3-utils'
 import { createLock } from '../../actions/lock'
 import connect from 'react-redux/es/connect/connect'
-import { secondsAsDays } from '../../utils/durations'
 
 class CreatorLockForm extends React.Component {
   constructor (props, context) {
@@ -53,7 +52,7 @@ class CreatorLockForm extends React.Component {
           <input type="text" id="name" onChange={this.handleChange} defaultValue={this.state.name} />
         </FormLockName>
         <FormLockDuration>
-          <input type="text" id="expirationDuration" onChange={this.handleChange} defaultValue={secondsAsDays(lock.expirationDuration)} /> days
+          <input type="text" id="expirationDuration" onChange={this.handleChange} defaultValue={this.state.expirationDuration} /> days
         </FormLockDuration>
         <FormLockKeys>
           <input type="text" id="maxNumberOfKeys" onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
