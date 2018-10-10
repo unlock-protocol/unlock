@@ -1,3 +1,7 @@
+import configure from '../config'
+
+const config = configure(global)
+
 /**
  * Given the address of a lock, returns its accompanying transaction
  * @param transactionStore
@@ -36,7 +40,7 @@ export function getLockConfirmations(transactionStore, lockAddress) {
 export function getLockStatusString(transactionStore, lockAddress) {
   let transaction = getLockTransaction(transactionStore, lockAddress)
   if (!transaction) return 'notfound'
-  if (transaction.status === 'mined' && transaction.confirmations >= 12) return 'deployed'
-  if (transaction.status === 'mined' && transaction.confirmations < 12) return 'confirming'
+  if (transaction.status === 'mined' && transaction.confirmations >= config.requiredConfirmations) return 'deployed'
+  if (transaction.status === 'mined' && transaction.confirmations < config.requiredConfirmations) return 'confirming'
   if (transaction.status !== 'mined') return 'pending'
 }

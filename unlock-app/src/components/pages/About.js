@@ -22,7 +22,7 @@ export const About = () => (
         <Column>
           <SubTitle>Julien Genestoux</SubTitle>
           <Photo src="images/illustrations/julien.jpg" />
-          <p>I am an entrepreneur and a software engineer. I am a vocal web advocate who co-authored the W3C WebSub protocol. I sold my previous company, Superfeedr, an RSS feed API, to Medium. Born in France, I currently live in Brooklyn with my wife and our two young kids.</p>
+          <p>I am an entrepreneur and a software engineer. I am a vocal web advocate who co-authored the W3C WebSub protocol. I sold my previous company, Superfeedr, an RSS feed API, to Medium. Born in France, I currently live in Brooklyn.</p>
           <small><a href="https://www.ouvre-boite.com/">Personal site</a> - <a href="https://www.linkedin.com/in/juliengenestoux/">LinkedIn</a></small>
         </Column>
         <Column>
@@ -65,7 +65,7 @@ const Photo = styled.img`
 const News = styled.div`
   display: grid;
   grid-template-columns: 1fr 3fr;
-  grid-gap: 42px;
+  grid-gap: 16px;
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
   fonts-size: 22px;
