@@ -47,10 +47,10 @@ describe('durations', () => {
   })
 
   it('should return the correct number of days from a given number of seconds', () => {
-    expect(secondsAsDays(86400).toEqual('1'))
-    expect(secondsAsDays(86399).toEqual('1'))
-    expect(secondsAsDays(0).toEqual('0'))
-    expect(secondsAsDays(172800).toEqual('2'))
-    expect(secondsAsDays(172000).toEqual('2'))
+    expect(secondsAsDays(86400)).toEqual('1')
+    expect(secondsAsDays(86399)).toEqual('1')
+    expect(secondsAsDays(0)).toEqual('0')
+    expect(secondsAsDays(172800)).toEqual('2')
+    expect(secondsAsDays(172000)).toEqual('2')
   })
 })
