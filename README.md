@@ -28,17 +28,16 @@ We strongly recommend that the community help us make improvements and determine
 git clone https://github.com/unlock-protocol/unlock
 ```
 
-2. Install all deps for the app
+2. Install all deps
 
 ```
-cd unlock/unlock-app && npm install
+npm run install-deps
 ```
-
 
 3. Run the app (this should also compile and deploy the smart contract to a local truffle node)
 
 ```
-npm start
+cd unlock-app && npm start
 ```
 
 ## Code
