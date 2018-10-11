@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "bn.js": "^4.11.8",
-    "bootstrap": "^4.0.0",
     "color-scheme": "^1.0.1",
     "prop-types": "^15.6.1",
     "react": "^16.4.2",
@@ -19,8 +18,8 @@
     "storybook-router": "^0.3.4",
     "styled-components": "^3.4.6",
     "truffle": "^4.1.11",
-    "web3": "^1.0.0-beta.34",
-    "web3-utils": "^1.0.0-beta.34"
+    "web3": "1.0.0-beta.36",
+    "web3-utils": "1.0.0-beta.36"
   },
   "devDependencies": {
     "@storybook/addon-jest": "^3.4.10",

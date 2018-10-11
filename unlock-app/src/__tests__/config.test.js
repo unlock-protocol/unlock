@@ -14,7 +14,7 @@ describe('config', () => {
 
     it('should have the right keys in dev', () => {
       expect(config.requiredNetwork).toEqual('Dev')
-      expect(config.providers).toEqual({
+      expect(config.providers).toMatchObject({
         HTTP: {
           connected: false,
           headers: undefined,
@@ -35,7 +35,7 @@ describe('config', () => {
           hostname: 'localhost',
         },
       })
-      expect(config.providers).toEqual({
+      expect(config.providers).toMatchObject({
         HTTP: {
           connected: false,
           headers: undefined,
