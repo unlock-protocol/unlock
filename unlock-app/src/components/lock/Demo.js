@@ -9,7 +9,7 @@ export const Demo = ({ address }) => (
     <Section>
       <Title>It’s Time to Unlock The Web</Title>
       <Headline>
-        The web needs a better business model — and we believe the technology is finally here to do it.
+        The web needs a better business model — and we believe the technology is finally here to do it.
       </Headline>
       <ShortColumn>
         <Paragraph>
