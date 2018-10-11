@@ -10,7 +10,7 @@ import { LockStatus } from './lock/CreatorLockConfirming'
 import Svg from '../interface/svg'
 import Web3Utils from 'web3-utils'
 import { createLock } from '../../actions/lock'
-import connect from 'react-redux/es/connect/connect'
+import { connect } from 'react-redux'
 
 class CreatorLockForm extends React.Component {
   constructor (props, context) {
