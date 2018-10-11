@@ -1,4 +1,4 @@
-import {durationsAsTextFromSeconds, durations, secondsAsDays} from '../../utils/durations'
+import { durationsAsTextFromSeconds, durations, secondsAsDays } from '../../utils/durations'
 
 describe('durations', () => {
   it('should compute the right durations', () => {
