@@ -8,7 +8,7 @@ export function LockIconBar({ lock }) {
     <IconBar>
       <Buttons.Withdraw />
       <Buttons.Edit />
-      <Buttons.ExportLock />
+      { /* Reinstate when we're ready <Buttons.ExportLock /> */ }
       <Buttons.Code />
     </IconBar>
   )
@@ -23,5 +23,5 @@ export default LockIconBar
 const IconBar = styled.div`
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4, 24px);
+  grid-template-columns: repeat(3, 24px);
 `
