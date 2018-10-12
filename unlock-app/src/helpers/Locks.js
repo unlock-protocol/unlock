@@ -44,3 +44,14 @@ export function getLockStatusString(transactionStore, lockAddress) {
   if (transaction.status === 'mined' && transaction.confirmations < config.requiredConfirmations) return 'confirming'
   if (transaction.status !== 'mined') return 'pending'
 }
+
+/**
+ * Returns a lock's user-facing name from its transaction
+ * @param transactionStore
+ * @param lockAddress
+ * @returns {string|null}
+ */
+export function getLockName(transactionStore, lockAddress) {
+  let transaction = getLockTransaction(transactionStore, lockAddress)
+  if (transaction.lockName) return transaction.lockName
+}
