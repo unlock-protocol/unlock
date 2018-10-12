@@ -214,7 +214,10 @@ describe('Web3Service', () => {
     })
 
     describe('getAddressBalance', () => {
-      it('should trigger an error if the address is not valid')
+      it.skip('should trigger an error if the address is not valid', () => {
+        expect(false).toBe(true)
+      })
+
       it('should return the balance of the address', () => {
         const address = '0x1df62f291b2e969fb0849d99d9ce41e2f137006e'
         getBalanceForAccountAndYieldBalance(address, '0xdeadbeef')
@@ -267,7 +270,10 @@ describe('Web3Service', () => {
           })
         })
       })
-      it('should handle failures')
+
+      it.skip('should handle failures', () => {
+        expect(false).toBe(true)
+      })
     })
 
     describe('getKey', () => {
@@ -494,7 +500,7 @@ describe('Web3Service', () => {
 
     })
 
-    describe('createLock', () => {
+    describe.skip('createLock', () => {
       it('should create a new lock with the params provided')
       it('should dispatch setLock once it has been successfuly created')
       it('should handle failures if the lock could not be created')
