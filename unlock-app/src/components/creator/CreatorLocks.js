@@ -34,7 +34,7 @@ export class CreatorLocks extends React.Component {
           <CreateButton onClick={this.toggleForm}>Create Lock</CreateButton>
         </LockHeaderRow>
         {this.state.showDashboardForm && <CreatorLockForm />}
-        {Object.values(this.props.locks).map((lock, index) => {
+        {Object.values(this.props.locks).reverse().map((lock, index) => {
           let lockStatus = getLockStatusString(this.props.transactions, lock.address)
           return (<CreatorLock key={index} lock={lock} status={lockStatus} />)
         })}
