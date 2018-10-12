@@ -1,7 +1,7 @@
 import UnlockPropTypes from '../../propTypes'
 
 import React from 'react'
-import {getLockName, getLockStatusString} from '../../helpers/Locks'
+import { getLockStatusString } from '../../helpers/Locks'
 import CreatorLock, { LockRowGrid } from './CreatorLock'
 import styled from 'styled-components'
 import CreatorLockForm from './CreatorLockForm'
@@ -36,8 +36,7 @@ export class CreatorLocks extends React.Component {
         {this.state.showDashboardForm && <CreatorLockForm />}
         {Object.values(this.props.locks).map((lock, index) => {
           let lockStatus = getLockStatusString(this.props.transactions, lock.address)
-          let lockName = getLockName(this.props.transactions, lock.address)
-          return (<CreatorLock key={index} lock={lock} status={lockStatus} lockName={lockName} />)
+          return (<CreatorLock key={index} lock={lock} status={lockStatus} />)
         })}
       </Locks>
     )

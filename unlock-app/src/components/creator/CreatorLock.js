@@ -7,9 +7,9 @@ import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
 import styled from 'styled-components'
 
-export function CreatorLock({ lock, status = 'deployed', lockName }) {
+export function CreatorLock({ lock, status = 'deployed' }) {
   // Some sanitization of strings to display
-  let name = lockName || 'New Lock'
+  let name = lock.lockName || 'New Lock'
   let outstandingKeys = lock.maxNumberOfKeys - lock.outstandingKeys || 0
   let lockComponentStatusBlock
 
