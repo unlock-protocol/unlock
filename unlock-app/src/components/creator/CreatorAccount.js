@@ -32,10 +32,10 @@ export function CreatorAccount({ account, network }) {
           <Buttons.Upload />
         </DoubleHeightCell>
         <DoubleHeightCell>
-          <Buttons.Download />
+          <Buttons.Etherscan />
         </DoubleHeightCell>
         <DoubleHeightCell>
-          <Buttons.Etherscan />
+          {/* reinstate download / export functionality when we're ready <Buttons.Download /> */}
         </DoubleHeightCell>
         <DoubleHeightCell />
         <Address>{account.address}</Address>
