@@ -12,13 +12,15 @@ import UnlockPropTypes from '../../propTypes'
  * @param {UnlockPropTypes.address} address
  */
 export function Icon({ address }) {
-  const mainColor = address.substring(2, 8).toUpperCase()
   const scheme = new ColorScheme()
-  scheme.from_hex(mainColor)
-    .scheme('triade')
-    .variation('light')
-
-  const colors = scheme.colors().map((c) => `#${c}`)
+  let colors = ['#8c8c8c', '#e8e8e8', '#c3c3c3']
+  if(address) {
+    const mainColor = address.substring(2, 8).toUpperCase()
+    scheme.from_hex(mainColor)
+      .scheme('triade')
+      .variation('light')
+    colors = scheme.colors().map((c) => `#${c}`)
+  }
 
   return (
     <svg
