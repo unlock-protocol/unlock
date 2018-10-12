@@ -46,7 +46,7 @@ class CreatorLockForm extends React.Component {
   }
 
   handleCancel(e) {
-    e.stopPropagation() // This prevents submit from also being called
+    e.preventDefault() // This prevents submit from also being called
     if (this.props.hideAction) this.props.hideAction()
   }
 
