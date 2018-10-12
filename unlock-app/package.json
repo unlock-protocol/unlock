@@ -51,7 +51,7 @@
   "scripts": {
     "start-app": "react-scripts start",
     "start-ganache": "ganache-cli -b 3 -i 1984 --deterministic &",
-    "deploy-lock": "cd ../smart-contracts && truffle deploy",
+    "deploy-lock": "cd ../smart-contracts && truffle deploy --reset",
     "prestart": "npm run start-ganache && npm run deploy-lock && npm run serve-unlockjs",
     "start": "react-scripts start",
     "deploy-staging": "npm run build && TARGET=staging npm run build-unlockjs && aws s3 sync build/ s3://staging.unlock-protocol.com --profile unlock --no-progress | awk '{print $2;}' | cut -d'/' -f2- | awk '{print \"/\"$0}' | xargs aws cloudfront create-invalidation --distribution-id E1ZWU0E90B9EBN --paths --profile unlock",
