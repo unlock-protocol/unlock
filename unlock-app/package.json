@@ -50,7 +50,7 @@
   "engineStrict": true,
   "scripts": {
     "start-app": "react-scripts start",
-    "start-ganache": "ganache-cli --deterministic &",
+    "start-ganache": "ganache-cli -b 3 -i 1984 --deterministic &",
     "deploy-lock": "cd ../smart-contracts && truffle deploy",
     "prestart": "npm run start-ganache && npm run deploy-lock && npm run serve-unlockjs",
     "start": "react-scripts start",
@@ -63,5 +63,11 @@
     "lint": "./node_modules/eslint/bin/eslint.js .",
     "storybook": "start-storybook -p 9001 -c .storybook -s public",
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --no-dimensions -d src/components/interface/svg/ public/images/svg/"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
