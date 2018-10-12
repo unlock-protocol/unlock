@@ -22,6 +22,7 @@ export const transaction = PropTypes.shape({
   createdAt: PropTypes.number,
   hash: PropTypes.string,
   lock: PropTypes.shape({}),
+  lockName: PropTypes.string,
 })
 
 export const children = PropTypes.shape({})
@@ -50,6 +51,8 @@ export const networks = PropTypes.shape({})
 
 export const status = PropTypes.string
 
+export const name = PropTypes.string
+
 export const showDashboardForm = PropTypes.bool
 
 export default {
@@ -62,6 +65,7 @@ export default {
   lock,
   locks,
   key,
+  name,
   network,
   networks,
   mechanism,

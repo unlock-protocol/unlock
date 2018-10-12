@@ -22,7 +22,7 @@ class CreatorLockForm extends React.Component {
       keyPrice: '0.01',
       keyPriceCurrency: 'ether',
       maxNumberOfKeys: 10,
-      name: 'New Lock',
+      lockName: 'New Lock',
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -35,6 +35,7 @@ class CreatorLockForm extends React.Component {
   handleSubmit () { // TODO save name to the redux store
     const lockParams = {
       keyReleaseMechanism: this.state.keyReleaseMechanism,
+      lockName: this.state.lockName,
       expirationDuration: this.state.expirationDuration * this.state.expirationDurationUnit,
       keyPrice: Web3Utils.toWei(this.state.keyPrice.toString(10), this.state.keyPriceCurrency),
       maxNumberOfKeys: this.state.maxNumberOfKeys,
@@ -49,7 +50,7 @@ class CreatorLockForm extends React.Component {
       <FormLockRow>
         <Icon address={'00000000000000'} />
         <FormLockName>
-          <input type="text" id="name" onChange={this.handleChange} defaultValue={this.state.name} />
+          <input type="text" id="lockName" onChange={this.handleChange} defaultValue={this.state.lockName} />
         </FormLockName>
         <FormLockDuration>
           <input type="text" id="expirationDuration" onChange={this.handleChange} defaultValue={this.state.expirationDuration} /> days

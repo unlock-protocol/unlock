@@ -7,9 +7,9 @@ import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
 import styled from 'styled-components'
 
-export function CreatorLock({ lock, status = 'deployed' }) {
+export function CreatorLock({ lock, status = 'deployed', lockName }) {
   // Some sanitization of strings to display
-  let name = lock.name || 'New Lock'
+  let name = lockName || 'New Lock'
   let outstandingKeys = lock.maxNumberOfKeys - lock.outstandingKeys || 0
   let lockComponentStatusBlock
 
@@ -43,6 +43,7 @@ export function CreatorLock({ lock, status = 'deployed' }) {
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock,
   status: UnlockPropTypes.status,
+  lockName: UnlockPropTypes.name,
 }
 
 export default CreatorLock

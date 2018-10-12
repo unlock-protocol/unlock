@@ -1,4 +1,4 @@
-import {getLockTransaction, getLockConfirmations, getLockStatusString} from '../../helpers/Locks'
+import {getLockTransaction, getLockConfirmations, getLockStatusString, getLockName} from '../../helpers/Locks'
 import configure from '../../config'
 
 const config = configure(global)
@@ -143,5 +143,26 @@ describe('lockHelpers', () => {
     }
 
     expect(getLockStatusString(transactions, Lock.address)).toEqual('confirming')
+  })
+
+  it('should return the name of a lock from its transaction', () => {
+    const Lock = {
+      address: '0x1234567890',
+    }
+    const transactions = {
+      all: {
+        theTransactionWereLookingFor: {
+          hash: 'theTransactionWereLookingFor',
+          confirmations: config.requiredConfirmations-1,
+          status: 'mined',
+          lock: {
+            address: '0x1234567890',
+          },
+          lockName: 'Steve',
+        },
+      },
+    }
+
+    expect(getLockName(transactions, Lock.address)).toEqual('Steve')
   })
 })

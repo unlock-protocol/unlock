@@ -184,6 +184,7 @@ export default class Web3Service {
         } else if (event === 'NewLock') {
           return this.getLock(args.newLockAddress).then((lock) => {
             transaction.lock = lock
+            if (newLock.lockName) transaction.lockName = newLock.lockName
             callback(transaction)
             return resolve(lock)
           })
