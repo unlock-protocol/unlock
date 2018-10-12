@@ -30,8 +30,11 @@ git clone https://github.com/unlock-protocol/unlock
 
 2. Install all deps
 
+First, install ganach-cli which is a "mock" blockchain node. We are using the latest dev version.
+
 ```
-npm run install-deps
+$ npm install -g ganache-cli@trufflesuite/ganache-cli#develop
+$ npm run install-deps
 ```
 
 3. Run the app (this should also compile and deploy the smart contract to a local truffle node)
