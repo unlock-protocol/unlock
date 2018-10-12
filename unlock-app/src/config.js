@@ -66,8 +66,8 @@ export default function configure(environment) {
     // In dev, the network can be anything above 100
     isRequiredNetwork = (networkId) => networkId > 100
 
-    // In dev, we only require 0 confirmation because we only mine when there are pending transactions
-    requiredConfirmations = 0
+    // In dev, we only require 6 confirmation because we only mine when there are pending transactions
+    requiredConfirmations = 6
   }
 
   if (env === 'staging') {
