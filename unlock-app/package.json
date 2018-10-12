@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@storybook/addon-jest": "^3.4.10",
-    "@storybook/react": "^3.4.10",
+    "@storybook/react": "4.0.0-alpha.24",
     "@svgr/cli": "^2.3.0",
     "babel-core": "7.0.0-bridge.0",
     "enzyme": "^3.4.0",
