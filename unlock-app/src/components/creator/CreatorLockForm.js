@@ -25,6 +25,7 @@ class CreatorLockForm extends React.Component {
       name: 'New Lock',
     }
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleCancel = this.handleCancel.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
 
@@ -41,6 +42,11 @@ class CreatorLockForm extends React.Component {
       creator: this.props.account,
     }
     this.props.createLock(lockParams)
+    if (this.props.hideAction) this.props.hideAction()
+  }
+
+  handleCancel(e) {
+    e.preventDefault() // This prevents submit from also being called
     if (this.props.hideAction) this.props.hideAction()
   }
 
@@ -66,6 +72,9 @@ class CreatorLockForm extends React.Component {
         <div>-</div>
         <LockSubmit onClick={this.handleSubmit}>
           Submit
+          <LockCancel onClick={this.handleCancel}>
+            Cancel
+          </LockCancel>
         </LockSubmit>
       </FormLockRow>
     )
@@ -132,4 +141,8 @@ const FormBalanceWithUnit = styled(BalanceWithUnit)`
 const LockSubmit = styled(LockStatus)`
   cursor: pointer;
   text-align: center;
+`
+const LockCancel = styled.div`
+  font-size: 10px;
+  margin-top: 11px;
 `
