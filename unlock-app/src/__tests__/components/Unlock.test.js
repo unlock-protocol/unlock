@@ -22,7 +22,7 @@ describe('Unlock Component', () => {
       config.providers = {}
       const component = (<Unlock network={network} config={config} path={'/'} />)
       const wrapper = shallow(component)
-      expect(wrapper.text()).toContain('A Web3 provider is required')
+      expect(wrapper.find('MissingProvider')).toExist()
     })
   })
 
@@ -41,7 +41,7 @@ describe('Unlock Component', () => {
     })
 
     describe('when the current network is not in the list of required networks', () => {
-      it.only('should show a message indicating that the network needs to be changed', () => {
+      it('should show a message indicating that the network needs to be changed', () => {
         config.providers = {
           HTTP: {},
         }

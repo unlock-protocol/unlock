@@ -24,7 +24,7 @@ export const Home = () => (
         <SubTitle>No More Middlemen</SubTitle>
         <ImageWithHover base='simple' />
         <Paragraph>
-          There are no middlemen, no fees and no gatekeeper who could shut you down or control your distribution.
+          There are no middlemen, no fees and no gatekeeper who could shut you down or control your distribution.
         </Paragraph>
       </Column>
       <Column>
