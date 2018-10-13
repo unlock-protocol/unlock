@@ -8,7 +8,8 @@ import LockContract from '../artifacts/contracts/Lock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
 
-const { providers } = configure(global)
+const isServer = typeof window === 'undefined'
+const { providers } = !isServer ? configure(global) : {}
 
 /**
  * This service interacts with the web3 RPC endpoint.
@@ -17,7 +18,6 @@ const { providers } = configure(global)
  *
  */
 export default class Web3Service {
-
   /**
    * This connects to the web3 service and listens to new blocks
    * TODO consider pulling the account logic away from that method into the promise listener

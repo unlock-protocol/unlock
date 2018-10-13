@@ -15,7 +15,6 @@ export default function lockMiddleware ({ getState, dispatch }) {
 
   return function (next) {
     return function (action) {
-
       if (!web3Service.ready) {
 
         // We return to make sure other middleware actions are not processed

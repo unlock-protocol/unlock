@@ -1,6 +1,6 @@
 import { loadState } from './services/localStorageService'
-import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
-import { routerReducer, routerMiddleware } from 'react-router-redux'
+import { createStore, applyMiddleware, combineReducers } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 // Reducers
 import networkReducer from './reducers/networkReducer'
@@ -13,17 +13,13 @@ import keysReducer  from './reducers/keysReducer'
 import lockMiddleware from './middlewares/lockMiddleware'
 
 export default function createUnlockStore(config, browserHistory) {
-
   const reducers = {
-    router: routerReducer,
     provider: providerReducer,
     network: networkReducer,
     transactions: transactionReducer,
     locks: locksReducer,
     keys: keysReducer,
   }
-
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
   // TODO: DRY this because each reducer has its own initial state.
   const initialState = Object.assign({
@@ -40,13 +36,12 @@ export default function createUnlockStore(config, browserHistory) {
   }, loadState())
 
   const middlewares = [
-    routerMiddleware(browserHistory),
-    lockMiddleware,
+    lockMiddleware
   ]
 
   return createStore(
     combineReducers(reducers),
     initialState,
-    composeEnhancers(applyMiddleware(...middlewares)),
+    composeWithDevTools(applyMiddleware(...middlewares))
   )
 }

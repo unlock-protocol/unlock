@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import Pages from '../components/pages'
+import Pages from '../pages'
 
 storiesOf('Content pages', Pages)
   .add('the Home page', () => {
