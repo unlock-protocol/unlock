@@ -40,7 +40,8 @@ export function getLockConfirmations(transactionStore, lockAddress) {
 export function getLockStatusString(transactionStore, lockAddress) {
   let transaction = getLockTransaction(transactionStore, lockAddress)
   if (!transaction) return 'notfound'
+  if (transaction.status === 'submitted') return 'submitted'
   if (transaction.status === 'mined' && transaction.confirmations >= config.requiredConfirmations) return 'deployed'
   if (transaction.status === 'mined' && transaction.confirmations < config.requiredConfirmations) return 'confirming'
-  if (transaction.status !== 'mined') return 'pending'
+  return 'unknown'
 }
