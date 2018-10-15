@@ -8,13 +8,13 @@ This repository is includes all the code deployed deployed by Unlock, including 
 
 Read more about [why we're building Unlock](https://medium.com/unlock-protocol/its-time-to-unlock-the-web-b98e9b94add1).
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://travis-ci.com/unlock-protocol/unlock.svg?branch=master)](https://travis-ci.com/unlock-protocol/unlock)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://travis-ci.com/unlock-protocol/unlock.svg?branch=master)](https://travis-ci.com/unlock-protocol/unlock) [![Greenkeeper badge](https://badges.greenkeeper.io/unlock-protocol/unlock.svg)](https://greenkeeper.io/)
 
 ## Demo
 
 We recorded a screencast to show how Unlock works for a paywall.
 
-[![Demo Unlock](https://img.youtube.com/vi/wktotzmea0E/0.jpg)](https://www.youtube.com/watch?v=wktotzmea0E) [![Greenkeeper badge](https://badges.greenkeeper.io/unlock-protocol/unlock.svg)](https://greenkeeper.io/)
+[![Demo Unlock](https://img.youtube.com/vi/wktotzmea0E/0.jpg)](https://www.youtube.com/watch?v=wktotzmea0E)
 
 ## Contributing
 
