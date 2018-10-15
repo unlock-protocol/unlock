@@ -43,7 +43,7 @@ export function CreatorLock({ lock, status = 'deployed' }) {
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock,
   status: UnlockPropTypes.status,
-  lockName: UnlockPropTypes.name,
+  name: UnlockPropTypes.name,
 }
 
 export default CreatorLock
