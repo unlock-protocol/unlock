@@ -15,7 +15,7 @@
     "react-router-redux": "^5.0.0-alpha.9",
     "react-scripts": "^2.0.4",
     "react-test-renderer": "^16.3.2",
-    "redux": "^3.7.2",
+    "redux": "^4.0.1",
     "storybook-router": "^0.3.4",
     "styled-components": "^3.4.6",
     "truffle": "^4.1.11",
@@ -25,7 +25,7 @@
   "devDependencies": {
     "@storybook/addon-jest": "^3.4.10",
     "@storybook/react": "4.0.0-alpha.24",
-    "@svgr/cli": "^2.3.0",
+    "@svgr/cli": "^3.1.0",
     "babel-core": "7.0.0-bridge.0",
     "enzyme": "^3.4.0",
     "enzyme-adapter-react-16": "^1.2.0",
@@ -38,8 +38,8 @@
     "eslint-plugin-react": "^7.7.0",
     "eslint-plugin-standard": "^4.0.0",
     "expect-enzyme": "^1.3.0",
-    "jest-enzyme": "^6.0.3",
-    "nock": "^9.3.3",
+    "jest-enzyme": "^7.0.0",
+    "nock": "^10.0.1",
     "react-router-test-context": "^0.1.0",
     "redux-mock-store": "^1.5.1",
     "storybook-react-router": "^1.0.1"

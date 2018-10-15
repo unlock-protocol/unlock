@@ -1,0 +1,13 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "package.json",
+        "smart-contracts/package.json",
+        "unlock-app/package.json",
+        "unlock-branding/package.json",
+        "unlock-protocol.com/package.json"
+      ]
+    }
+  }
+}
