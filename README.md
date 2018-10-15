@@ -8,7 +8,7 @@ This repository is includes all the code deployed deployed by Unlock, including 
 
 Read more about [why we're building Unlock](https://medium.com/unlock-protocol/its-time-to-unlock-the-web-b98e9b94add1).
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://travis-ci.com/unlock-protocol/unlock.svg?branch=master)](https://travis-ci.com/unlock-protocol/unlock)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://travis-ci.com/unlock-protocol/unlock.svg?branch=master)](https://travis-ci.com/unlock-protocol/unlock) [![Greenkeeper badge](https://badges.greenkeeper.io/unlock-protocol/unlock.svg)](https://greenkeeper.io/)
 
 ## Demo
 
@@ -30,8 +30,11 @@ git clone https://github.com/unlock-protocol/unlock
 
 2. Install all deps
 
+First, install ganach-cli which is a "mock" blockchain node. We are using the latest dev version.
+
 ```
-npm run install-deps
+$ npm install -g ganache-cli@trufflesuite/ganache-cli#develop
+$ npm run install-deps
 ```
 
 3. Run the app (this should also compile and deploy the smart contract to a local truffle node)

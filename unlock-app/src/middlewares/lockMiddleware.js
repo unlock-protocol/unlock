@@ -1,5 +1,5 @@
 import { LOCATION_CHANGE } from 'react-router-redux'
-import { CREATE_LOCK, SET_LOCK, WITHDRAW_FROM_LOCK, setLock, resetLock } from '../actions/lock'
+import { CREATE_LOCK, SET_LOCK, WITHDRAW_FROM_LOCK, resetLock } from '../actions/lock'
 import { PURCHASE_KEY, SET_KEY, setKey } from '../actions/key'
 import { SET_ACCOUNT, LOAD_ACCOUNT, CREATE_ACCOUNT, setAccount, resetAccountBalance } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
@@ -64,10 +64,11 @@ export default function lockMiddleware ({ getState, dispatch }) {
         })
       } else if (action.type === CREATE_LOCK) {
         // Create a lock
-        web3Service.createLock(action.lock, (transaction) => {
+        web3Service.createLock(action.lock, (transaction, lock) => {
           dispatch(setTransaction(transaction))
-        }).then((lock) => {
-          dispatch(setLock(lock))
+          dispatch(resetLock(lock)) // Update the lock accordingly
+        }).then(() => {
+          // Lock has been deployed and confirmed, we can update the balance
           return web3Service.getAddressBalance(action.lock.creator.address)
         }).then((balance) => {
           dispatch(resetAccountBalance(balance))

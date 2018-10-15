@@ -143,15 +143,15 @@ export default class Web3Service {
    * @param {function} callback
    * @return Promise<Lock>
    */
-  createLock(newLock, callback) {
+  createLock(lock, callback) {
     return new Promise((resolve, reject) => {
       const unlock = new this.web3.eth.Contract(UnlockContract.abi, UnlockContract.networks[this.networkId].address)
 
       const data = unlock.methods.createLock(
-        newLock.keyReleaseMechanism,
-        newLock.expirationDuration,
-        newLock.keyPrice,
-        newLock.maxNumberOfKeys
+        lock.keyReleaseMechanism,
+        lock.expirationDuration,
+        lock.keyPrice,
+        lock.maxNumberOfKeys
       ).encodeABI()
 
       // The transaction object!
@@ -159,15 +159,16 @@ export default class Web3Service {
         status: 'pending',
         confirmations: 0,
         createdAt: new Date().getTime(),
+        lock: lock.id,
       }
-      callback(transaction)
+      callback(transaction, lock)
 
       return this.sendTransaction({
         to: UnlockContract.networks[this.networkId].address,
-        from: newLock.creator.address,
+        from: lock.creator.address,
         data: data,
         gas: 1500000,
-        privateKey: newLock.creator.privateKey,
+        privateKey: lock.creator.privateKey,
         contractAbi: UnlockContract.abi,
       }, (error, { event, args }) => {
         if (error) {
@@ -176,16 +177,17 @@ export default class Web3Service {
         if (event === 'transactionHash') {
           transaction.hash = args.hash
           transaction.status = 'submitted'
-          callback(transaction)
+          callback(transaction, lock)
         } else if (event === 'confirmation') {
           transaction.status = 'mined'
           transaction.confirmations += 1
-          callback(transaction)
+          callback(transaction, lock)
         } else if (event === 'NewLock') {
-          return this.getLock(args.newLockAddress).then((lock) => {
-            lock.name = newLock.name // This isn't stored on-chain so we need to add it here
-            transaction.lock = lock
-            callback(transaction)
+          // Refresh lock object with the values from the smart contract
+          return this.getLock(args.newLockAddress).then((savedLock) => {
+            // TODO: sync savedLock into lock
+            lock = Object.assign(savedLock, lock)
+            callback(transaction, lock)
             return resolve(lock)
           })
         }

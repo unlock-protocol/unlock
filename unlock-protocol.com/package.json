@@ -4,15 +4,15 @@
   "version": "1.0.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
-    "gatsby": "^1.9.247",
-    "gatsby-link": "^1.6.40",
-    "gatsby-plugin-favicon": "^2.1.1",
-    "gatsby-plugin-react-helmet": "^2.0.10",
+    "gatsby": "^2.0.22",
+    "gatsby-link": "^2.0.4",
+    "gatsby-plugin-favicon": "^3.1.4",
+    "gatsby-plugin-react-helmet": "^3.0.0",
     "normalize.css": "^8.0.0",
-    "react-async-script": "^0.9.1",
-    "react-google-recaptcha": "^0.11.1",
+    "react-async-script": "^1.0.0",
+    "react-google-recaptcha": "^1.0.4",
     "react-helmet": "^5.2.0",
-    "react-icons": "^2.2.7"
+    "react-icons": "^3.2.0"
   },
   "keywords": [
     "gatsby"
@@ -25,7 +25,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "gatsby-plugin-sass": "^1.0.25",
+    "gatsby-plugin-sass": "^2.0.1",
     "prettier": "^1.12.0"
   }
 }

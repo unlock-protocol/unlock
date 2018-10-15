@@ -15,17 +15,18 @@
     "react-router-redux": "^5.0.0-alpha.9",
     "react-scripts": "^2.0.4",
     "react-test-renderer": "^16.3.2",
-    "redux": "^3.7.2",
+    "redux": "^4.0.1",
     "storybook-router": "^0.3.4",
     "styled-components": "^3.4.6",
     "truffle": "^4.1.11",
+    "uniqid": "^5.0.3",
     "web3": "^1.0.0-beta.34",
     "web3-utils": "^1.0.0-beta.34"
   },
   "devDependencies": {
     "@storybook/addon-jest": "^3.4.10",
-    "@storybook/react": "^3.4.10",
-    "@svgr/cli": "^2.3.0",
+    "@storybook/react": "4.0.0-alpha.24",
+    "@svgr/cli": "^3.1.0",
     "babel-core": "7.0.0-bridge.0",
     "enzyme": "^3.4.0",
     "enzyme-adapter-react-16": "^1.2.0",
@@ -38,8 +39,8 @@
     "eslint-plugin-react": "^7.7.0",
     "eslint-plugin-standard": "^4.0.0",
     "expect-enzyme": "^1.3.0",
-    "jest-enzyme": "^6.0.3",
-    "nock": "^9.3.3",
+    "jest-enzyme": "^7.0.0",
+    "nock": "^10.0.1",
     "react-router-test-context": "^0.1.0",
     "redux-mock-store": "^1.5.1",
     "storybook-react-router": "^1.0.1"
@@ -50,8 +51,8 @@
   "engineStrict": true,
   "scripts": {
     "start-app": "react-scripts start",
-    "start-ganache": "ganache-cli --deterministic &",
-    "deploy-lock": "cd ../smart-contracts && truffle deploy",
+    "start-ganache": "ganache-cli -b 3 -i 1984 --deterministic &",
+    "deploy-lock": "cd ../smart-contracts && truffle deploy --reset",
     "prestart": "npm run start-ganache && npm run deploy-lock && npm run serve-unlockjs",
     "start": "react-scripts start",
     "deploy-staging": "npm run build && TARGET=staging npm run build-unlockjs && aws s3 sync build/ s3://staging.unlock-protocol.com --profile unlock --no-progress | awk '{print $2;}' | cut -d'/' -f2- | awk '{print \"/\"$0}' | xargs aws cloudfront create-invalidation --distribution-id E1ZWU0E90B9EBN --paths --profile unlock",
@@ -63,5 +64,11 @@
     "lint": "./node_modules/eslint/bin/eslint.js .",
     "storybook": "start-storybook -p 9001 -c .storybook -s public",
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --no-dimensions -d src/components/interface/svg/ public/images/svg/"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
