@@ -14,7 +14,7 @@ Read more about [why we're building Unlock](https://medium.com/unlock-protocol/i
 
 We recorded a screencast to show how Unlock works for a paywall.
 
-[![Demo Unlock](https://img.youtube.com/vi/wktotzmea0E/0.jpg)](https://www.youtube.com/watch?v=wktotzmea0E)
+[![Demo Unlock](https://img.youtube.com/vi/wktotzmea0E/0.jpg)](https://www.youtube.com/watch?v=wktotzmea0E) [![Greenkeeper badge](https://badges.greenkeeper.io/unlock-protocol/unlock.svg)](https://greenkeeper.io/)
 
 ## Contributing
 
