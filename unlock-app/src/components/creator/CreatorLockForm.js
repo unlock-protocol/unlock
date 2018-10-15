@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import UnlockPropTypes from '../../propTypes'
+import uniqid from 'uniqid'
 
 import React from 'react'
 import styled from 'styled-components'
@@ -25,6 +26,7 @@ class CreatorLockForm extends React.Component {
       name: 'New Lock',
     }
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleCancel = this.handleCancel.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
 
@@ -33,22 +35,28 @@ class CreatorLockForm extends React.Component {
   }
 
   handleSubmit () { // TODO save name to the redux store
-    const lockParams = {
+    const lock = {
       keyReleaseMechanism: this.state.keyReleaseMechanism,
       name: this.state.name,
       expirationDuration: this.state.expirationDuration * this.state.expirationDurationUnit,
       keyPrice: Web3Utils.toWei(this.state.keyPrice.toString(10), this.state.keyPriceCurrency),
       maxNumberOfKeys: this.state.maxNumberOfKeys,
-      creator: this.props.account,
+      creator: this.props.account, // TODO denormalize: only use the account address
+      id: uniqid(),
     }
-    this.props.createLock(lockParams)
+    this.props.createLock(lock)
+    if (this.props.hideAction) this.props.hideAction()
+  }
+
+  handleCancel(e) {
+    e.stopPropagation() // This prevents submit from also being called
     if (this.props.hideAction) this.props.hideAction()
   }
 
   render() {
     return (
       <FormLockRow>
-        <Icon address={'00000000000000'} />
+        <Icon />
         <FormLockName>
           <input type="text" id="name" onChange={this.handleChange} defaultValue={this.state.name} />
         </FormLockName>
@@ -67,6 +75,9 @@ class CreatorLockForm extends React.Component {
         <div>-</div>
         <LockSubmit onClick={this.handleSubmit}>
           Submit
+          <LockCancel onClick={this.handleCancel}>
+            Cancel
+          </LockCancel>
         </LockSubmit>
       </FormLockRow>
     )
@@ -133,4 +144,8 @@ const FormBalanceWithUnit = styled(BalanceWithUnit)`
 const LockSubmit = styled(LockStatus)`
   cursor: pointer;
   text-align: center;
+`
+const LockCancel = styled.div`
+  font-size: 10px;
+  margin-top: 11px;
 `

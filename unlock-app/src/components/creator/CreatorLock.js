@@ -14,10 +14,11 @@ export function CreatorLock({ lock, status = 'deployed' }) {
   let lockComponentStatusBlock
 
   if (status === 'deployed') { // the transaction was mined and confirmed at least 12 times
-    lockComponentStatusBlock = <LockIconBarContainer><LockIconBar lock={lock} className={'lock-icons'} /></LockIconBarContainer>
-  }
-  if (status === 'confirming') { // the transaction was mined but hasn't yet been confirmed at least 12 times
-    lockComponentStatusBlock = <CreatorLockConfirming lock={lock} />
+    lockComponentStatusBlock = (<LockIconBarContainer>
+      <LockIconBar lock={lock} className={'lock-icons'} />
+    </LockIconBarContainer>)
+  } else {
+    lockComponentStatusBlock = <CreatorLockConfirming lock={lock} status={status} />
   }
 
   // TODO add USD values to lock
