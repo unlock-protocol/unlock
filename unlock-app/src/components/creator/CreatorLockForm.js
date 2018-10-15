@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import UnlockPropTypes from '../../propTypes'
+import uniqid from 'uniqid'
 
 import React from 'react'
 import styled from 'styled-components'
@@ -34,14 +35,15 @@ class CreatorLockForm extends React.Component {
   }
 
   handleSubmit () { // TODO save name to the redux store
-    const lockParams = {
+    const lock = {
       keyReleaseMechanism: this.state.keyReleaseMechanism,
       expirationDuration: this.state.expirationDuration * this.state.expirationDurationUnit,
       keyPrice: Web3Utils.toWei(this.state.keyPrice.toString(10), this.state.keyPriceCurrency),
       maxNumberOfKeys: this.state.maxNumberOfKeys,
-      creator: this.props.account,
+      creator: this.props.account, // TODO denormalize: only use the account address
+      id: uniqid(),
     }
-    this.props.createLock(lockParams)
+    this.props.createLock(lock)
     if (this.props.hideAction) this.props.hideAction()
   }
 
@@ -53,7 +55,7 @@ class CreatorLockForm extends React.Component {
   render() {
     return (
       <FormLockRow>
-        <Icon address={'00000000000000'} />
+        <Icon />
         <FormLockName>
           <input type="text" id="name" onChange={this.handleChange} defaultValue={this.state.name} />
         </FormLockName>
