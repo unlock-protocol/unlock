@@ -152,5 +152,3 @@ const config = configure(global)
       expect(getLockStatusString(transactions, lock.id)).toEqual('confirming')
     })
   })
-
-})
