@@ -3,6 +3,7 @@ import configure from '../../config'
 
 const config = configure(global)
 
+describe('lockHelpers', () => {
   describe('getLockTransaction', () => {
 
     it('should retrieve a transaction from a lock when a match exists', () => {
@@ -152,3 +153,4 @@ const config = configure(global)
       expect(getLockStatusString(transactions, lock.id)).toEqual('confirming')
     })
   })
+})
