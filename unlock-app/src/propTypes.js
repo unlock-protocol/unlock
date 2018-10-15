@@ -22,7 +22,7 @@ export const transaction = PropTypes.shape({
   createdAt: PropTypes.number,
   hash: PropTypes.string,
   lock: PropTypes.shape({}),
-  lockName: PropTypes.string,
+  name: PropTypes.string,
 })
 
 export const children = PropTypes.shape({})
