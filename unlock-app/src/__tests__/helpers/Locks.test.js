@@ -1,10 +1,9 @@
-import {getLockTransaction, getLockConfirmations, getLockStatusString} from '../../helpers/Locks'
+import { getLockTransaction, getLockConfirmations, getLockStatusString } from '../../helpers/Locks'
 import configure from '../../config'
 
 const config = configure(global)
 
 describe('lockHelpers', () => {
-
   describe('getLockTransaction', () => {
 
     it('should retrieve a transaction from a lock when a match exists', () => {
@@ -154,5 +153,4 @@ describe('lockHelpers', () => {
       expect(getLockStatusString(transactions, lock.id)).toEqual('confirming')
     })
   })
-
 })
