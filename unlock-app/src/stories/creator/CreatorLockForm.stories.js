@@ -1,12 +1,18 @@
+import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import CreatorLockForm from '../../components/creator/CreatorLockForm'
+import createUnlockStore from '../../createUnlockStore'
+
+const store = createUnlockStore()
 
 storiesOf('CreatorLockForm', CreatorLockForm)
+  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Default', () => {
     return (<CreatorLockForm />)
   })
   .add('With existing lock', () => {
+    // TODO: implement this
     const lock = {
       keyPrice: '10000000000000000000',
       expirationDuration: '172800',

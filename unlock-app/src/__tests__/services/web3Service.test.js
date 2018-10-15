@@ -502,7 +502,6 @@ describe('Web3Service', () => {
 
     describe.skip('createLock', () => {
       it('should create a new lock with the params provided')
-      it('should dispatch setLock once it has been successfuly created')
       it('should handle failures if the lock could not be created')
     })
 

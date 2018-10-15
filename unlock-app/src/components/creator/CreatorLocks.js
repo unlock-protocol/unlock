@@ -35,7 +35,7 @@ export class CreatorLocks extends React.Component {
         </LockHeaderRow>
         {this.state.showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
         {Object.values(this.props.locks).map((lock, index) => {
-          let lockStatus = getLockStatusString(this.props.transactions, lock.address)
+          let lockStatus = getLockStatusString(this.props.transactions, lock.id)
           return (<CreatorLock key={index} lock={lock} status={lockStatus} />)
         })}
       </Locks>
