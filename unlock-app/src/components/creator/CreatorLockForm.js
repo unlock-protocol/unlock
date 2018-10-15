@@ -37,6 +37,7 @@ class CreatorLockForm extends React.Component {
   handleSubmit () { // TODO save name to the redux store
     const lock = {
       keyReleaseMechanism: this.state.keyReleaseMechanism,
+      name: this.state.name,
       expirationDuration: this.state.expirationDuration * this.state.expirationDurationUnit,
       keyPrice: Web3Utils.toWei(this.state.keyPrice.toString(10), this.state.keyPriceCurrency),
       maxNumberOfKeys: this.state.maxNumberOfKeys,
