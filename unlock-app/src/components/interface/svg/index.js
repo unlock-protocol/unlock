@@ -9,6 +9,7 @@ import EthSub from './EthSub'
 import Export from './Export'
 import Github from './Github'
 import Lemniscate from './Lemniscate'
+import LockClosed from './LockClosed'
 import Jobs from './Jobs'
 import Unlock from './Unlock'
 import UnlockWordMark from './UnlockWordMark'
@@ -27,6 +28,7 @@ export default {
   Export,
   Github,
   Lemniscate,
+  LockClosed,
   Jobs,
   Unlock,
   UnlockWordMark,

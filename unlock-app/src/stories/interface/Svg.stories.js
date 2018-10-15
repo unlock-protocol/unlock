@@ -58,6 +58,11 @@ storiesOf('Svg', Svg)
       <Svg.Lemniscate />
     )
   })
+  .add('LockClosed', () => {
+    return (
+      <Svg.LockClosed />
+    )
+  })
   .add('Jobs', () => {
     return (
       <Svg.Jobs />
