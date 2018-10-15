@@ -9,7 +9,7 @@ import styled from 'styled-components'
 
 export function CreatorLock({ lock, status = 'deployed' }) {
   // Some sanitization of strings to display
-  let name = lock.lockName || 'New Lock'
+  let name = lock.name || 'New Lock'
   let outstandingKeys = lock.maxNumberOfKeys - lock.outstandingKeys || 0
   let lockComponentStatusBlock
 
