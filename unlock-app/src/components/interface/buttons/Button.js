@@ -1,14 +1,15 @@
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-export const LayoutButton = ({href, title, children}) => (
+export const LayoutButton = ({ to = '#', title, children }) => (
   <Button
-    href={href}
-    backgroundColor={'var(--grey)'}
-    fillColor={'white'}
-    backgroundHoverColor={'var(--link)'}
-    fillHoverColor={'white'}
+    to={to}
+    backgroundcolor={'var(--grey)'}
+    fillcolor={'white'}
+    backgroundhovercolor={'var(--link)'}
+    fillhovercolor={'white'}
   >
     {children}
     <Label>{title}</Label>
@@ -16,38 +17,38 @@ export const LayoutButton = ({href, title, children}) => (
 )
 
 LayoutButton.propTypes = {
-  href: PropTypes.string,
+  to: PropTypes.string,
   title: PropTypes.string,
   children: PropTypes.node,
-  backgroundColor: PropTypes.string,
-  backgroundHoverColor: PropTypes.string,
-  fillColor: PropTypes.string,
-  fillHoverColor: PropTypes.string,
+  backgroundcolor: PropTypes.string,
+  backgroundhovercolor: PropTypes.string,
+  fillcolor: PropTypes.string,
+  fillhovercolor: PropTypes.string,
 }
 
-export const LockButton = ({ href, children }) => (
+export const LockButton = ({ to = '#', children }) => (
   <Button
-    href={href}
-    backgroundColor={'var(--lightgrey)'}
-    fillColor={'var(--grey)'}
-    backgroundHoverColor={'var(--link)'}
-    fillHoverColor={'white'}
+    to={to}
+    backgroundcolor={'var(--lightgrey)'}
+    fillcolor={'var(--grey)'}
+    backgroundhovercolor={'var(--link)'}
+    fillhovercolor={'white'}
   >
     {children}
   </Button>
 )
 
 LockButton.propTypes = {
-  href: PropTypes.string,
+  to: PropTypes.string,
   children: PropTypes.node,
-  backgroundColor: PropTypes.string,
-  backgroundHoverColor: PropTypes.string,
-  fillColor: PropTypes.string,
-  fillHoverColor: PropTypes.string,
+  backgroundcolor: PropTypes.string,
+  backgroundhovercolor: PropTypes.string,
+  fillcolor: PropTypes.string,
+  fillhovercolor: PropTypes.string,
 }
 
-export const Button = styled.a`
-  background-color: ${props => props.backgroundColor || 'var(--grey)'};
+export const Button = styled(Link)`
+  background-color: ${props => props.backgroundcolor || 'var(--grey)'};
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -55,16 +56,16 @@ export const Button = styled.a`
   display: grid;
 
   > svg {
-    fill: ${props => props.fillColor || 'white'};
+    fill: ${props => props.fillcolor || 'white'};
     width: 100%;
     height: 100%;
   }
 
   &:hover {
-    background-color: ${props => props.backgroundHoverColor || 'var(--link)'};
+    background-color: ${props => props.backgroundhovercolor || 'var(--link)'};
 
     > svg {
-      fill: ${props => props.fillHoverColor || 'white'};
+      fill: ${props => props.fillhovercolor || 'white'};
     }
   }
 `
