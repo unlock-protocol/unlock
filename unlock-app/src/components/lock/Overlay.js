@@ -2,18 +2,22 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Logo from '../interface/Logo'
 import React from 'react'
+import Balance from '../helpers/Balance'
 
-export const LockDetails = ({ name, ethPrice, fiatPrice }) => (
+export const LockDetails = ({ name, keyPrice, fiatPrice }) => (
   <Lock>
     <Name>{name}</Name>
-    <EtherPrice>{ethPrice} Eth</EtherPrice>
-    <FiatPrice>${fiatPrice}</FiatPrice>
+    <EtherPrice><Balance amount={keyPrice} /></EtherPrice>
+    {fiatPrice &&
+      <FiatPrice>${fiatPrice}</FiatPrice>
+    }
+    <PurchaseButton>Purchase</PurchaseButton>
   </Lock>
 )
 
 LockDetails.propTypes = {
   name: PropTypes.string,
-  ethPrice: PropTypes.string,
+  keyPrice: PropTypes.string,
   fiatPrice: PropTypes.string,
 }
 
@@ -23,7 +27,7 @@ export const Overlay = ({ locks }) => (
       <Headline>You have reached your limit of free articles. Please purchase access:</Headline>
       <Locks>
         {locks.map((lock, key) => (
-          <LockDetails key={key} name={lock.name} ethPrice={lock.ethPrice} fiatPrice={lock.fiatPrice} />
+          <LockDetails key={key} name={lock.name} keyPrice={lock.keyPrice} fiatPrice={lock.fiatPrice} />
         ))}
       </Locks>
       <Colophon>
@@ -53,7 +57,6 @@ const FullPage = styled.div`
 const Banner = styled.div`
   position: fixed;
   display: grid;
-  width: 100%;
   height: 50%;
   left: 0;
   right: 0;
@@ -62,6 +65,7 @@ const Banner = styled.div`
   border: solid 1px var(--lightgrey);
   justify-items: center;
   padding: 32px;
+  padding-bottom: 100px;
   grid-gap: 24px;
   align-self: center;
 `
@@ -84,14 +88,33 @@ const Locks = styled.ul`
 `
 
 const Lock = styled.li`
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: stretch;
   margin: 0px;
   padding: 0px;
   width: 200px;
   background-color: var(--white);
   font-family: 'IBM Plex Sans' ,'Helvetica Neue', Arial, sans-serif;
-  justify-items: center;
   border-radius: 4px;
   height: 200px;
+`
+
+const PurchaseButton = styled.div`
+  display: grid;
+  height: 40px;
+  font-weight: 300;
+  align-self: end;
+  justify-content: center;
+  align-content: center;
+  background-color: var(--lightgrey);
+  border-radius: 0px 0px 4px 4px;
+
+  &:hover {
+    cursor: pointer;
+    color: var(--white);
+    background-color: var(--link);
+  }
 `
 
 const Name = styled.header`
@@ -103,12 +126,11 @@ const Name = styled.header`
   background-color: var(--lightgrey);
   font-size: 20px;
   color: var(--grey);
-  border-radius: 4px;
+  border-radius: 4px 4px 0px 0px;
   text-transform: capitalize;
 `
 
 const EtherPrice = styled.div`
-  margin-top: 32px;
   display: grid;
   justify-content: center;
   align-content: center;
