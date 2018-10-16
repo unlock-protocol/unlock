@@ -11,7 +11,7 @@ import { saveState } from './services/localStorageService'
 import Unlock from './components/Unlock'
 
 // Styles
-import './theme/globalStyle'
+import GlobalStyle from './theme/globalStyle'
 
 // Store
 import createUnlockStore from './createUnlockStore'
@@ -38,13 +38,16 @@ class App extends Component {
 
   render () {
     return (
-      <Provider store={this.store}>
-        <ConnectedRouter history={this.browserHistory}>
-          <ConfigContext.Provider value={config}>
-            <Unlock />
-          </ConfigContext.Provider>
-        </ConnectedRouter>
-      </Provider>
+      <React.Fragment>
+        <GlobalStyle />
+        <Provider store={this.store}>
+          <ConnectedRouter history={this.browserHistory}>
+            <ConfigContext.Provider value={config}>
+              <Unlock />
+            </ConfigContext.Provider>
+          </ConnectedRouter>
+        </Provider>
+      </React.Fragment>
     )
   }
 }

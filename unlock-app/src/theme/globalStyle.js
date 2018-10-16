@@ -1,10 +1,10 @@
-import { injectGlobal } from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
 
 /**
- * Shared CSS accross all components. Injected wtih styled-components' injectGlobal
+ * Shared CSS accross all components. Injected wtih styled-components' createGlobalStyle
  */
 
-injectGlobal`
+export default createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,400,500,600,700');
   @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:200i,200,500');
   @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Serif:300,400');
