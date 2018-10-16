@@ -5,10 +5,9 @@ import uniqid from 'uniqid'
 import React from 'react'
 import styled from 'styled-components'
 import Icon from '../lock/Icon'
-import { BalanceWithUnit, Unit } from '../helpers/Balance'
+import { BalanceWithUnit } from '../helpers/Balance'
 import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockConfirming'
-import Svg from '../interface/svg'
 import Web3Utils from 'web3-utils'
 import { createLock } from '../../actions/lock'
 import { connect } from 'react-redux'
@@ -67,10 +66,7 @@ class CreatorLockForm extends React.Component {
           <input type="text" id="maxNumberOfKeys" onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
         </FormLockKeys>
         <FormBalanceWithUnit>
-          <Unit>
-            <Svg.Eth width="1em" height="1em" />
-          </Unit>
-          <input type="text" id="keyPrice" onChange={this.handleChange} defaultValue={this.state.keyPrice} />
+          三<input type="text" id="keyPrice" onChange={this.handleChange} defaultValue={this.state.keyPrice} />
         </FormBalanceWithUnit>
         <div>-</div>
         <LockSubmit onClick={this.handleSubmit}>
@@ -133,11 +129,9 @@ const FormLockKeys = styled(LockKeys)`
 `
 
 const FormBalanceWithUnit = styled(BalanceWithUnit)`
+  white-space: nowrap;
   input[type=text] {
     width: 30px;
-  }
-  ${Unit} {
-    padding-bottom: 5px;
   }
 `
 
