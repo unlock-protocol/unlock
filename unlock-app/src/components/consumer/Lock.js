@@ -11,7 +11,6 @@ import Key from './Key'
 import { NonValidKey } from './NonValidKey'
 
 import { purchaseKey } from '../../actions/key'
-import NetworkBadge from '../interface/NetworkBadge'
 
 export class Lock extends React.Component {
 
@@ -46,7 +45,6 @@ export class Lock extends React.Component {
 
     return (
       <div className="container">
-        <NetworkBadge/>
         <div className="card">
           <div className="card-header">
             {account}
