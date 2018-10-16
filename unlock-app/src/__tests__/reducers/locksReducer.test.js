@@ -1,6 +1,7 @@
 import reducer from '../../reducers/locksReducer'
 import { CREATE_LOCK } from '../../actions/lock'
 import { SET_ACCOUNT } from '../../actions/accounts'
+import { DELETE_TRANSACTION } from '../../actions/transaction'
 
 describe('locks reducer', () => {
 
@@ -30,7 +31,33 @@ describe('locks reducer', () => {
     })).toEqual({
       [lock.id]: lock,
     })
+  })
 
+  it('should delete a lock when DELETE_TRANSACTION is called for a transaction which created that lock', () => {
+    const transaction = {
+      lock: lock.id,
+    }
+    expect(reducer({
+      [lock.id]: lock,
+    }, {
+      type: DELETE_TRANSACTION,
+      transaction,
+    })).toEqual({
+    })
+  })
+
+  it('should not delete a lock when DELETE_TRANSACTION is called for a transaction which created another lock', () => {
+    const transaction = {
+      lock: `${lock.id}x`,
+    }
+    expect(reducer({
+      [lock.id]: lock,
+    }, {
+      type: DELETE_TRANSACTION,
+      transaction,
+    })).toEqual({
+      [lock.id]: lock,
+    })
   })
 
   // It is kind of weird to test this.. but ok, I guess?
