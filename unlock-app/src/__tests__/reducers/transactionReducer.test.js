@@ -1,5 +1,5 @@
 import reducer from '../../reducers/transactionReducer'
-import { SET_TRANSACTION, UPDATE_TRANSACTION } from '../../actions/transaction'
+import { SET_TRANSACTION, UPDATE_TRANSACTION, DELETE_TRANSACTION } from '../../actions/transaction'
 
 describe('transaction reducer', () => {
 
@@ -110,6 +110,68 @@ describe('transaction reducer', () => {
       })
 
       expect(transactionsResponse.latest.status).toEqual('pending')
+    })
+  })
+
+  describe('when receiving DELETE_TRANSACTION', () => {
+    it('should remove the transaction which has been deleted from the list of all transactions', () => {
+      const transaction = {
+        hash: '123',
+        status: 'pending',
+        confirmations: 0,
+        createdAt: new Date().getTime(),
+      }
+
+      const transactions = {
+        all: {
+          [transaction.hash]: transaction,
+        },
+        lastUpdated: 0,
+        latest: transaction,
+      }
+
+      let newState = reducer(transactions, {
+        type: DELETE_TRANSACTION,
+        transaction,
+      })
+
+      expect(newState.all).toEqual({})
+      expect(newState.latest).toEqual(null)
+    })
+
+    it('should keep the transactions when another one has been deleted', () => {
+      const transaction = {
+        hash: '123',
+        status: 'pending',
+        confirmations: 0,
+        createdAt: new Date().getTime(),
+      }
+
+      const transactionToKeep = {
+        hash: '456',
+        status: 'pending',
+        confirmations: 0,
+        createdAt: new Date().getTime(),
+      }
+
+      const transactions = {
+        all: {
+          [transaction.hash]: transaction,
+          [transactionToKeep.hash]: transactionToKeep,
+        },
+        lastUpdated: 0,
+        latest: transactionToKeep,
+      }
+
+      let newState = reducer(transactions, {
+        type: DELETE_TRANSACTION,
+        transaction,
+      })
+
+      expect(newState.all).toEqual({
+        [transactionToKeep.hash]: transactionToKeep,
+      })
+      expect(newState.latest).toEqual(transactionToKeep)
     })
   })
 
