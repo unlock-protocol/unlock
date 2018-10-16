@@ -1,8 +1,20 @@
 import React from 'react'
+import Router from 'next/router'
 
 class Error extends React.Component {
   static getInitialProps ({ res, err }) {
     const statusCode = res ? res.statusCode : err ? err.statusCode : null
+
+    // redirect to home now if not found
+    if (statusCode) {
+      res.writeHead(301, {
+        Location: '/'
+      })
+      res.end()
+    } else {
+      Router.push('/')
+    }
+
     return { statusCode }
   }
 
