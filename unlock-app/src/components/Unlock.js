@@ -4,7 +4,6 @@ import UnlockPropTypes from '../propTypes'
 import React from 'react'
 import { Route, Switch } from 'react-router'
 
-import LockMaker from './creator/LockMaker'
 import Dashboard from './creator/Dashboard'
 import Lock from './consumer/Lock'
 import Home from './pages/Home'
@@ -44,7 +43,6 @@ export function Unlock({ network, config, path }) {
     <Switch>
       <Route path="/provider" component={Provider} />
       <Route path="/dashboard" component={Dashboard} />
-      <Route path="/creator" component={LockMaker} />
       <Route path="/lock/:lockAddress" component={Lock} />
       <Route path="/jobs" component={Jobs} />
       <Route path="/about" component={About} />
