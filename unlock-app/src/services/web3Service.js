@@ -248,6 +248,10 @@ export default class Web3Service {
         this.web3.eth.getBlockNumber(),
         this.web3.eth.getTransaction(transaction.hash),
       ]).then(([blockNumber, blockTransaction]) => {
+        if (!blockTransaction) {
+          // Missing transaction.
+          return reject(new Error('Missing transaction'))
+        }
         transaction.confirmations = blockNumber - blockTransaction.blockNumber
         return resolve(transaction)
       })

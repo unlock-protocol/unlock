@@ -211,6 +211,13 @@ describe('Web3Service', () => {
           expect(_transaction.confirmations).toEqual(15) //29-14
         })
       })
+
+      it.only('should reject if the transaction could not be found', () => {
+        ethBlockNumber(`0x${(29).toString('16')}`)
+        ethGetTransactionByHash(transaction.hash, null)
+
+        return web3Service.refreshTransaction(transaction).rejects
+      })
     })
 
     describe('getAddressBalance', () => {

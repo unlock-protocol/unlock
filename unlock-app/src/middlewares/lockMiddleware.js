@@ -4,7 +4,7 @@ import { PURCHASE_KEY, SET_KEY, setKey } from '../actions/key'
 import { SET_ACCOUNT, LOAD_ACCOUNT, CREATE_ACCOUNT, setAccount, resetAccountBalance } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
 import { SET_PROVIDER } from '../actions/provider'
-import { REFRESH_TRANSACTION, setTransaction, refreshTransaction, updateTransaction } from '../actions/transaction'
+import { REFRESH_TRANSACTION, setTransaction, refreshTransaction, updateTransaction, deleteTransaction } from '../actions/transaction'
 
 import Web3Service from '../services/web3Service'
 import { lockUnlessKeyIsValid } from '../services/iframeService'
@@ -87,6 +87,9 @@ export default function lockMiddleware ({ getState, dispatch }) {
         web3Service.refreshTransaction(action.transaction)
           .then((transaction) => {
             dispatch(updateTransaction(transaction))
+          })
+          .catch((error) => {
+            dispatch(deleteTransaction(action.transaction))
           })
       } else if (action.type === SET_KEY) {
         lockUnlessKeyIsValid({key: action.key})
