@@ -6,7 +6,7 @@ import Buttons from '../../interface/buttons/lock'
 export function LockIconBar({ lock }) {
   return (
     <IconBar>
-      <Buttons.PreviewLock />
+      <Buttons.PreviewLock lock={lock} />
       <Buttons.Withdraw />
       <Buttons.Edit />
       { /* Reinstate when we're ready <Buttons.ExportLock /> */ }

@@ -33,7 +33,7 @@ storiesOf('Overlay', Overlay)
     const locks = [
       {
         name: 'One Month',
-        ethPrice: '0.1',
+        keyPrice: '123400000000000000',
         fiatPrice: '20',
       },
     ]
@@ -43,12 +43,12 @@ storiesOf('Overlay', Overlay)
     const locks = [
       {
         name: 'One Month',
-        ethPrice: '0.1',
+        keyPrice: '10000000000000000',
         fiatPrice: '20.54',
       },
       {
         name: 'One Year',
-        ethPrice: '1.0',
+        keyPrice: '100000000000000000',
         fiatPrice: '200.27',
       },
     ]
