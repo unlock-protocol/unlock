@@ -3,7 +3,7 @@ import React from 'react'
 import { LayoutButton } from '../Button'
 
 const About = () => (
-  <LayoutButton href="/about" title="About">
+  <LayoutButton to="/about" title="About">
     <Svg.About />
   </LayoutButton>
 )
