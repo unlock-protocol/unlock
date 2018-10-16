@@ -31,7 +31,7 @@ const transactionReducer = (transactions = initialState, action) => {
 
   if (action.type === DELETE_TRANSACTION && action.transaction) {
     delete newTransactions.all[action.transaction.hash]
-    if (action.transaction.hash === transactions.latest.hash) {
+    if (transactions.latest && action.transaction.hash === transactions.latest.hash) {
       newTransactions.latest = null
     }
   }
