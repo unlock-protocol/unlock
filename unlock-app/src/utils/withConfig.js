@@ -45,13 +45,13 @@ export function withConfig(Component) {
   function mapStateToProps (state) {
     return {
       account: state.network.account, // TODO change account to base level
-      network: state.network
+      network: state.network,
     }
   }
 
   componentWithConfig.getInitialProps = async context => {
     return {
-      ...(Component.getInitialProps ? await Component.getInitialProps(context) : {})
+      ...(Component.getInitialProps ? await Component.getInitialProps(context) : {}),
     }
   }
 

@@ -8,7 +8,6 @@ const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dir: './src', dev })
 const handle = app.getRequestHandler()
 const route = pathMatch()
-const match = route('/lock/:lockaddress')
 
 app.prepare()
   .then(() => {
@@ -32,6 +31,6 @@ app.prepare()
     })
       .listen(port, (err) => {
         if (err) throw err
-        console.log(`> Ready on http://localhost:${port}`)
+        console.log(`> Ready on http://localhost:${port}`) // eslint-disable-line no-console
       })
   })

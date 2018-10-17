@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Router from 'next/router'
 
 class Error extends React.Component {
@@ -8,7 +9,7 @@ class Error extends React.Component {
     // redirect to home now if not found
     if (statusCode) {
       res.writeHead(301, {
-        Location: '/'
+        Location: '/',
       })
       res.end()
     } else {
@@ -33,6 +34,10 @@ class Error extends React.Component {
       </p>
     )
   }
+}
+
+Error.propTypes = {
+  statusCode: PropTypes.number,
 }
 
 export default Error

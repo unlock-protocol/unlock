@@ -34,7 +34,7 @@ export default (App) => {
 
       return {
         ...appProps,
-        initialReduxState: reduxStore.getState()
+        initialReduxState: reduxStore.getState(),
       }
     }
 

@@ -3,7 +3,6 @@ import UnlockPropTypes from '../propTypes'
 
 import React from 'react'
 import { connect } from 'react-redux'
-import Router from 'next/router'
 import NoSSR from 'react-no-ssr'
 
 import Authenticate from '../components/Authenticate'
@@ -60,7 +59,7 @@ export class Lock extends React.Component {
             </div>
             {cardBody}
           </div>
-        </div>)
+        </div>
       </NoSSR>
     )
   }

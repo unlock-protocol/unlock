@@ -23,6 +23,8 @@ export const Dashboard = ({account, network, transactions, locks}) => {
   )
 }
 
+Dashboard.displayName = 'Dashboard'
+
 Dashboard.propTypes = {
   account: UnlockPropTypes.account,
   network: UnlockPropTypes.network,
@@ -39,6 +41,4 @@ const mapStateToProps = state => {
   }
 }
 
-const Page = withConfig(connect(mapStateToProps)(Dashboard))
-
-export default (pageProps) => <Page {...pageProps} />
+export default withConfig(connect(mapStateToProps)(Dashboard))

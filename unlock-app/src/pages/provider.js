@@ -45,6 +45,8 @@ export function Web3Provider({ setProvider, config, provider }) {
   )
 }
 
+Web3Provider.displayName = 'Web3Provider'
+
 Web3Provider.propTypes = {
   provider: UnlockPropTypes.provider,
   setProvider: PropTypes.func,
@@ -63,7 +65,7 @@ const mapDispatchToProps = dispatch => ({
 
 const Page = withConfig(connect(mapStateToProps, mapDispatchToProps)(Web3Provider))
 
-export default (pageProps) =>
+export default (pageProps) => // eslint-disable-line react/display-name
   <NoSSR>
     <Page {...pageProps} />
   </NoSSR>
