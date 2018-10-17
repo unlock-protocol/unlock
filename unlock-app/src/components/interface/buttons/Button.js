@@ -3,7 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
 
-export const LayoutButton = ({href, title, children}) => (
+export const LayoutButton = ({href = '#', title, children}) => (
   <Link href={href}>
     <Button
       href={href}
