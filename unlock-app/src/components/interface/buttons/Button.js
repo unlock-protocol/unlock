@@ -6,6 +6,7 @@ import styled from 'styled-components'
 export const LayoutButton = ({href, title, children}) => (
   <Link href={href}>
     <Button
+      href={href}
       backgroundColor={'var(--grey)'}
       fillColor={'white'}
       backgroundHoverColor={'var(--link)'}
@@ -29,6 +30,7 @@ LayoutButton.propTypes = {
 export const LockButton = ({ href, children }) => (
   <Link href={href}>
     <Button
+      href={href}
       backgroundColor={'var(--lightgrey)'}
       fillColor={'var(--grey)'}
       backgroundHoverColor={'var(--link)'}
@@ -40,6 +42,7 @@ export const LockButton = ({ href, children }) => (
 )
 
 LockButton.propTypes = {
+  href: PropTypes.string,
   children: PropTypes.node,
   backgroundColor: PropTypes.string,
   backgroundHoverColor: PropTypes.string,

@@ -49,5 +49,11 @@ export function withConfig(Component) {
     }
   }
 
+  componentWithConfig.getInitialProps = async context => {
+    return {
+      ...(Component.getInitialProps ? await Component.getInitialProps(context) : {})
+    }
+  }
+
   return connect(mapStateToProps)(componentWithConfig)
 }

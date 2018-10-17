@@ -1,7 +1,7 @@
 import App, {Container} from 'next/app'
 import React from 'react'
-import withReduxStore from '../lib/with-redux-store'
 import { Provider } from 'react-redux'
+import withReduxStore from '../utils/withReduxStore'
 import configure from '../config'
 import GlobalStyle from '../theme/globalStyle'
 
@@ -10,8 +10,20 @@ const config = !isServer ? configure(global) : {}
 const ConfigContext = React.createContext()
 
 class MyApp extends App {
+  static async getInitialProps({ Component, router, ctx }) {
+    let pageProps = {}
+
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx)
+    }
+
+    return { pageProps }
+  }
+
   constructor (props) {
     super(props)
+
+    // Hack to quick the Redux lock middleware on load
     props.reduxStore.dispatch({ type: '@@INIT' })
   }
 
