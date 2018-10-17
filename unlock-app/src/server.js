@@ -15,15 +15,20 @@ app.prepare()
     createServer((req, res) => {
       const parsedUrl = parse(req.url, true)
       const { pathname, query } = parsedUrl
-      const params = match(pathname)
-      if (params === false) {
-        handle(req, res)
-        return
-      }
 
       // assigning `query` into the params means that we still
       // get the query string passed to our application
-      app.render(req, res, '/lock', Object.assign(params, query))
+      const path = pathname.split('/')[1]
+      if (path === 'lock') {
+        const params = route('/lock/:lockaddress')(pathname)
+        app.render(req, res, '/lock', Object.assign(params, query))
+      } else if (path === 'demo') {
+        const params = route('/demo/:lockaddress')(pathname)
+        app.render(req, res, '/demo', Object.assign(params, query))
+      } else {
+        handle(req, res)
+        return
+      }
     })
       .listen(port, (err) => {
         if (err) throw err
