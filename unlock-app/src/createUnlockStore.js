@@ -7,6 +7,7 @@ import networkReducer from './reducers/networkReducer'
 import providerReducer from './reducers/providerReducer'
 import transactionReducer  from './reducers/transactionReducer'
 import locksReducer  from './reducers/locksReducer'
+import keysReducer  from './reducers/keysReducer'
 
 // Middlewares
 import lockMiddleware from './middlewares/lockMiddleware'
@@ -19,10 +20,12 @@ export default function createUnlockStore(config, browserHistory) {
     network: networkReducer,
     transactions: transactionReducer,
     locks: locksReducer,
+    keys: keysReducer,
   }
 
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
+  // TODO: DRY this because each reducer has its own initial state.
   const initialState = Object.assign({
     network: {
       name: 0,
@@ -33,6 +36,7 @@ export default function createUnlockStore(config, browserHistory) {
       lastUpdated: 0,
     },
     locks: {},
+    keys: {},
   }, loadState())
 
   const middlewares = [
