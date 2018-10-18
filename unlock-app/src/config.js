@@ -38,6 +38,11 @@ export function getCurrentProvider(environment) {
  * @param {*} environment (in the JS sense: `window` most likely)
  */
 export default function configure(environment) {
+  const isServer = typeof window === 'undefined'
+  
+  // return an empty object on server side
+  if (isServer) return {}
+
   let env = 'dev' // default
   if (environment.location.hostname === 'staging.unlock-protocol.com') {
     env = 'staging'

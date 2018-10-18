@@ -1,12 +1,11 @@
 import { SET_PROVIDER } from '../actions/provider'
 import configure from '../config'
 
-const isServer = typeof window === 'undefined'
-const config = !isServer ? configure(global) : null
+const config = configure(global)
 
 let initialState = null 
 
-if (config) {
+if (Object.keys(config).length !== 0) {
   // By default, we start with the first provider.
   initialState = Object.keys(config.providers)[0]
 }

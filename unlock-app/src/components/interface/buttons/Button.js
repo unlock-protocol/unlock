@@ -28,7 +28,7 @@ LayoutButton.propTypes = {
   fillHoverColor: PropTypes.string,
 }
 
-export const LockButton = ({ href, children }) => (
+export const LockButton = ({ href = '#', children }) => (
   <Link href={href}>
     <Button
       href={href}

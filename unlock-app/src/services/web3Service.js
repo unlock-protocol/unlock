@@ -8,8 +8,7 @@ import LockContract from '../artifacts/contracts/Lock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
 
-const isServer = typeof window === 'undefined'
-const { providers } = !isServer ? configure(global) : {}
+const { providers } = configure(global)
 
 /**
  * This service interacts with the web3 RPC endpoint.

@@ -22,7 +22,6 @@
     "react-router-redux": "^5.0.0-alpha.9",
     "react-test-renderer": "^16.3.2",
     "redux": "^3.7.2",
-    "redux-devtools-extension": "^2.13.5",
     "storybook-router": "^0.3.4",
     "styled-components": "^4.0.0",
     "truffle": "^4.1.11",
@@ -57,9 +56,12 @@
     "react-addons-test-utils": "15.6.2",
     "react-router-test-context": "^0.1.0",
     "react-test-renderer": "16.4.2",
+    "redux-devtools-extension": "^2.13.5",
     "redux-mock-store": "^1.5.1",
     "storybook-react-router": "^1.0.1",
-    "webpack": "^4.20.2"
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.9"
   },
   "engines": {
     "node": "=8.11.4"
@@ -71,7 +73,7 @@
     "start": "NODE_ENV=production node src/server.js",
     "start-ganache": "ganache-cli -b 3 -i 1984 --deterministic &",
     "deploy-lock": "cd ../smart-contracts && truffle deploy --reset",
-    "prestart": "npm run start-ganache && npm run deploy-lock",
+    "prestart": "npm run start-ganache && npm run deploy-lock && npm run serve-unlockjs",
     "deploy-staging": "npm run build && TARGET=staging npm run build-unlockjs && aws s3 sync build/ s3://staging.unlock-protocol.com --profile unlock --no-progress | awk '{print $2;}' | cut -d'/' -f2- | awk '{print \"/\"$0}' | xargs aws cloudfront create-invalidation --distribution-id E1ZWU0E90B9EBN --paths --profile unlock",
     "build-unlockjs": "./node_modules/webpack/bin/webpack.js --config webpack-unlockjs.config.js",
     "serve-unlockjs": "TARGET=dev node_modules/.bin/webpack-dev-server --config webpack-unlockjs.config.js &",

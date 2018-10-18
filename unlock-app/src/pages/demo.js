@@ -56,4 +56,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default withConfig(connect(mapStateToProps)(Demo))
+export default connect(mapStateToProps)(Demo)

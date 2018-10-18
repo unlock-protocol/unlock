@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
  */
 
 const isServer = typeof window === 'undefined'
-const config = !isServer ? configure(global) : {}
+const config = configure(global)
 const ConfigContext = React.createContext(config)
 
 // This function takes a component...
@@ -20,8 +20,7 @@ export function withConfig(Component) {
     // ... and renders the wrapped component with the context config!
     // Notice that we pass through any additional props as well
 
-    const reduxStore = props.store
-    const router = props.router
+    const { store: reduxStore, router } = props
 
     if (!isServer) {
       // Ensuring that we have at least a provider
@@ -29,6 +28,7 @@ export function withConfig(Component) {
         return (<MissingProvider />)
       }
 
+      console.log(ETHEREUM_NETWORKS_NAMES, reduxStore.getState().network.name)
       // Ensuring that the provider is using the right network!
       if (router.route !== '/provider' && config.isRequiredNetwork && !config.isRequiredNetwork(reduxStore.getState().network.name)) {
         return (<WrongNetwork currentNetwork={ETHEREUM_NETWORKS_NAMES[reduxStore.getState().network.name][0]} requiredNetwork={config.requiredNetwork} />)

@@ -1,7 +1,6 @@
 import configure from '../config'
 
-const isServer = typeof window === 'undefined'
-const config = !isServer ? configure(global) : {}
+const config = configure(global)
 
 /**
  * Given the address of a lock, returns its accompanying transaction
