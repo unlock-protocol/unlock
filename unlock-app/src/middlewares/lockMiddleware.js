@@ -1,13 +1,12 @@
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { CREATE_LOCK, SET_LOCK, WITHDRAW_FROM_LOCK, resetLock } from '../actions/lock'
-import { PURCHASE_KEY, SET_KEY, setKey } from '../actions/key'
+import { PURCHASE_KEY, addKey } from '../actions/key'
 import { SET_ACCOUNT, LOAD_ACCOUNT, CREATE_ACCOUNT, setAccount, resetAccountBalance } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
 import { SET_PROVIDER } from '../actions/provider'
 import { REFRESH_TRANSACTION, setTransaction, refreshTransaction, updateTransaction, deleteTransaction } from '../actions/transaction'
 
 import Web3Service from '../services/web3Service'
-import { lockUnlessKeyIsValid } from '../services/iframeService'
 
 // This middleware listen to redux events and invokes the services APIs.
 export default function lockMiddleware ({ getState, dispatch }) {
@@ -78,7 +77,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
         web3Service.purchaseKey(action.lock.address, action.account, action.lock.keyPrice, '', (transaction) => {
           dispatch(setTransaction(transaction))
         }).then((key) => {
-          dispatch(setKey(key))
+          dispatch(addKey(key))
           return web3Service.getAddressBalance(action.account.address)
         }).then((balance) => {
           dispatch(resetAccountBalance(balance))
@@ -91,8 +90,6 @@ export default function lockMiddleware ({ getState, dispatch }) {
           .catch((error) => {
             dispatch(deleteTransaction(action.transaction))
           })
-      } else if (action.type === SET_KEY) {
-        lockUnlessKeyIsValid({key: action.key})
       } else if (action.type === WITHDRAW_FROM_LOCK) {
         const account = getState().network.account
         web3Service.withdrawFromLock(action.lock, account)
@@ -125,14 +122,14 @@ export default function lockMiddleware ({ getState, dispatch }) {
           // TODO(julien): isn't lock always set anyway?
           web3Service.getKey(lock.address, action.account)
             .then((key) => {
-              dispatch(setKey(key))
+              dispatch(addKey(key))
             })
         }
       } else if (action.type === SET_LOCK) {
         // Lock was changed, get the matching key
         web3Service.getKey(action.lock.address, getState().network.account)
           .then((key) => {
-            dispatch(setKey(key))
+            dispatch(addKey(key))
           })
       }
 
