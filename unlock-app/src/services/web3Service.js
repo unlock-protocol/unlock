@@ -2,6 +2,7 @@
 
 import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
+import crypto from 'crypto'
 
 import LockContract from '../artifacts/contracts/Lock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
@@ -383,10 +384,7 @@ export default class Web3Service {
    */
   getKey(lockAddress, account) {
     if (!account || !lockAddress) {
-      const key = {
-        expiration: 0,
-      }
-      return Promise.resolve(key)
+      return Promise.reject(new Error('Could not fetch key without account and lock'))
     }
     const lockContract = new this.web3.eth.Contract(LockContract.abi, lockAddress)
 
@@ -395,17 +393,14 @@ export default class Web3Service {
     return Promise.all([getKeyExpirationPromise, getKeyDataPromise])
       .then(([expiration, data]) => {
         const key = {
+          id: crypto.createHash('md5').update([lockAddress, account.address, expiration].join('')).digest('hex'),
           expiration: parseInt(expiration, 10),
           data,
         }
         return key
-      })
-      .catch(() => {
-        // TODO: be smarter about that error!
-        const key = {
-          expiration: 0,
-        }
-        return key
+      }).catch((error) => {
+        // We could not fetch the key. Assume it does not exist?
+        return Promise.reject(new Error('Missing key'))
       })
   }
 

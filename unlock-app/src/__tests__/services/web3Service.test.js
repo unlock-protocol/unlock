@@ -212,11 +212,11 @@ describe('Web3Service', () => {
         })
       })
 
-      it.only('should reject if the transaction could not be found', () => {
+      it('should reject if the transaction could not be found', () => {
         ethBlockNumber(`0x${(29).toString('16')}`)
         ethGetTransactionByHash(transaction.hash, null)
 
-        return web3Service.refreshTransaction(transaction).rejects
+        return expect(web3Service.refreshTransaction(transaction)).rejects.toHaveProperty('message', 'Missing transaction')
       })
     })
 
@@ -284,27 +284,22 @@ describe('Web3Service', () => {
     })
 
     describe('getKey', () => {
-      it('should handle missing lock or account', () => {
-        return Promise.all([
-          web3Service.getKey(null, {}),
-          web3Service.getKey(lockAddress, null),
-        ]).then(([keyForMissingLock, keyForMissingAccount]) => {
-          expect(keyForMissingLock.expiration).toBe(0)
-          expect(keyForMissingAccount.expiration).toBe(0)
-        })
+      it('should handle missing lock argument', () => {
+        return expect(web3Service.getKey(null, {})).rejects.toHaveProperty('message', 'Could not fetch key without account and lock')
+      })
+
+      it('should handle missing account argument', () => {
+        return expect(web3Service.getKey({}, null)).rejects.toHaveProperty('message', 'Could not fetch key without account and lock')
       })
 
       describe('when there is a lock and an account', () => {
         describe('when the key is missing', () => {
-          it('should have a 0 expiration date and an undefined data field', () => {
+          it('reject', () => {
             ethCallAndFail('0xabdf82ce000000000000000000000000aca94ef8bd5ffee41947b4585a84bda5a3d3da6e', lockAddress, { 'message': 'VM Exception while processing transaction: revert' })
             ethCallAndFail('0xd44fa14a000000000000000000000000aca94ef8bd5ffee41947b4585a84bda5a3d3da6e', lockAddress, { 'message': 'VM Exception while processing transaction: revert' })
 
-            return web3Service.getKey(lockAddress, { address: nodeAccounts[1] })
-              .then(({ expiration, data }) => {
-                expect(expiration).toBe(0)
-                expect(data).toBe(undefined)
-              })
+            return expect(web3Service.getKey(lockAddress, { address: nodeAccounts[1] }))
+              .rejects.toHaveProperty('message', 'Missing key')
           })
         })
 
@@ -314,7 +309,8 @@ describe('Web3Service', () => {
             ethCallAndYield('0xd44fa14a00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1', lockAddress, '0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000')
 
             return web3Service.getKey(lockAddress, { address: nodeAccounts[0] })
-              .then(({ expiration, data }) => {
+              .then(({ id, expiration, data }) => {
+                expect(id).toBe('6667250577ae077b23e61a0f438bd917')
                 expect(expiration).toBe(1532557829)
                 expect(data).toBe(null) // TODO: better value?
               })

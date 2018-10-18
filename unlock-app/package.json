@@ -6,6 +6,7 @@
     "bn.js": "^4.11.8",
     "bootstrap": "^4.0.0",
     "color-scheme": "^1.0.1",
+    "create-hash": "^1.2.0",
     "prop-types": "^15.6.1",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",

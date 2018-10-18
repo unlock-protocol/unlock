@@ -8,10 +8,6 @@ describe('network reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual({
       account: {},
-      key: {
-        data: '',
-        expiration: 0,
-      },
       lock: {
 
       },
