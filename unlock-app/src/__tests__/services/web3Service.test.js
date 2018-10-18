@@ -304,15 +304,17 @@ describe('Web3Service', () => {
         })
 
         describe('when the key exists', () => {
-          it('should yield that key with the right data field and expiration dates', () => {
+          it('should yield that key with the right account, lock, data field and expiration dates', () => {
             ethCallAndYield('0xabdf82ce00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1', lockAddress, '0x000000000000000000000000000000000000000000000000000000005b58fa05')
             ethCallAndYield('0xd44fa14a00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1', lockAddress, '0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000')
 
             return web3Service.getKey(lockAddress, { address: nodeAccounts[0] })
-              .then(({ id, expiration, data }) => {
-                expect(id).toBe('6667250577ae077b23e61a0f438bd917')
-                expect(expiration).toBe(1532557829)
-                expect(data).toBe(null) // TODO: better value?
+              .then((key) => {
+                expect(key.owner).toBe(nodeAccounts[0])
+                expect(key.lockAddress).toBe(lockAddress)
+                expect(key.id).toBe('6667250577ae077b23e61a0f438bd917')
+                expect(key.expiration).toBe(1532557829)
+                expect(key.data).toBe(null) // TODO: better value?
               })
 
           })
