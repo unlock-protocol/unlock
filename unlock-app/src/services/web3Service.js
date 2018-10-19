@@ -394,6 +394,8 @@ export default class Web3Service {
       .then(([expiration, data]) => {
         const key = {
           id: crypto.createHash('md5').update([lockAddress, account.address, expiration].join('')).digest('hex'),
+          lockAddress,
+          owner: account.address,
           expiration: parseInt(expiration, 10),
           data,
         }
