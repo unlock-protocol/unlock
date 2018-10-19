@@ -28,7 +28,6 @@ export function withConfig(Component) {
         return (<MissingProvider />)
       }
 
-      console.log(ETHEREUM_NETWORKS_NAMES, reduxStore.getState().network.name)
       // Ensuring that the provider is using the right network!
       if (router.route !== '/provider' && config.isRequiredNetwork && !config.isRequiredNetwork(reduxStore.getState().network.name)) {
         return (<WrongNetwork currentNetwork={ETHEREUM_NETWORKS_NAMES[reduxStore.getState().network.name][0]} requiredNetwork={config.requiredNetwork} />)

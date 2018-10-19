@@ -6,7 +6,6 @@ import NoSSR from 'react-no-ssr'
 import Layout from '../components/interface/Layout'
 import { Overlay } from '../components/lock/Overlay'
 import { Section, Title, Headline, ShortColumn, Paragraph } from '../components/Components'
-import { withConfig } from '../utils/withConfig'
 
 export class Demo extends React.Component {
   static async getInitialProps({ req, query: { lockaddress } }) {
