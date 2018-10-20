@@ -326,8 +326,8 @@ export default class Web3Service {
    */
   purchaseKey(lockAddress, account, keyPrice, keyData, callback) {
     return new Promise((resolve, reject) => {
-      const lock = new this.web3.eth.Contract(LockContract.abi, lockAddress)
-      const data = lock.methods.purchaseFor(account.address, Web3Utils.utf8ToHex(keyData)).encodeABI()
+      const lockContract = new this.web3.eth.Contract(LockContract.abi, lockAddress)
+      const data = lockContract.methods.purchaseFor(account.address, Web3Utils.utf8ToHex(keyData)).encodeABI()
 
       // The transaction object (conflict if other transactions have not been confirmed yet?)
       // TODO: We have a race condition because this will keep emitting even after
