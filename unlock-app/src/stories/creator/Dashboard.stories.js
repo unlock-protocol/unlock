@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { Dashboard } from '../../components/creator/Dashboard'
+import { Dashboard } from '../../pages/dashboard'
 import createUnlockStore from '../../createUnlockStore'
 
 const store = createUnlockStore()

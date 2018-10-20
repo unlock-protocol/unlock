@@ -7,7 +7,7 @@ import Layout from '../interface/Layout'
 
 const defaultError = (<p>This is a generic error because something just broke but we’re not sure what.</p>)
 
-export const DefaultError = ({ title = 'Fatal Error', children = defaultError, illustration = 'images/illustrations/error.svg' }) => (
+export const DefaultError = ({ title = 'Fatal Error', children = defaultError, illustration = '/static/images/illustrations/error.svg' }) => (
   <Layout title="Creator Dashboard">
     <Container>
       <Image src={illustration} />
@@ -62,7 +62,7 @@ const Message = styled.div`
 export const WrongNetwork = ({currentNetwork, requiredNetwork}) => (
   <DefaultError
     title="Network mismatch"
-    illustration={'/images/illustrations/network.svg'}>
+    illustration={'/static/images/illustrations/network.svg'}>
     <p>You’re currently on the {currentNetwork} network but you need to be on the {requiredNetwork} network. Please switch to {requiredNetwork}.</p>
   </DefaultError>)
 WrongNetwork.propTypes = {
@@ -73,7 +73,7 @@ WrongNetwork.propTypes = {
 export const MissingProvider= () => (
   <DefaultError
     title="Wallet missing"
-    illustration={'images/illustrations/wallet.svg'}>
+    illustration={'/static/images/illustrations/wallet.svg'}>
     <p>
       It looks like you’re using an incompatible browser or are missig a crypto wallet. If you’re using Chrome or Firefox you can install <a href='https://metamask.io/'>Metamask</a>.
     </p>

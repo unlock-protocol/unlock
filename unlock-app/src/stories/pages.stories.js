@@ -1,20 +1,22 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import Pages from '../components/pages'
+import Home from '../pages'
+import About from '../pages/about'
+import Jobs from '../pages/jobs'
 
-storiesOf('Content pages', Pages)
+storiesOf('Content pages', module)
   .add('the Home page', () => {
     return (
-      <Pages.Home />
+      <Home />
     )
   })
   .add('the About page', () => {
     return (
-      <Pages.About />
+      <About />
     )
   })
   .add('the Jobs page', () => {
     return (
-      <Pages.Jobs />
+      <Jobs />
     )
   })

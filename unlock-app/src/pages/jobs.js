@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React from 'react'
-import Layout from '../interface/Layout'
-import { Section, Title, Headline, SubTitle, CallToAction, Paragraph, UnorderedList, OrderedList, ListItem, ShortColumn } from './Components'
+import Layout from '../components/interface/Layout'
+import { Section, Title, Headline, SubTitle, CallToAction, Paragraph, UnorderedList, OrderedList, ListItem, ShortColumn } from '../components/Components'
 
 export const Jobs = () => (
   <Layout forContent={true}>

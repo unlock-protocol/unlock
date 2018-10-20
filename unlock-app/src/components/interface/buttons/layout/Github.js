@@ -3,7 +3,7 @@ import React from 'react'
 import { LayoutButton } from '../Button'
 
 const Github = () => (
-  <LayoutButton to="https://github.com/unlock-protocol/unlock" title="Source Code">
+  <LayoutButton href="https://github.com/unlock-protocol/unlock" title="Source Code">
     <Svg.Github />
   </LayoutButton>
 )

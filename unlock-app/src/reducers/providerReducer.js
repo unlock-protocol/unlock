@@ -3,8 +3,12 @@ import configure from '../config'
 
 const config = configure(global)
 
-// By default, we start with the first provider.
-const initialState = Object.keys(config.providers)[0] || null
+let initialState = null 
+
+if (Object.keys(config).length !== 0) {
+  // By default, we start with the first provider.
+  initialState = Object.keys(config.providers)[0]
+}
 
 const providerReducer = (state = initialState, action) => {
   if (action.type === SET_PROVIDER) {

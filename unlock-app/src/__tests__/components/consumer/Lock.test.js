@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 // Note, we use name import to import the non connected version of the component for testing
-import { Lock } from '../../../components/consumer/Lock'
+import { Lock } from '../../../pages/lock'
 
 jest.mock('../../../services/iframeService', () => {
   return {

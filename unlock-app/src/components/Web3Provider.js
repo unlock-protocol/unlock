@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import UnlockPropTypes from '../propTypes'
 
 import React from 'react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { connect } from 'react-redux'
 import { setProvider } from '../actions/provider'
 import { withConfig } from '../utils/withConfig'
@@ -31,8 +31,8 @@ export function Web3Provider({ setProvider, config, provider }) {
                 })}
               </select>
               <div className="input-group-append">
-                <Link to={'/'} className="fa fa-home btn btn-outline-secondary">
-                  Home
+                <Link href={'/'} className="fa fa-home btn btn-outline-secondary">
+                  <a>Home</a>
                 </Link>
 
               </div>

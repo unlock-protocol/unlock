@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import React from 'react'
-import { Link } from 'react-router-dom'
-import Layout from '../interface/Layout'
-import { Section, Headline, SubTitle, CallToAction, ThreeColumns, Column } from './Components'
-import { ActionButton } from '../creator/CreatorLocks'
+import Link from 'next/link'
+import Layout from '../components/interface/Layout'
+import { Section, Headline, SubTitle, CallToAction, ThreeColumns, Column } from '../components/Components'
+import { ActionButton } from '../components/creator/CreatorLocks'
 
 export const Home = () => (
   <Layout forContent={true}>
@@ -12,11 +12,13 @@ export const Home = () => (
       Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.
     </Headline>
 
-    <Link to={'/dashboard'}>
-      <Action>
-        <HomepageButton>Go to Your Dashboard</HomepageButton>
-        <ButtonLabel>Requires a browser with an Ethereum wallet</ButtonLabel>
-      </Action>
+    <Link href={'/dashboard'}>
+      <a>
+        <Action>
+          <HomepageButton>Go to Your Dashboard</HomepageButton>
+          <ButtonLabel>Requires a browser with an Ethereum wallet</ButtonLabel>
+        </Action>
+      </a>
     </Link>
 
     <ThreeColumns>
@@ -53,11 +55,11 @@ export default Home
 
 const ImageWithHover = styled.div`
   border-style: none;
-  background: url(${props => (`/images/pages/png/${props.base}.png`)}) no-repeat center/contain;
+  background: url(${props => (`/static/images/pages/png/${props.base}.png`)}) no-repeat center/contain;
   width: 300px;
   height: 200px;
   &:hover {
-    background: url(${props => (`/images/pages/png/${props.base}-hover.png`)}) no-repeat center/contain;
+    background: url(${props => (`/static/images/pages/png/${props.base}-hover.png`)}) no-repeat center/contain;
   }
 `
 

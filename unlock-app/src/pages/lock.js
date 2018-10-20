@@ -1,18 +1,25 @@
 import PropTypes from 'prop-types'
-import UnlockPropTypes from '../../propTypes'
+import UnlockPropTypes from '../propTypes'
 
 import React from 'react'
 import { connect } from 'react-redux'
+import NoSSR from 'react-no-ssr'
 
-import Authenticate from '../Authenticate'
-import Account from '../Account'
+import Authenticate from '../components/Authenticate'
+import Account from '../components/Account'
 
-import Key from './Key'
-import { NonValidKey } from './NonValidKey'
+import Key from '../components/consumer/Key'
+import { NonValidKey } from '../components/consumer/NonValidKey'
 
-import { purchaseKey } from '../../actions/key'
+import { purchaseKey } from '../actions/key'
+import { withConfig } from '../utils/withConfig'
 
 export class Lock extends React.Component {
+  static async getInitialProps({ req, query: { lockaddress } }) {
+
+    // passing :lockaddress query to the component as a prop
+    return { lock: lockaddress }
+  }
 
   constructor(props) {
     super(props)
@@ -44,14 +51,17 @@ export class Lock extends React.Component {
     }
 
     return (
-      <div className="container">
-        <div className="card">
-          <div className="card-header">
-            {account}
+      <NoSSR>
+        <div className="container">
+          <div className="card">
+            <div className="card-header">
+              {account}
+            </div>
+            {cardBody}
           </div>
-          {cardBody}
         </div>
-      </div>)
+      </NoSSR>
+    )
   }
 }
 
@@ -76,4 +86,6 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Lock)
+const Page = withConfig(connect(mapStateToProps, mapDispatchToProps)(Lock))
+
+export default Page

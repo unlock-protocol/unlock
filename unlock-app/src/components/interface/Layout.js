@@ -4,15 +4,15 @@ import styled from 'styled-components'
 import Header from './Header'
 import Footer from './Footer'
 import Logo from './Logo'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 
 export default function Layout({ forContent, title, children }) {
   return (
     <Container>
       <Left>
         {!forContent &&
-          <Link to={'/'}>
-            <Logo />
+          <Link href={'/'}>
+            <a><Logo /></a>
           </Link>
         }
       </Left>
