@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Svg from './svg'
 import Buttons from './buttons/layout'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 
 export default function Header({ forContent, title }) {
   return (
@@ -12,8 +12,8 @@ export default function Header({ forContent, title }) {
         <Title>{title}</Title>
       }
       {!!forContent &&
-        <Link to={'/'}>
-          <Svg.UnlockWordMark height={'28px'} width={'100%'} />
+        <Link href={'/'}>
+          <a><Svg.UnlockWordMark height={'28px'} width={'100%'} /></a>
         </Link>
       }
       <Buttons.About />
