@@ -40,7 +40,7 @@ $ npm run install-deps
 3. Run the app (this should also compile and deploy the smart contract to a local truffle node)
 
 ```
-cd unlock-app && npm start
+cd unlock-app && npm run dev
 ```
 
 ## Code

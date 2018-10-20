@@ -1,10 +1,12 @@
-import UnlockPropTypes from '../../propTypes'
+import UnlockPropTypes from '../propTypes'
 
 import React from 'react'
 import { connect } from 'react-redux'
-import Layout from '../interface/Layout'
-import CreatorAccount from './CreatorAccount'
-import CreatorLocks from './CreatorLocks'
+import NoSSR from 'react-no-ssr'
+import Layout from '../components/interface/Layout'
+import CreatorAccount from '../components/creator/CreatorAccount'
+import CreatorLocks from '../components/creator/CreatorLocks'
+import { withConfig } from '../utils/withConfig'
 
 export const Dashboard = ({account, network, transactions, locks}) => {
   if (!account) {
@@ -13,11 +15,15 @@ export const Dashboard = ({account, network, transactions, locks}) => {
 
   return (
     <Layout title="Creator Dashboard">
-      <CreatorAccount network={network} account={account} />
-      <CreatorLocks transactions={transactions} locks={locks} />
+      <NoSSR>
+        <CreatorAccount network={network} account={account} />
+        <CreatorLocks transactions={transactions} locks={locks} />
+      </NoSSR>
     </Layout>
   )
 }
+
+Dashboard.displayName = 'Dashboard'
 
 Dashboard.propTypes = {
   account: UnlockPropTypes.account,
@@ -35,4 +41,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(Dashboard)
+export default withConfig(connect(mapStateToProps)(Dashboard))
