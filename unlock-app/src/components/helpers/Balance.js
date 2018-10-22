@@ -11,9 +11,33 @@ import Web3Utils from 'web3-utils'
 export function Balance({ amount, unit = 'wei' }) {
   let inWei = Web3Utils.toWei(amount || '0', unit)
   let inEth = Web3Utils.fromWei(inWei, 'ether')
+  let ethWithPresentation = BalancePresenter(inEth)
+ 
   return (<BalanceWithUnit>
-    三 {inEth}
+    三 {ethWithPresentation}
   </BalanceWithUnit>)
+}
+
+/**
+ * Provide a representaion of Eth Balances suitable for the Unlock frontend
+ * application.
+ * @param {string} eth: An amount of Eth 
+ */
+function BalancePresenter(eth){  
+  const DECIMAL_PLACES = 2
+  const SIGNIFICANT_DIGITS = 2
+  const MINIMUM_THRESHOLD = 0.0001
+
+  let numericalEth = Number(eth)
+  
+  switch(true){
+  case numericalEth < MINIMUM_THRESHOLD:
+    return '< 0.0001'
+  case numericalEth < 1:
+    return parseFloat(numericalEth.toPrecision(SIGNIFICANT_DIGITS))
+  default:
+    return numericalEth.toFixed(DECIMAL_PLACES)
+  }
 }
 
 Balance.propTypes = {
