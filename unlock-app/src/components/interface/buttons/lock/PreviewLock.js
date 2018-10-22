@@ -4,8 +4,8 @@ import Svg from '../../svg'
 import React from 'react'
 import { LockButton } from '../Button'
 
-const PreviewLock = ({ lock }) => (
-  <LockButton to={`/demo/${lock.address}`}>
+const PreviewLock = ({ lock, props }) => (
+  <LockButton to={`/demo/${lock.address}`} {...props}>
     <Svg.LockClosed />
   </LockButton>
 )
