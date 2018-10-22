@@ -283,6 +283,55 @@ describe('Web3Service', () => {
       })
     })
 
+    describe('refreshKey', () => {
+      it('should handle missing lock address', () => {
+        const key = {}
+        return expect(web3Service.refreshKey(key)).rejects.toHaveProperty('message', 'Could not fetch key without a lock')
+      })
+
+      it('should update the data and expiration date', () => {
+        ethCallAndYield('0xabdf82ce00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1', lockAddress, '0x000000000000000000000000000000000000000000000000000000005b58fa05')
+        ethCallAndYield('0xd44fa14a00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1', lockAddress, '0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000')
+
+        const key = {
+          id: '123',
+          lockAddress: lockAddress,
+          owner: nodeAccounts[0],
+          expiration: 1,
+          data: 'data',
+        }
+
+        return web3Service.refreshKey(key)
+          .then((key) => {
+            expect(key.owner).toBe(nodeAccounts[0])
+            expect(key.lockAddress).toBe(lockAddress)
+            expect(key.expiration).toBe('1532557829')
+            expect(key.data).toBe(null)
+          })
+      })
+
+      it('should handle missing key when the lock exists', () => {
+        const key = {
+          id: '123',
+          lockAddress: lockAddress,
+          owner: nodeAccounts[0],
+          expiration: 1,
+          data: 'data',
+        }
+
+        ethCallAndFail('0xabdf82ce000000000000000000000000aca94ef8bd5ffee41947b4585a84bda5a3d3da6e', lockAddress, { 'message': 'VM Exception while processing transaction: revert' })
+        ethCallAndFail('0xd44fa14a000000000000000000000000aca94ef8bd5ffee41947b4585a84bda5a3d3da6e', lockAddress, { 'message': 'VM Exception while processing transaction: revert' })
+        return web3Service.refreshKey(key)
+          .then((key) => {
+            expect(key.owner).toBe(nodeAccounts[0])
+            expect(key.lockAddress).toBe(lockAddress)
+            expect(key.expiration).toBe(0)
+            expect(key.data).toBe(null)
+          })
+
+      })
+    })
+
     describe('getKey', () => {
       it('should handle missing lock argument', () => {
         return expect(web3Service.getKey(null, {})).rejects.toHaveProperty('message', 'Could not fetch key without account and lock')
