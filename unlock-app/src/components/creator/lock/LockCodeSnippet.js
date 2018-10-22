@@ -16,7 +16,7 @@ export function LockCodeSnippet({ lock }) {
   }
 
   function selectAll(event) {
-    event.target.select()
+    event.target.select();
   }
 
   return (
@@ -44,5 +44,4 @@ const CodeSnippet = styled.textarea`
   line-height: normal;
   letter-spacing: normal;
   color: var(--darkgrey);
-  grid-column: 2;
 `
