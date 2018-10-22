@@ -10,10 +10,6 @@ export class LockIconBar extends React.Component {
     super(props)
   }
 
-  toggleCode() {
-    console.log('good day')
-  }
-
   render() {
     return (
       <IconBar>

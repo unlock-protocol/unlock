@@ -42,29 +42,29 @@ export class CreatorLock extends React.Component {
     }
 
     return (
-    <LockRow>
-      <Icon lock={this.props.lock} address={this.props.lock.address} />
-      <LockName>
-        {name}
-        <LockAddress>{this.props.lock.address}</LockAddress>
-      </LockName>
-      <LockDuration>
-        <Duration seconds={this.props.lock.expirationDuration} />
-      </LockDuration>
-      <LockKeys>{outstandingKeys}/{this.props.lock.maxNumberOfKeys}</LockKeys>
-      <Balance amount={this.props.lock.keyPrice} />
-      <Balance amount={this.props.lock.balance} />
-      {lockComponentStatusBlock}
-      {this.props.status == 'deployed' && this.state.showEmbedCode &&
-        <LockCode>
-          <LockDivider />
-          <LockCodeControls>
-            <LockCodeSnippet lock={this.props.lock} />
-            <Buttons.Copy />
-          </LockCodeControls>
-        </LockCode>
-      }
-    </LockRow>
+      <LockRow>
+        <Icon lock={this.props.lock} address={this.props.lock.address} />
+        <LockName>
+          {name}
+          <LockAddress>{this.props.lock.address}</LockAddress>
+        </LockName>
+        <LockDuration>
+          <Duration seconds={this.props.lock.expirationDuration} />
+        </LockDuration>
+        <LockKeys>{outstandingKeys}/{this.props.lock.maxNumberOfKeys}</LockKeys>
+        <Balance amount={this.props.lock.keyPrice} />
+        <Balance amount={this.props.lock.balance} />
+        {lockComponentStatusBlock}
+        {this.props.status == 'deployed' && this.state.showEmbedCode &&
+          <LockCode>
+            <LockDivider />
+            <LockCodeControls>
+              <LockCodeSnippet lock={this.props.lock} />
+              <Buttons.Copy />
+            </LockCodeControls>
+          </LockCode>
+        }
+      </LockRow>
     )
   }
 }
@@ -99,6 +99,9 @@ export const LockRow = styled.div`
   display: grid;
   grid-gap: 16px;
   ${LockRowGrid}
+  grid-template-rows: 60px;
+  grid-column-gap: 16px;
+  grid-row-gap: 0;
   align-items: center;
 `
 
@@ -122,22 +125,23 @@ export const LockDuration = styled.div`
 export const LockKeys = styled.div`
 `
 
-export const LockCode = styled.div`
+const LockCode = styled.div`
   grid-column: 1 / span 7;
 `
 
-export const LockDivider = styled.div`
+const LockDivider = styled.div`
   width: 99%;
   height: 1px;
   background-color: var(--lightgrey);
 `
 
-export const LockCodeControls = styled.div`
+const LockCodeControls = styled.div`
   margin-top: 20px;
   width: 100%;
   display: grid;
-  grid-template-columns: 7fr 1fr;
-  grid-gap: 10px; 
+  grid-template-columns: 32px 7fr 1fr;
+  grid-gap: 16px;
+  margin-bottom: 10px;
 `
 
 /* Saving for use with sub-values that need to be added in a future PR
