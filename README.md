@@ -1,4 +1,4 @@
-![Unlock](https://raw.githubusercontent.com/unlock-protocol/unlock/master/unlock-branding/src/unlock-logo.svg?sanitize=true)
+![Unlock](https://raw.githubusercontent.com/unlock-protocol/unlock/master/unlock-app/src/static/images/unlock-word-mark.png?sanitize=true)
 
 ---
 
@@ -40,7 +40,7 @@ $ npm run install-deps
 3. Run the app (this should also compile and deploy the smart contract to a local truffle node)
 
 ```
-cd unlock-app && npm start
+cd unlock-app && npm run dev
 ```
 
 ## Code

@@ -1,7 +1,7 @@
 import lockMiddleware from '../../middlewares/lockMiddleware'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { CREATE_LOCK, SET_LOCK, WITHDRAW_FROM_LOCK } from '../../actions/lock'
-import { PURCHASE_KEY, SET_KEY } from '../../actions/key'
+import { PURCHASE_KEY } from '../../actions/key'
 import { SET_ACCOUNT, LOAD_ACCOUNT, CREATE_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { SET_PROVIDER } from '../../actions/provider'
@@ -25,10 +25,6 @@ let lock = {
   address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
   keyPrice: '100',
   creator: account,
-}
-let key = {
-  expiration: '1337',
-  data: '',
 }
 let state = {
   network: {
@@ -107,10 +103,6 @@ beforeEach(() => {
     address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
     keyPrice: '100',
     creator: account,
-  }
-  key = {
-    expiration: '1337',
-    data: '',
   }
   state = {
     network: {
@@ -237,14 +229,6 @@ describe('Lock middleware', () => {
       expect(mockWeb3Service.getKey).toHaveBeenCalledWith(lock.address, undefined)
       expect(next).toHaveBeenCalledWith(action)
     })
-  })
-
-  it('should handle SET_KEY by calling lockUnlessKeyIsValid from iframeService', () => {
-    const { next, invoke } = create()
-    const action = { type: SET_KEY, key }
-    invoke(action)
-    expect(iframeServiceMock.lockUnlessKeyIsValid).toHaveBeenCalledWith({ key })
-    expect(next).toHaveBeenCalledWith(action)
   })
 
   it('should handle WITHDRAW_FROM_LOCK by calling withdrawFromLock from web3Service', () => {

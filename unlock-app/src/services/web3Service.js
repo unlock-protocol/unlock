@@ -2,6 +2,7 @@
 
 import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
+import crypto from 'crypto'
 
 import LockContract from '../artifacts/contracts/Lock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
@@ -16,7 +17,6 @@ const { providers } = configure(global)
  *
  */
 export default class Web3Service {
-
   /**
    * This connects to the web3 service and listens to new blocks
    * TODO consider pulling the account logic away from that method into the promise listener
@@ -318,33 +318,35 @@ export default class Web3Service {
 
   /**
    * Purchase a key to a lock by account.
-   * @param {PropTypes.adress} lockAddress
-   * @param {PropTypes.account} account
-   * @param {PropTypes.number} keyPrice
-   * @param {PropTypes.string} keyData // This needs to maybe be less strict. (binary data)
+   * The key object is passed so we can kepe track of it from the application
+   * The account object is required for its privateKey
+   * The lock object is required to get the price data
+   * @param {UnlockPropTypes.key} key
+   * @param {UnlockPropTypes.account} account
+   * @param {UnlockPropTypes.lock} lock
+   * @param {PropTypes.func} callback
    * @return Promise<Key>
    */
-  purchaseKey(lockAddress, account, keyPrice, keyData, callback) {
+  purchaseKey(key, account, lock, callback) {
     return new Promise((resolve, reject) => {
-      const lock = new this.web3.eth.Contract(LockContract.abi, lockAddress)
-      const data = lock.methods.purchaseFor(account.address, Web3Utils.utf8ToHex(keyData)).encodeABI()
+      const lockContract = new this.web3.eth.Contract(LockContract.abi, key.lockAddress)
+      const data = lockContract.methods.purchaseFor(key.owner, Web3Utils.utf8ToHex(key.data)).encodeABI()
 
-      // The transaction object (conflict if other transactions have not been confirmed yet?)
-      // TODO: We have a race condition because this will keep emitting even after
-      // confirmation... which is a problem if we trigger other transaction
       const transaction = {
         status: 'pending',
         confirmations: 0,
         createdAt: new Date().getTime(),
+        key: key.id,
       }
-      callback(transaction)
+      key.transaction = transaction
+      callback(transaction, key)
 
       return this.sendTransaction({
-        to: lockAddress,
-        from: account.address,
+        to: key.lockAddress,
+        from: key.owner,
         data: data,
         gas: 1000000,
-        value: keyPrice,
+        value: lock.keyPrice,
         privateKey: account.privateKey,
         contractAbi: LockContract.abi,
       }, (error, { event, args }) => {
@@ -354,20 +356,20 @@ export default class Web3Service {
         if (event === 'transactionHash') {
           transaction.hash = args.hash
           transaction.status = 'submitted'
-          callback(transaction)
+          callback(transaction, key)
         } else if (event === 'confirmation') {
           transaction.status = 'mined'
           transaction.confirmations += 1
-          callback(transaction)
-          return this.getKey(lockAddress, account).then((key) => {
+          callback(transaction, key)
+          return this.refreshKey(key).then((key) => {
             transaction.key = key
-            callback(transaction)
+            callback(transaction, key)
             return resolve(key)
           })
         } else if (event === 'Transfer') {
-          return this.getKey(lockAddress, account).then((key) => {
+          return this.refreshKey(key).then((key) => {
             transaction.key = key
-            callback(transaction)
+            callback(transaction, key)
             return resolve(key)
           })
         }
@@ -377,17 +379,43 @@ export default class Web3Service {
 
   /**
    * Returns the key to the lockAddress by the account.
+   * @param {UnlockPropTypes.key} key
+   * @return Promise<Key>
+   */
+  refreshKey(key) {
+    if (!key.lockAddress) {
+      return Promise.reject(new Error('Could not fetch key without a lock'))
+    }
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, key.lockAddress)
+
+    const getKeyExpirationPromise = lockContract.methods.keyExpirationTimestampFor(key.owner).call()
+    const getKeyDataPromise = lockContract.methods.keyDataFor(key.owner).call()
+    return Promise.all([getKeyExpirationPromise, getKeyDataPromise])
+      .then(([expiration, data]) => {
+        key.expiration = expiration
+        key.data = data
+        return key
+      }).catch((error) => {
+        // We could not fetch the key. Assume it does not exist so set its expiration to 0
+        key.expiration = 0
+        key.data = null
+        return key
+      })
+  }
+
+  /**
+   * Returns the key to the lockAddress by the account.
+   * DEPRACTED: the objects are never created by this library but passed to it and synced against
+   * against the smart contract. This function creates a key object and yields it, which is not ok.
    * @param {PropTypes.adress} lockAddress
    * @param {PropTypes.account} account
    * @return Promise<Key>
    */
   getKey(lockAddress, account) {
     if (!account || !lockAddress) {
-      const key = {
-        expiration: 0,
-      }
-      return Promise.resolve(key)
+      return Promise.reject(new Error('Could not fetch key without account and lock'))
     }
+
     const lockContract = new this.web3.eth.Contract(LockContract.abi, lockAddress)
 
     const getKeyExpirationPromise = lockContract.methods.keyExpirationTimestampFor(account.address).call()
@@ -395,17 +423,16 @@ export default class Web3Service {
     return Promise.all([getKeyExpirationPromise, getKeyDataPromise])
       .then(([expiration, data]) => {
         const key = {
+          id: crypto.createHash('md5').update([lockAddress, account.address, expiration].join('')).digest('hex'),
+          lockAddress,
+          owner: account.address,
           expiration: parseInt(expiration, 10),
           data,
         }
         return key
-      })
-      .catch(() => {
-        // TODO: be smarter about that error!
-        const key = {
-          expiration: 0,
-        }
-        return key
+      }).catch((error) => {
+        // We could not fetch the key. Assume it does not exist?
+        return Promise.reject(new Error('Missing key'))
       })
   }
 

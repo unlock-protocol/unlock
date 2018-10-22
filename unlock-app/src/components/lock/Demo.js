@@ -3,8 +3,8 @@ import UnlockPropTypes from '../../propTypes'
 
 import React from 'react'
 import Layout from '../interface/Layout'
-import { Section, Title, Headline, ShortColumn, Paragraph } from '../pages/Components'
 import { Overlay } from './Overlay'
+import { Section, Title, Headline, ShortColumn, Paragraph } from '../Components'
 
 export const Demo = ({ lock }) => (
   <Layout title="Unlock Demo Page">
