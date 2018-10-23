@@ -74,6 +74,11 @@ const ImageWithHover = styled.div`
   &:hover {
     background: url(${props => (`/static/images/pages/png/${props.base}-hover.png`)}) no-repeat center/contain;
   }
+  /* // Preload to avoid flickering effect */
+  &:after {
+    content: url(${props => (`/static/images/pages/png/${props.base}-hover.png`)});
+    display: none;
+  }
 `
 
 const Hero = styled.h1`
