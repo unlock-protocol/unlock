@@ -70,6 +70,7 @@
   "scripts": {
     "dev": "npm run prestart && nodemon src/server.js",
     "build": "next build src",
+    "export": "next export src",
     "start": "NODE_ENV=production node src/server.js",
     "start-ganache": "ganache-cli -b 3 -i 1984 --deterministic &",
     "deploy-lock": "cd ../smart-contracts && truffle deploy --reset",
