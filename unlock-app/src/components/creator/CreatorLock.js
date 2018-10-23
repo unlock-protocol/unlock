@@ -15,7 +15,6 @@ export class CreatorLock extends React.Component {
     this.state = {
       showEmbedCode: false,
     }
-    this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
   }
 
   toggleEmbedCode() {
@@ -34,9 +33,8 @@ export class CreatorLock extends React.Component {
     let lockComponentStatusBlock
 
     if (this.props.status === 'deployed') { // the transaction was mined and confirmed at least 12 times
-      // The className below is required to hide / reveal the icon bar
       lockComponentStatusBlock = (<LockIconBarContainer>
-        <LockIconBar lock={this.props.lock} toggleCode={this.toggleEmbedCode} className={'lock-icons'} />
+        <LockIconBar lock={this.props.lock} toggleCode={this.toggleEmbedCode} />
       </LockIconBarContainer>)
     } else {
       lockComponentStatusBlock = <CreatorLockConfirming lock={this.props.lock} status={this.props.status} />
@@ -56,7 +54,7 @@ export class CreatorLock extends React.Component {
         <Balance amount={this.props.lock.keyPrice} />
         <Balance amount={this.props.lock.balance} />
         {lockComponentStatusBlock}
-        {this.props.status == 'deployed' && this.state.showEmbedCode &&
+        {this.props.status == 'deployed' && !this.state.showEmbedCode &&
           <LockCode>
             <LockDivider />
             <LockCodeControls>
