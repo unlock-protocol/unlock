@@ -4,22 +4,31 @@ import Link from 'next/link'
 import Layout from '../components/interface/Layout'
 import { Section, Headline, SubTitle, CallToAction, ThreeColumns, Column } from '../components/Components'
 import { ActionButton } from '../components/creator/CreatorLocks'
+import { withConfig } from '../utils/withConfig'
+import UnlockPropTypes from '../propTypes'
 
-export const Home = () => (
+export const Home = ({ config }) => (
   <Layout forContent={true}>
     <Hero>The Web&#39;s new business model</Hero>
     <Headline>
       Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.
     </Headline>
 
-    <Link href={'/dashboard'}>
-      <a>
-        <Action>
-          <HomepageButton>Go to Your Dashboard</HomepageButton>
-          <ButtonLabel>Requires a browser with an Ethereum wallet</ButtonLabel>
-        </Action>
-      </a>
-    </Link>
+    <Action>
+      { config.env !== 'prod' &&
+        <Link href={'/dashboard'}>
+          <a>
+            <HomepageButton>Go to Your Dashboard</HomepageButton>
+          </a>
+        </Link>
+      }
+
+      {config.env === 'prod' &&
+        <HomepageButton disabled>Go to Your Dashboard... <em>coming soon</em></HomepageButton>
+      }
+
+      <ButtonLabel>Requires a browser with an Ethereum wallet</ButtonLabel>
+    </Action>
 
     <ThreeColumns>
       <Column>
@@ -51,7 +60,11 @@ export const Home = () => (
   </Layout>
 )
 
-export default Home
+Home.propTypes = {
+  config: UnlockPropTypes.configuration,
+}
+
+export default withConfig(Home)
 
 const ImageWithHover = styled.div`
   border-style: none;
@@ -74,18 +87,17 @@ const Hero = styled.h1`
 const Action = styled.div`
   display: grid;
   justify-items: center;
-  grid-template-columns: 1fr minmax(250px, 2fr) 1fr;
   grid-gap: 16px;
   margin-bottom: 50px;
 `
 
 const ButtonLabel = styled.small`
-  grid-column: 2;
   font-size: 12px;
   font-weight: 200;
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
   color: var(--darkgrey);
   display: grid;
+  grid-row: 2;
   justify-content: center;
   text-align: center;
 `
@@ -97,6 +109,6 @@ const Paragraph = styled.p`
 `
 
 const HomepageButton = styled(ActionButton)`
-  padding: 20px;
-  grid-column: 2;
+  max-width: 400px;
+  padding: 20px 50px;
 `
