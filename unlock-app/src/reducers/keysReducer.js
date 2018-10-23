@@ -1,6 +1,6 @@
 import { ADD_KEY } from '../actions/key'
 
-const initialState = {}
+export const initialState = {}
 
 const keysReducer = (state = initialState, action) => {
 

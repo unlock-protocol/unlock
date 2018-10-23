@@ -1,6 +1,6 @@
 import { SET_LOCK, RESET_LOCK } from '../actions/lock'
 
-const initialState = {
+export const initialState = {
 }
 
 const lockReducer = (state = initialState, action) => {

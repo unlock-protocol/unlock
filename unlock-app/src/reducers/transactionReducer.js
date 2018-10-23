@@ -1,6 +1,6 @@
 import { SET_TRANSACTION, UPDATE_TRANSACTION, DELETE_TRANSACTION } from '../actions/transaction'
 
-const initialState = {
+export const initialState = {
   latest: null,
   all: {},
   lastUpdated: 0,
