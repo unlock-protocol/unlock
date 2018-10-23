@@ -2,6 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Router from 'next/router'
 
+import UnlockPropTypes from '../propTypes'
+import { withConfig } from '../utils/withConfig'
+
 class Error extends React.Component {
   static getInitialProps ({ res, err }) {
     const statusCode = res ? res.statusCode : err ? err.statusCode : null
@@ -20,9 +23,9 @@ class Error extends React.Component {
   }
 
   render () {
-    const isServer = typeof window === 'undefined'
+    const { config } = this.props
 
-    if (isServer) {
+    if (config.isServer) {
       return null
     }
 
@@ -38,6 +41,7 @@ class Error extends React.Component {
 
 Error.propTypes = {
   statusCode: PropTypes.number,
+  config: UnlockPropTypes.configuration,
 }
 
-export default Error
+export default withConfig(Error)

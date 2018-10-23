@@ -1,13 +1,15 @@
+import configure from '../config'
 import React from 'react'
 import createUnlockStore from '../createUnlockStore'
 import { saveState } from '../services/localStorageService'
 
-const isServer = typeof window === 'undefined'
+const config = configure(global)
+
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
 function getOrCreateStore (initialState) {
   // Always make a new store if server, otherwise state is shared between requests
-  if (isServer) {
+  if (config.isServer) {
     return createUnlockStore(initialState)
   }
 

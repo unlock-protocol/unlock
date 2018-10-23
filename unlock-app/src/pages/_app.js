@@ -5,8 +5,7 @@ import withReduxStore from '../utils/withReduxStore'
 import configure from '../config'
 import GlobalStyle from '../theme/globalStyle'
 
-const isServer = typeof window === 'undefined'
-const config = !isServer ? configure(global) : {}
+const config = configure(global)
 const ConfigContext = React.createContext()
 
 class MyApp extends App {
@@ -24,7 +23,9 @@ class MyApp extends App {
     super(props)
 
     // Hack to quick the Redux lock middleware on load
-    props.reduxStore.dispatch({ type: '@@INIT' })
+    if (!config.isServer) {
+      props.reduxStore.dispatch({ type: '@@INIT' })
+    }
   }
 
   render () {
