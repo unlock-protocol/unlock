@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import UnlockPropTypes from '../../../propTypes'
 
-export function LockCodeSnippet({ lock }) {
+export function EmbedCodeSnippet({ lock }) {
   function embedCode(lock) {
     return `<!-- Include this script in your <head> section -->
 <script src="https://unlock-protocol.com/unlock.js"></script>
@@ -24,11 +24,11 @@ export function LockCodeSnippet({ lock }) {
   )
 }
 
-LockCodeSnippet.propTypes = {
+EmbedCodeSnippet.propTypes = {
   lock: UnlockPropTypes.lock,
 }
 
-export default LockCodeSnippet
+export default EmbedCodeSnippet
 
 const CodeSnippet = styled.textarea`
   width: 100%;

@@ -17,7 +17,7 @@ export class LockIconBar extends React.Component {
         <Buttons.Withdraw />
         <Buttons.Edit />
         { /* Reinstate when we're ready <Buttons.ExportLock /> */ }
-        <Buttons.Code onClick={this.props.toggleCodeFunction} />
+        <Buttons.Code onClick={this.props.toggleCode} />
       </IconBar>
     )
   }
@@ -25,7 +25,7 @@ export class LockIconBar extends React.Component {
 
 LockIconBar.propTypes = {
   lock: UnlockPropTypes.lock,
-  toggleCodeFunction: PropTypes.func,
+  toggleCode: PropTypes.func,
 }
 
 export default LockIconBar

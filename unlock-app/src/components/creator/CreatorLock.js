@@ -3,7 +3,7 @@ import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
 import CreatorLockConfirming from './lock/CreatorLockConfirming'
 import Icon from '../lock/Icon'
-import LockCodeSnippet from './lock/LockCodeSnippet'
+import EmbedCodeSnippet from './lock/EmbedCodeSnippet'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
 import Buttons from '../interface/buttons/lock'
@@ -34,8 +34,9 @@ export class CreatorLock extends React.Component {
     let lockComponentStatusBlock
 
     if (this.props.status === 'deployed') { // the transaction was mined and confirmed at least 12 times
+      // The className below is required to hide / reveal the icon bar
       lockComponentStatusBlock = (<LockIconBarContainer>
-        <LockIconBar lock={this.props.lock} toggleCodeFunction={this.toggleEmbedCode} className={'lock-icons'} />
+        <LockIconBar lock={this.props.lock} toggleCode={this.toggleEmbedCode} className={'lock-icons'} />
       </LockIconBarContainer>)
     } else {
       lockComponentStatusBlock = <CreatorLockConfirming lock={this.props.lock} status={this.props.status} />
@@ -59,7 +60,7 @@ export class CreatorLock extends React.Component {
           <LockCode>
             <LockDivider />
             <LockCodeControls>
-              <LockCodeSnippet lock={this.props.lock} />
+              <EmbedCodeSnippet lock={this.props.lock} />
               <Buttons.Copy />
             </LockCodeControls>
           </LockCode>
