@@ -3,7 +3,7 @@ import configure from '../config'
 
 const config = configure(global)
 
-let initialState = null
+export let initialState = null
 
 if (!config.isServer) {
   // By default, we start with the first provider.
