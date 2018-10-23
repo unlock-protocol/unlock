@@ -1,6 +1,6 @@
 import { SET_ACCOUNT, RESET_ACCOUNT_BALANCE } from '../actions/accounts'
 
-const initialState = {}
+export const initialState = {}
 
 const accountReducer = (state = initialState, action) => {
   if (action.type === SET_ACCOUNT) {
