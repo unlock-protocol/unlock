@@ -60,6 +60,8 @@ export const Home = ({ config }) => (
   </Layout>
 )
 
+Home.skipConstraints = true
+
 Home.propTypes = {
   config: UnlockPropTypes.configuration,
 }

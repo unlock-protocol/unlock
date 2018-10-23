@@ -12,25 +12,30 @@ import { connect } from 'react-redux'
 const config = configure(global)
 const ConfigContext = React.createContext(config)
 
-// This function takes a component...
+/**
+ * This creates an HOC from a component and injects the configuration.
+ * It also triggers errors if constraints are not respected.
+ * @param {*} Component
+ */
 export function withConfig(Component) {
-  // ...and returns another component...
+
   function componentWithConfig(props) {
-    // ... and renders the wrapped component with the context config!
-    // Notice that we pass through any additional props as well
 
     const { store: reduxStore, router } = props
 
-    if (!config.isServer) {
-      // Ensuring that we have at least a provider
-      if (Object.keys(config.providers).length === 0) {
-        return (<MissingProvider />)
+    if (!Component.skipConstraints) {
+      if (!config.isServer) {
+        // Ensuring that we have at least a provider
+        if (Object.keys(config.providers).length === 0) {
+          return (<MissingProvider />)
+        }
+
+        // Ensuring that the provider is using the right network!
+        if (router.route !== '/provider' && config.isRequiredNetwork && !config.isRequiredNetwork(reduxStore.getState().network.name)) {
+          return (<WrongNetwork currentNetwork={ETHEREUM_NETWORKS_NAMES[reduxStore.getState().network.name][0]} requiredNetwork={config.requiredNetwork} />)
+        }
       }
 
-      // Ensuring that the provider is using the right network!
-      if (router.route !== '/provider' && config.isRequiredNetwork && !config.isRequiredNetwork(reduxStore.getState().network.name)) {
-        return (<WrongNetwork currentNetwork={ETHEREUM_NETWORKS_NAMES[reduxStore.getState().network.name][0]} requiredNetwork={config.requiredNetwork} />)
-      }
     }
 
     return (
