@@ -5,22 +5,16 @@ import PropTypes from 'prop-types'
 import UnlockPropTypes from '../../../propTypes'
 import Buttons from '../../interface/buttons/lock'
 
-export class LockIconBar extends React.Component {
-  constructor (props, context) {
-    super(props)
-  }
-
-  render() {
-    return (
-      <IconBar>
-        <Buttons.PreviewLock lock={this.props.lock} />
-        <Buttons.Withdraw />
-        <Buttons.Edit />
-        { /* Reinstate when we're ready <Buttons.ExportLock /> */ }
-        <Buttons.Code onClick={this.props.toggleCode} />
-      </IconBar>
-    )
-  }
+export function LockIconBar({ lock, toggleCode }) {
+  return (
+    <IconBar>
+      <Buttons.PreviewLock lock={lock} />
+      <Buttons.Withdraw />
+      <Buttons.Edit />
+      { /* Reinstate when we're ready <Buttons.ExportLock /> */ }
+      <Buttons.Code onClick={toggleCode} />
+    </IconBar>
+  )
 }
 
 LockIconBar.propTypes = {
