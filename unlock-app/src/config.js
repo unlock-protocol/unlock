@@ -99,6 +99,7 @@ export default function configure(environment) {
   }
 
   return {
+    env,
     providers,
     isRequiredNetwork,
     requiredNetwork,
