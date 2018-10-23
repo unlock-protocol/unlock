@@ -54,7 +54,7 @@ export class CreatorLock extends React.Component {
         <Balance amount={this.props.lock.keyPrice} />
         <Balance amount={this.props.lock.balance} />
         {lockComponentStatusBlock}
-        {this.props.status == 'deployed' && !this.state.showEmbedCode &&
+        {this.props.status == 'deployed' && this.state.showEmbedCode &&
           <LockCode>
             <LockDivider />
             <LockCodeControls>
@@ -140,6 +140,7 @@ const LockCodeControls = styled.div`
   display: grid;
   grid-template-columns: 32px 7fr 1fr;
   grid-gap: 16px;
+  grid-template-rows: 163px;
   margin-bottom: 10px;
 `
 

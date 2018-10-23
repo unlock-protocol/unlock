@@ -31,8 +31,6 @@ EmbedCodeSnippet.propTypes = {
 export default EmbedCodeSnippet
 
 const CodeSnippet = styled.textarea`
-  width: 100%;
-  height: 163px;
   border-radius: 4px;
   border: 0;
   background-color: var(--lightgrey);
