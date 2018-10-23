@@ -3,9 +3,9 @@ import configure from '../config'
 
 const config = configure(global)
 
-let initialState = null 
+let initialState = null
 
-if (Object.keys(config).length !== 0) {
+if (!config.isServer) {
   // By default, we start with the first provider.
   initialState = Object.keys(config.providers)[0]
 }

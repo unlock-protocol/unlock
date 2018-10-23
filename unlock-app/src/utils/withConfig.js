@@ -9,7 +9,6 @@ import { connect } from 'react-redux'
  * Taken from https://reactjs.org/docs/context.html#consuming-context-with-a-hoc
  */
 
-const isServer = typeof window === 'undefined'
 const config = configure(global)
 const ConfigContext = React.createContext(config)
 
@@ -22,7 +21,7 @@ export function withConfig(Component) {
 
     const { store: reduxStore, router } = props
 
-    if (!isServer) {
+    if (!config.isServer) {
       // Ensuring that we have at least a provider
       if (Object.keys(config.providers).length === 0) {
         return (<MissingProvider />)
