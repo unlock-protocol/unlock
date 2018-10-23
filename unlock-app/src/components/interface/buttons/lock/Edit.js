@@ -2,8 +2,8 @@ import Svg from '../../svg'
 import React from 'react'
 import { LockButton } from '../Button'
 
-const Edit = () => (
-  <LockButton>
+const Edit = (props) => (
+  <LockButton {...props}>
     <Svg.Edit />
   </LockButton>
 )
