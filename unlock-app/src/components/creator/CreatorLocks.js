@@ -91,14 +91,13 @@ const LockMinorHeader = styled.div`
 `
 
 export const ActionButton = styled.button`
-  background-color: var(--green);
+  background-color: ${props => props.disabled ? 'var(--grey)' : 'var(--green)'};
   border: none;
   font-size: 16px;
   color: var(--darkgrey);
   font-family: "IBM Plex Sans", sans-serif;
   border-radius: 4px;
-  justify-self: stretch;
-  cursor: pointer;
+  cursor: ${props => props.disabled ? 'auto' : 'pointer'};
 `
 
 const CreateButton = styled(ActionButton)`
