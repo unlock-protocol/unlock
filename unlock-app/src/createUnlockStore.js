@@ -3,11 +3,11 @@ import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 // Reducers
-import networkReducer from './reducers/networkReducer'
-import providerReducer from './reducers/providerReducer'
-import transactionReducer  from './reducers/transactionReducer'
-import locksReducer  from './reducers/locksReducer'
-import keysReducer  from './reducers/keysReducer'
+import networkReducer, { initialState as defaultNetwork } from './reducers/networkReducer'
+import providerReducer, { initialState as defaultProvider } from './reducers/providerReducer'
+import transactionReducer, { initialState as defaultTransactions } from './reducers/transactionReducer'
+import locksReducer, { initialState as defaultLocks } from './reducers/locksReducer'
+import keysReducer, { initialState as defaultKeys } from './reducers/keysReducer'
 
 // Middlewares
 import lockMiddleware from './middlewares/lockMiddleware'
@@ -21,18 +21,12 @@ export default function createUnlockStore(config, browserHistory) {
     keys: keysReducer,
   }
 
-  // TODO: DRY this because each reducer has its own initial state.
   const initialState = Object.assign({
-    network: {
-      name: 0,
-    },
-    transactions: {
-      latest: null,
-      all: {},
-      lastUpdated: 0,
-    },
-    locks: {},
-    keys: {},
+    network: defaultNetwork,
+    provider: defaultProvider,
+    transactions: defaultTransactions,
+    locks: defaultLocks,
+    keys: defaultKeys,
   }, loadState())
 
   const middlewares = [

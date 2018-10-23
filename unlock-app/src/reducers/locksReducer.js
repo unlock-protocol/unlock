@@ -1,7 +1,7 @@
 import { CREATE_LOCK, RESET_LOCK } from '../actions/lock'
 import { DELETE_TRANSACTION } from '../actions/transaction'
 
-const initialState = {}
+export const initialState = {}
 
 const locksReducer = (state = initialState, action) => {
 
