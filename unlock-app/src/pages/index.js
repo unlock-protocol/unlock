@@ -57,6 +57,7 @@ export const Home = ({ config }) => (
     <Section>
       <CallToAction>Check out our open source code on <a href="https://github.com/unlock-protocol/unlock">GitHub</a>, come work <a href="/jobs">with us</a> or simply <a href="mailto:hello@unlock-protocol.com">get in touch</a>.</CallToAction>
     </Section>
+
   </Layout>
 )
 
@@ -73,6 +74,11 @@ const ImageWithHover = styled.div`
   height: 200px;
   &:hover {
     background: url(${props => (`/static/images/pages/png/${props.base}-hover.png`)}) no-repeat center/contain;
+  }
+  /* // Preload to avoid flickering effect */
+  &:after {
+    content: url(${props => (`/static/images/pages/png/${props.base}-hover.png`)});
+    display: none;
   }
 `
 
