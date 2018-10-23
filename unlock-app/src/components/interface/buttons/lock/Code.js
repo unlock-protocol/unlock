@@ -2,8 +2,8 @@ import Svg from '../../svg'
 import React from 'react'
 import { LockButton } from '../Button'
 
-const Code = () => (
-  <LockButton>
+const Code = (props) => (
+  <LockButton {...props}>
     <Svg.Code />
   </LockButton>
 )

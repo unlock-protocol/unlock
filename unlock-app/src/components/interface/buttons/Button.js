@@ -28,7 +28,7 @@ LayoutButton.propTypes = {
   fillHoverColor: PropTypes.string,
 }
 
-export const LockButton = ({ href = '#', children }) => (
+export const LockButton = ({ href = '#', children, ...props }) => (
   <Link href={href}>
     <Button
       href={href}
@@ -36,6 +36,7 @@ export const LockButton = ({ href = '#', children }) => (
       fillColor={'var(--grey)'}
       backgroundHoverColor={'var(--link)'}
       fillHoverColor={'white'}
+      {...props}
     >
       {children}
     </Button>

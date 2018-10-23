@@ -2,8 +2,8 @@ import Svg from '../../svg'
 import React from 'react'
 import { LockButton } from '../Button'
 
-const Etherscan = () => (
-  <LockButton>
+const Etherscan = (props) => (
+  <LockButton {...props}>
     <Svg.Etherscan />
   </LockButton>
 )
