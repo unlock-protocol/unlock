@@ -18,7 +18,7 @@ export class CreatorLock extends React.Component {
 
   toggleEmbedCode() {
     this.setState({
-      showEmbedCode: this.state.showEmbedCode,
+      showEmbedCode: !this.state.showEmbedCode,
     })
   }
 
