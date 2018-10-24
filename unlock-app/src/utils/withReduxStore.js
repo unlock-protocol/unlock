@@ -43,6 +43,7 @@ export default (App) => {
     constructor (props) {
       super(props)
 
+      // For some reason this argument is being ignored... we probably need to use it!
       this.reduxStore = getOrCreateStore(props.initialReduxState)
       this.reduxStore.subscribe(() => {
         saveState(this.reduxStore.getState())
