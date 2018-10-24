@@ -1,18 +1,21 @@
 import { loadState } from './services/localStorageService'
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import configure from './config'
 
 // Reducers
+import keysReducer, { initialState as defaultKeys } from './reducers/keysReducer'
+import locksReducer, { initialState as defaultLocks } from './reducers/locksReducer'
 import networkReducer, { initialState as defaultNetwork } from './reducers/networkReducer'
 import providerReducer, { initialState as defaultProvider } from './reducers/providerReducer'
 import transactionReducer, { initialState as defaultTransactions } from './reducers/transactionReducer'
-import locksReducer, { initialState as defaultLocks } from './reducers/locksReducer'
-import keysReducer, { initialState as defaultKeys } from './reducers/keysReducer'
 
 // Middlewares
 import lockMiddleware from './middlewares/lockMiddleware'
 
-export default function createUnlockStore(config, browserHistory) {
+const config = configure(global)
+
+export default function createUnlockStore() {
   const reducers = {
     keys: keysReducer,
     locks: locksReducer,
@@ -21,12 +24,16 @@ export default function createUnlockStore(config, browserHistory) {
     transactions: transactionReducer,
   }
 
+  // We build the initial state by taking first each reducer's default values
+  // Then some overides and finally whatever state we have stored locally.
   const initialState = Object.assign({
     keys: defaultKeys,
     locks: defaultLocks,
     network: defaultNetwork,
     provider: defaultProvider,
     transactions: defaultTransactions,
+  }, {
+    provider: Object.keys(config.providers)[0],
   }, loadState())
 
   const middlewares = [
