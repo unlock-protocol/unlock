@@ -6,7 +6,6 @@ import Icon from '../lock/Icon'
 import EmbedCodeSnippet from './lock/EmbedCodeSnippet'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
-import Buttons from '../interface/buttons/lock'
 import styled from 'styled-components'
 
 export class CreatorLock extends React.Component {
@@ -19,7 +18,7 @@ export class CreatorLock extends React.Component {
 
   toggleEmbedCode() {
     this.setState({
-      showEmbedCode: !this.state.showEmbedCode,
+      showEmbedCode: this.state.showEmbedCode,
     })
   }
 
@@ -54,13 +53,10 @@ export class CreatorLock extends React.Component {
         <Balance amount={this.props.lock.keyPrice} />
         <Balance amount={this.props.lock.balance} />
         {lockComponentStatusBlock}
-        {this.props.status == 'deployed' && this.state.showEmbedCode &&
+        {this.props.status == 'deployed' && !this.state.showEmbedCode &&
           <LockCode>
             <LockDivider />
-            <LockCodeControls>
-              <EmbedCodeSnippet lock={this.props.lock} />
-              <Buttons.Copy />
-            </LockCodeControls>
+            <EmbedCodeSnippet lock={this.props.lock} />
           </LockCode>
         }
       </LockRow>
@@ -132,16 +128,6 @@ const LockDivider = styled.div`
   width: 99%;
   height: 1px;
   background-color: var(--lightgrey);
-`
-
-const LockCodeControls = styled.div`
-  margin-top: 20px;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 32px 7fr 1fr;
-  grid-gap: 16px;
-  grid-template-rows: 163px;
-  margin-bottom: 10px;
 `
 
 /* Saving for use with sub-values that need to be added in a future PR
