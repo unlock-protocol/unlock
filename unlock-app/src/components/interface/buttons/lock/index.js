@@ -6,6 +6,7 @@ import Download from './Download'
 import Upload from './Upload'
 import Etherscan from './Etherscan'
 import PreviewLock from './PreviewLock'
+import Copy from './Copy'
 
 export default {
   Withdraw,
@@ -16,4 +17,5 @@ export default {
   Upload,
   Etherscan,
   PreviewLock,
+  Copy,
 }
