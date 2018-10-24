@@ -220,6 +220,7 @@ contract('Lock', (accounts) => {
       })
 
       // TODO this test is flaky
+      // n44o: failing after refactoring(removed Modifier `onlyLockOwnerOnRestrictedOrKeyOwnerInPublic`)
       it('should succeed if the sending account was pre-approved', () => {
         return locks['RESTRICTED']
           .approve(accounts[3], accounts[3], {

@@ -26,9 +26,10 @@ pragma solidity 0.4.24;
  */
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+// n44o: import Interfaces here!
 import "./Lock.sol";
 
-
+// n44o: use dynamic factory pattern? https://blog.aragon.org/advanced-solidity-code-deployment-techniques-dc032665f434/
 contract Unlock is Ownable {
 
   /**
@@ -37,6 +38,7 @@ contract Unlock is Ownable {
    * This is required because both totalSales and yieldedDiscountTokens are 0 when initialized,
    * which would be the same values when the lock is not set.
    */
+
   struct LockBalances {
     bool deployed;
     uint totalSales; // This is in wei
@@ -67,7 +69,7 @@ contract Unlock is Ownable {
   function initialize(
     address _owner
   )
-    public 
+    public
   {
     require(!initialized);
     owner = _owner;

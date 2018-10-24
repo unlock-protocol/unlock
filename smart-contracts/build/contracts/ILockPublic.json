@@ -1,0 +1,667 @@
+{
+  "contractName": "ILockPublic",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "interfaceId",
+          "type": "bytes4"
+        }
+      ],
+      "name": "supportsInterface",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getApproved",
+      "outputs": [
+        {
+          "name": "operator",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "approve",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_keyPrice",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateKeyPrice",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "transferFrom",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "withdraw",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "outstandingKeys",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_recipient",
+          "type": "address"
+        },
+        {
+          "name": "_data",
+          "type": "bytes"
+        }
+      ],
+      "name": "purchaseFor",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "ownerOf",
+      "outputs": [
+        {
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "balanceOf",
+      "outputs": [
+        {
+          "name": "balance",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_owner",
+          "type": "address"
+        }
+      ],
+      "name": "expireKeyFor",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_owner",
+          "type": "address"
+        }
+      ],
+      "name": "keyExpirationTimestampFor",
+      "outputs": [
+        {
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_owner",
+          "type": "address"
+        }
+      ],
+      "name": "keyDataFor",
+      "outputs": [
+        {
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_recipient",
+          "type": "address"
+        },
+        {
+          "name": "_referrer",
+          "type": "address"
+        },
+        {
+          "name": "_data",
+          "type": "bytes"
+        }
+      ],
+      "name": "purchaseForFrom",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "previousOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipRenounced",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Transfer",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "approved",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Approval",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "operator",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "approved",
+          "type": "bool"
+        }
+      ],
+      "name": "ApprovalForAll",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity 0.4.24;\n\nimport \"openzeppelin-solidity/contracts/ownership/Ownable.sol\";\nimport \"./IERC721.sol\";\nimport \"./ILockCore.sol\";\n\n\n/**\n * @title The Public Lock base contract.\n * @author n44o (unlock-protocol.com)\n * @dev ILockPublic is abstract.\n * @dev Lock smart contracts are ERC721 compatible smart contracts.\n *  However, they have some specificities:\n *  - Since each address owns at most one single key, the tokenId is equal to the owner\n *  - Each address owns at most one single key (ERC721 allows for multiple owned NFTs)\n *  - When transfering the key, we actually reset the expiration date on the transfered key to now\n *    and assign its previous expiration date to the new owner. This is important because it prevents\n *    some abuse around referrals.\n */\ncontract ILockPublic is ILockCore, IERC721, Ownable {\n}",
+  "sourcePath": "/home/vagrant/DAPPS/unlock/smart-contracts/contracts/interfaces/ILockPublic.sol",
+  "ast": {
+    "absolutePath": "/home/vagrant/DAPPS/unlock/smart-contracts/contracts/interfaces/ILockPublic.sol",
+    "exportedSymbols": {
+      "ILockPublic": [
+        1329
+      ]
+    },
+    "id": 1330,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1319,
+        "literals": [
+          "solidity",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:10"
+      },
+      {
+        "absolutePath": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
+        "file": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
+        "id": 1320,
+        "nodeType": "ImportDirective",
+        "scope": 1330,
+        "sourceUnit": 1416,
+        "src": "25:63:10",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/vagrant/DAPPS/unlock/smart-contracts/contracts/interfaces/IERC721.sol",
+        "file": "./IERC721.sol",
+        "id": 1321,
+        "nodeType": "ImportDirective",
+        "scope": 1330,
+        "sourceUnit": 1255,
+        "src": "89:23:10",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/vagrant/DAPPS/unlock/smart-contracts/contracts/interfaces/ILockCore.sol",
+        "file": "./ILockCore.sol",
+        "id": 1322,
+        "nodeType": "ImportDirective",
+        "scope": 1330,
+        "sourceUnit": 1318,
+        "src": "113:25:10",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1323,
+              "name": "ILockCore",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1317,
+              "src": "807:9:10",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_ILockCore_$1317",
+                "typeString": "contract ILockCore"
+              }
+            },
+            "id": 1324,
+            "nodeType": "InheritanceSpecifier",
+            "src": "807:9:10"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1325,
+              "name": "IERC721",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1254,
+              "src": "818:7:10",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_IERC721_$1254",
+                "typeString": "contract IERC721"
+              }
+            },
+            "id": 1326,
+            "nodeType": "InheritanceSpecifier",
+            "src": "818:7:10"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1327,
+              "name": "Ownable",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1415,
+              "src": "827:7:10",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Ownable_$1415",
+                "typeString": "contract Ownable"
+              }
+            },
+            "id": 1328,
+            "nodeType": "InheritanceSpecifier",
+            "src": "827:7:10"
+          }
+        ],
+        "contractDependencies": [
+          1187,
+          1254,
+          1317,
+          1415
+        ],
+        "contractKind": "contract",
+        "documentation": "@title The Public Lock base contract.\n@author n44o (unlock-protocol.com)\n@dev ILockPublic is abstract.\n@dev Lock smart contracts are ERC721 compatible smart contracts.\n However, they have some specificities:\n - Since each address owns at most one single key, the tokenId is equal to the owner\n - Each address owns at most one single key (ERC721 allows for multiple owned NFTs)\n - When transfering the key, we actually reset the expiration date on the transfered key to now\n   and assign its previous expiration date to the new owner. This is important because it prevents\n   some abuse around referrals.",
+        "fullyImplemented": false,
+        "id": 1329,
+        "linearizedBaseContracts": [
+          1329,
+          1415,
+          1254,
+          1187,
+          1317
+        ],
+        "name": "ILockPublic",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 1330,
+        "src": "783:55:10"
+      }
+    ],
+    "src": "0:838:10"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/vagrant/DAPPS/unlock/smart-contracts/contracts/interfaces/ILockPublic.sol",
+    "exportedSymbols": {
+      "ILockPublic": [
+        1329
+      ]
+    },
+    "id": 1330,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1319,
+        "literals": [
+          "solidity",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:10"
+      },
+      {
+        "absolutePath": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
+        "file": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
+        "id": 1320,
+        "nodeType": "ImportDirective",
+        "scope": 1330,
+        "sourceUnit": 1416,
+        "src": "25:63:10",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/vagrant/DAPPS/unlock/smart-contracts/contracts/interfaces/IERC721.sol",
+        "file": "./IERC721.sol",
+        "id": 1321,
+        "nodeType": "ImportDirective",
+        "scope": 1330,
+        "sourceUnit": 1255,
+        "src": "89:23:10",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/vagrant/DAPPS/unlock/smart-contracts/contracts/interfaces/ILockCore.sol",
+        "file": "./ILockCore.sol",
+        "id": 1322,
+        "nodeType": "ImportDirective",
+        "scope": 1330,
+        "sourceUnit": 1318,
+        "src": "113:25:10",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1323,
+              "name": "ILockCore",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1317,
+              "src": "807:9:10",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_ILockCore_$1317",
+                "typeString": "contract ILockCore"
+              }
+            },
+            "id": 1324,
+            "nodeType": "InheritanceSpecifier",
+            "src": "807:9:10"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1325,
+              "name": "IERC721",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1254,
+              "src": "818:7:10",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_IERC721_$1254",
+                "typeString": "contract IERC721"
+              }
+            },
+            "id": 1326,
+            "nodeType": "InheritanceSpecifier",
+            "src": "818:7:10"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1327,
+              "name": "Ownable",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1415,
+              "src": "827:7:10",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Ownable_$1415",
+                "typeString": "contract Ownable"
+              }
+            },
+            "id": 1328,
+            "nodeType": "InheritanceSpecifier",
+            "src": "827:7:10"
+          }
+        ],
+        "contractDependencies": [
+          1187,
+          1254,
+          1317,
+          1415
+        ],
+        "contractKind": "contract",
+        "documentation": "@title The Public Lock base contract.\n@author n44o (unlock-protocol.com)\n@dev ILockPublic is abstract.\n@dev Lock smart contracts are ERC721 compatible smart contracts.\n However, they have some specificities:\n - Since each address owns at most one single key, the tokenId is equal to the owner\n - Each address owns at most one single key (ERC721 allows for multiple owned NFTs)\n - When transfering the key, we actually reset the expiration date on the transfered key to now\n   and assign its previous expiration date to the new owner. This is important because it prevents\n   some abuse around referrals.",
+        "fullyImplemented": false,
+        "id": 1329,
+        "linearizedBaseContracts": [
+          1329,
+          1415,
+          1254,
+          1187,
+          1317
+        ],
+        "name": "ILockPublic",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 1330,
+        "src": "783:55:10"
+      }
+    ],
+    "src": "0:838:10"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.1",
+  "updatedAt": "2018-10-25T16:54:53.942Z"
+}

@@ -2,3 +2,5 @@
 .vscode
 tmp_site/
 node_modules/
+temp
+temp/

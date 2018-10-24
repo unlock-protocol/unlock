@@ -1,6 +1,6 @@
 pragma solidity 0.4.24;
 
-import "./interfaces/ILock.sol";
+import "./interfaces/ILockPublic.sol";
 import "./Unlock.sol";
 
 /**
@@ -14,7 +14,8 @@ import "./Unlock.sol";
  *  TODO: consider using a _private version for each method that is being invoked by the
  * public one as this seems to be a pattern.
  */
-contract Lock is ILock {
+// n44o: inherit from ILockPublic here?
+contract Lock is ILockPublic {
 
   // The struct for a key
   struct Key {
@@ -28,6 +29,7 @@ contract Lock is ILock {
   address public unlockProtocol;
 
   // Key release mechanism
+  // n44o can this move to Unlock.sol?
   enum KeyReleaseMechanisms { Public, Restricted, Private }
   KeyReleaseMechanisms public keyReleaseMechanism;
 
@@ -66,23 +68,24 @@ contract Lock is ILock {
    * MODIFIERS
    */
   // Ensure the lock is public
+  // n44o: needed? Can be removed if Public is the only possibility for this contract.
   modifier onlyPublic() {
     require(keyReleaseMechanism == KeyReleaseMechanisms.Public, "Only allowed on public locks");
     _;
   }
 
-  // Ensure that the sender is either the lock owner or the key owner on a public lock
-  modifier onlyLockOwnerOnRestrictedOrKeyOwnerInPublic(
-    uint256 _tokenId
-  ) {
-    require(keyReleaseMechanism != KeyReleaseMechanisms.Private, "Only allowed on public or restricted locks");
+  // n44o: remove all non-public.
+  // modifier onlyLockOwnerOnRestrictedOrKeyOwnerInPublic(
+  //   uint256 _tokenId
+  // ) {
+  //   require(keyReleaseMechanism != KeyReleaseMechanisms.Private, "Only allowed on public or restricted locks");
 
-    require(
-      owner == msg.sender ||
-      (address(_tokenId) == msg.sender && keyReleaseMechanism == KeyReleaseMechanisms.Public)
-    );
-    _;
-  }
+  //   require(
+  //     owner == msg.sender ||
+  //     (address(_tokenId) == msg.sender && keyReleaseMechanism == KeyReleaseMechanisms.Public)
+  //   );
+  //   _;
+  // }
 
   // Ensures that an owner has a key
   modifier hasKey(
@@ -118,28 +121,30 @@ contract Lock is ILock {
 
   // Ensures that the lock is public
   // or that the sender has been approved on restricted locks
-  modifier onlyPublicOrApproved(
-    address _recipient
-  ) {
-    require(keyReleaseMechanism == KeyReleaseMechanisms.Public ||
-      (keyReleaseMechanism == KeyReleaseMechanisms.Restricted
-        && _getApproved(uint256(_recipient)) == _recipient),
-        "Only public locks or restriced with an approved recipient");
-    _;
-  }
+  // n44o: remove all non-public.
+  // modifier onlyPublicOrApproved(
+  //   address _recipient
+  // ) {
+  //   require(keyReleaseMechanism == KeyReleaseMechanisms.Public ||
+  //     (keyReleaseMechanism == KeyReleaseMechanisms.Restricted
+  //       && _getApproved(uint256(_recipient)) == _recipient),
+  //       "Only public locks or restriced with an approved recipient");
+  //   _;
+  // }
 
   // Ensure that the caller has a key
   // or that the caller has been approved
   // for ownership of that key
-  modifier onlyKeyOwnerOrApproved(
-    uint256 _tokenId
-  ) {
-    require(
-      address(_tokenId) == msg.sender
-      || _getApproved(_tokenId) == msg.sender
-    , "Only key owner or approved owner");
-    _;
-  }
+  // n44o: remove all non-public.
+  // modifier onlyKeyOwnerOrApproved(
+  //   uint256 _tokenId
+  // ) {
+  //   require(
+  //     address(_tokenId) == msg.sender
+  //     || _getApproved(_tokenId) == msg.sender
+  //   , "Only key owner or approved owner");
+  //   _;
+  // }
 
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
@@ -150,15 +155,19 @@ contract Lock is ILock {
   // Constructor
   constructor(
     address _owner,
+    // n440: remove?
     KeyReleaseMechanisms _keyReleaseMechanism,
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys
   )
     public {
+        // n440: ???
       unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract. (TODO: handle upgrades?)
       owner = _owner;
-      keyReleaseMechanism = _keyReleaseMechanism;
+      // n440: remove?
+      // n44o: hardcoded this for now? refactor out, no need if contract can only be Public.
+      keyReleaseMechanism = KeyReleaseMechanisms.Public;
       expirationDuration = _expirationDuration;
       keyPrice = _keyPrice;
       maxNumberOfKeys = _maxNumberOfKeys;
@@ -169,6 +178,7 @@ contract Lock is ILock {
   * @param _recipient address of the recipient of the purchased key
   * @param _data optional marker for the key
   */
+  // n44o: @core interface
   function purchaseFor(
     address _recipient,
     bytes _data
@@ -185,6 +195,7 @@ contract Lock is ILock {
   * @param _referrer address of the user making the referral
   * @param _data optional marker for the key
   */
+  // n44o: @core interface
   function purchaseForFrom(
     address _recipient,
     address _referrer,
@@ -201,6 +212,7 @@ contract Lock is ILock {
    * This is payable because at some point we want to allow the LOCK to capture a fee on 2ndary
    * market transactions...
    */
+  // n44o: erc721
   function transferFrom(
     address _from,
     address _recipient,
@@ -211,7 +223,7 @@ contract Lock is ILock {
     notSoldOut()
     onlyPublic()
     hasKey(address(_tokenId))
-    onlyKeyOwnerOrApproved(_tokenId)
+    onlyKeyOwner(_tokenId)
   {
     require(_recipient != address(0));
 
@@ -251,6 +263,7 @@ contract Lock is ILock {
    * TODO: consider partial withdraws?
    * TODO: check for re-entrency?
    */
+  // n44o: @core interface
   function withdraw(
   )
     external
@@ -266,13 +279,14 @@ contract Lock is ILock {
    * Note: that since this is used for both purchase and transfer approvals
    * the approved token may not exist.
    */
+  // n44o: erc721
   function approve(
     address _approved,
     uint256 _tokenId
   )
     external
     payable
-    onlyLockOwnerOnRestrictedOrKeyOwnerInPublic(_tokenId)
+    onlyKeyOwner(_tokenId)
   {
     require(_approved != address(0));
 
@@ -284,6 +298,7 @@ contract Lock is ILock {
    * In the specific case of a Lock, each owner can own only at most 1 key.
    * @return The number of NFTs owned by `_owner`, either 0 or 1.
   */
+  // n44o: erc721
   function balanceOf(
     address _owner
   )
@@ -299,6 +314,7 @@ contract Lock is ILock {
    * @notice ERC721: Find the owner of an NFT
    * @return The address of the owner of the NFT, if applicable
   */
+  // n44o: erc721
   function ownerOf(
     uint256 _tokenId
   )
@@ -314,6 +330,7 @@ contract Lock is ILock {
    * external version
    * Will return the approved recipient for a key, if any.
    */
+  // n44o: erc721
   function getApproved(
     uint256 _tokenId
   )
@@ -327,6 +344,7 @@ contract Lock is ILock {
   /**
    * Public function which returns the total number of keys (both expired and valid)
    */
+  // n44o: @core interface
   function outstandingKeys()
     public
     view
@@ -338,6 +356,7 @@ contract Lock is ILock {
   /**
    * A function which lets the owner of the lock expire a users' key.
    */
+  // n44o: @core interface
   function expireKeyFor(
     address _owner
   )
@@ -347,10 +366,11 @@ contract Lock is ILock {
   {
     keyByOwner[_owner].expirationTimestamp = now; // Effectively expiring the key
   }
-  
+
   /**
    * A function which lets the owner of the lock to change the price for future purchases.
    */
+  // n44o: @core interface
   function updateKeyPrice(
     uint _keyPrice
   )
@@ -364,6 +384,7 @@ contract Lock is ILock {
   * @dev Returns the key's data field for a given owner.
   * @param _owner address of the user for whom we search the key
   */
+  // n44o: @core interface
   function keyDataFor(
     address _owner
   )
@@ -379,6 +400,7 @@ contract Lock is ILock {
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
   * @param _owner address of the user for whom we search the key
   */
+  // n44o: @core interface
   function keyExpirationTimestampFor(
     address _owner
   )
@@ -401,6 +423,7 @@ contract Lock is ILock {
   *  - the recipient already owns a key
   * TODO: next version of solidity will allow for message to be added to require.
   */
+  // n44o: @core interface
   function _purchaseFor(
     address _recipient,
     address _referrer,
@@ -408,7 +431,7 @@ contract Lock is ILock {
   )
     internal
     notSoldOut()
-    onlyPublicOrApproved(_recipient)
+    onlyPublic()
   {
     require(_recipient != address(0));
 
@@ -462,6 +485,7 @@ contract Lock is ILock {
    * Note: this does not check that a corresponding key
    * actually exists.
    */
+  // n44o: erc721
   function _getApproved(
     uint256 _tokenId
   )
