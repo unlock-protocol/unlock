@@ -14,19 +14,19 @@ import lockMiddleware from './middlewares/lockMiddleware'
 
 export default function createUnlockStore(config, browserHistory) {
   const reducers = {
-    provider: providerReducer,
-    network: networkReducer,
-    transactions: transactionReducer,
-    locks: locksReducer,
     keys: keysReducer,
+    locks: locksReducer,
+    network: networkReducer,
+    provider: providerReducer,
+    transactions: transactionReducer,
   }
 
   const initialState = Object.assign({
+    keys: defaultKeys,
+    locks: defaultLocks,
     network: defaultNetwork,
     provider: defaultProvider,
     transactions: defaultTransactions,
-    locks: defaultLocks,
-    keys: defaultKeys,
   }, loadState())
 
   const middlewares = [
