@@ -4,14 +4,10 @@ import { createGlobalStyle } from 'styled-components'
  * Shared CSS accross all components. Injected wtih styled-components' createGlobalStyle
  */
 
-export const globalFonts = `
+export const globalStyle = `
   @import url(https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,400,500,600,700);
   @import url(https://fonts.googleapis.com/css?family=IBM+Plex+Mono:200i,200,500);
   @import url(https://fonts.googleapis.com/css?family=IBM+Plex+Serif:300,400);
-`
-
-export default createGlobalStyle`
-  ${globalFonts}
 
   :root {
     --white: #ffffff;
@@ -51,4 +47,8 @@ export default createGlobalStyle`
   a:visited {
     color: var(--link);
   }
+`
+
+export default createGlobalStyle`
+  ${globalStyle}
 `
