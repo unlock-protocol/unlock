@@ -40,16 +40,11 @@ export function getCurrentProvider(environment) {
 export default function configure(environment) {
   const isServer = typeof window === 'undefined'
 
-  // return an empty object on server side
-  if (isServer) return {
-    isServer: true,
-  }
-
   let env = 'dev' // default
-  if (environment.location.hostname === 'staging.unlock-protocol.com') {
+  if (environment.location && environment.location.hostname === 'staging.unlock-protocol.com') {
     env = 'staging'
   }
-  if (environment.location.hostname === 'unlock-protocol.com') {
+  if (environment.location && environment.location.hostname === 'unlock-protocol.com') {
     env = 'prod'
   }
 
@@ -99,6 +94,7 @@ export default function configure(environment) {
   }
 
   return {
+    isServer,
     env,
     providers,
     isRequiredNetwork,
