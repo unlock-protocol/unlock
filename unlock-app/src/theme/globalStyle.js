@@ -4,11 +4,15 @@ import { createGlobalStyle } from 'styled-components'
  * Shared CSS accross all components. Injected wtih styled-components' createGlobalStyle
  */
 
-export default createGlobalStyle`
+export const globalFonts = `
   @import url(https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,400,500,600,700);
   @import url(https://fonts.googleapis.com/css?family=IBM+Plex+Mono:200i,200,500);
   @import url(https://fonts.googleapis.com/css?family=IBM+Plex+Serif:300,400);
-            
+`
+
+export default createGlobalStyle`
+  ${globalFonts}
+
   :root {
     --white: #ffffff;
     --red: #ed663a;
