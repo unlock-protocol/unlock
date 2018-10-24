@@ -44,7 +44,9 @@ export default function configure(environment) {
   if (environment.location && environment.location.hostname === 'staging.unlock-protocol.com') {
     env = 'staging'
   }
-  if (environment.location && environment.location.hostname === 'unlock-protocol.com') {
+  if ((environment.location && environment.location.hostname === 'unlock-protocol.com') ||
+    process.env['CONTEXT'] === 'production'
+  ) {
     env = 'prod'
   }
 
@@ -83,7 +85,7 @@ export default function configure(environment) {
   }
 
   if (env === 'prod') {
-    // In staging, for now, we require a web3 injected provider.
+    // In prod, for now, we require a web3 injected provider.
     if (typeof environment.web3 !== 'undefined') {
       providers[getCurrentProvider(environment)] = environment.web3.currentProvider
     }
