@@ -46,17 +46,25 @@ export default function configure(environment) {
     process.env['UNLOCK_ENV'] === 'STAGING'
   ) {
     env = 'staging'
-  }
-  if ((environment.location && environment.location.hostname === 'unlock-protocol.com') ||
+  } else if ((environment.location && environment.location.hostname === 'unlock-protocol.com') ||
     process.env['UNLOCK_ENV'] === 'PROD'
   ) {
     env = 'prod'
+  } else if (process.env['NODE_ENV'] === 'text') {
+    env = 'test'
   }
 
   let providers = {}
   let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
   let requiredConfirmations = 12
+
+  if (env === 'test') {
+    // In test, we fake the HTTP provider
+    providers = {
+      'HTTP': new Web3.providers.HttpProvider('http://127.0.0.1:8545'),
+    }
+  }
 
   if (env === 'dev') {
     // In dev, we assume there is a running local ethereum node with unlocked accounts listening to the HTTP endpoint. We can add more providers (Websockets...) if needed.

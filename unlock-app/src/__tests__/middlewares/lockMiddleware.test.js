@@ -27,10 +27,12 @@ let lock = {
   creator: account,
 }
 let state = {
-  network: {
-    account,
-  },
-  provider: 'HTTP',
+}
+
+let key = {
+  id: '123',
+  lockAddress: lock.address,
+  owner: account.address,
 }
 
 const privateKey = '0xdeadbeef'
@@ -109,6 +111,9 @@ beforeEach(() => {
       account,
     },
     provider: 'HTTP',
+    locks: {
+      [lock.address]: lock,
+    },
   }
 
 })
@@ -122,7 +127,10 @@ describe('Lock middleware', () => {
       const { next, invoke } = create()
       const action = { type: SET_NETWORK, network }
       invoke(action)
-      expect(mockWeb3Service.connect).toHaveBeenCalledWith({...state, provider: 'HTTP'})
+      expect(mockWeb3Service.connect).toHaveBeenCalledWith({
+        network: state.network,
+        provider: 'HTTP',
+      })
       expect(next).toHaveBeenCalledTimes(0) // ensures that execution was stopped
     })
 
@@ -170,9 +178,11 @@ describe('Lock middleware', () => {
 
   it('should handle PURCHASE_KEY by calling web3Service\'s purchaseKey', () => {
     const { next, invoke } = create()
-    const action = { type: PURCHASE_KEY, lock, account }
+    const action = { type: PURCHASE_KEY, key }
     invoke(action)
-    expect(mockWeb3Service.purchaseKey).toHaveBeenCalledWith(lock.address, account, '100', '', expect.anything()) // TODO: Can we be more specific? (this is a function)
+    // web3Service.purchaseKey(action.key, account, lock, (transaction) => {
+
+    expect(mockWeb3Service.purchaseKey).toHaveBeenCalledWith(key, account, lock, expect.anything()) // TODO: Can we be more specific? (this is a function)
     expect(next).toHaveBeenCalledWith(action)
   })
 

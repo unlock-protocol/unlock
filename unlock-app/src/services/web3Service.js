@@ -330,7 +330,7 @@ export default class Web3Service {
   purchaseKey(key, account, lock, callback) {
     return new Promise((resolve, reject) => {
       const lockContract = new this.web3.eth.Contract(LockContract.abi, key.lockAddress)
-      const data = lockContract.methods.purchaseFor(key.owner, Web3Utils.utf8ToHex(key.data)).encodeABI()
+      const data = lockContract.methods.purchaseFor(key.owner, Web3Utils.utf8ToHex(key.data || '')).encodeABI()
 
       const transaction = {
         status: 'pending',
@@ -392,7 +392,7 @@ export default class Web3Service {
     const getKeyDataPromise = lockContract.methods.keyDataFor(key.owner).call()
     return Promise.all([getKeyExpirationPromise, getKeyDataPromise])
       .then(([expiration, data]) => {
-        key.expiration = expiration
+        key.expiration = parseInt(expiration, 10)
         key.data = data
         return key
       }).catch((error) => {
