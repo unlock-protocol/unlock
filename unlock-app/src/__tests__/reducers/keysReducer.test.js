@@ -1,5 +1,5 @@
 import reducer from '../../reducers/keysReducer'
-import { ADD_KEY } from '../../actions/key'
+import { ADD_KEY, PURCHASE_KEY } from '../../actions/key'
 
 describe('keys reducer', () => {
 
@@ -14,7 +14,6 @@ describe('keys reducer', () => {
     })
   })
 
-  // TODO  what is the key id? We should get that from the smart contract!
   it('should add the key by its id accordingly when receiving ADD_KEY', () => {
     expect(reducer({}, {
       type: ADD_KEY,
@@ -22,6 +21,16 @@ describe('keys reducer', () => {
     })).toEqual({
       [key.id]: key,
     })
+  })
+
+  it('should add a ley when receiving PURCHASE_KEY', () => {
+    expect(reducer({}, {
+      type: PURCHASE_KEY,
+      key,
+    })).toEqual({
+      [key.id]: key,
+    })
+
   })
 
 })
