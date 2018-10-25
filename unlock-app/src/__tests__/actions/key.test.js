@@ -3,14 +3,12 @@ import { purchaseKey, addKey, PURCHASE_KEY, ADD_KEY } from '../../actions/key'
 describe('key actions', () => {
 
   it('should create an action to purchase a key', () => {
-    const lock = {}
-    const account = '0x123'
+    const key = {}
     const expectedAction = {
       type: PURCHASE_KEY,
-      lock,
-      account,
+      key,
     }
-    expect(purchaseKey(lock, account)).toEqual(expectedAction)
+    expect(purchaseKey(key)).toEqual(expectedAction)
   })
 
   it('should create an action to add a key to the store', () => {
