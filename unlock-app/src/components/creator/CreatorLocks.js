@@ -1,7 +1,7 @@
 import UnlockPropTypes from '../../propTypes'
 
 import React from 'react'
-import { getLockStatusString } from '../../helpers/Locks'
+import { getLockTransaction } from '../../helpers/Locks'
 import CreatorLock, { LockRowGrid } from './CreatorLock'
 import styled from 'styled-components'
 import CreatorLockForm from './CreatorLockForm'
@@ -15,7 +15,7 @@ export class CreatorLocks extends React.Component {
     this.toggleForm = this.toggleForm.bind(this)
   }
 
-  toggleForm() { // TODO add cancel action to form
+  toggleForm() {
     this.setState({
       showDashboardForm: !this.state.showDashboardForm,
     })
@@ -35,8 +35,8 @@ export class CreatorLocks extends React.Component {
         </LockHeaderRow>
         {this.state.showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
         {Object.values(this.props.locks).map((lock, index) => {
-          let lockStatus = getLockStatusString(this.props.transactions, lock.id)
-          return (<CreatorLock key={index} lock={lock} status={lockStatus} />)
+          let transaction = getLockTransaction(this.props.transactions, lock.id)
+          return (<CreatorLock key={index} lock={lock} transaction={transaction} />)
         })}
       </Locks>
     )

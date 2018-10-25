@@ -1,12 +1,13 @@
 import React from 'react'
 import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
-import CreatorLockConfirming from './lock/CreatorLockConfirming'
+import CreatorLockStatus from './lock/CreatorLockStatus'
 import Icon from '../lock/Icon'
 import EmbedCodeSnippet from './lock/EmbedCodeSnippet'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
 import styled from 'styled-components'
+import { getStatusStringFromTransaction } from '../../helpers/Locks'
 
 export class CreatorLock extends React.Component {
   constructor (props, context) {
@@ -30,13 +31,14 @@ export class CreatorLock extends React.Component {
     let name = this.props.lock.name || 'New Lock'
     let outstandingKeys = this.props.lock.maxNumberOfKeys - this.props.lock.outstandingKeys || 0
     let lockComponentStatusBlock
+    let status = getStatusStringFromTransaction(this.props.transaction)
 
-    if (this.props.status === 'deployed') { // the transaction was mined and confirmed at least 12 times
+    if (status === 'deployed') { // the transaction was mined and confirmed at least 12 times
       lockComponentStatusBlock = (<LockIconBarContainer>
         <LockIconBar lock={this.props.lock} toggleCode={this.toggleEmbedCode} />
       </LockIconBarContainer>)
     } else {
-      lockComponentStatusBlock = <CreatorLockConfirming lock={this.props.lock} status={this.props.status} />
+      lockComponentStatusBlock = <CreatorLockStatus lock={this.props.lock} transaction={this.props.transaction} />
     }
 
     return (
@@ -53,7 +55,7 @@ export class CreatorLock extends React.Component {
         <Balance amount={this.props.lock.keyPrice} />
         <Balance amount={this.props.lock.balance} />
         {lockComponentStatusBlock}
-        {this.props.status == 'deployed' && this.state.showEmbedCode &&
+        {status === 'deployed' && this.state.showEmbedCode &&
           <LockCode>
             <LockDivider />
             <EmbedCodeSnippet lock={this.props.lock} />
@@ -66,7 +68,7 @@ export class CreatorLock extends React.Component {
 
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock,
-  status: UnlockPropTypes.status,
+  transaction: UnlockPropTypes.transaction,
 }
 
 export default CreatorLock

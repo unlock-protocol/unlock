@@ -1,0 +1,44 @@
+import PropTypes from 'prop-types'
+import React from 'react'
+import styled from 'styled-components'
+import UnlockPropTypes from '../../../propTypes'
+import { getStatusStringFromTransaction } from '../../../helpers/Locks'
+
+export function CreatorLockStatus({ lock, transaction }) {
+  let status = getStatusStringFromTransaction(transaction)
+  if (status === 'notfound') status = 'Not Found'
+
+  return (
+    <LockStatus>
+      {status}
+      {status == 'confirming' &&
+        <Confirmations>{transaction.confirmations} / 12</Confirmations>
+      }
+    </LockStatus>
+  )
+}
+
+CreatorLockStatus.propTypes = {
+  lock: UnlockPropTypes.lock,
+  transaction: PropTypes.transaction,
+}
+
+export default CreatorLockStatus
+
+export const LockStatus = styled.div`
+  align-self: stretch;
+  justify-content: center;
+  align-content: center;
+  display: grid;
+  text-transform: capitalize;
+  background-color: var(--lightgrey);
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 200;
+  color: var(--grey);
+`
+
+const Confirmations = styled.div`
+  font-size: 10px;
+  margin-top: 11px;
+  text-align: center;
+`
