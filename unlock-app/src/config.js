@@ -35,17 +35,20 @@ export function getCurrentProvider(environment) {
  * In dev/testing, the provider can be anything and the network can be anything too.
  * In staging, the provider needs to be an ingested web3 provider, and the network needs to be rinkeby
  * In prod, the provider needs to be an ingested web3 provider and the network needs to be mainnet
+ * We set UNLOCK_ENV on the deployment platform to STAGING or PROD.
  * @param {*} environment (in the JS sense: `window` most likely)
  */
 export default function configure(environment) {
   const isServer = typeof window === 'undefined'
 
   let env = 'dev' // default
-  if (environment.location && environment.location.hostname === 'staging.unlock-protocol.com') {
+  if ((environment.location && environment.location.hostname === 'staging.unlock-protocol.com') ||
+    process.env['UNLOCK_ENV'] === 'STAGING'
+  ) {
     env = 'staging'
   }
   if ((environment.location && environment.location.hostname === 'unlock-protocol.com') ||
-    process.env['CONTEXT'] === 'production'
+    process.env['UNLOCK_ENV'] === 'PROD'
   ) {
     env = 'prod'
   }
