@@ -14,7 +14,6 @@ describe('keys reducer', () => {
     })
   })
 
-  // TODO  what is the key id? We should get that from the smart contract!
   it('should add the key by its id accordingly when receiving ADD_KEY', () => {
     expect(reducer({}, {
       type: ADD_KEY,
