@@ -305,7 +305,7 @@ describe('Web3Service', () => {
           .then((key) => {
             expect(key.owner).toBe(nodeAccounts[0])
             expect(key.lockAddress).toBe(lockAddress)
-            expect(key.expiration).toBe('1532557829')
+            expect(key.expiration).toBe(1532557829)
             expect(key.data).toBe(null)
           })
       })
