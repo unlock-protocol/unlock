@@ -30,6 +30,8 @@ export default function lockMiddleware ({ getState, dispatch }) {
           dispatch(setAccount(account))
           // We refresh transactions
           Object.values(getState().transactions.all).forEach((transaction) => dispatch(refreshTransaction(transaction)))
+          // We refresh keys
+          Object.values(getState().keys).forEach((key) => web3Service.refreshKey(key))
         }).catch(() => {
           // we could not connect
           // TODO: show error to user
@@ -72,12 +74,12 @@ export default function lockMiddleware ({ getState, dispatch }) {
           dispatch(resetAccountBalance(balance))
         })
       } else if (action.type === PURCHASE_KEY) {
-        // TODO change data from ''
-        web3Service.purchaseKey(action.lock.address, action.account, action.lock.keyPrice, '', (transaction) => {
+        const account = getState().network.account
+        const lock = Object.values(getState().locks).find((lock) => lock.address === action.key.lockAddress)
+        web3Service.purchaseKey(action.key, account, lock, (transaction) => {
           dispatch(setTransaction(transaction))
         }).then((key) => {
-          dispatch(addKey(key))
-          return web3Service.getAddressBalance(action.account.address)
+          return web3Service.getAddressBalance(account.address)
         }).then((balance) => {
           dispatch(resetAccountBalance(balance))
         })
@@ -123,12 +125,18 @@ export default function lockMiddleware ({ getState, dispatch }) {
             .then((key) => {
               dispatch(addKey(key))
             })
+            .catch(() => {
+              // The key does not exist
+            })
         }
       } else if (action.type === SET_LOCK) {
         // Lock was changed, get the matching key
         web3Service.getKey(action.lock.address, getState().network.account)
           .then((key) => {
             dispatch(addKey(key))
+          })
+          .catch(() => {
+            // The key does not exist
           })
       }
 
