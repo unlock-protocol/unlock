@@ -1,10 +1,9 @@
 export const PURCHASE_KEY = 'PURCHASE_KEY'
 export const ADD_KEY = 'ADD_KEY'
 
-export const purchaseKey = (lock, account) => ({
+export const purchaseKey = (key) => ({
   type: PURCHASE_KEY,
-  lock,
-  account,
+  key,
 })
 
 export const addKey = (key) => ({
