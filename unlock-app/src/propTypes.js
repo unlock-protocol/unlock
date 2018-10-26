@@ -43,6 +43,8 @@ export const transactions = PropTypes.shape({})
 
 export const key = PropTypes.shape({})
 
+export const keys = PropTypes.shape({})
+
 export const network = PropTypes.shape({})
 
 export const provider = PropTypes.string
@@ -65,6 +67,7 @@ export default {
   lock,
   locks,
   key,
+  keys,
   name,
   network,
   networks,

@@ -1,11 +1,14 @@
 import { connect } from 'react-redux'
 import UnlockPropTypes from '../propTypes'
+import styled from 'styled-components'
 
 import React from 'react'
 import NoSSR from 'react-no-ssr'
 import Layout from '../components/interface/Layout'
 import { Overlay } from '../components/lock/Overlay'
 import { Section, Title, Headline, ShortColumn, Paragraph } from '../components/Components'
+import { withConfig } from '../utils/withConfig'
+import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
 
 export class Demo extends React.Component {
   static async getInitialProps({ req, query: { lockaddress } }) {
@@ -17,9 +20,8 @@ export class Demo extends React.Component {
   render() {
     const { lockAddress, locks } = this.props
     const lock = Object.values(locks).find((lock) => lock.address === lockAddress)
-
     return(
-      <Layout title="Unlock Demo Page">
+      <Layout title="Unlock Demo Page" forContent={true}>
         <NoSSR>
           <Section>
             <Title>It’s Time to Unlock The Web</Title>
@@ -33,14 +35,21 @@ export class Demo extends React.Component {
               <Paragraph>
                 The thing is, plenty of publishers and creators have been ahead of the curve on this one, even if we don’t give them much credit for it. They knew that free content can, in fact, be very costly and that real freedom comes from knowledge that’s expensive to produce. They understood that when Stewart Brand famously said that “information wants to be free” he meant free as in “speech” (libre), not free as in “beer” (gratis).
               </Paragraph>
-              <Overlay locks={[lock]} />
+
+              <BottomSticker>
+                You can only read this message if you own a key to the lock at {lockAddress}.
+              </BottomSticker>
+
+              <ShowUnlessUserHasKeyToAnyLock locks={[lock]}>
+                <Overlay locks={[lock]} />
+              </ShowUnlessUserHasKeyToAnyLock>
 
             </ShortColumn>
           </Section>
         </NoSSR>
       </Layout>
     )
-  } 
+  }
 }
 
 Demo.propTypes = {
@@ -55,4 +64,11 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(Demo)
+export default withConfig(connect(mapStateToProps)(Demo))
+
+const BottomSticker = styled.p`
+  overflow-wrap: break-word;
+  word-break: break-all;
+  background-color: var(--lightgrey);
+  padding: 10px 30px;
+`

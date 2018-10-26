@@ -1,6 +1,10 @@
+import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { Overlay } from '../../components/lock/Overlay'
+import createUnlockStore from '../../createUnlockStore'
+
+const store = createUnlockStore()
 
 const render = (locks) => (
   <section>
@@ -29,6 +33,7 @@ const render = (locks) => (
 )
 
 storiesOf('Overlay', Overlay)
+  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('with a single Lock', () => {
     const locks = [
       {

@@ -338,7 +338,7 @@ export default class Web3Service {
         createdAt: new Date().getTime(),
         key: key.id,
       }
-      key.transaction = transaction
+      key.transaction = transaction // TODO: do not have deep object, just use the transactionHash
       callback(transaction, key)
 
       return this.sendTransaction({
