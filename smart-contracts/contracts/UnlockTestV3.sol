@@ -10,7 +10,7 @@ pragma solidity 0.4.24;
  */
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
-import "./Lock.sol";
+import "./PublicLock.sol";
 
 
 contract UnlockTestV3 is Ownable {

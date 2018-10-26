@@ -16,5 +16,5 @@ import "./ILockCore.sol";
  *    and assign its previous expiration date to the new owner. This is important because it prevents
  *    some abuse around referrals.
  */
-contract ILock is ILockCore, ERC721, Ownable {
+contract ILockPublic is ILockCore, ERC721, Ownable {
 }
