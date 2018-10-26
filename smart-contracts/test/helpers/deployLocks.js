@@ -1,7 +1,7 @@
-const Lock = artifacts.require('./Lock.sol')
+const PublicLock = artifacts.require('./PublicLock.sol')
 const Locks = require('../fixtures/locks')
 
-module.exports = function deployLocks (unlock) {
+module.exports = function deployLocks(unlock) {
   let locks = {}
 
   return Promise.all(
@@ -14,7 +14,7 @@ module.exports = function deployLocks (unlock) {
       ).then((tx) => {
         // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
         const evt = tx.logs[0]
-        locks[name] = Lock.at(evt.args.newLockAddress)
+        locks[name] = PublicLock.at(evt.args.newLockAddress)
         locks[name].params = Locks[name]
       })
     })

@@ -26,7 +26,7 @@ pragma solidity 0.4.24;
  */
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
-import "./Lock.sol";
+import "./PublicLock.sol";
 
 
 contract Unlock is Ownable {
@@ -67,7 +67,7 @@ contract Unlock is Ownable {
   function initialize(
     address _owner
   )
-    public 
+    public
   {
     require(!initialized);
     owner = _owner;
@@ -81,17 +81,17 @@ contract Unlock is Ownable {
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
   */
   function createLock(
-    Lock.KeyReleaseMechanisms _keyReleaseMechanism,
+    PublicLock.KeyReleaseMechanisms _keyReleaseMechanism,
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys
   )
     public
-    returns (Lock lock)
+    returns (PublicLock lock)
   {
 
     // create lock
-    Lock newLock = new Lock(
+    PublicLock newPublicLock = new PublicLock(
       msg.sender,
       _keyReleaseMechanism,
       _expirationDuration,
@@ -100,17 +100,17 @@ contract Unlock is Ownable {
     );
 
     // Assign the new Lock
-    locks[address(newLock)] = LockBalances({
+    locks[address(newPublicLock)] = LockBalances({
       deployed: true,
       totalSales: 0,
       yieldedDiscountTokens: 0
     });
 
     // trigger event
-    emit NewLock(msg.sender, address(newLock));
+    emit NewLock(msg.sender, address(newPublicLock));
 
     // return the created lock
-    return newLock;
+    return newPublicLock;
   }
 
   /**
