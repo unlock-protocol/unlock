@@ -95,6 +95,7 @@ export const Column = styled.div`
 `
 
 export const ShortColumn = styled.div`
+  display: grid;
   width: minmax(300px, 66%);
   max-width: 560px;
 `
