@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import Icon from '../lock/Icon'
 import { BalanceWithUnit } from '../helpers/Balance'
 import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
-import { LockStatus } from './lock/CreatorLockConfirming'
+import { LockStatus } from './lock/CreatorLockStatus'
 import Web3Utils from 'web3-utils'
 import { createLock } from '../../actions/lock'
 import { connect } from 'react-redux'
@@ -139,6 +139,7 @@ const LockSubmit = styled(LockStatus)`
   cursor: pointer;
   text-align: center;
 `
+
 const LockCancel = styled.div`
   font-size: 10px;
   margin-top: 11px;

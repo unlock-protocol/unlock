@@ -32,6 +32,19 @@ export function getLockConfirmations(transactionStore, lockId) {
 }
 
 /**
+ * Returns a status string for a given lock, based on a supplied transaction
+ * @param transaction
+ * @returns {string}
+ */
+export function getStatusStringFromTransaction(transaction) {
+  if (!transaction) return 'notfound'
+  if (transaction.status === 'submitted') return 'submitted'
+  if (transaction.status === 'mined' && transaction.confirmations >= config.requiredConfirmations) return 'deployed'
+  if (transaction.status === 'mined' && transaction.confirmations < config.requiredConfirmations) return 'confirming'
+  return 'unknown'
+}
+
+/**
  * Returns a status string for a given lock, used to determine which component to display
  * @param transactionStore
  * @param lockId
@@ -39,9 +52,5 @@ export function getLockConfirmations(transactionStore, lockId) {
  */
 export function getLockStatusString(transactionStore, lockId) {
   let transaction = getLockTransaction(transactionStore, lockId)
-  if (!transaction) return 'notfound'
-  if (transaction.status === 'submitted') return 'submitted'
-  if (transaction.status === 'mined' && transaction.confirmations >= config.requiredConfirmations) return 'deployed'
-  if (transaction.status === 'mined' && transaction.confirmations < config.requiredConfirmations) return 'confirming'
-  return 'unknown'
+  return getStatusStringFromTransaction(transaction)
 }
