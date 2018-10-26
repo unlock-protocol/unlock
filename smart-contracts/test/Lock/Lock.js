@@ -22,7 +22,6 @@ contract('Lock', (accounts) => {
     const lock = locks['FIRST']
     return Promise.all([
       lock.owner.call(),
-      lock.keyReleaseMechanism.call(),
       lock.expirationDuration.call(),
       lock.keyPrice.call(),
       lock.maxNumberOfKeys.call(),
@@ -30,14 +29,12 @@ contract('Lock', (accounts) => {
     ]).then(
       ([
         owner,
-        keyReleaseMechanism,
         expirationDuration,
         keyPrice,
         maxNumberOfKeys,
         outstandingKeys
       ]) => {
         assert.strictEqual(owner, accounts[0])
-        assert.strictEqual(keyReleaseMechanism.toNumber(), 0)
         assert.strictEqual(
           expirationDuration.toNumber(),
           60 * 60 * 24 * 30

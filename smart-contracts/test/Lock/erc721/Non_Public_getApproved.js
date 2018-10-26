@@ -23,15 +23,15 @@ contract('Lock ERC721', (accounts) => {
         lockOwner = _owner
       })
     })
-
-    it('should fail if no one was approved for a key', () => {
-      return locks['FIRST'].getApproved(accounts[1])
-        .then(() => {
-          assert(false, 'this should have failed')
-        })
-        .catch(error => {
-          assert.equal(error.message, 'VM Exception while processing transaction: revert')
-        })
+    // from approve.js, ln# 27:
+    it.skip('should return the address of the approved owner for a key', () => {
+      return locks['FIRST'].approve(accounts[3], accounts[3], {
+        from: lockOwner
+      }).then(() => {
+        return locks['FIRST'].getApproved(accounts[3])
+      }).then((approved) => {
+        assert.equal(accounts[3], approved)
+      })
     })
   })
 })
