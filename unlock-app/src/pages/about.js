@@ -11,8 +11,8 @@ export const About = () => (
         We’re a small, smart and nimble team of coders and designers with a vision for a better and fairer way to monetize content.
       </Headline>
       <TwoColumns>
-        <Column>At Unlock, we believe the web needs a new business model. We believe the decentralization promise of the web cannot be achieved if economic incentives are not aligned between consumers and creators. For this, we&#39;re building a protocol which lets anyone restrict access to their creations and for consumers to earn points when they discover and promote the best creations.</Column>
-        <Column>The Unlock Protocol can be applied to publishing (paywalls), newsletters, software licenses or even the physical world, such as transportation systems. The web revolutionized all of these areas, Unlock will make them economically viable.</Column>
+        <Column>At Unlock, we believe the web needs a new business model. We believe the decentralization promise of the web cannot be achieved if economic incentives are not aligned between consumers and creators.<br /><br />For this, we&#39;re building a protocol which lets anyone restrict access to their work and for consumers to earn points when they discover and promote the best creations.</Column>
+        <Column>The Unlock Protocol can be applied to publishing (paywalls), newsletters, software licenses or even the physical world, such as transportation systems. The web revolutionized all of these areas - Unlock will make them economically viable.</Column>
       </TwoColumns>
     </Section>
 
