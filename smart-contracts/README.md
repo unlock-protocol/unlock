@@ -8,21 +8,21 @@ There are 2 "main" smart contracts:
 
 ## Lock
 
-The lock contract is a smart contract “class”, deployed on an Ethereum Blockchain and written in Solidity. Each instance is owned by a creator and represents access to a given resource (or set of resources). The Lock keeps track of its keys, which are non fungible tokens. We do not expect any deployed lock to be upgraded, however we will likely introduce more complex of the Lock with more features or characteristics.
+The lock contract is a smart contract “class”, deployed on an Ethereum Blockchain and written in Solidity. Each instance is owned by a creator and represents access to a given resource (or set of resources). The Lock keeps track of its keys, which are non fungible tokens. We do not expect any deployed lock to be upgraded, however we will likely introduce more complex versions of the Lock with more features or characteristics.
 
- One of its characteristics is that instances of it are deployed __from the Unlock Protocol smart contract__. The goal of this is to guarantee that the Unlock Protocol Smart Contract can keep track of revenue it generates as well as decides of discounts when users purchase them. As such the “address” of the Unlock Smart Contract is kept and can only be changed by the Unlock Smart Contract itself.
+ One of its characteristics is that instances of it are deployed __from the Unlock Protocol smart contract__. The goal of this is to guarantee that the Unlock Protocol smart contract can keep track of revenue it generates as well as decides of discounts when users purchase them. As such the “address” of the Unlock Smart Contract is kept in each Lock contract and can only be changed by the Unlock Smart Contract itself.
 
 The Lock Smart Contract should implement [ERC721](https://github.com/ethereum/eips/issues/721) . We should also make sure the token can be used with existing ecosystem elements such as protocols (0x) and existing applications (Metamask, Toshi, Rarebits…) which would ease user adoption.
 
-One of the design decisions between the lock contract is to make it as customizable as possible to cover the very large set of capabilities which locks can cover.
+One of the design decisions shaping the lock contract was to make it customizable so it can adapt to the very large set of capabilities which locks can cover.
 
-It is worth considering whether we have a single "Key" smart contract, or multiple different Key smart contracts inheriting from the "base" Key smart contract. The latter may actually a lot more cost efficient.
+It is worth considering whether we have a single "Lock" smart contract, or multiple different Lock smart contracts inheriting from the "base" Lock smart contract. The latter may actually a lot more cost efficient.
 
 The Lock Smart Contract has multiple capabilities:
 
-* _Administrative_: these are the function which change ownership of the lock or change the address of the Unlock Protocol smart contract, as well as the maximum number of keys, their release mechanism (public, pre-validated, private) or their expiration (period, date or interval) and of course their price (including, even the mechanism used to set the price: fixed or variable). Finally, there is a method to withdraw funds from the lock contract itself.
-* _Transfering key ownership_: keys can be purchased from the lock smart contract itself or from another user who purchased one previously. Another element is that keys can be purchased on behalf of somebody else (this is important because this lets somebody pay gas fees on behalf on somebody else)
-* _Changing key attributes_: the keys have an expiration date which can be changed (for an earlier date by the lock owner), or data attributes which can be changed to something else.
+* _Administrative_: these are the functions which change ownership of the lock or change the address of the Unlock Protocol smart contract, as well as the maximum number of keys, their release mechanism (public, pre-validated, private) or their expiration (period, date or interval) and of course their price (including the mechanism used to set the price: fixed or variable). Finally, there is a method to withdraw funds from the lock contract itself.
+* _Transfering key ownership_: keys can be purchased from the lock smart contract itself or from another user who purchased one previously. Another element is that keys can be purchased on behalf of somebody else (this is important because this lets somebody pay gas fees on behalf of somebody else)
+* _Changing key attributes_: the keys have an expiration date which can be changed (for an earlier date by the lock owner) as well as data attributes which can be changed to something else.
 
 #### Structs
 
@@ -35,7 +35,7 @@ It has the following fields:
 
 #### Data
 
-1. Unlock Protocol address (UPC): This is the address of the Unlock Protocol Contract address. It is set upon creation of the Lock and will be used to invoke the Lock when recording key purchases and more.
+1. Unlock Protocol address (UPC): This is the address of the Unlock Protocol Contract. It is set upon creation of the Lock and will be used to invoke the Lock when recording key purchases and more.
 
 2. Owner address: Address of the owner of the Lock smart contract. This address is able to withdraw funds from the contract as well as grant keys, authorize individual purchases (if applicable)… etc.
 
@@ -122,7 +122,7 @@ It has the following fields:
 
 #### Data
 
-1. Owner of the Unlock Discount Token smart contract. This is bu default the deployer of the Unlock smart contract but all discount token holders can eventually vote to replace that owner.
+1. Owner of the Unlock Discount Token smart contract. This is by default the deployer of the Unlock smart contract but all discount token holders can eventually vote to replace that owner.
 
 2. Max available discount share (TODO): this is the first golden rule of the protocol, fixed at 20% for now. The owner only can adjust that value.
 
