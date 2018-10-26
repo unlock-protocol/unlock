@@ -7,7 +7,7 @@ import EmbedCodeSnippet from './lock/EmbedCodeSnippet'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
 import styled from 'styled-components'
-import { getStatusStringFromTransaction } from '../../helpers/Locks'
+import { getStatusStringFromTransaction } from '../../helpers/locks'
 
 export class CreatorLock extends React.Component {
   constructor (props, context) {
