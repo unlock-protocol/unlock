@@ -1,7 +1,7 @@
 import UnlockPropTypes from '../../propTypes'
 
 import React from 'react'
-import { getLockTransaction } from '../../helpers/Locks'
+import { getLockTransaction } from '../../helpers/locks'
 import CreatorLock, { LockRowGrid } from './CreatorLock'
 import styled from 'styled-components'
 import CreatorLockForm from './CreatorLockForm'
