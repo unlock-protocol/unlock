@@ -1,6 +1,6 @@
 pragma solidity 0.4.24;
 
-import "./interfaces/ILock.sol";
+import "./interfaces/ILockPublic.sol";
 import "./Unlock.sol";
 
 /**
@@ -14,7 +14,7 @@ import "./Unlock.sol";
  *  TODO: consider using a _private version for each method that is being invoked by the
  * public one as this seems to be a pattern.
  */
-contract Lock is ILock {
+contract PublicLock is ILockPublic {
 
   // The struct for a key
   struct Key {
@@ -347,7 +347,7 @@ contract Lock is ILock {
   {
     keyByOwner[_owner].expirationTimestamp = now; // Effectively expiring the key
   }
-  
+
   /**
    * A function which lets the owner of the lock to change the price for future purchases.
    */
