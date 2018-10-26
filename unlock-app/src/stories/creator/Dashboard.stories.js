@@ -21,22 +21,19 @@ storiesOf('Dashboard', Dashboard)
           hash: '0x12345678',
           confirmations: 12,
           status: 'mined',
-          lock: {
-            address: '0x12345678a',
-          },
+          lock: '0x1234a',
         },
         0x5678: {
           hash: '0x56781234',
           confirmations: 4,
           status: 'mined',
-          lock: {
-            address: '0x56781234a',
-          },
+          lock: '0x5678a',
         },
       },
     }
     const locks = {
       0x5678a: {
+        id: '0x5678a',
         address: '0x56781234a',
         keyPrice: '10000000000000000000',
         expirationDuration: '86400',
@@ -44,6 +41,7 @@ storiesOf('Dashboard', Dashboard)
         outstandingKeys: '32',
       },
       0x1234a: {
+        id: '0x1234a',
         address: '0x12345678a',
         name: 'My Blog',
         keyPrice: '27000000000000000',
