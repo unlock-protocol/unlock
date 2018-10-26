@@ -49,7 +49,7 @@ export const Home = ({ config }) => (
         <SubTitle>And Much More</SubTitle>
         <ImageWithHover base='more' />
         <Paragraph>
-          For example, Unlock comes with a points system to reward your most loyal fans when they share your content their friends!
+          For example, Unlock comes with a points system to reward your most loyal fans when they share your content with their friends!
         </Paragraph>
       </Column>
     </ThreeColumns>
