@@ -175,6 +175,7 @@ export default class Web3Service {
           console.error(error)
         }
         if (event === 'transactionHash') {
+          // TODO link the transaction to the lock. This will remove the need for expensive lookups
           transaction.hash = args.hash
           transaction.status = 'submitted'
           callback(transaction, lock)
@@ -338,7 +339,6 @@ export default class Web3Service {
         createdAt: new Date().getTime(),
         key: key.id,
       }
-      key.transaction = transaction // TODO: do not have deep object, just use the transactionHash
       callback(transaction, key)
 
       return this.sendTransaction({
@@ -355,6 +355,7 @@ export default class Web3Service {
         }
         if (event === 'transactionHash') {
           transaction.hash = args.hash
+          key.transaction = transaction.hash
           transaction.status = 'submitted'
           callback(transaction, key)
         } else if (event === 'confirmation') {

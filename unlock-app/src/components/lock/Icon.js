@@ -14,7 +14,7 @@ import UnlockPropTypes from '../../propTypes'
 export function Icon({ address }) {
   const scheme = new ColorScheme()
   let colors = ['#8c8c8c', '#e8e8e8', '#c3c3c3']
-  if(address) {
+  if (address) {
     const mainColor = address.substring(2, 8).toUpperCase()
     scheme.from_hex(mainColor)
       .scheme('triade')
