@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import UnlockPropTypes from '../../../propTypes'
-import { getStatusStringFromTransaction } from '../../../helpers/Locks'
+import { getStatusStringFromTransaction } from '../../../helpers/locks'
 import configure from '../../../config'
 
 const config = configure(global)

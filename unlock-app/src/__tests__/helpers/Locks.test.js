@@ -1,4 +1,4 @@
-import { getLockTransaction, getLockConfirmations, getLockStatusString } from '../../helpers/Locks'
+import { getLockTransaction, getLockConfirmations, getLockStatusString } from '../../helpers/locks'
 import configure from '../../config'
 
 const config = configure(global)

@@ -5,7 +5,7 @@ import React from 'react'
 import { LockButton } from '../Button'
 
 const PreviewLock = ({ lock, ...props }) => (
-  <LockButton to={`/demo/${lock.address}`} {...props}>
+  <LockButton href={`/demo/${lock.address}`} {...props}>
     <Svg.LockClosed />
   </LockButton>
 )
