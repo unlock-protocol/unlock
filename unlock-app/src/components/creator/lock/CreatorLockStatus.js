@@ -3,6 +3,9 @@ import React from 'react'
 import styled from 'styled-components'
 import UnlockPropTypes from '../../../propTypes'
 import { getStatusStringFromTransaction } from '../../../helpers/Locks'
+import configure from '../../../config'
+
+const config = configure(global)
 
 export function CreatorLockStatus({ lock, transaction }) {
   let status = getStatusStringFromTransaction(transaction)
@@ -12,7 +15,7 @@ export function CreatorLockStatus({ lock, transaction }) {
     <LockStatus>
       {status}
       {status == 'confirming' &&
-        <Confirmations>{transaction.confirmations} / 12</Confirmations>
+        <Confirmations>{transaction.confirmations} / {config.requiredConfirmations}</Confirmations>
       }
     </LockStatus>
   )
