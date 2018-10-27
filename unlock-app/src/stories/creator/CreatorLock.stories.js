@@ -1,8 +1,24 @@
+import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import CreatorLock from '../../components/creator/CreatorLock'
+import createUnlockStore from '../../createUnlockStore'
+
+const store = createUnlockStore({
+  transactions: {
+    '0x123': {
+      status: 'mined',
+      confirmations: 24,
+    },
+    '0x456': {
+      status: 'mined',
+      confirmations: 4,
+    },
+  },
+})
 
 storiesOf('CreatorLock', CreatorLock)
+  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Deployed', () => {
     const lock = {
       keyPrice: '10000000000000000000',
@@ -10,13 +26,10 @@ storiesOf('CreatorLock', CreatorLock)
       maxNumberOfKeys: '240',
       outstandingKeys: '3',
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
-    }
-    const transaction = {
-      status: 'mined',
-      confirmations: 24,
+      transaction: '0x123',
     }
     return (
-      <CreatorLock lock={lock} transaction={transaction} />
+      <CreatorLock lock={lock} />
     )
   })
   .add('Confirming', () => {
@@ -26,6 +39,7 @@ storiesOf('CreatorLock', CreatorLock)
       maxNumberOfKeys: '240',
       outstandingKeys: '3',
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
+      transaction: '0x456',
     }
     const transaction = {
       status: 'mined',
@@ -42,6 +56,7 @@ storiesOf('CreatorLock', CreatorLock)
       maxNumberOfKeys: '240',
       outstandingKeys: '3',
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
+      transaction: '0x789',
     }
     return (
       <CreatorLock lock={lock} transaction={null} />

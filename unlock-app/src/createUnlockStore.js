@@ -15,7 +15,7 @@ import lockMiddleware from './middlewares/lockMiddleware'
 
 const config = configure(global)
 
-export default function createUnlockStore() {
+export default function createUnlockStore(defaultState = loadState()) {
   const reducers = {
     keys: keysReducer,
     locks: locksReducer,
@@ -34,7 +34,7 @@ export default function createUnlockStore() {
     transactions: defaultTransactions,
   }, {
     provider: Object.keys(config.providers)[0],
-  }, loadState())
+  }, defaultState)
 
   const middlewares = [
     lockMiddleware,
