@@ -1,5 +1,5 @@
 const { createServer } = require('http')
-const { parse } = require('url')
+const { URL } = require('url')
 const next = require('next')
 const pathMatch = require('path-match')
 
@@ -12,7 +12,7 @@ const route = pathMatch()
 app.prepare()
   .then(() => {
     createServer((req, res) => {
-      const parsedUrl = parse(req.url, true)
+      const parsedUrl = new URL(req.url, true)
       const { pathname, query } = parsedUrl
 
       // assigning `query` into the params means that we still
