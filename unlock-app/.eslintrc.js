@@ -1,25 +1,19 @@
 module.exports = {
-  "extends": ["standard", "eslint:recommended", "plugin:react/recommended"],
-  "settings": {
-    "react": {
-      "createClass": "createReactClass", // Regex for Component Factory to use,
-                                         // default to "createReactClass"
-      "pragma": "React",  // Pragma to use, default to "React"
-      "version": "16.4", // React version, default to the latest React stable release
-    },
-    "propWrapperFunctions": [ "forbidExtraProps" ] // The names of any functions used to wrap the
-                                                   // propTypes object, e.g. `forbidExtraProps`.
-                                                   // If this isn't set, any propTypes wrapped in
-                                                   // a function will be skipped.
-  },
+  "extends": [
+    "standard",
+    "airbnb",
+    "eslint:recommended",
+    "plugin:react/recommended",
+  ],
   "env": {
     "es6": true,
     "node": true,
     "browser": true,
     "jest": true
   },
-  globals: {},
-  rules: {
+  "parser": "babel-eslint",
+  "rules": {
+    "react/jsx-wrap-multilines": false,
     "react/prefer-stateless-function": [2],
     "indent": [
       "error",
@@ -49,6 +43,7 @@ module.exports = {
     "comma-dangle": [2, "always-multiline"],
     "eol-last": [
       "error"
-    ]
+    ],
+    "react/jsx-filename-extension": [0, { "extensions": [".js", ".jsx"] }]
   }
 };
