@@ -11,17 +11,15 @@ describe('lockHelpers', () => {
         id: '1337',
       }
       const transactions = {
-        all: {
-          notTheTransactionWereLookingFor: {
-            hash: 'notTheTransactionWereLookingFor',
-            confirmations: 24,
-            lock: '987654321',
-          },
-          theTransactionWereLookingFor: {
-            hash: 'theTransactionWereLookingFor',
-            confirmations: 12,
-            lock: '1337',
-          },
+        notTheTransactionWereLookingFor: {
+          hash: 'notTheTransactionWereLookingFor',
+          confirmations: 24,
+          lock: '987654321',
+        },
+        theTransactionWereLookingFor: {
+          hash: 'theTransactionWereLookingFor',
+          confirmations: 12,
+          lock: '1337',
         },
       }
 
@@ -33,17 +31,15 @@ describe('lockHelpers', () => {
         id: '404',
       }
       const transactions = {
-        all: {
-          notTheTransactionWereLookingFor: {
-            hash: 'notTheTransactionWereLookingFor',
-            confirmations: 24,
-            lock: '987654321',
-          },
-          theTransactionWereLookingFor: {
-            hash: 'theTransactionWereLookingFor',
-            confirmations: 12,
-            lock: '1234567890',
-          },
+        notTheTransactionWereLookingFor: {
+          hash: 'notTheTransactionWereLookingFor',
+          confirmations: 24,
+          lock: '987654321',
+        },
+        theTransactionWereLookingFor: {
+          hash: 'theTransactionWereLookingFor',
+          confirmations: 12,
+          lock: '1234567890',
         },
       }
 
@@ -58,17 +54,15 @@ describe('lockHelpers', () => {
         id: '1234567890',
       }
       const transactions = {
-        all: {
-          notTheTransactionWereLookingFor: {
-            hash: 'notTheTransactionWereLookingFor',
-            confirmations: 24,
-            lock: '987654321',
-          },
-          theTransactionWereLookingFor: {
-            hash: 'theTransactionWereLookingFor',
-            confirmations: 12,
-            lock: '1234567890',
-          },
+        notTheTransactionWereLookingFor: {
+          hash: 'notTheTransactionWereLookingFor',
+          confirmations: 24,
+          lock: '987654321',
+        },
+        theTransactionWereLookingFor: {
+          hash: 'theTransactionWereLookingFor',
+          confirmations: 12,
+          lock: '1234567890',
         },
       }
 
@@ -80,17 +74,15 @@ describe('lockHelpers', () => {
         id: '99999999999',
       }
       const transactions = {
-        all: {
-          notTheTransactionWereLookingFor: {
-            hash: 'notTheTransactionWereLookingFor',
-            confirmations: 24,
-            lock: '0987654321',
-          },
-          theTransactionWereLookingFor: {
-            hash: 'theTransactionWereLookingFor',
-            confirmations: 12,
-            lock: '1234567890',
-          },
+        notTheTransactionWereLookingFor: {
+          hash: 'notTheTransactionWereLookingFor',
+          confirmations: 24,
+          lock: '0987654321',
+        },
+        theTransactionWereLookingFor: {
+          hash: 'theTransactionWereLookingFor',
+          confirmations: 12,
+          lock: '1234567890',
         },
       }
 
@@ -105,13 +97,11 @@ describe('lockHelpers', () => {
         id: '1234567890',
       }
       const transactions = {
-        all: {
-          theTransactionWereLookingFor: {
-            hash: 'theTransactionWereLookingFor',
-            confirmations: config.requiredConfirmations,
-            status: 'mined',
-            lock: '1234567890',
-          },
+        theTransactionWereLookingFor: {
+          hash: 'theTransactionWereLookingFor',
+          confirmations: config.requiredConfirmations,
+          status: 'mined',
+          lock: '1234567890',
         },
       }
 
@@ -123,12 +113,10 @@ describe('lockHelpers', () => {
         id: '1234567890',
       }
       const transactions = {
-        all: {
-          theTransactionWereLookingFor: {
-            hash: 'theTransactionWereLookingFor',
-            status: 'submitted',
-            lock: '1234567890',
-          },
+        theTransactionWereLookingFor: {
+          hash: 'theTransactionWereLookingFor',
+          status: 'submitted',
+          lock: '1234567890',
         },
       }
 
@@ -140,13 +128,11 @@ describe('lockHelpers', () => {
         id: '1234567890',
       }
       const transactions = {
-        all: {
-          theTransactionWereLookingFor: {
-            hash: 'theTransactionWereLookingFor',
-            confirmations: config.requiredConfirmations - 1,
-            status: 'mined',
-            lock: '1234567890',
-          },
+        theTransactionWereLookingFor: {
+          hash: 'theTransactionWereLookingFor',
+          confirmations: config.requiredConfirmations - 1,
+          status: 'mined',
+          lock: '1234567890',
         },
       }
 

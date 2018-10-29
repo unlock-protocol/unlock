@@ -4,7 +4,7 @@ import { PURCHASE_KEY, addKey } from '../actions/key'
 import { SET_ACCOUNT, LOAD_ACCOUNT, CREATE_ACCOUNT, setAccount, resetAccountBalance } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
 import { SET_PROVIDER } from '../actions/provider'
-import { REFRESH_TRANSACTION, setTransaction, refreshTransaction, updateTransaction, deleteTransaction } from '../actions/transaction'
+import { REFRESH_TRANSACTION, addTransaction, refreshTransaction, updateTransaction, deleteTransaction } from '../actions/transaction'
 
 import Web3Service from '../services/web3Service'
 
@@ -29,7 +29,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
           // And set the account
           dispatch(setAccount(account))
           // We refresh transactions
-          Object.values(getState().transactions.all).forEach((transaction) => dispatch(refreshTransaction(transaction)))
+          Object.values(getState().transactions).forEach((transaction) => dispatch(refreshTransaction(transaction)))
           // We refresh keys
           Object.values(getState().keys).forEach((key) => web3Service.refreshKey(key))
         }).catch(() => {
@@ -65,7 +65,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
       } else if (action.type === CREATE_LOCK) {
         // Create a lock
         web3Service.createLock(action.lock, (transaction, lock) => {
-          dispatch(setTransaction(transaction))
+          dispatch(addTransaction(transaction))
           dispatch(resetLock(lock)) // Update the lock accordingly
         }).then(() => {
           // Lock has been deployed and confirmed, we can update the balance
@@ -77,7 +77,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
         const account = getState().network.account
         const lock = Object.values(getState().locks).find((lock) => lock.address === action.key.lockAddress)
         web3Service.purchaseKey(action.key, account, lock, (transaction) => {
-          dispatch(setTransaction(transaction))
+          dispatch(addTransaction(transaction))
         }).then((key) => {
           return web3Service.getAddressBalance(account.address)
         }).then((balance) => {
