@@ -8,7 +8,7 @@ import Layout from '../interface/Layout'
 const defaultError = (<p>This is a generic error because something just broke but we’re not sure what.</p>)
 
 export const DefaultError = ({ title = 'Fatal Error', children = defaultError, illustration = '/static/images/illustrations/error.svg' }) => (
-  <Layout title="Creator Dashboard">
+  <Layout title="">
     <Container>
       <Image src={illustration} />
       <Message>
@@ -27,18 +27,27 @@ DefaultError.propTypes = {
 
 const Container = styled.section`
   display: grid;
-  grid-template-columns: 72px 1fr;
   row-gap: 16px;
   column-gap: 32px;
   border: solid 1px var(--lightgrey);
+  grid-template-columns: 72px;
+  grid-auto-flow: column;
   border-radius: 4px;
   align-items: center;
   padding: 32px;
   padding-bottom: 40px;
-  padding-right: 160px;
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+    padding: 16px;
+  }
+
 `
 
-const Image = styled.img``
+const Image = styled.img`
+  width: 72px;
+`
 
 const Message = styled.div`
   display: grid;

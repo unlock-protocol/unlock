@@ -77,7 +77,7 @@ export const TwoColumns = styled.div`
 
 export const ThreeColumns = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: 24px;
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
