@@ -4,11 +4,13 @@ import Head from 'next/head'
 import Layout from '../components/interface/Layout'
 import { Section, Title, Headline, SubTitle, CallToAction, Paragraph, UnorderedList, OrderedList, ListItem, ShortColumn } from '../components/Components'
 import { pageTitle } from '../constants'
+import { TwitterTags } from '../components/page/TwitterTags'
 
 export const Jobs = () => (
   <Layout forContent>
     <Head>
       <title>{pageTitle('Work at Unlock')}</title>
+      <TwitterTags title={pageTitle('Work at Unlock')} description={'We\'re looking for world-class engineers who want to fix the Web forever.'} />
     </Head>
     <Section>
       <Title>Work at Unlock</Title>
