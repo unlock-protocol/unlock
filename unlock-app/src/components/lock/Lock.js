@@ -8,32 +8,19 @@ import { connect } from 'react-redux'
 
 import { purchaseKey } from '../../actions/key'
 
-export const Lock = ({ lock, account, keys, purchaseKey }) => {
-  if(!account) {
-    return null
-  }
-
-  let accessKey = Object.values(keys).find((key) => (
-    key.lockAddress === lock.address && key.owner === account.address
-  ))
-  if (!accessKey) {
-    accessKey = {
-      id: uniqid(),
-      lockAddress: lock.address,
-      owner: account.address,
-    }
-  }
+export const Lock = ({ lock, accessKey, transaction, purchaseKey }) => {
 
   let purchaseButton = <PurchaseButton onClick={() => { purchaseKey(accessKey) }}>Purchase</PurchaseButton>
-
-  if (!accessKey.transaction) {
+  if (!accessKey) {
+    purchaseButton = null
+  } else if (!transaction) {
     // No transaction attached to the key. What is it?
     // Maybe we just lost track of that transaction?
     // Is the key valid?
-  } else if (accessKey.transaction.status === 'mined') {
-    purchaseButton = <PurchaseButton>Mined! Confirming... {accessKey.transaction.confirmations}</PurchaseButton>
+  } else if (transaction.status === 'mined') {
+    purchaseButton = <PurchaseButton>Mined! Confirming... {transaction.confirmations}</PurchaseButton>
     // Key transaction was mined: it is mined, let's look at confirmations
-  } else if (accessKey.transaction.status === 'submitted') {
+  } else if (transaction.status === 'submitted') {
     purchaseButton = <PurchaseButton>Submitted!</PurchaseButton>
     // Ok, let's wait and not show another button!
   }
@@ -51,9 +38,9 @@ export const Lock = ({ lock, account, keys, purchaseKey }) => {
 }
 
 Lock.propTypes = {
-  keys: UnlockPropTypes.keys,
+  accessKey: UnlockPropTypes.key,
   lock: UnlockPropTypes.lock,
-  account: UnlockPropTypes.account,
+  transaction: UnlockPropTypes.transaction,
   purchaseKey: PropTypes.func,
 }
 
@@ -61,10 +48,33 @@ const mapDispatchToProps = dispatch => ({
   purchaseKey: (key) => dispatch(purchaseKey(key)),
 })
 
-const mapStateToProps = state => {
+export const mapStateToProps = (state, {lock}) => {
+  const account = state.network.account
+  const keys = state.keys
+
+  // If there is no account (probably not loaded yet), we do not want to create a key
+  if (!account) {
+    return {}
+  }
+
+  let accessKey = Object.values(keys).find((key) => (
+    key.lockAddress === lock.address && key.owner === account.address
+  ))
+  let transaction = null
+
+  if (!accessKey) {
+    accessKey = {
+      id: uniqid(),
+      lockAddress: lock.address,
+      owner: account.address,
+    }
+  } else {
+    transaction = state.transactions.all[accessKey.transaction]
+  }
+
   return {
-    keys: state.keys,
-    account: state.network.account,
+    accessKey,
+    transaction,
   }
 }
 
