@@ -45,6 +45,13 @@ module.exports = {
       "error"
     ],
     "react/jsx-filename-extension": [0, { "extensions": [".js", ".jsx"] }],
-    "import/no-named-as-default": 0
+    "import/no-named-as-default": 0,
+    "jsx-a11y/anchor-is-valid": [
+      "error", {
+        "components": [ "Link" ],
+        "specialLink": [ "hrefLeft", "hrefRight" ],
+        "aspects": [ "invalidHref", "preferButton" ]
+      }
+    ]
   }
 };
