@@ -56,5 +56,6 @@ module.exports = {
     "import/no-named-as-default": 0,
     "react/require-default-props": 0,
     "import/no-named-as-default-member": 0,
+    "react/no-unused-prop-types": 0,
   }
 };
