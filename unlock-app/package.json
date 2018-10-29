@@ -31,8 +31,8 @@
     "web3-utils": "^1.0.0-beta.34"
   },
   "devDependencies": {
-    "@storybook/addon-jest": "^4.0.0-alpha.24",
-    "@storybook/react": "4.0.0-alpha.24",
+    "@storybook/addon-jest": "^4.0.0",
+    "@storybook/react": "4.0.0",
     "@svgr/cli": "^3.1.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
