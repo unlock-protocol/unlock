@@ -3,12 +3,14 @@ import styled from 'styled-components'
 
 import React from 'react'
 import NoSSR from 'react-no-ssr'
+import Head from 'next/head'
 import UnlockPropTypes from '../propTypes'
 import Layout from '../components/interface/Layout'
 import { Overlay } from '../components/lock/Overlay'
 import { Section, Title, Headline, ShortColumn, Paragraph } from '../components/Components'
 import withConfig from '../utils/withConfig'
 import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
+import { pageTitle } from '../constants'
 
 export class Demo extends React.Component {
   static async getInitialProps({ req, query: { lockaddress } }) {
@@ -22,6 +24,9 @@ export class Demo extends React.Component {
     const lock = Object.values(locks).find((lock) => lock.address === lockAddress)
     return(
       <Layout title="Unlock Demo Page" forContent>
+        <Head>
+          <title>{pageTitle('Demo')}</title>
+        </Head>
         <NoSSR>
           <Section>
             <Title>It’s Time to Unlock The Web</Title>

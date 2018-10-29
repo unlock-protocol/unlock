@@ -1,10 +1,15 @@
 import styled from 'styled-components'
 import React from 'react'
+import Head from 'next/head'
 import Layout from '../components/interface/Layout'
 import { Section, Title, Headline, SubTitle, CallToAction, Paragraph, UnorderedList, OrderedList, ListItem, ShortColumn } from '../components/Components'
+import { pageTitle } from '../constants'
 
 export const Jobs = () => (
   <Layout forContent>
+    <Head>
+      <title>{pageTitle('Work at Unlock')}</title>
+    </Head>
     <Section>
       <Title>Work at Unlock</Title>
       <UnorderedList>
