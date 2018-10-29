@@ -16,9 +16,9 @@ export class CreatorLocks extends React.Component {
   }
 
   toggleForm() {
-    this.setState({
-      showDashboardForm: !this.state.showDashboardForm,
-    })
+    this.setState((previousState) => ({
+      showDashboardForm: !previousState.showDashboardForm,
+    }))
   }
 
   render() {

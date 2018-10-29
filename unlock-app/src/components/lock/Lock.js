@@ -21,7 +21,7 @@ export const Lock = ({ lock, lockKey, transaction, purchaseKey }) => {
     purchaseButton = <PurchaseButton>
 Mined! Confirming...
       {transaction.confirmations}
-                     </PurchaseButton>
+    </PurchaseButton>
     // Key transaction was mined: it is mined, let's look at confirmations
   } else if (transaction.status === 'submitted') {
     purchaseButton = <PurchaseButton>Submitted!</PurchaseButton>

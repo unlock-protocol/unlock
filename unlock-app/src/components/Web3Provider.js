@@ -40,7 +40,7 @@ export function Web3Provider({ setProvider, config, provider }) {
         </div>
       </div>
     </div>
-          </div>)
+  </div>)
 
 }
 
