@@ -17,7 +17,7 @@ const ConfigContext = React.createContext(config)
  * It also triggers errors if constraints are not respected.
  * @param {*} Component
  */
-export function withConfig(Component) {
+export default function withConfig(Component) {
 
   function componentWithConfig(props) {
 

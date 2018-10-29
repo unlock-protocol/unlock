@@ -44,6 +44,7 @@ module.exports = {
     "eol-last": [
       "error"
     ],
-    "react/jsx-filename-extension": [0, { "extensions": [".js", ".jsx"] }]
+    "react/jsx-filename-extension": [0, { "extensions": [".js", ".jsx"] }],
+    "import/no-named-as-default": 0
   }
 };
