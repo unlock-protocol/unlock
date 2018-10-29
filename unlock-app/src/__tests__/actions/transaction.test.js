@@ -1,4 +1,4 @@
-import { setTransaction, SET_TRANSACTION, updateTransaction, UPDATE_TRANSACTION, refreshTransaction, REFRESH_TRANSACTION, deleteTransaction, DELETE_TRANSACTION } from '../../actions/transaction'
+import { addTransaction, ADD_TRANSACTION, updateTransaction, UPDATE_TRANSACTION, refreshTransaction, REFRESH_TRANSACTION, deleteTransaction, DELETE_TRANSACTION } from '../../actions/transaction'
 
 describe('transaction actions', () => {
 
@@ -7,10 +7,10 @@ describe('transaction actions', () => {
 
     }
     const expectedAction = {
-      type: SET_TRANSACTION,
+      type: ADD_TRANSACTION,
       transaction,
     }
-    expect(setTransaction(transaction)).toEqual(expectedAction)
+    expect(addTransaction(transaction)).toEqual(expectedAction)
   })
 
   it('should create an action to update the transaction', () => {

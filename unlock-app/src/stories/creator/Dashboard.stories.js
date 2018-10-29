@@ -16,19 +16,17 @@ storiesOf('Dashboard', Dashboard)
       name: 4,
     }
     const transactions = {
-      all: {
-        0x1234: {
-          hash: '0x12345678',
-          confirmations: 12,
-          status: 'mined',
-          lock: '0x1234a',
-        },
-        0x5678: {
-          hash: '0x56781234',
-          confirmations: 4,
-          status: 'mined',
-          lock: '0x5678a',
-        },
+      0x1234: {
+        hash: '0x12345678',
+        confirmations: 12,
+        status: 'mined',
+        lock: '0x1234a',
+      },
+      0x5678: {
+        hash: '0x56781234',
+        confirmations: 4,
+        status: 'mined',
+        lock: '0x5678a',
       },
     }
     const locks = {

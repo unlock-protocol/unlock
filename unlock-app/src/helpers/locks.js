@@ -9,9 +9,9 @@ const config = configure(global)
  * @returns {object}
  */
 export function getLockTransaction(transactionStore, lockId) {
-  if (transactionStore && transactionStore.all) {
-    for (let transaction in transactionStore.all) {
-      let transactionObject = transactionStore.all[transaction]
+  if (transactionStore) {
+    for (let transaction in transactionStore) {
+      let transactionObject = transactionStore[transaction]
       if (transactionObject.lock === lockId)
         return transactionObject
     }
