@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { connect } from 'react-redux'
 import UnlockPropTypes from '../propTypes'
 import { setProvider } from '../actions/provider'
-import { withConfig } from '../utils/withConfig'
+import withConfig from '../utils/withConfig'
 
 export function Web3Provider({ setProvider, config, provider }) {
   return (
