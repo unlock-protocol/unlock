@@ -1,9 +1,9 @@
+import React from 'react'
+import styled from 'styled-components'
 import UnlockPropTypes from '../../propTypes'
 
-import React from 'react'
 import { getLockTransaction } from '../../helpers/locks'
 import CreatorLock, { LockRowGrid } from './CreatorLock'
-import styled from 'styled-components'
 import CreatorLockForm from './CreatorLockForm'
 
 export class CreatorLocks extends React.Component {
@@ -16,9 +16,9 @@ export class CreatorLocks extends React.Component {
   }
 
   toggleForm() {
-    this.setState({
-      showDashboardForm: !this.state.showDashboardForm,
-    })
+    this.setState((previousState) => ({
+      showDashboardForm: !previousState.showDashboardForm,
+    }))
   }
 
   render() {

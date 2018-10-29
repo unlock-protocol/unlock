@@ -1,5 +1,5 @@
-import lockMiddleware from '../../middlewares/lockMiddleware'
 import { LOCATION_CHANGE } from 'react-router-redux'
+import lockMiddleware from '../../middlewares/lockMiddleware'
 import { CREATE_LOCK, SET_LOCK, WITHDRAW_FROM_LOCK } from '../../actions/lock'
 import { PURCHASE_KEY } from '../../actions/key'
 import { SET_ACCOUNT, LOAD_ACCOUNT, CREATE_ACCOUNT } from '../../actions/accounts'

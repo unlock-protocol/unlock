@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Router from 'next/router'
 
 import UnlockPropTypes from '../propTypes'
-import { withConfig } from '../utils/withConfig'
+import withConfig from '../utils/withConfig'
 
 class Error extends React.Component {
   static getInitialProps ({ res, err }) {

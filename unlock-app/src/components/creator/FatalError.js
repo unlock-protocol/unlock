@@ -71,8 +71,19 @@ const Message = styled.div`
 export const WrongNetwork = ({currentNetwork, requiredNetwork}) => (
   <DefaultError
     title="Network mismatch"
-    illustration={'/static/images/illustrations/network.svg'}>
-    <p>You’re currently on the {currentNetwork} network but you need to be on the {requiredNetwork} network. Please switch to {requiredNetwork}.</p>
+    illustration="/static/images/illustrations/network.svg"
+  >
+    <p>
+You’re currently on the
+      {currentNetwork}
+      {' '}
+network but you need to be on the
+      {requiredNetwork}
+      {' '}
+network. Please switch to
+      {requiredNetwork}
+.
+    </p>
   </DefaultError>)
 WrongNetwork.propTypes = {
   currentNetwork: PropTypes.string,
@@ -82,9 +93,13 @@ WrongNetwork.propTypes = {
 export const MissingProvider= () => (
   <DefaultError
     title="Wallet missing"
-    illustration={'/static/images/illustrations/wallet.svg'}>
+    illustration="/static/images/illustrations/wallet.svg"
+  >
     <p>
-      It looks like you’re using an incompatible browser or are missig a crypto wallet. If you’re using Chrome or Firefox you can install <a href='https://metamask.io/'>Metamask</a>.
+      It looks like you’re using an incompatible browser or are missig a crypto wallet. If you’re using Chrome or Firefox you can install 
+      {' '}
+      <a href='https://metamask.io/'>Metamask</a>
+.
     </p>
   </DefaultError>)
 
