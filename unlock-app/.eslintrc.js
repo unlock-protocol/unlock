@@ -54,6 +54,7 @@ module.exports = {
     // TODO All rules below should be enforced. They have been disabled to avoid a monster PR
     "react/jsx-filename-extension": [0, { "extensions": [".js", ".jsx"] }],
     "import/no-named-as-default": 0,
-    "react/require-default-props": 0
+    "react/require-default-props": 0,
+    "import/no-named-as-default-member": 0,
   }
 };
