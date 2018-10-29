@@ -8,11 +8,13 @@ import { ActionButton } from '../components/creator/CreatorLocks'
 import withConfig from '../utils/withConfig'
 import UnlockPropTypes from '../propTypes'
 import { pageTitle } from '../constants'
+import { TwitterTags } from '../components/page/TwitterTags'
 
 export const Home = ({ config }) => (
   <Layout forContent>
     <Head>
       <title>{pageTitle()}</title>
+      <TwitterTags />
     </Head>
     <Hero>The Web&#39;s new business model</Hero>
     <Headline>
@@ -64,14 +66,17 @@ Go to Your Dashboard...
 
     <Section>
       <CallToAction>
-Check out our open source code on
+        Check out our open source code on
+        {' '}
         <a href="https://github.com/unlock-protocol/unlock">GitHub</a>
-, come work
+        , come work
+        {' '}
         <a href="/jobs">with us</a>
         {' '}
-or simply
+        or simply
+        {' '}
         <a href="mailto:hello@unlock-protocol.com">get in touch</a>
-.
+        .
       </CallToAction>
     </Section>
   </Layout>

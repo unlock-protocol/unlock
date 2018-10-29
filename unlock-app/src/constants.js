@@ -22,3 +22,7 @@ export const pageTitle = (title) => {
   if (title) pageTitle += `${title} | `
   return pageTitle += 'Unlock: The Web\'s new business model'
 }
+
+export const PAGE_DESCRIPTION = 'Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.'
+
+export const PAGE_DEFAULT_IMAGE = 'https://unlock-protocol.com/static/images/pages/png/simple.png'
