@@ -57,5 +57,6 @@ module.exports = {
     "react/require-default-props": 0,
     "import/no-named-as-default-member": 0,
     "react/no-unused-prop-types": 0,
+    "react/destructuring-assignment": 0,
   }
 };
