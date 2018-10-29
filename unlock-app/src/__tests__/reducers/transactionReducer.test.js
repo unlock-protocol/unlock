@@ -1,178 +1,142 @@
-import reducer from '../../reducers/transactionReducer'
-import { SET_TRANSACTION, UPDATE_TRANSACTION, DELETE_TRANSACTION } from '../../actions/transaction'
+import reducer, { initialState } from '../../reducers/transactionReducer'
+import { ADD_TRANSACTION, UPDATE_TRANSACTION, DELETE_TRANSACTION } from '../../actions/transaction'
 
 describe('transaction reducer', () => {
 
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual({all: {}, lastUpdated: 0, latest: null})
+    expect(initialState).toEqual({})
   })
 
-  describe('when receiving SET_TRANSACTION', () => {
+  describe('when receiving ADD_TRANSACTION', () => {
 
-    it('should set the transaction accordingly', () => {
+    it('should set the transaction accordingly if it has not been previously added', () => {
       const transaction = {
         status: 'pending',
         confirmations: 0,
-        createdAt: new Date().getTime(),
+        hash: '0x123',
       }
 
-      const transactions = {
-        all: {},
-        lastUpdated: 0,
-        latest: transaction,
-      }
-
-      expect(reducer(undefined, {
-        type: SET_TRANSACTION,
+      expect(reducer({}, {
+        type: ADD_TRANSACTION,
         transaction,
-      })).toEqual(transactions)
+      })).toEqual({
+        '0x123': transaction,
+      })
     })
 
-    it('should unset the transaction with no transaction', () => {
-      let transactions = reducer(undefined, {
-        type: SET_TRANSACTION,
+    it('should update an existing transaction', () => {
+      const transaction = {
+        status: 'pending',
+        confirmations: 0,
+        hash: '0x123',
+      }
+
+      expect(reducer({
+        '0x123': transaction,
+      }, {
+        type: ADD_TRANSACTION,
+        transaction: {
+          status: 'mined',
+          confirmations: 0,
+          hash: '0x123',
+        },
+      })).toEqual({
+        '0x123': {
+          status: 'mined',
+          confirmations: 0,
+          hash: '0x123',
+        },
       })
-      expect(transactions.latest).toEqual(null)
     })
   })
 
   describe('when receiving UPDATE_TRANSACTION', () => {
 
-    it('should update the transaction if the previous one is the same', () => {
+    it('should set the transaction accordingly if it has not been previously added', () => {
       const transaction = {
         status: 'pending',
         confirmations: 0,
-        createdAt: new Date().getTime(),
+        hash: '0x123',
       }
 
-      const transactions = {
-        all: {},
-        lastUpdated: 0,
-        latest: transaction,
-      }
-
-      const updatedTransaction = Object.assign({}, transaction)
-      updatedTransaction.status = 'mined'
-
-      let transactionsResponse = reducer(transactions, {
+      expect(reducer({}, {
         type: UPDATE_TRANSACTION,
-        transaction: updatedTransaction,
+        transaction,
+      })).toEqual({
+        '0x123': transaction,
       })
-
-      expect(transactionsResponse.latest.status).toEqual('mined')
     })
 
-    it('should not update the transaction if the previous one is different', () => {
+    it('should update an existing transaction', () => {
       const transaction = {
         status: 'pending',
         confirmations: 0,
-        createdAt: new Date().getTime(),
+        hash: '0x123',
       }
 
-      const transactions = {
-        all: {},
-        lastUpdated: 0,
-        latest: transaction,
-      }
-
-      const updatedTransaction = Object.assign({}, transaction)
-      updatedTransaction.status = 'mined'
-      updatedTransaction.createdAt = transaction.createdAt + 100
-
-      let transactionsResponse = reducer(transactions, {
+      expect(reducer({
+        '0x123': transaction,
+      }, {
         type: UPDATE_TRANSACTION,
-        transaction: updatedTransaction,
+        transaction: {
+          status: 'mined',
+          confirmations: 0,
+          hash: '0x123',
+        },
+      })).toEqual({
+        '0x123': {
+          status: 'mined',
+          confirmations: 0,
+          hash: '0x123',
+        },
       })
-
-      expect(transactionsResponse.latest.status).toEqual('pending')
-    })
-
-    it('should not update latest transaction if new transaction was created earlier', () => {
-      const transaction = {
-        status: 'pending',
-        confirmations: 0,
-        createdAt: new Date().getTime(),
-      }
-
-      const transactions = {
-        all: {},
-        lastUpdated: 0,
-        latest: transaction,
-      }
-
-      const updatedTransaction = Object.assign({}, transaction)
-      updatedTransaction.status = 'mined'
-      updatedTransaction.createdAt = transaction.createdAt - 100
-
-      let transactionsResponse = reducer(transactions, {
-        type: UPDATE_TRANSACTION,
-        transaction: updatedTransaction,
-      })
-
-      expect(transactionsResponse.latest.status).toEqual('pending')
     })
   })
 
   describe('when receiving DELETE_TRANSACTION', () => {
     it('should remove the transaction which has been deleted from the list of all transactions', () => {
       const transaction = {
-        hash: '123',
+        hash: '0x123',
         status: 'pending',
         confirmations: 0,
-        createdAt: new Date().getTime(),
       }
 
       const transactions = {
-        all: {
-          [transaction.hash]: transaction,
-        },
-        lastUpdated: 0,
-        latest: transaction,
+        '0x123': transaction,
       }
 
-      let newState = reducer(transactions, {
+      expect(reducer(transactions, {
         type: DELETE_TRANSACTION,
         transaction,
       })
-
-      expect(newState.all).toEqual({})
-      expect(newState.latest).toEqual(null)
+      ).toEqual({})
     })
 
     it('should keep the transactions when another one has been deleted', () => {
       const transaction = {
-        hash: '123',
+        hash: '0x123',
         status: 'pending',
         confirmations: 0,
-        createdAt: new Date().getTime(),
       }
 
       const transactionToKeep = {
-        hash: '456',
-        status: 'pending',
-        confirmations: 0,
-        createdAt: new Date().getTime(),
+        hash: '0x456',
+        status: 'mined',
+        confirmations: 12,
       }
 
       const transactions = {
-        all: {
-          [transaction.hash]: transaction,
-          [transactionToKeep.hash]: transactionToKeep,
-        },
-        lastUpdated: 0,
-        latest: transactionToKeep,
+        '0x123': transaction,
+        '0x456': transactionToKeep,
       }
 
-      let newState = reducer(transactions, {
+      expect(reducer(transactions, {
         type: DELETE_TRANSACTION,
         transaction,
       })
-
-      expect(newState.all).toEqual({
-        [transactionToKeep.hash]: transactionToKeep,
+      ).toEqual({
+        '0x456': transactionToKeep,
       })
-      expect(newState.latest).toEqual(transactionToKeep)
     })
   })
-
 })
