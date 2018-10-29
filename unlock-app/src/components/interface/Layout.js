@@ -44,9 +44,20 @@ const Left = styled.div`
   display: grid;
   align-items: start;
   height: 24px;
+
+  &>* {
+    @media (max-width: 500px) {
+      display: none;
+    }
+  }
 `
 
 const Right = styled.div`
+  &>* {
+    @media (max-width: 500px) {
+      display: none;
+    }
+  }
 `
 
 const Content = styled.div`
