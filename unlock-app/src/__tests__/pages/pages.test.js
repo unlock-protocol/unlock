@@ -42,7 +42,7 @@ describe('Pages', () => {
   })
   describe('Demo', () => {
     it('should render title correctly', () => {
-      const demopage = shallow(<Demo locks={{}} lockAddress={''} />)
+      const demopage = shallow(<Demo locks={{}} lockAddress='' />)
       expect(demopage.find('title').text()).toBe(pageTitle('Demo'))
     })
   })
