@@ -16,7 +16,7 @@ storiesOf('CreatorLock', CreatorLock)
       confirmations: 24,
     }
     return (
-      <CreatorLock lock={lock} transaction={transaction}/>
+      <CreatorLock lock={lock} transaction={transaction} />
     )
   })
   .add('Confirming', () => {
