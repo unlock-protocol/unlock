@@ -1,14 +1,19 @@
 import styled from 'styled-components'
 import React from 'react'
 import Link from 'next/link'
+import Head from 'next/head'
 import Layout from '../components/interface/Layout'
 import { Section, Headline, SubTitle, CallToAction, ThreeColumns, Column } from '../components/Components'
 import { ActionButton } from '../components/creator/CreatorLocks'
 import withConfig from '../utils/withConfig'
 import UnlockPropTypes from '../propTypes'
+import { pageTitle } from '../constants'
 
 export const Home = ({ config }) => (
   <Layout forContent>
+    <Head>
+      <title>{pageTitle()}</title>
+    </Head>
     <Hero>The Web&#39;s new business model</Hero>
     <Headline>
       Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.
