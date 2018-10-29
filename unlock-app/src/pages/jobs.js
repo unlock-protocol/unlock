@@ -4,7 +4,7 @@ import Layout from '../components/interface/Layout'
 import { Section, Title, Headline, SubTitle, CallToAction, Paragraph, UnorderedList, OrderedList, ListItem, ShortColumn } from '../components/Components'
 
 export const Jobs = () => (
-  <Layout forContent={true}>
+  <Layout forContent>
     <Section>
       <Title>Work at Unlock</Title>
       <UnorderedList>
@@ -35,8 +35,20 @@ export const Jobs = () => (
       <Headline>We&#39;ve clearly-defined our hiring process in order to evaluate your application in a fair, inclusive way, as well as to let you prepare.</Headline>
       <ShortColumn>
         <OrderedList>
-          <ListItem>Initial chat conversation with our founder Julien (find him in our <a href="https://t.me/unlockprotocol">Telegram group</a>!).</ListItem>
-          <ListItem>Open Source Bounty assignment: all of Unlock&#39;s code is public. We&#39;ll ask you to submit a pull request for <a href="https://github.com/unlock-protocol/unlock/issues">one of the issues</a> which has a bounty (look for the <Gitcoin>💰gitcoin</Gitcoin> label).</ListItem>
+          <ListItem>
+Initial chat conversation with our founder Julien (find him in our
+            <a href="https://t.me/unlockprotocol">Telegram group</a>
+!).
+          </ListItem>
+          <ListItem>
+Open Source Bounty assignment: all of Unlock&#39;s code is public. We&#39;ll ask you to submit a pull request for
+            <a href="https://github.com/unlock-protocol/unlock/issues">one of the issues</a>
+            {' '}
+which has a bounty (look for the
+            <Gitcoin>💰gitcoin</Gitcoin>
+            {' '}
+label).
+          </ListItem>
           <ListItem>Once your Pull Request has been merged, we&#39;ll invite you for a second round of interviews (expect 3 or 4) with the team.</ListItem>
           <ListItem>We&#39;ll call the references you provide (please have your resumé ready and updated too!)</ListItem>
         </OrderedList>
@@ -51,7 +63,11 @@ export const Jobs = () => (
         <SubTitle>About You</SubTitle>
 
         <Paragraph>
-          Do you think that the web&#39;s <a href="https://www.theatlantic.com/technology/archive/2014/08/advertising-is-the-internets-original-sin/376041/">original sin</a> is its lack of business model? Do you think that individuals, democracies and the web, deserve better than click-bait, information overload and fake news?
+          Do you think that the web&#39;s 
+          {' '}
+          <a href="https://www.theatlantic.com/technology/archive/2014/08/advertising-is-the-internets-original-sin/376041/">original sin</a>
+          {' '}
+is its lack of business model? Do you think that individuals, democracies and the web, deserve better than click-bait, information overload and fake news?
         </Paragraph>
         <Paragraph>
           Are you excited about empowering creators by building the tools and interfaces which will let them monetize their creations without gatekeepers?
@@ -78,7 +94,8 @@ export const Jobs = () => (
         </UnorderedList>
 
         <Paragraph>
-          Candidates for this position should have a solid background in back-end technologies, as well as the ability to consider front-end challenges. You should be able to make solid technical choices while taking into account differing requirements from a wide range of stakeholders in a software architecture.<br />
+          Candidates for this position should have a solid background in back-end technologies, as well as the ability to consider front-end challenges. You should be able to make solid technical choices while taking into account differing requirements from a wide range of stakeholders in a software architecture.
+          <br />
           Previous experience in open source development and a strong interest in crypto / decentralization is a plus.
         </Paragraph>
 
@@ -105,7 +122,13 @@ export const Jobs = () => (
       <Section>
         <Title>Applications</Title>
         <Paragraph>
-          If you are interested in applying for a position at Unlock, please send an email containing your resume, Github, and LinkedIn to <a href="mailto:julien@unlock-protocol.com">julien@unlock-protocol.com</a>, and reach out to Julien in our <a href="https://t.me/unlockprotocol">Telegram group</a>!).
+          If you are interested in applying for a position at Unlock, please send an email containing your resume, Github, and LinkedIn to 
+          {' '}
+          <a href="mailto:julien@unlock-protocol.com">julien@unlock-protocol.com</a>
+, and reach out to Julien in our 
+          {' '}
+          <a href="https://t.me/unlockprotocol">Telegram group</a>
+!).
         </Paragraph>
       </Section>
     </ShortColumn>
@@ -117,7 +140,11 @@ export const Jobs = () => (
         <SubTitle>About You</SubTitle>
 
         <Paragraph>
-          Do you think that the web&#39;s <a href="https://www.theatlantic.com/technology/archive/2014/08/advertising-is-the-internets-original-sin/376041/">original sin</a> is its lack of business model? Do you think that individuals, democracies and the web, deserve better than click-bait, information overload and fake news?
+          Do you think that the web&#39;s 
+          {' '}
+          <a href="https://www.theatlantic.com/technology/archive/2014/08/advertising-is-the-internets-original-sin/376041/">original sin</a>
+          {' '}
+is its lack of business model? Do you think that individuals, democracies and the web, deserve better than click-bait, information overload and fake news?
         </Paragraph>
         <Paragraph>
               Are you excited about empowering creators by building the tools and interfaces which will let them monetize their creations without gatekeepers?
@@ -171,7 +198,16 @@ export const Jobs = () => (
     </ShortColumn>
 
     <Section>
-      <CallToAction>Check out our open source code on <a href="https://github.com/unlock-protocol/unlock">GitHub</a>, come work <a href="/jobs">with us</a> or simply <a href="mailto:hello@unlock-protocol.com">get in touch</a>.</CallToAction>
+      <CallToAction>
+Check out our open source code on
+        <a href="https://github.com/unlock-protocol/unlock">GitHub</a>
+, come work
+        <a href="/jobs">with us</a>
+        {' '}
+or simply
+        <a href="mailto:hello@unlock-protocol.com">get in touch</a>
+.
+      </CallToAction>
     </Section>
   </Layout>
 )

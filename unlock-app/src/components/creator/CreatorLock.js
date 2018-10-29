@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
 import CreatorLockStatus from './lock/CreatorLockStatus'
@@ -6,7 +7,6 @@ import Icon from '../lock/Icon'
 import EmbedCodeSnippet from './lock/EmbedCodeSnippet'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
-import styled from 'styled-components'
 import { getStatusStringFromTransaction } from '../../helpers/locks'
 
 export class CreatorLock extends React.Component {
@@ -52,7 +52,11 @@ export class CreatorLock extends React.Component {
         <LockDuration>
           <Duration seconds={this.props.lock.expirationDuration} />
         </LockDuration>
-        <LockKeys>{outstandingKeys}/{this.props.lock.maxNumberOfKeys}</LockKeys>
+        <LockKeys>
+          {outstandingKeys}
+/
+          {this.props.lock.maxNumberOfKeys}
+        </LockKeys>
         <Balance amount={this.props.lock.keyPrice} />
         <Balance amount={this.props.lock.balance} />
         {lockComponentStatusBlock}

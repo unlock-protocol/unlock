@@ -1,10 +1,10 @@
-import UnlockPropTypes from '../../propTypes'
 import uniqid from 'uniqid'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import React from 'react'
-import Balance from '../helpers/Balance'
 import { connect } from 'react-redux'
+import Balance from '../helpers/Balance'
+import UnlockPropTypes from '../../propTypes'
 
 import { purchaseKey } from '../../actions/key'
 
@@ -18,7 +18,10 @@ export const Lock = ({ lock, accessKey, transaction, purchaseKey }) => {
     // Maybe we just lost track of that transaction?
     // Is the key valid?
   } else if (transaction.status === 'mined') {
-    purchaseButton = <PurchaseButton>Mined! Confirming... {transaction.confirmations}</PurchaseButton>
+    purchaseButton = <PurchaseButton>
+Mined! Confirming...
+      {transaction.confirmations}
+    </PurchaseButton>
     // Key transaction was mined: it is mined, let's look at confirmations
   } else if (transaction.status === 'submitted') {
     purchaseButton = <PurchaseButton>Submitted!</PurchaseButton>
@@ -30,7 +33,10 @@ export const Lock = ({ lock, accessKey, transaction, purchaseKey }) => {
       <Name>{lock.name}</Name>
       <EtherPrice><Balance amount={lock.keyPrice} /></EtherPrice>
       {lock.fiatPrice &&
-      <FiatPrice>${lock.fiatPrice}</FiatPrice>
+      <FiatPrice>
+$
+        {lock.fiatPrice}
+      </FiatPrice>
       }
       {purchaseButton}
     </Wrapper>

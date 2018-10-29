@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
+import Link from 'next/link'
 import Header from './Header'
 import Footer from './Footer'
 import Logo from './Logo'
-import Link from 'next/link'
 
 export default function Layout({ forContent, title, children }) {
   return (
     <Container>
       <Left>
         {!forContent &&
-          <Link href={'/'}>
+          <Link href="/">
             <a><Logo /></a>
           </Link>
         }

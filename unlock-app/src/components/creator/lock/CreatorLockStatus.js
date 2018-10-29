@@ -15,7 +15,13 @@ export function CreatorLockStatus({ lock, transaction }) {
     <LockStatus>
       {status}
       {status == 'confirming' &&
-        <Confirmations>{transaction.confirmations} / {config.requiredConfirmations}</Confirmations>
+        <Confirmations>
+          {transaction.confirmations}
+          {' '}
+/ 
+          {' '}
+          {config.requiredConfirmations}
+        </Confirmations>
       }
     </LockStatus>
   )

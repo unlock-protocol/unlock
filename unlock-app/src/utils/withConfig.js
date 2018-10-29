@@ -1,8 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import configure from '../config'
 import { WrongNetwork, MissingProvider } from '../components/creator/FatalError'
 import { ETHEREUM_NETWORKS_NAMES } from '../constants'
-import { connect } from 'react-redux'
 
 /**
  * Function which creates higher order component with the config
