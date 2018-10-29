@@ -8,10 +8,10 @@ import UnlockPropTypes from '../../propTypes'
 
 import { purchaseKey } from '../../actions/key'
 
-export const Lock = ({ lock, accessKey, transaction, purchaseKey }) => {
+export const Lock = ({ lock, lockKey, transaction, purchaseKey }) => {
 
-  let purchaseButton = <PurchaseButton onClick={() => { purchaseKey(accessKey) }}>Purchase</PurchaseButton>
-  if (!accessKey) {
+  let purchaseButton = <PurchaseButton onClick={() => { purchaseKey(lockKey) }}>Purchase</PurchaseButton>
+  if (!lockKey) {
     purchaseButton = null
   } else if (!transaction) {
     // No transaction attached to the key. What is it?
@@ -21,7 +21,7 @@ export const Lock = ({ lock, accessKey, transaction, purchaseKey }) => {
     purchaseButton = <PurchaseButton>
 Mined! Confirming...
       {transaction.confirmations}
-    </PurchaseButton>
+                     </PurchaseButton>
     // Key transaction was mined: it is mined, let's look at confirmations
   } else if (transaction.status === 'submitted') {
     purchaseButton = <PurchaseButton>Submitted!</PurchaseButton>
@@ -44,7 +44,7 @@ $
 }
 
 Lock.propTypes = {
-  accessKey: UnlockPropTypes.key,
+  lockKey: UnlockPropTypes.key,
   lock: UnlockPropTypes.lock,
   transaction: UnlockPropTypes.transaction,
   purchaseKey: PropTypes.func,
@@ -63,23 +63,23 @@ export const mapStateToProps = (state, {lock}) => {
     return {}
   }
 
-  let accessKey = Object.values(keys).find((key) => (
+  let lockKey = Object.values(keys).find((key) => (
     key.lockAddress === lock.address && key.owner === account.address
   ))
   let transaction = null
 
-  if (!accessKey) {
-    accessKey = {
+  if (!lockKey) {
+    lockKey = {
       id: uniqid(),
       lockAddress: lock.address,
       owner: account.address,
     }
   } else {
-    transaction = state.transactions.all[accessKey.transaction]
+    transaction = state.transactions.all[lockKey.transaction]
   }
 
   return {
-    accessKey,
+    lockKey,
     transaction,
   }
 }
