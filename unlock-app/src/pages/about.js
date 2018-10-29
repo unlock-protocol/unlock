@@ -4,11 +4,13 @@ import Head from 'next/head'
 import Layout from '../components/interface/Layout'
 import { Section, Title, Headline, SubTitle, CallToAction, ThreeColumns, Column, TwoColumns } from '../components/Components'
 import { pageTitle } from '../constants'
+import { TwitterTags } from '../components/page/TwitterTags'
 
 export const About = () => (
   <Layout forContent>
     <Head>
       <title>{pageTitle('About')}</title>
+      <TwitterTags title={pageTitle('About')} description='We’re a small, smart and nimble team of coders and designers with a vision for a better and fairer way to monetize content.' />
     </Head>
     <Section>
       <Title>About</Title>
@@ -36,7 +38,7 @@ For this, we&#39;re building a protocol which lets anyone restrict access to the
           <small>
             <a href="https://www.ouvre-boite.com/">Personal site</a>
             {' '}
-- 
+-
             {' '}
             <a href="https://www.linkedin.com/in/juliengenestoux/">LinkedIn</a>
           </small>
@@ -48,7 +50,7 @@ For this, we&#39;re building a protocol which lets anyone restrict access to the
           <small>
             <a href="https://benwerd.com/">Personal site</a>
             {' '}
-- 
+-
             {' '}
             <a href="https://www.linkedin.com/in/benwerd/">LinkedIn</a>
           </small>
@@ -60,7 +62,7 @@ For this, we&#39;re building a protocol which lets anyone restrict access to the
           <small>
             <a href="http://mombartz.com/">Personal site</a>
             {' '}
-- 
+-
             {' '}
             <a href="https://www.linkedin.com/in/smombartz/">LinkedIn</a>
           </small>
@@ -76,7 +78,7 @@ For this, we&#39;re building a protocol which lets anyone restrict access to the
 We received $1.7M in funding from the following investors: General Catalyst and by Cherry Ventures and with participations from Consensys Ventures, Kindred Ventures, Betaworks, 122 West, La Famiglia, Coinbase Ventures and a group of stellar business angels.
           <a href="https://medium.com/unlock-protocol/unlocking-some-exciting-news-5ad0f3889375">More...</a>
           {' '}
- 
+
         </p>
       </News>
     </Section>
