@@ -1,3 +1,5 @@
+// TODO: for consistency rename into transactionsReducer since it keeps track of all transactions
+
 import { ADD_TRANSACTION, UPDATE_TRANSACTION, DELETE_TRANSACTION } from '../actions/transaction'
 
 export const initialState = {}
