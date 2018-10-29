@@ -1,12 +1,11 @@
-import UnlockPropTypes from '../propTypes'
-
 import React from 'react'
 import { connect } from 'react-redux'
 import NoSSR from 'react-no-ssr'
+import UnlockPropTypes from '../propTypes'
 import Layout from '../components/interface/Layout'
 import CreatorAccount from '../components/creator/CreatorAccount'
 import CreatorLocks from '../components/creator/CreatorLocks'
-import { withConfig } from '../utils/withConfig'
+import withConfig from '../utils/withConfig'
 
 export const Dashboard = ({account, network, transactions, locks}) => {
   if (!account) {

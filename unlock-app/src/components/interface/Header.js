@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
+import Link from 'next/link'
 import Svg from './svg'
 import Buttons from './buttons/layout'
-import Link from 'next/link'
 
 export default function Header({ forContent, title }) {
   return (
@@ -12,8 +12,8 @@ export default function Header({ forContent, title }) {
         <Title>{title}</Title>
       }
       {!!forContent &&
-        <Link href={'/'}>
-          <a><Svg.UnlockWordMark height={'28px'} width={'100%'} /></a>
+        <Link href="/">
+          <a><Svg.UnlockWordMark height="28px" width="100%" /></a>
         </Link>
       }
       <Buttons.About />

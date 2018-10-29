@@ -24,7 +24,7 @@ export function EmbedCodeSnippet({ lock }) {
   // TODO: add visual confirmation of code having been copied
   return (
     <CodeControls>
-      <CodeSnippet value={embedCode(lock)} onClick={selectAll}></CodeSnippet>
+      <CodeSnippet value={embedCode(lock)} onClick={selectAll} />
       <CopyToClipboard text={embedCode(lock)}>
         <Buttons.Copy />
       </CopyToClipboard>

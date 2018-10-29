@@ -15,6 +15,6 @@ storiesOf('Header', Header)
   })
   .add('the header for a content page', () => {
     return (
-      <Header forContent={true} title="Roses are red" />
+      <Header forContent title="Roses are red" />
     )
   })

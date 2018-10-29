@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types'
-import UnlockPropTypes from '../../propTypes'
 import uniqid from 'uniqid'
-
 import React from 'react'
 import styled from 'styled-components'
+import Web3Utils from 'web3-utils'
+import { connect } from 'react-redux'
+import UnlockPropTypes from '../../propTypes'
+
 import Icon from '../lock/Icon'
 import { BalanceWithUnit } from '../helpers/Balance'
 import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockStatus'
-import Web3Utils from 'web3-utils'
 import { createLock } from '../../actions/lock'
-import { connect } from 'react-redux'
 
 class CreatorLockForm extends React.Component {
   constructor (props, context) {
@@ -60,13 +60,16 @@ class CreatorLockForm extends React.Component {
           <input type="text" id="name" onChange={this.handleChange} defaultValue={this.state.name} />
         </FormLockName>
         <FormLockDuration>
-          <input type="text" id="expirationDuration" onChange={this.handleChange} defaultValue={this.state.expirationDuration} /> days
+          <input type="text" id="expirationDuration" onChange={this.handleChange} defaultValue={this.state.expirationDuration} />
+          {' '}
+days
         </FormLockDuration>
         <FormLockKeys>
           <input type="text" id="maxNumberOfKeys" onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
         </FormLockKeys>
         <FormBalanceWithUnit>
-          三<input type="text" id="keyPrice" onChange={this.handleChange} defaultValue={this.state.keyPrice} />
+          三
+          <input type="text" id="keyPrice" onChange={this.handleChange} defaultValue={this.state.keyPrice} />
         </FormBalanceWithUnit>
         <div>-</div>
         <LockSubmit onClick={this.handleSubmit}>

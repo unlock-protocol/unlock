@@ -1,5 +1,5 @@
-import configure from '../config'
 import React from 'react'
+import configure from '../config'
 import createUnlockStore from '../createUnlockStore'
 import { saveState } from '../services/localStorageService'
 

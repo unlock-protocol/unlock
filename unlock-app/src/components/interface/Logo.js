@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import Unlock from './svg/Unlock'
-
 import React from 'react'
+import Unlock from './svg/Unlock'
 
 /**
  * This wraps the Unlock SVG component into a pink circle.

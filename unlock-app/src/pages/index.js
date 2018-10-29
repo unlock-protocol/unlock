@@ -4,11 +4,11 @@ import Link from 'next/link'
 import Layout from '../components/interface/Layout'
 import { Section, Headline, SubTitle, CallToAction, ThreeColumns, Column } from '../components/Components'
 import { ActionButton } from '../components/creator/CreatorLocks'
-import { withConfig } from '../utils/withConfig'
+import withConfig from '../utils/withConfig'
 import UnlockPropTypes from '../propTypes'
 
 export const Home = ({ config }) => (
-  <Layout forContent={true}>
+  <Layout forContent>
     <Hero>The Web&#39;s new business model</Hero>
     <Headline>
       Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.
@@ -16,7 +16,7 @@ export const Home = ({ config }) => (
 
     <Action>
       { config.env !== 'prod' &&
-        <Link href={'/dashboard'}>
+        <Link href="/dashboard">
           <a>
             <HomepageButton>Go to Your Dashboard</HomepageButton>
           </a>
@@ -24,7 +24,10 @@ export const Home = ({ config }) => (
       }
 
       {config.env === 'prod' &&
-        <HomepageButton disabled>Go to Your Dashboard... <em>coming soon</em></HomepageButton>
+        <HomepageButton disabled>
+Go to Your Dashboard...
+          <em>coming soon</em>
+        </HomepageButton>
       }
 
       <ButtonLabel>Requires a browser with an Ethereum wallet</ButtonLabel>
@@ -55,7 +58,16 @@ export const Home = ({ config }) => (
     </ThreeColumns>
 
     <Section>
-      <CallToAction>Check out our open source code on <a href="https://github.com/unlock-protocol/unlock">GitHub</a>, come work <a href="/jobs">with us</a> or simply <a href="mailto:hello@unlock-protocol.com">get in touch</a>.</CallToAction>
+      <CallToAction>
+Check out our open source code on
+        <a href="https://github.com/unlock-protocol/unlock">GitHub</a>
+, come work
+        <a href="/jobs">with us</a>
+        {' '}
+or simply
+        <a href="mailto:hello@unlock-protocol.com">get in touch</a>
+.
+      </CallToAction>
     </Section>
   </Layout>
 )

@@ -144,7 +144,7 @@ export default class Web3Service {
    * @return Promise<Lock>
    */
   createLock(lock, callback) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const unlock = new this.web3.eth.Contract(UnlockContract.abi, UnlockContract.networks[this.networkId].address)
 
       const data = unlock.methods.createLock(
@@ -210,7 +210,7 @@ export default class Web3Service {
    * @return Promise<Account>
    */
   loadAccount(privateKey) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       return resolve(this.web3.eth.accounts.privateKeyToAccount(privateKey))
     }).then((account) => {
       return this.getAddressBalance(account.address)
@@ -226,7 +226,7 @@ export default class Web3Service {
    * @return Promise<Account>
    */
   createAccount() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       return resolve(this.web3.eth.accounts.create())
     }).then((account) => {
       // We poll the balance even though it is certainly 0
@@ -329,7 +329,7 @@ export default class Web3Service {
    * @return Promise<Key>
    */
   purchaseKey(key, account, lock, callback) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const lockContract = new this.web3.eth.Contract(LockContract.abi, key.lockAddress)
       const data = lockContract.methods.purchaseFor(key.owner, Web3Utils.utf8ToHex(key.data || '')).encodeABI()
 
@@ -397,6 +397,7 @@ export default class Web3Service {
         key.data = data
         return key
       }).catch((error) => {
+        console.log(error)
         // We could not fetch the key. Assume it does not exist so set its expiration to 0
         key.expiration = 0
         key.data = null
@@ -432,6 +433,7 @@ export default class Web3Service {
         }
         return key
       }).catch((error) => {
+        console.log(error)
         // We could not fetch the key. Assume it does not exist?
         return Promise.reject(new Error('Missing key'))
       })
@@ -444,8 +446,8 @@ export default class Web3Service {
    * @param {Function} callback TODO: implement...
    * @return Promise<lock>
   */
-  withdrawFromLock(lock, account, callback) {
-    return new Promise((resolve, reject) => {
+  withdrawFromLock(lock, account) {
+    return new Promise((resolve) => {
       const lockContract = new this.web3.eth.Contract(LockContract.abi, lock.address)
       const data = lockContract.methods.withdraw().encodeABI()
 
@@ -456,7 +458,7 @@ export default class Web3Service {
         gas: 1000000,
         privateKey: account.privateKey,
         contractAbi: LockContract.abi,
-      }, (error, { event, args }) => {
+      }, (error, { event }) => {
         if (error) {
           console.error(error)
         }

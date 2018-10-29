@@ -10,6 +10,6 @@ storiesOf('Layout', Layout)
   })
   .add('the layout for the content page', () => {
     return (
-      <Layout forContent={true} title="About Unlock" />
+      <Layout forContent title="About Unlock" />
     )
   })

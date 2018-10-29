@@ -7,10 +7,10 @@ export const LayoutButton = ({href = '#', title, children}) => (
   <Link href={href}>
     <Button
       href={href}
-      backgroundColor={'var(--grey)'}
-      fillColor={'white'}
-      backgroundHoverColor={'var(--link)'}
-      fillHoverColor={'white'}
+      backgroundColor="var(--grey)"
+      fillColor="white"
+      backgroundHoverColor="var(--link)"
+      fillHoverColor="white"
     >
       {children}
       <Label>{title}</Label>
@@ -32,10 +32,10 @@ export const LockButton = ({ href = '#', children, ...props }) => (
   <Link href={href}>
     <Button
       href={href}
-      backgroundColor={'var(--lightgrey)'}
-      fillColor={'var(--grey)'}
-      backgroundHoverColor={'var(--link)'}
-      fillHoverColor={'white'}
+      backgroundColor="var(--lightgrey)"
+      fillColor="var(--grey)"
+      backgroundHoverColor="var(--link)"
+      fillHoverColor="white"
       {...props}
     >
       {children}

@@ -3,7 +3,7 @@ import { mapStateToProps } from '../../../components/lock/Lock'
 describe('Lock', () => {
   describe('mapStateToProps', () => {
 
-    it('should return a new accessKey and no transaction when there is no matching key', () => {
+    it('should return a new lockKey and no transaction when there is no matching key', () => {
       const state = {
         network: {
           account: {
@@ -21,14 +21,14 @@ describe('Lock', () => {
         },
       }
       const newProps = mapStateToProps(state, props)
-      expect(newProps.accessKey.lockAddress).toEqual(props.lock.address)
-      expect(newProps.accessKey.owner).toEqual(state.network.account.address)
-      expect(newProps.accessKey.data).toEqual(undefined)
-      expect(newProps.accessKey.expiration).toEqual(undefined)
+      expect(newProps.lockKey.lockAddress).toEqual(props.lock.address)
+      expect(newProps.lockKey.owner).toEqual(state.network.account.address)
+      expect(newProps.lockKey.data).toEqual(undefined)
+      expect(newProps.lockKey.expiration).toEqual(undefined)
       expect(newProps.transaction).toEqual(null)
     })
 
-    it('should return the accessKey and its transaction if applicable', () => {
+    it('should return the lockKey and its transaction if applicable', () => {
       const props = {
         lock: {
           address: '0xdeadbeef',
@@ -58,10 +58,10 @@ describe('Lock', () => {
         },
       }
       const newProps = mapStateToProps(state, props)
-      expect(newProps.accessKey.lockAddress).toEqual(props.lock.address)
-      expect(newProps.accessKey.owner).toEqual(state.network.account.address)
-      expect(newProps.accessKey.data).toEqual('hello')
-      expect(newProps.accessKey.expiration).toEqual(1000)
+      expect(newProps.lockKey.lockAddress).toEqual(props.lock.address)
+      expect(newProps.lockKey.owner).toEqual(state.network.account.address)
+      expect(newProps.lockKey.data).toEqual('hello')
+      expect(newProps.lockKey.expiration).toEqual(1000)
       expect(newProps.transaction).toEqual({
         status: 'pending',
         hash: '0x777',
