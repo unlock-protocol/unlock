@@ -45,7 +45,10 @@ Open Source Bounty assignment: all of Unlock&#39;s code is public. We&#39;ll ask
             <a href="https://github.com/unlock-protocol/unlock/issues">one of the issues</a>
             {' '}
 which has a bounty (look for the
-            <Gitcoin>💰gitcoin</Gitcoin>
+            <Gitcoin>
+              <span role="img" aria-label="bounty">💰</span>
+              gitcoin
+            </Gitcoin>
             {' '}
 label).
           </ListItem>
@@ -63,7 +66,7 @@ label).
         <SubTitle>About You</SubTitle>
 
         <Paragraph>
-          Do you think that the web&#39;s 
+          Do you think that the web&#39;s
           {' '}
           <a href="https://www.theatlantic.com/technology/archive/2014/08/advertising-is-the-internets-original-sin/376041/">original sin</a>
           {' '}
@@ -122,10 +125,10 @@ is its lack of business model? Do you think that individuals, democracies and th
       <Section>
         <Title>Applications</Title>
         <Paragraph>
-          If you are interested in applying for a position at Unlock, please send an email containing your resume, Github, and LinkedIn to 
+          If you are interested in applying for a position at Unlock, please send an email containing your resume, Github, and LinkedIn to
           {' '}
           <a href="mailto:julien@unlock-protocol.com">julien@unlock-protocol.com</a>
-, and reach out to Julien in our 
+, and reach out to Julien in our
           {' '}
           <a href="https://t.me/unlockprotocol">Telegram group</a>
 !).
@@ -140,7 +143,7 @@ is its lack of business model? Do you think that individuals, democracies and th
         <SubTitle>About You</SubTitle>
 
         <Paragraph>
-          Do you think that the web&#39;s 
+          Do you think that the web&#39;s
           {' '}
           <a href="https://www.theatlantic.com/technology/archive/2014/08/advertising-is-the-internets-original-sin/376041/">original sin</a>
           {' '}
