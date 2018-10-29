@@ -3,6 +3,7 @@ import UnlockPropTypes from '../propTypes'
 import React from 'react'
 import { connect } from 'react-redux'
 import NoSSR from 'react-no-ssr'
+import Head from 'next/head'
 import Layout from '../components/interface/Layout'
 import CreatorAccount from '../components/creator/CreatorAccount'
 import CreatorLocks from '../components/creator/CreatorLocks'
@@ -15,6 +16,9 @@ export const Dashboard = ({account, network, transactions, locks}) => {
 
   return (
     <Layout title="Creator Dashboard">
+      <Head>
+        <title>Dashboard | Unlock: The Web&#39;s new business model</title>
+      </Head>
       <NoSSR>
         <CreatorAccount network={network} account={account} />
         <CreatorLocks transactions={transactions} locks={locks} />

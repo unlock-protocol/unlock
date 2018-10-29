@@ -3,6 +3,7 @@ import UnlockPropTypes from '../propTypes'
 import React from 'react'
 import NoSSR from 'react-no-ssr'
 import Link from 'next/link'
+import Head from 'next/head'
 import { connect } from 'react-redux'
 import { setProvider } from '../actions/provider'
 import { withConfig } from '../utils/withConfig'
@@ -10,6 +11,9 @@ import { withConfig } from '../utils/withConfig'
 export function Web3Provider({ setProvider, config, provider }) {
   return (
     <div className="container">
+      <Head>
+        <title>Choose provider | Unlock: The Web&#39;s new business model</title>
+      </Head>
       <header className="masthead mb-auto">
         <div className="inner">
           <h3 className="masthead-brand">&nbsp;</h3>

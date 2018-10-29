@@ -1,10 +1,14 @@
 import styled from 'styled-components'
 import React from 'react'
+import Head from 'next/head'
 import Layout from '../components/interface/Layout'
 import { Section, Title, Headline, SubTitle, CallToAction, ThreeColumns, Column, TwoColumns } from '../components/Components'
 
 export const About = () => (
   <Layout forContent={true}>
+    <Head>
+      <title>About | Unlock: The Web&#39;s new business model</title>
+    </Head>
     <Section>
       <Title>About</Title>
       <Headline>

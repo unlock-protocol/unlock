@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import React from 'react'
 import NoSSR from 'react-no-ssr'
 import Layout from '../components/interface/Layout'
+import Head from 'next/head'
 import { Overlay } from '../components/lock/Overlay'
 import { Section, Title, Headline, ShortColumn, Paragraph } from '../components/Components'
 import { withConfig } from '../utils/withConfig'
@@ -22,6 +23,9 @@ export class Demo extends React.Component {
     const lock = Object.values(locks).find((lock) => lock.address === lockAddress)
     return(
       <Layout title="Unlock Demo Page" forContent={true}>
+        <Head>
+          <title>Demo | Unlock: The Web&#39;s new business model</title>
+        </Head>
         <NoSSR>
           <Section>
             <Title>It’s Time to Unlock The Web</Title>
