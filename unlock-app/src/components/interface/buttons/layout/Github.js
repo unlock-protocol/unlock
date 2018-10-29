@@ -1,5 +1,5 @@
-import Svg from '../../svg'
 import React from 'react'
+import Svg from '../../svg'
 import { LayoutButton } from '../Button'
 
 const Github = () => (

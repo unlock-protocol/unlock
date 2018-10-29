@@ -14,7 +14,9 @@ export function Balance({ amount, unit = 'wei' }) {
   let ethWithPresentation = BalancePresenter(inEth)
 
   return (<BalanceWithUnit>
-    三 {ethWithPresentation}
+    三 
+    {' '}
+    {ethWithPresentation}
   </BalanceWithUnit>)
 }
 

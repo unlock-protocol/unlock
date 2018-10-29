@@ -1,3 +1,5 @@
+/* eslint import/prefer-default-export: 0 */  // This file does not have a default export
+
 /**
  * Pair of network name and 'class' (dev, test, staging, main)
  * Taken from https://ethereum.stackexchange.com/questions/17051/how-to-select-a-network-id-or-is-there-a-list-of-network-ids

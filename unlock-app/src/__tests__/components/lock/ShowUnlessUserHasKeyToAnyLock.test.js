@@ -16,7 +16,9 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
     }
 
     const wrapper = shallow(<ShowUnlessUserHasKeyToAnyLock
-      locks={locks} keys={keys}>
+      locks={locks}
+      keys={keys}
+    >
       Show me
     </ShowUnlessUserHasKeyToAnyLock>)
     expect(wrapper.text()).toEqual('Show me')
@@ -34,7 +36,9 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
     }
 
     const wrapper = shallow(<ShowUnlessUserHasKeyToAnyLock
-      locks={locks} keys={keys}>
+      locks={locks}
+      keys={keys}
+    >
       Show me
     </ShowUnlessUserHasKeyToAnyLock>)
     expect(wrapper.text()).toEqual('Show me')
@@ -52,7 +56,9 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
     }
 
     const wrapper = shallow(<ShowUnlessUserHasKeyToAnyLock
-      locks={locks} keys={keys}>
+      locks={locks}
+      keys={keys}
+    >
       Hide me
     </ShowUnlessUserHasKeyToAnyLock>)
     expect(wrapper.text()).toEqual('')

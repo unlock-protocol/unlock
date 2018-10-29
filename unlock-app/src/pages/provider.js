@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
-import UnlockPropTypes from '../propTypes'
 import React from 'react'
 import NoSSR from 'react-no-ssr'
 import Link from 'next/link'
 import Head from 'next/head'
 import { connect } from 'react-redux'
+import UnlockPropTypes from '../propTypes'
 import { setProvider } from '../actions/provider'
-import { withConfig } from '../utils/withConfig'
+import withConfig from '../utils/withConfig'
 import { pageTitle } from '../constants'
 
 export function Web3Provider({ setProvider, config, provider }) {
@@ -18,8 +18,7 @@ export function Web3Provider({ setProvider, config, provider }) {
       <header className="masthead mb-auto">
         <div className="inner">
           <h3 className="masthead-brand">&nbsp;</h3>
-          <nav className="nav nav-masthead justify-content-center">
-          </nav>
+          <nav className="nav nav-masthead justify-content-center" />
         </div>
       </header>
       <div className="row align-items-center justify-content-center" style={{ height: '300px' }}>
@@ -37,7 +36,7 @@ export function Web3Provider({ setProvider, config, provider }) {
                   })}
                 </select>
                 <div className="input-group-append">
-                  <Link href={'/'}>
+                  <Link href="/">
                     <a className="fa fa-home btn btn-outline-secondary">Home</a>
                   </Link>
                 </div>
