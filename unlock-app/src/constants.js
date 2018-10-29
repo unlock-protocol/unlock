@@ -12,6 +12,11 @@ export const ETHEREUM_NETWORKS_NAMES = {
   4: ['Rinkeby', 'staging'],
 }
 
+/**
+ * Returns a page title to be used within HTML <title> tags.
+ * @param title
+ * @returns {string}
+ */
 export const pageTitle = (title) => {
   let pageTitle = ''
   if (title) pageTitle += `${title} | `
