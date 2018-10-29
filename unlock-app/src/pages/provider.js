@@ -7,12 +7,13 @@ import Head from 'next/head'
 import { connect } from 'react-redux'
 import { setProvider } from '../actions/provider'
 import { withConfig } from '../utils/withConfig'
+import { pageTitle } from '../constants'
 
 export function Web3Provider({ setProvider, config, provider }) {
   return (
     <div className="container">
       <Head>
-        <title>Choose provider | Unlock: The Web&#39;s new business model</title>
+        <title>{pageTitle('Choose provider')}</title>
       </Head>
       <header className="masthead mb-auto">
         <div className="inner">

@@ -10,6 +10,7 @@ import { Overlay } from '../components/lock/Overlay'
 import { Section, Title, Headline, ShortColumn, Paragraph } from '../components/Components'
 import { withConfig } from '../utils/withConfig'
 import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
+import { pageTitle } from '../constants'
 
 export class Demo extends React.Component {
   static async getInitialProps({ req, query: { lockaddress } }) {
@@ -24,7 +25,7 @@ export class Demo extends React.Component {
     return(
       <Layout title="Unlock Demo Page" forContent={true}>
         <Head>
-          <title>Demo | Unlock: The Web&#39;s new business model</title>
+          <title>{pageTitle('Demo')}</title>
         </Head>
         <NoSSR>
           <Section>

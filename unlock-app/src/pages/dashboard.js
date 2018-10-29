@@ -8,6 +8,7 @@ import Layout from '../components/interface/Layout'
 import CreatorAccount from '../components/creator/CreatorAccount'
 import CreatorLocks from '../components/creator/CreatorLocks'
 import { withConfig } from '../utils/withConfig'
+import { pageTitle } from '../constants'
 
 export const Dashboard = ({account, network, transactions, locks}) => {
   if (!account) {
@@ -17,7 +18,7 @@ export const Dashboard = ({account, network, transactions, locks}) => {
   return (
     <Layout title="Creator Dashboard">
       <Head>
-        <title>Dashboard | Unlock: The Web&#39;s new business model</title>
+        <title>{pageTitle('Dashboard')}</title>
       </Head>
       <NoSSR>
         <CreatorAccount network={network} account={account} />

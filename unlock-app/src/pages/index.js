@@ -7,11 +7,12 @@ import { Section, Headline, SubTitle, CallToAction, ThreeColumns, Column } from 
 import { ActionButton } from '../components/creator/CreatorLocks'
 import { withConfig } from '../utils/withConfig'
 import UnlockPropTypes from '../propTypes'
+import { pageTitle } from '../constants'
 
 export const Home = ({ config }) => (
   <Layout forContent={true}>
     <Head>
-      <title>Unlock: The Web&#39;s new business model</title>
+      <title>{pageTitle()}</title>
     </Head>
     <Hero>The Web&#39;s new business model</Hero>
     <Headline>
