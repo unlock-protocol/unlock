@@ -18,7 +18,7 @@ export function CreatorLockStatus({ lock, transaction }) {
         <Confirmations>
           {transaction.confirmations}
           {' '}
-/ 
+/
           {' '}
           {config.requiredConfirmations}
         </Confirmations>
@@ -29,7 +29,7 @@ export function CreatorLockStatus({ lock, transaction }) {
 
 CreatorLockStatus.propTypes = {
   lock: UnlockPropTypes.lock,
-  transaction: PropTypes.transaction,
+  transaction: UnlockPropTypes.transaction,
 }
 
 export default CreatorLockStatus
