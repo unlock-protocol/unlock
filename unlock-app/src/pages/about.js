@@ -1,10 +1,15 @@
 import styled from 'styled-components'
 import React from 'react'
+import Head from 'next/head'
 import Layout from '../components/interface/Layout'
 import { Section, Title, Headline, SubTitle, CallToAction, ThreeColumns, Column, TwoColumns } from '../components/Components'
+import { pageTitle } from '../constants'
 
 export const About = () => (
   <Layout forContent>
+    <Head>
+      <title>{pageTitle('About')}</title>
+    </Head>
     <Section>
       <Title>About</Title>
       <Headline>

@@ -2,14 +2,19 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import NoSSR from 'react-no-ssr'
 import Link from 'next/link'
+import Head from 'next/head'
 import { connect } from 'react-redux'
 import UnlockPropTypes from '../propTypes'
 import { setProvider } from '../actions/provider'
 import withConfig from '../utils/withConfig'
+import { pageTitle } from '../constants'
 
 export function Web3Provider({ setProvider, config, provider }) {
   return (
     <div className="container">
+      <Head>
+        <title>{pageTitle('Choose provider')}</title>
+      </Head>
       <header className="masthead mb-auto">
         <div className="inner">
           <h3 className="masthead-brand">&nbsp;</h3>

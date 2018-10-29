@@ -1,11 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import NoSSR from 'react-no-ssr'
+import Head from 'next/head'
 import UnlockPropTypes from '../propTypes'
 import Layout from '../components/interface/Layout'
 import CreatorAccount from '../components/creator/CreatorAccount'
 import CreatorLocks from '../components/creator/CreatorLocks'
 import withConfig from '../utils/withConfig'
+import { pageTitle } from '../constants'
 
 export const Dashboard = ({account, network, transactions, locks}) => {
   if (!account) {
@@ -14,6 +16,9 @@ export const Dashboard = ({account, network, transactions, locks}) => {
 
   return (
     <Layout title="Creator Dashboard">
+      <Head>
+        <title>{pageTitle('Dashboard')}</title>
+      </Head>
       <NoSSR>
         <CreatorAccount network={network} account={account} />
         <CreatorLocks transactions={transactions} locks={locks} />
