@@ -2,6 +2,9 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import UnlockPropTypes from '../../propTypes'
 
+/**
+ * TODO: We should probably check that the transaction for that key has been confirmed...
+ */
 export const ShowUnlessUserHasKeyToAnyLock = ({ locks, keys, children }) => {
   const now = new Date().getTime() / 1000
   for(let lock of locks) {

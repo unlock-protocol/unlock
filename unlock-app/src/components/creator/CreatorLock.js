@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
 import CreatorLockStatus from './lock/CreatorLockStatus'
@@ -7,7 +8,7 @@ import Icon from '../lock/Icon'
 import EmbedCodeSnippet from './lock/EmbedCodeSnippet'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
-import { getStatusStringFromTransaction } from '../../helpers/locks'
+import withConfig from '../../utils/withConfig'
 
 export class CreatorLock extends React.Component {
   constructor (props, context) {
@@ -28,42 +29,51 @@ export class CreatorLock extends React.Component {
     // TODO add USD values to lock
     // TODO add all-time balance to lock
 
-    // Some sanitization of strings to display
-    let name = this.props.lock.name || 'New Lock'
-    let outstandingKeys = this.props.lock.maxNumberOfKeys - this.props.lock.outstandingKeys || 0
-    let lockComponentStatusBlock
-    let status = getStatusStringFromTransaction(this.props.transaction)
+    const { lock, transaction, config } = this.props
 
-    if (status === 'deployed') { // the transaction was mined and confirmed at least 12 times
-      lockComponentStatusBlock = (<LockIconBarContainer>
-        <LockIconBar lock={this.props.lock} toggleCode={this.toggleEmbedCode} />
-      </LockIconBarContainer>)
-    } else {
-      lockComponentStatusBlock = <CreatorLockStatus lock={this.props.lock} transaction={this.props.transaction} />
+    // Some sanitization of strings to display
+    let name = lock.name || 'New Lock'
+    let outstandingKeys = lock.maxNumberOfKeys - lock.outstandingKeys || 0
+    let lockComponentStatusBlock = (<LockIconBarContainer>
+      <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
+    </LockIconBarContainer>)
+
+    if (!transaction) {
+      // We assume that the lock has been succeesfuly deployed?
+      // TODO if the transaction is missing we should try to look it up from the lock address
+    } else if (transaction.status === 'submitted') {
+      lockComponentStatusBlock = <CreatorLockStatus lock={lock} status="Submitted" />
+    } else if (transaction.status === 'mined' &&
+        transaction.confirmations < config.requiredConfirmations) {
+      lockComponentStatusBlock = <CreatorLockStatus
+        lock={lock}
+        status="Confirming"
+        confirmations={transaction.confirmations}
+      />
     }
 
     return (
       <LockRow>
-        <Icon lock={this.props.lock} address={this.props.lock.address} />
+        <Icon lock={lock} address={lock.address} />
         <LockName>
           {name}
-          <LockAddress>{this.props.lock.address}</LockAddress>
+          <LockAddress>{lock.address}</LockAddress>
         </LockName>
         <LockDuration>
-          <Duration seconds={this.props.lock.expirationDuration} />
+          <Duration seconds={lock.expirationDuration} />
         </LockDuration>
         <LockKeys>
           {outstandingKeys}
 /
-          {this.props.lock.maxNumberOfKeys}
+          {lock.maxNumberOfKeys}
         </LockKeys>
-        <Balance amount={this.props.lock.keyPrice} />
-        <Balance amount={this.props.lock.balance} />
+        <Balance amount={lock.keyPrice} />
+        <Balance amount={lock.balance} />
         {lockComponentStatusBlock}
         {status === 'deployed' && this.state.showEmbedCode &&
           <LockCode>
             <LockDivider />
-            <EmbedCodeSnippet lock={this.props.lock} />
+            <EmbedCodeSnippet lock={lock} />
           </LockCode>
         }
       </LockRow>
@@ -74,9 +84,18 @@ export class CreatorLock extends React.Component {
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock,
   transaction: UnlockPropTypes.transaction,
+  config: UnlockPropTypes.configuration,
 }
 
-export default CreatorLock
+const mapStateToProps = (state, { lock }) => {
+  const transaction = state.transactions[lock.transaction]
+  return {
+    transaction,
+    lock,
+  }
+}
+
+export default withConfig(connect(mapStateToProps)(CreatorLock))
 
 export const LockRowGrid = 'grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
 
