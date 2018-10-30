@@ -6,7 +6,6 @@ exports.shouldCreateLock = function (accounts) {
     let transaction
     beforeEach(async function () {
       transaction = await this.unlock.createLock(
-        0, // keyReleaseMechanism: KeyReleaseMechanisms.Public
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
         100 // maxNumberOfKeys
