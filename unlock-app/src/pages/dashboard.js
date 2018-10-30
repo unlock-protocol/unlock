@@ -9,7 +9,7 @@ import CreatorLocks from '../components/creator/CreatorLocks'
 import withConfig from '../utils/withConfig'
 import { pageTitle } from '../constants'
 
-export const Dashboard = ({account, network, transactions, locks}) => {
+export const Dashboard = ({account, network, locks}) => {
   if (!account) {
     return null //loading
   }
@@ -21,7 +21,7 @@ export const Dashboard = ({account, network, transactions, locks}) => {
       </Head>
       <NoSSR>
         <CreatorAccount network={network} account={account} />
-        <CreatorLocks transactions={transactions} locks={locks} />
+        <CreatorLocks locks={locks} />
       </NoSSR>
     </Layout>
   )
@@ -32,7 +32,6 @@ Dashboard.displayName = 'Dashboard'
 Dashboard.propTypes = {
   account: UnlockPropTypes.account,
   network: UnlockPropTypes.network,
-  transactions: UnlockPropTypes.transactions,
   locks: UnlockPropTypes.locks,
 }
 
@@ -40,7 +39,6 @@ const mapStateToProps = state => {
   return {
     account: state.network.account, // TODO change account to base level
     network: state.network,
-    transactions: state.transactions,
     locks: state.locks,
   }
 }

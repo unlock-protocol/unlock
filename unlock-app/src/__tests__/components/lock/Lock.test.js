@@ -12,7 +12,6 @@ describe('Lock', () => {
         },
         keys: [],
         transactions: {
-          all: {},
         },
       }
       const props = {
@@ -49,11 +48,9 @@ describe('Lock', () => {
           transaction: '0x777',
         }],
         transactions: {
-          all: {
-            '0x777': {
-              status: 'pending',
-              hash: '0x777',
-            },
+          '0x777': {
+            status: 'pending',
+            hash: '0x777',
           },
         },
       }

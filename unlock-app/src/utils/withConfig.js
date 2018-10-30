@@ -23,7 +23,7 @@ export default function withConfig(Component) {
 
     const { store: reduxStore, router } = props
 
-    if (!Component.skipConstraints) {
+    if (router && !Component.skipConstraints) {
       if (!config.isServer) {
         // Ensuring that we have at least a provider
         if (Object.keys(config.providers).length === 0) {

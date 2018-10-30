@@ -2,23 +2,17 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import UnlockPropTypes from '../../../propTypes'
-import { getStatusStringFromTransaction } from '../../../helpers/locks'
-import configure from '../../../config'
+import withConfig from '../../../utils/withConfig'
 
-const config = configure(global)
-
-export function CreatorLockStatus({ lock, transaction }) {
-  let status = getStatusStringFromTransaction(transaction)
-  if (status === 'notfound') status = 'Not Found'
-
+export function CreatorLockStatus({ config, lock, status, confirmations }) {
   return (
     <LockStatus>
       {status}
-      {status == 'confirming' &&
+      {confirmations &&
         <Confirmations>
-          {transaction.confirmations}
+          {confirmations}
           {' '}
-/
+          /
           {' '}
           {config.requiredConfirmations}
         </Confirmations>
@@ -29,10 +23,12 @@ export function CreatorLockStatus({ lock, transaction }) {
 
 CreatorLockStatus.propTypes = {
   lock: UnlockPropTypes.lock,
-  transaction: UnlockPropTypes.transaction,
+  status: PropTypes.string,
+  confirmations: PropTypes.number,
+  config: UnlockPropTypes.configuration,
 }
 
-export default CreatorLockStatus
+export default withConfig(CreatorLockStatus)
 
 export const LockStatus = styled.div`
   align-self: stretch;

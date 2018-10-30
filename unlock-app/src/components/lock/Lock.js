@@ -56,14 +56,13 @@ const mapDispatchToProps = dispatch => ({
 
 export const mapStateToProps = (state, {lock}) => {
   const account = state.network.account
-  const keys = state.keys
 
   // If there is no account (probably not loaded yet), we do not want to create a key
   if (!account) {
     return {}
   }
 
-  let lockKey = Object.values(keys).find((key) => (
+  let lockKey = Object.values(state.keys).find((key) => (
     key.lockAddress === lock.address && key.owner === account.address
   ))
   let transaction = null
@@ -75,7 +74,7 @@ export const mapStateToProps = (state, {lock}) => {
       owner: account.address,
     }
   } else {
-    transaction = state.transactions.all[lockKey.transaction]
+    transaction = state.transactions[lockKey.transaction]
   }
 
   return {

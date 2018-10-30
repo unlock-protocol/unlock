@@ -1,8 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import UnlockPropTypes from '../../propTypes'
-
-import { getLockTransaction } from '../../helpers/locks'
 import CreatorLock, { LockRowGrid } from './CreatorLock'
 import CreatorLockForm from './CreatorLockForm'
 
@@ -35,8 +33,7 @@ export class CreatorLocks extends React.Component {
         </LockHeaderRow>
         {this.state.showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
         {Object.values(this.props.locks).map((lock, index) => {
-          let transaction = getLockTransaction(this.props.transactions, lock.id)
-          return (<CreatorLock key={index} lock={lock} transaction={transaction} />)
+          return (<CreatorLock key={index} lock={lock} />)
         })}
       </Locks>
     )
@@ -44,7 +41,6 @@ export class CreatorLocks extends React.Component {
 }
 
 CreatorLocks.propTypes = {
-  transactions: UnlockPropTypes.transactions,
   locks: UnlockPropTypes.locks,
   showForm: UnlockPropTypes.showDashboardForm,
 }
