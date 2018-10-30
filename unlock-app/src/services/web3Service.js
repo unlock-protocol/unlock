@@ -161,7 +161,6 @@ export default class Web3Service {
         createdAt: new Date().getTime(),
         lock: lock.id,
       }
-      callback(transaction, lock)
 
       return this.sendTransaction({
         to: UnlockContract.networks[this.networkId].address,
@@ -175,9 +174,9 @@ export default class Web3Service {
           console.error(error)
         }
         if (event === 'transactionHash') {
-          // TODO link the transaction to the lock. This will remove the need for expensive lookups
           transaction.hash = args.hash
           transaction.status = 'submitted'
+          lock.transaction = transaction.hash
           callback(transaction, lock)
         } else if (event === 'confirmation') {
           transaction.status = 'mined'
