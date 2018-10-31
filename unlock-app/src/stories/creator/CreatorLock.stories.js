@@ -15,6 +15,9 @@ const store = createUnlockStore({
       confirmations: 4,
     },
   },
+  currency: {
+    USD: 195.99
+  }
 })
 
 storiesOf('CreatorLock', CreatorLock)
@@ -46,7 +49,7 @@ storiesOf('CreatorLock', CreatorLock)
       confirmations: 2,
     }
     return (
-      <CreatorLock lock={lock} transaction={transaction} />
+      <CreatorLock lock={lock} transaction={transaction}  />
     )
   })
   .add('Not found', () => {
