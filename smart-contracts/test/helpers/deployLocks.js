@@ -7,7 +7,7 @@ module.exports = function deployLocks(unlock) {
   return Promise.all(
     Object.keys(Locks).map(name => {
       return unlock.createLock(
-        // Locks[name].keyReleaseMechanism,
+        Locks[name].keyReleaseMechanism,
         Locks[name].expirationDuration,
         Locks[name].keyPrice,
         Locks[name].maxNumberOfKeys

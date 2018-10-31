@@ -56,6 +56,32 @@ contract('Lock ERC721', (accounts) => {
       })
     })
 
+    it('should abort if the lock is private', () => {
+      return locks['PRIVATE']
+        .transferFrom(from, to, tokenId, {
+          from
+        })
+        .then(() => {
+          assert(false, 'This should not succeed')
+        })
+        .catch(error => {
+          assert.equal(error.message, 'VM Exception while processing transaction: revert')
+        })
+    })
+
+    it('should abort if the lock is restricted', () => {
+      return locks['RESTRICTED']
+        .transferFrom(from, to, tokenId, {
+          from
+        })
+        .then(() => {
+          assert(false, 'This should not succeed')
+        })
+        .catch(error => {
+          assert.equal(error.message, 'VM Exception while processing transaction: revert')
+        })
+    })
+
     /// @dev Throws unless `msg.sender` is the current owner, an authorized
     ///  operator, or the approved address for this NFT. Throws if `_from` is
     ///  not the current owner. Throws if `_to` is the zero address. Throws if
