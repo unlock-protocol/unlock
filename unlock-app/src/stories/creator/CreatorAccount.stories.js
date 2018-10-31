@@ -10,7 +10,10 @@ storiesOf('CreatorAccount', CreatorAccount)
     const network = {
       name: 4,
     }
+    const conversion = {
+      USD: 195.99
+    }
     return (
-      <CreatorAccount network={network} account={account} />
+      <CreatorAccount network={network} account={account} conversion={conversion} />
     )
   })
