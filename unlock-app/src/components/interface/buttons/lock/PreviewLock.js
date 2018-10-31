@@ -5,7 +5,7 @@ import Svg from '../../svg'
 import { LockButton } from '../Button'
 
 const PreviewLock = ({ lock, ...props }) => (
-  <LockButton href={`/demo/${lock.transaction}`} {...props}>
+  <LockButton href={`/demo/${lock.address}`} {...props}>
     <Svg.LockClosed />
   </LockButton>
 )
