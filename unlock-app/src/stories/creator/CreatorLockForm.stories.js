@@ -4,7 +4,11 @@ import { storiesOf } from '@storybook/react'
 import CreatorLockForm from '../../components/creator/CreatorLockForm'
 import createUnlockStore from '../../createUnlockStore'
 
-const store = createUnlockStore()
+const store = createUnlockStore({
+  currency: {
+    USD: 195.99
+  }
+})
 
 storiesOf('CreatorLockForm', CreatorLockForm)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)

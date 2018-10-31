@@ -8,9 +8,14 @@ import Web3Utils from 'web3-utils'
  * @param {*} amount: the amount to convert to Eth
  * @param {string} unit: the unit of the amount to convert to Eth
  */
-export function Balance({ amount, unit = 'wei', conversion = { USD: undefined } }) {
-  const inWei = Web3Utils.toWei(amount || '0', unit)
-  const inEth = Web3Utils.fromWei(inWei, 'ether')
+export function Balance({ amount, unit = 'wei', conversion = { USD: undefined }, EthComponent = ({ value }) => value }) {
+  let inEth
+  if (unit === 'wei') {
+    const inWei = Web3Utils.toWei(amount || '0', unit)
+    inEth = Web3Utils.fromWei(inWei, 'ether')
+  } else {
+    inEth = +amount
+  }
   const ethWithPresentation = BalancePresenter(inEth)
   let convertedUSDValue
   if (!conversion.USD) {
@@ -24,7 +29,7 @@ export function Balance({ amount, unit = 'wei', conversion = { USD: undefined } 
       <Currency>
         <Eth/>
         <BalanceWithUnit>
-          {ethWithPresentation}
+          <EthComponent value={ethWithPresentation} />
         </BalanceWithUnit>
       </Currency>
       <Currency>
