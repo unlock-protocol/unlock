@@ -21,7 +21,7 @@ export const transaction = PropTypes.shape({
   confirmations: PropTypes.number,
   createdAt: PropTypes.number,
   hash: PropTypes.string,
-  lock: PropTypes.shape({}),
+  lock: PropTypes.string,
   name: PropTypes.string,
 })
 
