@@ -10,9 +10,9 @@ export function EmbedCodeSnippet({ lock }) {
 <script src="https://unlock-protocol.com/unlock.js"></script>
 
 <!-- Lock elements by wrapping them in this div -->
-<div unlock-lock="${lock.address}">
+<div unlock-lock="${lock.transaction}">
   This content is only visible to the visitors who have a key to the lock
-  ${lock.address}
+  ${lock.transaction}
 </div>
 `
   }
