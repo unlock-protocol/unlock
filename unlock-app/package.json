@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.1.2",
-    "@storybook/addon-jest": "^4.0.0",
+    "@storybook/addon-jest": "^4.0.1",
     "@storybook/react": "4.0.1",
     "@svgr/cli": "^3.1.0",
     "babel-eslint": "^10.0.1",
