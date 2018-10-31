@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
 
 import Icon from '../lock/Icon'
-import { BalanceWithUnit } from '../helpers/Balance'
+import { Balance, BalanceWithUnit } from '../helpers/Balance'
 import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockStatus'
 import { createLock } from '../../actions/lock'
@@ -21,12 +21,30 @@ class CreatorLockForm extends React.Component {
       expirationDurationUnit: 86400, // Days
       keyPrice: '0.01',
       keyPriceCurrency: 'ether',
+      keyPriceUSD: '---',
       maxNumberOfKeys: 10,
       name: 'New Lock',
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.ethPrice = ({ value }) => (
+      <FormBalanceWithUnit>
+        <input type="text" id="keyPrice" onChange={this.handleChange} defaultValue={value} />
+      </FormBalanceWithUnit>
+    )
+
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (!state.keyPrice.length || props.conversion.USD === 'undefined' || isNaN(+state.keyPrice)) {
+      return {
+        keyPriceUSD: '---',
+      }
+    }
+    return {
+      keyPriceUSD: +state.keyPrice * props.conversion.USD
+    }
   }
 
   handleChange (event) {
@@ -53,6 +71,7 @@ class CreatorLockForm extends React.Component {
   }
 
   render() {
+    const { conversion } = this.props
     return (
       <FormLockRow>
         <Icon />
@@ -67,10 +86,7 @@ days
         <FormLockKeys>
           <input type="text" id="maxNumberOfKeys" onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
         </FormLockKeys>
-        <FormBalanceWithUnit>
-          三
-          <input type="text" id="keyPrice" onChange={this.handleChange} defaultValue={this.state.keyPrice} />
-        </FormBalanceWithUnit>
+        <Balance unit='eth' amount={this.state.keyPrice} conversion={conversion} EthComponent={this.ethPrice}/>
         <div>-</div>
         <LockSubmit onClick={this.handleSubmit}>
           Submit
@@ -93,6 +109,7 @@ CreatorLockForm.propTypes = {
 const mapStateToProps = state => {
   return {
     account: state.network.account,
+    conversion: state.currency,
   }
 }
 
