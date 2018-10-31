@@ -8,16 +8,33 @@ import Web3Utils from 'web3-utils'
  * @param {*} amount: the amount to convert to Eth
  * @param {string} unit: the unit of the amount to convert to Eth
  */
-export function Balance({ amount, unit = 'wei' }) {
-  let inWei = Web3Utils.toWei(amount || '0', unit)
-  let inEth = Web3Utils.fromWei(inWei, 'ether')
-  let ethWithPresentation = BalancePresenter(inEth)
+export function Balance({ amount, unit = 'wei', conversion = { USD: undefined } }) {
+  const inWei = Web3Utils.toWei(amount || '0', unit)
+  const inEth = Web3Utils.fromWei(inWei, 'ether')
+  const ethWithPresentation = BalancePresenter(inEth)
+  let convertedUSDValue
+  if (!conversion.USD) {
+    convertedUSDValue = '---'
+  } else {
+    convertedUSDValue = BalancePresenter(inEth * conversion.USD)
+  }
 
-  return (<BalanceWithUnit>
-    三 
-    {' '}
-    {ethWithPresentation}
-  </BalanceWithUnit>)
+  return (
+    <BalanceWithConversion>
+      <Currency>
+        <Eth/>
+        <BalanceWithUnit>
+          {ethWithPresentation}
+        </BalanceWithUnit>
+      </Currency>
+      <Currency>
+        <USD/>
+        <BalanceWithUnit>
+          {convertedUSDValue}
+        </BalanceWithUnit>
+      </Currency>
+    </BalanceWithConversion>
+  )
 }
 
 /**
@@ -46,6 +63,33 @@ Balance.propTypes = {
   amount: PropTypes.string,
   unit: PropTypes.string,
 }
+
+export const BalanceWithConversion = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+export const Currency = styled.span`
+  display: flex;
+  flex-direction: row;
+  
+`
+
+export const CurrencySymbol = styled.span`
+  width: 20px;
+`
+
+export const Eth = styled(CurrencySymbol)`
+  &:before {
+    content: "三";
+  }
+`
+
+export const USD = styled(CurrencySymbol)`
+  &:before {
+    content: "$";
+  }
+`
 
 export const BalanceWithUnit = styled.span`
   white-space: nowrap;

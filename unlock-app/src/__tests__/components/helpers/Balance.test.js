@@ -9,13 +9,22 @@ describe('Balance Component', () => {
   describe('when the balance is 0 Eth', () => {
     const amount = '0'
 
-    const wrapper = render(<Balance
-      amount={amount}
-      unit={unit}
-    />)
+    it('no conversion data available', () => {
+      const wrapper = render(<Balance
+        amount={amount}
+        unit={unit}
+        conversion={{ USD: undefined }}
+      />)
 
-    it('shows the value of 三 0', () => {
-      expect(wrapper.text()).toEqual('三 0')
+      expect(wrapper.text()).toEqual('0---')
+    })
+    it('USD conversion data available', () => {
+      const wrapper = render(<Balance
+        amount={amount}
+        unit={unit}
+        conversion={{ USD: 195.99 }}
+      />)
+      expect(wrapper.text()).toEqual('00')
     })
   })
 
@@ -25,10 +34,11 @@ describe('Balance Component', () => {
     const wrapper = render(<Balance
       amount={amount}
       unit={unit}
+      conversion={{ USD: 195.99 }}
     />)
 
     it('shows the default minimum value of 三 < 0.0001', () => {
-      expect(wrapper.text()).toEqual('三 < 0.0001')
+      expect(wrapper.text()).toEqual('< 0.00010.014')
     })
   })
 
@@ -38,10 +48,11 @@ describe('Balance Component', () => {
     const wrapper = render(<Balance
       amount={amount}
       unit={unit}
+      conversion={{ USD: 195.99 }}
     />)
 
     it('shows the balance in Eth to two decimal places', () => {
-      expect(wrapper.text()).toEqual('三 0.076')
+      expect(wrapper.text()).toEqual('0.07614.86')
     })
   })
 
@@ -51,10 +62,11 @@ describe('Balance Component', () => {
     const wrapper = render(<Balance
       amount={amount}
       unit={unit}
+      conversion={{ USD: 195.99 }}
     />)
 
     it('shows the balance in Eth to two decimal places', () => {
-      expect(wrapper.text()).toEqual('三 2.00')
+      expect(wrapper.text()).toEqual('2.00391.98')
     })
   })
 })
