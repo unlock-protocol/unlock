@@ -38,7 +38,7 @@ export class CreatorLock extends React.Component {
     // TODO add USD values to lock
     // TODO add all-time balance to lock
 
-    const { lock, transaction, config } = this.props
+    const { lock, transaction, config, conversion } = this.props
 
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
@@ -76,8 +76,8 @@ export class CreatorLock extends React.Component {
 /
           {lock.maxNumberOfKeys}
         </LockKeys>
-        <Balance amount={lock.keyPrice} />
-        <Balance amount={lock.balance} />
+        <Balance amount={lock.keyPrice} conversion={conversion}/>
+        <Balance amount={lock.balance} conversion={conversion} />
         {lockComponentStatusBlock}
         {status === this.state.showEmbedCode &&
           <LockPanel>
@@ -100,6 +100,7 @@ CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock,
   transaction: UnlockPropTypes.transaction,
   config: UnlockPropTypes.configuration,
+  conversion: UnlockPropTypes.conversion
 }
 
 const mapStateToProps = (state, { lock }) => {
@@ -107,6 +108,7 @@ const mapStateToProps = (state, { lock }) => {
   return {
     transaction,
     lock,
+    conversion: state.currency
   }
 }
 
@@ -177,13 +179,5 @@ const LockValueSub = styled.div`
   font-size: 0.6em;
   color: var(--grey);
   margin-top: 5px;
-`
-*/
-
-/* Saving for use with sub-values that need to be added in a future PR
-const LockValueUsd = styled.div`
-  &:before {
-    content: "$ ";
-  }
 `
 */
