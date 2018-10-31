@@ -12,6 +12,7 @@ import currencyReducer, { initialState as defaultCurrency } from './reducers/cur
 
 // Middlewares
 import lockMiddleware from './middlewares/lockMiddleware'
+import currencyConversionMiddleware from './middlewares/currencyConversionMiddleware'
 
 const config = configure(global)
 
@@ -40,6 +41,7 @@ export default function createUnlockStore(defaultState) {
 
   const middlewares = [
     lockMiddleware,
+    currencyConversionMiddleware,
   ]
 
   return createStore(
