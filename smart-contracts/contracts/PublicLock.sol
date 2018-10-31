@@ -27,6 +27,10 @@ contract PublicLock is ILockPublic {
   // TODO: should we make that private/internal?
   address public unlockProtocol;
 
+  // Key release mechanism
+  enum KeyReleaseMechanisms { Public, Restricted, Private }
+  KeyReleaseMechanisms public keyReleaseMechanism;
+
   // Duration in seconds for which the keys are valid, after creation
   // should we take a smaller type use less gas?
   // TODO: add support for a timestamp instead of duration
@@ -61,6 +65,25 @@ contract PublicLock is ILockPublic {
   /**
    * MODIFIERS
    */
+  // Ensure the lock is public
+  modifier onlyPublic() {
+    require(keyReleaseMechanism == KeyReleaseMechanisms.Public, "Only allowed on public locks");
+    _;
+  }
+
+  // Ensure that the sender is either the lock owner or the key owner on a public lock
+  modifier onlyLockOwnerOnRestrictedOrKeyOwnerInPublic(
+    uint256 _tokenId
+  ) {
+    require(keyReleaseMechanism != KeyReleaseMechanisms.Private, "Only allowed on public or restricted locks");
+
+    require(
+      owner == msg.sender ||
+      (address(_tokenId) == msg.sender && keyReleaseMechanism == KeyReleaseMechanisms.Public)
+    );
+    _;
+  }
+
   // Ensures that an owner has a key
   modifier hasKey(
     address _owner
@@ -83,13 +106,25 @@ contract PublicLock is ILockPublic {
     _;
   }
 
-  // Ensure that the caller owns the key
+  // Ensure that the caller owns the token
   modifier onlyKeyOwner(
     uint256 _tokenId
   ) {
     require(
       address(_tokenId) == msg.sender
     );
+    _;
+  }
+
+  // Ensures that the lock is public
+  // or that the sender has been approved on restricted locks
+  modifier onlyPublicOrApproved(
+    address _recipient
+  ) {
+    require(keyReleaseMechanism == KeyReleaseMechanisms.Public ||
+      (keyReleaseMechanism == KeyReleaseMechanisms.Restricted
+        && _getApproved(uint256(_recipient)) == _recipient),
+        "Only public locks or restriced with an approved recipient");
     _;
   }
 
@@ -115,6 +150,7 @@ contract PublicLock is ILockPublic {
   // Constructor
   constructor(
     address _owner,
+    KeyReleaseMechanisms _keyReleaseMechanism,
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys
@@ -122,6 +158,7 @@ contract PublicLock is ILockPublic {
     public {
       unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract. (TODO: handle upgrades?)
       owner = _owner;
+      keyReleaseMechanism = _keyReleaseMechanism;
       expirationDuration = _expirationDuration;
       keyPrice = _keyPrice;
       maxNumberOfKeys = _maxNumberOfKeys;
@@ -172,6 +209,7 @@ contract PublicLock is ILockPublic {
     external
     payable
     notSoldOut()
+    onlyPublic()
     hasKey(address(_tokenId))
     onlyKeyOwnerOrApproved(_tokenId)
   {
@@ -234,7 +272,7 @@ contract PublicLock is ILockPublic {
   )
     external
     payable
-    onlyKeyOwner(_tokenId)
+    onlyLockOwnerOnRestrictedOrKeyOwnerInPublic(_tokenId)
   {
     require(_approved != address(0));
 
@@ -370,6 +408,7 @@ contract PublicLock is ILockPublic {
   )
     internal
     notSoldOut()
+    onlyPublicOrApproved(_recipient)
   {
     require(_recipient != address(0));
 

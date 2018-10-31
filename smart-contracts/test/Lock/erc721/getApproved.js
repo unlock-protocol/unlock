@@ -24,6 +24,16 @@ contract('Lock ERC721', (accounts) => {
       })
     })
 
+    it('should return the address of the approved owner for a key', () => {
+      return locks['FIRST'].approve(accounts[3], accounts[3], {
+        from: lockOwner
+      }).then(() => {
+        return locks['FIRST'].getApproved(accounts[3])
+      }).then((approved) => {
+        assert.equal(accounts[3], approved)
+      })
+    })
+
     it('should fail if no one was approved for a key', () => {
       return locks['FIRST'].getApproved(accounts[1])
         .then(() => {
