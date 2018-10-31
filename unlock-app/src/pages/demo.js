@@ -13,15 +13,15 @@ import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasK
 import { pageTitle } from '../constants'
 
 export class Demo extends React.Component {
-  static async getInitialProps({ req, query: { lockTransaction } }) {
+  static async getInitialProps({ req, query: { lockaddress } }) {
 
-    // passing :lockTransaction query to the component as a prop
-    return { lockTransaction: lockTransaction }
+    // passing :lockaddress query to the component as a prop
+    return { lockAddress: lockaddress }
   }
 
   render() {
-    const { lockTransaction, locks } = this.props
-    const lock = Object.values(locks).find((lock) => lock.transaction === lockTransaction)
+    const { lockAddress, locks } = this.props
+    const lock = Object.values(locks).find((lock) => lock.address === lockAddress)
     return(
       <Layout title="Unlock Demo Page" forContent>
         <Head>
@@ -44,7 +44,7 @@ export class Demo extends React.Component {
               <BottomSticker>
                 You can only read this message if you own a key to the lock at
                 {' '}
-                {lockTransaction}
+                {lockAddress}
 .
               </BottomSticker>
 
@@ -62,7 +62,7 @@ export class Demo extends React.Component {
 
 Demo.propTypes = {
   locks: UnlockPropTypes.locks,
-  lockTransaction: UnlockPropTypes.address,
+  lockAddress: UnlockPropTypes.address,
 }
 
 const mapStateToProps = state => {
