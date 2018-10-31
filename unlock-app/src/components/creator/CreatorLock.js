@@ -19,7 +19,8 @@ export class CreatorLock extends React.Component {
     this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
   }
 
-  toggleEmbedCode() {
+  toggleEmbedCode(e) {
+    e.stopPropagation()
     this.setState((previousState) => ({
       showEmbedCode: !previousState.showEmbedCode,
     }))
