@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { loadState } from './services/localStorageService'
 import configure from './config'
 
 // Reducers
@@ -15,7 +14,7 @@ import lockMiddleware from './middlewares/lockMiddleware'
 
 const config = configure(global)
 
-export default function createUnlockStore(defaultState = loadState()) {
+export default function createUnlockStore(defaultState) {
   const reducers = {
     keys: keysReducer,
     locks: locksReducer,
