@@ -26,6 +26,7 @@ We strongly recommend that the community help us make improvements and determine
 
 ```
 git clone https://github.com/unlock-protocol/unlock
+cd unlock
 ```
 
 2. Install all deps
