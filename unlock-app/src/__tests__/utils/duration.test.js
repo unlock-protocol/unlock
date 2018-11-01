@@ -1,4 +1,4 @@
-import { durationsAsTextFromSeconds, durations, secondsAsDays } from '../../utils/durations'
+import { durationsAsTextFromSeconds, durations, secondsAsDays, expirationAsDate } from '../../utils/durations'
 
 describe('durations', () => {
   it('should compute the right durations', () => {
@@ -52,5 +52,11 @@ describe('durations', () => {
     expect(secondsAsDays(0)).toEqual('0')
     expect(secondsAsDays(172800)).toEqual('2')
     expect(secondsAsDays(172000)).toEqual('2')
+  })
+
+  it('should return the correct timestamp', () => {
+    let dateToTest = 'Jul 7, 2022'
+    let timestamp = Math.round((new Date(dateToTest)).getTime() / 1000)
+    expect(expirationAsDate(timestamp)).toEqual(dateToTest)
   })
 })
