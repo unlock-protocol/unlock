@@ -21,7 +21,6 @@ class CreatorLockForm extends React.Component {
       expirationDurationUnit: 86400, // Days
       keyPrice: '0.01',
       keyPriceCurrency: 'ether',
-      keyPriceUSD: '---',
       maxNumberOfKeys: 10,
       name: 'New Lock',
     }
@@ -34,17 +33,6 @@ class CreatorLockForm extends React.Component {
       </FormBalanceWithUnit>
     )
 
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    if (!state.keyPrice.length || props.conversion.USD === 'undefined' || isNaN(+state.keyPrice)) {
-      return {
-        keyPriceUSD: '---',
-      }
-    }
-    return {
-      keyPriceUSD: +state.keyPrice * props.conversion.USD
-    }
   }
 
   handleChange (event) {
@@ -86,7 +74,7 @@ days
         <FormLockKeys>
           <input type="text" id="maxNumberOfKeys" onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
         </FormLockKeys>
-        <Balance unit='eth' amount={this.state.keyPrice} conversion={conversion} EthComponent={this.ethPrice}/>
+        <Balance unit='eth' amount={this.state.keyPrice} conversion={conversion} EthComponent={this.ethPrice} />
         <div>-</div>
         <LockSubmit onClick={this.handleSubmit}>
           Submit
@@ -104,6 +92,7 @@ CreatorLockForm.propTypes = {
   account: UnlockPropTypes.account,
   hideAction: PropTypes.func,
   createLock: PropTypes.func,
+  conversion: UnlockPropTypes.conversion,
 }
 
 const mapStateToProps = state => {
