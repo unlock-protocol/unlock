@@ -1,3 +1,5 @@
+import { MONTH_NAMES } from '../constants'
+
 /**
  * Function which computes days, hours, minutes and seconds based on seconds
  * We limit ourselves to days because months and years can becomes messy (variable duration!)
@@ -62,4 +64,22 @@ export function durationsAsTextFromSeconds(seconds) {
  */
 export function secondsAsDays(seconds) {
   return Math.ceil(seconds / 86400).toString()
+}
+
+/**
+ * Given an epoch timestamp, returns a string of the form 'Month Day, Year' (eg, 'Dec 31, 1980')
+ * @param timestamp
+ * @returns {string}
+ */
+export function expirationAsDate(timestamp) {
+  if (!timestamp) return 'Never'
+  if (timestamp - ((new Date().getTime()) /1000) < 86400) return durationsAsTextFromSeconds(timestamp)
+
+  let expirationDate = new Date(0)
+  expirationDate.setUTCSeconds(timestamp)
+  let day = expirationDate.getDate()
+  let month = expirationDate.getMonth()
+  let year = expirationDate.getFullYear()
+
+  return MONTH_NAMES[month] + ' ' + day + ', ' + year
 }

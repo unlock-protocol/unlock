@@ -6,6 +6,7 @@ import LockIconBar from './lock/LockIconBar'
 import CreatorLockStatus from './lock/CreatorLockStatus'
 import Icon from '../lock/Icon'
 import EmbedCodeSnippet from './lock/EmbedCodeSnippet'
+import KeyList from './lock/KeyList'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
 import withConfig from '../../utils/withConfig'
@@ -70,11 +71,17 @@ export class CreatorLock extends React.Component {
         <Balance amount={lock.keyPrice} />
         <Balance amount={lock.balance} />
         {lockComponentStatusBlock}
-        {status === 'deployed' && this.state.showEmbedCode &&
-          <LockCode>
+        {status === this.state.showEmbedCode &&
+          <LockPanel>
             <LockDivider />
             <EmbedCodeSnippet lock={lock} />
-          </LockCode>
+          </LockPanel>
+        }
+        {!this.state.showEmbedCode &&
+          <LockPanel>
+            <LockDivider />
+            <KeyList lock={lock} />
+          </LockPanel>
         }
       </LockRow>
     )
@@ -146,7 +153,7 @@ export const LockDuration = styled.div`
 export const LockKeys = styled.div`
 `
 
-const LockCode = styled.div`
+const LockPanel = styled.div`
   grid-column: 1 / span 7;
 `
 
