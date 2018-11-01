@@ -57,7 +57,7 @@ storiesOf('CreatorLock', CreatorLock)
       confirmations: 2,
     }
     return (
-      <CreatorLock lock={lock} transaction={transaction}  />
+      <CreatorLock lock={lock} transaction={transaction} />
     )
   })
   .add('Not found', () => {
