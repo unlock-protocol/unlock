@@ -21,7 +21,6 @@ class CreatorLockForm extends React.Component {
       expirationDurationUnit: 86400, // Days
       keyPrice: '0.01',
       keyPriceCurrency: 'ether',
-      keyPriceUSD: '---',
       maxNumberOfKeys: 10,
       name: 'New Lock',
     }
@@ -43,7 +42,7 @@ class CreatorLockForm extends React.Component {
       }
     }
     return {
-      keyPriceUSD: +state.keyPrice * props.conversion.USD
+      keyPriceUSD: +state.keyPrice * props.conversion.USD,
     }
   }
 
@@ -71,7 +70,6 @@ class CreatorLockForm extends React.Component {
   }
 
   render() {
-    const { conversion } = this.props
     return (
       <FormLockRow>
         <Icon />
@@ -86,7 +84,7 @@ days
         <FormLockKeys>
           <input type="text" id="maxNumberOfKeys" onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
         </FormLockKeys>
-        <Balance unit='eth' amount={this.state.keyPrice} conversion={conversion} EthComponent={this.ethPrice}/>
+        <Balance unit='eth' amount={this.state.keyPrice} EthComponent={this.ethPrice} />
         <div>-</div>
         <LockSubmit onClick={this.handleSubmit}>
           Submit

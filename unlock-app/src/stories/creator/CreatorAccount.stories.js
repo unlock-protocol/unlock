@@ -11,7 +11,7 @@ storiesOf('CreatorAccount', CreatorAccount)
       name: 4,
     }
     const conversion = {
-      USD: 195.99
+      USD: 195.99,
     }
     return (
       <CreatorAccount network={network} account={account} conversion={conversion} />

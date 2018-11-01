@@ -13,7 +13,7 @@ describe('CreatorAccount', () => {
       name: 4,
     }
     const conversion = {
-      USD: 195.99
+      USD: 195.99,
     }
 
     const wrapper = shallow(<CreatorAccount account={account} network={network} conversion={conversion} />)

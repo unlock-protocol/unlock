@@ -6,8 +6,8 @@ import createUnlockStore from '../../createUnlockStore'
 
 const store = createUnlockStore({
   currency: {
-    USD: 195.99
-  }
+    USD: 195.99,
+  },
 })
 
 storiesOf('CreatorLockForm', CreatorLockForm)

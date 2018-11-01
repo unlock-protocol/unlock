@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import React from 'react'
 import PropTypes from 'prop-types'
 import Web3Utils from 'web3-utils'
+
+import UnlockPropTypes from '../../propTypes'
 import { formatEth, formatCurrency } from '../../selectors/currency'
 
 /**
@@ -30,13 +32,13 @@ export function Balance({ amount, unit = 'wei', conversion = { USD: undefined },
   return (
     <BalanceWithConversion>
       <Currency>
-        <Eth/>
+        <Eth />
         <BalanceWithUnit>
           <EthComponent value={ethWithPresentation} />
         </BalanceWithUnit>
       </Currency>
       <Currency>
-        <USD/>
+        <USD />
         <BalanceWithUnit>
           {convertedUSDValue}
         </BalanceWithUnit>
@@ -48,6 +50,8 @@ export function Balance({ amount, unit = 'wei', conversion = { USD: undefined },
 Balance.propTypes = {
   amount: PropTypes.string,
   unit: PropTypes.string,
+  conversion: UnlockPropTypes.conversion,
+  EthComponent: PropTypes.func,
 }
 
 export const BalanceWithConversion = styled.div`
