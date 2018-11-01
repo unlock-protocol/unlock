@@ -10,7 +10,7 @@ const MINIMUM_THRESHOLD = 0.0001
 export function formatEth(eth) {
   let numericalEth = Number(eth)
   if (numericalEth < MINIMUM_THRESHOLD && numericalEth > 0) return '< 0.0001'
-  if (numericalEth < 1) return parseFloat(numericalEth.toPrecision(SIGNIFICANT_DIGITS))
+  if (numericalEth < 1) return parseFloat(numericalEth.toPrecision(SIGNIFICANT_DIGITS)).toString()
   return numericalEth.toFixed(DECIMAL_PLACES)
 }
 
@@ -30,7 +30,7 @@ export function formatEth(eth) {
  */
 export function formatCurrency(amount) {
   let currency = Number(amount)
-  if (currency < 1 && currency > 0.01) return parseFloat(currency.toPrecision(SIGNIFICANT_DIGITS))
+  if (currency < 1 && currency > 0.01) return parseFloat(currency.toPrecision(SIGNIFICANT_DIGITS)).toString()
   if (currency < 0.01) return '0'
   if (currency >= 1000 && currency < 1e5) return Math.round(currency).toLocaleString()
   if (currency >= 1e5 && currency < 1e6) return (+((currency/1e3).toFixed(1))).toLocaleString() + 'k'
