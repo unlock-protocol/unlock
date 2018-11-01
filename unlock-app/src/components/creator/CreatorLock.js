@@ -91,13 +91,11 @@ export class CreatorLock extends React.Component {
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock,
   transaction: UnlockPropTypes.transaction,
-  keys: UnlockPropTypes.keys,
   config: UnlockPropTypes.configuration,
 }
 
 const mapStateToProps = (state, { lock }) => {
   const transaction = state.transactions[lock.transaction]
-  const keys = state.keys
   return {
     transaction,
     lock,
