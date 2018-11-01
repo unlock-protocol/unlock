@@ -1,7 +1,7 @@
 import React from 'react'
 import configure from '../config'
 import createUnlockStore from '../createUnlockStore'
-import { saveState } from '../services/localStorageService'
+import { saveState, loadState } from '../services/localStorageService'
 
 const config = configure(global)
 
@@ -40,11 +40,13 @@ export default (App) => {
       }
     }
 
+    /**
+     * initialReduxState is actually coming from the server side rendered content
+     * We want to "merge" it with the data that might be stored in localStorage
+     */
     constructor (props) {
       super(props)
-
-      // For some reason this argument is being ignored... we probably need to use it!
-      this.reduxStore = getOrCreateStore(props.initialReduxState)
+      this.reduxStore = getOrCreateStore(Object.assign(props.initialReduxState, loadState()))
       this.reduxStore.subscribe(() => {
         saveState(this.reduxStore.getState())
       })

@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 export const loadState = () => {
   try {
     const serializedState = localStorage.getItem('state')
@@ -11,11 +13,10 @@ export const loadState = () => {
 }
 
 export const saveState = (state) => {
-
   try {
     const serializedState = JSON.stringify(state)
     localStorage.setItem('state', serializedState)
   } catch (err) {
-    // TODO log/warn user
+    console.error(err)
   }
 }
