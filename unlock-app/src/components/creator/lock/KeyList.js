@@ -6,36 +6,34 @@ import { expirationAsDate } from '../../../utils/durations'
 // TODO add pagination
 export function KeyList ({ keys }) {
   return (
-    <>
-      <KeyTable>
-        <KeyHeader>
-          <KeyCell>
-            Keys
-          </KeyCell>
-          <KeyCell>
-            Expiration
-          </KeyCell>
-          <KeyCell>
-            Data
-          </KeyCell>
-        </KeyHeader>
-        {Object.values(keys).map((key) => {
-          return (
-            <KeyRow key={key.id}>
-              <KeyData>
-                {key.transaction}
-              </KeyData>
-              <KeyCell>
-                {expirationAsDate(key.expiration)}
-              </KeyCell>
-              <KeyData>
-                {key.data}
-              </KeyData>
-            </KeyRow>
-          )
-        })}
-      </KeyTable>
-    </>
+    <KeyTable>
+      <KeyHeader>
+        <KeyCell>
+          Keys
+        </KeyCell>
+        <KeyCell>
+          Expiration
+        </KeyCell>
+        <KeyCell>
+          Data
+        </KeyCell>
+      </KeyHeader>
+      {Object.values(keys).map((key) => {
+        return (
+          <KeyRow key={key.id}>
+            <KeyData>
+              {key.transaction}
+            </KeyData>
+            <KeyCell>
+              {expirationAsDate(key.expiration)}
+            </KeyCell>
+            <KeyData>
+              {key.data}
+            </KeyData>
+          </KeyRow>
+        )
+      })}
+    </KeyTable>
   )
 }
 
