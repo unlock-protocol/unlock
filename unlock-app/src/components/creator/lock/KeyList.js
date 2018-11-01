@@ -6,8 +6,6 @@ import { expirationAsDate } from '../../../utils/durations'
 
 // TODO add pagination
 export function KeyList ({ keys, lock }) {
-  let keyList = {}
-  if (keys) Object.values(keys).filter((key) => key.lockAddress === lock.address).forEach((item) => keyList[item.id] = item)
   return (
     <Table>
       <Header>
@@ -21,7 +19,7 @@ export function KeyList ({ keys, lock }) {
           Data
         </Cell>
       </Header>
-      {Object.values(keyList).map((key) => {
+      {Object.values(keys).map((key) => {
         return (
           <Row key={key.id}>
             <Data>
@@ -46,7 +44,8 @@ KeyList.propTypes = {
 }
 
 const mapStateToProps = (state, { lock }) => {
-  const keys = state.keys
+  const keys = {}
+  if (state.keys) Object.values(state.keys).filter((key) => key.lockAddress === lock.address).forEach((item) => keys[item.id] = item)
   return {
     keys,
     lock,
