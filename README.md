@@ -2,7 +2,7 @@
 
 ---
 
-This repository is includes all the code deployed deployed by Unlock, including smart contracts and the web app running at https://unlock-protocol.com.
+This repository includes all the code deployed by Unlock, including smart contracts and the web app running at https://unlock-protocol.com.
 
 > Unlock is an access control protocol built on a blockchain. It enables creators to monetize their content or software without relying on a middleman. It lets consumers manage all of their subscriptions in a consistent way, as well as earn discounts when they share the best content and applications they use.
 
@@ -22,10 +22,11 @@ We strongly recommend that the community help us make improvements and determine
 
 ## Getting started
 
-1. Checkout the code from this repository
+1. Check out the code from this repository
 
 ```
 git clone https://github.com/unlock-protocol/unlock
+cd unlock
 ```
 
 2. Install all deps
@@ -51,7 +52,7 @@ Includes the code for smart contracts: Lock and Unlock.
 
 ### unlock-protocol.com
 
-A static site for unlock-protocol.com. Will eventually be deprecated un favor of code deployed from unlock-app.
+A static site for unlock-protocol.com. Will eventually be deprecated in favor of code deployed from unlock-app.
 
 ### unlock-app
 
