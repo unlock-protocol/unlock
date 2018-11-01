@@ -30,7 +30,7 @@ export class CreatorLock extends React.Component {
     // TODO add USD values to lock
     // TODO add all-time balance to lock
 
-    const { lock, transaction, keys, config } = this.props
+    const { lock, transaction, config } = this.props
 
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
@@ -39,23 +39,19 @@ export class CreatorLock extends React.Component {
       <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
     </LockIconBarContainer>)
 
-    let status
     if (!transaction) {
       // We assume that the lock has been succeesfuly deployed?
       // TODO if the transaction is missing we should try to look it up from the lock address
     } else if (transaction.status === 'submitted') {
-      status = 'submitted'
       lockComponentStatusBlock = <CreatorLockStatus lock={lock} status="Submitted" />
     } else if (transaction.status === 'mined' &&
         transaction.confirmations < config.requiredConfirmations) {
-      status = 'confirming'
       lockComponentStatusBlock = <CreatorLockStatus
         lock={lock}
         status="Confirming"
         confirmations={transaction.confirmations}
       />
-    } else if (transaction.status === 'mined' &&
-      transaction.confirmations >= config.requiredConfirmations) status = 'deployed'
+    }
 
     return (
       <LockRow>
@@ -75,16 +71,16 @@ export class CreatorLock extends React.Component {
         <Balance amount={lock.keyPrice} />
         <Balance amount={lock.balance} />
         {lockComponentStatusBlock}
-        {status === 'deployed' && this.state.showEmbedCode &&
+        {status === this.state.showEmbedCode &&
           <LockPanel>
             <LockDivider />
             <EmbedCodeSnippet lock={lock} />
           </LockPanel>
         }
-        {!this.state.showEmbedCode && status === 'deployed' &&
+        {!this.state.showEmbedCode &&
           <LockPanel>
             <LockDivider />
-            <KeyList keys={keys} lock={lock} />
+            <KeyList lock={lock} />
           </LockPanel>
         }
       </LockRow>
@@ -104,7 +100,6 @@ const mapStateToProps = (state, { lock }) => {
   const keys = state.keys
   return {
     transaction,
-    keys,
     lock,
   }
 }

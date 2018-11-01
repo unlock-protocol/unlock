@@ -72,6 +72,9 @@ export function secondsAsDays(seconds) {
  * @returns {string}
  */
 export function expirationAsDate(timestamp) {
+  if (!timestamp) return 'Never'
+  if (timestamp - ((new Date().getTime()) /1000) < 86400) return durationsAsTextFromSeconds(timestamp)
+
   let expirationDate = new Date(0)
   expirationDate.setUTCSeconds(timestamp)
   let day = expirationDate.getDate()

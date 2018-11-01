@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import UnlockPropTypes from '../../../propTypes'
 import { expirationAsDate } from '../../../utils/durations'
@@ -44,7 +45,15 @@ KeyList.propTypes = {
   lock: UnlockPropTypes.lock,
 }
 
-export default KeyList
+const mapStateToProps = (state, { lock }) => {
+  const keys = state.keys
+  return {
+    keys,
+    lock,
+  }
+}
+
+export default connect(mapStateToProps)(KeyList)
 
 const Table = styled.div`
 `
