@@ -6,6 +6,7 @@ import LockIconBar from './lock/LockIconBar'
 import CreatorLockStatus from './lock/CreatorLockStatus'
 import Icon from '../lock/Icon'
 import EmbedCodeSnippet from './lock/EmbedCodeSnippet'
+import KeyList from './lock/KeyList'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
 import withConfig from '../../utils/withConfig'
@@ -29,7 +30,7 @@ export class CreatorLock extends React.Component {
     // TODO add USD values to lock
     // TODO add all-time balance to lock
 
-    const { lock, transaction, config } = this.props
+    const { lock, transaction, keys, config } = this.props
 
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
@@ -38,19 +39,23 @@ export class CreatorLock extends React.Component {
       <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
     </LockIconBarContainer>)
 
+    let status = 'Not found'
     if (!transaction) {
       // We assume that the lock has been succeesfuly deployed?
       // TODO if the transaction is missing we should try to look it up from the lock address
     } else if (transaction.status === 'submitted') {
+      status = 'submitted'
       lockComponentStatusBlock = <CreatorLockStatus lock={lock} status="Submitted" />
     } else if (transaction.status === 'mined' &&
         transaction.confirmations < config.requiredConfirmations) {
+      status = 'confirming'
       lockComponentStatusBlock = <CreatorLockStatus
         lock={lock}
         status="Confirming"
         confirmations={transaction.confirmations}
       />
-    }
+    } else if (transaction.status === 'mined' &&
+      transaction.confirmations >= config.requiredConfirmations) status = 'deployed'
 
     return (
       <LockRow>
@@ -71,10 +76,16 @@ export class CreatorLock extends React.Component {
         <Balance amount={lock.balance} />
         {lockComponentStatusBlock}
         {status === 'deployed' && this.state.showEmbedCode &&
-          <LockCode>
+          <LockPanel>
             <LockDivider />
             <EmbedCodeSnippet lock={lock} />
-          </LockCode>
+          </LockPanel>
+        }
+        {!this.state.showEmbedCode && keys && keys !== {} && status === 'deployed' &&
+          <LockPanel>
+            <LockDivider />
+            <KeyList keys={keys} />
+          </LockPanel>
         }
       </LockRow>
     )
@@ -84,13 +95,17 @@ export class CreatorLock extends React.Component {
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock,
   transaction: UnlockPropTypes.transaction,
+  keys: UnlockPropTypes.keys,
   config: UnlockPropTypes.configuration,
 }
 
 const mapStateToProps = (state, { lock }) => {
   const transaction = state.transactions[lock.transaction]
+  const keys = {}
+  if (state.keys) Object.values(state.keys).filter((key) => key.lockAddress === lock.address).forEach((item) => keys[item.id] = item)
   return {
     transaction,
+    keys,
     lock,
   }
 }
@@ -146,7 +161,7 @@ export const LockDuration = styled.div`
 export const LockKeys = styled.div`
 `
 
-const LockCode = styled.div`
+const LockPanel = styled.div`
   grid-column: 1 / span 7;
 `
 
