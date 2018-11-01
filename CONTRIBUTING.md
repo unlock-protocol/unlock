@@ -39,6 +39,7 @@ Finally, submit a pull request, with the following rules:
 2. Do include relevant issue numbers in the description
 3. Include a concise, specific description of the complete pull request in the description
 4. Take care to exclude project workspace files and other collateral unnecessary to this project 
+5. Add a screenshot (either complete or partial) for any change which has a visual impact.
 
 You may be asked to revise your code or other aspects of your pull request. Please don't take this personally! We're delighted that you contributed, and we're grateful that you're a part of the community.
 
