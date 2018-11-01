@@ -35,17 +35,6 @@ class CreatorLockForm extends React.Component {
 
   }
 
-  static getDerivedStateFromProps(props, state) {
-    if (!state.keyPrice.length || props.conversion.USD === 'undefined' || isNaN(+state.keyPrice)) {
-      return {
-        keyPriceUSD: '---',
-      }
-    }
-    return {
-      keyPriceUSD: +state.keyPrice * props.conversion.USD,
-    }
-  }
-
   handleChange (event) {
     this.setState({ [event.target.id]: event.target.value })
   }
@@ -102,6 +91,7 @@ CreatorLockForm.propTypes = {
   account: UnlockPropTypes.account,
   hideAction: PropTypes.func,
   createLock: PropTypes.func,
+  conversion: UnlockPropTypes.conversion,
 }
 
 const mapStateToProps = state => {
