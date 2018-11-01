@@ -9,7 +9,7 @@ import CreatorLocks from '../components/creator/CreatorLocks'
 import withConfig from '../utils/withConfig'
 import { pageTitle } from '../constants'
 
-export const Dashboard = ({account, network, locks, conversion }) => {
+export const Dashboard = ({ account, network, locks, conversion }) => {
   if (!account) {
     return null //loading
   }

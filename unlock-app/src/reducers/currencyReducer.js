@@ -1,7 +1,7 @@
 import { SET_ETHER_CONVERSION_RATE } from '../actions/currencyconvert'
 
 export const initialState = {
-  USD: undefined
+  USD: undefined,
 }
 
 const currencyReducer = (state = initialState, action) => {

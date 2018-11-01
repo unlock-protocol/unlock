@@ -15,7 +15,6 @@ export class CreatorLock extends React.Component {
     super(props)
     this.state = {
       showEmbedCode: false,
-      usdConvertedPrice: 1
     }
     this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
   }
@@ -27,7 +26,6 @@ export class CreatorLock extends React.Component {
   }
 
   render() {
-    // TODO add USD values to lock
     // TODO add all-time balance to lock
 
     const { lock, transaction, config, conversion } = this.props
@@ -68,7 +66,7 @@ export class CreatorLock extends React.Component {
 /
           {lock.maxNumberOfKeys}
         </LockKeys>
-        <Balance amount={lock.keyPrice} conversion={conversion}/>
+        <Balance amount={lock.keyPrice} conversion={conversion} />
         <Balance amount={lock.balance} conversion={conversion} />
         {lockComponentStatusBlock}
         {status === 'deployed' && this.state.showEmbedCode &&
@@ -86,7 +84,7 @@ CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock,
   transaction: UnlockPropTypes.transaction,
   config: UnlockPropTypes.configuration,
-  conversion: UnlockPropTypes.conversion
+  conversion: UnlockPropTypes.conversion,
 }
 
 const mapStateToProps = (state, { lock }) => {
@@ -94,7 +92,7 @@ const mapStateToProps = (state, { lock }) => {
   return {
     transaction,
     lock,
-    conversion: state.currency
+    conversion: state.currency,
   }
 }
 

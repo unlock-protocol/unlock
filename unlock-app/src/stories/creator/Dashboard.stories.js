@@ -16,7 +16,7 @@ storiesOf('Dashboard', Dashboard)
       name: 4,
     }
     const conversion = {
-      USD: 195.99
+      USD: 195.99,
     }
     const transactions = {
       0x1234: {
