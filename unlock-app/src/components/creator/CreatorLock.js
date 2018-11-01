@@ -39,7 +39,7 @@ export class CreatorLock extends React.Component {
       <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
     </LockIconBarContainer>)
 
-    let status = 'Not found'
+    let status
     if (!transaction) {
       // We assume that the lock has been succeesfuly deployed?
       // TODO if the transaction is missing we should try to look it up from the lock address
@@ -81,10 +81,10 @@ export class CreatorLock extends React.Component {
             <EmbedCodeSnippet lock={lock} />
           </LockPanel>
         }
-        {!this.state.showEmbedCode && keys && keys !== {} && status === 'deployed' &&
+        {!this.state.showEmbedCode && status === 'deployed' &&
           <LockPanel>
             <LockDivider />
-            <KeyList keys={keys} />
+            <KeyList keys={keys} lock={lock} />
           </LockPanel>
         }
       </LockRow>
@@ -101,8 +101,7 @@ CreatorLock.propTypes = {
 
 const mapStateToProps = (state, { lock }) => {
   const transaction = state.transactions[lock.transaction]
-  const keys = {}
-  if (state.keys) Object.values(state.keys).filter((key) => key.lockAddress === lock.address).forEach((item) => keys[item.id] = item)
+  const keys = state.keys
   return {
     transaction,
     keys,

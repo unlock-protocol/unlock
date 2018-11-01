@@ -4,49 +4,52 @@ import UnlockPropTypes from '../../../propTypes'
 import { expirationAsDate } from '../../../utils/durations'
 
 // TODO add pagination
-export function KeyList ({ keys }) {
+export function KeyList ({ keys, lock }) {
+  let keyList = {}
+  if (keys) Object.values(keys).filter((key) => key.lockAddress === lock.address).forEach((item) => keyList[item.id] = item)
   return (
-    <KeyTable>
-      <KeyHeader>
-        <KeyCell>
+    <Table>
+      <Header>
+        <Cell>
           Keys
-        </KeyCell>
-        <KeyCell>
+        </Cell>
+        <Cell>
           Expiration
-        </KeyCell>
-        <KeyCell>
+        </Cell>
+        <Cell>
           Data
-        </KeyCell>
-      </KeyHeader>
-      {Object.values(keys).map((key) => {
+        </Cell>
+      </Header>
+      {Object.values(keyList).map((key) => {
         return (
-          <KeyRow key={key.id}>
-            <KeyData>
+          <Row key={key.id}>
+            <Data>
               {key.transaction}
-            </KeyData>
-            <KeyCell>
+            </Data>
+            <Cell>
               {expirationAsDate(key.expiration)}
-            </KeyCell>
-            <KeyData>
+            </Cell>
+            <Data>
               {key.data}
-            </KeyData>
-          </KeyRow>
+            </Data>
+          </Row>
         )
       })}
-    </KeyTable>
+    </Table>
   )
 }
 
 KeyList.propTypes = {
   keys: UnlockPropTypes.keys,
+  lock: UnlockPropTypes.lock,
 }
 
 export default KeyList
 
-const KeyTable = styled.div`
+const Table = styled.div`
 `
 
-const KeyRow = styled.div`
+const Row = styled.div`
   display: grid;
   margin-top: 20px;
   margin-left: 48px;
@@ -57,16 +60,16 @@ const KeyRow = styled.div`
   margin-bottom: 10px;
 `
 
-const KeyHeader = styled(KeyRow)`
+const Header = styled(Row)`
   font-family: 'IBM Plex Sans';
   font-size: 10px;
   text-transform: uppercase;
 `
 
-const KeyCell = styled.div`
+const Cell = styled.div`
 `
 
-const KeyData = styled(KeyCell)`
+const Data = styled(Cell)`
   overflow: hidden;
   text-overflow: ellipsis;
 `
