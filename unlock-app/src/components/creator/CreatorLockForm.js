@@ -137,7 +137,7 @@ const FormLockKeys = styled(LockKeys)`
 const FormBalanceWithUnit = styled(BalanceWithUnit)`
   white-space: nowrap;
   input[type=text] {
-    width: 30px;
+    width: 50px;
   }
 `
 
