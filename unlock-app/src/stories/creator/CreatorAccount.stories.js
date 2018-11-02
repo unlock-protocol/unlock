@@ -1,8 +1,9 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
+import { Provider } from 'react-redux'
+
 import { CreatorAccount } from '../../components/creator/CreatorAccount'
 import createUnlockStore from '../../createUnlockStore'
-import { Provider } from 'react-redux'
 
 const store = createUnlockStore({
   currency: {
