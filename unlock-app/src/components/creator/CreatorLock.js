@@ -75,8 +75,8 @@ export class CreatorLock extends React.Component {
 /
           {lock.maxNumberOfKeys}
         </LockKeys>
-        <Balance amount={lock.keyPrice} conversion={conversion} />
-        <Balance amount={lock.balance} conversion={conversion} />
+        <Balance amount={lock.keyPrice} />
+        <Balance amount={lock.balance} />
         {lockComponentStatusBlock}
         {status === this.state.showEmbedCode &&
           <LockPanel>
@@ -99,7 +99,6 @@ CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock,
   transaction: UnlockPropTypes.transaction,
   config: UnlockPropTypes.configuration,
-  conversion: UnlockPropTypes.conversion,
 }
 
 const mapStateToProps = (state, { lock }) => {
@@ -107,7 +106,6 @@ const mapStateToProps = (state, { lock }) => {
   return {
     transaction,
     lock,
-    conversion: state.currency,
   }
 }
 

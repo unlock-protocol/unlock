@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
 
 import Icon from '../lock/Icon'
-import { Balance, BalanceWithUnit } from '../helpers/Balance'
+import Balance, { BalanceWithUnit } from '../helpers/Balance'
 import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockStatus'
 import { createLock } from '../../actions/lock'
@@ -91,13 +91,11 @@ CreatorLockForm.propTypes = {
   account: UnlockPropTypes.account,
   hideAction: PropTypes.func,
   createLock: PropTypes.func,
-  conversion: UnlockPropTypes.conversion,
 }
 
 const mapStateToProps = state => {
   return {
     account: state.network.account,
-    conversion: state.currency,
   }
 }
 

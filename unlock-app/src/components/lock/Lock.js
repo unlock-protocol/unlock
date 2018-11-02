@@ -31,7 +31,7 @@ Mined! Confirming...
   return (
     <Wrapper>
       <Name>{lock.name}</Name>
-      <EtherPrice><Balance amount={lock.keyPrice} /></EtherPrice>
+      <EtherPrice><Balance amount={lock.keyPrice} convertCurrency={false} /></EtherPrice>
       {lock.fiatPrice &&
       <FiatPrice>
 $
