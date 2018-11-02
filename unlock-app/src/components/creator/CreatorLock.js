@@ -6,6 +6,7 @@ import LockIconBar from './lock/LockIconBar'
 import CreatorLockStatus from './lock/CreatorLockStatus'
 import Icon from '../lock/Icon'
 import EmbedCodeSnippet from './lock/EmbedCodeSnippet'
+import KeyList from './lock/KeyList'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
 import withConfig from '../../utils/withConfig'
@@ -15,13 +16,21 @@ export class CreatorLock extends React.Component {
     super(props)
     this.state = {
       showEmbedCode: false,
+      showKeys: false,
     }
     this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
+    this.toggleKeys = this.toggleKeys.bind(this)
   }
 
   toggleEmbedCode() {
     this.setState((previousState) => ({
       showEmbedCode: !previousState.showEmbedCode,
+    }))
+  }
+
+  toggleKeys() {
+    this.setState((previousState) => ({
+      showKeys: !previousState.showKeys,
     }))
   }
 
@@ -53,7 +62,7 @@ export class CreatorLock extends React.Component {
     }
 
     return (
-      <LockRow>
+      <LockRow onClick={this.toggleKeys}>
         <Icon lock={lock} address={lock.address} />
         <LockName>
           {name}
@@ -70,11 +79,17 @@ export class CreatorLock extends React.Component {
         <Balance amount={lock.keyPrice} />
         <Balance amount={lock.balance} />
         {lockComponentStatusBlock}
-        {status === 'deployed' && this.state.showEmbedCode &&
-          <LockCode>
+        {status === this.state.showEmbedCode &&
+          <LockPanel>
             <LockDivider />
             <EmbedCodeSnippet lock={lock} />
-          </LockCode>
+          </LockPanel>
+        }
+        {!this.state.showEmbedCode && this.state.showKeys &&
+          <LockPanel>
+            <LockDivider />
+            <KeyList lock={lock} />
+          </LockPanel>
         }
       </LockRow>
     )
@@ -124,6 +139,7 @@ export const LockRow = styled.div`
   grid-column-gap: 16px;
   grid-row-gap: 0;
   align-items: center;
+  cursor: pointer;
 `
 
 export const LockName = styled.div`
@@ -146,7 +162,7 @@ export const LockDuration = styled.div`
 export const LockKeys = styled.div`
 `
 
-const LockCode = styled.div`
+const LockPanel = styled.div`
   grid-column: 1 / span 7;
 `
 

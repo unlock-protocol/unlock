@@ -5,12 +5,14 @@ import Layout from '../components/interface/Layout'
 import { Section, Title, Headline, SubTitle, CallToAction, ThreeColumns, Column, TwoColumns } from '../components/Components'
 import { pageTitle } from '../constants'
 import { TwitterTags } from '../components/page/TwitterTags'
+import OpenGraphTags from '../components/page/OpenGraphTags'
 
 export const About = () => (
   <Layout forContent>
     <Head>
       <title>{pageTitle('About')}</title>
       <TwitterTags title={pageTitle('About')} description='We’re a small, smart and nimble team of coders and designers with a vision for a better and fairer way to monetize content.' />
+      <OpenGraphTags title={pageTitle('About')} description='We’re a small, smart and nimble team of coders and designers with a vision for a better and fairer way to monetize content.' canonicalPath='/about' />
     </Head>
     <Section>
       <Title>About</Title>
