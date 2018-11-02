@@ -89,4 +89,8 @@ export const BalanceWithUnit = styled.span`
   text-transform: uppercase;
 `
 
-export default connect(state => ({ conversion: state.currency }))(Balance)
+function mapStateToProps({ currency: conversion }) {
+  return { conversion }
+}
+
+export default connect(mapStateToProps)(Balance)
