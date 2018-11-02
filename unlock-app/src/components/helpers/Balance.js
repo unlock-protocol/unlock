@@ -15,19 +15,19 @@ import { formatEth, formatCurrency } from '../../selectors/currency'
  * @param {function} EthComponent: a React component that displays an ether value
  */
 export function Balance({ amount, unit = 'wei', conversion = { USD: undefined }, EthComponent = ({ value }) => value, convertCurrency = true }) {
-  let inEth
+  let currency
   if (unit !== 'dollars' && unit !== 'eth') {
     const inWei = Web3Utils.toWei(amount || '0', unit)
-    inEth = Web3Utils.fromWei(inWei, 'ether')
+    currency = Web3Utils.fromWei(inWei, 'ether')
   } else {
-    inEth = +amount
+    currency = +amount
   }
-  const ethWithPresentation = formatEth(inEth)
+  const ethWithPresentation = formatEth(currency)
   let convertedUSDValue
   if (!conversion.USD) {
     convertedUSDValue = '---'
   } else {
-    convertedUSDValue = formatCurrency(inEth * conversion.USD)
+    convertedUSDValue = formatCurrency(currency * conversion.USD)
   }
 
   return (
