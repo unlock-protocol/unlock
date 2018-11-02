@@ -66,7 +66,6 @@ export const BalanceWithConversion = styled.div`
 export const Currency = styled.span`
   display: flex;
   flex-direction: row;
-  
 `
 
 export const CurrencySymbol = styled.span`
