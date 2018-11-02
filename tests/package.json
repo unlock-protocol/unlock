@@ -31,7 +31,11 @@
     "jest-puppeteer": "^3.4.0",
     "puppeteer": "^1.9.0",
     "solc": "^0.4.25",
-    "truffle-contract": "^3.0.6"
+    "truffle": "^4.1.14",
+    "truffle-compile": "^3.0.13",
+    "truffle-config": "^1.0.6",
+    "truffle-contract": "^3.0.6",
+    "truffle-workflow-compile": "^1.0.6"
   },
   "devDependencies": {
     "eslint-config-airbnb-base": "^13.1.0",
