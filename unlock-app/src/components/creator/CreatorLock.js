@@ -37,7 +37,7 @@ export class CreatorLock extends React.Component {
   render() {
     // TODO add all-time balance to lock
 
-    const { lock, transaction, config, conversion } = this.props
+    const { lock, transaction, config } = this.props
 
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
