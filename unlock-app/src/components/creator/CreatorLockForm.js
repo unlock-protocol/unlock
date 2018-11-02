@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
 
 import Icon from '../lock/Icon'
-import { Balance, BalanceWithUnit } from '../helpers/Balance'
+import Balance, { BalanceWithUnit } from '../helpers/Balance'
 import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockStatus'
 import { createLock } from '../../actions/lock'
@@ -59,7 +59,6 @@ class CreatorLockForm extends React.Component {
   }
 
   render() {
-    const { conversion } = this.props
     return (
       <FormLockRow>
         <Icon />
@@ -74,7 +73,7 @@ days
         <FormLockKeys>
           <input type="text" id="maxNumberOfKeys" onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
         </FormLockKeys>
-        <Balance unit='eth' amount={this.state.keyPrice} conversion={conversion} EthComponent={this.ethPrice} />
+        <Balance unit='eth' amount={this.state.keyPrice} EthComponent={this.ethPrice} />
         <div>-</div>
         <LockSubmit onClick={this.handleSubmit}>
           Submit
@@ -92,13 +91,11 @@ CreatorLockForm.propTypes = {
   account: UnlockPropTypes.account,
   hideAction: PropTypes.func,
   createLock: PropTypes.func,
-  conversion: UnlockPropTypes.conversion,
 }
 
 const mapStateToProps = state => {
   return {
     account: state.network.account,
-    conversion: state.currency,
   }
 }
 

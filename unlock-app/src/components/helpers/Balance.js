@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React from 'react'
 import PropTypes from 'prop-types'
 import Web3Utils from 'web3-utils'
+import { connect } from 'react-redux'
 
 import UnlockPropTypes from '../../propTypes'
 import { formatEth, formatCurrency } from '../../selectors/currency'
@@ -13,7 +14,7 @@ import { formatEth, formatCurrency } from '../../selectors/currency'
  * @param {object} conversion: a hash of conversion values for ether to currencies
  * @param {function} EthComponent: a React component that displays an ether value
  */
-export function Balance({ amount, unit = 'wei', conversion = { USD: undefined }, EthComponent = ({ value }) => value }) {
+export function Balance({ amount, unit = 'wei', conversion = { USD: undefined }, EthComponent = ({ value }) => value, convertCurrency = true }) {
   let inEth
   if (unit !== 'dollars' && unit !== 'eth') {
     const inWei = Web3Utils.toWei(amount || '0', unit)
@@ -37,12 +38,14 @@ export function Balance({ amount, unit = 'wei', conversion = { USD: undefined },
           <EthComponent value={ethWithPresentation} />
         </BalanceWithUnit>
       </Currency>
-      <Currency>
-        <USD />
-        <BalanceWithUnit>
-          {convertedUSDValue}
-        </BalanceWithUnit>
-      </Currency>
+      { convertCurrency ?
+        <Currency>
+          <USD />
+          <BalanceWithUnit>
+            {convertedUSDValue}
+          </BalanceWithUnit>
+        </Currency> :
+        '' }
     </BalanceWithConversion>
   )
 }
@@ -52,6 +55,7 @@ Balance.propTypes = {
   unit: PropTypes.string,
   conversion: UnlockPropTypes.conversion,
   EthComponent: PropTypes.func,
+  convertCurrency: PropTypes.bool,
 }
 
 export const BalanceWithConversion = styled.div`
@@ -66,7 +70,7 @@ export const Currency = styled.span`
 `
 
 export const CurrencySymbol = styled.span`
-  width: 20px;
+  width: 1.3em;
 `
 
 export const Eth = styled(CurrencySymbol)`
@@ -86,4 +90,4 @@ export const BalanceWithUnit = styled.span`
   text-transform: uppercase;
 `
 
-export default Balance
+export default connect(state => ({ conversion: state.currency }))(Balance)

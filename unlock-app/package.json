@@ -94,6 +94,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "jest-mock-axios": "^2.1.11"
+    "jest-dom": "^2.1.0",
+    "jest-mock-axios": "^2.1.11",
+    "react-testing-library": "^5.2.3"
   }
 }
