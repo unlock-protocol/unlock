@@ -16,13 +16,21 @@ export class CreatorLock extends React.Component {
     super(props)
     this.state = {
       showEmbedCode: false,
+      showKeys: false,
     }
     this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
+    this.toggleKeys = this.toggleKeys.bind(this)
   }
 
   toggleEmbedCode() {
     this.setState((previousState) => ({
       showEmbedCode: !previousState.showEmbedCode,
+    }))
+  }
+
+  toggleKeys() {
+    this.setState((previousState) => ({
+      showKeys: !previousState.showKeys,
     }))
   }
 
@@ -54,7 +62,7 @@ export class CreatorLock extends React.Component {
     }
 
     return (
-      <LockRow>
+      <LockRow onClick={this.toggleKeys}>
         <Icon lock={lock} address={lock.address} />
         <LockName>
           {name}
@@ -77,7 +85,7 @@ export class CreatorLock extends React.Component {
             <EmbedCodeSnippet lock={lock} />
           </LockPanel>
         }
-        {!this.state.showEmbedCode &&
+        {!this.state.showEmbedCode && this.state.showKeys &&
           <LockPanel>
             <LockDivider />
             <KeyList lock={lock} />
@@ -131,6 +139,7 @@ export const LockRow = styled.div`
   grid-column-gap: 16px;
   grid-row-gap: 0;
   align-items: center;
+  cursor: pointer;
 `
 
 export const LockName = styled.div`
