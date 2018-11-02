@@ -1,3 +1,4 @@
+// TODO convert to fetch instead of using axios when it is supported well enough
 import axios from 'axios'
 
 import { setConversionRate } from '../actions/currencyconvert'
