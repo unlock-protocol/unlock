@@ -23,6 +23,9 @@ const store = createUnlockStore({
       data: 'ben@unlock-protocol.com',
     },
   },
+  currency: {
+    USD: 195.99,
+  },
 })
 
 storiesOf('CreatorLock', CreatorLock)
