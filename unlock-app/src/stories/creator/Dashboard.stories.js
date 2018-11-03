@@ -15,9 +15,6 @@ storiesOf('Dashboard', Dashboard)
     const network = {
       name: 4,
     }
-    const conversion = {
-      USD: 195.99,
-    }
     const transactions = {
       0x1234: {
         hash: '0x12345678',
@@ -52,6 +49,6 @@ storiesOf('Dashboard', Dashboard)
       },
     }
     return (
-      <Dashboard network={network} account={account} transactions={transactions} locks={locks} conversion={conversion} />
+      <Dashboard network={network} account={account} transactions={transactions} locks={locks} />
     )
   })
