@@ -15,7 +15,7 @@ module.exports = {
         browser: true,
         context: true,
         jestPuppeteer: true,
-    }
+    },
     "rules": {
         "indent": [
             "error",
