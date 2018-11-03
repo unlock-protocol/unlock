@@ -2,54 +2,95 @@ import styled from 'styled-components'
 import React from 'react'
 import PropTypes from 'prop-types'
 import Web3Utils from 'web3-utils'
+import { connect } from 'react-redux'
+
+import UnlockPropTypes from '../../propTypes'
+import { formatEth, formatCurrency } from '../../selectors/currency'
 
 /**
  * Component which shows a balance in Eth
  * @param {*} amount: the amount to convert to Eth
  * @param {string} unit: the unit of the amount to convert to Eth
+ * @param {object} conversion: a hash of conversion values for ether to currencies
+ * @param {function} EthComponent: a React component that displays an ether value
  */
-export function Balance({ amount, unit = 'wei' }) {
-  let inWei = Web3Utils.toWei(amount || '0', unit)
-  let inEth = Web3Utils.fromWei(inWei, 'ether')
-  let ethWithPresentation = BalancePresenter(inEth)
-
-  return (<BalanceWithUnit>
-    三 
-    {' '}
-    {ethWithPresentation}
-  </BalanceWithUnit>)
-}
-
-/**
- * Provide a representaion of Eth Balances suitable for the Unlock frontend
- * application.
- * @param {string} eth: An amount of Eth
- */
-function BalancePresenter(eth){
-  const DECIMAL_PLACES = 2
-  const SIGNIFICANT_DIGITS = 2
-  const MINIMUM_THRESHOLD = 0.0001
-
-  let numericalEth = Number(eth)
-
-  switch(true) {
-  case numericalEth < MINIMUM_THRESHOLD && numericalEth > 0 :
-    return '< 0.0001'
-  case numericalEth < 1:
-    return parseFloat(numericalEth.toPrecision(SIGNIFICANT_DIGITS))
-  default:
-    return numericalEth.toFixed(DECIMAL_PLACES)
+export function Balance({ amount, unit = 'wei', conversion = { USD: undefined }, EthComponent = ({ value }) => value, convertCurrency = true }) {
+  let currency
+  if (unit !== 'dollars' && unit !== 'eth') {
+    const inWei = Web3Utils.toWei(amount || '0', unit)
+    currency = Web3Utils.fromWei(inWei, 'ether')
+  } else {
+    currency = +amount
   }
+  const ethWithPresentation = formatEth(currency)
+  let convertedUSDValue
+  if (!conversion.USD) {
+    convertedUSDValue = '---'
+  } else {
+    convertedUSDValue = formatCurrency(currency * conversion.USD)
+  }
+
+  return (
+    <BalanceWithConversion>
+      <Currency>
+        <Eth />
+        <BalanceWithUnit>
+          <EthComponent value={ethWithPresentation} />
+        </BalanceWithUnit>
+      </Currency>
+      { convertCurrency ?
+        <Currency>
+          <USD />
+          <BalanceWithUnit>
+            {convertedUSDValue}
+          </BalanceWithUnit>
+        </Currency> :
+        '' }
+    </BalanceWithConversion>
+  )
 }
 
 Balance.propTypes = {
   amount: PropTypes.string,
   unit: PropTypes.string,
+  conversion: UnlockPropTypes.conversion,
+  EthComponent: PropTypes.func,
+  convertCurrency: PropTypes.bool,
 }
+
+export const BalanceWithConversion = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+export const Currency = styled.span`
+  display: flex;
+  flex-direction: row;
+`
+
+export const CurrencySymbol = styled.span`
+  width: 1.3em;
+`
+
+export const Eth = styled(CurrencySymbol)`
+  &:before {
+    content: "三";
+  }
+`
+
+export const USD = styled(CurrencySymbol)`
+  &:before {
+    content: "$";
+  }
+`
 
 export const BalanceWithUnit = styled.span`
   white-space: nowrap;
   text-transform: uppercase;
 `
 
-export default Balance
+function mapStateToProps({ currency: conversion }) {
+  return { conversion }
+}
+
+export default connect(mapStateToProps)(Balance)

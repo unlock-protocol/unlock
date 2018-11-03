@@ -35,7 +35,6 @@ export class CreatorLock extends React.Component {
   }
 
   render() {
-    // TODO add USD values to lock
     // TODO add all-time balance to lock
 
     const { lock, transaction, config } = this.props
@@ -177,13 +176,5 @@ const LockValueSub = styled.div`
   font-size: 0.6em;
   color: var(--grey);
   margin-top: 5px;
-`
-*/
-
-/* Saving for use with sub-values that need to be added in a future PR
-const LockValueUsd = styled.div`
-  &:before {
-    content: "$ ";
-  }
 `
 */

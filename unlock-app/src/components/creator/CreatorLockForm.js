@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
 
 import Icon from '../lock/Icon'
-import { BalanceWithUnit } from '../helpers/Balance'
+import Balance, { BalanceWithUnit } from '../helpers/Balance'
 import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockStatus'
 import { createLock } from '../../actions/lock'
@@ -27,6 +27,12 @@ class CreatorLockForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.ethPrice = ({ value }) => (
+      <FormBalanceWithUnit>
+        <input type="text" id="keyPrice" onChange={this.handleChange} defaultValue={value} />
+      </FormBalanceWithUnit>
+    )
+
   }
 
   handleChange (event) {
@@ -67,10 +73,7 @@ days
         <FormLockKeys>
           <input type="text" id="maxNumberOfKeys" onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
         </FormLockKeys>
-        <FormBalanceWithUnit>
-          三
-          <input type="text" id="keyPrice" onChange={this.handleChange} defaultValue={this.state.keyPrice} />
-        </FormBalanceWithUnit>
+        <Balance unit='eth' amount={this.state.keyPrice} EthComponent={this.ethPrice} />
         <div>-</div>
         <LockSubmit onClick={this.handleSubmit}>
           Submit
@@ -134,7 +137,7 @@ const FormLockKeys = styled(LockKeys)`
 const FormBalanceWithUnit = styled(BalanceWithUnit)`
   white-space: nowrap;
   input[type=text] {
-    width: 30px;
+    width: 50px;
   }
 `
 

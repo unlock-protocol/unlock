@@ -1,6 +1,8 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
+import { Provider } from 'react-redux'
 import { Lock } from '../../components/lock/Lock'
+import createUnlockStore from '../../createUnlockStore'
 
 // lock, account, keys, purchaseKey
 const lockKey = {}
@@ -12,7 +14,14 @@ const lock = {
   fiatPrice: 240.38,
 }
 
+const store = createUnlockStore({
+  currency: {
+    USD: 195.99,
+  },
+})
+
 storiesOf('Lock', Lock)
+  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('with no lockKey', () => {
     return (
       <Lock lock={lock} transaction={null} lockKey={null} purchaseKey={purchaseKey} />
