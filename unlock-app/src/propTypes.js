@@ -25,6 +25,8 @@ export const transaction = PropTypes.shape({
   name: PropTypes.string,
 })
 
+export const conversion = PropTypes.objectOf(PropTypes.number)
+
 export const children = PropTypes.shape({})
 
 export const component = PropTypes.func
@@ -63,6 +65,7 @@ export default {
   children,
   component,
   configuration,
+  conversion,
   layout,
   lock,
   locks,
