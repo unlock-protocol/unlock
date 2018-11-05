@@ -28,3 +28,5 @@ export const PAGE_DESCRIPTION = 'Unlock is a protocol which enables creators to 
 export const PAGE_DEFAULT_IMAGE = 'https://unlock-protocol.com/static/images/pages/png/simple.png'
 
 export const CANONICAL_BASE_URL = 'https://unlock-protocol.com' // Leave trailing slash off
+
+export const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']

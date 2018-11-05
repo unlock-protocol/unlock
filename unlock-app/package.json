@@ -6,7 +6,8 @@
     "@babel/core": "7.1.2",
     "@storybook/addon-jest": "^4.0.1",
     "@storybook/react": "4.0.1",
-    "@svgr/cli": "^3.1.0",
+    "@svgr/cli": "^4.0.0",
+    "axios": "^0.18.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.4",
@@ -91,5 +92,10 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "jest-dom": "^2.1.0",
+    "jest-mock-axios": "^2.1.11",
+    "react-testing-library": "^5.2.3"
+  }
 }

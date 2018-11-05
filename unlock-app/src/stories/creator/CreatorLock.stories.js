@@ -15,6 +15,17 @@ const store = createUnlockStore({
       confirmations: 4,
     },
   },
+  keys: {
+    '0x678': {
+      transaction: '0x23749328748932748932473298473289473298',
+      lockAddress: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
+      expiration: Math.floor((new Date).getTime()/1000) + (86400 * 30), // 30 days from right now
+      data: 'ben@unlock-protocol.com',
+    },
+  },
+  currency: {
+    USD: 195.99,
+  },
 })
 
 storiesOf('CreatorLock', CreatorLock)
@@ -60,5 +71,22 @@ storiesOf('CreatorLock', CreatorLock)
     }
     return (
       <CreatorLock lock={lock} transaction={null} />
+    )
+  })
+  .add('With key', () => {
+    const lock = {
+      keyPrice: '10000000000000000000',
+      expirationDuration: '172800',
+      maxNumberOfKeys: '240',
+      outstandingKeys: '3',
+      address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
+      transaction: '0x123',
+    }
+    const transaction = {
+      status: 'mined',
+      confirmations: 14,
+    }
+    return (
+      <CreatorLock lock={lock} transaction={transaction} />
     )
   })
