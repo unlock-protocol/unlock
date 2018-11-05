@@ -11,7 +11,7 @@ export function LockIconBar({ lock, toggleCode }) {
       <Buttons.PreviewLock lock={lock} />
       <Buttons.Withdraw />
       <Buttons.Edit />
-      { /* Reinstate when we're ready <Buttons.ExportLock /> */ }
+      {/* Reinstate when we're ready <Buttons.ExportLock /> */}
       <Buttons.Code onClick={toggleCode} />
     </IconBar>
   )

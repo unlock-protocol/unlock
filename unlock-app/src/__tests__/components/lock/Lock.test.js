@@ -2,7 +2,6 @@ import { mapStateToProps } from '../../../components/lock/Lock'
 
 describe('Lock', () => {
   describe('mapStateToProps', () => {
-
     it('should return a new lockKey and no transaction when there is no matching key', () => {
       const state = {
         network: {
@@ -11,8 +10,7 @@ describe('Lock', () => {
           },
         },
         keys: [],
-        transactions: {
-        },
+        transactions: {},
       }
       const props = {
         lock: {
@@ -40,13 +38,15 @@ describe('Lock', () => {
             address: '0x123',
           },
         },
-        keys: [{
-          lockAddress: props.lock.address,
-          owner: '0x123',
-          expiration: 1000,
-          data: 'hello',
-          transaction: '0x777',
-        }],
+        keys: [
+          {
+            lockAddress: props.lock.address,
+            owner: '0x123',
+            expiration: 1000,
+            data: 'hello',
+            transaction: '0x777',
+          },
+        ],
         transactions: {
           '0x777': {
             status: 'pending',
@@ -64,6 +64,5 @@ describe('Lock', () => {
         hash: '0x777',
       })
     })
-
   })
 })

@@ -3,7 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
 
-export const LayoutButton = ({href = '#', title, children}) => (
+export const LayoutButton = ({ href = '#', title, children }) => (
   <Link href={href}>
     <Button
       href={href}
@@ -79,7 +79,7 @@ export const Label = styled.small`
   position: relative;
   z-index: 1000;
   white-space: nowrap;
-  font-family: 'IBM Plex Sans' ,'Helvetica Neue', Arial, sans-serif;
+  font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 400;
   font-size: 12px;
   top: 24px;
@@ -89,5 +89,4 @@ export const Label = styled.small`
   ${Button}:hover & {
     display: grid;
   }
-
 `

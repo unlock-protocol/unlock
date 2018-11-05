@@ -7,7 +7,7 @@ const config = configure(global)
 
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
-function getOrCreateStore (initialState) {
+function getOrCreateStore(initialState) {
   // Always make a new store if server, otherwise state is shared between requests
   if (config.isServer) {
     return createUnlockStore(initialState)
@@ -20,9 +20,9 @@ function getOrCreateStore (initialState) {
   return window[__NEXT_REDUX_STORE__]
 }
 
-export default (App) => {
+export default App => {
   return class AppWithRedux extends React.Component {
-    static async getInitialProps (appContext) {
+    static async getInitialProps(appContext) {
       // Get or Create the store with `undefined` as initialState
       // This allows you to set a custom default initialState
       const reduxStore = getOrCreateStore()
@@ -44,15 +44,17 @@ export default (App) => {
      * initialReduxState is actually coming from the server side rendered content
      * We want to "merge" it with the data that might be stored in localStorage
      */
-    constructor (props) {
+    constructor(props) {
       super(props)
-      this.reduxStore = getOrCreateStore(Object.assign(props.initialReduxState, loadState()))
+      this.reduxStore = getOrCreateStore(
+        Object.assign(props.initialReduxState, loadState())
+      )
       this.reduxStore.subscribe(() => {
         saveState(this.reduxStore.getState())
       })
     }
 
-    render () {
+    render() {
       return <App {...this.props} reduxStore={this.reduxStore} />
     }
   }

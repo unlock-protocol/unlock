@@ -8,15 +8,14 @@ export function CreatorLockStatus({ config, lock, status, confirmations }) {
   return (
     <LockStatus>
       {status}
-      {confirmations &&
+      {confirmations && (
         <Confirmations>
           {confirmations}
           {' '}
-          /
-          {' '}
+/
           {config.requiredConfirmations}
         </Confirmations>
-      }
+      )}
     </LockStatus>
   )
 }
@@ -37,7 +36,7 @@ export const LockStatus = styled.div`
   display: grid;
   text-transform: capitalize;
   background-color: var(--lightgrey);
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: 'IBM Plex Sans', sans-serif;
   font-weight: 200;
   color: var(--grey);
 `

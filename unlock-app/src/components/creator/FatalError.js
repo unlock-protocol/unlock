@@ -5,9 +5,18 @@ import styled from 'styled-components'
 
 import Layout from '../interface/Layout'
 
-const defaultError = (<p>This is a generic error because something just broke but we’re not sure what.</p>)
+const defaultError = (
+  <p>
+    This is a generic error because something just broke but we’re not sure
+    what.
+  </p>
+)
 
-export const DefaultError = ({ title = 'Fatal Error', children = defaultError, illustration = '/static/images/illustrations/error.svg' }) => (
+export const DefaultError = ({
+  title = 'Fatal Error',
+  children = defaultError,
+  illustration = '/static/images/illustrations/error.svg',
+}) => (
   <Layout title="">
     <Container>
       <Image src={illustration} />
@@ -42,7 +51,6 @@ const Container = styled.section`
     grid-auto-flow: row;
     padding: 16px;
   }
-
 `
 
 const Image = styled.img`
@@ -53,28 +61,28 @@ const Message = styled.div`
   display: grid;
   grid-gap: 16px;
 
-  &>h1 {
+  & > h1 {
     font-weight: bold;
     color: var(--red);
     margin: 0px;
     padding: 0px;
   }
 
-  &>p {
+  & > p {
     margin: 0px;
     padding: 0px;
     font-size: 16px;
-      color: var(--dimgrey);
+    color: var(--dimgrey);
   }
 `
 
-export const WrongNetwork = ({currentNetwork, requiredNetwork}) => (
+export const WrongNetwork = ({ currentNetwork, requiredNetwork }) => (
   <DefaultError
     title="Network mismatch"
     illustration="/static/images/illustrations/network.svg"
   >
     <p>
-You’re currently on the
+      You’re currently on the
       {currentNetwork}
       {' '}
 network but you need to be on the
@@ -84,24 +92,27 @@ network. Please switch to
       {requiredNetwork}
 .
     </p>
-  </DefaultError>)
+  </DefaultError>
+)
 WrongNetwork.propTypes = {
   currentNetwork: PropTypes.string,
   requiredNetwork: PropTypes.string,
 }
 
-export const MissingProvider= () => (
+export const MissingProvider = () => (
   <DefaultError
     title="Wallet missing"
     illustration="/static/images/illustrations/wallet.svg"
   >
     <p>
-      It looks like you’re using an incompatible browser or are missig a crypto wallet. If you’re using Chrome or Firefox you can install 
+      It looks like you’re using an incompatible browser or are missig a crypto
+      wallet. If you’re using Chrome or Firefox you can install
       {' '}
-      <a href='https://metamask.io/'>Metamask</a>
+      <a href="https://metamask.io/">Metamask</a>
 .
     </p>
-  </DefaultError>)
+  </DefaultError>
+)
 
 export default {
   DefaultError,

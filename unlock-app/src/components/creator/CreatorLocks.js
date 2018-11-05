@@ -5,7 +5,7 @@ import CreatorLock, { LockRowGrid } from './CreatorLock'
 import CreatorLockForm from './CreatorLockForm'
 
 export class CreatorLocks extends React.Component {
-  constructor (props, context) {
+  constructor(props, context) {
     super(props)
     this.state = {
       showDashboardForm: !!this.props.showForm,
@@ -14,7 +14,7 @@ export class CreatorLocks extends React.Component {
   }
 
   toggleForm() {
-    this.setState((previousState) => ({
+    this.setState(previousState => ({
       showDashboardForm: !previousState.showDashboardForm,
     }))
   }
@@ -31,9 +31,11 @@ export class CreatorLocks extends React.Component {
           <LockMinorHeader>Balance / Earnings</LockMinorHeader>
           <CreateButton onClick={this.toggleForm}>Create Lock</CreateButton>
         </LockHeaderRow>
-        {this.state.showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
+        {this.state.showDashboardForm && (
+          <CreatorLockForm hideAction={this.toggleForm} />
+        )}
         {Object.values(this.props.locks).map((lock, index) => {
-          return (<CreatorLock key={index} lock={lock} />)
+          return <CreatorLock key={index} lock={lock} />
         })}
       </Locks>
     )
@@ -59,8 +61,7 @@ const LockHeaderRow = styled.div`
   font-size: 14px;
   display: grid;
   grid-gap: 16px;
-  ${LockRowGrid}
-  align-items: center;
+  ${LockRowGrid} align-items: center;
 `
 
 const LockHeader = styled.div`
@@ -87,13 +88,14 @@ const LockMinorHeader = styled.div`
 `
 
 export const ActionButton = styled.button`
-  background-color: ${props => props.disabled ? 'var(--grey)' : 'var(--green)'};
+  background-color: ${props =>
+    props.disabled ? 'var(--grey)' : 'var(--green)'};
   border: none;
   font-size: 16px;
   color: var(--darkgrey);
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: 'IBM Plex Sans', sans-serif;
   border-radius: 4px;
-  cursor: ${props => props.disabled ? 'auto' : 'pointer'};
+  cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
 `
 
 const CreateButton = styled(ActionButton)`

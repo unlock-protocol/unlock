@@ -12,7 +12,7 @@ import Balance from '../helpers/Balance'
 import withConfig from '../../utils/withConfig'
 
 export class CreatorLock extends React.Component {
-  constructor (props, context) {
+  constructor(props, context) {
     super(props)
     this.state = {
       showEmbedCode: false,
@@ -23,13 +23,13 @@ export class CreatorLock extends React.Component {
   }
 
   toggleEmbedCode() {
-    this.setState((previousState) => ({
+    this.setState(previousState => ({
       showEmbedCode: !previousState.showEmbedCode,
     }))
   }
 
   toggleKeys() {
-    this.setState((previousState) => ({
+    this.setState(previousState => ({
       showKeys: !previousState.showKeys,
     }))
   }
@@ -42,22 +42,30 @@ export class CreatorLock extends React.Component {
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
     let outstandingKeys = lock.maxNumberOfKeys - lock.outstandingKeys || 0
-    let lockComponentStatusBlock = (<LockIconBarContainer>
-      <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
-    </LockIconBarContainer>)
+    let lockComponentStatusBlock = (
+      <LockIconBarContainer>
+        <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
+      </LockIconBarContainer>
+    )
 
     if (!transaction) {
       // We assume that the lock has been succeesfuly deployed?
       // TODO if the transaction is missing we should try to look it up from the lock address
     } else if (transaction.status === 'submitted') {
-      lockComponentStatusBlock = <CreatorLockStatus lock={lock} status="Submitted" />
-    } else if (transaction.status === 'mined' &&
-        transaction.confirmations < config.requiredConfirmations) {
-      lockComponentStatusBlock = <CreatorLockStatus
-        lock={lock}
-        status="Confirming"
-        confirmations={transaction.confirmations}
-      />
+      lockComponentStatusBlock = (
+        <CreatorLockStatus lock={lock} status="Submitted" />
+      )
+    } else if (
+      transaction.status === 'mined' &&
+      transaction.confirmations < config.requiredConfirmations
+    ) {
+      lockComponentStatusBlock = (
+        <CreatorLockStatus
+          lock={lock}
+          status="Confirming"
+          confirmations={transaction.confirmations}
+        />
+      )
     }
 
     return (
@@ -78,18 +86,19 @@ export class CreatorLock extends React.Component {
         <Balance amount={lock.keyPrice} />
         <Balance amount={lock.balance} />
         {lockComponentStatusBlock}
-        {status === this.state.showEmbedCode &&
+        {status === this.state.showEmbedCode && (
           <LockPanel>
             <LockDivider />
             <EmbedCodeSnippet lock={lock} />
           </LockPanel>
-        }
-        {!this.state.showEmbedCode && this.state.showKeys &&
+        )}
+        {!this.state.showEmbedCode &&
+          this.state.showKeys && (
           <LockPanel>
             <LockDivider />
             <KeyList lock={lock} />
           </LockPanel>
-        }
+        )}
       </LockRow>
     )
   }
@@ -111,7 +120,8 @@ const mapStateToProps = (state, { lock }) => {
 
 export default withConfig(connect(mapStateToProps)(CreatorLock))
 
-export const LockRowGrid = 'grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
+export const LockRowGrid =
+  'grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
 
 const LockIconBarContainer = styled.div`
   visibility: hidden;
@@ -133,8 +143,7 @@ export const LockRow = styled.div`
   border-radius: 4px;
   display: grid;
   grid-gap: 16px;
-  ${LockRowGrid}
-  grid-template-rows: 60px;
+  ${LockRowGrid} grid-template-rows: 60px;
   grid-column-gap: 16px;
   grid-row-gap: 0;
   align-items: center;
@@ -155,11 +164,9 @@ export const LockAddress = styled.div`
   text-overflow: ellipsis;
 `
 
-export const LockDuration = styled.div`
-`
+export const LockDuration = styled.div``
 
-export const LockKeys = styled.div`
-`
+export const LockKeys = styled.div``
 
 const LockPanel = styled.div`
   grid-column: 1 / span 7;

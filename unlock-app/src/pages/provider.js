@@ -21,18 +21,27 @@ export function Web3Provider({ setProvider, config, provider }) {
           <nav className="nav nav-masthead justify-content-center" />
         </div>
       </header>
-      <div className="row align-items-center justify-content-center" style={{ height: '300px' }}>
+      <div
+        className="row align-items-center justify-content-center"
+        style={{ height: '300px' }}
+      >
         <div className="col align-items-center col-6 col-sm-12">
           <div className="card">
-            <div className="card-header">
-              Provider
-            </div>
+            <div className="card-header">Provider</div>
             <div className="card-body">
-
               <div className="input-group mb-3">
-                <select className="custom-select" type="select" value={provider} onChange={(event) => setProvider(event.target.value)}>
+                <select
+                  className="custom-select"
+                  type="select"
+                  value={provider}
+                  onChange={event => setProvider(event.target.value)}
+                >
                   {Object.keys(config.providers).map((name, i) => {
-                    return (<option value={name} key={i}>{name}</option>)
+                    return (
+                      <option value={name} key={i}>
+                        {name}
+                      </option>
+                    )
                   })}
                 </select>
                 <div className="input-group-append">
@@ -57,7 +66,7 @@ Web3Provider.propTypes = {
   config: UnlockPropTypes.configuration,
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     provider: state.provider,
   }
@@ -67,9 +76,17 @@ const mapDispatchToProps = dispatch => ({
   setProvider: provider => dispatch(setProvider(provider)),
 })
 
-const Page = withConfig(connect(mapStateToProps, mapDispatchToProps)(Web3Provider))
+const Page = withConfig(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Web3Provider)
+)
 
-export default (pageProps) => // eslint-disable-line react/display-name
+export default (
+  pageProps // eslint-disable-line react/display-name
+) => (
   <NoSSR>
     <Page {...pageProps} />
   </NoSSR>
+)

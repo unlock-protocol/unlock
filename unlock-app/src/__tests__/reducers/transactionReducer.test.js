@@ -1,14 +1,16 @@
 import reducer, { initialState } from '../../reducers/transactionReducer'
-import { ADD_TRANSACTION, UPDATE_TRANSACTION, DELETE_TRANSACTION } from '../../actions/transaction'
+import {
+  ADD_TRANSACTION,
+  UPDATE_TRANSACTION,
+  DELETE_TRANSACTION,
+} from '../../actions/transaction'
 
 describe('transaction reducer', () => {
-
   it('should return the initial state', () => {
     expect(initialState).toEqual({})
   })
 
   describe('when receiving ADD_TRANSACTION', () => {
-
     it('should set the transaction accordingly if it has not been previously added', () => {
       const transaction = {
         status: 'pending',
@@ -16,10 +18,15 @@ describe('transaction reducer', () => {
         hash: '0x123',
       }
 
-      expect(reducer({}, {
-        type: ADD_TRANSACTION,
-        transaction,
-      })).toEqual({
+      expect(
+        reducer(
+          {},
+          {
+            type: ADD_TRANSACTION,
+            transaction,
+          }
+        )
+      ).toEqual({
         '0x123': transaction,
       })
     })
@@ -31,16 +38,21 @@ describe('transaction reducer', () => {
         hash: '0x123',
       }
 
-      expect(reducer({
-        '0x123': transaction,
-      }, {
-        type: ADD_TRANSACTION,
-        transaction: {
-          status: 'mined',
-          confirmations: 0,
-          hash: '0x123',
-        },
-      })).toEqual({
+      expect(
+        reducer(
+          {
+            '0x123': transaction,
+          },
+          {
+            type: ADD_TRANSACTION,
+            transaction: {
+              status: 'mined',
+              confirmations: 0,
+              hash: '0x123',
+            },
+          }
+        )
+      ).toEqual({
         '0x123': {
           status: 'mined',
           confirmations: 0,
@@ -51,7 +63,6 @@ describe('transaction reducer', () => {
   })
 
   describe('when receiving UPDATE_TRANSACTION', () => {
-
     it('should set the transaction accordingly if it has not been previously added', () => {
       const transaction = {
         status: 'pending',
@@ -59,10 +70,15 @@ describe('transaction reducer', () => {
         hash: '0x123',
       }
 
-      expect(reducer({}, {
-        type: UPDATE_TRANSACTION,
-        transaction,
-      })).toEqual({
+      expect(
+        reducer(
+          {},
+          {
+            type: UPDATE_TRANSACTION,
+            transaction,
+          }
+        )
+      ).toEqual({
         '0x123': transaction,
       })
     })
@@ -74,16 +90,21 @@ describe('transaction reducer', () => {
         hash: '0x123',
       }
 
-      expect(reducer({
-        '0x123': transaction,
-      }, {
-        type: UPDATE_TRANSACTION,
-        transaction: {
-          status: 'mined',
-          confirmations: 0,
-          hash: '0x123',
-        },
-      })).toEqual({
+      expect(
+        reducer(
+          {
+            '0x123': transaction,
+          },
+          {
+            type: UPDATE_TRANSACTION,
+            transaction: {
+              status: 'mined',
+              confirmations: 0,
+              hash: '0x123',
+            },
+          }
+        )
+      ).toEqual({
         '0x123': {
           status: 'mined',
           confirmations: 0,
@@ -105,10 +126,11 @@ describe('transaction reducer', () => {
         '0x123': transaction,
       }
 
-      expect(reducer(transactions, {
-        type: DELETE_TRANSACTION,
-        transaction,
-      })
+      expect(
+        reducer(transactions, {
+          type: DELETE_TRANSACTION,
+          transaction,
+        })
       ).toEqual({})
     })
 
@@ -130,10 +152,11 @@ describe('transaction reducer', () => {
         '0x456': transactionToKeep,
       }
 
-      expect(reducer(transactions, {
-        type: DELETE_TRANSACTION,
-        transaction,
-      })
+      expect(
+        reducer(transactions, {
+          type: DELETE_TRANSACTION,
+          transaction,
+        })
       ).toEqual({
         '0x456': transactionToKeep,
       })

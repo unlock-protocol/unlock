@@ -5,32 +5,20 @@ import UnlockPropTypes from '../../../propTypes'
 import { expirationAsDate } from '../../../utils/durations'
 
 // TODO add pagination
-export function KeyList ({ keys, lock }) {
+export function KeyList({ keys, lock }) {
   return (
     <Table>
       <Header>
-        <Cell>
-          Keys
-        </Cell>
-        <Cell>
-          Expiration
-        </Cell>
-        <Cell>
-          Data
-        </Cell>
+        <Cell>Keys</Cell>
+        <Cell>Expiration</Cell>
+        <Cell>Data</Cell>
       </Header>
-      {Object.values(keys).map((key) => {
+      {Object.values(keys).map(key => {
         return (
           <Row key={key.id}>
-            <Data>
-              {key.transaction}
-            </Data>
-            <Cell>
-              {expirationAsDate(key.expiration)}
-            </Cell>
-            <Data>
-              {key.data}
-            </Data>
+            <Data>{key.transaction}</Data>
+            <Cell>{expirationAsDate(key.expiration)}</Cell>
+            <Data>{key.data}</Data>
           </Row>
         )
       })}
@@ -45,7 +33,10 @@ KeyList.propTypes = {
 
 const mapStateToProps = (state, { lock }) => {
   const keys = {}
-  if (state.keys) Object.values(state.keys).filter((key) => key.lockAddress === lock.address).forEach((item) => keys[item.id] = item)
+  if (state.keys)
+    Object.values(state.keys)
+      .filter(key => key.lockAddress === lock.address)
+      .forEach(item => (keys[item.id] = item))
   return {
     keys,
     lock,
@@ -54,8 +45,7 @@ const mapStateToProps = (state, { lock }) => {
 
 export default connect(mapStateToProps)(KeyList)
 
-const Table = styled.div`
-`
+const Table = styled.div``
 
 const Row = styled.div`
   display: grid;
@@ -74,8 +64,7 @@ const Header = styled(Row)`
   text-transform: uppercase;
 `
 
-const Cell = styled.div`
-`
+const Cell = styled.div``
 
 const Data = styled(Cell)`
   overflow: hidden;

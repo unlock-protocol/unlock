@@ -10,11 +10,7 @@ describe('Balance Component', () => {
   const conversion = { USD: 195.99 }
 
   function renderIt(amount, c = conversion, u = unit) {
-    return rtl.render(<Balance
-      amount={amount}
-      unit={u}
-      conversion={c}
-    />)
+    return rtl.render(<Balance amount={amount} unit={u} conversion={c} />)
   }
 
   describe('when the balance is 0 Eth', () => {

@@ -4,17 +4,11 @@ import Header from '../../components/interface/Header'
 
 storiesOf('Header', Header)
   .add('the header without a title', () => {
-    return (
-      <Header />
-    )
+    return <Header />
   })
   .add('the header with a title', () => {
-    return (
-      <Header title="Roses are red" />
-    )
+    return <Header title="Roses are red" />
   })
   .add('the header for a content page', () => {
-    return (
-      <Header forContent title="Roses are red" />
-    )
+    return <Header forContent title="Roses are red" />
   })

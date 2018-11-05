@@ -2,7 +2,6 @@ import reducer from '../../reducers/providerReducer'
 import { SET_PROVIDER } from '../../actions/provider'
 
 describe('provider reducer', () => {
-
   const provider = 'WebSocket'
 
   it('should return the initial state as null if there are no reducers', () => {
@@ -17,10 +16,11 @@ describe('provider reducer', () => {
   })
 
   it('should set the provider accordingly when receiving SET_PROVIDER', () => {
-    expect(reducer(undefined, {
-      type: SET_PROVIDER,
-      provider,
-    })).toEqual(provider)
+    expect(
+      reducer(undefined, {
+        type: SET_PROVIDER,
+        provider,
+      })
+    ).toEqual(provider)
   })
-
 })

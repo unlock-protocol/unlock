@@ -18,24 +18,32 @@ const ConfigContext = React.createContext(config)
  * @param {*} Component
  */
 export default function withConfig(Component) {
-
   function componentWithConfig(props) {
-
     const { store: reduxStore, router } = props
 
     if (router && !Component.skipConstraints) {
       if (!config.isServer) {
         // Ensuring that we have at least a provider
         if (Object.keys(config.providers).length === 0) {
-          return (<MissingProvider />)
+          return <MissingProvider />
         }
 
         // Ensuring that the provider is using the right network!
-        if (router.route !== '/provider' && config.isRequiredNetwork && !config.isRequiredNetwork(reduxStore.getState().network.name)) {
-          return (<WrongNetwork currentNetwork={ETHEREUM_NETWORKS_NAMES[reduxStore.getState().network.name][0]} requiredNetwork={config.requiredNetwork} />)
+        if (
+          router.route !== '/provider' &&
+          config.isRequiredNetwork &&
+          !config.isRequiredNetwork(reduxStore.getState().network.name)
+        ) {
+          return (
+            <WrongNetwork
+              currentNetwork={
+                ETHEREUM_NETWORKS_NAMES[reduxStore.getState().network.name][0]
+              }
+              requiredNetwork={config.requiredNetwork}
+            />
+          )
         }
       }
-
     }
 
     return (
@@ -45,7 +53,7 @@ export default function withConfig(Component) {
     )
   }
 
-  function mapStateToProps (state) {
+  function mapStateToProps(state) {
     return {
       account: state.network.account, // TODO change account to base level
       network: state.network,
@@ -54,7 +62,9 @@ export default function withConfig(Component) {
 
   componentWithConfig.getInitialProps = async context => {
     return {
-      ...(Component.getInitialProps ? await Component.getInitialProps(context) : {}),
+      ...(Component.getInitialProps
+        ? await Component.getInitialProps(context)
+        : {}),
     }
   }
 

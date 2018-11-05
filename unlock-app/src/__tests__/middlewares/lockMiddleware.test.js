@@ -2,7 +2,11 @@ import { LOCATION_CHANGE } from 'react-router-redux'
 import lockMiddleware from '../../middlewares/lockMiddleware'
 import { CREATE_LOCK, SET_LOCK, WITHDRAW_FROM_LOCK } from '../../actions/lock'
 import { PURCHASE_KEY } from '../../actions/key'
-import { SET_ACCOUNT, LOAD_ACCOUNT, CREATE_ACCOUNT } from '../../actions/accounts'
+import {
+  SET_ACCOUNT,
+  LOAD_ACCOUNT,
+  CREATE_ACCOUNT,
+} from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { SET_PROVIDER } from '../../actions/provider'
 import { REFRESH_TRANSACTION } from '../../actions/transaction'
@@ -26,8 +30,7 @@ let lock = {
   keyPrice: '100',
   creator: account,
 }
-let state = {
-}
+let state = {}
 
 let key = {
   id: '123',
@@ -48,12 +51,12 @@ const provider = 'Toshi'
  */
 const create = () => {
   const store = {
-    getState: jest.fn(() => (state)),
+    getState: jest.fn(() => state),
     dispatch: jest.fn(),
   }
   const next = jest.fn()
 
-  const invoke = (action) => lockMiddleware(store)(next)(action)
+  const invoke = action => lockMiddleware(store)(next)(action)
 
   return { next, invoke, store }
 }
@@ -78,9 +81,9 @@ let mockWeb3Service = {
 }
 
 jest.mock('../../services/web3Service', () => {
-  return (function() {
+  return function() {
     return mockWeb3Service
-  })
+  }
 })
 jest.mock('../../services/iframeService', () => {
   return {
@@ -90,10 +93,14 @@ jest.mock('../../services/iframeService', () => {
 
 beforeEach(() => {
   // Making sure all mocks are fresh and reset before each test
-  Object.keys(mockWeb3Service).forEach((key) => {
-    mockWeb3Service[key] = jest.fn().mockReturnValue(new Promise((resolve, reject) => {return resolve()}))
+  Object.keys(mockWeb3Service).forEach(key => {
+    mockWeb3Service[key] = jest.fn().mockReturnValue(
+      new Promise((resolve, reject) => {
+        return resolve()
+      })
+    )
   })
-  Object.keys(iframeServiceMock).forEach((key) => {
+  Object.keys(iframeServiceMock).forEach(key => {
     iframeServiceMock[key] = jest.fn()
   })
 
@@ -115,13 +122,10 @@ beforeEach(() => {
       [lock.address]: lock,
     },
   }
-
 })
 
 describe('Lock middleware', () => {
-
   describe('when web3Service is not ready', () => {
-
     it('should connect on any action and stop further execution', () => {
       mockWeb3Service.ready = false
       const { next, invoke } = create()
@@ -133,7 +137,6 @@ describe('Lock middleware', () => {
       })
       expect(next).toHaveBeenCalledTimes(0) // ensures that execution was stopped
     })
-
   })
 
   it('should handle REFRESH_TRANSACTION by calling web3Service', () => {
@@ -159,11 +162,11 @@ describe('Lock middleware', () => {
     const action = { type: SET_PROVIDER, provider }
     invoke(action)
     expect(mockWeb3Service.connect).toHaveBeenCalledWith({
-      'network': {
-        'account': {}, // account has been reset
-        'name': 'Unknown',
+      network: {
+        account: {}, // account has been reset
+        name: 'Unknown',
       },
-      'provider': provider,
+      provider: provider,
     })
     expect(next).toHaveBeenCalledWith(action)
   })
@@ -172,7 +175,10 @@ describe('Lock middleware', () => {
     const { next, invoke } = create()
     const action = { type: CREATE_LOCK, lock }
     invoke(action)
-    expect(mockWeb3Service.createLock).toHaveBeenCalledWith(lock, expect.anything()) // TODO: Can we be more specific? (this is a function)
+    expect(mockWeb3Service.createLock).toHaveBeenCalledWith(
+      lock,
+      expect.anything()
+    ) // TODO: Can we be more specific? (this is a function)
     expect(next).toHaveBeenCalledWith(action)
   })
 
@@ -182,13 +188,21 @@ describe('Lock middleware', () => {
     invoke(action)
     // web3Service.purchaseKey(action.key, account, lock, (transaction) => {
 
-    expect(mockWeb3Service.purchaseKey).toHaveBeenCalledWith(key, account, lock, expect.anything()) // TODO: Can we be more specific? (this is a function)
+    expect(mockWeb3Service.purchaseKey).toHaveBeenCalledWith(
+      key,
+      account,
+      lock,
+      expect.anything()
+    ) // TODO: Can we be more specific? (this is a function)
     expect(next).toHaveBeenCalledWith(action)
   })
 
   it('should handle LOCATION_CHANGE by calling web3Service\'s getLock', () => {
     const { next, invoke } = create()
-    const action = { type: LOCATION_CHANGE, payload: { pathname: `/lock/${lock.address}` } }
+    const action = {
+      type: LOCATION_CHANGE,
+      payload: { pathname: `/lock/${lock.address}` },
+    }
     invoke(action)
     expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock.address)
     expect(next).toHaveBeenCalledWith(action)
@@ -236,7 +250,10 @@ describe('Lock middleware', () => {
       const action = { type: SET_LOCK, lock }
       delete state.network.account
       invoke(action)
-      expect(mockWeb3Service.getKey).toHaveBeenCalledWith(lock.address, undefined)
+      expect(mockWeb3Service.getKey).toHaveBeenCalledWith(
+        lock.address,
+        undefined
+      )
       expect(next).toHaveBeenCalledWith(action)
     })
   })
@@ -246,7 +263,10 @@ describe('Lock middleware', () => {
     const action = { type: WITHDRAW_FROM_LOCK, lock }
     invoke(action)
 
-    expect(mockWeb3Service.withdrawFromLock).toHaveBeenCalledWith(lock, store.getState().network.account)
+    expect(mockWeb3Service.withdrawFromLock).toHaveBeenCalledWith(
+      lock,
+      store.getState().network.account
+    )
     expect(next).toHaveBeenCalledWith(action)
   })
 })

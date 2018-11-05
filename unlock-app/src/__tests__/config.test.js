@@ -1,7 +1,6 @@
 import configure from '../config'
 
 describe('config', () => {
-
   describe('dev', () => {
     let config = configure(global)
 
@@ -97,5 +96,4 @@ describe('config', () => {
       expect(config.providers).toEqual({}) // We miss a web3 provider!
     })
   })
-
 })

@@ -7,7 +7,9 @@ import Lock from './Lock'
 export const Overlay = ({ locks }) => (
   <FullPage>
     <Banner>
-      <Headline>You have reached your limit of free articles. Please purchase access:</Headline>
+      <Headline>
+        You have reached your limit of free articles. Please purchase access:
+      </Headline>
       <Locks>
         {locks.map((lock, key) => (
           <Lock key={key} lock={lock} />
@@ -62,7 +64,7 @@ const Headline = styled.h1`
 `
 
 const Locks = styled.ul`
-  display:grid;
+  display: grid;
   grid-auto-flow: column;
   grid-gap: 32px;
   list-style: none;

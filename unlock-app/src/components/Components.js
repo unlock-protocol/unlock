@@ -7,7 +7,7 @@ export const Section = styled.section.attrs({
 
   &:before {
     display: block;
-    content: "";
+    content: '';
     width: 87px;
     height: 3px;
     background-color: var(--silver);
@@ -36,7 +36,7 @@ export const CallToAction = styled.div`
 `
 
 export const SubTitle = styled.h2`
-  font-family: 'IBM Plex Sans' ,'Helvetica Neue', Arial, sans-serif;
+  font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 500;
   font-size: 24px;
 `

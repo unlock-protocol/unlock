@@ -36,13 +36,20 @@ describe('Pages', () => {
         address: '0xabc',
         privateKey: 'deadbeef',
       }
-      const dashboardpage = shallow(<Dashboard account={account} network={null} transactions={{}} locks={{}} />)
+      const dashboardpage = shallow(
+        <Dashboard
+          account={account}
+          network={null}
+          transactions={{}}
+          locks={{}}
+        />
+      )
       expect(dashboardpage.find('title').text()).toBe(pageTitle('Dashboard'))
     })
   })
   describe('Demo', () => {
     it('should render title correctly', () => {
-      const demopage = shallow(<Demo locks={{}} lockAddress='' />)
+      const demopage = shallow(<Demo locks={{}} lockAddress="" />)
       expect(demopage.find('title').text()).toBe(pageTitle('Demo'))
     })
   })

@@ -1,4 +1,4 @@
-import {formatCurrency, formatEth} from '../../selectors/currency'
+import { formatCurrency, formatEth } from '../../selectors/currency'
 
 describe('currency conversion and formatting selectors', () => {
   describe('formatEth', () => {

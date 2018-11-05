@@ -4,13 +4,13 @@ import { shallow } from 'enzyme'
 import { Duration } from '../../../components/helpers/Duration'
 
 describe('Duration Component', () => {
-
   const seconds = '10000000'
 
   const wrapper = shallow(<Duration seconds={seconds} />)
 
   it('shows the duration in seconds', () => {
-    expect(wrapper.text()).toEqual('115 days, 17 hours, 46 minutes and 40 seconds')
+    expect(wrapper.text()).toEqual(
+      '115 days, 17 hours, 46 minutes and 40 seconds'
+    )
   })
-
 })

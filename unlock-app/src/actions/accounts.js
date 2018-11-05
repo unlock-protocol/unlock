@@ -12,12 +12,12 @@ export const createAccount = account => ({
   type: CREATE_ACCOUNT,
 })
 
-export const resetAccountBalance = (balance) => ({
+export const resetAccountBalance = balance => ({
   type: RESET_ACCOUNT_BALANCE,
   balance,
 })
 
-export const loadAccount = (privateKey) => ({
+export const loadAccount = privateKey => ({
   type: LOAD_ACCOUNT,
   privateKey,
 })

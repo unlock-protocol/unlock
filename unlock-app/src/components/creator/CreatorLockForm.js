@@ -13,7 +13,7 @@ import { LockStatus } from './lock/CreatorLockStatus'
 import { createLock } from '../../actions/lock'
 
 class CreatorLockForm extends React.Component {
-  constructor (props, context) {
+  constructor(props, context) {
     super(props)
     this.state = {
       keyReleaseMechanism: 0, // Public
@@ -29,22 +29,31 @@ class CreatorLockForm extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.ethPrice = ({ value }) => (
       <FormBalanceWithUnit>
-        <input type="text" id="keyPrice" onChange={this.handleChange} defaultValue={value} />
+        <input
+          type="text"
+          id="keyPrice"
+          onChange={this.handleChange}
+          defaultValue={value}
+        />
       </FormBalanceWithUnit>
     )
-
   }
 
-  handleChange (event) {
+  handleChange(event) {
     this.setState({ [event.target.id]: event.target.value })
   }
 
-  handleSubmit () { // TODO save name to the redux store
+  handleSubmit() {
+    // TODO save name to the redux store
     const lock = {
       keyReleaseMechanism: this.state.keyReleaseMechanism,
       name: this.state.name,
-      expirationDuration: this.state.expirationDuration * this.state.expirationDurationUnit,
-      keyPrice: Web3Utils.toWei(this.state.keyPrice.toString(10), this.state.keyPriceCurrency),
+      expirationDuration:
+        this.state.expirationDuration * this.state.expirationDurationUnit,
+      keyPrice: Web3Utils.toWei(
+        this.state.keyPrice.toString(10),
+        this.state.keyPriceCurrency
+      ),
       maxNumberOfKeys: this.state.maxNumberOfKeys,
       creator: this.props.account, // TODO denormalize: only use the account address
       id: uniqid(),
@@ -63,23 +72,40 @@ class CreatorLockForm extends React.Component {
       <FormLockRow>
         <Icon />
         <FormLockName>
-          <input type="text" id="name" onChange={this.handleChange} defaultValue={this.state.name} />
+          <input
+            type="text"
+            id="name"
+            onChange={this.handleChange}
+            defaultValue={this.state.name}
+          />
         </FormLockName>
         <FormLockDuration>
-          <input type="text" id="expirationDuration" onChange={this.handleChange} defaultValue={this.state.expirationDuration} />
+          <input
+            type="text"
+            id="expirationDuration"
+            onChange={this.handleChange}
+            defaultValue={this.state.expirationDuration}
+          />
           {' '}
-days
+          days
         </FormLockDuration>
         <FormLockKeys>
-          <input type="text" id="maxNumberOfKeys" onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
+          <input
+            type="text"
+            id="maxNumberOfKeys"
+            onChange={this.handleChange}
+            defaultValue={this.state.maxNumberOfKeys}
+          />
         </FormLockKeys>
-        <Balance unit='eth' amount={this.state.keyPrice} EthComponent={this.ethPrice} />
+        <Balance
+          unit="eth"
+          amount={this.state.keyPrice}
+          EthComponent={this.ethPrice}
+        />
         <div>-</div>
         <LockSubmit onClick={this.handleSubmit}>
           Submit
-          <LockCancel onClick={this.handleCancel}>
-            Cancel
-          </LockCancel>
+          <LockCancel onClick={this.handleCancel}>Cancel</LockCancel>
         </LockSubmit>
       </FormLockRow>
     )
@@ -103,40 +129,46 @@ const mapDispatchToProps = dispatch => ({
   createLock: lock => dispatch(createLock(lock)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreatorLockForm)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreatorLockForm)
 
 const FormLockRow = styled(LockRow)`
-  grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);
-  input[type=text] {
+  grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(
+      174px,
+      1fr
+    );
+  input[type='text'] {
     background-color: var(--lightgrey);
     border: 0;
     padding: 5px;
-    font-family: "IBM Plex Sans", sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-size: 13px;
   }
 `
 
 const FormLockName = styled(LockName)`
-  input[type=text] {
+  input[type='text'] {
     width: 70px;
   }
 `
 
 const FormLockDuration = styled(LockDuration)`
-  input[type=text] {
+  input[type='text'] {
     width: 30px;
   }
 `
 
 const FormLockKeys = styled(LockKeys)`
-  input[type=text] {
+  input[type='text'] {
     width: 40px;
   }
 `
 
 const FormBalanceWithUnit = styled(BalanceWithUnit)`
   white-space: nowrap;
-  input[type=text] {
+  input[type='text'] {
     width: 50px;
   }
 `

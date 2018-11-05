@@ -22,9 +22,11 @@ describe('CreatorAccount', () => {
 
     const store = createUnlockStore({ currency })
 
-    const wrapper = rtl.render(<Provider store={store}>
-      <CreatorAccount account={account} network={network} />
-    </Provider>)
+    const wrapper = rtl.render(
+      <Provider store={store}>
+        <CreatorAccount account={account} network={network} />
+      </Provider>
+    )
     // eth value
     expect(wrapper.queryByText('0.2')).not.toBeNull()
     // usd value
