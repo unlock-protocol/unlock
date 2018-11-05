@@ -13,7 +13,14 @@ describe('CreatorAccount', () => {
       name: 4,
     }
 
-    const wrapper = shallow(<CreatorAccount account={account} network={network} />)
-    expect(wrapper.find('Balance').first().props().amount).toEqual('17.73')
+    const wrapper = shallow(
+      <CreatorAccount account={account} network={network} />
+    )
+    expect(
+      wrapper
+        .find('Balance')
+        .first()
+        .props().amount
+    ).toEqual('17.73')
   })
 })

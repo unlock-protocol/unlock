@@ -49,6 +49,11 @@ storiesOf('Dashboard', Dashboard)
       },
     }
     return (
-      <Dashboard network={network} account={account} transactions={transactions} locks={locks} />
+      <Dashboard
+        network={network}
+        account={account}
+        transactions={transactions}
+        locks={locks}
+      />
     )
   })
