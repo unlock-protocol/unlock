@@ -96,6 +96,8 @@
   "devDependencies": {
     "jest-dom": "^2.1.0",
     "jest-mock-axios": "^2.1.11",
+    "prettier": "^1.14.3",
+    "prettier-eslint-cli": "^4.7.1",
     "react-testing-library": "^5.2.3"
   }
 }
