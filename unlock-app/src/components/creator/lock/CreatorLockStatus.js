@@ -7,7 +7,9 @@ import withConfig from '../../../utils/withConfig'
 export function CreatorLockStatus({ config, lock, status, confirmations }) {
   return (
     <LockStatus>
-      {status}
+      <Status>
+        {status}
+      </Status>
       {confirmations &&
         <Confirmations>
           {confirmations}
@@ -32,8 +34,7 @@ export default withConfig(CreatorLockStatus)
 
 export const LockStatus = styled.div`
   align-self: stretch;
-  justify-content: center;
-  align-content: center;
+  align-items: stretch;
   display: grid;
   text-transform: capitalize;
   background-color: var(--lightgrey);
@@ -42,8 +43,16 @@ export const LockStatus = styled.div`
   color: var(--grey);
 `
 
+const Status = styled.div`
+  display: grid;
+  justify-content: center;
+  font-size: 13px;
+  align-self: end;
+`
+
 const Confirmations = styled.div`
+  display: grid;
+  justify-content: center;
   font-size: 10px;
-  margin-top: 11px;
-  text-align: center;
+  align-self: center;
 `

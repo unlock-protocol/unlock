@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */  // TODO: remove me when this is clean
+
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { CREATE_LOCK, SET_LOCK, WITHDRAW_FROM_LOCK, resetLock } from '../actions/lock'
 import { PURCHASE_KEY, addKey } from '../actions/key'
@@ -16,7 +18,6 @@ export default function lockMiddleware ({ getState, dispatch }) {
   return function (next) {
     return function (action) {
       if (!web3Service.ready) {
-
         // We return to make sure other middleware actions are not processed
         return web3Service.connect({
           provider: getState().provider,
@@ -32,9 +33,11 @@ export default function lockMiddleware ({ getState, dispatch }) {
           Object.values(getState().transactions).forEach((transaction) => dispatch(refreshTransaction(transaction)))
           // We refresh keys
           Object.values(getState().keys).forEach((key) => web3Service.refreshKey(key))
-        }).catch(() => {
+        }).catch((error) => {
           // we could not connect
           // TODO: show error to user
+          console.error('Failed to connect to web3 service: ')
+          console.error(error)
         })
       }
 

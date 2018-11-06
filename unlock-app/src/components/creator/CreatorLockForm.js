@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
 
 import Icon from '../lock/Icon'
-import Balance, { BalanceWithUnit } from '../helpers/Balance'
+import { BalanceWithUnit } from '../helpers/Balance'
 import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockStatus'
 import { createLock } from '../../actions/lock'
@@ -27,16 +27,10 @@ class CreatorLockForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.ethPrice = ({ value }) => (
-      <FormBalanceWithUnit>
-        <input type="text" id="keyPrice" onChange={this.handleChange} defaultValue={value} />
-      </FormBalanceWithUnit>
-    )
-
   }
 
   handleChange (event) {
-    this.setState({ [event.target.id]: event.target.value })
+    this.setState({ [event.target.name]: event.target.value })
   }
 
   handleSubmit () { // TODO save name to the redux store
@@ -63,24 +57,29 @@ class CreatorLockForm extends React.Component {
       <FormLockRow>
         <Icon />
         <FormLockName>
-          <input type="text" id="name" onChange={this.handleChange} defaultValue={this.state.name} />
+          <input type="text" name="name" onChange={this.handleChange} defaultValue={this.state.name} />
         </FormLockName>
         <FormLockDuration>
-          <input type="text" id="expirationDuration" onChange={this.handleChange} defaultValue={this.state.expirationDuration} />
+          <input type="text" name="expirationDuration" onChange={this.handleChange} defaultValue={this.state.expirationDuration} />
           {' '}
 days
         </FormLockDuration>
         <FormLockKeys>
-          <input type="text" id="maxNumberOfKeys" onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
+          <input type="text" name="maxNumberOfKeys" onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
         </FormLockKeys>
-        <Balance unit='eth' amount={this.state.keyPrice} EthComponent={this.ethPrice} />
+        <FormBalanceWithUnit>
+          三
+          <input type="text" name="keyPrice" onChange={this.handleChange} defaultValue={this.state.keyPrice} />
+        </FormBalanceWithUnit>
         <div>-</div>
-        <LockSubmit onClick={this.handleSubmit}>
-          Submit
-          <LockCancel onClick={this.handleCancel}>
+        <LockStatus>
+          <LockButton onClick={this.handleSubmit}>
+            Submit
+          </LockButton>
+          <LockButton cancel onClick={this.handleCancel}>
             Cancel
-          </LockCancel>
-        </LockSubmit>
+          </LockButton>
+        </LockStatus>
       </FormLockRow>
     )
   }
@@ -137,16 +136,17 @@ const FormLockKeys = styled(LockKeys)`
 const FormBalanceWithUnit = styled(BalanceWithUnit)`
   white-space: nowrap;
   input[type=text] {
-    width: 50px;
+    width: 30px;
   }
 `
 
-const LockSubmit = styled(LockStatus)`
-  cursor: pointer;
-  text-align: center;
-`
-
-const LockCancel = styled.div`
-  font-size: 10px;
-  margin-top: 11px;
+const LockButton = styled.button`
+  font: inherit;
+  font-size: ${props => props.cancel ? '10px' : '13px'};
+  align-self: ${props => props.cancel ? 'center' : 'end'};
+  background: none;
+  color: inherit;
+  border: none;
+  outline: inherit;
+  padding 0;
 `
