@@ -38,19 +38,19 @@ export function getCurrentProvider(environment) {
  * We set UNLOCK_ENV on the deployment platform to STAGING or PROD.
  * @param {*} environment (in the JS sense: `window` most likely)
  */
-export default function configure(environment) {
+export default function configure(environment, envVars = process.env ) {
   const isServer = typeof window === 'undefined'
 
   let env = 'dev' // default
   if ((environment.location && environment.location.hostname === 'staging.unlock-protocol.com') ||
-    process.env['UNLOCK_ENV'] === 'STAGING'
+    envVars['UNLOCK_ENV'] === 'STAGING'
   ) {
     env = 'staging'
   } else if ((environment.location && environment.location.hostname === 'unlock-protocol.com') ||
-    process.env['UNLOCK_ENV'] === 'PROD'
+    envVars['UNLOCK_ENV'] === 'PROD'
   ) {
     env = 'prod'
-  } else if (process.env['NODE_ENV'] === 'test') {
+  } else if (envVars['NODE_ENV'] === 'test') {
     env = 'test'
   }
 
@@ -61,16 +61,12 @@ export default function configure(environment) {
 
   if (env === 'test') {
     // In test, we fake the HTTP provider
-    providers = {
-      'HTTP': new Web3.providers.HttpProvider('http://127.0.0.1:8545'),
-    }
+    providers['HTTP'] = new Web3.providers.HttpProvider('http://127.0.0.1:8545')
   }
 
   if (env === 'dev') {
     // In dev, we assume there is a running local ethereum node with unlocked accounts listening to the HTTP endpoint. We can add more providers (Websockets...) if needed.
-    providers = {
-      'HTTP': new Web3.providers.HttpProvider('http://127.0.0.1:8545'),
-    }
+    providers['HTTP'] = new Web3.providers.HttpProvider('http://127.0.0.1:8545')
 
     // If there is an existing web3 injected provider, we also add this one to the list of possible providers
     if (typeof environment.web3 !== 'undefined') {

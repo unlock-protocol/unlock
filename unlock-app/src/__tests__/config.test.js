@@ -3,7 +3,7 @@ import configure from '../config'
 describe('config', () => {
 
   describe('dev', () => {
-    let config = configure(global)
+    let config = configure(global, { NODE_ENV: 'dev' })
 
     it('should require a dev network', () => {
       expect(config.isRequiredNetwork(0)).toEqual(false)
@@ -34,7 +34,7 @@ describe('config', () => {
         location: {
           hostname: 'localhost',
         },
-      })
+      }, { NODE_ENV: 'dev' })
       expect(config.providers).toMatchObject({
         HTTP: {
           connected: false,

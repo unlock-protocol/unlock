@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */  // TODO: remove me when this is clean
+
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { CREATE_LOCK, SET_LOCK, WITHDRAW_FROM_LOCK, resetLock } from '../actions/lock'
 import { PURCHASE_KEY, addKey } from '../actions/key'
