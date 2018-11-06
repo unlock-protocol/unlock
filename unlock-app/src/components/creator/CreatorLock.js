@@ -78,7 +78,7 @@ export class CreatorLock extends React.Component {
         <Balance amount={lock.keyPrice} />
         <Balance amount={lock.balance} />
         {lockComponentStatusBlock}
-        {status === this.state.showEmbedCode &&
+        {this.state.showEmbedCode &&
           <LockPanel>
             <LockDivider />
             <EmbedCodeSnippet lock={lock} />
