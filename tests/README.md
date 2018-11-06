@@ -8,3 +8,8 @@ We do not expect developers to necessarily run these tests for nost feature work
 run on every pull request as part of the CI/CD process.
 
 We use Puppeteer.
+
+Note: these integration tests assume that a local blockchain node is running on port 8545 and that
+the smart contract have been deplpoyed on that node.
+This should be the case by default on CI/CD since we'll run these tests *after* the smart contract
+tests.
