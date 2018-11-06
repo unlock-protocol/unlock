@@ -8,11 +8,11 @@ import Buttons from '../../interface/buttons/lock'
 export function LockIconBar({ lock, toggleCode }) {
   return (
     <IconBar>
-      <Buttons.PreviewLock lock={lock} title='Preview lock' />
-      <Buttons.Withdraw title='Withdraw balance' />
-      <Buttons.Edit title='Edit lock' />
+      <Buttons.PreviewLock lock={lock} />
+      <Buttons.Withdraw />
+      <Buttons.Edit />
       { /* Reinstate when we're ready <Buttons.ExportLock /> */ }
-      <Buttons.Code onClick={toggleCode} title='Show embed code' />
+      <Buttons.Code onClick={toggleCode} />
     </IconBar>
   )
 }
