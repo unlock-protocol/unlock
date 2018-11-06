@@ -50,7 +50,7 @@ export default function configure(environment) {
     process.env['UNLOCK_ENV'] === 'PROD'
   ) {
     env = 'prod'
-  } else if (process.env['NODE_ENV'] === 'text') {
+  } else if (process.env['NODE_ENV'] === 'test') {
     env = 'test'
   }
 
