@@ -25,12 +25,11 @@ export default class Web3Service {
    */
   connect({ provider, network }) {
     this.ready = false
-
     return new Promise((resolve, reject) => {
 
       // We fail: it appears that we are trying to connect but do not have a provider available...
       if (!providers[provider]) {
-        return reject()
+        return reject(new Error('Provider does not exist'))
       }
 
       this.web3 = new Web3(providers[provider])
@@ -68,6 +67,10 @@ export default class Web3Service {
         this.networkId = networkId
         this.ready = true
         return resolve([networkId, account])
+      }).catch(error => {
+        console.error('Failed to retrive network id: ')
+        console.error(error)
+        return reject(error)
       })
     })
 
