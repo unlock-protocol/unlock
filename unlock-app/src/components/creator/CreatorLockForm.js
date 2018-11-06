@@ -72,12 +72,14 @@ days
           <input type="text" name="keyPrice" onChange={this.handleChange} defaultValue={this.state.keyPrice} />
         </FormBalanceWithUnit>
         <div>-</div>
-        <LockSubmit onClick={this.handleSubmit}>
-          Submit
-          <LockCancel onClick={this.handleCancel}>
+        <LockStatus>
+          <LockButton onClick={this.handleSubmit}>
+            Submit
+          </LockButton>
+          <LockButton cancel onClick={this.handleCancel}>
             Cancel
-          </LockCancel>
-        </LockSubmit>
+          </LockButton>
+        </LockStatus>
       </FormLockRow>
     )
   }
@@ -138,12 +140,13 @@ const FormBalanceWithUnit = styled(BalanceWithUnit)`
   }
 `
 
-const LockSubmit = styled(LockStatus)`
-  cursor: pointer;
-  text-align: center;
-`
-
-const LockCancel = styled.div`
-  font-size: 10px;
-  margin-top: 11px;
+const LockButton = styled.button`
+  font: inherit;
+  font-size: ${props => props.cancel ? '10px' : '13px'};
+  align-self: ${props => props.cancel ? 'center' : 'end'};
+  background: none;
+  color: inherit;
+  border: none;
+  outline: inherit;
+  padding 0;
 `
