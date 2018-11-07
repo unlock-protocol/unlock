@@ -72,7 +72,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
           dispatch(resetLock(lock)) // Update the lock accordingly
         }).then(() => {
           // Lock has been deployed and confirmed, we can update the balance
-          return web3Service.getAddressBalance(action.lock.creator.address)
+          return web3Service.getAddressBalance(action.lock.owner.address)
         }).then((balance) => {
           dispatch(resetAccountBalance(balance))
         })
