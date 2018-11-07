@@ -87,7 +87,6 @@ contract('Unlock', function (accounts) {
       it('should allow removing functions', async function () {
         try {
           await this.unlock.createLock(
-            // 0,
             60 * 60 * 24 * 30,
             Units.convert(1, 'eth', 'wei'),
             100
