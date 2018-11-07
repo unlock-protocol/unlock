@@ -3,7 +3,7 @@ import Svg from '../../svg'
 import { LockButton } from '../Button'
 
 const Code = (props) => (
-  <LockButton {...props}>
+  <LockButton title='Show embed code' {...props}>
     <Svg.Code />
   </LockButton>
 )
