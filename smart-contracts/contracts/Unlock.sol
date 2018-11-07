@@ -81,7 +81,6 @@ contract Unlock is Ownable {
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
   */
   function createLock(
-    PublicLock.KeyReleaseMechanisms _keyReleaseMechanism,
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys
@@ -93,7 +92,6 @@ contract Unlock is Ownable {
     // create lock
     PublicLock newPublicLock = new PublicLock(
       msg.sender,
-      _keyReleaseMechanism,
       _expirationDuration,
       _keyPrice,
       _maxNumberOfKeys

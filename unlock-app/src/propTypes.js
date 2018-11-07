@@ -9,7 +9,6 @@ export const account = PropTypes.shape({
 })
 
 export const lock = PropTypes.shape({
-  keyReleaseMechanism: PropTypes.number,
   keyPrice: PropTypes.string,
   maxNumberOfKeys: PropTypes.number,
   owner: PropTypes.string,

@@ -1,7 +1,6 @@
 const Units = require('ethereumjs-units')
 
-let defaultLock = {
-  keyReleaseMechanism: 0, // KeyReleaseMechanisms.Public
+let publicLock = {
   expirationDuration: 60 * 60 * 24 * 30, // 30 days
   expirationTimestamp: 0, // Not used
   keyPriceCalculator: null, //
@@ -10,17 +9,11 @@ let defaultLock = {
 }
 
 module.exports = {
-  'FIRST': Object.assign({}, defaultLock, {}),
-  'SECOND': Object.assign({}, defaultLock, {}),
-  'PRIVATE': Object.assign({}, defaultLock, {
-    keyReleaseMechanism: 2 // KeyReleaseMechanisms.Private
-  }),
-  'RESTRICTED': Object.assign({}, defaultLock, {
-    keyReleaseMechanism: 1 // KeyReleaseMechanisms.Restricted
-  }),
-  'SINGLE KEY': Object.assign({}, defaultLock, {
+  'FIRST': Object.assign({}, publicLock, {}),
+  'SECOND': Object.assign({}, publicLock, {}),
+  'SINGLE KEY': Object.assign({}, publicLock, {
     maxNumberOfKeys: 1
   }),
-  'OWNED': Object.assign({}, defaultLock, {})
+  'OWNED': Object.assign({}, publicLock, {})
 
 }

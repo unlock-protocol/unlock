@@ -237,15 +237,14 @@ describe('Web3Service', () => {
     describe('getLock', () => {
 
       beforeEach(() => {
-        ethCallAndYield('0x0f15023b', lockAddress, '0x000000000000000000000000cfeb869f69431e42cdb54a4f4f105c19c080a601')
         ethCallAndYield('0x10e56973', lockAddress, '0x000000000000000000000000000000000000000000000000002386f26fc10000')
         ethCallAndYield('0x11a4c03a', lockAddress, '0x0000000000000000000000000000000000000000000000000000000000278d00')
-        ethCallAndYield('0x47a51015', lockAddress, '0x0000000000000000000000000000000000000000000000000000000000000000')
         ethCallAndYield('0x74b6c106', lockAddress, '0x000000000000000000000000000000000000000000000000000000000000000a')
         ethCallAndYield('0x8da5cb5b', lockAddress, '0x00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1')
-        ethCallAndYield('0x47dc1085', lockAddress, '0x0000000000000000000000000000000000000000000000000000000000000000')
+        ethCallAndYield('0x47dc1085', lockAddress, '0x0000000000000000000000000000000000000000000000000000000000000011')
         getBalanceForAccountAndYieldBalance(lockAddress, '0xdeadfeed')
       })
+
       it('should yield the lock once the lock has been loaded', () => {
         return web3Service.getLock(lockAddress)
           .then((lock) => {
@@ -253,12 +252,10 @@ describe('Web3Service', () => {
               address: lockAddress,
               balance: '3735944941',
               keyPrice: '10000000000000000',
-              unlockProtocol: '0xCfEB869F69431e42cdB54A4F4f105C19C080A601',
-              expirationDuration: '2592000',
-              keyReleaseMechanism: '0',
-              maxNumberOfKeys: '10',
+              expirationDuration: 2592000,
+              maxNumberOfKeys: 10,
               owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
-              outstandingKeys: '0',
+              outstandingKeys: 17,
             })
           })
       })
@@ -268,12 +265,10 @@ describe('Web3Service', () => {
           expect(lock).toMatchObject({
             address: lockAddress,
             balance: Web3Utils.hexToNumberString('0xdeadfeed'),
-            expirationDuration: '2592000',
+            expirationDuration: 2592000,
             keyPrice: '10000000000000000',
-            keyReleaseMechanism: '0',
-            maxNumberOfKeys: '10',
+            maxNumberOfKeys: 10,
             owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
-            unlockProtocol: '0xCfEB869F69431e42cdB54A4F4f105C19C080A601',
           })
         })
       })
