@@ -46,10 +46,14 @@ export default (App) => {
      */
     constructor (props) {
       super(props)
-      this.reduxStore = getOrCreateStore(Object.assign(props.initialReduxState, loadState()))
-      this.reduxStore.subscribe(() => {
-        saveState(this.reduxStore.getState())
-      })
+      if (config.isServer) {
+        this.reduxStore = getOrCreateStore(props.initialReduxState)
+      } else {
+        this.reduxStore = getOrCreateStore(Object.assign(props.initialReduxState, loadState()))
+        this.reduxStore.subscribe(() => {
+          saveState(this.reduxStore.getState())
+        })
+      }
     }
 
     render () {
