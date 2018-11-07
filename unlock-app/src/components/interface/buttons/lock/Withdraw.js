@@ -3,7 +3,7 @@ import Svg from '../../svg'
 import { LockButton } from '../Button'
 
 const Withdraw = (props) => (
-  <LockButton {...props}>
+  <LockButton title='Withdraw balance' {...props}>
     <Svg.Withdraw />
   </LockButton>
 )
