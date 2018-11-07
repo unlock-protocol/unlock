@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/core": "7.1.2",
+    "@babel/core": "7.1.5",
     "@storybook/addon-jest": "^4.0.3",
     "@storybook/react": "4.0.3",
     "@svgr/cli": "^4.0.0",
