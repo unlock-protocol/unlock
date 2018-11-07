@@ -168,7 +168,7 @@ export default class Web3Service {
         to: UnlockContract.networks[this.networkId].address,
         from: lock.creator.address,
         data: data,
-        gas: 1500000,
+        gas: 2000000,
         privateKey: lock.creator.privateKey,
         contractAbi: UnlockContract.abi,
       }, (error, { event, args }) => {
@@ -193,6 +193,10 @@ export default class Web3Service {
             return resolve(lock)
           })
         }
+      }).catch((error) => {
+        console.error('TRANSACTION ERROR')
+        console.log(error)
+
       })
     })
   }
