@@ -36,7 +36,7 @@
     "nodemon": "^1.12.1",
     "path-match": "^1.2.4",
     "prop-types": "^15.6.1",
-    "react": "^16.6.0",
+    "react": "^16.6.1",
     "react-addons-test-utils": "15.6.2",
     "react-app-polyfill": "^0.1.3",
     "react-copy-to-clipboard": "^5.0.1",
