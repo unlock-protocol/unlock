@@ -18,10 +18,11 @@ export const Lock = ({ lock, lockKey, transaction, purchaseKey }) => {
     // Maybe we just lost track of that transaction?
     // Is the key valid?
   } else if (transaction.status === 'mined') {
-    purchaseButton = <PurchaseButton>
+    purchaseButton = (
+      <PurchaseButton>
 Mined! Confirming...
-      {transaction.confirmations}
-    </PurchaseButton>
+        {transaction.confirmations}
+      </PurchaseButton>)
     // Key transaction was mined: it is mined, let's look at confirmations
   } else if (transaction.status === 'submitted') {
     purchaseButton = <PurchaseButton>Submitted!</PurchaseButton>

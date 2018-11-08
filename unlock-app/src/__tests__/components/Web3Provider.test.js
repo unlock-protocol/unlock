@@ -23,15 +23,18 @@ describe('Provider Component', () => {
   it('shows the provider picker', () => {
     const options = wrapper.find('option')
 
-    expect(options.at(0).equals(<option value="alpha">
-      alpha
-    </option>)).toEqual(true)
-    expect(options.at(1).equals(<option value="beta">
-      beta
-    </option>)).toEqual(true)
-    expect(options.at(2).equals(<option value="gamma">
-      gamma
-    </option>)).toEqual(true)
+    expect(options.at(0).equals(
+      <option value="alpha">
+        alpha
+      </option>)).toEqual(true)
+    expect(options.at(1).equals(
+      <option value="beta">
+        beta
+      </option>)).toEqual(true)
+    expect(options.at(2).equals(
+      <option value="gamma">
+        gamma
+      </option>)).toEqual(true)
     expect(options).toHaveLength(3)
   })
 
