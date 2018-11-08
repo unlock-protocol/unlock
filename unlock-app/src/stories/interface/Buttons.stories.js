@@ -18,3 +18,8 @@ storiesOf('Buttons', Buttons)
       <Buttons.Jobs />
     )
   })
+  .add('Close', () => {
+    return (
+      <Buttons.Close />
+    )
+  })

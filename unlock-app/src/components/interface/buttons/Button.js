@@ -3,7 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
 
-export const LayoutButton = ({href = '#', title, children}) => (
+export const LayoutButton = ({href = '#', title, children, ...props}) => (
   <Link href={href}>
     <Button
       href={href}
@@ -11,6 +11,7 @@ export const LayoutButton = ({href = '#', title, children}) => (
       fillColor="white"
       backgroundHoverColor="var(--link)"
       fillHoverColor="white"
+      {...props}
     >
       {children}
       <Label>{title}</Label>
@@ -56,13 +57,14 @@ export const Button = styled.a`
   background-color: ${props => props.backgroundColor || 'var(--grey)'};
   cursor: pointer;
   border-radius: 50%;
-  height: 24px;
-  width: 24px;
+  height: ${props => props.size || ' 24px'};
+  width: ${props => props.size || ' 24px'};
   display: grid;
 
   > svg {
     fill: ${props => props.fillColor || 'white'};
-    width: 100%;
+    height: ${props => props.size || ' 24px'};
+    width: ${props => props.size || ' 24px'};
   }
 
   &:hover {
