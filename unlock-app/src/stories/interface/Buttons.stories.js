@@ -13,11 +13,6 @@ storiesOf('Buttons', Buttons)
       <Buttons.About />
     )
   })
-  .add('About Large', () => {
-    return (
-      <Buttons.About size="56px" />
-    )
-  })
   .add('Jobs', () => {
     return (
       <Buttons.Jobs />
@@ -26,5 +21,15 @@ storiesOf('Buttons', Buttons)
   .add('Close', () => {
     return (
       <Buttons.Close />
+    )
+  })
+  .add('Close Large', () => {
+    return (
+      <Buttons.Close size="100px" />
+    )
+  })
+  .add('Close Small', () => {
+    return (
+      <Buttons.Close size="16px" />
     )
   })
