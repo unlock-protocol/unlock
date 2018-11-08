@@ -32,8 +32,8 @@ export class CreatorLocks extends React.Component {
           <CreateButton onClick={this.toggleForm}>Create Lock</CreateButton>
         </LockHeaderRow>
         {this.state.showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
-        {Object.values(this.props.locks).map((lock, index) => {
-          return (<CreatorLock key={index} lock={lock} />)
+        {Object.values(this.props.locks).map((lock) => {
+          return (<CreatorLock key={lock.id} lock={lock} />)
         })}
       </Locks>
     )
