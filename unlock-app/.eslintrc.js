@@ -59,7 +59,6 @@ module.exports = {
     "react/no-unused-prop-types": 0,
     "react/destructuring-assignment": 0,
     "no-unused-vars": 0,
-    "react/jsx-closing-tag-location": 0,
     "react/no-array-index-key": 0,
   }
 };

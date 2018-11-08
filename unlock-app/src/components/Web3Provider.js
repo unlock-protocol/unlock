@@ -7,8 +7,8 @@ import UnlockPropTypes from '../propTypes'
 import { setProvider } from '../actions/provider'
 import withConfig from '../utils/withConfig'
 
-export function Web3Provider({ setProvider, config, provider }) {
-  return (<div className="container">
+export const Web3Provider = ({ setProvider, config, provider }) => (
+  <div className="container">
     <header className="masthead mb-auto">
       <div className="inner">
         <h3 className="masthead-brand">&nbsp;</h3>
@@ -40,9 +40,8 @@ export function Web3Provider({ setProvider, config, provider }) {
         </div>
       </div>
     </div>
-  </div>)
-
-}
+  </div>
+)
 
 Web3Provider.propTypes = {
   provider: UnlockPropTypes.provider,
