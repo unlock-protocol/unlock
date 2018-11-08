@@ -13,6 +13,11 @@ storiesOf('Svg', Svg)
       <Svg.Code />
     )
   })
+  .add('Close', () => {
+    return (
+      <Svg.Close />
+    )
+  })
   .add('Copy', () => {
     return (
       <Svg.Copy />
