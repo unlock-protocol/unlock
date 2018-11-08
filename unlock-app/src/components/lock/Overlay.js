@@ -9,8 +9,8 @@ export const Overlay = ({ locks }) => (
     <Banner>
       <Headline>You have reached your limit of free articles. Please purchase access:</Headline>
       <Locks>
-        {locks.map((lock, key) => (
-          <Lock key={key} lock={lock} />
+        {locks.map((lock) => (
+          <Lock key={lock.id} lock={lock} />
         ))}
       </Locks>
       <Colophon>
