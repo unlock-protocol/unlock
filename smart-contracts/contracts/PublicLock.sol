@@ -1,7 +1,7 @@
 pragma solidity 0.4.24;
 
 import "./interfaces/ILockPublic.sol";
-import "./Unlock.sol";
+import "./interfaces/IUnlock.sol";
 
 /**
  * TODO: consider error codes rather than strings
@@ -243,6 +243,18 @@ contract PublicLock is ILockPublic {
   }
 
   /**
+   * A function which lets the owner of the lock to change the price for future purchases.
+   */
+  function updateKeyPrice(
+    uint _keyPrice
+  )
+    external
+    onlyOwner
+  {
+    keyPrice = _keyPrice;
+  }
+
+  /**
    * In the specific case of a Lock, each owner can own only at most 1 key.
    * @return The number of NFTs owned by `_owner`, either 0 or 1.
   */
@@ -311,18 +323,6 @@ contract PublicLock is ILockPublic {
   }
 
   /**
-   * A function which lets the owner of the lock to change the price for future purchases.
-   */
-  function updateKeyPrice(
-    uint _keyPrice
-  )
-    external
-    onlyOwner
-  {
-    keyPrice = _keyPrice;
-  }
-
-  /**
   * @dev Returns the key's data field for a given owner.
   * @param _owner address of the user for whom we search the key
   */
@@ -374,7 +374,7 @@ contract PublicLock is ILockPublic {
     require(_recipient != address(0));
 
     // Let's get the actual price for the key from the Unlock smart contract
-    Unlock unlock = Unlock(unlockProtocol);
+    IUnlock unlock = IUnlock(unlockProtocol);
     uint discount;
     uint tokens;
     (discount, tokens) = unlock.computeAvailableDiscountFor(_recipient, keyPrice);

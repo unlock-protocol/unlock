@@ -31,7 +31,7 @@ contract UnlockTestV2 is Unlock {
     uint _keyPrice // solhint-disable-line no-unused-vars
   )
     public
-    pure
+    view
     returns (uint discount, uint tokens)
   {
     // an example modification
