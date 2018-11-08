@@ -17,7 +17,7 @@
     "color": "^0.11.0",
     "color-scheme": "^1.0.1",
     "create-hash": "^1.2.0",
-    "enzyme": "3.4.3",
+    "enzyme": "3.7.0",
     "enzyme-adapter-react-16": "1.2.0",
     "eslint": "^5.8.0",
     "eslint-config-airbnb": "^17.1.0",
