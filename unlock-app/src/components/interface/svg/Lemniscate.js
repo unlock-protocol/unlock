@@ -1,7 +1,7 @@
 import React from 'react'
 
-const Lemniscate = props => (
-  <svg {...props}>
+const SvgLemniscate = props => (
+  <svg viewBox="0 0 24 24" {...props}>
     <text
       fill="#333"
       fillRule="evenodd"
@@ -10,13 +10,13 @@ const Lemniscate = props => (
       letterSpacing={-3.2}
     >
       <tspan x={0.044} y={10}>
-        o
+        {'o'}
       </tspan>
       <tspan x={6.444} y={10} letterSpacing={-0.044}>
-        o
+        {'o'}
       </tspan>
     </text>
   </svg>
 )
 
-export default Lemniscate
+export default SvgLemniscate

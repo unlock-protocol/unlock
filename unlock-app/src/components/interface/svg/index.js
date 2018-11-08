@@ -1,4 +1,5 @@
 import About from './About'
+import Close from './Close'
 import Code from './Code'
 import Copy from './Copy'
 import Download from './Download'
@@ -18,6 +19,7 @@ import Withdraw from './Withdraw'
 
 export default {
   About,
+  Close,
   Code,
   Copy,
   Download,
