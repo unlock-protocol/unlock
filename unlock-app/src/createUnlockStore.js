@@ -9,6 +9,7 @@ import networkReducer, { initialState as defaultNetwork } from './reducers/netwo
 import providerReducer, { initialState as defaultProvider } from './reducers/providerReducer'
 import transactionReducer, { initialState as defaultTransactions } from './reducers/transactionReducer'
 import currencyReducer, { initialState as defaultCurrency } from './reducers/currencyReducer'
+import errorReducer, { initialState as defaultError } from './reducers/errorReducer'
 
 // Middlewares
 import lockMiddleware from './middlewares/lockMiddleware'
@@ -24,6 +25,7 @@ export default function createUnlockStore(defaultState) {
     provider: providerReducer,
     transactions: transactionReducer,
     currency: currencyReducer,
+    error: errorReducer,
   }
 
   // We build the initial state by taking first each reducer's default values
@@ -35,6 +37,7 @@ export default function createUnlockStore(defaultState) {
     provider: defaultProvider,
     transactions: defaultTransactions,
     currency: defaultCurrency,
+    error: defaultError,
   }, {
     provider: Object.keys(config.providers)[0],
   }, defaultState)
