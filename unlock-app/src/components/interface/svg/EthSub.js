@@ -1,7 +1,7 @@
 import React from 'react'
 
-const EthSub = props => (
-  <svg viewBox="0 0 7 11" {...props}>
+const SvgEthSub = props => (
+  <svg viewBox="0 0 24 24" {...props}>
     <path
       d="M1 6V5h5v1H1zm-1 5v-1h7v1H0zM0 1V0h7v1H0z"
       fill="#a6a6a6"
@@ -10,4 +10,4 @@ const EthSub = props => (
   </svg>
 )
 
-export default EthSub
+export default SvgEthSub

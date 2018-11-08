@@ -1,7 +1,7 @@
 import React from 'react'
 
-const UnlockWordMark = props => (
-  <svg {...props}>
+const SvgUnlockWordMark = props => (
+  <svg viewBox="0 0 24 24" {...props}>
     <path
       fill="#ED6E82"
       fillRule="evenodd"
@@ -10,4 +10,4 @@ const UnlockWordMark = props => (
   </svg>
 )
 
-export default UnlockWordMark
+export default SvgUnlockWordMark
