@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
+
 import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
 import CreatorLockStatus from './lock/CreatorLockStatus'
@@ -10,6 +12,7 @@ import KeyList from './lock/KeyList'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
 import withConfig from '../../utils/withConfig'
+import { withdrawFromLock } from '../../actions/lock'
 
 export class CreatorLock extends React.Component {
   constructor (props, context) {
@@ -17,9 +20,14 @@ export class CreatorLock extends React.Component {
     this.state = {
       showEmbedCode: false,
       showKeys: false,
+      withdrawing: false,
     }
     this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
     this.toggleKeys = this.toggleKeys.bind(this)
+  }
+
+  startWithdrawal() {
+    this.props.withdraw(this.props.lock, this.props.account)
   }
 
   toggleEmbedCode() {
@@ -45,7 +53,7 @@ export class CreatorLock extends React.Component {
     let outstandingKeys = lock.outstandingKeys || 0
     let lockComponentStatusBlock = (
       <LockIconBarContainer>
-        <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
+        <LockIconBar lock={lock} withdraw={this.startWithdrawal} toggleCode={this.toggleEmbedCode} />
       </LockIconBarContainer>)
 
     if (!transaction) {
@@ -100,6 +108,8 @@ export class CreatorLock extends React.Component {
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   transaction: UnlockPropTypes.transaction,
+  account: UnlockPropTypes.account,
+  withdraw: PropTypes.func,
   config: UnlockPropTypes.configuration.isRequired,
 }
 
@@ -109,13 +119,19 @@ CreatorLock.defaultProps = {
 
 const mapStateToProps = (state, { lock }) => {
   const transaction = state.transactions[lock.transaction]
+  const account = state.network.account
   return {
     transaction,
+    account,
     lock,
   }
 }
 
-export default withConfig(connect(mapStateToProps)(CreatorLock))
+const mapDispatchToProps = dispatch => ({
+  withdraw: (lock, account) => dispatch(withdrawFromLock(lock, account)),
+})
+
+export default withConfig(connect(mapStateToProps, mapDispatchToProps)(CreatorLock))
 
 export const LockRowGrid = 'grid-template-columns: 32px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
 
