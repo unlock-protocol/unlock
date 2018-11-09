@@ -67,12 +67,12 @@ export default function lockMiddleware ({ getState, dispatch }) {
         })
       } else if (action.type === CREATE_LOCK) {
         // Create a lock
-        web3Service.createLock(action.lock, (transaction, lock) => {
+        web3Service.createLock(action.lock, getState().network.account, (transaction, lock) => {
           dispatch(addTransaction(transaction))
           dispatch(resetLock(lock)) // Update the lock accordingly
         }).then(() => {
           // Lock has been deployed and confirmed, we can update the balance
-          return web3Service.getAddressBalance(action.lock.owner.address)
+          return web3Service.getAddressBalance(getState().network.account.address)
         }).then((balance) => {
           dispatch(resetAccountBalance(balance))
         })
