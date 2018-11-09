@@ -14,7 +14,7 @@ import { formatEth, formatCurrency } from '../../selectors/currency'
  * @param {object} conversion: a hash of conversion values for ether to currencies
  * @param {function} EthComponent: a React component that displays an ether value
  */
-export function Balance({ amount, unit = 'wei', conversion = { USD: undefined }, EthComponent = ({ value }) => value, convertCurrency = true }) {
+export function Balance({ amount, unit, conversion, EthComponent, convertCurrency }) {
   let currency
   if (unit !== 'dollars' && unit !== 'eth') {
     const inWei = Web3Utils.toWei(amount || '0', unit)
@@ -51,11 +51,18 @@ export function Balance({ amount, unit = 'wei', conversion = { USD: undefined },
 }
 
 Balance.propTypes = {
-  amount: PropTypes.string,
+  amount: PropTypes.string.isRequired,
   unit: PropTypes.string,
   conversion: UnlockPropTypes.conversion,
   EthComponent: PropTypes.func,
   convertCurrency: PropTypes.bool,
+}
+
+Balance.defaultProps = {
+  unit: 'wei',
+  conversion: { USD: undefined },
+  EthComponent: ({ value }) => value,
+  convertCurrency: true,
 }
 
 export const BalanceWithConversion = styled.div`

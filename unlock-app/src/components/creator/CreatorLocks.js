@@ -45,6 +45,11 @@ CreatorLocks.propTypes = {
   showForm: UnlockPropTypes.showDashboardForm,
 }
 
+CreatorLocks.defaultProps = {
+  locks: [],
+  showForm: false,
+}
+
 export default CreatorLocks
 
 const Locks = styled.section`

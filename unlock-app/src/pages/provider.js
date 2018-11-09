@@ -52,9 +52,9 @@ export function Web3Provider({ setProvider, config, provider }) {
 Web3Provider.displayName = 'Web3Provider'
 
 Web3Provider.propTypes = {
-  provider: UnlockPropTypes.provider,
-  setProvider: PropTypes.func,
-  config: UnlockPropTypes.configuration,
+  provider: UnlockPropTypes.provider.isRequired,
+  setProvider: PropTypes.func.isRequired,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 const mapStateToProps = (state) => {

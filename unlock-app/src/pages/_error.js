@@ -40,8 +40,8 @@ class Error extends React.Component {
 }
 
 Error.propTypes = {
-  statusCode: PropTypes.number,
-  config: UnlockPropTypes.configuration,
+  statusCode: PropTypes.number.isRequired,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 export default withConfig(Error)

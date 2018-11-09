@@ -87,7 +87,7 @@ Go to Your Dashboard...
 Home.skipConstraints = true
 
 Home.propTypes = {
-  config: UnlockPropTypes.configuration,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 export default withConfig(Home)

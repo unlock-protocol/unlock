@@ -30,9 +30,13 @@ export const Dashboard = ({account, network, locks}) => {
 Dashboard.displayName = 'Dashboard'
 
 Dashboard.propTypes = {
-  account: UnlockPropTypes.account,
-  network: UnlockPropTypes.network,
+  account: UnlockPropTypes.account.isRequired,
+  network: UnlockPropTypes.network.isRequired,
   locks: UnlockPropTypes.locks,
+}
+
+Dashboard.defaultProps = {
+  locks: [],
 }
 
 const mapStateToProps = state => {

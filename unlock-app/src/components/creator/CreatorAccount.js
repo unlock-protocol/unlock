@@ -46,8 +46,8 @@ export function CreatorAccount({ account, network }) {
 }
 
 CreatorAccount.propTypes = {
-  account: UnlockPropTypes.account,
-  network: UnlockPropTypes.network,
+  account: UnlockPropTypes.account.isRequired,
+  network: UnlockPropTypes.network.isRequired,
 }
 
 export default CreatorAccount

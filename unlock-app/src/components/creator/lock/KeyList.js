@@ -40,7 +40,11 @@ export function KeyList ({ keys, lock }) {
 
 KeyList.propTypes = {
   keys: UnlockPropTypes.keys,
-  lock: UnlockPropTypes.lock,
+  lock: UnlockPropTypes.lock.isRequired,
+}
+
+KeyList.defaultProps = {
+  keys: [],
 }
 
 const mapStateToProps = (state, { lock }) => {

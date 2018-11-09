@@ -3,7 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
 
-export const LayoutButton = ({href = '#', title, children, ...props}) => (
+export const LayoutButton = ({href, title, children, ...props}) => (
   <Link href={href}>
     <Button
       href={href}
@@ -29,7 +29,17 @@ LayoutButton.propTypes = {
   fillHoverColor: PropTypes.string,
 }
 
-export const LockButton = ({ href = '#', children, ...props }) => (
+LayoutButton.defaultProps = {
+  href: '#',
+  title: '',
+  children: null,
+  backgroundColor: '',
+  backgroundHoverColor: '',
+  fillColor: '',
+  fillHoverColor: '',
+}
+
+export const LockButton = ({ href , children, ...props }) => (
   <Link href={href}>
     <Button
       href={href}
@@ -51,6 +61,15 @@ LockButton.propTypes = {
   backgroundHoverColor: PropTypes.string,
   fillColor: PropTypes.string,
   fillHoverColor: PropTypes.string,
+}
+
+LockButton.defaultProps = {
+  href: '#',
+  children: null,
+  backgroundColor: '',
+  backgroundHoverColor: '',
+  fillColor: '',
+  fillHoverColor: '',
 }
 
 export const Button = styled.a`

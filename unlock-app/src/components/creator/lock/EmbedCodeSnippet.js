@@ -33,7 +33,7 @@ export function EmbedCodeSnippet({ lock }) {
 }
 
 EmbedCodeSnippet.propTypes = {
-  lock: UnlockPropTypes.lock,
+  lock: UnlockPropTypes.lock.isRequired,
 }
 
 export default EmbedCodeSnippet

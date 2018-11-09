@@ -46,9 +46,14 @@ $
 
 Lock.propTypes = {
   lockKey: UnlockPropTypes.key,
-  lock: UnlockPropTypes.lock,
+  lock: UnlockPropTypes.lock.isRequired,
   transaction: UnlockPropTypes.transaction,
-  purchaseKey: PropTypes.func,
+  purchaseKey: PropTypes.func.isRequired,
+}
+
+Lock.defaultProps = {
+  lockKey: null,
+  transaction: null,
 }
 
 const mapDispatchToProps = dispatch => ({

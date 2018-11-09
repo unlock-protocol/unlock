@@ -85,9 +85,13 @@ days
 
 CreatorLockForm.propTypes = {
   lock: UnlockPropTypes.lock,
-  account: UnlockPropTypes.account,
-  hideAction: PropTypes.func,
-  createLock: PropTypes.func,
+  account: UnlockPropTypes.account.isRequired,
+  hideAction: PropTypes.func.isRequired,
+  createLock: PropTypes.func.isRequired,
+}
+
+CreatorLockForm.defaultProps = {
+  lock: null,
 }
 
 const mapStateToProps = state => {
