@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import React from 'react'
 import Logo from '../interface/Logo'
 import Lock from './Lock'
+import UnlockPropTypes from '../../propTypes'
 
 export const Overlay = ({ locks }) => (
   <FullPage>
@@ -22,7 +23,11 @@ export const Overlay = ({ locks }) => (
 )
 
 Overlay.propTypes = {
-  locks: PropTypes.arrayOf(Object),
+  locks: PropTypes.arrayOf(UnlockPropTypes.lock),
+}
+
+Overlay.defaultProps = {
+  locks: [],
 }
 
 export default Overlay

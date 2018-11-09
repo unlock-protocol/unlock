@@ -97,9 +97,13 @@ export class CreatorLock extends React.Component {
 }
 
 CreatorLock.propTypes = {
-  lock: UnlockPropTypes.lock,
+  lock: UnlockPropTypes.lock.isRequired,
   transaction: UnlockPropTypes.transaction,
-  config: UnlockPropTypes.configuration,
+  config: UnlockPropTypes.configuration.isRequired,
+}
+
+CreatorLock.defaultProps = {
+  transaction: null,
 }
 
 const mapStateToProps = (state, { lock }) => {

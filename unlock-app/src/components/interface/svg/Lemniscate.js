@@ -1,7 +1,8 @@
 import React from 'react'
 
-const SvgLemniscate = props => (
+const SvgLemniscate = ({ title, ...props }) => (
   <svg {...props}>
+    <title>{title}</title>
     <text
       fill="#333"
       fillRule="evenodd"

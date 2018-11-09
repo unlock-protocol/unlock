@@ -24,9 +24,14 @@ export function CreatorLockStatus({ config, status, confirmations }) {
 }
 
 CreatorLockStatus.propTypes = {
-  status: PropTypes.string,
+  status: PropTypes.string.isRequired,
+  lock: UnlockPropTypes.lock.isRequired,
   confirmations: PropTypes.number,
-  config: UnlockPropTypes.configuration,
+  config: UnlockPropTypes.configuration.isRequired,
+}
+
+CreatorLockStatus.defaultProps = {
+  confirmations: 0,
 }
 
 export default withConfig(CreatorLockStatus)

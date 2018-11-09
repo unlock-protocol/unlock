@@ -61,8 +61,8 @@ export class Demo extends React.Component {
 }
 
 Demo.propTypes = {
-  locks: UnlockPropTypes.locks,
-  lockAddress: UnlockPropTypes.address,
+  locks: UnlockPropTypes.locks.isRequired,
+  lockAddress: UnlockPropTypes.address.isRequired,
 }
 
 const mapStateToProps = state => {

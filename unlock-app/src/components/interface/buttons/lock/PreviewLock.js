@@ -6,11 +6,12 @@ import { LockButton } from '../Button'
 
 const PreviewLock = ({ lock, ...props }) => (
   <LockButton href={`/demo/${lock.address}`} title='Preview lock' {...props}>
-    <Svg.LockClosed />
+    <Svg.LockClosed name="Preview Lock" />
   </LockButton>
 )
 
 PreviewLock.propTypes = {
-  lock: UnlockPropTypes.lock,
+  lock: UnlockPropTypes.lock.isRequired,
 }
+
 export default PreviewLock
