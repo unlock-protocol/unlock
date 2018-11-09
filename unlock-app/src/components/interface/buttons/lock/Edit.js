@@ -4,7 +4,7 @@ import { LockButton } from '../Button'
 
 const Edit = (props) => (
   <LockButton title='Edit' {...props}>
-    <Svg.Edit />
+    <Svg.Edit name="Edit" />
   </LockButton>
 )
 
