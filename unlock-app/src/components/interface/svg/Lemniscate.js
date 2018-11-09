@@ -1,7 +1,7 @@
 import React from 'react'
 
 const SvgLemniscate = props => (
-  <svg viewBox="0 0 24 24" {...props}>
+  <svg {...props}>
     <text
       fill="#333"
       fillRule="evenodd"
