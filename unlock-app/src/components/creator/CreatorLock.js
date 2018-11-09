@@ -22,11 +22,13 @@ export class CreatorLock extends React.Component {
       showKeys: false,
       withdrawing: false,
     }
+    this.startWithdrawal = this.startWithdrawal.bind(this)
     this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
     this.toggleKeys = this.toggleKeys.bind(this)
   }
 
-  startWithdrawal() {
+  startWithdrawal(e) {
+    e.stopPropagation() // We don't want to toggle embed code etc when this is clicked
     this.props.withdraw(this.props.lock, this.props.account)
   }
 
