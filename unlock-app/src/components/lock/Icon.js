@@ -58,4 +58,8 @@ Icon.propTypes = {
   address: UnlockPropTypes.address,
 }
 
+Icon.defaultProps = {
+  address: null,
+}
+
 export default Icon
