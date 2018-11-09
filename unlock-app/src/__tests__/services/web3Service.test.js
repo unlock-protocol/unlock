@@ -234,6 +234,71 @@ describe('Web3Service', () => {
       })
     })
 
+    describe('refreshLock', () => {
+
+      it('should get the lock data using its address', () => {
+        const lock = {
+          address: '0xabc',
+        }
+
+        const getLockMock = jest.fn(() => {
+          return new Promise((resolve, reject) => {
+            return resolve({
+              balance: '1773',
+              keyPrice: '10000000000000000',
+              outstandingKeys: 2,
+            })
+          })
+        })
+        const _getLock = web3Service.getLock
+
+        web3Service.getLock = getLockMock
+
+        return web3Service.refreshLock(lock)
+          .then((lock) => {
+            expect(lock).toMatchObject({
+              address: '0xabc',
+              balance: '1773',
+              keyPrice: '10000000000000000',
+              outstandingKeys: 2,
+            })
+
+            expect(getLockMock).toHaveBeenCalledWith('0xabc')
+            web3Service.getLock = _getLock
+          })
+      })
+
+      it('should not overide the data that is not coming from the smart contract, such as the id', () => {
+        const lock = {
+          id: 'alpha',
+          address: '0xabc',
+        }
+
+        const getLockMock = jest.fn(() => {
+          return new Promise((resolve, reject) => {
+            return resolve({
+              balance: '1773',
+            })
+          })
+        })
+        const _getLock = web3Service.getLock
+
+        web3Service.getLock = getLockMock
+
+        return web3Service.refreshLock(lock)
+          .then((lock) => {
+            expect(lock).toMatchObject({
+              id: 'alpha',
+              address: '0xabc',
+              balance: '1773',
+            })
+
+            web3Service.getLock = _getLock
+          })
+      })
+
+    })
+
     describe('getLock', () => {
 
       beforeEach(() => {
