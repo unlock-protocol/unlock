@@ -1,10 +1,12 @@
 /* eslint no-console: 0 */  // TODO: remove me when this is clean
 
+import React from 'react'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { CREATE_LOCK, SET_LOCK, WITHDRAW_FROM_LOCK, resetLock } from '../actions/lock'
 import { PURCHASE_KEY, addKey } from '../actions/key'
 import { SET_ACCOUNT, LOAD_ACCOUNT, CREATE_ACCOUNT, setAccount, resetAccountBalance } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
+import { setError } from '../actions/error'
 import { SET_PROVIDER } from '../actions/provider'
 import { REFRESH_TRANSACTION, addTransaction, refreshTransaction, updateTransaction, deleteTransaction } from '../actions/transaction'
 
@@ -77,6 +79,15 @@ export default function lockMiddleware ({ getState, dispatch }) {
           return web3Service.getAddressBalance(getState().network.account.address)
         }).then((balance) => {
           dispatch(resetAccountBalance(balance))
+        }).catch((error) => {
+          // TODO: Since there was an error creating the lock, should also delete that lock!
+          dispatch(setError(
+            <p>
+              There was an error creating your lock. 
+              {' '}
+              {error.message}
+            </p>)
+          )
         })
       } else if (action.type === PURCHASE_KEY) {
         const account = getState().network.account

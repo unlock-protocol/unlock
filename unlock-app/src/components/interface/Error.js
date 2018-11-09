@@ -1,24 +1,46 @@
-import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import { setError } from '../../actions/error'
 import Buttons from './buttons/layout'
 
-export const Error = ({ children }) => (
-  <Wrapper>
-    {children}
-    <Close size="16px">X</Close>
-  </Wrapper>
+export const Error = ({ children, error, close }) => {
+  const content = children || error
+  if(!content) {
+    return null
+  }
+  return (
+    <Wrapper>
+      {content}
+      <Close onClick={close} size="16px">X</Close>
+    </Wrapper>
+  )
+}
+
+const mapStateToProps = ({ error }) => ({
+  error,
+}
 )
+
+const mapDispatchToProps = dispatch => ({
+  close: () => {
+    dispatch(setError(null))
+  },
+})
 
 Error.propTypes = {
   children: PropTypes.node,
+  error: PropTypes.node,
+  close: PropTypes.func.isRequired,
 }
 
 Error.defaultProps = {
   children: null,
+  error: null,
 }
 
-export default Error
+export default connect(mapStateToProps, mapDispatchToProps)(Error)
 
 const Wrapper = styled.section`
   grid-template-columns: 1fr 20px;
@@ -37,5 +59,4 @@ const Wrapper = styled.section`
 `
 
 const Close = styled(Buttons.Close)`
-
 `
