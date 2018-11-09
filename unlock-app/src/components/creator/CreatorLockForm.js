@@ -32,7 +32,7 @@ class CreatorLockForm extends React.Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  handleSubmit () { // TODO save name to the redux store
+  handleSubmit () { 
     const lock = {
       name: this.state.name,
       expirationDuration: this.state.expirationDuration * this.state.expirationDurationUnit,
