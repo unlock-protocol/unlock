@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import Error from '../../components/interface/Error'
+import { Error } from '../../components/interface/Error'
 
 storiesOf('Error', Error)
   .add('Simple Error', () => {
