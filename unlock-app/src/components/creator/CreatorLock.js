@@ -121,7 +121,7 @@ CreatorLock.defaultProps = {
 
 const mapStateToProps = (state, { lock }) => {
   const transaction = state.transactions[lock.transaction]
-  const account = state.network.account
+  const account = state.account
   return {
     transaction,
     account,
