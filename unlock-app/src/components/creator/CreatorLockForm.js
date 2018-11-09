@@ -38,7 +38,7 @@ class CreatorLockForm extends React.Component {
       expirationDuration: this.state.expirationDuration * this.state.expirationDurationUnit,
       keyPrice: Web3Utils.toWei(this.state.keyPrice.toString(10), this.state.keyPriceCurrency),
       maxNumberOfKeys: this.state.maxNumberOfKeys,
-      owner: this.props.account, // TODO denormalize: only use the account address
+      owner: this.props.account.address, 
       id: uniqid(),
     }
     this.props.createLock(lock)

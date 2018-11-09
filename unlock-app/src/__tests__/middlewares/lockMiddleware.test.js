@@ -169,10 +169,10 @@ describe('Lock middleware', () => {
   })
 
   it('should handle CREATE_LOCK by calling web3Service\'s createLock', () => {
-    const { next, invoke } = create()
+    const { next, invoke, store } = create()
     const action = { type: CREATE_LOCK, lock }
     invoke(action)
-    expect(mockWeb3Service.createLock).toHaveBeenCalledWith(lock, expect.anything()) // TODO: Can we be more specific? (this is a function)
+    expect(mockWeb3Service.createLock).toHaveBeenCalledWith(lock, store.getState().network.account, expect.anything()) // TODO: Can we be more specific? (this is a function)
     expect(next).toHaveBeenCalledWith(action)
   })
 
