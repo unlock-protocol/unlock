@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import UnlockPropTypes from '../../../propTypes'
 import withConfig from '../../../utils/withConfig'
 
-export function CreatorLockStatus({ config, lock, status, confirmations }) {
+export function CreatorLockStatus({ config, status, confirmations }) {
   return (
     <LockStatus>
       <Status>
@@ -24,7 +24,6 @@ export function CreatorLockStatus({ config, lock, status, confirmations }) {
 }
 
 CreatorLockStatus.propTypes = {
-  lock: UnlockPropTypes.lock,
   status: PropTypes.string,
   confirmations: PropTypes.number,
   config: UnlockPropTypes.configuration,

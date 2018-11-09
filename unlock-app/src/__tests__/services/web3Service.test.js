@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */ 
+
 import EventEmitter from 'events'
 import Web3Utils from 'web3-utils'
 import nock from 'nock'
@@ -29,7 +31,7 @@ const nockScope = nock('http://127.0.0.1:8545', { 'encodedQueryParams': true })
 let rpcRequestId = 0
 
 function logNock(message, x, y) {
-  // console.log(message, x, y)
+  console.log(message, x, y)
 }
 
 // Generic call
@@ -75,8 +77,8 @@ const ethCallAndFail = (data, to, error) => {
 }
 
 nock.emitter.on('no match', function (x, y, body) {
-  // console.log('DID NOT MATCH')
-  // console.log(body)
+  console.log('DID NOT MATCH')
+  console.log(body)
 })
 
 describe('Web3Service', () => {
@@ -96,6 +98,7 @@ describe('Web3Service', () => {
           getBalanceForAccountAndYieldBalance(state.network.account.address, '0xdeadbeef')
 
           return web3Service.connect(state).then(([networkId, account]) => {
+            expect(networkId).not.toBeNull()
             expect(account).toEqual({
               address: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
               balance: '3735928559',
@@ -124,6 +127,7 @@ describe('Web3Service', () => {
           getBalanceForAccountAndYieldBalance(newAccount.address, '0x0')
 
           return web3Service.connect(state).then(([networkId, account]) => {
+            expect(networkId).not.toBeNull()
             expect(account).toEqual({
               address: newAccount.address,
               balance: '0',
@@ -148,6 +152,7 @@ describe('Web3Service', () => {
         getBalanceForAccountAndYieldBalance(nodeAccountAddress, '0x0')
 
         return web3Service.connect(state).then(([networkId, account]) => {
+          expect(networkId).not.toBeNull()
           expect(account).toEqual({
             address: nodeAccountAddress,
             balance: '0',
@@ -242,7 +247,7 @@ describe('Web3Service', () => {
         }
 
         const getLockMock = jest.fn(() => {
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve) => {
             return resolve({
               balance: '1773',
               keyPrice: '10000000000000000',
@@ -275,7 +280,7 @@ describe('Web3Service', () => {
         }
 
         const getLockMock = jest.fn(() => {
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve) => {
             return resolve({
               balance: '1773',
             })
@@ -523,7 +528,7 @@ describe('Web3Service', () => {
           rawTransaction: '',
         }
         const mockSignTransaction = jest.fn(() => {
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve) => {
             return resolve(mockSignedTransaction)
           })
         })
@@ -567,7 +572,7 @@ describe('Web3Service', () => {
           .then(() => {
             expect(true).toBe(false) // should not happen
           })
-          .catch((error) => {
+          .catch(() => {
             expect(true).toBe(true)
           })
       })
@@ -683,7 +688,7 @@ describe('Web3Service', () => {
         web3Service.getAddressBalance = jest.fn().mockReturnValueOnce('10.9999').mockReturnValueOnce('0')
 
         // Mock
-        web3Service.web3.eth.Contract = function (abi, address) {
+        web3Service.web3.eth.Contract = function () {
           this.methods = {
             withdraw: () => {
               return {
