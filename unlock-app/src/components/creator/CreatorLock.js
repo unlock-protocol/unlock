@@ -20,7 +20,6 @@ export class CreatorLock extends React.Component {
     this.state = {
       showEmbedCode: false,
       showKeys: false,
-      withdrawing: false,
     }
     this.startWithdrawal = this.startWithdrawal.bind(this)
     this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
