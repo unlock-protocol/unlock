@@ -4,10 +4,10 @@ import PropTypes from 'prop-types'
 
 import Buttons from '../../interface/buttons/lock'
 
-export function LockIconBar({ toggleCode }) {
+export function LockIconBar({ withdraw, toggleCode }) {
   return (
     <IconBar>
-      <Buttons.Withdraw as="button" />
+      <Buttons.Withdraw action={withdraw} as="button" />
       <Buttons.Edit as="button" />
       { /* Reinstate when we're ready <Buttons.ExportLock /> */ }
       <Buttons.Code action={toggleCode} as="button" />
@@ -17,6 +17,7 @@ export function LockIconBar({ toggleCode }) {
 
 LockIconBar.propTypes = {
   toggleCode: PropTypes.func.isRequired,
+  withdraw: PropTypes.func.isRequired,
 }
 
 export default LockIconBar
