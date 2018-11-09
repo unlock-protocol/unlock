@@ -445,9 +445,9 @@ export default class Web3Service {
   */
   withdrawFromLock(lock, account) {
     return new Promise((resolve) => {
+      console.log(account)
       const lockContract = new this.web3.eth.Contract(LockContract.abi, lock.address)
       const data = lockContract.methods.withdraw().encodeABI()
-
       return this.sendTransaction({
         to: lock.address,
         from: account.address,
