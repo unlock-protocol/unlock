@@ -146,7 +146,7 @@ export default class Web3Service {
    * @param {function} callback
    * @return Promise<Lock>
    */
-  createLock(lock, callback) {
+  createLock(lock, owner, callback) {
     return new Promise((resolve) => {
       const unlock = new this.web3.eth.Contract(UnlockContract.abi, UnlockContract.networks[this.networkId].address)
 
@@ -166,10 +166,10 @@ export default class Web3Service {
 
       return this.sendTransaction({
         to: UnlockContract.networks[this.networkId].address,
-        from: lock.owner.address,
+        from: owner.address,
         data: data,
         gas: 2000000,
-        privateKey: lock.owner.privateKey,
+        privateKey: owner.privateKey,
         contractAbi: UnlockContract.abi,
       }, (error, { event, args }) => {
         if (error) {
