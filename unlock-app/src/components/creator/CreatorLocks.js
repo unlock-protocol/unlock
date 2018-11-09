@@ -6,7 +6,7 @@ import CreatorLockForm from './CreatorLockForm'
 
 export class CreatorLocks extends React.Component {
   constructor (props, context) {
-    super(props)
+    super(props, context)
     this.state = {
       showDashboardForm: !!this.props.showForm,
     }

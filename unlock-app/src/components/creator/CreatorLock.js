@@ -13,7 +13,7 @@ import withConfig from '../../utils/withConfig'
 
 export class CreatorLock extends React.Component {
   constructor (props, context) {
-    super(props)
+    super(props, context)
     this.state = {
       showEmbedCode: false,
       showKeys: false,

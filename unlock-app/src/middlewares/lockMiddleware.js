@@ -83,7 +83,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
         const lock = Object.values(getState().locks).find((lock) => lock.address === action.key.lockAddress)
         web3Service.purchaseKey(action.key, account, lock, (transaction) => {
           dispatch(addTransaction(transaction))
-        }).then((key) => {
+        }).then(() => {
           return web3Service.getAddressBalance(account.address)
         }).then((balance) => {
           dispatch(resetAccountBalance(balance))
@@ -94,12 +94,13 @@ export default function lockMiddleware ({ getState, dispatch }) {
             dispatch(updateTransaction(transaction))
           })
           .catch((error) => {
+            console.error(error)
             dispatch(deleteTransaction(action.transaction))
           })
       } else if (action.type === WITHDRAW_FROM_LOCK) {
         const account = getState().network.account
         web3Service.withdrawFromLock(action.lock, account)
-          .then((lock) => {
+          .then(() => {
             return Promise.all([
               web3Service.getAddressBalance(account.address),
               web3Service.getAddressBalance(action.lock.address),

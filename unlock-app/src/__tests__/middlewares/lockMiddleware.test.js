@@ -91,7 +91,7 @@ jest.mock('../../services/iframeService', () => {
 beforeEach(() => {
   // Making sure all mocks are fresh and reset before each test
   Object.keys(mockWeb3Service).forEach((key) => {
-    mockWeb3Service[key] = jest.fn().mockReturnValue(new Promise((resolve, reject) => {return resolve()}))
+    mockWeb3Service[key] = jest.fn().mockReturnValue(new Promise((resolve) => {return resolve()}))
   })
   Object.keys(iframeServiceMock).forEach((key) => {
     iframeServiceMock[key] = jest.fn()

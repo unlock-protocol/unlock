@@ -14,7 +14,7 @@ import { createLock } from '../../actions/lock'
 
 class CreatorLockForm extends React.Component {
   constructor (props, context) {
-    super(props)
+    super(props, context)
     this.state = {
       expirationDuration: 30,
       expirationDurationUnit: 86400, // Days

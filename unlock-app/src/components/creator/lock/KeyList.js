@@ -5,7 +5,7 @@ import UnlockPropTypes from '../../../propTypes'
 import { expirationAsDate } from '../../../utils/durations'
 
 // TODO add pagination
-export function KeyList ({ keys, lock }) {
+export function KeyList ({ keys }) {
   return (
     <Table>
       <Header>

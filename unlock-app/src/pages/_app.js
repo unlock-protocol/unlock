@@ -9,7 +9,7 @@ const config = configure(global)
 const ConfigContext = React.createContext()
 
 class MyApp extends App {
-  static async getInitialProps({ Component, router, ctx }) {
+  static async getInitialProps({ Component, ctx }) {
     let pageProps = {}
 
     if (Component.getInitialProps) {
@@ -19,8 +19,8 @@ class MyApp extends App {
     return { pageProps }
   }
 
-  constructor (props) {
-    super(props)
+  constructor (props, context) {
+    super(props, context)
 
     // Hack to quick the Redux lock middleware on load
     if (!config.isServer) {
