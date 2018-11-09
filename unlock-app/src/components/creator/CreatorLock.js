@@ -42,9 +42,10 @@ export class CreatorLock extends React.Component {
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
     let outstandingKeys = lock.maxNumberOfKeys - lock.outstandingKeys || 0
-    let lockComponentStatusBlock = (<LockIconBarContainer>
-      <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
-    </LockIconBarContainer>)
+    let lockComponentStatusBlock = (
+      <LockIconBarContainer>
+        <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
+      </LockIconBarContainer>)
 
     if (!transaction) {
       // We assume that the lock has been succeesfuly deployed?
@@ -78,7 +79,7 @@ export class CreatorLock extends React.Component {
         <Balance amount={lock.keyPrice} />
         <Balance amount={lock.balance} />
         {lockComponentStatusBlock}
-        {status === this.state.showEmbedCode &&
+        {this.state.showEmbedCode &&
           <LockPanel>
             <LockDivider />
             <EmbedCodeSnippet lock={lock} />

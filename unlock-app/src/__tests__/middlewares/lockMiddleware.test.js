@@ -24,7 +24,7 @@ let account = {
 let lock = {
   address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
   keyPrice: '100',
-  creator: account,
+  owner: account,
 }
 let state = {
 }
@@ -104,7 +104,7 @@ beforeEach(() => {
   lock = {
     address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
     keyPrice: '100',
-    creator: account,
+    owner: account,
   }
   state = {
     network: {

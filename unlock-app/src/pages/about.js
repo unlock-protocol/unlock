@@ -80,7 +80,6 @@ For this, we&#39;re building a protocol which lets anyone restrict access to the
 We received $1.7M in funding from the following investors: General Catalyst and by Cherry Ventures and with participations from Consensys Ventures, Kindred Ventures, Betaworks, 122 West, La Famiglia, Coinbase Ventures and a group of stellar business angels.
           <a href="https://medium.com/unlock-protocol/unlocking-some-exciting-news-5ad0f3889375">More...</a>
           {' '}
-
         </p>
       </News>
     </Section>
@@ -88,11 +87,14 @@ We received $1.7M in funding from the following investors: General Catalyst and 
     <Section>
       <CallToAction>
 Check out our open source code on
+        {' '}
         <a href="https://github.com/unlock-protocol/unlock">GitHub</a>
 , come work
+        {' '}
         <a href="/jobs">with us</a>
         {' '}
 or simply
+        {' '}
         <a href="mailto:hello@unlock-protocol.com">get in touch</a>
 .
       </CallToAction>

@@ -151,7 +151,6 @@ export default class Web3Service {
       const unlock = new this.web3.eth.Contract(UnlockContract.abi, UnlockContract.networks[this.networkId].address)
 
       const data = unlock.methods.createLock(
-        lock.keyReleaseMechanism,
         lock.expirationDuration,
         lock.keyPrice,
         lock.maxNumberOfKeys
@@ -167,10 +166,10 @@ export default class Web3Service {
 
       return this.sendTransaction({
         to: UnlockContract.networks[this.networkId].address,
-        from: lock.creator.address,
+        from: lock.owner.address,
         data: data,
-        gas: 1500000,
-        privateKey: lock.creator.privateKey,
+        gas: 2000000,
+        privateKey: lock.owner.privateKey,
         contractAbi: UnlockContract.abi,
       }, (error, { event, args }) => {
         if (error) {
@@ -188,12 +187,15 @@ export default class Web3Service {
         } else if (event === 'NewLock') {
           // Refresh lock object with the values from the smart contract
           return this.getLock(args.newLockAddress).then((savedLock) => {
-            // TODO: sync savedLock into lock
             lock = Object.assign(savedLock, lock)
             callback(transaction, lock)
             return resolve(lock)
           })
         }
+      }).catch((error) => {
+        console.error('TRANSACTION ERROR')
+        console.log(error)
+
       })
     })
   }
@@ -274,35 +276,19 @@ export default class Web3Service {
 
     const contract = new this.web3.eth.Contract(LockContract.abi, address)
 
-    const constantPromises = []
+    const attributes = {
+      keyPrice: (x) => x, // this is a BigNumber (represented as string)
+      expirationDuration: parseInt,
+      maxNumberOfKeys: parseInt,
+      owner: (x) => x,
+      outstandingKeys: parseInt,
+    }
 
-    LockContract.abi.forEach((item) => {
-      if (item.constant) {
-        if (item.inputs.length === 0) {
-          if (!lock[item.name]) {
-            const promise = contract.methods[item.name]().call().then((result) => {
-              lock[item.name] = result
-              return lock
-            })
-            constantPromises.push(promise)
-          }
-          lock[item.name] = undefined
-        } else {
-          lock[item.name] = (...args) => {
-            const promise = new Promise((resolve, reject) => {
-              contract.methods[item.name](...args).call((error, result) => {
-                if (error) {
-                  // Something happened
-                  return reject(error)
-                } else {
-                  return resolve(result)
-                }
-              })
-            })
-            return promise
-          }
-        }
-      }
+    const constantPromises = Object.keys(attributes).map((attribute) => {
+      return contract.methods[attribute]().call().then((result) => {
+        lock[attribute] = attributes[attribute](result) // We cast the value
+        return lock
+      })
     })
 
     // Let's load its balance
@@ -315,8 +301,6 @@ export default class Web3Service {
     return Promise.all(constantPromises).then(() => {
       return lock
     })
-
-    // TODO: methods, events, changes?
   }
 
   /**

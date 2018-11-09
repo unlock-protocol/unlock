@@ -9,9 +9,8 @@ export const account = PropTypes.shape({
 })
 
 export const lock = PropTypes.shape({
-  keyReleaseMechanism: PropTypes.string,
   keyPrice: PropTypes.string,
-  maxNumberOfKeys: PropTypes.string,
+  maxNumberOfKeys: PropTypes.number,
   owner: PropTypes.string,
   outstandingKeys: PropTypes.string,
 })
@@ -21,7 +20,7 @@ export const transaction = PropTypes.shape({
   confirmations: PropTypes.number,
   createdAt: PropTypes.number,
   hash: PropTypes.string,
-  lock: PropTypes.shape({}),
+  lock: PropTypes.string,
   name: PropTypes.string,
 })
 

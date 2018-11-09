@@ -11,7 +11,7 @@ export function Duration({ seconds }) {
 }
 
 Duration.propTypes = {
-  seconds: PropTypes.string,
+  seconds: PropTypes.number,
 }
 
 export default Duration

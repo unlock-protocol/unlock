@@ -23,7 +23,7 @@ contract('Unlock', function (accounts) {
 
       it('should fail if called from the proxy owner\'s account', async function () {
         try {
-          await this.unlock.grossNetworkProduct({from: proxyOwner})
+          await this.unlock.grossNetworkProduct({ from: proxyOwner })
         } catch (e) {
           return
         }
@@ -36,7 +36,7 @@ contract('Unlock', function (accounts) {
       beforeEach(async function () {
         const implV2 = await UnlockTestV2.new()
         const initV2Call = zos.encodeCall('initializeV2')
-        await this.proxy.upgradeToAndCall(implV2.address, initV2Call, {from: proxyOwner})
+        await this.proxy.upgradeToAndCall(implV2.address, initV2Call, { from: proxyOwner })
         this.unlock = await UnlockTestV2.at(this.proxy.address)
       })
 
@@ -56,7 +56,6 @@ contract('Unlock', function (accounts) {
 
     it('should persist state between upgrades', async function () {
       const transaction = await this.unlock.createLock(
-        0, // keyReleaseMechanism: KeyReleaseMechanisms.Public
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
         100 // maxNumberOfKeys
@@ -66,7 +65,7 @@ contract('Unlock', function (accounts) {
       const resultsBefore = await this.unlock.locks(transaction.logs[0].args.newLockAddress)
       const implV2 = await UnlockTestV2.new()
       const initV2Call = zos.encodeCall('initializeV2')
-      await this.proxy.upgradeToAndCall(implV2.address, initV2Call, {from: proxyOwner})
+      await this.proxy.upgradeToAndCall(implV2.address, initV2Call, { from: proxyOwner })
       this.unlock = await UnlockTestV2.at(this.proxy.address)
       const resultsAfter = await this.unlock.locks(transaction.logs[0].args.newLockAddress)
       assert.equal(JSON.stringify(resultsAfter), JSON.stringify(resultsBefore))
@@ -76,7 +75,7 @@ contract('Unlock', function (accounts) {
       beforeEach(async function () {
         const implV3 = await UnlockTestV3.new()
         const initV3Call = zos.encodeCall('initializeV3')
-        await this.proxy.upgradeToAndCall(implV3.address, initV3Call, {from: proxyOwner})
+        await this.proxy.upgradeToAndCall(implV3.address, initV3Call, { from: proxyOwner })
         this.unlock = await UnlockTestV3.at(this.proxy.address)
       })
 
@@ -88,7 +87,6 @@ contract('Unlock', function (accounts) {
       it('should allow removing functions', async function () {
         try {
           await this.unlock.createLock(
-            0,
             60 * 60 * 24 * 30,
             Units.convert(1, 'eth', 'wei'),
             100

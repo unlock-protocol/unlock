@@ -7,8 +7,8 @@ import UnlockPropTypes from '../propTypes'
 import { setProvider } from '../actions/provider'
 import withConfig from '../utils/withConfig'
 
-export function Web3Provider({ setProvider, config, provider }) {
-  return (<div className="container">
+export const Web3Provider = ({ setProvider, config, provider }) => (
+  <div className="container">
     <header className="masthead mb-auto">
       <div className="inner">
         <h3 className="masthead-brand">&nbsp;</h3>
@@ -25,8 +25,8 @@ export function Web3Provider({ setProvider, config, provider }) {
 
             <div className="input-group mb-3">
               <select className="custom-select" type="select" value={provider} onChange={(event) => setProvider(event.target.value)}>
-                {Object.keys(config.providers).map((name, i) => {
-                  return (<option value={name} key={i}>{name}</option>)
+                {Object.keys(config.providers).map((name) => {
+                  return (<option value={name} key={name}>{name}</option>)
                 })}
               </select>
               <div className="input-group-append">
@@ -40,9 +40,8 @@ export function Web3Provider({ setProvider, config, provider }) {
         </div>
       </div>
     </div>
-  </div>)
-
-}
+  </div>
+)
 
 Web3Provider.propTypes = {
   provider: UnlockPropTypes.provider,

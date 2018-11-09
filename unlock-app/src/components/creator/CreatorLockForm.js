@@ -16,7 +16,6 @@ class CreatorLockForm extends React.Component {
   constructor (props, context) {
     super(props)
     this.state = {
-      keyReleaseMechanism: 0, // Public
       expirationDuration: 30,
       expirationDurationUnit: 86400, // Days
       keyPrice: '0.01',
@@ -35,12 +34,11 @@ class CreatorLockForm extends React.Component {
 
   handleSubmit () { // TODO save name to the redux store
     const lock = {
-      keyReleaseMechanism: this.state.keyReleaseMechanism,
       name: this.state.name,
       expirationDuration: this.state.expirationDuration * this.state.expirationDurationUnit,
       keyPrice: Web3Utils.toWei(this.state.keyPrice.toString(10), this.state.keyPriceCurrency),
       maxNumberOfKeys: this.state.maxNumberOfKeys,
-      creator: this.props.account, // TODO denormalize: only use the account address
+      owner: this.props.account, // TODO denormalize: only use the account address
       id: uniqid(),
     }
     this.props.createLock(lock)
