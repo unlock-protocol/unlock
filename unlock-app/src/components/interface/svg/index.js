@@ -1,3 +1,4 @@
+import React from 'react'
 import About from './About'
 import Close from './Close'
 import Code from './Code'
@@ -17,23 +18,30 @@ import UnlockWordMark from './UnlockWordMark'
 import Upload from './Upload'
 import Withdraw from './Withdraw'
 
+function wrapViewBox(WrappedComponent, viewBox) {
+  const Wrapped = (props) => (
+    <WrappedComponent viewBox={viewBox} {...props} />
+  )
+  return Wrapped
+}
+
 export default {
-  About,
-  Close,
-  Code,
-  Copy,
-  Download,
-  Edit,
-  Eth,
-  Etherscan,
-  EthSub,
-  Export,
-  Github,
-  Lemniscate,
-  LockClosed,
-  Jobs,
-  Unlock,
+  About: wrapViewBox(About, '0 0 24 24'),
+  Close: wrapViewBox(Close, '0 0 24 24'),
+  Code: wrapViewBox(Code, '0 0 24 24'),
+  Copy: wrapViewBox(Copy, '0 0 24 24'),
+  Download: wrapViewBox(Download, '0 0 24 24'),
+  Edit: wrapViewBox(Edit, '0 0 24 24'),
+  Eth: wrapViewBox(Eth, '0 0 24 24'),
+  Etherscan: wrapViewBox(Etherscan, '0 0 24 24'),
+  EthSub: wrapViewBox(EthSub, '0 0 24 24'),
+  Export: wrapViewBox(Export, '0 0 24 24'),
+  Github: wrapViewBox(Github, '0 0 24 24'),
+  Lemniscate: wrapViewBox(Lemniscate, '0 0 24 24'),
+  LockClosed: wrapViewBox(LockClosed, '0 0 24 24'),
+  Jobs: wrapViewBox(Jobs, '0 0 24 24'),
+  Unlock: wrapViewBox(Unlock, '0 0 24 24'),
   UnlockWordMark,
-  Upload,
-  Withdraw,
+  Upload: wrapViewBox(Upload, '0 0 24 24'),
+  Withdraw: wrapViewBox(Withdraw, '0 0 24 24'),
 }
