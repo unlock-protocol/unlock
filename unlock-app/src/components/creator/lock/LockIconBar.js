@@ -12,7 +12,7 @@ export function LockIconBar({ lock, toggleCode }) {
       <Buttons.Withdraw />
       <Buttons.Edit />
       { /* Reinstate when we're ready <Buttons.ExportLock /> */ }
-      <Buttons.Code onClick={toggleCode} />
+      <Buttons.Code action={toggleCode} />
     </IconBar>
   )
 }

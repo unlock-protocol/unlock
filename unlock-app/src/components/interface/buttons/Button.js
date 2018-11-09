@@ -3,7 +3,12 @@ import React from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
 
-export const LayoutButton = ({href = '#', title, children, ...props}) => (
+const clickAction = (e, action) => {
+  e.stopPropagation()
+  if (action) action()
+}
+
+export const LayoutButton = ({href = '#', title, children, action, ...props}) => (
   <Link href={href}>
     <Button
       href={href}
@@ -11,6 +16,7 @@ export const LayoutButton = ({href = '#', title, children, ...props}) => (
       fillColor="white"
       backgroundHoverColor="var(--link)"
       fillHoverColor="white"
+      onClick={(e) => clickAction(e, action)}
       {...props}
     >
       {children}
@@ -23,13 +29,14 @@ LayoutButton.propTypes = {
   href: PropTypes.string,
   title: PropTypes.string,
   children: PropTypes.node,
+  action: PropTypes.func,
   backgroundColor: PropTypes.string,
   backgroundHoverColor: PropTypes.string,
   fillColor: PropTypes.string,
   fillHoverColor: PropTypes.string,
 }
 
-export const LockButton = ({ href = '#', children, ...props }) => (
+export const LockButton = ({ href = '#', children, action, ...props }) => (
   <Link href={href}>
     <Button
       href={href}
@@ -37,6 +44,7 @@ export const LockButton = ({ href = '#', children, ...props }) => (
       fillColor="var(--grey)"
       backgroundHoverColor="var(--link)"
       fillHoverColor="white"
+      onClick={(e) => clickAction(e, action)}
       {...props}
     >
       {children}
@@ -47,6 +55,7 @@ export const LockButton = ({ href = '#', children, ...props }) => (
 LockButton.propTypes = {
   href: PropTypes.string,
   children: PropTypes.node,
+  action: PropTypes.func,
   backgroundColor: PropTypes.string,
   backgroundHoverColor: PropTypes.string,
   fillColor: PropTypes.string,
