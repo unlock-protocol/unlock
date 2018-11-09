@@ -4,7 +4,7 @@ import { LockButton } from '../Button'
 
 const Upload = (props) => (
   <LockButton {...props}>
-    <Svg.Upload />
+    <Svg.Upload name="Upload" />
   </LockButton>
 )
 
