@@ -11,6 +11,7 @@ const PreviewLock = ({ lock, ...props }) => (
 )
 
 PreviewLock.propTypes = {
-  lock: UnlockPropTypes.lock,
+  lock: UnlockPropTypes.lock.isRequired,
 }
+
 export default PreviewLock
