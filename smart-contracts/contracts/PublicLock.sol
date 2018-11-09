@@ -377,12 +377,13 @@ contract PublicLock is ILockPublic {
     IUnlock unlock = IUnlock(unlockProtocol);
     uint discount;
     uint tokens;
-    (discount, tokens) = unlock.computeAvailableDiscountFor(_recipient, keyPrice);
-    uint netPrice = keyPrice;
-    if (discount > keyPrice) {
+    uint inMemoryKeyPrice = keyPrice;
+    (discount, tokens) = unlock.computeAvailableDiscountFor(_recipient, inMemoryKeyPrice);
+    uint netPrice = inMemoryKeyPrice;
+    if (discount > inMemoryKeyPrice) {
       netPrice = 0;
     } else {
-      netPrice = keyPrice - discount;
+      netPrice = inMemoryKeyPrice - discount;
     }
 
     // We explicitly allow for greater amounts to allow "donations" or partial refunds after
