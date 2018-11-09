@@ -1382,8 +1382,8 @@
     "1984": {
       "events": {},
       "links": {},
-      "address": "0x2a9fbce996cc33234267f24c1f97b7fee3b75e24",
-      "transactionHash": "0xdbf758c2bf3c3a9cc0a1016846d65083641b372c2d44554304df7b6c2b34a79e"
+      "address": "0x885ef47c3439ade0cb9b33a4d3c534c99964db93",
+      "transactionHash": "0x50e91e4718f06c03f250dd7ae326a789ff9a284b78d9b98cf657354cae649500"
     },
     "5777": {
       "events": {},
@@ -1723,5 +1723,5 @@
     }
   },
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-11-07T00:08:27.174Z"
+  "updatedAt": "2018-11-08T23:49:56.631Z"
 }
