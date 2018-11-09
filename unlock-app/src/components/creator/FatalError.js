@@ -7,7 +7,7 @@ import Layout from '../interface/Layout'
 
 const defaultError = (<p>This is a generic error because something just broke but we’re not sure what.</p>)
 
-export const DefaultError = ({ title = 'Fatal Error', children = defaultError, illustration = '/static/images/illustrations/error.svg' }) => (
+export const DefaultError = ({ title, children, illustration }) => (
   <Layout title="">
     <Container>
       <Image src={illustration} />
@@ -23,6 +23,12 @@ DefaultError.propTypes = {
   illustration: PropTypes.string,
   title: PropTypes.string,
   children: PropTypes.node,
+}
+
+DefaultError.defaultProps = {
+  illustration: '/static/images/illustrations/error.svg',
+  title: 'Fatal Error',
+  children: defaultError,
 }
 
 const Container = styled.section`
@@ -42,7 +48,6 @@ const Container = styled.section`
     grid-auto-flow: row;
     padding: 16px;
   }
-
 `
 
 const Image = styled.img`
@@ -85,9 +90,10 @@ network. Please switch to
 .
     </p>
   </DefaultError>)
+
 WrongNetwork.propTypes = {
-  currentNetwork: PropTypes.string,
-  requiredNetwork: PropTypes.string,
+  currentNetwork: PropTypes.string.isRequired,
+  requiredNetwork: PropTypes.string.isRequired,
 }
 
 export const MissingProvider= () => (

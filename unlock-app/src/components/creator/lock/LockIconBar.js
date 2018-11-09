@@ -18,8 +18,8 @@ export function LockIconBar({ lock, toggleCode }) {
 }
 
 LockIconBar.propTypes = {
-  lock: UnlockPropTypes.lock,
-  toggleCode: PropTypes.func,
+  lock: UnlockPropTypes.lock.isRequired,
+  toggleCode: PropTypes.func.isRequired,
 }
 
 export default LockIconBar

@@ -28,6 +28,11 @@ Header.propTypes = {
   forContent: PropTypes.bool,
 }
 
+Header.defaultProps = {
+  title: 'Unlock',
+  forContent: false,
+}
+
 const TopHeader = styled.header`
   display: grid;
   grid-gap: 16px;

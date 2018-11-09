@@ -14,6 +14,10 @@ Error.propTypes = {
   children: PropTypes.node,
 }
 
+Error.defaultProps = {
+  children: null,
+}
+
 export default Error
 
 const Wrapper = styled.section`
