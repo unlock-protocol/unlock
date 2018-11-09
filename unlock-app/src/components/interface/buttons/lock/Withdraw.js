@@ -4,7 +4,7 @@ import { LockButton } from '../Button'
 
 const Withdraw = (props) => (
   <LockButton title='Withdraw balance' {...props}>
-    <Svg.Withdraw />
+    <Svg.Withdraw name="Withdraw" />
   </LockButton>
 )
 

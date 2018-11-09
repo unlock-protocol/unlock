@@ -4,7 +4,7 @@ import { LockButton } from '../Button'
 
 const Download = (props) => (
   <LockButton {...props}>
-    <Svg.Download />
+    <Svg.Download name="Download" />
   </LockButton>
 )
 

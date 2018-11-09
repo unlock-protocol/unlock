@@ -4,7 +4,7 @@ import { LockButton } from '../Button'
 
 const Etherscan = (props) => (
   <LockButton {...props}>
-    <Svg.Etherscan />
+    <Svg.Etherscan name="Etherscan" />
   </LockButton>
 )
 

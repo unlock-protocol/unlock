@@ -4,7 +4,7 @@ import { LayoutButton } from '../Button'
 
 const Close = (props) => (
   <LayoutButton {...props}>
-    <Svg.Close />
+    <Svg.Close name="Close" />
   </LayoutButton>
 )
 

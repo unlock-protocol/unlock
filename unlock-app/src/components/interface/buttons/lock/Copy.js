@@ -4,7 +4,7 @@ import { LockButton } from '../Button'
 
 const Copy = (props) => (
   <LockButton {...props}>
-    <Svg.Copy />
+    <Svg.Copy name="Copy" />
   </LockButton>
 )
 

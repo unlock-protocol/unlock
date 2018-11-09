@@ -4,7 +4,7 @@ import { LayoutButton } from '../Button'
 
 const About = () => (
   <LayoutButton href="/about" title="About">
-    <Svg.About />
+    <Svg.About title="About" />
   </LayoutButton>
 )
 
