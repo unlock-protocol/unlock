@@ -185,12 +185,11 @@ export default class Web3Service {
           transaction.confirmations += 1
           callback(transaction, lock)
         } else if (event === 'NewLock') {
-          // Refresh lock object with the values from the smart contract
-          return this.getLock(args.newLockAddress).then((savedLock) => {
-            lock = Object.assign(savedLock, lock)
-            callback(transaction, lock)
-            return resolve(lock)
-          })
+          return this.refreshLock(lock)
+            .then((lock) => {
+              callback(transaction, lock)
+              return resolve(lock)
+            })
         }
       }).catch((error) => {
         console.error('TRANSACTION ERROR')
@@ -261,6 +260,18 @@ export default class Web3Service {
         return resolve(transaction)
       })
     })
+  }
+
+  /**
+   * Refresh the lock's data
+   * @return Promise<Lock>
+   */
+  refreshLock(lock) {
+    return this.getLock(lock.address)
+      .then((savedLock) => {
+        lock = Object.assign(lock, savedLock)
+        return lock
+      })
   }
 
   /**

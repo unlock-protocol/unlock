@@ -33,6 +33,8 @@ export default function lockMiddleware ({ getState, dispatch }) {
           Object.values(getState().transactions).forEach((transaction) => dispatch(refreshTransaction(transaction)))
           // We refresh keys
           Object.values(getState().keys).forEach((key) => web3Service.refreshKey(key))
+          // We refresh locks
+          Object.values(getState().locks).forEach((lock) => web3Service.refreshLock(lock))
         }).catch((error) => {
           // we could not connect
           // TODO: show error to user
