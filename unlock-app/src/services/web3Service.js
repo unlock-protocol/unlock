@@ -185,6 +185,7 @@ export default class Web3Service {
           transaction.confirmations += 1
           callback(transaction, lock)
         } else if (event === 'NewLock') {
+          lock.address = args.newLockAddress
           return this.refreshLock(lock)
             .then((lock) => {
               callback(transaction, lock)
