@@ -40,7 +40,6 @@ export function KeyList ({ keys }) {
 
 KeyList.propTypes = {
   keys: UnlockPropTypes.keys,
-  lock: UnlockPropTypes.lock.isRequired,
 }
 
 KeyList.defaultProps = {
