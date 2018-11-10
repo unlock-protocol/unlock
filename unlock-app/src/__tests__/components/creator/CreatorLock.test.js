@@ -3,7 +3,7 @@ import * as rtl from 'react-testing-library'
 import 'jest-dom/extend-expect'
 import { Provider } from 'react-redux'
 
-import { CreatorLock } from '../../../components/creator/CreatorLock'
+import {CreatorLock, LockKeys, LockRow} from '../../../components/creator/CreatorLock'
 import configure from '../../../config'
 import createUnlockStore from '../../../createUnlockStore'
 
@@ -48,5 +48,36 @@ describe('CreatorLock', () => {
 
     expect(wrapper.queryByText('This content is only visible', {exact: false})).not.toBeNull()
 
+  })
+  it ('should display the correct number of keys', () => {
+
+    const lock = {
+      id: '0x123',
+      address: '0x1234567890',
+      transaction: '0x0987654321',
+      keyPrice: '1',
+      keyBalance: '1',
+      outstandingKeys: 1,
+      maxNumberOfKeys: 10,
+    }
+    const transaction = {
+      id: '0x098',
+      address: '0x0987654321',
+      confirmations: 12,
+      status: 'mined',
+
+    }
+    const config = configure({
+      requiredConfirmations: 6,
+    })
+
+    const store = createUnlockStore()
+
+    let wrapper = rtl.render(
+    <Provider store={store}>
+      <CreatorLock lock={lock} transaction={transaction} config={config} />
+    </Provider>)
+
+    expect(wrapper.queryByText('1/10')).not.toBeNull()
   })
 })
