@@ -25,7 +25,6 @@ export function CreatorLockStatus({ config, status, confirmations }) {
 
 CreatorLockStatus.propTypes = {
   status: PropTypes.string.isRequired,
-  lock: UnlockPropTypes.lock.isRequired,
   confirmations: PropTypes.number,
   config: UnlockPropTypes.configuration.isRequired,
 }
