@@ -53,7 +53,6 @@ module.exports = {
     ],
     "react/jsx-filename-extension": [0, { "extensions": [".js", ".jsx"] }], 
     "import/no-named-as-default": 0,
-    "import/no-named-as-default-member": 0,
-    "react/destructuring-assignment": 0,
+    "import/no-named-as-default-member": 0
   }
 };
