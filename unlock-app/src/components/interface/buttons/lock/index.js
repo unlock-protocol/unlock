@@ -5,7 +5,7 @@ import Code from './Code'
 import Download from './Download'
 import Upload from './Upload'
 import Etherscan from './Etherscan'
-import PreviewLock from './PreviewLock'
+import Preview from './Preview'
 import Copy from './Copy'
 
 export default {
@@ -16,6 +16,6 @@ export default {
   Download,
   Upload,
   Etherscan,
-  PreviewLock,
+  Preview,
   Copy,
 }
