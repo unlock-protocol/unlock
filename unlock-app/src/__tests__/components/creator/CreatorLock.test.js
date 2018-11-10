@@ -3,7 +3,7 @@ import * as rtl from 'react-testing-library'
 import 'jest-dom/extend-expect'
 import { Provider } from 'react-redux'
 
-import {CreatorLock, LockKeys, LockRow} from '../../../components/creator/CreatorLock'
+import { CreatorLock } from '../../../components/creator/CreatorLock'
 import configure from '../../../config'
 import createUnlockStore from '../../../createUnlockStore'
 
