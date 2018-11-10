@@ -38,6 +38,7 @@ export class CreatorLock extends React.Component {
     // TODO add all-time balance to lock
 
     const { lock, transaction, config } = this.props
+    const { showEmbedCode, showKeys } = this.state
 
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
@@ -79,13 +80,13 @@ export class CreatorLock extends React.Component {
         <Balance amount={lock.keyPrice} />
         <Balance amount={lock.balance} />
         {lockComponentStatusBlock}
-        {this.state.showEmbedCode &&
+        {showEmbedCode &&
           <LockPanel>
             <LockDivider />
             <EmbedCodeSnippet lock={lock} />
           </LockPanel>
         }
-        {!this.state.showEmbedCode && this.state.showKeys &&
+        {!showEmbedCode && showKeys &&
           <LockPanel>
             <LockDivider />
             <KeyList lock={lock} />
