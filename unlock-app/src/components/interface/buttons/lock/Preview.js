@@ -14,4 +14,4 @@ Preview.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
 }
 
-export default PreviewLock
+export default Preview

@@ -23,20 +23,12 @@ LayoutButton.propTypes = {
   href: PropTypes.string,
   title: PropTypes.string,
   children: PropTypes.node,
-  backgroundColor: PropTypes.string,
-  backgroundHoverColor: PropTypes.string,
-  fillColor: PropTypes.string,
-  fillHoverColor: PropTypes.string,
 }
 
 LayoutButton.defaultProps = {
   href: '#',
   title: '',
   children: null,
-  backgroundColor: '',
-  backgroundHoverColor: '',
-  fillColor: '',
-  fillHoverColor: '',
 }
 
 export const LockButton = ({ href , children, ...props }) => (
@@ -57,19 +49,11 @@ export const LockButton = ({ href , children, ...props }) => (
 LockButton.propTypes = {
   href: PropTypes.string,
   children: PropTypes.node,
-  backgroundColor: PropTypes.string,
-  backgroundHoverColor: PropTypes.string,
-  fillColor: PropTypes.string,
-  fillHoverColor: PropTypes.string,
 }
 
 LockButton.defaultProps = {
   href: '#',
   children: null,
-  backgroundColor: '',
-  backgroundHoverColor: '',
-  fillColor: '',
-  fillHoverColor: '',
 }
 
 export const Button = styled.a`
