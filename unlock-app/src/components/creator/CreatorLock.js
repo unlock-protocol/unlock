@@ -42,7 +42,7 @@ export class CreatorLock extends React.Component {
 
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
-    let outstandingKeys = lock.maxNumberOfKeys - lock.outstandingKeys || 0
+    let outstandingKeys = lock.outstandingKeys || 0
     let lockComponentStatusBlock = (
       <LockIconBarContainer>
         <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
@@ -120,6 +120,9 @@ export default withConfig(connect(mapStateToProps)(CreatorLock))
 export const LockRowGrid = 'grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
 
 const LockIconBarContainer = styled.div`
+  display: grid;
+  justify-items: end;
+  padding-right: 24px;
   visibility: hidden;
 `
 
