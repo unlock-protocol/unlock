@@ -7,8 +7,9 @@ import CreatorLockForm from './CreatorLockForm'
 export class CreatorLocks extends React.Component {
   constructor (props, context) {
     super(props, context)
+    const { showForm } = this.props
     this.state = {
-      showDashboardForm: !!this.props.showForm,
+      showDashboardForm: !!showForm,
     }
     this.toggleForm = this.toggleForm.bind(this)
   }
@@ -20,6 +21,9 @@ export class CreatorLocks extends React.Component {
   }
 
   render() {
+    const { locks } = this.props
+    const { showDashboardForm } = this.state
+
     return (
       <Locks>
         <LockHeaderRow>
@@ -31,8 +35,8 @@ export class CreatorLocks extends React.Component {
           <LockMinorHeader>Balance / Earnings</LockMinorHeader>
           <CreateButton onClick={this.toggleForm}>Create Lock</CreateButton>
         </LockHeaderRow>
-        {this.state.showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
-        {Object.values(this.props.locks).map((lock) => {
+        {showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
+        {Object.values(locks).map((lock) => {
           return (<CreatorLock key={lock.id} lock={lock} />)
         })}
       </Locks>

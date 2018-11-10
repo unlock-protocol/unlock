@@ -33,41 +33,59 @@ class CreatorLockForm extends React.Component {
   }
 
   handleSubmit () { 
+    const { account, createLock, hideAction } = this.props
+    const { 
+      expirationDuration, 
+      expirationDurationUnit, 
+      keyPriceCurrency,
+      maxNumberOfKeys,
+      keyPrice, 
+      name, 
+    } = this.state
+
     const lock = {
-      name: this.state.name,
-      expirationDuration: this.state.expirationDuration * this.state.expirationDurationUnit,
-      keyPrice: Web3Utils.toWei(this.state.keyPrice.toString(10), this.state.keyPriceCurrency),
-      maxNumberOfKeys: this.state.maxNumberOfKeys,
-      owner: this.props.account.address, 
+      name: name,
+      expirationDuration: expirationDuration * expirationDurationUnit,
+      keyPrice: Web3Utils.toWei(keyPrice.toString(10), keyPriceCurrency),
+      maxNumberOfKeys,
+      owner: account.address, 
       id: uniqid(),
     }
-    this.props.createLock(lock)
-    if (this.props.hideAction) this.props.hideAction()
+    createLock(lock)
+    if (hideAction) hideAction()
   }
 
   handleCancel(e) {
+    const { hideAction } = this.props
     e.stopPropagation() // This prevents submit from also being called
-    if (this.props.hideAction) this.props.hideAction()
+    if (hideAction) hideAction()
   }
 
   render() {
+    const { 
+      expirationDuration, 
+      maxNumberOfKeys,
+      keyPrice, 
+      name ,
+    } = this.state
+
     return (
       <FormLockRow>
         <Icon />
         <FormLockName>
-          <input type="text" name="name" onChange={this.handleChange} defaultValue={this.state.name} />
+          <input type="text" name="name" onChange={this.handleChange} defaultValue={name} />
         </FormLockName>
         <FormLockDuration>
-          <input type="text" name="expirationDuration" onChange={this.handleChange} defaultValue={this.state.expirationDuration} />
+          <input type="text" name="expirationDuration" onChange={this.handleChange} defaultValue={expirationDuration} />
           {' '}
 days
         </FormLockDuration>
         <FormLockKeys>
-          <input type="text" name="maxNumberOfKeys" onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
+          <input type="text" name="maxNumberOfKeys" onChange={this.handleChange} defaultValue={maxNumberOfKeys} />
         </FormLockKeys>
         <FormBalanceWithUnit>
           三
-          <input type="text" name="keyPrice" onChange={this.handleChange} defaultValue={this.state.keyPrice} />
+          <input type="text" name="keyPrice" onChange={this.handleChange} defaultValue={keyPrice} />
         </FormBalanceWithUnit>
         <div>-</div>
         <LockStatus>
