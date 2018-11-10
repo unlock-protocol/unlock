@@ -74,9 +74,9 @@ describe('CreatorLock', () => {
     const store = createUnlockStore()
 
     let wrapper = rtl.render(
-    <Provider store={store}>
-      <CreatorLock lock={lock} transaction={transaction} config={config} />
-    </Provider>)
+      <Provider store={store}>
+        <CreatorLock lock={lock} transaction={transaction} config={config} />
+      </Provider>)
 
     expect(wrapper.queryByText('1/10')).not.toBeNull()
   })
