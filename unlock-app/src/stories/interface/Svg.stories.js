@@ -73,6 +73,11 @@ storiesOf('Svg', Svg)
       <Svg.Jobs />
     )
   })
+  .add('Preview', () => {
+    return (
+      <Svg.Preview />
+    )
+  })
   .add('Unlock', () => {
     return (
       <Svg.Unlock />
