@@ -13,7 +13,7 @@ export default function Header({ forContent, title }) {
       }
       {!!forContent &&
         <Link href="/">
-          <a><Svg.UnlockWordMark height="28px" width="100%" /></a>
+          <a><Svg.UnlockWordMark height="28px" width="100%" name="Unlock" /></a>
         </Link>
       }
       <Buttons.About />
@@ -26,6 +26,11 @@ export default function Header({ forContent, title }) {
 Header.propTypes = {
   title: PropTypes.string,
   forContent: PropTypes.bool,
+}
+
+Header.defaultProps = {
+  title: 'Unlock',
+  forContent: false,
 }
 
 const TopHeader = styled.header`

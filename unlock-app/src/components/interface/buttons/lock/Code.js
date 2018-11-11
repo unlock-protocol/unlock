@@ -4,7 +4,7 @@ import { LockButton } from '../Button'
 
 const Code = (props) => (
   <LockButton title='Show embed code' {...props}>
-    <Svg.Code />
+    <Svg.Code name="Code" />
   </LockButton>
 )
 

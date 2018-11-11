@@ -146,7 +146,7 @@ export default class Web3Service {
    * @param {function} callback
    * @return Promise<Lock>
    */
-  createLock(lock, callback) {
+  createLock(lock, owner, callback) {
     return new Promise((resolve) => {
       const unlock = new this.web3.eth.Contract(UnlockContract.abi, UnlockContract.networks[this.networkId].address)
 
@@ -166,10 +166,10 @@ export default class Web3Service {
 
       return this.sendTransaction({
         to: UnlockContract.networks[this.networkId].address,
-        from: lock.owner.address,
+        from: owner.address,
         data: data,
         gas: 2000000,
-        privateKey: lock.owner.privateKey,
+        privateKey: owner.privateKey,
         contractAbi: UnlockContract.abi,
       }, (error, { event, args }) => {
         if (error) {
@@ -185,12 +185,12 @@ export default class Web3Service {
           transaction.confirmations += 1
           callback(transaction, lock)
         } else if (event === 'NewLock') {
-          // Refresh lock object with the values from the smart contract
-          return this.getLock(args.newLockAddress).then((savedLock) => {
-            lock = Object.assign(savedLock, lock)
-            callback(transaction, lock)
-            return resolve(lock)
-          })
+          lock.address = args.newLockAddress
+          return this.refreshLock(lock)
+            .then((lock) => {
+              callback(transaction, lock)
+              return resolve(lock)
+            })
         }
       }).catch((error) => {
         console.error('TRANSACTION ERROR')
@@ -261,6 +261,18 @@ export default class Web3Service {
         return resolve(transaction)
       })
     })
+  }
+
+  /**
+   * Refresh the lock's data
+   * @return Promise<Lock>
+   */
+  refreshLock(lock) {
+    return this.getLock(lock.address)
+      .then((savedLock) => {
+        lock = Object.assign(lock, savedLock)
+        return lock
+      })
   }
 
   /**

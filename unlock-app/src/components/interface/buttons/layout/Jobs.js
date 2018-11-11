@@ -4,7 +4,7 @@ import { LayoutButton } from '../Button'
 
 const Jobs = () => (
   <LayoutButton href="/jobs" title="Join us">
-    <Svg.Jobs />
+    <Svg.Jobs name="Jobs" />
   </LayoutButton>
 )
 

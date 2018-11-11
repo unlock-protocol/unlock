@@ -91,7 +91,7 @@ jest.mock('../../services/iframeService', () => {
 beforeEach(() => {
   // Making sure all mocks are fresh and reset before each test
   Object.keys(mockWeb3Service).forEach((key) => {
-    mockWeb3Service[key] = jest.fn().mockReturnValue(new Promise((resolve, reject) => {return resolve()}))
+    mockWeb3Service[key] = jest.fn().mockReturnValue(new Promise((resolve) => {return resolve()}))
   })
   Object.keys(iframeServiceMock).forEach((key) => {
     iframeServiceMock[key] = jest.fn()
@@ -169,10 +169,10 @@ describe('Lock middleware', () => {
   })
 
   it('should handle CREATE_LOCK by calling web3Service\'s createLock', () => {
-    const { next, invoke } = create()
+    const { next, invoke, store } = create()
     const action = { type: CREATE_LOCK, lock }
     invoke(action)
-    expect(mockWeb3Service.createLock).toHaveBeenCalledWith(lock, expect.anything()) // TODO: Can we be more specific? (this is a function)
+    expect(mockWeb3Service.createLock).toHaveBeenCalledWith(lock, store.getState().network.account, expect.anything()) // TODO: Can we be more specific? (this is a function)
     expect(next).toHaveBeenCalledWith(action)
   })
 

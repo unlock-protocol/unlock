@@ -13,7 +13,7 @@ import withConfig from '../../utils/withConfig'
 
 export class CreatorLock extends React.Component {
   constructor (props, context) {
-    super(props)
+    super(props, context)
     this.state = {
       showEmbedCode: false,
       showKeys: false,
@@ -38,10 +38,11 @@ export class CreatorLock extends React.Component {
     // TODO add all-time balance to lock
 
     const { lock, transaction, config } = this.props
+    const { showEmbedCode, showKeys } = this.state
 
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
-    let outstandingKeys = lock.maxNumberOfKeys - lock.outstandingKeys || 0
+    let outstandingKeys = lock.outstandingKeys || 0
     let lockComponentStatusBlock = (
       <LockIconBarContainer>
         <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
@@ -79,13 +80,13 @@ export class CreatorLock extends React.Component {
         <Balance amount={lock.keyPrice} />
         <Balance amount={lock.balance} />
         {lockComponentStatusBlock}
-        {this.state.showEmbedCode &&
+        {showEmbedCode &&
           <LockPanel>
             <LockDivider />
             <EmbedCodeSnippet lock={lock} />
           </LockPanel>
         }
-        {!this.state.showEmbedCode && this.state.showKeys &&
+        {!showEmbedCode && showKeys &&
           <LockPanel>
             <LockDivider />
             <KeyList lock={lock} />
@@ -97,9 +98,13 @@ export class CreatorLock extends React.Component {
 }
 
 CreatorLock.propTypes = {
-  lock: UnlockPropTypes.lock,
+  lock: UnlockPropTypes.lock.isRequired,
   transaction: UnlockPropTypes.transaction,
-  config: UnlockPropTypes.configuration,
+  config: UnlockPropTypes.configuration.isRequired,
+}
+
+CreatorLock.defaultProps = {
+  transaction: null,
 }
 
 const mapStateToProps = (state, { lock }) => {
@@ -115,6 +120,9 @@ export default withConfig(connect(mapStateToProps)(CreatorLock))
 export const LockRowGrid = 'grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
 
 const LockIconBarContainer = styled.div`
+  display: grid;
+  justify-items: end;
+  padding-right: 24px;
   visibility: hidden;
 `
 

@@ -33,6 +33,8 @@ export default function lockMiddleware ({ getState, dispatch }) {
           Object.values(getState().transactions).forEach((transaction) => dispatch(refreshTransaction(transaction)))
           // We refresh keys
           Object.values(getState().keys).forEach((key) => web3Service.refreshKey(key))
+          // We refresh locks
+          Object.values(getState().locks).forEach((lock) => web3Service.refreshLock(lock))
         }).catch((error) => {
           // we could not connect
           // TODO: show error to user
@@ -67,12 +69,12 @@ export default function lockMiddleware ({ getState, dispatch }) {
         })
       } else if (action.type === CREATE_LOCK) {
         // Create a lock
-        web3Service.createLock(action.lock, (transaction, lock) => {
+        web3Service.createLock(action.lock, getState().network.account, (transaction, lock) => {
           dispatch(addTransaction(transaction))
           dispatch(resetLock(lock)) // Update the lock accordingly
         }).then(() => {
           // Lock has been deployed and confirmed, we can update the balance
-          return web3Service.getAddressBalance(action.lock.owner.address)
+          return web3Service.getAddressBalance(getState().network.account.address)
         }).then((balance) => {
           dispatch(resetAccountBalance(balance))
         })
@@ -81,7 +83,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
         const lock = Object.values(getState().locks).find((lock) => lock.address === action.key.lockAddress)
         web3Service.purchaseKey(action.key, account, lock, (transaction) => {
           dispatch(addTransaction(transaction))
-        }).then((key) => {
+        }).then(() => {
           return web3Service.getAddressBalance(account.address)
         }).then((balance) => {
           dispatch(resetAccountBalance(balance))
@@ -92,12 +94,13 @@ export default function lockMiddleware ({ getState, dispatch }) {
             dispatch(updateTransaction(transaction))
           })
           .catch((error) => {
+            console.error(error)
             dispatch(deleteTransaction(action.transaction))
           })
       } else if (action.type === WITHDRAW_FROM_LOCK) {
         const account = getState().network.account
         web3Service.withdrawFromLock(action.lock, account)
-          .then((lock) => {
+          .then(() => {
             return Promise.all([
               web3Service.getAddressBalance(account.address),
               web3Service.getAddressBalance(action.lock.address),

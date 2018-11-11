@@ -12,7 +12,7 @@ export const lock = PropTypes.shape({
   keyPrice: PropTypes.string,
   maxNumberOfKeys: PropTypes.number,
   owner: PropTypes.string,
-  outstandingKeys: PropTypes.string,
+  outstandingKeys: PropTypes.number,
 })
 
 export const transaction = PropTypes.shape({
