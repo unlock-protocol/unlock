@@ -20,8 +20,8 @@ describe('CreatorLock', () => {
       address: '0x1234567890',
       transaction: '0x0987654321',
       keyPrice: '1',
-      keyBalance: '1',
-
+      balance: '1',
+      expirationDuration: 100,
     }
     const transaction = {
       id: '0x098',
@@ -56,9 +56,10 @@ describe('CreatorLock', () => {
       address: '0x1234567890',
       transaction: '0x0987654321',
       keyPrice: '1',
-      keyBalance: '1',
+      balance: '1',
       outstandingKeys: 1,
       maxNumberOfKeys: 10,
+      expirationDuration: 100,
     }
     const transaction = {
       id: '0x098',
