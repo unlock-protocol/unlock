@@ -38,7 +38,7 @@ exports[`withConfig High Order Component when the current network is not in the 
         
       </h1>
       <a
-        className="s850ddk-0 dGmMFz"
+        className="s850ddk-0 hYJZpg"
         href="/about"
         onClick={[Function]}
       >
@@ -60,7 +60,7 @@ exports[`withConfig High Order Component when the current network is not in the 
         </small>
       </a>
       <a
-        className="s850ddk-0 dGmMFz"
+        className="s850ddk-0 hYJZpg"
         href="/jobs"
         onClick={[Function]}
       >
@@ -81,7 +81,7 @@ exports[`withConfig High Order Component when the current network is not in the 
         </small>
       </a>
       <a
-        className="s850ddk-0 dGmMFz"
+        className="s850ddk-0 hYJZpg"
         href="https://github.com/unlock-protocol/unlock"
         onClick={[Function]}
       >
