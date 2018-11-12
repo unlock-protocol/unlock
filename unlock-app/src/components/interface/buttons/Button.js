@@ -8,8 +8,8 @@ const clickAction = (e, action) => {
   if (action) action()
 }
 
-export const LayoutButton = ({href, title, children, action, ...props}) => (
-  <Link href={href}>
+export const LayoutButton = ({href, title, children, action, ...props}) => {
+  const button = (
     <Button
       href={href}
       backgroundColor="var(--grey)"
@@ -22,8 +22,16 @@ export const LayoutButton = ({href, title, children, action, ...props}) => (
       {children}
       <Label>{title}</Label>
     </Button>
-  </Link>
-)
+  )
+  if (href) {
+    return (
+      <Link href={href}>
+        {button}
+      </Link>
+    )
+  }
+  return button
+}
 
 LayoutButton.propTypes = {
   href: PropTypes.string,
@@ -37,7 +45,7 @@ LayoutButton.propTypes = {
 }
 
 LayoutButton.defaultProps = {
-  href: '#',
+  href: null,
   title: '',
   children: null,
   action: null,
@@ -47,8 +55,8 @@ LayoutButton.defaultProps = {
   fillHoverColor: 'white',
 }
 
-export const LockButton = ({ href, children, action, ...props }) => (
-  <Link href={href}>
+export const LockButton = ({ href , children, action, ...props }) => {
+  const button = (
     <Button
       href={href}
       backgroundColor="var(--lightgrey)"
@@ -60,8 +68,16 @@ export const LockButton = ({ href, children, action, ...props }) => (
     >
       {children}
     </Button>
-  </Link>
-)
+  )
+  if (href) {
+    return (
+      <Link href={href}>
+        {button}
+      </Link>
+    )
+  }
+  return button
+}
 
 LockButton.propTypes = {
   href: PropTypes.string,
@@ -74,7 +90,7 @@ LockButton.propTypes = {
 }
 
 LockButton.defaultProps = {
-  href: '#',
+  href: null,
   children: null,
   action: null,
   backgroundColor: 'var(--lightgrey)',
