@@ -42,7 +42,7 @@ LayoutButton.defaultProps = {
   children: null,
 }
 
-export const LockButton = ({ href, children, ...props }) => (
+export const LockButton = ({ href, children, action, ...props }) => (
   <Link href={href}>
     <Button
       href={href}
