@@ -24,7 +24,7 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
     expect(wrapper.queryByText('Show me')).not.toBe(null)
   })
 
-  test('should show the children if there is no valid key for this lock', () => {
+  it('should show the children if there is no valid key for this lock', () => {
     const locks = [{
       address: '0x123',
     }]
