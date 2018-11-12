@@ -57,6 +57,6 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
       <ShowUnlessUserHasKeyToAnyLock locks={locks} keys={keys}>
         Hide me
       </ShowUnlessUserHasKeyToAnyLock>)
-    expect(wrapper.queryByText('')).not.toBe(null)
+    expect(wrapper.container.firstChild).toBeNull()
   })
 })
