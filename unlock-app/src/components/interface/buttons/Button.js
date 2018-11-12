@@ -3,8 +3,8 @@ import React from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
 
-export const LayoutButton = ({href, title, children, ...props}) => (
-  <Link href={href}>
+export const LayoutButton = ({href, title, children, ...props}) => {
+  const button = (
     <Button
       href={href}
       backgroundColor="var(--grey)"
@@ -16,8 +16,16 @@ export const LayoutButton = ({href, title, children, ...props}) => (
       {children}
       <Label>{title}</Label>
     </Button>
-  </Link>
-)
+  )
+  if (href) {
+    return (
+      <Link href={href}>
+        {button}
+      </Link>
+    )
+  }
+  return button
+}
 
 LayoutButton.propTypes = {
   href: PropTypes.string,
@@ -26,13 +34,13 @@ LayoutButton.propTypes = {
 }
 
 LayoutButton.defaultProps = {
-  href: '#',
+  href: null,
   title: '',
   children: null,
 }
 
-export const LockButton = ({ href , children, ...props }) => (
-  <Link href={href}>
+export const LockButton = ({ href , children, ...props }) => {
+  const button = (
     <Button
       href={href}
       backgroundColor="var(--lightgrey)"
@@ -43,8 +51,16 @@ export const LockButton = ({ href , children, ...props }) => (
     >
       {children}
     </Button>
-  </Link>
-)
+  )
+  if (href) {
+    return (
+      <Link href={href}>
+        {button}
+      </Link>
+    )
+  }
+  return button
+}
 
 LockButton.propTypes = {
   href: PropTypes.string,
@@ -52,7 +68,7 @@ LockButton.propTypes = {
 }
 
 LockButton.defaultProps = {
-  href: '#',
+  href: null,
   children: null,
 }
 
