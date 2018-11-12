@@ -55,7 +55,7 @@ export class CreatorLock extends React.Component {
     let outstandingKeys = lock.outstandingKeys || 0
     let lockComponentStatusBlock = (
       <LockIconBarContainer>
-        <LockIconBar lock={lock} withdraw={this.startWithdrawal} toggleCode={this.toggleEmbedCode} />
+        <LockIconBar withdraw={this.startWithdrawal} toggleCode={this.toggleEmbedCode} />
       </LockIconBarContainer>)
 
     if (!transaction) {
