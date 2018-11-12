@@ -40,6 +40,11 @@ LayoutButton.defaultProps = {
   href: '#',
   title: '',
   children: null,
+  action: null,
+  backgroundColor: 'var(--grey)',
+  backgroundHoverColor: 'var(--link)',
+  fillColor: 'var(--grey)',
+  fillHoverColor: 'white',
 }
 
 export const LockButton = ({ href, children, action, ...props }) => (
@@ -71,6 +76,11 @@ LockButton.propTypes = {
 LockButton.defaultProps = {
   href: '#',
   children: null,
+  action: null,
+  backgroundColor: 'var(--lightgrey)',
+  backgroundHoverColor: 'var(--link)',
+  fillColor: 'var(--grey)',
+  fillHoverColor: 'white',
 }
 
 export const Button = styled.a`
