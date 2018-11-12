@@ -6,7 +6,7 @@ import Buttons from './buttons/layout'
 export const Error = ({ children }) => (
   <Wrapper>
     {children}
-    <Close size="16px">X</Close>
+    <Buttons.Close as="button" size="16px">X</Buttons.Close>
   </Wrapper>
 )
 
@@ -34,8 +34,4 @@ const Wrapper = styled.section`
   a {
     color: var(--red);
   }
-`
-
-const Close = styled(Buttons.Close)`
-
 `

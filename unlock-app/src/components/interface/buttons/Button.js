@@ -63,6 +63,8 @@ export const Button = styled.a`
   height: ${props => props.size || ' 24px'};
   width: ${props => props.size || ' 24px'};
   display: grid;
+  padding: 0;
+  border: 0;
 
   > svg {
     fill: ${props => props.fillColor || 'white'};
