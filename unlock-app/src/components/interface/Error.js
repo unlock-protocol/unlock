@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { setError } from '../../actions/error'
-import Buttons from './buttons/layout'
+import { Close } from './buttons/layout'
 
 export const Error = ({ children, error, close }) => {
   const content = children || error
@@ -13,7 +13,7 @@ export const Error = ({ children, error, close }) => {
   return (
     <Wrapper>
       {content}
-      <Close onClick={close} size="16px">X</Close>
+      <Close onClick={close} as="button" size="16px">X</Close>
     </Wrapper>
   )
 }
@@ -56,7 +56,4 @@ const Wrapper = styled.section`
   a {
     color: var(--red);
   }
-`
-
-const Close = styled(Buttons.Close)`
 `
