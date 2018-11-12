@@ -43,11 +43,11 @@ export default function configure(environment, envVars = process.env ) {
 
   let env = 'dev' // default
   if ((environment.location && environment.location.hostname === 'staging.unlock-protocol.com') ||
-    envVars['UNLOCK_ENV'] === 'STAGING'
+    envVars['UNLOCK_ENV'] === 'staging'
   ) {
     env = 'staging'
   } else if ((environment.location && environment.location.hostname === 'unlock-protocol.com') ||
-    envVars['UNLOCK_ENV'] === 'PROD'
+    envVars['UNLOCK_ENV'] === 'prod'
   ) {
     env = 'prod'
   } else if (envVars['NODE_ENV'] === 'test') {
