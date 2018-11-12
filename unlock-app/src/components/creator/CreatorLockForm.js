@@ -89,10 +89,10 @@ days
         </FormBalanceWithUnit>
         <div>-</div>
         <LockStatus>
-          <LockButton onClick={this.handleSubmit}>
+          <LockButton action={this.handleSubmit}>
             Submit
           </LockButton>
-          <LockButton cancel onClick={this.handleCancel}>
+          <LockButton cancel action={this.handleCancel}>
             Cancel
           </LockButton>
         </LockStatus>
