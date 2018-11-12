@@ -1,7 +1,6 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import * as rtl from 'react-testing-library'
-import 'jest-dom/extend-expect'
 
 import { Home } from '../../pages/index'
 import { Jobs } from '../../pages/jobs'

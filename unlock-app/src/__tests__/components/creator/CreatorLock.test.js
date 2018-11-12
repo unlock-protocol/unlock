@@ -1,6 +1,5 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
-import 'jest-dom/extend-expect'
 import { Provider } from 'react-redux'
 
 import { CreatorLock } from '../../../components/creator/CreatorLock'
@@ -11,7 +10,6 @@ jest.mock('next/link', () => {
   return ({children}) => children
 })
 
-afterEach(rtl.cleanup)
 describe('CreatorLock', () => {
   it ('should show embed code when the button is clicked', () => {
 

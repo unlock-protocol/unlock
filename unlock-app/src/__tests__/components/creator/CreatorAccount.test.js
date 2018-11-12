@@ -1,6 +1,5 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
-import 'jest-dom/extend-expect'
 import { Provider } from 'react-redux'
 // Note, we use name import to import the non connected version of the component for testing
 import { CreatorAccount } from '../../../components/creator/CreatorAccount'
