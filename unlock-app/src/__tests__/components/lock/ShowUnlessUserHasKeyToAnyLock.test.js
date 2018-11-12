@@ -6,7 +6,7 @@ import {ShowUnlessUserHasKeyToAnyLock} from '../../../components/lock/ShowUnless
 
 describe('ShowUnlessUserHasKeyToAnyLock', () => {
 
-  test('should show the children if there is no key for this lock', () => {
+  it('should show the children if there is no key for this lock', () => {
     const locks = [{
       address: '0x123',
     }]
