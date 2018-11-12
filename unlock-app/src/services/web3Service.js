@@ -147,7 +147,7 @@ export default class Web3Service {
    * @return Promise<Lock>
    */
   createLock(lock, owner, callback) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const unlock = new this.web3.eth.Contract(UnlockContract.abi, UnlockContract.networks[this.networkId].address)
 
       const data = unlock.methods.createLock(
@@ -193,9 +193,8 @@ export default class Web3Service {
             })
         }
       }).catch((error) => {
-        console.error('TRANSACTION ERROR')
-        console.log(error)
-
+        console.error(error)
+        return reject(error)
       })
     })
   }
