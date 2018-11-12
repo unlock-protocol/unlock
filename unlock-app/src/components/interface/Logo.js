@@ -18,6 +18,10 @@ RoundedLogo.propTypes = {
   size: PropTypes.string,
 }
 
+RoundedLogo.defaultProps = {
+  size: '56px',
+}
+
 export default RoundedLogo
 
 const Circle = styled.div`

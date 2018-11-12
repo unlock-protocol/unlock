@@ -4,13 +4,14 @@ import UnlockPropTypes from '../../../../propTypes'
 import Svg from '../../svg'
 import { LockButton } from '../Button'
 
-const PreviewLock = ({ lock, ...props }) => (
+const Preview = ({ lock, ...props }) => (
   <LockButton href={`/demo/${lock.address}`} title='Preview lock' {...props}>
-    <Svg.LockClosed />
+    <Svg.Preview name="Preview Lock" />
   </LockButton>
 )
 
-PreviewLock.propTypes = {
-  lock: UnlockPropTypes.lock,
+Preview.propTypes = {
+  lock: UnlockPropTypes.lock.isRequired,
 }
-export default PreviewLock
+
+export default Preview

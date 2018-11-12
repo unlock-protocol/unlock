@@ -1,35 +1,52 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import Buttons from '../../components/interface/buttons/layout'
+import LayoutButtons from '../../components/interface/buttons/layout'
+import LockButtons from '../../components/interface/buttons/lock'
 
-storiesOf('Buttons', Buttons)
+storiesOf('Buttons')
   .add('Github', () => {
     return (
-      <Buttons.Github />
+      <LayoutButtons.Github />
     )
   })
   .add('About', () => {
     return (
-      <Buttons.About />
+      <LayoutButtons.About />
     )
   })
   .add('Jobs', () => {
     return (
-      <Buttons.Jobs />
+      <LayoutButtons.Jobs />
     )
   })
   .add('Close', () => {
     return (
-      <Buttons.Close />
+      <LayoutButtons.Close as="button" />
     )
   })
   .add('Close Large', () => {
     return (
-      <Buttons.Close size="100px" />
+      <LayoutButtons.Close as="button" size="100px" />
     )
   })
   .add('Close Small', () => {
     return (
-      <Buttons.Close size="16px" />
+      <LayoutButtons.Close as="button" size="16px" />
+    )
+  })
+  .add('Withdraw', () => {
+    const lock = {
+      address: '0xabc',
+    }
+    return (
+      <LockButtons.Withdraw lock={lock} />
+    )
+  })
+  .add('Preview', () => {
+    const lock = {
+      address: '0xabc',
+    }
+    return (
+      <LockButtons.Preview lock={lock} />
     )
   })

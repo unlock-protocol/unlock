@@ -10,6 +10,7 @@ export const setAccount = account => ({
 
 export const createAccount = account => ({
   type: CREATE_ACCOUNT,
+  account,
 })
 
 export const resetAccountBalance = (balance) => ({

@@ -8,7 +8,7 @@ const clickAction = (e, action) => {
   if (action) action()
 }
 
-export const LayoutButton = ({href = '#', title, children, action, ...props}) => (
+export const LayoutButton = ({href, title, children, action, ...props}) => (
   <Link href={href}>
     <Button
       href={href}
@@ -36,7 +36,13 @@ LayoutButton.propTypes = {
   fillHoverColor: PropTypes.string,
 }
 
-export const LockButton = ({ href = '#', children, action, ...props }) => (
+LayoutButton.defaultProps = {
+  href: '#',
+  title: '',
+  children: null,
+}
+
+export const LockButton = ({ href, children, ...props }) => (
   <Link href={href}>
     <Button
       href={href}
@@ -62,6 +68,11 @@ LockButton.propTypes = {
   fillHoverColor: PropTypes.string,
 }
 
+LockButton.defaultProps = {
+  href: '#',
+  children: null,
+}
+
 export const Button = styled.a`
   background-color: ${props => props.backgroundColor || 'var(--grey)'};
   cursor: pointer;
@@ -69,6 +80,8 @@ export const Button = styled.a`
   height: ${props => props.size || ' 24px'};
   width: ${props => props.size || ' 24px'};
   display: grid;
+  padding: 0;
+  border: 0;
 
   > svg {
     fill: ${props => props.fillColor || 'white'};

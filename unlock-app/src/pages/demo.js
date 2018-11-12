@@ -13,7 +13,7 @@ import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasK
 import { pageTitle } from '../constants'
 
 export class Demo extends React.Component {
-  static async getInitialProps({ req, query: { lockaddress } }) {
+  static async getInitialProps({ query: { lockaddress } }) {
 
     // passing :lockaddress query to the component as a prop
     return { lockAddress: lockaddress }
@@ -61,8 +61,8 @@ export class Demo extends React.Component {
 }
 
 Demo.propTypes = {
-  locks: UnlockPropTypes.locks,
-  lockAddress: UnlockPropTypes.address,
+  locks: UnlockPropTypes.locks.isRequired,
+  lockAddress: UnlockPropTypes.address.isRequired,
 }
 
 const mapStateToProps = state => {
