@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import UnlockPropTypes from '../../propTypes'
 import CreatorLock, { LockRowGrid } from './CreatorLock'
 import CreatorLockForm from './CreatorLockForm'
+import Error from '../interface/Error'
 
 export class CreatorLocks extends React.Component {
   constructor (props, context) {
@@ -35,6 +36,7 @@ export class CreatorLocks extends React.Component {
           <LockMinorHeader>Balance / Earnings</LockMinorHeader>
           <CreateButton onClick={this.toggleForm}>Create Lock</CreateButton>
         </LockHeaderRow>
+        <Error />
         {showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
         {Object.values(locks).map((lock) => {
           return (<CreatorLock key={lock.id} lock={lock} />)
