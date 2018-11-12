@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import * as rtl from 'react-testing-library'
 // Note, we use name import to import the non connected version of the component for testing
 import { Web3Provider } from '../../components/Web3Provider'
 
@@ -17,33 +17,40 @@ describe('Provider Component', () => {
     providers,
   }
 
-  const component = (<Web3Provider provider={provider} setProvider={setProvider} config={config} />)
-  const wrapper = shallow(component)
+  let component
+  let wrapper
+  let select
+
+  beforeEach(() => {
+    component = (<Web3Provider provider={provider} setProvider={setProvider} config={config} />)
+    wrapper = rtl.render(component)
+    select = wrapper.queryBySelectText(provider)
+  })
 
   it('shows the provider picker', () => {
-    const options = wrapper.find('option')
+    const options = select.querySelectorAll('option')
 
-    expect(options.at(0).equals(
-      <option value="alpha">
-        alpha
-      </option>)).toEqual(true)
-    expect(options.at(1).equals(
-      <option value="beta">
-        beta
-      </option>)).toEqual(true)
-    expect(options.at(2).equals(
-      <option value="gamma">
-        gamma
-      </option>)).toEqual(true)
     expect(options).toHaveLength(3)
+
+    expect(wrapper.getByText('alpha').value).toBe('alpha')
+    expect(wrapper.getByText('beta').value).toBe('beta')
+    expect(wrapper.getByText('gamma').value).toBe('gamma')
   })
 
   it('triggers a change in the store when a different provider is picked', () => {
-    wrapper.find('select').simulate('change', { target: { value: 'beta' } })
+    select.value = 'beta'
+    rtl.fireEvent.change(select)
+
     expect(setProvider).toBeCalledWith('beta')
-    wrapper.find('select').simulate('change', { target: { value: 'gamma' } })
+
+    select.value = 'gamma'
+    rtl.fireEvent.change(select)
+
     expect(setProvider).toBeCalledWith('gamma')
-    wrapper.find('select').simulate('change', { target: { value: 'alpha' } })
+
+    select.value = 'alpha'
+    rtl.fireEvent.change(select)
+
     expect(setProvider).toBeCalledWith('alpha')
   })
 

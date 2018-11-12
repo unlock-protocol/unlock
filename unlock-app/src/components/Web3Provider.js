@@ -24,7 +24,7 @@ export const Web3Provider = ({ setProvider, config, provider }) => (
           <div className="card-body">
 
             <div className="input-group mb-3">
-              <select className="custom-select" type="select" value={provider} onChange={(event) => setProvider(event.target.value)}>
+              <select className="custom-select" value={provider} onChange={(event) => setProvider(event.target.value)}>
                 {Object.keys(config.providers).map((name) => {
                   return (<option value={name} key={name}>{name}</option>)
                 })}

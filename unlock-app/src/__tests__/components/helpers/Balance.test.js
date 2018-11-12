@@ -1,10 +1,8 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
-import 'jest-dom/extend-expect'
 // Note, we use name import to import the non connected version of the component for testing
 import { Balance } from '../../../components/helpers/Balance'
 
-afterEach(rtl.cleanup)
 describe('Balance Component', () => {
   const unit = 'szabo'
   const conversion = { USD: 195.99 }

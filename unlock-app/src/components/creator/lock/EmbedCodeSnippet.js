@@ -25,7 +25,7 @@ export function EmbedCodeSnippet({ lock }) {
   return (
     <CodeControls>
       <Label>Code snippet</Label>
-      <CodeSnippet value={embedCode(lock)} onClick={selectAll} />
+      <CodeSnippet value={embedCode(lock)} onClick={selectAll} readOnly />
       <Actions>
         <CopyToClipboard text={embedCode(lock)}>
           <Buttons.Copy as="button" />

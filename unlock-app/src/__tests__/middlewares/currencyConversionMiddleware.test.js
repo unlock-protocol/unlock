@@ -8,7 +8,7 @@ describe('Currency conversion service retrieval middleware', () => {
   const response2 = {'data':{'base':'ETH','currency':'USD','amount':'198.20'}}
   const APIaddress = 'https://api.coinbase.com/v2/prices/ETH-USD/buy'
 
-  test('service called, action dispatched to set currency conversion rate', () => {
+  it('service called, action dispatched to set currency conversion rate', () => {
     jest.useFakeTimers()
     const middleware = require('../../middlewares/currencyConversionMiddleware').default
     const store = {
@@ -34,7 +34,7 @@ describe('Currency conversion service retrieval middleware', () => {
 
     expect(store.dispatch).toHaveBeenCalledWith(setConversionRate('USD', '198.20'))
   })
-  test('service called, values are the same, so don\'t dispatch', () => {
+  it('service called, values are the same, so don\'t dispatch', () => {
     jest.useFakeTimers()
     const middleware = require('../../middlewares/currencyConversionMiddleware').default
     const store = {

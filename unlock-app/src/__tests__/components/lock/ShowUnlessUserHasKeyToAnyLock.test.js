@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import * as rtl from 'react-testing-library'
 
 import {ShowUnlessUserHasKeyToAnyLock} from '../../../components/lock/ShowUnlessUserHasKeyToAnyLock'
 
@@ -15,12 +15,12 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
       },
     }
 
-    const wrapper = shallow(
+    const wrapper = rtl.render(
       <ShowUnlessUserHasKeyToAnyLock locks={locks} keys={keys}>
         Show me
       </ShowUnlessUserHasKeyToAnyLock>)
 
-    expect(wrapper.text()).toEqual('Show me')
+    expect(wrapper.queryByText('Show me')).not.toBe(null)
   })
 
   it('should show the children if there is no valid key for this lock', () => {
@@ -34,11 +34,11 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
       },
     }
 
-    const wrapper = shallow(
+    const wrapper = rtl.render(
       <ShowUnlessUserHasKeyToAnyLock locks={locks} keys={keys}>
         Show me
       </ShowUnlessUserHasKeyToAnyLock>)
-    expect(wrapper.text()).toEqual('Show me')
+    expect(wrapper.queryByText('Show me')).not.toBe(null)
   })
 
   it('should not show the children if there is a valid key', () => {
@@ -52,10 +52,10 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
       },
     }
 
-    const wrapper = shallow(
+    const wrapper = rtl.render(
       <ShowUnlessUserHasKeyToAnyLock locks={locks} keys={keys}>
         Hide me
       </ShowUnlessUserHasKeyToAnyLock>)
-    expect(wrapper.text()).toEqual('')
+    expect(wrapper.container.firstChild).toBeNull()
   })
 })
