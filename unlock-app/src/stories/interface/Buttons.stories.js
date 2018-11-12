@@ -21,17 +21,17 @@ storiesOf('Buttons')
   })
   .add('Close', () => {
     return (
-      <LayoutButtons.Close />
+      <LayoutButtons.Close as="button" />
     )
   })
   .add('Close Large', () => {
     return (
-      <LayoutButtons.Close size="100px" />
+      <LayoutButtons.Close as="button" size="100px" />
     )
   })
   .add('Close Small', () => {
     return (
-      <LayoutButtons.Close size="16px" />
+      <LayoutButtons.Close as="button" size="16px" />
     )
   })
   .add('Withdraw', () => {

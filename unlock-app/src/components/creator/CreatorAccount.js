@@ -28,10 +28,10 @@ export function CreatorAccount({ account, network }) {
         <Label>Balance</Label>
         <Label>Earning</Label>
         <DoubleHeightCell>
-          <Buttons.Upload />
+          <Buttons.Upload as="button" />
         </DoubleHeightCell>
         <DoubleHeightCell>
-          <Buttons.Etherscan />
+          <Buttons.Etherscan as="button" />
         </DoubleHeightCell>
         <DoubleHeightCell>
           {/* reinstate download / export functionality when we're ready <Buttons.Download /> */}
