@@ -32,13 +32,13 @@ class CreatorLockForm extends React.Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  handleSubmit () { 
+  handleSubmit () {
     const lock = {
       name: this.state.name,
       expirationDuration: this.state.expirationDuration * this.state.expirationDurationUnit,
       keyPrice: Web3Utils.toWei(this.state.keyPrice.toString(10), this.state.keyPriceCurrency),
       maxNumberOfKeys: this.state.maxNumberOfKeys,
-      owner: this.props.account.address, 
+      owner: this.props.account.address,
       id: uniqid(),
     }
     this.props.createLock(lock)
@@ -71,10 +71,10 @@ days
         </FormBalanceWithUnit>
         <div>-</div>
         <LockStatus>
-          <LockButton onClick={this.handleSubmit}>
+          <LockButton action={this.handleSubmit}>
             Submit
           </LockButton>
-          <LockButton cancel onClick={this.handleCancel}>
+          <LockButton cancel action={this.handleCancel}>
             Cancel
           </LockButton>
         </LockStatus>
