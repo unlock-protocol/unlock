@@ -17,9 +17,15 @@ describe('Provider Component', () => {
     providers,
   }
 
-  const component = (<Web3Provider provider={provider} setProvider={setProvider} config={config} />)
-  const wrapper = rtl.render(component)
-  const select = wrapper.queryBySelectText(provider)
+  let component
+  let wrapper
+  let select
+
+  beforeEach(() => {
+    component = (<Web3Provider provider={provider} setProvider={setProvider} config={config} />)
+    wrapper = rtl.render(component)
+    select = wrapper.queryBySelectText(provider)
+  })
 
   it('shows the provider picker', () => {
     const options = select.querySelectorAll('option')
