@@ -134,8 +134,8 @@ export const LockRow = styled.div`
   }
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
   font-weight: 200;
-  min-height: 60px;
-  padding-left: 8px;
+  min-height: 48px;
+  padding: 16px 0 0 8px;
   color: var(--slate);
   font-size: 14px;
   box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.08);
@@ -143,10 +143,10 @@ export const LockRow = styled.div`
   display: grid;
   grid-gap: 16px;
   ${LockRowGrid}
-  grid-template-rows: 60px;
+  grid-template-rows: 48px;
   grid-column-gap: 16px;
   grid-row-gap: 0;
-  align-items: center;
+  align-items: normal;
   cursor: pointer;
 `
 

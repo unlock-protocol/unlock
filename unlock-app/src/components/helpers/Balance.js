@@ -77,6 +77,9 @@ export const Currency = styled.span`
 
 export const CurrencySymbol = styled.span`
   width: 1.3em;
+  text-align: right;
+  padding-right: 8px;
+
 `
 
 export const Eth = styled(CurrencySymbol)`
