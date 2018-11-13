@@ -27,11 +27,12 @@ pragma solidity 0.4.24;
  */
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "zos-lib/contracts/Initializable.sol";
 import "./PublicLock.sol";
 import "./interfaces/IUnlock.sol";
 
 
-contract Unlock is IUnlock, Ownable {
+contract Unlock is IUnlock, Ownable, Initializable {
 
   /**
    * The struct for a lock
@@ -63,19 +64,16 @@ contract Unlock is IUnlock, Ownable {
     address indexed newLockAddress
   );
 
-  bool internal initialized;
-
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
   function initialize(
     address _owner
   )
     public
+    initializer()
   {
-    require(!initialized);
     owner = _owner;
     grossNetworkProduct = 0;
     totalDiscountGranted = 0;
-    initialized = true;
   }
 
   /**

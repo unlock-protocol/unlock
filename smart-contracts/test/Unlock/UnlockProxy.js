@@ -13,9 +13,9 @@ contract('Unlock', function (accounts) {
   describe('Proxy Unlock contract', function () {
     beforeEach(async function () {
       const implV1 = await Unlock.new()
-      this.proxy = await AdminUpgradeabilityProxy.new(implV1.address, { from: proxyOwner })
+      const initV1Call = zos.encodeCall('initialize', ['address'], [unlockOwner])
+      this.proxy = await AdminUpgradeabilityProxy.new(implV1.address, initV1Call, { from: proxyOwner })
       this.unlock = await Unlock.at(this.proxy.address)
-      await this.unlock.initialize(unlockOwner)
     })
 
     describe('should function as a proxy', function () {
