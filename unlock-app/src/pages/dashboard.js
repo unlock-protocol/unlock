@@ -41,7 +41,7 @@ Dashboard.defaultProps = {
 
 const mapStateToProps = state => {
   return {
-    account: state.network.account, // TODO change account to base level
+    account: state.account,
     network: state.network,
     locks: state.locks,
   }
