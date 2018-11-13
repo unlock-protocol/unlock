@@ -47,7 +47,6 @@ export default function withConfig(Component) {
 
   function mapStateToProps (state) {
     return {
-      account: state.network.account, // TODO change account to base level
       network: state.network,
     }
   }

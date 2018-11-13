@@ -1,5 +1,6 @@
 import reducer from '../../reducers/keysReducer'
 import { ADD_KEY, PURCHASE_KEY } from '../../actions/key'
+import { SET_PROVIDER } from '../../actions/provider'
 
 describe('keys reducer', () => {
 
@@ -11,6 +12,15 @@ describe('keys reducer', () => {
 
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual({
+    })
+  })
+
+  it('should return the initial state when receveing SET_PROVIDER', () => {
+    expect(reducer({
+      [key.id]: key,
+    }, {
+      type: SET_PROVIDER,
+    })).toEqual({
     })
   })
 

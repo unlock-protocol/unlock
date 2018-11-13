@@ -61,7 +61,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export const mapStateToProps = (state, {lock}) => {
-  const account = state.network.account
+  const account = state.account
 
   // If there is no account (probably not loaded yet), we do not want to create a key
   if (!account) {

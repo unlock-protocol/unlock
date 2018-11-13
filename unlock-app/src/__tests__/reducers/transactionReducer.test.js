@@ -1,10 +1,26 @@
 import reducer, { initialState } from '../../reducers/transactionReducer'
 import { ADD_TRANSACTION, UPDATE_TRANSACTION, DELETE_TRANSACTION } from '../../actions/transaction'
+import { SET_PROVIDER } from '../../actions/provider'
 
 describe('transaction reducer', () => {
 
   it('should return the initial state', () => {
     expect(initialState).toEqual({})
+  })
+
+  it('should return the initial state when receveing SET_PROVIDER', () => {
+    const transaction = {
+      status: 'pending',
+      confirmations: 0,
+      hash: '0x123',
+    }
+
+    expect(reducer({
+      [transaction.hash]: transaction,
+    }, {
+      type: SET_PROVIDER,
+    })).toEqual({
+    })
   })
 
   describe('when receiving ADD_TRANSACTION', () => {

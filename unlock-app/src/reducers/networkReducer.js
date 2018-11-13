@@ -1,9 +1,7 @@
 import { SET_NETWORK } from '../actions/network'
-import accountReducer, { initialState as defaultAccount } from './accountReducer'
 
 export const initialState = {
   name: 0,
-  account: defaultAccount,
 }
 
 const networkReducer = (state = initialState, action) => {
@@ -15,7 +13,6 @@ const networkReducer = (state = initialState, action) => {
 
   return {
     ...state,
-    account: accountReducer(state.account, action),
   }
 
 }

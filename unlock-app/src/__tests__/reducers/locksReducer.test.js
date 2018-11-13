@@ -2,6 +2,7 @@ import reducer from '../../reducers/locksReducer'
 import { CREATE_LOCK } from '../../actions/lock'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { DELETE_TRANSACTION } from '../../actions/transaction'
+import { SET_PROVIDER } from '../../actions/provider'
 
 describe('locks reducer', () => {
 
@@ -11,6 +12,15 @@ describe('locks reducer', () => {
 
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual({})
+  })
+
+  it('should return the initial state when receveing SET_PROVIDER', () => {
+    expect(reducer({
+      [lock.id]: lock,
+    }, {
+      type: SET_PROVIDER,
+    })).toEqual({
+    })
   })
 
   it('should add the lock when receiving CREATE_LOCK and if it was not there yet', () => {

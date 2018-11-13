@@ -10,6 +10,7 @@ import providerReducer, { initialState as defaultProvider } from './reducers/pro
 import transactionReducer, { initialState as defaultTransactions } from './reducers/transactionReducer'
 import currencyReducer, { initialState as defaultCurrency } from './reducers/currencyReducer'
 import errorReducer, { initialState as defaultError } from './reducers/errorReducer'
+import accountReducer, { initialState as defaultAccount } from './reducers/accountReducer'
 
 // Middlewares
 import lockMiddleware from './middlewares/lockMiddleware'
@@ -19,6 +20,7 @@ const config = configure(global)
 
 export default function createUnlockStore(defaultState = {}) {
   const reducers = {
+    account: accountReducer,
     keys: keysReducer,
     locks: locksReducer,
     network: networkReducer,
@@ -35,6 +37,7 @@ export default function createUnlockStore(defaultState = {}) {
   // We build the initial state by taking first each reducer's default values
   // Then some overides and finally whatever state we have stored locally.
   const initialState = Object.assign({
+    account: defaultAccount,
     keys: defaultKeys,
     locks: defaultLocks,
     network: defaultNetwork,
