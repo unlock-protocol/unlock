@@ -6,6 +6,3 @@ node_modules/
 # ZeppelinOS
 zos.dev-*.json
 .zos.session
-
-#Truffle
-build/

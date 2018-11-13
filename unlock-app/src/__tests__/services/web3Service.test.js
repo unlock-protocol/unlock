@@ -4,7 +4,7 @@ import EventEmitter from 'events'
 import Web3Utils from 'web3-utils'
 import nock from 'nock'
 import Web3Service from '../../services/web3Service'
-import LockContract from '../../artifacts/contracts/Lock.json'
+import LockContract from '../../artifacts/contracts/PublicLock.json'
 
 const defaultState = {
   network: {

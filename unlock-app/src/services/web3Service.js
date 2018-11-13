@@ -4,7 +4,7 @@ import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
 import crypto from 'crypto'
 
-import LockContract from '../artifacts/contracts/Lock.json'
+import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
 
