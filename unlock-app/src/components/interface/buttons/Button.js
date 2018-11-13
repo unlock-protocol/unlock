@@ -23,13 +23,13 @@ export const LayoutButton = ({href, title, children, action, ...props}) => {
       <Label>{title}</Label>
     </Button>
   )
-  /*(if (href) {
+  if (href) {
     return (
       <Link href={href}>
         {button}
       </Link>
     )
-  }*/
+  }
   return button
 }
 
