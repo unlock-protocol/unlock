@@ -51,7 +51,7 @@ LayoutButton.defaultProps = {
   action: null,
   backgroundColor: 'var(--grey)',
   backgroundHoverColor: 'var(--link)',
-  fillColor: 'var(--grey)',
+  fillColor: 'white',
   fillHoverColor: 'white',
 }
 
