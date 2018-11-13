@@ -1,4 +1,4 @@
-/* eslint no-console: 0 */ 
+/* eslint no-console: 0 */
 
 import EventEmitter from 'events'
 import Web3Utils from 'web3-utils'
@@ -9,10 +9,9 @@ import LockContract from '../../artifacts/contracts/Lock.json'
 const defaultState = {
   network: {
     name: 'test',
-    account: {
-    },
   },
   provider: 'HTTP',
+  account: {},
 }
 
 const nodeAccounts = [
@@ -92,10 +91,10 @@ describe('Web3Service', () => {
           const web3Service = new Web3Service()
 
           const state = Object.assign({}, defaultState)
-          state.network.account.address = '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1'
+          state.account.address = '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1'
 
           netVersionAndYield(1337)
-          getBalanceForAccountAndYieldBalance(state.network.account.address, '0xdeadbeef')
+          getBalanceForAccountAndYieldBalance(state.account.address, '0xdeadbeef')
 
           return web3Service.connect(state).then(([networkId, account]) => {
             expect(networkId).not.toBeNull()
@@ -112,7 +111,7 @@ describe('Web3Service', () => {
           const web3Service = new Web3Service()
 
           const state = Object.assign({}, defaultState)
-          state.network.account = {}
+          state.account = {}
 
           const newAccount = {
             address: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
@@ -143,7 +142,7 @@ describe('Web3Service', () => {
         const web3Service = new Web3Service()
 
         const state = Object.assign({}, defaultState)
-        state.network.account = {}
+        state.account = {}
 
         const nodeAccountAddress = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 
@@ -624,11 +623,11 @@ describe('Web3Service', () => {
       it('should handle failures if the lock could not be created')
     })
 
-    describe('purchaseKey', () => {
+    describe.skip('purchaseKey', () => {
     })
 
     describe('withdrawFromLock', () => {
-      it('should send a transaction to withdraw from the lock', () => {
+      it.only('should send a transaction to withdraw from the lock', () => {
         const lock = {
           address: '0xlock',
         }

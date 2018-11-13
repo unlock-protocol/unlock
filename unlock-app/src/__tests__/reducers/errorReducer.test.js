@@ -1,6 +1,7 @@
 import React from 'react'
 import reducer from '../../reducers/errorReducer'
 import { SET_ERROR } from '../../actions/error'
+import { SET_PROVIDER } from '../../actions/provider'
 
 describe('error reducer', () => {
 
@@ -8,6 +9,14 @@ describe('error reducer', () => {
 
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(null)
+  })
+
+  it('should return the initial state when receveing SET_PROVIDER', () => {
+    expect(reducer({
+      error,
+    }, {
+      type: SET_PROVIDER,
+    })).toEqual(null)
   })
 
   it('should set the error accordingly when receiving SET_ERROR', () => {
