@@ -84,99 +84,17 @@ describe('Web3Service', () => {
 
   describe('connect', () => {
 
-    describe('when there is no account setup', () => {
-
-      describe('when there is an account unlocked on the node', () => {
-        it('should yield that account, after refreshing its balance', () => {
-          const web3Service = new Web3Service()
-
-          const state = Object.assign({}, defaultState)
-          state.account.address = '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1'
-
-          netVersionAndYield(1337)
-          getBalanceForAccountAndYieldBalance(state.account.address, '0xdeadbeef')
-
-          return web3Service.connect(state).then(([networkId, account]) => {
-            expect(networkId).not.toBeNull()
-            expect(account).toEqual({
-              address: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
-              balance: '3735928559',
-            })
-          })
-        })
-      })
-
-      describe('when there is no account unlocked on the node', () => {
-        it('should create an account and yield it with a balance 0', () => {
-          const web3Service = new Web3Service()
-
-          const state = Object.assign({}, defaultState)
-          state.account = {}
-
-          const newAccount = {
-            address: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
-          }
-
-          web3Service.createAccount = jest.fn( () => {
-            return Promise.resolve(newAccount)
-          })
-
-          netVersionAndYield(1337)
-          accountsAndYield([])
-          getBalanceForAccountAndYieldBalance(newAccount.address, '0x0')
-
-          return web3Service.connect(state).then(([networkId, account]) => {
-            expect(networkId).not.toBeNull()
-            expect(account).toEqual({
-              address: newAccount.address,
-              balance: '0',
-            })
-          })
-
-        })
-      })
-    })
-
-    describe('when there is an account unlocked on the node', () => {
-      it('should refresh that account\'s balance and yield it', () => {
-        const web3Service = new Web3Service()
-
-        const state = Object.assign({}, defaultState)
-        state.account = {}
-
-        const nodeAccountAddress = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
-
-        netVersionAndYield(1337)
-        accountsAndYield([nodeAccountAddress])
-        getBalanceForAccountAndYieldBalance(nodeAccountAddress, '0x0')
-
-        return web3Service.connect(state).then(([networkId, account]) => {
-          expect(networkId).not.toBeNull()
-          expect(account).toEqual({
-            address: nodeAccountAddress,
-            balance: '0',
-          })
-        })
-
-      })
-    })
-
     it('should get the network id and be ready', () => {
       const web3Service = new Web3Service(jest.fn())
-      const nodeAccountAddress = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
       const netVersion = Math.floor(Math.random(100000))
 
       netVersionAndYield(netVersion)
-      accountsAndYield([nodeAccountAddress])
-      getBalanceForAccountAndYieldBalance(nodeAccountAddress, '0x0')
 
       return web3Service.connect(Object.assign({}, defaultState)).then(() => {
         expect(web3Service.networkId).toEqual(netVersion)
         expect(web3Service.ready).toEqual(true)
       })
-
     })
-
   })
 
   describe('once connected', () => {
@@ -185,12 +103,67 @@ describe('Web3Service', () => {
 
     beforeEach(() => {
       netVersionAndYield(1337)
-      accountsAndYield(nodeAccounts)
-      getBalanceForAccountAndYieldBalance(nodeAccounts[0], '0x0')
       web3Service = new Web3Service()
       return web3Service.connect(defaultState).then(() => {
         // Clean all matchers
         nock.cleanAll()
+      })
+    })
+
+    describe('refreshOrGetAccount', () => {
+      describe('when no account was passed but the node has an unlocked account', () => {
+        it('should load a local account with the right balance', () => {
+          const unlockAccountsOnNode = ['0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2']
+
+          accountsAndYield(unlockAccountsOnNode)
+          getBalanceForAccountAndYieldBalance(unlockAccountsOnNode[0], '0xdeadbeef')
+
+          return web3Service.refreshOrGetAccount().then((account) => {
+            expect(account).toEqual({
+              address: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+              balance: '3735928559',
+            })
+          })
+        })
+      })
+
+      describe('when no account was passed and the node has no unlocked account', () => {
+        it('should create an account and yield 0 as its balance', () => {
+          const newAccount = {
+            address: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
+          }
+
+          web3Service.createAccount = jest.fn(() => {
+            return Promise.resolve(newAccount)
+          })
+
+          accountsAndYield([])
+          getBalanceForAccountAndYieldBalance(newAccount.address, '0x0')
+
+          return web3Service.refreshOrGetAccount().then((account) => {
+            expect(account).toEqual({
+              address: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
+              balance: '0',
+            })
+          })
+        })
+      })
+
+      describe('when an account was passed', () => {
+        it('should load the balance for that account', () => {
+          const account = {
+            address: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+            balance: '123',
+          }
+          getBalanceForAccountAndYieldBalance(account.address, '0xdeadbeef')
+          return web3Service.refreshOrGetAccount(account).then((account) => {
+            expect(account).toEqual({
+              address: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+              balance: '3735928559',
+            })
+          })
+
+        })
       })
     })
 
@@ -627,7 +600,7 @@ describe('Web3Service', () => {
     })
 
     describe('withdrawFromLock', () => {
-      it.only('should send a transaction to withdraw from the lock', () => {
+      it('should send a transaction to withdraw from the lock', () => {
         const lock = {
           address: '0xlock',
         }

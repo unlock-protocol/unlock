@@ -23,13 +23,15 @@ export default function lockMiddleware ({ getState, dispatch }) {
         // We return to make sure other middleware actions are not processed
         return web3Service.connect({
           provider: getState().provider,
-          account: getState().account,
-        }).then(([networkId, account]) => {
+        }).then(([networkId]) => {
           // we dispatch again first.
           dispatch(action)
           // We then set the network
           dispatch(setNetwork(networkId))
-          // And set the account
+          // and refresh or load the account
+          return web3Service.refreshOrGetAccount(getState().account)
+        }).then((account) => {
+          // Set the refreshed account
           dispatch(setAccount(account))
           // We refresh transactions
           Object.values(getState().transactions).forEach((transaction) => dispatch(refreshTransaction(transaction)))
@@ -58,9 +60,9 @@ export default function lockMiddleware ({ getState, dispatch }) {
       } else if (action.type === SET_PROVIDER) {
         web3Service.connect({
           provider: action.provider,
-        }).then(([networkId, account]) => {
+        }).then((networkId) => {
           dispatch(setNetwork(networkId))
-          return dispatch(setAccount(account))
+          return web3Service.refreshOrGetAccount(getState().account)
         }).catch(() => {
           // we could not connect
           // TODO: show error to user

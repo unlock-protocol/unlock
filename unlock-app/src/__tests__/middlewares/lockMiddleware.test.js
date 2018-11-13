@@ -39,7 +39,9 @@ const privateKey = '0xdeadbeef'
 const transaction = {
   hash: '0xf21e9820af34282c8bebb3a191cf615076ca06026a144c9c28e9cb762585472e',
 }
-const network = 'test'
+const network = {
+  name: 'test',
+}
 const provider = 'Toshi'
 
 /**
@@ -127,7 +129,6 @@ describe('Lock middleware', () => {
       const action = { type: SET_NETWORK, network }
       invoke(action)
       expect(mockWeb3Service.connect).toHaveBeenCalledWith({
-        account: state.account,
         provider: 'HTTP',
       })
       expect(next).toHaveBeenCalledTimes(0) // ensures that execution was stopped
@@ -153,7 +154,7 @@ describe('Lock middleware', () => {
     expect(next).toHaveBeenCalledWith(action)
   })
 
-  it.only('should handle SET_PROVIDER and reset the whole state', () => {
+  it('should handle SET_PROVIDER and reset the whole state', () => {
     const { next, invoke } = create()
     const action = { type: SET_PROVIDER, provider }
     invoke(action)
