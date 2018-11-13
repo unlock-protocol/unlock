@@ -23,13 +23,13 @@ export const LayoutButton = ({href, title, children, action, ...props}) => {
       <Label>{title}</Label>
     </Button>
   )
-  if (href) {
+  /*(if (href) {
     return (
       <Link href={href}>
         {button}
       </Link>
     )
-  }
+  }*/
   return button
 }
 
@@ -51,7 +51,7 @@ LayoutButton.defaultProps = {
   action: null,
   backgroundColor: 'var(--grey)',
   backgroundHoverColor: 'var(--link)',
-  fillColor: 'var(--grey)',
+  fillColor: 'white',
   fillHoverColor: 'white',
 }
 
