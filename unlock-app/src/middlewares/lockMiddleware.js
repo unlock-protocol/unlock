@@ -23,7 +23,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
         // We return to make sure other middleware actions are not processed
         return web3Service.connect({
           provider: getState().provider,
-          network: getState().network,
+          account: getState().account,
         }).then(([networkId, account]) => {
           // we dispatch again first.
           dispatch(action)
@@ -58,10 +58,6 @@ export default function lockMiddleware ({ getState, dispatch }) {
       } else if (action.type === SET_PROVIDER) {
         web3Service.connect({
           provider: action.provider,
-          network: {
-            name: 'Unknown',
-            account: {},
-          },
         }).then(([networkId, account]) => {
           dispatch(setNetwork(networkId))
           return dispatch(setAccount(account))
@@ -71,12 +67,12 @@ export default function lockMiddleware ({ getState, dispatch }) {
         })
       } else if (action.type === CREATE_LOCK) {
         // Create a lock
-        web3Service.createLock(action.lock, getState().network.account, (transaction, lock) => {
+        web3Service.createLock(action.lock, getState().account, (transaction, lock) => {
           dispatch(addTransaction(transaction))
           dispatch(resetLock(lock)) // Update the lock accordingly
         }).then(() => {
           // Lock has been deployed and confirmed, we can update the balance
-          return web3Service.getAddressBalance(getState().network.account.address)
+          return web3Service.getAddressBalance(getState().account.address)
         }).then((balance) => {
           dispatch(resetAccountBalance(balance))
         }).catch((error) => {
@@ -90,7 +86,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
           )
         })
       } else if (action.type === PURCHASE_KEY) {
-        const account = getState().network.account
+        const account = getState().account
         const lock = Object.values(getState().locks).find((lock) => lock.address === action.key.lockAddress)
         web3Service.purchaseKey(action.key, account, lock, (transaction) => {
           dispatch(addTransaction(transaction))
@@ -109,7 +105,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
             dispatch(deleteTransaction(action.transaction))
           })
       } else if (action.type === WITHDRAW_FROM_LOCK) {
-        const account = getState().network.account
+        const account = getState().account
         web3Service.withdrawFromLock(action.lock, account)
           .then(() => {
             return Promise.all([
@@ -148,7 +144,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
         }
       } else if (action.type === SET_LOCK) {
         // Lock was changed, get the matching key
-        web3Service.getKey(action.lock.address, getState().network.account)
+        web3Service.getKey(action.lock.address, getState().account)
           .then((key) => {
             dispatch(addKey(key))
           })
