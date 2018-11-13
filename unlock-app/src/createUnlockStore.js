@@ -17,7 +17,7 @@ import currencyConversionMiddleware from './middlewares/currencyConversionMiddle
 
 const config = configure(global)
 
-export default function createUnlockStore(defaultState) {
+export default function createUnlockStore(defaultState = {}) {
   const reducers = {
     keys: keysReducer,
     locks: locksReducer,
@@ -27,6 +27,10 @@ export default function createUnlockStore(defaultState) {
     currency: currencyReducer,
     error: errorReducer,
   }
+
+  // Cleanup the defaultState to remove all null values so that we do not overwrite existing
+  // values with null
+  Object.keys(defaultState).forEach((k) => (defaultState[k] == null) && delete defaultState[k])
 
   // We build the initial state by taking first each reducer's default values
   // Then some overides and finally whatever state we have stored locally.
