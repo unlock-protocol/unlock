@@ -394,7 +394,6 @@ export default class Web3Service {
         key.data = data
         return key
       }).catch((error) => {
-        console.log(error)
         // We could not fetch the key. Assume it does not exist so set its expiration to 0
         key.expiration = 0
         key.data = null
@@ -406,7 +405,7 @@ export default class Web3Service {
    * Returns the key to the lockAddress by the account.
    * DEPRACTED: the objects are never created by this library but passed to it and synced against
    * against the smart contract. This function creates a key object and yields it, which is not ok.
-   * @param {PropTypes.adress} lockAddress
+   * @param {PropTypes.address} lockAddress
    * @param {PropTypes.account} account
    * @return Promise<Key>
    */
@@ -430,7 +429,7 @@ export default class Web3Service {
         }
         return key
       }).catch((error) => {
-        console.log(error)
+        console.error(error)
         // We could not fetch the key. Assume it does not exist?
         return Promise.reject(new Error('Missing key'))
       })
