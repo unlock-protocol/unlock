@@ -30,13 +30,13 @@ export const Dashboard = ({account, network, locks}) => {
 Dashboard.displayName = 'Dashboard'
 
 Dashboard.propTypes = {
-  account: UnlockPropTypes.account.isRequired,
+  account: UnlockPropTypes.account, // We can't mark this as required because it's undefined when the dashboard is loading
   network: UnlockPropTypes.network.isRequired,
   locks: UnlockPropTypes.locks,
 }
 
 Dashboard.defaultProps = {
-  locks: [],
+  locks: {},
 }
 
 const mapStateToProps = state => {
