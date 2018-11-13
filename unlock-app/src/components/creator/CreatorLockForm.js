@@ -32,15 +32,15 @@ class CreatorLockForm extends React.Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  handleSubmit () { 
+  handleSubmit () {
     const { account, createLock, hideAction } = this.props
-    const { 
-      expirationDuration, 
-      expirationDurationUnit, 
+    const {
+      expirationDuration,
+      expirationDurationUnit,
       keyPriceCurrency,
       maxNumberOfKeys,
-      keyPrice, 
-      name, 
+      keyPrice,
+      name,
     } = this.state
 
     const lock = {
@@ -48,24 +48,23 @@ class CreatorLockForm extends React.Component {
       expirationDuration: expirationDuration * expirationDurationUnit,
       keyPrice: Web3Utils.toWei(keyPrice.toString(10), keyPriceCurrency),
       maxNumberOfKeys,
-      owner: account.address, 
+      owner: account.address,
       id: uniqid(),
     }
     createLock(lock)
     if (hideAction) hideAction()
   }
 
-  handleCancel(e) {
+  handleCancel() {
     const { hideAction } = this.props
-    e.stopPropagation() // This prevents submit from also being called
     if (hideAction) hideAction()
   }
 
   render() {
-    const { 
-      expirationDuration, 
+    const {
+      expirationDuration,
       maxNumberOfKeys,
-      keyPrice, 
+      keyPrice,
       name ,
     } = this.state
 
@@ -89,10 +88,10 @@ days
         </FormBalanceWithUnit>
         <div>-</div>
         <LockStatus>
-          <LockButton action={this.handleSubmit}>
+          <LockButton onClick={this.handleSubmit}>
             Submit
           </LockButton>
-          <LockButton cancel action={this.handleCancel}>
+          <LockButton cancel onClick={this.handleCancel}>
             Cancel
           </LockButton>
         </LockStatus>
@@ -159,6 +158,7 @@ const FormBalanceWithUnit = styled(BalanceWithUnit)`
 `
 
 const LockButton = styled.button`
+  cursor: pointer;
   font: inherit;
   font-size: ${props => props.cancel ? '10px' : '13px'};
   align-self: ${props => props.cancel ? 'center' : 'end'};

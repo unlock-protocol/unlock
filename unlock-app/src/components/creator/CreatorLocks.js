@@ -52,7 +52,7 @@ CreatorLocks.propTypes = {
 }
 
 CreatorLocks.defaultProps = {
-  locks: [],
+  locks: {},
   showForm: false,
 }
 
