@@ -393,7 +393,7 @@ export default class Web3Service {
         key.expiration = parseInt(expiration, 10)
         key.data = data
         return key
-      }).catch((error) => {
+      }).catch(() => {
         // We could not fetch the key. Assume it does not exist so set its expiration to 0
         key.expiration = 0
         key.data = null
@@ -439,14 +439,22 @@ export default class Web3Service {
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
    * @param {PropTypes.lock}
    * @param {PropTypes.account} account
+   * @param {PropTypes.func} callback
    * @param {Function} callback TODO: implement...
    * @return Promise<lock>
   */
-  withdrawFromLock(lock, account) {
+  withdrawFromLock(lock, account, callback) {
     return new Promise((resolve) => {
-      console.log(account)
       const lockContract = new this.web3.eth.Contract(LockContract.abi, lock.address)
       const data = lockContract.methods.withdraw().encodeABI()
+
+      const transaction = {
+        status: 'pending',
+        confirmations: 0,
+        createdAt: new Date().getTime(),
+        withdrawal: lock.id,
+      }
+
       return this.sendTransaction({
         to: lock.address,
         from: account.address,
@@ -454,11 +462,19 @@ export default class Web3Service {
         gas: 1000000,
         privateKey: account.privateKey,
         contractAbi: LockContract.abi,
-      }, (error, { event }) => {
+      }, (error, { event, args }) => {
         if (error) {
           console.error(error)
         }
-        if (event === 'receipt') {
+        if (event === 'transactionHash') {
+          transaction.hash = args.hash
+          transaction.status = 'submitted'
+          callback(transaction)
+        } else if (event === 'confirmation') {
+          transaction.status = 'mined'
+          transaction.confirmations += 1
+          callback(transaction)
+        } else if (event === 'receipt') {
           return resolve(lock)
         }
       })

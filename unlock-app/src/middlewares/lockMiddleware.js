@@ -108,18 +108,19 @@ export default function lockMiddleware ({ getState, dispatch }) {
           })
       } else if (action.type === WITHDRAW_FROM_LOCK) {
         const account = getState().account
-        web3Service.withdrawFromLock(action.lock, account)
-          .then(() => {
-            return Promise.all([
-              web3Service.getAddressBalance(account.address),
-              web3Service.getAddressBalance(action.lock.address),
-            ])
-          }).then(([accountBalance, lockBalance]) => {
-            account.balance = accountBalance
-            action.lock.balance = lockBalance
-            dispatch(resetAccountBalance(account.balance))
-            dispatch(resetLock(action.lock))
-          })
+        web3Service.withdrawFromLock(action.lock, account, (transaction) => {
+          dispatch(addTransaction(transaction))
+        }).then(() => {
+          return Promise.all([
+            web3Service.getAddressBalance(account.address),
+            web3Service.getAddressBalance(action.lock.address),
+          ])
+        }).then(([accountBalance, lockBalance]) => {
+          account.balance = accountBalance
+          action.lock.balance = lockBalance
+          dispatch(resetAccountBalance(account.balance))
+          dispatch(resetLock(action.lock))
+        })
       }
 
       next(action)

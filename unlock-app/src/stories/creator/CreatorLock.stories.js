@@ -18,6 +18,16 @@ const store = createUnlockStore({
       status: 'submitted',
       confirmations: 0,
     },
+    '0x789': {
+      status: 'mined',
+      confirmations: 2,
+      withdrawal: '0xba',
+    },
+    '0x987': {
+      status: 'submitted',
+      confirmations: 0,
+      withdrawal: '0xbc',
+    },
   },
   keys: {
     '0x678': {
@@ -36,6 +46,7 @@ storiesOf('CreatorLock', CreatorLock)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Deployed', () => {
     const lock = {
+      id: '0xab',
       keyPrice: '10000000000000000000',
       expirationDuration: '172800',
       maxNumberOfKeys: '240',
@@ -62,6 +73,7 @@ storiesOf('CreatorLock', CreatorLock)
   })
   .add('Confirming', () => {
     const lock = {
+      id: '0xab',
       keyPrice: '10000000000000000000',
       expirationDuration: '172800',
       maxNumberOfKeys: '240',
@@ -79,6 +91,7 @@ storiesOf('CreatorLock', CreatorLock)
   })
   .add('Not found', () => {
     const lock = {
+      id: '0xab',
       keyPrice: '10000000000000000000',
       expirationDuration: '172800',
       maxNumberOfKeys: '240',
@@ -92,6 +105,7 @@ storiesOf('CreatorLock', CreatorLock)
   })
   .add('With key', () => {
     const lock = {
+      id: '0xab',
       keyPrice: '10000000000000000000',
       expirationDuration: '172800',
       maxNumberOfKeys: '240',
@@ -105,5 +119,33 @@ storiesOf('CreatorLock', CreatorLock)
     }
     return (
       <CreatorLock lock={lock} transaction={transaction} />
+    )
+  })
+  .add('Withdrawal submitted', () => {
+    const lock = {
+      id: '0xbc',
+      keyPrice: '10000000000000000000',
+      expirationDuration: '172800',
+      maxNumberOfKeys: '240',
+      outstandingKeys: '3',
+      address: '0xbc7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
+      transaction: '0x123',
+    }
+    return (
+      <CreatorLock lock={lock} />
+    )
+  })
+  .add('Withdrawing', () => {
+    const lock = {
+      id: '0xba',
+      keyPrice: '10000000000000000000',
+      expirationDuration: '172800',
+      maxNumberOfKeys: '240',
+      outstandingKeys: '3',
+      address: '0xba7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
+      transaction: '0x123',
+    }
+    return (
+      <CreatorLock lock={lock} />
     )
   })

@@ -27,8 +27,9 @@ export class CreatorLock extends React.Component {
   }
 
   startWithdrawal() {
-    if (this.props.lock.balance > 0) {
-      this.props.withdraw(this.props.lock, this.props.account)
+    const { lock, account, withdraw } = this.props
+    if (lock.balance > 0) {
+      withdraw(lock, account)
     }
   }
 
@@ -47,16 +48,43 @@ export class CreatorLock extends React.Component {
   render() {
     // TODO add all-time balance to lock
 
-    const { lock, transaction, config } = this.props
+    const { lock, transaction, withdrawalTransaction, config } = this.props
     const { showEmbedCode, showKeys } = this.state
+
+    let startWithdrawal
+    if (withdrawalTransaction && ((withdrawalTransaction.status === 'submitted' ||
+      (withdrawalTransaction.status === 'mined' && withdrawalTransaction.confirmations < config.requiredConfirmations)))) {
+      startWithdrawal = false
+    } else {
+      startWithdrawal = this.startWithdrawal
+    }
 
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
     let outstandingKeys = lock.outstandingKeys || 0
     let lockComponentStatusBlock = (
-      <LockIconBarContainer>
-        <LockIconBar withdraw={this.startWithdrawal} toggleCode={this.toggleEmbedCode} />
-      </LockIconBarContainer>)
+      <StatusBlock>
+        <LockIconBarContainer>
+          <LockIconBar withdraw={startWithdrawal} toggleCode={this.toggleEmbedCode} />
+        </LockIconBarContainer>
+        <SubStatus>
+          {withdrawalTransaction && withdrawalTransaction.status === 'submitted' &&
+            <>
+              Submitted to Network...
+            </>
+          }
+          {withdrawalTransaction && withdrawalTransaction.status === 'mined' && withdrawalTransaction.confirmations < config.requiredConfirmations &&
+            <>
+              Confirming Withdrawal
+              <WithdrawalConfirmations>
+                {withdrawalTransaction.confirmations}
+                /
+                {config.requiredConfirmations}
+              </WithdrawalConfirmations>
+            </>
+          }
+        </SubStatus>
+      </StatusBlock>)
 
     if (!transaction) {
       // We assume that the lock has been succeesfuly deployed?
@@ -110,20 +138,28 @@ export class CreatorLock extends React.Component {
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   transaction: UnlockPropTypes.transaction,
+  withdrawalTransaction: UnlockPropTypes.transaction,
   account: UnlockPropTypes.account,
-  withdraw: PropTypes.func,
+  withdraw: PropTypes.func.isRequired,
   config: UnlockPropTypes.configuration.isRequired,
 }
 
 CreatorLock.defaultProps = {
   transaction: null,
+  withdrawalTransaction: null,
+  account: null,
 }
 
 const mapStateToProps = (state, { lock }) => {
   const transaction = state.transactions[lock.transaction]
+  let withdrawalTransaction
+  Object.keys(state.transactions).forEach((el) => {
+    if (state.transactions[el].withdrawal === lock.id) withdrawalTransaction = state.transactions[el]
+  })
   const account = state.account
   return {
     transaction,
+    withdrawalTransaction,
     account,
     lock,
   }
@@ -136,6 +172,9 @@ const mapDispatchToProps = dispatch => ({
 export default withConfig(connect(mapStateToProps, mapDispatchToProps)(CreatorLock))
 
 export const LockRowGrid = 'grid-template-columns: 32px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
+
+const StatusBlock = styled.div`
+`
 
 const LockIconBarContainer = styled.div`
   display: grid;
@@ -201,3 +240,25 @@ const LockDivider = styled.div`
   height: 1px;
   background-color: var(--lightgrey);
 `
+
+const SubStatus = styled.div`
+  margin-top: 13px;
+  font-size: 10px;
+  font-family: 'IBM Plex Sans';
+  font-weight: normal;
+  color: var(--green);
+  text-align: right;
+  padding-right: 24px;
+`
+
+const WithdrawalConfirmations = styled.span`
+  margin-left: 15px;
+`
+
+/* Saving for use with sub-values that need to be added in a future PR
+const LockValueSub = styled.div`
+  font-size: 0.6em;
+  color: var(--grey);
+  margin-top: 5px;
+`
+*/
