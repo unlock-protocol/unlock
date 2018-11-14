@@ -117,7 +117,7 @@ const mapStateToProps = (state, { lock }) => {
 
 export default withConfig(connect(mapStateToProps)(CreatorLock))
 
-export const LockRowGrid = 'grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
+export const LockRowGrid = 'grid-template-columns: 32px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
 
 const LockIconBarContainer = styled.div`
   display: grid;
@@ -134,7 +134,7 @@ export const LockRow = styled.div`
   }
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
   font-weight: 200;
-  min-height: 60px;
+  min-height: 48px;
   padding-left: 8px;
   color: var(--slate);
   font-size: 14px;
@@ -143,11 +143,15 @@ export const LockRow = styled.div`
   display: grid;
   grid-gap: 16px;
   ${LockRowGrid}
-  grid-template-rows: 60px;
+  grid-template-rows: 84px;
   grid-column-gap: 16px;
   grid-row-gap: 0;
-  align-items: center;
+  align-items: start;
   cursor: pointer;
+  
+  &>* { 
+    padding-top: 16px 
+  }
 `
 
 export const LockName = styled.div`
