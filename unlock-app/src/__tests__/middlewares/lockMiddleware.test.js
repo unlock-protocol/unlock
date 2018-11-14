@@ -241,7 +241,7 @@ describe('Lock middleware', () => {
     const action = { type: WITHDRAW_FROM_LOCK, lock }
     invoke(action)
 
-    expect(mockWeb3Service.withdrawFromLock).toHaveBeenCalledWith(lock, store.getState().account)
+    expect(mockWeb3Service.withdrawFromLock).toHaveBeenCalledWith(lock, store.getState().account, expect.anything())
     expect(next).toHaveBeenCalledWith(action)
   })
 })
