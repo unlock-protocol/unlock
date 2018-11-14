@@ -77,6 +77,7 @@ let mockWeb3Service = {
   withdrawFromLock: true,
   getAddressBalance: true,
   refreshTransaction: true,
+  refreshOrGetAccount: true,
 }
 
 jest.mock('../../services/web3Service', () => {
