@@ -37,6 +37,7 @@ Dashboard.propTypes = {
 
 Dashboard.defaultProps = {
   locks: {},
+  account: null,
 }
 
 const mapStateToProps = state => {

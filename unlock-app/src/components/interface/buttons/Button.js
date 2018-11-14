@@ -55,11 +55,11 @@ LayoutButton.defaultProps = {
   fillHoverColor: 'white',
 }
 
-export const LockButton = ({ href , children, action, ...props }) => {
+export const LockButton = ({ href, children, action, backgroundColor, ...props }) => {
   const button = (
     <Button
       href={href}
-      backgroundColor="var(--lightgrey)"
+      backgroundColor={backgroundColor}
       fillColor="var(--grey)"
       backgroundHoverColor="var(--link)"
       fillHoverColor="white"

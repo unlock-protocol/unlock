@@ -7,7 +7,12 @@ import Buttons from '../../interface/buttons/lock'
 export function LockIconBar({ withdraw, toggleCode }) {
   return (
     <IconBar>
-      <Buttons.Withdraw action={withdraw} as="button" />
+      {!withdraw &&
+        <Buttons.Withdraw action={withdraw} backgroundColor='var(--green)' fillColor='white' as="button" />
+      }
+      {withdraw &&
+        <Buttons.Withdraw action={withdraw} as="button" />
+      }
       <Buttons.Edit as="button" />
       { /* Reinstate when we're ready <Buttons.ExportLock /> */ }
       <Buttons.Code action={toggleCode} as="button" />
