@@ -23,7 +23,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
         // We return to make sure other middleware actions are not processed
         return web3Service.connect({
           provider: getState().provider,
-        }).then(([networkId]) => {
+        }).then((networkId) => {
           // we dispatch again first.
           dispatch(action)
           // We then set the network
