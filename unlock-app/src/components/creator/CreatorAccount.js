@@ -80,9 +80,9 @@ const DoubleHeightCell = styled.div`
   display: grid;
   height: 40px;
   grid-row: span 2;
-  align-self: center;
+  align-self: start;
   font-size: 24px;
-  align-content: center;
+  align-content: start;
 `
 
 const Label = styled.div `

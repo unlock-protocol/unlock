@@ -73,10 +73,14 @@ export const BalanceWithConversion = styled.div`
 export const Currency = styled.span`
   display: flex;
   flex-direction: row;
+  padding-bottom: 0.5em;
 `
 
 export const CurrencySymbol = styled.span`
   width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+
 `
 
 export const Eth = styled(CurrencySymbol)`
