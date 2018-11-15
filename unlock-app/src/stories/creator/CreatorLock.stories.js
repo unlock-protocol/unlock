@@ -30,7 +30,7 @@ const store = createUnlockStore({
     },
   },
   keys: {
-    '0x678': {
+    'keyid': {
       transaction: '0x23749328748932748932473298473289473298',
       lockAddress: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
       expiration: Math.floor((new Date).getTime()/1000) + (86400 * 30), // 30 days from right now
@@ -88,7 +88,7 @@ storiesOf('CreatorLock', CreatorLock)
   })
   .add('Not found', () => {
     const lock = {
-      id: '0xab',
+      id: 'lockid',
       keyPrice: '10000000000000000000',
       expirationDuration: '172800',
       maxNumberOfKeys: '240',
@@ -102,7 +102,7 @@ storiesOf('CreatorLock', CreatorLock)
   })
   .add('With key', () => {
     const lock = {
-      id: '0xab',
+      id: 'lockid',
       keyPrice: '10000000000000000000',
       expirationDuration: '172800',
       maxNumberOfKeys: '240',
