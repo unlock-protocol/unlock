@@ -53,7 +53,6 @@ const Status = styled.div`
   justify-content: center;
   font-size: 13px;
   align-self: end;
-  justify-content: center;
 `
 
 const Confirmations = styled.div`
