@@ -10,33 +10,41 @@ jest.mock('next/link', () => {
   return ({children}) => children
 })
 
+const lock = {
+  id: 'lockid',
+  address: '0x1234567890',
+  transaction: 'transactionid',
+  keyPrice: '1',
+  balance: '1',
+  expirationDuration: 100,
+}
+const transaction = {
+  id: 'transactionid',
+  address: '0x0987654321',
+  confirmations: 12,
+  status: 'mined',
+  lock: 'lockid',
+}
+
 describe('CreatorLock', () => {
   it ('should show embed code when the button is clicked', () => {
 
-    const lock = {
-      id: '0x123',
-      address: '0x1234567890',
-      transaction: '0x0987654321',
-      keyPrice: '1',
-      balance: '1',
-      expirationDuration: 100,
-    }
-    const transaction = {
-      id: '0x098',
-      address: '0x0987654321',
-      confirmations: 12,
-      status: 'mined',
+    const store = createUnlockStore({
+      transactions: {
+        'transactionid': transaction,
+      },
+      locks: {
+        'lockid': lock,
+      },
+    })
 
-    }
     const config = configure({
       requiredConfirmations: 6,
     })
 
-    const store = createUnlockStore()
-
     let wrapper = rtl.render(
-      <Provider store={store}>
-        <CreatorLock lock={lock} transaction={transaction} config={config} />
+      <Provider store={store} config={config}>
+        <CreatorLock lock={lock} transaction={transaction} />
       </Provider>)
 
     expect(wrapper.queryByText('This content is only visible', {exact: false})).toBeNull()
@@ -49,32 +57,33 @@ describe('CreatorLock', () => {
   })
   it ('should display the correct number of keys', () => {
 
-    const lock = {
-      id: '0x123',
+    const keylock = {
+      id: 'lockid',
       address: '0x1234567890',
-      transaction: '0x0987654321',
+      transaction: 'transactionid',
       keyPrice: '1',
       balance: '1',
       outstandingKeys: 1,
       maxNumberOfKeys: 10,
       expirationDuration: 100,
     }
-    const transaction = {
-      id: '0x098',
-      address: '0x0987654321',
-      confirmations: 12,
-      status: 'mined',
 
-    }
+    const store = createUnlockStore({
+      transactions: {
+        'transactionid': transaction,
+      },
+      locks: {
+        'lockid': keylock,
+      },
+    })
+
     const config = configure({
       requiredConfirmations: 6,
     })
 
-    const store = createUnlockStore()
-
     let wrapper = rtl.render(
-      <Provider store={store}>
-        <CreatorLock lock={lock} transaction={transaction} config={config} />
+      <Provider store={store} config={config}>
+        <CreatorLock lock={keylock} transaction={transaction} />
       </Provider>)
 
     expect(wrapper.queryByText('1/10')).not.toBeNull()

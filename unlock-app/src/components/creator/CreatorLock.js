@@ -1,18 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 
 import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
-import CreatorLockStatus from './lock/CreatorLockStatus'
 import Icon from '../lock/Icon'
 import EmbedCodeSnippet from './lock/EmbedCodeSnippet'
 import KeyList from './lock/KeyList'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
-import withConfig from '../../utils/withConfig'
-import { withdrawFromLock } from '../../actions/lock'
 
 export class CreatorLock extends React.Component {
   constructor (props, context) {
@@ -21,16 +17,8 @@ export class CreatorLock extends React.Component {
       showEmbedCode: false,
       showKeys: false,
     }
-    this.startWithdrawal = this.startWithdrawal.bind(this)
     this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
     this.toggleKeys = this.toggleKeys.bind(this)
-  }
-
-  startWithdrawal() {
-    const { lock, account, withdraw } = this.props
-    if (lock.balance > 0) {
-      withdraw(lock, account)
-    }
   }
 
   toggleEmbedCode() {
@@ -48,37 +36,12 @@ export class CreatorLock extends React.Component {
   render() {
     // TODO add all-time balance to lock
 
-    const { lock, transaction, withdrawalTransaction, config } = this.props
+    const { lock, transaction } = this.props
     const { showEmbedCode, showKeys } = this.state
-
-    let startWithdrawal
-    if (withdrawalTransaction && ((withdrawalTransaction.status === 'submitted' ||
-      (withdrawalTransaction.status === 'mined' && withdrawalTransaction.confirmations < config.requiredConfirmations)))) {
-      startWithdrawal = false
-    } else {
-      startWithdrawal = this.startWithdrawal
-    }
 
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
     let outstandingKeys = lock.outstandingKeys || 0
-    let lockComponentStatusBlock = (
-      <LockIconBar withdraw={startWithdrawal} toggleCode={this.toggleEmbedCode} withdrawalTransaction={withdrawalTransaction} />
-    )
-
-    if (!transaction) {
-      // We assume that the lock has been succeesfuly deployed?
-      // TODO if the transaction is missing we should try to look it up from the lock address
-    } else if (transaction.status === 'submitted') {
-      lockComponentStatusBlock = <CreatorLockStatus lock={lock} status="Submitted" />
-    } else if (transaction.status === 'mined' &&
-      transaction.confirmations < config.requiredConfirmations) {
-      lockComponentStatusBlock = <CreatorLockStatus
-        lock={lock}
-        status="Confirming"
-        confirmations={transaction.confirmations}
-      />
-    }
 
     return (
       <LockRow onClick={this.toggleKeys}>
@@ -97,7 +60,11 @@ export class CreatorLock extends React.Component {
         </LockKeys>
         <Balance amount={lock.keyPrice} />
         <Balance amount={lock.balance} />
-        {lockComponentStatusBlock}
+        <LockIconBar
+          lock={lock}
+          transaction={transaction}
+          toggleCode={this.toggleEmbedCode}
+        />
         {showEmbedCode &&
           <LockPanel>
             <LockDivider />
@@ -118,38 +85,21 @@ export class CreatorLock extends React.Component {
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   transaction: UnlockPropTypes.transaction,
-  withdrawalTransaction: UnlockPropTypes.transaction,
-  account: UnlockPropTypes.account,
-  withdraw: PropTypes.func.isRequired,
-  config: UnlockPropTypes.configuration.isRequired,
 }
 
 CreatorLock.defaultProps = {
   transaction: null,
-  withdrawalTransaction: null,
-  account: null,
 }
 
 const mapStateToProps = (state, { lock }) => {
   const transaction = state.transactions[lock.transaction]
-  let withdrawalTransaction
-  Object.keys(state.transactions).forEach((el) => {
-    if (state.transactions[el].withdrawal === lock.id) withdrawalTransaction = state.transactions[el]
-  })
-  const account = state.account
   return {
     transaction,
-    withdrawalTransaction,
-    account,
     lock,
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  withdraw: (lock, account) => dispatch(withdrawFromLock(lock, account)),
-})
-
-export default withConfig(connect(mapStateToProps, mapDispatchToProps)(CreatorLock))
+export default connect(mapStateToProps)(CreatorLock)
 
 export const LockRowGrid = 'grid-template-columns: 32px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
 
