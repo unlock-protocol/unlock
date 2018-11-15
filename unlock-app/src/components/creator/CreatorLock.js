@@ -54,7 +54,7 @@ export class CreatorLock extends React.Component {
     } else if (transaction.status === 'submitted') {
       lockComponentStatusBlock = <CreatorLockStatus lock={lock} status="Submitted" />
     } else if (transaction.status === 'mined' &&
-        transaction.confirmations < config.requiredConfirmations) {
+      transaction.confirmations < config.requiredConfirmations) {
       lockComponentStatusBlock = <CreatorLockStatus
         lock={lock}
         status="Confirming"
