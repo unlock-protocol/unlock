@@ -30,9 +30,9 @@ module.exports = {
       host: '127.0.0.1', // This will require us to deploy from a running geth node connected to rinkeby (see docs)
       port: 8545, // We use ganache-cli and this is its default port
       from: '0x3ca206264762caf81a8f0a843bbb850987b41e16', // Account which has a positive of eth
-      network_id: '*', // Network Id for Rinkeby
+      network_id: '4', // Network Id for Rinkeby
       gas: 4712388,
-      gasPrice: 100000000000
+      gasPrice: 5000000000
     }
   },
   solc: {
