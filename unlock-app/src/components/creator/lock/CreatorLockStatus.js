@@ -10,15 +10,17 @@ export function CreatorLockStatus({ config, status, confirmations }) {
       <Status>
         {status}
       </Status>
-      {confirmations &&
-        <Confirmations>
-          {confirmations}
-          {' '}
-          /
-          {' '}
-          {config.requiredConfirmations}
-        </Confirmations>
-      }
+      <Confirmations>
+        {confirmations > 0 &&
+          <>
+            {confirmations}
+            {' '}
+            /
+            {' '}
+            {config.requiredConfirmations}
+          </>
+        }
+      </Confirmations>
     </LockStatus>
   )
 }
@@ -51,6 +53,7 @@ const Status = styled.div`
   justify-content: center;
   font-size: 13px;
   align-self: end;
+  justify-content: center;
 `
 
 const Confirmations = styled.div`
