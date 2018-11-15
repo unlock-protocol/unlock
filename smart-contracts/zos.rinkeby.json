@@ -1,0 +1,143 @@
+{
+  "contracts": {
+    "Unlock": {
+      "address": "0x7633dd082406861c384309c67576a4260c5775e0",
+      "constructorCode": "608060405260008054600160a060020a03191633179055611b8c806100256000396000f300",
+      "bodyBytecodeHash": "c05d7b86cd70a2fa765632338a32786d39a865084bc6b4f0a7bd83c9adc746a0",
+      "localBytecodeHash": "23536d5604b09694060ba4bc2843bcad3d13328b5be5af456e309b15ab90dc10",
+      "deployedBytecodeHash": "23536d5604b09694060ba4bc2843bcad3d13328b5be5af456e309b15ab90dc10",
+      "types": {
+        "t_address": {
+          "id": "t_address",
+          "kind": "elementary",
+          "label": "address"
+        },
+        "t_bool": {
+          "id": "t_bool",
+          "kind": "elementary",
+          "label": "bool"
+        },
+        "t_uint256": {
+          "id": "t_uint256",
+          "kind": "elementary",
+          "label": "uint256"
+        },
+        "t_array:50<t_uint256>": {
+          "id": "t_array:50<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "50",
+          "kind": "array",
+          "label": "uint256[50]"
+        },
+        "t_struct<Unlock.LockBalances>": {
+          "id": "t_struct<Unlock.LockBalances>",
+          "kind": "struct",
+          "label": "Unlock.LockBalances",
+          "members": [
+            {
+              "label": "deployed",
+              "astId": 711,
+              "type": "t_bool",
+              "src": "1821:13:2"
+            },
+            {
+              "label": "totalSales",
+              "astId": 713,
+              "type": "t_uint256",
+              "src": "1840:15:2"
+            },
+            {
+              "label": "yieldedDiscountTokens",
+              "astId": 715,
+              "type": "t_uint256",
+              "src": "1879:26:2"
+            }
+          ]
+        },
+        "t_mapping<t_struct<Unlock.LockBalances>>": {
+          "id": "t_mapping<t_struct<Unlock.LockBalances>>",
+          "valueType": "t_struct<Unlock.LockBalances>",
+          "label": "mapping(key => Unlock.LockBalances)",
+          "kind": "mapping"
+        }
+      },
+      "storage": [
+        {
+          "contract": "Ownable",
+          "path": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
+          "label": "owner",
+          "astId": 1202,
+          "type": "t_address",
+          "src": "238:20:9"
+        },
+        {
+          "contract": "Initializable",
+          "path": "zos-lib/contracts/Initializable.sol",
+          "label": "initialized",
+          "astId": 1288,
+          "type": "t_bool",
+          "src": "749:24:10"
+        },
+        {
+          "contract": "Initializable",
+          "path": "zos-lib/contracts/Initializable.sol",
+          "label": "initializing",
+          "astId": 1290,
+          "type": "t_bool",
+          "src": "868:25:10"
+        },
+        {
+          "contract": "Initializable",
+          "path": "zos-lib/contracts/Initializable.sol",
+          "label": "______gap",
+          "astId": 1339,
+          "type": "t_array:50<t_uint256>",
+          "src": "1883:29:10"
+        },
+        {
+          "contract": "Unlock",
+          "path": "contracts/Unlock.sol",
+          "label": "grossNetworkProduct",
+          "astId": 731,
+          "type": "t_uint256",
+          "src": "2042:31:2"
+        },
+        {
+          "contract": "Unlock",
+          "path": "contracts/Unlock.sol",
+          "label": "totalDiscountGranted",
+          "astId": 733,
+          "type": "t_uint256",
+          "src": "2078:32:2"
+        },
+        {
+          "contract": "Unlock",
+          "path": "contracts/Unlock.sol",
+          "label": "locks",
+          "astId": 737,
+          "type": "t_mapping<t_struct<Unlock.LockBalances>>",
+          "src": "2199:46:2"
+        }
+      ],
+      "warnings": {
+        "hasConstructor": false,
+        "hasSelfDestruct": false,
+        "hasDelegateCall": false,
+        "hasInitialValuesInDeclarations": false,
+        "uninitializedBaseContracts": []
+      }
+    }
+  },
+  "solidityLibs": {},
+  "proxies": {
+    "lock/Unlock": [
+      {
+        "address": "0x3c6e461341adbf7c0947085e86b4a6f35ff2f801",
+        "version": "0.1.0",
+        "implementation": "0x7633dd082406861c384309c67576a4260c5775e0"
+      }
+    ]
+  },
+  "zosversion": "2",
+  "version": "0.1.0"
+}
