@@ -10,15 +10,17 @@ export function CreatorLockStatus({ config, status, confirmations }) {
       <Status>
         {status}
       </Status>
-      {confirmations &&
-        <Confirmations>
-          {confirmations}
-          {' '}
-          /
-          {' '}
-          {config.requiredConfirmations}
-        </Confirmations>
-      }
+      <Confirmations>
+        {confirmations > 0 &&
+          <>
+            {confirmations}
+            {' '}
+            /
+            {' '}
+            {config.requiredConfirmations}
+          </>
+        }
+      </Confirmations>
     </LockStatus>
   )
 }

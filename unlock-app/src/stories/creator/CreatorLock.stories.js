@@ -14,6 +14,10 @@ const store = createUnlockStore({
       status: 'mined',
       confirmations: 4,
     },
+    '0x111': {
+      status: 'submitted',
+      confirmations: 0,
+    },
   },
   keys: {
     '0x678': {
@@ -38,6 +42,19 @@ storiesOf('CreatorLock', CreatorLock)
       outstandingKeys: '3',
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
       transaction: '0x123',
+    }
+    return (
+      <CreatorLock lock={lock} />
+    )
+  })
+  .add('Submitted', () => {
+    const lock = {
+      keyPrice: '10000000000000000000',
+      expirationDuration: '172800',
+      maxNumberOfKeys: '240',
+      outstandingKeys: '3',
+      address: '0x127c74abc0c4d48d1bdad5dcb26153fc8780f83e',
+      transaction: '0x111',
     }
     return (
       <CreatorLock lock={lock} />
