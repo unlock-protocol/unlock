@@ -6,27 +6,27 @@ import createUnlockStore from '../../createUnlockStore'
 
 const store = createUnlockStore({
   transactions: {
-    '0x123': {
+    'deployedid': {
       status: 'mined',
       confirmations: 24,
     },
-    '0x456': {
+    'confirmingid': {
       status: 'mined',
       confirmations: 4,
     },
-    '0x111': {
+    'submittedid': {
       status: 'submitted',
       confirmations: 0,
     },
-    '0x789': {
+    'withdrawalconfirmingid': {
       status: 'mined',
       confirmations: 2,
-      withdrawal: '0xba',
+      withdrawal: 'lockwithdrawalconfirmingid',
     },
-    '0x987': {
+    'withdrawalsubmittedid': {
       status: 'submitted',
       confirmations: 0,
-      withdrawal: '0xbc',
+      withdrawal: 'lockwithdrawalsubmittedid',
     },
   },
   keys: {
@@ -46,13 +46,13 @@ storiesOf('CreatorLock', CreatorLock)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Deployed', () => {
     const lock = {
-      id: '0xab',
+      id: 'lockid',
       keyPrice: '10000000000000000000',
       expirationDuration: '172800',
       maxNumberOfKeys: '240',
       outstandingKeys: '3',
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
-      transaction: '0x123',
+      transaction: 'deployedid',
     }
     return (
       <CreatorLock lock={lock} />
@@ -60,12 +60,13 @@ storiesOf('CreatorLock', CreatorLock)
   })
   .add('Submitted', () => {
     const lock = {
+      id: 'lockid',
       keyPrice: '10000000000000000000',
       expirationDuration: '172800',
       maxNumberOfKeys: '240',
       outstandingKeys: '3',
       address: '0x127c74abc0c4d48d1bdad5dcb26153fc8780f83e',
-      transaction: '0x111',
+      transaction: 'submittedid',
     }
     return (
       <CreatorLock lock={lock} />
@@ -73,20 +74,16 @@ storiesOf('CreatorLock', CreatorLock)
   })
   .add('Confirming', () => {
     const lock = {
-      id: '0xab',
+      id: 'lockid',
       keyPrice: '10000000000000000000',
       expirationDuration: '172800',
       maxNumberOfKeys: '240',
       outstandingKeys: '3',
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
-      transaction: '0x456',
-    }
-    const transaction = {
-      status: 'mined',
-      confirmations: 2,
+      transaction: 'confirmingid',
     }
     return (
-      <CreatorLock lock={lock} transaction={transaction} />
+      <CreatorLock lock={lock} />
     )
   })
   .add('Not found', () => {
@@ -97,7 +94,7 @@ storiesOf('CreatorLock', CreatorLock)
       maxNumberOfKeys: '240',
       outstandingKeys: '3',
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
-      transaction: '0x789',
+      transaction: null,
     }
     return (
       <CreatorLock lock={lock} transaction={null} />
@@ -111,25 +108,21 @@ storiesOf('CreatorLock', CreatorLock)
       maxNumberOfKeys: '240',
       outstandingKeys: '3',
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
-      transaction: '0x123',
-    }
-    const transaction = {
-      status: 'mined',
-      confirmations: 14,
+      transaction: 'deployedid',
     }
     return (
-      <CreatorLock lock={lock} transaction={transaction} />
+      <CreatorLock lock={lock} />
     )
   })
   .add('Withdrawal submitted', () => {
     const lock = {
-      id: '0xbc',
+      id: 'lockwithdrawalsubmittedid',
       keyPrice: '10000000000000000000',
       expirationDuration: '172800',
       maxNumberOfKeys: '240',
       outstandingKeys: '3',
       address: '0xbc7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
-      transaction: '0x123',
+      transaction: 'deployedid',
     }
     return (
       <CreatorLock lock={lock} />
@@ -137,13 +130,13 @@ storiesOf('CreatorLock', CreatorLock)
   })
   .add('Withdrawing', () => {
     const lock = {
-      id: '0xba',
+      id: 'lockwithdrawalconfirmingid',
       keyPrice: '10000000000000000000',
       expirationDuration: '172800',
       maxNumberOfKeys: '240',
       outstandingKeys: '3',
       address: '0xba7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
-      transaction: '0x123',
+      transaction: 'deployedid',
     }
     return (
       <CreatorLock lock={lock} />
