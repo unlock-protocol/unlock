@@ -36,7 +36,7 @@ export class CreatorLock extends React.Component {
   render() {
     // TODO add all-time balance to lock
 
-    const { lock, transaction } = this.props
+    const { lock } = this.props
     const { showEmbedCode, showKeys } = this.state
 
     // Some sanitization of strings to display
@@ -83,17 +83,10 @@ export class CreatorLock extends React.Component {
 
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
-  transaction: UnlockPropTypes.transaction,
-}
-
-CreatorLock.defaultProps = {
-  transaction: null,
 }
 
 const mapStateToProps = (state, { lock }) => {
-  const transaction = state.transactions[lock.transaction]
   return {
-    transaction,
     lock,
   }
 }
