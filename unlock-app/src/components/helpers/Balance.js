@@ -39,12 +39,14 @@ export function Balance({ amount, unit, conversion, EthComponent, convertCurrenc
         </BalanceWithUnit>
       </Currency>
       { convertCurrency ?
-        <Currency>
-          <USD />
-          <BalanceWithUnit>
-            {convertedUSDValue}
-          </BalanceWithUnit>
-        </Currency> :
+        <SubBalance>
+          <Currency>
+            <USD />
+            <BalanceWithUnit>
+              {convertedUSDValue}
+            </BalanceWithUnit>
+          </Currency>
+        </SubBalance>:
         '' }
     </BalanceWithConversion>
   )
@@ -98,6 +100,12 @@ export const USD = styled(CurrencySymbol)`
 export const BalanceWithUnit = styled.span`
   white-space: nowrap;
   text-transform: uppercase;
+`
+
+const SubBalance = styled.div`
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
 `
 
 function mapStateToProps({ currency: conversion }) {
