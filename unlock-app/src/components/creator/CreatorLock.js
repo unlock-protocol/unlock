@@ -183,11 +183,3 @@ const LockDivider = styled.div`
   height: 1px;
   background-color: var(--lightgrey);
 `
-
-/* Saving for use with sub-values that need to be added in a future PR
-const LockValueSub = styled.div`
-  font-size: 0.6em;
-  color: var(--grey);
-  margin-top: 5px;
-`
-*/
