@@ -62,7 +62,6 @@ export class CreatorLock extends React.Component {
         <Balance amount={lock.balance} />
         <LockIconBar
           lock={lock}
-          transaction={transaction}
           toggleCode={this.toggleEmbedCode}
         />
         {showEmbedCode &&
