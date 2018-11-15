@@ -38,7 +38,7 @@ export const mechanism = PropTypes.oneOf(['0', '1', '2', undefined])
 
 export const layout = PropTypes.instanceOf(Function) //PropTypes.instanceOf(React.Component)
 
-export const locks = PropTypes.shape({})
+export const locks = PropTypes.objectOf(lock)
 
 export const transactions = PropTypes.shape({})
 
