@@ -36,7 +36,7 @@ Dashboard.propTypes = {
 }
 
 Dashboard.defaultProps = {
-  locks: [],
+  locks: {},
 }
 
 const mapStateToProps = state => {
