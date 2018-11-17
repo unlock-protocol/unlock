@@ -21,7 +21,16 @@ export class Demo extends React.Component {
 
   render() {
     const { lockAddress, locks } = this.props
-    const lock = Object.values(locks).find((lock) => lock.address === lockAddress)
+    const locksForDemo = Object.keys(locks).reduce((acc, lockId) => {
+      if (locks[lockId].address === lockAddress) {
+        return {
+          ...acc,
+          [lockId]: locks[lockId],
+        }
+      }
+      return acc
+    }, {})
+
     return(
       <Layout title="Unlock Demo Page" forContent>
         <Head>
@@ -48,8 +57,8 @@ export class Demo extends React.Component {
 .
               </BottomSticker>
 
-              <ShowUnlessUserHasKeyToAnyLock locks={[lock]}>
-                <Overlay locks={[lock]} />
+              <ShowUnlessUserHasKeyToAnyLock locks={locksForDemo}>
+                <Overlay locks={locksForDemo} />
               </ShowUnlessUserHasKeyToAnyLock>
 
             </ShortColumn>
