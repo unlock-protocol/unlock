@@ -53,7 +53,7 @@ export function Balance({ amount, unit, conversion, EthComponent, convertCurrenc
 }
 
 Balance.propTypes = {
-  amount: PropTypes.string.isRequired,
+  amount: PropTypes.string,
   unit: PropTypes.string,
   conversion: UnlockPropTypes.conversion,
   EthComponent: PropTypes.func,
@@ -61,6 +61,7 @@ Balance.propTypes = {
 }
 
 Balance.defaultProps = {
+  amount: '0',
   unit: 'wei',
   conversion: { USD: undefined },
   EthComponent: ({ value }) => value,

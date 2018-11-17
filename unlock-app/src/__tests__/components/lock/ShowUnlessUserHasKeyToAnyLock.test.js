@@ -6,9 +6,11 @@ import {ShowUnlessUserHasKeyToAnyLock} from '../../../components/lock/ShowUnless
 describe('ShowUnlessUserHasKeyToAnyLock', () => {
 
   it('should show the children if there is no key for this lock', () => {
-    const locks = [{
-      address: '0x123',
-    }]
+    const locks = {
+      '123': {
+        address: '0x123',
+      },
+    }
     const keys = {
       '123': {
         lockAddress: '0x456',
@@ -24,9 +26,11 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
   })
 
   it('should show the children if there is no valid key for this lock', () => {
-    const locks = [{
-      address: '0x123',
-    }]
+    const locks = {
+      '123': {
+        address: '0x123',
+      },
+    }
     const keys = {
       '123': {
         lockAddress: '0x123',
@@ -42,9 +46,11 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
   })
 
   it('should not show the children if there is a valid key', () => {
-    const locks = [{
-      address: '0x123',
-    }]
+    const locks = {
+      '123': {
+        address: '0x123',
+      },
+    }
     const keys = {
       '123': {
         lockAddress: '0x123',

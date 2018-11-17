@@ -7,7 +7,7 @@ import UnlockPropTypes from '../../propTypes'
  */
 export const ShowUnlessUserHasKeyToAnyLock = ({ locks, keys, children }) => {
   const now = new Date().getTime() / 1000
-  for(let lock of locks) {
+  for (let lock of Object.values(locks)) {
     for(let key of Object.values(keys)) {
       if (
         key.lockAddress === lock.address
