@@ -76,6 +76,7 @@
     "serve-unlockjs": "TARGET=dev node_modules/.bin/webpack-dev-server --config webpack-unlockjs.config.js &",
     "test": "NODE_ENV=test jest --env=jsdom",
     "lint": "./node_modules/eslint/bin/eslint.js .",
+    "reformat": "npx prettier-eslint --write \"src/**/*.js\"",
     "storybook": "start-storybook -p 9001 -c .storybook -s src/static",
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions -d src/components/interface/svg/ src/static/images/svg/"
   },
@@ -93,6 +94,8 @@
   "devDependencies": {
     "jest-dom": "^2.1.0",
     "jest-mock-axios": "^2.1.11",
+    "prettier": "^1.14.3",
+    "prettier-eslint-cli": "^4.7.1",
     "react-testing-library": "^5.2.3"
   }
 }
