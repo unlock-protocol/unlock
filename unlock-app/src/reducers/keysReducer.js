@@ -4,7 +4,6 @@ import { SET_PROVIDER } from '../actions/provider'
 export const initialState = {}
 
 const keysReducer = (state = initialState, action) => {
-
   if (action.type == SET_PROVIDER) {
     return initialState
   }

@@ -49,7 +49,16 @@ describe('Pages', () => {
         privateKey: 'deadbeef',
         balance: '200000000000000000',
       }
-      rtl.render(<Provider store={store}><Dashboard account={account} network={network} transactions={{}} locks={[]} /></Provider>)
+      rtl.render(
+        <Provider store={store}>
+          <Dashboard
+            account={account}
+            network={network}
+            transactions={{}}
+            locks={[]}
+          />
+        </Provider>
+      )
       expect(pageTitle).toBeCalledWith('Dashboard')
     })
   })
@@ -62,15 +71,21 @@ describe('Pages', () => {
       const keys = {
         '0x123': {
           lockAddress: '0x123',
-          expiration: (new Date().getTime() / 1000) + 60*60, // Expired one hour from now
+          expiration: new Date().getTime() / 1000 + 60 * 60, // Expired one hour from now
         },
       }
-      const locks = [{
-        address: '0x123',
-      }]
+      const locks = [
+        {
+          address: '0x123',
+        },
+      ]
 
       const store = createUnlockStore({ currency, keys })
-      rtl.render(<Provider store={store}><Demo locks={locks} lockAddress='0x123' /></Provider>)
+      rtl.render(
+        <Provider store={store}>
+          <Demo locks={locks} lockAddress="0x123" />
+        </Provider>
+      )
       expect(pageTitle).toBeCalledWith('Demo')
     })
   })

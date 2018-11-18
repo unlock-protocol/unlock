@@ -16,17 +16,11 @@ const store = createUnlockStore({
 storiesOf('Content pages', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('the Home page', () => {
-    return (
-      <Home />
-    )
+    return <Home />
   })
   .add('the About page', () => {
-    return (
-      <About />
-    )
+    return <About />
   })
   .add('the Jobs page', () => {
-    return (
-      <Jobs />
-    )
+    return <Jobs />
   })

@@ -6,7 +6,7 @@ import createUnlockStore from '../../createUnlockStore'
 
 // lock, account, keys, purchaseKey
 const lockKey = {}
-const purchaseKey = () => { }
+const purchaseKey = () => {}
 const lock = {
   address: '0x123',
   name: 'Weekly Lock',
@@ -24,12 +24,22 @@ storiesOf('Lock', Lock)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('with no lockKey', () => {
     return (
-      <Lock lock={lock} transaction={null} lockKey={null} purchaseKey={purchaseKey} />
+      <Lock
+        lock={lock}
+        transaction={null}
+        lockKey={null}
+        purchaseKey={purchaseKey}
+      />
     )
   })
   .add('with no key for that account on this lock', () => {
     return (
-      <Lock lock={lock} transaction={null} lockKey={lockKey} purchaseKey={purchaseKey} />
+      <Lock
+        lock={lock}
+        transaction={null}
+        lockKey={lockKey}
+        purchaseKey={purchaseKey}
+      />
     )
   })
   .add('with a pending key (not yet mined)', () => {

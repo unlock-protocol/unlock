@@ -18,7 +18,6 @@ const { providers } = configure(global)
  * upstream objects.
  */
 export default class Web3Service extends EventEmitter {
-
   constructor() {
     super()
     this.ready = false
@@ -39,11 +38,14 @@ export default class Web3Service extends EventEmitter {
 
     this.web3 = new Web3(providers[provider])
 
-    return this.web3.eth.net.getId()
-      .then((networkId) => {
-
+    return this.web3.eth.net
+      .getId()
+      .then(networkId => {
         if (!UnlockContract.networks[networkId]) {
-          return this.emit('error', new Error(`Unlock is not deployed on network ${networkId}`))
+          return this.emit(
+            'error',
+            new Error(`Unlock is not deployed on network ${networkId}`)
+          )
         }
 
         this.unlockContractAddress = UnlockContract.networks[networkId].address
@@ -52,10 +54,10 @@ export default class Web3Service extends EventEmitter {
           this.networkId = networkId
           this.emit('network.changed', networkId)
         }
-      }).catch(error => {
+      })
+      .catch(error => {
         this.emit('error', error)
       })
-
   }
 
   /**
@@ -66,7 +68,7 @@ export default class Web3Service extends EventEmitter {
   refreshOrGetAccount(account) {
     let getAccountPromise
     if (!account || !account.address) {
-      getAccountPromise = this.web3.eth.getAccounts().then((accounts) => {
+      getAccountPromise = this.web3.eth.getAccounts().then(accounts => {
         if (accounts.length === 0) {
           return this.createAccount()
         } else {
@@ -80,8 +82,8 @@ export default class Web3Service extends EventEmitter {
     }
 
     // Once we have the account, let's refresh it!
-    return getAccountPromise.then((account) => {
-      return this.getAddressBalance(account.address).then((balance) => {
+    return getAccountPromise.then(account => {
+      return this.getAddressBalance(account.address).then(balance => {
         account.balance = balance
         this.emit('account.changed', account)
         return account
@@ -94,25 +96,40 @@ export default class Web3Service extends EventEmitter {
    * and sends it.
    * @private
    */
-  sendTransaction({ to, from, data, value, gas, privateKey, contractAbi = [] }, callback) {
-
+  sendTransaction(
+    { to, from, data, value, gas, privateKey, contractAbi = [] },
+    callback
+  ) {
     // Home made event handling since this is not handled correctly by web3 :/
-    const abiEvents = contractAbi.filter((item) => {
+    const abiEvents = contractAbi.filter(item => {
       return item.type === 'event'
     })
 
     if (!privateKey) {
       // We are using a third party provider so we do not have a privateKey for the user...
       // We assume this will support sendTransaction
-      const sentTransactionPromise = this.web3.eth.sendTransaction({ to, from, value, data, gas })
+      const sentTransactionPromise = this.web3.eth.sendTransaction({
+        to,
+        from,
+        value,
+        data,
+        gas,
+      })
       return this.handleTransaction(sentTransactionPromise, abiEvents, callback)
     } else {
       // We process transactions ourselves...
       // Sign first
-      return this.web3.eth.accounts.signTransaction({ to, from, value, data, gas }, privateKey)
-        .then((signedTransaction) => {
-          const sentSignedTransactionPromise = this.web3.eth.sendSignedTransaction(signedTransaction.rawTransaction)
-          return this.handleTransaction(sentSignedTransactionPromise, abiEvents, callback)
+      return this.web3.eth.accounts
+        .signTransaction({ to, from, value, data, gas }, privateKey)
+        .then(signedTransaction => {
+          const sentSignedTransactionPromise = this.web3.eth.sendSignedTransaction(
+            signedTransaction.rawTransaction
+          )
+          return this.handleTransaction(
+            sentSignedTransactionPromise,
+            abiEvents,
+            callback
+          )
         })
     }
   }
@@ -124,32 +141,43 @@ export default class Web3Service extends EventEmitter {
    * @param {*} callback
    */
   handleTransaction(sentTransaction, abiEvents, callback) {
-    return sentTransaction.once('transactionHash', (hash) => {
-      callback(null, { event: 'transactionHash', args: { hash } })
-    }).on('confirmation', (confirmationNumber, receipt) => {
-      callback(null, { event: 'confirmation', args: { confirmationNumber, receipt } })
-    }).once('receipt', (receipt) => {
-      callback(null, { event: 'receipt', args: { receipt } })
-      receipt.logs.forEach((log) => {
-        // For each event, let's look at the inputs
-        abiEvents.forEach((event) => {
-          let topics = log.topics
-          if (event.name) {
-            // https://web3js.readthedocs.io/en/1.0/web3-eth-abi.html#decodelog
-            // topics - Array: An array with the index parameter topics of the log, without the topic[0] if its a non-anonymous event, otherwise with topic[0].
-            topics = log.topics.slice(1)
-          }
-          const decoded = this.web3.eth.abi.decodeLog(event.inputs, log.data, topics)
-          const args = event.inputs.reduce((args, input) => {
-            args[input.name] = decoded[input.name]
-            return args
-          }, {})
-          callback(null, { event: event.name, args })
+    return sentTransaction
+      .once('transactionHash', hash => {
+        callback(null, { event: 'transactionHash', args: { hash } })
+      })
+      .on('confirmation', (confirmationNumber, receipt) => {
+        callback(null, {
+          event: 'confirmation',
+          args: { confirmationNumber, receipt },
         })
       })
-    }).on('error', (error) => {
-      callback(error, {})
-    })
+      .once('receipt', receipt => {
+        callback(null, { event: 'receipt', args: { receipt } })
+        receipt.logs.forEach(log => {
+          // For each event, let's look at the inputs
+          abiEvents.forEach(event => {
+            let topics = log.topics
+            if (event.name) {
+              // https://web3js.readthedocs.io/en/1.0/web3-eth-abi.html#decodelog
+              // topics - Array: An array with the index parameter topics of the log, without the topic[0] if its a non-anonymous event, otherwise with topic[0].
+              topics = log.topics.slice(1)
+            }
+            const decoded = this.web3.eth.abi.decodeLog(
+              event.inputs,
+              log.data,
+              topics
+            )
+            const args = event.inputs.reduce((args, input) => {
+              args[input.name] = decoded[input.name]
+              return args
+            }, {})
+            callback(null, { event: event.name, args })
+          })
+        })
+      })
+      .on('error', error => {
+        callback(error, {})
+      })
   }
 
   /**
@@ -157,13 +185,14 @@ export default class Web3Service extends EventEmitter {
    * @param {PropTypes.lock} lock
    */
   createLock(lock, owner) {
-    const unlock = new this.web3.eth.Contract(UnlockContract.abi, this.unlockContractAddress)
+    const unlock = new this.web3.eth.Contract(
+      UnlockContract.abi,
+      this.unlockContractAddress
+    )
 
-    const data = unlock.methods.createLock(
-      lock.expirationDuration,
-      lock.keyPrice,
-      lock.maxNumberOfKeys
-    ).encodeABI()
+    const data = unlock.methods
+      .createLock(lock.expirationDuration, lock.keyPrice, lock.maxNumberOfKeys)
+      .encodeABI()
 
     // The transaction object!
     const transaction = {
@@ -173,32 +202,35 @@ export default class Web3Service extends EventEmitter {
       lock: lock.id,
     }
 
-    return this.sendTransaction({
-      to: this.unlockContractAddress,
-      from: owner.address,
-      data: data,
-      gas: 2000000,
-      contractAbi: UnlockContract.abi,
-    }, (error, { event, args } = {}) => {
-      if (error) {
-        this.emit('error', error)
+    return this.sendTransaction(
+      {
+        to: this.unlockContractAddress,
+        from: owner.address,
+        data: data,
+        gas: 2000000,
+        contractAbi: UnlockContract.abi,
+      },
+      (error, { event, args } = {}) => {
+        if (error) {
+          this.emit('error', error)
+        }
+        if (event === 'transactionHash') {
+          transaction.hash = args.hash
+          transaction.status = 'submitted'
+          lock.transaction = transaction.hash
+          this.emit('lock.updated', lock)
+          this.emit('transaction.new', transaction)
+        } else if (event === 'confirmation') {
+          transaction.status = 'mined'
+          transaction.confirmations += 1
+          this.emit('transaction.updated', transaction)
+        } else if (event === 'NewLock') {
+          lock.address = args.newLockAddress
+          this.getLock(lock)
+          return this.emit('lock.saved', lock)
+        }
       }
-      if (event === 'transactionHash') {
-        transaction.hash = args.hash
-        transaction.status = 'submitted'
-        lock.transaction = transaction.hash
-        this.emit('lock.updated', lock)
-        this.emit('transaction.new', transaction)
-      } else if (event === 'confirmation') {
-        transaction.status = 'mined'
-        transaction.confirmations += 1
-        this.emit('transaction.updated', transaction)
-      } else if (event === 'NewLock') {
-        lock.address = args.newLockAddress
-        this.getLock(lock)
-        return this.emit('lock.saved', lock)
-      }
-    })
+    )
   }
 
   /**
@@ -206,10 +238,9 @@ export default class Web3Service extends EventEmitter {
    * Returns a promise with the balance
    */
   getAddressBalance(address) {
-    return this.web3.eth.getBalance(address)
-      .catch((error) => {
-        this.emit('error', error)
-      })
+    return this.web3.eth.getBalance(address).catch(error => {
+      this.emit('error', error)
+    })
   }
 
   /**
@@ -217,15 +248,14 @@ export default class Web3Service extends EventEmitter {
    * @return Promise<Account>
    */
   createAccount() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       return resolve(this.web3.eth.accounts.create())
-    }).then((account) => {
+    }).then(account => {
       // We poll the balance even though it is certainly 0
-      return this.getAddressBalance(account.address)
-        .then((balance) => {
-          account.balance = balance
-          return account
-        })
+      return this.getAddressBalance(account.address).then(balance => {
+        account.balance = balance
+        return account
+      })
     })
   }
 
@@ -254,25 +284,29 @@ export default class Web3Service extends EventEmitter {
     const contract = new this.web3.eth.Contract(LockContract.abi, lock.address)
 
     const attributes = {
-      keyPrice: (x) => x, // this is a BigNumber (represented as string)
+      keyPrice: x => x, // this is a BigNumber (represented as string)
       expirationDuration: parseInt,
       maxNumberOfKeys: parseInt,
-      owner: (x) => x,
+      owner: x => x,
       outstandingKeys: parseInt,
     }
 
-    const constantPromises = Object.keys(attributes).map((attribute) => {
-      return contract.methods[attribute]().call().then((result) => {
-        lock[attribute] = attributes[attribute](result) // We cast the value
-        return lock
-      })
+    const constantPromises = Object.keys(attributes).map(attribute => {
+      return contract.methods[attribute]()
+        .call()
+        .then(result => {
+          lock[attribute] = attributes[attribute](result) // We cast the value
+          return lock
+        })
     })
 
     // Let's load its balance
-    constantPromises.push(this.getAddressBalance(lock.address).then((balance) => {
-      lock.balance = balance
-      return lock
-    }))
+    constantPromises.push(
+      this.getAddressBalance(lock.address).then(balance => {
+        lock.balance = balance
+        return lock
+      })
+    )
 
     // Once lock has been refreshed
     return Promise.all(constantPromises).then(() => {
@@ -291,8 +325,13 @@ export default class Web3Service extends EventEmitter {
    * @param {UnlockPropTypes.lock} lock
    */
   purchaseKey(key, account, lock) {
-    const lockContract = new this.web3.eth.Contract(LockContract.abi, key.lockAddress)
-    const data = lockContract.methods.purchaseFor(key.owner, Web3Utils.utf8ToHex(key.data || '')).encodeABI()
+    const lockContract = new this.web3.eth.Contract(
+      LockContract.abi,
+      key.lockAddress
+    )
+    const data = lockContract.methods
+      .purchaseFor(key.owner, Web3Utils.utf8ToHex(key.data || ''))
+      .encodeABI()
 
     const transaction = {
       status: 'pending',
@@ -303,32 +342,35 @@ export default class Web3Service extends EventEmitter {
       account: account.address,
     }
 
-    return this.sendTransaction({
-      to: key.lockAddress,
-      from: key.owner,
-      data: data,
-      gas: 1000000,
-      value: lock.keyPrice,
-      contractAbi: LockContract.abi,
-    }, (error, { event, args } = {}) => {
-      if (error) {
-        return this.emit('error', error)
+    return this.sendTransaction(
+      {
+        to: key.lockAddress,
+        from: key.owner,
+        data: data,
+        gas: 1000000,
+        value: lock.keyPrice,
+        contractAbi: LockContract.abi,
+      },
+      (error, { event, args } = {}) => {
+        if (error) {
+          return this.emit('error', error)
+        }
+        if (event === 'transactionHash') {
+          transaction.hash = args.hash
+          key.transaction = transaction.hash
+          transaction.status = 'submitted'
+          this.emit('transaction.new', transaction)
+          this.emit('key.updated', key)
+        } else if (event === 'confirmation') {
+          transaction.status = 'mined'
+          transaction.confirmations += 1
+          this.emit('transaction.updated', transaction)
+        } else if (event === 'Transfer') {
+          this.getKey(key)
+          return this.emit('key.saved', key)
+        }
       }
-      if (event === 'transactionHash') {
-        transaction.hash = args.hash
-        key.transaction = transaction.hash
-        transaction.status = 'submitted'
-        this.emit('transaction.new', transaction)
-        this.emit('key.updated', key)
-      } else if (event === 'confirmation') {
-        transaction.status = 'mined'
-        transaction.confirmations += 1
-        this.emit('transaction.updated', transaction)
-      } else if (event === 'Transfer') {
-        this.getKey(key)
-        return this.emit('key.saved', key)
-      }
-    })
+    )
   }
 
   /**
@@ -341,19 +383,28 @@ export default class Web3Service extends EventEmitter {
       key.data = null
       return this.emit('key.updated', key)
     }
-    const lockContract = new this.web3.eth.Contract(LockContract.abi, key.lockAddress)
+    const lockContract = new this.web3.eth.Contract(
+      LockContract.abi,
+      key.lockAddress
+    )
 
-    const getKeyExpirationPromise = lockContract.methods.keyExpirationTimestampFor(key.owner).call()
+    const getKeyExpirationPromise = lockContract.methods
+      .keyExpirationTimestampFor(key.owner)
+      .call()
     const getKeyDataPromise = lockContract.methods.keyDataFor(key.owner).call()
-    if(!key.id) {
-      key.id = crypto.createHash('md5').update([key.lockAddress, key.owner].join('')).digest('hex')
+    if (!key.id) {
+      key.id = crypto
+        .createHash('md5')
+        .update([key.lockAddress, key.owner].join(''))
+        .digest('hex')
     }
     Promise.all([getKeyExpirationPromise, getKeyDataPromise])
       .then(([expiration, data]) => {
         key.expiration = parseInt(expiration, 10)
         key.data = data
         this.emit('key.updated', key)
-      }).catch(() => {
+      })
+      .catch(() => {
         key.expiration = 0
         key.data = null
         this.emit('key.updated', key)
@@ -365,9 +416,12 @@ export default class Web3Service extends EventEmitter {
    * @param {PropTypes.lock}
    * @param {PropTypes.account} account
    * @param {Function} callback TODO: implement...
-  */
+   */
   withdrawFromLock(lock, account) {
-    const lockContract = new this.web3.eth.Contract(LockContract.abi, lock.address)
+    const lockContract = new this.web3.eth.Contract(
+      LockContract.abi,
+      lock.address
+    )
     const data = lockContract.methods.withdraw().encodeABI()
 
     const transaction = {
@@ -378,29 +432,30 @@ export default class Web3Service extends EventEmitter {
       account: account.address,
     }
 
-    this.sendTransaction({
-      to: lock.address,
-      from: account.address,
-      data: data,
-      gas: 1000000,
-      contractAbi: LockContract.abi,
-    }, (error, { event, args } = {}) => {
-      if (error) {
-        return this.emit('error', error)
+    this.sendTransaction(
+      {
+        to: lock.address,
+        from: account.address,
+        data: data,
+        gas: 1000000,
+        contractAbi: LockContract.abi,
+      },
+      (error, { event, args } = {}) => {
+        if (error) {
+          return this.emit('error', error)
+        }
+        if (event === 'transactionHash') {
+          transaction.hash = args.hash
+          transaction.status = 'submitted'
+          this.emit('transaction.new', transaction)
+        } else if (event === 'confirmation') {
+          transaction.status = 'mined'
+          transaction.confirmations += 1
+          this.emit('transaction.updated', transaction)
+        } else if (event === 'receipt') {
+          return this.getLock(lock)
+        }
       }
-      if (event === 'transactionHash') {
-        transaction.hash = args.hash
-        transaction.status = 'submitted'
-        this.emit('transaction.new', transaction)
-      } else if (event === 'confirmation') {
-        transaction.status = 'mined'
-        transaction.confirmations += 1
-        this.emit('transaction.updated', transaction)
-      } else if (event === 'receipt') {
-        return this.getLock(lock)
-
-      }
-    })
+    )
   }
-
 }

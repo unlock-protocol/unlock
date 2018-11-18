@@ -32,6 +32,5 @@ const Circle = styled.div`
 
   > svg {
     fill: white;
-
-}
+  }
 `

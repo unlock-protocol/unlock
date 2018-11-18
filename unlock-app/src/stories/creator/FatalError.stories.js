@@ -4,17 +4,16 @@ import FatalError from '../../components/creator/FatalError'
 
 storiesOf('FatalError', FatalError)
   .add('default', () => {
-    return (
-      <FatalError.DefaultError />
-    )
+    return <FatalError.DefaultError />
   })
   .add('Network mismatch', () => {
     return (
-      <FatalError.WrongNetwork currentNetwork='main' requiredNetwork='rinkeby' />
+      <FatalError.WrongNetwork
+        currentNetwork="main"
+        requiredNetwork="rinkeby"
+      />
     )
   })
   .add('Wallet missing', () => {
-    return (
-      <FatalError.MissingProvider />
-    )
+    return <FatalError.MissingProvider />
   })

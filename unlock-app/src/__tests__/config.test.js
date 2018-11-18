@@ -1,7 +1,6 @@
 import configure from '../config'
 
 describe('config', () => {
-
   describe('dev', () => {
     let config = configure(global, { NODE_ENV: 'dev' })
 
@@ -25,16 +24,19 @@ describe('config', () => {
     })
 
     it('should have the right keys in dev when there is a web3 provider', () => {
-      config = configure({
-        web3: {
-          currentProvider: {
-            isMetaMask: true,
+      config = configure(
+        {
+          web3: {
+            currentProvider: {
+              isMetaMask: true,
+            },
+          },
+          location: {
+            hostname: 'localhost',
           },
         },
-        location: {
-          hostname: 'localhost',
-        },
-      }, { NODE_ENV: 'dev' })
+        { NODE_ENV: 'dev' }
+      )
       expect(config.providers).toMatchObject({
         HTTP: {
           connected: false,
@@ -97,5 +99,4 @@ describe('config', () => {
       expect(config.providers).toEqual({}) // We miss a web3 provider!
     })
   })
-
 })
