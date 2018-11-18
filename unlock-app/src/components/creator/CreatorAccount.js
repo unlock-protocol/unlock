@@ -28,10 +28,10 @@ export function CreatorAccount({ account, network }) {
         <Label>Balance</Label>
         <Label>Earning</Label>
         <DoubleHeightCell>
-          <Buttons.Upload />
+          <Buttons.Upload as="button" />
         </DoubleHeightCell>
         <DoubleHeightCell>
-          <Buttons.Etherscan />
+          <Buttons.Etherscan as="button" />
         </DoubleHeightCell>
         <DoubleHeightCell>
           {/* reinstate download / export functionality when we're ready <Buttons.Download /> */}
@@ -46,8 +46,8 @@ export function CreatorAccount({ account, network }) {
 }
 
 CreatorAccount.propTypes = {
-  account: UnlockPropTypes.account,
-  network: UnlockPropTypes.network,
+  account: UnlockPropTypes.account.isRequired,
+  network: UnlockPropTypes.network.isRequired,
 }
 
 export default CreatorAccount
@@ -80,9 +80,9 @@ const DoubleHeightCell = styled.div`
   display: grid;
   height: 40px;
   grid-row: span 2;
-  align-self: center;
+  align-self: start;
   font-size: 24px;
-  align-content: center;
+  align-content: start;
 `
 
 const Label = styled.div `

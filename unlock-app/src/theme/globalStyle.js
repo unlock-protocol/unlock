@@ -5,9 +5,9 @@ import { createGlobalStyle } from 'styled-components'
  */
 
 export const globalStyle = `
-  @import url(https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,400,500,600,700);
-  @import url(https://fonts.googleapis.com/css?family=IBM+Plex+Mono:200i,200,500);
-  @import url(https://fonts.googleapis.com/css?family=IBM+Plex+Serif:300,400);
+  @import url(https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,400,500,700);
+  @import url(https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700);
+  @import url(https://fonts.googleapis.com/css?family=IBM+Plex+Serif:300,400,700);
 
   :root {
     --white: #ffffff;

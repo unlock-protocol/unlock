@@ -27,7 +27,6 @@ export function Icon({ address }) {
       viewBox="0 0 216 216"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       width="100%"
-      height="100%"
     >
       <defs>
         <circle id="a" cx={108} cy={108} r={108} />
@@ -56,6 +55,10 @@ export function Icon({ address }) {
 
 Icon.propTypes = {
   address: UnlockPropTypes.address,
+}
+
+Icon.defaultProps = {
+  address: null,
 }
 
 export default Icon

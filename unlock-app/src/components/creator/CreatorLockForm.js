@@ -7,16 +7,15 @@ import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
 
 import Icon from '../lock/Icon'
-import Balance, { BalanceWithUnit } from '../helpers/Balance'
+import { BalanceWithUnit } from '../helpers/Balance'
 import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockStatus'
 import { createLock } from '../../actions/lock'
 
 class CreatorLockForm extends React.Component {
   constructor (props, context) {
-    super(props)
+    super(props, context)
     this.state = {
-      keyReleaseMechanism: 0, // Public
       expirationDuration: 30,
       expirationDurationUnit: 86400, // Days
       keyPrice: '0.01',
@@ -27,75 +26,92 @@ class CreatorLockForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.ethPrice = ({ value }) => (
-      <FormBalanceWithUnit>
-        <input type="text" id="keyPrice" onChange={this.handleChange} defaultValue={value} />
-      </FormBalanceWithUnit>
-    )
-
   }
 
   handleChange (event) {
-    this.setState({ [event.target.id]: event.target.value })
+    this.setState({ [event.target.name]: event.target.value })
   }
 
-  handleSubmit () { // TODO save name to the redux store
+  handleSubmit () {
+    const { account, createLock, hideAction } = this.props
+    const {
+      expirationDuration,
+      expirationDurationUnit,
+      keyPriceCurrency,
+      maxNumberOfKeys,
+      keyPrice,
+      name,
+    } = this.state
+
     const lock = {
-      keyReleaseMechanism: this.state.keyReleaseMechanism,
-      name: this.state.name,
-      expirationDuration: this.state.expirationDuration * this.state.expirationDurationUnit,
-      keyPrice: Web3Utils.toWei(this.state.keyPrice.toString(10), this.state.keyPriceCurrency),
-      maxNumberOfKeys: this.state.maxNumberOfKeys,
-      creator: this.props.account, // TODO denormalize: only use the account address
+      name: name,
+      expirationDuration: expirationDuration * expirationDurationUnit,
+      keyPrice: Web3Utils.toWei(keyPrice.toString(10), keyPriceCurrency),
+      maxNumberOfKeys,
+      owner: account.address,
       id: uniqid(),
     }
-    this.props.createLock(lock)
-    if (this.props.hideAction) this.props.hideAction()
+    createLock(lock)
+    if (hideAction) hideAction()
   }
 
-  handleCancel(e) {
-    e.stopPropagation() // This prevents submit from also being called
-    if (this.props.hideAction) this.props.hideAction()
+  handleCancel() {
+    const { hideAction } = this.props
+    if (hideAction) hideAction()
   }
 
   render() {
+    const {
+      expirationDuration,
+      maxNumberOfKeys,
+      keyPrice,
+      name ,
+    } = this.state
+
     return (
       <FormLockRow>
         <Icon />
         <FormLockName>
-          <input type="text" id="name" onChange={this.handleChange} defaultValue={this.state.name} />
+          <input type="text" name="name" onChange={this.handleChange} defaultValue={name} />
         </FormLockName>
         <FormLockDuration>
-          <input type="text" id="expirationDuration" onChange={this.handleChange} defaultValue={this.state.expirationDuration} />
+          <input type="text" name="expirationDuration" onChange={this.handleChange} defaultValue={expirationDuration} />
           {' '}
 days
         </FormLockDuration>
         <FormLockKeys>
-          <input type="text" id="maxNumberOfKeys" onChange={this.handleChange} defaultValue={this.state.maxNumberOfKeys} />
+          <input type="text" name="maxNumberOfKeys" onChange={this.handleChange} defaultValue={maxNumberOfKeys} />
         </FormLockKeys>
-        <Balance unit='eth' amount={this.state.keyPrice} EthComponent={this.ethPrice} />
+        <FormBalanceWithUnit>
+          三
+          <input type="text" name="keyPrice" onChange={this.handleChange} defaultValue={keyPrice} />
+        </FormBalanceWithUnit>
         <div>-</div>
-        <LockSubmit onClick={this.handleSubmit}>
-          Submit
-          <LockCancel onClick={this.handleCancel}>
+        <LockStatus>
+          <LockButton onClick={this.handleSubmit}>
+            Submit
+          </LockButton>
+          <LockButton cancel onClick={this.handleCancel}>
             Cancel
-          </LockCancel>
-        </LockSubmit>
+          </LockButton>
+        </LockStatus>
       </FormLockRow>
     )
   }
 }
 
 CreatorLockForm.propTypes = {
-  lock: UnlockPropTypes.lock,
-  account: UnlockPropTypes.account,
-  hideAction: PropTypes.func,
-  createLock: PropTypes.func,
+  account: UnlockPropTypes.account.isRequired,
+  hideAction: PropTypes.func.isRequired,
+  createLock: PropTypes.func.isRequired,
+}
+
+CreatorLockForm.defaultProps = {
 }
 
 const mapStateToProps = state => {
   return {
-    account: state.network.account,
+    account: state.account,
   }
 }
 
@@ -137,16 +153,18 @@ const FormLockKeys = styled(LockKeys)`
 const FormBalanceWithUnit = styled(BalanceWithUnit)`
   white-space: nowrap;
   input[type=text] {
-    width: 50px;
+    width: 30px;
   }
 `
 
-const LockSubmit = styled(LockStatus)`
+const LockButton = styled.button`
   cursor: pointer;
-  text-align: center;
-`
-
-const LockCancel = styled.div`
-  font-size: 10px;
-  margin-top: 11px;
+  font: inherit;
+  font-size: ${props => props.cancel ? '10px' : '13px'};
+  align-self: ${props => props.cancel ? 'center' : 'end'};
+  background: none;
+  color: inherit;
+  border: none;
+  outline: inherit;
+  padding 0;
 `

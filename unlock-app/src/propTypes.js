@@ -9,11 +9,10 @@ export const account = PropTypes.shape({
 })
 
 export const lock = PropTypes.shape({
-  keyReleaseMechanism: PropTypes.string,
   keyPrice: PropTypes.string,
-  maxNumberOfKeys: PropTypes.string,
+  maxNumberOfKeys: PropTypes.number,
   owner: PropTypes.string,
-  outstandingKeys: PropTypes.string,
+  outstandingKeys: PropTypes.number,
 })
 
 export const transaction = PropTypes.shape({
@@ -21,7 +20,7 @@ export const transaction = PropTypes.shape({
   confirmations: PropTypes.number,
   createdAt: PropTypes.number,
   hash: PropTypes.string,
-  lock: PropTypes.shape({}),
+  lock: PropTypes.string,
   name: PropTypes.string,
 })
 
@@ -39,11 +38,14 @@ export const mechanism = PropTypes.oneOf(['0', '1', '2', undefined])
 
 export const layout = PropTypes.instanceOf(Function) //PropTypes.instanceOf(React.Component)
 
-export const locks = PropTypes.shape({})
+export const locks = PropTypes.objectOf(PropTypes.object)
 
 export const transactions = PropTypes.shape({})
 
-export const key = PropTypes.shape({})
+export const key = PropTypes.shape({
+  lockAddress: address,
+  expiration: PropTypes.number,
+})
 
 export const keys = PropTypes.shape({})
 

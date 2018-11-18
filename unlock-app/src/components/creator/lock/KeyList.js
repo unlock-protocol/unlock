@@ -5,7 +5,7 @@ import UnlockPropTypes from '../../../propTypes'
 import { expirationAsDate } from '../../../utils/durations'
 
 // TODO add pagination
-export function KeyList ({ keys, lock }) {
+export function KeyList ({ keys }) {
   return (
     <Table>
       <Header>
@@ -40,7 +40,10 @@ export function KeyList ({ keys, lock }) {
 
 KeyList.propTypes = {
   keys: UnlockPropTypes.keys,
-  lock: UnlockPropTypes.lock,
+}
+
+KeyList.defaultProps = {
+  keys: [],
 }
 
 const mapStateToProps = (state, { lock }) => {

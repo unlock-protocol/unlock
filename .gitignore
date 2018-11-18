@@ -2,3 +2,7 @@
 .vscode
 tmp_site/
 node_modules/
+
+# ZeppelinOS
+zos.dev-*.json
+.zos.session

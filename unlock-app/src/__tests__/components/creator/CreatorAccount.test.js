@@ -1,6 +1,5 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
-import 'jest-dom/extend-expect'
 import { Provider } from 'react-redux'
 // Note, we use name import to import the non connected version of the component for testing
 import { CreatorAccount } from '../../../components/creator/CreatorAccount'
@@ -22,9 +21,11 @@ describe('CreatorAccount', () => {
 
     const store = createUnlockStore({ currency })
 
-    const wrapper = rtl.render(<Provider store={store}>
-      <CreatorAccount account={account} network={network} />
-    </Provider>)
+    const wrapper = rtl.render(
+      <Provider store={store}>
+        <CreatorAccount account={account} network={network} />
+      </Provider>)
+    
     // eth value
     expect(wrapper.queryByText('0.2')).not.toBeNull()
     // usd value

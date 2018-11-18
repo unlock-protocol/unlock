@@ -4,7 +4,7 @@ import { LayoutButton } from '../Button'
 
 const Github = () => (
   <LayoutButton href="https://github.com/unlock-protocol/unlock" title="Source Code">
-    <Svg.Github />
+    <Svg.Github name="Github" />
   </LayoutButton>
 )
 

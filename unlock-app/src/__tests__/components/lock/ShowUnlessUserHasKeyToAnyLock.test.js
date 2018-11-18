@@ -1,33 +1,36 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import * as rtl from 'react-testing-library'
 
 import {ShowUnlessUserHasKeyToAnyLock} from '../../../components/lock/ShowUnlessUserHasKeyToAnyLock'
 
 describe('ShowUnlessUserHasKeyToAnyLock', () => {
 
   it('should show the children if there is no key for this lock', () => {
-    const locks = [{
-      address: '0x123',
-    }]
+    const locks = {
+      '123': {
+        address: '0x123',
+      },
+    }
     const keys = {
       '123': {
         lockAddress: '0x456',
       },
     }
 
-    const wrapper = shallow(<ShowUnlessUserHasKeyToAnyLock
-      locks={locks}
-      keys={keys}
-    >
-      Show me
-    </ShowUnlessUserHasKeyToAnyLock>)
-    expect(wrapper.text()).toEqual('Show me')
+    const wrapper = rtl.render(
+      <ShowUnlessUserHasKeyToAnyLock locks={locks} keys={keys}>
+        Show me
+      </ShowUnlessUserHasKeyToAnyLock>)
+
+    expect(wrapper.queryByText('Show me')).not.toBe(null)
   })
 
   it('should show the children if there is no valid key for this lock', () => {
-    const locks = [{
-      address: '0x123',
-    }]
+    const locks = {
+      '123': {
+        address: '0x123',
+      },
+    }
     const keys = {
       '123': {
         lockAddress: '0x123',
@@ -35,19 +38,19 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
       },
     }
 
-    const wrapper = shallow(<ShowUnlessUserHasKeyToAnyLock
-      locks={locks}
-      keys={keys}
-    >
-      Show me
-    </ShowUnlessUserHasKeyToAnyLock>)
-    expect(wrapper.text()).toEqual('Show me')
+    const wrapper = rtl.render(
+      <ShowUnlessUserHasKeyToAnyLock locks={locks} keys={keys}>
+        Show me
+      </ShowUnlessUserHasKeyToAnyLock>)
+    expect(wrapper.queryByText('Show me')).not.toBe(null)
   })
 
   it('should not show the children if there is a valid key', () => {
-    const locks = [{
-      address: '0x123',
-    }]
+    const locks = {
+      '123': {
+        address: '0x123',
+      },
+    }
     const keys = {
       '123': {
         lockAddress: '0x123',
@@ -55,12 +58,10 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
       },
     }
 
-    const wrapper = shallow(<ShowUnlessUserHasKeyToAnyLock
-      locks={locks}
-      keys={keys}
-    >
-      Hide me
-    </ShowUnlessUserHasKeyToAnyLock>)
-    expect(wrapper.text()).toEqual('')
+    const wrapper = rtl.render(
+      <ShowUnlessUserHasKeyToAnyLock locks={locks} keys={keys}>
+        Hide me
+      </ShowUnlessUserHasKeyToAnyLock>)
+    expect(wrapper.container.firstChild).toBeNull()
   })
 })

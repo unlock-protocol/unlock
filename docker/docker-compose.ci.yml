@@ -5,7 +5,7 @@ services:
     image: trufflesuite/ganache-cli:v6.1.6
     expose:
       - 8545
-    command: ["-h=0.0.0.0"]
+    command: ["-h=0.0.0.0", "-m=hello unlock save the web"]
   unlock:
     build:
       context: ..

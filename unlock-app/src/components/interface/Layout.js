@@ -34,6 +34,12 @@ Layout.propTypes = {
   forContent: PropTypes.bool,
 }
 
+Layout.defaultProps = {
+  title: 'Unlock',
+  children: null,
+  forContent: false,
+}
+
 const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr minmax(300px, 4fr) 1fr;

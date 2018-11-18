@@ -1,10 +1,9 @@
-/* eslint no-console: 0 */  // TODO: remove me when this is clean
-
+import EventEmitter from 'events'
 import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
 import crypto from 'crypto'
 
-import LockContract from '../artifacts/contracts/Lock.json'
+import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
 
@@ -13,64 +12,81 @@ const { providers } = configure(global)
 /**
  * This service interacts with the web3 RPC endpoint.
  * All the methods return promises.
- * Some methods (createLock, withdrawFromLock, purchaseKey) are performing transactions. They return a promise but also accept a callback which lets the user 'listen' to changes on the pending transaction
- *
+ * Some methods (createLock, withdrawFromLock, purchaseKey) are performing transactions. They return
+ * a promise but also accept a callback which lets the user 'listen' to changes on the pending
+ * transaction Web3Service is an event emitter and will trigger events which can be handled by
+ * upstream objects.
  */
-export default class Web3Service {
+export default class Web3Service extends EventEmitter {
+
+  constructor() {
+    super()
+    this.ready = false
+  }
+
   /**
    * This connects to the web3 service and listens to new blocks
-   * TODO consider pulling the account logic away from that method into the promise listener
-   * @param {object} network
-   * @return {Promise}
+   * @param {object} account
+   * @return
    */
-  connect({ provider, network }) {
+  connect({ provider }) {
     this.ready = false
 
-    return new Promise((resolve, reject) => {
+    // We fail: it appears that we are trying to connect but do not have a provider available...
+    if (!providers[provider]) {
+      return this.emit('error', new Error('Provider does not exist'))
+    }
 
-      // We fail: it appears that we are trying to connect but do not have a provider available...
-      if (!providers[provider]) {
-        return reject()
-      }
+    this.web3 = new Web3(providers[provider])
 
-      this.web3 = new Web3(providers[provider])
+    return this.web3.eth.net.getId()
+      .then((networkId) => {
 
-      // Get the network id
-      const getNetworkIdPromise = this.web3.eth.net.getId()
+        if (!UnlockContract.networks[networkId]) {
+          return this.emit('error', new Error(`Unlock is not deployed on network ${networkId}`))
+        }
 
-      let getAccountPromise
-      if (!network.account.address) {
-        getAccountPromise = this.web3.eth.getAccounts().then((accounts) => {
-          if (accounts.length === 0) {
-            return this.createAccount() // TODO: make it a promise which returns an account!
-          } else {
-            return Promise.resolve({
-              address: accounts[0], // take the first one by default
-            })
-          }
-        })
-      } else {
-        getAccountPromise = Promise.resolve(network.account)
-      }
-
-      // Once we have the account, let's refresh it!
-      const refreshAccountPromise = getAccountPromise.then((account) => {
-        return this.getAddressBalance(account.address).then((balance) => {
-          account.balance = balance
-          return account
-        })
+        this.unlockContractAddress = UnlockContract.networks[networkId].address
+        this.ready = true
+        if (this.networkId !== networkId) {
+          this.networkId = networkId
+          this.emit('network.changed', networkId)
+        }
+      }).catch(error => {
+        this.emit('error', error)
       })
 
-      return Promise.all([
-        refreshAccountPromise,
-        getNetworkIdPromise,
-      ]).then(([account, networkId]) => {
-        this.networkId = networkId
-        this.ready = true
-        return resolve([networkId, account])
+  }
+
+  /**
+   * Function which refreshes the account supplied or loads one from the local node or creates
+   * one.
+   * @param {*} account
+   */
+  refreshOrGetAccount(account) {
+    let getAccountPromise
+    if (!account || !account.address) {
+      getAccountPromise = this.web3.eth.getAccounts().then((accounts) => {
+        if (accounts.length === 0) {
+          return this.createAccount()
+        } else {
+          return Promise.resolve({
+            address: accounts[0], // take the first one by default
+          })
+        }
+      })
+    } else {
+      getAccountPromise = Promise.resolve(account)
+    }
+
+    // Once we have the account, let's refresh it!
+    return getAccountPromise.then((account) => {
+      return this.getAddressBalance(account.address).then((balance) => {
+        account.balance = balance
+        this.emit('account.changed', account)
+        return account
       })
     })
-
   }
 
   /**
@@ -138,60 +154,50 @@ export default class Web3Service {
 
   /**
    * Creates a lock on behalf of the user `from`.
-   * This returns a promise of lock, but also accepts a callback to monitor the transaction
    * @param {PropTypes.lock} lock
-   * @param {function} callback
-   * @return Promise<Lock>
    */
-  createLock(lock, callback) {
-    return new Promise((resolve) => {
-      const unlock = new this.web3.eth.Contract(UnlockContract.abi, UnlockContract.networks[this.networkId].address)
+  createLock(lock, owner) {
+    const unlock = new this.web3.eth.Contract(UnlockContract.abi, this.unlockContractAddress)
 
-      const data = unlock.methods.createLock(
-        lock.keyReleaseMechanism,
-        lock.expirationDuration,
-        lock.keyPrice,
-        lock.maxNumberOfKeys
-      ).encodeABI()
+    const data = unlock.methods.createLock(
+      lock.expirationDuration,
+      lock.keyPrice,
+      lock.maxNumberOfKeys
+    ).encodeABI()
 
-      // The transaction object!
-      const transaction = {
-        status: 'pending',
-        confirmations: 0,
-        createdAt: new Date().getTime(),
-        lock: lock.id,
+    // The transaction object!
+    const transaction = {
+      status: 'pending',
+      confirmations: 0,
+      createdAt: new Date().getTime(),
+      lock: lock.id,
+    }
+
+    return this.sendTransaction({
+      to: this.unlockContractAddress,
+      from: owner.address,
+      data: data,
+      gas: 2000000,
+      contractAbi: UnlockContract.abi,
+    }, (error, { event, args } = {}) => {
+      if (error) {
+        this.emit('error', error)
       }
-
-      return this.sendTransaction({
-        to: UnlockContract.networks[this.networkId].address,
-        from: lock.creator.address,
-        data: data,
-        gas: 1500000,
-        privateKey: lock.creator.privateKey,
-        contractAbi: UnlockContract.abi,
-      }, (error, { event, args }) => {
-        if (error) {
-          console.error(error)
-        }
-        if (event === 'transactionHash') {
-          transaction.hash = args.hash
-          transaction.status = 'submitted'
-          lock.transaction = transaction.hash
-          callback(transaction, lock)
-        } else if (event === 'confirmation') {
-          transaction.status = 'mined'
-          transaction.confirmations += 1
-          callback(transaction, lock)
-        } else if (event === 'NewLock') {
-          // Refresh lock object with the values from the smart contract
-          return this.getLock(args.newLockAddress).then((savedLock) => {
-            // TODO: sync savedLock into lock
-            lock = Object.assign(savedLock, lock)
-            callback(transaction, lock)
-            return resolve(lock)
-          })
-        }
-      })
+      if (event === 'transactionHash') {
+        transaction.hash = args.hash
+        transaction.status = 'submitted'
+        lock.transaction = transaction.hash
+        this.emit('lock.updated', lock)
+        this.emit('transaction.new', transaction)
+      } else if (event === 'confirmation') {
+        transaction.status = 'mined'
+        transaction.confirmations += 1
+        this.emit('transaction.updated', transaction)
+      } else if (event === 'NewLock') {
+        lock.address = args.newLockAddress
+        this.getLock(lock)
+        return this.emit('lock.saved', lock)
+      }
     })
   }
 
@@ -201,23 +207,9 @@ export default class Web3Service {
    */
   getAddressBalance(address) {
     return this.web3.eth.getBalance(address)
-  }
-
-  /**
-   * This loads the account matching the private key
-   * @param {string} privateKey
-   * @return Promise<Account>
-   */
-  loadAccount(privateKey) {
-    return new Promise((resolve) => {
-      return resolve(this.web3.eth.accounts.privateKeyToAccount(privateKey))
-    }).then((account) => {
-      return this.getAddressBalance(account.address)
-        .then((balance) => {
-          account.balance = balance
-          return account
-        })
-    })
+      .catch((error) => {
+        this.emit('error', error)
+      })
   }
 
   /**
@@ -240,80 +232,53 @@ export default class Web3Service {
   /**
    * This refreshes a transaction by its hash
    * @param {Transaction} transaction
-   * @return Promise<Transaction>
    */
-  refreshTransaction(transaction) {
-    return new Promise((resolve, reject) => {
-      return Promise.all([
-        this.web3.eth.getBlockNumber(),
-        this.web3.eth.getTransaction(transaction.hash),
-      ]).then(([blockNumber, blockTransaction]) => {
-        if (!blockTransaction) {
-          // Missing transaction.
-          return reject(new Error('Missing transaction'))
-        }
-        transaction.confirmations = blockNumber - blockTransaction.blockNumber
-        return resolve(transaction)
-      })
+  getTransaction(transaction) {
+    Promise.all([
+      this.web3.eth.getBlockNumber(),
+      this.web3.eth.getTransaction(transaction.hash),
+    ]).then(([blockNumber, blockTransaction]) => {
+      if (!blockTransaction) {
+        return this.emit('error', new Error('Missing transaction'))
+      }
+      transaction.confirmations = blockNumber - blockTransaction.blockNumber
+      this.emit('transaction.updated', transaction)
     })
   }
 
   /**
-   * This gets the lock object from the stored data in the blockchain
-   * @param {PropTypes.adress} address
+   * Refresh the lock's data
    * @return Promise<Lock>
    */
-  getLock(address) {
-    let lock = {
-      address,
-      balance: '0',
+  getLock(lock) {
+    const contract = new this.web3.eth.Contract(LockContract.abi, lock.address)
+
+    const attributes = {
+      keyPrice: (x) => x, // this is a BigNumber (represented as string)
+      expirationDuration: parseInt,
+      maxNumberOfKeys: parseInt,
+      owner: (x) => x,
+      outstandingKeys: parseInt,
     }
 
-    const contract = new this.web3.eth.Contract(LockContract.abi, address)
-
-    const constantPromises = []
-
-    LockContract.abi.forEach((item) => {
-      if (item.constant) {
-        if (item.inputs.length === 0) {
-          if (!lock[item.name]) {
-            const promise = contract.methods[item.name]().call().then((result) => {
-              lock[item.name] = result
-              return lock
-            })
-            constantPromises.push(promise)
-          }
-          lock[item.name] = undefined
-        } else {
-          lock[item.name] = (...args) => {
-            const promise = new Promise((resolve, reject) => {
-              contract.methods[item.name](...args).call((error, result) => {
-                if (error) {
-                  // Something happened
-                  return reject(error)
-                } else {
-                  return resolve(result)
-                }
-              })
-            })
-            return promise
-          }
-        }
-      }
+    const constantPromises = Object.keys(attributes).map((attribute) => {
+      return contract.methods[attribute]().call().then((result) => {
+        lock[attribute] = attributes[attribute](result) // We cast the value
+        return lock
+      })
     })
 
     // Let's load its balance
-    constantPromises.push(this.getAddressBalance(address).then((balance) => {
+    constantPromises.push(this.getAddressBalance(lock.address).then((balance) => {
       lock.balance = balance
       return lock
     }))
 
     // Once lock has been refreshed
     return Promise.all(constantPromises).then(() => {
+      this.emit('lock.updated', lock)
       return lock
     })
-
-    // TODO: methods, events, changes?
   }
 
   /**
@@ -324,117 +289,74 @@ export default class Web3Service {
    * @param {UnlockPropTypes.key} key
    * @param {UnlockPropTypes.account} account
    * @param {UnlockPropTypes.lock} lock
-   * @param {PropTypes.func} callback
-   * @return Promise<Key>
    */
-  purchaseKey(key, account, lock, callback) {
-    return new Promise((resolve) => {
-      const lockContract = new this.web3.eth.Contract(LockContract.abi, key.lockAddress)
-      const data = lockContract.methods.purchaseFor(key.owner, Web3Utils.utf8ToHex(key.data || '')).encodeABI()
+  purchaseKey(key, account, lock) {
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, key.lockAddress)
+    const data = lockContract.methods.purchaseFor(key.owner, Web3Utils.utf8ToHex(key.data || '')).encodeABI()
 
-      const transaction = {
-        status: 'pending',
-        confirmations: 0,
-        createdAt: new Date().getTime(),
-        key: key.id,
+    const transaction = {
+      status: 'pending',
+      confirmations: 0,
+      createdAt: new Date().getTime(),
+      key: key.id,
+      lock: lock.id,
+      account: account.address,
+    }
+
+    return this.sendTransaction({
+      to: key.lockAddress,
+      from: key.owner,
+      data: data,
+      gas: 1000000,
+      value: lock.keyPrice,
+      contractAbi: LockContract.abi,
+    }, (error, { event, args } = {}) => {
+      if (error) {
+        return this.emit('error', error)
       }
-      callback(transaction, key)
-
-      return this.sendTransaction({
-        to: key.lockAddress,
-        from: key.owner,
-        data: data,
-        gas: 1000000,
-        value: lock.keyPrice,
-        privateKey: account.privateKey,
-        contractAbi: LockContract.abi,
-      }, (error, { event, args }) => {
-        if (error) {
-          console.error(error)
-        }
-        if (event === 'transactionHash') {
-          transaction.hash = args.hash
-          key.transaction = transaction.hash
-          transaction.status = 'submitted'
-          callback(transaction, key)
-        } else if (event === 'confirmation') {
-          transaction.status = 'mined'
-          transaction.confirmations += 1
-          callback(transaction, key)
-          return this.refreshKey(key).then((key) => {
-            transaction.key = key
-            callback(transaction, key)
-            return resolve(key)
-          })
-        } else if (event === 'Transfer') {
-          return this.refreshKey(key).then((key) => {
-            transaction.key = key
-            callback(transaction, key)
-            return resolve(key)
-          })
-        }
-      })
+      if (event === 'transactionHash') {
+        transaction.hash = args.hash
+        key.transaction = transaction.hash
+        transaction.status = 'submitted'
+        this.emit('transaction.new', transaction)
+        this.emit('key.updated', key)
+      } else if (event === 'confirmation') {
+        transaction.status = 'mined'
+        transaction.confirmations += 1
+        this.emit('transaction.updated', transaction)
+      } else if (event === 'Transfer') {
+        this.getKey(key)
+        return this.emit('key.saved', key)
+      }
     })
   }
 
   /**
    * Returns the key to the lockAddress by the account.
    * @param {UnlockPropTypes.key} key
-   * @return Promise<Key>
    */
-  refreshKey(key) {
+  getKey(key) {
     if (!key.lockAddress) {
-      return Promise.reject(new Error('Could not fetch key without a lock'))
+      key.expiration = 0
+      key.data = null
+      return this.emit('key.updated', key)
     }
     const lockContract = new this.web3.eth.Contract(LockContract.abi, key.lockAddress)
 
     const getKeyExpirationPromise = lockContract.methods.keyExpirationTimestampFor(key.owner).call()
     const getKeyDataPromise = lockContract.methods.keyDataFor(key.owner).call()
-    return Promise.all([getKeyExpirationPromise, getKeyDataPromise])
+    if(!key.id) {
+      key.id = crypto.createHash('md5').update([key.lockAddress, key.owner].join('')).digest('hex')
+    }
+    Promise.all([getKeyExpirationPromise, getKeyDataPromise])
       .then(([expiration, data]) => {
         key.expiration = parseInt(expiration, 10)
         key.data = data
-        return key
-      }).catch((error) => {
-        console.log(error)
-        // We could not fetch the key. Assume it does not exist so set its expiration to 0
+        this.emit('key.updated', key)
+      }).catch(() => {
         key.expiration = 0
         key.data = null
-        return key
-      })
-  }
-
-  /**
-   * Returns the key to the lockAddress by the account.
-   * DEPRACTED: the objects are never created by this library but passed to it and synced against
-   * against the smart contract. This function creates a key object and yields it, which is not ok.
-   * @param {PropTypes.adress} lockAddress
-   * @param {PropTypes.account} account
-   * @return Promise<Key>
-   */
-  getKey(lockAddress, account) {
-    if (!account || !lockAddress) {
-      return Promise.reject(new Error('Could not fetch key without account and lock'))
-    }
-
-    const lockContract = new this.web3.eth.Contract(LockContract.abi, lockAddress)
-
-    const getKeyExpirationPromise = lockContract.methods.keyExpirationTimestampFor(account.address).call()
-    const getKeyDataPromise = lockContract.methods.keyDataFor(account.address).call()
-    return Promise.all([getKeyExpirationPromise, getKeyDataPromise])
-      .then(([expiration, data]) => {
-        const key = {
-          id: crypto.createHash('md5').update([lockAddress, account.address, expiration].join('')).digest('hex'),
-          lockAddress,
-          owner: account.address,
-          expiration: parseInt(expiration, 10),
-          data,
-        }
-        return key
-      }).catch((error) => {
-        console.log(error)
-        // We could not fetch the key. Assume it does not exist?
-        return Promise.reject(new Error('Missing key'))
+        this.emit('key.updated', key)
       })
   }
 
@@ -443,30 +365,42 @@ export default class Web3Service {
    * @param {PropTypes.lock}
    * @param {PropTypes.account} account
    * @param {Function} callback TODO: implement...
-   * @return Promise<lock>
   */
   withdrawFromLock(lock, account) {
-    return new Promise((resolve) => {
-      const lockContract = new this.web3.eth.Contract(LockContract.abi, lock.address)
-      const data = lockContract.methods.withdraw().encodeABI()
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, lock.address)
+    const data = lockContract.methods.withdraw().encodeABI()
 
-      return this.sendTransaction({
-        to: lock.address,
-        from: account.address,
-        data: data,
-        gas: 1000000,
-        privateKey: account.privateKey,
-        contractAbi: LockContract.abi,
-      }, (error, { event }) => {
-        if (error) {
-          console.error(error)
-        }
-        if (event === 'receipt') {
-          return resolve(lock)
-        }
-      })
+    const transaction = {
+      status: 'pending',
+      confirmations: 0,
+      createdAt: new Date().getTime(),
+      lock: lock.id,
+      account: account.address,
+    }
+
+    this.sendTransaction({
+      to: lock.address,
+      from: account.address,
+      data: data,
+      gas: 1000000,
+      contractAbi: LockContract.abi,
+    }, (error, { event, args } = {}) => {
+      if (error) {
+        return this.emit('error', error)
+      }
+      if (event === 'transactionHash') {
+        transaction.hash = args.hash
+        transaction.status = 'submitted'
+        this.emit('transaction.new', transaction)
+      } else if (event === 'confirmation') {
+        transaction.status = 'mined'
+        transaction.confirmations += 1
+        this.emit('transaction.updated', transaction)
+      } else if (event === 'receipt') {
+        return this.getLock(lock)
+
+      }
     })
-
   }
 
 }

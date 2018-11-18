@@ -33,10 +33,7 @@ export const Home = ({ config }) => (
       }
 
       {config.env === 'prod' &&
-        <HomepageButton disabled>
-Go to Your Dashboard...
-          <em>coming soon</em>
-        </HomepageButton>
+        <HomepageButton disabled>Dashboard coming soon</HomepageButton>
       }
 
       <ButtonLabel>Requires a browser with an Ethereum wallet</ButtonLabel>
@@ -87,7 +84,7 @@ Go to Your Dashboard...
 Home.skipConstraints = true
 
 Home.propTypes = {
-  config: UnlockPropTypes.configuration,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 export default withConfig(Home)

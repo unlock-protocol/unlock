@@ -23,7 +23,7 @@ class Error extends React.Component {
   }
 
   render () {
-    const { config } = this.props
+    const { config, statusCode } = this.props
 
     if (config.isServer) {
       return null
@@ -31,8 +31,8 @@ class Error extends React.Component {
 
     return (
       <p>
-        {this.props.statusCode
-          ? `An error ${this.props.statusCode} occurred on server`
+        {statusCode
+          ? `An error ${statusCode} occurred on server`
           : 'An error occurred on client'}
       </p>
     )
@@ -40,8 +40,8 @@ class Error extends React.Component {
 }
 
 Error.propTypes = {
-  statusCode: PropTypes.number,
-  config: UnlockPropTypes.configuration,
+  statusCode: PropTypes.number.isRequired,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 export default withConfig(Error)

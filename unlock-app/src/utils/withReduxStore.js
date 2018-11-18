@@ -44,12 +44,16 @@ export default (App) => {
      * initialReduxState is actually coming from the server side rendered content
      * We want to "merge" it with the data that might be stored in localStorage
      */
-    constructor (props) {
-      super(props)
-      this.reduxStore = getOrCreateStore(Object.assign(props.initialReduxState, loadState()))
-      this.reduxStore.subscribe(() => {
-        saveState(this.reduxStore.getState())
-      })
+    constructor (props, context) {
+      super(props, context)
+      if (config.isServer) {
+        this.reduxStore = getOrCreateStore(props.initialReduxState)
+      } else {
+        this.reduxStore = getOrCreateStore(Object.assign(props.initialReduxState, loadState()))
+        this.reduxStore.subscribe(() => {
+          saveState(this.reduxStore.getState())
+        })
+      }
     }
 
     render () {

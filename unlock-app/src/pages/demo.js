@@ -13,7 +13,7 @@ import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasK
 import { pageTitle } from '../constants'
 
 export class Demo extends React.Component {
-  static async getInitialProps({ req, query: { lockaddress } }) {
+  static async getInitialProps({ query: { lockaddress } }) {
 
     // passing :lockaddress query to the component as a prop
     return { lockAddress: lockaddress }
@@ -21,7 +21,16 @@ export class Demo extends React.Component {
 
   render() {
     const { lockAddress, locks } = this.props
-    const lock = Object.values(locks).find((lock) => lock.address === lockAddress)
+    const locksForDemo = Object.keys(locks).reduce((acc, lockId) => {
+      if (locks[lockId].address === lockAddress) {
+        return {
+          ...acc,
+          [lockId]: locks[lockId],
+        }
+      }
+      return acc
+    }, {})
+
     return(
       <Layout title="Unlock Demo Page" forContent>
         <Head>
@@ -48,8 +57,8 @@ export class Demo extends React.Component {
 .
               </BottomSticker>
 
-              <ShowUnlessUserHasKeyToAnyLock locks={[lock]}>
-                <Overlay locks={[lock]} />
+              <ShowUnlessUserHasKeyToAnyLock locks={locksForDemo}>
+                <Overlay locks={locksForDemo} />
               </ShowUnlessUserHasKeyToAnyLock>
 
             </ShortColumn>
@@ -61,8 +70,8 @@ export class Demo extends React.Component {
 }
 
 Demo.propTypes = {
-  locks: UnlockPropTypes.locks,
-  lockAddress: UnlockPropTypes.address,
+  locks: UnlockPropTypes.locks.isRequired,
+  lockAddress: UnlockPropTypes.address.isRequired,
 }
 
 const mapStateToProps = state => {

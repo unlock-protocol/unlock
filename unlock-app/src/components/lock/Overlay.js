@@ -1,16 +1,16 @@
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import React from 'react'
 import Logo from '../interface/Logo'
 import Lock from './Lock'
+import UnlockPropTypes from '../../propTypes'
 
 export const Overlay = ({ locks }) => (
   <FullPage>
     <Banner>
       <Headline>You have reached your limit of free articles. Please purchase access:</Headline>
       <Locks>
-        {locks.map((lock, key) => (
-          <Lock key={key} lock={lock} />
+        {Object.values(locks).map((lock) => (
+          <Lock key={lock.id} lock={lock} />
         ))}
       </Locks>
       <Colophon>
@@ -22,7 +22,11 @@ export const Overlay = ({ locks }) => (
 )
 
 Overlay.propTypes = {
-  locks: PropTypes.arrayOf(Object),
+  locks: UnlockPropTypes.locks,
+}
+
+Overlay.defaultProps = {
+  locks: {},
 }
 
 export default Overlay

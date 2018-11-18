@@ -1,7 +1,8 @@
 {
+  "zosversion": "2",
   "name": "lock",
   "version": "0.1.0",
   "contracts": {
-    "unlock": "unlock"
+    "Unlock": "Unlock"
   }
 }

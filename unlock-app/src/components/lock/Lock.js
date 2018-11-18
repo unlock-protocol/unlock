@@ -18,10 +18,11 @@ export const Lock = ({ lock, lockKey, transaction, purchaseKey }) => {
     // Maybe we just lost track of that transaction?
     // Is the key valid?
   } else if (transaction.status === 'mined') {
-    purchaseButton = <PurchaseButton>
+    purchaseButton = (
+      <PurchaseButton>
 Mined! Confirming...
-      {transaction.confirmations}
-    </PurchaseButton>
+        {transaction.confirmations}
+      </PurchaseButton>)
     // Key transaction was mined: it is mined, let's look at confirmations
   } else if (transaction.status === 'submitted') {
     purchaseButton = <PurchaseButton>Submitted!</PurchaseButton>
@@ -45,9 +46,14 @@ $
 
 Lock.propTypes = {
   lockKey: UnlockPropTypes.key,
-  lock: UnlockPropTypes.lock,
+  lock: UnlockPropTypes.lock.isRequired,
   transaction: UnlockPropTypes.transaction,
-  purchaseKey: PropTypes.func,
+  purchaseKey: PropTypes.func.isRequired,
+}
+
+Lock.defaultProps = {
+  lockKey: null,
+  transaction: null,
 }
 
 const mapDispatchToProps = dispatch => ({
@@ -55,7 +61,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export const mapStateToProps = (state, {lock}) => {
-  const account = state.network.account
+  const account = state.account
 
   // If there is no account (probably not loaded yet), we do not want to create a key
   if (!account) {

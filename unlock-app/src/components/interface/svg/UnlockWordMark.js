@@ -1,7 +1,8 @@
 import React from 'react'
 
-const UnlockWordMark = props => (
+const SvgUnlockWordMark = ({ title, ...props }) => (
   <svg {...props}>
+    <title>{title}</title>
     <path
       fill="#ED6E82"
       fillRule="evenodd"
@@ -10,4 +11,4 @@ const UnlockWordMark = props => (
   </svg>
 )
 
-export default UnlockWordMark
+export default SvgUnlockWordMark

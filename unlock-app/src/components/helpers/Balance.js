@@ -14,7 +14,7 @@ import { formatEth, formatCurrency } from '../../selectors/currency'
  * @param {object} conversion: a hash of conversion values for ether to currencies
  * @param {function} EthComponent: a React component that displays an ether value
  */
-export function Balance({ amount, unit = 'wei', conversion = { USD: undefined }, EthComponent = ({ value }) => value, convertCurrency = true }) {
+export function Balance({ amount, unit, conversion, EthComponent, convertCurrency }) {
   let currency
   if (unit !== 'dollars' && unit !== 'eth') {
     const inWei = Web3Utils.toWei(amount || '0', unit)
@@ -39,12 +39,14 @@ export function Balance({ amount, unit = 'wei', conversion = { USD: undefined },
         </BalanceWithUnit>
       </Currency>
       { convertCurrency ?
-        <Currency>
-          <USD />
-          <BalanceWithUnit>
-            {convertedUSDValue}
-          </BalanceWithUnit>
-        </Currency> :
+        <SubBalance>
+          <Currency>
+            <USD />
+            <BalanceWithUnit>
+              {convertedUSDValue}
+            </BalanceWithUnit>
+          </Currency>
+        </SubBalance>:
         '' }
     </BalanceWithConversion>
   )
@@ -58,6 +60,14 @@ Balance.propTypes = {
   convertCurrency: PropTypes.bool,
 }
 
+Balance.defaultProps = {
+  amount: '0',
+  unit: 'wei',
+  conversion: { USD: undefined },
+  EthComponent: ({ value }) => value,
+  convertCurrency: true,
+}
+
 export const BalanceWithConversion = styled.div`
   display: flex;
   flex-direction: column;
@@ -66,10 +76,14 @@ export const BalanceWithConversion = styled.div`
 export const Currency = styled.span`
   display: flex;
   flex-direction: row;
+  padding-bottom: 0.5em;
 `
 
 export const CurrencySymbol = styled.span`
   width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+
 `
 
 export const Eth = styled(CurrencySymbol)`
@@ -87,6 +101,12 @@ export const USD = styled(CurrencySymbol)`
 export const BalanceWithUnit = styled.span`
   white-space: nowrap;
   text-transform: uppercase;
+`
+
+const SubBalance = styled.div`
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
 `
 
 function mapStateToProps({ currency: conversion }) {

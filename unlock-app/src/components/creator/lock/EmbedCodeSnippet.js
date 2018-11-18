@@ -24,41 +24,58 @@ export function EmbedCodeSnippet({ lock }) {
   // TODO: add visual confirmation of code having been copied
   return (
     <CodeControls>
-      <CodeSnippet value={embedCode(lock)} onClick={selectAll} />
-      <CopyToClipboard text={embedCode(lock)}>
-        <Buttons.Copy />
-      </CopyToClipboard>
+      <Label>Code snippet</Label>
+      <CodeSnippet value={embedCode(lock)} onClick={selectAll} readOnly />
+      <Actions>
+        <CopyToClipboard text={embedCode(lock)}>
+          <Buttons.Copy as="button" />
+        </CopyToClipboard>
+        <Buttons.Preview lock={lock} />
+      </Actions>
     </CodeControls>
   )
 }
 
 EmbedCodeSnippet.propTypes = {
-  lock: UnlockPropTypes.lock,
+  lock: UnlockPropTypes.lock.isRequired,
 }
 
 export default EmbedCodeSnippet
 
-const CodeControls = styled.div`
-  margin-top: 20px;
-  width: 100%;
+const Actions = styled.div`
   display: grid;
-  grid-template-columns: 32px 7fr 1fr;
+  grid-auto-flow: row;
+  grid-template-rows: repeat(auto-fill, 24px);
   grid-gap: 16px;
-  grid-template-rows: 163px;
+`
+
+const Label = styled.span`
+  grid-column: 1/3;
+  text-transform: uppercase;
+  font-size: 9px;
+  color: var(--4a4a4a);
+`
+
+const CodeControls = styled.div`
+  padding-top: 16px;
+  padding-left: 48px;
+  padding-right: 24px;
+  padding-bottom: 24px;
+  display: grid;
+  grid-template-columns: 1fr 24px;
+  grid-row-gap: 4px;
+  grid-column-gap: 16px;
   margin-bottom: 10px;
 `
 
 const CodeSnippet = styled.textarea`
+  padding: 8px;
   border-radius: 4px;
   border: 0;
-  background-color: var(--lightgrey);
+  background-color: var(--offwhite);
   font-family: 'IBM Plex Mono';
   font-size: 14px;
   font-weight: 300;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
   color: var(--darkgrey);
-  grid-column: 2;
+  min-height: 170px;
 `

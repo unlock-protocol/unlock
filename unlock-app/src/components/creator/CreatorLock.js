@@ -13,7 +13,7 @@ import withConfig from '../../utils/withConfig'
 
 export class CreatorLock extends React.Component {
   constructor (props, context) {
-    super(props)
+    super(props, context)
     this.state = {
       showEmbedCode: false,
       showKeys: false,
@@ -38,13 +38,15 @@ export class CreatorLock extends React.Component {
     // TODO add all-time balance to lock
 
     const { lock, transaction, config } = this.props
+    const { showEmbedCode, showKeys } = this.state
 
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
-    let outstandingKeys = lock.maxNumberOfKeys - lock.outstandingKeys || 0
-    let lockComponentStatusBlock = (<LockIconBarContainer>
-      <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
-    </LockIconBarContainer>)
+    let outstandingKeys = lock.outstandingKeys || 0
+    let lockComponentStatusBlock = (
+      <LockIconBarContainer>
+        <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
+      </LockIconBarContainer>)
 
     if (!transaction) {
       // We assume that the lock has been succeesfuly deployed?
@@ -52,7 +54,7 @@ export class CreatorLock extends React.Component {
     } else if (transaction.status === 'submitted') {
       lockComponentStatusBlock = <CreatorLockStatus lock={lock} status="Submitted" />
     } else if (transaction.status === 'mined' &&
-        transaction.confirmations < config.requiredConfirmations) {
+      transaction.confirmations < config.requiredConfirmations) {
       lockComponentStatusBlock = <CreatorLockStatus
         lock={lock}
         status="Confirming"
@@ -78,13 +80,13 @@ export class CreatorLock extends React.Component {
         <Balance amount={lock.keyPrice} />
         <Balance amount={lock.balance} />
         {lockComponentStatusBlock}
-        {status === this.state.showEmbedCode &&
+        {showEmbedCode &&
           <LockPanel>
             <LockDivider />
             <EmbedCodeSnippet lock={lock} />
           </LockPanel>
         }
-        {!this.state.showEmbedCode && this.state.showKeys &&
+        {!showEmbedCode && showKeys &&
           <LockPanel>
             <LockDivider />
             <KeyList lock={lock} />
@@ -96,9 +98,13 @@ export class CreatorLock extends React.Component {
 }
 
 CreatorLock.propTypes = {
-  lock: UnlockPropTypes.lock,
+  lock: UnlockPropTypes.lock.isRequired,
   transaction: UnlockPropTypes.transaction,
-  config: UnlockPropTypes.configuration,
+  config: UnlockPropTypes.configuration.isRequired,
+}
+
+CreatorLock.defaultProps = {
+  transaction: null,
 }
 
 const mapStateToProps = (state, { lock }) => {
@@ -111,9 +117,12 @@ const mapStateToProps = (state, { lock }) => {
 
 export default withConfig(connect(mapStateToProps)(CreatorLock))
 
-export const LockRowGrid = 'grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
+export const LockRowGrid = 'grid-template-columns: 32px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
 
 const LockIconBarContainer = styled.div`
+  display: grid;
+  justify-items: end;
+  padding-right: 24px;
   visibility: hidden;
 `
 
@@ -125,7 +134,7 @@ export const LockRow = styled.div`
   }
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
   font-weight: 200;
-  min-height: 60px;
+  min-height: 48px;
   padding-left: 8px;
   color: var(--slate);
   font-size: 14px;
@@ -134,11 +143,15 @@ export const LockRow = styled.div`
   display: grid;
   grid-gap: 16px;
   ${LockRowGrid}
-  grid-template-rows: 60px;
+  grid-template-rows: 84px;
   grid-column-gap: 16px;
   grid-row-gap: 0;
-  align-items: center;
+  align-items: start;
   cursor: pointer;
+  
+  &>* { 
+    padding-top: 16px 
+  }
 `
 
 export const LockName = styled.div`
@@ -170,11 +183,3 @@ const LockDivider = styled.div`
   height: 1px;
   background-color: var(--lightgrey);
 `
-
-/* Saving for use with sub-values that need to be added in a future PR
-const LockValueSub = styled.div`
-  font-size: 0.6em;
-  color: var(--grey);
-  margin-top: 5px;
-`
-*/

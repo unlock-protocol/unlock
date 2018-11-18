@@ -13,6 +13,11 @@ storiesOf('Svg', Svg)
       <Svg.Code />
     )
   })
+  .add('Close', () => {
+    return (
+      <Svg.Close />
+    )
+  })
   .add('Copy', () => {
     return (
       <Svg.Copy />
@@ -66,6 +71,11 @@ storiesOf('Svg', Svg)
   .add('Jobs', () => {
     return (
       <Svg.Jobs />
+    )
+  })
+  .add('Preview', () => {
+    return (
+      <Svg.Preview />
     )
   })
   .add('Unlock', () => {

@@ -1,5 +1,6 @@
 import reducer from '../../reducers/accountReducer'
 import { SET_ACCOUNT, RESET_ACCOUNT_BALANCE } from '../../actions/accounts'
+import { SET_PROVIDER } from '../../actions/provider'
 
 describe('account reducer', () => {
 
@@ -10,7 +11,13 @@ describe('account reducer', () => {
   const balance = '1337'
 
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual({})
+    expect(reducer(undefined, {})).toEqual(null)
+  })
+
+  it('should return the initial state when receveing SET_PROVIDER', () => {
+    expect(reducer(account, {
+      type: SET_PROVIDER,
+    })).toEqual(null)
   })
 
   it('should set the account accordingly when receiving SET_ACCOUNT', () => {

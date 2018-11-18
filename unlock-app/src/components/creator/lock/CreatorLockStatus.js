@@ -4,36 +4,42 @@ import styled from 'styled-components'
 import UnlockPropTypes from '../../../propTypes'
 import withConfig from '../../../utils/withConfig'
 
-export function CreatorLockStatus({ config, lock, status, confirmations }) {
+export function CreatorLockStatus({ config, status, confirmations }) {
   return (
     <LockStatus>
-      {status}
-      {confirmations &&
-        <Confirmations>
-          {confirmations}
-          {' '}
-          /
-          {' '}
-          {config.requiredConfirmations}
-        </Confirmations>
-      }
+      <Status>
+        {status}
+      </Status>
+      <Confirmations>
+        {confirmations > 0 &&
+          <>
+            {confirmations}
+            {' '}
+            /
+            {' '}
+            {config.requiredConfirmations}
+          </>
+        }
+      </Confirmations>
     </LockStatus>
   )
 }
 
 CreatorLockStatus.propTypes = {
-  lock: UnlockPropTypes.lock,
-  status: PropTypes.string,
+  status: PropTypes.string.isRequired,
   confirmations: PropTypes.number,
-  config: UnlockPropTypes.configuration,
+  config: UnlockPropTypes.configuration.isRequired,
+}
+
+CreatorLockStatus.defaultProps = {
+  confirmations: 0,
 }
 
 export default withConfig(CreatorLockStatus)
 
 export const LockStatus = styled.div`
   align-self: stretch;
-  justify-content: center;
-  align-content: center;
+  align-items: stretch;
   display: grid;
   text-transform: capitalize;
   background-color: var(--lightgrey);
@@ -42,8 +48,16 @@ export const LockStatus = styled.div`
   color: var(--grey);
 `
 
+const Status = styled.div`
+  display: grid;
+  justify-content: center;
+  font-size: 13px;
+  align-self: end;
+`
+
 const Confirmations = styled.div`
+  display: grid;
+  justify-content: center;
   font-size: 10px;
-  margin-top: 11px;
-  text-align: center;
+  align-self: center;
 `
