@@ -1,67 +1,50 @@
 import styled from 'styled-components'
 import React from 'react'
 import PropTypes from 'prop-types'
-import Web3Utils from 'web3-utils'
-import { connect } from 'react-redux'
 
-import UnlockPropTypes from '../../propTypes'
-import { formatEth, formatCurrency } from '../../selectors/currency'
+import BalanceProvider from './BalanceProvider'
 
 /**
- * Component which shows a balance in Eth
+ * Component which shows a balance in Eth using default styles.
+ * use the BalanceProvider
  * @param {*} amount: the amount to convert to Eth
  * @param {string} unit: the unit of the amount to convert to Eth
- * @param {object} conversion: a hash of conversion values for ether to currencies
+ * @param {boolean} convertCurrency: show the converted value
  */
-export function Balance({ amount, unit, conversion, convertCurrency }) {
-  let currency
-  if (unit !== 'dollars' && unit !== 'eth') {
-    const inWei = Web3Utils.toWei(amount || '0', unit)
-    currency = Web3Utils.fromWei(inWei, 'ether')
-  } else {
-    currency = +amount
-  }
-  const ethWithPresentation = formatEth(currency)
-  let convertedUSDValue
-  if (!conversion.USD) {
-    convertedUSDValue = '---'
-  } else {
-    convertedUSDValue = formatCurrency(currency * conversion.USD)
-  }
-
-  return (
-    <BalanceWithConversion>
-      <Currency>
-        <Eth />
-        <BalanceWithUnit>
-          {ethWithPresentation}
-        </BalanceWithUnit>
-      </Currency>
-      {convertCurrency ? (
-        <SubBalance>
-          <Currency>
-            <USD />
-            <BalanceWithUnit>{convertedUSDValue}</BalanceWithUnit>
-          </Currency>
-        </SubBalance>
-      ) : (
-        ''
-      )}
-    </BalanceWithConversion>
-  )
-}
+export const Balance = ({ amount, unit, convertCurrency }) => (
+  <BalanceProvider
+    amount={amount}
+    unit={unit}
+    render={(ethWithPresentation, convertedUSDValue) => (
+      <BalanceWithConversion>
+        <Currency>
+          <Eth />
+          <BalanceWithUnit>{ethWithPresentation}</BalanceWithUnit>
+        </Currency>
+        {convertCurrency ? (
+          <SubBalance>
+            <Currency>
+              <USD />
+              <BalanceWithUnit>{convertedUSDValue}</BalanceWithUnit>
+            </Currency>
+          </SubBalance>
+        ) : (
+          ''
+        )}
+      </BalanceWithConversion>
+    )}
+  />
+)
 
 Balance.propTypes = {
   amount: PropTypes.string,
   unit: PropTypes.string,
-  conversion: UnlockPropTypes.conversion,
   convertCurrency: PropTypes.bool,
 }
 
 Balance.defaultProps = {
   amount: '0',
   unit: 'wei',
-  conversion: { USD: undefined },
   convertCurrency: true,
 }
 
@@ -105,8 +88,4 @@ const SubBalance = styled.div`
   margin-top: 5px;
 `
 
-function mapStateToProps({ currency: conversion }) {
-  return { conversion }
-}
-
-export default connect(mapStateToProps)(Balance)
+export default Balance

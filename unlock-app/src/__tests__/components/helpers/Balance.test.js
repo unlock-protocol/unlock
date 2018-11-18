@@ -1,25 +1,28 @@
 import React from 'react'
+import { Provider } from 'react-redux'
 import * as rtl from 'react-testing-library'
 // Note, we use name import to import the non connected version of the component for testing
 import { Balance } from '../../../components/helpers/Balance'
+import createUnlockStore from '../../../createUnlockStore'
 
 describe('Balance Component', () => {
   const unit = 'szabo'
-  const conversion = { USD: 195.99 }
 
-  function renderIt(amount, c = conversion, u = unit) {
-    return rtl.render(<Balance amount={amount} unit={u} conversion={c} />)
+  const store = createUnlockStore({
+    currency: { USD: 195.99 },
+  })
+
+  function renderIt(amount, u = unit, convertCurrency = true) {
+    return rtl.render(
+      <Provider store={store}>
+        <Balance amount={amount} unit={u} convertCurrency={convertCurrency} />
+      </Provider>
+    )
   }
 
   describe('when the balance is 0 Eth', () => {
     const amount = '0'
 
-    it('no conversion data available', () => {
-      const wrapper = renderIt(amount, { USD: undefined })
-
-      expect(wrapper.queryByText('0')).not.toBeNull()
-      expect(wrapper.queryByText('---')).not.toBeNull()
-    })
     it('USD conversion data available', () => {
       const wrapper = renderIt(amount)
       expect(wrapper.queryByText('0')).not.toBeNull()
@@ -101,7 +104,7 @@ describe('Balance Component', () => {
     const amount = '9999999'
 
     it('shows the balance in billions of dollars postfixed with b', () => {
-      const wrapper = renderIt(amount, undefined, 'eth')
+      const wrapper = renderIt(amount, 'eth')
       expect(wrapper.queryByText('9999999.00')).not.toBeNull()
       expect(wrapper.queryByText('2b')).not.toBeNull()
     })
