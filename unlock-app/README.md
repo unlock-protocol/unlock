@@ -36,3 +36,16 @@ This project uses [Next.js](https://github.com/zeit/next.js).
 ```
 npm run dev
 ```
+
+### Setting up prettier-eslint
+
+You can either run prettier-eslint prior to commit:
+
+```
+npm run reformat
+```
+
+or set it up to run automatically on file changes.
+
+Instructions for most IDEs: https://prettier.io/docs/en/editors.html
+Instructions for Webstorm: https://prettier.io/docs/en/webstorm.html
