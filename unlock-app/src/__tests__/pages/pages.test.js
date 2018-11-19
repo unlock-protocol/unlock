@@ -6,13 +6,16 @@ import { Home } from '../../pages/index'
 import { Jobs } from '../../pages/jobs'
 import { About } from '../../pages/about'
 import { Dashboard } from '../../pages/dashboard'
-import { Demo } from '../../pages/demo'
 import { pageTitle } from '../../constants'
 import createUnlockStore from '../../createUnlockStore'
 
 jest.mock('../../constants')
 
 describe('Pages', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   describe('Home', () => {
     it('should render title correctly', () => {
       const config = {
@@ -60,33 +63,6 @@ describe('Pages', () => {
         </Provider>
       )
       expect(pageTitle).toBeCalledWith('Dashboard')
-    })
-  })
-  describe('Demo', () => {
-    it('should render title correctly', () => {
-      const currency = {
-        USD: 195.99,
-      }
-
-      const keys = {
-        '0x123': {
-          lockAddress: '0x123',
-          expiration: new Date().getTime() / 1000 + 60 * 60, // Expired one hour from now
-        },
-      }
-      const locks = [
-        {
-          address: '0x123',
-        },
-      ]
-
-      const store = createUnlockStore({ currency, keys })
-      rtl.render(
-        <Provider store={store}>
-          <Demo locks={locks} lockAddress="0x123" />
-        </Provider>
-      )
-      expect(pageTitle).toBeCalledWith('Demo')
     })
   })
 })

@@ -69,10 +69,10 @@ describe('CreatorLock', () => {
 
     const store = createUnlockStore({
       transactions: {
-        'transactionid': transaction,
+        transactionid: transaction,
       },
       locks: {
-        'lockid': keylock,
+        lockid: keylock,
       },
     })
 
