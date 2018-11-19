@@ -6,22 +6,22 @@ import Svg from '../../svg'
 import { LockButton } from '../Button'
 import UnlockPropTypes from '../../../../propTypes'
 
-const Withdraw = props => {
-  const { lock, withdraw, account } = props
+export class Withdraw extends React.Component {
+  render() {
+    const { lock, withdraw, account } = this.props
 
-  console.log(props)
-
-  /*const startWithdrawal = () => {
-    if (lock.balance > 0) {
-      withdraw(lock, account)
+    const startWithdrawal = () => {
+      if (lock.balance > 0) {
+        withdraw(lock, account)
+      }
     }
-  }*/
 
-  return (
-    <LockButton title="Withdraw balance" {...props}>
-      <Svg.Withdraw name="Withdraw" />
-    </LockButton>
-  )
+    return (
+      <LockButton title="Withdraw balance" {...this.props}>
+        <Svg.Withdraw name="Withdraw" />
+      </LockButton>
+    )
+  }
 }
 
 Withdraw.propTypes = {
@@ -37,8 +37,10 @@ Withdraw.defaultProps = {
 }
 
 const mapStateToProps = (state, { lock }) => {
+  const account = state.account
   const transaction = state.transactions[lock.transaction]
   return {
+    account,
     transaction,
   }
 }
@@ -50,4 +52,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)
+)(Withdraw)
