@@ -54,4 +54,5 @@ const Confirmations = styled.div`
   justify-content: center;
   font-size: 10px;
   align-self: center;
+  margin-bottom: 15px;
 `
