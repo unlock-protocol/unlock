@@ -13,9 +13,7 @@ export function LockIconBar({ lock, toggleCode, transaction, config }) {
     // We assume that the lock has been succeesfuly deployed?
     // TODO if the transaction is missing we should try to look it up from the lock address
   } else if (transaction.status === 'submitted') {
-    return (
-      <CreatorLockStatus lock={lock} status="Submitted" />
-    )
+    return <CreatorLockStatus lock={lock} status="Submitted" />
   } else if (
     transaction.status === 'mined' &&
     transaction.confirmations < config.requiredConfirmations
@@ -32,7 +30,7 @@ export function LockIconBar({ lock, toggleCode, transaction, config }) {
   return (
     <IconBarContainer>
       <IconBar>
-        <Buttons.Withdraw as="button" />
+        <Buttons.Withdraw as="button" lock={lock} />
         <Buttons.Edit as="button" />
         {/* Reinstate when we're ready <Buttons.ExportLock /> */}
         <Buttons.Code action={toggleCode} as="button" />
