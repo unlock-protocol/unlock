@@ -49,7 +49,6 @@ contract UnlockTestV3 is Ownable {
     public
   {
     require(!initialized);
-    owner = _owner;
     exampleData = 42;
     initialized = true;
   }
