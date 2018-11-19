@@ -1,7 +1,6 @@
 import { purchaseKey, addKey, PURCHASE_KEY, ADD_KEY } from '../../actions/key'
 
 describe('key actions', () => {
-
   it('should create an action to purchase a key', () => {
     const key = {}
     const expectedAction = {
@@ -23,5 +22,4 @@ describe('key actions', () => {
     }
     expect(addKey(key)).toEqual(expectedAction)
   })
-
 })

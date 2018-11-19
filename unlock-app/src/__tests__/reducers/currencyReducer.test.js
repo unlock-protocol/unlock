@@ -2,7 +2,6 @@ import reducer, { initialState } from '../../reducers/currencyReducer'
 import { setConversionRate } from '../../actions/currencyconvert'
 
 describe('currency conversion reducer', () => {
-  
   const USD123 = {
     USD: 123,
   }

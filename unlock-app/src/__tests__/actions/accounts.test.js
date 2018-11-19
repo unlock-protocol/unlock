@@ -1,7 +1,11 @@
-import { setAccount, resetAccountBalance, SET_ACCOUNT, RESET_ACCOUNT_BALANCE } from '../../actions/accounts'
+import {
+  setAccount,
+  resetAccountBalance,
+  SET_ACCOUNT,
+  RESET_ACCOUNT_BALANCE,
+} from '../../actions/accounts'
 
 describe('accounts actions', () => {
-
   it('should create an action to set the account', () => {
     const account = {
       address: '0xabc',
@@ -23,5 +27,4 @@ describe('accounts actions', () => {
     }
     expect(resetAccountBalance(balance)).toEqual(expectedAction)
   })
-
 })

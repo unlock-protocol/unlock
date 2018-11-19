@@ -18,17 +18,16 @@ const store = {
   subscribe: jest.fn(),
 }
 
-const Component = () =>
-  <div>
-    An unlock component
-  </div>
+const Component = () => <div>An unlock component</div>
 
 const ComponentWithConfig = withConfig(Component)
 
 describe('withConfig High Order Component', () => {
   it('should render correctly', () => {
     const tree = renderer
-      .create(<ComponentWithConfig store={store} router={{ route: '/provider' }} />)
+      .create(
+        <ComponentWithConfig store={store} router={{ route: '/provider' }} />
+      )
       .toJSON()
     expect(tree).toMatchSnapshot()
   })

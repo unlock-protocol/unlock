@@ -1,7 +1,6 @@
 import { setProvider, SET_PROVIDER } from '../../actions/provider'
 
 describe('provider actions', () => {
-
   it('should create an action to set the provider', () => {
     const provider = 'dev'
     const expectedAction = {
@@ -10,5 +9,4 @@ describe('provider actions', () => {
     }
     expect(setProvider(provider)).toEqual(expectedAction)
   })
-
 })

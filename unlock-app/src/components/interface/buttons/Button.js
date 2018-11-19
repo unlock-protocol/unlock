@@ -8,7 +8,7 @@ const clickAction = (e, action) => {
   if (action) action()
 }
 
-export const LayoutButton = ({href, title, children, action, ...props}) => {
+export const LayoutButton = ({ href, title, children, action, ...props }) => {
   const button = (
     <Button
       href={href}
@@ -16,7 +16,7 @@ export const LayoutButton = ({href, title, children, action, ...props}) => {
       fillColor="white"
       backgroundHoverColor="var(--link)"
       fillHoverColor="white"
-      onClick={(e) => clickAction(e, action)}
+      onClick={e => clickAction(e, action)}
       {...props}
     >
       {children}
@@ -24,11 +24,7 @@ export const LayoutButton = ({href, title, children, action, ...props}) => {
     </Button>
   )
   if (href) {
-    return (
-      <Link href={href}>
-        {button}
-      </Link>
-    )
+    return <Link href={href}>{button}</Link>
   }
   return button
 }
@@ -55,7 +51,7 @@ LayoutButton.defaultProps = {
   fillHoverColor: 'white',
 }
 
-export const LockButton = ({ href , children, action, ...props }) => {
+export const LockButton = ({ href, children, action, ...props }) => {
   const button = (
     <Button
       href={href}
@@ -63,18 +59,14 @@ export const LockButton = ({ href , children, action, ...props }) => {
       fillColor="var(--grey)"
       backgroundHoverColor="var(--link)"
       fillHoverColor="white"
-      onClick={(e) => clickAction(e, action)}
+      onClick={e => clickAction(e, action)}
       {...props}
     >
       {children}
     </Button>
   )
   if (href) {
-    return (
-      <Link href={href}>
-        {button}
-      </Link>
-    )
+    return <Link href={href}>{button}</Link>
   }
   return button
 }
@@ -129,7 +121,7 @@ export const Label = styled.small`
   position: relative;
   z-index: 1000;
   white-space: nowrap;
-  font-family: 'IBM Plex Sans' ,'Helvetica Neue', Arial, sans-serif;
+  font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 400;
   font-size: 12px;
   top: 24px;
@@ -139,5 +131,4 @@ export const Label = styled.small`
   ${Button}:hover & {
     display: grid;
   }
-
 `

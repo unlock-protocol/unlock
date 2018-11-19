@@ -1,10 +1,9 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
 
-import {ShowUnlessUserHasKeyToAnyLock} from '../../../components/lock/ShowUnlessUserHasKeyToAnyLock'
+import { ShowUnlessUserHasKeyToAnyLock } from '../../../components/lock/ShowUnlessUserHasKeyToAnyLock'
 
 describe('ShowUnlessUserHasKeyToAnyLock', () => {
-
   it('should show the children if there is no key for this lock', () => {
     const locks = {
       '123': {
@@ -20,7 +19,8 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
     const wrapper = rtl.render(
       <ShowUnlessUserHasKeyToAnyLock locks={locks} keys={keys}>
         Show me
-      </ShowUnlessUserHasKeyToAnyLock>)
+      </ShowUnlessUserHasKeyToAnyLock>
+    )
 
     expect(wrapper.queryByText('Show me')).not.toBe(null)
   })
@@ -34,14 +34,15 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
     const keys = {
       '123': {
         lockAddress: '0x123',
-        expiration: (new Date().getTime() / 1000) - 60*60, // Expired one hour ago
+        expiration: new Date().getTime() / 1000 - 60 * 60, // Expired one hour ago
       },
     }
 
     const wrapper = rtl.render(
       <ShowUnlessUserHasKeyToAnyLock locks={locks} keys={keys}>
         Show me
-      </ShowUnlessUserHasKeyToAnyLock>)
+      </ShowUnlessUserHasKeyToAnyLock>
+    )
     expect(wrapper.queryByText('Show me')).not.toBe(null)
   })
 
@@ -54,14 +55,15 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
     const keys = {
       '123': {
         lockAddress: '0x123',
-        expiration: (new Date().getTime() / 1000) + 60 * 60, // Expires in one hour
+        expiration: new Date().getTime() / 1000 + 60 * 60, // Expires in one hour
       },
     }
 
     const wrapper = rtl.render(
       <ShowUnlessUserHasKeyToAnyLock locks={locks} keys={keys}>
         Hide me
-      </ShowUnlessUserHasKeyToAnyLock>)
+      </ShowUnlessUserHasKeyToAnyLock>
+    )
     expect(wrapper.container.firstChild).toBeNull()
   })
 })

@@ -12,7 +12,7 @@ import Balance from '../helpers/Balance'
 import withConfig from '../../utils/withConfig'
 
 export class CreatorLock extends React.Component {
-  constructor (props, context) {
+  constructor(props, context) {
     super(props, context)
     this.state = {
       showEmbedCode: false,
@@ -23,13 +23,13 @@ export class CreatorLock extends React.Component {
   }
 
   toggleEmbedCode() {
-    this.setState((previousState) => ({
+    this.setState(previousState => ({
       showEmbedCode: !previousState.showEmbedCode,
     }))
   }
 
   toggleKeys() {
-    this.setState((previousState) => ({
+    this.setState(previousState => ({
       showKeys: !previousState.showKeys,
     }))
   }
@@ -46,20 +46,27 @@ export class CreatorLock extends React.Component {
     let lockComponentStatusBlock = (
       <LockIconBarContainer>
         <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
-      </LockIconBarContainer>)
+      </LockIconBarContainer>
+    )
 
     if (!transaction) {
       // We assume that the lock has been succeesfuly deployed?
       // TODO if the transaction is missing we should try to look it up from the lock address
     } else if (transaction.status === 'submitted') {
-      lockComponentStatusBlock = <CreatorLockStatus lock={lock} status="Submitted" />
-    } else if (transaction.status === 'mined' &&
-      transaction.confirmations < config.requiredConfirmations) {
-      lockComponentStatusBlock = <CreatorLockStatus
-        lock={lock}
-        status="Confirming"
-        confirmations={transaction.confirmations}
-      />
+      lockComponentStatusBlock = (
+        <CreatorLockStatus lock={lock} status="Submitted" />
+      )
+    } else if (
+      transaction.status === 'mined' &&
+      transaction.confirmations < config.requiredConfirmations
+    ) {
+      lockComponentStatusBlock = (
+        <CreatorLockStatus
+          lock={lock}
+          status="Confirming"
+          confirmations={transaction.confirmations}
+        />
+      )
     }
 
     return (
@@ -80,18 +87,19 @@ export class CreatorLock extends React.Component {
         <Balance amount={lock.keyPrice} />
         <Balance amount={lock.balance} />
         {lockComponentStatusBlock}
-        {showEmbedCode &&
+        {showEmbedCode && (
           <LockPanel>
             <LockDivider />
             <EmbedCodeSnippet lock={lock} />
           </LockPanel>
-        }
-        {!showEmbedCode && showKeys &&
+        )}
+        {!showEmbedCode &&
+          showKeys && (
           <LockPanel>
             <LockDivider />
             <KeyList lock={lock} />
           </LockPanel>
-        }
+        )}
       </LockRow>
     )
   }
@@ -117,7 +125,8 @@ const mapStateToProps = (state, { lock }) => {
 
 export default withConfig(connect(mapStateToProps)(CreatorLock))
 
-export const LockRowGrid = 'grid-template-columns: 32px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
+export const LockRowGrid =
+  'grid-template-columns: 32px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
 
 const LockIconBarContainer = styled.div`
   display: grid;
@@ -142,15 +151,14 @@ export const LockRow = styled.div`
   border-radius: 4px;
   display: grid;
   grid-gap: 16px;
-  ${LockRowGrid}
-  grid-template-rows: 84px;
+  ${LockRowGrid} grid-template-rows: 84px;
   grid-column-gap: 16px;
   grid-row-gap: 0;
   align-items: start;
   cursor: pointer;
-  
-  &>* { 
-    padding-top: 16px 
+
+  & > * {
+    padding-top: 16px;
   }
 `
 
@@ -168,11 +176,9 @@ export const LockAddress = styled.div`
   text-overflow: ellipsis;
 `
 
-export const LockDuration = styled.div`
-`
+export const LockDuration = styled.div``
 
-export const LockKeys = styled.div`
-`
+export const LockKeys = styled.div``
 
 const LockPanel = styled.div`
   grid-column: 1 / span 7;

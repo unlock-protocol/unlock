@@ -13,7 +13,9 @@ export const Error = ({ children, error, close }) => {
   return (
     <Wrapper>
       {content}
-      <Buttons.Close as="button" onClick={close} size="16px">X</Buttons.Close>
+      <Buttons.Close as="button" onClick={close} size="16px">
+        X
+      </Buttons.Close>
     </Wrapper>
   )
 }
@@ -39,7 +41,10 @@ Error.defaultProps = {
   error: null,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Error)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Error)
 
 const Wrapper = styled.section`
   grid-template-columns: 1fr 20px;

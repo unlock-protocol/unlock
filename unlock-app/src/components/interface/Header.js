@@ -8,14 +8,14 @@ import Buttons from './buttons/layout'
 export default function Header({ forContent, title }) {
   return (
     <TopHeader>
-      {!forContent &&
-        <Title>{title}</Title>
-      }
-      {!!forContent &&
+      {!forContent && <Title>{title}</Title>}
+      {!!forContent && (
         <Link href="/">
-          <a><Svg.UnlockWordMark height="28px" width="100%" name="Unlock" /></a>
+          <a>
+            <Svg.UnlockWordMark height="28px" width="100%" name="Unlock" />
+          </a>
         </Link>
-      }
+      )}
       <Buttons.About />
       <Buttons.Jobs />
       <Buttons.Github />

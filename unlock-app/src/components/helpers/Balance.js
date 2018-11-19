@@ -14,7 +14,13 @@ import { formatEth, formatCurrency } from '../../selectors/currency'
  * @param {object} conversion: a hash of conversion values for ether to currencies
  * @param {function} EthComponent: a React component that displays an ether value
  */
-export function Balance({ amount, unit, conversion, EthComponent, convertCurrency }) {
+export function Balance({
+  amount,
+  unit,
+  conversion,
+  EthComponent,
+  convertCurrency,
+}) {
   let currency
   if (unit !== 'dollars' && unit !== 'eth') {
     const inWei = Web3Utils.toWei(amount || '0', unit)
@@ -38,16 +44,16 @@ export function Balance({ amount, unit, conversion, EthComponent, convertCurrenc
           <EthComponent value={ethWithPresentation} />
         </BalanceWithUnit>
       </Currency>
-      { convertCurrency ?
+      {convertCurrency ? (
         <SubBalance>
           <Currency>
             <USD />
-            <BalanceWithUnit>
-              {convertedUSDValue}
-            </BalanceWithUnit>
+            <BalanceWithUnit>{convertedUSDValue}</BalanceWithUnit>
           </Currency>
-        </SubBalance>:
-        '' }
+        </SubBalance>
+      ) : (
+        ''
+      )}
     </BalanceWithConversion>
   )
 }
@@ -83,18 +89,17 @@ export const CurrencySymbol = styled.span`
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
-
 `
 
 export const Eth = styled(CurrencySymbol)`
   &:before {
-    content: "三";
+    content: '三';
   }
 `
 
 export const USD = styled(CurrencySymbol)`
   &:before {
-    content: "$";
+    content: '$';
   }
 `
 

@@ -1,8 +1,13 @@
-/* eslint no-console: 0 */  // TODO: remove me when this is clean
+/* eslint no-console: 0 */ // TODO: remove me when this is clean
 
 import React from 'react'
 import { LOCATION_CHANGE } from 'react-router-redux'
-import { CREATE_LOCK, SET_LOCK, WITHDRAW_FROM_LOCK, resetLock } from '../actions/lock'
+import {
+  CREATE_LOCK,
+  SET_LOCK,
+  WITHDRAW_FROM_LOCK,
+  resetLock,
+} from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
 import { SET_ACCOUNT, setAccount } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
@@ -15,8 +20,7 @@ import Web3Service from '../services/web3Service'
 // This middleware listen to redux events and invokes the services APIs.
 // It also listen to events from web3Service and dispatches corresponding actions
 // TODO: consider if on events we should only trigger more actions instead of calling web3Service directly
-export default function lockMiddleware ({ getState, dispatch }) {
-
+export default function lockMiddleware({ getState, dispatch }) {
   // Buffer of actions waiting for connection
   const actions = []
 
@@ -26,14 +30,14 @@ export default function lockMiddleware ({ getState, dispatch }) {
    * When an account was changed, we dispatch the corresponding action
    * TODO: consider cleaning up state when the account is a different one
    */
-  web3Service.on('account.changed', (account) => {
+  web3Service.on('account.changed', account => {
     dispatch(setAccount(account))
   })
 
   /**
    * When a lock was saved, we refresh the balance of its owner
    */
-  web3Service.on('lock.saved', (lock) => {
+  web3Service.on('lock.saved', lock => {
     dispatch(resetLock(lock))
     web3Service.refreshOrGetAccount(getState().account)
   })
@@ -42,7 +46,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
    * The Lock was changed.
    * Should we get the balance of the lock owner?
    */
-  web3Service.on('lock.updated', (lock) => {
+  web3Service.on('lock.updated', lock => {
     dispatch(resetLock(lock))
   })
 
@@ -50,7 +54,7 @@ export default function lockMiddleware ({ getState, dispatch }) {
    * When a key was saved, we refresh the balance of the lock
    * and the balance of the account!
    */
-  web3Service.on('key.saved', (key) => {
+  web3Service.on('key.saved', key => {
     web3Service.getLock(getState().locks[key.lock])
     web3Service.refreshOrGetAccount(getState().account)
   })
@@ -59,29 +63,26 @@ export default function lockMiddleware ({ getState, dispatch }) {
    * When a key was updated, we reload the corresponding lock because
    * it might have been updated (balance, outstanding keys...)
    */
-  web3Service.on('key.updated', (key) => {
+  web3Service.on('key.updated', key => {
     web3Service.getLock(getState().locks[key.lock])
   })
 
-  web3Service.on('transaction.new', (transaction) => {
+  web3Service.on('transaction.new', transaction => {
     dispatch(addTransaction(transaction))
   })
 
-  web3Service.on('transaction.updated', (transaction) => {
+  web3Service.on('transaction.updated', transaction => {
     dispatch(updateTransaction(transaction))
   })
 
-  web3Service.on('error', (error) => {
-    dispatch(setError(
-      <p>
-        {error.message}
-      </p>))
+  web3Service.on('error', error => {
+    dispatch(setError(<p>{error.message}</p>))
   })
 
   /**
    * When the network has changed, we may need to refresh state or clean it
    */
-  web3Service.on('network.changed', (networkId) => {
+  web3Service.on('network.changed', networkId => {
     // retrigger all actions buffered. Not sure this is actually required though.
     while (actions.length > 0) {
       let action = actions.shift()
@@ -93,20 +94,21 @@ export default function lockMiddleware ({ getState, dispatch }) {
     } else {
       // The network is the same, so let's refresh
       // We refresh transactions
-      Object.values(getState().transactions).forEach((transaction) => web3Service.getTransaction(transaction))
+      Object.values(getState().transactions).forEach(transaction =>
+        web3Service.getTransaction(transaction)
+      )
       // We refresh keys
-      Object.values(getState().keys).forEach((key) => web3Service.getKey(key))
+      Object.values(getState().keys).forEach(key => web3Service.getKey(key))
       // We refresh locks
-      Object.values(getState().locks).forEach((lock) => web3Service.getLock(lock))
+      Object.values(getState().locks).forEach(lock => web3Service.getLock(lock))
 
       // and refresh or load the account
       return web3Service.refreshOrGetAccount(getState().account)
     }
   })
 
-  return function (next) {
-    return function (action) {
-
+  return function(next) {
+    return function(action) {
       // As long as middleware is not ready
       if (!web3Service.ready) {
         actions.push(action)
@@ -120,7 +122,9 @@ export default function lockMiddleware ({ getState, dispatch }) {
         web3Service.createLock(action.lock, getState().account)
       } else if (action.type === PURCHASE_KEY) {
         const account = getState().account
-        const lock = Object.values(getState().locks).find((lock) => lock.address === action.key.lockAddress)
+        const lock = Object.values(getState().locks).find(
+          lock => lock.address === action.key.lockAddress
+        )
         web3Service.purchaseKey(action.key, account, lock)
       } else if (action.type === WITHDRAW_FROM_LOCK) {
         const account = getState().account
@@ -131,9 +135,11 @@ export default function lockMiddleware ({ getState, dispatch }) {
 
       if (action.type === LOCATION_CHANGE) {
         // Location was changed, get the matching lock
-        const match = action.payload.pathname.match(/\/lock\/(0x[a-fA-F0-9]{40})$/)
+        const match = action.payload.pathname.match(
+          /\/lock\/(0x[a-fA-F0-9]{40})$/
+        )
         if (match) {
-          web3Service.getLock({address: match[1]})
+          web3Service.getLock({ address: match[1] })
         }
       } else if (action.type === SET_ACCOUNT) {
         const lock = getState().network.lock
@@ -151,7 +157,6 @@ export default function lockMiddleware ({ getState, dispatch }) {
           owner: getState().account,
         })
       }
-
     }
   }
 }

@@ -10,18 +10,18 @@ export default function Layout({ forContent, title, children }) {
   return (
     <Container>
       <Left>
-        {!forContent &&
+        {!forContent && (
           <Link href="/">
-            <a><Logo /></a>
+            <a>
+              <Logo />
+            </a>
           </Link>
-        }
+        )}
       </Left>
       <Content>
         <Header forContent={forContent} title={title} />
         {children}
-        {forContent &&
-          <Footer />
-        }
+        {forContent && <Footer />}
       </Content>
       <Right />
     </Container>
@@ -51,7 +51,7 @@ const Left = styled.div`
   align-items: start;
   height: 24px;
 
-  &>* {
+  & > * {
     @media (max-width: 500px) {
       display: none;
     }
@@ -59,7 +59,7 @@ const Left = styled.div`
 `
 
 const Right = styled.div`
-  &>* {
+  & > * {
     @media (max-width: 500px) {
       display: none;
     }

@@ -1,7 +1,6 @@
 import { setNetwork, SET_NETWORK } from '../../actions/network'
 
 describe('network actions', () => {
-
   it('should create an action to set the network', () => {
     const network = 'dev'
     const expectedAction = {
@@ -10,5 +9,4 @@ describe('network actions', () => {
     }
     expect(setNetwork(network)).toEqual(expectedAction)
   })
-
 })

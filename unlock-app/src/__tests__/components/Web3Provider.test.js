@@ -10,7 +10,6 @@ const providers = {
 }
 
 describe('Provider Component', () => {
-
   const provider = 'alpha'
   const setProvider = jest.fn()
   const config = {
@@ -22,7 +21,13 @@ describe('Provider Component', () => {
   let select
 
   beforeEach(() => {
-    component = (<Web3Provider provider={provider} setProvider={setProvider} config={config} />)
+    component = (
+      <Web3Provider
+        provider={provider}
+        setProvider={setProvider}
+        config={config}
+      />
+    )
     wrapper = rtl.render(component)
     select = wrapper.queryBySelectText(provider)
   })
@@ -53,5 +58,4 @@ describe('Provider Component', () => {
 
     expect(setProvider).toBeCalledWith('alpha')
   })
-
 })

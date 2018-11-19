@@ -20,9 +20,7 @@ storiesOf('CreatorAccount', CreatorAccount)
     const network = {
       name: 4,
     }
-    return (
-      <CreatorAccount network={network} account={account} />
-    )
+    return <CreatorAccount network={network} account={account} />
   })
   .add('With balance', () => {
     const account = {
@@ -32,7 +30,5 @@ storiesOf('CreatorAccount', CreatorAccount)
     const network = {
       name: 4,
     }
-    return (
-      <CreatorAccount network={network} account={account} />
-    )
+    return <CreatorAccount network={network} account={account} />
   })

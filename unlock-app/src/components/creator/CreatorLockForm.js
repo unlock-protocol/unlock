@@ -13,7 +13,7 @@ import { LockStatus } from './lock/CreatorLockStatus'
 import { createLock } from '../../actions/lock'
 
 class CreatorLockForm extends React.Component {
-  constructor (props, context) {
+  constructor(props, context) {
     super(props, context)
     this.state = {
       expirationDuration: 30,
@@ -28,11 +28,11 @@ class CreatorLockForm extends React.Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  handleChange (event) {
+  handleChange(event) {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  handleSubmit () {
+  handleSubmit() {
     const { account, createLock, hideAction } = this.props
     const {
       expirationDuration,
@@ -61,36 +61,49 @@ class CreatorLockForm extends React.Component {
   }
 
   render() {
-    const {
-      expirationDuration,
-      maxNumberOfKeys,
-      keyPrice,
-      name ,
-    } = this.state
+    const { expirationDuration, maxNumberOfKeys, keyPrice, name } = this.state
 
     return (
       <FormLockRow>
         <Icon />
         <FormLockName>
-          <input type="text" name="name" onChange={this.handleChange} defaultValue={name} />
+          <input
+            type="text"
+            name="name"
+            onChange={this.handleChange}
+            defaultValue={name}
+          />
         </FormLockName>
         <FormLockDuration>
-          <input type="text" name="expirationDuration" onChange={this.handleChange} defaultValue={expirationDuration} />
+          <input
+            type="text"
+            name="expirationDuration"
+            onChange={this.handleChange}
+            defaultValue={expirationDuration}
+          />
           {' '}
-days
+          days
         </FormLockDuration>
         <FormLockKeys>
-          <input type="text" name="maxNumberOfKeys" onChange={this.handleChange} defaultValue={maxNumberOfKeys} />
+          <input
+            type="text"
+            name="maxNumberOfKeys"
+            onChange={this.handleChange}
+            defaultValue={maxNumberOfKeys}
+          />
         </FormLockKeys>
         <FormBalanceWithUnit>
           三
-          <input type="text" name="keyPrice" onChange={this.handleChange} defaultValue={keyPrice} />
+          <input
+            type="text"
+            name="keyPrice"
+            onChange={this.handleChange}
+            defaultValue={keyPrice}
+          />
         </FormBalanceWithUnit>
         <div>-</div>
         <LockStatus>
-          <LockButton onClick={this.handleSubmit}>
-            Submit
-          </LockButton>
+          <LockButton onClick={this.handleSubmit}>Submit</LockButton>
           <LockButton cancel onClick={this.handleCancel}>
             Cancel
           </LockButton>
@@ -106,8 +119,7 @@ CreatorLockForm.propTypes = {
   createLock: PropTypes.func.isRequired,
 }
 
-CreatorLockForm.defaultProps = {
-}
+CreatorLockForm.defaultProps = {}
 
 const mapStateToProps = state => {
   return {
@@ -119,40 +131,46 @@ const mapDispatchToProps = dispatch => ({
   createLock: lock => dispatch(createLock(lock)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreatorLockForm)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreatorLockForm)
 
 const FormLockRow = styled(LockRow)`
-  grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);
-  input[type=text] {
+  grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(
+      174px,
+      1fr
+    );
+  input[type='text'] {
     background-color: var(--lightgrey);
     border: 0;
     padding: 5px;
-    font-family: "IBM Plex Sans", sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-size: 13px;
   }
 `
 
 const FormLockName = styled(LockName)`
-  input[type=text] {
+  input[type='text'] {
     width: 70px;
   }
 `
 
 const FormLockDuration = styled(LockDuration)`
-  input[type=text] {
+  input[type='text'] {
     width: 30px;
   }
 `
 
 const FormLockKeys = styled(LockKeys)`
-  input[type=text] {
+  input[type='text'] {
     width: 40px;
   }
 `
 
 const FormBalanceWithUnit = styled(BalanceWithUnit)`
   white-space: nowrap;
-  input[type=text] {
+  input[type='text'] {
     width: 30px;
   }
 `
@@ -160,8 +178,8 @@ const FormBalanceWithUnit = styled(BalanceWithUnit)`
 const LockButton = styled.button`
   cursor: pointer;
   font: inherit;
-  font-size: ${props => props.cancel ? '10px' : '13px'};
-  align-self: ${props => props.cancel ? 'center' : 'end'};
+  font-size: ${props => (props.cancel ? '10px' : '13px')};
+  align-self: ${props => (props.cancel ? 'center' : 'end')};
   background: none;
   color: inherit;
   border: none;

@@ -13,7 +13,7 @@ const store = createUnlockStore({
 storiesOf('CreatorLockForm', CreatorLockForm)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Default', () => {
-    return (<CreatorLockForm />)
+    return <CreatorLockForm />
   })
   .add('With existing lock', () => {
     // TODO: implement this
@@ -25,5 +25,5 @@ storiesOf('CreatorLockForm', CreatorLockForm)
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
       name: 'Existing Lock',
     }
-    return (<CreatorLockForm lock={lock} />)
+    return <CreatorLockForm lock={lock} />
   })

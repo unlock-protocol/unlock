@@ -7,19 +7,13 @@ import withConfig from '../../../utils/withConfig'
 export function CreatorLockStatus({ config, status, confirmations }) {
   return (
     <LockStatus>
-      <Status>
-        {status}
-      </Status>
+      <Status>{status}</Status>
       <Confirmations>
-        {confirmations > 0 &&
+        {confirmations > 0 && (
           <>
-            {confirmations}
-            {' '}
-            /
-            {' '}
-            {config.requiredConfirmations}
+            {confirmations} / {config.requiredConfirmations}
           </>
-        }
+        )}
       </Confirmations>
     </LockStatus>
   )
@@ -43,7 +37,7 @@ export const LockStatus = styled.div`
   display: grid;
   text-transform: capitalize;
   background-color: var(--lightgrey);
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: 'IBM Plex Sans', sans-serif;
   font-weight: 200;
   color: var(--grey);
 `

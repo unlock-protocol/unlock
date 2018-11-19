@@ -6,7 +6,7 @@ import CreatorLockForm from './CreatorLockForm'
 import Error from '../interface/Error'
 
 export class CreatorLocks extends React.Component {
-  constructor (props, context) {
+  constructor(props, context) {
     super(props, context)
     const { showForm } = this.props
     this.state = {
@@ -16,7 +16,7 @@ export class CreatorLocks extends React.Component {
   }
 
   toggleForm() {
-    this.setState((previousState) => ({
+    this.setState(previousState => ({
       showDashboardForm: !previousState.showDashboardForm,
     }))
   }
@@ -38,8 +38,8 @@ export class CreatorLocks extends React.Component {
         </LockHeaderRow>
         <Error />
         {showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
-        {Object.values(locks).map((lock) => {
-          return (<CreatorLock key={lock.id} lock={lock} />)
+        {Object.values(locks).map(lock => {
+          return <CreatorLock key={lock.id} lock={lock} />
         })}
       </Locks>
     )
@@ -70,8 +70,7 @@ const LockHeaderRow = styled.div`
   font-size: 14px;
   display: grid;
   grid-gap: 16px;
-  ${LockRowGrid}
-  align-items: center;
+  ${LockRowGrid} align-items: center;
 `
 
 const LockHeader = styled.div`
@@ -98,13 +97,14 @@ const LockMinorHeader = styled.div`
 `
 
 export const ActionButton = styled.button`
-  background-color: ${props => props.disabled ? 'var(--grey)' : 'var(--green)'};
+  background-color: ${props =>
+    props.disabled ? 'var(--grey)' : 'var(--green)'};
   border: none;
   font-size: 16px;
   color: var(--darkgrey);
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: 'IBM Plex Sans', sans-serif;
   border-radius: 4px;
-  cursor: ${props => props.disabled ? 'auto' : 'pointer'};
+  cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
 `
 
 const CreateButton = styled(ActionButton)`

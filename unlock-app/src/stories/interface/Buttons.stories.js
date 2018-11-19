@@ -5,48 +5,32 @@ import LockButtons from '../../components/interface/buttons/lock'
 
 storiesOf('Buttons')
   .add('Github', () => {
-    return (
-      <LayoutButtons.Github />
-    )
+    return <LayoutButtons.Github />
   })
   .add('About', () => {
-    return (
-      <LayoutButtons.About />
-    )
+    return <LayoutButtons.About />
   })
   .add('Jobs', () => {
-    return (
-      <LayoutButtons.Jobs />
-    )
+    return <LayoutButtons.Jobs />
   })
   .add('Close', () => {
-    return (
-      <LayoutButtons.Close as="button" />
-    )
+    return <LayoutButtons.Close as="button" />
   })
   .add('Close Large', () => {
-    return (
-      <LayoutButtons.Close as="button" size="100px" />
-    )
+    return <LayoutButtons.Close as="button" size="100px" />
   })
   .add('Close Small', () => {
-    return (
-      <LayoutButtons.Close as="button" size="16px" />
-    )
+    return <LayoutButtons.Close as="button" size="16px" />
   })
   .add('Withdraw', () => {
     const lock = {
       address: '0xabc',
     }
-    return (
-      <LockButtons.Withdraw lock={lock} />
-    )
+    return <LockButtons.Withdraw lock={lock} />
   })
   .add('Preview', () => {
     const lock = {
       address: '0xabc',
     }
-    return (
-      <LockButtons.Preview lock={lock} />
-    )
+    return <LockButtons.Preview lock={lock} />
   })

@@ -6,7 +6,7 @@ export const setAccount = account => ({
   account,
 })
 
-export const resetAccountBalance = (balance) => ({
+export const resetAccountBalance = balance => ({
   type: RESET_ACCOUNT_BALANCE,
   balance,
 })

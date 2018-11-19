@@ -3,22 +3,22 @@ export const SET_LOCK = 'SET_LOCK'
 export const RESET_LOCK = 'RESET_LOCK'
 export const WITHDRAW_FROM_LOCK = 'WITHDRAW_FROM_LOCK'
 
-export const createLock = (lock) => ({
+export const createLock = lock => ({
   type: CREATE_LOCK,
   lock,
 })
 
-export const setLock = (lock) => ({
+export const setLock = lock => ({
   type: SET_LOCK,
   lock,
 })
 
-export const resetLock = (lock) => ({
+export const resetLock = lock => ({
   type: RESET_LOCK,
   lock,
 })
 
-export const withdrawFromLock = (lock) => ({
+export const withdrawFromLock = lock => ({
   type: WITHDRAW_FROM_LOCK,
   lock,
 })

@@ -20,9 +20,7 @@ import Upload from './Upload'
 import Withdraw from './Withdraw'
 
 function wrapViewBox(WrappedComponent, viewBox) {
-  const Wrapped = (props) => (
-    <WrappedComponent viewBox={viewBox} {...props} />
-  )
+  const Wrapped = props => <WrappedComponent viewBox={viewBox} {...props} />
   return Wrapped
 }
 

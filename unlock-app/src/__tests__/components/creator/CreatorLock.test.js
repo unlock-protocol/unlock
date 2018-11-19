@@ -7,12 +7,11 @@ import configure from '../../../config'
 import createUnlockStore from '../../../createUnlockStore'
 
 jest.mock('next/link', () => {
-  return ({children}) => children
+  return ({ children }) => children
 })
 
 describe('CreatorLock', () => {
-  it ('should show embed code when the button is clicked', () => {
-
+  it('should show embed code when the button is clicked', () => {
     const lock = {
       id: '0x123',
       address: '0x1234567890',
@@ -26,7 +25,6 @@ describe('CreatorLock', () => {
       address: '0x0987654321',
       confirmations: 12,
       status: 'mined',
-
     }
     const config = configure({
       requiredConfirmations: 6,
@@ -37,18 +35,21 @@ describe('CreatorLock', () => {
     let wrapper = rtl.render(
       <Provider store={store}>
         <CreatorLock lock={lock} transaction={transaction} config={config} />
-      </Provider>)
+      </Provider>
+    )
 
-    expect(wrapper.queryByText('This content is only visible', {exact: false})).toBeNull()
+    expect(
+      wrapper.queryByText('This content is only visible', { exact: false })
+    ).toBeNull()
 
     let codeButton = wrapper.getByTitle('Show embed code')
     rtl.fireEvent.click(codeButton)
 
-    expect(wrapper.queryByText('This content is only visible', {exact: false})).not.toBeNull()
-
+    expect(
+      wrapper.queryByText('This content is only visible', { exact: false })
+    ).not.toBeNull()
   })
-  it ('should display the correct number of keys', () => {
-
+  it('should display the correct number of keys', () => {
     const lock = {
       id: '0x123',
       address: '0x1234567890',
@@ -64,7 +65,6 @@ describe('CreatorLock', () => {
       address: '0x0987654321',
       confirmations: 12,
       status: 'mined',
-
     }
     const config = configure({
       requiredConfirmations: 6,
@@ -75,7 +75,8 @@ describe('CreatorLock', () => {
     let wrapper = rtl.render(
       <Provider store={store}>
         <CreatorLock lock={lock} transaction={transaction} config={config} />
-      </Provider>)
+      </Provider>
+    )
 
     expect(wrapper.queryByText('1/10')).not.toBeNull()
   })

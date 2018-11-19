@@ -9,8 +9,15 @@ import UnlockPropTypes from '../../propTypes'
 import { purchaseKey } from '../../actions/key'
 
 export const Lock = ({ lock, lockKey, transaction, purchaseKey }) => {
-
-  let purchaseButton = <PurchaseButton onClick={() => { purchaseKey(lockKey) }}>Purchase</PurchaseButton>
+  let purchaseButton = (
+    <PurchaseButton
+      onClick={() => {
+        purchaseKey(lockKey)
+      }}
+    >
+      Purchase
+    </PurchaseButton>
+  )
   if (!lockKey) {
     purchaseButton = null
   } else if (!transaction) {
@@ -20,9 +27,10 @@ export const Lock = ({ lock, lockKey, transaction, purchaseKey }) => {
   } else if (transaction.status === 'mined') {
     purchaseButton = (
       <PurchaseButton>
-Mined! Confirming...
+        Mined! Confirming...
         {transaction.confirmations}
-      </PurchaseButton>)
+      </PurchaseButton>
+    )
     // Key transaction was mined: it is mined, let's look at confirmations
   } else if (transaction.status === 'submitted') {
     purchaseButton = <PurchaseButton>Submitted!</PurchaseButton>
@@ -32,13 +40,9 @@ Mined! Confirming...
   return (
     <Wrapper>
       <Name>{lock.name}</Name>
-      <EtherPrice><Balance amount={lock.keyPrice} convertCurrency={false} /></EtherPrice>
-      {lock.fiatPrice &&
-      <FiatPrice>
-$
-        {lock.fiatPrice}
-      </FiatPrice>
-      }
+      <EtherPrice>
+        <Balance amount={lock.keyPrice} convertCurrency={false} />
+      </EtherPrice>
       {purchaseButton}
     </Wrapper>
   )
@@ -57,10 +61,10 @@ Lock.defaultProps = {
 }
 
 const mapDispatchToProps = dispatch => ({
-  purchaseKey: (key) => dispatch(purchaseKey(key)),
+  purchaseKey: key => dispatch(purchaseKey(key)),
 })
 
-export const mapStateToProps = (state, {lock}) => {
+export const mapStateToProps = (state, { lock }) => {
   const account = state.account
 
   // If there is no account (probably not loaded yet), we do not want to create a key
@@ -68,9 +72,9 @@ export const mapStateToProps = (state, {lock}) => {
     return {}
   }
 
-  let lockKey = Object.values(state.keys).find((key) => (
-    key.lockAddress === lock.address && key.owner === account.address
-  ))
+  let lockKey = Object.values(state.keys).find(
+    key => key.lockAddress === lock.address && key.owner === account.address
+  )
   let transaction = null
 
   if (!lockKey) {
@@ -89,7 +93,10 @@ export const mapStateToProps = (state, {lock}) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Lock)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Lock)
 
 const Wrapper = styled.li`
   display: grid;
@@ -99,7 +106,7 @@ const Wrapper = styled.li`
   padding: 0px;
   width: 200px;
   background-color: var(--white);
-  font-family: 'IBM Plex Sans' ,'Helvetica Neue', Arial, sans-serif;
+  font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
   border-radius: 4px;
   height: 200px;
 `
@@ -142,13 +149,4 @@ const EtherPrice = styled.div`
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
-`
-
-const FiatPrice = styled.div`
-  display: grid;
-  justify-content: center;
-  align-content: center;
-  font-size: 20px;
-  margin-top: 8px;
-  font-weight: 300;
 `

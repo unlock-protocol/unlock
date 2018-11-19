@@ -18,16 +18,12 @@ const store = {
   subscribe: jest.fn(),
 }
 
-const Component = () =>
-  <div>
-    An unlock component
-  </div>
+const Component = () => <div>An unlock component</div>
 
 const ComponentWithConfig = withConfig(Component)
 
-jest.mock('../../../config', () => jest
-  .fn()
-  .mockImplementation(() => {
+jest.mock('../../../config', () =>
+  jest.fn().mockImplementation(() => {
     return {
       providers: {},
       isRequiredNetwork: () => true,
