@@ -124,7 +124,12 @@ contract PublicLock is ILockPublic {
       owner = _owner;
       expirationDuration = _expirationDuration;
       keyPrice = _keyPrice;
-      maxNumberOfKeys = _maxNumberOfKeys;
+      if (_maxNumberOfKeys == uint256(-1)) {
+        maxNumberOfKeys = uint256(-1);
+      } else {
+        maxNumberOfKeys = _maxNumberOfKeys;
+      }
+
     }
 
   /**

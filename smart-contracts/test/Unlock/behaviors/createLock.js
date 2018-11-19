@@ -37,5 +37,45 @@ exports.shouldCreateLock = function (accounts) {
       let unlockProtocol = await publicLock.unlockProtocol()
       assert.equal(unlockProtocol, this.unlock.address)
     })
+
+    describe('Create a Lock with infinite keys', function () {
+      let transaction
+      before(async function () {
+        transaction = await this.unlock.createLock(
+          60 * 60 * 24 * 30, // expirationDuration: 30 days
+          Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
+          -1 // maxNumberOfKeys
+          , {
+            from: accounts[0]
+          })
+      })
+
+      it('should have created the lock with an infinite number of keys', async function () {
+        let publicLock = PublicLock.at(transaction.logs[0].args.newLockAddress)
+        const maxNumberOfKeys = await publicLock.maxNumberOfKeys()
+        console.log(maxNumberOfKeys)
+        assert.equal(maxNumberOfKeys.toNumber(10), 1.157920892373162e+77)
+      })
+    })
+
+    describe('Create a Lock with 0 keys', function () {
+      let transaction
+      before(async function () {
+        transaction = await this.unlock.createLock(
+          60 * 60 * 24 * 30, // expirationDuration: 30 days
+          Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
+          0 // maxNumberOfKeys
+          , {
+            from: accounts[0]
+          })
+      })
+
+      it('should have created the lock with 0 keys', async function () {
+        let publicLock = PublicLock.at(transaction.logs[0].args.newLockAddress)
+        const maxNumberOfKeys = await publicLock.maxNumberOfKeys()
+        console.log(maxNumberOfKeys)
+        assert.equal(maxNumberOfKeys.toNumber(10), 0)
+      })
+    })
   })
 }
