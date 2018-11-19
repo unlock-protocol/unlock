@@ -46,7 +46,7 @@ const FullPage = styled.div`
 const Banner = styled.div`
   position: fixed;
   display: grid;
-  height: 50%;
+  height: 20%;
   left: 0;
   right: 0;
   bottom: 0;
