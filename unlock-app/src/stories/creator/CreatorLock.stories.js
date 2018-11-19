@@ -23,7 +23,7 @@ const store = createUnlockStore({
     '0x678': {
       transaction: '0x23749328748932748932473298473289473298',
       lockAddress: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
-      expiration: Math.floor((new Date).getTime()/1000) + (86400 * 30), // 30 days from right now
+      expiration: Math.floor(new Date().getTime() / 1000) + 86400 * 30, // 30 days from right now
       data: 'ben@unlock-protocol.com',
     },
   },
@@ -43,9 +43,7 @@ storiesOf('CreatorLock', CreatorLock)
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
       transaction: '0x123',
     }
-    return (
-      <CreatorLock lock={lock} />
-    )
+    return <CreatorLock lock={lock} />
   })
   .add('Submitted', () => {
     const lock = {
@@ -56,9 +54,7 @@ storiesOf('CreatorLock', CreatorLock)
       address: '0x127c74abc0c4d48d1bdad5dcb26153fc8780f83e',
       transaction: '0x111',
     }
-    return (
-      <CreatorLock lock={lock} />
-    )
+    return <CreatorLock lock={lock} />
   })
   .add('Confirming', () => {
     const lock = {
@@ -73,9 +69,7 @@ storiesOf('CreatorLock', CreatorLock)
       status: 'mined',
       confirmations: 2,
     }
-    return (
-      <CreatorLock lock={lock} transaction={transaction} />
-    )
+    return <CreatorLock lock={lock} transaction={transaction} />
   })
   .add('Not found', () => {
     const lock = {
@@ -86,9 +80,7 @@ storiesOf('CreatorLock', CreatorLock)
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
       transaction: '0x789',
     }
-    return (
-      <CreatorLock lock={lock} transaction={null} />
-    )
+    return <CreatorLock lock={lock} transaction={null} />
   })
   .add('With key', () => {
     const lock = {
@@ -103,7 +95,5 @@ storiesOf('CreatorLock', CreatorLock)
       status: 'mined',
       confirmations: 14,
     }
-    return (
-      <CreatorLock lock={lock} transaction={transaction} />
-    )
+    return <CreatorLock lock={lock} transaction={transaction} />
   })

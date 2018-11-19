@@ -16,10 +16,11 @@ export function Icon({ address }) {
   let colors = ['#8c8c8c', '#e8e8e8', '#c3c3c3']
   if (address) {
     const mainColor = address.substring(2, 8).toUpperCase()
-    scheme.from_hex(mainColor)
+    scheme
+      .from_hex(mainColor)
       .scheme('triade')
       .variation('light')
-    colors = scheme.colors().map((c) => `#${c}`)
+    colors = scheme.colors().map(c => `#${c}`)
   }
 
   return (
@@ -36,8 +37,20 @@ export function Icon({ address }) {
         <mask id="b" fill="#fff">
           <use xlinkHref="#a" />
         </mask>
-        <circle fill={colors[0]} mask="url(#b)" cx={195.75} cy={114.75} r={114.75} />
-        <circle fill={colors[1]} mask="url(#b)" cx={33.75} cy={162} r={114.75} />
+        <circle
+          fill={colors[0]}
+          mask="url(#b)"
+          cx={195.75}
+          cy={114.75}
+          r={114.75}
+        />
+        <circle
+          fill={colors[1]}
+          mask="url(#b)"
+          cx={33.75}
+          cy={162}
+          r={114.75}
+        />
         <circle fill={colors[2]} mask="url(#b)" cx={121.5} r={114.75} />
         <mask id="d" fill="#fff">
           <use xlinkHref="#c" />

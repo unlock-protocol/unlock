@@ -5,7 +5,7 @@ exports[`withConfig High Order Component when the current network is not in the 
   className="hm3mhg-0 gzhZVm"
 >
   <div
-    className="hm3mhg-1 eYricy"
+    className="hm3mhg-1 fPETbe"
   >
     <a
       href="/"
@@ -110,7 +110,7 @@ exports[`withConfig High Order Component when the current network is not in the 
         src="/static/images/illustrations/wallet.svg"
       />
       <div
-        className="s1g6piw8-2 csrrBV"
+        className="s1g6piw8-2 kRghYL"
       >
         <h1>
           Wallet missing
@@ -129,7 +129,7 @@ exports[`withConfig High Order Component when the current network is not in the 
     </section>
   </div>
   <div
-    className="hm3mhg-2 kNiilz"
+    className="hm3mhg-2 jRHNuc"
   />
 </div>
 `;

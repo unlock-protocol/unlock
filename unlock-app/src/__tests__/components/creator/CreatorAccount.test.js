@@ -24,8 +24,9 @@ describe('CreatorAccount', () => {
     const wrapper = rtl.render(
       <Provider store={store}>
         <CreatorAccount account={account} network={network} />
-      </Provider>)
-    
+      </Provider>
+    )
+
     // eth value
     expect(wrapper.queryByText('0.2')).not.toBeNull()
     // usd value

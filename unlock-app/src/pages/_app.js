@@ -1,4 +1,4 @@
-import App, {Container} from 'next/app'
+import App, { Container } from 'next/app'
 import React from 'react'
 import { Provider } from 'react-redux'
 import withReduxStore from '../utils/withReduxStore'
@@ -19,7 +19,7 @@ class MyApp extends App {
     return { pageProps }
   }
 
-  constructor (props, context) {
+  constructor(props, context) {
     super(props, context)
 
     // Hack to quick the Redux lock middleware on load
@@ -53,8 +53,8 @@ The Unlock team
     }
   }
 
-  render () {
-    const {Component, pageProps, reduxStore, router} = this.props
+  render() {
+    const { Component, pageProps, reduxStore, router } = this.props
 
     return (
       <Container>

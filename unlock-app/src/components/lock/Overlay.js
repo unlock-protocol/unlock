@@ -7,9 +7,11 @@ import UnlockPropTypes from '../../propTypes'
 export const Overlay = ({ locks }) => (
   <FullPage>
     <Banner>
-      <Headline>You have reached your limit of free articles. Please purchase access:</Headline>
+      <Headline>
+        You have reached your limit of free articles. Please purchase access:
+      </Headline>
       <Locks>
-        {Object.values(locks).map((lock) => (
+        {Object.values(locks).map(lock => (
           <Lock key={lock.id} lock={lock} />
         ))}
       </Locks>
@@ -66,7 +68,7 @@ const Headline = styled.h1`
 `
 
 const Locks = styled.ul`
-  display:grid;
+  display: grid;
   grid-auto-flow: column;
   grid-gap: 32px;
   list-style: none;

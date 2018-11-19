@@ -6,13 +6,11 @@ import { CreatorLocks } from '../../../components/creator/CreatorLocks'
 import createUnlockStore from '../../../createUnlockStore'
 
 jest.mock('next/link', () => {
-  return ({children}) => children
+  return ({ children }) => children
 })
 
 describe('CreatorLockForm', () => {
-
-  it ('should display when create lock button is clicked', () => {
-
+  it('should display when create lock button is clicked', () => {
     const store = createUnlockStore()
 
     let wrapper = rtl.render(
@@ -29,10 +27,8 @@ describe('CreatorLockForm', () => {
 
     expect(wrapper.queryByValue('New Lock')).not.toBeNull()
     expect(wrapper.queryByText('Submit')).not.toBeNull()
-
   })
-  it ('should disappear when cancel button is clicked', () => {
-
+  it('should disappear when cancel button is clicked', () => {
     const store = createUnlockStore()
 
     let wrapper = rtl.render(
@@ -52,7 +48,5 @@ describe('CreatorLockForm', () => {
 
     expect(wrapper.queryByValue('New Lock')).toBeNull()
     expect(wrapper.queryByText('Submit')).toBeNull()
-
   })
-
 })
