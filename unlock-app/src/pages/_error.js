@@ -6,7 +6,7 @@ import UnlockPropTypes from '../propTypes'
 import withConfig from '../utils/withConfig'
 
 class Error extends React.Component {
-  static getInitialProps ({ res, err }) {
+  static getInitialProps({ res, err }) {
     const statusCode = res ? res.statusCode : err ? err.statusCode : null
 
     // redirect to home now if not found
@@ -22,7 +22,7 @@ class Error extends React.Component {
     return { statusCode }
   }
 
-  render () {
+  render() {
     const { config, statusCode } = this.props
 
     if (config.isServer) {

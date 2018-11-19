@@ -1,5 +1,9 @@
 import React from 'react'
-import { pageTitle, PAGE_DESCRIPTION, PAGE_DEFAULT_IMAGE } from '../../constants'
+import {
+  pageTitle,
+  PAGE_DESCRIPTION,
+  PAGE_DEFAULT_IMAGE,
+} from '../../constants'
 
 export const TwitterTags = ({ title, description, image }) => {
   if (!title) title = pageTitle()

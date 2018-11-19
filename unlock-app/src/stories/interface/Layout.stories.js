@@ -4,12 +4,8 @@ import Layout from '../../components/interface/Layout'
 
 storiesOf('Layout', Layout)
   .add('the layout for the dashboard', () => {
-    return (
-      <Layout title="Unlock Dashboard" />
-    )
+    return <Layout title="Unlock Dashboard" />
   })
   .add('the layout for the content page', () => {
-    return (
-      <Layout forContent title="About Unlock" />
-    )
+    return <Layout forContent title="About Unlock" />
   })

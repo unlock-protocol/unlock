@@ -1,12 +1,15 @@
 // TODO: for consistency rename into transactionsReducer since it keeps track of all transactions
 
-import { ADD_TRANSACTION, UPDATE_TRANSACTION, DELETE_TRANSACTION } from '../actions/transaction'
+import {
+  ADD_TRANSACTION,
+  UPDATE_TRANSACTION,
+  DELETE_TRANSACTION,
+} from '../actions/transaction'
 import { SET_PROVIDER } from '../actions/provider'
 
 export const initialState = {}
 
 const transactionReducer = (transactions = initialState, action) => {
-
   if (action.type == SET_PROVIDER) {
     return initialState
   }

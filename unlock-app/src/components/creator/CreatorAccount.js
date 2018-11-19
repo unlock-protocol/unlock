@@ -9,7 +9,8 @@ import Buttons from '../interface/buttons/lock'
 import Balance from '../helpers/Balance'
 
 export function CreatorAccount({ account, network }) {
-  const networkName = ETHEREUM_NETWORKS_NAMES[network.name[0]] || 'Unknown Network'
+  const networkName =
+    ETHEREUM_NETWORKS_NAMES[network.name[0]] || 'Unknown Network'
   // Using https://github.com/MetaMask/metamask-extension/blob/develop/ui/lib/icon-factory.js#L60 to make sure jazzicons are consistent between Metamask and unlock.
   const iconSeed = parseInt(account.address.slice(2, 10), 16)
 
@@ -38,7 +39,9 @@ export function CreatorAccount({ account, network }) {
         </DoubleHeightCell>
         <DoubleHeightCell />
         <Address>{account.address}</Address>
-        <Value><Balance amount={account.balance} /></Value>
+        <Value>
+          <Balance amount={account.balance} />
+        </Value>
         <Value>0.00</Value>
       </AccountDetails>
     </Account>
@@ -52,8 +55,7 @@ CreatorAccount.propTypes = {
 
 export default CreatorAccount
 
-const Account = styled.section`
-`
+const Account = styled.section``
 const AccountHead = styled.header`
   display: grid;
   grid-template-columns: auto 1fr 1fr;
@@ -85,7 +87,7 @@ const DoubleHeightCell = styled.div`
   align-content: start;
 `
 
-const Label = styled.div `
+const Label = styled.div`
   font-weight: 100;
   text-transform: uppercase;
   letter-spacing: 1px;

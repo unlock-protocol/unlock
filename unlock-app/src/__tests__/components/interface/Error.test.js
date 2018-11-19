@@ -6,7 +6,6 @@ import { Error } from '../../../components/interface/Error'
 
 afterEach(rtl.cleanup)
 describe('Error Component', () => {
-
   describe('when the component has no children or no message', () => {
     it('should not render anything', () => {
       const wrapper = rtl.render(<Error />)
@@ -16,20 +15,14 @@ describe('Error Component', () => {
 
   describe('when the component has a children', () => {
     it('should display the content of the children', () => {
-      const wrapper = rtl.render(
-        <Error>
-          There was an error.
-        </Error>
-      )
+      const wrapper = rtl.render(<Error>There was an error.</Error>)
       expect(wrapper.queryByText('There was an error.')).not.toBeNull()
     })
 
     it('should dispatch a setError element when clicking on the close icon', () => {
       const close = jest.fn()
       const wrapper = rtl.render(
-        <Error close={close}>
-          There was an error.
-        </Error>
+        <Error close={close}>There was an error.</Error>
       )
       rtl.fireEvent.click(wrapper.getByTitle(/close/i))
       expect(close).toHaveBeenCalledTimes(1)
@@ -38,10 +31,8 @@ describe('Error Component', () => {
 
   describe('the the component has an error message', () => {
     it('should display the content of the children', () => {
-      const message = (<p>There was an error.</p>)
-      const wrapper = rtl.render(
-        <Error error={message} />
-      )
+      const message = <p>There was an error.</p>
+      const wrapper = rtl.render(<Error error={message} />)
       expect(wrapper.queryByText('There was an error.')).not.toBeNull()
     })
   })
