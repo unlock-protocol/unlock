@@ -22,10 +22,7 @@ class MyApp extends App {
   constructor(props, context) {
     super(props, context)
 
-    // Hack to quick the Redux lock middleware on load
     if (!config.isServer) {
-      props.reduxStore.dispatch({ type: '@@INIT' })
-
       /* eslint-disable no-console */
       console.info(`
 *********************************************************************
