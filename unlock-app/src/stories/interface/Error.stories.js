@@ -2,17 +2,19 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { Error } from '../../components/interface/Error'
 
+const close = () => {}
+
 storiesOf('Error', Error)
   .add('Simple Error', () => {
     return (
-      <Error>
+      <Error close={close}>
         <p>We could not process that transaction.</p>
       </Error>
     )
   })
   .add('Error with Markup', () => {
     return (
-      <Error>
+      <Error close={close}>
         <p>
           We could not process that transaction.
           <a href=".">Retry</a>

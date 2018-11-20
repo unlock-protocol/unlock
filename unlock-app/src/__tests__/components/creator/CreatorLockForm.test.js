@@ -11,7 +11,9 @@ jest.mock('next/link', () => {
 
 describe('CreatorLockForm', () => {
   it('should display when create lock button is clicked', () => {
-    const store = createUnlockStore()
+    const store = createUnlockStore({
+      account: {},
+    })
 
     let wrapper = rtl.render(
       <Provider store={store}>
@@ -29,7 +31,9 @@ describe('CreatorLockForm', () => {
     expect(wrapper.queryByText('Submit')).not.toBeNull()
   })
   it('should disappear when cancel button is clicked', () => {
-    const store = createUnlockStore()
+    const store = createUnlockStore({
+      account: {},
+    })
 
     let wrapper = rtl.render(
       <Provider store={store}>

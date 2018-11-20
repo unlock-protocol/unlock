@@ -58,7 +58,7 @@ describe('Pages', () => {
             account={account}
             network={network}
             transactions={{}}
-            locks={[]}
+            locks={{}}
           />
         </Provider>
       )

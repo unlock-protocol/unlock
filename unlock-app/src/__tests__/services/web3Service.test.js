@@ -29,8 +29,12 @@ const nockScope = nock('http://127.0.0.1:8545', { encodedQueryParams: true })
 
 let rpcRequestId = 0
 
+const debug = false // set to true to see more logging statements
+
 function logNock(message, x, y) {
-  console.log(message, x, y)
+  if (debug) {
+    console.log(message, x, y)
+  }
 }
 
 // Generic call
@@ -81,8 +85,10 @@ const ethCallAndFail = (data, to, error) => {
 }
 
 nock.emitter.on('no match', function(x, y, body) {
-  console.log('DID NOT MATCH')
-  console.log(body)
+  if (debug) {
+    console.log('DID NOT MATCH')
+    console.log(body)
+  }
 })
 
 describe('Web3Service', () => {
