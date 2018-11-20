@@ -3,49 +3,63 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import React from 'react'
 import { connect } from 'react-redux'
-import Balance from '../helpers/Balance'
+import BalanceProvider from '../helpers/BalanceProvider'
 import UnlockPropTypes from '../../propTypes'
+import withConfig from '../../utils/withConfig'
 
 import { purchaseKey } from '../../actions/key'
 
-export const Lock = ({ lock, lockKey, transaction, purchaseKey }) => {
-  let purchaseButton = (
-    <PurchaseButton
-      onClick={() => {
-        purchaseKey(lockKey)
-      }}
-    >
-      Purchase
-    </PurchaseButton>
-  )
-  if (!lockKey) {
-    purchaseButton = null
-  } else if (!transaction) {
-    // No transaction attached to the key. What is it?
-    // Maybe we just lost track of that transaction?
-    // Is the key valid?
-  } else if (transaction.status === 'mined') {
-    purchaseButton = (
-      <PurchaseButton>
-        Mined! Confirming...
-        {transaction.confirmations}
-      </PurchaseButton>
-    )
-    // Key transaction was mined: it is mined, let's look at confirmations
-  } else if (transaction.status === 'submitted') {
-    purchaseButton = <PurchaseButton>Submitted!</PurchaseButton>
-    // Ok, let's wait and not show another button!
-  }
+import PendingKeyLock from './PendingKeyLock'
+import ConfirmingKeyLock from './ConfirmingKeyLock'
+import { LockWrapper, LockHeader, LockBody } from './LockStyles'
 
-  return (
-    <Wrapper>
-      <Name>{lock.name}</Name>
-      <EtherPrice>
-        <Balance amount={lock.keyPrice} convertCurrency={false} />
-      </EtherPrice>
-      {purchaseButton}
-    </Wrapper>
-  )
+export const Lock = ({
+  lock,
+  lockKey,
+  transaction,
+  purchaseKey,
+  config,
+  disabled,
+}) => {
+  if (
+    transaction &&
+    ['submitted', 'pending'].indexOf(transaction.status) > -1
+  ) {
+    return <PendingKeyLock lock={lock} />
+  } else if (
+    transaction &&
+    transaction.status == 'mined' &&
+    transaction.confirmations < config.requiredConfirmations
+  ) {
+    return <ConfirmingKeyLock lock={lock} transaction={transaction} />
+  } else {
+    return (
+      <Wrapper
+        disabled={disabled}
+        onClick={() => {
+          !disabled && purchaseKey(lockKey)
+        }}
+      >
+        <Header>{lock.name}</Header>
+        <BalanceProvider
+          amount={lock.keyPrice}
+          render={(ethPrice, fiatPrice) => (
+            <LockBody>
+              <EthPrice>
+                {ethPrice}
+                {' '}
+Eth
+              </EthPrice>
+              <FiatPrice>
+$
+                {fiatPrice}
+              </FiatPrice>
+            </LockBody>
+          )}
+        />
+      </Wrapper>
+    )
+  }
 }
 
 Lock.propTypes = {
@@ -53,6 +67,7 @@ Lock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   transaction: UnlockPropTypes.transaction,
   purchaseKey: PropTypes.func.isRequired,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 Lock.defaultProps = {
@@ -93,60 +108,35 @@ export const mapStateToProps = (state, { lock }) => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Lock)
+export default withConfig(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Lock)
+)
 
-const Wrapper = styled.li`
-  display: grid;
-  grid-template-columns: 1fr;
-  justify-items: stretch;
-  margin: 0px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--white);
-  font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
-  border-radius: 4px;
-  height: 200px;
-`
-
-const PurchaseButton = styled.div`
-  display: grid;
-  height: 40px;
-  font-weight: 300;
-  align-self: end;
-  justify-content: center;
-  align-content: center;
-  background-color: var(--lightgrey);
-  border-radius: 0px 0px 4px 4px;
-
+const Wrapper = styled(LockWrapper)`
   &:hover {
-    cursor: pointer;
-    color: var(--white);
-    background-color: var(--link);
+    border: ${props => (!props.disabled ? '1px solid var(--grey)' : null)};
   }
 `
 
-const Name = styled.header`
-  display: grid;
-  height: 40px;
-  font-weight: 300;
-  justify-content: center;
-  align-content: center;
+const Header = styled(LockHeader)`
   background-color: var(--lightgrey);
-  font-size: 20px;
   color: var(--grey);
-  border-radius: 4px 4px 0px 0px;
-  text-transform: capitalize;
 `
 
-const EtherPrice = styled.div`
-  display: grid;
-  justify-content: center;
-  align-content: center;
+const EthPrice = styled.div`
   font-size: 30px;
+  line-height: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
+`
+
+const FiatPrice = styled.div`
+  margin-top: 8px;
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
 `
