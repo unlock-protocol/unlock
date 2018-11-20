@@ -144,32 +144,76 @@ describe('Lock middleware', () => {
     )
   })
 
-  it('it should handle key.saved events triggered by the web3Service', () => {
-    create()
+  describe.only('when handling the key.saved events triggered by the web3Service', () => {
+    it('it should reload the lock and the account when the lock exists', () => {
+      create()
 
-    const key = {
-      lock: lock.id,
-    }
-    mockWeb3Service.getLock = jest.fn()
-    mockWeb3Service.refreshOrGetAccount = jest.fn()
+      const key = {
+        lockAddress: lock.address,
+      }
+      mockWeb3Service.getLock = jest.fn()
+      mockWeb3Service.refreshOrGetAccount = jest.fn()
 
-    mockWeb3Service.emit('key.saved', key)
-    expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock)
-    expect(mockWeb3Service.refreshOrGetAccount).toHaveBeenCalledWith(
-      state.account
-    )
+      mockWeb3Service.emit('key.saved', key)
+      expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock)
+      expect(mockWeb3Service.refreshOrGetAccount).toHaveBeenCalledWith(
+        state.account
+      )
+    })
+
+    it('it should the account and fetch a new lock when the lock does not exist', () => {
+      create()
+
+      const key = {
+        lockAddress: '0xAnotherLock',
+      }
+      mockWeb3Service.getLock = jest.fn()
+      mockWeb3Service.refreshOrGetAccount = jest.fn()
+
+      mockWeb3Service.emit('key.saved', key)
+      expect(mockWeb3Service.getLock).toHaveBeenCalledWith({
+        address: '0xAnotherLock',
+      })
+      expect(mockWeb3Service.refreshOrGetAccount).toHaveBeenCalledWith(
+        state.account
+      )
+    })
   })
 
-  it('it should handle key.updated events triggered by the web3Service', () => {
-    create()
+  describe.only('when handling the key.updated events triggered by the web3Service', () => {
+    it('it should reload the lock and the account when the lock exists', () => {
+      create()
 
-    const key = {
-      lock: lock.id,
-    }
-    mockWeb3Service.getLock = jest.fn()
+      const key = {
+        lockAddress: lock.address,
+      }
+      mockWeb3Service.getLock = jest.fn()
+      mockWeb3Service.refreshOrGetAccount = jest.fn()
 
-    mockWeb3Service.emit('key.updated', key)
-    expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock)
+      mockWeb3Service.emit('key.updated', key)
+      expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock)
+      expect(mockWeb3Service.refreshOrGetAccount).toHaveBeenCalledWith(
+        state.account
+      )
+    })
+
+    it('it should the account and fetch a new lock when the lock does not exist', () => {
+      create()
+
+      const key = {
+        lockAddress: '0xAnotherLock',
+      }
+      mockWeb3Service.getLock = jest.fn()
+      mockWeb3Service.refreshOrGetAccount = jest.fn()
+
+      mockWeb3Service.emit('key.updated', key)
+      expect(mockWeb3Service.getLock).toHaveBeenCalledWith({
+        address: '0xAnotherLock',
+      })
+      expect(mockWeb3Service.refreshOrGetAccount).toHaveBeenCalledWith(
+        state.account
+      )
+    })
   })
 
   it('it should handle transaction.new events triggered by the web3Service', () => {

@@ -48,10 +48,10 @@ export const Lock = ({
               <EthPrice>
                 {ethPrice}
                 {' '}
-Eth
+                Eth
               </EthPrice>
               <FiatPrice>
-$
+                $
                 {fiatPrice}
               </FiatPrice>
             </LockBody>
@@ -116,6 +116,7 @@ export default withConfig(
 )
 
 const Wrapper = styled(LockWrapper)`
+  cursor: pointer;
   &:hover {
     border: ${props => (!props.disabled ? '1px solid var(--grey)' : null)};
   }

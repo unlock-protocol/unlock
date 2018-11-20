@@ -51,21 +51,26 @@ export default function lockMiddleware({ getState, dispatch }) {
   })
 
   /**
-   * When a key was saved, we refresh the balance of the lock
-   * and the balance of the account!
-   */
-  web3Service.on('key.saved', key => {
-    web3Service.getLock(getState().locks[key.lock])
-    web3Service.refreshOrGetAccount(getState().account)
-  })
-
-  /**
    * When a key was updated, we reload the corresponding lock because
    * it might have been updated (balance, outstanding keys...)
    */
-  web3Service.on('key.updated', key => {
-    web3Service.getLock(getState().locks[key.lock])
-  })
+  const keySavedOrUpdated = key => {
+    const lockId = Object.keys(getState().locks).find(
+      lockId => key.lockAddress === getState().locks[lockId].address
+    )
+    if (!lockId) {
+      // Hum. We have a key saved but we do not know of the lock :/
+      // We probably need to retrieve it!
+      web3Service.getLock({
+        address: key.lockAddress,
+      })
+    } else {
+      web3Service.getLock(getState().locks[lockId])
+    }
+    web3Service.refreshOrGetAccount(getState().account)
+  }
+  web3Service.on('key.saved', keySavedOrUpdated)
+  web3Service.on('key.updated', keySavedOrUpdated)
 
   web3Service.on('transaction.new', transaction => {
     dispatch(addTransaction(transaction))
