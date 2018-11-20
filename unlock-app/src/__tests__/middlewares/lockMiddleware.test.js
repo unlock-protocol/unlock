@@ -246,6 +246,7 @@ describe('Lock middleware', () => {
       const action = { type: 'FAKE_ACTION' }
       mockWeb3Service.ready = false
       mockWeb3Service.connect = jest.fn()
+      mockWeb3Service.refreshOrGetAccount = jest.fn()
       invoke(action)
 
       // Trigger the event
@@ -258,11 +259,22 @@ describe('Lock middleware', () => {
     })
 
     describe('when the network.changed is different from the store value', () => {
+      it('should get a new account', () => {
+        create()
+        const networkId = 1984
+
+        state.network.name = 1773
+        mockWeb3Service.refreshOrGetAccount = jest.fn()
+        mockWeb3Service.emit('network.changed', networkId)
+        expect(mockWeb3Service.refreshOrGetAccount).toHaveBeenCalledWith()
+      })
+
       it('should dispatch a SET_NETWORK action', () => {
         const { store } = create()
         const networkId = 1984
 
         state.network.name = 1773
+        mockWeb3Service.refreshOrGetAccount = jest.fn()
         mockWeb3Service.emit('network.changed', networkId)
         expect(store.dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
