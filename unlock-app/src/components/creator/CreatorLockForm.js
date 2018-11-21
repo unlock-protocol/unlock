@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
 
 import Icon from '../lock/Icon'
-import { BalanceWithUnit } from '../helpers/Balance'
+import { BalanceWithUnit, Eth } from '../helpers/Balance'
 import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockStatus'
 import { createLock } from '../../actions/lock'
@@ -93,7 +93,7 @@ class CreatorLockForm extends React.Component {
           />
         </FormLockKeys>
         <FormBalanceWithUnit>
-          三
+          <Eth />
           <input
             type="text"
             name="keyPrice"
@@ -102,12 +102,12 @@ class CreatorLockForm extends React.Component {
           />
         </FormBalanceWithUnit>
         <div>-</div>
-        <LockStatus>
+        <Status>
           <LockButton onClick={this.handleSubmit}>Submit</LockButton>
           <LockButton cancel onClick={this.handleCancel}>
             Cancel
           </LockButton>
-        </LockStatus>
+        </Status>
       </FormLockRow>
     )
   }
@@ -148,6 +148,10 @@ const FormLockRow = styled(LockRow)`
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 13px;
   }
+`
+
+const Status = styled(LockStatus)`
+  padding-bottom: 15px;
 `
 
 const FormLockName = styled(LockName)`
