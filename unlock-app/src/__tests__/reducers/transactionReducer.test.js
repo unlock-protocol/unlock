@@ -82,7 +82,7 @@ describe('transaction reducer', () => {
     })
   })
 
-  describe.only('when receiving UPDATE_TRANSACTION', () => {
+  describe('when receiving UPDATE_TRANSACTION', () => {
     it('should raise an error when trying to update the hash', () => {
       const transaction = {
         status: 'pending',

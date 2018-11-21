@@ -5,6 +5,7 @@ import {
   UPDATE_TRANSACTION,
   DELETE_TRANSACTION,
 } from '../actions/transaction'
+
 import { SET_PROVIDER } from '../actions/provider'
 
 export const initialState = {}

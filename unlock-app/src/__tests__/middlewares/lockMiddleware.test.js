@@ -115,16 +115,18 @@ describe('Lock middleware', () => {
     )
   })
 
-  it.only('it should handle lock.saved events triggered by the web3Service', () => {
+  it('it should handle lock.saved events triggered by the web3Service', () => {
     const { store } = create()
     const lock = {}
     const address = '0x123'
     mockWeb3Service.refreshOrGetAccount = jest.fn()
+    mockWeb3Service.getLock = jest.fn()
 
     mockWeb3Service.emit('lock.saved', lock, address)
     expect(mockWeb3Service.refreshOrGetAccount).toHaveBeenCalledWith(
       state.account
     )
+    expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: LOCK_DEPLOYED,
