@@ -7,11 +7,10 @@ import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
 
 import Icon from '../lock/Icon'
-import { BalanceWithUnit } from '../helpers/Balance'
+import { BalanceWithUnit, Eth } from '../helpers/Balance'
 import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockStatus'
 import { createLock } from '../../actions/lock'
-import { Eth } from '../helpers/Balance'
 
 class CreatorLockForm extends React.Component {
   constructor(props, context) {
