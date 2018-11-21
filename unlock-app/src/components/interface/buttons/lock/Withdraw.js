@@ -7,19 +7,19 @@ import { LockButton } from '../Button'
 import UnlockPropTypes from '../../../../propTypes'
 import { withdrawFromLock } from '../../../../actions/lock'
 
-export function Withdraw({ lock, withdraw, account, ...props }) {
-  const startWithdrawal = () => {
-    if (lock.balance > 0) {
-      withdraw(lock, account)
-    }
-  }
-
-  return (
-    <LockButton title="Withdraw balance" action={startWithdrawal} {...props}>
-      <Svg.Withdraw name="Withdraw" />
-    </LockButton>
-  )
-}
+export const Withdraw = ({ lock, withdraw, account, ...props }) => (
+  <LockButton
+    title="Withdraw balance"
+    action={() => {
+      if (lock.balance > 0) {
+        withdraw(lock, account)
+      }
+    }}
+    {...props}
+  >
+    <Svg.Withdraw name="Withdraw" />
+  </LockButton>
+)
 
 Withdraw.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
@@ -34,9 +34,8 @@ Withdraw.defaultProps = {
   withdraw: () => {},
 }
 
-const mapStateToProps = (state, { lock }) => {
-  const account = state.account
-  const transaction = state.transactions[lock.transaction]
+const mapStateToProps = ({ account, transactions }, { lock }) => {
+  const transaction = transactions[lock.transaction]
   return {
     account,
     transaction,
