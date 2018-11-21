@@ -48,10 +48,10 @@ export const Lock = ({
               <EthPrice>
                 {ethPrice}
                 {' '}
-                Eth
+Eth
               </EthPrice>
               <FiatPrice>
-                $
+$
                 {fiatPrice}
               </FiatPrice>
             </LockBody>
