@@ -5,23 +5,20 @@ import { connect } from 'react-redux'
 import Svg from '../../svg'
 import { LockButton } from '../Button'
 import UnlockPropTypes from '../../../../propTypes'
+import { withdrawFromLock } from '../../../../actions/lock'
 
-export class Withdraw extends React.Component {
-  render() {
-    const { lock, withdraw, account } = this.props
-
-    const startWithdrawal = () => {
-      if (lock.balance > 0) {
-        withdraw(lock, account)
-      }
+export function Withdraw({ lock, withdraw, account, ...props }) {
+  const startWithdrawal = () => {
+    if (lock.balance > 0) {
+      withdraw(lock, account)
     }
-
-    return (
-      <LockButton title="Withdraw balance" {...this.props}>
-        <Svg.Withdraw name="Withdraw" />
-      </LockButton>
-    )
   }
+
+  return (
+    <LockButton title="Withdraw balance" action={startWithdrawal} {...props}>
+      <Svg.Withdraw name="Withdraw" />
+    </LockButton>
+  )
 }
 
 Withdraw.propTypes = {
@@ -34,6 +31,7 @@ Withdraw.propTypes = {
 Withdraw.defaultProps = {
   transaction: null,
   account: null,
+  withdraw: () => {},
 }
 
 const mapStateToProps = (state, { lock }) => {
