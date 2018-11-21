@@ -11,6 +11,7 @@ import { BalanceWithUnit } from '../helpers/Balance'
 import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockStatus'
 import { createLock } from '../../actions/lock'
+import { Eth } from '../helpers/Balance'
 
 class CreatorLockForm extends React.Component {
   constructor(props, context) {
@@ -93,7 +94,7 @@ class CreatorLockForm extends React.Component {
           />
         </FormLockKeys>
         <FormBalanceWithUnit>
-          三
+          <Eth />
           <input
             type="text"
             name="keyPrice"
