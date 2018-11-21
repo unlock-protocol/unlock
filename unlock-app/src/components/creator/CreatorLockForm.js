@@ -102,12 +102,12 @@ class CreatorLockForm extends React.Component {
           />
         </FormBalanceWithUnit>
         <div>-</div>
-        <LockStatus>
+        <Status>
           <LockButton onClick={this.handleSubmit}>Submit</LockButton>
           <LockButton cancel onClick={this.handleCancel}>
             Cancel
           </LockButton>
-        </LockStatus>
+        </Status>
       </FormLockRow>
     )
   }
@@ -148,6 +148,10 @@ const FormLockRow = styled(LockRow)`
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 13px;
   }
+`
+
+const Status = styled(LockStatus)`
+  padding-bottom: 15px;
 `
 
 const FormLockName = styled(LockName)`
