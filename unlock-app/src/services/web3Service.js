@@ -21,6 +21,8 @@ export default class Web3Service extends EventEmitter {
   constructor() {
     super()
     this.ready = false
+    this.provider = null
+    this.web3 = null
   }
 
   /**
@@ -29,6 +31,14 @@ export default class Web3Service extends EventEmitter {
    * @return
    */
   connect({ provider }) {
+    if (provider === this.provider) {
+      // If the provider did not really change, no need to reset it
+      return
+    }
+
+    // Keep track of the provider
+    this.provider = provider
+    // And reset the connection
     this.ready = false
 
     // We fail: it appears that we are trying to connect but do not have a provider available...
