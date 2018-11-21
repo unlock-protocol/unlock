@@ -54,11 +54,8 @@ export function LockIconBar({
             config.requiredConfirmations && (
             <>
               Confirming Withdrawal
-              <WithdrawalConfirmations>
-                {withdrawalTransaction.confirmations}
-/
-                {config.requiredConfirmations}
-              </WithdrawalConfirmations>
+              {withdrawalTransaction.confirmations}/
+              {config.requiredConfirmations}
             </>
         )}
       </SubStatus>
@@ -116,8 +113,4 @@ const SubStatus = styled.div`
   color: var(--green);
   text-align: right;
   padding-right: 24px;
-`
-
-const WithdrawalConfirmations = styled.span`
-  margin-left: 15px;
 `
