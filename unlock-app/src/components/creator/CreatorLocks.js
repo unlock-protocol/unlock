@@ -39,7 +39,7 @@ export class CreatorLocks extends React.Component {
         <Error />
         {showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
         {Object.values(locks).map(lock => {
-          return <CreatorLock key={lock.id} lock={lock} />
+          return <CreatorLock key={lock.address} lock={lock} />
         })}
       </Locks>
     )
