@@ -30,7 +30,7 @@ export function LockIconBar({ lock, toggleCode, transaction, config }) {
   return (
     <IconBarContainer>
       <IconBar>
-        <Buttons.Withdraw as="button" />
+        <Buttons.Withdraw as="button" lock={lock} />
         <Buttons.Edit as="button" />
         {/* Reinstate when we're ready <Buttons.ExportLock /> */}
         <Buttons.Code action={toggleCode} as="button" />

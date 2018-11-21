@@ -18,6 +18,16 @@ const lock = {
   balance: '1',
   expirationDuration: 100,
 }
+const keylock = {
+  id: 'lockid',
+  address: '0x1234567890',
+  transaction: 'transactionid',
+  keyPrice: '1',
+  balance: '1',
+  outstandingKeys: 1,
+  maxNumberOfKeys: 10,
+  expirationDuration: 100,
+}
 const transaction = {
   id: 'transactionid',
   address: '0x0987654321',
@@ -52,17 +62,6 @@ describe('CreatorLock', () => {
     ).not.toBeNull()
   })
   it('should display the correct number of keys', () => {
-    const keylock = {
-      id: 'lockid',
-      address: '0x1234567890',
-      transaction: 'transactionid',
-      keyPrice: '1',
-      balance: '1',
-      outstandingKeys: 1,
-      maxNumberOfKeys: 10,
-      expirationDuration: 100,
-    }
-
     const config = configure({
       requiredConfirmations: 6,
     })
