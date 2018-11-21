@@ -53,8 +53,7 @@ export function LockIconBar({
           withdrawalTransaction.confirmations <
             config.requiredConfirmations && (
             <>
-              Confirming Withdrawal
-              {withdrawalTransaction.confirmations}/
+              Confirming Withdrawal {withdrawalTransaction.confirmations}/
               {config.requiredConfirmations}
             </>
         )}
