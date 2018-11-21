@@ -139,6 +139,26 @@ describe('Web3Service', () => {
       web3Service.connect(Object.assign({}, defaultState))
     })
 
+    it('should silently ignore requests to connect again to the same provider', done => {
+      expect.assertions(1)
+      const web3Service = new Web3Service()
+
+      web3Service.once('error', error => {
+        expect(error.message).toBe('Provider does not exist')
+
+        web3Service.once('error', () => {
+          // This should not trigger
+          expect(false).toBe(true)
+        })
+
+        setTimeout(done, 1000) // wait 1 second
+
+        // connect again
+        web3Service.connect({ provider: 'CLOUD' })
+      })
+      web3Service.connect({ provider: 'CLOUD' })
+    })
+
     it('should emit an error event when the provider is not available', done => {
       expect.assertions(2)
       const web3Service = new Web3Service()
