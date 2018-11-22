@@ -118,16 +118,21 @@ describe('Lock middleware', () => {
   it('it should handle lock.saved events triggered by the web3Service', () => {
     const { store } = create()
     const lock = {}
+    const address = '0x123'
     mockWeb3Service.refreshOrGetAccount = jest.fn()
 
-    mockWeb3Service.emit('lock.saved', lock)
+    mockWeb3Service.emit('lock.saved', lock, address)
     expect(mockWeb3Service.refreshOrGetAccount).toHaveBeenCalledWith(
       state.account
     )
+    const update = {
+      address,
+    }
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: RESET_LOCK,
         lock,
+        update,
       })
     )
   })
@@ -135,11 +140,13 @@ describe('Lock middleware', () => {
   it('it should handle lock.updated events triggered by the web3Service', () => {
     const { store } = create()
     const lock = {}
-    mockWeb3Service.emit('lock.updated', lock)
+    const update = {}
+    mockWeb3Service.emit('lock.updated', lock, update)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: RESET_LOCK,
         lock,
+        update,
       })
     )
   })
@@ -229,11 +236,13 @@ describe('Lock middleware', () => {
 
   it('it should handle transaction.updated events triggered by the web3Service', () => {
     const { store } = create()
-    mockWeb3Service.emit('transaction.updated', transaction)
+    const update = {}
+    mockWeb3Service.emit('transaction.updated', transaction, update)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: UPDATE_TRANSACTION,
         transaction,
+        update,
       })
     )
   })

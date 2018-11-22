@@ -13,9 +13,10 @@ export const setLock = lock => ({
   lock,
 })
 
-export const resetLock = lock => ({
+export const resetLock = (lock, update) => ({
   type: RESET_LOCK,
   lock,
+  update,
 })
 
 export const withdrawFromLock = lock => ({
