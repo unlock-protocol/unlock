@@ -24,10 +24,12 @@ const mapStateToProps = ({ error }) => ({
   error,
 })
 
-const mapDispatchToProps = dispatch => ({
-  close: () => {
-    dispatch(setError(null))
-  },
+const mapDispatchToProps = (dispatch, { close }) => ({
+  close:
+    close ||
+    (() => {
+      dispatch(setError(null))
+    }),
 })
 
 Error.propTypes = {
