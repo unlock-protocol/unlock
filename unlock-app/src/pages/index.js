@@ -1,8 +1,9 @@
 import styled from 'styled-components'
-import React from 'react'
+import React, { Component } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import Layout from '../components/interface/Layout'
+import Error from '../components/interface/Error'
 import {
   Section,
   Headline,
@@ -18,79 +19,126 @@ import { pageTitle } from '../constants'
 import { TwitterTags } from '../components/page/TwitterTags'
 import { OpenGraphTags } from '../components/page/OpenGraphTags'
 
-export const Home = ({ config }) => (
-  <Layout forContent>
-    <Head>
-      <title>{pageTitle()}</title>
-      <TwitterTags />
-      <OpenGraphTags />
-    </Head>
-    <Hero>The Web&#39;s new business model</Hero>
-    <Headline>
-      Unlock is a protocol which enables creators to monetize their content with
-      a few lines of code in a fully decentralized way.
-    </Headline>
+const METAMASK_REF_URL =
+  'https://metamask.io' + '/?utm_source=unlock-protocol.com&utm_medium=referral'
 
-    <Action>
-      {config.env !== 'prod' && (
-        <Link href="/dashboard">
-          <a>
-            <HomepageButton>Go to Your Dashboard</HomepageButton>
-          </a>
-        </Link>
-      )}
+const isMetaMaskUnlocked = () =>
+  typeof window.web3 === 'object' &&
+  typeof window.web3.currentProvider === 'object' &&
+  window.web3.currentProvider.isMetaMask
 
-      {config.env === 'prod' && (
-        <HomepageButton disabled>Dashboard coming soon</HomepageButton>
-      )}
+export class Home extends Component {
+  state = {
+    showMetaMaskAlert: false,
+  }
 
-      <ButtonLabel>Requires a browser with an Ethereum wallet</ButtonLabel>
-    </Action>
+  componentDidMount() {
+    if (!isMetaMaskUnlocked()) {
+      this.setState({
+        showMetaMaskAlert: true,
+      })
+    }
+  }
 
-    <ThreeColumns>
-      <Column>
-        <SubTitle>No More Middlemen</SubTitle>
-        <ImageWithHover base="simple" />
-        <Paragraph>
-          There are no middlemen, no fees and no gatekeeper who could shut you
-          down or control your distribution.
-        </Paragraph>
-      </Column>
-      <Column>
-        <SubTitle>Simple Integration</SubTitle>
-        <ImageWithHover base="code" />
-        <Paragraph>
-          Unlock provides a simple snippet of code to integrate easily on your
-          website, as well as several other integration tools...
-        </Paragraph>
-      </Column>
-      <Column>
-        <SubTitle>And Much More</SubTitle>
-        <ImageWithHover base="more" />
-        <Paragraph>
-          For example, Unlock comes with a points system to reward your most
-          loyal fans when they share your content with their friends!
-        </Paragraph>
-      </Column>
-    </ThreeColumns>
+  closeMetaMaskAlert = () => {
+    this.setState({
+      showMetaMaskAlert: false,
+    })
+  }
 
-    <Section>
-      <CallToAction>
-        Check out our open source code on
-        {' '}
-        <a href="https://github.com/unlock-protocol/unlock">GitHub</a>
+  render() {
+    const {
+      props: { config },
+      state: { showMetaMaskAlert },
+      closeMetaMaskAlert,
+    } = this
+
+    return (
+      <Layout forContent>
+        <Head>
+          <title>{pageTitle()}</title>
+          <TwitterTags />
+          <OpenGraphTags />
+        </Head>
+        {showMetaMaskAlert && (
+          <Error close={closeMetaMaskAlert}>
+            <ErrorParagraph>
+              Web3 is locked. Please unlock
+              {' '}
+              <a href={METAMASK_REF_URL}>MetaMask</a>
+              {' '}
+to continue.
+            </ErrorParagraph>
+          </Error>
+        )}
+        <Hero>The Web&#39;s new business model</Hero>
+        <Headline>
+          Unlock is a protocol which enables creators to monetize their content
+          with a few lines of code in a fully decentralized way.
+        </Headline>
+
+        <Action>
+          {config.env !== 'prod' && (
+            <Link href="/dashboard">
+              <a>
+                <HomepageButton>Go to Your Dashboard</HomepageButton>
+              </a>
+            </Link>
+          )}
+
+          {config.env === 'prod' && (
+            <HomepageButton disabled>Dashboard coming soon</HomepageButton>
+          )}
+
+          <ButtonLabel>Requires a browser with an Ethereum wallet</ButtonLabel>
+        </Action>
+
+        <ThreeColumns>
+          <Column>
+            <SubTitle>No More Middlemen</SubTitle>
+            <ImageWithHover base="simple" />
+            <Paragraph>
+              There are no middlemen, no fees and no gatekeeper who could shut
+              you down or control your distribution.
+            </Paragraph>
+          </Column>
+          <Column>
+            <SubTitle>Simple Integration</SubTitle>
+            <ImageWithHover base="code" />
+            <Paragraph>
+              Unlock provides a simple snippet of code to integrate easily on
+              your website, as well as several other integration tools...
+            </Paragraph>
+          </Column>
+          <Column>
+            <SubTitle>And Much More</SubTitle>
+            <ImageWithHover base="more" />
+            <Paragraph>
+              For example, Unlock comes with a points system to reward your most
+              loyal fans when they share your content with their friends!
+            </Paragraph>
+          </Column>
+        </ThreeColumns>
+
+        <Section>
+          <CallToAction>
+            Check out our open source code on
+            {' '}
+            <a href="https://github.com/unlock-protocol/unlock">GitHub</a>
 , come
-        work
-        <a href="/jobs">with us</a>
-        {' '}
+            work
+            <a href="/jobs">with us</a>
+            {' '}
 or simply
-        {' '}
-        <a href="mailto:hello@unlock-protocol.com">get in touch</a>
+            {' '}
+            <a href="mailto:hello@unlock-protocol.com">get in touch</a>
 .
-      </CallToAction>
-    </Section>
-  </Layout>
-)
+          </CallToAction>
+        </Section>
+      </Layout>
+    )
+  }
+}
 
 Home.skipConstraints = true
 
@@ -149,6 +197,10 @@ const Paragraph = styled.p`
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
   font-size: 20px;
+`
+
+const ErrorParagraph = styled(Paragraph)`
+  margin: 1em;
 `
 
 const HomepageButton = styled(ActionButton)`

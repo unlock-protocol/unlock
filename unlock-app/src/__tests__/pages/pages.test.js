@@ -16,13 +16,33 @@ describe('Pages', () => {
     jest.clearAllMocks()
   })
 
+  afterEach(rtl.cleanup)
+
   describe('Home', () => {
-    it('should render title correctly', () => {
+    let wrapper
+
+    beforeEach(() => {
+      const store = createUnlockStore({
+        account: {},
+      })
       const config = {
         env: 'prod',
       }
-      rtl.render(<Home config={config} />)
+
+      wrapper = rtl.render(
+        <Provider store={store}>
+          <Home config={config} />
+        </Provider>
+      )
+    })
+
+    it('should render title correctly', () => {
       expect(pageTitle).toBeCalled()
+    })
+    it('should display warning if MetaMask is not found', () => {
+      const { getByText } = wrapper
+      const found = getByText(/Web3 is locked/)
+      expect(found).toEqual(expect.anything())
     })
   })
   describe('Jobs', () => {
