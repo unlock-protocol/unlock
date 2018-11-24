@@ -16,7 +16,8 @@ storiesOf('Error', Error)
     return (
       <Error close={close}>
         <p>
-          We could not process that transaction.
+          We could not process that transaction. 
+          {' '}
           <a href=".">Retry</a>
 .
         </p>
