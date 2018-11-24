@@ -139,7 +139,7 @@ describe('BalanceProvider Component', () => {
     })
   })
 
-  describe.skip('when the balance converts to > $1b ', () => {
+  describe('when the balance converts to > $1b ', () => {
     const amount = '20000000000000'
 
     it('shows the balance in billions of dollars postfixed with b', () => {
@@ -148,20 +148,6 @@ describe('BalanceProvider Component', () => {
         render: (ethValue, fiatValue) => {
           expect(ethValue).toEqual('20000000.00')
           expect(fiatValue).toEqual('3.9b')
-        },
-      })
-    })
-  })
-
-  describe.skip('when the balance converts to > $1b, unit is eth (used in lock form)', () => {
-    const amount = '9999999'
-
-    it('shows the balance in billions of dollars postfixed with b', () => {
-      renderIt({
-        amount,
-        render: (ethValue, fiatValue) => {
-          expect(ethValue).toEqual('9999999.00')
-          expect(fiatValue).toEqual('2b')
         },
       })
     })
