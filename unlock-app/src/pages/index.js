@@ -3,11 +3,10 @@ import React from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import Layout from '../components/interface/Layout'
+import Signature from '../components/interface/Signature'
 import {
-  Section,
   Headline,
   SubTitle,
-  CallToAction,
   ThreeColumns,
   Column,
 } from '../components/Components'
@@ -30,7 +29,6 @@ export const Home = ({ config }) => (
       Unlock is a protocol which enables creators to monetize their content with
       a few lines of code in a fully decentralized way.
     </Headline>
-
     <Action>
       {config.env !== 'prod' && (
         <Link href="/dashboard">
@@ -46,7 +44,6 @@ export const Home = ({ config }) => (
 
       <ButtonLabel>Requires a browser with an Ethereum wallet</ButtonLabel>
     </Action>
-
     <ThreeColumns>
       <Column>
         <SubTitle>No More Middlemen</SubTitle>
@@ -73,22 +70,7 @@ export const Home = ({ config }) => (
         </Paragraph>
       </Column>
     </ThreeColumns>
-
-    <Section>
-      <CallToAction>
-        Check out our open source code on
-        {' '}
-        <a href="https://github.com/unlock-protocol/unlock">GitHub</a>
-, come
-        work
-        <a href="/jobs">with us</a>
-        {' '}
-or simply
-        {' '}
-        <a href="mailto:hello@unlock-protocol.com">get in touch</a>
-.
-      </CallToAction>
-    </Section>
+    <Signature />
   </Layout>
 )
 
