@@ -38,7 +38,7 @@ export default function lockMiddleware({ getState, dispatch }) {
    * When a lock was saved, we refresh the balance of its owner
    */
   web3Service.on('lock.saved', (lock, address) => {
-    dispatch(resetLock(lock, { address }))
+    dispatch(resetLock(lock, { address, pending: false }))
     web3Service.refreshOrGetAccount(getState().account)
   })
 

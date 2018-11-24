@@ -9,13 +9,13 @@ import UnlockPropTypes from '../../propTypes'
  * @todo Customize position of circles
  * @body In order to get more unique lock icons we should also position (x, y and z) the inner circles
  * more uniquely based on the lock address... the challenge is to not have any white space.
- * @param {UnlockPropTypes.address} address
+ * @param {UnlockPropTypes.lock} lock
  */
-export function Icon({ address }) {
+export function Icon({ lock }) {
   const scheme = new ColorScheme()
   let colors = ['#8c8c8c', '#e8e8e8', '#c3c3c3']
-  if (address) {
-    const mainColor = address.substring(2, 8).toUpperCase()
+  if (lock && !lock.pending) {
+    const mainColor = lock.address.substring(2, 8).toUpperCase()
     scheme
       .from_hex(mainColor)
       .scheme('triade')
@@ -67,11 +67,11 @@ export function Icon({ address }) {
 }
 
 Icon.propTypes = {
-  address: UnlockPropTypes.address,
+  lock: UnlockPropTypes.lock,
 }
 
 Icon.defaultProps = {
-  address: null,
+  lock: null,
 }
 
 export default Icon

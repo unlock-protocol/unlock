@@ -12,7 +12,7 @@ export const Overlay = ({ locks }) => (
       </Headline>
       <Locks>
         {Object.values(locks).map(lock => (
-          <Lock key={lock.id} lock={lock} />
+          <Lock key={lock.address} lock={lock} />
         ))}
       </Locks>
       <Colophon>

@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import uniqid from 'uniqid'
 import React from 'react'
 import styled from 'styled-components'
 import Web3Utils from 'web3-utils'
@@ -49,7 +48,6 @@ class CreatorLockForm extends React.Component {
       keyPrice: Web3Utils.toWei(keyPrice.toString(10), keyPriceCurrency),
       maxNumberOfKeys,
       owner: account.address,
-      id: uniqid(),
     }
     createLock(lock)
     if (hideAction) hideAction()

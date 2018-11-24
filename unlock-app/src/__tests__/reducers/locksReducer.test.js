@@ -6,7 +6,7 @@ import { SET_PROVIDER } from '../../actions/provider'
 
 describe('locks reducer', () => {
   const lock = {
-    id: '123',
+    address: '123',
   }
 
   it('should return the initial state', () => {
@@ -17,7 +17,7 @@ describe('locks reducer', () => {
     expect(
       reducer(
         {
-          [lock.id]: lock,
+          [lock.address]: lock,
         },
         {
           type: SET_PROVIDER,
@@ -33,34 +33,18 @@ describe('locks reducer', () => {
         lock,
       })
     ).toEqual({
-      [lock.id]: lock,
-    })
-  })
-
-  it('should not add the lock twice even when receiving CREATE_LOCK again', () => {
-    expect(
-      reducer(
-        {
-          [lock.id]: lock,
-        },
-        {
-          type: CREATE_LOCK,
-          lock,
-        }
-      )
-    ).toEqual({
-      [lock.id]: lock,
+      [lock.address]: lock,
     })
   })
 
   it('should delete a lock when DELETE_TRANSACTION is called for a transaction which created that lock', () => {
     const transaction = {
-      lock: lock.id,
+      lock: lock.address,
     }
     expect(
       reducer(
         {
-          [lock.id]: lock,
+          [lock.address]: lock,
         },
         {
           type: DELETE_TRANSACTION,
@@ -72,12 +56,12 @@ describe('locks reducer', () => {
 
   it('should not delete a lock when DELETE_TRANSACTION is called for a transaction which created another lock', () => {
     const transaction = {
-      lock: `${lock.id}x`,
+      lock: `${lock.address}x`,
     }
     expect(
       reducer(
         {
-          [lock.id]: lock,
+          [lock.address]: lock,
         },
         {
           type: DELETE_TRANSACTION,
@@ -85,7 +69,7 @@ describe('locks reducer', () => {
         }
       )
     ).toEqual({
-      [lock.id]: lock,
+      [lock.address]: lock,
     })
   })
 
@@ -95,7 +79,7 @@ describe('locks reducer', () => {
     expect(
       reducer(
         {
-          [lock.id]: lock,
+          [lock.address]: lock,
         },
         {
           type: SET_ACCOUNT,
@@ -103,7 +87,7 @@ describe('locks reducer', () => {
         }
       )
     ).toEqual({
-      [lock.id]: lock,
+      [lock.address]: lock,
     })
   })
 })
