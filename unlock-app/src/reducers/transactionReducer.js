@@ -14,10 +14,22 @@ const transactionReducer = (transactions = initialState, action) => {
     return initialState
   }
 
-  if (action.type === ADD_TRANSACTION || action.type === UPDATE_TRANSACTION) {
+  // Add the transaction
+  if (action.type === ADD_TRANSACTION) {
     return {
       ...transactions,
       [action.transaction.hash]: action.transaction,
+    }
+  }
+
+  // Replace the transaction with the updated value
+  if (action.type === UPDATE_TRANSACTION) {
+    return {
+      ...transactions,
+      [action.transaction.hash]: Object.assign(
+        action.transaction,
+        action.update
+      ),
     }
   }
 

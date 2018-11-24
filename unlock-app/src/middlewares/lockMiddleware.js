@@ -37,8 +37,8 @@ export default function lockMiddleware({ getState, dispatch }) {
   /**
    * When a lock was saved, we refresh the balance of its owner
    */
-  web3Service.on('lock.saved', lock => {
-    dispatch(resetLock(lock))
+  web3Service.on('lock.saved', (lock, address) => {
+    dispatch(resetLock(lock, { address }))
     web3Service.refreshOrGetAccount(getState().account)
   })
 
@@ -46,8 +46,8 @@ export default function lockMiddleware({ getState, dispatch }) {
    * The Lock was changed.
    * Should we get the balance of the lock owner?
    */
-  web3Service.on('lock.updated', lock => {
-    dispatch(resetLock(lock))
+  web3Service.on('lock.updated', (lock, update) => {
+    dispatch(resetLock(lock, update))
   })
 
   /**
@@ -76,8 +76,8 @@ export default function lockMiddleware({ getState, dispatch }) {
     dispatch(addTransaction(transaction))
   })
 
-  web3Service.on('transaction.updated', transaction => {
-    dispatch(updateTransaction(transaction))
+  web3Service.on('transaction.updated', (transaction, update) => {
+    dispatch(updateTransaction(transaction, update))
   })
 
   web3Service.on('error', error => {

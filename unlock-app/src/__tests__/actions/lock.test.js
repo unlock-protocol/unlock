@@ -21,11 +21,13 @@ describe('lock actions', () => {
 
   it('should create an action to reset the lock', () => {
     const lock = {}
+    const update = {}
     const expectedAction = {
       type: RESET_LOCK,
       lock,
+      update,
     }
-    expect(resetLock(lock)).toEqual(expectedAction)
+    expect(resetLock(lock, update)).toEqual(expectedAction)
   })
 
   it('should create an action to set the lock', () => {

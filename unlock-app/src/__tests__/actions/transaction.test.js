@@ -19,11 +19,13 @@ describe('transaction actions', () => {
 
   it('should create an action to update the transaction', () => {
     const transaction = {}
+    const update = {}
     const expectedAction = {
       type: UPDATE_TRANSACTION,
       transaction,
+      update,
     }
-    expect(updateTransaction(transaction)).toEqual(expectedAction)
+    expect(updateTransaction(transaction, update)).toEqual(expectedAction)
   })
 
   it('should create an action to delete a transaction', () => {
