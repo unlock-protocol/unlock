@@ -11,7 +11,6 @@ jest.mock('next/link', () => {
 })
 
 const lock = {
-  id: 'lockid',
   address: '0x1234567890',
   transaction: 'transactionid',
   keyPrice: '1',
@@ -19,7 +18,6 @@ const lock = {
   expirationDuration: 100,
 }
 const keylock = {
-  id: 'lockid',
   address: '0x1234567890',
   transaction: 'transactionid',
   keyPrice: '1',
@@ -28,8 +26,8 @@ const keylock = {
   maxNumberOfKeys: 10,
   expirationDuration: 100,
 }
+
 const transaction = {
-  id: 'transactionid',
   address: '0x0987654321',
   confirmations: 12,
   status: 'mined',
@@ -71,7 +69,7 @@ describe('CreatorLock', () => {
         transactionid: transaction,
       },
       locks: {
-        lockid: keylock,
+        [keylock.address]: keylock,
       },
     })
 

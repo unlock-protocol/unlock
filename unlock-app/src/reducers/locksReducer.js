@@ -1,3 +1,5 @@
+import uniqid from 'uniqid'
+
 import { CREATE_LOCK, RESET_LOCK } from '../actions/lock'
 import { DELETE_TRANSACTION } from '../actions/transaction'
 import { SET_PROVIDER } from '../actions/provider'
@@ -9,19 +11,35 @@ const locksReducer = (state = initialState, action) => {
     return initialState
   }
 
-  // Add the lock to the list of locks
   if (action.type === CREATE_LOCK) {
+    // The lock does not have an address yet, so we use a 'temporary' one in the form of an id
+    action.lock.address = uniqid()
+    action.lock.pending = true
     return {
       ...state,
-      [action.lock.id]: action.lock,
+      [action.lock.address]: action.lock,
     }
   }
 
   // Replace the lock in list with the updated value
   if (action.type === RESET_LOCK) {
+    // If the address has been updated, we first need to remove the mapping to the old address
+    if (
+      action.update.address &&
+      action.update.address !== action.lock.address
+    ) {
+      const newState = { ...state }
+      delete newState[action.lock.address]
+      newState[action.update.address] = Object.assign(
+        action.lock,
+        action.update
+      )
+      return newState
+    }
+
     return {
       ...state,
-      [action.lock.id]: Object.assign(action.lock, action.update),
+      [action.lock.address]: Object.assign(action.lock, action.update),
     }
   }
 

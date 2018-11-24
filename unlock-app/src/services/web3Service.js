@@ -209,7 +209,7 @@ export default class Web3Service extends EventEmitter {
       status: 'pending',
       confirmations: 0,
       createdAt: new Date().getTime(),
-      lock: lock.id,
+      lock: lock.address,
     }
 
     return this.sendTransaction(
@@ -347,7 +347,7 @@ export default class Web3Service extends EventEmitter {
       confirmations: 0,
       createdAt: new Date().getTime(),
       key: key.id,
-      lock: lock.id,
+      lock: lock.address,
       account: account.address,
     }
 
@@ -442,7 +442,7 @@ export default class Web3Service extends EventEmitter {
       status: 'pending',
       confirmations: 0,
       createdAt: new Date().getTime(),
-      lock: lock.id,
+      lock: lock.address,
       account: account.address,
     }
 
