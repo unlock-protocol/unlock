@@ -120,8 +120,8 @@ describe('Web3Service', () => {
       web3Service.connect(Object.assign({}, defaultState))
     })
 
-    it.skip('should emit an error event when the smart contract has not been deployed', done => {
-      expect.assertions(2)
+    it('should emit an error event when the smart contract has not been deployed on this network', done => {
+      expect.assertions(3)
 
       const web3Service = new Web3Service()
       expect(web3Service.ready).toBe(false)
@@ -132,7 +132,9 @@ describe('Web3Service', () => {
 
       expect(web3Service.ready).toBe(false)
       web3Service.on('error', error => {
-        expect(error.message).toBe('Provider does not exist')
+        expect(error.message).toBe(
+          `Unlock is not deployed on network ${netVersion}`
+        )
         done()
       })
 
