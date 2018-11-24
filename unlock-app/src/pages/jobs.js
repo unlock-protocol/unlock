@@ -2,12 +2,12 @@ import styled from 'styled-components'
 import React from 'react'
 import Head from 'next/head'
 import Layout from '../components/interface/Layout'
+import Signature from '../components/interface/Signature'
 import {
   Section,
   Title,
   Headline,
   SubTitle,
-  CallToAction,
   Paragraph,
   UnorderedList,
   OrderedList,
@@ -355,19 +355,7 @@ export const Jobs = () => (
       </Section>
     </ShortColumn>
 
-    <Section>
-      <CallToAction>
-        Check out our open source code on
-        <a href="https://github.com/unlock-protocol/unlock">GitHub</a>
-, come
-        work
-        <a href="/jobs">with us</a>
-        {' '}
-or simply
-        <a href="mailto:hello@unlock-protocol.com">get in touch</a>
-.
-      </CallToAction>
-    </Section>
+    <Signature />
   </Layout>
 )
 
