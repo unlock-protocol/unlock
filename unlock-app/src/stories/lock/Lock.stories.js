@@ -1,7 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { Provider } from 'react-redux'
-import Lock from '../../components/lock/Lock'
+import { Lock } from '../../components/lock/Lock'
 import createUnlockStore from '../../createUnlockStore'
 
 // lock, account, keys, purchaseKey
