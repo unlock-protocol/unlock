@@ -227,17 +227,15 @@ export default class Web3Service extends EventEmitter {
         if (event === 'transactionHash') {
           transaction.hash = args.hash
           transaction.status = 'submitted'
-          lock.transaction = transaction.hash
-          this.emit('lock.updated', lock)
           this.emit('transaction.new', transaction)
+          this.emit('lock.updated', lock, { transaction: transaction.hash })
         } else if (event === 'confirmation') {
-          transaction.status = 'mined'
-          transaction.confirmations += 1
-          this.emit('transaction.updated', transaction)
+          this.emit('transaction.updated', transaction, {
+            status: 'mined',
+            confirmations: args.confirmationNumber,
+          })
         } else if (event === 'NewLock') {
-          lock.address = args.newLockAddress
-          this.getLock(lock)
-          return this.emit('lock.saved', lock)
+          return this.emit('lock.saved', lock, args.newLockAddress)
         }
       }
     )
@@ -281,8 +279,9 @@ export default class Web3Service extends EventEmitter {
       if (!blockTransaction) {
         return this.emit('error', new Error('Missing transaction'))
       }
-      transaction.confirmations = blockNumber - blockTransaction.blockNumber
-      this.emit('transaction.updated', transaction)
+      this.emit('transaction.updated', transaction, {
+        confirmations: blockNumber - blockTransaction.blockNumber,
+      })
     })
   }
 
@@ -301,26 +300,26 @@ export default class Web3Service extends EventEmitter {
       outstandingKeys: parseInt,
     }
 
+    const update = {}
+
     const constantPromises = Object.keys(attributes).map(attribute => {
       return contract.methods[attribute]()
         .call()
         .then(result => {
-          lock[attribute] = attributes[attribute](result) // We cast the value
-          return lock
+          update[attribute] = attributes[attribute](result) // We cast the value
         })
     })
 
     // Let's load its balance
     constantPromises.push(
       this.getAddressBalance(lock.address).then(balance => {
-        lock.balance = balance
-        return lock
+        update.balance = balance
       })
     )
 
     // Once lock has been refreshed
     return Promise.all(constantPromises).then(() => {
-      this.emit('lock.updated', lock)
+      this.emit('lock.updated', lock, update)
       return lock
     })
   }
@@ -367,14 +366,16 @@ export default class Web3Service extends EventEmitter {
         }
         if (event === 'transactionHash') {
           transaction.hash = args.hash
-          key.transaction = transaction.hash
           transaction.status = 'submitted'
           this.emit('transaction.new', transaction)
-          this.emit('key.updated', key)
+          this.emit('key.updated', key, {
+            transaction: transaction.hash,
+          })
         } else if (event === 'confirmation') {
-          transaction.status = 'mined'
-          transaction.confirmations += 1
-          this.emit('transaction.updated', transaction)
+          this.emit('transaction.updated', transaction, {
+            status: 'mined',
+            confirmations: args.confirmationNumber,
+          })
         } else if (event === 'Transfer') {
           this.getKey(key)
           return this.emit('key.saved', key)
@@ -389,10 +390,13 @@ export default class Web3Service extends EventEmitter {
    */
   getKey(key) {
     if (!key.lockAddress) {
-      key.expiration = 0
-      key.data = null
-      return this.emit('key.updated', key)
+      return this.emit('key.updated', key, {
+        expiration: 0,
+        data: null,
+      })
     }
+    const update = {}
+
     const lockContract = new this.web3.eth.Contract(
       LockContract.abi,
       key.lockAddress
@@ -403,21 +407,21 @@ export default class Web3Service extends EventEmitter {
       .call()
     const getKeyDataPromise = lockContract.methods.keyDataFor(key.owner).call()
     if (!key.id) {
-      key.id = crypto
+      update.id = crypto
         .createHash('md5')
         .update([key.lockAddress, key.owner].join(''))
         .digest('hex')
     }
     Promise.all([getKeyExpirationPromise, getKeyDataPromise])
       .then(([expiration, data]) => {
-        key.expiration = parseInt(expiration, 10)
-        key.data = data
-        this.emit('key.updated', key)
+        update.expiration = parseInt(expiration, 10)
+        update.data = data
+        this.emit('key.updated', key, update)
       })
       .catch(() => {
-        key.expiration = 0
-        key.data = null
-        this.emit('key.updated', key)
+        update.expiration = 0
+        update.data = null
+        this.emit('key.updated', key, update)
       })
   }
 
@@ -459,9 +463,10 @@ export default class Web3Service extends EventEmitter {
           transaction.status = 'submitted'
           this.emit('transaction.new', transaction)
         } else if (event === 'confirmation') {
-          transaction.status = 'mined'
-          transaction.confirmations += 1
-          this.emit('transaction.updated', transaction)
+          this.emit('transaction.updated', transaction, {
+            status: 'mined',
+            confirmations: args.confirmationNumber,
+          })
         } else if (event === 'receipt') {
           return this.getLock(lock)
         }

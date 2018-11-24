@@ -9,10 +9,19 @@ const locksReducer = (state = initialState, action) => {
     return initialState
   }
 
-  if (action.type === CREATE_LOCK || action.type === RESET_LOCK) {
+  // Add the lock to the list of locks
+  if (action.type === CREATE_LOCK) {
     return {
       ...state,
       [action.lock.id]: action.lock,
+    }
+  }
+
+  // Replace the lock in list with the updated value
+  if (action.type === RESET_LOCK) {
+    return {
+      ...state,
+      [action.lock.id]: Object.assign(action.lock, action.update),
     }
   }
 
