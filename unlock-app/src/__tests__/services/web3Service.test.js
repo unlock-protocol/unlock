@@ -657,7 +657,7 @@ describe('Web3Service', () => {
 
       beforeEach(() => {
         lock = {
-          id: '0xadd',
+          address: '0xadd',
           expirationDuration: 86400, // 1 day
           keyPrice: '100000000000000000', // 0.1 Eth
           maxNumberOfKeys: 100,
@@ -722,7 +722,7 @@ describe('Web3Service', () => {
 
         web3Service.on('lock.updated', (lock, update) => {
           expect(lock).toMatchObject({
-            id: '0xadd',
+            address: '0xadd',
             expirationDuration: 86400, // 1 day
             keyPrice: '100000000000000000', // 0.1 Eth
             maxNumberOfKeys: 100,
@@ -770,7 +770,7 @@ describe('Web3Service', () => {
 
         web3Service.on('lock.saved', (lock, address) => {
           expect(lock).toMatchObject({
-            id: '0xadd',
+            address: '0xadd',
             expirationDuration: 86400, // 1 day
             keyPrice: '100000000000000000', // 0.1 Eth
             maxNumberOfKeys: 100,
@@ -790,7 +790,6 @@ describe('Web3Service', () => {
 
       beforeEach(() => {
         lock = {
-          id: 'lock',
           address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
           expirationDuration: 86400, // 1 day
           keyPrice: '100000000000000000', // 0.1 Eth
@@ -844,7 +843,7 @@ describe('Web3Service', () => {
             createdAt: expect.any(Number),
             hash: '0x123',
             key: key.id,
-            lock: lock.id,
+            lock: lock.address,
             account: owner.address,
             status: 'submitted',
           })
@@ -924,7 +923,6 @@ describe('Web3Service', () => {
 
       beforeEach(() => {
         lock = {
-          id: 'lock',
           address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
           expirationDuration: 86400, // 1 day
           keyPrice: '100000000000000000', // 0.1 Eth
@@ -973,7 +971,7 @@ describe('Web3Service', () => {
             confirmations: 0,
             createdAt: expect.any(Number),
             hash: '0x123',
-            lock: lock.id,
+            lock: lock.address,
             status: 'submitted',
           })
           done()

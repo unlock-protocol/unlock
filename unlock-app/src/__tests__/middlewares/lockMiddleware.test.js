@@ -87,7 +87,6 @@ beforeEach(() => {
     address: '0xabc',
   }
   lock = {
-    id: 'alpha',
     address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
     keyPrice: '100',
     owner: account.address,
@@ -97,7 +96,7 @@ beforeEach(() => {
     network,
     provider: 'HTTP',
     locks: {
-      [lock.id]: lock,
+      [lock.address]: lock,
     },
   }
 })
@@ -312,7 +311,7 @@ describe('Lock middleware', () => {
           [key.id]: key,
         }
         state.locks = {
-          [lock.id]: lock,
+          [lock.address]: lock,
         }
         mockWeb3Service.emit('network.changed', networkId)
         expect(store.dispatch).not.toHaveBeenCalled()

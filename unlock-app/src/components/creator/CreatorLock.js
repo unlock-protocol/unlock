@@ -44,10 +44,11 @@ export class CreatorLock extends React.Component {
 
     return (
       <LockRow onClick={this.toggleKeys}>
-        <Icon lock={lock} address={lock.address} />
+        <Icon lock={lock} />
         <LockName>
           {name}
-          <LockAddress>{lock.address}</LockAddress>
+
+          <LockAddress>{!lock.pending && lock.address}</LockAddress>
         </LockName>
         <LockDuration>
           <Duration seconds={lock.expirationDuration} />
