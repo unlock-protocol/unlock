@@ -18,6 +18,8 @@ const globalStyle = `
     --link: #4d8be8;
     --green: #74ce63;
     --pink: #ed6e82;
+
+    --foreground: 9001;
   }
 
   body {
