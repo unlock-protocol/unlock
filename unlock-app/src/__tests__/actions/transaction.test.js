@@ -18,14 +18,14 @@ describe('transaction actions', () => {
   })
 
   it('should create an action to update the transaction', () => {
-    const transaction = {}
+    const hash = '0x123'
     const update = {}
     const expectedAction = {
       type: UPDATE_TRANSACTION,
-      transaction,
+      hash,
       update,
     }
-    expect(updateTransaction(transaction, update)).toEqual(expectedAction)
+    expect(updateTransaction(hash, update)).toEqual(expectedAction)
   })
 
   it('should create an action to delete a transaction', () => {
