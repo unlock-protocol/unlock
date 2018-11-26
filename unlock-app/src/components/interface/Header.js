@@ -37,7 +37,7 @@ export default class Header extends React.PureComponent {
           <Buttons.Jobs />
           <Buttons.Github />
         </DesktopButtons>
-        <MobileToggle>
+        <MobileToggle visibilityToggle={menu ? true : false}>
           <Buttons.Bars onClick={this.toggleMenu} size="48px" />
           <Buttons.ChevronUp onClick={this.toggleMenu} size="48px" />
         </MobileToggle>
@@ -105,11 +105,12 @@ const MobileToggle = styled.div`
     background-color: var(--white);
     padding: 15px;
 
-    transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 500ms cubic-bezier(0.165, 0.84, 0.44, 1);
     opacity: 1;
     pointer-events: visible;
 
     ${props => (props.visibilityToggle ? '&:nth-child(1)' : '&:nth-child(2)')} {
+      top: -25px;
       opacity: 0;
       pointer-events: none;
     }
@@ -120,7 +121,7 @@ const MobileToggle = styled.div`
 
     &:hover {
       > svg {
-        fill: var(--link);
+        fill: var(--grey);
       }
     }
   }
@@ -146,11 +147,11 @@ const MobilePopover = styled.div`
   align-items: center;
   justify-content: center;
 
-  transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 500ms cubic-bezier(0.165, 0.84, 0.44, 1);
   ${props =>
     props.visibilityToggle
-      ? 'opacity: 1; pointer-events: visible;'
-      : 'opacity: 0; pointer-events: none;'} ${Button} {
+      ? 'opacity: 1; pointer-events: visible; top: 70px;'
+      : 'opacity: 0; pointer-events: none; top: 50px;'} ${Button} {
     margin: 24px;
 
     small {
