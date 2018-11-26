@@ -1,12 +1,14 @@
 import {
   createLock,
   setLock,
-  resetLock,
+  updateLock,
   withdrawFromLock,
+  lockDeployed,
   CREATE_LOCK,
   SET_LOCK,
-  RESET_LOCK,
+  UPDATE_LOCK,
   WITHDRAW_FROM_LOCK,
+  LOCK_DEPLOYED,
 } from '../../actions/lock'
 
 describe('lock actions', () => {
@@ -20,14 +22,14 @@ describe('lock actions', () => {
   })
 
   it('should create an action to reset the lock', () => {
-    const lock = {}
+    const address = '0x1234'
     const update = {}
     const expectedAction = {
-      type: RESET_LOCK,
-      lock,
+      type: UPDATE_LOCK,
+      address,
       update,
     }
-    expect(resetLock(lock, update)).toEqual(expectedAction)
+    expect(updateLock(address, update)).toEqual(expectedAction)
   })
 
   it('should create an action to set the lock', () => {
@@ -46,5 +48,16 @@ describe('lock actions', () => {
       lock,
     }
     expect(withdrawFromLock(lock)).toEqual(expectedAction)
+  })
+
+  it('should create an action to indicate that a lock has been deployed', () => {
+    const lock = {}
+    const address = '0x1234'
+    const expectedAction = {
+      type: LOCK_DEPLOYED,
+      lock,
+      address,
+    }
+    expect(lockDeployed(lock, address)).toEqual(expectedAction)
   })
 })

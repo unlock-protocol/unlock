@@ -6,7 +6,8 @@ import {
   CREATE_LOCK,
   SET_LOCK,
   WITHDRAW_FROM_LOCK,
-  resetLock,
+  updateLock,
+  lockDeployed,
 } from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
 import { SET_ACCOUNT, setAccount } from '../actions/accounts'
@@ -38,7 +39,7 @@ export default function lockMiddleware({ getState, dispatch }) {
    * When a lock was saved, we refresh the balance of its owner
    */
   web3Service.on('lock.saved', (lock, address) => {
-    dispatch(resetLock(lock, { address, pending: false }))
+    dispatch(lockDeployed(lock, address))
     web3Service.refreshOrGetAccount(getState().account)
   })
 
@@ -47,7 +48,7 @@ export default function lockMiddleware({ getState, dispatch }) {
    * Should we get the balance of the lock owner?
    */
   web3Service.on('lock.updated', (lock, update) => {
-    dispatch(resetLock(lock, update))
+    dispatch(updateLock(lock.address, update))
   })
 
   /**
