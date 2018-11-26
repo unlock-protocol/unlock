@@ -2,8 +2,9 @@ import EventEmitter from 'events'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import lockMiddleware from '../../middlewares/lockMiddleware'
 import {
-  RESET_LOCK,
+  UPDATE_LOCK,
   CREATE_LOCK,
+  LOCK_DEPLOYED,
   SET_LOCK,
   WITHDRAW_FROM_LOCK,
 } from '../../actions/lock'
@@ -114,7 +115,7 @@ describe('Lock middleware', () => {
     )
   })
 
-  it('it should handle lock.saved events triggered by the web3Service', () => {
+  it.only('it should handle lock.saved events triggered by the web3Service', () => {
     const { store } = create()
     const lock = {}
     const address = '0x123'
@@ -124,33 +125,32 @@ describe('Lock middleware', () => {
     expect(mockWeb3Service.refreshOrGetAccount).toHaveBeenCalledWith(
       state.account
     )
-    const update = {
-      address,
-    }
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
-        type: RESET_LOCK,
+        type: LOCK_DEPLOYED,
         lock,
-        update,
+        address,
       })
     )
   })
 
   it('it should handle lock.updated events triggered by the web3Service', () => {
     const { store } = create()
-    const lock = {}
+    const lock = {
+      address: '0x123',
+    }
     const update = {}
     mockWeb3Service.emit('lock.updated', lock, update)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
-        type: RESET_LOCK,
-        lock,
+        type: UPDATE_LOCK,
+        address: lock.address,
         update,
       })
     )
   })
 
-  describe.only('when handling the key.saved events triggered by the web3Service', () => {
+  describe('when handling the key.saved events triggered by the web3Service', () => {
     it('it should reload the lock and the account when the lock exists', () => {
       create()
 
@@ -186,7 +186,7 @@ describe('Lock middleware', () => {
     })
   })
 
-  describe.only('when handling the key.updated events triggered by the web3Service', () => {
+  describe('when handling the key.updated events triggered by the web3Service', () => {
     it('it should reload the lock and the account when the lock exists', () => {
       create()
 
