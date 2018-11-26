@@ -2,8 +2,8 @@ import React from 'react'
 import Svg from '../../svg'
 import { LayoutButton } from '../Button'
 
-const About = () => (
-  <LayoutButton href="/about" title="About">
+const About = props => (
+  <LayoutButton href="/about" title="About" {...props}>
     <Svg.About title="About" />
   </LayoutButton>
 )

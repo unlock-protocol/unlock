@@ -18,6 +18,11 @@ import Unlock from './Unlock'
 import UnlockWordMark from './UnlockWordMark'
 import Upload from './Upload'
 import Withdraw from './Withdraw'
+import Newsletter from './Email'
+import Telegram from './Telegram'
+import Twitter from './Twitter'
+import Bars from './Bars'
+import ChevronUp from './ChevronUp'
 
 function wrapViewBox(WrappedComponent, viewBox) {
   const Wrapped = props => <WrappedComponent viewBox={viewBox} {...props} />
@@ -44,4 +49,9 @@ export default {
   UnlockWordMark,
   Upload: wrapViewBox(Upload, '0 0 24 24'),
   Withdraw: wrapViewBox(Withdraw, '0 0 24 24'),
+  Newsletter: wrapViewBox(Newsletter, '0 0 24 24'),
+  Telegram: wrapViewBox(Telegram, '0 0 24 24'),
+  Twitter: wrapViewBox(Twitter, '0 0 24 24'),
+  Bars: wrapViewBox(Bars, '0 0 56 42'),
+  ChevronUp: wrapViewBox(ChevronUp, '0 0 58 32'),
 }
