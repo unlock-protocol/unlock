@@ -24,12 +24,17 @@ const transactionReducer = (transactions = initialState, action) => {
 
   // Replace the transaction with the updated value
   if (action.type === UPDATE_TRANSACTION) {
+    if (action.update.hash && action.update.hash !== action.hash) {
+      throw new Error('Could not change the transaction hash')
+    }
+
+    if (!transactions[action.hash]) {
+      throw new Error('Could not update missing transaction')
+    }
+
     return {
       ...transactions,
-      [action.transaction.hash]: Object.assign(
-        action.transaction,
-        action.update
-      ),
+      [action.hash]: Object.assign(transactions[action.hash], action.update),
     }
   }
 

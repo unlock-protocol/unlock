@@ -240,7 +240,7 @@ describe('Lock middleware', () => {
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: UPDATE_TRANSACTION,
-        transaction,
+        hash: transaction.hash,
         update,
       })
     )
