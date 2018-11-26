@@ -77,7 +77,7 @@ export default function lockMiddleware({ getState, dispatch }) {
   })
 
   web3Service.on('transaction.updated', (transaction, update) => {
-    dispatch(updateTransaction(transaction, update))
+    dispatch(updateTransaction(transaction.hash, update))
   })
 
   web3Service.on('error', error => {
