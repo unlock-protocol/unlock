@@ -82,25 +82,47 @@ describe('transaction reducer', () => {
     })
   })
 
-  describe('when receiving UPDATE_TRANSACTION', () => {
-    it('should set the transaction accordingly if it has not been previously added', () => {
+  describe.only('when receiving UPDATE_TRANSACTION', () => {
+    it('should raise an error when trying to update the hash', () => {
       const transaction = {
         status: 'pending',
         confirmations: 0,
         hash: '0x123',
       }
 
-      expect(
-        reducer(
-          {},
-          {
-            type: UPDATE_TRANSACTION,
-            transaction,
-          }
-        )
-      ).toEqual({
-        '0x123': transaction,
-      })
+      const state = {
+        [transaction.hash]: transaction,
+      }
+      const action = {
+        type: UPDATE_TRANSACTION,
+        hash: transaction.hash,
+        update: {
+          hash: '0x456',
+        },
+      }
+      expect(() => {
+        reducer(state, action)
+      }).toThrow(/Could not change the transaction hash/)
+    })
+
+    it('should raise an error when trying to update a transaction which does not exist', () => {
+      const transaction = {
+        status: 'pending',
+        confirmations: 0,
+        hash: '0x123',
+      }
+
+      const state = {}
+      const action = {
+        type: UPDATE_TRANSACTION,
+        hash: transaction.hash,
+        update: {
+          hash: '0x123',
+        },
+      }
+      expect(() => {
+        reducer(state, action)
+      }).toThrow(/Could not update missing transaction/)
     })
 
     it('should update an existing transaction', () => {
@@ -110,24 +132,22 @@ describe('transaction reducer', () => {
         hash: '0x123',
       }
 
-      expect(
-        reducer(
-          {
-            '0x123': transaction,
-          },
-          {
-            type: UPDATE_TRANSACTION,
-            transaction: {
-              status: 'mined',
-              confirmations: 0,
-              hash: '0x123',
-            },
-          }
-        )
-      ).toEqual({
+      const state = {
+        [transaction.hash]: transaction,
+      }
+      const action = {
+        type: UPDATE_TRANSACTION,
+        hash: transaction.hash,
+        update: {
+          status: 'mined',
+          confirmations: 3,
+        },
+      }
+
+      expect(reducer(state, action)).toEqual({
         '0x123': {
           status: 'mined',
-          confirmations: 0,
+          confirmations: 3,
           hash: '0x123',
         },
       })

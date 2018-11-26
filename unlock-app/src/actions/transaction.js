@@ -7,9 +7,9 @@ export const addTransaction = transaction => ({
   transaction,
 })
 
-export const updateTransaction = (transaction, update) => ({
+export const updateTransaction = (hash, update) => ({
   type: UPDATE_TRANSACTION,
-  transaction,
+  hash,
   update,
 })
 
