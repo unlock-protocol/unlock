@@ -10,15 +10,7 @@ const clickAction = (e, action) => {
 
 export const LayoutButton = ({ href, title, children, action, ...props }) => {
   const button = (
-    <Button
-      href={href}
-      backgroundColor="var(--grey)"
-      fillColor="white"
-      backgroundHoverColor="var(--link)"
-      fillHoverColor="white"
-      onClick={e => clickAction(e, action)}
-      {...props}
-    >
+    <Button href={href} onClick={e => clickAction(e, action)} {...props}>
       {children}
       <Label>{title}</Label>
     </Button>
