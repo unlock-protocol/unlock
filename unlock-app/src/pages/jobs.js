@@ -90,12 +90,14 @@ export const Jobs = () => (
         <OrderedList>
           <ListItem>
             Initial chat conversation with our founder Julien (find him in our
+            {' '}
             <a href="https://t.me/unlockprotocol">Telegram group</a>
             !).
           </ListItem>
           <ListItem>
             Open Source Bounty assignment: all of Unlock&#39;s code is public.
             We&#39;ll ask you to submit a pull request for
+            {' '}
             <a href="https://github.com/unlock-protocol/unlock/issues">
               one of the issues
             </a>

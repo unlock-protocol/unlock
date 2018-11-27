@@ -228,23 +228,25 @@ exports[`withConfig High Order Component when the current network is not in the 
       </div>
     </header>
     <section
-      className="s1g6piw8-0 ihyWBx"
+      className="sc-1g6piw8-0 jXGMmL"
     >
       <img
-        className="s1g6piw8-1 jAguAC"
+        className="sc-1g6piw8-1 fcKGMu"
         src="/static/images/illustrations/network.svg"
       />
       <div
-        className="s1g6piw8-2 kRghYL"
+        className="sc-1g6piw8-2 gCvXha"
       >
         <h1>
           Network mismatch
         </h1>
         <p>
           You’re currently on the
+           
           Rinkeby
            
           network but you need to be on the
+           
           dev
            
           network. Please switch to
