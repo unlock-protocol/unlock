@@ -15,9 +15,9 @@ import networkReducer, {
 import providerReducer, {
   initialState as defaultProvider,
 } from './reducers/providerReducer'
-import transactionReducer, {
+import transactionsReducer, {
   initialState as defaultTransactions,
-} from './reducers/transactionReducer'
+} from './reducers/transactionsReducer'
 import currencyReducer, {
   initialState as defaultCurrency,
 } from './reducers/currencyReducer'
@@ -41,7 +41,7 @@ export default function createUnlockStore(defaultState = {}) {
     locks: locksReducer,
     network: networkReducer,
     provider: providerReducer,
-    transactions: transactionReducer,
+    transactions: transactionsReducer,
     currency: currencyReducer,
     error: errorReducer,
   }

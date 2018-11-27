@@ -1,5 +1,3 @@
-// TODO: for consistency rename into transactionsReducer since it keeps track of all transactions
-
 import {
   ADD_TRANSACTION,
   UPDATE_TRANSACTION,
@@ -10,7 +8,7 @@ import { SET_PROVIDER } from '../actions/provider'
 
 export const initialState = {}
 
-const transactionReducer = (transactions = initialState, action) => {
+const transactionsReducer = (transactions = initialState, action) => {
   if (action.type == SET_PROVIDER) {
     return initialState
   }
@@ -47,4 +45,4 @@ const transactionReducer = (transactions = initialState, action) => {
   return transactions
 }
 
-export default transactionReducer
+export default transactionsReducer

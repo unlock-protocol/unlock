@@ -1,4 +1,4 @@
-import reducer, { initialState } from '../../reducers/transactionReducer'
+import reducer, { initialState } from '../../reducers/transactionsReducer'
 import {
   ADD_TRANSACTION,
   UPDATE_TRANSACTION,
