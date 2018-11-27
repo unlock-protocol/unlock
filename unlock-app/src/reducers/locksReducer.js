@@ -1,5 +1,3 @@
-import uniqid from 'uniqid'
-
 import { CREATE_LOCK, UPDATE_LOCK, LOCK_DEPLOYED } from '../actions/lock'
 import { DELETE_TRANSACTION } from '../actions/transaction'
 import { SET_PROVIDER } from '../actions/provider'
@@ -12,8 +10,6 @@ const locksReducer = (state = initialState, action) => {
   }
 
   if (action.type === CREATE_LOCK) {
-    // The lock does not have an address yet, so we use a 'temporary' one in the form of an id
-    action.lock.address = uniqid()
     action.lock.pending = true
     return {
       ...state,
