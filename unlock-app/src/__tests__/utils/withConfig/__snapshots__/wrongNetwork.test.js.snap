@@ -228,14 +228,14 @@ exports[`withConfig High Order Component when the current network is not in the 
       </div>
     </header>
     <section
-      className="sc-1g6piw8-0 jXGMmL"
+      className="s1g6piw8-0 ihyWBx"
     >
       <img
-        className="sc-1g6piw8-1 fcKGMu"
+        className="s1g6piw8-1 jAguAC"
         src="/static/images/illustrations/network.svg"
       />
       <div
-        className="sc-1g6piw8-2 gCvXha"
+        className="s1g6piw8-2 kRghYL"
       >
         <h1>
           Network mismatch
