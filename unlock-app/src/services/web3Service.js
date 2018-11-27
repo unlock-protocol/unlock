@@ -23,6 +23,18 @@ export default class Web3Service extends EventEmitter {
     this.ready = false
     this.provider = null
     this.web3 = null
+    this.eventsHandlers = {
+      NewLock: (transaction, args) => {
+        return this.emit(
+          'lock.saved',
+          {
+            transaction: transaction.hash,
+            address: transaction.lock,
+          },
+          args.newLockAddress
+        )
+      },
+    }
   }
 
   /**
@@ -58,7 +70,9 @@ export default class Web3Service extends EventEmitter {
           )
         }
 
-        this.unlockContractAddress = UnlockContract.networks[networkId].address
+        this.unlockContractAddress = Web3Utils.toChecksumAddress(
+          UnlockContract.networks[networkId].address
+        )
         this.ready = true
         if (this.networkId !== networkId) {
           this.networkId = networkId
@@ -107,86 +121,62 @@ export default class Web3Service extends EventEmitter {
    * @private
    */
   sendTransaction(
-    { to, from, data, value, gas, privateKey, contractAbi = [] },
+    transaction,
+    { to, from, data, value, gas, contractAbi = [] },
     callback
   ) {
-    // Home made event handling since this is not handled correctly by web3 :/
-    const abiEvents = contractAbi.filter(item => {
-      return item.type === 'event'
+    const web3TransactionPromise = this.web3.eth.sendTransaction({
+      to,
+      from,
+      value,
+      data,
+      gas,
     })
-
-    if (!privateKey) {
-      // We are using a third party provider so we do not have a privateKey for the user...
-      // We assume this will support sendTransaction
-      const sentTransactionPromise = this.web3.eth.sendTransaction({
-        to,
-        from,
-        value,
-        data,
-        gas,
-      })
-      return this.handleTransaction(sentTransactionPromise, abiEvents, callback)
-    } else {
-      // We process transactions ourselves...
-      // Sign first
-      return this.web3.eth.accounts
-        .signTransaction({ to, from, value, data, gas }, privateKey)
-        .then(signedTransaction => {
-          const sentSignedTransactionPromise = this.web3.eth.sendSignedTransaction(
-            signedTransaction.rawTransaction
-          )
-          return this.handleTransaction(
-            sentSignedTransactionPromise,
-            abiEvents,
-            callback
-          )
-        })
-    }
+    return this.handleTransaction(
+      transaction,
+      web3TransactionPromise,
+      contractAbi,
+      callback
+    )
   }
 
   /**
+   * This function submits a web3Transaction and will trigger events as it is being processed,
+   * as well as invoke the callback for functions which may need to know about specific events.
    * @private
-   * @param {*} sentTransaction
-   * @param {*} abiEvents
+   * @param {*} transaction
+   * @param {*} web3TransactionPromise
+   * @param {*} contractAbi
    * @param {*} callback
    */
-  handleTransaction(sentTransaction, abiEvents, callback) {
-    return sentTransaction
+  handleTransaction(
+    transaction,
+    web3TransactionPromise,
+    contractAbi,
+    callback
+  ) {
+    return web3TransactionPromise
       .once('transactionHash', hash => {
+        transaction.hash = hash
+        transaction.status = 'submitted'
         callback(null, { event: 'transactionHash', args: { hash } })
+        this.emit('transaction.new', transaction)
       })
-      .on('confirmation', (confirmationNumber, receipt) => {
-        callback(null, {
-          event: 'confirmation',
-          args: { confirmationNumber, receipt },
+      .on('confirmation', confirmationNumber => {
+        this.emit('transaction.updated', transaction, {
+          status: 'mined',
+          confirmations: confirmationNumber,
         })
       })
       .once('receipt', receipt => {
         callback(null, { event: 'receipt', args: { receipt } })
-        receipt.logs.forEach(log => {
-          // For each event, let's look at the inputs
-          abiEvents.forEach(event => {
-            let topics = log.topics
-            if (event.name) {
-              // https://web3js.readthedocs.io/en/1.0/web3-eth-abi.html#decodelog
-              // topics - Array: An array with the index parameter topics of the log, without the topic[0] if its a non-anonymous event, otherwise with topic[0].
-              topics = log.topics.slice(1)
-            }
-            const decoded = this.web3.eth.abi.decodeLog(
-              event.inputs,
-              log.data,
-              topics
-            )
-            const args = event.inputs.reduce((args, input) => {
-              args[input.name] = decoded[input.name]
-              return args
-            }, {})
-            callback(null, { event: event.name, args })
-          })
-        })
+        // Should we invoke this only when we have received enough confirmations?
+        // That would be safer... but also add a lot of latency.
+        this.parseTransactionLogsFromReceipt(transaction, contractAbi, receipt)
       })
       .on('error', error => {
-        callback(error, {})
+        this.emit('error', error)
+        callback(error)
       })
   }
 
@@ -213,6 +203,7 @@ export default class Web3Service extends EventEmitter {
     }
 
     return this.sendTransaction(
+      transaction,
       {
         to: this.unlockContractAddress,
         from: owner.address,
@@ -221,21 +212,8 @@ export default class Web3Service extends EventEmitter {
         contractAbi: UnlockContract.abi,
       },
       (error, { event, args } = {}) => {
-        if (error) {
-          this.emit('error', error)
-        }
         if (event === 'transactionHash') {
-          transaction.hash = args.hash
-          transaction.status = 'submitted'
-          this.emit('transaction.new', transaction)
-          this.emit('lock.updated', lock, { transaction: transaction.hash })
-        } else if (event === 'confirmation') {
-          this.emit('transaction.updated', transaction, {
-            status: 'mined',
-            confirmations: args.confirmationNumber,
-          })
-        } else if (event === 'NewLock') {
-          return this.emit('lock.saved', lock, args.newLockAddress)
+          this.emit('lock.updated', lock, { transaction: args.hash })
         }
       }
     )
@@ -268,6 +246,60 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
+   * This function will trigger events based on smart contract events
+   * @private
+   * @param {*} name
+   * @param {*} params
+   */
+  emitContractEvent(transaction, name, params) {
+    const handler = this.eventsHandlers[name]
+    if (handler) {
+      return handler(transaction, params)
+    }
+  }
+
+  /**
+   * Given a transaction receipt and the abi for a contract, parses and trigger the
+   * corresponding events
+   * @param {*} transaction
+   * @param {*} contractAbi
+   * @param {*} transactionReceipt
+   */
+  parseTransactionLogsFromReceipt(
+    transaction,
+    contractAbi,
+    transactionReceipt
+  ) {
+    transactionReceipt.logs.forEach(log => {
+      // Home made event handling since this is not handled correctly by web3 :/
+      const abiEvents = contractAbi.filter(item => {
+        return item.type === 'event'
+      })
+
+      // For each event, let's look at the inputs
+      abiEvents.forEach(event => {
+        let topics = log.topics
+        if (event.name) {
+          // https://web3js.readthedocs.io/en/1.0/web3-eth-abi.html#decodelog
+          // topics - Array: An array with the index parameter topics of the log, without the topic[0] if its a non-anonymous event, otherwise with topic[0].
+          topics = log.topics.slice(1)
+        }
+        const decoded = this.web3.eth.abi.decodeLog(
+          event.inputs,
+          log.data,
+          topics
+        )
+
+        const args = event.inputs.reduce((args, input) => {
+          args[input.name] = decoded[input.name]
+          return args
+        }, {})
+        this.emitContractEvent(transaction, event.name, args)
+      })
+    })
+  }
+
+  /**
    * This refreshes a transaction by its hash
    * @param {Transaction} transaction
    */
@@ -279,9 +311,48 @@ export default class Web3Service extends EventEmitter {
       if (!blockTransaction) {
         return this.emit('error', new Error('Missing transaction'))
       }
+
+      if (blockTransaction.transactionIndex === null) {
+        // This means the transaction is not in a block yet (ie. not mined)
+        return this.emit('transaction.updated', transaction, {
+          status: 'pending',
+          confirmations: 0,
+        })
+      }
+
+      // The transaction was mined
       this.emit('transaction.updated', transaction, {
+        status: 'mined',
         confirmations: blockNumber - blockTransaction.blockNumber,
       })
+
+      // Let's check its receipt to see if it triggered any event!
+      return this.web3.eth
+        .getTransactionReceipt(transaction.hash)
+        .then(transactionReceipt => {
+          if (!transactionReceipt.status) {
+            return this.emit('transaction.updated', transaction, {
+              status: 'failed',
+            })
+          }
+
+          if (
+            this.unlockContractAddress ===
+            Web3Utils.toChecksumAddress(blockTransaction.to)
+          ) {
+            return this.parseTransactionLogsFromReceipt(
+              transaction,
+              UnlockContract.abi,
+              transactionReceipt
+            )
+          }
+
+          return this.parseTransactionLogsFromReceipt(
+            transaction,
+            LockContract.abi,
+            transactionReceipt
+          )
+        })
     })
   }
 
@@ -327,7 +398,6 @@ export default class Web3Service extends EventEmitter {
   /**
    * Purchase a key to a lock by account.
    * The key object is passed so we can kepe track of it from the application
-   * The account object is required for its privateKey
    * The lock object is required to get the price data
    * @param {UnlockPropTypes.key} key
    * @param {UnlockPropTypes.account} account
@@ -352,6 +422,7 @@ export default class Web3Service extends EventEmitter {
     }
 
     return this.sendTransaction(
+      transaction,
       {
         to: key.lockAddress,
         from: key.owner,
@@ -360,21 +431,10 @@ export default class Web3Service extends EventEmitter {
         value: lock.keyPrice,
         contractAbi: LockContract.abi,
       },
-      (error, { event, args } = {}) => {
-        if (error) {
-          return this.emit('error', error)
-        }
+      (error, { event } = {}) => {
         if (event === 'transactionHash') {
-          transaction.hash = args.hash
-          transaction.status = 'submitted'
-          this.emit('transaction.new', transaction)
           this.emit('key.updated', key, {
             transaction: transaction.hash,
-          })
-        } else if (event === 'confirmation') {
-          this.emit('transaction.updated', transaction, {
-            status: 'mined',
-            confirmations: args.confirmationNumber,
           })
         } else if (event === 'Transfer') {
           this.getKey(key)
@@ -447,6 +507,7 @@ export default class Web3Service extends EventEmitter {
     }
 
     this.sendTransaction(
+      transaction,
       {
         to: lock.address,
         from: account.address,
@@ -454,20 +515,8 @@ export default class Web3Service extends EventEmitter {
         gas: 1000000,
         contractAbi: LockContract.abi,
       },
-      (error, { event, args } = {}) => {
-        if (error) {
-          return this.emit('error', error)
-        }
-        if (event === 'transactionHash') {
-          transaction.hash = args.hash
-          transaction.status = 'submitted'
-          this.emit('transaction.new', transaction)
-        } else if (event === 'confirmation') {
-          this.emit('transaction.updated', transaction, {
-            status: 'mined',
-            confirmations: args.confirmationNumber,
-          })
-        } else if (event === 'receipt') {
+      (error, { event } = {}) => {
+        if (event === 'receipt') {
           return this.getLock(lock)
         }
       }

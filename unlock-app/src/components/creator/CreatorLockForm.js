@@ -3,6 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Web3Utils from 'web3-utils'
 import { connect } from 'react-redux'
+import uniqid from 'uniqid'
 import UnlockPropTypes from '../../propTypes'
 
 import Icon from '../lock/Icon'
@@ -43,6 +44,7 @@ class CreatorLockForm extends React.Component {
     } = this.state
 
     const lock = {
+      address: uniqid(), // The lock does not have an address yet, so we use a 'temporary' one
       name: name,
       expirationDuration: expirationDuration * expirationDurationUnit,
       keyPrice: Web3Utils.toWei(keyPrice.toString(10), keyPriceCurrency),

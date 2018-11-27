@@ -5,6 +5,7 @@ import Web3Utils from 'web3-utils'
 import nock from 'nock'
 import Web3Service from '../../services/web3Service'
 import UnlockContract from '../../artifacts/contracts/Unlock.json'
+import LockContract from '../../artifacts/contracts/PublicLock.json'
 
 const defaultState = {
   network: {
@@ -78,6 +79,11 @@ const ethBlockNumber = result => {
 // eth_getTransactionByHash
 const ethGetTransactionByHash = (hash, result) => {
   return jsonRpcRequest('eth_getTransactionByHash', [hash], result)
+}
+
+// eth_getTransactionReceipt
+const ethGetTransactionReceipt = (hash, result) => {
+  return jsonRpcRequest('eth_getTransactionReceipt', [hash], result)
 }
 
 const ethCallAndFail = (data, to, error) => {
@@ -296,7 +302,11 @@ describe('Web3Service', () => {
             '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
         })
 
-        web3Service.on('transaction.updated', (transaction, update) => {
+        ethGetTransactionReceipt(transaction.hash, {
+          status: '0x0',
+        })
+
+        web3Service.once('transaction.updated', (transaction, update) => {
           expect(update.confirmations).toEqual(15) //29-14
           done()
         })
@@ -316,6 +326,115 @@ describe('Web3Service', () => {
         })
 
         return web3Service.getTransaction(transaction)
+      })
+
+      describe('when the transaction was mined', () => {
+        const blockTransaction = {
+          hash:
+            '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
+          nonce: '0x04',
+          blockHash:
+            '0xdc7c95899e030f3104871a597866767ec296e948a24e99b12e0b251011d11c36',
+          blockNumber: `0x${(14).toString('16')}`,
+          transactionIndex: '0x00',
+          from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+          to: '0xCfEB869F69431e42cdB54A4F4f105C19C080A601',
+          value: '0x0',
+          gas: '0x16e360',
+          gasPrice: '0x04a817c800',
+          input:
+            '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
+        }
+
+        beforeEach(() => {
+          ethBlockNumber(`0x${(29).toString('16')}`)
+
+          ethGetTransactionByHash(transaction.hash, blockTransaction)
+        })
+
+        it('should mark the transaction as failed if the transaction receipt status is false', done => {
+          expect.assertions(2)
+          ethGetTransactionReceipt(transaction.hash, {
+            transactionIndex: '0x3',
+            blockHash:
+              '0x01b3cd21ace224e17cc1d5a8af18c01a4e6c2c99b83b28a711f6ea76c31e62f9',
+            blockNumber: '0x158',
+            gasUsed: '0x2ea84',
+            cumulativeGasUsed: '0x3a525',
+            logs: [],
+            status: '0x0',
+          })
+
+          web3Service.once('transaction.updated', (transaction, update) => {
+            expect(update.confirmations).toEqual(15) //29-14
+            web3Service.once('transaction.updated', (transaction, update) => {
+              expect(update.status).toBe('failed')
+              done()
+            })
+          })
+
+          return web3Service.getTransaction(transaction)
+        })
+
+        it('should parseTransactionLogsFromReceipt with the Unlock abi if the address is one of the Unlock contract', done => {
+          expect.assertions(4)
+          const transactionReceipt = {
+            transactionIndex: '0x3',
+            blockHash:
+              '0x01b3cd21ace224e17cc1d5a8af18c01a4e6c2c99b83b28a711f6ea76c31e62f9',
+            blockNumber: '0x158',
+            gasUsed: '0x2ea84',
+            cumulativeGasUsed: '0x3a525',
+            logs: [],
+            status: '0x1',
+          }
+          ethGetTransactionReceipt(transaction.hash, transactionReceipt)
+          const previousAddress = web3Service.unlockContractAddress
+
+          web3Service.parseTransactionLogsFromReceipt = (
+            transactionToUpdate,
+            abi,
+            receipt
+          ) => {
+            expect(transactionToUpdate.hash).toEqual(transaction.hash)
+            expect(abi).toEqual(UnlockContract.abi)
+            expect(receipt.blockNumber).toEqual(344)
+            expect(receipt.logs).toEqual([])
+            web3Service.unlockContractAddress = previousAddress
+            done()
+          }
+          web3Service.unlockContractAddress = blockTransaction.to
+          web3Service.getTransaction(transaction)
+        })
+
+        it('should parseTransactionLogsFromReceipt with the Lock abi otherwise', done => {
+          expect.assertions(4)
+          const transactionReceipt = {
+            transactionIndex: '0x3',
+            blockHash:
+              '0x01b3cd21ace224e17cc1d5a8af18c01a4e6c2c99b83b28a711f6ea76c31e62f9',
+            blockNumber: '0x158',
+            gasUsed: '0x2ea84',
+            cumulativeGasUsed: '0x3a525',
+            logs: [],
+            status: '0x1',
+          }
+          ethGetTransactionReceipt(transaction.hash, transactionReceipt)
+
+          web3Service.parseTransactionLogsFromReceipt = (
+            transactionToUpdate,
+            abi,
+            receipt
+          ) => {
+            expect(transactionToUpdate.hash).toEqual(transaction.hash)
+            expect(abi).toEqual(LockContract.abi)
+            expect(receipt.blockNumber).toEqual(344)
+            expect(receipt.logs).toEqual([])
+            done()
+          }
+
+          web3Service.getTransaction(transaction)
+        })
       })
     })
 
@@ -458,11 +577,25 @@ describe('Web3Service', () => {
     })
 
     describe('handleTransaction', () => {
-      it('should trigger transactionHash events', () => {
+      it('should trigger transactionHash events and trigger a transaction.new event', done => {
+        expect.assertions(2)
+
         const callback = jest.fn()
         const hash = 'hash'
         const sendTransaction = new EventEmitter()
-        web3Service.handleTransaction(sendTransaction, [], callback)
+        const transaction = {}
+
+        web3Service.on('transaction.new', newTransaction => {
+          expect(newTransaction.hash).toBe(hash)
+          done()
+        })
+
+        web3Service.handleTransaction(
+          transaction,
+          sendTransaction,
+          [],
+          callback
+        )
         sendTransaction.emit('transactionHash', hash)
         expect(callback).toHaveBeenCalledWith(null, {
           event: 'transactionHash',
@@ -470,55 +603,48 @@ describe('Web3Service', () => {
         })
       })
 
-      it('should trigger confirmation events', () => {
+      it('should trigger confirmation events and trigger a transaction.updated event', done => {
+        expect.assertions(3)
+
         const callback = jest.fn()
         const confirmationNumber = 1
         const receipt = {}
         const sendTransaction = new EventEmitter()
-        web3Service.handleTransaction(sendTransaction, [], callback)
-        sendTransaction.emit('confirmation', confirmationNumber, receipt)
-        expect(callback).toHaveBeenCalledWith(null, {
-          event: 'confirmation',
-          args: { confirmationNumber, receipt },
+        const transaction = {
+          hash: '0x456',
+        }
+
+        web3Service.on('transaction.updated', (updatedTransaction, update) => {
+          expect(updatedTransaction).toBe(transaction)
+          expect(update.confirmations).toBe(1)
+          expect(update.status).toBe('mined')
+          done()
         })
+
+        web3Service.handleTransaction(
+          transaction,
+          sendTransaction,
+          [],
+          callback
+        )
+        sendTransaction.emit('confirmation', confirmationNumber, receipt)
       })
 
-      it('should trigger receipt events', () => {
+      it('should trigger receipt events and invoke parseTransactionLogsFromReceipt', () => {
+        expect.assertions(2)
+
         const callback = jest.fn()
+        web3Service.parseTransactionLogsFromReceipt = jest.fn()
+        const transaction = {}
         const receipt = {
           logs: [],
         }
-        const sendTransaction = new EventEmitter()
-        web3Service.handleTransaction(sendTransaction, [], callback)
-        sendTransaction.emit('receipt', receipt)
-        expect(callback).toHaveBeenCalledWith(null, {
-          event: 'receipt',
-          args: { receipt },
-        })
-      })
 
-      it('should trigger named custom events when there are any', () => {
-        const previousDecodeLog = web3Service.web3.eth.abi.decodeLog
-        web3Service.web3.eth.abi.decodeLog = jest.fn() //(event.inputs, log.data, topics)
-
-        const callback = jest.fn()
-        const receipt = {
-          logs: [
-            {
-              topics: ['', 'x', 'y'],
-              data: [],
-            },
-          ],
-        }
         const sendTransaction = new EventEmitter()
         web3Service.handleTransaction(
+          transaction,
           sendTransaction,
-          [
-            {
-              name: 'ping',
-              inputs: [],
-            },
-          ],
+          [],
           callback
         )
         sendTransaction.emit('receipt', receipt)
@@ -526,23 +652,47 @@ describe('Web3Service', () => {
           event: 'receipt',
           args: { receipt },
         })
-        expect(callback).toHaveBeenCalledWith(null, { event: 'ping', args: {} })
+        expect(
+          web3Service.parseTransactionLogsFromReceipt
+        ).toHaveBeenCalledWith(transaction, [], receipt)
+      })
 
-        web3Service.web3.eth.abi.decodeLog = previousDecodeLog
+      it('should handle errors', done => {
+        expect.assertions(1)
+        const callback = jest.fn()
+        const transaction = {
+          hash: '0x456',
+        }
+        const sendTransaction = new EventEmitter()
+        const error = 'There was a problem'
+
+        web3Service.on('error', error => {
+          expect(error).toBe('There was a problem')
+          done()
+        })
+
+        web3Service.handleTransaction(
+          transaction,
+          sendTransaction,
+          [],
+          callback
+        )
+        sendTransaction.emit('error', error)
       })
     })
 
     describe('sendTransaction', () => {
       it('should handle cases where the private key is not known and using an extrenal provider', () => {
-        const previousHandleTransaction = web3Service.handleTransaction
+        expect.assertions(2)
+
         web3Service.handleTransaction = jest.fn()
 
-        const previousSendTransaction = web3Service.web3.eth.sendTransaction
         const mockSendTransaction = jest.fn()
         const mockTransaction = {}
         mockSendTransaction.mockReturnValue(mockTransaction)
         web3Service.web3.eth.sendTransaction = mockSendTransaction
 
+        const transaction = {}
         const to = ''
         const from = '0x'
         const data = ''
@@ -552,6 +702,7 @@ describe('Web3Service', () => {
         const contractAbi = []
         const callback = () => {}
         web3Service.sendTransaction(
+          transaction,
           { to, from, data, value, gas, privateKey, contractAbi },
           callback
         )
@@ -563,71 +714,18 @@ describe('Web3Service', () => {
           to,
         })
         expect(web3Service.handleTransaction).toHaveBeenCalledWith(
+          transaction,
           mockTransaction,
           [],
           callback
         )
-        web3Service.handleTransaction = previousHandleTransaction
-        web3Service.web3.eth.sendTransaction = previousSendTransaction
-      })
-
-      // TODO: this test fails even though it should not: investigate!
-      it.skip('should handle cases where the private key is known', () => {
-        const previousHandleTransaction = web3Service.handleTransaction
-        web3Service.handleTransaction = jest.fn()
-
-        // mocking signTransaction
-        const previousSignTransaction =
-          web3Service.web3.eth.accounts.signTransaction
-        const mockSignedTransaction = {
-          rawTransaction: '',
-        }
-        const mockSignTransaction = jest.fn(() => {
-          return new Promise(resolve => {
-            return resolve(mockSignedTransaction)
-          })
-        })
-        web3Service.web3.eth.accounts.signTransaction = mockSignTransaction
-
-        // mocking sendSignedTransaction
-        const previousSendSignedTransaction =
-          web3Service.web3.eth.sendSignedTransaction
-        const mockSendSignedTransaction = jest.fn()
-        const mockTransaction = {}
-        mockSendSignedTransaction.mockReturnValue(mockTransaction)
-        web3Service.web3.eth.sendSignedTransaction = mockSendSignedTransaction
-
-        const to = ''
-        const from = '0x'
-        const data = ''
-        const value = ''
-        const gas = ''
-        const privateKey = '0x123'
-        const contractAbi = []
-        const callback = () => {}
-
-        web3Service.sendTransaction(
-          { to, from, data, value, gas, privateKey, contractAbi },
-          callback
-        )
-
-        expect(mockSignTransaction).toHaveBeenCalledWith(
-          { data, from, value, gas, to },
-          privateKey
-        )
-        // TODO these assertions fail even though the mocks are being called. Investigate!
-        // expect(mockSendSignedTransaction).toHaveBeenCalledWith(mockSignedTransaction.rawTransaction)
-        // expect(web3Service.handleTransaction).toHaveBeenCalledWith(mockTransaction, [], callback)
-
-        // Restoring mocks
-        web3Service.handleTransaction = previousHandleTransaction
-        web3Service.web3.eth.accounts.signTransaction = previousSignTransaction
-        web3Service.web3.eth.accounts.sendSignedTransaction = previousSendSignedTransaction
       })
     })
 
     describe('createAccount', () => {
       it('should yield a new account with a balance of 0', () => {
+        expect.assertions(1)
+
         // mock web3's create
         const mock = jest.fn()
         mock.mockReturnValue({
@@ -669,20 +767,19 @@ describe('Web3Service', () => {
           '0x3ca206264762caf81a8f0a843bbb850987b41e16'
       })
 
-      it('should handle errors when the transaction could not be processed', done => {
-        expect.assertions(2)
+      it('should invoke sendTransaction with the right params', () => {
+        expect.assertions(1)
 
-        web3Service.sendTransaction = jest.fn((args, cb) => {
-          return cb(new Error('Failed to create lock'))
-        })
-
-        web3Service.on('error', error => {
-          expect(error).toMatchObject({ message: 'Failed to create lock' })
-          done()
-        })
+        web3Service.sendTransaction = jest.fn()
 
         web3Service.createLock(lock, owner)
         expect(web3Service.sendTransaction).toHaveBeenCalledWith(
+          expect.objectContaining({
+            status: 'pending',
+            confirmations: 0,
+            createdAt: expect.any(Number),
+            lock: lock.address,
+          }),
           {
             to: expect.any(String),
             from: owner.address,
@@ -695,87 +792,14 @@ describe('Web3Service', () => {
       })
 
       it('should emit a new transaction once it has been submitted', done => {
-        expect.assertions(1)
-        web3Service.sendTransaction = jest.fn((args, cb) => {
+        expect.assertions(2)
+        web3Service.sendTransaction = jest.fn((transaction, args, cb) => {
           return cb(null, { event: 'transactionHash', args: { hash: '0x123' } })
         })
 
-        web3Service.on('transaction.new', transaction => {
-          expect(transaction).toMatchObject({
-            confirmations: 0,
-            createdAt: expect.any(Number),
-            hash: '0x123',
-            lock: '0xadd',
-            status: 'submitted',
-          })
-          done()
-        })
-
-        web3Service.createLock(lock, owner)
-      })
-
-      it('should attach the transaction to the lock and emit lock.updated', done => {
-        expect.assertions(2)
-        web3Service.sendTransaction = jest.fn((args, cb) => {
-          return cb(null, { event: 'transactionHash', args: { hash: '0x123' } })
-        })
-
-        web3Service.on('lock.updated', (lock, update) => {
-          expect(lock).toMatchObject({
-            address: '0xadd',
-            expirationDuration: 86400, // 1 day
-            keyPrice: '100000000000000000', // 0.1 Eth
-            maxNumberOfKeys: 100,
-          })
-          expect(update).toMatchObject({
-            transaction: '0x123',
-          })
-          done()
-        })
-
-        web3Service.createLock(lock, owner)
-      })
-
-      it('should emit transaction.updated for each confirmation', done => {
-        expect.assertions(1)
-        web3Service.sendTransaction = jest.fn((args, cb) => {
-          cb(null, { event: 'transactionHash', args: { hash: '0x123' } })
-          return cb(null, {
-            event: 'confirmation',
-            args: { confirmationNumber: 3 },
-          })
-        })
-
-        web3Service.on('transaction.updated', (transaction, update) => {
-          expect(update).toMatchObject({
-            confirmations: 3,
-            status: 'mined',
-          })
-          done()
-        })
-
-        web3Service.createLock(lock, owner)
-      })
-
-      it('should emit lock.saved once the NewLock event has been received', done => {
-        expect.assertions(2)
-        web3Service.sendTransaction = jest.fn((args, cb) => {
-          cb(null, { event: 'transactionHash', args: { hash: '0x123' } })
-          return cb(null, {
-            event: 'NewLock',
-            args: { newLockAddress: '0xlock' },
-          })
-        })
-        web3Service.getLock = jest.fn()
-
-        web3Service.on('lock.saved', (lock, address) => {
-          expect(lock).toMatchObject({
-            address: '0xadd',
-            expirationDuration: 86400, // 1 day
-            keyPrice: '100000000000000000', // 0.1 Eth
-            maxNumberOfKeys: 100,
-          })
-          expect(address).toBe('0xlock')
+        web3Service.on('lock.updated', (lockToUpdate, params) => {
+          expect(lockToUpdate).toBe(lock)
+          expect(params.transaction).toBe('0x123')
           done()
         })
 
@@ -805,20 +829,23 @@ describe('Web3Service', () => {
         }
       })
 
-      it('should handle errors when the transaction could not be processed', done => {
-        expect.assertions(2)
+      it('should invoke sendTransaction with the right params', () => {
+        expect.assertions(1)
 
-        web3Service.sendTransaction = jest.fn((args, cb) => {
+        web3Service.sendTransaction = jest.fn((transaction, args, cb) => {
           return cb(new Error('Failed to purchase key'), {})
-        })
-
-        web3Service.on('error', error => {
-          expect(error).toMatchObject({ message: 'Failed to purchase key' })
-          done()
         })
 
         web3Service.purchaseKey(key, owner, lock)
         expect(web3Service.sendTransaction).toHaveBeenCalledWith(
+          expect.objectContaining({
+            status: 'pending',
+            confirmations: 0,
+            createdAt: expect.any(Number),
+            lock: lock.address,
+            key: key.id,
+            account: owner.address,
+          }),
           {
             to: expect.any(String),
             from: owner.address,
@@ -831,74 +858,9 @@ describe('Web3Service', () => {
         )
       })
 
-      it('should emit a new transaction once it has been submitted', done => {
-        expect.assertions(1)
-        web3Service.sendTransaction = jest.fn((args, cb) => {
-          return cb(null, { event: 'transactionHash', args: { hash: '0x123' } })
-        })
-
-        web3Service.on('transaction.new', transaction => {
-          expect(transaction).toMatchObject({
-            confirmations: 0,
-            createdAt: expect.any(Number),
-            hash: '0x123',
-            key: key.id,
-            lock: lock.address,
-            account: owner.address,
-            status: 'submitted',
-          })
-          done()
-        })
-
-        web3Service.purchaseKey(key, owner, lock)
-      })
-
-      it('should attach the transaction to the key and emit key.updated', done => {
-        expect.assertions(2)
-        web3Service.sendTransaction = jest.fn((args, cb) => {
-          return cb(null, { event: 'transactionHash', args: { hash: '0x123' } })
-        })
-
-        web3Service.on('key.updated', (key, update) => {
-          expect(key).toMatchObject({
-            id: 'abc',
-            lockAddress: lock.address,
-            owner: owner.address,
-          })
-          expect(update).toMatchObject({
-            transaction: '0x123',
-          })
-          done()
-        })
-
-        web3Service.purchaseKey(key, owner, lock)
-      })
-
-      it('should emit transaction.updated for each confirmation', done => {
-        expect.assertions(1)
-        web3Service.sendTransaction = jest.fn((args, cb) => {
-          cb(null, { event: 'transactionHash', args: { hash: '0x123' } })
-          return cb(null, {
-            event: 'confirmation',
-            args: { confirmationNumber: 3 },
-          })
-        })
-
-        web3Service.on('transaction.updated', (transaction, update) => {
-          expect(update).toMatchObject({
-            confirmations: 3,
-            status: 'mined',
-          })
-          done()
-        })
-
-        web3Service.purchaseKey(key, owner, lock)
-      })
-
       it('should emit key.saved once the Transfer event has been received', done => {
         expect.assertions(2)
-        web3Service.sendTransaction = jest.fn((args, cb) => {
-          cb(null, { event: 'transactionHash', args: { hash: '0x123' } })
+        web3Service.sendTransaction = jest.fn((transaction, args, cb) => {
           return cb(null, { event: 'Transfer', args: {} })
         })
         web3Service.getKey = jest.fn()
@@ -933,22 +895,20 @@ describe('Web3Service', () => {
         }
       })
 
-      it('should handle errors when the transaction could not be processed', done => {
-        expect.assertions(2)
+      it('should invoke sendTransaction with the right params', () => {
+        expect.assertions(1)
 
-        web3Service.sendTransaction = jest.fn((args, cb) => {
-          return cb(new Error('Failed to withdraw from lock'), {})
-        })
-
-        web3Service.on('error', error => {
-          expect(error).toMatchObject({
-            message: 'Failed to withdraw from lock',
-          })
-          done()
-        })
+        web3Service.sendTransaction = jest.fn()
 
         web3Service.withdrawFromLock(lock, account)
         expect(web3Service.sendTransaction).toHaveBeenCalledWith(
+          expect.objectContaining({
+            status: 'pending',
+            confirmations: 0,
+            createdAt: expect.any(Number),
+            lock: lock.address,
+            account: account.address,
+          }),
           {
             to: expect.any(String),
             from: account.address,
@@ -960,51 +920,9 @@ describe('Web3Service', () => {
         )
       })
 
-      it('should emit a new transaction once it has been submitted', done => {
-        expect.assertions(1)
-        web3Service.sendTransaction = jest.fn((args, cb) => {
-          return cb(null, { event: 'transactionHash', args: { hash: '0x123' } })
-        })
-
-        web3Service.on('transaction.new', transaction => {
-          expect(transaction).toMatchObject({
-            confirmations: 0,
-            createdAt: expect.any(Number),
-            hash: '0x123',
-            lock: lock.address,
-            status: 'submitted',
-          })
-          done()
-        })
-
-        web3Service.withdrawFromLock(lock, account)
-      })
-
-      it('should emit transaction.updated for each confirmation', done => {
-        expect.assertions(1)
-        web3Service.sendTransaction = jest.fn((args, cb) => {
-          cb(null, { event: 'transactionHash', args: { hash: '0x123' } })
-          return cb(null, {
-            event: 'confirmation',
-            args: { confirmationNumber: 3 },
-          })
-        })
-
-        web3Service.on('transaction.updated', (transaction, update) => {
-          expect(update).toMatchObject({
-            confirmations: 3,
-            status: 'mined',
-          })
-          done()
-        })
-
-        web3Service.withdrawFromLock(lock, account)
-      })
-
       it('should getLock when the receipt event has been received', () => {
         expect.assertions(1)
-        web3Service.sendTransaction = jest.fn((args, cb) => {
-          cb(null, { event: 'transactionHash', args: { hash: '0x123' } })
+        web3Service.sendTransaction = jest.fn((transaction, args, cb) => {
           return cb(null, { event: 'receipt', args: {} })
         })
         web3Service.getLock = jest.fn()
