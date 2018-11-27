@@ -1,18 +1,312 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`withConfig High Order Component when the current network is not in the list of required networks should show a message indicating that the network needs to be changed 1`] = `
+.c8 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: grid;
+  padding: 0;
+  border: 0;
+}
+
+.c8 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c8:hover {
+  background-color: var(--link);
+}
+
+.c8:hover > svg {
+  fill: white;
+}
+
+.c11 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: grid;
+  padding: 0;
+  border: 0;
+}
+
+.c11 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
+}
+
+.c11:hover {
+  background-color: var(--link);
+}
+
+.c11:hover > svg {
+  fill: white;
+}
+
+.c9 {
+  display: none;
+  position: relative;
+  z-index: 1000;
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  top: 24px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.c7:hover .c9 {
+  display: grid;
+}
+
+.c4 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: 1fr repeat(3,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 70px;
+}
+
+.c5 {
+  color: var(--grey);
+}
+
+.c6 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: 1fr repeat(3,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+}
+
+.c10 {
+  display: none;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+}
+
+.c10 .c7 {
+  position: absolute;
+  right: 5px;
+  top: 0px;
+  background-color: var(--white);
+  padding: 15px;
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+}
+
+.c10 .c7:nth-child(2) {
+  top: -25px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.c10 .c7 > svg {
+  fill: var(--grey);
+}
+
+.c10 .c7:hover > svg {
+  fill: var(--grey);
+}
+
+.c12 {
+  background-color: var(--white);
+  position: absolute;
+  left: 0;
+  top: 70px;
+  width: 100%;
+  height: auto;
+  z-index: var(--foreground);
+  padding-bottom: 30px;
+  display: none;
+  grid-template-columns: 92px 92px 92px;
+  grid-gap: 0px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 0;
+  pointer-events: none;
+  top: 50px;
+}
+
+.c12 .c7 {
+  margin: 24px;
+}
+
+.c12 .c7 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c2 {
+  background-color: var(--pink);
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
+}
+
+.c2 > svg {
+  fill: white;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 1fr minmax(300px,4fr) 1fr;
+}
+
+.c1 {
+  padding: 8px;
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  height: 24px;
+}
+
+.c3 {
+  color: var(--darkgrey);
+  display: grid;
+  row-gap: 24px;
+}
+
+.c13 {
+  display: grid;
+  row-gap: 16px;
+  -webkit-column-gap: 32px;
+  column-gap: 32px;
+  border: solid 1px var(--lightgrey);
+  grid-template-columns: 72px;
+  grid-auto-flow: column;
+  border-radius: 4px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 32px;
+  padding-bottom: 40px;
+}
+
+.c14 {
+  width: 72px;
+}
+
+.c15 {
+  display: grid;
+  grid-gap: 16px;
+}
+
+.c15 > h1 {
+  font-weight: bold;
+  color: var(--red);
+  margin: 0px;
+  padding: 0px;
+}
+
+.c15 > p {
+  margin: 0px;
+  padding: 0px;
+  font-size: 16px;
+  color: var(--dimgrey);
+}
+
+@media (max-width:600px) {
+  .c4 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
+@media (max-width:600px) {
+  .c6 {
+    display: none;
+  }
+}
+
+@media (max-width:600px) {
+  .c10 {
+    display: block;
+  }
+}
+
+@media (max-width:600px) {
+  .c12 {
+    display: grid;
+  }
+}
+
+@media (max-width:500px) {
+  .c1 > * {
+    display: none;
+  }
+}
+
+@media (max-width:500px) {
+  .c16 > * {
+    display: none;
+  }
+}
+
+@media (max-width:500px) {
+  .c13 {
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+    padding: 16px;
+  }
+}
+
 <div
-  className="hm3mhg-0 gzhZVm"
+  className="c0"
 >
   <div
-    className="hm3mhg-1 fPETbe"
+    className="c1"
   >
     <a
       href="/"
       onClick={[Function]}
     >
       <div
-        className="cenpj1-0 laMZpD"
+        className="c2"
         size="56px"
       >
         <svg
@@ -27,21 +321,21 @@ exports[`withConfig High Order Component when the current network is not in the 
     </a>
   </div>
   <div
-    className="hm3mhg-3 cFpjmx"
+    className="c3"
   >
     <header
-      className="s1glv5oz-0 hMcKHQ"
+      className="c4"
     >
       <h1
-        className="s1glv5oz-1 hxdRe"
+        className="c5"
       >
         
       </h1>
       <div
-        className="s1glv5oz-2 iuOnxi"
+        className="c6"
       >
         <a
-          className="s850ddk-0 dGmMFz"
+          className="c7 c8"
           href="/about"
           onClick={[Function]}
         >
@@ -57,13 +351,13 @@ exports[`withConfig High Order Component when the current network is not in the 
             />
           </svg>
           <small
-            className="s850ddk-1 hAgZgI"
+            className="c9"
           >
             About
           </small>
         </a>
         <a
-          className="s850ddk-0 dGmMFz"
+          className="c7 c8"
           href="/jobs"
           onClick={[Function]}
         >
@@ -78,13 +372,13 @@ exports[`withConfig High Order Component when the current network is not in the 
             />
           </svg>
           <small
-            className="s850ddk-1 hAgZgI"
+            className="c9"
           >
             Join us
           </small>
         </a>
         <a
-          className="s850ddk-0 dGmMFz"
+          className="c7 c8"
           href="https://github.com/unlock-protocol/unlock"
           onClick={[Function]}
         >
@@ -99,17 +393,17 @@ exports[`withConfig High Order Component when the current network is not in the 
             />
           </svg>
           <small
-            className="s850ddk-1 hAgZgI"
+            className="c9"
           >
             Source Code
           </small>
         </a>
       </div>
       <div
-        className="s1glv5oz-3 fKpFtW"
+        className="c10"
       >
         <a
-          className="s850ddk-0 crpNeQ"
+          className="c7 c11"
           href={null}
           onClick={[Function]}
           size="48px"
@@ -126,13 +420,13 @@ exports[`withConfig High Order Component when the current network is not in the 
             />
           </svg>
           <small
-            className="s850ddk-1 hAgZgI"
+            className="c9"
           >
             
           </small>
         </a>
         <a
-          className="s850ddk-0 crpNeQ"
+          className="c7 c11"
           href={null}
           onClick={[Function]}
           size="48px"
@@ -149,17 +443,17 @@ exports[`withConfig High Order Component when the current network is not in the 
             />
           </svg>
           <small
-            className="s850ddk-1 hAgZgI"
+            className="c9"
           >
             
           </small>
         </a>
       </div>
       <div
-        className="s1glv5oz-4 iXIbGr"
+        className="c12"
       >
         <a
-          className="s850ddk-0 crpNeQ"
+          className="c7 c11"
           href="/about"
           onClick={[Function]}
           size="48px"
@@ -176,13 +470,13 @@ exports[`withConfig High Order Component when the current network is not in the 
             />
           </svg>
           <small
-            className="s850ddk-1 hAgZgI"
+            className="c9"
           >
             About
           </small>
         </a>
         <a
-          className="s850ddk-0 crpNeQ"
+          className="c7 c11"
           href="/jobs"
           onClick={[Function]}
           size="48px"
@@ -198,13 +492,13 @@ exports[`withConfig High Order Component when the current network is not in the 
             />
           </svg>
           <small
-            className="s850ddk-1 hAgZgI"
+            className="c9"
           >
             Join us
           </small>
         </a>
         <a
-          className="s850ddk-0 crpNeQ"
+          className="c7 c11"
           href="https://github.com/unlock-protocol/unlock"
           onClick={[Function]}
           size="48px"
@@ -220,7 +514,7 @@ exports[`withConfig High Order Component when the current network is not in the 
             />
           </svg>
           <small
-            className="s850ddk-1 hAgZgI"
+            className="c9"
           >
             Source Code
           </small>
@@ -228,14 +522,14 @@ exports[`withConfig High Order Component when the current network is not in the 
       </div>
     </header>
     <section
-      className="s1g6piw8-0 ihyWBx"
+      className="c13"
     >
       <img
-        className="s1g6piw8-1 jAguAC"
+        className="c14"
         src="/static/images/illustrations/network.svg"
       />
       <div
-        className="s1g6piw8-2 kRghYL"
+        className="c15"
       >
         <h1>
           Network mismatch
@@ -255,7 +549,7 @@ exports[`withConfig High Order Component when the current network is not in the 
     </section>
   </div>
   <div
-    className="hm3mhg-2 jRHNuc"
+    className="c16"
   />
 </div>
 `;
