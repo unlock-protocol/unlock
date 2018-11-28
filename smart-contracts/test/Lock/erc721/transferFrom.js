@@ -71,7 +71,7 @@ contract('Lock ERC721', (accounts) => {
             assert(false, 'This should not succeed')
           })
           .catch(error => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert')
+            assert.equal(error.message, 'VM Exception while processing transaction: revert No such key')
           })
       })
 

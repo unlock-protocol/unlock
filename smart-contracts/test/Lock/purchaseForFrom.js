@@ -26,11 +26,11 @@ contract('Lock', (accounts) => {
         return lock
           .purchaseForFrom(accounts[0], accounts[1], 'Julien')
           .catch((error) => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert')
+            assert.equal(error.message, 'VM Exception while processing transaction: revert Key is not valid')
             // Making sure we do not have a key set!
             return lock.keyExpirationTimestampFor(accounts[0])
               .catch(error => {
-                assert.equal(error.message, 'VM Exception while processing transaction: revert')
+                assert.equal(error.message, 'VM Exception while processing transaction: revert No such key')
               })
           })
       })
