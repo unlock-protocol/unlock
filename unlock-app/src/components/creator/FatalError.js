@@ -85,9 +85,11 @@ export const WrongNetwork = ({ currentNetwork, requiredNetwork }) => (
   >
     <p>
       You’re currently on the
+      {' '}
       {currentNetwork}
       {' '}
 network but you need to be on the
+      {' '}
       {requiredNetwork}
       {' '}
 network. Please switch to
