@@ -2,7 +2,7 @@ version: '3'
 services:
   ganache:
     restart: always
-    image: trufflesuite/ganache-cli:v6.1.6
+    image: trufflesuite/ganache-cli:v6.2.3
     expose:
       - 8545
     command: ["-h=0.0.0.0", "-m=hello unlock save the web"]

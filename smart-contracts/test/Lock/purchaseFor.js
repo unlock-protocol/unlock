@@ -27,11 +27,11 @@ contract('Lock', (accounts) => {
             value: Units.convert('0.0001', 'eth', 'wei')
           })
           .catch(error => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert')
+            assert.equal(error.message, 'VM Exception while processing transaction: revert Insufficient funds')
             // Making sure we do not have a key set!
             return locks['FIRST'].keyExpirationTimestampFor(accounts[0])
               .catch(error => {
-                assert.equal(error.message, 'VM Exception while processing transaction: revert')
+                assert.equal(error.message, 'VM Exception while processing transaction: revert No such key')
               })
           })
       })
@@ -52,10 +52,10 @@ contract('Lock', (accounts) => {
             })
           })
           .catch(error => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert')
+            assert.equal(error.message, 'VM Exception while processing transaction: revert Maximum number of keys already sold')
             return locks['SINGLE KEY'].keyDataFor(accounts[1])
               .catch(error => {
-                assert.equal(error.message, 'VM Exception while processing transaction: revert')
+                assert.equal(error.message, 'VM Exception while processing transaction: revert No such key')
               })
           })
       })

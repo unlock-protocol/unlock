@@ -36,7 +36,7 @@ contract('Lock', (accounts) => {
           assert(false, 'this should have failed')
         })
         .catch(error => {
-          assert.equal(error.message, 'VM Exception while processing transaction: revert')
+          assert.equal(error.message, 'VM Exception while processing transaction: revert Key is not valid')
         })
     })
 
@@ -60,7 +60,7 @@ contract('Lock', (accounts) => {
         assert(false, 'this should have failed')
       })
         .catch(error => {
-          assert.equal(error.message, 'VM Exception while processing transaction: revert')
+          assert.equal(error.message, 'VM Exception while processing transaction: revert Key is not valid')
         })
     })
 
