@@ -90,6 +90,9 @@
     "*.js": [
       "npm run reformat",
       "git add"
+    ],
+    "ignore": [
+      "*.js.snap"
     ]
   },
   "nodemonConfig": {
