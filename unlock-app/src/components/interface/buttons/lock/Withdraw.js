@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import Svg from '../../svg'
-import { LockButton } from '../Button'
+import Button from '../Button'
 import UnlockPropTypes from '../../../../propTypes'
 import { withdrawFromLock } from '../../../../actions/lock'
 
 export const Withdraw = ({ lock, withdraw, account, ...props }) => (
-  <LockButton
+  <Button
     title="Withdraw balance"
     action={() => {
       if (lock.balance > 0) {
@@ -18,7 +18,7 @@ export const Withdraw = ({ lock, withdraw, account, ...props }) => (
     {...props}
   >
     <Svg.Withdraw name="Withdraw" />
-  </LockButton>
+  </Button>
 )
 
 Withdraw.propTypes = {

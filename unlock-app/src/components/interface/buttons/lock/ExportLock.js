@@ -1,11 +1,11 @@
 import React from 'react'
 import Svg from '../../svg'
-import { LockButton } from '../Button'
+import Button from '../Button'
 
 const ExportLock = props => (
-  <LockButton {...props}>
+  <Button {...props}>
     <Svg.Export name="Export" />
-  </LockButton>
+  </Button>
 )
 
 export default ExportLock

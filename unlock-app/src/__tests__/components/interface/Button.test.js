@@ -2,7 +2,7 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 import 'jest-dom/extend-expect'
 
-import { LockButton } from '../../../components/interface/buttons/Button'
+import Button from '../../../components/interface/buttons/Button'
 
 jest.mock('next/link', () => {
   return ({ children }) => children
@@ -16,7 +16,7 @@ describe('Button', () => {
       buttonClicked = true
     }
 
-    let wrapper = rtl.render(<LockButton action={action}>Click me</LockButton>)
+    let wrapper = rtl.render(<Button action={action}>Click me</Button>)
 
     let button = wrapper.getByText('Click me')
     rtl.fireEvent.click(button)
@@ -42,7 +42,7 @@ describe('Button', () => {
         onKeyDown={wrapperAction}
         role="presentation"
       >
-        <LockButton action={buttonAction}>Click me</LockButton>
+        <Button action={buttonAction}>Click me</Button>
       </div>
     )
 

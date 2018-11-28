@@ -1,11 +1,11 @@
 import React from 'react'
 import Svg from '../../svg'
-import { LockButton } from '../Button'
+import Button from '../Button'
 
 const Copy = props => (
-  <LockButton {...props}>
+  <Button {...props}>
     <Svg.Copy name="Copy" />
-  </LockButton>
+  </Button>
 )
 
 export default Copy
