@@ -120,10 +120,10 @@ export const About = () => (
           Catalyst and by Cherry Ventures and with participations from Consensys
           Ventures, Kindred Ventures, Betaworks, 122 West, La Famiglia, Coinbase
           Ventures and a group of stellar business angels.
+          {' '}
           <a href="https://medium.com/unlock-protocol/unlocking-some-exciting-news-5ad0f3889375">
             More...
           </a>
-          {' '}
         </p>
       </News>
     </Section>
