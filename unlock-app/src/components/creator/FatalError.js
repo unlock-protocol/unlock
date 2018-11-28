@@ -84,7 +84,7 @@ export const WrongNetwork = ({ currentNetwork, requiredNetwork }) => (
     illustration="/static/images/illustrations/network.svg"
   >
     <p>
-      You’re currently on the
+      You’re currently on the 
       {' '}
       {currentNetwork}
       {' '}
