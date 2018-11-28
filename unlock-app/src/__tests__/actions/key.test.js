@@ -1,4 +1,11 @@
-import { purchaseKey, addKey, PURCHASE_KEY, ADD_KEY } from '../../actions/key'
+import {
+  purchaseKey,
+  addKey,
+  updateKey,
+  PURCHASE_KEY,
+  ADD_KEY,
+  UPDATE_KEY,
+} from '../../actions/key'
 
 describe('key actions', () => {
   it('should create an action to purchase a key', () => {
@@ -21,5 +28,19 @@ describe('key actions', () => {
       key,
     }
     expect(addKey(key)).toEqual(expectedAction)
+  })
+
+  it('should create an action to update a key in the store', () => {
+    const key = {
+      expiration: 100,
+      data: 'hello',
+      id: '123',
+    }
+    const expectedAction = {
+      type: UPDATE_KEY,
+      id: key.id,
+      update: key,
+    }
+    expect(updateKey(key.id, key)).toEqual(expectedAction)
   })
 })

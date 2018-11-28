@@ -1,4 +1,4 @@
-import { ADD_KEY, PURCHASE_KEY } from '../actions/key'
+import { ADD_KEY, PURCHASE_KEY, UPDATE_KEY } from '../actions/key'
 import { SET_PROVIDER } from '../actions/provider'
 
 export const initialState = {}
@@ -19,6 +19,21 @@ const keysReducer = (state = initialState, action) => {
     return {
       [action.key.id]: action.key,
       ...state,
+    }
+  }
+
+  if (action.type === UPDATE_KEY) {
+    if (action.update.id && action.update.id !== action.id) {
+      throw new Error('Could not change the key id')
+    }
+
+    if (!state[action.id]) {
+      throw new Error('Could not update missing key')
+    }
+
+    return {
+      ...state,
+      [action.id]: Object.assign(state[action.id], action.update),
     }
   }
 
