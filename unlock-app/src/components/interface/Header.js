@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Link from 'next/link'
 import Svg from './svg'
 import Buttons from './buttons/layout'
-import { Button } from './buttons/Button'
+import { ButtonLink } from './buttons/Button'
 
 export default class Header extends React.PureComponent {
   constructor(props) {
@@ -97,7 +97,7 @@ const MobileToggle = styled.div`
   align-items: center;
   height: 100%;
 
-  ${Button} {
+  ${ButtonLink} {
     position: absolute;
     right: 5px;
     top: 0px;
@@ -151,7 +151,7 @@ const MobilePopover = styled.div`
   ${props =>
     props.visibilityToggle
       ? 'opacity: 1; pointer-events: visible; top: 70px;'
-      : 'opacity: 0; pointer-events: none; top: 50px;'} ${Button} {
+      : 'opacity: 0; pointer-events: none; top: 50px;'} ${ButtonLink} {
     margin: 24px;
 
     small {

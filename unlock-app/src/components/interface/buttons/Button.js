@@ -8,24 +8,29 @@ const clickAction = (e, action) => {
   if (action) action()
 }
 
-export const LayoutButton = ({ href, title, children, action, ...props }) => {
-  const button = (
-    <Button href={href} onClick={e => clickAction(e, action)} {...props}>
+export const LayoutButton = ({
+  children,
+  backgroundColor,
+  backgroundHoverColor,
+  fillColor,
+  fillHoverColor,
+  ...props
+}) => {
+  return (
+    <BaseButton
+      backgroundColor={backgroundColor}
+      backgroundHoverColor={backgroundHoverColor}
+      fillColor={fillColor}
+      fillHoverColor={fillHoverColor}
+      {...props}
+    >
       {children}
-      <Label>{title}</Label>
-    </Button>
+    </BaseButton>
   )
-  if (href) {
-    return <Link href={href}>{button}</Link>
-  }
-  return button
 }
 
 LayoutButton.propTypes = {
-  href: PropTypes.string,
-  title: PropTypes.string,
   children: PropTypes.node,
-  action: PropTypes.func,
   backgroundColor: PropTypes.string,
   backgroundHoverColor: PropTypes.string,
   fillColor: PropTypes.string,
@@ -33,29 +38,19 @@ LayoutButton.propTypes = {
 }
 
 LayoutButton.defaultProps = {
-  href: null,
-  title: '',
   children: null,
-  action: null,
   backgroundColor: 'var(--grey)',
   backgroundHoverColor: 'var(--link)',
   fillColor: 'white',
   fillHoverColor: 'white',
 }
 
-export const LockButton = ({ href, children, action, ...props }) => {
+export const BaseButton = ({ href, label, children, action, ...props }) => {
   const button = (
-    <Button
-      href={href}
-      backgroundColor="var(--lightgrey)"
-      fillColor="var(--grey)"
-      backgroundHoverColor="var(--link)"
-      fillHoverColor="white"
-      onClick={e => clickAction(e, action)}
-      {...props}
-    >
+    <ButtonLink href={href} onClick={e => clickAction(e, action)} {...props}>
       {children}
-    </Button>
+      {label && <Label>{label}</Label>}
+    </ButtonLink>
   )
   if (href) {
     return <Link href={href}>{button}</Link>
@@ -63,8 +58,9 @@ export const LockButton = ({ href, children, action, ...props }) => {
   return button
 }
 
-LockButton.propTypes = {
+BaseButton.propTypes = {
   href: PropTypes.string,
+  label: PropTypes.string,
   children: PropTypes.node,
   action: PropTypes.func,
   backgroundColor: PropTypes.string,
@@ -73,8 +69,9 @@ LockButton.propTypes = {
   fillHoverColor: PropTypes.string,
 }
 
-LockButton.defaultProps = {
+BaseButton.defaultProps = {
   href: null,
+  label: '',
   children: null,
   action: null,
   backgroundColor: 'var(--lightgrey)',
@@ -83,7 +80,7 @@ LockButton.defaultProps = {
   fillHoverColor: 'white',
 }
 
-export const Button = styled.a`
+export const ButtonLink = styled.a`
   background-color: ${props => props.backgroundColor || 'var(--grey)'};
   cursor: pointer;
   border-radius: 50%;
@@ -116,11 +113,13 @@ export const Label = styled.small`
   font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 400;
   font-size: 12px;
-  top: 24px;
+  top: 12px;
   left: 50%;
   transform: translateX(-50%);
 
-  ${Button}:hover & {
+  ${ButtonLink}:hover & {
     display: grid;
   }
 `
+
+export default BaseButton

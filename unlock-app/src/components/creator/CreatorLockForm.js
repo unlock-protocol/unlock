@@ -103,10 +103,10 @@ class CreatorLockForm extends React.Component {
         </FormBalanceWithUnit>
         <div>-</div>
         <Status>
-          <LockButton onClick={this.handleSubmit}>Submit</LockButton>
-          <LockButton cancel onClick={this.handleCancel}>
+          <Button onClick={this.handleSubmit}>Submit</Button>
+          <Button cancel onClick={this.handleCancel}>
             Cancel
-          </LockButton>
+          </Button>
         </Status>
       </FormLockRow>
     )
@@ -179,7 +179,7 @@ const FormBalanceWithUnit = styled(BalanceWithUnit)`
   }
 `
 
-const LockButton = styled.button`
+const Button = styled.button`
   cursor: pointer;
   font: inherit;
   font-size: ${props => (props.cancel ? '10px' : '13px')};
