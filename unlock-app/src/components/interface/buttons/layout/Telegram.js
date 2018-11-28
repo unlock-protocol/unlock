@@ -3,7 +3,7 @@ import Svg from '../../svg'
 import { LayoutButton } from '../Button'
 
 const Telegram = props => (
-  <LayoutButton href="/telegram" title="Telegram" {...props}>
+  <LayoutButton href="/telegram" label="Telegram" {...props}>
     <Svg.Telegram name="Telegram" />
   </LayoutButton>
 )

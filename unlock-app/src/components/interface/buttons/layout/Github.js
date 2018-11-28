@@ -5,7 +5,7 @@ import { LayoutButton } from '../Button'
 const Github = props => (
   <LayoutButton
     href="https://github.com/unlock-protocol/unlock"
-    title="Source Code"
+    label="Source Code"
     {...props}
   >
     <Svg.Github name="Github" />

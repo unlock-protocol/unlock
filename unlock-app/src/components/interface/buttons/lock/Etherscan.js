@@ -1,11 +1,11 @@
 import React from 'react'
 import Svg from '../../svg'
-import { LockButton } from '../Button'
+import Button from '../Button'
 
 const Etherscan = props => (
-  <LockButton {...props}>
+  <Button {...props}>
     <Svg.Etherscan name="Etherscan" />
-  </LockButton>
+  </Button>
 )
 
 export default Etherscan
