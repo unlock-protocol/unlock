@@ -31,11 +31,11 @@ contract('Lock', (accounts) => {
           assert.fail()
         })
         .catch(error => {
-          assert.equal(error.message, 'VM Exception while processing transaction: revert')
+          assert.equal(error.message, 'VM Exception while processing transaction: revert Insufficient funds')
           // Making sure we do not have a key set!
           return locks['FIRST'].keyExpirationTimestampFor(accounts[0])
             .catch(error => {
-              assert.equal(error.message, 'VM Exception while processing transaction: revert')
+              assert.equal(error.message, 'VM Exception while processing transaction: revert No such key')
             })
         })
     })
