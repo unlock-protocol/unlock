@@ -2,12 +2,12 @@ import React from 'react'
 import UnlockPropTypes from '../../../../propTypes'
 
 import Svg from '../../svg'
-import { LockButton } from '../Button'
+import Button from '../Button'
 
 const Preview = ({ lock, ...props }) => (
-  <LockButton href={`/demo/${lock.address}`} title="Preview lock" {...props}>
+  <Button href={`/demo/${lock.address}`} title="Preview lock" {...props}>
     <Svg.Preview name="Preview Lock" />
-  </LockButton>
+  </Button>
 )
 
 Preview.propTypes = {

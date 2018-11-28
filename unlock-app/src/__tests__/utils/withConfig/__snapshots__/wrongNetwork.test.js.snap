@@ -59,7 +59,7 @@ exports[`withConfig High Order Component when the current network is not in the 
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
-  top: 24px;
+  top: 12px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -419,11 +419,7 @@ exports[`withConfig High Order Component when the current network is not in the 
               d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
             />
           </svg>
-          <small
-            className="c9"
-          >
-            
-          </small>
+          
         </a>
         <a
           className="c7 c11"
@@ -442,11 +438,7 @@ exports[`withConfig High Order Component when the current network is not in the 
               d="M3 29L29 5l26 24"
             />
           </svg>
-          <small
-            className="c9"
-          >
-            
-          </small>
+          
         </a>
       </div>
       <div

@@ -1,11 +1,11 @@
 import React from 'react'
 import Svg from '../../svg'
-import { LockButton } from '../Button'
+import Button from '../Button'
 
 const Code = props => (
-  <LockButton title="Show embed code" {...props}>
+  <Button title="Show embed code" {...props}>
     <Svg.Code name="Code" />
-  </LockButton>
+  </Button>
 )
 
 export default Code

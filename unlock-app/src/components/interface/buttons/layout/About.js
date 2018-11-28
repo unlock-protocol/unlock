@@ -3,7 +3,7 @@ import Svg from '../../svg'
 import { LayoutButton } from '../Button'
 
 const About = props => (
-  <LayoutButton href="/about" title="About" {...props}>
+  <LayoutButton href="/about" label="About" {...props}>
     <Svg.About title="About" />
   </LayoutButton>
 )

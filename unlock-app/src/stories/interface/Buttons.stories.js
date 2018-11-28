@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { Provider } from 'react-redux'
 import LayoutButtons from '../../components/interface/buttons/layout'
-import LockButtons from '../../components/interface/buttons/lock'
+import Buttons from '../../components/interface/buttons/lock'
 
 import createUnlockStore from '../../createUnlockStore'
 
@@ -32,11 +32,11 @@ storiesOf('Buttons')
     const lock = {
       address: '0xabc',
     }
-    return <LockButtons.Withdraw lock={lock} />
+    return <Buttons.Withdraw lock={lock} />
   })
   .add('Preview', () => {
     const lock = {
       address: '0xabc',
     }
-    return <LockButtons.Preview lock={lock} />
+    return <Buttons.Preview lock={lock} />
   })

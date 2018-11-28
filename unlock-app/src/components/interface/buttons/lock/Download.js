@@ -1,11 +1,11 @@
 import React from 'react'
 import Svg from '../../svg'
-import { LockButton } from '../Button'
+import Button from '../Button'
 
 const Download = props => (
-  <LockButton {...props}>
+  <Button {...props}>
     <Svg.Download name="Download" />
-  </LockButton>
+  </Button>
 )
 
 export default Download

@@ -1,11 +1,11 @@
 import React from 'react'
 import Svg from '../../svg'
-import { LockButton } from '../Button'
+import Button from '../Button'
 
 const Edit = props => (
-  <LockButton title="Edit" {...props}>
+  <Button title="Edit" {...props}>
     <Svg.Edit name="Edit" />
-  </LockButton>
+  </Button>
 )
 
 export default Edit
