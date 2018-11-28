@@ -1,5 +1,7 @@
 import React from 'react'
 import About from './About'
+import Arrow from './Arrow'
+import Checkmark from './Checkmark'
 import Close from './Close'
 import Code from './Code'
 import Copy from './Copy'
@@ -12,6 +14,7 @@ import Export from './Export'
 import Github from './Github'
 import Lemniscate from './Lemniscate'
 import LockClosed from './LockClosed'
+import Log from './Log'
 import Jobs from './Jobs'
 import Preview from './Preview'
 import Unlock from './Unlock'
@@ -31,6 +34,8 @@ function wrapViewBox(WrappedComponent, viewBox) {
 
 export default {
   About: wrapViewBox(About, '0 0 24 24'),
+  Arrow: wrapViewBox(Arrow, '0 0 24 24'),
+  Checkmark: wrapViewBox(Checkmark, '0 0 24 24'),
   Close: wrapViewBox(Close, '0 0 24 24'),
   Code: wrapViewBox(Code, '0 0 24 24'),
   Copy: wrapViewBox(Copy, '0 0 24 24'),
@@ -43,6 +48,7 @@ export default {
   Github: wrapViewBox(Github, '0 0 24 24'),
   Lemniscate: wrapViewBox(Lemniscate, '0 0 24 24'),
   LockClosed: wrapViewBox(LockClosed, '0 0 24 24'),
+  Log: wrapViewBox(Log, '0 0 24 24'),
   Preview: wrapViewBox(Preview, '0 0 24 24'),
   Jobs: wrapViewBox(Jobs, '0 0 24 24'),
   Unlock: wrapViewBox(Unlock, '0 0 24 24'),
