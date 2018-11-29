@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { connect } from 'react-redux'
 import styled, { createGlobalStyle } from 'styled-components'
 import UnlockPropTypes from '../propTypes'
-import { Overlay } from '../components/lock/Overlay'
+import Overlay from '../components/lock/Overlay'
 import withConfig from '../utils/withConfig'
 import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
 
