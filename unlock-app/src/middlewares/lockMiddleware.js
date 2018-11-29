@@ -9,7 +9,7 @@ import {
   updateLock,
   lockDeployed,
 } from '../actions/lock'
-import { PURCHASE_KEY } from '../actions/key'
+import { PURCHASE_KEY, updateKey } from '../actions/key'
 import { SET_ACCOUNT, setAccount } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
@@ -59,10 +59,10 @@ export default function lockMiddleware({ getState, dispatch }) {
   })
 
   /**
-   * When a key was updated, we reload the corresponding lock because
+   * When a key was saved, we reload the corresponding lock because
    * it might have been updated (balance, outstanding keys...)
    */
-  const keySavedOrUpdated = key => {
+  web3Service.on('key.saved', key => {
     const lockId = Object.keys(getState().locks).find(
       lockId => key.lockAddress === getState().locks[lockId].address
     )
@@ -76,9 +76,11 @@ export default function lockMiddleware({ getState, dispatch }) {
       web3Service.getLock(getState().locks[lockId])
     }
     web3Service.refreshOrGetAccount(getState().account)
-  }
-  web3Service.on('key.saved', keySavedOrUpdated)
-  web3Service.on('key.updated', keySavedOrUpdated)
+  })
+
+  web3Service.on('key.updated', (key, update) => {
+    dispatch(updateKey(key.id, update))
+  })
 
   web3Service.on('transaction.new', transaction => {
     dispatch(addTransaction(transaction))

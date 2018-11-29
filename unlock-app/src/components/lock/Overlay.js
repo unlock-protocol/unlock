@@ -1,10 +1,13 @@
 import styled from 'styled-components'
 import React from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import Logo from '../interface/Logo'
 import Lock from './Lock'
 import UnlockPropTypes from '../../propTypes'
+import { hideModal } from '../../actions/modal'
 
-export const Overlay = ({ locks }) => (
+export const Overlay = ({ locks, hideModal }) => (
   <FullPage>
     <Banner>
       <Headline>
@@ -12,7 +15,7 @@ export const Overlay = ({ locks }) => (
       </Headline>
       <Locks>
         {Object.values(locks).map(lock => (
-          <Lock key={lock.address} lock={lock} />
+          <Lock key={lock.address} lock={lock} hideModal={hideModal} />
         ))}
       </Locks>
       <Colophon>
@@ -25,13 +28,21 @@ export const Overlay = ({ locks }) => (
 
 Overlay.propTypes = {
   locks: UnlockPropTypes.locks,
+  hideModal: PropTypes.func.isRequired,
 }
 
 Overlay.defaultProps = {
   locks: {},
 }
 
-export default Overlay
+export const mapDispatchToProps = (dispatch, { locks }) => ({
+  hideModal: () => dispatch(hideModal(Object.keys(locks).join('-'))),
+})
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Overlay)
 
 const FullPage = styled.div`
   position: fixed; /* Sit on top of the page content */
@@ -46,7 +57,7 @@ const FullPage = styled.div`
 const Banner = styled.div`
   position: fixed;
   display: grid;
-  height: 20%;
+  height: 30%;
   left: 0;
   right: 0;
   bottom: 0;

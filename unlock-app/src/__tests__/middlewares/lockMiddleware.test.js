@@ -8,7 +8,7 @@ import {
   SET_LOCK,
   WITHDRAW_FROM_LOCK,
 } from '../../actions/lock'
-import { PURCHASE_KEY } from '../../actions/key'
+import { PURCHASE_KEY, UPDATE_KEY } from '../../actions/key'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { SET_PROVIDER } from '../../actions/provider'
@@ -188,38 +188,26 @@ describe('Lock middleware', () => {
     })
   })
 
-  describe('when handling the key.updated events triggered by the web3Service', () => {
-    it('it should reload the lock and the account when the lock exists', () => {
-      create()
+  describe.only('when handling the key.updated events triggered by the web3Service', () => {
+    it('it dispatch updateKey', () => {
+      expect.assertions(1)
+      const { store } = create()
 
       const key = {
+        id: 'keyId',
         lockAddress: lock.address,
       }
-      mockWeb3Service.getLock = jest.fn()
-      mockWeb3Service.refreshOrGetAccount = jest.fn()
-
-      mockWeb3Service.emit('key.updated', key)
-      expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock)
-      expect(mockWeb3Service.refreshOrGetAccount).toHaveBeenCalledWith(
-        state.account
-      )
-    })
-
-    it('it should the account and fetch a new lock when the lock does not exist', () => {
-      create()
-
-      const key = {
-        lockAddress: '0xAnotherLock',
+      const update = {
+        data: 'hello',
       }
-      mockWeb3Service.getLock = jest.fn()
-      mockWeb3Service.refreshOrGetAccount = jest.fn()
 
-      mockWeb3Service.emit('key.updated', key)
-      expect(mockWeb3Service.getLock).toHaveBeenCalledWith({
-        address: '0xAnotherLock',
-      })
-      expect(mockWeb3Service.refreshOrGetAccount).toHaveBeenCalledWith(
-        state.account
+      mockWeb3Service.emit('key.updated', key, update)
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: UPDATE_KEY,
+          id: key.id,
+          update,
+        })
       )
     })
   })
