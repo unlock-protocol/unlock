@@ -87,9 +87,14 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "npm run reformat",
-      "git add"
+    "linters": {
+      "*.js": [
+        "npm run reformat",
+        "git add"
+      ]
+    },
+    "ignore": [
+      "*.js.snap"
     ]
   },
   "nodemonConfig": {
