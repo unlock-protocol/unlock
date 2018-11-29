@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react'
 import { Provider } from 'react-redux'
 import LayoutButtons from '../../components/interface/buttons/layout'
 import Buttons from '../../components/interface/buttons/lock'
+import OverlayButtons from '../../components/interface/buttons/overlay'
 
 import createUnlockStore from '../../createUnlockStore'
 
@@ -39,4 +40,7 @@ storiesOf('Buttons')
       address: '0xabc',
     }
     return <Buttons.Preview lock={lock} />
+  })
+  .add('Confirmed Key', () => {
+    return <OverlayButtons.ConfirmedKey />
   })

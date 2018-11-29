@@ -1,13 +1,12 @@
 import React from 'react'
 
 const SvgArrow = ({ title, ...props }) => (
-  <svg fill="none" {...props}>
+  <svg {...props}>
     <title>{title}</title>
     <path
-      d="M7.5 1L11 4m0 0L7.5 7M11 4H1"
-      stroke="#000"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
     />
   </svg>
 )
