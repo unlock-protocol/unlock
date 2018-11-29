@@ -27,6 +27,9 @@ import errorReducer, {
 import accountReducer, {
   initialState as defaultAccount,
 } from './reducers/accountReducer'
+import modalReducer, {
+  initialState as defaultModals,
+} from './reducers/modalsReducer'
 
 // Middlewares
 import lockMiddleware from './middlewares/lockMiddleware'
@@ -39,6 +42,7 @@ export default function createUnlockStore(defaultState = {}) {
     account: accountReducer,
     keys: keysReducer,
     locks: locksReducer,
+    modals: modalReducer,
     network: networkReducer,
     provider: providerReducer,
     transactions: transactionsReducer,
@@ -59,6 +63,7 @@ export default function createUnlockStore(defaultState = {}) {
       account: defaultAccount,
       keys: defaultKeys,
       locks: defaultLocks,
+      modals: defaultModals,
       network: defaultNetwork,
       provider: defaultProvider,
       transactions: defaultTransactions,
