@@ -4,8 +4,8 @@ const SvgAbout = ({ title, ...props }) => (
   <svg {...props}>
     <title>{title}</title>
     <path
-      d="M13.2 18h-2.4v-7.2h2.4V18zm0-9.6h-2.4V6h2.4v2.4z"
       fillRule="evenodd"
+      d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
     />
   </svg>
 )
