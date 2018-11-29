@@ -11,6 +11,7 @@ import { purchaseKey } from '../../actions/key'
 
 import PendingKeyLock from './PendingKeyLock'
 import ConfirmingKeyLock from './ConfirmingKeyLock'
+import ConfirmedKeyLock from './ConfirmedKeyLock'
 import { LockWrapper, LockHeader, LockBody } from './LockStyles'
 
 export const Lock = ({
@@ -20,6 +21,7 @@ export const Lock = ({
   purchaseKey,
   config,
   disabled,
+  hideModal,
 }) => {
   if (
     transaction &&
@@ -32,6 +34,8 @@ export const Lock = ({
     transaction.confirmations < config.requiredConfirmations
   ) {
     return <ConfirmingKeyLock lock={lock} transaction={transaction} />
+  } else if (transaction && transaction.status == 'mined') {
+    return <ConfirmedKeyLock lock={lock} hideModal={hideModal} />
   } else {
     return (
       <Wrapper
@@ -68,6 +72,7 @@ Lock.propTypes = {
   transaction: UnlockPropTypes.transaction,
   purchaseKey: PropTypes.func.isRequired,
   config: UnlockPropTypes.configuration.isRequired,
+  hideModal: PropTypes.func.isRequired,
 }
 
 Lock.defaultProps = {
@@ -117,6 +122,7 @@ export default withConfig(
 
 const Wrapper = styled(LockWrapper)`
   cursor: pointer;
+
   &:hover {
     border: ${props => (!props.disabled ? '1px solid var(--grey)' : null)};
   }
@@ -129,14 +135,12 @@ const Header = styled(LockHeader)`
 
 const EthPrice = styled.div`
   font-size: 30px;
-  line-height: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 `
 
 const FiatPrice = styled.div`
-  margin-top: 8px;
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
