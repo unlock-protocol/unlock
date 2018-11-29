@@ -83,3 +83,21 @@ storiesOf('Lock', Lock)
       />
     )
   })
+  .add('with a mined key.', () => {
+    const k = {
+      lockAddress: lock.address,
+    }
+    const t = {
+      status: 'mined',
+      confirmations: config.requiredConfirmations + 1,
+    }
+    return (
+      <Lock
+        lock={lock}
+        transaction={t}
+        lockKey={k}
+        purchaseKey={purchaseKey}
+        config={config}
+      />
+    )
+  })

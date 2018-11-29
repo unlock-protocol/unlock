@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import Svg from '../../svg'
 import Button from '../Button'
 
-const ConfirmedKey = props => (
+const ConfirmedKey = ({ hideModal, ...props }) => (
   <ConfirmedKeyButton {...props} backgroundHoverColor="var(--green)">
     <NotHover />
-    <Hover />
+    <Hover onClick={hideModal} />
   </ConfirmedKeyButton>
 )
 

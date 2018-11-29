@@ -10,8 +10,9 @@ export const LockWrapper = styled.li`
   font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
   border-radius: 4px;
   height: 152px;
-  grid-gap: 16px;
+  grid-gap: 0px;
   border: 1px solid transparent;
+  background-clip: padding-box;
   grid-template-rows: 40px 112px;
   opacity: ${props => (props.disabled ? 0.5 : 1)};
 `
@@ -26,23 +27,31 @@ export const LockHeader = styled.header`
   height: 40px;
   border-radius: 4px 4px 0px 0px;
   text-transform: capitalize;
+  padding: 0px;
 `
 
 export const LockBody = styled.div`
   display: grid;
-  height: 64px;
+  height: 120px;
   justify-content: center;
-  align-content: center;
+  justify-items: center;
   text-align: center;
-  padding: 0px 10px;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 16px;
 `
 
 export const LockDetail = styled.div`
   white-space: nowrap;
   font-weight: ${props => (props.bold == true ? 'bold' : null)};
+  align-content: center;
+  align-items: center;
+  align-self: center;
 `
 
-export const TransactionStatus = styled.p`
+export const TransactionStatus = styled.div`
   display: grid;
   justify-content: center;
   align-content: center;
@@ -56,10 +65,12 @@ export const TransactionStatus = styled.p`
 export const LockDetails = styled.div`
   display: grid;
   font-size: 15px;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
   color: var(--grey);
   font-weight: 300;
-  grid-gap: 8px;
+  grid-gap: 4px;
+  align-self: center;
   justify-items: center;
   align-content: center;
 `
