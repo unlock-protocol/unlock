@@ -22,6 +22,10 @@ const globalStyle = `
     --foreground: 9001;
   }
 
+  * {
+    box-sizing: border-box;
+  }
+
   body {
     font-family: 'IBM Plex Sans' ,'Helvetica Neue', Arial, sans-serif;
     color: var(--grey);
