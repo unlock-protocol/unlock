@@ -22,7 +22,7 @@ You could also try out the staging version - which runs the latest, in-progress 
 ## Contributing
 
 Thanks for your interest in contributing to Unlock! We're excited you're here. There are a variety of ways to contribute to the project.
-Please read more about contributing on this [dedicated document](https://github.com/unlock-protocol/unlock/blob/master/CONTRIBUTING.md). Please, also check our [code of conduct](https://github.com/unlock-protocol/unlock/blob/master/CODE_OF_CONDUCT.md).
+Please read more about contributing in our [contributor guide](https://github.com/unlock-protocol/unlock/blob/master/CONTRIBUTING.md). Please also check our [code of conduct](https://github.com/unlock-protocol/unlock/blob/master/CODE_OF_CONDUCT.md) for all participants in our community.
 
 ## Getting started
 
