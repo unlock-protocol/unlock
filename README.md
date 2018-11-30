@@ -12,7 +12,7 @@ Read more about [why we're building Unlock](https://medium.com/unlock-protocol/i
 
 ## Demo
 
-We recorded a screencast to show how Unlock works for a paywall. (note: this video is a few months old and outdated but still shows the "user flow" pretty accurately)
+We recorded a screencast to show how Unlock works for a paywall. (Note: this video is a few months old and outdated but still shows the "user flow" pretty accurately.)
 
 [![Demo Unlock](https://img.youtube.com/vi/wktotzmea0E/0.jpg)](https://www.youtube.com/watch?v=wktotzmea0E)
 
