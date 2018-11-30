@@ -3,12 +3,66 @@ import ColorScheme from 'color-scheme'
 
 import UnlockPropTypes from '../../propTypes'
 
+const originalIcon = [
+  { x: 195.75, y: 114.75 },
+  { x: 33.75, y: 162 },
+  { x: 121.5, y: 0 },
+]
+
+const stripedIcon = [{ x: 108, y: 108 }, { x: 146, y: 147 }, { x: 216, y: 216 }]
+
+const chompIcon = [{ x: 108, y: 108 }, { x: 108, y: -64 }, { x: 108, y: 280 }]
+
+const biteIcon = [{ x: 108, y: 108 }, { x: 108, y: 0 }, { x: 108, y: 216 }]
+
+const tailIcon = [{ x: 108, y: 108 }, { x: 64, y: 0 }, { x: 64, y: 216 }]
+
+const triadIcon = [{ x: 108, y: 108 }, { x: 32, y: 0 }, { x: 32, y: 216 }]
+
+/**
+ * This selects a set of 3 circles (specified by position) to use to construct the lock icon.
+ * @param {string} address
+ * @returns {object}
+ */
+function circles(address) {
+  const options = [
+    originalIcon,
+    stripedIcon,
+    chompIcon,
+    biteIcon,
+    tailIcon,
+    triadIcon,
+  ]
+  const n = parseInt(address) % options.length
+  return options[n]
+}
+
+/**
+ * This computes how much rotation to apply to the lock glyph
+ * @param {string} address
+ * @returns {number}
+ */
+function degreesOfRotation(address) {
+  const n = parseInt(address)
+  return (n % 36) * 10
+}
+
+/**
+ * This returns either instructions to mirror the icon and then translate it back to
+ * the origin, or do nothing depending on lock address.
+ * @param {string} address
+ * @returns {string}
+ */
+function translateAndScale(address) {
+  const n = parseInt(address)
+  return n % 2 == 0 ? '' : 'tranlate(216, 0) scale(-1, 1)'
+}
+
 /**
  * This generates a lock icon unique for each lock
- * At this point, it only changes the colors of the 3 inner circles based on the lock address
- * @todo Customize position of circles
- * @body In order to get more unique lock icons we should also position (x, y and z) the inner circles
- * more uniquely based on the lock address... the challenge is to not have any white space.
+ * It changes the colors of the 3 inner circles and applies a rotation and permutation of layer order
+ * based on the lock address
+ * @todo Figure out proper output for falsy lock address?
  * @param {UnlockPropTypes.lock} lock
  */
 export function Icon({ lock }) {
@@ -22,7 +76,7 @@ export function Icon({ lock }) {
       .variation('light')
     colors = scheme.colors().map(c => `#${c}`)
   }
-
+  const innerCircles = circles(lock.address)
   return (
     <svg
       viewBox="0 0 216 216"
@@ -37,21 +91,36 @@ export function Icon({ lock }) {
         <mask id="b" fill="#fff">
           <use xlinkHref="#a" />
         </mask>
-        <circle
-          fill={colors[0]}
-          mask="url(#b)"
-          cx={195.75}
-          cy={114.75}
-          r={114.75}
-        />
-        <circle
-          fill={colors[1]}
-          mask="url(#b)"
-          cx={33.75}
-          cy={162}
-          r={114.75}
-        />
-        <circle fill={colors[2]} mask="url(#b)" cx={121.5} r={114.75} />
+        <g
+          transform={
+            'rotate(' +
+            degreesOfRotation(lock.address) +
+            ', 108, 108)' +
+            translateAndScale(lock.address)
+          }
+        >
+          <circle
+            fill={colors[0]}
+            mask="url(#b)"
+            cx={innerCircles[0].x}
+            cy={innerCircles[0].y}
+            r="114.75"
+          />
+          <circle
+            fill={colors[1]}
+            mask="url(#b)"
+            cx={innerCircles[1].x}
+            cy={innerCircles[1].y}
+            r="114.75"
+          />
+          <circle
+            fill={colors[2]}
+            mask="url(#b)"
+            cx={innerCircles[2].x}
+            cy={innerCircles[2].y}
+            r="114.75"
+          />
+        </g>
         <mask id="d" fill="#fff">
           <use xlinkHref="#c" />
         </mask>
