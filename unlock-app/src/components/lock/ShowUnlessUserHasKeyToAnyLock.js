@@ -42,7 +42,7 @@ export const mapStateToProps = ({ keys, modals }, { locks }) => {
   const now = new Date().getTime() / 1000
   for (let lock of Object.values(locks)) {
     for (let k of Object.values(keys)) {
-      if (k.lockAddress === lock.address && k.expiration > now) {
+      if (k.lock === lock.address && k.expiration > now) {
         validKeys.push(k)
       }
     }

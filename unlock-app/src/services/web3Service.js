@@ -31,7 +31,7 @@ export default class Web3Service extends EventEmitter {
             transaction: transaction.hash,
             address: transaction.lock,
           },
-          args.newLockAddress
+          args.newLock
         )
       },
     }
@@ -404,10 +404,7 @@ export default class Web3Service extends EventEmitter {
    * @param {UnlockPropTypes.lock} lock
    */
   purchaseKey(key, account, lock) {
-    const lockContract = new this.web3.eth.Contract(
-      LockContract.abi,
-      key.lockAddress
-    )
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, key.lock)
     const data = lockContract.methods
       .purchaseFor(key.owner, Web3Utils.utf8ToHex(key.data || ''))
       .encodeABI()
@@ -424,7 +421,7 @@ export default class Web3Service extends EventEmitter {
     return this.sendTransaction(
       transaction,
       {
-        to: key.lockAddress,
+        to: key.lock,
         from: key.owner,
         data: data,
         gas: 1000000,
@@ -445,11 +442,11 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
-   * Returns the key to the lockAddress by the account.
+   * Returns the key to the lock by the account.
    * @param {UnlockPropTypes.key} key
    */
   getKey(key) {
-    if (!key.lockAddress) {
+    if (!key.lock) {
       return this.emit('key.updated', key, {
         expiration: 0,
         data: null,
@@ -457,10 +454,7 @@ export default class Web3Service extends EventEmitter {
     }
     const update = {}
 
-    const lockContract = new this.web3.eth.Contract(
-      LockContract.abi,
-      key.lockAddress
-    )
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, key.lock)
 
     const getKeyExpirationPromise = lockContract.methods
       .keyExpirationTimestampFor(key.owner)
@@ -469,7 +463,7 @@ export default class Web3Service extends EventEmitter {
     if (!key.id) {
       update.id = crypto
         .createHash('md5')
-        .update([key.lockAddress, key.owner].join(''))
+        .update([key.lock, key.owner].join(''))
         .digest('hex')
     }
     Promise.all([getKeyExpirationPromise, getKeyDataPromise])

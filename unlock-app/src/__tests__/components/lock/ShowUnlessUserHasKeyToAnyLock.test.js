@@ -15,7 +15,7 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
       const keys = [
         {
           id: 'keyId',
-          lockAddress: '0xLock',
+          lock: '0xLock',
           owner: '0x123',
         },
       ]
@@ -34,7 +34,7 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
       const keys = [
         {
           id: 'keyId',
-          lockAddress: '0xLock',
+          lock: '0xLock',
           owner: '0x123',
         },
       ]
@@ -112,22 +112,22 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
       const keys = {
         first: {
           id: 'first',
-          lockAddress: '0x123',
+          lock: '0x123',
           expiration: now + 10,
         },
         second: {
           id: 'second',
-          lockAddress: '0x123',
+          lock: '0x123',
           expiration: 0,
         },
         third: {
           id: 'third',
-          lockAddress: '0x456',
+          lock: '0x456',
           expiration: now + 10,
         },
         fourth: {
           id: 'fourth',
-          lockAddress: '0x000',
+          lock: '0x000',
           expiration: now + 10,
         },
       }

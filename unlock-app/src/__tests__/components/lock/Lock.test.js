@@ -17,7 +17,7 @@ describe('Lock', () => {
         },
       }
       const newProps = mapStateToProps(state, props)
-      expect(newProps.lockKey.lockAddress).toEqual(props.lock.address)
+      expect(newProps.lockKey.lock).toEqual(props.lock.address)
       expect(newProps.lockKey.owner).toEqual(state.account.address)
       expect(newProps.lockKey.data).toEqual(undefined)
       expect(newProps.lockKey.expiration).toEqual(undefined)
@@ -38,7 +38,7 @@ describe('Lock', () => {
         },
         keys: [
           {
-            lockAddress: props.lock.address,
+            lock: props.lock.address,
             owner: '0x123',
             expiration: 1000,
             data: 'hello',
@@ -53,7 +53,7 @@ describe('Lock', () => {
         },
       }
       const newProps = mapStateToProps(state, props)
-      expect(newProps.lockKey.lockAddress).toEqual(props.lock.address)
+      expect(newProps.lockKey.lock).toEqual(props.lock.address)
       expect(newProps.lockKey.owner).toEqual(state.account.address)
       expect(newProps.lockKey.data).toEqual('hello')
       expect(newProps.lockKey.expiration).toEqual(1000)

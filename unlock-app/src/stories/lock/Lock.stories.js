@@ -50,7 +50,7 @@ storiesOf('Lock', Lock)
   })
   .add('with a pending key (not yet mined)', () => {
     const k = {
-      lockAddress: lock.address,
+      lock: lock.address,
     }
     const t = {
       status: 'submitted',
@@ -67,7 +67,7 @@ storiesOf('Lock', Lock)
   })
   .add('with a mined key (which was not confirmed).', () => {
     const k = {
-      lockAddress: lock.address,
+      lock: lock.address,
     }
     const t = {
       status: 'mined',
@@ -85,7 +85,7 @@ storiesOf('Lock', Lock)
   })
   .add('with a mined key.', () => {
     const k = {
-      lockAddress: lock.address,
+      lock: lock.address,
     }
     const t = {
       status: 'mined',
