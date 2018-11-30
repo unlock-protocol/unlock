@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const SvgJobs = ({ title, ...props }) => (
   <svg {...props}>
@@ -6,10 +6,9 @@ const SvgJobs = ({ title, ...props }) => (
     <path
       fillRule="evenodd"
       clipRule="evenodd"
-      d="M13 5h-2a2 2 0 0 0-2 2H6a1 1 0 0 0-1 1v2h14V8a1 1 0 0 0-1-1h-3a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4z"
+      d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
     />
-    <path d="M5 11h14v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-5z" />
   </svg>
-)
+);
 
-export default SvgJobs
+export default SvgJobs;

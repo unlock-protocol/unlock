@@ -1,13 +1,14 @@
-import React from 'react'
+import React from 'react';
 
 const SvgClose = ({ title, ...props }) => (
   <svg {...props}>
     <title>{title}</title>
     <path
-      d="M16.837 16.837a.554.554 0 0 1-.785 0L12 12.785l-4.052 4.052a.554.554 0 0 1-.785 0 .555.555 0 0 1 0-.785L11.214 12 7.163 7.948a.555.555 0 1 1 .785-.786L12 11.215l4.052-4.053a.556.556 0 0 1 .785.786L12.786 12l4.051 4.052a.555.555 0 0 1 0 .785z"
       fillRule="evenodd"
+      clipRule="evenodd"
+      d="M13.06 12l4.47-4.47-1.06-1.06L12 10.94 7.53 6.47 6.47 7.53 10.94 12l-4.47 4.47 1.06 1.06L12 13.06l4.47 4.47 1.06-1.06L13.06 12z"
     />
   </svg>
-)
+);
 
-export default SvgClose
+export default SvgClose;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const SvgEthSub = ({ title, ...props }) => (
   <svg viewBox="0 0 7 11" {...props}>
@@ -9,6 +9,6 @@ const SvgEthSub = ({ title, ...props }) => (
       fillRule="evenodd"
     />
   </svg>
-)
+);
 
-export default SvgEthSub
+export default SvgEthSub;

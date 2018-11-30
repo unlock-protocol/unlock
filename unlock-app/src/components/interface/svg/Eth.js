@@ -1,14 +1,10 @@
-import React from 'react'
+import React from 'react';
 
 const SvgEth = ({ title, ...props }) => (
-  <svg {...props}>
+  <svg fill="none" {...props}>
     <title>{title}</title>
-    <path
-      d="M1 6V5h5v1H1zm-1 5v-1h7v1H0zM0 1V0h7v1H0z"
-      fill="#333"
-      fillRule="evenodd"
-    />
+    <path clipRule="evenodd" d="M1 6V5h5v1H1zm-1 5v-1h7v1H0zM0 1V0h7v1H0z" />
   </svg>
-)
+);
 
-export default SvgEth
+export default SvgEth;
