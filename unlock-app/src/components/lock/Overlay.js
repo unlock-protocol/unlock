@@ -58,6 +58,7 @@ const Banner = styled.div`
   position: fixed;
   display: grid;
   height: 30%;
+  min-height: 375px;
   left: 0;
   right: 0;
   bottom: 0;
