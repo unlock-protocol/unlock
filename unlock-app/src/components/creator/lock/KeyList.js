@@ -38,7 +38,7 @@ const mapStateToProps = (state, { lock }) => {
   const keys = {}
   if (state.keys)
     Object.values(state.keys)
-      .filter(key => key.lockAddress === lock.address)
+      .filter(key => key.lock === lock.address)
       .forEach(item => (keys[item.id] = item))
   return {
     keys,

@@ -42,7 +42,7 @@ export const locks = PropTypes.objectOf(PropTypes.object)
 export const transactions = PropTypes.shape({})
 
 export const key = PropTypes.shape({
-  lockAddress: address,
+  lock: address,
   expiration: PropTypes.number,
 })
 

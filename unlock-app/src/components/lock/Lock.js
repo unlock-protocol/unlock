@@ -93,14 +93,14 @@ export const mapStateToProps = (state, { lock }) => {
   }
 
   let lockKey = Object.values(state.keys).find(
-    key => key.lockAddress === lock.address && key.owner === account.address
+    key => key.lock === lock.address && key.owner === account.address
   )
   let transaction = null
 
   if (!lockKey) {
     lockKey = {
       id: uniqid(),
-      lockAddress: lock.address,
+      lock: lock.address,
       owner: account.address,
     }
   } else {

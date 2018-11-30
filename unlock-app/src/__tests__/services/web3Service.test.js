@@ -526,7 +526,7 @@ describe('Web3Service', () => {
 
         web3Service.on('key.updated', (key, update) => {
           expect(key.owner).toBe(nodeAccounts[0])
-          expect(key.lockAddress).toBe(lockAddress)
+          expect(key.lock).toBe(lockAddress)
           expect(update.expiration).toBe(1532557829)
           expect(update.data).toBe(null)
           done()
@@ -534,7 +534,7 @@ describe('Web3Service', () => {
 
         const key = {
           id: '123',
-          lockAddress: lockAddress,
+          lock: lockAddress,
           owner: nodeAccounts[0],
           expiration: 1,
           data: 'data',
@@ -548,7 +548,7 @@ describe('Web3Service', () => {
 
         web3Service.on('key.updated', (key, update) => {
           expect(key.owner).toBe(nodeAccounts[0])
-          expect(key.lockAddress).toBe(lockAddress)
+          expect(key.lock).toBe(lockAddress)
           expect(update.expiration).toBe(0)
           expect(update.data).toBe(null)
           done()
@@ -556,7 +556,7 @@ describe('Web3Service', () => {
 
         const key = {
           id: '123',
-          lockAddress: lockAddress,
+          lock: lockAddress,
           owner: nodeAccounts[0],
           expiration: 1,
           data: 'data',
@@ -824,12 +824,12 @@ describe('Web3Service', () => {
         }
         key = {
           id: 'abc',
-          lockAddress: lock.address,
+          lock: lock.address,
           owner: owner.address,
         }
       })
 
-      it('should invoke sendTransaction with the right params', () => {
+      it.only('should invoke sendTransaction with the right params', () => {
         expect.assertions(1)
 
         web3Service.sendTransaction = jest.fn((transaction, args, cb) => {
@@ -847,7 +847,7 @@ describe('Web3Service', () => {
             account: owner.address,
           }),
           {
-            to: expect.any(String),
+            to: key.lock,
             from: owner.address,
             data: expect.any(String), // encoded purchaseKey data
             gas: 1000000,
@@ -868,7 +868,7 @@ describe('Web3Service', () => {
         web3Service.on('key.saved', key => {
           expect(key).toMatchObject({
             id: 'abc',
-            lockAddress: lock.address,
+            key: lock.address,
             owner: owner.address,
           })
           expect(web3Service.getKey).toHaveBeenCalledWith(key)

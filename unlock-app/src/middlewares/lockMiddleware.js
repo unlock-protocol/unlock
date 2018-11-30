@@ -64,13 +64,13 @@ export default function lockMiddleware({ getState, dispatch }) {
    */
   web3Service.on('key.saved', key => {
     const lockId = Object.keys(getState().locks).find(
-      lockId => key.lockAddress === getState().locks[lockId].address
+      lockId => key.lock === getState().locks[lockId].address
     )
     if (!lockId) {
       // Hum. We have a key saved but we do not know of the lock :/
       // We probably need to retrieve it!
       web3Service.getLock({
-        address: key.lockAddress,
+        address: key.lock,
       })
     } else {
       web3Service.getLock(getState().locks[lockId])
@@ -140,7 +140,7 @@ export default function lockMiddleware({ getState, dispatch }) {
       } else if (action.type === PURCHASE_KEY) {
         const account = getState().account
         const lock = Object.values(getState().locks).find(
-          lock => lock.address === action.key.lockAddress
+          lock => lock.address === action.key.lock
         )
         web3Service.purchaseKey(action.key, account, lock)
       } else if (action.type === WITHDRAW_FROM_LOCK) {
@@ -163,14 +163,14 @@ export default function lockMiddleware({ getState, dispatch }) {
         if (lock && lock.address) {
           // TODO(julien): isn't lock always set anyway?
           web3Service.getKey({
-            lockAddress: lock.address,
+            lock: lock.address,
             owner: action.account,
           })
         }
       } else if (action.type === SET_LOCK) {
         // Lock was changed, get the matching key
         web3Service.getKey({
-          lockAddress: action.lock.address,
+          lock: action.lock.address,
           owner: getState().account,
         })
       }
