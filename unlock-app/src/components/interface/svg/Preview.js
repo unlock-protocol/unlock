@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const SvgPreview = ({ title, ...props }) => (
   <svg {...props}>
@@ -11,6 +11,6 @@ const SvgPreview = ({ title, ...props }) => (
     />
     <path d="M19 12l.445-.227a.501.501 0 0 1 0 .454L19 12zM4.555 11.773L5 12l-.445.228a.503.503 0 0 1 0-.455z" />
   </svg>
-);
+)
 
-export default SvgPreview;
+export default SvgPreview
