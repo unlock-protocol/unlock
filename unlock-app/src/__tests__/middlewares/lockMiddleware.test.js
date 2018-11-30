@@ -30,7 +30,7 @@ let state = {}
 
 let key = {
   id: '123',
-  lockAddress: lock.address,
+  lock: lock.address,
   owner: account.address,
 }
 
@@ -157,7 +157,7 @@ describe('Lock middleware', () => {
       create()
 
       const key = {
-        lockAddress: lock.address,
+        lock: lock.address,
       }
       mockWeb3Service.getLock = jest.fn()
       mockWeb3Service.refreshOrGetAccount = jest.fn()
@@ -173,7 +173,7 @@ describe('Lock middleware', () => {
       create()
 
       const key = {
-        lockAddress: '0xAnotherLock',
+        lock: '0xAnotherLock',
       }
       mockWeb3Service.getLock = jest.fn()
       mockWeb3Service.refreshOrGetAccount = jest.fn()
@@ -195,7 +195,7 @@ describe('Lock middleware', () => {
 
       const key = {
         id: 'keyId',
-        lockAddress: lock.address,
+        lock: lock.address,
       }
       const update = {
         data: 'hello',
@@ -398,7 +398,7 @@ describe('Lock middleware', () => {
       mockWeb3Service.getKey = jest.fn()
       invoke(action)
       expect(mockWeb3Service.getKey).toHaveBeenCalledWith({
-        lockAddress: lock.address,
+        lock: lock.address,
         owner: account,
       })
       expect(next).toHaveBeenCalledWith(action)
@@ -423,7 +423,7 @@ describe('Lock middleware', () => {
       mockWeb3Service.getKey = jest.fn()
       invoke(action)
       expect(mockWeb3Service.getKey).toHaveBeenCalledWith({
-        lockAddress: lock.address,
+        lock: lock.address,
         owner: account,
       })
       expect(next).toHaveBeenCalledWith(action)
@@ -436,7 +436,7 @@ describe('Lock middleware', () => {
       mockWeb3Service.getKey = jest.fn()
       invoke(action)
       expect(mockWeb3Service.getKey).toHaveBeenCalledWith({
-        lockAddress: lock.address,
+        lock: lock.address,
         owner: null,
       })
       expect(next).toHaveBeenCalledWith(action)
