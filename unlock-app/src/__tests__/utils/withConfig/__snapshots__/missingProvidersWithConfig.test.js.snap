@@ -100,32 +100,29 @@ exports[`withConfig High Order Component when the current network is not in the 
 
 .c10 {
   display: none;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
   height: 100%;
 }
 
 .c10 .c7 {
-  position: absolute;
-  right: 5px;
-  top: 0px;
   background-color: var(--white);
-  padding: 15px;
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   opacity: 1;
   pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c10 .c7:nth-child(1) {
+  grid-row: 0;
+  pointer-events: none;
 }
 
 .c10 .c7:nth-child(2) {
-  top: -25px;
-  opacity: 0;
+  grid-row: 1;
   pointer-events: none;
+  display: none;
 }
 
 .c10 .c7 > svg {
@@ -189,11 +186,10 @@ exports[`withConfig High Order Component when the current network is not in the 
 
 .c0 {
   display: grid;
-  grid-template-columns: 1fr minmax(300px,4fr) 1fr;
+  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
 }
 
 .c1 {
-  padding: 8px;
   display: grid;
   -webkit-align-items: start;
   -webkit-box-align: start;
@@ -250,10 +246,7 @@ exports[`withConfig High Order Component when the current network is not in the 
 
 @media (max-width:600px) {
   .c4 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
+    grid-template-columns: 1fr 48px;
   }
 }
 
@@ -265,7 +258,7 @@ exports[`withConfig High Order Component when the current network is not in the 
 
 @media (max-width:600px) {
   .c10 {
-    display: block;
+    display: grid;
   }
 }
 
@@ -405,6 +398,7 @@ exports[`withConfig High Order Component when the current network is not in the 
       </div>
       <div
         className="c10"
+        onClick={[Function]}
       >
         <a
           className="c7 c11"
