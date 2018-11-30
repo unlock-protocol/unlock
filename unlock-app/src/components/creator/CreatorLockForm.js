@@ -8,7 +8,13 @@ import UnlockPropTypes from '../../propTypes'
 
 import Icon from '../lock/Icon'
 import { BalanceWithUnit, Eth } from '../helpers/Balance'
-import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
+import {
+  LockRow,
+  LockName,
+  LockDuration,
+  LockKeys,
+  LockRowGrid,
+} from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockStatus'
 import { createLock } from '../../actions/lock'
 
@@ -137,11 +143,7 @@ export default connect(
 )(CreatorLockForm)
 
 const FormLockRow = styled(LockRow)`
-  grid-template-columns: 32px minmax(100px, 3fr) repeat(4, minmax(56px, 100px)) minmax(
-      174px,
-      1fr
-    );
-  input[type='text'] {
+  ${LockRowGrid} input[type='text'] {
     background-color: var(--lightgrey);
     border: 0;
     padding: 5px;
@@ -156,26 +158,30 @@ const Status = styled(LockStatus)`
 
 const FormLockName = styled(LockName)`
   input[type='text'] {
-    width: 70px;
+    min-width: 70px;
+    width: 80%;
   }
 `
 
 const FormLockDuration = styled(LockDuration)`
   input[type='text'] {
-    width: 30px;
+    min-width: 30px;
+    width: 50%;
   }
 `
 
 const FormLockKeys = styled(LockKeys)`
   input[type='text'] {
-    width: 40px;
+    min-width: 30px;
+    width: 80%;
   }
 `
 
 const FormBalanceWithUnit = styled(BalanceWithUnit)`
   white-space: nowrap;
   input[type='text'] {
-    width: 30px;
+    min-width: 30px;
+    width: 50%;
   }
 `
 
