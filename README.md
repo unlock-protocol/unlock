@@ -12,13 +12,17 @@ Read more about [why we're building Unlock](https://medium.com/unlock-protocol/i
 
 ## Demo
 
-We recorded a screencast to show how Unlock works for a paywall.
+We recorded a screencast to show how Unlock works for a paywall. (Note: this video is a few months old and outdated but still shows the "user flow" pretty accurately.)
 
 [![Demo Unlock](https://img.youtube.com/vi/wktotzmea0E/0.jpg)](https://www.youtube.com/watch?v=wktotzmea0E)
 
+We are building this in the open, which mean you can run the code locally (see instructions below).
+You could also try out the staging version - which runs the latest, in-progress code - at https:://staging.unlock-protocol.com.
+
 ## Contributing
 
-We strongly recommend that the community help us make improvements and determine the future direction of the protocol. To report bugs within this package, please create an issue in this repository.
+Thanks for your interest in contributing to Unlock! We're excited you're here. There are a variety of ways to contribute to the project.
+Please read more about contributing in our [contributor guide](https://github.com/unlock-protocol/unlock/blob/master/CONTRIBUTING.md). Please also check our [code of conduct](https://github.com/unlock-protocol/unlock/blob/master/CODE_OF_CONDUCT.md) for all participants in our community.
 
 ## Getting started
 
@@ -43,20 +47,6 @@ $ npm run install-deps
 ```
 cd unlock-app && npm run dev
 ```
-
-## Code
-
-### Smart Contract
-
-Includes the code for smart contracts: Lock and Unlock.
-
-### unlock-protocol.com
-
-A static site for unlock-protocol.com. Will eventually be deprecated in favor of code deployed from unlock-app.
-
-### unlock-app
-
-The code for the React app which interfaces with the deployed smart contracts.
 
 ## Running tests/ci
 
