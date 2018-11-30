@@ -51,7 +51,7 @@ export default {
   Log: wrapViewBox(Log, '0 0 24 24'),
   Preview: wrapViewBox(Preview, '0 0 24 24'),
   Jobs: wrapViewBox(Jobs, '0 0 24 24'),
-  Unlock: wrapViewBox(Unlock, '0 0 24 24'),
+  Unlock: wrapViewBox(Unlock, '0 0 56 56'),
   UnlockWordMark,
   Upload: wrapViewBox(Upload, '0 0 24 24'),
   Withdraw: wrapViewBox(Withdraw, '0 0 24 24'),
