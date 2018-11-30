@@ -37,9 +37,12 @@ export default class Header extends React.PureComponent {
           <Buttons.Jobs />
           <Buttons.Github />
         </DesktopButtons>
-        <MobileToggle visibilityToggle={menu ? true : false}>
-          <Buttons.Bars onClick={this.toggleMenu} size="48px" />
-          <Buttons.ChevronUp onClick={this.toggleMenu} size="48px" />
+        <MobileToggle
+          visibilityToggle={menu ? true : false}
+          onClick={this.toggleMenu}
+        >
+          <Buttons.Bars size="48px" />
+          <Buttons.ChevronUp size="48px" />
         </MobileToggle>
         <MobilePopover visibilityToggle={menu ? true : false}>
           <Buttons.About size="48px" />
@@ -70,7 +73,7 @@ const TopHeader = styled.header`
   height: 70px;
 
   @media (max-width: 600px) {
-    display: flex;
+    grid-template-columns: 1fr 48px;
   }
 `
 
@@ -93,26 +96,24 @@ const DesktopButtons = styled.div`
 
 const MobileToggle = styled.div`
   display: none;
-  flex-direction: row;
-  align-items: center;
   height: 100%;
 
   ${ButtonLink} {
-    position: absolute;
-    right: 5px;
-    top: 0px;
-
     background-color: var(--white);
-    padding: 15px;
-
     transition: all 500ms cubic-bezier(0.165, 0.84, 0.44, 1);
     opacity: 1;
     pointer-events: visible;
+    align-self: center;
+
+    ${props => (props.visibilityToggle ? '&:nth-child(2)' : '&:nth-child(1)')} {
+      grid-row: 0;
+      pointer-events: none;
+    }
 
     ${props => (props.visibilityToggle ? '&:nth-child(1)' : '&:nth-child(2)')} {
-      top: -25px;
-      opacity: 0;
+      grid-row: 1;
       pointer-events: none;
+      display: none;
     }
 
     > svg {
@@ -127,7 +128,7 @@ const MobileToggle = styled.div`
   }
 
   @media (max-width: 600px) {
-    display: block;
+    display: grid;
   }
 `
 
