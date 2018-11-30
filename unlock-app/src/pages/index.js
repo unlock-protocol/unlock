@@ -86,7 +86,7 @@ const ImageWithHover = styled.div`
   border-style: none;
   background: url(${props => `/static/images/pages/png/${props.base}.png`})
     no-repeat center/contain;
-  width: 300px;
+  width: 280px;
   height: 200px;
   &:hover {
     background: url(${props =>

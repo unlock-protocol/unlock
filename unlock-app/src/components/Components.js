@@ -66,7 +66,7 @@ export const ListItem = styled.li`
 
 export const TwoColumns = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   grid-gap: 42px;
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
@@ -77,7 +77,7 @@ export const TwoColumns = styled.div`
 
 export const ThreeColumns = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   grid-gap: 24px;
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
