@@ -8,10 +8,15 @@ import UnlockPropTypes from '../../propTypes'
 
 import Icon from '../lock/Icon'
 import { BalanceWithUnit, Eth } from '../helpers/Balance'
-import { LockRow, LockName, LockDuration, LockKeys } from './CreatorLock'
+import {
+  LockRow,
+  LockName,
+  LockDuration,
+  LockKeys,
+  LockRowGrid,
+} from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockStatus'
 import { createLock } from '../../actions/lock'
-import { LockRowGrid } from './CreatorLock'
 
 class CreatorLockForm extends React.Component {
   constructor(props, context) {
