@@ -8,11 +8,12 @@ import {
   LockDetails,
   TransactionStatus,
   LockDetail,
+  LockName,
 } from './LockStyles'
 import BalanceProvider from '../helpers/BalanceProvider'
 import withConfig from '../../utils/withConfig'
 
-const ConfirmingKeyLock = ({ lock, transaction, config }) => (
+export const ConfirmingKeyLock = ({ lock, transaction, config }) => (
   <LockWrapper>
     <Header>Payment Received</Header>
     <LockBody>
@@ -26,18 +27,20 @@ const ConfirmingKeyLock = ({ lock, transaction, config }) => (
       <BalanceProvider
         amount={lock.keyPrice}
         render={(ethPrice, fiatPrice) => (
-          <LockDetails>
-            <LockDetail>{lock.name}</LockDetail>
-            <LockDetail bold>
-              {ethPrice}
-              {' '}
+          <>
+            <LockName>{lock.name}</LockName>
+            <LockDetails>
+              <LockDetail bold>
+                {ethPrice}
+                {' '}
 ETH
-            </LockDetail>
-            <LockDetail>
+              </LockDetail>
+              <LockDetail>
 $
-              {fiatPrice}
-            </LockDetail>
-          </LockDetails>
+                {fiatPrice}
+              </LockDetail>
+            </LockDetails>
+          </>
         )}
       />
     </LockBody>
