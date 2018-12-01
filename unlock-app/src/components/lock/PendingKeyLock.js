@@ -11,7 +11,7 @@ import {
 } from './LockStyles'
 import BalanceProvider from '../helpers/BalanceProvider'
 
-const PendingKeyLock = ({ lock }) => (
+export const PendingKeyLock = ({ lock }) => (
   <LockWrapper>
     <Header>Payment sent</Header>
     <LockBody>
@@ -20,18 +20,20 @@ const PendingKeyLock = ({ lock }) => (
       <BalanceProvider
         amount={lock.keyPrice}
         render={(ethPrice, fiatPrice) => (
-          <LockDetails>
-            <LockDetail>{lock.name}</LockDetail>
-            <LockDetail bold>
-              {ethPrice}
-              {' '}
+          <>
+            <LockName>{lock.name}</LockName>
+            <LockDetails>
+              <LockDetail bold>
+                {ethPrice}
+                {' '}
 ETH
-            </LockDetail>
-            <LockDetail>
+              </LockDetail>
+              <LockDetail>
 $
-              {fiatPrice}
-            </LockDetail>
-          </LockDetails>
+                {fiatPrice}
+              </LockDetail>
+            </LockDetails>
+          </>
         )}
       />
     </LockBody>
@@ -47,4 +49,9 @@ export default PendingKeyLock
 const Header = styled(LockHeader)`
   background-color: var(--link);
   color: var(--offwhite);
+`
+
+const LockName = styled(LockDetail)`
+  white-space: normal;
+  font-size: 12px;
 `
