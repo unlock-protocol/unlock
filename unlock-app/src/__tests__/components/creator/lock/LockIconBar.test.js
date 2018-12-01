@@ -28,7 +28,7 @@ describe('LockIconBar', () => {
     const withdrawalTransaction = {
       status: 'submitted',
       confirmations: 0,
-      withdrawal: 'lockwithdrawalsubmittedid',
+      withdrawal: '0xbc7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
     }
 
     const store = createUnlockStore({})

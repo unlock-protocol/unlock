@@ -79,7 +79,10 @@ const mapStateToProps = ({ transactions }, { lock }) => {
   const transaction = transactions[lock.transaction]
   let withdrawalTransaction = null
   Object.keys(transactions).forEach(el => {
-    if (transactions[el].withdrawal && transactions[el].withdrawal === lock.id)
+    if (
+      transactions[el].withdrawal &&
+      transactions[el].withdrawal === lock.address
+    )
       withdrawalTransaction = transactions[el]
   })
   return {
