@@ -498,6 +498,7 @@ export default class Web3Service extends EventEmitter {
       createdAt: new Date().getTime(),
       lock: lock.address,
       account: account.address,
+      withdrawal: lock.address,
     }
 
     this.sendTransaction(
