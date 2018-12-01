@@ -31,7 +31,7 @@ export default class Web3Service extends EventEmitter {
             transaction: transaction.hash,
             address: transaction.lock,
           },
-          args.newLock
+          args.newLockAddress
         )
       },
     }
