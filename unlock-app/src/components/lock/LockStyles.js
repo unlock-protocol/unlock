@@ -74,3 +74,8 @@ export const LockDetails = styled.div`
   justify-items: center;
   align-content: center;
 `
+
+export const LockName = styled(LockDetail)`
+  white-space: normal;
+  font-size: 12px;
+`
