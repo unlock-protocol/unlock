@@ -71,7 +71,7 @@ contract Unlock is IUnlock, Ownable, Initializable {
     public
     initializer()
   {
-    owner = _owner;
+    transferOwnership(_owner);
     grossNetworkProduct = 0;
     totalDiscountGranted = 0;
   }

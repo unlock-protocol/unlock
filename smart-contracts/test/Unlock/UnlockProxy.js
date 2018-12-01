@@ -2,28 +2,30 @@ const zos = require('zos-lib')
 const Unlock = artifacts.require('Unlock')
 const UnlockTestV2 = artifacts.require('UnlockTestV2')
 const UnlockTestV3 = artifacts.require('UnlockTestV3')
-const AdminUpgradeabilityProxy = zos.Contracts.getFromNodeModules('zos-lib', 'AdminUpgradeabilityProxy')
+const Zos = require('zos')
+const TestHelper = Zos.TestHelper
 const shared = require('./behaviors/shared')
 const Units = require('ethereumjs-units')
 
 contract('Unlock', function (accounts) {
-  const proxyOwner = accounts[1]
+  const proxyAdmin = accounts[1]
   const unlockOwner = accounts[2]
 
   describe('Proxy Unlock contract', function () {
     beforeEach(async function () {
-      const implV1 = await Unlock.new()
-      const initV1Call = zos.encodeCall('initialize', ['address'], [unlockOwner])
-      this.proxy = await AdminUpgradeabilityProxy.new(implV1.address, initV1Call, { from: proxyOwner })
+      this.project = await TestHelper({ from: proxyAdmin })
+      this.proxy = await this.project.createProxy(Unlock, { initMethod: 'initialize', initArgs: [unlockOwner], initFrom: unlockOwner })
       this.unlock = await Unlock.at(this.proxy.address)
     })
 
     describe('should function as a proxy', function () {
-      shared.shouldBehaveLikeV1(accounts, unlockOwner)
+      // see note regarding _logIndex in Unlock.js
+      let _logIndex = 0
+      shared.shouldBehaveLikeV1(accounts, unlockOwner, _logIndex)
 
       it('should fail if called from the proxy owner\'s account', async function () {
         try {
-          await this.unlock.grossNetworkProduct({ from: proxyOwner })
+          await this.unlock.grossNetworkProduct({ from: proxyAdmin })
         } catch (e) {
           return
         }
@@ -34,13 +36,12 @@ contract('Unlock', function (accounts) {
 
     describe('should function after upgrade', function () {
       beforeEach(async function () {
-        const implV2 = await UnlockTestV2.new()
-        const initV2Call = zos.encodeCall('initializeV2')
-        await this.proxy.upgradeToAndCall(implV2.address, initV2Call, { from: proxyOwner })
+        await this.project.upgradeProxy(this.proxy, UnlockTestV2, { initMethod: 'initializeV2', initArgs: [], initFrom: unlockOwner })
         this.unlock = await UnlockTestV2.at(this.proxy.address)
       })
-
-      shared.shouldBehaveLikeV1(accounts, unlockOwner)
+      // see note regarding _logIndex in Unlock.js
+      let _logIndex = 2
+      shared.shouldBehaveLikeV1(accounts, unlockOwner, _logIndex)
 
       it('should allow new functions', async function () {
         const results = await this.unlock.testNewMethod()
@@ -62,10 +63,8 @@ contract('Unlock', function (accounts) {
         , {
           from: accounts[0]
         })
-      const resultsBefore = await this.unlock.locks(transaction.logs[0].args.newLockAddress)
-      const implV2 = await UnlockTestV2.new()
-      const initV2Call = zos.encodeCall('initializeV2')
-      await this.proxy.upgradeToAndCall(implV2.address, initV2Call, { from: proxyOwner })
+      const resultsBefore = await this.proxy.locks(transaction.logs[0].args.newLockAddress)
+      await this.project.upgradeProxy(this.proxy, UnlockTestV2, { initMethod: 'initializeV2', initArgs: [], initFrom: unlockOwner })
       this.unlock = await UnlockTestV2.at(this.proxy.address)
       const resultsAfter = await this.unlock.locks(transaction.logs[0].args.newLockAddress)
       assert.equal(JSON.stringify(resultsAfter), JSON.stringify(resultsBefore))
@@ -73,9 +72,7 @@ contract('Unlock', function (accounts) {
 
     describe('should allow you to make significant changes to the contract', function () {
       beforeEach(async function () {
-        const implV3 = await UnlockTestV3.new()
-        const initV3Call = zos.encodeCall('initializeV3')
-        await this.proxy.upgradeToAndCall(implV3.address, initV3Call, { from: proxyOwner })
+        await this.project.upgradeProxy(this.proxy, UnlockTestV3, { initMethod: 'initializeV3', initArgs: [], initFrom: unlockOwner })
         this.unlock = await UnlockTestV3.at(this.proxy.address)
       })
 
