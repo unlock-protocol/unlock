@@ -21,12 +21,12 @@ const store = createUnlockStore({
     withdrawalconfirmingid: {
       status: 'mined',
       confirmations: 2,
-      withdrawal: 'lockwithdrawalconfirmingid',
+      withdrawal: 'withdrawalconfirmingaddress',
     },
     withdrawalsubmittedid: {
       status: 'submitted',
       confirmations: 0,
-      withdrawal: 'lockwithdrawalsubmittedid',
+      withdrawal: 'withdrawalsubmittedaddress',
     },
   },
   keys: {
@@ -114,7 +114,7 @@ storiesOf('CreatorLock', CreatorLock)
       expirationDuration: '172800',
       maxNumberOfKeys: '240',
       outstandingKeys: '3',
-      address: '0xbc7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
+      address: 'withdrawalsubmittedaddress',
       transaction: 'deployedid',
     }
     return <CreatorLock lock={lock} />
@@ -126,7 +126,7 @@ storiesOf('CreatorLock', CreatorLock)
       expirationDuration: '172800',
       maxNumberOfKeys: '240',
       outstandingKeys: '3',
-      address: '0xba7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
+      address: 'withdrawalconfirmingaddress',
       transaction: 'deployedid',
     }
     return <CreatorLock lock={lock} />
