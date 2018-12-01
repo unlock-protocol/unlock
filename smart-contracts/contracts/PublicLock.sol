@@ -119,18 +119,14 @@ contract PublicLock is ILockPublic {
     uint _keyPrice,
     uint _maxNumberOfKeys
   )
-    public {
-      unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract. (TODO: handle upgrades?)
-      owner = _owner;
-      expirationDuration = _expirationDuration;
-      keyPrice = _keyPrice;
-      if (_maxNumberOfKeys == uint256(-1)) {
-        maxNumberOfKeys = uint256(-1);
-      } else {
-        maxNumberOfKeys = _maxNumberOfKeys;
-      }
-
-    }
+    public
+  {
+    unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract.
+    transferOwnership(_owner);
+    expirationDuration = _expirationDuration;
+    keyPrice = _keyPrice;
+    maxNumberOfKeys = _maxNumberOfKeys;
+  }
 
   /**
   * @dev Purchase function, public version, with no referrer.
@@ -225,6 +221,7 @@ contract PublicLock is ILockPublic {
   {
     uint256 balance = address(this).balance;
     require(balance > 0, "Not enough funds");
+    address owner = Ownable.owner();
     owner.transfer(balance);
   }
 
