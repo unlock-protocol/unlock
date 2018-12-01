@@ -8,6 +8,7 @@ import {
   LockDetails,
   TransactionStatus,
   LockDetail,
+  LockName,
 } from './LockStyles'
 import BalanceProvider from '../helpers/BalanceProvider'
 
@@ -49,9 +50,4 @@ export default PendingKeyLock
 const Header = styled(LockHeader)`
   background-color: var(--link);
   color: var(--offwhite);
-`
-
-const LockName = styled(LockDetail)`
-  white-space: normal;
-  font-size: 12px;
 `
