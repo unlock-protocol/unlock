@@ -1,8 +1,8 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import Logo from '../../components/interface/Logo'
+import { RoundedLogo } from '../../components/interface/Logo'
 
-storiesOf('Logo', Logo)
-  .add('default size', () => <Logo />)
-  .add('large size', () => <Logo size="120px" />)
-  .add('small size', () => <Logo size="28px" />)
+storiesOf('Logo', RoundedLogo)
+  .add('default size', () => <RoundedLogo />)
+  .add('large size', () => <RoundedLogo size="120px" />)
+  .add('small size', () => <RoundedLogo size="28px" />)
