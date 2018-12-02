@@ -1,6 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`withConfig High Order Component when the current network is not in the list of required networks should show a message indicating that the network needs to be changed 1`] = `
+.c2 {
+  background-color: var(--brand);
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
+}
+
+.c2 > svg {
+  fill: white;
+}
+
 .c8 {
   background-color: var(--grey);
   cursor: pointer;
@@ -173,17 +184,6 @@ exports[`withConfig High Order Component when the current network is not in the 
   text-align: center;
 }
 
-.c2 {
-  background-color: var(--pink);
-  height: 56px;
-  width: 56px;
-  border-radius: 50%;
-}
-
-.c2 > svg {
-  fill: white;
-}
-
 .c0 {
   display: grid;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
@@ -307,7 +307,7 @@ exports[`withConfig High Order Component when the current network is not in the 
         >
           <title />
           <path
-            d="M33.467 30.455c0 .365-.02.733-.07 1.095-.434 3.2-3.945 5.285-7.054 4.192-2.274-.799-3.7-2.769-3.7-5.134-.002-1.62-.002-3.241-.002-4.862h10.828c0 1.57 0 3.139-.002 4.709m6.719-14.07V16H33.41v6.61H22.58l.001-6.228v-.374h-6.753c-.006.08-.014.139-.014.197 0 2.135-.005 4.27-.008 6.405H14v3.14h1.806c.001 1.7.006 3.4.02 5.1.03 3.36 1.456 6.143 4.099 8.243 3.811 3.029 8.114 3.673 12.708 2.016 4.35-1.569 7.612-5.66 7.563-10.643a525.27 525.27 0 0 1-.023-4.716H42v-3.14h-1.825c.004-2.075.01-4.15.01-6.225"
+            d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
           />
         </svg>
       </div>
@@ -339,6 +339,7 @@ exports[`withConfig High Order Component when the current network is not in the 
               About
             </title>
             <path
+              clipRule="evenodd"
               d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
               fillRule="evenodd"
             />
@@ -361,11 +362,8 @@ exports[`withConfig High Order Component when the current network is not in the 
             <title />
             <path
               clipRule="evenodd"
-              d="M13 5h-2a2 2 0 0 0-2 2H6a1 1 0 0 0-1 1v2h14V8a1 1 0 0 0-1-1h-3a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4z"
+              d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
               fillRule="evenodd"
-            />
-            <path
-              d="M5 11h14v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-5z"
             />
           </svg>
           <small
@@ -386,7 +384,6 @@ exports[`withConfig High Order Component when the current network is not in the 
             <title />
             <path
               d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-              fillRule="evenodd"
             />
           </svg>
           <small
@@ -407,7 +404,6 @@ exports[`withConfig High Order Component when the current network is not in the 
           size="48px"
         >
           <svg
-            fill="none"
             viewBox="0 0 56 42"
           >
             <title>
@@ -426,7 +422,6 @@ exports[`withConfig High Order Component when the current network is not in the 
           size="48px"
         >
           <svg
-            fill="none"
             viewBox="0 0 58 32"
           >
             <title>
@@ -455,6 +450,7 @@ exports[`withConfig High Order Component when the current network is not in the 
               About
             </title>
             <path
+              clipRule="evenodd"
               d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
               fillRule="evenodd"
             />
@@ -478,11 +474,8 @@ exports[`withConfig High Order Component when the current network is not in the 
             <title />
             <path
               clipRule="evenodd"
-              d="M13 5h-2a2 2 0 0 0-2 2H6a1 1 0 0 0-1 1v2h14V8a1 1 0 0 0-1-1h-3a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4z"
+              d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
               fillRule="evenodd"
-            />
-            <path
-              d="M5 11h14v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-5z"
             />
           </svg>
           <small
@@ -504,7 +497,6 @@ exports[`withConfig High Order Component when the current network is not in the 
             <title />
             <path
               d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-              fillRule="evenodd"
             />
           </svg>
           <small

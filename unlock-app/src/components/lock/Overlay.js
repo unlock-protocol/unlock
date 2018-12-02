@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import Logo from '../interface/Logo'
+import { RoundedLogo } from '../interface/Logo'
 import Lock from './Lock'
 import UnlockPropTypes from '../../propTypes'
 import { hideModal } from '../../actions/modal'
@@ -19,7 +19,7 @@ export const Overlay = ({ locks, hideModal }) => (
         ))}
       </Locks>
       <Colophon>
-        <Logo size="28px" />
+        <RoundedLogo size="28px" />
         <p>Powered by Unlock</p>
       </Colophon>
     </Banner>

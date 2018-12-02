@@ -6,6 +6,7 @@ import { createGlobalStyle } from 'styled-components'
 
 const globalStyle = `
   :root {
+    --brand: #ff6771;
     --white: #ffffff;
     --red: #ed663a;
     --offwhite: #f6f6f6;

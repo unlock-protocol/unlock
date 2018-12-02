@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
-import Svg from './svg'
+import { WordMarkLogo } from './Logo'
 import Buttons from './buttons/layout'
 import { ButtonLink } from './buttons/Button'
 
@@ -28,7 +28,11 @@ export default class Header extends React.PureComponent {
         {!!this.forContent && (
           <Link href="/">
             <a>
-              <Svg.UnlockWordMark height="28px" width="100%" name="Unlock" />
+              <WordMarkLogo
+                viewBox="0 0 1200 256"
+                height="28px"
+                name="Unlock"
+              />
             </a>
           </Link>
         )}

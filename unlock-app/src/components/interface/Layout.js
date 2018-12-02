@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Link from 'next/link'
 import Header from './Header'
 import Footer from './Footer'
-import Logo from './Logo'
+import { RoundedLogo } from './Logo'
 
 export default function Layout({ forContent, title, children }) {
   return (
@@ -13,7 +13,7 @@ export default function Layout({ forContent, title, children }) {
         {!forContent && (
           <Link href="/">
             <a>
-              <Logo />
+              <RoundedLogo />
             </a>
           </Link>
         )}
