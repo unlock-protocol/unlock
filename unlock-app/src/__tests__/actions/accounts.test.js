@@ -1,8 +1,8 @@
 import {
   setAccount,
-  resetAccountBalance,
+  updateAccount,
   SET_ACCOUNT,
-  RESET_ACCOUNT_BALANCE,
+  UPDATE_ACCOUNT,
 } from '../../actions/accounts'
 
 describe('accounts actions', () => {
@@ -18,13 +18,15 @@ describe('accounts actions', () => {
     expect(setAccount(account)).toEqual(expectedAction)
   })
 
-  it('should create an action to update an account\'s balance', () => {
-    const balance = '1337'
+  it('should create an action to update an account', () => {
+    const update = {
+      balance: '1337',
+    }
 
     const expectedAction = {
-      type: RESET_ACCOUNT_BALANCE,
-      balance,
+      type: UPDATE_ACCOUNT,
+      update,
     }
-    expect(resetAccountBalance(balance)).toEqual(expectedAction)
+    expect(updateAccount(update)).toEqual(expectedAction)
   })
 })
