@@ -10,7 +10,7 @@ import {
   lockDeployed,
 } from '../actions/lock'
 import { PURCHASE_KEY, updateKey } from '../actions/key'
-import { SET_ACCOUNT, setAccount } from '../actions/accounts'
+import { SET_ACCOUNT, setAccount, updateAccount } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
 import { SET_PROVIDER } from '../actions/provider'
@@ -35,6 +35,10 @@ export default function lockMiddleware({ getState, dispatch }) {
     dispatch(setAccount(account))
   })
 
+  web3Service.on('account.updated', (account, update) => {
+    dispatch(updateAccount(update))
+  })
+
   /**
    * When a lock was saved, we update it, as well as its transaction and
    * refresh the balance of its owner and refresh its content
@@ -47,7 +51,7 @@ export default function lockMiddleware({ getState, dispatch }) {
       })
     )
     web3Service.getLock(lock)
-    web3Service.refreshOrGetAccount(getState().account)
+    web3Service.refreshAccountBalance(getState().account)
   })
 
   /**
@@ -75,7 +79,7 @@ export default function lockMiddleware({ getState, dispatch }) {
     } else {
       web3Service.getLock(getState().locks[lockId])
     }
-    web3Service.refreshOrGetAccount(getState().account)
+    web3Service.refreshAccountBalance(getState().account)
   })
 
   web3Service.on('key.updated', (key, update) => {
