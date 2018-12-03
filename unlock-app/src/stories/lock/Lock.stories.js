@@ -101,3 +101,21 @@ storiesOf('Lock', Lock)
       />
     )
   })
+  .add('with a balance', () => {
+    const lockWithBalance = {
+      address: '0x123',
+      name: 'Monthly',
+      keyPrice: '1203120301203013000',
+      fiatPrice: 240.38,
+      balance: 5,
+    }
+    return (
+      <Lock
+        lock={lock}
+        transaction={null}
+        lockKey={null}
+        purchaseKey={purchaseKey}
+        config={config}
+      />
+    )
+  })
