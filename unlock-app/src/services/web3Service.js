@@ -282,30 +282,30 @@ export default class Web3Service extends EventEmitter {
     contractAbi,
     transactionReceipt
   ) {
-    transactionReceipt.logs.forEach(log => {
-      // Home made event handling since this is not handled correctly by web3 :/
-      const abiEvents = contractAbi.filter(item => {
-        return item.type === 'event'
-      })
+    // Home made event handling since this is not handled correctly by web3 :/
+    const abiEvents = contractAbi.filter(item => {
+      return item.type === 'event'
+    })
 
-      // For each event, let's look at the inputs
+    transactionReceipt.logs.forEach(log => {
+      // For each log, let's find which event it is
       abiEvents.forEach(event => {
+        const encodedEvent = this.web3.eth.abi.encodeEventSignature(event)
         let topics = log.topics
-        if (event.name) {
-          // https://web3js.readthedocs.io/en/1.0/web3-eth-abi.html#decodelog
-          // topics - Array: An array with the index parameter topics of the log, without the topic[0] if its a non-anonymous event, otherwise with topic[0].
-          topics = log.topics.slice(1)
-        }
+
+        if (encodedEvent !== topics[0]) return
+
         const decoded = this.web3.eth.abi.decodeLog(
           event.inputs,
           log.data,
-          topics
+          log.topics.slice(1)
         )
 
         const args = event.inputs.reduce((args, input) => {
           args[input.name] = decoded[input.name]
           return args
         }, {})
+
         this.emitContractEvent(transaction, event.name, args)
       })
     })
