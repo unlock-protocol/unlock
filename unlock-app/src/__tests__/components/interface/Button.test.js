@@ -2,7 +2,9 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 import 'jest-dom/extend-expect'
 
-import Button from '../../../components/interface/buttons/Button'
+import Button, {
+  DisabledButton,
+} from '../../../components/interface/buttons/Button'
 
 jest.mock('next/link', () => {
   return ({ children }) => children
@@ -51,5 +53,21 @@ describe('Button', () => {
 
     expect(buttonClicked).toEqual(true)
     expect(wrapperClicked).toEqual(false)
+  })
+  it('should not run an action from a disabled button', () => {
+    let buttonClicked = false
+
+    const buttonAction = () => {
+      buttonClicked = true
+    }
+
+    let wrapper = rtl.render(
+      <DisabledButton action={buttonAction}>Click me</DisabledButton>
+    )
+
+    let button = wrapper.getByText('Click me')
+    rtl.fireEvent.click(button)
+
+    expect(buttonClicked).toEqual(false)
   })
 })
