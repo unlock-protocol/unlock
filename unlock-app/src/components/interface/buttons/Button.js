@@ -39,15 +39,68 @@ LayoutButton.propTypes = {
 
 LayoutButton.defaultProps = {
   children: null,
+  disabled: false,
   backgroundColor: 'var(--grey)',
   backgroundHoverColor: 'var(--link)',
   fillColor: 'white',
   fillHoverColor: 'white',
 }
 
-export const BaseButton = ({ href, label, children, action, ...props }) => {
+export const DisabledButton = ({
+  children,
+  backgroundColor,
+  backgroundHoverColor,
+  fillColor,
+  fillHoverColor,
+  ...props
+}) => {
+  return (
+    <BaseButton
+      backgroundColor={backgroundColor}
+      backgroundHoverColor={backgroundHoverColor}
+      fillColor={fillColor}
+      fillHoverColor={fillHoverColor}
+      {...props}
+    >
+      {children}
+    </BaseButton>
+  )
+}
+
+DisabledButton.propTypes = {
+  children: PropTypes.node,
+  backgroundColor: PropTypes.string,
+  backgroundHoverColor: PropTypes.string,
+  fillColor: PropTypes.string,
+  fillHoverColor: PropTypes.string,
+  disabled: PropTypes.bool,
+}
+
+DisabledButton.defaultProps = {
+  children: null,
+  disabled: true,
+  backgroundColor: 'white',
+  backgroundHoverColor: 'white',
+  fillColor: 'var(--lightgrey)',
+  fillHoverColor: 'var(--lightgrey)',
+}
+
+export const BaseButton = ({
+  href,
+  label,
+  children,
+  action,
+  disabled,
+  ...props
+}) => {
   const button = (
-    <ButtonLink href={href} onClick={e => clickAction(e, action)} {...props}>
+    <ButtonLink
+      href={href}
+      onClick={e => {
+        if (!disabled) return clickAction(e, action)
+      }}
+      {...props}
+    >
       {children}
       {label && <Label>{label}</Label>}
     </ButtonLink>
