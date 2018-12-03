@@ -3,23 +3,33 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import Svg from '../../svg'
-import Button from '../Button'
+import Button, { DisabledButton } from '../Button'
 import UnlockPropTypes from '../../../../propTypes'
 import { withdrawFromLock } from '../../../../actions/lock'
 
-export const Withdraw = ({ lock, withdraw, account, ...props }) => (
-  <Button
-    title="Withdraw balance"
-    action={() => {
-      if (lock.balance > 0) {
-        withdraw(lock, account)
-      }
-    }}
-    {...props}
-  >
-    <Svg.Withdraw name="Withdraw" />
-  </Button>
-)
+export const Withdraw = ({ lock, withdraw, account, ...props }) => {
+  if (lock.balance > 0) {
+    return (
+      <Button
+        title="Withdraw balance"
+        action={() => {
+          if (lock.balance > 0) {
+            withdraw(lock, account)
+          }
+        }}
+        {...props}
+      >
+        <Svg.Withdraw name="Withdraw" />
+      </Button>
+    )
+  } else {
+    return (
+      <DisabledButton title="Withdraw balance" {...props}>
+        <Svg.Withdraw name="Withdraw" />
+      </DisabledButton>
+    )
+  }
+}
 
 Withdraw.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
