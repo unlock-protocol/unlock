@@ -56,24 +56,14 @@ describe('Button', () => {
   })
   it('should not run an action from a disabled button', () => {
     let buttonClicked = false
-    let wrapperClicked = false
 
     const buttonAction = () => {
       buttonClicked = true
     }
-    const wrapperAction = () => {
-      wrapperClicked = false
-    }
 
     // role and onKeyDown action here are to comply with accessibility rules
     let wrapper = rtl.render(
-      <div
-        onClick={wrapperAction}
-        onKeyDown={wrapperAction}
-        role="presentation"
-      >
-        <DisabledButton action={buttonAction}>Click me</DisabledButton>
-      </div>
+      <DisabledButton action={buttonAction}>Click me</DisabledButton>
     )
 
     let button = wrapper.getByText('Click me')

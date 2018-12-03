@@ -39,7 +39,6 @@ LayoutButton.propTypes = {
 
 LayoutButton.defaultProps = {
   children: null,
-  disabled: false,
   backgroundColor: 'var(--grey)',
   backgroundHoverColor: 'var(--link)',
   fillColor: 'white',

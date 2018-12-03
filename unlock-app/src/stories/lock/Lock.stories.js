@@ -111,7 +111,7 @@ storiesOf('Lock', Lock)
     }
     return (
       <Lock
-        lock={lock}
+        lock={lockWithBalance}
         transaction={null}
         lockKey={null}
         purchaseKey={purchaseKey}
