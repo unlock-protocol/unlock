@@ -829,7 +829,7 @@ describe('Web3Service', () => {
         }
       })
 
-      it.only('should invoke sendTransaction with the right params', () => {
+      it('should invoke sendTransaction with the right params', () => {
         expect.assertions(1)
 
         web3Service.sendTransaction = jest.fn((transaction, args, cb) => {
@@ -868,7 +868,7 @@ describe('Web3Service', () => {
         web3Service.on('key.saved', key => {
           expect(key).toMatchObject({
             id: 'abc',
-            key: lock.address,
+            lock: lock.address,
             owner: owner.address,
           })
           expect(web3Service.getKey).toHaveBeenCalledWith(key)

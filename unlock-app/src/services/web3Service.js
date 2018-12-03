@@ -85,6 +85,18 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
+   * Refreshed the balance of the account
+   * @param {*} account
+   */
+  refreshAccountBalance(account) {
+    return this.getAddressBalance(account.address).then(balance => {
+      this.emit('account.updated', account, {
+        balance,
+      })
+    })
+  }
+
+  /**
    * Function which refreshes the account supplied or loads one from the local node or creates
    * one.
    * @param {*} account
