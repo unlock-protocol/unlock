@@ -61,7 +61,6 @@ describe('Button', () => {
       buttonClicked = true
     }
 
-    // role and onKeyDown action here are to comply with accessibility rules
     let wrapper = rtl.render(
       <DisabledButton action={buttonAction}>Click me</DisabledButton>
     )
