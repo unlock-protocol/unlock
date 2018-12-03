@@ -1,12 +1,12 @@
 export const SET_ACCOUNT = 'SET_ACCOUNT'
-export const RESET_ACCOUNT_BALANCE = 'RESET_ACCOUNT_BALANCE'
+export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT'
+
+export const updateAccount = update => ({
+  type: UPDATE_ACCOUNT,
+  update,
+})
 
 export const setAccount = account => ({
   type: SET_ACCOUNT,
   account,
-})
-
-export const resetAccountBalance = balance => ({
-  type: RESET_ACCOUNT_BALANCE,
-  balance,
 })
