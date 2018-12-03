@@ -24,15 +24,7 @@ export const Withdraw = ({ lock, withdraw, account, ...props }) => {
     )
   } else {
     return (
-      <DisabledButton
-        title="Withdraw balance"
-        action={() => {
-          if (lock.balance > 0) {
-            withdraw(lock, account)
-          }
-        }}
-        {...props}
-      >
+      <DisabledButton title="Withdraw balance" {...props}>
         <Svg.Withdraw name="Withdraw" />
       </DisabledButton>
     )
