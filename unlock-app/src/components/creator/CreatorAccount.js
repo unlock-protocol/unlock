@@ -9,8 +9,9 @@ import Buttons from '../interface/buttons/lock'
 import Balance from '../helpers/Balance'
 
 export function CreatorAccount({ account, network }) {
-  const networkName =
-    ETHEREUM_NETWORKS_NAMES[network.name[0]] || 'Unknown Network'
+  const networkName = ETHEREUM_NETWORKS_NAMES[network.name]
+    ? ETHEREUM_NETWORKS_NAMES[network.name][0]
+    : 'Unknown Network'
   // Using https://github.com/MetaMask/metamask-extension/blob/develop/ui/lib/icon-factory.js#L60 to make sure jazzicons are consistent between Metamask and unlock.
   const iconSeed = parseInt(account.address.slice(2, 10), 16)
 
