@@ -33,6 +33,7 @@ export default function lockMiddleware({ getState, dispatch }) {
    */
   web3Service.on('account.changed', account => {
     dispatch(setAccount(account))
+    web3Service.getPastUnlockTransactionsForUser(account.address)
   })
 
   web3Service.on('account.updated', (account, update) => {

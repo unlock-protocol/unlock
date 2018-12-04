@@ -90,6 +90,14 @@ const ethCallAndFail = (data, to, error) => {
   return jsonRpcRequest('eth_call', [{ data, to }, 'latest'], undefined, error)
 }
 
+const ethGetLogs = (fromBlock, toBlock, topics, address, result) => {
+  return jsonRpcRequest(
+    'eth_getLogs',
+    [{ fromBlock, toBlock, topics, address }],
+    result
+  )
+}
+
 nock.emitter.on('no match', function(x, y, body) {
   if (debug) {
     console.log('DID NOT MATCH')
@@ -278,6 +286,56 @@ describe('Web3Service', () => {
 
           return web3Service.refreshOrGetAccount(account)
         })
+      })
+    })
+
+    describe('getPastUnlockTransactionsForUser', () => {
+      it('should getPastEvents for the Unlock contract', done => {
+        expect.assertions(1)
+        const events = [
+          {
+            logIndex: '0x2',
+            transactionIndex: '0x0',
+            transactionHash:
+              '0x8a7c22fe9bcb5ee44c06410c584139f96a2f5cff529866bbed615986100eb6bd',
+            blockHash:
+              '0xf42e7b871541fe9f4b705633a8d5fd5e36899054ea4db817ff533d5ab1015e99',
+            blockNumber: '0xcc9',
+            address: '0x3f313221a2af33fd8a430891291370632cb471bf',
+            data: '0x00',
+            topics: [
+              '0x01017ed19df0c7f8acc436147b234b09664a9fb4797b4fa3fb9e599c2eb67be7',
+              '0x000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+              '0x000000000000000000000000dc069c4d26510749bea2057c4db43ba8efe4d23a',
+            ],
+            type: 'mined',
+          },
+        ]
+
+        const userAddress = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
+        ethGetLogs(
+          '0x0',
+          'latest',
+          [
+            '0x01017ed19df0c7f8acc436147b234b09664a9fb4797b4fa3fb9e599c2eb67be7', // NewLock
+            `0x000000000000000000000000${userAddress.substring(2)}`,
+            null,
+          ],
+          '0x3f313221a2af33fd8a430891291370632cb471bf',
+          events
+        )
+
+        web3Service.once('transaction.new', transaction => {
+          expect(transaction.hash).toEqual(
+            '0x8a7c22fe9bcb5ee44c06410c584139f96a2f5cff529866bbed615986100eb6bd'
+          )
+          done()
+        })
+
+        web3Service.getTransaction = jest.fn()
+        web3Service.getPastUnlockTransactionsForUser(
+          Web3Utils.toChecksumAddress(userAddress)
+        )
       })
     })
 

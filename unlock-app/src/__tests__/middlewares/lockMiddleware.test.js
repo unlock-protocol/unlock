@@ -103,10 +103,19 @@ beforeEach(() => {
 })
 
 describe('Lock middleware', () => {
-  it('it should handle account.changed events triggered by the web3Service', () => {
+  it('it should handle account.changed events triggered by the web3Service and retrieve the users past transactions', () => {
+    expect.assertions(2)
     const { store } = create()
-    const account = {}
+    const address = '0x123'
+    const account = {
+      address,
+    }
+    mockWeb3Service.getPastUnlockTransactionsForUser = jest.fn()
+
     mockWeb3Service.emit('account.changed', account)
+    expect(
+      mockWeb3Service.getPastUnlockTransactionsForUser
+    ).toHaveBeenCalledWith(address)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: SET_ACCOUNT,
