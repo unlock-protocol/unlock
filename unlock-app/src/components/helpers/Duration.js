@@ -7,11 +7,18 @@ import { durationsAsTextFromSeconds } from '../../utils/durations'
  * @param {*} seconds: time in seconds
  */
 export function Duration({ seconds }) {
+  if (seconds === null) {
+    return <span> - </span>
+  }
   return <span>{durationsAsTextFromSeconds(seconds)}</span>
 }
 
 Duration.propTypes = {
-  seconds: PropTypes.number.isRequired,
+  seconds: PropTypes.number,
+}
+
+Duration.defaultProps = {
+  seconds: null,
 }
 
 export default Duration
