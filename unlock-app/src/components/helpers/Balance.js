@@ -43,7 +43,7 @@ Balance.propTypes = {
 }
 
 Balance.defaultProps = {
-  amount: '0',
+  amount: null,
   unit: 'wei',
   convertCurrency: true,
 }

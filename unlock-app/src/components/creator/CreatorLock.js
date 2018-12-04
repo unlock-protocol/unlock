@@ -9,6 +9,21 @@ import KeyList from './lock/KeyList'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
 
+const LockKeysNumbers = ({ lock }) => (
+  <LockKeys>
+    {lock.outstandingKeys !== null &&
+    lock.maxNumberOfKeys !== null &&
+    typeof lock.outstandingKeys !== 'undefined' &&
+    typeof lock.maxNumberOfKeys !== 'undefined'
+      ? `${lock.outstandingKeys}/${lock.maxNumberOfKeys}`
+      : ' - '}
+  </LockKeys>
+)
+
+LockKeysNumbers.propTypes = {
+  lock: UnlockPropTypes.lock.isRequired,
+}
+
 export class CreatorLock extends React.Component {
   constructor(props, context) {
     super(props, context)
@@ -40,8 +55,6 @@ export class CreatorLock extends React.Component {
 
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
-    let outstandingKeys = lock.outstandingKeys || 0
-
     return (
       <LockRow onClick={this.toggleKeys}>
         <Icon lock={lock} />
@@ -53,11 +66,7 @@ export class CreatorLock extends React.Component {
         <LockDuration>
           <Duration seconds={lock.expirationDuration} />
         </LockDuration>
-        <LockKeys>
-          {outstandingKeys}
-/
-          {lock.maxNumberOfKeys}
-        </LockKeys>
+        <LockKeysNumbers lock={lock} />
         <Balance amount={lock.keyPrice} />
         <Balance amount={lock.balance} />
         <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />

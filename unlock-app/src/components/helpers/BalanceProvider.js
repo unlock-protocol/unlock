@@ -10,6 +10,9 @@ import { formatEth, formatCurrency } from '../../selectors/currency'
  * This is useful to display balance in different ways.
  */
 export const BalanceProvider = ({ amount, unit, conversion, render }) => {
+  if (typeof amount === 'undefined' || amount === null) {
+    return render(' - ', ' - ') || null
+  }
   let currency
   if (unit !== 'dollars' && unit !== 'eth') {
     const inWei = Web3Utils.toWei(amount || '0', unit)
@@ -35,7 +38,7 @@ BalanceProvider.propTypes = {
 }
 
 BalanceProvider.defaultProps = {
-  amount: '0',
+  amount: null,
   unit: 'wei',
   conversion: { USD: undefined },
   convertCurrency: true,

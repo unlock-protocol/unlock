@@ -19,6 +19,29 @@ describe('BalanceProvider Component', () => {
       />
     )
   }
+  it('renders with - when amount is null (probably unset)', () => {
+    renderIt({
+      amount: null,
+      unit: 'eth',
+      conversion: {},
+      render: (ethValue, fiatValue) => {
+        expect(ethValue).toEqual(' - ')
+        expect(fiatValue).toEqual(' - ')
+      },
+    })
+  })
+
+  it('renders with - when amount is undefined (probably loading)', () => {
+    renderIt({
+      amount: undefined,
+      unit: 'eth',
+      conversion: {},
+      render: (ethValue, fiatValue) => {
+        expect(ethValue).toEqual(' - ')
+        expect(fiatValue).toEqual(' - ')
+      },
+    })
+  })
 
   it('USD conversion data is not available', () => {
     renderIt({
