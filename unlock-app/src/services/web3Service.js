@@ -193,6 +193,38 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
+   * This function is able to retrieve past transaction sent by a user to the Unlock smart contract
+   * if they triggered events
+   * This is helpful because it means we can recover state for a given user from the chain
+   * @param {*} address
+   */
+  getPastUnlockTransactionsForUser(address) {
+    const unlock = new this.web3.eth.Contract(
+      UnlockContract.abi,
+      this.unlockContractAddress
+    )
+    unlock.getPastEvents(
+      'NewLock',
+      {
+        fromBlock: 0, // TODO start only when the smart contract was deployed?
+        toBlock: 'latest',
+        filter: {
+          lockOwner: address,
+        },
+      },
+      (error, events = []) => {
+        events.forEach(event => {
+          const transaction = {
+            hash: event.transactionHash,
+          }
+          this.emit('transaction.new', transaction)
+          this.getTransaction(transaction)
+        })
+      }
+    )
+  }
+
+  /**
    * Creates a lock on behalf of the user `from`.
    * @param {PropTypes.lock} lock
    */
@@ -312,8 +344,10 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
-   * This refreshes a transaction by its hash
+   * This refreshes a transaction by its hash.
+   * It will only process the transaction if the filter function returns true
    * @param {Transaction} transaction
+   * @param {Function} filter
    */
   getTransaction(transaction) {
     Promise.all([
