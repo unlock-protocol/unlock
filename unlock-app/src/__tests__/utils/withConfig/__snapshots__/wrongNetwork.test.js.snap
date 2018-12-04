@@ -521,17 +521,7 @@ exports[`withConfig High Order Component when the current network is not in the 
           Network mismatch
         </h1>
         <p>
-          You’re currently on the
-           
-          Rinkeby
-           
-          network but you need to be on the
-           
-          dev
-           
-          network. Please switch to
-          dev
-          .
+          You’re currently on the Rinkeby network but you need to be on the dev network. Please switch to dev.
         </p>
       </div>
     </section>

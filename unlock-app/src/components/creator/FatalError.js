@@ -84,17 +84,7 @@ export const WrongNetwork = ({ currentNetwork, requiredNetwork }) => (
     illustration="/static/images/illustrations/network.svg"
   >
     <p>
-      You’re currently on the 
-      {' '}
-      {currentNetwork}
-      {' '}
-network but you need to be on the
-      {' '}
-      {requiredNetwork}
-      {' '}
-network. Please switch to
-      {requiredNetwork}
-.
+      {`You’re currently on the ${currentNetwork} network but you need to be on the ${requiredNetwork} network. Please switch to ${requiredNetwork}.`}
     </p>
   </DefaultError>
 )
