@@ -18,6 +18,7 @@ contract PublicLock is ILockPublic {
 
   // The struct for a key
   struct Key {
+    uint keyId;
     uint expirationTimestamp;
     bytes data; // Note: This can be expensive?
   }
@@ -43,7 +44,7 @@ contract PublicLock is ILockPublic {
   // Each owner can have at most exactly one key
   // TODO: could we use public here? (this could be confusing though because it getter will
   // return 0 values when missing a key)
-  mapping (address => Key) internal keyByOwner;
+  mapping (address => Key[]) internal keysByOwner;
 
   // Addresses of owners are also stored in an array.
   // Addresses are never removed by design to avoid abuses around referals
@@ -65,9 +66,13 @@ contract PublicLock is ILockPublic {
   modifier hasKey(
     address _owner
   ) {
-    Key storage key = keyByOwner[_owner];
+    Key[] storage keys = keysByOwner[_owner];
     require(
-      key.expirationTimestamp > 0, "No such key"
+      keys.length > 0, "User does not have a key"
+    );
+
+    require(
+      keys[0].expirationTimestamp > 0, "No such key"
     );
     _;
   }
@@ -76,9 +81,13 @@ contract PublicLock is ILockPublic {
   modifier hasValidKey(
     address _owner
   ) {
-    Key storage key = keyByOwner[_owner];
+    Key[] storage keys = keysByOwner[_owner];
     require(
-      key.expirationTimestamp > now, "Key is not valid"
+      keys.length > 0, "User does not have a key"
+    );
+
+    require(
+      keys[0].expirationTimestamp > now, "Key is not valid"
     );
     _;
   }
@@ -178,27 +187,27 @@ contract PublicLock is ILockPublic {
   {
     require(_recipient != address(0));
 
-    uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
+    require(keysByOwner[_from].length > 0, "User does not have a key");
+
+    Key storage fromKey = keysByOwner[_from][keysByOwner[_from].length];
+    Key storage newKey;
+
+    uint previousExpiration = fromKey.expirationTimestamp;
 
     if (previousExpiration == 0) {
       // The recipient did not have a key previously
       owners.push(_recipient);
     }
 
-    if (previousExpiration <= now) {
-      // The recipient did not have a key, or had a key but it expired. The new expiration is the
-      // sender's key expiration
-      keyByOwner[_recipient].expirationTimestamp = keyByOwner[_from].expirationTimestamp;
-    } else {
-      // The recipient has a non expired key. We just add them the corresponding remaining time
-      keyByOwner[_recipient].expirationTimestamp =
-        keyByOwner[_from].expirationTimestamp + previousExpiration - now;
-    }
+    newKey.expirationTimestamp = fromKey.expirationTimestamp;
+
     // Overwite data in all cases
-    keyByOwner[_recipient].data = keyByOwner[_from].data;
+    newKey.data = fromKey.data;
 
     // Effectively expiring the key for the previous owner
-    keyByOwner[_from].expirationTimestamp = now;
+    keysByOwner[_from][keysByOwner[_from].length].expirationTimestamp = now;
+
+    keysByOwner[_recipient].push(newKey);
 
     // trigger event
     emit Transfer(
@@ -268,7 +277,7 @@ contract PublicLock is ILockPublic {
     hasKey(_owner)
     returns (uint256)
   {
-    return keyByOwner[_owner].expirationTimestamp > 0 ? 1 : 0;
+    return keysByOwner[_owner].length;
   }
 
   /**
@@ -315,13 +324,14 @@ contract PublicLock is ILockPublic {
    * A function which lets the owner of the lock expire a users' key.
    */
   function expireKeyFor(
-    address _owner
+    address _owner,
+    uint _ownerKeyIndex
   )
     public
     onlyOwner
     hasValidKey(_owner)
   {
-    keyByOwner[_owner].expirationTimestamp = now; // Effectively expiring the key
+    keysByOwner[_owner][_ownerKeyIndex].expirationTimestamp = now; // Effectively expiring the key
   }
 
   /**
@@ -329,14 +339,15 @@ contract PublicLock is ILockPublic {
   * @param _owner address of the user for whom we search the key
   */
   function keyDataFor(
-    address _owner
+    address _owner,
+    uint _ownerKeyIndex
   )
     public
     view
     hasKey(_owner)
     returns (bytes data)
   {
-    return keyByOwner[_owner].data;
+    return keysByOwner[_owner][_ownerKeyIndex].data;
   }
 
   /**
@@ -344,14 +355,15 @@ contract PublicLock is ILockPublic {
   * @param _owner address of the user for whom we search the key
   */
   function keyExpirationTimestampFor(
-    address _owner
+    address _owner,
+    uint _ownerKeyIndex
   )
     public
     view
     hasKey(_owner)
     returns (uint timestamp)
   {
-    return keyByOwner[_owner].expirationTimestamp;
+    return keysByOwner[_owner][_ownerKeyIndex].expirationTimestamp;
   }
 
   /**
@@ -394,17 +406,12 @@ contract PublicLock is ILockPublic {
     // TODO: If there is more than the required price, then let's return whatever is extra
     // extra (CAREFUL: re-entrency!)
 
-    // Assign the key
-    uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
-    if (previousExpiration < now) {
-      owners.push(_recipient);
-      keyByOwner[_recipient].expirationTimestamp = now + expirationDuration;
-    } else {
-      // This is an existing owner trying to extend their key
-      keyByOwner[_recipient].expirationTimestamp = previousExpiration + expirationDuration;
-    }
-    // Overwite data in all cases
-    keyByOwner[_recipient].data = _data;
+    Key storage newKey;
+
+    newKey.expirationTimestamp = now + expirationDuration;
+    newKey.data = _data;
+
+    keysByOwner[_recipient].push(newKey);
 
     if (discount > 0) {
       unlock.recordConsumedDiscount(discount, tokens);

@@ -44,7 +44,8 @@ interface ILockCore {
    * A function which lets the owner of the lock expire a users' key.
    */
   function expireKeyFor(
-    address _owner
+    address _owner,
+    uint _ownerKeyIndex
   )
     external;
 
@@ -69,7 +70,8 @@ interface ILockCore {
   * @param _owner address of the user for whom we search the key
   */
   function keyDataFor(
-    address _owner
+    address _owner,
+    uint _ownerKeyIndex
   )
     external
     view
@@ -80,7 +82,8 @@ interface ILockCore {
   * @param _owner address of the user for whom we search the key
   */
   function keyExpirationTimestampFor(
-    address _owner
+    address _owner,
+    uint _ownerKeyIndex
   )
     external
     view
