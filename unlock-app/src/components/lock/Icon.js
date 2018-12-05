@@ -62,7 +62,6 @@ function translateAndScale(address) {
  * This generates a lock icon unique for each lock
  * It changes the colors of the 3 inner circles and applies a rotation and permutation of layer order
  * based on the lock address
- * @todo Figure out proper output for falsy lock address?
  * @param {UnlockPropTypes.lock} lock
  */
 export function Icon({ lock }) {
