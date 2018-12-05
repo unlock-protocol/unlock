@@ -4,7 +4,7 @@ import { Icon } from '../../components/lock/Icon'
 
 storiesOf('Icon', Icon)
   .add('with a falsy lock address', () => {
-    const lock = { address: '' }
+    const lock = { pending: true, address: '' }
     return <Icon lock={lock} />
   })
   .add('with a lock address', () => {

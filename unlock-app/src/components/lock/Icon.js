@@ -68,15 +68,17 @@ function translateAndScale(address) {
 export function Icon({ lock }) {
   const scheme = new ColorScheme()
   let colors = ['#8c8c8c', '#e8e8e8', '#c3c3c3']
+  let address = '0x000000'
   if (lock && !lock.pending) {
-    const mainColor = lock.address.substring(2, 8).toUpperCase()
+    address = lock.address
+    const mainColor = address.substring(2, 8).toUpperCase()
     scheme
       .from_hex(mainColor)
       .scheme('triade')
       .variation('light')
     colors = scheme.colors().map(c => `#${c}`)
   }
-  const innerCircles = circles(lock.address)
+  const innerCircles = circles(address)
   return (
     <svg
       viewBox="0 0 216 216"
@@ -94,9 +96,9 @@ export function Icon({ lock }) {
         <g
           transform={
             'rotate(' +
-            degreesOfRotation(lock.address) +
+            degreesOfRotation(address) +
             ', 108, 108)' +
-            translateAndScale(lock.address)
+            translateAndScale(address)
           }
         >
           <circle
