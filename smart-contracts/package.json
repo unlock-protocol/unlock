@@ -16,7 +16,6 @@
     "bignumber.js": "^8.0.1",
     "eslint": "^5.7.0",
     "ethereumjs-units": "^0.2.0",
-    "ganache-core": "^2.3.1",
     "openzeppelin-solidity": "^2.0.0",
     "truffle": "^4.1.14",
     "truffle-contract": "^3.0.6",
@@ -31,7 +30,6 @@
     "eslint-plugin-node": "^8.0.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
-    "ganache-cli": "^6.2.3",
     "solhint": "^1.4.0"
   },
   "scripts": {
