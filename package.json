@@ -10,12 +10,13 @@
     "eslint-plugin-jest": "^21.22.1"
   },
   "devDependencies": {
-    "husky": "^1.2.0"
+    "husky": "^1.2.0",
+    "ganache-cli": "6.1.7"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install-deps": "cd smart-contracts && npm install && cd ../unlock-app && npm install",
     "start-ganache": "ganache-cli -b 3 -i 1984 --mnemonic 'hello unlock save the web'",
+    "postinstall": "cd smart-contracts && npm install && cd ../unlock-app && npm install",
     "deploy-lock": "cd smart-contracts && truffle deploy --reset"
   },
   "repository": {

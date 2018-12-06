@@ -1,8 +1,8 @@
-version: '3'
+version: "3"
 services:
   ganache:
     restart: always
-    image: trufflesuite/ganache-cli:v6.2.3
+    image: trufflesuite/ganache-cli:v6.1.7
     expose:
       - 8545
     command: ["-h=0.0.0.0", "-m=hello unlock save the web"]
@@ -12,4 +12,3 @@ services:
       dockerfile: ./docker/unlock.tests.dockerfile
     depends_on:
       - ganache
-
