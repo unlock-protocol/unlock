@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "husky": "^1.2.0",
-    "ganache-cli": "6.1.7"
+    "ganache-cli": "^6.2.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
