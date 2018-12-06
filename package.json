@@ -9,7 +9,9 @@
   "dependencies": {
     "eslint-plugin-jest": "^21.22.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "husky": "^1.2.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "install-deps": "cd smart-contracts && npm install && cd ../unlock-app && npm install",

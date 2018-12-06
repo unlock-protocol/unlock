@@ -99,7 +99,6 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "husky": "^1.1.4",
     "jest-dom": "^3.0.0",
     "jest-mock-axios": "^2.1.11",
     "lint-staged": "^8.0.5",
