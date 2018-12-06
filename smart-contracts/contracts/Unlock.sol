@@ -26,13 +26,13 @@ pragma solidity 0.4.24;
  *  b. Keeping track of GNP
  */
 
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-eth/contracts/ownership/Ownable.sol";
 import "zos-lib/contracts/Initializable.sol";
 import "./PublicLock.sol";
 import "./interfaces/IUnlock.sol";
 
 
-contract Unlock is IUnlock, Ownable, Initializable {
+contract Unlock is IUnlock, Initializable, Ownable {
 
   /**
    * The struct for a lock
@@ -71,7 +71,8 @@ contract Unlock is IUnlock, Ownable, Initializable {
     public
     initializer()
   {
-    transferOwnership(_owner);
+    // Initialize Ownable.sol (openzeppelin-eth version)
+    Ownable.initialize(_owner);
     grossNetworkProduct = 0;
     totalDiscountGranted = 0;
   }

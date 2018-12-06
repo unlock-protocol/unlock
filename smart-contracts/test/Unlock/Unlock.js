@@ -13,8 +13,6 @@ contract('Unlock', (accounts) => {
       const proxy = await project.createProxy(Unlock, { initMethod: 'initialize', initArgs: [unlockOwner], initFrom: unlockOwner })
       this.unlock = await Unlock.at(proxy.address)
     })
-    // needed to retrieve the correct addresses for the newly created publicLocks in 2 tests in createLock.js. Each of the 2 tests is called twice, and since the move to using the zos.TestHelper in UnlockProxy.js, both times these tests are called, the log index of the correct args.newLockAddress is different. With refactoring of tests this can most likely be removed.
-    let _logIndex = 0
-    shared.shouldBehaveLikeV1(accounts, unlockOwner, _logIndex)
+    shared.shouldBehaveLikeV1(accounts, unlockOwner)
   })
 })
