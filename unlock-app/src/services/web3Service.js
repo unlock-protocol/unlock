@@ -376,7 +376,11 @@ export default class Web3Service extends EventEmitter {
       return this.web3.eth
         .getTransactionReceipt(transaction.hash)
         .then(transactionReceipt => {
-          if (!transactionReceipt.status) {
+          // NOTE: old version of web3.js (pre 1.0.0-beta.34) are not parsing 0x0 into a falsy value
+          if (
+            !transactionReceipt.status ||
+            transactionReceipt.status == '0x0'
+          ) {
             return this.emit('transaction.updated', transaction, {
               status: 'failed',
             })
