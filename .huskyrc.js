@@ -1,7 +1,7 @@
 const tasks = tasks => {
   return tasks
     .map(task => {
-      return task.command
+      return `cd ${__dirname}/${task.path} && ${task.command}`
     })
     .join(`&& cd ${__dirname} && `)
 }
@@ -15,7 +15,7 @@ const svg2Components = {
 
 // Run lint on staged files
 const lintStaged = {
-  command: "cd unlock-app && npx lint-staged",
+  command: "npx lint-staged",
   path: "unlock-app"
 }
 
