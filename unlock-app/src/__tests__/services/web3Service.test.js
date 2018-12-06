@@ -105,12 +105,17 @@ nock.emitter.on('no match', function(x, y, body) {
   }
 })
 
+let web3Service
+
 describe('Web3Service', () => {
+  beforeEach(() => {
+    web3Service = new Web3Service()
+  })
+
   describe('connect', () => {
     it('should get the network id and be ready', done => {
       expect.assertions(3)
 
-      const web3Service = new Web3Service()
       expect(web3Service.ready).toBe(false)
 
       const netVersion = Math.floor(Math.random() * 100000)
@@ -137,7 +142,6 @@ describe('Web3Service', () => {
     it('should emit an error event when the smart contract has not been deployed on this network', done => {
       expect.assertions(3)
 
-      const web3Service = new Web3Service()
       expect(web3Service.ready).toBe(false)
       UnlockContract.networks = {}
 
@@ -157,7 +161,6 @@ describe('Web3Service', () => {
 
     it('should silently ignore requests to connect again to the same provider', done => {
       expect.assertions(1)
-      const web3Service = new Web3Service()
 
       web3Service.once('error', error => {
         expect(error.message).toBe('Provider does not exist')
@@ -177,7 +180,6 @@ describe('Web3Service', () => {
 
     it('should emit an error event when the provider is not available', done => {
       expect.assertions(2)
-      const web3Service = new Web3Service()
 
       expect(web3Service.ready).toBe(false)
       web3Service.on('error', error => {
@@ -189,13 +191,11 @@ describe('Web3Service', () => {
   })
 
   describe('once connected', () => {
-    let web3Service
     const lockAddress = '0x0d370b0974454d7b0e0e3b4512c0735a6489a71a'
     const netVersion = Math.floor(Math.random() * 100000)
 
     beforeEach(done => {
       netVersionAndYield(netVersion)
-      web3Service = new Web3Service()
 
       UnlockContract.networks = {
         [netVersion]: {
@@ -378,7 +378,7 @@ describe('Web3Service', () => {
         ethBlockNumber(`0x${(29).toString('16')}`)
         ethGetTransactionByHash(transaction.hash, null)
 
-        web3Service.on('error', error => {
+        web3Service.once('error', error => {
           expect(error.message).toEqual('Missing transaction')
           done()
         })
