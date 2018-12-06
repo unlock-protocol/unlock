@@ -12,7 +12,9 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install-deps": "cd smart-contracts && npm install && cd ../unlock-app && npm install"
+    "install-deps": "cd smart-contracts && npm install && cd ../unlock-app && npm install",
+    "start-ganache": "ganache-cli -b 3 -i 1984 --mnemonic 'hello unlock save the web'",
+    "deploy-lock": "cd smart-contracts && truffle deploy --reset"
   },
   "repository": {
     "type": "git",
