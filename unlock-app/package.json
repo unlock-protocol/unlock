@@ -69,7 +69,7 @@
     "build": "next build src",
     "export": "next export src",
     "start": "NODE_ENV=production node src/server.js",
-    "setup-dev": "cd .. && (npm run start-ganache &) && npm run deploy-lock",
+    "setup-dev": "cd .. && (npm run start-ganache -- -b 3 &) && npm run deploy-lock",
     "test": "NODE_ENV=test jest --env=jsdom",
     "lint": "./node_modules/eslint/bin/eslint.js .",
     "reformat": "npx prettier-eslint --write \"src/**/*.js\"",
