@@ -1,8 +1,10 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
+import { Provider } from 'react-redux'
 import withConfig from '../../../utils/withConfig'
+import createUnlockStore from '../../../createUnlockStore'
 
-const state = {
+const store = createUnlockStore({
   account: {
     address: '0xdeadbeef',
     balance: '1000',
@@ -10,13 +12,7 @@ const state = {
   network: {
     name: 4,
   },
-}
-
-const store = {
-  getState: jest.fn(() => state),
-  dispatch: jest.fn(),
-  subscribe: jest.fn(),
-}
+})
 
 const Component = () => <div>An unlock component</div>
 
@@ -26,7 +22,9 @@ describe('withConfig High Order Component', () => {
   it('should render correctly', () => {
     const tree = renderer
       .create(
-        <ComponentWithConfig store={store} router={{ route: '/provider' }} />
+        <Provider store={store}>
+          <ComponentWithConfig router={{ route: '/provider' }} />
+        </Provider>
       )
       .toJSON()
     expect(tree).toMatchSnapshot()

@@ -19,8 +19,7 @@ const ConfigContext = React.createContext(config)
  */
 export default function withConfig(Component) {
   function componentWithConfig(props) {
-    const { store: reduxStore, router } = props
-
+    const { router, network } = props
     if (router && !Component.skipConstraints) {
       if (!config.isServer) {
         // Ensuring that we have at least a provider
@@ -32,13 +31,11 @@ export default function withConfig(Component) {
         if (
           router.route !== '/provider' &&
           config.isRequiredNetwork &&
-          !config.isRequiredNetwork(reduxStore.getState().network.name)
+          !config.isRequiredNetwork(network.name)
         ) {
           return (
             <WrongNetwork
-              currentNetwork={
-                ETHEREUM_NETWORKS_NAMES[reduxStore.getState().network.name][0]
-              }
+              currentNetwork={ETHEREUM_NETWORKS_NAMES[network.name][0]}
               requiredNetwork={config.requiredNetwork}
             />
           )
