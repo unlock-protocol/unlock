@@ -1,14 +1,30 @@
 import App, { Container } from 'next/app'
 import React from 'react'
 import { Provider } from 'react-redux'
-import withReduxStore from '../utils/withReduxStore'
 import configure from '../config'
 import GlobalStyle from '../theme/globalStyle'
+import createUnlockStore from '../createUnlockStore'
 
 const config = configure(global)
+
+const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
+
+function getOrCreateStore(initialState) {
+  // Always make a new store if server, otherwise state is shared between requests
+  if (config.isServer) {
+    return createUnlockStore(initialState)
+  }
+
+  // Create store if unavailable on the client and set it on the window object
+  if (!window[__NEXT_REDUX_STORE__]) {
+    window[__NEXT_REDUX_STORE__] = createUnlockStore(initialState)
+  }
+  return window[__NEXT_REDUX_STORE__]
+}
+
 const ConfigContext = React.createContext()
 
-class MyApp extends App {
+class UnlockApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {}
 
@@ -51,12 +67,13 @@ The Unlock team
   }
 
   render() {
-    const { Component, pageProps, reduxStore, router } = this.props
+    const { Component, pageProps, router } = this.props
+    const store = getOrCreateStore({})
 
     return (
       <Container>
         <GlobalStyle />
-        <Provider store={reduxStore}>
+        <Provider store={store}>
           <ConfigContext.Provider value={config}>
             <Component {...pageProps} router={router} />
           </ConfigContext.Provider>
@@ -66,4 +83,4 @@ The Unlock team
   }
 }
 
-export default withReduxStore(MyApp)
+export default UnlockApp
