@@ -58,7 +58,7 @@ The Unlock team
         <GlobalStyle />
         <Provider store={reduxStore}>
           <ConfigContext.Provider value={config}>
-            <Component {...pageProps} router={router} store={reduxStore} />
+            <Component {...pageProps} router={router} />
           </ConfigContext.Provider>
         </Provider>
       </Container>

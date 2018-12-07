@@ -1,22 +1,14 @@
 import React from 'react'
+import { Provider } from 'react-redux'
 import renderer from 'react-test-renderer'
 import withConfig from '../../../utils/withConfig'
+import createUnlockStore from '../../../createUnlockStore'
 
-const state = {
-  account: {
-    address: '0xdeadbeef',
-    balance: '1000',
-  },
+const store = createUnlockStore({
   network: {
     name: 4,
   },
-}
-
-const store = {
-  getState: jest.fn(() => state),
-  dispatch: jest.fn(),
-  subscribe: jest.fn(),
-}
+})
 
 const Component = () => <div>An unlock component</div>
 
@@ -38,7 +30,11 @@ describe('withConfig High Order Component', () => {
   describe('when the current network is not in the list of required networks', () => {
     it('should show a message indicating that the network needs to be changed', () => {
       const tree = renderer
-        .create(<ComponentWithConfig store={store} router={{ route: '/' }} />)
+        .create(
+          <Provider store={store}>
+            <ComponentWithConfig router={{ route: '/' }} />
+          </Provider>
+        )
         .toJSON()
       expect(tree).toMatchSnapshot()
     })
