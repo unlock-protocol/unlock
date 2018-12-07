@@ -1,23 +1,26 @@
 import App, { Container } from 'next/app'
 import React from 'react'
 import { Provider } from 'react-redux'
+import { ConnectedRouter } from 'connected-react-router'
+import { createBrowserHistory, createMemoryHistory } from 'history'
 import configure from '../config'
+import { createUnlockStore } from '../createUnlockStore'
+
 import GlobalStyle from '../theme/globalStyle'
-import createUnlockStore from '../createUnlockStore'
 
 const config = configure(global)
 
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
-function getOrCreateStore(initialState) {
+function getOrCreateStore(initialState, history) {
   // Always make a new store if server, otherwise state is shared between requests
   if (config.isServer) {
-    return createUnlockStore(initialState)
+    return createUnlockStore(initialState, history)
   }
 
   // Create store if unavailable on the client and set it on the window object
   if (!window[__NEXT_REDUX_STORE__]) {
-    window[__NEXT_REDUX_STORE__] = createUnlockStore(initialState)
+    window[__NEXT_REDUX_STORE__] = createUnlockStore(initialState, history)
   }
   return window[__NEXT_REDUX_STORE__]
 }
@@ -68,15 +71,20 @@ The Unlock team
 
   render() {
     const { Component, pageProps, router } = this.props
-    const store = getOrCreateStore({})
+    const history = config.isServer
+      ? createMemoryHistory()
+      : createBrowserHistory()
+    const store = getOrCreateStore({}, history)
 
     return (
       <Container>
         <GlobalStyle />
         <Provider store={store}>
-          <ConfigContext.Provider value={config}>
-            <Component {...pageProps} router={router} />
-          </ConfigContext.Provider>
+          <ConnectedRouter history={history}>
+            <ConfigContext.Provider value={config}>
+              <Component {...pageProps} router={router} />
+            </ConfigContext.Provider>
+          </ConnectedRouter>
         </Provider>
       </Container>
     )
