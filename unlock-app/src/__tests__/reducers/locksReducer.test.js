@@ -1,5 +1,10 @@
 import reducer from '../../reducers/locksReducer'
-import { CREATE_LOCK, UPDATE_LOCK, LOCK_DEPLOYED } from '../../actions/lock'
+import {
+  ADD_LOCK,
+  CREATE_LOCK,
+  UPDATE_LOCK,
+  LOCK_DEPLOYED,
+} from '../../actions/lock'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { DELETE_TRANSACTION } from '../../actions/transaction'
 import { SET_PROVIDER } from '../../actions/provider'
@@ -88,6 +93,59 @@ describe('locks reducer', () => {
       )
     ).toEqual({
       [lock.address]: lock,
+    })
+  })
+
+  describe('ADD_LOCK', () => {
+    it('should raise an error if the address is a mismatch', () => {
+      const state = {}
+      const action = {
+        type: ADD_LOCK,
+        address: '0x123',
+        lock: {
+          address: '0x456',
+        },
+      }
+      expect(() => {
+        reducer(state, action)
+      }).toThrowError('Mismatch in lock address')
+    })
+
+    it('should raise an error if the lock was previously added', () => {
+      const state = {
+        '0x123': {},
+      }
+      const action = {
+        type: ADD_LOCK,
+        address: '0x123',
+        lock: {
+          address: '0x123',
+        },
+      }
+      expect(() => {
+        reducer(state, action)
+      }).toThrowError('Lock already exists')
+    })
+
+    it('should add the lock and add its address', () => {
+      const state = {
+        '0x456': {},
+      }
+      const action = {
+        type: ADD_LOCK,
+        address: '0x123',
+        lock: {
+          name: 'hello',
+        },
+      }
+
+      expect(reducer(state, action)).toEqual({
+        '0x456': {},
+        '0x123': {
+          address: '0x123',
+          name: 'hello',
+        },
+      })
     })
   })
 

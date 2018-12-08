@@ -1,5 +1,5 @@
 export const CREATE_LOCK = 'CREATE_LOCK'
-export const SET_LOCK = 'SET_LOCK'
+export const ADD_LOCK = 'ADD_LOCK'
 export const UPDATE_LOCK = 'UPDATE_LOCK'
 export const WITHDRAW_FROM_LOCK = 'WITHDRAW_FROM_LOCK'
 export const LOCK_DEPLOYED = 'LOCK_DEPLOYED'
@@ -9,8 +9,9 @@ export const createLock = lock => ({
   lock,
 })
 
-export const setLock = lock => ({
-  type: SET_LOCK,
+export const addLock = (address, lock) => ({
+  type: ADD_LOCK,
+  address,
   lock,
 })
 
