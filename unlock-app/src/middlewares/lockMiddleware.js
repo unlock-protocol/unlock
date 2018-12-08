@@ -4,7 +4,6 @@ import React from 'react'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   CREATE_LOCK,
-  SET_LOCK,
   WITHDRAW_FROM_LOCK,
   updateLock,
   lockDeployed,
@@ -172,12 +171,6 @@ export default function lockMiddleware({ getState, dispatch }) {
             owner: action.account,
           })
         }
-      } else if (action.type === SET_LOCK) {
-        // Lock was changed, get the matching key
-        web3Service.getKey({
-          lock: action.lock.address,
-          owner: getState().account,
-        })
       }
     }
   }
