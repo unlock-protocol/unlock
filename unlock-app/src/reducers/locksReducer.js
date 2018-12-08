@@ -1,4 +1,9 @@
-import { CREATE_LOCK, UPDATE_LOCK, LOCK_DEPLOYED } from '../actions/lock'
+import {
+  CREATE_LOCK,
+  ADD_LOCK,
+  UPDATE_LOCK,
+  LOCK_DEPLOYED,
+} from '../actions/lock'
 import { DELETE_TRANSACTION } from '../actions/transaction'
 import { SET_PROVIDER } from '../actions/provider'
 
@@ -7,6 +12,24 @@ export const initialState = {}
 const locksReducer = (state = initialState, action) => {
   if (action.type == SET_PROVIDER) {
     return initialState
+  }
+
+  if (action.type === ADD_LOCK) {
+    if (action.lock.address && action.lock.address !== action.address) {
+      throw new Error('Mismatch in lock address')
+    }
+
+    if (state[action.address]) {
+      throw new Error('Lock already exists')
+    }
+
+    return {
+      ...state,
+      [action.address]: {
+        address: action.address,
+        ...action.lock,
+      },
+    }
   }
 
   if (action.type === CREATE_LOCK) {

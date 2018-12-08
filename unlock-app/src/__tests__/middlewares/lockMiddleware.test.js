@@ -5,7 +5,6 @@ import {
   UPDATE_LOCK,
   CREATE_LOCK,
   LOCK_DEPLOYED,
-  SET_LOCK,
   WITHDRAW_FROM_LOCK,
 } from '../../actions/lock'
 import { PURCHASE_KEY, UPDATE_KEY } from '../../actions/key'
@@ -435,34 +434,6 @@ describe('Lock middleware', () => {
       mockWeb3Service.getKey = jest.fn()
       invoke(action)
       expect(mockWeb3Service.getKey).toHaveBeenCalledTimes(0)
-      expect(next).toHaveBeenCalledWith(action)
-    })
-  })
-
-  describe('when SET_LOCK was called', () => {
-    it('should call getKey', () => {
-      const { next, invoke } = create()
-      const action = { type: SET_LOCK, lock }
-      state.account = account
-      mockWeb3Service.getKey = jest.fn()
-      invoke(action)
-      expect(mockWeb3Service.getKey).toHaveBeenCalledWith({
-        lock: lock.address,
-        owner: account,
-      })
-      expect(next).toHaveBeenCalledWith(action)
-    })
-
-    it('should call getKey if the account is not set', () => {
-      const { next, invoke } = create()
-      const action = { type: SET_LOCK, lock }
-      state.account = null
-      mockWeb3Service.getKey = jest.fn()
-      invoke(action)
-      expect(mockWeb3Service.getKey).toHaveBeenCalledWith({
-        lock: lock.address,
-        owner: null,
-      })
       expect(next).toHaveBeenCalledWith(action)
     })
   })
