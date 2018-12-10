@@ -8,7 +8,6 @@ import {
   LockDetails,
   TransactionStatus,
   LockDetail,
-  LockName,
 } from './LockStyles'
 import BalanceProvider from '../helpers/BalanceProvider'
 import withConfig from '../../utils/withConfig'
