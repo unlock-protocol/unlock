@@ -1,5 +1,8 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import { connectRouter, routerMiddleware } from 'connected-react-router'
+import { createMemoryHistory } from 'history'
+
 import configure from './config'
 
 // Reducers
@@ -37,8 +40,12 @@ import currencyConversionMiddleware from './middlewares/currencyConversionMiddle
 
 const config = configure(global)
 
-export default function createUnlockStore(defaultState = {}) {
+export const createUnlockStore = (
+  defaultState = {},
+  history = createMemoryHistory()
+) => {
   const reducers = {
+    router: connectRouter(history),
     account: accountReducer,
     keys: keysReducer,
     locks: locksReducer,
@@ -76,7 +83,11 @@ export default function createUnlockStore(defaultState = {}) {
     defaultState
   )
 
-  const middlewares = [lockMiddleware, currencyConversionMiddleware]
+  const middlewares = [
+    lockMiddleware,
+    currencyConversionMiddleware,
+    routerMiddleware(history),
+  ]
 
   return createStore(
     combineReducers(reducers),
@@ -84,3 +95,5 @@ export default function createUnlockStore(defaultState = {}) {
     composeWithDevTools(applyMiddleware(...middlewares))
   )
 }
+
+export default createUnlockStore
