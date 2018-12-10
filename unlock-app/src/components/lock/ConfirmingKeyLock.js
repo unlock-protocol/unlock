@@ -28,7 +28,6 @@ export const ConfirmingKeyLock = ({ lock, transaction, config }) => (
         amount={lock.keyPrice}
         render={(ethPrice, fiatPrice) => (
           <>
-            <LockName>{lock.name}</LockName>
             <LockDetails>
               <LockDetail bold>
                 {ethPrice}
