@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import React from 'react'
 import Head from 'next/head'
@@ -8,13 +9,77 @@ import {
   Title,
   Headline,
   SubTitle,
-  ThreeColumns,
   Column,
   TwoColumns,
+  Columns,
 } from '../components/Components'
 import { pageTitle } from '../constants'
 import { TwitterTags } from '../components/page/TwitterTags'
 import OpenGraphTags from '../components/page/OpenGraphTags'
+
+const People = [
+  {
+    name: 'Julien Genestoux',
+    picture: '/static/images/illustrations/julien.jpg',
+    personalLink: 'https://www.ouvre-boite.com/',
+    linkedIn: 'https://www.linkedin.com/in/juliengenestoux/',
+    bio: `I am an entrepreneur and a software engineer. I am a vocal web
+            advocate who co-authored the W3C WebSub protocol. I sold my previous
+            company, Superfeedr, an RSS feed API, to Medium. Born in France, I
+            currently live in Brooklyn.`,
+  },
+  {
+    name: 'Ben Werdmuller',
+    picture: '/static/images/illustrations/ben.jpg',
+    personalLink: 'https://benwerd.com/',
+    linkedIn: 'https://www.linkedin.com/in/benwerd/',
+    bio: `I work at the intersection of technology, media, and democracy. I
+            co-founded Elgg and Known, worked on Medium and Latakoo, and
+            invested in innovative media startups to support a stronger
+            democracy at Matter.`,
+  },
+  {
+    name: 'Sascha Mombartz',
+    picture: '/static/images/illustrations/sascha.jpg',
+    personalLink: 'http://mombartz.com/',
+    linkedIn: 'https://www.linkedin.com/in/smombartz/',
+    bio: `I am an artist and designer from no particular place. My work –
+            multidisciplinary, spanning digital to physical – deals with the
+            interaction between people and objects and questions our
+            relationship with progress.`,
+  },
+  {
+    name: 'Akeem Adeniji',
+    picture: '/static/images/illustrations/akeem.jpg',
+    personalLink: 'http://akeemadeniji.com',
+    linkedIn: 'https://www.linkedin.com/in/akeemadeniji',
+    bio: `I'm a software engineer, comfortable wearing many hats, and
+            excited to help build our future enabling people with technology.
+            Prior to joining Unlock, I worked to launch and scale projects at
+            Facebook.`,
+  },
+].sort((bonnie, clyde) => (bonnie.name < clyde.name ? -1 : 1))
+
+const Person = ({ name, picture, personalLink, linkedIn, bio }) => (
+  <Column>
+    <SubTitle>{name}</SubTitle>
+    <Photo src={picture} />
+    <p>{bio}</p>
+    <small>
+      <a href={personalLink}>Personal site</a>
+      &nbsp;-&nbsp;
+      <a href={linkedIn}>LinkedIn</a>
+    </small>
+  </Column>
+)
+
+Person.propTypes = {
+  name: PropTypes.string.isRequired,
+  picture: PropTypes.string.isRequired,
+  personalLink: PropTypes.string.isRequired,
+  linkedIn: PropTypes.string.isRequired,
+  bio: PropTypes.string.isRequired,
+}
 
 export const About = () => (
   <Layout forContent>
@@ -57,80 +122,11 @@ export const About = () => (
     </Section>
     <Section>
       <Title>Team</Title>
-      <ThreeColumns>
-        <Column>
-          <SubTitle>Julien Genestoux</SubTitle>
-          <Photo src="/static/images/illustrations/julien.jpg" />
-          <p>
-            I am an entrepreneur and a software engineer. I am a vocal web
-            advocate who co-authored the W3C WebSub protocol. I sold my previous
-            company, Superfeedr, an RSS feed API, to Medium. Born in France, I
-            currently live in Brooklyn.
-          </p>
-          <small>
-            <a href="https://www.ouvre-boite.com/">Personal site</a>
-            {' '}
--
-            {' '}
-            <a href="https://www.linkedin.com/in/juliengenestoux/">LinkedIn</a>
-          </small>
-        </Column>
-        <Column>
-          <SubTitle>Ben Werdmuller</SubTitle>
-          <Photo src="/static/images/illustrations/ben.jpg" />
-          <p>
-            I work at the intersection of technology, media, and democracy. I
-            co-founded Elgg and Known, worked on Medium and Latakoo, and
-            invested in innovative media startups to support a stronger
-            democracy at Matter.
-          </p>
-          <small>
-            <a href="https://benwerd.com/">Personal site</a>
-            {' '}
--
-            {' '}
-            <a href="https://www.linkedin.com/in/benwerd/">LinkedIn</a>
-          </small>
-        </Column>
-        <Column>
-          <SubTitle>Sascha Mombartz</SubTitle>
-          <Photo src="/static/images/illustrations/sascha.jpg" />
-          <p>
-            I am an artist and designer from no particular place. My work –
-            multidisciplinary, spanning digital to physical – deals with the
-            interaction between people and objects and questions our
-            relationship with progress.
-          </p>
-          <small>
-            <a href="http://mombartz.com/">Personal site</a>
-            {' '}
--
-            {' '}
-            <a href="https://www.linkedin.com/in/smombartz/">LinkedIn</a>
-          </small>
-        </Column>
-      </ThreeColumns>
-      <ThreeColumns>
-        <Column />
-        <Column>
-          <SubTitle>Akeem Adeniji</SubTitle>
-          <Photo src="/static/images/illustrations/akeem.jpg" />
-          <p>
-            I&#39;m a software engineer, comfortable wearing many hats, and
-            excited to help build our future enabling people with technology.
-            Prior to joining Unlock, I worked to launch and scale projects at
-            Facebook.
-          </p>
-          <small>
-            <a href="http://akeemadeniji.com">Personal site</a>
-            {' '}
--
-            {' '}
-            <a href="https://www.linkedin.com/in/akeemadeniji">LinkedIn</a>
-          </small>
-        </Column>
-        <Column />
-      </ThreeColumns>
+      <Columns>
+        {People.map(function(person) {
+          return <Person {...person} key={person.name} />
+        })}
+      </Columns>
     </Section>
     <Section>
       <Title>News</Title>
