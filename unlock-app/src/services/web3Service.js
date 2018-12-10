@@ -243,7 +243,7 @@ export default class Web3Service extends EventEmitter {
       status: 'pending',
       confirmations: 0,
       createdAt: new Date().getTime(),
-      lock: lock.address,
+      lock: lock.address, // This is likely a temporary address
     }
 
     return this.sendTransaction(
@@ -257,7 +257,8 @@ export default class Web3Service extends EventEmitter {
       },
       (error, { event, args } = {}) => {
         if (event === 'transactionHash') {
-          this.emit('lock.updated', lock, { transaction: args.hash })
+          // We update the transaction, still using the temporary address
+          this.emit('lock.updated', lock.address, { transaction: args.hash })
         }
       }
     )
@@ -410,8 +411,8 @@ export default class Web3Service extends EventEmitter {
    * Refresh the lock's data
    * @return Promise<Lock>
    */
-  getLock(lock) {
-    const contract = new this.web3.eth.Contract(LockContract.abi, lock.address)
+  getLock(address) {
+    const contract = new this.web3.eth.Contract(LockContract.abi, address)
 
     const attributes = {
       keyPrice: x => x, // this is a BigNumber (represented as string)
@@ -433,15 +434,15 @@ export default class Web3Service extends EventEmitter {
 
     // Let's load its balance
     constantPromises.push(
-      this.getAddressBalance(lock.address).then(balance => {
+      this.getAddressBalance(address).then(balance => {
         update.balance = balance
       })
     )
 
     // Once lock has been refreshed
     return Promise.all(constantPromises).then(() => {
-      this.emit('lock.updated', lock, update)
-      return lock
+      this.emit('lock.updated', address, update)
+      return update
     })
   }
 
@@ -562,7 +563,7 @@ export default class Web3Service extends EventEmitter {
       },
       (error, { event } = {}) => {
         if (event === 'receipt') {
-          return this.getLock(lock)
+          return this.getLock(lock.address)
         }
       }
     )

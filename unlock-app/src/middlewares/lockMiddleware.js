@@ -51,7 +51,7 @@ export default function lockMiddleware({ getState, dispatch }) {
         lock: address,
       })
     )
-    web3Service.getLock(lock)
+    web3Service.getLock(address)
     web3Service.refreshAccountBalance(getState().account)
   })
 
@@ -59,11 +59,11 @@ export default function lockMiddleware({ getState, dispatch }) {
    * The Lock was changed.
    * Should we get the balance of the lock owner?
    */
-  web3Service.on('lock.updated', (lock, update) => {
-    if (getState().locks[lock.address]) {
-      dispatch(updateLock(lock.address, update))
+  web3Service.on('lock.updated', (address, update) => {
+    if (getState().locks[address]) {
+      dispatch(updateLock(address, update))
     } else {
-      dispatch(addLock(lock.address, update))
+      dispatch(addLock(address, update))
     }
   })
 
@@ -72,18 +72,7 @@ export default function lockMiddleware({ getState, dispatch }) {
    * it might have been updated (balance, outstanding keys...)
    */
   web3Service.on('key.saved', key => {
-    const lockId = Object.keys(getState().locks).find(
-      lockId => key.lock === getState().locks[lockId].address
-    )
-    if (!lockId) {
-      // Hum. We have a key saved but we do not know of the lock :/
-      // We probably need to retrieve it!
-      web3Service.getLock({
-        address: key.lock,
-      })
-    } else {
-      web3Service.getLock(getState().locks[lockId])
-    }
+    web3Service.getLock(key.lock)
     web3Service.refreshAccountBalance(getState().account)
   })
 
@@ -126,7 +115,9 @@ export default function lockMiddleware({ getState, dispatch }) {
       // We refresh keys
       Object.values(getState().keys).forEach(key => web3Service.getKey(key))
       // We refresh locks
-      Object.values(getState().locks).forEach(lock => web3Service.getLock(lock))
+      Object.values(getState().locks).forEach(lock =>
+        web3Service.getLock(lock.address)
+      )
 
       // and refresh or load the account
       return web3Service.refreshOrGetAccount(getState().account)
