@@ -110,6 +110,27 @@ export const About = () => (
           </small>
         </Column>
       </ThreeColumns>
+      <ThreeColumns>
+        <Column />
+        <Column>
+          <SubTitle>Akeem Adeniji</SubTitle>
+          <Photo src="/static/images/illustrations/akeem.jpg" />
+          <p>
+            I&#39;m a software engineer, comfortable wearing many hats, and
+            excited to help build our future enabling people with technology.
+            Prior to joining Unlock, I worked to launch and scale projects at
+            Facebook.
+          </p>
+          <small>
+            <a href="http://akeemadeniji.com">Personal site</a>
+            {' '}
+-
+            {' '}
+            <a href="https://www.linkedin.com/in/akeemadeniji">LinkedIn</a>
+          </small>
+        </Column>
+        <Column />
+      </ThreeColumns>
     </Section>
     <Section>
       <Title>News</Title>
