@@ -5,10 +5,10 @@ import { connect } from 'react-redux'
 import { RoundedLogo } from '../interface/Logo'
 import Lock from './Lock'
 import UnlockPropTypes from '../../propTypes'
-import { hideModal } from '../../actions/modal'
+import { hideModal, showModal } from '../../actions/modal'
 import { unlockPage } from '../../services/iframeService'
 
-export const Overlay = ({ locks, hideModal }) => (
+export const Overlay = ({ locks, hideModal, showModal }) => (
   <FullPage>
     <Banner>
       <Headline>
@@ -16,7 +16,12 @@ export const Overlay = ({ locks, hideModal }) => (
       </Headline>
       <Locks>
         {locks.map(lock => (
-          <Lock key={JSON.stringify(lock)} lock={lock} hideModal={hideModal} />
+          <Lock
+            key={JSON.stringify(lock)}
+            lock={lock}
+            hideModal={hideModal}
+            showModal={showModal}
+          />
         ))}
       </Locks>
       <Colophon>
@@ -30,12 +35,16 @@ export const Overlay = ({ locks, hideModal }) => (
 Overlay.propTypes = {
   locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
   hideModal: PropTypes.func.isRequired,
+  showModal: PropTypes.func.isRequired,
 }
 
 export const mapDispatchToProps = (dispatch, { locks }) => ({
   hideModal: () => {
     unlockPage()
     return dispatch(hideModal(locks.map(l => l.address).join('-')))
+  },
+  showModal: () => {
+    dispatch(showModal(locks.map(l => l.address).join('-')))
   },
 })
 
