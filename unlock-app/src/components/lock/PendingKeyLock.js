@@ -8,7 +8,6 @@ import {
   LockDetails,
   TransactionStatus,
   LockDetail,
-  LockName,
 } from './LockStyles'
 import BalanceProvider from '../helpers/BalanceProvider'
 
@@ -22,7 +21,6 @@ export const PendingKeyLock = ({ lock }) => (
         amount={lock.keyPrice}
         render={(ethPrice, fiatPrice) => (
           <>
-            <LockName>{lock.name}</LockName>
             <LockDetails>
               <LockDetail bold>
                 {ethPrice}
