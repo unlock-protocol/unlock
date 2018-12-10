@@ -75,6 +75,21 @@ export const TwoColumns = styled.div`
   color: var(--darkgrey);
 `
 
+export const Columns = styled.div`
+  display: grid;
+  grid-gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-gap: 24px;
+  font-family: 'IBM Plex Serif', serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--darkgrey);
+  align-items: start;
+  justify-content: center;
+  text-align: center;
+`
+
 export const ThreeColumns = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
