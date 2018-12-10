@@ -81,10 +81,14 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
 
   describe('mapDispatchToProps', () => {
     it('should yield a prop function which dispatches showModal with the right value', () => {
-      const locks = {
-        '0x123': {},
-        '0x456': {},
-      }
+      const locks = [
+        {
+          address: '0x123',
+        },
+        {
+          address: '0x456',
+        },
+      ]
       const dispatch = jest.fn()
       const props = mapDispatchToProps(dispatch, { locks })
       props.showModal()
@@ -97,17 +101,17 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
 
   describe('mapStateToProps', () => {
     it('should include valid keys', () => {
-      const locks = {
-        '0x123': {
+      const locks = [
+        {
           address: '0x123',
         },
-        '0x456': {
+        {
           address: '0x456',
         },
-        '0x789': {
+        {
           address: '0x789',
         },
-      }
+      ]
       const now = new Date().getTime() / 1000
       const keys = {
         first: {
@@ -148,14 +152,14 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
     })
 
     it('should include modalShown as true if a modal is shown', () => {
-      const locks = {
-        '0x123': {
+      const locks = [
+        {
           address: '0x123',
         },
-        '0x456': {
+        {
           address: '0x456',
         },
-      }
+      ]
 
       const props = mapStateToProps(
         {
@@ -172,14 +176,14 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
     })
 
     it('should include modalShown as false if a modal is not shown', () => {
-      const locks = {
-        '0x123': {
+      const locks = [
+        {
           address: '0x123',
         },
-        '0x456': {
+        {
           address: '0x456',
         },
-      }
+      ]
 
       const props = mapStateToProps(
         {

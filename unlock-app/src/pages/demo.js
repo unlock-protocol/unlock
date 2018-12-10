@@ -11,23 +11,13 @@ import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasK
 export class Demo extends React.Component {
   static async getInitialProps({ query: { lockaddress } }) {
     // passing :lockaddress query to the component as a prop
-
     return {
       lockAddress: lockaddress,
     }
   }
 
   render() {
-    const { lockAddress, locks } = this.props
-    const locksForDemo = Object.keys(locks).reduce((acc, lockId) => {
-      if (locks[lockId].address === lockAddress) {
-        return {
-          ...acc,
-          [lockId]: locks[lockId],
-        }
-      }
-      return acc
-    }, {})
+    const { lock } = this.props
 
     return (
       <Container>
@@ -89,8 +79,8 @@ export class Demo extends React.Component {
         </Content>
         <Right />
         <NoSSR>
-          <ShowUnlessUserHasKeyToAnyLock locks={locksForDemo}>
-            <Overlay locks={locksForDemo} />
+          <ShowUnlessUserHasKeyToAnyLock locks={lock ? [lock] : []}>
+            <Overlay locks={lock ? [lock] : []} />
           </ShowUnlessUserHasKeyToAnyLock>
         </NoSSR>
       </Container>
@@ -99,14 +89,16 @@ export class Demo extends React.Component {
 }
 
 Demo.propTypes = {
-  locks: UnlockPropTypes.locks.isRequired,
-  lockAddress: UnlockPropTypes.address.isRequired,
+  lock: UnlockPropTypes.lock.isRequired,
 }
 
-const mapStateToProps = state => {
-  // What if there is no address in the path? and/or the lock is missing from state?
+export const mapStateToProps = ({ locks: stateLocks }, { lockAddress }) => {
+  const lock = Object.values(stateLocks).find(
+    lock => lock.address === lockAddress
+  )
+
   return {
-    locks: state.locks,
+    lock,
   }
 }
 
