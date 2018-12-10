@@ -150,7 +150,7 @@ describe('Lock middleware', () => {
     expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
       state.account
     )
-    expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock)
+    expect(mockWeb3Service.getLock).toHaveBeenCalledWith(address)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: LOCK_DEPLOYED,
@@ -171,7 +171,7 @@ describe('Lock middleware', () => {
       }
 
       const update = {}
-      mockWeb3Service.emit('lock.updated', lock, update)
+      mockWeb3Service.emit('lock.updated', lock.address, update)
       expect(store.dispatch).toHaveBeenCalledWith(
         expect.objectContaining({
           type: UPDATE_LOCK,
@@ -188,7 +188,7 @@ describe('Lock middleware', () => {
       }
 
       const update = {}
-      mockWeb3Service.emit('lock.updated', lock, update)
+      mockWeb3Service.emit('lock.updated', lock.address, update)
       expect(store.dispatch).toHaveBeenCalledWith(
         expect.objectContaining({
           type: ADD_LOCK,
@@ -210,7 +210,7 @@ describe('Lock middleware', () => {
       mockWeb3Service.refreshAccountBalance = jest.fn()
 
       mockWeb3Service.emit('key.saved', key)
-      expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock)
+      expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock.address)
       expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
         state.account
       )
@@ -226,9 +226,7 @@ describe('Lock middleware', () => {
       mockWeb3Service.refreshAccountBalance = jest.fn()
 
       mockWeb3Service.emit('key.saved', key)
-      expect(mockWeb3Service.getLock).toHaveBeenCalledWith({
-        address: '0xAnotherLock',
-      })
+      expect(mockWeb3Service.getLock).toHaveBeenCalledWith('0xAnotherLock')
       expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
         state.account
       )
@@ -354,7 +352,7 @@ describe('Lock middleware', () => {
         expect(store.dispatch).not.toHaveBeenCalled()
         expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(transaction)
         expect(mockWeb3Service.getKey).toHaveBeenCalledWith(key)
-        expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock)
+        expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock.address)
         expect(mockWeb3Service.refreshOrGetAccount).toHaveBeenCalledWith(
           account
         )
