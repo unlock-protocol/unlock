@@ -17,6 +17,60 @@ import { pageTitle } from '../constants'
 import { TwitterTags } from '../components/page/TwitterTags'
 import OpenGraphTags from '../components/page/OpenGraphTags'
 
+const Stories = [
+  {
+    date: new Date('2018-04-27T21:00:37.411Z'),
+    summary:
+      'The web needs a better business model — and we believe the technology is finally here to do it.',
+    link:
+      'https://medium.com/unlock-protocol/its-time-to-unlock-the-web-b98e9b94add1',
+  },
+  {
+    date: new Date('2018-07-23T21:00:37.411Z'),
+    summary:
+      'We received $1.7M in funding from the following investors: General Catalyst and by Cherry Ventures and with participations from Consensys Ventures, Kindred Ventures, Betaworks, 122 West, La Famiglia, Coinbase Ventures and a group of stellar business angels. ',
+    link:
+      'https://medium.com/unlock-protocol/unlocking-some-exciting-news-5ad0f3889375',
+  },
+  {
+    date: new Date('2018-10-15T17:17:51.940Z'),
+    summary:
+      'In a world where corporations control our conversations, removing middlemen is more important than ever.',
+    link:
+      'https://medium.com/unlock-protocol/to-save-freedom-of-speech-we-must-decentralize-the-web-19b2eb92f3b8',
+  },
+].sort((first, last) => (first.date < last.date ? 1 : -1))
+
+const monthNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]
+
+const Post = ({ date, summary, link }) => (
+  <>
+    <p>
+      {monthNames[date.getMonth()]}
+      &nbsp;
+      {date.getFullYear()}
+    </p>
+    <p>
+      {summary}
+      &nbsp;
+      <a href={link}>More...</a>
+    </p>
+  </>
+)
+
 const People = [
   {
     name: 'Julien Genestoux',
@@ -131,17 +185,9 @@ export const About = () => (
     <Section>
       <Title>News</Title>
       <News>
-        <p>July 2018</p>
-        <p>
-          We received $1.7M in funding from the following investors: General
-          Catalyst and by Cherry Ventures and with participations from Consensys
-          Ventures, Kindred Ventures, Betaworks, 122 West, La Famiglia, Coinbase
-          Ventures and a group of stellar business angels.
-          {' '}
-          <a href="https://medium.com/unlock-protocol/unlocking-some-exciting-news-5ad0f3889375">
-            More...
-          </a>
-        </p>
+        {Stories.map(function(story) {
+          return <Post {...story} key={story.date} />
+        })}
       </News>
     </Section>
     <Signature />
