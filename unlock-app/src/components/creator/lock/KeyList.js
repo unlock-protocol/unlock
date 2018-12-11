@@ -6,7 +6,7 @@ import { expirationAsDate } from '../../../utils/durations'
 import Pagination from '../../interface/pagination/Pagination'
 
 // TODO add pagination
-export function KeyList(props) {
+export function KeyList({ keys }) {
   const renderItems = items => {
     return items.map(item => {
       return (
@@ -32,7 +32,7 @@ export function KeyList(props) {
           and a function that takes list of items and renders the list.
           This is so that the Pagination component can be reused across the app
       */}
-      <Pagination items={Object.values(props.keys)} renderItems={renderItems} />
+      <Pagination items={Object.values(keys)} renderItems={renderItems} />
     </KeyListWrapper>
   )
 }

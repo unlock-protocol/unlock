@@ -1,13 +1,8 @@
 import React from 'react'
-import { ArrowGroup, RightArrow } from './Pagination.js'
+import PropTypes from 'prop-types'
+import { ArrowGroup, RightArrow } from './Pagination'
 
-const NextButtons = ({
-  count,
-  itemsPerPage,
-  numberOfPages,
-  currentPage,
-  goToPage,
-}) => {
+const NextButtons = ({ numberOfPages, currentPage, goToPage }) => {
   const goToNextPage = () => {
     if (currentPage + 1 > numberOfPages) {
       return
@@ -26,6 +21,18 @@ const NextButtons = ({
       <RightArrow onClick={goToLastPage}>&gt;&gt;</RightArrow>
     </ArrowGroup>
   )
+}
+
+NextButtons.propTypes = {
+  numberOfPages: PropTypes.number,
+  currentPage: PropTypes.number,
+  goToPage: PropTypes.func,
+}
+
+NextButtons.defaultProps = {
+  numberOfPages: 10,
+  currentPage: 1,
+  goToPage: null,
 }
 
 export default NextButtons

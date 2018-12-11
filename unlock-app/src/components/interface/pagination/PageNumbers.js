@@ -1,13 +1,8 @@
 import React from 'react'
-import { PageGroup, PageNumber, PageNumberActive } from './Pagination.js'
+import PropTypes from 'prop-types'
+import { PageGroup, PageNumber, PageNumberActive } from './Pagination'
 
-const NextButtons = ({
-  count,
-  itemsPerPage,
-  numberOfPages,
-  currentPage,
-  goToPage,
-}) => {
+const PageNumbers = ({ numberOfPages, currentPage, goToPage }) => {
   const pageNumber = number => {
     return number === currentPage ? (
       <PageNumberActive onClick={() => goToPage(number)}>
@@ -83,4 +78,16 @@ const NextButtons = ({
   )
 }
 
-export default NextButtons
+PageNumbers.propTypes = {
+  numberOfPages: PropTypes.number,
+  currentPage: PropTypes.number,
+  goToPage: PropTypes.func,
+}
+
+PageNumbers.defaultProps = {
+  numberOfPages: 10,
+  currentPage: 1,
+  goToPage: null,
+}
+
+export default PageNumbers

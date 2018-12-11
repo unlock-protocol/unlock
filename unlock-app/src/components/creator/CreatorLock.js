@@ -1,13 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
-import UnlockPropTypes from '../../propTypes';
-import LockIconBar from './lock/LockIconBar';
-import Icon from '../lock/Icon';
-import EmbedCodeSnippet from './lock/EmbedCodeSnippet';
-import KeyList from './lock/KeyList';
-import Duration from '../helpers/Duration';
-import Balance from '../helpers/Balance';
+import UnlockPropTypes from '../../propTypes'
+import LockIconBar from './lock/LockIconBar'
+import Icon from '../lock/Icon'
+import EmbedCodeSnippet from './lock/EmbedCodeSnippet'
+import KeyList from './lock/KeyList'
+import Duration from '../helpers/Duration'
+import Balance from '../helpers/Balance'
 
 const LockKeysNumbers = ({ lock }) => (
   <LockKeys>
@@ -18,48 +18,48 @@ const LockKeysNumbers = ({ lock }) => (
       ? `${lock.outstandingKeys}/${lock.maxNumberOfKeys}`
       : ' - '}
   </LockKeys>
-);
+)
 
 LockKeysNumbers.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
-};
+}
 
 export class CreatorLock extends React.Component {
   constructor(props, context) {
-    super(props, context);
+    super(props, context)
     this.state = {
       showEmbedCode: false,
       showKeys: false,
-    };
-    this.toggleEmbedCode = this.toggleEmbedCode.bind(this);
-    this.toggleKeys = this.toggleKeys.bind(this);
-    this.preventPropagation = this.preventPropagation.bind(this);
+    }
+    this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
+    this.toggleKeys = this.toggleKeys.bind(this)
+    this.preventPropagation = this.preventPropagation.bind(this)
   }
 
   toggleEmbedCode() {
     this.setState(previousState => ({
       showEmbedCode: !previousState.showEmbedCode,
-    }));
+    }))
   }
 
   toggleKeys() {
     this.setState(previousState => ({
       showKeys: !previousState.showKeys,
-    }));
+    }))
   }
 
   preventPropagation(e) {
-    e.stopPropagation();
+    e.stopPropagation()
   }
 
   render() {
     // TODO add all-time balance to lock
 
-    const { lock } = this.props;
-    const { showEmbedCode, showKeys } = this.state;
+    const { lock } = this.props
+    const { showEmbedCode, showKeys } = this.state
 
     // Some sanitization of strings to display
-    let name = lock.name || 'New Lock';
+    let name = lock.name || 'New Lock'
     return (
       <LockRow onClick={this.toggleKeys}>
         <Icon lock={lock} />
@@ -83,24 +83,24 @@ export class CreatorLock extends React.Component {
         )}
         {!showEmbedCode &&
           showKeys && (
-            <LockPanel onClick={this.preventPropagation}>
-              <LockDivider />
-              <KeyList lock={lock} />
-            </LockPanel>
-          )}
+          <LockPanel onClick={this.preventPropagation}>
+            <LockDivider />
+            <KeyList lock={lock} />
+          </LockPanel>
+        )}
       </LockRow>
-    );
+    )
   }
 }
 
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
-};
+}
 
-export default CreatorLock;
+export default CreatorLock
 
 export const LockRowGrid =
-  'grid-template-columns: 32px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);';
+  'grid-template-columns: 32px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
 
 export const LockRow = styled.div`
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
@@ -122,12 +122,12 @@ export const LockRow = styled.div`
   & > * {
     padding-top: 16px;
   }
-`;
+`
 
 export const LockName = styled.div`
   color: var(--link);
   font-weight: 600;
-`;
+`
 
 export const LockAddress = styled.div`
   color: var(--grey);
@@ -136,18 +136,18 @@ export const LockAddress = styled.div`
   font-size: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
-`;
+`
 
-export const LockDuration = styled.div``;
+export const LockDuration = styled.div``
 
-export const LockKeys = styled.div``;
+export const LockKeys = styled.div``
 
 const LockPanel = styled.div`
   grid-column: 1 / span 7;
-`;
+`
 
 const LockDivider = styled.div`
   width: 99%;
   height: 1px;
   background-color: var(--lightgrey);
-`;
+`

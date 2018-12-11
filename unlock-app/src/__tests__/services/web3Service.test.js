@@ -850,7 +850,10 @@ describe('Web3Service', () => {
       it('should emit a new transaction once it has been submitted', done => {
         expect.assertions(2)
         web3Service.sendTransaction = jest.fn((transaction, args, cb) => {
-          return cb(null, { event: 'transactionHash', args: { hash: '0x123' } })
+          return cb(null, {
+            event: 'transactionHash',
+            args: { hash: '0x123' },
+          })
         })
 
         web3Service.on('lock.updated', (addressOfLockToUpdate, params) => {

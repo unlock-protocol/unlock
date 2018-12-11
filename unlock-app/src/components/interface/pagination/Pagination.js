@@ -19,27 +19,28 @@ class Paginate extends React.Component {
 
   itemList = () => {
     const { currentPage, itemsPerPage } = this.state
-    return this.props.renderItems(
-      [...this.props.items].splice(
-        (currentPage - 1) * itemsPerPage,
-        itemsPerPage
-      )
+    const { items, renderItems } = this.props
+    return renderItems(
+      [...items].splice((currentPage - 1) * itemsPerPage, itemsPerPage)
     )
   }
 
   goToPage = page => {
-    this.setState({
-      ...this.state,
-      currentPage: page,
+    this.setState(state => {
+      return {
+        ...state,
+        currentPage: page,
+      }
     })
   }
 
   render() {
+    const { count } = this.state
     return (
       <PaginationWrapper>
         {this.itemList()}
         <LockDivider />
-        {this.state.count > 10 && (
+        {count > 10 && (
           <Pagination>
             <PreviousButtons {...this.state} goToPage={this.goToPage} />
             <PageNumbers {...this.state} goToPage={this.goToPage} />
