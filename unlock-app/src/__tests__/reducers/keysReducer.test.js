@@ -40,17 +40,69 @@ describe('keys reducer', () => {
     ).toEqual({})
   })
 
-  it('should add the key by its id accordingly when receiving ADD_KEY', () => {
-    expect(
-      reducer(
-        {},
-        {
-          type: ADD_KEY,
-          key,
-        }
-      )
-    ).toEqual({
-      [key.id]: key,
+  describe('ADD_KEY', () => {
+    it('should refuse to add a key with the wrong id', () => {
+      const id = '0x123'
+
+      const state = {}
+      const action = {
+        type: ADD_KEY,
+        id,
+        key: {
+          id: '0x456',
+          data: 'new key',
+        },
+      }
+
+      expect(() => {
+        reducer(state, action)
+      }).toThrowError('Could not add key with wrong id')
+    })
+
+    it('should refuse to overwrite keys', () => {
+      const id = '0x123'
+
+      const state = {
+        [id]: {
+          data: 'previous key',
+        },
+      }
+      const action = {
+        type: ADD_KEY,
+        id,
+        key: {
+          id,
+          data: 'new key',
+        },
+      }
+
+      expect(() => {
+        reducer(state, action)
+      }).toThrowError('Could not add already existing key')
+    })
+
+    it('should add the key by its id accordingly when receiving ADD_KEY', () => {
+      const id = '0x123'
+      const key = {
+        data: 'data',
+        expiration: 100,
+      }
+      expect(
+        reducer(
+          {},
+          {
+            type: ADD_KEY,
+            id,
+            key,
+          }
+        )
+      ).toEqual({
+        [id]: {
+          id,
+          data: 'data',
+          expiration: 100,
+        },
+      })
     })
   })
 
