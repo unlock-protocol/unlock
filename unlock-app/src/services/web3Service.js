@@ -6,6 +6,7 @@ import crypto from 'crypto'
 import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
+import { TRANSACTION_TYPES } from '../constants'
 
 const { providers } = configure(global)
 
@@ -244,6 +245,7 @@ export default class Web3Service extends EventEmitter {
       confirmations: 0,
       createdAt: new Date().getTime(),
       lock: lock.address, // This is likely a temporary address
+      type: TRANSACTION_TYPES.LOCK_CREATION,
     }
 
     return this.sendTransaction(
@@ -467,6 +469,7 @@ export default class Web3Service extends EventEmitter {
       key: key.id,
       lock: lock.address,
       account: account.address,
+      type: TRANSACTION_TYPES.OUTGOING,
     }
 
     return this.sendTransaction(
@@ -550,6 +553,7 @@ export default class Web3Service extends EventEmitter {
       lock: lock.address,
       account: account.address,
       withdrawal: lock.address,
+      type: TRANSACTION_TYPES.WITHDRAWAL,
     }
 
     this.sendTransaction(

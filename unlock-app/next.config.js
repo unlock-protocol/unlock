@@ -30,6 +30,7 @@ module.exports = {
       '/jobs': { page: '/jobs' },
       '/dashboard': { page: '/dashboard' },
       '/demo': { page: '/demo' },
+      '/log': { page: '/log' },
     }
   },
 }

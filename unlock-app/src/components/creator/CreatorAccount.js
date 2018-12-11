@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Jazzicon from 'react-jazzicon'
+import Link from 'next/link'
 
 import UnlockPropTypes from '../../propTypes'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
@@ -37,6 +38,11 @@ export function CreatorAccount({ account, network }) {
         </DoubleHeightCell>
         <DoubleHeightCell>
           {/* reinstate download / export functionality when we're ready <Buttons.Download /> */}
+        </DoubleHeightCell>
+        <DoubleHeightCell>
+          <Link href="/log">
+            <Buttons.Log as="button" />
+          </Link>
         </DoubleHeightCell>
         <DoubleHeightCell />
         <Address>{account.address}</Address>
@@ -76,7 +82,7 @@ const AccountDetails = styled.div`
   display: grid;
   row-gap: 8px;
   column-gap: 16px;
-  grid-template-columns: 40px 200px repeat(2, 100px) repeat(3, 24px) 1fr;
+  grid-template-columns: 40px 200px repeat(2, 100px) repeat(4, 24px) 1fr;
 `
 
 const DoubleHeightCell = styled.div`

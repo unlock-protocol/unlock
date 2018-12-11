@@ -45,3 +45,10 @@ export const MONTH_NAMES = [
   'Nov',
   'Dec',
 ]
+
+export const TRANSACTION_TYPES = {
+  OUTGOING: 'OUTGOING',
+  INCOMING: 'INCOMING',
+  LOCK_CREATION: 'LOCK_CREATION',
+  WITHDRAWAL: 'WITHDRAWAL',
+}

@@ -7,6 +7,7 @@ import Upload from './Upload'
 import Etherscan from './Etherscan'
 import Preview from './Preview'
 import Copy from './Copy'
+import Log from './Log'
 
 export default {
   Withdraw,
@@ -18,4 +19,5 @@ export default {
   Etherscan,
   Preview,
   Copy,
+  Log,
 }
