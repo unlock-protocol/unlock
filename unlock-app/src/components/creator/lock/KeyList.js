@@ -5,15 +5,14 @@ import UnlockPropTypes from '../../../propTypes'
 import { expirationAsDate } from '../../../utils/durations'
 import Pagination from '../../interface/pagination/Pagination'
 
-// TODO add pagination
 export function KeyList({ keys }) {
-  const renderItems = items => {
-    return items.map(item => {
+  const renderItems = lockKeys => {
+    return lockKeys.map(lockKey => {
       return (
-        <Row key={item.id}>
-          <Data>{item.transaction}</Data>
-          <Cell>{expirationAsDate(item.expiration)}</Cell>
-          <Data>{item.key}</Data>
+        <Row key={lockKey.id}>
+          <Data>{lockKey.transaction}</Data>
+          <Cell>{expirationAsDate(lockKey.expiration)}</Cell>
+          <Data>{lockKey.data}</Data>
         </Row>
       )
     })

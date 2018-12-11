@@ -3,17 +3,17 @@ import styled from 'styled-components'
 import PreviousButtons from './Previous'
 import NextButtons from './Next'
 import PageNumbers from './PageNumbers'
+import { PGN_ITEMS_PER_PAGE } from '../../../constants'
 
 class Paginate extends React.Component {
   constructor(props) {
     super(props)
-    const itemCount = props.items.length,
-      itemsPerPage = 10
+    const itemCount = props.items.length
     this.state = {
       currentPage: 1,
-      itemsPerPage: itemsPerPage,
+      itemsPerPage: PGN_ITEMS_PER_PAGE,
       count: itemCount,
-      numberOfPages: Math.ceil(itemCount / itemsPerPage),
+      numberOfPages: Math.ceil(itemCount / PGN_ITEMS_PER_PAGE),
     }
   }
 

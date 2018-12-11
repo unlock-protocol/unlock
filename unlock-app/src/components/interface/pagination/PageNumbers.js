@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { PageGroup, PageNumber, PageNumberActive } from './Pagination'
+import { PGN_MAX_NUMBER_OF_PAGES_TO_SHOW_ALL } from '../../../constants'
 
 const PageNumbers = ({ numberOfPages, currentPage, goToPage }) => {
   const pageNumber = number => {
@@ -14,7 +15,7 @@ const PageNumbers = ({ numberOfPages, currentPage, goToPage }) => {
   }
 
   // If number of pages less than 10, show all 10 page numbers
-  if (numberOfPages <= 10) {
+  if (numberOfPages <= PGN_MAX_NUMBER_OF_PAGES_TO_SHOW_ALL) {
     return (
       <PageGroup>
         {Array(numberOfPages)
@@ -26,23 +27,25 @@ const PageNumbers = ({ numberOfPages, currentPage, goToPage }) => {
     )
   }
 
+  const HALF_MAX_PAGES_TO_SHOW_ALL = PGN_MAX_NUMBER_OF_PAGES_TO_SHOW_ALL / 2
+
   // If number of pages greater than 10,  show first five and last five (1 2 3 4 5 .... 26 27 28 29 30)
   return (
     <PageGroup>
       {//show first five page numbers
-        Array(5)
+        Array(HALF_MAX_PAGES_TO_SHOW_ALL)
           .fill()
           .map((_, pn) => {
             return pageNumber(pn + 1)
           })}
       {//show first few dots
-        currentPage - 1 === 5 ? (
-          pageNumber(5 + 1)
+        currentPage - 1 === HALF_MAX_PAGES_TO_SHOW_ALL ? (
+          pageNumber(HALF_MAX_PAGES_TO_SHOW_ALL + 1)
         ) : (
           <PageNumber>
             {currentPage === numberOfPages / 2 ||
-          currentPage <= 5 ||
-          currentPage >= numberOfPages - 5
+          currentPage <= HALF_MAX_PAGES_TO_SHOW_ALL ||
+          currentPage >= numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL
               ? '....'
               : currentPage < numberOfPages / 2
                 ? '..'
@@ -50,13 +53,13 @@ const PageNumbers = ({ numberOfPages, currentPage, goToPage }) => {
           </PageNumber>
         )}
       {// show the current page number if it is between first five and last five elements
-        currentPage > 5 + 1 &&
-        currentPage < numberOfPages - 5 && (
+        currentPage > HALF_MAX_PAGES_TO_SHOW_ALL + 1 &&
+        currentPage < numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL && (
           <PageNumberActive>{currentPage}</PageNumberActive>
         )}
       {// show last few dots
-        currentPage > 5 &&
-        currentPage < numberOfPages - 5 && (
+        currentPage > HALF_MAX_PAGES_TO_SHOW_ALL &&
+        currentPage < numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL && (
           <PageNumber>
             {' '}
             {currentPage === numberOfPages / 2
@@ -67,12 +70,13 @@ const PageNumbers = ({ numberOfPages, currentPage, goToPage }) => {
             {' '}
           </PageNumber>
         )}
-      {currentPage === numberOfPages - 5 && pageNumber(currentPage)}
+      {currentPage === numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL &&
+        pageNumber(currentPage)}
       {// show last five page numbers
-        Array(5)
+        Array(HALF_MAX_PAGES_TO_SHOW_ALL)
           .fill()
           .map((_, pn) => {
-            return pageNumber(numberOfPages - 4 + pn)
+            return pageNumber(numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL + 1 + pn)
           })}
     </PageGroup>
   )
