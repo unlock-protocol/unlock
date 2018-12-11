@@ -45,3 +45,7 @@ export const MONTH_NAMES = [
   'Nov',
   'Dec',
 ]
+
+// constants related to pagination
+export const PGN_ITEMS_PER_PAGE = 10
+export const PGN_MAX_NUMBER_OF_PAGES_TO_SHOW_ALL = 10
