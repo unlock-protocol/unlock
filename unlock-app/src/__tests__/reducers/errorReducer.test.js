@@ -2,6 +2,7 @@ import React from 'react'
 import reducer from '../../reducers/errorReducer'
 import { SET_ERROR } from '../../actions/error'
 import { SET_PROVIDER } from '../../actions/provider'
+import { SET_NETWORK } from '../../actions/network'
 
 describe('error reducer', () => {
   const error = <p>Something was wrong</p>
@@ -18,6 +19,19 @@ describe('error reducer', () => {
         },
         {
           type: SET_PROVIDER,
+        }
+      )
+    ).toEqual(null)
+  })
+
+  it('should return the initial state when receveing SET_NETWORK', () => {
+    expect(
+      reducer(
+        {
+          error,
+        },
+        {
+          type: SET_NETWORK,
         }
       )
     ).toEqual(null)

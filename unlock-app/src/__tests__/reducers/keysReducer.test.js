@@ -1,6 +1,7 @@
 import reducer from '../../reducers/keysReducer'
 import { ADD_KEY, PURCHASE_KEY, UPDATE_KEY } from '../../actions/key'
 import { SET_PROVIDER } from '../../actions/provider'
+import { SET_NETWORK } from '../../actions/network'
 
 describe('keys reducer', () => {
   const key = {
@@ -21,6 +22,19 @@ describe('keys reducer', () => {
         },
         {
           type: SET_PROVIDER,
+        }
+      )
+    ).toEqual({})
+  })
+
+  it('should return the initial state when receveing SET_NETWORK', () => {
+    expect(
+      reducer(
+        {
+          [key.id]: key,
+        },
+        {
+          type: SET_NETWORK,
         }
       )
     ).toEqual({})
