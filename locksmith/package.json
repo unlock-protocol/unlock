@@ -1,0 +1,27 @@
+{
+  "name": "locksmith",
+  "version": "1.0.0",
+  "description": "an unlock storage service",
+  "main": "index.js",
+  "scripts": {
+    "dev-setup" : "NODE_ENV=development sequelize db:migrate",
+    "dev": "npm run dev-setup && nodemon server.js",
+    "test-setup" : "NODE_ENV=test sequelize db:migrate",
+    "test" : "npm run test-setup && jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "sequelize": "^4.41.2",
+    "sequelize-cli": "^5.4.0",
+    "sqlite3": "^4.0.4"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.8",
+    "supertest": "^3.3.0"
+  }
+}

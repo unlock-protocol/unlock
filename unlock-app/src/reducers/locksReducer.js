@@ -7,6 +7,7 @@ import {
 import { DELETE_TRANSACTION } from '../actions/transaction'
 import { SET_PROVIDER } from '../actions/provider'
 import { SET_NETWORK } from '../actions/network'
+import { SET_LOCK_NAME } from '../actions/storage'
 
 export const initialState = {}
 
@@ -89,6 +90,17 @@ const locksReducer = (state = initialState, action) => {
   ) {
     const { [action.transaction.lock]: lockToRemove, ...otherLocks } = state
     return otherLocks
+  }
+
+  if (action.type === SET_LOCK_NAME) {
+    if (action.address && action.name) {
+      return {
+        ...state,
+        [action.address]: Object.assign(state[action.address], {
+          name: action.name,
+        }),
+      }
+    }
   }
 
   return state

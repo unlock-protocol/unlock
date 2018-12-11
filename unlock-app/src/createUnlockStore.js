@@ -37,6 +37,7 @@ import modalReducer, {
 // Middlewares
 import lockMiddleware from './middlewares/lockMiddleware'
 import currencyConversionMiddleware from './middlewares/currencyConversionMiddleware'
+import storageMiddleware from './middlewares/storageMiddleware'
 
 const config = configure(global)
 
@@ -86,6 +87,7 @@ export const createUnlockStore = (
   const middlewares = [
     lockMiddleware,
     currencyConversionMiddleware,
+    storageMiddleware,
     routerMiddleware(history),
   ]
 

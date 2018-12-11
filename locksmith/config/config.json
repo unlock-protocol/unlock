@@ -1,0 +1,10 @@
+{
+  "development": {
+    "dialect": "sqlite",
+    "storage" : "locksmith_development.sqlite3"
+  },
+  "test": {
+    "dialect": "sqlite",
+    "storage" : "locksmith_test.sqlite3"
+  }
+}
