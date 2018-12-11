@@ -18,16 +18,18 @@ describe('key actions', () => {
   })
 
   it('should create an action to add a key to the store', () => {
+    const id = '123'
     const key = {
       expiration: 100,
       data: 'hello',
-      id: '123',
+      id,
     }
     const expectedAction = {
       type: ADD_KEY,
+      id,
       key,
     }
-    expect(addKey(key)).toEqual(expectedAction)
+    expect(addKey(id, key)).toEqual(expectedAction)
   })
 
   it('should create an action to update a key in the store', () => {

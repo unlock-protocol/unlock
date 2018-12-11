@@ -17,9 +17,20 @@ const keysReducer = (state = initialState, action) => {
   }
 
   if (action.type === ADD_KEY) {
+    if (action.key.id && action.key.id !== action.id) {
+      throw new Error('Could not add key with wrong id')
+    }
+
+    if (state[action.id]) {
+      throw new Error('Could not add already existing key')
+    }
+
     return {
-      [action.key.id]: action.key,
       ...state,
+      [action.id]: {
+        ...action.key,
+        id: action.id,
+      },
     }
   }
 
