@@ -43,20 +43,24 @@ const locksReducer = (state = initialState, action) => {
 
   // Invoked when a lock has been deployed at an address
   if (action.type === LOCK_DEPLOYED) {
-    action.lock.pending = false
     const newState = { ...state }
-    const previousLock = newState[action.lock.address] || action.lock
+
+    const previousLock = action.lock.address
+      ? newState[action.lock.address]
+      : newState[action.address]
 
     // First remove the previous locks mapping (the address was updated), if any!
     delete newState[action.lock.address]
 
-    // Then we update the lock object
+    const newLock = Object.assign(previousLock || {}, action.lock, {
+      address: action.address,
+    })
+    // mark the lock has not pending anymore:
+    delete newLock.pending
+
     return {
       ...newState,
-      [action.address]: Object.assign(previousLock, {
-        address: action.address,
-        pending: false,
-      }),
+      [action.address]: newLock,
     }
   }
 
