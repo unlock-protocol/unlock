@@ -29,7 +29,7 @@ export class CreatorLock extends React.Component {
     super(props, context)
     this.state = {
       showEmbedCode: false,
-      showKeys: true,
+      showKeys: false,
     }
     this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
     this.toggleKeys = this.toggleKeys.bind(this)
