@@ -5,11 +5,12 @@ import {
 } from '../actions/transaction'
 
 import { SET_PROVIDER } from '../actions/provider'
+import { SET_NETWORK } from '../actions/network'
 
 export const initialState = {}
 
 const transactionsReducer = (transactions = initialState, action) => {
-  if (action.type == SET_PROVIDER) {
+  if ([SET_PROVIDER, SET_NETWORK].indexOf(action.type) > -1) {
     return initialState
   }
 
