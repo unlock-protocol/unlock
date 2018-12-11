@@ -327,37 +327,6 @@ describe('Lock middleware', () => {
         )
       })
     })
-
-    describe('when the network.changed is the same as the store value', () => {
-      it('should refresh transactions, keys, locks and the account', () => {
-        const { store } = create()
-        const networkId = 1984
-
-        mockWeb3Service.getTransaction = jest.fn()
-        mockWeb3Service.getKey = jest.fn()
-        mockWeb3Service.getLock = jest.fn()
-        mockWeb3Service.refreshOrGetAccount = jest.fn()
-
-        state.network.name = networkId
-        state.transactions = {
-          [transaction.hash]: transaction,
-        }
-        state.keys = {
-          [key.id]: key,
-        }
-        state.locks = {
-          [lock.address]: lock,
-        }
-        mockWeb3Service.emit('network.changed', networkId)
-        expect(store.dispatch).not.toHaveBeenCalled()
-        expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(transaction)
-        expect(mockWeb3Service.getKey).toHaveBeenCalledWith(key)
-        expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock.address)
-        expect(mockWeb3Service.refreshOrGetAccount).toHaveBeenCalledWith(
-          account
-        )
-      })
-    })
   })
 
   it('it should handle error events triggered by the web3Service', () => {
