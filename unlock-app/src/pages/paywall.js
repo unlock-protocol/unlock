@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import NoSSR from 'react-no-ssr'
-import PropTypes from 'prop-types'
 import UnlockPropTypes from '../propTypes'
 import Overlay from '../components/lock/Overlay'
 import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
@@ -14,22 +13,13 @@ export class Paywall extends React.Component {
   }
 
   render() {
-    const { lockAddress, locks } = this.props
-    const locksForPaywall = Object.keys(locks).reduce((acc, lockId) => {
-      if (locks[lockId].address === lockAddress) {
-        return {
-          ...acc,
-          [lockId]: locks[lockId],
-        }
-      }
-      return acc
-    }, {})
+    const { lock } = this.props
 
     return (
       <>
         <NoSSR>
-          <ShowUnlessUserHasKeyToAnyLock locks={locksForPaywall}>
-            <Overlay locks={locksForPaywall} />
+          <ShowUnlessUserHasKeyToAnyLock locks={lock ? [lock] : []}>
+            <Overlay locks={lock ? [lock] : []} />
           </ShowUnlessUserHasKeyToAnyLock>
         </NoSSR>
       </>
@@ -38,13 +28,16 @@ export class Paywall extends React.Component {
 }
 
 Paywall.propTypes = {
-  lockAddress: UnlockPropTypes.address.isRequired,
-  locks: UnlockPropTypes.locks.isRequired,
+  lock: UnlockPropTypes.lock.isRequired,
 }
 
-const mapStateToProps = state => {
+export const mapStateToProps = ({ locks: stateLocks }, { lockAddress }) => {
+  const lock = Object.values(stateLocks).find(
+    lock => lock.address === lockAddress
+  )
+
   return {
-    locks: state.locks,
+    lock,
   }
 }
 
