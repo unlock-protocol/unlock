@@ -7,8 +7,9 @@ export const purchaseKey = key => ({
   key,
 })
 
-export const addKey = key => ({
+export const addKey = (id, key) => ({
   type: ADD_KEY,
+  id,
   key,
 })
 
