@@ -1,10 +1,11 @@
 import { ADD_KEY, PURCHASE_KEY, UPDATE_KEY } from '../actions/key'
 import { SET_PROVIDER } from '../actions/provider'
+import { SET_NETWORK } from '../actions/network'
 
 export const initialState = {}
 
 const keysReducer = (state = initialState, action) => {
-  if (action.type == SET_PROVIDER) {
+  if ([SET_PROVIDER, SET_NETWORK].indexOf(action.type) > -1) {
     return initialState
   }
 
