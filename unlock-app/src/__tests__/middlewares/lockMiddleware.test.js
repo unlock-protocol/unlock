@@ -2,6 +2,7 @@ import EventEmitter from 'events'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import lockMiddleware from '../../middlewares/lockMiddleware'
 import {
+  ADD_LOCK,
   UPDATE_LOCK,
   CREATE_LOCK,
   LOCK_DEPLOYED,
@@ -149,7 +150,7 @@ describe('Lock middleware', () => {
     expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
       state.account
     )
-    expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock)
+    expect(mockWeb3Service.getLock).toHaveBeenCalledWith(address)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: LOCK_DEPLOYED,
@@ -159,20 +160,43 @@ describe('Lock middleware', () => {
     )
   })
 
-  it('it should handle lock.updated events triggered by the web3Service', () => {
-    const { store } = create()
-    const lock = {
-      address: '0x123',
-    }
-    const update = {}
-    mockWeb3Service.emit('lock.updated', lock, update)
-    expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: UPDATE_LOCK,
-        address: lock.address,
-        update,
-      })
-    )
+  describe('lock.updated', () => {
+    it('it should dispatch UPDATE_LOCK if the lock already exists ', () => {
+      const { store } = create()
+      const lock = {
+        address: '0x123',
+      }
+      state.locks = {
+        [lock.address]: lock,
+      }
+
+      const update = {}
+      mockWeb3Service.emit('lock.updated', lock.address, update)
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: UPDATE_LOCK,
+          address: lock.address,
+          update,
+        })
+      )
+    })
+
+    it('it should dispatch ADD_LOCK if the lock does not already exist', () => {
+      const { store } = create()
+      const lock = {
+        address: '0x123',
+      }
+
+      const update = {}
+      mockWeb3Service.emit('lock.updated', lock.address, update)
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: ADD_LOCK,
+          address: lock.address,
+          lock: update,
+        })
+      )
+    })
   })
 
   describe('when handling the key.saved events triggered by the web3Service', () => {
@@ -186,7 +210,7 @@ describe('Lock middleware', () => {
       mockWeb3Service.refreshAccountBalance = jest.fn()
 
       mockWeb3Service.emit('key.saved', key)
-      expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock)
+      expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock.address)
       expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
         state.account
       )
@@ -202,9 +226,7 @@ describe('Lock middleware', () => {
       mockWeb3Service.refreshAccountBalance = jest.fn()
 
       mockWeb3Service.emit('key.saved', key)
-      expect(mockWeb3Service.getLock).toHaveBeenCalledWith({
-        address: '0xAnotherLock',
-      })
+      expect(mockWeb3Service.getLock).toHaveBeenCalledWith('0xAnotherLock')
       expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
         state.account
       )
@@ -330,7 +352,7 @@ describe('Lock middleware', () => {
         expect(store.dispatch).not.toHaveBeenCalled()
         expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(transaction)
         expect(mockWeb3Service.getKey).toHaveBeenCalledWith(key)
-        expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock)
+        expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock.address)
         expect(mockWeb3Service.refreshOrGetAccount).toHaveBeenCalledWith(
           account
         )
@@ -403,39 +425,12 @@ describe('Lock middleware', () => {
     const { next, invoke } = create()
     const action = {
       type: LOCATION_CHANGE,
-      payload: { pathname: `/lock/${lock.address}` },
+      payload: { location: { pathname: `/lock/${lock.address}` } },
     }
     mockWeb3Service.getLock = jest.fn()
     invoke(action)
-    expect(mockWeb3Service.getLock).toHaveBeenCalledWith({
-      address: lock.address,
-    })
+    expect(mockWeb3Service.getLock).toHaveBeenCalled()
     expect(next).toHaveBeenCalledWith(action)
-  })
-
-  describe('when SET_ACCOUNT was called', () => {
-    it('should call getKey if the lock is set', () => {
-      const { next, invoke } = create()
-      const action = { type: SET_ACCOUNT, account }
-      state.network.lock = lock
-      mockWeb3Service.getKey = jest.fn()
-      invoke(action)
-      expect(mockWeb3Service.getKey).toHaveBeenCalledWith({
-        lock: lock.address,
-        owner: account,
-      })
-      expect(next).toHaveBeenCalledWith(action)
-    })
-
-    it('should not call getKey if the lock is not set', () => {
-      const { next, invoke } = create()
-      const action = { type: SET_ACCOUNT, account }
-      delete state.network.lock
-      mockWeb3Service.getKey = jest.fn()
-      invoke(action)
-      expect(mockWeb3Service.getKey).toHaveBeenCalledTimes(0)
-      expect(next).toHaveBeenCalledWith(action)
-    })
   })
 
   it('should handle WITHDRAW_FROM_LOCK by calling withdrawFromLock from web3Service', () => {

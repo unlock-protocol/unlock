@@ -27,29 +27,29 @@ export const ShowUnlessUserHasKeyToAnyLock = ({
 }
 
 ShowUnlessUserHasKeyToAnyLock.propTypes = {
-  modalShown: PropTypes.bool,
-  locks: UnlockPropTypes.locks,
   keys: PropTypes.arrayOf(UnlockPropTypes.key),
+  showModal: PropTypes.func,
+  modalShown: PropTypes.bool,
   children: PropTypes.node,
 }
 
 export const mapDispatchToProps = (dispatch, { locks }) => ({
-  showModal: () => dispatch(showModal(Object.keys(locks).join('-'))),
+  showModal: () => dispatch(showModal(locks.map(l => l.address).join('-'))),
 })
 
 export const mapStateToProps = ({ keys, modals }, { locks }) => {
   let validKeys = []
   const now = new Date().getTime() / 1000
-  for (let lock of Object.values(locks)) {
+  locks.forEach(lock => {
     for (let k of Object.values(keys)) {
       if (k.lock === lock.address && k.expiration > now) {
         validKeys.push(k)
       }
     }
-  }
+  })
 
   return {
-    modalShown: !!modals[Object.keys(locks).join('-')],
+    modalShown: !!modals[locks.map(l => l.address).join('-')],
     keys: validKeys,
   }
 }

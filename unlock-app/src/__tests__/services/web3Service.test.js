@@ -540,10 +540,8 @@ describe('Web3Service', () => {
       it('should trigger an event when it has been loaded woth an updated balance', done => {
         expect.assertions(2)
 
-        web3Service.on('lock.updated', (lock, update) => {
-          expect(lock).toMatchObject({
-            address: lockAddress,
-          })
+        web3Service.on('lock.updated', (address, update) => {
+          expect(address).toBe(lockAddress)
           expect(update).toMatchObject({
             balance: '3735944941',
             keyPrice: '10000000000000000',
@@ -555,7 +553,7 @@ describe('Web3Service', () => {
           done()
         })
 
-        return web3Service.getLock({ address: lockAddress })
+        return web3Service.getLock(lockAddress)
       })
     })
 
@@ -855,8 +853,8 @@ describe('Web3Service', () => {
           return cb(null, { event: 'transactionHash', args: { hash: '0x123' } })
         })
 
-        web3Service.on('lock.updated', (lockToUpdate, params) => {
-          expect(lockToUpdate).toBe(lock)
+        web3Service.on('lock.updated', (addressOfLockToUpdate, params) => {
+          expect(addressOfLockToUpdate).toBe(lock.address)
           expect(params.transaction).toBe('0x123')
           done()
         })
@@ -986,7 +984,7 @@ describe('Web3Service', () => {
         web3Service.getLock = jest.fn()
 
         web3Service.withdrawFromLock(lock, account)
-        expect(web3Service.getLock).toHaveBeenCalledWith(lock)
+        expect(web3Service.getLock).toHaveBeenCalledWith(lock.address)
       })
     })
   })

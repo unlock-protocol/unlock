@@ -5,11 +5,12 @@ import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   CREATE_LOCK,
   WITHDRAW_FROM_LOCK,
-  updateLock,
+  addLock,
   lockDeployed,
+  updateLock,
 } from '../actions/lock'
 import { PURCHASE_KEY, updateKey } from '../actions/key'
-import { SET_ACCOUNT, setAccount, updateAccount } from '../actions/accounts'
+import { setAccount, updateAccount } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
 import { SET_PROVIDER } from '../actions/provider'
@@ -50,7 +51,7 @@ export default function lockMiddleware({ getState, dispatch }) {
         lock: address,
       })
     )
-    web3Service.getLock(lock)
+    web3Service.getLock(address)
     web3Service.refreshAccountBalance(getState().account)
   })
 
@@ -58,8 +59,12 @@ export default function lockMiddleware({ getState, dispatch }) {
    * The Lock was changed.
    * Should we get the balance of the lock owner?
    */
-  web3Service.on('lock.updated', (lock, update) => {
-    dispatch(updateLock(lock.address, update))
+  web3Service.on('lock.updated', (address, update) => {
+    if (getState().locks[address]) {
+      dispatch(updateLock(address, update))
+    } else {
+      dispatch(addLock(address, update))
+    }
   })
 
   /**
@@ -67,18 +72,7 @@ export default function lockMiddleware({ getState, dispatch }) {
    * it might have been updated (balance, outstanding keys...)
    */
   web3Service.on('key.saved', key => {
-    const lockId = Object.keys(getState().locks).find(
-      lockId => key.lock === getState().locks[lockId].address
-    )
-    if (!lockId) {
-      // Hum. We have a key saved but we do not know of the lock :/
-      // We probably need to retrieve it!
-      web3Service.getLock({
-        address: key.lock,
-      })
-    } else {
-      web3Service.getLock(getState().locks[lockId])
-    }
+    web3Service.getLock(key.lock)
     web3Service.refreshAccountBalance(getState().account)
   })
 
@@ -121,7 +115,9 @@ export default function lockMiddleware({ getState, dispatch }) {
       // We refresh keys
       Object.values(getState().keys).forEach(key => web3Service.getKey(key))
       // We refresh locks
-      Object.values(getState().locks).forEach(lock => web3Service.getLock(lock))
+      Object.values(getState().locks).forEach(lock =>
+        web3Service.getLock(lock.address)
+      )
 
       // and refresh or load the account
       return web3Service.refreshOrGetAccount(getState().account)
@@ -154,22 +150,17 @@ export default function lockMiddleware({ getState, dispatch }) {
 
       next(action)
 
-      if (action.type === LOCATION_CHANGE) {
+      if (
+        action.type === LOCATION_CHANGE &&
+        action.payload.location &&
+        action.payload.location.pathname
+      ) {
         // Location was changed, get the matching lock
-        const match = action.payload.pathname.match(
-          /\/lock\/(0x[a-fA-F0-9]{40})$/
+        const match = action.payload.location.pathname.match(
+          /\/lock|demo\/(0x[a-fA-F0-9]{40})$/
         )
         if (match) {
           web3Service.getLock({ address: match[1] })
-        }
-      } else if (action.type === SET_ACCOUNT) {
-        const lock = getState().network.lock
-        if (lock && lock.address) {
-          // TODO(julien): isn't lock always set anyway?
-          web3Service.getKey({
-            lock: lock.address,
-            owner: action.account,
-          })
         }
       }
     }

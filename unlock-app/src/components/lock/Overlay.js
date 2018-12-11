@@ -14,8 +14,8 @@ export const Overlay = ({ locks, hideModal }) => (
         You have reached your limit of free articles. Please purchase access:
       </Headline>
       <Locks>
-        {Object.values(locks).map(lock => (
-          <Lock key={lock.address} lock={lock} hideModal={hideModal} />
+        {locks.map(lock => (
+          <Lock key={JSON.stringify(lock)} lock={lock} hideModal={hideModal} />
         ))}
       </Locks>
       <Colophon>
@@ -27,16 +27,12 @@ export const Overlay = ({ locks, hideModal }) => (
 )
 
 Overlay.propTypes = {
-  locks: UnlockPropTypes.locks,
+  locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
   hideModal: PropTypes.func.isRequired,
 }
 
-Overlay.defaultProps = {
-  locks: {},
-}
-
 export const mapDispatchToProps = (dispatch, { locks }) => ({
-  hideModal: () => dispatch(hideModal(Object.keys(locks).join('-'))),
+  hideModal: () => dispatch(hideModal(locks.map(l => l.address).join('-'))),
 })
 
 export default connect(
