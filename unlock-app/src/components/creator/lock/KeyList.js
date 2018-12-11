@@ -3,26 +3,37 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import UnlockPropTypes from '../../../propTypes'
 import { expirationAsDate } from '../../../utils/durations'
+import Pagination from '../../interface/pagination/Pagination'
 
 // TODO add pagination
-export function KeyList({ keys }) {
+export function KeyList(props) {
+  const renderItems = items => {
+    return items.map(item => {
+      return (
+        <Row key={item.id}>
+          <Data>{item.transaction}</Data>
+          <Cell>{expirationAsDate(item.expiration)}</Cell>
+          <Data>{item.key}</Data>
+        </Row>
+      )
+    })
+  }
   return (
-    <Table>
-      <Header>
-        <Cell>Keys</Cell>
-        <Cell>Expiration</Cell>
-        <Cell>Data</Cell>
-      </Header>
-      {Object.values(keys).map(key => {
-        return (
-          <Row key={key.id}>
-            <Data>{key.transaction}</Data>
-            <Cell>{expirationAsDate(key.expiration)}</Cell>
-            <Data>{key.data}</Data>
-          </Row>
-        )
-      })}
-    </Table>
+    <KeyListWrapper>
+      <Table>
+        <Header>
+          <Cell>Keys</Cell>
+          <Cell>Expiration</Cell>
+          <Cell>Data</Cell>
+        </Header>
+      </Table>
+      {/* 
+          <Pagination> takes a list of items
+          and a function that takes list of items and renders the list.
+          This is so that the Pagination component can be reused across the app
+      */}
+      <Pagination items={Object.values(props.keys)} renderItems={renderItems} />
+    </KeyListWrapper>
   )
 }
 
@@ -47,6 +58,10 @@ const mapStateToProps = (state, { lock }) => {
 }
 
 export default connect(mapStateToProps)(KeyList)
+
+const KeyListWrapper = styled.div`
+  cursor: default;
+`
 
 const Table = styled.div``
 

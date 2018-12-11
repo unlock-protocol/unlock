@@ -29,10 +29,11 @@ export class CreatorLock extends React.Component {
     super(props, context)
     this.state = {
       showEmbedCode: false,
-      showKeys: false,
+      showKeys: true,
     }
     this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
     this.toggleKeys = this.toggleKeys.bind(this)
+    this.preventPropagation = this.preventPropagation.bind(this)
   }
 
   toggleEmbedCode() {
@@ -41,10 +42,14 @@ export class CreatorLock extends React.Component {
     }))
   }
 
-  toggleKeys() {
+  toggleKeys(shouldToggle) {
     this.setState(previousState => ({
       showKeys: !previousState.showKeys,
     }))
+  }
+
+  preventPropagation(e) {
+    e.stopPropagation()
   }
 
   render() {
@@ -78,7 +83,7 @@ export class CreatorLock extends React.Component {
         )}
         {!showEmbedCode &&
           showKeys && (
-          <LockPanel>
+          <LockPanel onClick={this.preventPropagation}>
             <LockDivider />
             <KeyList lock={lock} />
           </LockPanel>
