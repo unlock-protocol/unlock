@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import UnlockPropTypes from '../../propTypes'
 import { showModal } from '../../actions/modal'
-import { lockPage } from '../../services/iframeService'
+import { lockPage, unlockPage } from '../../services/iframeService'
 
 export const ShowUnlessUserHasKeyToAnyLock = ({
   keys,
@@ -17,7 +17,7 @@ export const ShowUnlessUserHasKeyToAnyLock = ({
 
   // There is a valid key, but we shown the modal previously
   if (keys.length > 0 && !!modalShown) {
-    window.parent.postMessage('unlocked', '*')
+    unlockPage()
     return children
   }
 
