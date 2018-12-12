@@ -53,4 +53,27 @@ describe('CreatorLockForm', () => {
     expect(wrapper.queryByValue('New Lock')).toBeNull()
     expect(wrapper.queryByText('Submit')).toBeNull()
   })
+  it('should not allow a form with invalid data to be submitted', () => {
+    const store = createUnlockStore({
+      account: {},
+    })
+
+    let wrapper = rtl.render(
+    <Provider store={store}>
+      <CreatorLocks />
+    </Provider>
+    )
+
+    let createButton = wrapper.getByText('Create Lock')
+    rtl.fireEvent.click(createButton)
+
+    // Setting name to be an invalid value (empty)
+    let name = wrapper.queryByValue('New Lock')
+    rtl.fireEvent.change(name, { target: { value: '' }})
+
+    rtl.fireEvent.click(wrapper.queryByText('Submit'))
+
+    // Form should still exist
+    expect(wrapper.queryByText('Submit')).not.toBeNull()
+  })
 })
