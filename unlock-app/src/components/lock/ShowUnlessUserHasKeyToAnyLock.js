@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import UnlockPropTypes from '../../propTypes'
 import { showModal } from '../../actions/modal'
+import { lockPage } from '../../services/iframeService'
 
 export const ShowUnlessUserHasKeyToAnyLock = ({
   keys,
@@ -36,7 +37,7 @@ ShowUnlessUserHasKeyToAnyLock.propTypes = {
 
 export const mapDispatchToProps = (dispatch, { locks }) => ({
   showModal: () => {
-    window.parent.postMessage('locked', '*')
+    lockPage()
     dispatch(showModal(locks.map(l => l.address).join('-')))
   },
 })
