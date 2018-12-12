@@ -41,11 +41,7 @@ class CreatorLockForm extends React.Component {
   }
 
   handleChange(event) {
-    if (!this.validate(event.target.name, event.target.value)) {
-      event.target.dataset.valid = false
-    } else {
-      event.target.dataset.valid = true
-    }
+    event.target.dataset.valid = this.validate(event.target.name, event.target.value)
     this.setState({ [event.target.name]: event.target.value })
   }
 
