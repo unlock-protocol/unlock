@@ -1,24 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ArrowGroup, LeftArrow } from './Pagination'
+import { ArrowGroup, ArrowGroupDisabled, LeftArrow } from './Pagination'
 
 const PreviousButtons = ({ currentPage, goToPage }) => {
-  const goToPreviousPage = () => {
-    if (currentPage === 1) {
-      return
-    }
-    goToPage(currentPage - 1)
-  }
-  const goToFirstPage = () => {
-    if (currentPage === 1) {
-      return
-    }
-    goToPage(1)
+  if (currentPage === 1) {
+    return (
+      <ArrowGroupDisabled>
+        <LeftArrow>&lt;&lt;</LeftArrow>
+        <LeftArrow>&lt;</LeftArrow>
+      </ArrowGroupDisabled>
+    )
   }
   return (
     <ArrowGroup>
-      <LeftArrow onClick={goToFirstPage}>&lt;&lt;</LeftArrow>
-      <LeftArrow onClick={goToPreviousPage}>&lt;</LeftArrow>
+      <LeftArrow onClick={() => goToPage(1)}>&lt;&lt;</LeftArrow>
+      <LeftArrow onClick={() => goToPage(currentPage - 1)}>&lt;</LeftArrow>
     </ArrowGroup>
   )
 }

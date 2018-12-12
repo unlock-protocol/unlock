@@ -7,12 +7,12 @@ import Pagination from '../../interface/pagination/Pagination'
 
 export function KeyList({ keys }) {
   const renderItems = lockKeys => {
-    return lockKeys.map(lockKey => {
+    return lockKeys.map(({ id, transaction, expiration, data }) => {
       return (
-        <Row key={lockKey.id}>
-          <Data>{lockKey.transaction}</Data>
-          <Cell>{expirationAsDate(lockKey.expiration)}</Cell>
-          <Data>{lockKey.data}</Data>
+        <Row key={id}>
+          <Data>{transaction}</Data>
+          <Cell>{expirationAsDate(expiration)}</Cell>
+          <Data>{data}</Data>
         </Row>
       )
     })

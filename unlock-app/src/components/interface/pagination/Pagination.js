@@ -39,13 +39,15 @@ class Paginate extends React.Component {
     return (
       <PaginationWrapper>
         {this.itemList()}
-        <LockDivider />
         {count > 10 && (
-          <Pagination>
-            <PreviousButtons {...this.state} goToPage={this.goToPage} />
-            <PageNumbers {...this.state} goToPage={this.goToPage} />
-            <NextButtons {...this.state} goToPage={this.goToPage} />
-          </Pagination>
+          <div>
+            <LockDivider />
+            <Pagination>
+              <PreviousButtons {...this.state} goToPage={this.goToPage} />
+              <PageNumbers {...this.state} goToPage={this.goToPage} />
+              <NextButtons {...this.state} goToPage={this.goToPage} />
+            </Pagination>
+          </div>
         )}
       </PaginationWrapper>
     )
@@ -69,6 +71,14 @@ export const ArrowGroup = styled.div`
   flex-direction: row;
   cursor: pointer;
   color: #72accf;
+  font-weight: bold;
+`
+
+export const ArrowGroupDisabled = styled.div`
+  display: flex;
+  flex-direction: row;
+  cursor: default;
+  color: gray;
   font-weight: bold;
 `
 
