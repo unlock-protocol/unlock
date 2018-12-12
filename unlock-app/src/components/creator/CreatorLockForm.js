@@ -34,11 +34,20 @@ class CreatorLockForm extends React.Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
+  validate(name, value) {
+    return (name === 'name' && typeof value === 'string' && value.length > 0) ||
+      ((name === 'expirationDuration' || name === 'maxNumberOfKeys') & !isNaN(value) && value > 0) ||
+      (name === 'keyPrice' && !isNaN(value) && value >= 0)
+  }
+
   handleChange(event) {
+    event.target.dataset.valid = this.validate(event.target.name, event.target.value)
     this.setState({ [event.target.name]: event.target.value })
   }
 
   handleSubmit() {
+    if (document.querySelector('[data-valid="false"]')) return false
+
     const { account, createLock, hideAction } = this.props
     const {
       expirationDuration,
@@ -57,6 +66,7 @@ class CreatorLockForm extends React.Component {
       maxNumberOfKeys,
       owner: account.address,
     }
+
     createLock(lock)
     if (hideAction) hideAction()
   }
@@ -149,6 +159,9 @@ const FormLockRow = styled(LockRow)`
     padding: 5px;
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 13px;
+  }
+  ${LockRowGrid} input[type='text'][data-valid="false"] {
+    background-color: var(--lightred);
   }
 `
 
