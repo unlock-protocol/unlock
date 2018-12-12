@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import Jazzicon from 'react-jazzicon'
-import Link from 'next/link'
 
 import UnlockPropTypes from '../../propTypes'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
@@ -40,9 +39,7 @@ export function CreatorAccount({ account, network }) {
           {/* reinstate download / export functionality when we're ready <Buttons.Download /> */}
         </DoubleHeightCell>
         <DoubleHeightCell>
-          <Link href="/log">
-            <Buttons.Log as="button" />
-          </Link>
+          <Buttons.Log href="/log" as="button" />
         </DoubleHeightCell>
         <DoubleHeightCell />
         <Address>{account.address}</Address>

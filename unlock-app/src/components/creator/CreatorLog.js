@@ -1,9 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
 import BalanceProvider from '../helpers/BalanceProvider'
-import { expirationAsDate } from '../../utils/durations'
+import { dateTimeString } from '../../utils/durations'
 
-import UnlogPropTypes from '../../propTypes'
+import UnlockPropTypes from '../../propTypes'
+
+/** Define default string values for the log so we don't crash the app */
+const logDefaults = {
+  DATE: 'Date Unknown',
+  NAME: '',
+  TYPE: 'TRANSACTION',
+  OWNER: '',
+  DATA: '',
+}
+
+function snakeToTitleCase(string) {
+  return string
+    .split('_')
+    .map(word => word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ')
+}
 
 export class CreatorLog extends React.Component {
   constructor(props, context) {
@@ -21,20 +37,24 @@ export class CreatorLog extends React.Component {
         ? lock.name
         : lock.address
           ? lock.address
-          : ''
-      : ''
+          : logDefaults.NAME
+      : logDefaults.NAME
   }
 
   getOwner = (transaction, locks) => {
     const lock = this.getLock(transaction, locks)
 
-    return lock ? lock.owner : null
+    return lock ? lock.owner : logDefaults.OWNER
+  }
+
+  getType = transaction => {
+    return transaction.type ? transaction.type : logDefaults.TYPE
   }
 
   getPrice = (transaction, locks) => {
     const lock = this.getLock(transaction, locks)
 
-    return lock.keyPrice
+    return lock ? lock.keyPrice : 0
   }
 
   render() {
@@ -42,35 +62,37 @@ export class CreatorLog extends React.Component {
 
     return (
       <LogRow>
-        <div>{expirationAsDate(transaction.createdAt)}</div>
+        <LogDate>
+          {transaction.createdAt
+            ? dateTimeString(transaction.createdAt)
+            : logDefaults.DATE}
+        </LogDate>
         <LogName>
           {this.getLockNameAddress(transaction, this.props.locks)}
         </LogName>
-        <LogType>{transaction.type || 'TRANSACTION'}</LogType>
+        <LogType>{snakeToTitleCase(this.getType(transaction))}</LogType>
         <LogOwner>{this.getOwner(transaction, this.props.locks)}</LogOwner>
         <BalanceProvider
           amount={this.getPrice(transaction, this.props.locks)}
           unit="wei"
-          render={ethWithPresentation => <div>
-            {ethWithPresentation}
-            {' '}
-ETH
-          </div>}
+          render={ethWithPresentation => (
+            <LogAmount>{`${ethWithPresentation} ETH`}</LogAmount>
+          )}
         />
-        <div>{transaction.data || 'NONE'}</div>
+        <LogData>{transaction.data || logDefaults.DATA}</LogData>
       </LogRow>
     )
   }
 }
 
 CreatorLog.propTypes = {
-  transaction: UnlogPropTypes.transaction.isRequired,
+  transaction: UnlockPropTypes.transaction.isRequired,
 }
 
 export default CreatorLog
 
 export const LogRowGrid =
-  'grid-template-columns: 170px repeat(5, minmax(100px, 1fr));'
+  'grid-template-columns: 160px repeat(3, minmax(100px, 1fr)) 100px minmax(100px, 1fr);'
 
 export const LogRow = styled.div`
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
@@ -82,7 +104,7 @@ export const LogRow = styled.div`
   display: grid;
   grid-gap: 16px;
   ${LogRowGrid} grid-template-rows: 0px;
-  grid-column-gap: 16px;
+  grid-column-gap: 24px;
   grid-row-gap: 0;
   align-items: start;
 
@@ -91,26 +113,23 @@ export const LogRow = styled.div`
   }
 `
 
-export const LogName = styled.div`
+const LogDate = styled.div``
+
+const LogName = styled.div`
   color: var(--link);
   overflow: hidden;
   text-overflow: ellipsis;
 `
 
-export const LogType = styled.div`
+const LogType = styled.div`
   color: #74ce63;
 `
 
-export const LogOwner = styled.div`
+const LogOwner = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
 `
 
-export const LogAddress = styled.div`
-  color: var(--grey);
-  font-weight: 200;
-  white-space: nowrap;
-  font-size: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`
+const LogAmount = styled.div``
+
+const LogData = styled.div``

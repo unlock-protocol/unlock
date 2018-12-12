@@ -82,10 +82,33 @@ export function expirationAsDate(timestamp) {
     return durationsAsTextFromSeconds(timestamp)
 
   let expirationDate = new Date(0)
-  expirationDate.setUTCSeconds(timestamp)
+  expirationDate.setUTCSeconds(timestamp / 1000)
   let day = expirationDate.getDate()
   let month = expirationDate.getMonth()
   let year = expirationDate.getFullYear()
 
   return MONTH_NAMES[month] + ' ' + day + ', ' + year
+}
+
+/**
+ * Given an epoch timestamp, returns a string of the form 'Month Day, Year, Hour:Minutes' (eg, 'Dec 31, 1980 12:151')
+ * @param timestamp
+ * @returns {string}
+ */
+export function dateTimeString(timestamp) {
+  if (!timestamp) return 'Never'
+  if (timestamp - new Date().getTime() / 1000 < 86400)
+    return durationsAsTextFromSeconds(timestamp)
+
+  let expirationDate = new Date(0)
+  expirationDate.setUTCSeconds(timestamp / 1000)
+  let day = expirationDate.getDate()
+  let month = expirationDate.getMonth()
+  let year = expirationDate.getFullYear()
+  let hours = expirationDate.getHours()
+  let minutes = expirationDate.getMinutes()
+
+  return (
+    MONTH_NAMES[month] + ' ' + day + ', ' + year + ' ' + hours + ':' + minutes
+  )
 }

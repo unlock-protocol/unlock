@@ -51,6 +51,7 @@ const LogHeaderRow = styled.div`
   display: grid;
   grid-gap: 16px;
   ${LogRowGrid} align-items: center;
+  grid-column-gap: 24px;
 `
 
 const LogHeader = styled.div`
