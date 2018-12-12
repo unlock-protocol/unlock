@@ -21,9 +21,6 @@ function _server(port, dev) {
           if (path === 'paywall') {
             const params = route('/paywall/:lockAddress')(pathname)
             app.render(req, res, '/paywall', Object.assign(params, query))
-          } else if (path === 'lock') {
-            const params = route('/lock/:lockaddress')(pathname)
-            app.render(req, res, '/lock', Object.assign(params, query))
           } else if (path === 'demo') {
             const params = route('/demo/:lockaddress')(pathname)
             app.render(req, res, '/demo', Object.assign(params, query))

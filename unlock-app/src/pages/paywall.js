@@ -16,13 +16,11 @@ export class Paywall extends React.Component {
     const { lock } = this.props
 
     return (
-      <>
-        <NoSSR>
-          <ShowUnlessUserHasKeyToAnyLock locks={lock ? [lock] : []}>
-            <Overlay locks={lock ? [lock] : []} />
-          </ShowUnlessUserHasKeyToAnyLock>
-        </NoSSR>
-      </>
+      <NoSSR>
+        <ShowUnlessUserHasKeyToAnyLock locks={lock ? [lock] : []}>
+          <Overlay locks={lock ? [lock] : []} />
+        </ShowUnlessUserHasKeyToAnyLock>
+      </NoSSR>
     )
   }
 }
