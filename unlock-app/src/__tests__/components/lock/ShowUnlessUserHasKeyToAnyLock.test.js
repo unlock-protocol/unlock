@@ -76,6 +76,7 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
       )
 
       expect(showModal).toHaveBeenCalled()
+
     })
   })
 

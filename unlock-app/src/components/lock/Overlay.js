@@ -32,7 +32,10 @@ Overlay.propTypes = {
 }
 
 export const mapDispatchToProps = (dispatch, { locks }) => ({
-  hideModal: () => dispatch(hideModal(locks.map(l => l.address).join('-'))),
+  hideModal: () => {
+    window.parent.postMessage('unlocked', '*')
+    return dispatch(hideModal(locks.map(l => l.address).join('-')))
+  },
 })
 
 export default connect(
