@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import UnlockPropTypes from '../../propTypes'
 import { showModal } from '../../actions/modal'
+import { lockPage, unlockPage } from '../../services/iframeService'
 
 export const ShowUnlessUserHasKeyToAnyLock = ({
   keys,
@@ -16,6 +17,7 @@ export const ShowUnlessUserHasKeyToAnyLock = ({
 
   // There is a valid key, but we shown the modal previously
   if (keys.length > 0 && !!modalShown) {
+    unlockPage()
     return children
   }
 
@@ -34,7 +36,10 @@ ShowUnlessUserHasKeyToAnyLock.propTypes = {
 }
 
 export const mapDispatchToProps = (dispatch, { locks }) => ({
-  showModal: () => dispatch(showModal(locks.map(l => l.address).join('-'))),
+  showModal: () => {
+    lockPage()
+    dispatch(showModal(locks.map(l => l.address).join('-')))
+  },
 })
 
 export const mapStateToProps = ({ keys, modals }, { locks }) => {
