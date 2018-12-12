@@ -1,13 +1,7 @@
-export const lockUnlessKeyIsValid = ({ key }) => {
-  const now = new Date().getTime() / 1000
-  if (key.expiration < now) {
-    window.parent.postMessage('locked', '*')
-  }
+export const lockPage = () => {
+  window.parent.postMessage('locked', '*')
 }
 
-export const unlockIfKeyIsValid = ({ key }) => {
-  const now = new Date().getTime() / 1000
-  if (key.expiration >= now) {
-    window.parent.postMessage('unlocked', '*')
-  }
+export const unlockPage = () => {
+  window.parent.postMessage('unlocked', '*')
 }

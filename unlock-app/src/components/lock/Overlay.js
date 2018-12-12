@@ -6,6 +6,7 @@ import { RoundedLogo } from '../interface/Logo'
 import Lock from './Lock'
 import UnlockPropTypes from '../../propTypes'
 import { hideModal } from '../../actions/modal'
+import { unlockPage } from '../../services/iframeService'
 
 export const Overlay = ({ locks, hideModal }) => (
   <FullPage>
@@ -32,7 +33,10 @@ Overlay.propTypes = {
 }
 
 export const mapDispatchToProps = (dispatch, { locks }) => ({
-  hideModal: () => dispatch(hideModal(locks.map(l => l.address).join('-'))),
+  hideModal: () => {
+    unlockPage()
+    return dispatch(hideModal(locks.map(l => l.address).join('-')))
+  },
 })
 
 export default connect(
