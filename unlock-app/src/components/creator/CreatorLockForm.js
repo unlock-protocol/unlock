@@ -35,21 +35,9 @@ class CreatorLockForm extends React.Component {
   }
 
   validate(name, value) {
-    switch (name) {
-      case 'name':
-        // TODO do we want to impose a maximum lock name length?
-        if (typeof value === 'string' && value.length > 0) return true
-        break
-      case 'expirationDuration':
-      case 'maxNumberOfKeys':
-        if (!isNaN(value) && value > 0) return true
-        break
-      case 'keyPrice':
-        if (!isNaN(value) && value >= 0) return true
-        break
-    }
-
-    return false
+    return (name === 'name' && typeof value === 'string' && value.length > 0) ||
+      ((name === 'expirationDuration' || name === 'maxNumberOfKeys') & !isNaN(value) && value > 0) ||
+      (name === 'keyPrice' && !isNaN(value) && value >= 0)
   }
 
   handleChange(event) {

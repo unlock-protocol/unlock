@@ -59,9 +59,9 @@ describe('CreatorLockForm', () => {
     })
 
     let wrapper = rtl.render(
-    <Provider store={store}>
-      <CreatorLocks />
-    </Provider>
+      <Provider store={store}>
+        <CreatorLocks />
+      </Provider>
     )
 
     let createButton = wrapper.getByText('Create Lock')
@@ -69,7 +69,7 @@ describe('CreatorLockForm', () => {
 
     // Setting name to be an invalid value (empty)
     let name = wrapper.queryByValue('New Lock')
-    rtl.fireEvent.change(name, { target: { value: '' }})
+    rtl.fireEvent.change(name, {target: {value: ''}})
 
     rtl.fireEvent.click(wrapper.queryByText('Submit'))
 
