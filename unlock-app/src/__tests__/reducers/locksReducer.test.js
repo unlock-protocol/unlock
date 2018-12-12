@@ -8,6 +8,7 @@ import {
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { DELETE_TRANSACTION } from '../../actions/transaction'
 import { SET_PROVIDER } from '../../actions/provider'
+import { SET_NETWORK } from '../../actions/network'
 
 describe('locks reducer', () => {
   const lock = {
@@ -26,6 +27,19 @@ describe('locks reducer', () => {
         },
         {
           type: SET_PROVIDER,
+        }
+      )
+    ).toEqual({})
+  })
+
+  it('should return the initial state when receveing SET_NETWORK', () => {
+    expect(
+      reducer(
+        {
+          [lock.address]: lock,
+        },
+        {
+          type: SET_NETWORK,
         }
       )
     ).toEqual({})

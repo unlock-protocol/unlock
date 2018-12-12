@@ -104,23 +104,8 @@ export default function lockMiddleware({ getState, dispatch }) {
     if (getState().network.name !== networkId) {
       // Set the new network, which should also clean up all reducers
       dispatch(setNetwork(networkId))
-      // So we need a new account!
+      // And we need a new account!
       return web3Service.refreshOrGetAccount()
-    } else {
-      // The network is the same, so let's refresh
-      // We refresh transactions
-      Object.values(getState().transactions).forEach(transaction =>
-        web3Service.getTransaction(transaction)
-      )
-      // We refresh keys
-      Object.values(getState().keys).forEach(key => web3Service.getKey(key))
-      // We refresh locks
-      Object.values(getState().locks).forEach(lock =>
-        web3Service.getLock(lock.address)
-      )
-
-      // and refresh or load the account
-      return web3Service.refreshOrGetAccount(getState().account)
     }
   })
 

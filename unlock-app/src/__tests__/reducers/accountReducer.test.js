@@ -1,6 +1,7 @@
 import reducer from '../../reducers/accountReducer'
 import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
 import { SET_PROVIDER } from '../../actions/provider'
+import { SET_NETWORK } from '../../actions/network'
 
 describe('account reducer', () => {
   const account = {
@@ -16,6 +17,13 @@ describe('account reducer', () => {
     expect(
       reducer(account, {
         type: SET_PROVIDER,
+      })
+    ).toEqual(null)
+  })
+  it('should return the initial state when receveing SET_NETWORK', () => {
+    expect(
+      reducer(account, {
+        type: SET_NETWORK,
       })
     ).toEqual(null)
   })

@@ -1,10 +1,11 @@
 import { ADD_KEY, PURCHASE_KEY, UPDATE_KEY } from '../actions/key'
 import { SET_PROVIDER } from '../actions/provider'
+import { SET_NETWORK } from '../actions/network'
 
 export const initialState = {}
 
 const keysReducer = (state = initialState, action) => {
-  if (action.type == SET_PROVIDER) {
+  if ([SET_PROVIDER, SET_NETWORK].indexOf(action.type) > -1) {
     return initialState
   }
 
@@ -16,9 +17,20 @@ const keysReducer = (state = initialState, action) => {
   }
 
   if (action.type === ADD_KEY) {
+    if (action.key.id && action.key.id !== action.id) {
+      throw new Error('Could not add key with wrong id')
+    }
+
+    if (state[action.id]) {
+      throw new Error('Could not add already existing key')
+    }
+
     return {
-      [action.key.id]: action.key,
       ...state,
+      [action.id]: {
+        ...action.key,
+        id: action.id,
+      },
     }
   }
 

@@ -7,7 +7,7 @@ import Buttons from '../../interface/buttons/lock'
 export function EmbedCodeSnippet({ lock }) {
   function embedCode(lock) {
     return `<!-- Include this script in your <head> section -->
-<script src="https://unlock-protocol.com/unlock.js"></script>
+<script src="https://unlock-protocol.com/static/unlock.js"></script>
 
 <!-- Lock elements by wrapping them in this div -->
 <div unlock-lock="${lock.address}">

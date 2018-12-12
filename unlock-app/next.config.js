@@ -29,6 +29,7 @@ module.exports = {
       '/about': { page: '/about' },
       '/jobs': { page: '/jobs' },
       '/dashboard': { page: '/dashboard' },
+      '/paywall': { page: '/paywall' },
       '/demo': { page: '/demo' },
       '/log': { page: '/log' },
     }
