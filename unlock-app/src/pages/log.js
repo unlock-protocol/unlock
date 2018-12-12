@@ -20,7 +20,6 @@ export const Log = ({ account, network, transactions, locks, state }) => {
         <title>{pageTitle('Log')}</title>
       </Head>
       <NoSSR>
-        <pre>{JSON.stringify({ state }, null, 2)}</pre>
         <CreatorAccount network={network} account={account} />
         <CreatorLogs transactions={transactions} locks={locks} />
       </NoSSR>
