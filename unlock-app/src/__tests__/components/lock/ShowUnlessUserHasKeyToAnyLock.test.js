@@ -65,7 +65,6 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
       expect.assertions(1)
       const keys = []
       const showModal = jest.fn()
-
       rtl.render(
         <ShowUnlessUserHasKeyToAnyLock
           keys={keys}
