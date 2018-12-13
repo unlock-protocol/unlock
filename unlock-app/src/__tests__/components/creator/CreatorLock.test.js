@@ -49,14 +49,14 @@ describe('CreatorLock', () => {
     )
 
     expect(
-      wrapper.queryByText('This content is only visible', { exact: false })
+      wrapper.queryByText('Include this script in the <head> section of your page', { exact: false })
     ).toBeNull()
 
     let codeButton = wrapper.getByTitle('Show embed code')
     rtl.fireEvent.click(codeButton)
 
     expect(
-      wrapper.queryByText('This content is only visible', { exact: false })
+      wrapper.queryByText('Include this script in the <head> section of your page', { exact: false })
     ).not.toBeNull()
   })
   it('should display the correct number of keys', () => {
