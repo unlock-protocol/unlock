@@ -6,11 +6,16 @@ import { PGN_MAX_NUMBER_OF_PAGES_TO_SHOW_ALL } from '../../../constants'
 const PageNumbers = ({ numberOfPages, currentPage, goToPage }) => {
   const pageNumber = number => {
     return number === currentPage ? (
-      <PageNumberActive onClick={() => goToPage(number)}>
+      <PageNumberActive
+        key={number.toString()}
+        onClick={() => goToPage(number)}
+      >
         {number}
       </PageNumberActive>
     ) : (
-      <PageNumber onClick={() => goToPage(number)}>{number}</PageNumber>
+      <PageNumber key={number.toString()} onClick={() => goToPage(number)}>
+        {number}
+      </PageNumber>
     )
   }
 
