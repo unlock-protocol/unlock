@@ -35,13 +35,20 @@ class CreatorLockForm extends React.Component {
   }
 
   validate(name, value) {
-    return (name === 'name' && typeof value === 'string' && value.length > 0) ||
-      ((name === 'expirationDuration' || name === 'maxNumberOfKeys') & !isNaN(value) && value > 0) ||
+    return (
+      (name === 'name' && typeof value === 'string' && value.length > 0) ||
+      ((name === 'expirationDuration' || name === 'maxNumberOfKeys') &
+        !isNaN(value) &&
+        value > 0) ||
       (name === 'keyPrice' && !isNaN(value) && value >= 0)
+    )
   }
 
   handleChange(event) {
-    event.target.dataset.valid = this.validate(event.target.name, event.target.value)
+    event.target.dataset.valid = this.validate(
+      event.target.name,
+      event.target.value
+    )
     this.setState({ [event.target.name]: event.target.value })
   }
 
