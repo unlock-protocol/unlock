@@ -1,12 +1,12 @@
 window.onload = function() {
-  const lockedNode = document.querySelector('[unlock-lock]')
+  const lockedNode = document.querySelector('meta[name=lock]')
 
   // If there is no lock, do nothing!
   if (lockedNode) {
     var src = window.unlock_url || 'http://localhost:3000'
 
     var s = document.createElement('iframe')
-    src += `/paywall/${lockedNode.getAttribute('unlock-lock')}/`
+    src += `/paywall/${lockedNode.getAttribute('content')}/`
 
     s.setAttribute(
       'style',
