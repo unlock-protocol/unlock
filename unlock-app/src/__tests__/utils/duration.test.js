@@ -3,6 +3,7 @@ import {
   durations,
   secondsAsDays,
   expirationAsDate,
+  dateTimeString,
 } from '../../utils/durations'
 
 describe('durations', () => {
@@ -69,5 +70,11 @@ describe('durations', () => {
     let dateToTest = 'Jul 7, 2022'
     let timestamp = Math.round(new Date(dateToTest).getTime() / 1000)
     expect(expirationAsDate(timestamp)).toEqual(dateToTest)
+  })
+
+  it('should return the correct timestamp with minutes/seconds', () => {
+    let dateToTest = 'Jul 7, 2022 0:00'
+    let timestamp = Math.round(new Date(dateToTest).getTime() / 1000)
+    expect(dateTimeString(timestamp)).toEqual(dateToTest)
   })
 })

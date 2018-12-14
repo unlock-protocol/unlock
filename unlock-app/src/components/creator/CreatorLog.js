@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import BalanceProvider from '../helpers/BalanceProvider'
 import { dateTimeString } from '../../utils/durations'
-
 import UnlockPropTypes from '../../propTypes'
 
 /** Define default string values for the log so we don't crash the app */
@@ -61,26 +60,24 @@ export class CreatorLog extends React.Component {
     const { transaction } = this.props
 
     return (
-      <LogRow>
-        <LogDate>
+      <Row>
+        <Date>
           {transaction.createdAt
-            ? dateTimeString(transaction.createdAt)
+            ? dateTimeString(transaction.createdAt / 1000)
             : logDefaults.DATE}
-        </LogDate>
-        <LogName>
-          {this.getLockNameAddress(transaction, this.props.locks)}
-        </LogName>
-        <LogType>{snakeToTitleCase(this.getType(transaction))}</LogType>
-        <LogOwner>{this.getOwner(transaction, this.props.locks)}</LogOwner>
+        </Date>
+        <Name>{this.getLockNameAddress(transaction, this.props.locks)}</Name>
+        <Type>{snakeToTitleCase(this.getType(transaction))}</Type>
+        <Owner>{this.getOwner(transaction, this.props.locks)}</Owner>
         <BalanceProvider
           amount={this.getPrice(transaction, this.props.locks)}
           unit="wei"
           render={ethWithPresentation => (
-            <LogAmount>{`${ethWithPresentation} ETH`}</LogAmount>
+            <Amount>{`${ethWithPresentation} ETH`}</Amount>
           )}
         />
-        <LogData>{transaction.data || logDefaults.DATA}</LogData>
-      </LogRow>
+        <Data>{transaction.data || logDefaults.DATA}</Data>
+      </Row>
     )
   }
 }
@@ -94,7 +91,7 @@ export default CreatorLog
 export const LogRowGrid =
   'grid-template-columns: 160px repeat(3, minmax(100px, 1fr)) 100px minmax(100px, 1fr);'
 
-export const LogRow = styled.div`
+const Row = styled.div`
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
   font-weight: 200;
   min-height: 48px;
@@ -103,7 +100,7 @@ export const LogRow = styled.div`
   font-size: 14px;
   display: grid;
   grid-gap: 16px;
-  ${LogRowGrid} grid-template-rows: 0px;
+  ${RowGrid} grid-template-rows: 0px;
   grid-column-gap: 24px;
   grid-row-gap: 0;
   align-items: start;
@@ -113,23 +110,23 @@ export const LogRow = styled.div`
   }
 `
 
-const LogDate = styled.div``
+const Date = styled.div``
 
-const LogName = styled.div`
+const Name = styled.div`
   color: var(--link);
   overflow: hidden;
   text-overflow: ellipsis;
 `
 
-const LogType = styled.div`
+const Type = styled.div`
   color: #74ce63;
 `
 
-const LogOwner = styled.div`
+const Owner = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
 `
 
-const LogAmount = styled.div``
+const Amount = styled.div``
 
-const LogData = styled.div``
+const Data = styled.div``

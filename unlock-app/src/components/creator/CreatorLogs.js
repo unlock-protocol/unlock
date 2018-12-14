@@ -13,14 +13,14 @@ export class CreatorLogs extends React.Component {
   render() {
     return (
       <Log>
-        <LogHeaderRow>
-          <LogHeader>Log</LogHeader>
-          <LogMinorHeader>Lock Name/Address</LogMinorHeader>
-          <LogMinorHeader>Type</LogMinorHeader>
-          <LogMinorHeader>From/To</LogMinorHeader>
-          <LogMinorHeader>Qty</LogMinorHeader>
-          <LogMinorHeader>Data</LogMinorHeader>
-        </LogHeaderRow>
+        <HeaderRow>
+          <Header>Log</Header>
+          <MinorHeader>Lock Name/Address</MinorHeader>
+          <MinorHeader>Type</MinorHeader>
+          <MinorHeader>From/To</MinorHeader>
+          <MinorHeader>Qty</MinorHeader>
+          <MinorHeader>Data</MinorHeader>
+        </HeaderRow>
         {Object.values(this.props.transactions).map(transaction => (
           <CreatorLog transaction={transaction} locks={this.props.locks} />
         ))}
@@ -43,7 +43,7 @@ const Log = styled.section`
   display: grid;
 `
 
-const LogHeaderRow = styled.div`
+const HeaderRow = styled.div`
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
   font-weight: 200;
   padding-left: 8px;
@@ -54,7 +54,7 @@ const LogHeaderRow = styled.div`
   grid-column-gap: 24px;
 `
 
-const LogHeader = styled.div`
+const Header = styled.div`
   font-family: 'IBM Plex Sans';
   font-size: 13px;
   font-weight: bold;
@@ -65,7 +65,7 @@ const LogHeader = styled.div`
   color: var(--grey);
 `
 
-const LogMinorHeader = styled.div`
+const MinorHeader = styled.div`
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
