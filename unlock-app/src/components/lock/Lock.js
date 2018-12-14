@@ -7,6 +7,7 @@ import UnlockPropTypes from '../../propTypes'
 import withConfig from '../../utils/withConfig'
 
 import { purchaseKey } from '../../actions/key'
+import { updateLockPrice } from '../../actions/lock'
 
 import PendingKeyLock from './PendingKeyLock'
 import ConfirmingKeyLock from './ConfirmingKeyLock'
@@ -20,12 +21,11 @@ export const Lock = ({
   purchaseKey,
   config,
   disabled,
+  editing,
   hideModal,
+  updateLockPrice,
 }) => {
-  if (
-    transaction &&
-    ['submitted', 'pending'].indexOf(transaction.status) > -1
-  ) {
+  if (transaction && ['submitted', 'pending'].includes(transaction.status)) {
     return <PendingKeyLock lock={lock} />
   } else if (
     transaction &&
@@ -65,6 +65,7 @@ Lock.propTypes = {
   purchaseKey: PropTypes.func.isRequired,
   config: UnlockPropTypes.configuration.isRequired,
   hideModal: PropTypes.func.isRequired,
+  updateLockPrice: PropTypes.func.isRequired,
 }
 
 Lock.defaultProps = {
@@ -76,6 +77,9 @@ export const mapDispatchToProps = (dispatch, { showModal }) => ({
   purchaseKey: key => {
     showModal()
     dispatch(purchaseKey(key))
+  },
+  updateLockPrice: (lock, price) => {
+    dispatch(updateLockPrice(lock, price))
   },
 })
 

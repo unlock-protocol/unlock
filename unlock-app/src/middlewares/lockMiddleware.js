@@ -4,11 +4,14 @@ import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   ADD_LOCK,
   CREATE_LOCK,
+  UPDATE_LOCK,
+  SET_LOCK,
   WITHDRAW_FROM_LOCK,
   UPDATE_LOCK,
   addLock,
-  lockDeployed,
+  UPDATE_LOCK_PRICE,
   updateLock,
+  lockDeployed,
 } from '../actions/lock'
 import { PURCHASE_KEY, updateKey, addKey } from '../actions/key'
 import { setAccount, updateAccount, SET_ACCOUNT } from '../actions/accounts'
@@ -138,6 +141,11 @@ export default function lockMiddleware({ getState, dispatch }) {
         web3Service.connect({ provider: action.provider })
       } else if (action.type === CREATE_LOCK) {
         web3Service.createLock(action.lock, getState().account)
+      } else if (action.type === UPDATE_LOCK_PRICE) {
+        console.table([action])
+        console.log(
+          `web3Service.updatePrice(${action.address}, new_price_here)`
+        )
       } else if (action.type === PURCHASE_KEY) {
         const account = getState().account
         const lock = Object.values(getState().locks).find(

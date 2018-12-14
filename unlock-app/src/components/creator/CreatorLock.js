@@ -33,14 +33,22 @@ export class CreatorLock extends React.Component {
     this.state = {
       showEmbedCode: false,
       showKeys: false,
+      editing: false,
     }
     this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
     this.toggleKeys = this.toggleKeys.bind(this)
+    this.toggleEditing = this.toggleEditing.bind(this)
   }
 
   toggleEmbedCode() {
     this.setState(previousState => ({
       showEmbedCode: !previousState.showEmbedCode,
+    }))
+  }
+
+  toggleEditing() {
+    this.setState(previousState => ({
+      editing: !previousState.editing,
     }))
   }
 
@@ -54,7 +62,7 @@ export class CreatorLock extends React.Component {
     // TODO add all-time balance to lock
 
     const { lock } = this.props
-    const { showEmbedCode, showKeys } = this.state
+    const { showEmbedCode, showKeys, editing } = this.state
 
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
@@ -72,6 +80,7 @@ export class CreatorLock extends React.Component {
         </LockDuration>
         <LockKeysNumbers lock={lock} />
         <Balance amount={lock.keyPrice} />
+
         <BalanceContainer>
           <NoPhone>
             <Balance amount={lock.balance} />
@@ -80,7 +89,7 @@ export class CreatorLock extends React.Component {
             <Balance amount={lock.balance} convertCurrency={false} />
           </Phone>
         </BalanceContainer>
-        <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
+        <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} editing={editing} toggleEditing={this.toggleEditing}/>
         {showEmbedCode && (
           <LockPanel>
             <LockDivider />

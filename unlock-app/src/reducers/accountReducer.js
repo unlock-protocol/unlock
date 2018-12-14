@@ -5,7 +5,7 @@ import { SET_NETWORK } from '../actions/network'
 export const initialState = null
 
 const accountReducer = (state = initialState, action) => {
-  if ([SET_PROVIDER, SET_NETWORK].indexOf(action.type) > -1) {
+  if ([SET_PROVIDER, SET_NETWORK].includes(action.type)) {
     return initialState
   }
 

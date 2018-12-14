@@ -12,7 +12,10 @@ import withConfig from '../../../utils/withConfig'
 export function LockIconBar({
   lock,
   toggleCode,
+  toggleEditing,
+  updateLockPrice,
   transaction,
+  editing,
   withdrawalTransaction,
   config,
 }) {
@@ -39,7 +42,21 @@ export function LockIconBar({
       <IconBarContainer>
         <IconBar>
           <Buttons.Withdraw as="button" lock={lock} />
-          <Buttons.Edit as="button" />
+          {editing && (
+            <Buttons.Save
+              as="button"
+              lock={lock}
+              toggleEditing={toggleEditing}
+              updateLockPrice={updateLockPrice}
+            />
+          )}
+          {!editing && (
+            <Buttons.Edit
+              as="button"
+              lock={lock}
+              toggleEditing={toggleEditing}
+            />
+          )}
           {/* Reinstate when we're ready <Buttons.ExportLock /> */}
           <Buttons.Code action={toggleCode} as="button" />
         </IconBar>
@@ -66,6 +83,7 @@ export function LockIconBar({
 LockIconBar.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   toggleCode: PropTypes.func.isRequired,
+  toggleEditing: PropTypes.func.isRequired,
   transaction: UnlockPropTypes.transaction,
   withdrawalTransaction: UnlockPropTypes.transaction,
   config: UnlockPropTypes.configuration.isRequired,
