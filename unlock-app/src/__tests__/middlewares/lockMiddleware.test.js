@@ -99,6 +99,7 @@ beforeEach(() => {
     locks: {
       [lock.address]: lock,
     },
+    keys: {},
   }
 })
 
@@ -140,17 +141,17 @@ describe('Lock middleware', () => {
   })
 
   it('it should handle lock.saved events triggered by the web3Service', () => {
+    expect.assertions(2)
     const { store } = create()
     const lock = {}
     const address = '0x123'
     mockWeb3Service.refreshAccountBalance = jest.fn()
-    mockWeb3Service.getLock = jest.fn()
+    mockWeb3Service.getKeyByLockForOwner = jest.fn()
 
     mockWeb3Service.emit('lock.saved', lock, address)
     expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
       state.account
     )
-    expect(mockWeb3Service.getLock).toHaveBeenCalledWith(address)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: LOCK_DEPLOYED,
@@ -182,12 +183,15 @@ describe('Lock middleware', () => {
     })
 
     it('it should dispatch ADD_LOCK if the lock does not already exist', () => {
+      expect.assertions(1)
       const { store } = create()
       const lock = {
         address: '0x123',
       }
 
       const update = {}
+      mockWeb3Service.getKeyByLockForOwner = jest.fn()
+
       mockWeb3Service.emit('lock.updated', lock.address, update)
       expect(store.dispatch).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -238,15 +242,20 @@ describe('Lock middleware', () => {
       expect.assertions(1)
       const { store } = create()
 
+      const keyId = 'keyId'
       const key = {
-        id: 'keyId',
+        id: keyId,
         lock: lock.address,
+      }
+
+      state.keys = {
+        [keyId]: key,
       }
       const update = {
         data: 'hello',
       }
 
-      mockWeb3Service.emit('key.updated', key, update)
+      mockWeb3Service.emit('key.updated', keyId, update)
       expect(store.dispatch).toHaveBeenCalledWith(
         expect.objectContaining({
           type: UPDATE_KEY,
