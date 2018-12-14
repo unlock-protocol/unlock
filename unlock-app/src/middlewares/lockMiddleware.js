@@ -52,6 +52,7 @@ export default function lockMiddleware({ getState, dispatch }) {
       })
     )
     web3Service.refreshAccountBalance(getState().account)
+    web3Service.getLock(address)
   })
 
   /**
