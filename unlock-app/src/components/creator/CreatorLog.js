@@ -100,7 +100,7 @@ const Row = styled.div`
   font-size: 14px;
   display: grid;
   grid-gap: 16px;
-  ${RowGrid} grid-template-rows: 0px;
+  ${LogRowGrid} grid-template-rows: 0px;
   grid-column-gap: 24px;
   grid-row-gap: 0;
   align-items: start;
