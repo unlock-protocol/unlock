@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { WordMarkLogo } from './Logo'
 import Buttons from './buttons/layout'
 import { ButtonLink } from './buttons/Button'
+import Media from '../../theme/Media'
 
 export default class Header extends React.PureComponent {
   constructor(props) {
@@ -76,9 +77,10 @@ const TopHeader = styled.header`
   align-items: center;
   height: 70px;
 
-  @media (max-width: 600px) {
+  ${Media.phone`
     grid-template-columns: 1fr 48px;
-  }
+    height: 35px;
+  `};
 `
 
 const Title = styled.h1`
