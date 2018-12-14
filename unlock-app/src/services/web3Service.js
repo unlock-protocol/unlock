@@ -36,6 +36,10 @@ export default class Web3Service extends EventEmitter {
         )
       },
     }
+
+    this.on('ready', () => {
+      this.ready = true
+    })
   }
 
   /**
@@ -74,7 +78,6 @@ export default class Web3Service extends EventEmitter {
         this.unlockContractAddress = Web3Utils.toChecksumAddress(
           UnlockContract.networks[networkId].address
         )
-        this.ready = true
         if (this.networkId !== networkId) {
           this.networkId = networkId
           this.emit('network.changed', networkId)
@@ -123,6 +126,8 @@ export default class Web3Service extends EventEmitter {
       return this.getAddressBalance(account.address).then(balance => {
         account.balance = balance
         this.emit('account.changed', account)
+        this.emit('ready')
+
         return account
       })
     })
