@@ -228,48 +228,75 @@ describe('locks reducer', () => {
   })
 
   describe('LOCK_DEPLOYED', () => {
-    it('should create a new lock if none existed with the previous address', () => {
-      const state = {
-        '0x123': {
-          name: 'hello',
-          address: '0x123',
-        },
-      }
-      const action = {
-        type: LOCK_DEPLOYED,
-        address: '0x456',
-        lock: {
+    describe('if the deployed lock has an older address', () => {
+      it('should update the lock and re-assign it to the new address without the pending flag', () => {
+        const state = {
+          '0x123': {
+            name: 'hello',
+            address: '0x123',
+            pending: true,
+          },
+        }
+        const action = {
+          type: LOCK_DEPLOYED,
           address: '0x456',
-        },
-      }
-      expect(reducer(state, action)).toEqual({
-        '0x123': { address: '0x123', name: 'hello' },
-        '0x456': { address: '0x456', pending: false },
+          lock: {
+            address: '0x123',
+          },
+        }
+
+        expect(reducer(state, action)).toEqual({
+          '0x456': {
+            address: '0x456',
+            name: 'hello',
+          },
+        })
       })
     })
 
-    it('should update the lock and re-assign it to the new address', () => {
-      const state = {
-        '0x123': {
-          name: 'hello',
-          address: '0x123',
-          pending: true,
-        },
-      }
-      const action = {
-        type: LOCK_DEPLOYED,
-        address: '0x456',
-        lock: {
-          address: '0x123',
-        },
-      }
+    describe('if the deployed lock does not have an older address', () => {
+      describe('if a lock exists with the new address and remove the pending flag', () => {
+        it('should update the lock', () => {
+          const state = {
+            '0x123': {
+              name: 'hello',
+              address: '0x123',
+              pending: true,
+            },
+          }
+          const action = {
+            type: LOCK_DEPLOYED,
+            address: '0x123',
+            lock: {
+              name: 'world',
+            },
+          }
+          expect(reducer(state, action)).toEqual({
+            '0x123': { address: '0x123', name: 'world' },
+          })
+        })
+      })
 
-      expect(reducer(state, action)).toEqual({
-        '0x456': {
-          address: '0x456',
-          pending: false,
-          name: 'hello',
-        },
+      describe('if no lock exists with the new address', () => {
+        it('should just assign it', () => {
+          const state = {
+            '0x123': {
+              name: 'hello',
+              address: '0x123',
+            },
+          }
+          const action = {
+            type: LOCK_DEPLOYED,
+            address: '0x456',
+            lock: {
+              name: 'world',
+            },
+          }
+          expect(reducer(state, action)).toEqual({
+            '0x123': { address: '0x123', name: 'hello' },
+            '0x456': { address: '0x456', name: 'world' },
+          })
+        })
       })
     })
   })

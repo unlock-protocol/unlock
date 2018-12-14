@@ -30,11 +30,11 @@ const nockScope = nock('http://127.0.0.1:8545', { encodedQueryParams: true })
 
 let rpcRequestId = 0
 
-const debug = false // set to true to see more logging statements
+let debug = false // set to true to see more logging statements
 
-function logNock(message, x, y) {
+function logNock(...args) {
   if (debug) {
-    console.log(message, x, y)
+    console.log(...args)
   }
 }
 
@@ -98,10 +98,9 @@ const ethGetLogs = (fromBlock, toBlock, topics, address, result) => {
   )
 }
 
-nock.emitter.on('no match', function(x, y, body) {
+nock.emitter.on('no match', function(clientRequestObject, options, body) {
   if (debug) {
-    console.log('DID NOT MATCH')
-    console.log(body)
+    console.log(`NO HTTP MOCK EXISTS FOR THAT REQUEST\n${body}`)
   }
 })
 
@@ -109,6 +108,8 @@ let web3Service
 
 describe('Web3Service', () => {
   beforeEach(() => {
+    nock.cleanAll()
+
     web3Service = new Web3Service()
   })
 
@@ -208,11 +209,10 @@ describe('Web3Service', () => {
       }
 
       web3Service.on('network.changed', () => {
-        nock.cleanAll()
         done()
       })
 
-      return web3Service.connect(defaultState)
+      return web3Service.connect(Object.assign({}, defaultState))
     })
 
     describe('refreshOrGetAccount', () => {
@@ -557,18 +557,9 @@ describe('Web3Service', () => {
       })
     })
 
-    describe('getKey', () => {
-      it('should handle missing lock address', done => {
-        expect.assertions(1)
-        web3Service.on('key.updated', (key, update) => {
-          expect(update).toMatchObject({ data: null, expiration: 0 })
-          done()
-        })
-        web3Service.getKey({})
-      })
-
+    describe('getKeyByLockForOwner', () => {
       it('should update the data and expiration date', done => {
-        expect.assertions(4)
+        expect.assertions(3)
         ethCallAndYield(
           '0xabdf82ce00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
           lockAddress,
@@ -580,43 +571,25 @@ describe('Web3Service', () => {
           '0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000'
         )
 
-        web3Service.on('key.updated', (key, update) => {
-          expect(key.owner).toBe(nodeAccounts[0])
-          expect(key.lock).toBe(lockAddress)
+        web3Service.on('key.updated', (keyId, update) => {
+          expect(keyId).toBe([lockAddress, nodeAccounts[0]].join('-'))
           expect(update.expiration).toBe(1532557829)
           expect(update.data).toBe(null)
           done()
         })
 
-        const key = {
-          id: '123',
-          lock: lockAddress,
-          owner: nodeAccounts[0],
-          expiration: 1,
-          data: 'data',
-        }
-
-        return web3Service.getKey(key)
+        return web3Service.getKeyByLockForOwner(lockAddress, nodeAccounts[0])
       })
 
       it('should handle missing key when the lock exists', done => {
-        expect.assertions(4)
+        expect.assertions(3)
 
-        web3Service.on('key.updated', (key, update) => {
-          expect(key.owner).toBe(nodeAccounts[0])
-          expect(key.lock).toBe(lockAddress)
+        web3Service.on('key.updated', (keyId, update) => {
+          expect(keyId).toBe([lockAddress, nodeAccounts[0]].join('-'))
           expect(update.expiration).toBe(0)
           expect(update.data).toBe(null)
           done()
         })
-
-        const key = {
-          id: '123',
-          lock: lockAddress,
-          owner: nodeAccounts[0],
-          expiration: 1,
-          data: 'data',
-        }
 
         ethCallAndFail(
           '0xabdf82ce000000000000000000000000aca94ef8bd5ffee41947b4585a84bda5a3d3da6e',
@@ -628,7 +601,7 @@ describe('Web3Service', () => {
           lockAddress,
           { message: 'VM Exception while processing transaction: revert' }
         )
-        return web3Service.getKey(key)
+        return web3Service.getKeyByLockForOwner(lockAddress, nodeAccounts[0])
       })
     })
 
@@ -892,15 +865,25 @@ describe('Web3Service', () => {
           return cb(new Error('Failed to purchase key'), {})
         })
 
-        web3Service.purchaseKey(key, owner, lock)
+        web3Service.getKeyByLockForOwner = jest.fn()
+
+        const keyData = ''
+
+        web3Service.purchaseKey(
+          lock.address,
+          owner.address,
+          lock.keyPrice,
+          owner,
+          keyData
+        )
         expect(web3Service.sendTransaction).toHaveBeenCalledWith(
           expect.objectContaining({
             status: 'pending',
             confirmations: 0,
             createdAt: expect.any(Number),
             lock: lock.address,
-            key: key.id,
-            account: owner.address,
+            key: [lock.address, owner.address].join('-'),
+            owner: owner.address,
           }),
           {
             to: key.lock,
@@ -915,23 +898,24 @@ describe('Web3Service', () => {
       })
 
       it('should emit key.saved once the Transfer event has been received', done => {
-        expect.assertions(2)
+        expect.assertions(1)
         web3Service.sendTransaction = jest.fn((transaction, args, cb) => {
           return cb(null, { event: 'Transfer', args: {} })
         })
-        web3Service.getKey = jest.fn()
+        const keyData = ''
 
-        web3Service.on('key.saved', key => {
-          expect(key).toMatchObject({
-            id: 'abc',
-            lock: lock.address,
-            owner: owner.address,
-          })
-          expect(web3Service.getKey).toHaveBeenCalledWith(key)
+        web3Service.on('key.saved', keyId => {
+          expect(keyId).toBe([lock.address, owner.address].join('-'))
           done()
         })
 
-        web3Service.purchaseKey(key, owner, lock)
+        web3Service.purchaseKey(
+          lock.address,
+          owner.address,
+          lock.keyPrice,
+          owner,
+          keyData
+        )
       })
     })
 

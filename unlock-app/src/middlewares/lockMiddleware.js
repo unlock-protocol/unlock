@@ -9,7 +9,7 @@ import {
   lockDeployed,
   updateLock,
 } from '../actions/lock'
-import { PURCHASE_KEY, updateKey } from '../actions/key'
+import { PURCHASE_KEY, updateKey, addKey } from '../actions/key'
 import { setAccount, updateAccount } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
@@ -51,7 +51,6 @@ export default function lockMiddleware({ getState, dispatch }) {
         lock: address,
       })
     )
-    web3Service.getLock(address)
     web3Service.refreshAccountBalance(getState().account)
   })
 
@@ -76,8 +75,13 @@ export default function lockMiddleware({ getState, dispatch }) {
     web3Service.refreshAccountBalance(getState().account)
   })
 
-  web3Service.on('key.updated', (key, update) => {
-    dispatch(updateKey(key.id, update))
+  web3Service.on('key.updated', (id, update) => {
+    if (getState().keys[id]) {
+      dispatch(updateKey(id, update))
+    } else {
+      // That key does not exist yet
+      dispatch(addKey(id, update))
+    }
   })
 
   web3Service.on('transaction.new', transaction => {
@@ -145,7 +149,7 @@ export default function lockMiddleware({ getState, dispatch }) {
           /\/lock|demo\/(0x[a-fA-F0-9]{40})$/
         )
         if (match) {
-          web3Service.getLock({ address: match[1] })
+          web3Service.getLock(match[1])
         }
       }
     }

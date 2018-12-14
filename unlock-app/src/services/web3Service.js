@@ -1,13 +1,14 @@
 import EventEmitter from 'events'
 import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
-import crypto from 'crypto'
 
 import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
 
 const { providers } = configure(global)
+
+export const keyId = (lock, owner) => [lock, owner].join('-')
 
 /**
  * This service interacts with the web3 RPC endpoint.
@@ -450,43 +451,46 @@ export default class Web3Service extends EventEmitter {
    * Purchase a key to a lock by account.
    * The key object is passed so we can kepe track of it from the application
    * The lock object is required to get the price data
-   * @param {UnlockPropTypes.key} key
+   * We pass both the owner and the account because at some point, these may be different (someone
+   * purchases a key for someone else)
+   * @param {string} lock
+   * @param {string} owner
+   * @param {string} keyPrice
+   * @param {string} data
    * @param {UnlockPropTypes.account} account
-   * @param {UnlockPropTypes.lock} lock
    */
-  purchaseKey(key, account, lock) {
-    const lockContract = new this.web3.eth.Contract(LockContract.abi, key.lock)
-    const data = lockContract.methods
-      .purchaseFor(key.owner, Web3Utils.utf8ToHex(key.data || ''))
+  purchaseKey(lock, owner, keyPrice, account, data = '') {
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
+    const abi = lockContract.methods
+      .purchaseFor(owner, Web3Utils.utf8ToHex(data || ''))
       .encodeABI()
 
     const transaction = {
       status: 'pending',
       confirmations: 0,
       createdAt: new Date().getTime(),
-      key: key.id,
-      lock: lock.address,
-      account: account.address,
+      key: keyId(lock, owner),
+      lock: lock,
+      owner,
     }
 
     return this.sendTransaction(
       transaction,
       {
-        to: key.lock,
-        from: key.owner,
-        data: data,
+        to: lock,
+        from: account.address,
+        data: abi,
         gas: 1000000,
-        value: lock.keyPrice,
+        value: keyPrice,
         contractAbi: LockContract.abi,
       },
       (error, { event } = {}) => {
         if (event === 'transactionHash') {
-          this.emit('key.updated', key, {
+          this.emit('key.updated', keyId(lock, owner), {
             transaction: transaction.hash,
           })
         } else if (event === 'Transfer') {
-          this.getKey(key)
-          return this.emit('key.saved', key)
+          return this.emit('key.saved', keyId(lock, owner))
         }
       }
     )
@@ -494,39 +498,29 @@ export default class Web3Service extends EventEmitter {
 
   /**
    * Returns the key to the lock by the account.
-   * @param {UnlockPropTypes.key} key
+   * @param {PropTypes.string} lock
+   * @param {PropTypes.string} owner
    */
-  getKey(key) {
-    if (!key.lock) {
-      return this.emit('key.updated', key, {
-        expiration: 0,
-        data: null,
-      })
-    }
-    const update = {}
-
-    const lockContract = new this.web3.eth.Contract(LockContract.abi, key.lock)
+  getKeyByLockForOwner(lock, owner) {
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
 
     const getKeyExpirationPromise = lockContract.methods
-      .keyExpirationTimestampFor(key.owner)
+      .keyExpirationTimestampFor(owner)
       .call()
-    const getKeyDataPromise = lockContract.methods.keyDataFor(key.owner).call()
-    if (!key.id) {
-      update.id = crypto
-        .createHash('md5')
-        .update([key.lock, key.owner].join(''))
-        .digest('hex')
-    }
+    const getKeyDataPromise = lockContract.methods.keyDataFor(owner).call()
+
     Promise.all([getKeyExpirationPromise, getKeyDataPromise])
       .then(([expiration, data]) => {
-        update.expiration = parseInt(expiration, 10)
-        update.data = data
-        this.emit('key.updated', key, update)
+        this.emit('key.updated', keyId(lock, owner), {
+          expiration: parseInt(expiration, 10),
+          data,
+        })
       })
       .catch(() => {
-        update.expiration = 0
-        update.data = null
-        this.emit('key.updated', key, update)
+        this.emit('key.updated', keyId(lock, owner), {
+          expiration: 0,
+          data: null,
+        })
       })
   }
 
