@@ -4,6 +4,7 @@ module.exports = {
     'airbnb',
     'eslint:recommended',
     'plugin:react/recommended',
+    'prettier',
   ],
   env: {
     es6: true,
