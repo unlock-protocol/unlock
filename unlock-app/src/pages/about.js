@@ -129,9 +129,13 @@ const Person = ({ name, picture, personalLink, linkedIn, bio }) => (
     <Photo src={picture} />
     <p>{bio}</p>
     <small>
-      <a href={personalLink} target="_blank" rel="noopener noreferrer">Personal site</a>
+      <a href={personalLink} target="_blank" rel="noopener noreferrer">
+        Personal site
+      </a>
       &nbsp;-&nbsp;
-      <a href={linkedIn} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href={linkedIn} target="_blank" rel="noopener noreferrer">
+        LinkedIn
+      </a>
     </small>
   </Column>
 )
