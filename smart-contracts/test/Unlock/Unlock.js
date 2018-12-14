@@ -1,7 +1,8 @@
 process.env.NODE_ENV = 'test'
 
 const Unlock = artifacts.require('./Unlock.sol')
-const TestHelper = require('zos').TestHelper
+const Zos = require('zos')
+const TestHelper = Zos.TestHelper
 const shared = require('./behaviors/shared')
 
 contract('Unlock', (accounts) => {

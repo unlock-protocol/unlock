@@ -31,7 +31,7 @@ import "zos-lib/contracts/Initializable.sol";
 import "./PublicLock.sol";
 import "./interfaces/IUnlock.sol";
 
-
+/// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”. https://solidity.readthedocs.io/en/latest/contracts.html?highlight=linearization#multiple-inheritance-and-linearization
 contract Unlock is IUnlock, Initializable, Ownable {
 
   /**
@@ -71,7 +71,7 @@ contract Unlock is IUnlock, Initializable, Ownable {
     public
     initializer()
   {
-    // Initialize Ownable.sol (openzeppelin-eth version)
+    // We must manually initialize Ownable.sol
     Ownable.initialize(_owner);
     grossNetworkProduct = 0;
     totalDiscountGranted = 0;

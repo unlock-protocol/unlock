@@ -13,6 +13,7 @@ contract('Unlock', function (accounts) {
 
   describe('Proxy Unlock contract', function () {
     beforeEach(async function () {
+      // TestHelper retrieves project structure from the zos.json file and deploys everything to the current test network.
       this.project = await TestHelper({ from: proxyAdmin })
       this.proxy = await this.project.createProxy(Unlock, { Unlock, initMethod: 'initialize', initArgs: [unlockOwner] })
       this.unlock = await Unlock.at(this.proxy.address)

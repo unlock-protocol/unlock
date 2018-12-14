@@ -12,7 +12,7 @@ pragma solidity 0.4.24;
 import "openzeppelin-eth/contracts/ownership/Ownable.sol";
 import "zos-lib/contracts/Initializable.sol";
 import "./PublicLock.sol";
-// import "./interfaces/IUnlock.sol";
+import "./interfaces/IUnlock.sol";
 
 
 contract UnlockTestV3 is Initializable, Ownable {
@@ -49,9 +49,9 @@ contract UnlockTestV3 is Initializable, Ownable {
     address _owner
   )
     public
-    // initializer()
+    initializer()
   {
-    // Initialize Ownable.sol (openzeppelin-eth version)
+    // We must manually initialize Ownable.sol
     Ownable.initialize(_owner);
     require(!initialized);
     exampleData = 42;
