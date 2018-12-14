@@ -114,10 +114,8 @@ describe('Web3Service', () => {
   })
 
   describe('connect', () => {
-    it('should get the network id and be ready', done => {
-      expect.assertions(3)
-
-      expect(web3Service.ready).toBe(false)
+    it('should get the network id', done => {
+      expect.assertions(1)
 
       const netVersion = Math.floor(Math.random() * 100000)
       netVersionAndYield(netVersion)
@@ -133,7 +131,6 @@ describe('Web3Service', () => {
       }
       web3Service.on('network.changed', networkId => {
         expect(networkId).toEqual(netVersion)
-        expect(web3Service.ready).toEqual(true)
         return done()
       })
 
@@ -218,7 +215,7 @@ describe('Web3Service', () => {
     describe('refreshOrGetAccount', () => {
       describe('when no account was passed but the node has an unlocked account', () => {
         it('should load a local account with the right balance', done => {
-          expect.assertions(1)
+          expect.assertions(2)
           const unlockAccountsOnNode = [
             '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
           ]
@@ -229,12 +226,16 @@ describe('Web3Service', () => {
             '0xdeadbeef'
           )
 
+          web3Service.once('ready', () => {
+            expect(web3Service.ready).toBe(true)
+            done()
+          })
+
           web3Service.on('account.changed', account => {
             expect(account).toEqual({
               address: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
               balance: '3735928559',
             })
-            done()
           })
 
           web3Service.refreshOrGetAccount()
@@ -243,7 +244,7 @@ describe('Web3Service', () => {
 
       describe('when no account was passed and the node has no unlocked account', () => {
         it('should create an account and yield 0 as its balance', done => {
-          expect.assertions(1)
+          expect.assertions(2)
           const newAccount = {
             address: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
           }
@@ -255,12 +256,16 @@ describe('Web3Service', () => {
           accountsAndYield([])
           getBalanceForAccountAndYieldBalance(newAccount.address, '0x0')
 
+          web3Service.once('ready', () => {
+            expect(web3Service.ready).toBe(true)
+            done()
+          })
+
           web3Service.on('account.changed', account => {
             expect(account).toEqual({
               address: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
               balance: '0',
             })
-            done()
           })
 
           return web3Service.refreshOrGetAccount()
@@ -269,19 +274,23 @@ describe('Web3Service', () => {
 
       describe('when an account was passed', () => {
         it('should load the balance for that account', done => {
-          expect.assertions(1)
+          expect.assertions(2)
           const account = {
             address: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
             balance: '123',
           }
           getBalanceForAccountAndYieldBalance(account.address, '0xdeadbeef')
 
+          web3Service.once('ready', () => {
+            expect(web3Service.ready).toBe(true)
+            done()
+          })
+
           web3Service.on('account.changed', account => {
             expect(account).toEqual({
               address: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
               balance: '3735928559',
             })
-            done()
           })
 
           return web3Service.refreshOrGetAccount(account)
