@@ -568,7 +568,7 @@ describe('Web3Service', () => {
 
     describe('getKeyByLockForOwner', () => {
       it('should update the data and expiration date', done => {
-        expect.assertions(3)
+        expect.assertions(5)
         ethCallAndYield(
           '0xabdf82ce00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
           lockAddress,
@@ -584,6 +584,8 @@ describe('Web3Service', () => {
           expect(keyId).toBe([lockAddress, nodeAccounts[0]].join('-'))
           expect(update.expiration).toBe(1532557829)
           expect(update.data).toBe(null)
+          expect(update.lock).toBe(lockAddress)
+          expect(update.owner).toBe(nodeAccounts[0])
           done()
         })
 
@@ -591,12 +593,14 @@ describe('Web3Service', () => {
       })
 
       it('should handle missing key when the lock exists', done => {
-        expect.assertions(3)
+        expect.assertions(5)
 
         web3Service.on('key.updated', (keyId, update) => {
           expect(keyId).toBe([lockAddress, nodeAccounts[0]].join('-'))
           expect(update.expiration).toBe(0)
           expect(update.data).toBe(null)
+          expect(update.lock).toBe(lockAddress)
+          expect(update.owner).toBe(nodeAccounts[0])
           done()
         })
 
@@ -906,17 +910,21 @@ describe('Web3Service', () => {
         )
       })
 
-      it('should emit key.saved once the Transfer event has been received', done => {
-        expect.assertions(1)
-        web3Service.sendTransaction = jest.fn((transaction, args, cb) => {
-          return cb(null, { event: 'Transfer', args: {} })
-        })
-        const keyData = ''
+      it('should emit key.updated when the transaction has has been computed', done => {
+        expect.assertions(4)
 
-        web3Service.on('key.saved', keyId => {
+        web3Service.sendTransaction = jest.fn((transaction, args, cb) => {
+          return cb(null, { event: 'transactionHash', args: { hash: '0x123' } })
+        })
+
+        web3Service.on('key.updated', (keyId, key) => {
           expect(keyId).toBe([lock.address, owner.address].join('-'))
+          expect(key.transaction).toBe('0x123')
+          expect(key.lock).toBe(lock.address)
+          expect(key.owner).toBe(owner.address)
           done()
         })
+        const keyData = ''
 
         web3Service.purchaseKey(
           lock.address,
@@ -978,6 +986,42 @@ describe('Web3Service', () => {
 
         web3Service.withdrawFromLock(lock, account)
         expect(web3Service.getLock).toHaveBeenCalledWith(lock.address)
+      })
+    })
+
+    describe('emitContractEvent', () => {
+      it('should handle NewLock and emit lock.saved', done => {
+        expect.assertions(3)
+        const transaction = {
+          hash: '0x123',
+          lock: '0x456',
+        }
+        web3Service.once('lock.saved', (lock, address) => {
+          expect(lock.transaction).toBe(transaction.hash)
+          expect(lock.address).toBe(transaction.lock)
+          expect(address).toBe(address)
+          done()
+        })
+        const params = {
+          newLockAddress: ' 0x789',
+        }
+        web3Service.emitContractEvent(transaction, 'NewLock', params)
+      })
+      it('should handle Transfer and emit key.save', done => {
+        expect.assertions(1)
+        const transaction = {
+          hash: '0x123',
+          lock: '0x456',
+          owner: '0x789',
+        }
+        const params = {}
+
+        web3Service.once('key.saved', keyId => {
+          expect(keyId).toBe('0x456-0x789')
+          done()
+        })
+
+        web3Service.emitContractEvent(transaction, 'Transfer', params)
       })
     })
   })
