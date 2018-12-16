@@ -26,14 +26,25 @@ Please read more about contributing in our [contributor guide](https://github.co
 
 ## Getting started
 
-1. Check out the code from this repository
+1. Ensure your dev environment is correct
+
+unlock requires node version 8.11.4, and the latest npm in order to build. You can ensure that npm is the latest version with:
+
+```
+$ npm i -g npm
+```
+
+To manage node versions, there are several options. If you are using nvm, note that the default version of npm installed with
+node version 8.11.4 is outdated, and will result in several node-gyp errors. Upgrading npm will fix these errors.
+
+2. Check out the code from this repository
 
 ```
 git clone https://github.com/unlock-protocol/unlock
 cd unlock
 ```
 
-2. Install all deps
+3. Install all deps
 
 This will install all dependencies required for all the Unlock components (smart contracts and react app).
 
@@ -41,7 +52,7 @@ This will install all dependencies required for all the Unlock components (smart
 $ npm install
 ```
 
-3. Run the app (this should also compile and deploy the smart contract to a local truffle node)
+4. Run the app (this should also compile and deploy the smart contract to a local truffle node)
 
 ```
 cd unlock-app && npm run dev
