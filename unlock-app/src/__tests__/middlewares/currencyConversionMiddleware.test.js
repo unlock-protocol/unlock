@@ -4,8 +4,12 @@ import { setConversionRate } from '../../actions/currencyconvert'
 afterEach(() => mockAxios.reset())
 
 describe('Currency conversion service retrieval middleware', () => {
-  const response1 = { data: { base: 'ETH', currency: 'USD', amount: '195.99' } }
-  const response2 = { data: { base: 'ETH', currency: 'USD', amount: '198.20' } }
+  const response1 = {
+    data: { base: 'ETH', currency: 'USD', amount: '195.99' },
+  }
+  const response2 = {
+    data: { base: 'ETH', currency: 'USD', amount: '198.20' },
+  }
   const APIaddress = 'https://api.coinbase.com/v2/prices/ETH-USD/buy'
 
   it('service called, action dispatched to set currency conversion rate', () => {
