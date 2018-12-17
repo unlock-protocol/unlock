@@ -5,7 +5,11 @@ import Link from 'next/link'
 import { WordMarkLogo } from './Logo'
 import Buttons from './buttons/layout'
 import { ButtonLink } from './buttons/Button'
+<<<<<<< HEAD
 import Media from '../../theme/media'
+=======
+import Media from '../../theme/Media'
+>>>>>>> Initial responsive changes + dashboard (#712)
 
 export default class Header extends React.PureComponent {
   constructor(props) {
@@ -75,6 +79,10 @@ const TopHeader = styled.header`
   grid-auto-flow: column;
   align-items: center;
   height: 70px;
+<<<<<<< HEAD
+=======
+
+>>>>>>> Initial responsive changes + dashboard (#712)
   ${Media.phone`
     grid-template-columns: 1fr 48px;
     height: 35px;

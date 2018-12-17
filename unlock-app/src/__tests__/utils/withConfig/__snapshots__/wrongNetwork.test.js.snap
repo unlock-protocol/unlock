@@ -271,6 +271,7 @@ exports[`withConfig High Order Component when the current network is not in the 
 }
 
 @media only screen and (min-device-width:300px) and (max-device-width:736px) {
+<<<<<<< HEAD
   .c0 {
     display: -webkit-box;
     display: -webkit-flex;
@@ -282,6 +283,8 @@ exports[`withConfig High Order Component when the current network is not in the 
 }
 
 @media only screen and (min-device-width:300px) and (max-device-width:736px) {
+=======
+>>>>>>> Initial responsive changes + dashboard (#712)
   .c1 {
     display: none;
   }
