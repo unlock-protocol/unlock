@@ -39,6 +39,7 @@ export class CreatorLock extends React.Component {
     this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
     this.toggleKeys = this.toggleKeys.bind(this)
     this.toggleEditing = this.toggleEditing.bind(this)
+    this.updateLockPrice = this.updateLockPrice.bind(this)
   }
 
   toggleEmbedCode() {
@@ -51,13 +52,17 @@ export class CreatorLock extends React.Component {
     this.setState(previousState => ({
       editing: !previousState.editing,
     }))
-    console.dir(`editing is now ${this.state.editing}`)
   }
 
   toggleKeys() {
     this.setState(previousState => ({
       showKeys: !previousState.showKeys,
     }))
+  }
+
+  updateLockPrice() {
+    console.log('update lock price here')
+    console.dir(this.props.lock.updateLockPrice)
   }
 
   render() {
@@ -96,7 +101,7 @@ export class CreatorLock extends React.Component {
           editing={editing}
           toggleCode={this.toggleEmbedCode}
           toggleEditing={this.toggleEditing}
-          updateLockPrice={updateLockPrice}
+          updateLockPrice={this.updateLockPrice}
         />
         {showEmbedCode && (
           <LockPanel>

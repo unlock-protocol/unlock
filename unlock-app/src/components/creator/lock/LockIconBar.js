@@ -52,20 +52,7 @@ export function LockIconBar({
               }}
             />
           )}
-          {!editing && (
-            <Buttons.Edit
-              as="button"
-              action={() => {
-                console.dir('wat')
-              }}
-              /*
-              action={() => {
-                console.log(`hit`)
-                toggleEditing()
-              }}
-              */
-            />
-          )}
+          {!editing && <Buttons.Edit action={toggleEditing} as="button" />}
           {/* Reinstate when we're ready <Buttons.ExportLock /> */}
           <Buttons.Code action={toggleCode} as="button" />
         </IconBar>
@@ -91,6 +78,7 @@ export function LockIconBar({
 
 LockIconBar.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
+  editing: PropTypes.bool,
   toggleCode: PropTypes.func.isRequired,
   toggleEditing: PropTypes.func.isRequired,
   updateLockPrice: PropTypes.func.isRequired,
