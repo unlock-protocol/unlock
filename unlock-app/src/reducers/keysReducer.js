@@ -10,8 +10,14 @@ const keysReducer = (state = initialState, action) => {
   }
 
   if (action.type === PURCHASE_KEY) {
+    const id = action.key.id
+      ? action.key.id
+      : [action.key.lock, action.key.owner].join('-')
     return {
-      [action.key.id]: action.key,
+      [id]: {
+        ...action.key,
+        id,
+      },
       ...state,
     }
   }

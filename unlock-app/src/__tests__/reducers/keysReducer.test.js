@@ -106,17 +106,41 @@ describe('keys reducer', () => {
     })
   })
 
-  it('should add a ley when receiving PURCHASE_KEY', () => {
-    expect(
-      reducer(
-        {},
-        {
-          type: PURCHASE_KEY,
-          key,
-        }
-      )
-    ).toEqual({
-      [key.id]: key,
+  describe('PURCHASE_KEY', () => {
+    it('should add a key when receiving PURCHASE_KEY if the key has an id', () => {
+      expect(
+        reducer(
+          {},
+          {
+            type: PURCHASE_KEY,
+            key,
+          }
+        )
+      ).toEqual({
+        [key.id]: key,
+      })
+    })
+
+    it('should add a key when receiving PURCHASE_KEY and construct a key id if needed', () => {
+      const newKey = {
+        lock: '0x123',
+        owner: '0x456',
+      }
+      expect(
+        reducer(
+          {},
+          {
+            type: PURCHASE_KEY,
+            key: newKey,
+          }
+        )
+      ).toEqual({
+        '0x123-0x456': {
+          id: '0x123-0x456',
+          lock: '0x123',
+          owner: '0x456',
+        },
+      })
     })
   })
 
