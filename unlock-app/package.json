@@ -67,7 +67,10 @@
   },
   "engineStrict": true,
   "scripts": {
-    "dev": "npm run setup-dev && nodemon src/server.js",
+    "dev": "npm run setup-dev && npm run set-link && nodemon src/server.js",
+    "set-link": "run-script-os",
+    "set-link:darwin:freebsd:linux:sunos": "cd src && (rm artifacts -f) && ln -s ../../smart-contracts/build artifacts",
+    "set-link:win32": "cd src && if exist artifacts (rmdir artifacts /q /s || del artifacts) && cmd /c mklink /d artifacts ..\\..\\smart-contracts\\build",
     "build": "next build src",
     "export": "next export src",
     "start": "NODE_ENV=production node src/server.js",
