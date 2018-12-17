@@ -136,19 +136,19 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity 0.4.24;\n\n\n/**\n * @title The Lock interface core methods for a Lock\n * @author HardlyDifficult (unlock-protocol.com)\n */\ninterface ILockCore {\n\n  /**\n  * @dev Purchase function, public version, with no referrer.\n  * @param _recipient address of the recipient of the purchased key\n  * @param _data optional marker for the key\n  */\n  function purchaseFor(\n    address _recipient,\n    bytes _data\n  )\n    external\n    payable;\n\n  /**\n  * @dev Purchase function, public version, with referrer.\n  * @param _recipient address of the recipient of the purchased key\n  * @param _referrer address of the user making the referral\n  * @param _data optional marker for the key\n  */\n  function purchaseForFrom(\n    address _recipient,\n    address _referrer,\n    bytes _data\n  )\n    external\n    payable;\n\n  /**\n   * @dev Called by owner to wiwthdraw all funds from the lock.\n   */\n  function withdraw(\n  )\n    external;\n\n  /**\n   * A function which lets the owner of the lock expire a users' key.\n   */\n  function expireKeyFor(\n    address _owner\n  )\n    external;\n\n  /**\n   * A function which lets the owner of the lock to change the price for future purchases.\n   */\n  function updateKeyPrice(\n    uint _keyPrice\n  )\n    external;\n\n  /**\n   * Public function which returns the total number of keys (both expired and valid)\n   */\n  function outstandingKeys()\n    external\n    view\n    returns (uint);\n\n  /**\n  * @dev Returns the key's data field for a given owner.\n  * @param _owner address of the user for whom we search the key\n  */\n  function keyDataFor(\n    address _owner\n  )\n    external\n    view\n    returns (bytes data);\n\n  /**\n  * @dev Returns the key's ExpirationTimestamp field for a given owner.\n  * @param _owner address of the user for whom we search the key\n  */\n  function keyExpirationTimestampFor(\n    address _owner\n  )\n    external\n    view\n    returns (uint timestamp);\n}\n",
-  "sourcePath": "/Users/overlord/DAPPS/unlock/smart-contracts/contracts/interfaces/ILockCore.sol",
+  "sourcePath": "/Users/julien/repos/unlock/smart-contracts/contracts/interfaces/ILockCore.sol",
   "ast": {
-    "absolutePath": "/Users/overlord/DAPPS/unlock/smart-contracts/contracts/interfaces/ILockCore.sol",
+    "absolutePath": "/Users/julien/repos/unlock/smart-contracts/contracts/interfaces/ILockCore.sol",
     "exportedSymbols": {
       "ILockCore": [
-        1150
+        1153
       ]
     },
-    "id": 1151,
+    "id": 1154,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1101,
+        "id": 1104,
         "literals": [
           "solidity",
           "0.4",
@@ -163,9 +163,9 @@
         "contractKind": "interface",
         "documentation": "@title The Lock interface core methods for a Lock\n@author HardlyDifficult (unlock-protocol.com)",
         "fullyImplemented": false,
-        "id": 1150,
+        "id": 1153,
         "linearizedBaseContracts": [
-          1150
+          1153
         ],
         "name": "ILockCore",
         "nodeType": "ContractDefinition",
@@ -173,7 +173,7 @@
           {
             "body": null,
             "documentation": "@dev Purchase function, public version, with no referrer.\n@param _recipient address of the recipient of the purchased key\n@param _data optional marker for the key",
-            "id": 1108,
+            "id": 1111,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -181,15 +181,15 @@
             "name": "purchaseFor",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1106,
+              "id": 1109,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1103,
+                  "id": 1106,
                   "name": "_recipient",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1108,
+                  "scope": 1111,
                   "src": "373:18:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -198,7 +198,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1102,
+                    "id": 1105,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "373:7:6",
@@ -212,10 +212,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 1105,
+                  "id": 1108,
                   "name": "_data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1108,
+                  "scope": 1111,
                   "src": "397:11:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -224,7 +224,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 1104,
+                    "id": 1107,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "397:5:6",
@@ -241,12 +241,12 @@
             },
             "payable": true,
             "returnParameters": {
-              "id": 1107,
+              "id": 1110,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "437:0:6"
             },
-            "scope": 1150,
+            "scope": 1153,
             "src": "347:91:6",
             "stateMutability": "payable",
             "superFunction": null,
@@ -255,7 +255,7 @@
           {
             "body": null,
             "documentation": "@dev Purchase function, public version, with referrer.\n@param _recipient address of the recipient of the purchased key\n@param _referrer address of the user making the referral\n@param _data optional marker for the key",
-            "id": 1117,
+            "id": 1120,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -263,15 +263,15 @@
             "name": "purchaseForFrom",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1115,
+              "id": 1118,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1110,
+                  "id": 1113,
                   "name": "_recipient",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1117,
+                  "scope": 1120,
                   "src": "716:18:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -280,7 +280,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1109,
+                    "id": 1112,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "716:7:6",
@@ -294,10 +294,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 1112,
+                  "id": 1115,
                   "name": "_referrer",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1117,
+                  "scope": 1120,
                   "src": "740:17:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -306,7 +306,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1111,
+                    "id": 1114,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "740:7:6",
@@ -320,10 +320,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 1114,
+                  "id": 1117,
                   "name": "_data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1117,
+                  "scope": 1120,
                   "src": "763:11:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -332,7 +332,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 1113,
+                    "id": 1116,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "763:5:6",
@@ -349,12 +349,12 @@
             },
             "payable": true,
             "returnParameters": {
-              "id": 1116,
+              "id": 1119,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "803:0:6"
             },
-            "scope": 1150,
+            "scope": 1153,
             "src": "686:118:6",
             "stateMutability": "payable",
             "superFunction": null,
@@ -363,7 +363,7 @@
           {
             "body": null,
             "documentation": "@dev Called by owner to wiwthdraw all funds from the lock.",
-            "id": 1120,
+            "id": 1123,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -371,19 +371,19 @@
             "name": "withdraw",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1118,
+              "id": 1121,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "901:5:6"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1119,
+              "id": 1122,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "919:0:6"
             },
-            "scope": 1150,
+            "scope": 1153,
             "src": "884:36:6",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -392,7 +392,7 @@
           {
             "body": null,
             "documentation": "A function which lets the owner of the lock expire a users' key.",
-            "id": 1125,
+            "id": 1128,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -400,15 +400,15 @@
             "name": "expireKeyFor",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1123,
+              "id": 1126,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1122,
+                  "id": 1125,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1125,
+                  "scope": 1128,
                   "src": "1033:14:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -417,7 +417,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1121,
+                    "id": 1124,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1033:7:6",
@@ -434,12 +434,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 1124,
+              "id": 1127,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1064:0:6"
             },
-            "scope": 1150,
+            "scope": 1153,
             "src": "1006:59:6",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -448,7 +448,7 @@
           {
             "body": null,
             "documentation": "A function which lets the owner of the lock to change the price for future purchases.",
-            "id": 1130,
+            "id": 1133,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -456,15 +456,15 @@
             "name": "updateKeyPrice",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1128,
+              "id": 1131,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1127,
+                  "id": 1130,
                   "name": "_keyPrice",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1130,
+                  "scope": 1133,
                   "src": "1201:14:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -473,7 +473,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1126,
+                    "id": 1129,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1201:4:6",
@@ -490,12 +490,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 1129,
+              "id": 1132,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1232:0:6"
             },
-            "scope": 1150,
+            "scope": 1153,
             "src": "1172:61:6",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -504,7 +504,7 @@
           {
             "body": null,
             "documentation": "Public function which returns the total number of keys (both expired and valid)",
-            "id": 1135,
+            "id": 1138,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -512,22 +512,22 @@
             "name": "outstandingKeys",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1131,
+              "id": 1134,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1358:2:6"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1134,
+              "id": 1137,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1133,
+                  "id": 1136,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1135,
+                  "scope": 1138,
                   "src": "1396:4:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -536,7 +536,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1132,
+                    "id": 1135,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1396:4:6",
@@ -551,7 +551,7 @@
               ],
               "src": "1395:6:6"
             },
-            "scope": 1150,
+            "scope": 1153,
             "src": "1334:68:6",
             "stateMutability": "view",
             "superFunction": null,
@@ -560,7 +560,7 @@
           {
             "body": null,
             "documentation": "@dev Returns the key's data field for a given owner.\n@param _owner address of the user for whom we search the key",
-            "id": 1142,
+            "id": 1145,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -568,15 +568,15 @@
             "name": "keyDataFor",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1138,
+              "id": 1141,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1137,
+                  "id": 1140,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1142,
+                  "scope": 1145,
                   "src": "1564:14:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -585,7 +585,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1136,
+                    "id": 1139,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1564:7:6",
@@ -602,15 +602,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 1141,
+              "id": 1144,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1140,
+                  "id": 1143,
                   "name": "data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1142,
+                  "scope": 1145,
                   "src": "1618:10:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -619,7 +619,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 1139,
+                    "id": 1142,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "1618:5:6",
@@ -634,7 +634,7 @@
               ],
               "src": "1617:12:6"
             },
-            "scope": 1150,
+            "scope": 1153,
             "src": "1539:91:6",
             "stateMutability": "view",
             "superFunction": null,
@@ -643,7 +643,7 @@
           {
             "body": null,
             "documentation": "@dev Returns the key's ExpirationTimestamp field for a given owner.\n@param _owner address of the user for whom we search the key",
-            "id": 1149,
+            "id": 1152,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -651,15 +651,15 @@
             "name": "keyExpirationTimestampFor",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1145,
+              "id": 1148,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1144,
+                  "id": 1147,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1149,
+                  "scope": 1152,
                   "src": "1822:14:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -668,7 +668,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1143,
+                    "id": 1146,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1822:7:6",
@@ -685,15 +685,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 1148,
+              "id": 1151,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1147,
+                  "id": 1150,
                   "name": "timestamp",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1149,
+                  "scope": 1152,
                   "src": "1876:14:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -702,7 +702,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1146,
+                    "id": 1149,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1876:4:6",
@@ -717,31 +717,31 @@
               ],
               "src": "1875:16:6"
             },
-            "scope": 1150,
+            "scope": 1153,
             "src": "1782:110:6",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 1151,
+        "scope": 1154,
         "src": "136:1758:6"
       }
     ],
     "src": "0:1895:6"
   },
   "legacyAST": {
-    "absolutePath": "/Users/overlord/DAPPS/unlock/smart-contracts/contracts/interfaces/ILockCore.sol",
+    "absolutePath": "/Users/julien/repos/unlock/smart-contracts/contracts/interfaces/ILockCore.sol",
     "exportedSymbols": {
       "ILockCore": [
-        1150
+        1153
       ]
     },
-    "id": 1151,
+    "id": 1154,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1101,
+        "id": 1104,
         "literals": [
           "solidity",
           "0.4",
@@ -756,9 +756,9 @@
         "contractKind": "interface",
         "documentation": "@title The Lock interface core methods for a Lock\n@author HardlyDifficult (unlock-protocol.com)",
         "fullyImplemented": false,
-        "id": 1150,
+        "id": 1153,
         "linearizedBaseContracts": [
-          1150
+          1153
         ],
         "name": "ILockCore",
         "nodeType": "ContractDefinition",
@@ -766,7 +766,7 @@
           {
             "body": null,
             "documentation": "@dev Purchase function, public version, with no referrer.\n@param _recipient address of the recipient of the purchased key\n@param _data optional marker for the key",
-            "id": 1108,
+            "id": 1111,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -774,15 +774,15 @@
             "name": "purchaseFor",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1106,
+              "id": 1109,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1103,
+                  "id": 1106,
                   "name": "_recipient",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1108,
+                  "scope": 1111,
                   "src": "373:18:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -791,7 +791,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1102,
+                    "id": 1105,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "373:7:6",
@@ -805,10 +805,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 1105,
+                  "id": 1108,
                   "name": "_data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1108,
+                  "scope": 1111,
                   "src": "397:11:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -817,7 +817,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 1104,
+                    "id": 1107,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "397:5:6",
@@ -834,12 +834,12 @@
             },
             "payable": true,
             "returnParameters": {
-              "id": 1107,
+              "id": 1110,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "437:0:6"
             },
-            "scope": 1150,
+            "scope": 1153,
             "src": "347:91:6",
             "stateMutability": "payable",
             "superFunction": null,
@@ -848,7 +848,7 @@
           {
             "body": null,
             "documentation": "@dev Purchase function, public version, with referrer.\n@param _recipient address of the recipient of the purchased key\n@param _referrer address of the user making the referral\n@param _data optional marker for the key",
-            "id": 1117,
+            "id": 1120,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -856,15 +856,15 @@
             "name": "purchaseForFrom",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1115,
+              "id": 1118,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1110,
+                  "id": 1113,
                   "name": "_recipient",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1117,
+                  "scope": 1120,
                   "src": "716:18:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -873,7 +873,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1109,
+                    "id": 1112,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "716:7:6",
@@ -887,10 +887,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 1112,
+                  "id": 1115,
                   "name": "_referrer",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1117,
+                  "scope": 1120,
                   "src": "740:17:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -899,7 +899,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1111,
+                    "id": 1114,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "740:7:6",
@@ -913,10 +913,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 1114,
+                  "id": 1117,
                   "name": "_data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1117,
+                  "scope": 1120,
                   "src": "763:11:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -925,7 +925,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 1113,
+                    "id": 1116,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "763:5:6",
@@ -942,12 +942,12 @@
             },
             "payable": true,
             "returnParameters": {
-              "id": 1116,
+              "id": 1119,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "803:0:6"
             },
-            "scope": 1150,
+            "scope": 1153,
             "src": "686:118:6",
             "stateMutability": "payable",
             "superFunction": null,
@@ -956,7 +956,7 @@
           {
             "body": null,
             "documentation": "@dev Called by owner to wiwthdraw all funds from the lock.",
-            "id": 1120,
+            "id": 1123,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -964,19 +964,19 @@
             "name": "withdraw",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1118,
+              "id": 1121,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "901:5:6"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1119,
+              "id": 1122,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "919:0:6"
             },
-            "scope": 1150,
+            "scope": 1153,
             "src": "884:36:6",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -985,7 +985,7 @@
           {
             "body": null,
             "documentation": "A function which lets the owner of the lock expire a users' key.",
-            "id": 1125,
+            "id": 1128,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -993,15 +993,15 @@
             "name": "expireKeyFor",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1123,
+              "id": 1126,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1122,
+                  "id": 1125,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1125,
+                  "scope": 1128,
                   "src": "1033:14:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1010,7 +1010,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1121,
+                    "id": 1124,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1033:7:6",
@@ -1027,12 +1027,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 1124,
+              "id": 1127,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1064:0:6"
             },
-            "scope": 1150,
+            "scope": 1153,
             "src": "1006:59:6",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1041,7 +1041,7 @@
           {
             "body": null,
             "documentation": "A function which lets the owner of the lock to change the price for future purchases.",
-            "id": 1130,
+            "id": 1133,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1049,15 +1049,15 @@
             "name": "updateKeyPrice",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1128,
+              "id": 1131,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1127,
+                  "id": 1130,
                   "name": "_keyPrice",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1130,
+                  "scope": 1133,
                   "src": "1201:14:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1066,7 +1066,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1126,
+                    "id": 1129,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1201:4:6",
@@ -1083,12 +1083,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 1129,
+              "id": 1132,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1232:0:6"
             },
-            "scope": 1150,
+            "scope": 1153,
             "src": "1172:61:6",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1097,7 +1097,7 @@
           {
             "body": null,
             "documentation": "Public function which returns the total number of keys (both expired and valid)",
-            "id": 1135,
+            "id": 1138,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1105,22 +1105,22 @@
             "name": "outstandingKeys",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1131,
+              "id": 1134,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1358:2:6"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1134,
+              "id": 1137,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1133,
+                  "id": 1136,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1135,
+                  "scope": 1138,
                   "src": "1396:4:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1129,7 +1129,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1132,
+                    "id": 1135,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1396:4:6",
@@ -1144,7 +1144,7 @@
               ],
               "src": "1395:6:6"
             },
-            "scope": 1150,
+            "scope": 1153,
             "src": "1334:68:6",
             "stateMutability": "view",
             "superFunction": null,
@@ -1153,7 +1153,7 @@
           {
             "body": null,
             "documentation": "@dev Returns the key's data field for a given owner.\n@param _owner address of the user for whom we search the key",
-            "id": 1142,
+            "id": 1145,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1161,15 +1161,15 @@
             "name": "keyDataFor",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1138,
+              "id": 1141,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1137,
+                  "id": 1140,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1142,
+                  "scope": 1145,
                   "src": "1564:14:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1178,7 +1178,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1136,
+                    "id": 1139,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1564:7:6",
@@ -1195,15 +1195,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 1141,
+              "id": 1144,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1140,
+                  "id": 1143,
                   "name": "data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1142,
+                  "scope": 1145,
                   "src": "1618:10:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1212,7 +1212,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 1139,
+                    "id": 1142,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "1618:5:6",
@@ -1227,7 +1227,7 @@
               ],
               "src": "1617:12:6"
             },
-            "scope": 1150,
+            "scope": 1153,
             "src": "1539:91:6",
             "stateMutability": "view",
             "superFunction": null,
@@ -1236,7 +1236,7 @@
           {
             "body": null,
             "documentation": "@dev Returns the key's ExpirationTimestamp field for a given owner.\n@param _owner address of the user for whom we search the key",
-            "id": 1149,
+            "id": 1152,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1244,15 +1244,15 @@
             "name": "keyExpirationTimestampFor",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1145,
+              "id": 1148,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1144,
+                  "id": 1147,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1149,
+                  "scope": 1152,
                   "src": "1822:14:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1261,7 +1261,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1143,
+                    "id": 1146,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1822:7:6",
@@ -1278,15 +1278,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 1148,
+              "id": 1151,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1147,
+                  "id": 1150,
                   "name": "timestamp",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1149,
+                  "scope": 1152,
                   "src": "1876:14:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1295,7 +1295,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1146,
+                    "id": 1149,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1876:4:6",
@@ -1310,14 +1310,14 @@
               ],
               "src": "1875:16:6"
             },
-            "scope": 1150,
+            "scope": 1153,
             "src": "1782:110:6",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 1151,
+        "scope": 1154,
         "src": "136:1758:6"
       }
     ],
@@ -1329,5 +1329,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-14T22:05:17.685Z"
+  "updatedAt": "2018-12-17T20:32:21.386Z"
 }

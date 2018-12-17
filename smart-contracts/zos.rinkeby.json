@@ -1,17 +1,12 @@
 {
   "contracts": {
     "Unlock": {
-      "address": "0x7633dd082406861c384309c67576a4260c5775e0",
-      "constructorCode": "608060405260008054600160a060020a03191633179055611b8c806100256000396000f300",
-      "bodyBytecodeHash": "c05d7b86cd70a2fa765632338a32786d39a865084bc6b4f0a7bd83c9adc746a0",
-      "localBytecodeHash": "23536d5604b09694060ba4bc2843bcad3d13328b5be5af456e309b15ab90dc10",
-      "deployedBytecodeHash": "23536d5604b09694060ba4bc2843bcad3d13328b5be5af456e309b15ab90dc10",
+      "address": "0x1a35d2356d4881c0458338b2ddaee0ba7c62f9bc",
+      "constructorCode": "608060405234801561001057600080fd5b50611e7b806100206000396000f300",
+      "bodyBytecodeHash": "a5784f2b20aa147b50c50c2a367a7abf6eb511b355bd73115932d77f28b10289",
+      "localBytecodeHash": "38b0fe3827c0cd07879168ba1a2fb820a40fb109dce5564a6be483991a9b0b40",
+      "deployedBytecodeHash": "38b0fe3827c0cd07879168ba1a2fb820a40fb109dce5564a6be483991a9b0b40",
       "types": {
-        "t_address": {
-          "id": "t_address",
-          "kind": "elementary",
-          "label": "address"
-        },
         "t_bool": {
           "id": "t_bool",
           "kind": "elementary",
@@ -29,6 +24,11 @@
           "kind": "array",
           "label": "uint256[50]"
         },
+        "t_address": {
+          "id": "t_address",
+          "kind": "elementary",
+          "label": "address"
+        },
         "t_struct<Unlock.LockBalances>": {
           "id": "t_struct<Unlock.LockBalances>",
           "kind": "struct",
@@ -36,21 +36,21 @@
           "members": [
             {
               "label": "deployed",
-              "astId": 711,
+              "astId": 719,
               "type": "t_bool",
-              "src": "1821:13:2"
+              "src": "2042:13:2"
             },
             {
               "label": "totalSales",
-              "astId": 713,
+              "astId": 721,
               "type": "t_uint256",
-              "src": "1840:15:2"
+              "src": "2061:15:2"
             },
             {
               "label": "yieldedDiscountTokens",
-              "astId": 715,
+              "astId": 723,
               "type": "t_uint256",
-              "src": "1879:26:2"
+              "src": "2100:26:2"
             }
           ]
         },
@@ -63,18 +63,10 @@
       },
       "storage": [
         {
-          "contract": "Ownable",
-          "path": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
-          "label": "owner",
-          "astId": 1202,
-          "type": "t_address",
-          "src": "238:20:9"
-        },
-        {
           "contract": "Initializable",
           "path": "zos-lib/contracts/Initializable.sol",
           "label": "initialized",
-          "astId": 1288,
+          "astId": 1333,
           "type": "t_bool",
           "src": "749:24:10"
         },
@@ -82,7 +74,7 @@
           "contract": "Initializable",
           "path": "zos-lib/contracts/Initializable.sol",
           "label": "initializing",
-          "astId": 1290,
+          "astId": 1335,
           "type": "t_bool",
           "src": "868:25:10"
         },
@@ -90,33 +82,49 @@
           "contract": "Initializable",
           "path": "zos-lib/contracts/Initializable.sol",
           "label": "______gap",
-          "astId": 1339,
+          "astId": 1384,
           "type": "t_array:50<t_uint256>",
           "src": "1883:29:10"
+        },
+        {
+          "contract": "Ownable",
+          "path": "openzeppelin-eth/contracts/ownership/Ownable.sol",
+          "label": "_owner",
+          "astId": 1223,
+          "type": "t_address",
+          "src": "301:22:9"
+        },
+        {
+          "contract": "Ownable",
+          "path": "openzeppelin-eth/contracts/ownership/Ownable.sol",
+          "label": "______gap",
+          "astId": 1328,
+          "type": "t_array:50<t_uint256>",
+          "src": "2057:29:9"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "grossNetworkProduct",
-          "astId": 731,
+          "astId": 739,
           "type": "t_uint256",
-          "src": "2042:31:2"
+          "src": "2263:31:2"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "totalDiscountGranted",
-          "astId": 733,
+          "astId": 741,
           "type": "t_uint256",
-          "src": "2078:32:2"
+          "src": "2299:32:2"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "locks",
-          "astId": 737,
+          "astId": 745,
           "type": "t_mapping<t_struct<Unlock.LockBalances>>",
-          "src": "2199:46:2"
+          "src": "2420:46:2"
         }
       ],
       "warnings": {
@@ -130,11 +138,11 @@
   },
   "solidityLibs": {},
   "proxies": {
-    "lock/Unlock": [
+    "unlock-protocol/Unlock": [
       {
-        "address": "0x3c6e461341adbf7c0947085e86b4a6f35ff2f801",
+        "address": "0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b",
         "version": "0.1.0",
-        "implementation": "0x7633dd082406861c384309c67576a4260c5775e0"
+        "implementation": "0x1a35d2356d4881c0458338b2ddaee0ba7c62f9bc"
       }
     ]
   },
