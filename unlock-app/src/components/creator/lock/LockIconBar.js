@@ -46,7 +46,7 @@ export function LockIconBar({
             <Buttons.Save
               as="button"
               onCancel={toggleEditing}
-              action={() => {
+              onClick={() => {
                 toggleEditing()
                 updateLockPrice()
               }}
