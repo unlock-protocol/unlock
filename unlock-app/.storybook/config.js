@@ -2,7 +2,7 @@ import React from 'react'
 import { configure, addDecorator } from '@storybook/react'
 import StoryRouter from 'storybook-react-router'
 import GlobalStyle from '../src/theme/globalStyle'
-import Fonts from '../src/theme/fonts'
+import Fonts from '../src/theme/Fonts'
 
 const req = require.context('../src/stories', true, /\.stories\.js$/)
 
