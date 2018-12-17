@@ -5,7 +5,6 @@ import Link from 'next/link'
 import Header from './Header'
 import Footer from './Footer'
 import { RoundedLogo } from './Logo'
-import Media from '../../theme/Media'
 
 export default function Layout({ forContent, title, children }) {
   return (
@@ -51,15 +50,19 @@ const Left = styled.div`
   align-items: start;
   height: 24px;
 
-  ${Media.phone`
-    display: none;
-  `};
+  & > * {
+    @media (max-width: 500px) {
+      display: none;
+    }
+  }
 `
 
 const Right = styled.div`
-  ${Media.phone`
-    display: none;
-  `};
+  & > * {
+    @media (max-width: 500px) {
+      display: none;
+    }
+  }
 `
 
 const Content = styled.div`
