@@ -1,18 +1,19 @@
 const deployLocks = require('../../helpers/deployLocks')
 const Unlock = artifacts.require('../../Unlock.sol')
+const Zos = require('zos')
+const TestHelper = Zos.TestHelper
 
-let unlock, locks
+let locks
 
 contract('Lock ERC721', (accounts) => {
-  before(() => {
-    return Unlock.deployed()
-      .then(_unlock => {
-        unlock = _unlock
-        return deployLocks(unlock)
-      })
-      .then(_locks => {
-        locks = _locks
-      })
+  const proxyAdmin = accounts[1]
+  const unlockOwner = accounts[2]
+
+  before(async function () {
+    this.project = await TestHelper({ from: proxyAdmin })
+    this.proxy = await this.project.createProxy(Unlock, { initMethod: 'initialize', initArgs: [unlockOwner], initFrom: unlockOwner })
+    this.unlock = await Unlock.at(this.proxy.address)
+    locks = await deployLocks(this.unlock)
   })
 
   describe('getApproved', () => {
