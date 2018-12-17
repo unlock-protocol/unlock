@@ -35,6 +35,12 @@ export default class Web3Service extends EventEmitter {
           args.newLockAddress
         )
       },
+      Transfer: ({ lock, owner }) => {
+        return this.emit('key.saved', keyId(lock, owner), {
+          lock,
+          owner,
+        })
+      },
     }
 
     this.on('ready', () => {
@@ -489,13 +495,13 @@ export default class Web3Service extends EventEmitter {
         value: keyPrice,
         contractAbi: LockContract.abi,
       },
-      (error, { event } = {}) => {
+      (error, { event, args } = {}) => {
         if (event === 'transactionHash') {
           this.emit('key.updated', keyId(lock, owner), {
-            transaction: transaction.hash,
+            lock,
+            owner,
+            transaction: args.hash,
           })
-        } else if (event === 'Transfer') {
-          return this.emit('key.saved', keyId(lock, owner))
         }
       }
     )
@@ -517,12 +523,16 @@ export default class Web3Service extends EventEmitter {
     Promise.all([getKeyExpirationPromise, getKeyDataPromise])
       .then(([expiration, data]) => {
         this.emit('key.updated', keyId(lock, owner), {
+          lock,
+          owner,
           expiration: parseInt(expiration, 10),
           data,
         })
       })
       .catch(() => {
         this.emit('key.updated', keyId(lock, owner), {
+          lock,
+          owner,
           expiration: 0,
           data: null,
         })
