@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import UnlockPropTypes from '../../propTypes'
-import CreatorLock, { LockRowGrid } from './CreatorLock'
+import CreatorLock, { LockRowGrid, PhoneLockRowGrid } from './CreatorLock'
 import CreatorLockForm from './CreatorLockForm'
 import Error from '../interface/Error'
+import Media, { NoPhone, Phone } from '../../theme/Media'
 
 export class CreatorLocks extends React.Component {
   constructor(props, context) {
@@ -31,11 +32,16 @@ export class CreatorLocks extends React.Component {
         <LockHeaderRow>
           <LockHeader>Locks</LockHeader>
           <LockMinorHeader>Name / Address</LockMinorHeader>
-          <LockMinorHeader>Duration</LockMinorHeader>
+          <Duration>Duration</Duration>
           <LockMinorHeader>Quantity</LockMinorHeader>
           <LockMinorHeader>Price</LockMinorHeader>
-          <LockMinorHeader>Balance / Earnings</LockMinorHeader>
-          <CreateButton onClick={this.toggleForm}>Create Lock</CreateButton>
+          <LockMinorHeader>
+            <NoPhone>Balance / Earnings</NoPhone>
+            <Phone>Balance</Phone>
+          </LockMinorHeader>
+          <NoPhone>
+            <CreateButton onClick={this.toggleForm}>Create Lock</CreateButton>
+          </NoPhone>
         </LockHeaderRow>
         <Error />
         {showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
@@ -72,6 +78,10 @@ const LockHeaderRow = styled.div`
   display: grid;
   grid-gap: 16px;
   ${LockRowGrid} align-items: center;
+  ${Media.phone`
+    ${PhoneLockRowGrid} align-items: start;
+    grid-gap: 4px;
+  `};
 `
 
 const LockHeader = styled.div`
@@ -83,6 +93,9 @@ const LockHeader = styled.div`
   line-height: normal;
   letter-spacing: normal;
   color: var(--grey);
+  ${Media.phone`
+    grid-row: span 2;
+  `};
 `
 
 const LockMinorHeader = styled.div`
@@ -95,6 +108,12 @@ const LockMinorHeader = styled.div`
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--darkgrey);
+`
+
+export const Duration = styled(LockMinorHeader)`
+  ${Media.phone`
+    grid-row: span 2;
+  `};
 `
 
 export const ActionButton = styled.button`

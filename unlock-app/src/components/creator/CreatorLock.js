@@ -97,6 +97,9 @@ export default CreatorLock
 export const LockRowGrid =
   'grid-template-columns: 32px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
 
+export const PhoneLockRowGrid =
+  'grid-template-columns: 42px minmax(100px, 1fr) repeat(2, minmax(56px, 100px));'
+
 export const LockRow = styled.div`
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
   font-weight: 200;

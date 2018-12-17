@@ -1,7 +1,7 @@
 import React from 'react'
 import Document, { Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
-import Fonts from '../theme/fonts'
+import Fonts from '../theme/Fonts'
 
 export default class MyDocument extends Document {
   static getInitialProps({ renderPage }) {
