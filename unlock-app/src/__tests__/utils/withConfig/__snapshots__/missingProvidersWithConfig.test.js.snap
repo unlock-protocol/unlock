@@ -244,10 +244,9 @@ exports[`withConfig High Order Component when the current network is not in the 
   color: var(--dimgrey);
 }
 
-@media only screen and (min-device-width:300px) and (max-device-width:736px) {
+@media (max-width:600px) {
   .c4 {
     grid-template-columns: 1fr 48px;
-    height: 35px;
   }
 }
 
@@ -269,14 +268,14 @@ exports[`withConfig High Order Component when the current network is not in the 
   }
 }
 
-@media only screen and (min-device-width:300px) and (max-device-width:736px) {
-  .c1 {
+@media (max-width:500px) {
+  .c1 > * {
     display: none;
   }
 }
 
-@media only screen and (min-device-width:300px) and (max-device-width:736px) {
-  .c16 {
+@media (max-width:500px) {
+  .c16 > * {
     display: none;
   }
 }

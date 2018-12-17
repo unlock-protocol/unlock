@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { WordMarkLogo } from './Logo'
 import Buttons from './buttons/layout'
 import { ButtonLink } from './buttons/Button'
-import Media from '../../theme/Media'
 
 export default class Header extends React.PureComponent {
   constructor(props) {
@@ -42,11 +41,14 @@ export default class Header extends React.PureComponent {
           <Buttons.Jobs />
           <Buttons.Github />
         </DesktopButtons>
-        <MobileToggle visibilityToggle={!!menu} onClick={this.toggleMenu}>
+        <MobileToggle
+          visibilityToggle={menu ? true : false}
+          onClick={this.toggleMenu}
+        >
           <Buttons.Bars size="48px" />
           <Buttons.ChevronUp size="48px" />
         </MobileToggle>
-        <MobilePopover visibilityToggle={!!menu}>
+        <MobilePopover visibilityToggle={menu ? true : false}>
           <Buttons.About size="48px" />
           <Buttons.Jobs size="48px" />
           <Buttons.Github size="48px" />
@@ -74,10 +76,9 @@ const TopHeader = styled.header`
   align-items: center;
   height: 70px;
 
-  ${Media.phone`
+  @media (max-width: 600px) {
     grid-template-columns: 1fr 48px;
-    height: 35px;
-  `};
+  }
 `
 
 const Title = styled.h1`
