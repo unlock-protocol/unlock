@@ -17,7 +17,7 @@ export function Web3Provider({ setProvider, config, provider }) {
         <title>{pageTitle('Pick Web3 Provider')}</title>
       </Head>
       <NoSSR>
-        <div>
+        <p>
           <p>Pick web3 provider:</p>
           <select
             value={provider}
@@ -31,7 +31,7 @@ export function Web3Provider({ setProvider, config, provider }) {
               )
             })}
           </select>
-        </div>
+        </p>
         <p>
           <Link href="/">
             <a>Return</a>
