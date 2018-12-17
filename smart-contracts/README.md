@@ -108,6 +108,7 @@ The Unlock Smart contract is only deployed once. It has several roles:
 * Granting Discount. The Unlock smart contract will compute the available discount for each key purchase based on the amount of discount tokens owned by the key buyer.
 
 This smart contract needs to be "upgradable" to deploy changes. It is critical that its address does not change however so that all the Locks deployed by it can still access it.
+We are using zeppelinOS (zOS) to enable upgradeability. This requires us to use openzeppelin-eth (instead of openzeppelin-solidity), as its contracts have been modified to use init functions instead of constructors. Openzeppelin-solidity does not work correctly!
 
 #### Structs
 
