@@ -119,8 +119,8 @@ const People = [
     linkedIn: 'https://www.linkedin.com/in/gbeaver/',
     bio: `I am a symbiotic organism, thriving in both music and the art of
           software development. 18 years as cellist of The Chiara Quartet, and now
-          a soloist and composer matches equal experience in open source.`
-  }
+          a soloist and composer matches equal experience in open source.`,
+  },
 ].sort((bonnie, clyde) => (bonnie.name < clyde.name ? -1 : 1))
 
 const Person = ({ name, picture, personalLink, linkedIn, bio }) => (
@@ -129,9 +129,9 @@ const Person = ({ name, picture, personalLink, linkedIn, bio }) => (
     <Photo src={picture} />
     <p>{bio}</p>
     <small>
-      <a href={personalLink} target="_blank">Personal site</a>
+      <a href={personalLink} target="_blank" rel="noopener noreferrer">Personal site</a>
       &nbsp;-&nbsp;
-      <a href={linkedIn} target="_blank">LinkedIn</a>
+      <a href={linkedIn} target="_blank" rel="noopener noreferrer">LinkedIn</a>
     </small>
   </Column>
 )
