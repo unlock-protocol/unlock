@@ -112,6 +112,15 @@ const People = [
             Prior to joining Unlock, I worked to launch and scale projects at
             Facebook.`,
   },
+  {
+    name: 'Gregory Beaver',
+    picture: '/static/images/illustrations/greg.jpg',
+    personalLink: 'https://gregorybeaver.com',
+    linkedIn: 'https://www.linkedin.com/in/gbeaver/',
+    bio: `I am a symbiotic organism, thriving in both music and the art of
+          software development. 18 years as cellist of The Chiara Quartet, and now
+          a soloist and composer matches equal experience in open source.`,
+  },
 ].sort((bonnie, clyde) => (bonnie.name < clyde.name ? -1 : 1))
 
 const Person = ({ name, picture, personalLink, linkedIn, bio }) => (
@@ -120,9 +129,9 @@ const Person = ({ name, picture, personalLink, linkedIn, bio }) => (
     <Photo src={picture} />
     <p>{bio}</p>
     <small>
-      <a href={personalLink}>Personal site</a>
+      <a href={personalLink} target="_blank" rel="noopener noreferrer">Personal site</a>
       &nbsp;-&nbsp;
-      <a href={linkedIn}>LinkedIn</a>
+      <a href={linkedIn} target="_blank" rel="noopener noreferrer">LinkedIn</a>
     </small>
   </Column>
 )
