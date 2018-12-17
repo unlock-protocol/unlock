@@ -69,7 +69,7 @@ export default class Web3Service extends EventEmitter {
       // this exists for metamask and other modern dapp wallets and must be called,
       // see: https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
       try {
-        await window.ethereum.enable()
+        await providers[provider].enable()
       } catch (error) {
         // User denied account access...
         this.emit('error', error)
