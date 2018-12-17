@@ -41,6 +41,7 @@ export default class Header extends React.PureComponent {
           <Buttons.About />
           <Buttons.Jobs />
           <Buttons.Github />
+          <Buttons.Telegram />
         </DesktopButtons>
         <MobileToggle visibilityToggle={!!menu} onClick={this.toggleMenu}>
           <Buttons.Bars size="48px" />
@@ -50,6 +51,7 @@ export default class Header extends React.PureComponent {
           <Buttons.About size="48px" />
           <Buttons.Jobs size="48px" />
           <Buttons.Github size="48px" />
+          <Buttons.Telegram size="48px" />
         </MobilePopover>
       </TopHeader>
     )
