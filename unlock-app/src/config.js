@@ -65,6 +65,10 @@ export default function configure(environment, envVars = process.env) {
   let requiredNetwork = 'Dev'
   let requiredConfirmations = 12
 
+  if (!isServer && window.ethereum) {
+    providers['in-browser wallet'] = window.ethereum
+  }
+
   if (env === 'test') {
     // In test, we fake the HTTP provider
     providers['HTTP'] = new Web3.providers.HttpProvider('http://127.0.0.1:8545')

@@ -47,7 +47,7 @@ export default class Web3Service extends EventEmitter {
    * @param {object} account
    * @return
    */
-  connect({ provider }) {
+  async connect({ provider }) {
     if (provider === this.provider) {
       // If the provider did not really change, no need to reset it
       return
@@ -64,6 +64,17 @@ export default class Web3Service extends EventEmitter {
     }
 
     this.web3 = new Web3(providers[provider])
+
+    if (providers[provider].enable) {
+      // this exists for metamask and other modern dapp wallets and must be called,
+      // see: https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
+      try {
+        await window.ethereum.enable()
+      } catch (error) {
+        // User denied account access...
+        this.emit('error', error)
+      }
+    }
 
     return this.web3.eth.net
       .getId()
