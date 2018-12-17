@@ -5,7 +5,6 @@ import Jazzicon from 'react-jazzicon'
 import UnlockPropTypes from '../../propTypes'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
 
-import Media, { NoPhone } from '../../theme/Media'
 import Buttons from '../interface/buttons/lock'
 import Balance from '../helpers/Balance'
 
@@ -31,14 +30,10 @@ export function CreatorAccount({ account, network }) {
         <Label>Balance</Label>
         <Label>Earning</Label>
         <DoubleHeightCell>
-          <NoPhone>
-            <Buttons.Upload as="button" />
-          </NoPhone>
+          <Buttons.Upload as="button" />
         </DoubleHeightCell>
         <DoubleHeightCell>
-          <NoPhone>
-            <Buttons.Etherscan as="button" />
-          </NoPhone>
+          <Buttons.Etherscan as="button" />
         </DoubleHeightCell>
         <DoubleHeightCell>
           {/* reinstate download / export functionality when we're ready <Buttons.Download /> */}
@@ -82,10 +77,6 @@ const AccountDetails = styled.div`
   row-gap: 8px;
   column-gap: 16px;
   grid-template-columns: 40px 200px repeat(2, 100px) repeat(3, 24px) 1fr;
-  ${Media.phone`
-    column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2, 100px);
-  `};
 `
 
 const DoubleHeightCell = styled.div`
@@ -95,9 +86,6 @@ const DoubleHeightCell = styled.div`
   align-self: start;
   font-size: 24px;
   align-content: start;
-  ${Media.phone`
-    height: 0px;
-  `};
 `
 
 const Label = styled.div`
