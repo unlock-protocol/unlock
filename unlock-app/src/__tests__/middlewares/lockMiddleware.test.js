@@ -141,17 +141,18 @@ describe('Lock middleware', () => {
   })
 
   it('it should handle lock.saved events triggered by the web3Service', () => {
-    expect.assertions(2)
+    expect.assertions(3)
     const { store } = create()
     const lock = {}
     const address = '0x123'
     mockWeb3Service.refreshAccountBalance = jest.fn()
-    mockWeb3Service.getKeyByLockForOwner = jest.fn()
+    mockWeb3Service.getLock = jest.fn()
 
     mockWeb3Service.emit('lock.saved', lock, address)
     expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
       state.account
     )
+    expect(mockWeb3Service.getLock).toHaveBeenCalledWith(address)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: LOCK_DEPLOYED,
@@ -290,7 +291,7 @@ describe('Lock middleware', () => {
     )
   })
 
-  describe('when receiving a network.changed event triggered by the web3Service', () => {
+  describe('when receiving the ready event triggered by the web3Service', () => {
     it('should dispatch queued up actions', () => {
       const { store, invoke } = create()
 
@@ -302,14 +303,16 @@ describe('Lock middleware', () => {
       invoke(action)
 
       // Trigger the event
-      mockWeb3Service.emit('network.changed', 123)
+      mockWeb3Service.emit('ready')
       expect(store.dispatch).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'FAKE_ACTION',
         })
       )
     })
+  })
 
+  describe('when receiving a network.changed event triggered by the web3Service', () => {
     describe('when the network.changed is different from the store value', () => {
       it('should get a new account', () => {
         create()
@@ -353,13 +356,33 @@ describe('Lock middleware', () => {
     it('should connect on any action and stop further execution', () => {
       mockWeb3Service.ready = false
       const { next, invoke } = create()
-      const action = { type: SET_NETWORK, network }
+      const action = { type: 'FAKE_ACTION' }
       mockWeb3Service.connect = jest.fn()
       invoke(action)
       expect(mockWeb3Service.connect).toHaveBeenCalledWith({
         provider: 'HTTP',
       })
       expect(next).toHaveBeenCalledTimes(0) // ensures that execution was stopped
+    })
+
+    it('should propagate the SET_NETWORK action', () => {
+      mockWeb3Service.ready = false
+      const { next, invoke } = create()
+      const action = { type: SET_NETWORK, network: 0 }
+      mockWeb3Service.connect = jest.fn()
+      invoke(action)
+      expect(mockWeb3Service.connect).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledTimes(1) // ensures that execution was not stopped
+    })
+
+    it('should propagate the SET_ACCOUNT action', () => {
+      mockWeb3Service.ready = false
+      const { next, invoke } = create()
+      const action = { type: SET_ACCOUNT, account: {} }
+      mockWeb3Service.connect = jest.fn()
+      invoke(action)
+      expect(mockWeb3Service.connect).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledTimes(1) // ensures that execution was not stopped
     })
   })
 

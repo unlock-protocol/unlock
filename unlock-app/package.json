@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/core": "7.1.6",
-    "@storybook/addon-jest": "^4.1.1",
-    "@storybook/react": "4.1.1",
+    "@babel/core": "7.2.2",
+    "@storybook/addon-jest": "^4.1.2",
+    "@storybook/react": "4.1.2",
     "@svgr/cli": "^4.0.0",
     "axios": "^0.18.0",
     "babel-eslint": "^10.0.1",
@@ -50,6 +50,7 @@
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.5",
     "redux-mock-store": "^1.5.1",
+    "run-script-os": "^1.0.5",
     "storybook-react-router": "^1.0.1",
     "storybook-router": "^0.3.4",
     "styled-components": "^4.0.0",
@@ -70,12 +71,15 @@
     "build": "next build src",
     "export": "next export src",
     "start": "NODE_ENV=production node src/server.js",
-    "setup-dev": "cd .. && (npm run start-ganache -- -b 3 &) && npm run deploy-lock",
+    "setup-dev": "run-script-os",
+    "setup-dev:darwin:freebsd:linux:sunos": "cd .. && (npm run start-ganache -- -b 3 &) && npm run deploy-lock",
+    "setup-dev:win32": "cd .. && (START /b npm run start-ganache -- -b 3 ) && npm run deploy-lock",
     "test": "NODE_ENV=test jest --env=jsdom",
     "lint": "./node_modules/eslint/bin/eslint.js .",
     "reformat": "npx prettier-eslint --write \"src/**/*.js\"",
     "storybook": "start-storybook -p 9001 -c .storybook -s src",
-    "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions -d src/components/interface/svg/ src/static/images/svg/"
+    "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions -d src/components/interface/svg/ src/static/images/svg/",
+    "eslint-check": "eslint --print-config . | eslint-config-prettier-check"
   },
   "lint-staged": {
     "linters": {
@@ -100,6 +104,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "eslint-config-prettier": "^3.3.0",
     "jest-dom": "^3.0.0",
     "jest-mock-axios": "^2.1.11",
     "lint-staged": "^8.0.5",

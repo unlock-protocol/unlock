@@ -10,8 +10,8 @@ import {
   updateLock,
 } from '../actions/lock'
 import { PURCHASE_KEY, updateKey, addKey } from '../actions/key'
-import { setAccount, updateAccount } from '../actions/accounts'
-import { setNetwork } from '../actions/network'
+import { setAccount, updateAccount, SET_ACCOUNT } from '../actions/accounts'
+import { setNetwork, SET_NETWORK } from '../actions/network'
 import { setError } from '../actions/error'
 import { SET_PROVIDER } from '../actions/provider'
 import { addTransaction, updateTransaction } from '../actions/transaction'
@@ -52,6 +52,7 @@ export default function lockMiddleware({ getState, dispatch }) {
       })
     )
     web3Service.refreshAccountBalance(getState().account)
+    web3Service.getLock(address)
   })
 
   /**
@@ -97,32 +98,39 @@ export default function lockMiddleware({ getState, dispatch }) {
   })
 
   /**
-   * When the network has changed, we may need to refresh state or clean it
+   * When the network has changed, we need to get a new account
+   * as well as reset all the reducers
    */
   web3Service.on('network.changed', networkId => {
-    // retrigger all actions buffered. Not sure this is actually required though.
+    if (getState().network.name !== networkId) {
+      // Set the new network, which should also clean up all reducers
+      // And we need a new account!
+      dispatch(setNetwork(networkId))
+      return web3Service.refreshOrGetAccount()
+    }
+  })
+
+  /**
+   * This is invoked when the web3Service is ready. We can then (re)trigger all past actions.
+   */
+  web3Service.on('ready', () => {
     while (actions.length > 0) {
       let action = actions.shift()
       dispatch(action)
-    }
-    if (getState().network.name !== networkId) {
-      // Set the new network, which should also clean up all reducers
-      dispatch(setNetwork(networkId))
-      // And we need a new account!
-      return web3Service.refreshOrGetAccount()
     }
   })
 
   return function(next) {
     return function(action) {
-      // As long as middleware is not ready
-      if (!web3Service.ready) {
+      if (
+        !web3Service.ready &&
+        [SET_NETWORK, SET_ACCOUNT].indexOf(action.type) == -1
+      ) {
+        // As long as middleware is not ready
+        // we store the action
         actions.push(action)
-        // We return to make sure other middleware actions are not processed
         return web3Service.connect({ provider: getState().provider })
-      }
-
-      if (action.type === SET_PROVIDER) {
+      } else if (action.type === SET_PROVIDER) {
         web3Service.connect({ provider: action.provider })
       } else if (action.type === CREATE_LOCK) {
         web3Service.createLock(action.lock, getState().account)

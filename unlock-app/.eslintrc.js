@@ -4,6 +4,7 @@ module.exports = {
     'airbnb',
     'eslint:recommended',
     'plugin:react/recommended',
+    'prettier',
   ],
   env: {
     es6: true,
@@ -28,7 +29,7 @@ module.exports = {
         maxBOF: 0,
       },
     ],
-    'brace-style': [2, '1tbs', { allowSingleLine: true }],
+    'brace-style': 0,
     'react/forbid-prop-types': 2,
     'comma-dangle': [2, 'always-multiline'],
     'eol-last': ['error'],
@@ -44,5 +45,8 @@ module.exports = {
     'react/jsx-filename-extension': [0, { extensions: ['.js', '.jsx'] }],
     'import/no-named-as-default': 0,
     'import/no-named-as-default-member': 0,
+    'standard/computed-property-even-spacing': 0,
+    'standard/object-curly-even-spacing': 0,
+    'standard/array-bracket-even-spacing': 0,
   },
 }
