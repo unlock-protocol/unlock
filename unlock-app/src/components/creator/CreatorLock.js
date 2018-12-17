@@ -12,10 +12,10 @@ import Balance from '../helpers/Balance'
 const LockKeysNumbers = ({ lock }) => (
   <LockKeys>
     {lock.outstandingKeys !== null &&
-    lock.maxNumberOfKeys !== null &&
-    typeof lock.outstandingKeys !== 'undefined' &&
-    typeof lock.maxNumberOfKeys !== 'undefined'
-      ? `${lock.outstandingKeys}/${lock.maxNumberOfKeys}`
+      lock.maxNumberOfKeys !== null &&
+      typeof lock.outstandingKeys !== 'undefined' &&
+      typeof lock.maxNumberOfKeys !== 'undefined'
+      ? `${lock.outstandingKeys}/${lock.maxNumberOfKeys > 0 ? lock.maxNumberOfKeys : '∞'}`
       : ' - '}
   </LockKeys>
 )
@@ -78,11 +78,11 @@ export class CreatorLock extends React.Component {
         )}
         {!showEmbedCode &&
           showKeys && (
-          <LockPanel>
-            <LockDivider />
-            <KeyList lock={lock} />
-          </LockPanel>
-        )}
+            <LockPanel>
+              <LockDivider />
+              <KeyList lock={lock} />
+            </LockPanel>
+          )}
       </LockRow>
     )
   }
@@ -117,6 +117,10 @@ export const LockRow = styled.div`
   & > * {
     padding-top: 16px;
   }
+`
+
+export const LockLabel = styled.div`
+  color: var(--link);
 `
 
 export const LockName = styled.div`

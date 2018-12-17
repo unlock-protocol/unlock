@@ -11,6 +11,7 @@ import { BalanceWithUnit, Eth } from '../helpers/Balance'
 import {
   LockRow,
   LockName,
+  LockLabel,
   LockDuration,
   LockKeys,
   LockRowGrid,
@@ -27,29 +28,51 @@ class CreatorLockForm extends React.Component {
       keyPrice: '0.01',
       keyPriceCurrency: 'ether',
       maxNumberOfKeys: 10,
+      defaultNumberOfKeys: 10,
+      unlimitedKeys: false,
       name: 'New Lock',
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handleUnlimitedClick = this.handleUnlimitedClick.bind(this)
   }
 
   validate(name, value) {
     return (
       (name === 'name' && typeof value === 'string' && value.length > 0) ||
-      ((name === 'expirationDuration' || name === 'maxNumberOfKeys') &
+      ((name === 'expirationDuration' || name === 'maxNumberOfKeys') &&
         !isNaN(value) &&
         value > 0) ||
+      (name === "maxNumberOfKeys" && value === '∞' && this.state.unlimitedKeys) ||
       (name === 'keyPrice' && !isNaN(value) && value >= 0)
     )
   }
 
+  handleUnlimitedClick() {
+    this.setState({ unlimitedKeys: true, maxNumberOfKeys: '∞' })
+  }
+
   handleChange(event) {
-    event.target.dataset.valid = this.validate(
-      event.target.name,
-      event.target.value
-    )
-    this.setState({ [event.target.name]: event.target.value })
+    let { name, value } = event.target
+
+    if (name === 'maxNumberOfKeys') {
+      event.target.dataset.valid = (value === '∞')
+        ? true
+        : this.validate(
+          name,
+          value
+        )
+      this.setState({ unlimitedKeys: value === '∞' })
+    } else {
+      event.target.dataset.valid = this.validate(
+        name,
+        value
+      )
+    }
+
+
+    this.setState({ [name]: value })
   }
 
   handleSubmit() {
@@ -61,6 +84,7 @@ class CreatorLockForm extends React.Component {
       expirationDurationUnit,
       keyPriceCurrency,
       maxNumberOfKeys,
+      unlimitedKeys,
       keyPrice,
       name,
     } = this.state
@@ -70,7 +94,7 @@ class CreatorLockForm extends React.Component {
       name: name,
       expirationDuration: expirationDuration * expirationDurationUnit,
       keyPrice: Web3Utils.toWei(keyPrice.toString(10), keyPriceCurrency),
-      maxNumberOfKeys,
+      maxNumberOfKeys: (unlimitedKeys) ? 0 : maxNumberOfKeys,
       owner: account.address,
     }
 
@@ -84,7 +108,7 @@ class CreatorLockForm extends React.Component {
   }
 
   render() {
-    const { expirationDuration, maxNumberOfKeys, keyPrice, name } = this.state
+    const { expirationDuration, maxNumberOfKeys, keyPrice, name, unlimitedKeys } = this.state
 
     return (
       <FormLockRow>
@@ -112,8 +136,11 @@ class CreatorLockForm extends React.Component {
             type="text"
             name="maxNumberOfKeys"
             onChange={this.handleChange}
-            defaultValue={maxNumberOfKeys}
+            value={maxNumberOfKeys}
           />
+          {!unlimitedKeys &&
+            <LockLabelUnlimited onClick={this.handleUnlimitedClick}>Unlimited</LockLabelUnlimited>
+          }
         </FormLockKeys>
         <FormBalanceWithUnit>
           <Eth />
@@ -158,6 +185,12 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(CreatorLockForm)
+
+const LockLabelUnlimited = styled(LockLabel)`
+  font-size: 11px;
+  width: 100%;
+  padding: 5px;
+`
 
 const FormLockRow = styled(LockRow)`
   ${LockRowGrid} input[type='text'] {
