@@ -1,7 +1,10 @@
 import axios from 'axios'
+import configure from '../config'
+
+const { services } = configure(global)
 
 export default class StorageService {
-  HOST = 'http://localhost:4000'
+  HOST = services.storage.host
 
   lockLookUp(address) {
     return axios.get(`${this.HOST}/lock/${address}`)

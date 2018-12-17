@@ -64,6 +64,7 @@ export default function configure(environment, envVars = process.env) {
   let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
   let requiredConfirmations = 12
+  let services = {}
 
   if (env === 'test') {
     // In test, we fake the HTTP provider
@@ -111,6 +112,12 @@ export default function configure(environment, envVars = process.env) {
     requiredNetwork = ETHEREUM_NETWORKS_NAMES[1][0]
   }
 
+  const locksmithHost = envVars['LOCKSMITH_HOST'] || 'http://localhost:4000'
+
+  services = {
+    storage: { host: locksmithHost },
+  }
+
   return {
     isServer,
     env,
@@ -118,5 +125,6 @@ export default function configure(environment, envVars = process.env) {
     isRequiredNetwork,
     requiredNetwork,
     requiredConfirmations,
+    services,
   }
 }

@@ -4,16 +4,30 @@
   "description": "an unlock storage service",
   "main": "index.js",
   "scripts": {
-    "dev-setup" : "NODE_ENV=development sequelize db:migrate",
+    "dev-setup": "NODE_ENV=development sequelize db:migrate",
     "dev": "npm run dev-setup && nodemon server.js",
-    "test-setup" : "NODE_ENV=test sequelize db:migrate",
-    "test" : "npm run test-setup && jest"
+    "test-setup": "NODE_ENV=test sequelize db:migrate",
+    "test": "npm run test-setup && jest",
+    "lint": "./node_modules/eslint/bin/eslint.js .",
+    "reformat": "npx prettier-eslint --write \"src/**/*.js\"",
+    "eslint-check": "eslint --print-config . | eslint-config-prettier-check"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel-eslint": "^10.0.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
+    "eslint": "^5.10.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-mocha": "^5.2.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-standard": "^4.0.0",
     "express": "^4.16.4",
     "sequelize": "^4.41.2",
     "sequelize-cli": "^5.4.0",
@@ -22,6 +36,10 @@
   "devDependencies": {
     "jest": "^23.6.0",
     "nodemon": "^1.18.8",
-    "supertest": "^3.3.0"
+    "supertest": "^3.3.0",
+    "eslint-config-prettier": "^3.3.0",
+    "lint-staged": "^8.0.5",
+    "prettier": "^1.14.3",
+    "prettier-eslint-cli": "^4.7.1"
   }
 }
