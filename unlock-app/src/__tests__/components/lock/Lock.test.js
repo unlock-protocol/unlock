@@ -1,6 +1,27 @@
-import { mapStateToProps } from '../../../components/lock/Lock'
+import {
+  mapStateToProps,
+  mapDispatchToProps,
+} from '../../../components/lock/Lock'
+import { purchaseKey } from '../../../actions/key'
 
 describe('Lock', () => {
+  describe('mapDispatchToProps', () => {
+    it('should return a purchaseKey function which when invoked dispatches purchaseKey and invokes showModal', () => {
+      expect.assertions(2)
+      const dispatch = jest.fn()
+      const props = {
+        showModal: jest.fn(),
+      }
+      const key = {}
+
+      const newProps = mapDispatchToProps(dispatch, props)
+
+      newProps.purchaseKey(key)
+      expect(props.showModal).toHaveBeenCalledWith()
+      expect(dispatch).toHaveBeenCalledWith(purchaseKey(key))
+    })
+  })
+
   describe('mapStateToProps', () => {
     it('should return a new lockKey and no transaction when there is no matching key', () => {
       const state = {

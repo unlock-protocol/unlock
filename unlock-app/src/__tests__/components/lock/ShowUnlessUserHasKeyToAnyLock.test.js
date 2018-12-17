@@ -1,15 +1,35 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
-import { SHOW_MODAL } from '../../../actions/modal'
+import { lockPage, unlockPage } from '../../../services/iframeService'
 
 import {
-  mapDispatchToProps,
   mapStateToProps,
   ShowUnlessUserHasKeyToAnyLock,
 } from '../../../components/lock/ShowUnlessUserHasKeyToAnyLock'
 
+jest.mock('../../../services/iframeService.js')
+
 describe('ShowUnlessUserHasKeyToAnyLock', () => {
   describe('if there is a valid key', () => {
+    it('should call the iframeService unlockPage', () => {
+      expect.assertions(1)
+      const keys = [
+        {
+          id: 'keyId',
+          lock: '0xLock',
+          owner: '0x123',
+        },
+      ]
+
+      rtl.render(
+        <ShowUnlessUserHasKeyToAnyLock keys={keys} modalShown={false}>
+          Show me
+        </ShowUnlessUserHasKeyToAnyLock>
+      )
+
+      expect(unlockPage).toHaveBeenCalledWith()
+    })
+
     it('should not show the children if there is no modal', () => {
       expect.assertions(1)
       const keys = [
@@ -38,6 +58,7 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
           owner: '0x123',
         },
       ]
+
       const wrapper = rtl.render(
         <ShowUnlessUserHasKeyToAnyLock keys={keys} modalShown>
           Show me
@@ -61,41 +82,17 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
       expect(wrapper.queryByText('Show me')).not.toBe(null)
     })
 
-    it('should invoke showModal if no modal exists', () => {
+    it('should call the iframeService lockPage', () => {
       expect.assertions(1)
       const keys = []
-      const showModal = jest.fn()
+
       rtl.render(
-        <ShowUnlessUserHasKeyToAnyLock
-          keys={keys}
-          modalShown={false}
-          showModal={showModal}
-        >
+        <ShowUnlessUserHasKeyToAnyLock keys={keys}>
           Show me
         </ShowUnlessUserHasKeyToAnyLock>
       )
 
-      expect(showModal).toHaveBeenCalled()
-    })
-  })
-
-  describe('mapDispatchToProps', () => {
-    it('should yield a prop function which dispatches showModal with the right value', () => {
-      const locks = [
-        {
-          address: '0x123',
-        },
-        {
-          address: '0x456',
-        },
-      ]
-      const dispatch = jest.fn()
-      const props = mapDispatchToProps(dispatch, { locks })
-      props.showModal()
-      expect(dispatch).toHaveBeenCalledWith({
-        modal: '0x123-0x456',
-        type: SHOW_MODAL,
-      })
+      expect(lockPage).toHaveBeenCalledWith()
     })
   })
 

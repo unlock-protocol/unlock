@@ -171,6 +171,7 @@ describe('Lock middleware', () => {
       state.locks = {
         [lock.address]: lock,
       }
+      mockWeb3Service.getKeyByLockForOwner = jest.fn()
 
       const update = {}
       mockWeb3Service.emit('lock.updated', lock.address, update)
@@ -205,35 +206,27 @@ describe('Lock middleware', () => {
   })
 
   describe('when handling the key.saved events triggered by the web3Service', () => {
-    it('it should reload the lock and the account when the lock exists', () => {
+    it('it should reload the lock, the account and get the corresponding key for the current user', () => {
+      expect.assertions(3)
       create()
 
       const key = {
+        id: '0xabc',
         lock: lock.address,
+        owner: state.account.address,
       }
       mockWeb3Service.getLock = jest.fn()
       mockWeb3Service.refreshAccountBalance = jest.fn()
+      mockWeb3Service.getKeyByLockForOwner = jest.fn()
 
-      mockWeb3Service.emit('key.saved', key)
+      mockWeb3Service.emit('key.saved', '0xabc', key)
       expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock.address)
-      expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
-        state.account
+      expect(mockWeb3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
+        lock.address,
+        state.account.address
       )
-    })
-
-    it('it should the account and fetch a new lock when the lock does not exist', () => {
-      create()
-
-      const key = {
-        lock: '0xAnotherLock',
-      }
-      mockWeb3Service.getLock = jest.fn()
-      mockWeb3Service.refreshAccountBalance = jest.fn()
-
-      mockWeb3Service.emit('key.saved', key)
-      expect(mockWeb3Service.getLock).toHaveBeenCalledWith('0xAnotherLock')
       expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
-        state.account
+        state.account.address
       )
     })
   })
@@ -418,7 +411,13 @@ describe('Lock middleware', () => {
     mockWeb3Service.purchaseKey = jest.fn()
 
     invoke(action)
-    expect(mockWeb3Service.purchaseKey).toHaveBeenCalledWith(key, account, lock)
+    expect(mockWeb3Service.purchaseKey).toHaveBeenCalledWith(
+      key.lock,
+      key.owner,
+      lock.keyPrice,
+      account,
+      key.data
+    )
     expect(next).toHaveBeenCalledWith(action)
   })
 
@@ -445,5 +444,57 @@ describe('Lock middleware', () => {
       store.getState().account
     )
     expect(next).toHaveBeenCalledWith(action)
+  })
+
+  describe('ADD_LOCK', () => {
+    it('should handle ADD_LOCK by loading keys for the current user', () => {
+      const { next, invoke, store } = create()
+      const action = { type: ADD_LOCK, address: lock.address }
+      mockWeb3Service.getKeyByLockForOwner = jest.fn()
+      invoke(action)
+
+      expect(mockWeb3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
+        lock.address,
+        store.getState().account.address
+      )
+      expect(next).toHaveBeenCalledWith(action)
+    })
+
+    it('should handle ADD_LOCK bbut not load keys if the lock is pending', () => {
+      const { next, invoke, store } = create()
+      store.getState().locks[lock.address].pending = true
+      const action = { type: ADD_LOCK, address: lock.address }
+      mockWeb3Service.getKeyByLockForOwner = jest.fn()
+      invoke(action)
+
+      expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(action)
+    })
+  })
+
+  describe('UPDATE_LOCK', () => {
+    it('should handle UPDATE_LOCK by loading keys for the current user', () => {
+      const { next, invoke, store } = create()
+      const action = { type: UPDATE_LOCK, address: lock.address }
+      mockWeb3Service.getKeyByLockForOwner = jest.fn()
+      invoke(action)
+
+      expect(mockWeb3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
+        lock.address,
+        store.getState().account.address
+      )
+      expect(next).toHaveBeenCalledWith(action)
+    })
+
+    it('should handle UPDATE_LOCK bbut not load keys if the lock is pending', () => {
+      const { next, invoke, store } = create()
+      store.getState().locks[lock.address].pending = true
+      const action = { type: UPDATE_LOCK, address: lock.address }
+      mockWeb3Service.getKeyByLockForOwner = jest.fn()
+      invoke(action)
+
+      expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(action)
+    })
   })
 })

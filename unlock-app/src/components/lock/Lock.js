@@ -1,4 +1,3 @@
-import uniqid from 'uniqid'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import React from 'react'
@@ -80,8 +79,11 @@ Lock.defaultProps = {
   transaction: null,
 }
 
-const mapDispatchToProps = dispatch => ({
-  purchaseKey: key => dispatch(purchaseKey(key)),
+export const mapDispatchToProps = (dispatch, { showModal }) => ({
+  purchaseKey: key => {
+    showModal()
+    dispatch(purchaseKey(key))
+  },
 })
 
 export const mapStateToProps = (state, { lock }) => {
@@ -99,7 +101,6 @@ export const mapStateToProps = (state, { lock }) => {
 
   if (!lockKey) {
     lockKey = {
-      id: uniqid(),
       lock: lock.address,
       owner: account.address,
     }
