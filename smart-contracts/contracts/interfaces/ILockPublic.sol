@@ -2,7 +2,7 @@
 
 pragma solidity 0.4.24;
 
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-eth/contracts/ownership/Ownable.sol";
 import "./ERC721.sol";
 import "./ILockCore.sol";
 

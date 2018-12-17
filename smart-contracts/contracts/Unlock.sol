@@ -26,13 +26,13 @@ pragma solidity 0.4.24;
  *  b. Keeping track of GNP
  */
 
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-eth/contracts/ownership/Ownable.sol";
 import "zos-lib/contracts/Initializable.sol";
 import "./PublicLock.sol";
 import "./interfaces/IUnlock.sol";
 
-
-contract Unlock is IUnlock, Ownable, Initializable {
+/// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”. https://solidity.readthedocs.io/en/latest/contracts.html?highlight=linearization#multiple-inheritance-and-linearization
+contract Unlock is IUnlock, Initializable, Ownable {
 
   /**
    * The struct for a lock
@@ -71,7 +71,8 @@ contract Unlock is IUnlock, Ownable, Initializable {
     public
     initializer()
   {
-    transferOwnership(_owner);
+    // We must manually initialize Ownable.sol
+    Ownable.initialize(_owner);
     grossNetworkProduct = 0;
     totalDiscountGranted = 0;
   }
