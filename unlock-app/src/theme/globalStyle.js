@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 
 /**
- * Shared CSS across all components. Injected with styled-components' createGlobalStyle
+ * Shared CSS accross all components. Injected wtih styled-components' createGlobalStyle
  */
 
 const globalStyle = `

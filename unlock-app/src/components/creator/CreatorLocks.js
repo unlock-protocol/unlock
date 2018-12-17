@@ -36,25 +36,14 @@ export class CreatorLocks extends React.Component {
         <LockHeaderRow>
           <LockHeader>Locks</LockHeader>
           <LockMinorHeader>Name / Address</LockMinorHeader>
-<<<<<<< HEAD
           <LockMinorHeader>Duration</LockMinorHeader>
           <Quantity>Quantity</Quantity>
-=======
-          <Duration>Duration</Duration>
-          <LockMinorHeader>Quantity</LockMinorHeader>
->>>>>>> Initial responsive changes + dashboard (#712)
           <LockMinorHeader>Price</LockMinorHeader>
           <LockMinorHeader>
             <NoPhone>Balance / Earnings</NoPhone>
             <Phone>Balance</Phone>
           </LockMinorHeader>
-<<<<<<< HEAD
           <CreateButton onClick={this.toggleForm}>Create Lock</CreateButton>
-=======
-          <NoPhone>
-            <CreateButton onClick={this.toggleForm}>Create Lock</CreateButton>
-          </NoPhone>
->>>>>>> Initial responsive changes + dashboard (#712)
         </LockHeaderRow>
         <Error />
         {showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
@@ -123,11 +112,7 @@ const LockMinorHeader = styled.div`
   color: var(--darkgrey);
 `
 
-<<<<<<< HEAD
 export const Quantity = styled(LockMinorHeader)`
-=======
-export const Duration = styled(LockMinorHeader)`
->>>>>>> Initial responsive changes + dashboard (#712)
   ${Media.phone`
     grid-row: span 2;
   `};

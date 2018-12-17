@@ -271,7 +271,6 @@ exports[`withConfig High Order Component when the current network is not in the 
 }
 
 @media only screen and (min-device-width:300px) and (max-device-width:736px) {
-<<<<<<< HEAD
   .c0 {
     display: -webkit-box;
     display: -webkit-flex;
@@ -283,8 +282,6 @@ exports[`withConfig High Order Component when the current network is not in the 
 }
 
 @media only screen and (min-device-width:300px) and (max-device-width:736px) {
-=======
->>>>>>> Initial responsive changes + dashboard (#712)
   .c1 {
     display: none;
   }
@@ -338,7 +335,7 @@ exports[`withConfig High Order Component when the current network is not in the 
       <h1
         className="c5"
       >
-        
+
       </h1>
       <div
         className="c6"
@@ -432,7 +429,7 @@ exports[`withConfig High Order Component when the current network is not in the 
               d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
             />
           </svg>
-          
+
         </a>
         <a
           className="c7 c11"
@@ -450,7 +447,7 @@ exports[`withConfig High Order Component when the current network is not in the 
               d="M3 29L29 5l26 24"
             />
           </svg>
-          
+
         </a>
       </div>
       <div
@@ -544,7 +541,7 @@ exports[`withConfig High Order Component when the current network is not in the 
         </h1>
         <p>
           It looks like you’re using an incompatible browser or are missig a crypto wallet. If you’re using Chrome or Firefox you can install
-           
+
           <a
             href="https://metamask.io/"
           >

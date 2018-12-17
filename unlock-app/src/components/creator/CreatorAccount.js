@@ -5,11 +5,7 @@ import Jazzicon from 'react-jazzicon'
 import UnlockPropTypes from '../../propTypes'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
 
-<<<<<<< HEAD
 import Media, { NoPhone } from '../../theme/media'
-=======
-import Media, { NoPhone } from '../../theme/Media'
->>>>>>> Initial responsive changes + dashboard (#712)
 import Buttons from '../interface/buttons/lock'
 import Balance from '../helpers/Balance'
 
@@ -38,7 +34,6 @@ export function CreatorAccount({ account, network }) {
         <Label>Address</Label>
         <Label>Balance</Label>
         <Label>Earning</Label>
-<<<<<<< HEAD
         {/* reinstate upload / etherscan / download / export functionality when we're ready  */
           enableTheseButtons ? (
           <>
@@ -74,22 +69,6 @@ export function CreatorAccount({ account, network }) {
         {' '}
         {/* eslint-disable-line */
         /* prettier formats this as 12 spaces, eslint wants 10 :/ */}
-=======
-        <DoubleHeightCell>
-          <NoPhone>
-            <Buttons.Upload as="button" />
-          </NoPhone>
-        </DoubleHeightCell>
-        <DoubleHeightCell>
-          <NoPhone>
-            <Buttons.Etherscan as="button" />
-          </NoPhone>
-        </DoubleHeightCell>
-        <DoubleHeightCell>
-          {/* reinstate download / export functionality when we're ready <Buttons.Download /> */}
-        </DoubleHeightCell>
-        <DoubleHeightCell />
->>>>>>> Initial responsive changes + dashboard (#712)
         <Address>{account.address}</Address>
         <Value>
           <Balance amount={account.balance} convertCurrency={false} />
@@ -130,11 +109,7 @@ const AccountDetails = styled.div`
   grid-template-columns: 40px 200px repeat(2, 100px) repeat(3, 24px) 1fr;
   ${Media.phone`
     column-gap: 2px;
-<<<<<<< HEAD
     grid-template-columns: 45px 145px repeat(2, 80px);
-=======
-    grid-template-columns: 45px 145px repeat(2, 100px);
->>>>>>> Initial responsive changes + dashboard (#712)
   `};
 `
 

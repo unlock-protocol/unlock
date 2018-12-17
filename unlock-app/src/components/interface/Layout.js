@@ -5,11 +5,7 @@ import Link from 'next/link'
 import Header from './Header'
 import Footer from './Footer'
 import { RoundedLogo } from './Logo'
-<<<<<<< HEAD
 import Media from '../../theme/media'
-=======
-import Media from '../../theme/Media'
->>>>>>> Initial responsive changes + dashboard (#712)
 
 export default function Layout({ forContent, title, children }) {
   return (

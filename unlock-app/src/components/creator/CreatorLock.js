@@ -107,11 +107,7 @@ export const LockRowGrid =
   'grid-template-columns: 32px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
 
 export const PhoneLockRowGrid =
-<<<<<<< HEAD
   'grid-template-columns: 43px minmax(80px, 140px) repeat(2, minmax(56px, 80px)); grid-auto-flow: column;'
-=======
-  'grid-template-columns: 42px minmax(100px, 1fr) repeat(2, minmax(56px, 100px));'
->>>>>>> Initial responsive changes + dashboard (#712)
 
 export const LockRow = styled.div`
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
