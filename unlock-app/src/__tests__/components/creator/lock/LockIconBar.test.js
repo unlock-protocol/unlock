@@ -7,6 +7,7 @@ import configure from '../../../../config'
 import createUnlockStore from '../../../../createUnlockStore'
 
 const toggleCode = jest.fn()
+const toggleEditing = jest.fn()
 
 describe('LockIconBar', () => {
   it('should display a submitted label when withdrawal has been submitted', () => {
@@ -40,6 +41,7 @@ describe('LockIconBar', () => {
           transaction={transaction}
           withdrawalTransaction={withdrawalTransaction}
           toggleCode={toggleCode}
+          toggleEditing={toggleEditing}
           config={config}
         />
       </Provider>
@@ -80,6 +82,7 @@ describe('LockIconBar', () => {
           transaction={transaction}
           withdrawalTransaction={withdrawalTransaction}
           toggleCode={toggleCode}
+          toggleEditing={toggleEditing}
           config={config}
         />
       </Provider>

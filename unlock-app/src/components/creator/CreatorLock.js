@@ -9,6 +9,7 @@ import KeyList from './lock/KeyList'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
 import Media, { NoPhone, Phone } from '../../theme/media'
+import { updateLockPrice } from '../../actions/lock'
 
 const LockKeysNumbers = ({ lock }) => (
   <LockKeys>
@@ -50,6 +51,7 @@ export class CreatorLock extends React.Component {
     this.setState(previousState => ({
       editing: !previousState.editing,
     }))
+    console.dir(`editing is now ${this.state.editing}`)
   }
 
   toggleKeys() {
@@ -89,7 +91,13 @@ export class CreatorLock extends React.Component {
             <Balance amount={lock.balance} convertCurrency={false} />
           </Phone>
         </BalanceContainer>
-        <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} editing={editing} toggleEditing={this.toggleEditing}/>
+        <LockIconBar
+          lock={lock}
+          editing={editing}
+          toggleCode={this.toggleEmbedCode}
+          toggleEditing={this.toggleEditing}
+          updateLockPrice={updateLockPrice}
+        />
         {showEmbedCode && (
           <LockPanel>
             <LockDivider />

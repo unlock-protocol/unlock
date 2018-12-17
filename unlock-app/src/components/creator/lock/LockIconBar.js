@@ -45,16 +45,25 @@ export function LockIconBar({
           {editing && (
             <Buttons.Save
               as="button"
-              lock={lock}
-              toggleEditing={toggleEditing}
-              updateLockPrice={updateLockPrice}
+              onCancel={toggleEditing}
+              action={() => {
+                toggleEditing()
+                updateLockPrice()
+              }}
             />
           )}
           {!editing && (
             <Buttons.Edit
               as="button"
-              lock={lock}
-              toggleEditing={toggleEditing}
+              action={() => {
+                console.dir('wat')
+              }}
+              /*
+              action={() => {
+                console.log(`hit`)
+                toggleEditing()
+              }}
+              */
             />
           )}
           {/* Reinstate when we're ready <Buttons.ExportLock /> */}
@@ -84,6 +93,7 @@ LockIconBar.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   toggleCode: PropTypes.func.isRequired,
   toggleEditing: PropTypes.func.isRequired,
+  updateLockPrice: PropTypes.func.isRequired,
   transaction: UnlockPropTypes.transaction,
   withdrawalTransaction: UnlockPropTypes.transaction,
   config: UnlockPropTypes.configuration.isRequired,

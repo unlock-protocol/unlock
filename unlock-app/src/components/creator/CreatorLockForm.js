@@ -17,7 +17,7 @@ import {
   LockRowGrid,
 } from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockStatus'
-import { createLock } from '../../actions/lock'
+import { createLock, updateLockPrice } from '../../actions/lock'
 
 class CreatorLockForm extends React.Component {
   constructor(props, context) {
@@ -72,7 +72,7 @@ class CreatorLockForm extends React.Component {
   handleSubmit() {
     if (document.querySelector('[data-valid="false"]')) return false
 
-    const { account, createLock, hideAction } = this.props
+    const { account, createLock, hideAction, updateLockPrice } = this.props
     const {
       expirationDuration,
       expirationDurationUnit,
@@ -169,6 +169,7 @@ CreatorLockForm.propTypes = {
   account: UnlockPropTypes.account.isRequired,
   hideAction: PropTypes.func.isRequired,
   createLock: PropTypes.func.isRequired,
+  updateLockPrice: PropTypes.func.isRequired,
 }
 
 CreatorLockForm.defaultProps = {}
@@ -181,6 +182,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   createLock: lock => dispatch(createLock(lock)),
+  updateLockPrice: lock => dispatch(updateLockPrice(lock, lock.keyPrice)),
 })
 
 export default connect(
