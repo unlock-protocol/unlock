@@ -187,25 +187,83 @@ describe('Web3Service', () => {
       })
       web3Service.connect({ provider: 'CLOUD' })
     })
+  })
 
-    it('should call enable on a provider that supplies it', async done => {
+  describe('request enabling access to account', () => {
+    const netVersion = Math.floor(Math.random() * 100000)
+    let enable
+
+    beforeEach(done => {
       const { providers } = configure(global)
-      expect.assertions(1)
-      try {
-        providers.HTTP.enable = jest.fn(() => Promise.resolve())
+      nock.cleanAll()
 
-        web3Service = new Web3Service(providers)
+      enable = providers.HTTP.enable = jest.fn(() => Promise.resolve())
+      web3Service = new Web3Service(providers)
+      netVersionAndYield(netVersion)
 
-        await web3Service.enable({ provider: 'test' })
-        expect(providers.test.enable).toHaveBeenCalled()
-        done()
-      } finally {
-        delete providers.HTTP.enable
-        done()
+      UnlockContract.networks = {
+        [netVersion]: {
+          events: {},
+          links: {},
+          address: '0x3f313221a2af33fd8a430891291370632cb471bf',
+          transactionHash:
+            '0x8545541749873b42c96e1699c2e62f0f4062ca57f3398270423c1089232ef7dd',
+        },
       }
+
+      web3Service.on('network.changed', () => {
+        done()
+      })
+
+      return web3Service.connect(Object.assign({}, defaultState))
+    })
+
+    it('should call enable on a provider that supplies it', () => {
+      expect(enable).toHaveBeenCalled()
     })
   })
 
+  describe('fail while enabling access to acount', () => {
+    const netVersion = Math.floor(Math.random() * 100000)
+    let enable, errors
+
+    beforeEach(done => {
+      const { providers } = configure(global)
+      nock.cleanAll()
+
+      enable = providers.HTTP.enable = jest.fn(() => Promise.reject())
+      errors = []
+
+      web3Service = new Web3Service(providers)
+      netVersionAndYield(netVersion)
+
+      UnlockContract.networks = {
+        [netVersion]: {
+          events: {},
+          links: {},
+          address: '0x3f313221a2af33fd8a430891291370632cb471bf',
+          transactionHash:
+            '0x8545541749873b42c96e1699c2e62f0f4062ca57f3398270423c1089232ef7dd',
+        },
+      }
+
+      web3Service.on('error', e => {
+        errors.push(e)
+      })
+      web3Service.on('network.changed', () => {
+        done()
+      })
+
+      return web3Service.connect(Object.assign({}, defaultState))
+    })
+
+    it('should error if a user rejects access', () => {
+      expect(enable).toHaveBeenCalled()
+      expect(errors).toHaveLength(1)
+      expect(errors[0].message).toBe('User canceled access to ethereum wallet, cannot continue')
+    })
+  })
+  
   describe('once connected', () => {
     const lockAddress = '0x0d370b0974454d7b0e0e3b4512c0735a6489a71a'
     const netVersion = Math.floor(Math.random() * 100000)
@@ -226,7 +284,6 @@ describe('Web3Service', () => {
       web3Service.on('network.changed', () => {
         done()
       })
-
       return web3Service.connect(Object.assign({}, defaultState))
     })
 

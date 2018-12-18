@@ -71,7 +71,14 @@ export default class Web3Service extends EventEmitter {
         // see: https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
         await provider.enable()
       }
+    } catch (error) {
+      this.emit(
+        'error',
+        new Error('User canceled access to ethereum wallet, cannot continue')
+      )
+    }
 
+    try {
       this.web3 = new Web3(provider)
 
       const networkId = await this.web3.eth.net.getId()
