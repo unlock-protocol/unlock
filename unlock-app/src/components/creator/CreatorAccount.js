@@ -32,12 +32,12 @@ export function CreatorAccount({ account, network }) {
         <Label>Earning</Label>
         <DoubleHeightCell>
           <NoPhone>
-            <Buttons.Upload as="button" />
+            <Buttons.Upload action={() => { }} />
           </NoPhone>
         </DoubleHeightCell>
         <DoubleHeightCell>
           <NoPhone>
-            <Buttons.Etherscan as="button" />
+            <Buttons.Etherscan action={() => { }} />
           </NoPhone>
         </DoubleHeightCell>
         <DoubleHeightCell>
