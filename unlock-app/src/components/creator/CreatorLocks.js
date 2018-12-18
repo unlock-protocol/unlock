@@ -4,11 +4,7 @@ import UnlockPropTypes from '../../propTypes'
 import CreatorLock, { LockRowGrid, PhoneLockRowGrid } from './CreatorLock'
 import CreatorLockForm from './CreatorLockForm'
 import Error from '../interface/Error'
-<<<<<<< HEAD
 import Media, { NoPhone, Phone } from '../../theme/media'
-=======
-import Media, { NoPhone, Phone } from '../../theme/Media'
->>>>>>> Initial responsive changes + dashboard (#712)
 
 export class CreatorLocks extends React.Component {
   constructor(props, context) {
