@@ -57,8 +57,8 @@ export const Home = ({ config }) => (
         <SubTitle>Simple Integration</SubTitle>
         <ImageWithHover base="code" />
         <Paragraph>
-          Unlock provides a simple snippet of code to integrate easily on your
-          website, as well as several other integration tools...
+          Unlock provides a simple snippet of code to integrate easily with your
+          website, as well as with several other integration tools...
         </Paragraph>
       </Column>
       <Column>
