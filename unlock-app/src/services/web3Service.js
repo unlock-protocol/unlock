@@ -19,8 +19,9 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * upstream objects.
  */
 export default class Web3Service extends EventEmitter {
-  constructor() {
+  constructor(myproviders = providers) {
     super()
+    this.providers = myproviders
     this.ready = false
     this.provider = null
     this.web3 = null
@@ -47,56 +48,47 @@ export default class Web3Service extends EventEmitter {
    * @param {object} account
    * @return
    */
-  async connect({ provider }) {
-    if (provider === this.provider) {
+  async connect({ provider: providerName }) {
+    if (providerName === this.provider) {
       // If the provider did not really change, no need to reset it
       return
     }
 
     // Keep track of the provider
-    this.provider = provider
+    this.provider = providerName
     // And reset the connection
     this.ready = false
 
     // We fail: it appears that we are trying to connect but do not have a provider available...
-    if (!providers[provider]) {
+    const provider = this.providers[providerName]
+    if (!provider) {
       return this.emit('error', new Error('Provider does not exist'))
     }
 
-    this.web3 = new Web3(providers[provider])
-
-    if (providers[provider].enable) {
-      // this exists for metamask and other modern dapp wallets and must be called,
-      // see: https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
-      try {
-        await providers[provider].enable()
-      } catch (error) {
-        // User denied account access...
-        this.emit('error', error)
+    try {
+      if (provider.enable) {
+        // this exists for metamask and other modern dapp wallets and must be called,
+        // see: https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
+        await provider.enable()
       }
+
+      this.web3 = new Web3(provider)
+
+      const networkId = await this.web3.eth.net.getId()
+      if (!UnlockContract.networks[networkId]) {
+        throw new Error(`Unlock is not deployed on network ${networkId}`)
+      }
+
+      this.unlockContractAddress = Web3Utils.toChecksumAddress(
+        UnlockContract.networks[networkId].address
+      )
+      if (this.networkId !== networkId) {
+        this.networkId = networkId
+        this.emit('network.changed', networkId)
+      }
+    } catch (error) {
+      this.emit('error', error)
     }
-
-    return this.web3.eth.net
-      .getId()
-      .then(networkId => {
-        if (!UnlockContract.networks[networkId]) {
-          return this.emit(
-            'error',
-            new Error(`Unlock is not deployed on network ${networkId}`)
-          )
-        }
-
-        this.unlockContractAddress = Web3Utils.toChecksumAddress(
-          UnlockContract.networks[networkId].address
-        )
-        if (this.networkId !== networkId) {
-          this.networkId = networkId
-          this.emit('network.changed', networkId)
-        }
-      })
-      .catch(error => {
-        this.emit('error', error)
-      })
   }
 
   /**

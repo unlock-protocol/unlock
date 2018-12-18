@@ -6,6 +6,7 @@ import nock from 'nock'
 import Web3Service from '../../services/web3Service'
 import UnlockContract from '../../artifacts/contracts/Unlock.json'
 import LockContract from '../../artifacts/contracts/PublicLock.json'
+import configure from '../../config'
 
 const defaultState = {
   network: {
@@ -185,6 +186,23 @@ describe('Web3Service', () => {
         done()
       })
       web3Service.connect({ provider: 'CLOUD' })
+    })
+
+    it('should call enable on a provider that supplies it', async done => {
+      const { providers } = configure(global)
+      expect.assertions(1)
+      try {
+        providers.HTTP.enable = jest.fn(() => Promise.resolve())
+
+        web3Service = new Web3Service(providers)
+
+        await web3Service.enable({ provider: 'test' })
+        expect(providers.test.enable).toHaveBeenCalled()
+        done()
+      } finally {
+        delete providers.HTTP.enable
+        done()
+      }
     })
   })
 
