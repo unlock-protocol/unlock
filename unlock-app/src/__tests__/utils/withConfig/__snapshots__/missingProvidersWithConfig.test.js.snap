@@ -202,6 +202,7 @@ exports[`withConfig High Order Component when the current network is not in the 
   color: var(--darkgrey);
   display: grid;
   row-gap: 24px;
+  width: 100%;
 }
 
 .c13 {
@@ -244,9 +245,10 @@ exports[`withConfig High Order Component when the current network is not in the 
   color: var(--dimgrey);
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:300px) and (max-device-width:736px) {
   .c4 {
     grid-template-columns: 1fr 48px;
+    height: 35px;
   }
 }
 
@@ -256,7 +258,7 @@ exports[`withConfig High Order Component when the current network is not in the 
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:300px) and (max-device-width:736px) {
   .c10 {
     display: grid;
   }
@@ -268,14 +270,25 @@ exports[`withConfig High Order Component when the current network is not in the 
   }
 }
 
-@media (max-width:500px) {
-  .c1 > * {
+@media only screen and (min-device-width:300px) and (max-device-width:736px) {
+  .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media only screen and (min-device-width:300px) and (max-device-width:736px) {
+  .c1 {
     display: none;
   }
 }
 
-@media (max-width:500px) {
-  .c16 > * {
+@media only screen and (min-device-width:300px) and (max-device-width:736px) {
+  .c16 {
     display: none;
   }
 }

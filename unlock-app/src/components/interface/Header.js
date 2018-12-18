@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { WordMarkLogo } from './Logo'
 import Buttons from './buttons/layout'
 import { ButtonLink } from './buttons/Button'
+import Media from '../../theme/media'
 
 export default class Header extends React.PureComponent {
   constructor(props) {
@@ -41,14 +42,11 @@ export default class Header extends React.PureComponent {
           <Buttons.Jobs />
           <Buttons.Github />
         </DesktopButtons>
-        <MobileToggle
-          visibilityToggle={menu ? true : false}
-          onClick={this.toggleMenu}
-        >
+        <MobileToggle visibilityToggle={!!menu} onClick={this.toggleMenu}>
           <Buttons.Bars size="48px" />
           <Buttons.ChevronUp size="48px" />
         </MobileToggle>
-        <MobilePopover visibilityToggle={menu ? true : false}>
+        <MobilePopover visibilityToggle={!!menu}>
           <Buttons.About size="48px" />
           <Buttons.Jobs size="48px" />
           <Buttons.Github size="48px" />
@@ -75,10 +73,10 @@ const TopHeader = styled.header`
   grid-auto-flow: column;
   align-items: center;
   height: 70px;
-
-  @media (max-width: 600px) {
+  ${Media.phone`
     grid-template-columns: 1fr 48px;
-  }
+    height: 35px;
+  `};
 `
 
 const Title = styled.h1`
@@ -131,9 +129,9 @@ const MobileToggle = styled.div`
     }
   }
 
-  @media (max-width: 600px) {
+  ${Media.phone`
     display: grid;
-  }
+  `};
 `
 
 const MobilePopover = styled.div`
