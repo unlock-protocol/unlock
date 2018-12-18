@@ -64,5 +64,38 @@ describe('Pages', () => {
       )
       expect(pageTitle).toBeCalledWith('Dashboard')
     })
+    it('with no account, should render nothing at first, and then an error after delay has passed', () => {
+      const network = {
+        name: 4,
+      }
+      const currency = {
+        USD: 195.99,
+      }
+
+      const store = createUnlockStore({ currency })
+      const account = null
+      jest.useFakeTimers()
+      const component = rtl.render(
+        <Provider store={store}>
+          <Dashboard
+            account={account}
+            network={network}
+            transactions={{}}
+            locks={{}}
+            delay={500}
+          />
+        </Provider>
+      )
+
+      expect(component.queryByText('Creator Dashboard')).toBe(null)
+      expect(component.queryByText('User account not initialized')).toBe(null)
+
+      jest.advanceTimersByTime(501)
+
+      expect(component.queryByText('Creator Dashboard')).toBe(null)
+      expect(
+        component.queryByText('User account not initialized')
+      ).toHaveTextContent('User account not initialized')
+    })
   })
 })

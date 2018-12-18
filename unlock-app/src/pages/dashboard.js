@@ -4,14 +4,25 @@ import NoSSR from 'react-no-ssr'
 import Head from 'next/head'
 import UnlockPropTypes from '../propTypes'
 import Layout from '../components/interface/Layout'
+import SuspendedError from '../components/helpers/SuspendedError'
 import CreatorAccount from '../components/creator/CreatorAccount'
 import CreatorLocks from '../components/creator/CreatorLocks'
 import withConfig from '../utils/withConfig'
 import { pageTitle } from '../constants'
+import { DefaultError } from '../components/creator/FatalError'
 
-export const Dashboard = ({ account, network, locks }) => {
+export const Dashboard = ({ account, network, locks, delay = 500 }) => {
   if (!account) {
-    return null //loading
+    return (
+      <SuspendedError delay={delay}>
+        <DefaultError title="User account not initialized">
+          <p>
+            In order to display your Unlock dashboard, you need to connect a
+            crypto-wallet to your browser
+          </p>
+        </DefaultError>
+      </SuspendedError>
+    )
   }
 
   return (
@@ -33,11 +44,13 @@ Dashboard.propTypes = {
   account: UnlockPropTypes.account,
   network: UnlockPropTypes.network.isRequired,
   locks: UnlockPropTypes.locks,
+  delay: UnlockPropTypes.delay,
 }
 
 Dashboard.defaultProps = {
   locks: {},
   account: null,
+  delay: 500,
 }
 
 const mapStateToProps = state => {

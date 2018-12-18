@@ -60,6 +60,10 @@ export const name = PropTypes.string
 
 export const showDashboardForm = PropTypes.bool
 
+export const element = PropTypes.oneOfType([PropTypes.func, PropTypes.element])
+
+export const delay = PropTypes.number
+
 export default {
   account,
   address,
@@ -67,6 +71,8 @@ export default {
   component,
   configuration,
   conversion,
+  delay,
+  element,
   layout,
   lock,
   locks,
