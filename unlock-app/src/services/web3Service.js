@@ -19,9 +19,9 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * upstream objects.
  */
 export default class Web3Service extends EventEmitter {
-  constructor(myproviders = providers) {
+  constructor(availableProviders = providers) {
     super()
-    this.providers = myproviders
+    this.providers = availableProviders
     this.ready = false
     this.provider = null
     this.web3 = null

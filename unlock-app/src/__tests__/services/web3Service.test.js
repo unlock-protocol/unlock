@@ -211,7 +211,7 @@ describe('Web3Service', () => {
         },
       }
 
-      web3Service.on('network.changed', () => {
+      web3Service.once('network.changed', () => {
         done()
       })
 
@@ -225,14 +225,14 @@ describe('Web3Service', () => {
 
   describe('fail while enabling access to acount', () => {
     const netVersion = Math.floor(Math.random() * 100000)
-    let enable, errors
+    let enable, error
 
     beforeEach(done => {
       const { providers } = configure(global)
       nock.cleanAll()
 
       enable = providers.HTTP.enable = jest.fn(() => Promise.reject())
-      errors = []
+      error = false
 
       web3Service = new Web3Service(providers)
       netVersionAndYield(netVersion)
@@ -247,8 +247,8 @@ describe('Web3Service', () => {
         },
       }
 
-      web3Service.on('error', e => {
-        errors.push(e)
+      web3Service.once('error', e => {
+        error = e
       })
       web3Service.on('network.changed', () => {
         done()
@@ -259,11 +259,12 @@ describe('Web3Service', () => {
 
     it('should error if a user rejects access', () => {
       expect(enable).toHaveBeenCalled()
-      expect(errors).toHaveLength(1)
-      expect(errors[0].message).toBe('User canceled access to ethereum wallet, cannot continue')
+      expect(error.message).toBe(
+        'User canceled access to ethereum wallet, cannot continue'
+      )
     })
   })
-  
+
   describe('once connected', () => {
     const lockAddress = '0x0d370b0974454d7b0e0e3b4512c0735a6489a71a'
     const netVersion = Math.floor(Math.random() * 100000)
