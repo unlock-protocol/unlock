@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import Buttons from '../../interface/buttons/lock'
 import UnlockPropTypes from '../../../propTypes'
 import CreatorLockStatus from './CreatorLockStatus'
+import Media from '../../../theme/media'
 import withConfig from '../../../utils/withConfig'
 
 export function LockIconBar({
@@ -97,6 +98,9 @@ const IconBarContainer = styled.div`
   display: grid;
   justify-items: end;
   padding-right: 24px;
+  ${Media.phone`
+    display: none;
+  `};
 `
 
 const IconBar = styled.div`
