@@ -54,7 +54,7 @@
     "storybook-react-router": "^1.0.1",
     "storybook-router": "^0.3.4",
     "styled-components": "^4.0.0",
-    "truffle": "^4.1.11",
+    "truffle": "^5.0.0",
     "uniqid": "^5.0.3",
     "web3": "1.0.0-beta.33",
     "web3-utils": "1.0.0-beta.33",
