@@ -11,10 +11,10 @@ import withConfig from '../utils/withConfig'
 import { pageTitle } from '../constants'
 import { DefaultError } from '../components/creator/FatalError'
 
-export const Dashboard = ({ account, network, locks, delay = 500 }) => {
+export const Dashboard = ({ account, network, locks }) => {
   if (!account) {
     return (
-      <SuspendedError delay={delay}>
+      <SuspendedError>
         <DefaultError title="User account not initialized">
           <p>
             In order to display your Unlock dashboard, you need to connect a
@@ -44,13 +44,11 @@ Dashboard.propTypes = {
   account: UnlockPropTypes.account,
   network: UnlockPropTypes.network.isRequired,
   locks: UnlockPropTypes.locks,
-  delay: UnlockPropTypes.delay,
 }
 
 Dashboard.defaultProps = {
   locks: {},
   account: null,
-  delay: 500,
 }
 
 const mapStateToProps = state => {

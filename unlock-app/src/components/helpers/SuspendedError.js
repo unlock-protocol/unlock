@@ -17,12 +17,13 @@ export default class SuspendedError extends Component {
       show: false,
     }
     this.mounted = false
+    this.clearTimeout = false
   }
 
   componentDidMount() {
     const { delay } = this.props
     this.mounted = true
-    setTimeout(() => {
+    this.clearTimeout = setTimeout(() => {
       if (!this.mounted) return
       this.setState({ show: true })
     }, delay)
@@ -30,6 +31,9 @@ export default class SuspendedError extends Component {
 
   componentWillUnmount() {
     this.mounted = false
+    if (this.clearTimeout) {
+      clearTimeout(this.clearTimeout)
+    }
   }
 
   render() {
