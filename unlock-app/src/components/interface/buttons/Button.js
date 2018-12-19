@@ -90,6 +90,7 @@ export const BaseButton = ({
   children,
   action,
   disabled,
+  title,
   ...props
 }) => {
   const button = (
@@ -98,6 +99,7 @@ export const BaseButton = ({
       onClick={e => {
         if (!disabled) return clickAction(e, action)
       }}
+      title={label ? label : title}
       {...props}
     >
       {children}

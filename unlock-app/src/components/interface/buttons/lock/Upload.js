@@ -3,7 +3,7 @@ import Svg from '../../svg'
 import Button from '../Button'
 
 const Upload = props => (
-  <Button {...props}>
+  <Button label="Upload" {...props}>
     <Svg.Upload name="Upload" />
   </Button>
 )

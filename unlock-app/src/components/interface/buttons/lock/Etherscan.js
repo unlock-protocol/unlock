@@ -3,7 +3,7 @@ import Svg from '../../svg'
 import Button from '../Button'
 
 const Etherscan = props => (
-  <Button {...props}>
+  <Button label="Etherscan" {...props}>
     <Svg.Etherscan name="Etherscan" />
   </Button>
 )
