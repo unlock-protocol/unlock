@@ -344,6 +344,7 @@ exports[`withConfig High Order Component when the current network is not in the 
           className="c7 c8"
           href="/about"
           onClick={[Function]}
+          title="About"
         >
           <svg
             viewBox="0 0 24 24"
@@ -367,6 +368,7 @@ exports[`withConfig High Order Component when the current network is not in the 
           className="c7 c8"
           href="/jobs"
           onClick={[Function]}
+          title="Join us"
         >
           <svg
             name="Jobs"
@@ -389,6 +391,7 @@ exports[`withConfig High Order Component when the current network is not in the 
           className="c7 c8"
           href="https://github.com/unlock-protocol/unlock"
           onClick={[Function]}
+          title="Source Code"
         >
           <svg
             name="Github"
@@ -455,6 +458,7 @@ exports[`withConfig High Order Component when the current network is not in the 
           href="/about"
           onClick={[Function]}
           size="48px"
+          title="About"
         >
           <svg
             viewBox="0 0 24 24"
@@ -479,6 +483,7 @@ exports[`withConfig High Order Component when the current network is not in the 
           href="/jobs"
           onClick={[Function]}
           size="48px"
+          title="Join us"
         >
           <svg
             name="Jobs"
@@ -502,6 +507,7 @@ exports[`withConfig High Order Component when the current network is not in the 
           href="https://github.com/unlock-protocol/unlock"
           onClick={[Function]}
           size="48px"
+          title="Source Code"
         >
           <svg
             name="Github"
