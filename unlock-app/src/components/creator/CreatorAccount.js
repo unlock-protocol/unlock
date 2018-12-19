@@ -15,7 +15,7 @@ export function CreatorAccount({ account, network }) {
     : 'Unknown Network'
   // Using https://github.com/MetaMask/metamask-extension/blob/develop/ui/lib/icon-factory.js#L60 to make sure jazzicons are consistent between Metamask and unlock.
   const iconSeed = parseInt(account.address.slice(2, 10), 16)
-  const enableTheseButtons = true
+  const enableTheseButtons = false
 
   return (
     <Account>
