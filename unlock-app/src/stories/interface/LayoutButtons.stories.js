@@ -2,7 +2,6 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { Provider } from 'react-redux'
 import LayoutButtons from '../../components/interface/buttons/layout'
-import OverlayButtons from '../../components/interface/buttons/overlay'
 
 import createUnlockStore from '../../createUnlockStore'
 
