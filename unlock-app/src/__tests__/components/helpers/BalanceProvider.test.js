@@ -120,10 +120,10 @@ describe('BalanceProvider Component', () => {
     })
   })
 
-  describe('when the balance would round up using toFixed', () => {
+  describe('when the balance would round up', () => {
     const amount = '1998887'
 
-    it('shows the balance in Eth would round up', () => {
+    it('shows the balance in Eth without rounding up', () => {
       renderIt({
         amount,
         render: ethValue => {
