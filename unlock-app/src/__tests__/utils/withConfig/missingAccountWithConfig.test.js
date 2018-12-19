@@ -19,7 +19,7 @@ describe('withConfig High Order Component', () => {
     })
   })
 
-  it.only('with no account, should render nothing at first, and then an error after delay has passed', () => {
+  it('with no account, should render nothing at first, and then an error after delay has passed', () => {
     const Component = () => <div>hi</div>
     const NoAccountComponent = withConfig(Component)
     const fakerouter = {
