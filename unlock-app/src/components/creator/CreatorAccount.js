@@ -15,6 +15,9 @@ export function CreatorAccount({ account, network }) {
     : 'Unknown Network'
   // Using https://github.com/MetaMask/metamask-extension/blob/develop/ui/lib/icon-factory.js#L60 to make sure jazzicons are consistent between Metamask and unlock.
   const iconSeed = parseInt(account.address.slice(2, 10), 16)
+  // this is a toggle. The buttons below (upload / etherscan / download / export)
+  // are disabled because they don't do anything yet. When we are ready to enable them
+  // set this toggle to true
   const enableTheseButtons = false
 
   return (
