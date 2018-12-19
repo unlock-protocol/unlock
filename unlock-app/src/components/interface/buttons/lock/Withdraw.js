@@ -11,7 +11,7 @@ export const Withdraw = ({ lock, withdraw, account, ...props }) => {
   if (lock.balance > 0) {
     return (
       <Button
-        label="Withdraw"
+        label="Withdraw balance"
         action={() => {
           if (lock.balance > 0) {
             withdraw(lock, account)
