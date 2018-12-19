@@ -1,10 +1,14 @@
 const fs = require('fs')
 const { join } = require('path')
 const { promisify } = require('util')
+const withSourceMaps = require('@zeit/next-source-maps')
 
 const copyFile = promisify(fs.copyFile)
 
-module.exports = {
+module.exports = withSourceMaps({
+  webpack(config) {
+    return config
+  },
   exportPathMap: async (defaultPathMap, { dev, dir, outDir }) => {
     // Export robots.txt and humans.txt in non-dev environments
     if (!dev && outDir) {
@@ -33,4 +37,4 @@ module.exports = {
       '/demo': { page: '/demo' },
     }
   },
-}
+})
