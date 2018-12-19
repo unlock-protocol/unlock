@@ -1,11 +1,11 @@
 import React from 'react'
 import Svg from '../../svg'
-import { LayoutButton } from '../Button'
+import Button from '../Button'
 
 const Etherscan = props => (
-  <LayoutButton label="Etherscan" {...props}>
+  <Button label="Etherscan" {...props}>
     <Svg.Etherscan name="Etherscan" />
-  </LayoutButton>
+  </Button>
 )
 
 export default Etherscan

@@ -1,11 +1,11 @@
 import React from 'react'
 import Svg from '../../svg'
-import { LayoutButton } from '../Button'
+import Button from '../Button'
 
 const Upload = props => (
-  <LayoutButton label="Upload" {...props}>
+  <Button label="Upload" {...props}>
     <Svg.Upload name="Upload" />
-  </LayoutButton>
+  </Button>
 )
 
 export default Upload
