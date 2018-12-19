@@ -9,11 +9,13 @@ pragma solidity 0.4.24;
  * Then a few small changes have been made, higlighted with comments.
  */
 
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-eth/contracts/ownership/Ownable.sol";
+import "zos-lib/contracts/Initializable.sol";
 import "./PublicLock.sol";
+import "./interfaces/IUnlock.sol";
 
 
-contract UnlockTestV3 is Ownable {
+contract UnlockTestV3 is Initializable, Ownable {
 
   struct LockBalances {
     bool deployed;
@@ -47,7 +49,10 @@ contract UnlockTestV3 is Ownable {
     address _owner
   )
     public
+    initializer()
   {
+    // We must manually initialize Ownable.sol
+    Ownable.initialize(_owner);
     require(!initialized);
     exampleData = 42;
     initialized = true;

@@ -1,4 +1,3 @@
-const zos = require('zos-lib')
 const Unlock = artifacts.require('Unlock')
 const UnlockTestV2 = artifacts.require('UnlockTestV2')
 const UnlockTestV3 = artifacts.require('UnlockTestV3')
@@ -6,6 +5,7 @@ const Zos = require('zos')
 const TestHelper = Zos.TestHelper
 const shared = require('./behaviors/shared')
 const Units = require('ethereumjs-units')
+const shell = require('shelljs')
 
 contract('Unlock', function (accounts) {
   const proxyAdmin = accounts[1]
@@ -13,15 +13,18 @@ contract('Unlock', function (accounts) {
 
   describe('Proxy Unlock contract', function () {
     beforeEach(async function () {
+      // TestHelper retrieves project structure from the zos.json file and deploys everything to the current test network.
       this.project = await TestHelper({ from: proxyAdmin })
-      this.proxy = await this.project.createProxy(Unlock, { initMethod: 'initialize', initArgs: [unlockOwner], initFrom: unlockOwner })
+      this.proxy = await this.project.createProxy(Unlock, { Unlock, initMethod: 'initialize', initArgs: [unlockOwner] })
       this.unlock = await Unlock.at(this.proxy.address)
     })
 
+    after(async function () {
+      await shell.exec('zos add Unlock:Unlock --skip-compile')
+    })
+
     describe('should function as a proxy', function () {
-      // see note regarding _logIndex in Unlock.js
-      let _logIndex = 0
-      shared.shouldBehaveLikeV1(accounts, unlockOwner, _logIndex)
+      shared.shouldBehaveLikeV1(accounts, unlockOwner)
 
       it('should fail if called from the proxy owner\'s account', async function () {
         try {
@@ -36,12 +39,12 @@ contract('Unlock', function (accounts) {
 
     describe('should function after upgrade', function () {
       beforeEach(async function () {
-        await this.project.upgradeProxy(this.proxy, UnlockTestV2, { initMethod: 'initializeV2', initArgs: [], initFrom: unlockOwner })
+        await shell.exec('zos add UnlockTestV2:Unlock --skip-compile')
+        await this.project.upgradeProxy(this.proxy.address, UnlockTestV2, { Unlock, initMethod: 'initializeV2', initArgs: [] })
         this.unlock = await UnlockTestV2.at(this.proxy.address)
+        await shell.exec('zos add Unlock:Unlock --skip-compile')
       })
-      // see note regarding _logIndex in Unlock.js
-      let _logIndex = 2
-      shared.shouldBehaveLikeV1(accounts, unlockOwner, _logIndex)
+      shared.shouldBehaveLikeV1(accounts, unlockOwner)
 
       it('should allow new functions', async function () {
         const results = await this.unlock.testNewMethod()
@@ -63,17 +66,22 @@ contract('Unlock', function (accounts) {
         , {
           from: accounts[0]
         })
-      const resultsBefore = await this.proxy.locks(transaction.logs[0].args.newLockAddress)
-      await this.project.upgradeProxy(this.proxy, UnlockTestV2, { initMethod: 'initializeV2', initArgs: [], initFrom: unlockOwner })
+      const newLockAddress = transaction.logs[0].args.newLockAddress
+      const resultsBefore = await this.unlock.locks(newLockAddress)
+      await shell.exec('zos add UnlockTestV2:Unlock --skip-compile')
+      await this.project.upgradeProxy(this.proxy.address, UnlockTestV2, { Unlock, initMethod: 'initializeV2', initArgs: [] })
       this.unlock = await UnlockTestV2.at(this.proxy.address)
-      const resultsAfter = await this.unlock.locks(transaction.logs[0].args.newLockAddress)
+      await shell.exec('zos add Unlock:Unlock --skip-compile')
+      const resultsAfter = await this.unlock.locks(newLockAddress)
       assert.equal(JSON.stringify(resultsAfter), JSON.stringify(resultsBefore))
     })
 
     describe('should allow you to make significant changes to the contract', function () {
       beforeEach(async function () {
-        await this.project.upgradeProxy(this.proxy, UnlockTestV3, { initMethod: 'initializeV3', initArgs: [], initFrom: unlockOwner })
+        await shell.exec('zos add UnlockTestV3:Unlock --skip-compile')
+        await this.project.upgradeProxy(this.proxy.address, UnlockTestV3, { Unlock, initMethod: 'initializeV3', initArgs: [] })
         this.unlock = await UnlockTestV3.at(this.proxy.address)
+        await shell.exec('zos add Unlock:Unlock --skip-compile')
       })
 
       it('should allow new functions', async function () {

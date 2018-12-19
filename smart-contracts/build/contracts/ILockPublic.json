@@ -177,6 +177,20 @@
       "type": "function"
     },
     {
+      "constant": true,
+      "inputs": [],
+      "name": "isOwner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
@@ -207,6 +221,20 @@
       ],
       "payable": false,
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -254,7 +282,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_newOwner",
+          "name": "newOwner",
           "type": "address"
         }
       ],
@@ -364,58 +392,58 @@
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "/* solhint-disable no-empty-blocks */\n\npragma solidity 0.4.24;\n\nimport \"openzeppelin-solidity/contracts/ownership/Ownable.sol\";\nimport \"./ERC721.sol\";\nimport \"./ILockCore.sol\";\n\n\n/**\n * @title The Lock interface\n * @author HardlyDifficult (unlock-protocol.com)\n * @dev Lock smart contracts are ERC721 compatible smart contracts.\n *  However, they have some specificities:\n *  - Since each address owns at most one single key, the tokenId is equal to the owner\n *  - Each address owns at most one single key (ERC721 allows for multiple owned NFTs)\n *  - When transfering the key, we actually reset the expiration date on the transfered key to now\n *    and assign its previous expiration date to the new owner. This is important because it prevents\n *    some abuse around referrals.\n */\ncontract ILockPublic is ILockCore, ERC721, Ownable { // solhint-disable-line no-empty-blocks\n}\n",
+  "source": "/* solhint-disable no-empty-blocks */\n\npragma solidity 0.4.24;\n\nimport \"openzeppelin-eth/contracts/ownership/Ownable.sol\";\nimport \"./ERC721.sol\";\nimport \"./ILockCore.sol\";\n\n\n/**\n * @title The Lock interface\n * @author HardlyDifficult (unlock-protocol.com)\n * @dev Lock smart contracts are ERC721 compatible smart contracts.\n *  However, they have some specificities:\n *  - Since each address owns at most one single key, the tokenId is equal to the owner\n *  - Each address owns at most one single key (ERC721 allows for multiple owned NFTs)\n *  - When transfering the key, we actually reset the expiration date on the transfered key to now\n *    and assign its previous expiration date to the new owner. This is important because it prevents\n *    some abuse around referrals.\n */\ncontract ILockPublic is ILockCore, ERC721, Ownable { // solhint-disable-line no-empty-blocks\n}\n",
   "sourcePath": "/Users/julien/repos/unlock/smart-contracts/contracts/interfaces/ILockPublic.sol",
   "ast": {
     "absolutePath": "/Users/julien/repos/unlock/smart-contracts/contracts/interfaces/ILockPublic.sol",
     "exportedSymbols": {
       "ILockPublic": [
-        1106
+        1165
       ]
     },
-    "id": 1107,
+    "id": 1166,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1096,
+        "id": 1155,
         "literals": [
           "solidity",
           "0.4",
           ".24"
         ],
         "nodeType": "PragmaDirective",
-        "src": "39:23:6"
+        "src": "39:23:7"
       },
       {
-        "absolutePath": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
-        "file": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
-        "id": 1097,
+        "absolutePath": "openzeppelin-eth/contracts/ownership/Ownable.sol",
+        "file": "openzeppelin-eth/contracts/ownership/Ownable.sol",
+        "id": 1156,
         "nodeType": "ImportDirective",
-        "scope": 1107,
-        "sourceUnit": 1244,
-        "src": "64:63:6",
+        "scope": 1166,
+        "sourceUnit": 1330,
+        "src": "64:58:7",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "/Users/julien/repos/unlock/smart-contracts/contracts/interfaces/ERC721.sol",
         "file": "./ERC721.sol",
-        "id": 1098,
+        "id": 1157,
         "nodeType": "ImportDirective",
-        "scope": 1107,
-        "sourceUnit": 1044,
-        "src": "128:22:6",
+        "scope": 1166,
+        "sourceUnit": 1103,
+        "src": "123:22:7",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "/Users/julien/repos/unlock/smart-contracts/contracts/interfaces/ILockCore.sol",
         "file": "./ILockCore.sol",
-        "id": 1099,
+        "id": 1158,
         "nodeType": "ImportDirective",
-        "scope": 1107,
-        "sourceUnit": 1095,
-        "src": "151:25:6",
+        "scope": 1166,
+        "sourceUnit": 1154,
+        "src": "146:25:7",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -425,131 +453,133 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 1100,
+              "id": 1159,
               "name": "ILockCore",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1094,
-              "src": "811:9:6",
+              "referencedDeclaration": 1153,
+              "src": "806:9:7",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ILockCore_$1094",
+                "typeIdentifier": "t_contract$_ILockCore_$1153",
                 "typeString": "contract ILockCore"
               }
             },
-            "id": 1101,
+            "id": 1160,
             "nodeType": "InheritanceSpecifier",
-            "src": "811:9:6"
+            "src": "806:9:7"
           },
           {
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 1102,
+              "id": 1161,
               "name": "ERC721",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1043,
-              "src": "822:6:6",
+              "referencedDeclaration": 1102,
+              "src": "817:6:7",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ERC721_$1043",
+                "typeIdentifier": "t_contract$_ERC721_$1102",
                 "typeString": "contract ERC721"
               }
             },
-            "id": 1103,
+            "id": 1162,
             "nodeType": "InheritanceSpecifier",
-            "src": "822:6:6"
+            "src": "817:6:7"
           },
           {
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 1104,
+              "id": 1163,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1243,
-              "src": "830:7:6",
+              "referencedDeclaration": 1329,
+              "src": "825:7:7",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$1243",
+                "typeIdentifier": "t_contract$_Ownable_$1329",
                 "typeString": "contract Ownable"
               }
             },
-            "id": 1105,
+            "id": 1164,
             "nodeType": "InheritanceSpecifier",
-            "src": "830:7:6"
+            "src": "825:7:7"
           }
         ],
         "contractDependencies": [
-          1043,
-          1094,
-          1243
+          1102,
+          1153,
+          1329,
+          1385
         ],
         "contractKind": "contract",
         "documentation": "@title The Lock interface\n@author HardlyDifficult (unlock-protocol.com)\n@dev Lock smart contracts are ERC721 compatible smart contracts.\n However, they have some specificities:\n - Since each address owns at most one single key, the tokenId is equal to the owner\n - Each address owns at most one single key (ERC721 allows for multiple owned NFTs)\n - When transfering the key, we actually reset the expiration date on the transfered key to now\n   and assign its previous expiration date to the new owner. This is important because it prevents\n   some abuse around referrals.",
         "fullyImplemented": false,
-        "id": 1106,
+        "id": 1165,
         "linearizedBaseContracts": [
-          1106,
-          1243,
-          1043,
-          1094
+          1165,
+          1329,
+          1385,
+          1102,
+          1153
         ],
         "name": "ILockPublic",
         "nodeType": "ContractDefinition",
         "nodes": [],
-        "scope": 1107,
-        "src": "787:94:6"
+        "scope": 1166,
+        "src": "782:94:7"
       }
     ],
-    "src": "39:843:6"
+    "src": "39:838:7"
   },
   "legacyAST": {
     "absolutePath": "/Users/julien/repos/unlock/smart-contracts/contracts/interfaces/ILockPublic.sol",
     "exportedSymbols": {
       "ILockPublic": [
-        1106
+        1165
       ]
     },
-    "id": 1107,
+    "id": 1166,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1096,
+        "id": 1155,
         "literals": [
           "solidity",
           "0.4",
           ".24"
         ],
         "nodeType": "PragmaDirective",
-        "src": "39:23:6"
+        "src": "39:23:7"
       },
       {
-        "absolutePath": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
-        "file": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
-        "id": 1097,
+        "absolutePath": "openzeppelin-eth/contracts/ownership/Ownable.sol",
+        "file": "openzeppelin-eth/contracts/ownership/Ownable.sol",
+        "id": 1156,
         "nodeType": "ImportDirective",
-        "scope": 1107,
-        "sourceUnit": 1244,
-        "src": "64:63:6",
+        "scope": 1166,
+        "sourceUnit": 1330,
+        "src": "64:58:7",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "/Users/julien/repos/unlock/smart-contracts/contracts/interfaces/ERC721.sol",
         "file": "./ERC721.sol",
-        "id": 1098,
+        "id": 1157,
         "nodeType": "ImportDirective",
-        "scope": 1107,
-        "sourceUnit": 1044,
-        "src": "128:22:6",
+        "scope": 1166,
+        "sourceUnit": 1103,
+        "src": "123:22:7",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "/Users/julien/repos/unlock/smart-contracts/contracts/interfaces/ILockCore.sol",
         "file": "./ILockCore.sol",
-        "id": 1099,
+        "id": 1158,
         "nodeType": "ImportDirective",
-        "scope": 1107,
-        "sourceUnit": 1095,
-        "src": "151:25:6",
+        "scope": 1166,
+        "sourceUnit": 1154,
+        "src": "146:25:7",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -559,80 +589,82 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 1100,
+              "id": 1159,
               "name": "ILockCore",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1094,
-              "src": "811:9:6",
+              "referencedDeclaration": 1153,
+              "src": "806:9:7",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ILockCore_$1094",
+                "typeIdentifier": "t_contract$_ILockCore_$1153",
                 "typeString": "contract ILockCore"
               }
             },
-            "id": 1101,
+            "id": 1160,
             "nodeType": "InheritanceSpecifier",
-            "src": "811:9:6"
+            "src": "806:9:7"
           },
           {
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 1102,
+              "id": 1161,
               "name": "ERC721",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1043,
-              "src": "822:6:6",
+              "referencedDeclaration": 1102,
+              "src": "817:6:7",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ERC721_$1043",
+                "typeIdentifier": "t_contract$_ERC721_$1102",
                 "typeString": "contract ERC721"
               }
             },
-            "id": 1103,
+            "id": 1162,
             "nodeType": "InheritanceSpecifier",
-            "src": "822:6:6"
+            "src": "817:6:7"
           },
           {
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 1104,
+              "id": 1163,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1243,
-              "src": "830:7:6",
+              "referencedDeclaration": 1329,
+              "src": "825:7:7",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$1243",
+                "typeIdentifier": "t_contract$_Ownable_$1329",
                 "typeString": "contract Ownable"
               }
             },
-            "id": 1105,
+            "id": 1164,
             "nodeType": "InheritanceSpecifier",
-            "src": "830:7:6"
+            "src": "825:7:7"
           }
         ],
         "contractDependencies": [
-          1043,
-          1094,
-          1243
+          1102,
+          1153,
+          1329,
+          1385
         ],
         "contractKind": "contract",
         "documentation": "@title The Lock interface\n@author HardlyDifficult (unlock-protocol.com)\n@dev Lock smart contracts are ERC721 compatible smart contracts.\n However, they have some specificities:\n - Since each address owns at most one single key, the tokenId is equal to the owner\n - Each address owns at most one single key (ERC721 allows for multiple owned NFTs)\n - When transfering the key, we actually reset the expiration date on the transfered key to now\n   and assign its previous expiration date to the new owner. This is important because it prevents\n   some abuse around referrals.",
         "fullyImplemented": false,
-        "id": 1106,
+        "id": 1165,
         "linearizedBaseContracts": [
-          1106,
-          1243,
-          1043,
-          1094
+          1165,
+          1329,
+          1385,
+          1102,
+          1153
         ],
         "name": "ILockPublic",
         "nodeType": "ContractDefinition",
         "nodes": [],
-        "scope": 1107,
-        "src": "787:94:6"
+        "scope": 1166,
+        "src": "782:94:7"
       }
     ],
-    "src": "39:843:6"
+    "src": "39:838:7"
   },
   "compiler": {
     "name": "solc",
@@ -640,5 +672,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-11-28T00:25:10.826Z"
+  "updatedAt": "2018-12-17T20:32:21.405Z"
 }

@@ -122,7 +122,7 @@ contract PublicLock is ILockPublic {
     public
   {
     unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract.
-    transferOwnership(_owner);
+    Ownable.initialize(_owner);
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
