@@ -11,7 +11,7 @@ export const Withdraw = ({ lock, withdraw, account, ...props }) => {
   if (lock.balance > 0) {
     return (
       <Button
-        label="Withdraw balance"
+        label="Withdraw"
         action={() => {
           if (lock.balance > 0) {
             withdraw(lock, account)
@@ -24,7 +24,7 @@ export const Withdraw = ({ lock, withdraw, account, ...props }) => {
     )
   } else {
     return (
-      <DisabledButton label="Withdraw balance" {...props}>
+      <DisabledButton {...props}>
         <Svg.Withdraw name="Withdraw" />
       </DisabledButton>
     )
