@@ -2,12 +2,15 @@ window.onload = function() {
   // Initialize source domain
   var src = window.unlock_url || 'http://localhost:3000'
 
-  // Get the domain and URI scheme of host we're loading this script from
-  let scripts = document.getElementsByTagName('script')
-  for (let i = 0; i < scripts.length; i++) {
-    let pattern = /static\/unlock/i
-    if (pattern.test(scripts[i].getAttribute('src')))
-      src = scripts[i].getAttribute('src').replace('/static/unlock.js', '')
+  // Setting window.unlock_url hard sets the domain and URI scheme - if this is set, no need to auto-detect
+  if (!window.unlock_url) {
+    // Get the domain and URI scheme of host we're loading this script from
+    let scripts = document.getElementsByTagName('script')
+    for (let i = 0; i < scripts.length; i++) {
+      let pattern = /static\/unlock/i
+      if (pattern.test(scripts[i].getAttribute('src')))
+        src = scripts[i].getAttribute('src').replace('/static/unlock.js', '')
+    }
   }
 
   const lockedNode = document.querySelector('meta[name=lock]')
