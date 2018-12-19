@@ -15,6 +15,7 @@ export function CreatorAccount({ account, network }) {
     : 'Unknown Network'
   // Using https://github.com/MetaMask/metamask-extension/blob/develop/ui/lib/icon-factory.js#L60 to make sure jazzicons are consistent between Metamask and unlock.
   const iconSeed = parseInt(account.address.slice(2, 10), 16)
+  const enableTheseButtons = true
 
   return (
     <Account>
@@ -30,20 +31,38 @@ export function CreatorAccount({ account, network }) {
         <Label>Address</Label>
         <Label>Balance</Label>
         <Label>Earning</Label>
-        <DoubleHeightCell>
-          <NoPhone>
-            <Buttons.Upload action={() => { }} />
-          </NoPhone>
-        </DoubleHeightCell>
-        <DoubleHeightCell>
-          <NoPhone>
-            <Buttons.Etherscan action={() => { }} />
-          </NoPhone>
-        </DoubleHeightCell>
-        <DoubleHeightCell>
-          {/* reinstate download / export functionality when we're ready <Buttons.Download /> */}
-        </DoubleHeightCell>
-        <DoubleHeightCell />
+        {/* reinstate upload / etherscan / download / export functionality when we're ready  */
+          enableTheseButtons ? (
+            <>
+              <DoubleHeightCell>
+                <NoPhone>
+                  <Buttons.Upload />
+                </NoPhone>
+              </DoubleHeightCell>
+              <DoubleHeightCell>
+                <NoPhone>
+                  <Buttons.Etherscan />
+                </NoPhone>
+              </DoubleHeightCell>
+              <DoubleHeightCell>
+                <NoPhone>
+                  <Buttons.Download />
+                </NoPhone>
+              </DoubleHeightCell>
+              <DoubleHeightCell>
+                <NoPhone>
+                  <Buttons.ExportLock />
+                </NoPhone>
+              </DoubleHeightCell>
+            </>
+          ) : (
+              <>
+                <DoubleHeightCell />
+                <DoubleHeightCell />
+                <DoubleHeightCell />
+                <DoubleHeightCell />
+              </>
+            )}
         <Address>{account.address}</Address>
         <Value>
           <Balance amount={account.balance} />
