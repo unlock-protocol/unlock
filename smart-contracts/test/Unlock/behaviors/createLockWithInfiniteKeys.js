@@ -1,7 +1,7 @@
 
 const Units = require('ethereumjs-units')
-const Unlock = artifacts.require('./Unlock.sol')
-const PublicLock = artifacts.require('../../PublicLock.sol')
+const Unlock = artifacts.require('Unlock')
+const PublicLock = artifacts.require('PublicLock')
 const Zos = require('zos')
 const TestHelper = Zos.TestHelper
 

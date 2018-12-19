@@ -1,6 +1,6 @@
 process.env.NODE_ENV = 'test'
 
-const Unlock = artifacts.require('./Unlock.sol')
+const Unlock = artifacts.require('Unlock')
 const Zos = require('zos')
 const TestHelper = Zos.TestHelper
 const shared = require('./behaviors/shared')
