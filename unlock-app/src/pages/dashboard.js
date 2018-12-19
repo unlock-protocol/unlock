@@ -18,7 +18,7 @@ export const Dashboard = ({ account, network, locks }) => {
         <DefaultError title="User account not initialized">
           <p>
             In order to display your Unlock dashboard, you need to connect a
-            crypto-wallet to your browser
+            crypto-wallet to your browser.
           </p>
         </DefaultError>
       </SuspendedError>
