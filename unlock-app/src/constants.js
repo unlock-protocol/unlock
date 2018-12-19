@@ -23,6 +23,11 @@ export const pageTitle = title => {
   return (pageTitle += 'Unlock: The Web\'s new business model')
 }
 
+/**
+ * Matches /lock /demo or /paywall
+ */
+export const LOCK_PATH_NAME_REGEXP = /\/[a-z0-9]+\/(0x[a-fA-F0-9]{40}).*/
+
 export const PAGE_DESCRIPTION =
   'Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.'
 
