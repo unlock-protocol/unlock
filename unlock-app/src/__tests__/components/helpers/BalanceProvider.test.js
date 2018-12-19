@@ -120,6 +120,19 @@ describe('BalanceProvider Component', () => {
     })
   })
 
+  describe('when the balance would round up', () => {
+    const amount = '1998887'
+
+    it('shows the balance in Eth without rounding up', () => {
+      renderIt({
+        amount,
+        render: ethValue => {
+          expect(ethValue).toEqual('1.99')
+        },
+      })
+    })
+  })
+
   describe('when the balance converts to > $1000 ', () => {
     const amount = '20000000'
 
