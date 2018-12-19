@@ -28,7 +28,6 @@ class CreatorLockForm extends React.Component {
       keyPrice: '0.01',
       keyPriceCurrency: 'ether',
       maxNumberOfKeys: 10,
-      defaultNumberOfKeys: 10,
       unlimitedKeys: false,
       name: 'New Lock',
     }
@@ -39,12 +38,13 @@ class CreatorLockForm extends React.Component {
   }
 
   validate(name, value) {
+    let { unlimitedKeys } = this.state
     return (
       (name === 'name' && typeof value === 'string' && value.length > 0) ||
       ((name === 'expirationDuration' || name === 'maxNumberOfKeys') &&
         !isNaN(value) &&
         value > 0) ||
-      (name === "maxNumberOfKeys" && value === '∞' && this.state.unlimitedKeys) ||
+      (name === 'maxNumberOfKeys' && value === '∞' && unlimitedKeys) ||
       (name === 'keyPrice' && !isNaN(value) && value >= 0)
     )
   }
@@ -70,7 +70,6 @@ class CreatorLockForm extends React.Component {
         value
       )
     }
-
 
     this.setState({ [name]: value })
   }

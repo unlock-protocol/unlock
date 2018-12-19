@@ -78,11 +78,11 @@ export class CreatorLock extends React.Component {
         )}
         {!showEmbedCode &&
           showKeys && (
-            <LockPanel>
-              <LockDivider />
-              <KeyList lock={lock} />
-            </LockPanel>
-          )}
+          <LockPanel>
+            <LockDivider />
+            <KeyList lock={lock} />
+          </LockPanel>
+        )}
       </LockRow>
     )
   }
