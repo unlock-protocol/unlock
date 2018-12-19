@@ -17,6 +17,7 @@ import { setNetwork, SET_NETWORK } from '../actions/network'
 import { setError } from '../actions/error'
 import { SET_PROVIDER } from '../actions/provider'
 import { addTransaction, updateTransaction } from '../actions/transaction'
+import { LOCK_PATH_NAME_REGEXP } from '../constants'
 
 import Web3Service from '../services/web3Service'
 
@@ -172,7 +173,7 @@ export default function lockMiddleware({ getState, dispatch }) {
       ) {
         // Location was changed, get the matching lock
         const match = action.payload.location.pathname.match(
-          /\/lock|demo\/(0x[a-fA-F0-9]{40})$/
+          LOCK_PATH_NAME_REGEXP
         )
         if (match) {
           web3Service.getLock(match[1])
