@@ -17,7 +17,8 @@ We recorded a screencast to show how Unlock works for a paywall. (Note: this vid
 [![Demo Unlock](https://img.youtube.com/vi/wktotzmea0E/0.jpg)](https://www.youtube.com/watch?v=wktotzmea0E)
 
 We are building this in the open, which mean you can run the code locally (see instructions below).
-You could also try out the staging version - which runs the latest, in-progress code - at https:://staging.unlock-protocol.com.
+You could also try out the staging version - which runs the latest, in-progress code - at https://staging.unlock-protocol.com. 
+Finally, you can learn more [on our documentation wiki](https://github.com/unlock-protocol/unlock/wiki).
 
 ## Contributing
 
