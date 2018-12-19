@@ -12,7 +12,8 @@ import "openzeppelin-eth/contracts/introspection/ERC165.sol";
  * @title The Lock contract
  * @author Julien Genestoux (unlock-protocol.com)
  * Eventually: implement ERC721.
- * @dev ERC165 allows our contract to be queried to determine whether it implements a given interface. It's part of the ERC721 spec.
+ * @dev ERC165 allows our contract to be queried to determine whether it implements a given interface.
+ * It's part of the ERC721 spec.
  *  TODO: consider using a _private version for each method that is being invoked by the
  * public one as this seems to be a pattern.
  */
@@ -121,8 +122,7 @@ contract PublicLock is ILockPublic, ERC165 {
     uint _keyPrice,
     uint _maxNumberOfKeys
   )
-    public
-{
+  public {
     unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract.
     Ownable.initialize(_owner);
     ERC165.initialize();
