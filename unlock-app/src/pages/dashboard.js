@@ -10,10 +10,6 @@ import withConfig from '../utils/withConfig'
 import { pageTitle } from '../constants'
 
 export const Dashboard = ({ account, network, locks }) => {
-  if (!account) {
-    return null //loading
-  }
-
   return (
     <Layout title="Creator Dashboard">
       <Head>

@@ -1,7 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import configure from '../config'
-import { WrongNetwork, MissingProvider } from '../components/creator/FatalError'
+import {
+  WrongNetwork,
+  MissingProvider,
+  DefaultError,
+} from '../components/creator/FatalError'
+import SuspendedError from '../components/helpers/SuspendedError'
 import { ETHEREUM_NETWORKS_NAMES } from '../constants'
 
 /**
@@ -19,7 +24,7 @@ const ConfigContext = React.createContext(config)
  */
 export default function withConfig(Component) {
   function componentWithConfig(props) {
-    const { router, network } = props
+    const { router, network, account } = props
     if (router && !Component.skipConstraints) {
       if (!config.isServer) {
         // Ensuring that we have at least a provider
@@ -40,6 +45,20 @@ export default function withConfig(Component) {
             />
           )
         }
+
+        // Ensuring that an account is defined
+        if (!account) {
+          return (
+            <SuspendedError>
+              <DefaultError title="User account not initialized">
+                <p>
+                  In order to display your Unlock dashboard, you need to connect
+                  a crypto-wallet to your browser.
+                </p>
+              </DefaultError>
+            </SuspendedError>
+          )
+        }
       }
     }
 
@@ -53,6 +72,7 @@ export default function withConfig(Component) {
   function mapStateToProps(state) {
     return {
       network: state.network,
+      account: state.account,
     }
   }
 
