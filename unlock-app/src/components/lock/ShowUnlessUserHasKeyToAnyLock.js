@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Component } from 'react'
+import React, { Component } from 'react'
+import SuspendedError from '../helpers/SuspendedError'
 import UnlockPropTypes from '../../propTypes'
 import { lockPage, unlockPage } from '../../services/iframeService'
 
@@ -30,7 +31,7 @@ export class ShowUnlessUserHasKeyToAnyLock extends Component {
     }
 
     // There is no valid key or we shown the modal previously
-    return children
+    return <SuspendedError>{children}</SuspendedError>
   }
 }
 
