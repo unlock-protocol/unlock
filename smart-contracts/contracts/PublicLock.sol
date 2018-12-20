@@ -13,7 +13,8 @@ import "openzeppelin-eth/contracts/introspection/ERC165.sol";
  * @author Julien Genestoux (unlock-protocol.com)
  * Eventually: implement ERC721.
  * @dev ERC165 allows our contract to be queried to determine whether it implements a given interface.
- * It's part of the ERC721 spec.
+ * Every ERC-721 compliant contract must implement the ERC165 interface.
+ * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
  *  TODO: consider using a _private version for each method that is being invoked by the
  * public one as this seems to be a pattern.
  */
