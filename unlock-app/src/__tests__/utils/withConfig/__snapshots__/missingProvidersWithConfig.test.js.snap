@@ -412,6 +412,7 @@ exports[`withConfig High Order Component when the current network is not in the 
           className="c7 c8"
           href="https://t.me/unlockprotocol"
           onClick={[Function]}
+          title="Telegram"
         >
           <svg
             name="Telegram"
@@ -551,6 +552,7 @@ exports[`withConfig High Order Component when the current network is not in the 
           href="https://t.me/unlockprotocol"
           onClick={[Function]}
           size="48px"
+          title="Telegram"
         >
           <svg
             name="Telegram"
