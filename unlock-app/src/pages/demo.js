@@ -8,6 +8,7 @@ import Overlay from '../components/lock/Overlay'
 import withConfig from '../utils/withConfig'
 import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
 import { LOCK_PATH_NAME_REGEXP } from '../constants'
+import Media from '../theme/media'
 
 const Demo = ({ lock }) => {
   return (
@@ -105,12 +106,12 @@ const GlobalStyle = createGlobalStyle`
 
 const Container = styled.div`
   display: grid;
-  max-width: 1400px;
-  grid-template-columns: 1fr minmax(500px, 3fr) 1fr;
+  width: 100%;
+  grid-template-columns: 1fr minmax(500px, 800px) 1fr;
 
-  @media (max-width: 500px) {
+  ${Media.phone`
     grid-template-columns: 0px 1fr 0px;
-  }
+  `};
 `
 
 const Left = styled.div``
