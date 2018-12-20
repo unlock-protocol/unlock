@@ -4,7 +4,11 @@ import { storiesOf } from '@storybook/react'
 import { Overlay } from '../../components/lock/Overlay'
 import createUnlockStore from '../../createUnlockStore'
 
-const store = createUnlockStore()
+const store = createUnlockStore({
+  currency: {
+    USD: 195.99,
+  },
+})
 
 const render = locks => (
   <section>
