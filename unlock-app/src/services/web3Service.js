@@ -19,8 +19,19 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * upstream objects.
  */
 export default class Web3Service extends EventEmitter {
-  constructor() {
+  // Note: This dependency injection is necessary for these tests:
+  //
+  // describe('request enabling access to account',...
+  // describe('fail while enabling access to account',...
+  //
+  // In the tests, we add an "enable" mock in order to test the code in connect (below)
+  // where we "await provider.enable()" to support privacy measures in metamask and other
+  // wallets
+  //
+  // This will be removed when Web3Service is refactored
+  constructor(availableProviders = providers) {
     super()
+    this.providers = availableProviders
     this.ready = false
     this.provider = null
     this.web3 = null
@@ -53,45 +64,54 @@ export default class Web3Service extends EventEmitter {
    * @param {object} account
    * @return
    */
-  connect({ provider }) {
-    if (provider === this.provider) {
+  async connect({ provider: providerName }) {
+    if (providerName === this.provider) {
       // If the provider did not really change, no need to reset it
       return
     }
 
     // Keep track of the provider
-    this.provider = provider
+    this.provider = providerName
     // And reset the connection
     this.ready = false
 
     // We fail: it appears that we are trying to connect but do not have a provider available...
-    if (!providers[provider]) {
+    const provider = this.providers[providerName]
+    if (!provider) {
       return this.emit('error', new Error('Provider does not exist'))
     }
 
-    this.web3 = new Web3(providers[provider])
+    try {
+      if (provider.enable) {
+        // this exists for metamask and other modern dapp wallets and must be called,
+        // see: https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
+        await provider.enable()
+      }
+    } catch (error) {
+      this.emit(
+        'error',
+        new Error('User canceled access to ethereum wallet, cannot continue')
+      )
+    }
 
-    return this.web3.eth.net
-      .getId()
-      .then(networkId => {
-        if (!UnlockContract.networks[networkId]) {
-          return this.emit(
-            'error',
-            new Error(`Unlock is not deployed on network ${networkId}`)
-          )
-        }
+    try {
+      this.web3 = new Web3(provider)
 
-        this.unlockContractAddress = Web3Utils.toChecksumAddress(
-          UnlockContract.networks[networkId].address
-        )
-        if (this.networkId !== networkId) {
-          this.networkId = networkId
-          this.emit('network.changed', networkId)
-        }
-      })
-      .catch(error => {
-        this.emit('error', error)
-      })
+      const networkId = await this.web3.eth.net.getId()
+      if (!UnlockContract.networks[networkId]) {
+        throw new Error(`Unlock is not deployed on network ${networkId}`)
+      }
+
+      this.unlockContractAddress = Web3Utils.toChecksumAddress(
+        UnlockContract.networks[networkId].address
+      )
+      if (this.networkId !== networkId) {
+        this.networkId = networkId
+        this.emit('network.changed', networkId)
+      }
+    } catch (error) {
+      this.emit('error', error)
+    }
   }
 
   /**
