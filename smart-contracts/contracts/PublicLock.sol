@@ -2,6 +2,7 @@ pragma solidity 0.4.24;
 
 import "./interfaces/ILockPublic.sol";
 import "./interfaces/IUnlock.sol";
+import "openzeppelin-eth/contracts/introspection/ERC165.sol";
 
 /**
  * TODO: consider error codes rather than strings
@@ -11,10 +12,13 @@ import "./interfaces/IUnlock.sol";
  * @title The Lock contract
  * @author Julien Genestoux (unlock-protocol.com)
  * Eventually: implement ERC721.
+ * @dev ERC165 allows our contract to be queried to determine whether it implements a given interface.
+ * Every ERC-721 compliant contract must implement the ERC165 interface.
+ * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
  *  TODO: consider using a _private version for each method that is being invoked by the
  * public one as this seems to be a pattern.
  */
-contract PublicLock is ILockPublic {
+contract PublicLock is ILockPublic, ERC165 {
 
   // The struct for a key
   struct Key {
@@ -119,10 +123,10 @@ contract PublicLock is ILockPublic {
     uint _keyPrice,
     uint _maxNumberOfKeys
   )
-    public
-  {
+  public {
     unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract.
     Ownable.initialize(_owner);
+    ERC165.initialize();
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
