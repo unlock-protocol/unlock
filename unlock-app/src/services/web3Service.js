@@ -19,6 +19,16 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * upstream objects.
  */
 export default class Web3Service extends EventEmitter {
+  // Note: This dependency injection is necessary for these tests:
+  //
+  // describe('request enabling access to account',...
+  // describe('fail while enabling access to account',...
+  //
+  // In the tests, we add an "enable" mock in order to test the code in connect (below)
+  // where we "await provider.enable()" to support privacy measures in metamask and other
+  // wallets
+  //
+  // This will be removed when Web3Service is refactored
   constructor(availableProviders = providers) {
     super()
     this.providers = availableProviders

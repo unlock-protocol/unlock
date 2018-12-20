@@ -223,7 +223,7 @@ describe('Web3Service', () => {
     })
   })
 
-  describe('fail while enabling access to acount', () => {
+  describe('fail while enabling access to account', () => {
     const netVersion = Math.floor(Math.random() * 100000)
     let enable, error
 
