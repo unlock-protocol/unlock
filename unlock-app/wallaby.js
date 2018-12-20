@@ -27,8 +27,7 @@ module.exports = function(wallaby) {
     testFramework: 'jest',
     setup: function(wallaby) {
       var jestConfig = require('./jest.config.js')
-      // for example:
-      // jestConfig.globals = { "__DEV__": true };
+      process.env.NODE_ENV = 'test'
       wallaby.testFramework.configure(jestConfig)
     },
   }
