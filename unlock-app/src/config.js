@@ -3,6 +3,12 @@ import { ETHEREUM_NETWORKS_NAMES } from './constants'
 
 // There is no standard way to detect the provider name...
 export function getCurrentProvider(environment) {
+  if (
+    environment.ethereum &&
+    environment.ethereum.constructor.name === 'Object'
+  )
+    return 'Opera'
+
   if (environment.web3.currentProvider.isMetaMask) return 'Metamask'
 
   if (environment.web3.currentProvider.isTrust) return 'Trust'
