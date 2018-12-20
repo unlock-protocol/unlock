@@ -1,34 +1,22 @@
-import React, { Component } from 'react'
+import React from 'react'
 import UnlockPropTypes from '../../propTypes'
 
-export class DeveloperOverlay extends Component {
-  static propTypes = {
-    providers: UnlockPropTypes.providerList.isRequired,
-    selected: UnlockPropTypes.provider,
-  }
+export const DeveloperOverlay = ({ providers, selected }) => (
+  <select value={selected}>
+    {providers.map(provider => (
+      <option value={provider} key={provider}>
+        {provider}
+      </option>
+    ))}
+  </select>
+)
 
-  static defaultProps = {
-    selected: '',
-  }
-
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
-
-  render() {
-    const { providers, selected } = this.props
-
-    return (
-      <select value={selected}>
-        {providers.map(provider => (
-          <option value={provider} key={provider}>
-            {provider}
-          </option>
-        ))}
-      </select>
-    )
-  }
+DeveloperOverlay.propTypes = {
+  providers: UnlockPropTypes.providerList.isRequired,
+  selected: UnlockPropTypes.provider,
 }
 
+DeveloperOverlay.defaultProps = {
+  selected: '',
+}
 export default DeveloperOverlay
