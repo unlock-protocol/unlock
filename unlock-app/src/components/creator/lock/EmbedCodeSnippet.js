@@ -6,8 +6,11 @@ import Buttons from '../../interface/buttons/lock'
 
 export function EmbedCodeSnippet({ lock }) {
   function embedCode(lock) {
+    // Autodetect current domain
+    let domain = window.location.origin
+
     return `<!-- Include this script in the <head> section of your page -->
-<script src="https://unlock-protocol.com/static/unlock.js"></script>
+<script src="${domain}/static/unlock.js"></script>
 <meta name="lock" content="${lock.address}" />
 `
   }
