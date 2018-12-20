@@ -55,13 +55,7 @@ const Left = styled.div`
   display: grid;
   align-items: start;
   height: 24px;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
->>>>>>> Initial responsive changes + dashboard (#712)
-=======
->>>>>>> Responsive interface for dashboard + framework for all pages (#766)
   ${Media.phone`
     display: none;
   `};

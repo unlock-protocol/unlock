@@ -75,13 +75,7 @@ const TopHeader = styled.header`
   grid-auto-flow: column;
   align-items: center;
   height: 70px;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
->>>>>>> Initial responsive changes + dashboard (#712)
-=======
->>>>>>> Responsive interface for dashboard + framework for all pages (#766)
   ${Media.phone`
     grid-template-columns: 1fr 48px;
     height: 35px;
