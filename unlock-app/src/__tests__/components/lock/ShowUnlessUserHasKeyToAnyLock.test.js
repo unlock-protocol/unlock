@@ -49,7 +49,7 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
       expect(wrapper.queryByText('Show me')).toBeNull()
     })
 
-    it('should show nothing if accounts are not loaded and 500ms has not elapsed (no flash)', () => {
+    it('should show nothing if accounts are not loaded and 200ms has not elapsed (no flash)', () => {
       expect.assertions(1)
 
       jest.useFakeTimers()
