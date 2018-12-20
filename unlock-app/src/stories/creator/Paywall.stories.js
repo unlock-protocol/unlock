@@ -5,7 +5,7 @@ import Paywall from '../../pages/paywall'
 import createUnlockStore from '../../createUnlockStore'
 
 const lock = {
-  address: '0x56781234a',
+  address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
   keyPrice: '10000000000000000000',
   expirationDuration: '86400',
   maxNumberOfKeys: '800',
@@ -13,16 +13,24 @@ const lock = {
 }
 
 const store = createUnlockStore({
-  locks: {
-    '0x56781234a': lock,
-    '0x12345678a': {
-      address: '0x12345678a',
+  locks: [
+    lock,
+    {
+      address: '0xab7c74abc0c4d48d1bdad5dcb26153fc87ffffff',
       name: 'My Blog',
       keyPrice: '27000000000000000',
       expirationDuration: '172800',
       maxNumberOfKeys: 240,
       outstandingKeys: 3,
     },
+  ],
+  router: {
+    location: {
+      pathname: '/demo/' + lock.address,
+    },
+  },
+  currency: {
+    USD: 195.99,
   },
 })
 
