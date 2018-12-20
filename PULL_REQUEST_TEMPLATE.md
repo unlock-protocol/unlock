@@ -8,7 +8,7 @@
 - [ ] My code follows the style guidelines of this project, including naming conventions
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] If my code adds or changes components, I have written correspoding stories with Storybook
+- [ ] If my code adds or changes components, I have written corresponding stories with Storybook
 - [ ] I have performed a self-review of my own code
 - [ ] If my code involves visual changes, I am adding applicable screenshots to this thread
 
