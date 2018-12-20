@@ -52,6 +52,8 @@ export const network = PropTypes.shape({})
 
 export const provider = PropTypes.string
 
+export const providerList = PropTypes.arrayOf(provider)
+
 export const networks = PropTypes.shape({})
 
 export const status = PropTypes.string
@@ -83,6 +85,7 @@ export default {
   networks,
   mechanism,
   provider,
+  providerList,
   transaction,
   transactions,
   status,
