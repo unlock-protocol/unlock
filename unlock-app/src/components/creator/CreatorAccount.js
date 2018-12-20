@@ -71,7 +71,7 @@ export function CreatorAccount({ account, network }) {
         /* prettier formats this as 12 spaces, eslint wants 10 :/ */}
         <Address>{account.address}</Address>
         <Value>
-          <Balance amount={account.balance} />
+          <Balance amount={account.balance} convertCurrency={false} />
         </Value>
         <Value>0.00</Value>
       </AccountDetails>
