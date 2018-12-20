@@ -4,6 +4,11 @@ import UnlockPropTypes from '../../propTypes'
 export class DeveloperOverlay extends Component {
   static propTypes = {
     providers: UnlockPropTypes.providerList.isRequired,
+    selected: UnlockPropTypes.provider,
+  }
+
+  static defaultProps = {
+    selected: '',
   }
 
   constructor(props) {
@@ -12,10 +17,10 @@ export class DeveloperOverlay extends Component {
   }
 
   render() {
-    const { providers } = this.props
+    const { providers, selected } = this.props
 
     return (
-      <select>
+      <select value={selected}>
         {providers.map(provider => (
           <option value={provider} key={provider}>
             {provider}
