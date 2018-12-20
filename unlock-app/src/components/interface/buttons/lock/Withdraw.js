@@ -7,8 +7,19 @@ import Button, { DisabledButton } from '../Button'
 import UnlockPropTypes from '../../../../propTypes'
 import { withdrawFromLock } from '../../../../actions/lock'
 
-export const Withdraw = ({ lock, withdraw, account, ...props }) => {
-  if (lock.balance > 0) {
+export const Withdraw = ({
+  lock,
+  withdrawalTransaction,
+  withdraw,
+  account,
+  ...props
+}) => {
+  if (
+    !(
+      lock.balance == 0 ||
+      (withdrawalTransaction && withdrawalTransaction.status === 'submitted')
+    )
+  ) {
     return (
       <Button
         label="Withdraw balance"
@@ -33,22 +44,29 @@ export const Withdraw = ({ lock, withdraw, account, ...props }) => {
 
 Withdraw.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
-  transaction: UnlockPropTypes.transaction,
+  withdrawalTransaction: UnlockPropTypes.transaction,
   withdraw: PropTypes.func,
   account: UnlockPropTypes.account,
 }
 
 Withdraw.defaultProps = {
-  transaction: null,
+  withdrawalTransaction: null,
   account: null,
   withdraw: () => {},
 }
 
 const mapStateToProps = ({ account, transactions }, { lock }) => {
-  const transaction = transactions[lock.transaction]
+  let withdrawalTransaction = null
+  Object.keys(transactions).forEach(el => {
+    if (
+      transactions[el].withdrawal &&
+      transactions[el].withdrawal === lock.address
+    )
+      withdrawalTransaction = transactions[el]
+  })
   return {
     account,
-    transaction,
+    withdrawalTransaction,
   }
 }
 
