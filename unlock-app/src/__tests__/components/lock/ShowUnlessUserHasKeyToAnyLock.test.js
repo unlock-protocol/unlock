@@ -49,8 +49,11 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
       expect(wrapper.queryByText('Show me')).toBeNull()
     })
 
-    it('should show the children if there is a modal', () => {
+    it('should show nothing if accounts are not loaded and 200ms has not elapsed (no flash)', () => {
       expect.assertions(1)
+
+      jest.useFakeTimers()
+
       const keys = [
         {
           id: 'keyId',
@@ -64,6 +67,29 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
           Show me
         </ShowUnlessUserHasKeyToAnyLock>
       )
+      jest.advanceTimersByTime(199)
+
+      expect(wrapper.queryByText('Show me')).toBe(null)
+    })
+
+    it('should show the children if there is a modal', () => {
+      expect.assertions(1)
+
+      jest.useFakeTimers()
+      const keys = [
+        {
+          id: 'keyId',
+          lock: '0xLock',
+          owner: '0x123',
+        },
+      ]
+
+      const wrapper = rtl.render(
+        <ShowUnlessUserHasKeyToAnyLock keys={keys} modalShown>
+          Show me
+        </ShowUnlessUserHasKeyToAnyLock>
+      )
+      jest.runAllTimers()
 
       expect(wrapper.queryByText('Show me')).not.toBe(null)
     })
@@ -72,12 +98,15 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
   describe('if there is no valid key', () => {
     it('should show the children', () => {
       expect.assertions(1)
+
+      jest.useFakeTimers()
       const keys = []
       const wrapper = rtl.render(
         <ShowUnlessUserHasKeyToAnyLock keys={keys} modalShown>
           Show me
         </ShowUnlessUserHasKeyToAnyLock>
       )
+      jest.runAllTimers()
 
       expect(wrapper.queryByText('Show me')).not.toBe(null)
     })
