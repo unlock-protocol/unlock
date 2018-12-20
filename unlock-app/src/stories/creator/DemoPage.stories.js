@@ -18,8 +18,8 @@ const store = createUnlockStore({
       name: 'My Blog',
       keyPrice: '27000000000000000',
       expirationDuration: '172800',
-      maxNumberOfKeys: '240',
-      outstandingKeys: '3',
+      maxNumberOfKeys: 240,
+      outstandingKeys: 3,
     },
   },
 })
