@@ -3,7 +3,7 @@
 pragma solidity 0.4.24;
 
 import "openzeppelin-eth/contracts/ownership/Ownable.sol";
-import "./ERC721.sol";
+import "./IERC721.sol";
 import "./ILockCore.sol";
 
 
@@ -18,5 +18,5 @@ import "./ILockCore.sol";
  *    and assign its previous expiration date to the new owner. This is important because it prevents
  *    some abuse around referrals.
  */
-contract ILockPublic is ILockCore, ERC721, Ownable { // solhint-disable-line no-empty-blocks
+contract ILockPublic is ILockCore, IERC721, Ownable { // solhint-disable-line no-empty-blocks
 }
