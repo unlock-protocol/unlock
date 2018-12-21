@@ -107,6 +107,11 @@ export class CreatorLock extends React.Component {
 
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
+  toggleEditing: PropTypes.func,
+}
+
+CreatorLock.defaultProps = {
+  toggleEditing: null,
 }
 
 export default CreatorLock

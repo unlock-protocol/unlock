@@ -4,8 +4,6 @@ import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   ADD_LOCK,
   CREATE_LOCK,
-  UPDATE_LOCK,
-  SET_LOCK,
   WITHDRAW_FROM_LOCK,
   UPDATE_LOCK,
   addLock,
