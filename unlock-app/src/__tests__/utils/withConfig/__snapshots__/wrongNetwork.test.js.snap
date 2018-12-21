@@ -245,7 +245,7 @@ exports[`withConfig High Order Component when the current network is not in the 
   color: var(--dimgrey);
 }
 
-@media only screen and (min-device-width:300px) and (max-device-width:736px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c4 {
     grid-template-columns: 1fr 48px;
     height: 35px;
@@ -258,7 +258,7 @@ exports[`withConfig High Order Component when the current network is not in the 
   }
 }
 
-@media only screen and (min-device-width:300px) and (max-device-width:736px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c10 {
     display: grid;
   }
@@ -270,7 +270,7 @@ exports[`withConfig High Order Component when the current network is not in the 
   }
 }
 
-@media only screen and (min-device-width:300px) and (max-device-width:736px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c0 {
     display: -webkit-box;
     display: -webkit-flex;
@@ -281,13 +281,13 @@ exports[`withConfig High Order Component when the current network is not in the 
   }
 }
 
-@media only screen and (min-device-width:300px) and (max-device-width:736px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c1 {
     display: none;
   }
 }
 
-@media only screen and (min-device-width:300px) and (max-device-width:736px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c16 {
     display: none;
   }
