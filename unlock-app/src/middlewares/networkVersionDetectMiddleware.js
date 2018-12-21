@@ -1,23 +1,17 @@
-export default store => {
-  axios
-    .get('https://api.coinbase.com/v2/prices/ETH-USD/buy')
-    .then(info =>
-      store.dispatch(
-        setConversionRate(info.data.data.currency, info.data.data.amount)
-      )
-    )
-  setInterval(() => {
-    axios.get('https://api.coinbase.com/v2/prices/ETH-USD/buy').then(info => {
-      const {
-        data: {
-          data: { currency, amount },
-        },
-      } = info
-      const current = store.getState().currency[currency]
-      if (current === +amount) return
+import { setNetwork } from '../actions/network'
 
-      store.dispatch(setConversionRate(currency, amount))
-    })
-  }, 10000)
+export function checkNetwork(store) {
+  if (!window.web3) return
+  window.web3.version.getNetwork().then(id => {
+    if (store.getState().network.name !== id) {
+      store.dispatch(setNetwork(id))
+    }
+  })
+}
+
+export default store => {
+  checkNetwork(store)
+  const checkAgain = checkNetwork.bind(null, store)
+  setInterval(checkAgain, 1000)
   return next => action => next(action)
 }

@@ -1,66 +1,97 @@
 import { setNetwork } from '../../actions/network'
 
-afterEach(() => mockAxios.reset())
-
 describe('network change detection middleware', () => {
-  const response1 = {
-    data: { base: 'ETH', currency: 'USD', amount: '195.99' },
-  }
-  const response2 = {
-    data: { base: 'ETH', currency: 'USD', amount: '198.20' },
-  }
-  const APIaddress = 'https://api.coinbase.com/v2/prices/ETH-USD/buy'
-
-  it('service called, action dispatched to set currency conversion rate', () => {
-    jest.useFakeTimers()
-    const middleware = require('../../middlewares/currencyConversionMiddleware')
+  it('network change on initialize', done => {
+    const middleware = require('../../middlewares/networkVersionDetectMiddleware')
       .default
     const store = {
       dispatch: jest.fn(),
       getState() {
-        return { currency: { USD: 1 } }
+        return { network: { name: 'nothi' } }
+      },
+    }
+
+    window.web3 = {
+      version: {
+        getNetwork: () => {
+          return Promise.resolve('hi')
+        },
       },
     }
 
     middleware(store)
 
-    expect(mockAxios.get).toHaveBeenCalledWith(APIaddress)
-    mockAxios.mockResponse({ data: response1 })
-    expect(store.dispatch).toHaveBeenCalledWith(
-      setConversionRate('USD', '195.99')
-    )
-
-    store.dispatch = jest.fn() // reset
-    mockAxios.reset()
-
-    jest.advanceTimersByTime(10000) // test the setInterval
-
-    expect(mockAxios.get).toHaveBeenCalledWith(APIaddress)
-    mockAxios.mockResponse({ data: response2 })
-
-    expect(store.dispatch).toHaveBeenCalledWith(
-      setConversionRate('USD', '198.20')
-    )
+    setTimeout(() => {
+      expect(store.dispatch).toHaveBeenCalledWith(setNetwork('hi'))
+      done()
+    }, 0)
   })
-  it('service called, values are the same, so don\'t dispatch', () => {
-    jest.useFakeTimers()
-    const middleware = require('../../middlewares/currencyConversionMiddleware')
+
+  it('network change on interval', done => {
+    const middleware = require('../../middlewares/networkVersionDetectMiddleware')
       .default
     const store = {
       dispatch: jest.fn(),
+      getState() {
+        return { network: { name: 'hi' } }
+      },
+    }
+
+    window.web3 = {
+      version: {
+        getNetwork: () => {
+          return Promise.resolve('hi')
+        },
+      },
     }
 
     middleware(store)
-    store.dispatch = jest.fn() // reset
-    store.getState = () => ({ currency: { USD: 195.99 } })
 
-    mockAxios.reset()
+    window.web3 = {
+      version: {
+        getNetwork: () => {
+          return Promise.resolve('nothi')
+        },
+      },
+    }
 
-    jest.advanceTimersByTime(10000) // test the setInterval
+    setTimeout(() => {
+      expect(store.dispatch).toHaveBeenCalledTimes(1)
+      done()
+    }, 1001)
+  })
 
-    expect(mockAxios.get).toHaveBeenCalledWith(APIaddress)
-    mockAxios.mockResponse({ data: response1 })
+  it('no network change', done => {
+    const middleware = require('../../middlewares/networkVersionDetectMiddleware')
+      .default
+    const store = {
+      dispatch: jest.fn(),
+      getState() {
+        return { network: { name: 'hi' } }
+      },
+    }
 
-    expect(store.dispatch).not.toHaveBeenCalled()
+    window.web3 = {
+      version: {
+        getNetwork: () => {
+          return Promise.resolve('hi')
+        },
+      },
+    }
+
+    middleware(store)
+
+    window.web3 = {
+      version: {
+        getNetwork: () => {
+          return Promise.resolve('hi')
+        },
+      },
+    }
+
+    setTimeout(() => {
+      expect(store.dispatch).not.toHaveBeenCalled()
+      done()
+    }, 1001)
   })
 })
