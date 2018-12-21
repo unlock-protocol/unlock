@@ -22,5 +22,18 @@ storiesOf('DeveloperOverlay', DeveloperOverlay)
     )
   })
   .add('the developer overlay (invisible outside development)', () => {
-    return <DeveloperOverlay />
+    const config = {
+      env: 'prod',
+      providers: { HTTP: {}, Metamask: {} },
+    }
+
+    const selected = 'HTTP'
+
+    return (
+      <DeveloperOverlay
+        config={config}
+        selected={selected}
+        selectProvider={() => {}}
+      />
+    )
   })
