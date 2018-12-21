@@ -100,7 +100,7 @@ describe('CreatorLockForm', () => {
     expect(wrapper.queryByText('Unlimited')).toBeNull()
     expect(wrapper.queryByValue('∞')).not.toBeNull()
   })
-  it('should enable unlimited label after a number inputed', () => {
+  it('should enable the "Unlimited" label after infinity is replaced with a finite number', () => {
     const store = createUnlockStore({
       account: {},
     })
