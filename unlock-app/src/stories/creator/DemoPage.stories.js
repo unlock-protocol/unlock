@@ -13,16 +13,16 @@ const myLock = {
   outstandingKeys: 3,
 }
 const store = createUnlockStore({
-  locks: [
-    {
+  locks: {
+    '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e': {
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
       keyPrice: '10000000000000000000',
       expirationDuration: '86400',
-      maxNumberOfKeys: '800',
-      outstandingKeys: '32',
+      maxNumberOfKeys: 800,
+      outstandingKeys: 32,
     },
-    myLock,
-  ],
+    '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e': myLock,
+  },
   router: {
     location: {
       pathname: '/demo/' + myLock.address,
@@ -36,5 +36,5 @@ const store = createUnlockStore({
 storiesOf('Demo', Demo)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('the demo', () => {
-    return <Demo lock={myLock} />
+    return <Demo />
   })
