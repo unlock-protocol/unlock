@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import FatalError from '../../components/creator/FatalError'
 
-storiesOf('FatalError', FatalError)
+storiesOf('FatalError', module)
   .add('default', () => {
     return <FatalError.DefaultError />
   })

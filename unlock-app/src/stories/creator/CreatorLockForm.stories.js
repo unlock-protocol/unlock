@@ -10,7 +10,7 @@ const store = createUnlockStore({
   },
 })
 
-storiesOf('CreatorLockForm', CreatorLockForm)
+storiesOf('CreatorLockForm', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Default', () => {
     return <CreatorLockForm />
@@ -20,8 +20,8 @@ storiesOf('CreatorLockForm', CreatorLockForm)
     const lock = {
       keyPrice: '10000000000000000000',
       expirationDuration: '172800',
-      maxNumberOfKeys: '240',
-      outstandingKeys: '3',
+      maxNumberOfKeys: 240,
+      outstandingKeys: 3,
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
       name: 'Existing Lock',
     }
