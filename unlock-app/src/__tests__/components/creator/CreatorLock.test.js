@@ -26,6 +26,15 @@ const keylock = {
   maxNumberOfKeys: 10,
   expirationDuration: 100,
 }
+const unlimitedlock = {
+  address: '0x1234567890',
+  transaction: 'transactionid',
+  keyPrice: '1',
+  balance: '1',
+  outstandingKeys: 1,
+  maxNumberOfKeys: 0,
+  expirationDuration: 100,
+}
 
 const transaction = {
   address: '0x0987654321',
@@ -86,5 +95,27 @@ describe('CreatorLock', () => {
     )
 
     expect(wrapper.queryByText('1/10')).not.toBeNull()
+  })
+  it('should display infinite keys correctly', ()=>{
+    const config = configure({
+      requiredConfirmations: 6,
+    })
+
+    const store = createUnlockStore({
+      transactions: {
+        transactionid: transaction,
+      },
+      locks: {
+        [unlimitedlock.address]: unlimitedlock,
+      },
+    })
+
+    let wrapper = rtl.render(
+      <Provider store={store} config={config}>
+        <CreatorLock lock={unlimitedlock} transaction={transaction} />
+      </Provider>
+    )
+
+    expect(wrapper.queryByText('1/∞')).not.toBeNull()
   })
 })
