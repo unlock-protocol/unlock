@@ -11,24 +11,14 @@ const lock = {
   fiatPrice: 240.38,
 }
 
-const lockWithAnAnnoyingName = {
-  address: '0x456',
-  name: 'Time And Relative Dimension In Space',
-  keyPrice: '1203120301203013000',
-  fiatPrice: 240.38,
-}
-
 const store = createUnlockStore({
   currency: {
     USD: 195.99,
   },
 })
 
-storiesOf('PendingKeyLock', PendingKeyLock)
+storiesOf('PendingKeyLock', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('waiting for mining confirmation', () => {
     return <PendingKeyLock lock={lock} />
-  })
-  .add('with an annoyingly long name', () => {
-    return <PendingKeyLock lock={lockWithAnAnnoyingName} />
   })

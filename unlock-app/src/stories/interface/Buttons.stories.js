@@ -7,7 +7,7 @@ import createUnlockStore from '../../createUnlockStore'
 
 const store = createUnlockStore({})
 
-storiesOf('Buttons/Lock Buttons')
+storiesOf('Buttons/Lock Buttons', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Withdraw, no balance', () => {
     const lock = {

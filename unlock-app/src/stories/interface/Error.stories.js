@@ -4,7 +4,7 @@ import { Error } from '../../components/interface/Error'
 
 const close = () => {}
 
-storiesOf('Error', Error)
+storiesOf('Error', module)
   .add('Simple Error', () => {
     return (
       <Error close={close}>

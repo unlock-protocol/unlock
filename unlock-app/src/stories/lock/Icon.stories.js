@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { Icon } from '../../components/lock/Icon'
 
-storiesOf('Icon', Icon)
+storiesOf('Icon', module)
   .add('with a falsy lock address', () => {
     const lock = { pending: true, address: '' }
     return <Icon lock={lock} />

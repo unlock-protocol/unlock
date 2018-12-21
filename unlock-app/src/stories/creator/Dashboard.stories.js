@@ -6,7 +6,7 @@ import createUnlockStore from '../../createUnlockStore'
 
 const store = createUnlockStore()
 
-storiesOf('Dashboard', Dashboard)
+storiesOf('Dashboard', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('the dashboard', () => {
     const account = {
@@ -48,8 +48,8 @@ storiesOf('Dashboard', Dashboard)
         name: 'My Blog',
         keyPrice: '27000000000000000',
         expirationDuration: '172800',
-        maxNumberOfKeys: '240',
-        outstandingKeys: '3',
+        maxNumberOfKeys: 240,
+        outstandingKeys: 3,
       },
       '0x9abcdef0a': {
         address: '0x9abcdef0',
@@ -66,51 +66,6 @@ storiesOf('Dashboard', Dashboard)
         account={account}
         transactions={transactions}
         locks={locks}
-      />
-    )
-  })
-  .add('Dashboard with no account', () => {
-    const network = {
-      name: 4,
-    }
-    const transactions = {
-      0x1234: {
-        hash: '0x12345678',
-        confirmations: 12,
-        status: 'mined',
-        lock: '0x12345678a',
-      },
-      0x5678: {
-        hash: '0x56781234',
-        confirmations: 4,
-        status: 'mined',
-        lock: '0x56781234a',
-      },
-    }
-    const locks = {
-      '0x56781234a': {
-        address: '0x56781234a',
-        keyPrice: '10000000000000000000',
-        expirationDuration: '86400',
-        maxNumberOfKeys: '800',
-        outstandingKeys: '32',
-      },
-      '0x12345678a': {
-        address: '0x12345678a',
-        name: 'My Blog',
-        keyPrice: '27000000000000000',
-        expirationDuration: '172800',
-        maxNumberOfKeys: '240',
-        outstandingKeys: '3',
-      },
-    }
-    return (
-      <Dashboard
-        network={network}
-        account={undefined}
-        transactions={transactions}
-        locks={locks}
-        delay={0}
       />
     )
   })

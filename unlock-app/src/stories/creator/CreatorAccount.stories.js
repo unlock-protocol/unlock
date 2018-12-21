@@ -11,7 +11,7 @@ const store = createUnlockStore({
   },
 })
 
-storiesOf('CreatorAccount', CreatorAccount)
+storiesOf('CreatorAccount', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('With no key purchased', () => {
     const account = {
