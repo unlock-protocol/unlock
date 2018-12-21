@@ -55,6 +55,7 @@ const Left = styled.div`
   display: grid;
   align-items: start;
   height: 24px;
+
   ${Media.phone`
     display: none;
   `};
