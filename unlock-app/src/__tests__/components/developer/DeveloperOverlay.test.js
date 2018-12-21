@@ -1,29 +1,47 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
-import createUnlockStore from '../../../createUnlockStore'
 
-import { DeveloperOverlay } from '../../../components/developer/DeveloperOverlay'
+import {
+  DeveloperOverlay,
+  mapStateToProps,
+} from '../../../components/developer/DeveloperOverlay'
+
+jest.mock('../../../config.js', () => {
+  const ret = () => ({
+    env: 'dev',
+    isRequiredNetwork: () => false,
+    isServer: false,
+    providers: {
+      HTTP: {},
+      Metamask: {},
+      Opera: {},
+    },
+    requiredNetwork: 'Dev',
+    requiredConfirmations: 12,
+  })
+  return ret
+})
+
+const config = {
+  env: 'dev',
+  isRequiredNetwork: () => false,
+  isServer: false,
+  providers: {
+    HTTP: {},
+    Metamask: {},
+    Opera: {},
+  },
+}
 
 describe('DeveloperOverlay', () => {
-  let config
   let callback
   beforeEach(() => {
     callback = jest.fn()
-    config = {
-      env: 'dev',
-      isRequiredNetwork: () => false,
-      isServer: false,
-      providers: {
-        HTTP: {},
-        Metamask: {},
-        Opera: {},
-      },
-    }
   })
 
   it('has a dropdown that can be used to choose between providers', () => {
     const component = rtl.render(
-      <DeveloperOverlay config={config} selectProvider={callback} />
+      <DeveloperOverlay config={config} setProvider={callback} />
     )
 
     expect(component.queryByText('HTTP')).not.toBeNull()
@@ -35,19 +53,19 @@ describe('DeveloperOverlay', () => {
       <DeveloperOverlay
         config={config}
         selected="Metamask"
-        selectProvider={callback}
+        setProvider={callback}
       />
     )
 
     expect(component.queryBySelectText('Metamask')).not.toBeNull()
   })
 
-  it('selects provider', async () => {
+  it('selects provider', () => {
     const component = rtl.render(
       <DeveloperOverlay
         config={config}
         selected="Metamask"
-        selectProvider={callback}
+        setProvider={callback}
       />
     )
     expect(component.queryBySelectText('Metamask')).not.toBeNull()
@@ -58,25 +76,11 @@ describe('DeveloperOverlay', () => {
     expect(callback).toHaveBeenCalledWith('HTTP')
   })
 
-  describe('connected overlay', () => {
-    let store
-
-    beforeEach(() => {
-      store = createUnlockStore({
-        provider: 'HTTP',
+  it('mapStateToProps', () => {
+    expect(
+      mapStateToProps({
+        provider: 'hi',
       })
-      config = {
-        env: 'dev',
-        isRequiredNetwork: () => false,
-        isServer: false,
-        providers: {
-          HTTP: {},
-          Metamask: {},
-          Opera: {},
-        },
-      }
-    })
-
-    it('with actual config', () => {})
+    ).toEqual({ selected: 'hi' })
   })
 })
