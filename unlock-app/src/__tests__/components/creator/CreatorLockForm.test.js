@@ -86,9 +86,9 @@ describe('CreatorLockForm', () => {
         <CreatorLocks />
       </Provider>
     )
-    
+
     expect(wrapper.queryByText('Unlimited')).toBeNull()
-    
+
     let createButton = wrapper.getByText('Create Lock')
     rtl.fireEvent.click(createButton)
 
@@ -110,9 +110,9 @@ describe('CreatorLockForm', () => {
         <CreatorLocks />
       </Provider>
     )
-    
+
     expect(wrapper.queryByText('Unlimited')).toBeNull()
-    
+
     let createButton = wrapper.getByText('Create Lock')
     rtl.fireEvent.click(createButton)
 
