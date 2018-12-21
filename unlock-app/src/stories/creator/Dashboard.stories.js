@@ -6,7 +6,7 @@ import createUnlockStore from '../../createUnlockStore'
 
 const store = createUnlockStore()
 
-storiesOf('Dashboard', Dashboard)
+storiesOf('Dashboard', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('the dashboard', () => {
     const account = {

@@ -17,7 +17,7 @@ const store = createUnlockStore({
   },
 })
 
-storiesOf('PendingKeyLock', PendingKeyLock)
+storiesOf('PendingKeyLock', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('waiting for mining confirmation', () => {
     return <PendingKeyLock lock={lock} />

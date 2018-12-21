@@ -63,7 +63,7 @@ in turpis pulvinar facilisis. Ut felis.
   </section>
 )
 
-storiesOf('Overlay', Overlay)
+storiesOf('Overlay', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('with a single Lock', () => {
     const locks = [

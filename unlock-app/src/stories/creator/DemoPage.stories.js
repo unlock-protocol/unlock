@@ -33,7 +33,7 @@ const store = createUnlockStore({
   },
 })
 
-storiesOf('Demo', Demo)
+storiesOf('Demo', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('the demo', () => {
     return <Demo />

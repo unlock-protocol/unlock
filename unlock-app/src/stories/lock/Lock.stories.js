@@ -23,7 +23,7 @@ const store = createUnlockStore({
   },
 })
 
-storiesOf('Lock', Lock)
+storiesOf('Lock', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('with no key (check hover state too)', () => {
     return (

@@ -10,7 +10,7 @@ const store = createUnlockStore({
   },
 })
 
-storiesOf('CreatorLockForm', CreatorLockForm)
+storiesOf('CreatorLockForm', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Default', () => {
     return <CreatorLockForm />

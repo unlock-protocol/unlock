@@ -25,7 +25,7 @@ const store = createUnlockStore({
   },
 })
 
-storiesOf('ConfirmingKeyLock', ConfirmingKeyLock)
+storiesOf('ConfirmingKeyLock', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('waiting for confirmation', () => {
     return (

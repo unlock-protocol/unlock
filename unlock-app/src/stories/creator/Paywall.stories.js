@@ -34,7 +34,7 @@ const store = createUnlockStore({
   },
 })
 
-storiesOf('Paywall', Paywall)
+storiesOf('Paywall', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('the paywall overlay', () => {
     return <Paywall />

@@ -44,7 +44,7 @@ const store = createUnlockStore({
   },
 })
 
-storiesOf('CreatorLock', CreatorLock)
+storiesOf('CreatorLock', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Deployed', () => {
     const lock = {
