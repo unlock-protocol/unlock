@@ -5,6 +5,7 @@ import Web3Utils from 'web3-utils'
 import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
+import { TRANSACTION_TYPES } from '../constants'
 
 const { providers } = configure(global)
 
@@ -160,6 +161,33 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
+   * The method sets the transaction's type, based on the data being sent.
+   * TODO: match also based on Contract type. There could be conflicts in names
+   * @param {*} transaction
+   * @param {*} data
+   */
+  getTransactionType(contractAbi, data) {
+    const method = contractAbi.find(binaryInterface => {
+      return data.startsWith(binaryInterface.signature)
+    })
+
+    if (method.name === 'createLock') {
+      return TRANSACTION_TYPES.LOCK_CREATION
+    }
+
+    if (method.name === 'purchaseFor') {
+      return TRANSACTION_TYPES.KEY_PURCHASE
+    }
+
+    if (method.name === 'withdraw') {
+      return TRANSACTION_TYPES.WITHDRAW
+    }
+
+    // Unknown transaction
+    return null
+  }
+
+  /**
    * This helper function signs a transaction
    * and sends it.
    * @private
@@ -176,6 +204,9 @@ export default class Web3Service extends EventEmitter {
       data,
       gas,
     })
+
+    transaction.type = this.getTransactionType(contractAbi, data)
+
     return this.handleTransaction(
       transaction,
       web3TransactionPromise,
@@ -391,10 +422,22 @@ export default class Web3Service extends EventEmitter {
         return this.emit('error', new Error('Missing transaction'))
       }
 
+      const contractAbi =
+        this.unlockContractAddress ===
+        Web3Utils.toChecksumAddress(blockTransaction.to)
+          ? UnlockContract.abi
+          : LockContract.abi
+
+      const transactionType = this.getTransactionType(
+        contractAbi,
+        blockTransaction.input
+      )
+
       if (blockTransaction.transactionIndex === null) {
         // This means the transaction is not in a block yet (ie. not mined)
         return this.emit('transaction.updated', transaction, {
           status: 'pending',
+          type: transactionType,
           confirmations: 0,
         })
       }
@@ -402,6 +445,7 @@ export default class Web3Service extends EventEmitter {
       // The transaction was mined
       this.emit('transaction.updated', transaction, {
         status: 'mined',
+        type: transactionType,
         confirmations: blockNumber - blockTransaction.blockNumber,
       })
 
@@ -419,20 +463,9 @@ export default class Web3Service extends EventEmitter {
             })
           }
 
-          if (
-            this.unlockContractAddress ===
-            Web3Utils.toChecksumAddress(blockTransaction.to)
-          ) {
-            return this.parseTransactionLogsFromReceipt(
-              transaction,
-              UnlockContract.abi,
-              transactionReceipt
-            )
-          }
-
           return this.parseTransactionLogsFromReceipt(
             transaction,
-            LockContract.abi,
+            contractAbi,
             transactionReceipt
           )
         })
