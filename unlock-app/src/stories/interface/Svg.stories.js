@@ -8,7 +8,7 @@ const wrapSvg = name => {
   return React.createElement(Svg[name], {})
 }
 
-storiesOf('SVG', Svg).add('Icons', () => {
+storiesOf('SVG', module).add('Icons', () => {
   return (
     <div>
       <h1>All SVGs</h1>
