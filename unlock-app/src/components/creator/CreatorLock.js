@@ -34,23 +34,15 @@ export class CreatorLock extends React.Component {
     this.state = {
       showEmbedCode: false,
       showKeys: false,
-      editing: false,
     }
     this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
     this.toggleKeys = this.toggleKeys.bind(this)
-    this.toggleEditing = this.toggleEditing.bind(this)
     this.updateLockPrice = this.updateLockPrice.bind(this)
   }
 
   toggleEmbedCode() {
     this.setState(previousState => ({
       showEmbedCode: !previousState.showEmbedCode,
-    }))
-  }
-
-  toggleEditing() {
-    this.setState(previousState => ({
-      editing: !previousState.editing,
     }))
   }
 
@@ -68,8 +60,8 @@ export class CreatorLock extends React.Component {
   render() {
     // TODO add all-time balance to lock
 
-    const { lock } = this.props
-    const { showEmbedCode, showKeys, editing } = this.state
+    const { lock, toggleEditing } = this.props
+    const { showEmbedCode, showKeys } = this.state
 
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
@@ -98,7 +90,6 @@ export class CreatorLock extends React.Component {
         </BalanceContainer>
         <LockIconBar
           lock={lock}
-          editing={editing}
           toggleCode={this.toggleEmbedCode}
           toggleEditing={this.toggleEditing}
           updateLockPrice={this.updateLockPrice}
@@ -122,6 +113,7 @@ export class CreatorLock extends React.Component {
 
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
+  toggleEditing: PropTypes.fn.isRequired,
 }
 
 export default CreatorLock

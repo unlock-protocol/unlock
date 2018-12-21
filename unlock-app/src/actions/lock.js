@@ -22,10 +22,9 @@ export const updateLock = (address, update) => ({
   update,
 })
 
-export const updateLockPrice = (lock, price) => ({
+export const updateLockPrice = lock => ({
   type: UPDATE_LOCK_PRICE,
   lock,
-  price,
 })
 
 export const withdrawFromLock = lock => ({

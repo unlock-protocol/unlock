@@ -42,17 +42,7 @@ export function LockIconBar({
       <IconBarContainer>
         <IconBar>
           <Buttons.Withdraw as="button" lock={lock} />
-          {editing && (
-            <Buttons.Save
-              as="button"
-              onCancel={toggleEditing}
-              onClick={() => {
-                toggleEditing()
-                updateLockPrice()
-              }}
-            />
-          )}
-          {!editing && <Buttons.Edit action={toggleEditing} as="button" />}
+          <Buttons.Edit action={toggleEditing} as="button" />
           {/* Reinstate when we're ready <Buttons.ExportLock /> */}
           <Buttons.Code action={toggleCode} as="button" />
         </IconBar>
