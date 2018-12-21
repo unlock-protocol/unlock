@@ -13,9 +13,7 @@ export function LockIconBar({
   lock,
   toggleCode,
   toggleEditing,
-  updateLockPrice,
   transaction,
-  editing,
   withdrawalTransaction,
   config,
 }) {
@@ -68,10 +66,8 @@ export function LockIconBar({
 
 LockIconBar.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
-  editing: PropTypes.bool,
   toggleCode: PropTypes.func.isRequired,
   toggleEditing: PropTypes.func.isRequired,
-  updateLockPrice: PropTypes.func.isRequired,
   transaction: UnlockPropTypes.transaction,
   withdrawalTransaction: UnlockPropTypes.transaction,
   config: UnlockPropTypes.configuration.isRequired,

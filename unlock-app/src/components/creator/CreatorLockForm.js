@@ -30,7 +30,7 @@ class CreatorLockForm extends React.Component {
       maxNumberOfKeys: 10,
       unlimitedKeys: false,
       name: 'New Lock',
-      editing: false,
+      editing: props.lock !== null,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
@@ -80,7 +80,14 @@ class CreatorLockForm extends React.Component {
   handleSubmit() {
     if (document.querySelector('[data-valid="false"]')) return false
 
-    const { account, createLock, hideAction, updateLockPrice } = this.props
+    const {
+      account,
+      createLock,
+      hideAction,
+      updateLockPrice,
+      lock,
+    } = this.props
+
     const {
       expirationDuration,
       expirationDurationUnit,
@@ -92,24 +99,25 @@ class CreatorLockForm extends React.Component {
       editing,
     } = this.state
 
-    // should be this.state.lock?
-    if (editing) return updateLockPrice(this.props.lock)
+    const weiPrice = Web3Utils.toWei(keyPrice.toString(10), keyPriceCurrency)
 
-    const lock = {
+    if (editing) return updateLockPrice({ ...lock, keyPrice: weiPrice })
+
+    createLock({
       address: uniqid(), // The lock does not have an address yet, so we use a 'temporary' one
       name: name,
       expirationDuration: expirationDuration * expirationDurationUnit,
-      keyPrice: Web3Utils.toWei(keyPrice.toString(10), keyPriceCurrency),
+      keyPrice: weiPrice,
       maxNumberOfKeys: unlimitedKeys ? 0 : maxNumberOfKeys,
       owner: account.address,
-    }
+    })
 
-    createLock(lock)
     if (hideAction) hideAction()
   }
 
   handleCancel() {
-    const { hideAction } = this.props
+    const { hideAction, cancelEdit } = this.props
+    if (cancelEdit) cancelEdit()
     if (hideAction) hideAction()
   }
 
@@ -132,7 +140,7 @@ class CreatorLockForm extends React.Component {
             name="name"
             onChange={this.handleChange}
             defaultValue={name}
-            disabled={!editing}
+            disabled={editing}
           />
         </FormLockName>
         <FormLockDuration>
@@ -141,7 +149,7 @@ class CreatorLockForm extends React.Component {
             name="expirationDuration"
             onChange={this.handleChange}
             defaultValue={expirationDuration}
-            disabled={!editing}
+            disabled={editing}
           />{' '}
           days
         </FormLockDuration>
@@ -153,7 +161,7 @@ class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             value={maxNumberOfKeys}
             defaultValue={maxNumberOfKeys}
-            disabled={!editing}
+            disabled={editing}
           />
           {!unlimitedKeys && (
             <LockLabelUnlimited onClick={this.handleUnlimitedClick}>
@@ -187,12 +195,18 @@ class CreatorLockForm extends React.Component {
 
 CreatorLockForm.propTypes = {
   account: UnlockPropTypes.account.isRequired,
-  hideAction: PropTypes.func.isRequired,
+  hideAction: PropTypes.func,
   createLock: PropTypes.func.isRequired,
   updateLockPrice: PropTypes.func.isRequired,
+  lock: UnlockPropTypes.lock,
+  cancelEdit: PropTypes.func,
 }
 
-CreatorLockForm.defaultProps = {}
+CreatorLockForm.defaultProps = {
+  lock: null,
+  cancelEdit: null,
+  hideAction: null,
+}
 
 const mapStateToProps = state => {
   return {

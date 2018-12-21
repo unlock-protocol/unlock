@@ -141,10 +141,10 @@ export default function lockMiddleware({ getState, dispatch }) {
       } else if (action.type === CREATE_LOCK) {
         web3Service.createLock(action.lock, getState().account)
       } else if (action.type === UPDATE_LOCK_PRICE) {
-        console.table([action])
-        console.log(
-          `web3Service.updatePrice(${action.address}, new_price_here)`
-        )
+        const { lock } = action
+        console.table(lock)
+        const { address, keyPrice } = lock
+        console.log(`web3Service.updatePrice(${address}, ${keyPrice})`)
       } else if (action.type === PURCHASE_KEY) {
         const account = getState().account
         const lock = Object.values(getState().locks).find(

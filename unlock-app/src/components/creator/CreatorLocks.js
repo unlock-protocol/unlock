@@ -12,8 +12,10 @@ export class CreatorLocks extends React.Component {
     const { showForm } = this.props
     this.state = {
       showDashboardForm: !!showForm,
+      editIndex: null,
     }
     this.toggleForm = this.toggleForm.bind(this)
+    this.editLock = this.editLock.bind(this)
   }
 
   toggleForm() {
@@ -22,9 +24,15 @@ export class CreatorLocks extends React.Component {
     }))
   }
 
+  editLock(editIndex) {
+    this.setState(() => ({
+      editIndex: editIndex,
+    }))
+  }
+
   render() {
     const { locks } = this.props
-    const { showDashboardForm } = this.state
+    const { showDashboardForm, editIndex } = this.state
     let lockFeed = Object.values(locks).reverse() // We want to display newer locks first
 
     return (
@@ -43,8 +51,22 @@ export class CreatorLocks extends React.Component {
         </LockHeaderRow>
         <Error />
         {showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
-        {lockFeed.map(lock => {
-          return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
+        {lockFeed.map((lock, index) => {
+          if (index == editIndex)
+            return (
+              <CreatorLockForm
+                cancelEdit={() => this.editLock(null)}
+                key={JSON.stringify(lock)}
+                lock={lock}
+              />
+            )
+          return (
+            <CreatorLock
+              key={JSON.stringify(lock)}
+              lock={lock}
+              toggleEditing={() => this.editLock(index)}
+            />
+          )
         })}
       </Locks>
     )
