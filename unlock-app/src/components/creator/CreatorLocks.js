@@ -36,7 +36,7 @@ export class CreatorLocks extends React.Component {
           <Quantity>Quantity</Quantity>
           <LockMinorHeader>Price</LockMinorHeader>
           <LockMinorHeader>
-            <NoPhone>Balance / Earnings</NoPhone>
+            <NoPhone>Balance</NoPhone>
             <Phone>Balance</Phone>
           </LockMinorHeader>
           <CreateButton onClick={this.toggleForm}>Create Lock</CreateButton>
