@@ -76,4 +76,56 @@ describe('CreatorLockForm', () => {
     // Form should still exist
     expect(wrapper.queryByText('Submit')).not.toBeNull()
   })
+  it('should display infinity symbol when unlimited is clicked', () => {
+    const store = createUnlockStore({
+      account: {},
+    })
+
+    let wrapper = rtl.render(
+      <Provider store={store}>
+        <CreatorLocks />
+      </Provider>
+    )
+    
+    expect(wrapper.queryByText('Unlimited')).toBeNull()
+    
+    let createButton = wrapper.getByText('Create Lock')
+    rtl.fireEvent.click(createButton)
+
+    let unlimitedLabel = wrapper.queryByText('Unlimited')
+    expect(unlimitedLabel).not.toBeNull()
+    expect(wrapper.queryByText('Submit')).not.toBeNull()
+
+    rtl.fireEvent.click(unlimitedLabel)
+    expect(wrapper.queryByText('Unlimited')).toBeNull()
+    expect(wrapper.queryByValue('∞')).not.toBeNull()
+  })
+  it('should enable unlimited label after a number inputed', () => {
+    const store = createUnlockStore({
+      account: {},
+    })
+
+    let wrapper = rtl.render(
+      <Provider store={store}>
+        <CreatorLocks />
+      </Provider>
+    )
+    
+    expect(wrapper.queryByText('Unlimited')).toBeNull()
+    
+    let createButton = wrapper.getByText('Create Lock')
+    rtl.fireEvent.click(createButton)
+
+    let unlimitedLabel = wrapper.queryByText('Unlimited')
+    expect(unlimitedLabel).not.toBeNull()
+    expect(wrapper.queryByText('Submit')).not.toBeNull()
+
+    rtl.fireEvent.click(unlimitedLabel)
+    expect(wrapper.queryByText('Unlimited')).toBeNull()
+    expect(wrapper.queryByValue('∞')).not.toBeNull()
+
+    let numberOfKeys = wrapper.queryByValue('∞')
+    rtl.fireEvent.change(numberOfKeys, { target: { value: '12' } })
+    expect(wrapper.queryByText('Unlimited')).not.toBeNull()
+  })
 })
