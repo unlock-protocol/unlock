@@ -96,7 +96,7 @@ describe('CreatorLock', () => {
 
     expect(wrapper.queryByText('1/10')).not.toBeNull()
   })
-  it('should display infinite keys correctly', ()=>{
+  it('should display infinite keys correctly', () => {
     const config = configure({
       requiredConfirmations: 6,
     })
