@@ -1,9 +1,8 @@
 import { setNetwork } from '../../actions/network'
+import middleware from '../../middlewares/networkVersionDetectMiddleware'
 
 describe('network change detection middleware', () => {
   it('network change on initialize', done => {
-    const middleware = require('../../middlewares/networkVersionDetectMiddleware')
-      .default
     const store = {
       dispatch: jest.fn(),
       getState() {
@@ -28,8 +27,6 @@ describe('network change detection middleware', () => {
   })
 
   it('network change on interval', done => {
-    const middleware = require('../../middlewares/networkVersionDetectMiddleware')
-      .default
     const store = {
       dispatch: jest.fn(),
       getState() {
@@ -62,8 +59,6 @@ describe('network change detection middleware', () => {
   })
 
   it('no network change', done => {
-    const middleware = require('../../middlewares/networkVersionDetectMiddleware')
-      .default
     const store = {
       dispatch: jest.fn(),
       getState() {
