@@ -24,6 +24,15 @@ export const pageTitle = title => {
 }
 
 /**
+ * Transaction types
+ */
+export const TRANSACTION_TYPES = {
+  LOCK_CREATION: 'LOCK_CREATION',
+  KEY_PURCHASE: 'KEY_PURCHASE',
+  WITHDRAWAL: 'WITHDRAWAL',
+}
+
+/**
  * Matches /lock /demo or /paywall
  */
 export const LOCK_PATH_NAME_REGEXP = /\/[a-z0-9]+\/(0x[a-fA-F0-9]{40}).*/
