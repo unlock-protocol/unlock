@@ -2,22 +2,29 @@ import { setNetwork } from '../../actions/network'
 import middleware from '../../middlewares/networkVersionDetectMiddleware'
 
 describe('network change detection middleware', () => {
-  it('network change on initialize', done => {
-    const store = {
+  let store
+
+  window.web3 = {
+    version: {},
+  }
+
+  beforeEach(() => {
+    window.web3.version.getNetwork = () => {
+      return Promise.resolve('hi')
+    }
+    store = {
       dispatch: jest.fn(),
       getState() {
         return { network: { name: 'nothi' } }
       },
     }
+  })
 
-    window.web3 = {
-      version: {
-        getNetwork: () => {
-          return Promise.resolve('hi')
-        },
-      },
-    }
+  afterEach(() => {
+    jest.clearAllTimers()
+  })
 
+  it('network change on initialize', done => {
     middleware(store)
 
     setTimeout(() => {
@@ -27,29 +34,10 @@ describe('network change detection middleware', () => {
   })
 
   it('network change on interval', done => {
-    const store = {
-      dispatch: jest.fn(),
-      getState() {
-        return { network: { name: 'hi' } }
-      },
-    }
-
-    window.web3 = {
-      version: {
-        getNetwork: () => {
-          return Promise.resolve('hi')
-        },
-      },
-    }
-
     middleware(store)
 
-    window.web3 = {
-      version: {
-        getNetwork: () => {
-          return Promise.resolve('nothi')
-        },
-      },
+    window.web3.version.getNetwork = () => {
+      return Promise.resolve('nothi')
     }
 
     setTimeout(() => {
@@ -66,22 +54,10 @@ describe('network change detection middleware', () => {
       },
     }
 
-    window.web3 = {
-      version: {
-        getNetwork: () => {
-          return Promise.resolve('hi')
-        },
-      },
-    }
-
     middleware(store)
 
-    window.web3 = {
-      version: {
-        getNetwork: () => {
-          return Promise.resolve('hi')
-        },
-      },
+    window.web3.version.getNetwork = () => {
+      return Promise.resolve('hi')
     }
 
     setTimeout(() => {
