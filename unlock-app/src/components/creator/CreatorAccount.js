@@ -33,7 +33,7 @@ export function CreatorAccount({ account, network }) {
         </DoubleHeightCell>
         <Label>Address</Label>
         <Label>Balance</Label>
-        <Label>Earning</Label>
+        {/* <Label>Earning</Label> */}
         {/* reinstate upload / etherscan / download / export functionality when we're ready  */
           enableTheseButtons ? (
           <>
