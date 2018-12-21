@@ -9,6 +9,7 @@ import withConfig from '../../utils/withConfig'
 
 export function DeveloperOverlay({ config, selected, setProvider }) {
   const providers = Object.keys(config.providers)
+  if (!location.hostname.match('localhost')) return null
 
   return (
     <NoSSR>
