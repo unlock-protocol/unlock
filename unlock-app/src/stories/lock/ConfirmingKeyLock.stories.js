@@ -11,15 +11,6 @@ const lock = {
   fiatPrice: 240.38,
 }
 
-/*
-const lockWithAnAnnoyingName = {
-  address: '0x456',
-  name: 'Time And Relative Dimension In Space',
-  keyPrice: '1203120301203013000',
-  fiatPrice: 240.38,
-}
-*/
-
 const transaction = {
   confirmations: 3,
 }
@@ -45,14 +36,3 @@ storiesOf('ConfirmingKeyLock', ConfirmingKeyLock)
       />
     )
   })
-/* obsolte, preserving in case design changes later
-  .add('with an annoyingly long name', () => {
-    return (
-      <ConfirmingKeyLock
-        lock={lockWithAnAnnoyingName}
-        transaction={transaction}
-        config={config}
-      />
-    )
-  })
-  */
