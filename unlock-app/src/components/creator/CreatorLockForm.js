@@ -189,7 +189,7 @@ CreatorLockForm.propTypes = {
   account: UnlockPropTypes.account.isRequired,
   hideAction: PropTypes.func.isRequired,
   createLock: PropTypes.func.isRequired,
- // updateLockPrice: PropTypes.func.isRequired,
+  updateLockPrice: PropTypes.func.isRequired,
 }
 
 CreatorLockForm.defaultProps = {}

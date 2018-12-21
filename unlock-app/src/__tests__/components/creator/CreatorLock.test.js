@@ -10,6 +10,8 @@ jest.mock('next/link', () => {
   return ({ children }) => children
 })
 
+const toggleEditing = jest.fn()
+
 const lock = {
   address: '0x1234567890',
   transaction: 'transactionid',
@@ -51,7 +53,11 @@ describe('CreatorLock', () => {
 
     let wrapper = rtl.render(
       <Provider store={store} config={config}>
-        <CreatorLock lock={lock} transaction={transaction} />
+        <CreatorLock
+          lock={lock}
+          transaction={transaction}
+          toggleEditing={toggleEditing}
+        />
       </Provider>
     )
 
@@ -86,7 +92,11 @@ describe('CreatorLock', () => {
 
     let wrapper = rtl.render(
       <Provider store={store} config={config}>
-        <CreatorLock lock={keylock} transaction={transaction} />
+        <CreatorLock
+          lock={keylock}
+          transaction={transaction}
+          toggleEditing={toggleEditing}
+        />
       </Provider>
     )
 

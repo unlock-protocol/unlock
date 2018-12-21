@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
@@ -91,7 +92,7 @@ export class CreatorLock extends React.Component {
         <LockIconBar
           lock={lock}
           toggleCode={this.toggleEmbedCode}
-          toggleEditing={this.toggleEditing}
+          toggleEditing={toggleEditing}
           updateLockPrice={this.updateLockPrice}
         />
         {showEmbedCode && (
@@ -113,7 +114,7 @@ export class CreatorLock extends React.Component {
 
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
-  toggleEditing: PropTypes.fn.isRequired,
+  toggleEditing: PropTypes.func.isRequired,
 }
 
 export default CreatorLock

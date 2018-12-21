@@ -85,6 +85,7 @@ describe('LockIconBar', () => {
           withdrawalTransaction={withdrawalTransaction}
           toggleCode={toggleCode}
           toggleEditing={toggleEditing}
+          updateLockPrice={updateLockPrice}
           config={config}
         />
       </Provider>

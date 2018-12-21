@@ -47,13 +47,11 @@ describe('lock actions', () => {
 
   it('should create an action to update the lock price', () => {
     const lock = {}
-    const price = '1234'
     const expectedAction = {
       type: UPDATE_LOCK_PRICE,
       lock,
-      price,
     }
-    expect(updateLockPrice(lock, price)).toEqual(expectedAction)
+    expect(updateLockPrice(lock)).toEqual(expectedAction)
   })
 
   it('should create an action to withdraw from the lock', () => {
