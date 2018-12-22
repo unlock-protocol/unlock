@@ -99,8 +99,8 @@ const GlobalStyle = createGlobalStyle`
     @import url('https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|UnifrakturCook:700');
 
     body {
-      background - color: #fdfaf7;
-      font - family: 'Source Serif Pro', serif;
+      background-color: #fdfaf7;
+      font-family: 'Source Serif Pro', serif;
     }
 `
 
