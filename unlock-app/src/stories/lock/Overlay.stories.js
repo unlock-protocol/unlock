@@ -59,7 +59,7 @@ in turpis pulvinar facilisis. Ut felis.
       <li>Aliquam tincidunt mauris eu risus.</li>
     </ul>
 
-    <Overlay locks={locks} />
+    <Overlay locks={locks} hideModal={() => {}} showModal={() => {}} />
   </section>
 )
 

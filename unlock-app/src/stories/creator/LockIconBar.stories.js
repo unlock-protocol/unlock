@@ -17,5 +17,5 @@ storiesOf('LockIconBar', module)
       outstandingKeys: 3,
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
     }
-    return <LockIconBar lock={lock} />
+    return <LockIconBar lock={lock} toggleCode={() => {}} />
   })
