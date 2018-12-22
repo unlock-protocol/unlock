@@ -35,6 +35,7 @@ class CreatorLockForm extends React.Component {
     this.handleCancel = this.handleCancel.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleUnlimitedClick = this.handleUnlimitedClick.bind(this)
+    this.maxNumberOfKeysRef = React.createRef()
   }
 
   validate(name, value) {
@@ -51,17 +52,18 @@ class CreatorLockForm extends React.Component {
 
   handleUnlimitedClick() {
     this.setState({ unlimitedKeys: true, maxNumberOfKeys: '∞' })
+    // Marking the maxNumberOfKeysRef field as valid.
+    this.maxNumberOfKeysRef.current.dataset.valid = true
   }
 
   handleChange(event) {
-    let { name, value } = event.target
+    let { name, value, dataset } = event.target
 
     if (name === 'maxNumberOfKeys') {
-      event.target.dataset.valid =
-        value === '∞' ? true : this.validate(name, value)
+      dataset.valid = value === '∞' ? true : this.validate(name, value)
       this.setState({ unlimitedKeys: value === '∞' })
     } else {
-      event.target.dataset.valid = this.validate(name, value)
+      dataset.valid = this.validate(name, value)
     }
 
     this.setState({ [name]: value })
@@ -131,6 +133,7 @@ class CreatorLockForm extends React.Component {
         </FormLockDuration>
         <FormLockKeys>
           <input
+            ref={this.maxNumberOfKeysRef}
             type="text"
             name="maxNumberOfKeys"
             onChange={this.handleChange}
