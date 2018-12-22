@@ -1,8 +1,9 @@
 import {
-  CREATE_LOCK,
   ADD_LOCK,
-  UPDATE_LOCK,
+  CREATE_LOCK,
+  DELETE_LOCK,
   LOCK_DEPLOYED,
+  UPDATE_LOCK,
   UPDATE_LOCK_KEY_PRICE,
 } from '../actions/lock'
 import { DELETE_TRANSACTION } from '../actions/transaction'
@@ -93,6 +94,13 @@ const locksReducer = (state = initialState, action) => {
         ...state[action.address],
         keyPrice: action.price,
       },
+    }
+  }
+
+  if (action.type === DELETE_LOCK) {
+    delete state[action.address]
+    return {
+      ...state,
     }
   }
 
