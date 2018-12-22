@@ -30,6 +30,8 @@ export const conversion = PropTypes.objectOf(PropTypes.number)
 
 export const children = PropTypes.shape({})
 
+export const callback = PropTypes.func
+
 export const component = PropTypes.func
 
 // TODO
@@ -69,6 +71,7 @@ export const delay = PropTypes.number
 export default {
   account,
   address,
+  callback,
   children,
   component,
   configuration,
