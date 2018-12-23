@@ -567,29 +567,66 @@ export default class Web3Service extends EventEmitter {
    */
   getKeyByLockForOwner(lock, owner) {
     const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
-
-    const getKeyExpirationPromise = lockContract.methods
-      .keyExpirationTimestampFor(owner)
-      .call()
-    const getKeyDataPromise = lockContract.methods.keyDataFor(owner).call()
-
-    Promise.all([getKeyExpirationPromise, getKeyDataPromise])
-      .then(([expiration, data]) => {
+    return this._getKeyByLockForOwner(lockContract, owner).then(
+      ([expiration, data]) => {
         this.emit('key.updated', keyId(lock, owner), {
           lock,
           owner,
-          expiration: parseInt(expiration, 10),
+          expiration,
           data,
         })
-      })
-      .catch(() => {
-        this.emit('key.updated', keyId(lock, owner), {
-          lock,
-          owner,
-          expiration: 0,
-          data: null,
+      }
+    )
+  }
+
+  /**
+   * Returns the key to the lock by the account.
+   * @private
+   * @param {PropTypes.string} lock
+   * @param {PropTypes.string} owner
+   * @return Promise<>
+   */
+  _getKeyByLockForOwner(lockContract, owner) {
+    return new Promise(resolve => {
+      const getKeyExpirationPromise = lockContract.methods
+        .keyExpirationTimestampFor(owner)
+        .call()
+      const getKeyDataPromise = lockContract.methods.keyDataFor(owner).call()
+
+      Promise.all([getKeyExpirationPromise, getKeyDataPromise])
+        .then(([expiration, data]) => {
+          return resolve([parseInt(expiration, 10), data])
         })
-      })
+        .catch(() => {
+          return resolve([0, null])
+        })
+    })
+  }
+
+  /**
+   * This loads and returns the keys for a lock per page
+   * This function is performing quite badly because it retrieves n owners one by one
+   * and then gets their keys. We need to implement functions on the smart contract
+   * to make that better.
+   * @param {PropTypes.string}
+   * @param {PropTypes.integer}
+   * @param {PropTypes.integer}
+   */
+  getKeysForLockOnPage(lock, page, byPage) {
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
+
+    const startIndex = page * byPage
+    const keyPromises = Array.from(Array(byPage).keys()).map(n => {
+      return lockContract.methods
+        .owners(n + startIndex)
+        .call()
+        .then(ownerAddress => {
+          return this._getKeyByLockForOwner(lockContract, ownerAddress)
+        })
+    })
+    return Promise.all(keyPromises).then(keys => {
+      this.emit('keys.page', lock, page, keys)
+    })
   }
 
   /**
