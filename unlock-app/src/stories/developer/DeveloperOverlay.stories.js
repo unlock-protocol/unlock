@@ -17,7 +17,7 @@ storiesOf('DeveloperOverlay', DeveloperOverlay)
       <DeveloperOverlay
         config={config}
         selected={selected}
-        selectProvider={() => {}}
+        setProvider={() => {}}
       />
     )
   })
@@ -33,7 +33,7 @@ storiesOf('DeveloperOverlay', DeveloperOverlay)
       <DeveloperOverlay
         config={config}
         selected={selected}
-        selectProvider={() => {}}
+        setProvider={() => {}}
       />
     )
   })

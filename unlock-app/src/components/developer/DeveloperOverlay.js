@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import NoSSR from 'react-no-ssr'
 import styled from 'styled-components'
+import { func } from 'prop-types'
 
 import UnlockPropTypes from '../../propTypes'
 import { setProvider } from '../../actions/provider'
@@ -37,7 +38,7 @@ export function DeveloperOverlay({ config, selected, setProvider }) {
 DeveloperOverlay.propTypes = {
   config: UnlockPropTypes.configuration.isRequired,
   selected: UnlockPropTypes.provider,
-  setProvider: UnlockPropTypes.callback.isRequired,
+  setProvider: func.isRequired,
 }
 
 DeveloperOverlay.defaultProps = {
