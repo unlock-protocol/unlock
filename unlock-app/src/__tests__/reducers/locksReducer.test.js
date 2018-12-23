@@ -111,7 +111,7 @@ describe('locks reducer', () => {
   })
 
   describe('ADD_LOCK', () => {
-    it('should raise an error if the address is a mismatch', () => {
+    it('should keep state unchanged if the address is a mismatch', () => {
       const state = {}
       const action = {
         type: ADD_LOCK,
@@ -120,12 +120,10 @@ describe('locks reducer', () => {
           address: '0x456',
         },
       }
-      expect(() => {
-        reducer(state, action)
-      }).toThrowError('Mismatch in lock address')
+      expect(reducer(state, action)).toEqual(state)
     })
 
-    it('should raise an error if the lock was previously added', () => {
+    it('should keep state unchanged if the lock was previously added', () => {
       const state = {
         '0x123': {},
       }
@@ -136,9 +134,7 @@ describe('locks reducer', () => {
           address: '0x123',
         },
       }
-      expect(() => {
-        reducer(state, action)
-      }).toThrowError('Lock already exists')
+      expect(reducer(state, action)).toEqual(state)
     })
 
     it('should add the lock and add its address', () => {
@@ -164,7 +160,7 @@ describe('locks reducer', () => {
   })
 
   describe('UPDATE_LOCK', () => {
-    it('should trigger an error if trying to update the lock address', () => {
+    it('should keep state unchanged if trying to update the lock address', () => {
       const state = {
         '0x123': {
           name: 'hello',
@@ -178,12 +174,10 @@ describe('locks reducer', () => {
           address: '0x456',
         },
       }
-      expect(() => {
-        reducer(state, action)
-      }).toThrowError('Could not change the lock address')
+      expect(reducer(state, action)).toEqual(state)
     })
 
-    it('should throw when the lock being updated does not exist', () => {
+    it('should keep state unchanged when the lock being updated does not exist', () => {
       const state = {
         '0x123': {
           name: 'hello',
@@ -197,9 +191,7 @@ describe('locks reducer', () => {
           address: '0x456',
         },
       }
-      expect(() => {
-        reducer(state, action)
-      }).toThrowError('Could not update missing lock')
+      expect(reducer(state, action)).toEqual(state)
     })
 
     it('should update the locks values', () => {
