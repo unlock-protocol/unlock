@@ -660,9 +660,9 @@ describe('Web3Service', () => {
       })
     })
 
-    describe('getKeyByLockForOwner', () => {
-      it('should update the data and expiration date', done => {
-        expect.assertions(5)
+    describe('_getKeyByLockForOwner', () => {
+      it('should update the data and expiration date', () => {
+        expect.assertions(2)
         ethCallAndYield(
           '0xabdf82ce00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
           lockAddress,
@@ -674,41 +674,66 @@ describe('Web3Service', () => {
           '0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000'
         )
 
-        web3Service.on('key.updated', (keyId, update) => {
-          expect(keyId).toBe([lockAddress, nodeAccounts[0]].join('-'))
-          expect(update.expiration).toBe(1532557829)
-          expect(update.data).toBe(null)
-          expect(update.lock).toBe(lockAddress)
-          expect(update.owner).toBe(nodeAccounts[0])
-          done()
-        })
+        const lockContract = new web3Service.web3.eth.Contract(
+          LockContract.abi,
+          lockAddress
+        )
 
-        return web3Service.getKeyByLockForOwner(lockAddress, nodeAccounts[0])
+        return web3Service
+          ._getKeyByLockForOwner(lockContract, nodeAccounts[0])
+          .then(([expiration, data]) => {
+            expect(expiration).toBe(1532557829)
+            expect(data).toBe(null)
+          })
       })
 
-      it('should handle missing key when the lock exists', done => {
+      it('should handle missing key when the lock exists', () => {
+        expect.assertions(2)
+
+        ethCallAndFail(
+          '0xabdf82ce00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+          lockAddress,
+          { message: 'VM Exception while processing transaction: revert' }
+        )
+        ethCallAndFail(
+          '0xd44fa14a00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+          lockAddress,
+          { message: 'VM Exception while processing transaction: revert' }
+        )
+
+        const lockContract = new web3Service.web3.eth.Contract(
+          LockContract.abi,
+          lockAddress
+        )
+
+        return web3Service
+          ._getKeyByLockForOwner(lockContract, nodeAccounts[0])
+          .then(([expiration, data]) => {
+            expect(expiration).toBe(0)
+            expect(data).toBe(null)
+          })
+      })
+    })
+
+    describe('getKeyByLockForOwner', () => {
+      it('should trigger an event with the key', done => {
         expect.assertions(5)
+
+        web3Service._getKeyByLockForOwner = jest.fn(() => {
+          return new Promise(resolve => {
+            return resolve([100, 'hello'])
+          })
+        })
 
         web3Service.on('key.updated', (keyId, update) => {
           expect(keyId).toBe([lockAddress, nodeAccounts[0]].join('-'))
-          expect(update.expiration).toBe(0)
-          expect(update.data).toBe(null)
+          expect(update.expiration).toBe(100)
+          expect(update.data).toBe('hello')
           expect(update.lock).toBe(lockAddress)
           expect(update.owner).toBe(nodeAccounts[0])
           done()
         })
-
-        ethCallAndFail(
-          '0xabdf82ce000000000000000000000000aca94ef8bd5ffee41947b4585a84bda5a3d3da6e',
-          lockAddress,
-          { message: 'VM Exception while processing transaction: revert' }
-        )
-        ethCallAndFail(
-          '0xd44fa14a000000000000000000000000aca94ef8bd5ffee41947b4585a84bda5a3d3da6e',
-          lockAddress,
-          { message: 'VM Exception while processing transaction: revert' }
-        )
-        return web3Service.getKeyByLockForOwner(lockAddress, nodeAccounts[0])
+        web3Service.getKeyByLockForOwner(lockAddress, nodeAccounts[0])
       })
     })
 
@@ -1158,6 +1183,38 @@ describe('Web3Service', () => {
         })
 
         web3Service.emitContractEvent(transaction, 'Transfer', params)
+      })
+    })
+
+    describe('getKeysForLockOnPage', () => {
+      it('should get as many owners as there are per page, starting at the right index', done => {
+        expect.assertions(3)
+
+        web3Service._getKeyByLockForOwner = jest.fn(() => {
+          return new Promise(resolve => {
+            return resolve([100, 'hello'])
+          })
+        })
+
+        const onPage = 3
+        const byPage = 5
+        for (let i = 0; i < byPage; i++) {
+          const start = onPage * byPage + i
+          ethCallAndYield(
+            `0x025e7c27${start.toString(16).padStart(64, '0')}`,
+            lockAddress,
+            '0x000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
+          )
+        }
+
+        web3Service.on('keys.page', (lock, page, keys) => {
+          expect(lockAddress).toEqual(lock)
+          expect(page).toEqual(onPage)
+          expect(keys.length).toEqual(byPage)
+          done()
+        })
+
+        web3Service.getKeysForLockOnPage(lockAddress, onPage, byPage)
       })
     })
   })
