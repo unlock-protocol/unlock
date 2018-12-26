@@ -1,25 +1,25 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
 
-import SuspendedError from '../../../components/helpers/SuspendedError'
+import SuspendedRender from '../../../components/helpers/SuspendedRender'
 
 jest.useFakeTimers()
 
-describe('SuspendedError', () => {
+describe('SuspendedRender', () => {
   const Fallback = () => <div>hi</div>
   it('should not display anything during timeout', () => {
     const rendered = rtl.render(
-      <SuspendedError>
+      <SuspendedRender>
         <Fallback />
-      </SuspendedError>
+      </SuspendedRender>
     )
     expect(rendered.queryByText('hi')).toBeNull()
   })
   it('should display fallback after timeout', () => {
     const rendered = rtl.render(
-      <SuspendedError>
+      <SuspendedRender>
         <Fallback />
-      </SuspendedError>
+      </SuspendedRender>
     )
     expect(rendered.queryByText('hi')).toBeNull()
     jest.advanceTimersByTime(201)
