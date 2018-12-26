@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import * as UnlockPropTypes from '../../propTypes'
 
-export default class SuspendedError extends Component {
+export default class SuspendedRender extends Component {
   static propTypes = {
     children: UnlockPropTypes.element.isRequired,
     delay: UnlockPropTypes.delay,
