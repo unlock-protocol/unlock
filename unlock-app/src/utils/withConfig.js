@@ -6,7 +6,7 @@ import {
   MissingProvider,
   DefaultError,
 } from '../components/creator/FatalError'
-import SuspendedError from '../components/helpers/SuspendedError'
+import SuspendedRender from '../components/helpers/SuspendedRender'
 import { ETHEREUM_NETWORKS_NAMES } from '../constants'
 
 /**
@@ -49,14 +49,14 @@ export default function withConfig(Component) {
         // Ensuring that an account is defined
         if (!account) {
           return (
-            <SuspendedError>
+            <SuspendedRender>
               <DefaultError title="User account not initialized">
                 <p>
                   In order to display your Unlock dashboard, you need to connect
                   a crypto-wallet to your browser.
                 </p>
               </DefaultError>
-            </SuspendedError>
+            </SuspendedRender>
           )
         }
       }
