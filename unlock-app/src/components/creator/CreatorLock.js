@@ -16,7 +16,9 @@ const LockKeysNumbers = ({ lock }) => (
     lock.maxNumberOfKeys !== null &&
     typeof lock.outstandingKeys !== 'undefined' &&
     typeof lock.maxNumberOfKeys !== 'undefined'
-      ? `${lock.outstandingKeys}/${lock.maxNumberOfKeys}`
+      ? `${lock.outstandingKeys}/${
+        lock.maxNumberOfKeys > 0 ? lock.maxNumberOfKeys : '∞'
+      }`
       : ' - '}
   </LockKeys>
 )
@@ -133,6 +135,10 @@ export const LockRow = styled.div`
   & > * {
     padding-top: 16px;
   }
+`
+
+export const LockLabel = styled.div`
+  color: var(--link);
 `
 
 export const DoubleHeightCell = styled.div`

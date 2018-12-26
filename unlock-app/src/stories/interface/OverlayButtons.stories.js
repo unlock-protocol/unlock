@@ -7,7 +7,7 @@ import createUnlockStore from '../../createUnlockStore'
 
 const store = createUnlockStore({})
 
-storiesOf('Buttons/Overlay Buttons')
+storiesOf('Buttons/Overlay Buttons', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Confirmed Key', () => {
     return <OverlayButtons.ConfirmedKey />

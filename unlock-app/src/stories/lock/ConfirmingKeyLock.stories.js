@@ -11,13 +11,6 @@ const lock = {
   fiatPrice: 240.38,
 }
 
-const lockWithAnAnnoyingName = {
-  address: '0x456',
-  name: 'Time And Relative Dimension In Space',
-  keyPrice: '1203120301203013000',
-  fiatPrice: 240.38,
-}
-
 const transaction = {
   confirmations: 3,
 }
@@ -32,21 +25,12 @@ const store = createUnlockStore({
   },
 })
 
-storiesOf('ConfirmingKeyLock', ConfirmingKeyLock)
+storiesOf('ConfirmingKeyLock', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('waiting for confirmation', () => {
     return (
       <ConfirmingKeyLock
         lock={lock}
-        transaction={transaction}
-        config={config}
-      />
-    )
-  })
-  .add('with an annoyingly long name', () => {
-    return (
-      <ConfirmingKeyLock
-        lock={lockWithAnAnnoyingName}
         transaction={transaction}
         config={config}
       />

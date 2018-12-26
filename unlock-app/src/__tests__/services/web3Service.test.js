@@ -7,6 +7,7 @@ import Web3Service from '../../services/web3Service'
 import UnlockContract from '../../artifacts/contracts/Unlock.json'
 import LockContract from '../../artifacts/contracts/PublicLock.json'
 import configure from '../../config'
+import { TRANSACTION_TYPES } from '../../constants'
 
 const defaultState = {
   network: {
@@ -426,7 +427,7 @@ describe('Web3Service', () => {
 
     describe('getTransaction', () => {
       it('should update the number of confirmation based on number of blocks since the transaction', done => {
-        expect.assertions(1)
+        expect.assertions(2)
         ethBlockNumber(`0x${(29).toString('16')}`)
         ethGetTransactionByHash(transaction.hash, {
           hash:
@@ -449,8 +450,11 @@ describe('Web3Service', () => {
           status: '0x0',
         })
 
+        web3Service.getTransactionType = jest.fn(() => 'TYPE')
+
         web3Service.once('transaction.updated', (transaction, update) => {
           expect(update.confirmations).toEqual(15) //29-14
+          expect(update.type).toEqual('TYPE') //29-14
           done()
         })
 
@@ -496,7 +500,7 @@ describe('Web3Service', () => {
         })
 
         it('should mark the transaction as failed if the transaction receipt status is false', done => {
-          expect.assertions(2)
+          expect.assertions(3)
           ethGetTransactionReceipt(transaction.hash, {
             transactionIndex: '0x3',
             blockHash:
@@ -507,9 +511,11 @@ describe('Web3Service', () => {
             logs: [],
             status: '0x0',
           })
+          web3Service.getTransactionType = jest.fn(() => 'TYPE')
 
           web3Service.once('transaction.updated', (transaction, update) => {
             expect(update.confirmations).toEqual(15) //29-14
+            expect(update.type).toEqual('TYPE')
             web3Service.once('transaction.updated', (transaction, update) => {
               expect(update.status).toBe('failed')
               done()
@@ -520,7 +526,7 @@ describe('Web3Service', () => {
         })
 
         it('should parseTransactionLogsFromReceipt with the Unlock abi if the address is one of the Unlock contract', done => {
-          expect.assertions(4)
+          expect.assertions(5)
           const transactionReceipt = {
             transactionIndex: '0x3',
             blockHash:
@@ -534,6 +540,8 @@ describe('Web3Service', () => {
           ethGetTransactionReceipt(transaction.hash, transactionReceipt)
           const previousAddress = web3Service.unlockContractAddress
 
+          web3Service.getTransactionType = jest.fn(() => 'TYPE')
+
           web3Service.parseTransactionLogsFromReceipt = (
             transactionToUpdate,
             abi,
@@ -544,6 +552,10 @@ describe('Web3Service', () => {
             expect(receipt.blockNumber).toEqual(344)
             expect(receipt.logs).toEqual([])
             web3Service.unlockContractAddress = previousAddress
+            expect(web3Service.getTransactionType).toHaveBeenCalledWith(
+              UnlockContract.abi,
+              blockTransaction.input
+            )
             done()
           }
           web3Service.unlockContractAddress = blockTransaction.to
@@ -551,7 +563,7 @@ describe('Web3Service', () => {
         })
 
         it('should parseTransactionLogsFromReceipt with the Lock abi otherwise', done => {
-          expect.assertions(4)
+          expect.assertions(5)
           const transactionReceipt = {
             transactionIndex: '0x3',
             blockHash:
@@ -564,6 +576,8 @@ describe('Web3Service', () => {
           }
           ethGetTransactionReceipt(transaction.hash, transactionReceipt)
 
+          web3Service.getTransactionType = jest.fn(() => 'TYPE')
+
           web3Service.parseTransactionLogsFromReceipt = (
             transactionToUpdate,
             abi,
@@ -573,6 +587,10 @@ describe('Web3Service', () => {
             expect(abi).toEqual(LockContract.abi)
             expect(receipt.blockNumber).toEqual(344)
             expect(receipt.logs).toEqual([])
+            expect(web3Service.getTransactionType).toHaveBeenCalledWith(
+              LockContract.abi,
+              blockTransaction.input
+            )
             done()
           }
 
@@ -642,9 +660,9 @@ describe('Web3Service', () => {
       })
     })
 
-    describe('getKeyByLockForOwner', () => {
-      it('should update the data and expiration date', done => {
-        expect.assertions(5)
+    describe('_getKeyByLockForOwner', () => {
+      it('should update the data and expiration date', () => {
+        expect.assertions(2)
         ethCallAndYield(
           '0xabdf82ce00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
           lockAddress,
@@ -656,41 +674,99 @@ describe('Web3Service', () => {
           '0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000'
         )
 
-        web3Service.on('key.updated', (keyId, update) => {
-          expect(keyId).toBe([lockAddress, nodeAccounts[0]].join('-'))
-          expect(update.expiration).toBe(1532557829)
-          expect(update.data).toBe(null)
-          expect(update.lock).toBe(lockAddress)
-          expect(update.owner).toBe(nodeAccounts[0])
-          done()
-        })
+        const lockContract = new web3Service.web3.eth.Contract(
+          LockContract.abi,
+          lockAddress
+        )
 
-        return web3Service.getKeyByLockForOwner(lockAddress, nodeAccounts[0])
+        return web3Service
+          ._getKeyByLockForOwner(lockContract, nodeAccounts[0])
+          .then(([expiration, data]) => {
+            expect(expiration).toBe(1532557829)
+            expect(data).toBe(null)
+          })
       })
 
-      it('should handle missing key when the lock exists', done => {
+      it('should handle missing key when the lock exists', () => {
+        expect.assertions(2)
+
+        ethCallAndFail(
+          '0xabdf82ce00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+          lockAddress,
+          { message: 'VM Exception while processing transaction: revert' }
+        )
+        ethCallAndFail(
+          '0xd44fa14a00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+          lockAddress,
+          { message: 'VM Exception while processing transaction: revert' }
+        )
+
+        const lockContract = new web3Service.web3.eth.Contract(
+          LockContract.abi,
+          lockAddress
+        )
+
+        return web3Service
+          ._getKeyByLockForOwner(lockContract, nodeAccounts[0])
+          .then(([expiration, data]) => {
+            expect(expiration).toBe(0)
+            expect(data).toBe(null)
+          })
+      })
+    })
+
+    describe('getKeyByLockForOwner', () => {
+      it('should trigger an event with the key', done => {
         expect.assertions(5)
+
+        web3Service._getKeyByLockForOwner = jest.fn(() => {
+          return new Promise(resolve => {
+            return resolve([100, 'hello'])
+          })
+        })
 
         web3Service.on('key.updated', (keyId, update) => {
           expect(keyId).toBe([lockAddress, nodeAccounts[0]].join('-'))
-          expect(update.expiration).toBe(0)
-          expect(update.data).toBe(null)
+          expect(update.expiration).toBe(100)
+          expect(update.data).toBe('hello')
           expect(update.lock).toBe(lockAddress)
           expect(update.owner).toBe(nodeAccounts[0])
           done()
         })
+        web3Service.getKeyByLockForOwner(lockAddress, nodeAccounts[0])
+      })
+    })
 
-        ethCallAndFail(
-          '0xabdf82ce000000000000000000000000aca94ef8bd5ffee41947b4585a84bda5a3d3da6e',
-          lockAddress,
-          { message: 'VM Exception while processing transaction: revert' }
+    describe('getTransactionType', () => {
+      it('should return the right transaction type on lock creation', () => {
+        expect.assertions(1)
+        const unlock = new web3Service.web3.eth.Contract(UnlockContract.abi, '')
+        const data = unlock.methods
+          .createLock('1000', '1000000000', '1')
+          .encodeABI()
+        expect(web3Service.getTransactionType(UnlockContract.abi, data)).toBe(
+          TRANSACTION_TYPES.LOCK_CREATION
         )
-        ethCallAndFail(
-          '0xd44fa14a000000000000000000000000aca94ef8bd5ffee41947b4585a84bda5a3d3da6e',
-          lockAddress,
-          { message: 'VM Exception while processing transaction: revert' }
+      })
+
+      it('should return the right transaction type on key purchase', () => {
+        expect.assertions(1)
+        const lock = new web3Service.web3.eth.Contract(LockContract.abi, '')
+        const data = lock.methods
+          .purchaseFor(nodeAccounts[0], Web3Utils.utf8ToHex(''))
+          .encodeABI()
+        expect(web3Service.getTransactionType(LockContract.abi, data)).toBe(
+          TRANSACTION_TYPES.KEY_PURCHASE
         )
-        return web3Service.getKeyByLockForOwner(lockAddress, nodeAccounts[0])
+      })
+
+      it('should return the right transaction type on withdrawals', () => {
+        expect.assertions(1)
+        const lock = new web3Service.web3.eth.Contract(LockContract.abi, '')
+        const data = lock.methods.withdraw().encodeABI()
+        expect(web3Service.getTransactionType(LockContract.abi, data)).toBe(
+          TRANSACTION_TYPES.WITHDRAW
+        )
       })
     })
 
@@ -800,8 +876,8 @@ describe('Web3Service', () => {
     })
 
     describe('sendTransaction', () => {
-      it('should handle cases where the private key is not known and using an extrenal provider', () => {
-        expect.assertions(2)
+      it('should handle cases where the transaction is sent via a provider', () => {
+        expect.assertions(4)
 
         web3Service.handleTransaction = jest.fn()
 
@@ -809,6 +885,7 @@ describe('Web3Service', () => {
         const mockTransaction = {}
         mockSendTransaction.mockReturnValue(mockTransaction)
         web3Service.web3.eth.sendTransaction = mockSendTransaction
+        web3Service.getTransactionType = jest.fn(() => 'TYPE')
 
         const transaction = {}
         const to = ''
@@ -824,6 +901,11 @@ describe('Web3Service', () => {
           { to, from, data, value, gas, privateKey, contractAbi },
           callback
         )
+        expect(web3Service.getTransactionType).toHaveBeenCalledWith(
+          contractAbi,
+          data
+        )
+        expect(transaction.type).toBe('TYPE')
         expect(mockSendTransaction).toHaveBeenCalledWith({
           data,
           from,
@@ -1101,6 +1183,38 @@ describe('Web3Service', () => {
         })
 
         web3Service.emitContractEvent(transaction, 'Transfer', params)
+      })
+    })
+
+    describe('getKeysForLockOnPage', () => {
+      it('should get as many owners as there are per page, starting at the right index', done => {
+        expect.assertions(3)
+
+        web3Service._getKeyByLockForOwner = jest.fn(() => {
+          return new Promise(resolve => {
+            return resolve([100, 'hello'])
+          })
+        })
+
+        const onPage = 3
+        const byPage = 5
+        for (let i = 0; i < byPage; i++) {
+          const start = onPage * byPage + i
+          ethCallAndYield(
+            `0x025e7c27${start.toString(16).padStart(64, '0')}`,
+            lockAddress,
+            '0x000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
+          )
+        }
+
+        web3Service.on('keys.page', (lock, page, keys) => {
+          expect(lockAddress).toEqual(lock)
+          expect(page).toEqual(onPage)
+          expect(keys.length).toEqual(byPage)
+          done()
+        })
+
+        web3Service.getKeysForLockOnPage(lockAddress, onPage, byPage)
       })
     })
   })

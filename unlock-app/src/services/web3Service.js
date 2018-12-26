@@ -5,6 +5,7 @@ import Web3Utils from 'web3-utils'
 import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
+import { TRANSACTION_TYPES } from '../constants'
 
 const { providers } = configure(global)
 
@@ -160,6 +161,33 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
+   * The method sets the transaction's type, based on the data being sent.
+   * TODO: match also based on Contract type. There could be conflicts in names
+   * @param {*} transaction
+   * @param {*} data
+   */
+  getTransactionType(contractAbi, data) {
+    const method = contractAbi.find(binaryInterface => {
+      return data.startsWith(binaryInterface.signature)
+    })
+
+    if (method.name === 'createLock') {
+      return TRANSACTION_TYPES.LOCK_CREATION
+    }
+
+    if (method.name === 'purchaseFor') {
+      return TRANSACTION_TYPES.KEY_PURCHASE
+    }
+
+    if (method.name === 'withdraw') {
+      return TRANSACTION_TYPES.WITHDRAW
+    }
+
+    // Unknown transaction
+    return null
+  }
+
+  /**
    * This helper function signs a transaction
    * and sends it.
    * @private
@@ -176,6 +204,9 @@ export default class Web3Service extends EventEmitter {
       data,
       gas,
     })
+
+    transaction.type = this.getTransactionType(contractAbi, data)
+
     return this.handleTransaction(
       transaction,
       web3TransactionPromise,
@@ -391,10 +422,22 @@ export default class Web3Service extends EventEmitter {
         return this.emit('error', new Error('Missing transaction'))
       }
 
+      const contractAbi =
+        this.unlockContractAddress ===
+        Web3Utils.toChecksumAddress(blockTransaction.to)
+          ? UnlockContract.abi
+          : LockContract.abi
+
+      const transactionType = this.getTransactionType(
+        contractAbi,
+        blockTransaction.input
+      )
+
       if (blockTransaction.transactionIndex === null) {
         // This means the transaction is not in a block yet (ie. not mined)
         return this.emit('transaction.updated', transaction, {
           status: 'pending',
+          type: transactionType,
           confirmations: 0,
         })
       }
@@ -402,6 +445,7 @@ export default class Web3Service extends EventEmitter {
       // The transaction was mined
       this.emit('transaction.updated', transaction, {
         status: 'mined',
+        type: transactionType,
         confirmations: blockNumber - blockTransaction.blockNumber,
       })
 
@@ -419,20 +463,9 @@ export default class Web3Service extends EventEmitter {
             })
           }
 
-          if (
-            this.unlockContractAddress ===
-            Web3Utils.toChecksumAddress(blockTransaction.to)
-          ) {
-            return this.parseTransactionLogsFromReceipt(
-              transaction,
-              UnlockContract.abi,
-              transactionReceipt
-            )
-          }
-
           return this.parseTransactionLogsFromReceipt(
             transaction,
-            LockContract.abi,
+            contractAbi,
             transactionReceipt
           )
         })
@@ -534,29 +567,66 @@ export default class Web3Service extends EventEmitter {
    */
   getKeyByLockForOwner(lock, owner) {
     const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
-
-    const getKeyExpirationPromise = lockContract.methods
-      .keyExpirationTimestampFor(owner)
-      .call()
-    const getKeyDataPromise = lockContract.methods.keyDataFor(owner).call()
-
-    Promise.all([getKeyExpirationPromise, getKeyDataPromise])
-      .then(([expiration, data]) => {
+    return this._getKeyByLockForOwner(lockContract, owner).then(
+      ([expiration, data]) => {
         this.emit('key.updated', keyId(lock, owner), {
           lock,
           owner,
-          expiration: parseInt(expiration, 10),
+          expiration,
           data,
         })
-      })
-      .catch(() => {
-        this.emit('key.updated', keyId(lock, owner), {
-          lock,
-          owner,
-          expiration: 0,
-          data: null,
+      }
+    )
+  }
+
+  /**
+   * Returns the key to the lock by the account.
+   * @private
+   * @param {PropTypes.string} lock
+   * @param {PropTypes.string} owner
+   * @return Promise<>
+   */
+  _getKeyByLockForOwner(lockContract, owner) {
+    return new Promise(resolve => {
+      const getKeyExpirationPromise = lockContract.methods
+        .keyExpirationTimestampFor(owner)
+        .call()
+      const getKeyDataPromise = lockContract.methods.keyDataFor(owner).call()
+
+      Promise.all([getKeyExpirationPromise, getKeyDataPromise])
+        .then(([expiration, data]) => {
+          return resolve([parseInt(expiration, 10), data])
         })
-      })
+        .catch(() => {
+          return resolve([0, null])
+        })
+    })
+  }
+
+  /**
+   * This loads and returns the keys for a lock per page
+   * This function is performing quite badly because it retrieves n owners one by one
+   * and then gets their keys. We need to implement functions on the smart contract
+   * to make that better.
+   * @param {PropTypes.string}
+   * @param {PropTypes.integer}
+   * @param {PropTypes.integer}
+   */
+  getKeysForLockOnPage(lock, page, byPage) {
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
+
+    const startIndex = page * byPage
+    const keyPromises = Array.from(Array(byPage).keys()).map(n => {
+      return lockContract.methods
+        .owners(n + startIndex)
+        .call()
+        .then(ownerAddress => {
+          return this._getKeyByLockForOwner(lockContract, ownerAddress)
+        })
+    })
+    return Promise.all(keyPromises).then(keys => {
+      this.emit('keys.page', lock, page, keys)
+    })
   }
 
   /**

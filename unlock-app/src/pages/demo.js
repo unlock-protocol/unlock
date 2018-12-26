@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import styled, { createGlobalStyle } from 'styled-components'
 import UnlockPropTypes from '../propTypes'
 import Overlay from '../components/lock/Overlay'
+import DeveloperOverlay from '../components/developer/DeveloperOverlay'
 import withConfig from '../utils/withConfig'
 import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
 import { LOCK_PATH_NAME_REGEXP } from '../constants'
@@ -73,6 +74,7 @@ const Demo = ({ lock }) => {
         <ShowUnlessUserHasKeyToAnyLock locks={lock ? [lock] : []}>
           <Overlay locks={lock ? [lock] : []} />
         </ShowUnlessUserHasKeyToAnyLock>
+        <DeveloperOverlay />
       </NoSSR>
     </Container>
   )
@@ -99,8 +101,8 @@ const GlobalStyle = createGlobalStyle`
     @import url('https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|UnifrakturCook:700');
 
     body {
-      background - color: #fdfaf7;
-      font - family: 'Source Serif Pro', serif;
+      background-color: #fdfaf7;
+      font-family: 'Source Serif Pro', serif;
     }
 `
 
