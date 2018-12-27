@@ -38,7 +38,8 @@
   "scripts": {
     "remix": "remixd -s contracts --remix-ide http://localhost:8080 --read-only",
     "test": "truffle test",
-    "lint": "solhint contracts/**/*.sol"
+    "lint": "solhint contracts/**/*.sol",
+    "ci": "npm run lint && npm run test --  --network test"
   },
   "author": "",
   "license": "ISC"
