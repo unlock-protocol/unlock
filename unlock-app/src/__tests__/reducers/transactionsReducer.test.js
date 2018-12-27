@@ -103,7 +103,7 @@ describe('transaction reducer', () => {
   })
 
   describe('when receiving UPDATE_TRANSACTION', () => {
-    it('should raise an error when trying to update the hash', () => {
+    it('should not change state when trying to update the hash', () => {
       const transaction = {
         status: 'pending',
         confirmations: 0,
@@ -120,12 +120,10 @@ describe('transaction reducer', () => {
           hash: '0x456',
         },
       }
-      expect(() => {
-        reducer(state, action)
-      }).toThrow(/Could not change the transaction hash/)
+      expect(reducer(state, action)).toEqual(state)
     })
 
-    it('should raise an error when trying to update a transaction which does not exist', () => {
+    it('should not change state when trying to update a transaction which does not exist', () => {
       const transaction = {
         status: 'pending',
         confirmations: 0,
@@ -140,9 +138,7 @@ describe('transaction reducer', () => {
           hash: '0x123',
         },
       }
-      expect(() => {
-        reducer(state, action)
-      }).toThrow(/Could not update missing transaction/)
+      expect(reducer(state, action)).toEqual(state)
     })
 
     it('should update an existing transaction', () => {

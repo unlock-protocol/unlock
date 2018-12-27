@@ -17,11 +17,13 @@ const locksReducer = (state = initialState, action) => {
 
   if (action.type === ADD_LOCK) {
     if (action.lock.address && action.lock.address !== action.address) {
-      throw new Error('Mismatch in lock address')
+      // 'Mismatch in lock address' => Let's not change state
+      return state
     }
 
     if (state[action.address]) {
-      throw new Error('Lock already exists')
+      // 'Lock already exists' => Let's not change state
+      return state
     }
 
     return {
@@ -68,11 +70,13 @@ const locksReducer = (state = initialState, action) => {
   // This will change the locks value... except for its address!
   if (action.type === UPDATE_LOCK) {
     if (action.update.address && action.update.address !== action.address) {
-      throw new Error('Could not change the lock address')
+      // 'Could not change the lock address' => Let's not change state
+      return state
     }
 
     if (!state[action.address]) {
-      throw new Error('Could not update missing lock')
+      // 'Could not update missing lock' => Let's not change state
+      return state
     }
 
     return {
