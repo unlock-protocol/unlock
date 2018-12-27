@@ -1,7 +1,9 @@
 pragma solidity 0.4.24;
 
-import "./interfaces/ILockPublic.sol";
 import "./interfaces/IUnlock.sol";
+import "./interfaces/IERC721.sol";
+import "./interfaces/ILockCore.sol";
+import "openzeppelin-eth/contracts/ownership/Ownable.sol";
 import "openzeppelin-eth/contracts/introspection/ERC165.sol";
 
 /**
@@ -15,10 +17,8 @@ import "openzeppelin-eth/contracts/introspection/ERC165.sol";
  * @dev ERC165 allows our contract to be queried to determine whether it implements a given interface.
  * Every ERC-721 compliant contract must implement the ERC165 interface.
  * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
- *  TODO: consider using a _private version for each method that is being invoked by the
- * public one as this seems to be a pattern.
  */
-contract PublicLock is ILockPublic, ERC165 {
+contract PublicLock is ILockCore, ERC165, IERC721, Ownable {
 
   // The struct for a key
   struct Key {
