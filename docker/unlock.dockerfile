@@ -1,7 +1,5 @@
-FROM truffle/ci
-RUN npm install -g .
+FROM node:8.11.4
 RUN mkdir /home/unlock
 COPY . /home/unlock
 WORKDIR /home/unlock
-
-CMD ./tests.sh
+RUN npm install -g npm@latest
