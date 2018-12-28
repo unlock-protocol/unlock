@@ -16,7 +16,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-ganache": "ganache-cli -i 1984 --mnemonic 'hello unlock save the web'",
-    "postinstall": "cd smart-contracts && npm install && cd ../unlock-app && npm install",
+    "postinstall": "cd smart-contracts && npm ci && cd ../unlock-app && npm ci",
     "deploy-lock": "cd smart-contracts && truffle deploy --reset"
   },
   "repository": {

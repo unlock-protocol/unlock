@@ -5,10 +5,8 @@
 
 # Solidity tests
 cd /home/unlock/smart-contracts
-npm ci
 CI=1 npm run ci || exit 1
 
 # React application
 cd /home/unlock/unlock-app
-npm ci
 CI=1 npm run ci || exit 1
