@@ -79,11 +79,13 @@
     "setup-dev:darwin:freebsd:linux:sunos": "cd .. && (npm run start-ganache -- -b 3 &) && npm run deploy-lock",
     "setup-dev:win32": "cd .. && (START /b npm run start-ganache -- -b 3 ) && npm run deploy-lock",
     "test": "NODE_ENV=test jest --env=jsdom",
-    "lint": "./node_modules/eslint/bin/eslint.js .",
-    "reformat": "npx prettier-eslint --write \"src/**/*.js\"",
+    "lint": "eslint .",
+    "reformat": "prettier-eslint \"src/**/*.js\" --write",
+    "fail-pending-changes": "./scripts/pending-changes.sh",
     "storybook": "start-storybook -p 9001 -c .storybook -s src",
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions -d src/components/interface/svg/ src/static/images/svg/",
-    "eslint-check": "eslint --print-config . | eslint-config-prettier-check"
+    "eslint-check": "eslint --print-config . | eslint-config-prettier-check",
+    "ci": "npm run lint && npm test && npm run reformat && npm run fail-pending-changes"
   },
   "lint-staged": {
     "linters": {
