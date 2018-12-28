@@ -9,6 +9,7 @@ services:
   unlock:
     build:
       context: ..
-      dockerfile: ./docker/unlock.tests.dockerfile
+      dockerfile: ./docker/unlock.dockerfile
     depends_on:
       - ganache
+    command: ["./tests.sh"]
