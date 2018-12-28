@@ -10,6 +10,7 @@ services:
     build:
       context: ..
       dockerfile: ./docker/unlock.dockerfile
+    user: node
     depends_on:
       - ganache
     command: ["./tests.sh"]
