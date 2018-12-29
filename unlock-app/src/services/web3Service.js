@@ -7,7 +7,7 @@ import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
 import { TRANSACTION_TYPES } from '../constants'
 
-const { providers } = configure(global)
+const { providers } = configure()
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 

@@ -2,7 +2,7 @@ import configure from '../config'
 
 describe('config', () => {
   describe('dev', () => {
-    let config = configure(global, { NODE_ENV: 'dev' })
+    let config = configure(global, { unlockEnv: 'dev' })
 
     it('should require a dev network', () => {
       expect(config.isRequiredNetwork(0)).toEqual(false)
@@ -31,11 +31,8 @@ describe('config', () => {
               isMetaMask: true,
             },
           },
-          location: {
-            hostname: 'localhost',
-          },
         },
-        { NODE_ENV: 'dev' }
+        { unlockEnv: 'dev' }
       )
       expect(config.providers).toMatchObject({
         HTTP: {
@@ -52,16 +49,16 @@ describe('config', () => {
   })
 
   describe('staging', () => {
-    let config = configure({
-      web3: {
-        currentProvider: {
-          isMetaMask: true,
+    let config = configure(
+      {
+        web3: {
+          currentProvider: {
+            isMetaMask: true,
+          },
         },
       },
-      location: {
-        hostname: 'staging.unlock-protocol.com',
-      },
-    })
+      { unlockEnv: 'staging' }
+    )
 
     it('should require rinkeby', () => {
       expect(config.isRequiredNetwork(0)).toEqual(false)
@@ -81,11 +78,7 @@ describe('config', () => {
   })
 
   describe('production', () => {
-    let config = configure({
-      location: {
-        hostname: 'unlock-protocol.com',
-      },
-    })
+    let config = configure(global, { unlockEnv: 'prod' })
 
     it('should require mainnet', () => {
       expect(config.isRequiredNetwork(0)).toEqual(false)
