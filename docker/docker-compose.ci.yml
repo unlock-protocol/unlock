@@ -6,6 +6,17 @@ services:
     expose:
       - 8545
     command: ["-h=0.0.0.0", "-m=hello unlock save the web"]
+  unlock:
+    image: unlock
+    user: node
+    working_dir: /home/unlock/unlock-app
+    depends_on:
+      - ganache
+    expose:
+      - 3000
+    environment:
+      HTTP_PROVIDER: ganache
+    command: ["npm", "run", "start"]
   smart-contracts:
     image: unlock
     user: node
@@ -16,3 +27,12 @@ services:
     image: unlock
     user: node
     working_dir: /home/unlock/unlock-app
+  integration-tests:
+    image: unlock-integration
+    user: node
+    environment:
+      - UNLOCK_HOST=unlock
+    depends_on:
+      - ganache
+      - unlock
+    working_dir: /home/unlock/tests
