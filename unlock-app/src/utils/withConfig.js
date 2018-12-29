@@ -14,7 +14,7 @@ import { ETHEREUM_NETWORKS_NAMES } from '../constants'
  * Taken from https://reactjs.org/docs/context.html#consuming-context-with-a-hoc
  */
 
-const config = configure(global)
+const config = configure()
 const ConfigContext = React.createContext(config)
 
 /**
