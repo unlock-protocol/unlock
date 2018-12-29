@@ -6,11 +6,13 @@ services:
     expose:
       - 8545
     command: ["-h=0.0.0.0", "-m=hello unlock save the web"]
-  unlock:
-    build:
-      context: ..
-      dockerfile: ./docker/unlock.dockerfile
+  smart-contracts:
+    image: unlock
     user: node
     depends_on:
       - ganache
-    command: ["./tests.sh"]
+    working_dir: /home/unlock/smart-contracts
+  unlock-app:
+    image: unlock
+    user: node
+    working_dir: /home/unlock/unlock-app
