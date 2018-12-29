@@ -6,4 +6,3 @@ RUN chown -R node /home/unlock
 USER node
 WORKDIR /home/unlock
 RUN npm ci
-
