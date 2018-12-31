@@ -2,9 +2,8 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 import 'jest-dom/extend-expect'
 
-import Button, {
-  DisabledButton,
-} from '../../../components/interface/buttons/Button'
+import Button from '../../../components/interface/buttons/Button'
+import DisabledButton from '../../../components/interface/buttons/DisabledButton'
 
 jest.mock('next/link', () => {
   return ({ children }) => children
