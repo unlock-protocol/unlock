@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import Svg from '../../svg'
-import Button, { DisabledButton } from '../Button'
+import Button from '../Button'
+import DisabledButton from '../DisabledButton'
 import UnlockPropTypes from '../../../../propTypes'
 import { withdrawFromLock } from '../../../../actions/lock'
 
