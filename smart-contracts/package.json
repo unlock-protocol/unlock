@@ -21,7 +21,7 @@
     "truffle": "^4.1.14",
     "truffle-contract": "^3.0.6",
     "web3-utils": "^1.0.0-beta.36",
-    "zos": "^2.0.2",
+    "zos": "^v2.1.0-rc.0",
     "zos-lib": "^2.0.2"
   },
   "devDependencies": {
