@@ -1,6 +1,6 @@
 import React from 'react'
 import Svg from '../../svg'
-import { LayoutButton } from '../Button'
+import LayoutButton from '../LayoutButton'
 
 const Telegram = props => (
   <LayoutButton href="https://t.me/unlockprotocol" label="Telegram" {...props}>
