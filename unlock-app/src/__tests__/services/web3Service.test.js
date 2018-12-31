@@ -195,7 +195,7 @@ describe('Web3Service', () => {
     let enable
 
     beforeEach(done => {
-      const { providers } = configure()
+      const { providers } = configure(global)
       nock.cleanAll()
 
       enable = providers.HTTP.enable = jest.fn(() => Promise.resolve())
@@ -229,7 +229,7 @@ describe('Web3Service', () => {
     let enable, error
 
     beforeEach(done => {
-      const { providers } = configure()
+      const { providers } = configure(global)
       nock.cleanAll()
 
       enable = providers.HTTP.enable = jest.fn(() => Promise.reject())

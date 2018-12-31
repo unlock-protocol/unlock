@@ -45,7 +45,9 @@ const transaction = {
 
 describe('CreatorLock', () => {
   it('should show embed code when the button is clicked', () => {
-    const config = configure()
+    const config = configure({
+      requiredConfirmations: 6,
+    })
 
     const store = createUnlockStore()
 
@@ -73,7 +75,9 @@ describe('CreatorLock', () => {
     ).not.toBeNull()
   })
   it('should display the correct number of keys', () => {
-    const config = configure()
+    const config = configure({
+      requiredConfirmations: 6,
+    })
 
     const store = createUnlockStore({
       transactions: {
@@ -93,7 +97,9 @@ describe('CreatorLock', () => {
     expect(wrapper.queryByText('1/10')).not.toBeNull()
   })
   it('should display infinite keys correctly', () => {
-    const config = configure()
+    const config = configure({
+      requiredConfirmations: 6,
+    })
 
     const store = createUnlockStore({
       transactions: {

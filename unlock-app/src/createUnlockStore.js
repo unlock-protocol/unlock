@@ -38,7 +38,7 @@ import modalReducer, {
 import lockMiddleware from './middlewares/lockMiddleware'
 import currencyConversionMiddleware from './middlewares/currencyConversionMiddleware'
 
-const config = configure()
+const config = configure(global)
 
 export const createUnlockStore = (
   defaultState = {},

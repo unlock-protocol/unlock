@@ -6,9 +6,6 @@ const withSourceMaps = require('@zeit/next-source-maps')
 const copyFile = promisify(fs.copyFile)
 
 module.exports = withSourceMaps({
-  publicRuntimeConfig: {
-    unlockEnv: process.env.UNLOCK_ENV || 'dev',
-  },
   webpack(config) {
     return config
   },

@@ -1,5 +1,4 @@
 import Web3 from 'web3'
-import getConfig from 'next/config'
 import { ETHEREUM_NETWORKS_NAMES } from './constants'
 
 // There is no standard way to detect the provider name...
@@ -40,20 +39,32 @@ export function getCurrentProvider(environment) {
 }
 
 /**
- * This function, based on the environment will return the list of providers available, the one that
- * is used, as well as the list of networks and the one that is being used.
+ * This function, based on the environment will return the list of providers available, the one that is used, as well as the list of networks and the one that is being used.
  * In dev/testing, the provider can be anything and the network can be anything too.
  * In staging, the provider needs to be an ingested web3 provider, and the network needs to be rinkeby
  * In prod, the provider needs to be an ingested web3 provider and the network needs to be mainnet
+ * We set UNLOCK_ENV on the deployment platform to STAGING or PROD.
  * @param {*} environment (in the JS sense: `window` most likely)
  */
-export default function configure(
-  environment = global,
-  runtimeConfig = getConfig().publicRuntimeConfig
-) {
+export default function configure(environment, envVars = process.env) {
   const isServer = typeof window === 'undefined'
 
-  const env = runtimeConfig.unlockEnv
+  let env = 'dev' // default
+  if (
+    (environment.location &&
+      environment.location.hostname === 'staging.unlock-protocol.com') ||
+    envVars['UNLOCK_ENV'] === 'staging'
+  ) {
+    env = 'staging'
+  } else if (
+    (environment.location &&
+      environment.location.hostname === 'unlock-protocol.com') ||
+    envVars['UNLOCK_ENV'] === 'prod'
+  ) {
+    env = 'prod'
+  } else if (envVars['NODE_ENV'] === 'test') {
+    env = 'test'
+  }
 
   let providers = {}
   let isRequiredNetwork = () => false

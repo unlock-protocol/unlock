@@ -8,7 +8,7 @@ import { createUnlockStore } from '../createUnlockStore'
 
 import GlobalStyle from '../theme/globalStyle'
 
-const config = configure()
+const config = configure(global)
 
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
