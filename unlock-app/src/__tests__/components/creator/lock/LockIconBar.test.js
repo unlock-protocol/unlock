@@ -10,7 +10,7 @@ const toggleCode = jest.fn()
 
 describe('LockIconBar', () => {
   it('should display a submitted label when withdrawal has been submitted', () => {
-    const config = configure({})
+    const config = configure()
 
     const lock = {
       id: 'lockwithdrawalsubmittedid',
@@ -50,7 +50,7 @@ describe('LockIconBar', () => {
     ).not.toBeNull()
   })
   it('should display a confirming label when withdrawal is confirming', () => {
-    const config = configure({})
+    const config = configure()
 
     const lock = {
       id: 'lockwithdrawalconfirmingid',
