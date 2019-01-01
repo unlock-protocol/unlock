@@ -52,8 +52,6 @@
     "redux-devtools-extension": "^2.13.5",
     "redux-mock-store": "^1.5.1",
     "run-script-os": "^1.0.5",
-    "storybook-react-router": "^1.0.1",
-    "storybook-router": "^0.3.4",
     "styled-components": "^4.0.0",
     "truffle": "^4.1.11",
     "uniqid": "^5.0.3",
@@ -110,6 +108,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@storybook/addon-actions": "^4.1.4",
     "@storybook/addon-knobs": "^4.1.4",
     "@storybook/addon-storyshots": "^4.1.4",
     "@storybook/addons": "^4.1.4",
@@ -120,6 +119,7 @@
     "lint-staged": "^8.0.5",
     "prettier": "^1.14.3",
     "prettier-eslint-cli": "^4.7.1",
-    "react-testing-library": "^5.2.3"
+    "react-testing-library": "^5.2.3",
+    "storybook-react-router": "^1.0.2"
   }
 }
