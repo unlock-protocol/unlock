@@ -1097,6 +1097,60 @@ describe('Web3Service', () => {
       })
     })
 
+    describe('updateKeyPrice', () => {
+      let lock
+      let account
+      let price
+
+      beforeEach(() => {
+        lock = {
+          address: '0xbE9437f7D6A119c81609A93B724507156E62a84d',
+          expirationDuration: 86400, // 1 day
+          keyPrice: '100000000000000000', // 0.1 Eth
+          maxNumberOfKeys: 100,
+        }
+        account = {
+          address: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+        }
+        price = '1000000000000'
+      })
+
+      it('should invoke sendTransaction with the right params', () => {
+        expect.assertions(1)
+
+        web3Service.sendTransaction = jest.fn()
+
+        web3Service.updateKeyPrice(lock.address, account, price)
+        expect(web3Service.sendTransaction).toHaveBeenCalledWith(
+          expect.objectContaining({
+            status: 'pending',
+            confirmations: 0,
+            createdAt: expect.any(Number),
+            lock: lock.address,
+          }),
+          {
+            to: expect.any(String),
+            from: account.address,
+            data: expect.any(String), // encoded purchaseKey data
+            gas: 1000000,
+            contractAbi: expect.any(Array), // abi...
+          },
+          expect.any(Function)
+        )
+      })
+
+      it('should getLock when the receipt event has been received', () => {
+        expect.assertions(1)
+        web3Service.sendTransaction = jest.fn((transaction, args, cb) => {
+          return cb(null, { event: 'receipt', args: {} })
+        })
+        web3Service.getLock = jest.fn()
+
+        web3Service.updateKeyPrice(lock.address, account, price)
+        expect(web3Service.getLock).toHaveBeenCalledWith(lock.address)
+      })
+    })
+
     describe('withdrawFromLock', () => {
       let lock
       let account
