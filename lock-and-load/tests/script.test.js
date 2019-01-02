@@ -1,4 +1,4 @@
-import { findPaywallUrl, DEFAULT_URL } from "../src/script";
+import { findPaywallUrl, DEFAULT_URL, findLocks } from "../src/script";
 
 describe('script', () => {
   describe('findPaywallUrl', () => {
@@ -42,5 +42,13 @@ describe('script', () => {
       }
       expect(findPaywallUrl(fakeDoc)).toBe(DEFAULT_URL)
     })
+  })
+
+  it('findLocks', () => {
+    const document = {
+      querySelector: jest.fn(() => 'hi')
+    }
+    expect(findLocks(document)).toBe('hi')
+    expect(document.querySelector).toHaveBeenCalledWith('meta[name=lock]')
   })
 })
