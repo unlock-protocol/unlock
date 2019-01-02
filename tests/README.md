@@ -24,7 +24,7 @@ In CI, running these tests requires 3 docker images:
 
 ## Running locally
 
-It is possible to run the tests locally, without docker running. Additionnaly, running the test
+It is possible to run the tests locally, without docker running. Additionally, running the test
 locally allows for a little more flexibility to debug. For example, even if the tests are running in
 a headless way by default, they can be run in an actual web browser which lets the developer see
 what is being rendered on screen.
