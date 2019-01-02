@@ -8,6 +8,7 @@ const copyFile = promisify(fs.copyFile)
 module.exports = withSourceMaps({
   publicRuntimeConfig: {
     unlockEnv: process.env.UNLOCK_ENV || 'dev',
+    httpProvider: process.env.HTTP_PROVIDER || '127.0.0.1',
   },
   webpack(config) {
     return config

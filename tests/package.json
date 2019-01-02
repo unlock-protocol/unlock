@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --detectOpenHandles",
-    "lint": "./node_modules/eslint/bin/eslint.js ."
+    "lint": "eslint .",
+    "pretest": "cd ../smart-contracts && npm run deploy -- --network test",
+    "ci": "npm run test"
   },
   "jest": {
     "globalSetup": "./helpers/setup.js",
@@ -24,18 +26,10 @@
     "eslint-plugin-standard": "^4.0.0",
     "expect-puppeteer": "^3.4.0",
     "fs-extra": "^7.0.0",
-    "ganache-cli": "^6.1.8",
     "jest": "^23.6.0",
-    "jest-cli": "^23.6.0",
     "jest-environment-puppeteer": "^3.4.0",
     "jest-puppeteer": "^3.4.0",
-    "puppeteer": "^1.9.0",
-    "solc": "^0.4.25",
-    "truffle": "^4.1.14",
-    "truffle-compile": "^3.0.13",
-    "truffle-config": "^1.0.6",
-    "truffle-contract": "^3.0.6",
-    "truffle-workflow-compile": "^1.0.6"
+    "puppeteer": "^1.9.0"
   },
   "devDependencies": {
     "eslint-config-airbnb-base": "^13.1.0",
