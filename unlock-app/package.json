@@ -51,6 +51,23 @@
     "web3": "1.0.0-beta.33",
     "web3-utils": "1.0.0-beta.33"
   },
+  "devDependencies": {
+    "@storybook/addon-actions": "^4.1.4",
+    "@storybook/addon-knobs": "^4.1.4",
+    "@storybook/addon-storyshots": "^4.1.4",
+    "@storybook/addons": "^4.1.4",
+    "babel-plugin-require-context-hook": "^1.0.0",
+    "depcheck": "^0.6.11",
+    "eslint-config-prettier": "^3.3.0",
+    "jest-dom": "^3.0.0",
+    "jest-mock-axios": "^2.1.11",
+    "lint-staged": "^8.1.0",
+    "npm-check": "^5.9.0",
+    "prettier": "^1.15.3",
+    "prettier-eslint-cli": "^4.7.1",
+    "react-testing-library": "^5.4.2",
+    "storybook-react-router": "^1.0.2"
+  },
   "engines": {
     "node": "=8.11.4"
   },
@@ -98,22 +115,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "@storybook/addon-actions": "^4.1.4",
-    "@storybook/addon-knobs": "^4.1.4",
-    "@storybook/addon-storyshots": "^4.1.4",
-    "@storybook/addons": "^4.1.4",
-    "babel-plugin-require-context-hook": "^1.0.0",
-    "depcheck": "^0.6.11",
-    "eslint-config-prettier": "^3.3.0",
-    "jest-dom": "^3.0.0",
-    "jest-mock-axios": "^2.1.11",
-    "lint-staged": "^8.1.0",
-    "npm-check": "^5.9.0",
-    "prettier": "^1.15.3",
-    "prettier-eslint-cli": "^4.7.1",
-    "react-testing-library": "^5.4.2",
-    "storybook-react-router": "^1.0.2"
-  }
+  ]
 }
