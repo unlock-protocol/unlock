@@ -87,8 +87,7 @@ export class CreatorLock extends React.Component {
             <EmbedCodeSnippet lock={lock} />
           </LockPanel>
         )}
-        {!showEmbedCode &&
-          showKeys && (
+        {!showEmbedCode && showKeys && (
           <LockPanel>
             <LockDivider />
             <KeyList lock={lock} />
