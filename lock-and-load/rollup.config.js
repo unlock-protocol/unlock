@@ -10,6 +10,7 @@ const config = {
   plugins: [
     babel({
       exclude: '**/node_modules/**',
+      runtimeHelpers: true,
     }),
     uglify({
       compress: {

@@ -4,6 +4,7 @@
   "description": "Loader for Unlock protocol locks into a web resource",
   "main": "index.js",
   "scripts": {
+    "build": "NODE_ENV=production rollup -c -o paywall.min.js",
     "test": "jest"
   },
   "repository": {
@@ -17,8 +18,20 @@
   },
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
   "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-env": "^7.2.3",
+    "babel-core": "^7.0.0-bridge.0",
     "jest": "^23.6.0",
+    "regenerator-runtime": "^0.13.1",
+    "rollup": "^1.0.0",
     "rollup-plugin-babel": "^4.2.0",
     "rollup-plugin-uglify": "^6.0.0"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
