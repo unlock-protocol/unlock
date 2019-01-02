@@ -1,0 +1,147 @@
+[
+  {
+    "scope": "http://127.0.0.1:8545",
+    "method": "POST",
+    "path": "/",
+    "body": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "net_version",
+      "params": []
+    },
+    "status": 200,
+    "response": {
+      "id": 1,
+      "jsonrpc": "2.0",
+      "result": "1984"
+    },
+    "rawHeaders": [
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, User-Agent",
+      "Access-Control-Allow-Origin",
+      "*",
+      "Access-Control-Allow-Methods",
+      "*",
+      "Content-Type",
+      "application/json",
+      "Date",
+      "Wed, 02 Jan 2019 19:57:43 GMT",
+      "Connection",
+      "keep-alive",
+      "Transfer-Encoding",
+      "chunked"
+    ]
+  },
+  {
+    "scope": "http://127.0.0.1:8545",
+    "method": "POST",
+    "path": "/",
+    "body": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "eth_sign",
+      "params": [
+        "0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2",
+        "0x65794a68624763694f694a756232356c4969776964486c77496a6f69536c6455496e302e65794a6b59585268496a6f695a47526b4969776961574630496a6f784e5451324d6a45354e6a49334c434a6c654841694f6a45314e4459794d546b324d7a4173496d6c7a63794936496a4234595746685a47566c5a44526a4d4749344e6a466a596a4d325a6a526a5a5441774e6d4535597a6b77596d45795a54517a5a6d526a4d694a39"
+      ]
+    },
+    "status": 200,
+    "response": {
+      "id": 2,
+      "jsonrpc": "2.0",
+      "result": "0xd64fd442c30596b2861f60d8e55207aa239df32303689463ea4f5ab48ee9c4992eb6db40d8f8c5b568413f3963edfdb708ed788369c87fc93b1aca95222e54e401"
+    },
+    "rawHeaders": [
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, User-Agent",
+      "Access-Control-Allow-Origin",
+      "*",
+      "Access-Control-Allow-Methods",
+      "*",
+      "Content-Type",
+      "application/json",
+      "Date",
+      "Wed, 02 Jan 2019 19:57:43 GMT",
+      "Connection",
+      "keep-alive",
+      "Transfer-Encoding",
+      "chunked"
+    ]
+  },
+  {
+    "scope": "http://127.0.0.1:8545",
+    "method": "POST",
+    "path": "/",
+    "body": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "method": "net_version",
+      "params": []
+    },
+    "status": 200,
+    "response": {
+      "id": 3,
+      "jsonrpc": "2.0",
+      "result": "1984"
+    },
+    "rawHeaders": [
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, User-Agent",
+      "Access-Control-Allow-Origin",
+      "*",
+      "Access-Control-Allow-Methods",
+      "*",
+      "Content-Type",
+      "application/json",
+      "Date",
+      "Wed, 02 Jan 2019 19:57:43 GMT",
+      "Connection",
+      "keep-alive",
+      "Transfer-Encoding",
+      "chunked"
+    ]
+  },
+  {
+    "scope": "http://127.0.0.1:8545",
+    "method": "POST",
+    "path": "/",
+    "body": {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "method": "eth_sign",
+      "params": [
+        "0xf8ade52fe03fceb34458bac79eeba0be5344182d",
+        "0x65794a68624763694f694a756232356c4969776964486c77496a6f69536c6455496e302e65794a6b59585268496a6f695a47526b4969776961574630496a6f784e5451324d6a45354e6a49334c434a6c654841694f6a45314e4459794d546b324d7a4173496d6c7a63794936496a42345a6a6868524555314d6d5a464d444e47593256694d7a51304e54686959554d334f55566c516d4577596b55314d7a51304d5467795a434a39"
+      ]
+    },
+    "status": 200,
+    "response": {
+      "id": 4,
+      "jsonrpc": "2.0",
+      "error": {
+        "message": "cannot sign data; no private key",
+        "code": -32000,
+        "data": {
+          "stack": "Error: cannot sign data; no private key\n    at StateManager.sign (/Users/akeem/projects/unlock/node_modules/ganache-cli/node_modules/ganache-core/lib/statemanager.js:476:11)\n    at GethApiDouble.eth_sign (/Users/akeem/projects/unlock/node_modules/ganache-cli/node_modules/ganache-core/lib/subproviders/geth_api_double.js:279:25)\n    at GethApiDouble.handleRequest (/Users/akeem/projects/unlock/node_modules/ganache-cli/node_modules/ganache-core/lib/subproviders/geth_api_double.js:105:10)\n    at next (/Users/akeem/projects/unlock/node_modules/ganache-cli/node_modules/ganache-core/node_modules/web3-provider-engine/index.js:116:18)\n    at GethDefaults.handleRequest (/Users/akeem/projects/unlock/node_modules/ganache-cli/node_modules/ganache-core/lib/subproviders/gethdefaults.js:15:12)\n    at next (/Users/akeem/projects/unlock/node_modules/ganache-cli/node_modules/ganache-core/node_modules/web3-provider-engine/index.js:116:18)\n    at SubscriptionSubprovider.FilterSubprovider.handleRequest (/Users/akeem/projects/unlock/node_modules/ganache-cli/node_modules/ganache-core/node_modules/web3-provider-engine/subproviders/filters.js:89:7)\n    at SubscriptionSubprovider.handleRequest (/Users/akeem/projects/unlock/node_modules/ganache-cli/node_modules/ganache-core/node_modules/web3-provider-engine/subproviders/subscriptions.js:136:49)\n    at next (/Users/akeem/projects/unlock/node_modules/ganache-cli/node_modules/ganache-core/node_modules/web3-provider-engine/index.js:116:18)\n    at DelayedBlockFilter.handleRequest (/Users/akeem/projects/unlock/node_modules/ganache-cli/node_modules/ganache-core/lib/subproviders/delayedblockfilter.js:31:3)\n    at next (/Users/akeem/projects/unlock/node_modules/ganache-cli/node_modules/ganache-core/node_modules/web3-provider-engine/index.js:116:18)\n    at RequestFunnel.handleRequest (/Users/akeem/projects/unlock/node_modules/ganache-cli/node_modules/ganache-core/lib/subproviders/requestfunnel.js:32:12)\n    at next (/Users/akeem/projects/unlock/node_modules/ganache-cli/node_modules/ganache-core/node_modules/web3-provider-engine/index.js:116:18)\n    at Web3ProviderEngine._handleAsync (/Users/akeem/projects/unlock/node_modules/ganache-cli/node_modules/ganache-core/node_modules/web3-provider-engine/index.js:103:3)\n    at Timeout._onTimeout (/Users/akeem/projects/unlock/node_modules/ganache-cli/node_modules/ganache-core/node_modules/web3-provider-engine/index.js:87:12)\n    at listOnTimeout (timers.js:324:15)\n    at processTimers (timers.js:268:5)",
+          "name": "Error"
+        }
+      }
+    },
+    "rawHeaders": [
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, User-Agent",
+      "Access-Control-Allow-Origin",
+      "*",
+      "Access-Control-Allow-Methods",
+      "*",
+      "Content-Type",
+      "application/json",
+      "Date",
+      "Wed, 02 Jan 2019 19:57:43 GMT",
+      "Connection",
+      "keep-alive",
+      "Transfer-Encoding",
+      "chunked"
+    ]
+  }
+]
