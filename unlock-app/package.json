@@ -49,10 +49,7 @@
     "truffle": "^4.1.11",
     "uniqid": "^5.0.3",
     "web3": "1.0.0-beta.33",
-    "web3-utils": "1.0.0-beta.33",
-    "webpack": "^4.20.2",
-    "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.9"
+    "web3-utils": "1.0.0-beta.33"
   },
   "engines": {
     "node": "=8.11.4"
@@ -112,11 +109,11 @@
     "eslint-config-prettier": "^3.3.0",
     "jest-dom": "^3.0.0",
     "jest-mock-axios": "^2.1.11",
-    "lint-staged": "^8.0.5",
+    "lint-staged": "^8.1.0",
     "npm-check": "^5.9.0",
-    "prettier": "^1.14.3",
+    "prettier": "^1.15.3",
     "prettier-eslint-cli": "^4.7.1",
-    "react-testing-library": "^5.2.3",
+    "react-testing-library": "^5.4.2",
     "storybook-react-router": "^1.0.2"
   }
 }
