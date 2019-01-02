@@ -66,6 +66,7 @@
     "react-router-test-context": "^0.1.0",
     "react-test-renderer": "16.7.0",
     "react-testing-library": "^5.4.2",
+    "rollup": "^1.0.0",
     "storybook-react-router": "^1.0.2"
   },
   "engines": {
