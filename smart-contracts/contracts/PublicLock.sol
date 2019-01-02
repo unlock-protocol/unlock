@@ -26,6 +26,12 @@ contract PublicLock is ILockCore, ERC165, IERC721, Ownable {
     bytes data; // Note: This can be expensive?
   }
 
+  // Events
+  event PriceChanged(
+    uint indexed keyPrice
+  );
+
+
   // Fields
   // Unlock Protocol address
   // TODO: should we make that private/internal?
@@ -258,6 +264,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, Ownable {
     onlyOwner
   {
     keyPrice = _keyPrice;
+    emit PriceChanged(keyPrice);
   }
 
   /**
