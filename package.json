@@ -7,7 +7,8 @@
     "doc": "docs"
   },
   "dependencies": {
-    "eslint-plugin-jest": "^21.22.1"
+    "eslint-plugin-jest": "^21.22.1",
+    "netlify-cli": "^2.6.0"
   },
   "devDependencies": {
     "husky": "^1.2.0",
