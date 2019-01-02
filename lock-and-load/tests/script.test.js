@@ -1,4 +1,4 @@
-import { findPaywallUrl, DEFAULT_URL, findLocks } from "../src/script";
+import { findPaywallUrl, DEFAULT_URL, findLocks, getPaywallUrl } from "../src/script";
 
 describe('script', () => {
   describe('findPaywallUrl', () => {
@@ -50,5 +50,12 @@ describe('script', () => {
     }
     expect(findLocks(document)).toBe('hi')
     expect(document.querySelector).toHaveBeenCalledWith('meta[name=lock]')
+  })
+
+  it('getPaywallUrl', () => {
+    const window = {
+      unlock_url: 'hi'
+    }
+    expect(getPaywallUrl(window)).toBe('hi')
   })
 })
