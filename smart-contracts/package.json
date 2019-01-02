@@ -41,7 +41,8 @@
     "lint": "solhint contracts/**/*.sol",
     "ci": "npm run lint && npm run test",
     "build": "truffle compile --reset",
-    "deploy": "truffle deploy"
+    "deploy": "truffle deploy",
+    "zos": "zos"
   },
   "author": "",
   "license": "ISC"

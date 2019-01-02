@@ -128,35 +128,35 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity 0.4.24;\n\nimport \"./ILockCore.sol\";\n\n/**\n * @title The Unlock Interface\n * @author Nick Furfaro (unlock-protocol.com)\n**/\n\ninterface IUnlock {\n\n\n  // Events\n  event NewLock(\n    address indexed lockOwner,\n    address indexed newLockAddress\n  );\n\n  // Use initialize instead of a constructor to support proxies (for upgradeability via zos).\n  function initialize(address _owner) public;\n\n  /**\n  * @dev Create lock\n  * This deploys a lock for a creator. It also keeps track of the deployed lock.\n  * Return type `ILockCore` is the most specific interface from which all lock types inherit.\n  */\n  function createLock(\n    uint _expirationDuration,\n    uint _keyPrice,\n    uint _maxNumberOfKeys\n  )\n    public\n    returns (ILockCore lock);\n\n    /**\n   * This function returns the discount available for a user, when purchasing a\n   * a key from a lock.\n   * This does not modify the state. It returns both the discount and the number of tokens\n   * consumed to grant that discount.\n   */\n  function computeAvailableDiscountFor(\n    address _purchaser, // solhint-disable-line no-unused-vars\n    uint _keyPrice // solhint-disable-line no-unused-vars\n  )\n    public\n    view\n    returns (uint discount, uint tokens);\n\n    /**\n   * This function keeps track of the added GDP, as well as grants of discount tokens\n   * to the referrer, if applicable.\n   * The number of discount tokens granted is based on the value of the referal,\n   * the current growth rate and the lock's discount token distribution rate\n   * This function is invoked by a previously deployed lock only.\n   */\n  function recordKeyPurchase(\n    uint _value,\n    address _referrer // solhint-disable-line no-unused-vars\n  )\n    public;\n\n    /**\n   * This function will keep track of consumed discounts by a given user.\n   * It will also grant discount tokens to the creator who is granting the discount based on the\n   * amount of discount and compensation rate.\n   * This function is invoked by a previously deployed lock only.\n   */\n  function recordConsumedDiscount(\n    uint _discount,\n    uint _tokens // solhint-disable-line no-unused-vars\n  )\n    public;\n}\n",
-  "sourcePath": "/Users/overlord/DAPPS/unlock/smart-contracts/contracts/interfaces/IUnlock.sol",
+  "sourcePath": "/Users/julien/repos/unlock/smart-contracts/contracts/interfaces/IUnlock.sol",
   "ast": {
-    "absolutePath": "/Users/overlord/DAPPS/unlock/smart-contracts/contracts/interfaces/IUnlock.sol",
+    "absolutePath": "/Users/julien/repos/unlock/smart-contracts/contracts/interfaces/IUnlock.sol",
     "exportedSymbols": {
       "IUnlock": [
-        1161
+        1218
       ]
     },
-    "id": 1162,
+    "id": 1219,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1112,
+        "id": 1169,
         "literals": [
           "solidity",
           "0.4",
           ".24"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:23:6"
+        "src": "0:23:7"
       },
       {
-        "absolutePath": "/Users/overlord/DAPPS/unlock/smart-contracts/contracts/interfaces/ILockCore.sol",
+        "absolutePath": "/Users/julien/repos/unlock/smart-contracts/contracts/interfaces/ILockCore.sol",
         "file": "./ILockCore.sol",
-        "id": 1113,
+        "id": 1170,
         "nodeType": "ImportDirective",
-        "scope": 1162,
-        "sourceUnit": 1111,
-        "src": "25:25:6",
+        "scope": 1219,
+        "sourceUnit": 1168,
+        "src": "25:25:7",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -166,9 +166,9 @@
         "contractKind": "interface",
         "documentation": "@title The Unlock Interface\n@author Nick Furfaro (unlock-protocol.com)*",
         "fullyImplemented": false,
-        "id": 1161,
+        "id": 1218,
         "linearizedBaseContracts": [
-          1161
+          1218
         ],
         "name": "IUnlock",
         "nodeType": "ContractDefinition",
@@ -176,21 +176,21 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 1119,
+            "id": 1176,
             "name": "NewLock",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 1118,
+              "id": 1175,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1115,
+                  "id": 1172,
                   "indexed": true,
                   "name": "lockOwner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1119,
-                  "src": "193:25:6",
+                  "scope": 1176,
+                  "src": "193:25:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -198,10 +198,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1114,
+                    "id": 1171,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "193:7:6",
+                    "src": "193:7:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -212,12 +212,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 1117,
+                  "id": 1174,
                   "indexed": true,
                   "name": "newLockAddress",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1119,
-                  "src": "224:30:6",
+                  "scope": 1176,
+                  "src": "224:30:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -225,10 +225,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1116,
+                    "id": 1173,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "224:7:6",
+                    "src": "224:7:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -238,14 +238,14 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "187:71:6"
+              "src": "187:71:7"
             },
-            "src": "174:85:6"
+            "src": "174:85:7"
           },
           {
             "body": null,
             "documentation": null,
-            "id": 1124,
+            "id": 1181,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -253,16 +253,16 @@
             "name": "initialize",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1122,
+              "id": 1179,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1121,
+                  "id": 1178,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1124,
-                  "src": "377:14:6",
+                  "scope": 1181,
+                  "src": "377:14:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -270,10 +270,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1120,
+                    "id": 1177,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "377:7:6",
+                    "src": "377:7:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -283,17 +283,17 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "376:16:6"
+              "src": "376:16:7"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1123,
+              "id": 1180,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "399:0:6"
+              "src": "399:0:7"
             },
-            "scope": 1161,
-            "src": "357:43:6",
+            "scope": 1218,
+            "src": "357:43:7",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -301,7 +301,7 @@
           {
             "body": null,
             "documentation": "@dev Create lock\nThis deploys a lock for a creator. It also keeps track of the deployed lock.\nReturn type `ILockCore` is the most specific interface from which all lock types inherit.",
-            "id": 1135,
+            "id": 1192,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -309,16 +309,16 @@
             "name": "createLock",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1131,
+              "id": 1188,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1126,
+                  "id": 1183,
                   "name": "_expirationDuration",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1135,
-                  "src": "636:24:6",
+                  "scope": 1192,
+                  "src": "636:24:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -326,10 +326,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1125,
+                    "id": 1182,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "636:4:6",
+                    "src": "636:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -340,11 +340,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1128,
+                  "id": 1185,
                   "name": "_keyPrice",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1135,
-                  "src": "666:14:6",
+                  "scope": 1192,
+                  "src": "666:14:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -352,10 +352,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1127,
+                    "id": 1184,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "666:4:6",
+                    "src": "666:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -366,11 +366,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1130,
+                  "id": 1187,
                   "name": "_maxNumberOfKeys",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1135,
-                  "src": "686:21:6",
+                  "scope": 1192,
+                  "src": "686:21:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -378,10 +378,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1129,
+                    "id": 1186,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "686:4:6",
+                    "src": "686:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -391,35 +391,35 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "630:81:6"
+              "src": "630:81:7"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1134,
+              "id": 1191,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1133,
+                  "id": 1190,
                   "name": "lock",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1135,
-                  "src": "736:14:6",
+                  "scope": 1192,
+                  "src": "736:14:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_ILockCore_$1110",
+                    "typeIdentifier": "t_contract$_ILockCore_$1167",
                     "typeString": "contract ILockCore"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 1132,
+                    "id": 1189,
                     "name": "ILockCore",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 1110,
-                    "src": "736:9:6",
+                    "referencedDeclaration": 1167,
+                    "src": "736:9:7",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_ILockCore_$1110",
+                      "typeIdentifier": "t_contract$_ILockCore_$1167",
                       "typeString": "contract ILockCore"
                     }
                   },
@@ -427,10 +427,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "735:16:6"
+              "src": "735:16:7"
             },
-            "scope": 1161,
-            "src": "611:141:6",
+            "scope": 1218,
+            "src": "611:141:7",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -438,7 +438,7 @@
           {
             "body": null,
             "documentation": "This function returns the discount available for a user, when purchasing a\na key from a lock.\nThis does not modify the state. It returns both the discount and the number of tokens\nconsumed to grant that discount.",
-            "id": 1146,
+            "id": 1203,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -446,16 +446,16 @@
             "name": "computeAvailableDiscountFor",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1140,
+              "id": 1197,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1137,
+                  "id": 1194,
                   "name": "_purchaser",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1146,
-                  "src": "1045:18:6",
+                  "scope": 1203,
+                  "src": "1045:18:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -463,10 +463,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1136,
+                    "id": 1193,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1045:7:6",
+                    "src": "1045:7:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -477,11 +477,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1139,
+                  "id": 1196,
                   "name": "_keyPrice",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1146,
-                  "src": "1108:14:6",
+                  "scope": 1203,
+                  "src": "1108:14:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -489,10 +489,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1138,
+                    "id": 1195,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1108:4:6",
+                    "src": "1108:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -502,20 +502,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1039:126:6"
+              "src": "1039:126:7"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1145,
+              "id": 1202,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1142,
+                  "id": 1199,
                   "name": "discount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1146,
-                  "src": "1199:13:6",
+                  "scope": 1203,
+                  "src": "1199:13:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -523,10 +523,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1141,
+                    "id": 1198,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1199:4:6",
+                    "src": "1199:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -537,11 +537,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1144,
+                  "id": 1201,
                   "name": "tokens",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1146,
-                  "src": "1214:11:6",
+                  "scope": 1203,
+                  "src": "1214:11:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -549,10 +549,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1143,
+                    "id": 1200,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1214:4:6",
+                    "src": "1214:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -562,10 +562,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1198:28:6"
+              "src": "1198:28:7"
             },
-            "scope": 1161,
-            "src": "1003:224:6",
+            "scope": 1218,
+            "src": "1003:224:7",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
@@ -573,7 +573,7 @@
           {
             "body": null,
             "documentation": "This function keeps track of the added GDP, as well as grants of discount tokens\nto the referrer, if applicable.\nThe number of discount tokens granted is based on the value of the referal,\nthe current growth rate and the lock's discount token distribution rate\nThis function is invoked by a previously deployed lock only.",
-            "id": 1153,
+            "id": 1210,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -581,16 +581,16 @@
             "name": "recordKeyPurchase",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1151,
+              "id": 1208,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1148,
+                  "id": 1205,
                   "name": "_value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1153,
-                  "src": "1624:11:6",
+                  "scope": 1210,
+                  "src": "1624:11:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -598,10 +598,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1147,
+                    "id": 1204,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1624:4:6",
+                    "src": "1624:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -612,11 +612,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1150,
+                  "id": 1207,
                   "name": "_referrer",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1153,
-                  "src": "1641:17:6",
+                  "scope": 1210,
+                  "src": "1641:17:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -624,10 +624,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1149,
+                    "id": 1206,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1641:7:6",
+                    "src": "1641:7:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -637,17 +637,17 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1618:83:6"
+              "src": "1618:83:7"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1152,
+              "id": 1209,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1712:0:6"
+              "src": "1712:0:7"
             },
-            "scope": 1161,
-            "src": "1592:121:6",
+            "scope": 1218,
+            "src": "1592:121:7",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -655,7 +655,7 @@
           {
             "body": null,
             "documentation": "This function will keep track of consumed discounts by a given user.\nIt will also grant discount tokens to the creator who is granting the discount based on the\namount of discount and compensation rate.\nThis function is invoked by a previously deployed lock only.",
-            "id": 1160,
+            "id": 1217,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -663,16 +663,16 @@
             "name": "recordConsumedDiscount",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1158,
+              "id": 1215,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1155,
+                  "id": 1212,
                   "name": "_discount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1160,
-                  "src": "2052:14:6",
+                  "scope": 1217,
+                  "src": "2052:14:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -680,10 +680,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1154,
+                    "id": 1211,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2052:4:6",
+                    "src": "2052:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -694,11 +694,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1157,
+                  "id": 1214,
                   "name": "_tokens",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1160,
-                  "src": "2072:12:6",
+                  "scope": 1217,
+                  "src": "2072:12:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -706,10 +706,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1156,
+                    "id": 1213,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2072:4:6",
+                    "src": "2072:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -719,56 +719,56 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2046:81:6"
+              "src": "2046:81:7"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1159,
+              "id": 1216,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "2138:0:6"
+              "src": "2138:0:7"
             },
-            "scope": 1161,
-            "src": "2015:124:6",
+            "scope": 1218,
+            "src": "2015:124:7",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 1162,
-        "src": "138:2003:6"
+        "scope": 1219,
+        "src": "138:2003:7"
       }
     ],
-    "src": "0:2142:6"
+    "src": "0:2142:7"
   },
   "legacyAST": {
-    "absolutePath": "/Users/overlord/DAPPS/unlock/smart-contracts/contracts/interfaces/IUnlock.sol",
+    "absolutePath": "/Users/julien/repos/unlock/smart-contracts/contracts/interfaces/IUnlock.sol",
     "exportedSymbols": {
       "IUnlock": [
-        1161
+        1218
       ]
     },
-    "id": 1162,
+    "id": 1219,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1112,
+        "id": 1169,
         "literals": [
           "solidity",
           "0.4",
           ".24"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:23:6"
+        "src": "0:23:7"
       },
       {
-        "absolutePath": "/Users/overlord/DAPPS/unlock/smart-contracts/contracts/interfaces/ILockCore.sol",
+        "absolutePath": "/Users/julien/repos/unlock/smart-contracts/contracts/interfaces/ILockCore.sol",
         "file": "./ILockCore.sol",
-        "id": 1113,
+        "id": 1170,
         "nodeType": "ImportDirective",
-        "scope": 1162,
-        "sourceUnit": 1111,
-        "src": "25:25:6",
+        "scope": 1219,
+        "sourceUnit": 1168,
+        "src": "25:25:7",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -778,9 +778,9 @@
         "contractKind": "interface",
         "documentation": "@title The Unlock Interface\n@author Nick Furfaro (unlock-protocol.com)*",
         "fullyImplemented": false,
-        "id": 1161,
+        "id": 1218,
         "linearizedBaseContracts": [
-          1161
+          1218
         ],
         "name": "IUnlock",
         "nodeType": "ContractDefinition",
@@ -788,21 +788,21 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 1119,
+            "id": 1176,
             "name": "NewLock",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 1118,
+              "id": 1175,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1115,
+                  "id": 1172,
                   "indexed": true,
                   "name": "lockOwner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1119,
-                  "src": "193:25:6",
+                  "scope": 1176,
+                  "src": "193:25:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -810,10 +810,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1114,
+                    "id": 1171,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "193:7:6",
+                    "src": "193:7:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -824,12 +824,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 1117,
+                  "id": 1174,
                   "indexed": true,
                   "name": "newLockAddress",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1119,
-                  "src": "224:30:6",
+                  "scope": 1176,
+                  "src": "224:30:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -837,10 +837,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1116,
+                    "id": 1173,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "224:7:6",
+                    "src": "224:7:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -850,14 +850,14 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "187:71:6"
+              "src": "187:71:7"
             },
-            "src": "174:85:6"
+            "src": "174:85:7"
           },
           {
             "body": null,
             "documentation": null,
-            "id": 1124,
+            "id": 1181,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -865,16 +865,16 @@
             "name": "initialize",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1122,
+              "id": 1179,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1121,
+                  "id": 1178,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1124,
-                  "src": "377:14:6",
+                  "scope": 1181,
+                  "src": "377:14:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -882,10 +882,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1120,
+                    "id": 1177,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "377:7:6",
+                    "src": "377:7:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -895,17 +895,17 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "376:16:6"
+              "src": "376:16:7"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1123,
+              "id": 1180,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "399:0:6"
+              "src": "399:0:7"
             },
-            "scope": 1161,
-            "src": "357:43:6",
+            "scope": 1218,
+            "src": "357:43:7",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -913,7 +913,7 @@
           {
             "body": null,
             "documentation": "@dev Create lock\nThis deploys a lock for a creator. It also keeps track of the deployed lock.\nReturn type `ILockCore` is the most specific interface from which all lock types inherit.",
-            "id": 1135,
+            "id": 1192,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -921,16 +921,16 @@
             "name": "createLock",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1131,
+              "id": 1188,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1126,
+                  "id": 1183,
                   "name": "_expirationDuration",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1135,
-                  "src": "636:24:6",
+                  "scope": 1192,
+                  "src": "636:24:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -938,10 +938,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1125,
+                    "id": 1182,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "636:4:6",
+                    "src": "636:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -952,11 +952,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1128,
+                  "id": 1185,
                   "name": "_keyPrice",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1135,
-                  "src": "666:14:6",
+                  "scope": 1192,
+                  "src": "666:14:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -964,10 +964,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1127,
+                    "id": 1184,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "666:4:6",
+                    "src": "666:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -978,11 +978,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1130,
+                  "id": 1187,
                   "name": "_maxNumberOfKeys",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1135,
-                  "src": "686:21:6",
+                  "scope": 1192,
+                  "src": "686:21:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -990,10 +990,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1129,
+                    "id": 1186,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "686:4:6",
+                    "src": "686:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1003,35 +1003,35 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "630:81:6"
+              "src": "630:81:7"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1134,
+              "id": 1191,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1133,
+                  "id": 1190,
                   "name": "lock",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1135,
-                  "src": "736:14:6",
+                  "scope": 1192,
+                  "src": "736:14:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_ILockCore_$1110",
+                    "typeIdentifier": "t_contract$_ILockCore_$1167",
                     "typeString": "contract ILockCore"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 1132,
+                    "id": 1189,
                     "name": "ILockCore",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 1110,
-                    "src": "736:9:6",
+                    "referencedDeclaration": 1167,
+                    "src": "736:9:7",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_ILockCore_$1110",
+                      "typeIdentifier": "t_contract$_ILockCore_$1167",
                       "typeString": "contract ILockCore"
                     }
                   },
@@ -1039,10 +1039,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "735:16:6"
+              "src": "735:16:7"
             },
-            "scope": 1161,
-            "src": "611:141:6",
+            "scope": 1218,
+            "src": "611:141:7",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -1050,7 +1050,7 @@
           {
             "body": null,
             "documentation": "This function returns the discount available for a user, when purchasing a\na key from a lock.\nThis does not modify the state. It returns both the discount and the number of tokens\nconsumed to grant that discount.",
-            "id": 1146,
+            "id": 1203,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1058,16 +1058,16 @@
             "name": "computeAvailableDiscountFor",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1140,
+              "id": 1197,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1137,
+                  "id": 1194,
                   "name": "_purchaser",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1146,
-                  "src": "1045:18:6",
+                  "scope": 1203,
+                  "src": "1045:18:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1075,10 +1075,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1136,
+                    "id": 1193,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1045:7:6",
+                    "src": "1045:7:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1089,11 +1089,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1139,
+                  "id": 1196,
                   "name": "_keyPrice",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1146,
-                  "src": "1108:14:6",
+                  "scope": 1203,
+                  "src": "1108:14:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1101,10 +1101,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1138,
+                    "id": 1195,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1108:4:6",
+                    "src": "1108:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1114,20 +1114,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1039:126:6"
+              "src": "1039:126:7"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1145,
+              "id": 1202,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1142,
+                  "id": 1199,
                   "name": "discount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1146,
-                  "src": "1199:13:6",
+                  "scope": 1203,
+                  "src": "1199:13:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1135,10 +1135,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1141,
+                    "id": 1198,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1199:4:6",
+                    "src": "1199:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1149,11 +1149,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1144,
+                  "id": 1201,
                   "name": "tokens",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1146,
-                  "src": "1214:11:6",
+                  "scope": 1203,
+                  "src": "1214:11:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1161,10 +1161,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1143,
+                    "id": 1200,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1214:4:6",
+                    "src": "1214:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1174,10 +1174,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1198:28:6"
+              "src": "1198:28:7"
             },
-            "scope": 1161,
-            "src": "1003:224:6",
+            "scope": 1218,
+            "src": "1003:224:7",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
@@ -1185,7 +1185,7 @@
           {
             "body": null,
             "documentation": "This function keeps track of the added GDP, as well as grants of discount tokens\nto the referrer, if applicable.\nThe number of discount tokens granted is based on the value of the referal,\nthe current growth rate and the lock's discount token distribution rate\nThis function is invoked by a previously deployed lock only.",
-            "id": 1153,
+            "id": 1210,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1193,16 +1193,16 @@
             "name": "recordKeyPurchase",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1151,
+              "id": 1208,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1148,
+                  "id": 1205,
                   "name": "_value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1153,
-                  "src": "1624:11:6",
+                  "scope": 1210,
+                  "src": "1624:11:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1210,10 +1210,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1147,
+                    "id": 1204,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1624:4:6",
+                    "src": "1624:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1224,11 +1224,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1150,
+                  "id": 1207,
                   "name": "_referrer",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1153,
-                  "src": "1641:17:6",
+                  "scope": 1210,
+                  "src": "1641:17:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1236,10 +1236,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1149,
+                    "id": 1206,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1641:7:6",
+                    "src": "1641:7:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1249,17 +1249,17 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1618:83:6"
+              "src": "1618:83:7"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1152,
+              "id": 1209,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1712:0:6"
+              "src": "1712:0:7"
             },
-            "scope": 1161,
-            "src": "1592:121:6",
+            "scope": 1218,
+            "src": "1592:121:7",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -1267,7 +1267,7 @@
           {
             "body": null,
             "documentation": "This function will keep track of consumed discounts by a given user.\nIt will also grant discount tokens to the creator who is granting the discount based on the\namount of discount and compensation rate.\nThis function is invoked by a previously deployed lock only.",
-            "id": 1160,
+            "id": 1217,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1275,16 +1275,16 @@
             "name": "recordConsumedDiscount",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1158,
+              "id": 1215,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1155,
+                  "id": 1212,
                   "name": "_discount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1160,
-                  "src": "2052:14:6",
+                  "scope": 1217,
+                  "src": "2052:14:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1292,10 +1292,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1154,
+                    "id": 1211,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2052:4:6",
+                    "src": "2052:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1306,11 +1306,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1157,
+                  "id": 1214,
                   "name": "_tokens",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1160,
-                  "src": "2072:12:6",
+                  "scope": 1217,
+                  "src": "2072:12:7",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1318,10 +1318,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1156,
+                    "id": 1213,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2072:4:6",
+                    "src": "2072:4:7",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1331,27 +1331,27 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2046:81:6"
+              "src": "2046:81:7"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1159,
+              "id": 1216,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "2138:0:6"
+              "src": "2138:0:7"
             },
-            "scope": 1161,
-            "src": "2015:124:6",
+            "scope": 1218,
+            "src": "2015:124:7",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 1162,
-        "src": "138:2003:6"
+        "scope": 1219,
+        "src": "138:2003:7"
       }
     ],
-    "src": "0:2142:6"
+    "src": "0:2142:7"
   },
   "compiler": {
     "name": "solc",
@@ -1359,5 +1359,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-24T21:59:04.358Z"
+  "updatedAt": "2019-01-02T20:21:32.257Z"
 }
