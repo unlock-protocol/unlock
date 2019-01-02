@@ -1,4 +1,4 @@
-const iframeStyles = [
+export const iframeStyles = [
   'display:none',
   'position:fixed',
   'top:0',
@@ -30,6 +30,6 @@ export function show(iframe) {
   iframe.style['z-index'] = '2147483647'
 }
 
-export function hide(iframe) {
+export function hide(document, iframe) {
   document.body.removeChild(iframe)
 }
