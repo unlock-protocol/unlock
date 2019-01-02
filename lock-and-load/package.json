@@ -1,0 +1,24 @@
+{
+  "name": "lock-and-load",
+  "version": "0.1.0",
+  "description": "Loader for Unlock protocol locks into a web resource",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unlock-protocol/unlock.git"
+  },
+  "author": "Gregory Beaver <greg@unlock-protocol.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/unlock-protocol/unlock/issues"
+  },
+  "homepage": "https://github.com/unlock-protocol/unlock#readme",
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "rollup-plugin-babel": "^4.2.0",
+    "rollup-plugin-uglify": "^6.0.0"
+  }
+}
