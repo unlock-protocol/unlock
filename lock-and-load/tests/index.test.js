@@ -1,5 +1,6 @@
-import lockAndLoad from '../src'
 import mockdoc from './mockdoc'
+global.window = {} // this is fun...
+const lockAndLoad = require('../src').default
 
 describe('lockAndLoad', () => {
   let listenChildren
@@ -51,7 +52,7 @@ describe('lockAndLoad', () => {
     })
 
     it('no locks present', () => {
-      document = mockdoc(['first', 'second'], false, listenScripts, listenQuery, listenChildren, listenIframe)
+      document = mockdoc(['first', 'second'], false, listenScripts, listenQuery, listenChildren, listenIframe, ifr => iframe = ifr)
       const window = {
         addEventListener(type, listener) {
           expect(type).toBe('message')
@@ -87,7 +88,9 @@ describe('lockAndLoad', () => {
     expect(listenChildren).toHaveBeenCalledTimes(1)
 
     listener({ data: 'unlocked' })
-    expect(listenChildren).toHaveBeenCalledTimes(2)
-    expect(listenChildren).toHaveBeenNthCalledWith(2, iframe, 'remove')
+    expect(listenChildren).toHaveBeenCalledTimes(1)
+
+    expect(iframe.style.backgroundColor).toBe('transparent')
+    expect(iframe.style.backgroundImage).toBe('none')
   })
 })

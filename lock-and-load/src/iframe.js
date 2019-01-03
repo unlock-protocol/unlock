@@ -6,7 +6,7 @@ export const iframeStyles = [
   'width:100%',
   'height:100vh',
   'border:0px',
-  'background: linear-gradient(to bottom, rgba(255,255,255,0) 18%, rgba(255,255,255,0) 29%, rgba(255,255,255,1) 48%, rgba(255,255,255,1) 100%)',
+  'background: linear-gradient(rgba(255,255,255,0) 18%, rgba(255,255,255,0) 29%, rgb(255,255,255) 48%)',
   'z-index: -2147483647'
 ]
 
@@ -15,7 +15,7 @@ export function getIframe(document, src) {
 
   s.setAttribute(
     'style',
-    iframeStyles.join(' ')
+    iframeStyles.join('; ')
   )
   s.setAttribute('src', src)
   return s
@@ -30,6 +30,7 @@ export function show(iframe) {
   iframe.style['z-index'] = '2147483647'
 }
 
-export function hide(document, iframe) {
-  document.body.removeChild(iframe)
+export function hide(iframe) {
+  iframe.style.backgroundColor = 'transparent'
+  iframe.style.backgroundImage = 'none'
 }

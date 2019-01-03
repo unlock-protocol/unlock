@@ -13,7 +13,7 @@ describe('script', () => {
           },
           {
             getAttribute() {
-              return 'hooby/booby/static/paywall.js'
+              return 'hooby/booby/static/paywall.min.js'
             }
           }
         ]
@@ -45,8 +45,13 @@ describe('script', () => {
   })
 
   it('findLocks', () => {
+    const el = {
+      getAttribute() {
+        return 'hi'
+      }
+    }
     const document = {
-      querySelector: jest.fn(() => 'hi')
+      querySelector: jest.fn(() => el)
     }
     expect(findLocks(document)).toBe('hi')
     expect(document.querySelector).toHaveBeenCalledWith('meta[name=lock]')

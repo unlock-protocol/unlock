@@ -15,7 +15,7 @@ describe('iframe', () => {
 
     expect(el.setAttribute).toHaveBeenCalledTimes(2)
     expect(el.setAttribute).toHaveBeenLastCalledWith('src', 'hi')
-    expect(el.setAttribute).toHaveBeenNthCalledWith(1, 'style', iframeStyles.join(' '))
+    expect(el.setAttribute).toHaveBeenNthCalledWith(1, 'style', iframeStyles.join('; '))
   })
 
   it('add', () => {
@@ -42,13 +42,14 @@ describe('iframe', () => {
   })
 
   it('hide', () => {
-    const document = {
-      body: {
-        removeChild: jest.fn()
-      }
+    const iframe = {
+      style: {}
     }
-    hide(document, 'hi')
+    hide(iframe)
 
-    expect(document.body.removeChild).toHaveBeenCalledWith('hi')
+    expect(iframe.style).toEqual({
+      backgroundColor: 'transparent',
+      backgroundImage: 'none',
+    })
   })
 })

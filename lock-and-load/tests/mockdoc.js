@@ -22,7 +22,11 @@ export default function mockdoc(
     },
     querySelector() {
       monitorQS()
-      if (!lock) return lock
+      if (!lock) return {
+        getAttribute() {
+          return undefined
+        }
+      }
       return {
         getAttribute() {
           return lock
