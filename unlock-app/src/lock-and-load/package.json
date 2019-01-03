@@ -4,7 +4,7 @@
   "description": "Loader for Unlock protocol locks into a web resource",
   "main": "index.js",
   "scripts": {
-    "build": "NODE_ENV=production rollup -c -o ../unlock-app/src/static/paywall.min.js",
+    "build": "NODE_ENV=production rollup -c -o ../static/paywall.min.js",
     "test": "jest"
   },
   "repository": {
