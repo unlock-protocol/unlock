@@ -7,7 +7,7 @@
     "dev-setup": "NODE_ENV=development sequelize db:migrate",
     "dev": "npm run dev-setup && nodemon server.js",
     "test-setup": "NODE_ENV=test sequelize db:migrate",
-    "test": "npm run test-setup && jest --detectOpenHandles",
+    "test": "npm run test-setup && jest --forceExit",
     "lint": "eslint .",
     "reformat": "prettier-eslint \"src/**/*.js\" --write",
     "eslint-check": "eslint --print-config . | eslint-config-prettier-check",
