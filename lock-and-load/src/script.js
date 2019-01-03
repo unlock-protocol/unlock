@@ -1,7 +1,7 @@
 export const DEFAULT_URL = 'http://localhost:3000'
 
 export function getPaywallUrl(window) {
-  return window.unlock_url
+  return false
 }
 
 export function findPaywallUrl(document) {
@@ -11,13 +11,15 @@ export function findPaywallUrl(document) {
   for (let i = 0; i < scripts.length; i++) {
     const src = scripts[i].getAttribute('src')
     if (pattern.test(src)) {
-      return src.replace('/static/paywall.min.js', '')
+      const paywallHost = scripts[i].getAttribute('data-unlock-url')
+      if (paywallHost) return paywallHost
+      return src.substring(0, src.indexOf('/static/paywall'))
     }
   }
   return DEFAULT_URL
 }
 
-export function findLocks(document) {
-  const lock = document.querySelector('meta[name=lock]')
+export function findLocks(head) {
+  const lock = head.querySelector('meta[name=lock]')
   return lock && lock.getAttribute('content')
 }

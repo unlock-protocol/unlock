@@ -10,7 +10,7 @@ export function EmbedCodeSnippet({ lock }) {
     let domain = window.location.origin
 
     return `<!-- Include this script in the <head> section of your page -->
-<script src="${domain}/static/paywall.min.js"></script>
+<script src="${domain}/static/paywall.min.js" data-unlock-url="${domain}"></script>
 <meta name="lock" content="${lock.address}" />
 `
   }

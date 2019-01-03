@@ -7,16 +7,14 @@ import withConfig from '../utils/withConfig'
 import { LOCK_PATH_NAME_REGEXP } from '../constants'
 import Media from '../theme/media'
 
-const Demo = ({ lock }) => {
+const Demo = ({ lock, domain }) => {
   return (
     <Container>
       <GlobalStyle />
       <Head>
         <title>Unlock Demo Example - Unlock Times</title>
-        <script src="http://localhost:3000/static/paywall.min.js" />
-        {(!lock && console.log('no lock'), lock) && (
-          <meta name="lock" content={(console.log('here', lock), lock)} />
-        )}
+        <script src="/static/paywall.min.js" />
+        {lock && <meta name="lock" content={lock} />}
       </Head>
       <Left />
       <Content>
@@ -76,6 +74,7 @@ const Demo = ({ lock }) => {
 
 Demo.propTypes = {
   lock: PropTypes.string,
+  domain: PropTypes.string.isRequired,
 }
 
 Demo.defaultProps = {
@@ -85,9 +84,13 @@ Demo.defaultProps = {
 export const mapStateToProps = ({ router }) => {
   const match = router.location.pathname.match(LOCK_PATH_NAME_REGEXP)
   const lock = match ? match[1] : null
-
+  const domain =
+    global.document && document.location
+      ? document.location.protocol + '//' + document.location.host
+      : ''
   return {
     lock,
+    domain,
   }
 }
 

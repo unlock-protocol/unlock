@@ -18,14 +18,17 @@ export default function lockAndLoad(window, document, lockAddress) {
 
   // If there is no lock, do nothing!
   if (!lockAddress) {
-    return listenForNewLocks(document.head)
+    return
   }
 
   paywallUrl += `/paywall/${lockAddress}/`
   var iframe = getIframe(document, paywallUrl)
 
+  if (!iframe) {
+    return
+  }
+
   add(document, iframe)
-  console.log(iframe)
 
   let locked = false
   window.addEventListener(
