@@ -7,14 +7,14 @@
     "dev-setup": "NODE_ENV=development sequelize db:migrate",
     "dev": "npm run dev-setup && nodemon server.js",
     "test-setup": "NODE_ENV=test sequelize db:migrate",
-    "test": "npm run test-setup && jest",
+    "test": "npm run test-setup && jest --detectOpenHandles",
     "lint": "eslint .",
     "reformat": "prettier-eslint \"src/**/*.js\" --write",
     "eslint-check": "eslint --print-config . | eslint-config-prettier-check",
     "db:migrate": "sequelize db:migrate",
     "fail-pending-changes": "./scripts/pending-changes.sh",
-    "ci": "npm run build && npm run lint && npm test && npm run reformat && npm run fail-pending-changes",
-    "build": "npm install"
+    "ci": "npm ci && npm run lint && npm test && npm run reformat && npm run fail-pending-changes",
+    "build": "npm ci"
   },
   "author": "",
   "license": "ISC",
