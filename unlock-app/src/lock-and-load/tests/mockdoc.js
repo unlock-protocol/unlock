@@ -2,18 +2,18 @@ function makeFakeScripts(scripts) {
   return scripts.map(src => ({
     getAttribute() {
       return src
-    }
+    },
   }))
 }
 
 export default function mockdoc(
   scripts = ['first', 'second/static/paywall.js'],
   lock = 'lockid',
-  monitorGEBT = () => { },
-  monitorQS = () => { },
-  monitorChild = () => { },
-  monitorIframe = () => { },
-  setIframe = () => { }
+  monitorGEBT = () => {},
+  monitorQS = () => {},
+  monitorChild = () => {},
+  monitorIframe = () => {},
+  setIframe = () => {}
 ) {
   return {
     getElementsByTagName() {
@@ -22,15 +22,16 @@ export default function mockdoc(
     },
     querySelector() {
       monitorQS()
-      if (!lock) return {
-        getAttribute() {
-          return undefined
+      if (!lock)
+        return {
+          getAttribute() {
+            return undefined
+          },
         }
-      }
       return {
         getAttribute() {
           return lock
-        }
+        },
       }
     },
     createElement() {
@@ -38,7 +39,7 @@ export default function mockdoc(
         setAttribute(attr, value) {
           monitorIframe(attr, value)
         },
-        style: {}
+        style: {},
       }
       setIframe(iframe)
       return iframe
@@ -49,7 +50,7 @@ export default function mockdoc(
       },
       removeChild(child) {
         monitorChild(child, 'remove')
-      }
-    }
+      },
+    },
   }
 }

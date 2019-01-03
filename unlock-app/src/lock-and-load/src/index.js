@@ -1,6 +1,6 @@
 import { getIframe, add, show, hide } from './iframe'
 import { getPaywallUrl, findPaywallUrl, findLocks } from './script'
-import { listenForNewLocks } from './mutationobserver';
+import { listenForNewLocks } from './mutationobserver'
 
 //window.onload = () => lockAndLoad(window, document)
 listenForNewLocks(lock => openPaywall(lock), document.head)

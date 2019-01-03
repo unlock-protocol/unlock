@@ -7,16 +7,13 @@ export const iframeStyles = [
   'height:100vh',
   'border:0px',
   'background: linear-gradient(rgba(255,255,255,0) 18%, rgba(255,255,255,0) 29%, rgb(255,255,255) 48%)',
-  'z-index: -2147483647'
+  'z-index: -2147483647',
 ]
 
 export function getIframe(document, src) {
   var s = document.createElement('iframe')
 
-  s.setAttribute(
-    'style',
-    iframeStyles.join('; ')
-  )
+  s.setAttribute('style', iframeStyles.join('; '))
   s.setAttribute('src', src)
   s.setAttribute('data-unlock', 'yes')
   return s

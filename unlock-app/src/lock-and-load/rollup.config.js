@@ -5,7 +5,7 @@ const config = {
   input: 'src/index.js',
   output: {
     format: 'umd',
-    name: 'paywall.js'
+    name: 'paywall.js',
   },
   plugins: [
     babel({
@@ -17,10 +17,10 @@ const config = {
         pure_getters: true,
         unsafe: true,
         unsafe_comps: true,
-        warnings: false
-      }
-    })
-  ]
+        warnings: false,
+      },
+    }),
+  ],
 }
 
 export default config

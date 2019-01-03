@@ -1,4 +1,5 @@
 import mockdoc from './mockdoc'
+
 global.window = {} // this is fun...
 const lockAndLoad = require('../src').default
 
@@ -15,7 +16,15 @@ describe('lockAndLoad', () => {
     listenIframe = jest.fn()
     listenScripts = jest.fn()
     listenQuery = jest.fn()
-    document = mockdoc(['first', 'second/static/paywall.js'], 'lock', listenScripts, listenQuery, listenChildren, listenIframe, ifr => iframe = ifr)
+    document = mockdoc(
+      ['first', 'second/static/paywall.js'],
+      'lock',
+      listenScripts,
+      listenQuery,
+      listenChildren,
+      listenIframe,
+      ifr => (iframe = ifr)
+    )
   })
   describe('sets up the iframe on load', () => {
     it('explicit unlock_url', () => {
@@ -24,7 +33,7 @@ describe('lockAndLoad', () => {
         addEventListener(type, listener) {
           expect(type).toBe('message')
           expect(listener).not.toBe(null)
-        }
+        },
       }
       lockAndLoad(window, document)
 
@@ -40,7 +49,7 @@ describe('lockAndLoad', () => {
         addEventListener(type, listener) {
           expect(type).toBe('message')
           expect(listener).not.toBe(null)
-        }
+        },
       }
       lockAndLoad(window, document)
 
@@ -52,12 +61,20 @@ describe('lockAndLoad', () => {
     })
 
     it('no locks present', () => {
-      document = mockdoc(['first', 'second'], false, listenScripts, listenQuery, listenChildren, listenIframe, ifr => iframe = ifr)
+      document = mockdoc(
+        ['first', 'second'],
+        false,
+        listenScripts,
+        listenQuery,
+        listenChildren,
+        listenIframe,
+        ifr => (iframe = ifr)
+      )
       const window = {
         addEventListener(type, listener) {
           expect(type).toBe('message')
           expect(listener).not.toBe(null)
-        }
+        },
       }
       lockAndLoad(window, document)
 
@@ -75,7 +92,7 @@ describe('lockAndLoad', () => {
     const window = {
       addEventListener(type, l) {
         listener = l
-      }
+      },
     }
     lockAndLoad(window, document)
 

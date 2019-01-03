@@ -1,5 +1,3 @@
 describe('mutationobserver', () => {
-  it('', () => {
-
-  })
+  it('', () => {})
 })
