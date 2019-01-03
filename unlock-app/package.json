@@ -13,6 +13,7 @@
     "history": "^4.7.2",
     "jest": "^23.6.0",
     "jest-styled-components": "^6.3.1",
+    "jsonwebtoken": "^8.4.0",
     "next": "^7.0.2",
     "path-match": "^1.2.4",
     "prop-types": "^15.6.1",
