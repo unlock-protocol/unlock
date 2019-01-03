@@ -9,11 +9,7 @@ services:
   db:
     image: postgres
     ports:
-<<<<<<< HEAD
       - "5432"
-=======
-      - "5432:5432"
->>>>>>> Adds the Locksmith application to unlock
     environment:
       POSTGRES_USER: "locksmith_test"
       POSTGRES_PASSWORD: "password" 
