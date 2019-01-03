@@ -18,5 +18,6 @@ export function findPaywallUrl(document) {
 }
 
 export function findLocks(document) {
-  return document.querySelector('meta[name=lock]').getAttribute('content')
+  const lock = document.querySelector('meta[name=lock]')
+  return lock && lock.getAttribute('content')
 }

@@ -1,13 +1,9 @@
 import React from 'react'
-import NoSSR from 'react-no-ssr'
 import Head from 'next/head'
 import { connect } from 'react-redux'
 import styled, { createGlobalStyle } from 'styled-components'
-import UnlockPropTypes from '../propTypes'
-import Overlay from '../components/lock/Overlay'
-import DeveloperOverlay from '../components/developer/DeveloperOverlay'
+import PropTypes from 'prop-types'
 import withConfig from '../utils/withConfig'
-import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
 import { LOCK_PATH_NAME_REGEXP } from '../constants'
 import Media from '../theme/media'
 
@@ -17,6 +13,10 @@ const Demo = ({ lock }) => {
       <GlobalStyle />
       <Head>
         <title>Unlock Demo Example - Unlock Times</title>
+        <script src="http://localhost:3000/static/paywall.min.js" />
+        {(!lock && console.log('no lock'), lock) && (
+          <meta name="lock" content={(console.log('here', lock), lock)} />
+        )}
       </Head>
       <Left />
       <Content>
@@ -70,25 +70,21 @@ const Demo = ({ lock }) => {
         </Body>
       </Content>
       <Right />
-      <NoSSR>
-        <ShowUnlessUserHasKeyToAnyLock locks={lock ? [lock] : []}>
-          <Overlay locks={lock ? [lock] : []} />
-        </ShowUnlessUserHasKeyToAnyLock>
-        <DeveloperOverlay />
-      </NoSSR>
     </Container>
   )
 }
 
 Demo.propTypes = {
-  lock: UnlockPropTypes.lock.isRequired,
+  lock: PropTypes.string,
 }
 
-export const mapStateToProps = ({ locks, router }) => {
+Demo.defaultProps = {
+  lock: '',
+}
+
+export const mapStateToProps = ({ router }) => {
   const match = router.location.pathname.match(LOCK_PATH_NAME_REGEXP)
-  const lock = match
-    ? Object.values(locks).find(lock => lock.address === match[1])
-    : null
+  const lock = match ? match[1] : null
 
   return {
     lock,
