@@ -11,6 +11,9 @@ const rinkebyHostUsername = process.env.RINKEBY_HOST_USERNAME
 const rinkebyHostPassword = process.env.RINKEBY_HOST_PASSWORD
 const rinkebyProviderUrl = `https://${rinkebyHostUsername}:${rinkebyHostPassword}@${rinkebyHost}/`
 
+// When running CI, we connect to the 'ganache' container
+const testHost = process.env.CI ? 'ganache' : '127.0.0.1'
+
 module.exports = {
   networks: {
     development: {
@@ -27,7 +30,7 @@ module.exports = {
     },
     test: {
       // used to run tests in docker (ci)
-      host: 'ganache', // This is because we use docker-compose and that is the name of the service which runs ganache
+      host: testHost,
       port: 8545,
       network_id: '*' // Match any network id
     },
