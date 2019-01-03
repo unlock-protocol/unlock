@@ -1,8 +1,3 @@
-/build
-/coverage
-/__tests__/utils/withConfig/__snapshots
-/src/.next
-/src/out
 /.cache
 /models
 /migrations

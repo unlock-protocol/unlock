@@ -8,8 +8,8 @@ services:
     command: ["-h=0.0.0.0", "-m=hello unlock save the web"]
   db:
     image: postgres
-    ports:
-      - "5432"
+    expose:
+      - 5432
     environment:
       POSTGRES_USER: "locksmith_test"
       POSTGRES_PASSWORD: "password" 
@@ -49,6 +49,6 @@ services:
     user: node
     working_dir: /home/unlock/locksmith
     ports:
-      - 8080:8080
+      - 8080
     depends_on:
       - db
