@@ -2,7 +2,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const express = require('express')
 const tokenMiddleware = require('./token_middleware')
-const Lock = require('./sequelize')
+const Lock = require('./lock')
 
 const app = express()
 const router = express.Router()

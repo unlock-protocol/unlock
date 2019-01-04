@@ -17,7 +17,7 @@ var base64Decode = data => {
   return buff.toString('utf-8')
 }
 
-const validateHaders = headers => {
+const validateHeaders = headers => {
   return headers.alg && headers.typ && headers.typ == 'JWT'
 }
 
@@ -93,7 +93,7 @@ function process(req, res, next) {
   )
 
   if (
-    validateHaders(parsedHeaders) &&
+    validateHeaders(parsedHeaders) &&
     validatePayload(parsedPayload, signingAddress) &&
     validatePayloadClaims(parsedPayload, signingAddress) &&
     validatePayloadBodyMatch(parsedPayload, req.body)
