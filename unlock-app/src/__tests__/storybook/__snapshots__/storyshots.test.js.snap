@@ -30330,7 +30330,7 @@ Object {
           readonly=""
         >
           &lt;!-- Include this script in the &lt;head&gt; section of your page --&gt;
-&lt;script src="http://localhost/static/unlock.js"&gt;&lt;/script&gt;
+&lt;script src="http://localhost/static/paywall.min.js" data-unlock-url="http://localhost"&gt;&lt;/script&gt;
 &lt;meta name="lock" content="0xa62142888aba8370742be823c1782d17a0389da1" /&gt;
 
         </textarea>
@@ -30361,7 +30361,6 @@ Object {
           <a
             class="c4 c5"
             href="/demo/0xa62142888aba8370742be823c1782d17a0389da1"
-            target="_blank"
             title="Preview lock"
           >
             <svg
@@ -30409,7 +30408,7 @@ Object {
         readonly=""
       >
         &lt;!-- Include this script in the &lt;head&gt; section of your page --&gt;
-&lt;script src="http://localhost/static/unlock.js"&gt;&lt;/script&gt;
+&lt;script src="http://localhost/static/paywall.min.js" data-unlock-url="http://localhost"&gt;&lt;/script&gt;
 &lt;meta name="lock" content="0xa62142888aba8370742be823c1782d17a0389da1" /&gt;
 
       </textarea>
@@ -30440,7 +30439,6 @@ Object {
         <a
           class="sc-850ddk-0 iWrhly"
           href="/demo/0xa62142888aba8370742be823c1782d17a0389da1"
-          target="_blank"
           title="Preview lock"
         >
           <svg
