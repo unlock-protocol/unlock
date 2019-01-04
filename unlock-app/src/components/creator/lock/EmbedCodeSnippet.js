@@ -28,7 +28,7 @@ export function EmbedCodeSnippet({ lock }) {
         <CopyToClipboard text={embedCode(lock)}>
           <Buttons.Copy as="button" />
         </CopyToClipboard>
-        <Buttons.Preview lock={lock} />
+        <Buttons.Preview lock={lock} target="_blank" />
       </Actions>
     </CodeControls>
   )
@@ -76,4 +76,4 @@ const CodeSnippet = styled.textarea`
   font-weight: 300;
   color: var(--darkgrey);
   min-height: 170px;
-`
+`~
