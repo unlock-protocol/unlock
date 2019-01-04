@@ -35,21 +35,21 @@ describe('script', () => {
     it('returns the default url if nothing is found', () => {
       fakeDoc = {
         getElementsByTagName() {
-          return [
-            {
-              getAttribute() {
-                return 'foobar'
-              },
-            },
-            {
-              getAttribute() {
-                return 'nope'
-              },
-            },
-          ]
+          return [makeFakeScript('foobar'), makeFakeScript('nope')]
         },
       }
       expect(findPaywallUrl(fakeDoc)).toBe(DEFAULT_URL)
+    })
+    it('returns data-unlock-src if present', () => {
+      fakeDoc = {
+        getElementsByTagName() {
+          return [
+            makeFakeScript('foobar'),
+            makeFakeScript('/static/paywall/nope', 'hi'),
+          ]
+        },
+      }
+      expect(findPaywallUrl(fakeDoc)).toBe('hi')
     })
   })
 
