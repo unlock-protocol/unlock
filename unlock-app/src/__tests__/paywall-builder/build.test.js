@@ -2,8 +2,6 @@ import buildPaywall from '../../paywall-builder/build'
 import * as script from '../../paywall-builder/script'
 import * as iframeManager from '../../paywall-builder/iframe'
 
-import mockdoc from './mockdoc'
-
 global.window = {} // this is fun...
 global.MutationObserver = function() {
   this.observe = () => {}
@@ -12,27 +10,10 @@ global.MutationObserver = function() {
 const fakeLockAddress = 'lockaddress'
 
 describe('buildPaywall', () => {
-  let listenChildren
-  let listenIframe
-  let listenScripts
-  let listenQuery
-  let iframe
   let document
 
   beforeEach(() => {
-    listenChildren = jest.fn()
-    listenIframe = jest.fn()
-    listenScripts = jest.fn()
-    listenQuery = jest.fn()
-    document = mockdoc(
-      ['first', 'second/static/paywall.js'],
-      'lock',
-      listenScripts,
-      listenQuery,
-      listenChildren,
-      listenIframe,
-      ifr => (iframe = ifr)
-    )
+    document = {}
   })
 
   afterEach(() => jest.restoreAllMocks())

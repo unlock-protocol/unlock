@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import NoSSR from 'react-no-ssr'
 import styled, { createGlobalStyle } from 'styled-components'
 import PropTypes from 'prop-types'
+import UnlockPropTypes from '../propTypes'
 import withConfig from '../utils/withConfig'
 import Overlay from '../components/lock/Overlay'
 import DeveloperOverlay from '../components/developer/DeveloperOverlay'
@@ -94,7 +95,7 @@ const Demo = ({ lock, locks }) => {
 
 Demo.propTypes = {
   lock: PropTypes.string,
-  locks: PropTypes.array.isRequired,
+  locks: UnlockPropTypes.locks.isRequired,
 }
 
 Demo.defaultProps = {
