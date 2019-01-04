@@ -82,7 +82,7 @@
     "set-link:darwin:freebsd:linux:sunos": "pushd src && (test -e artifacts && rm -f artifacts) && ln -s ../../smart-contracts/build artifacts",
     "set-link:win32": "cd src && if exist artifacts (rmdir artifacts /q /s || del artifacts) && cmd /c mklink /d artifacts ..\\..\\smart-contracts\\build",
     "build": "next build src",
-    "export": "next export src",
+    "deploy": "next export src",
     "start": "next start src",
     "setup-dev": "run-script-os",
     "setup-dev:darwin:freebsd:linux:sunos": "cd .. && (npm run start-ganache -- -b 3 &) && npm run deploy-lock",
