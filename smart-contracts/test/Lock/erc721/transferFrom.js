@@ -52,7 +52,7 @@ contract('Lock ERC721', (accounts) => {
       ]).then(() => {
         return locks['FIRST'].keyExpirationTimestampFor(from)
       }).then((expirationTimestamp) => {
-        keyExpiration = expirationTimestamp.toNumber()
+        keyExpiration = expirationTimestamp
       })
     })
 
@@ -88,7 +88,7 @@ contract('Lock ERC721', (accounts) => {
             // Ensuring that ownership of the key did not change
             return locks['FIRST'].keyExpirationTimestampFor(from)
           }).then((expirationTimestamp) => {
-            assert.equal(keyExpiration, expirationTimestamp.toNumber())
+            assert(keyExpiration.eq(expirationTimestamp))
           })
       })
 
@@ -113,7 +113,7 @@ contract('Lock ERC721', (accounts) => {
           }).then(() => {
             return locks['FIRST'].keyExpirationTimestampFor(accountWithExpiredKey)
           }).then((expirationTimestamp) => {
-            assert.equal(expirationTimestamp.toNumber(), fromExpirationTimestamp)
+            assert(expirationTimestamp.eq(fromExpirationTimestamp))
           })
         })
       })
@@ -131,8 +131,8 @@ contract('Lock ERC721', (accounts) => {
               locks['FIRST'].keyExpirationTimestampFor(accounts[1])
             ])
           }).then(([_transferedKeyTimestamp, _previousExpirationTimestamp]) => {
-            transferedKeyTimestamp = _transferedKeyTimestamp.toNumber()
-            previousExpirationTimestamp = _previousExpirationTimestamp.toNumber()
+            transferedKeyTimestamp = _transferedKeyTimestamp
+            previousExpirationTimestamp = _previousExpirationTimestamp
             return locks['FIRST'].transferFrom(from, accountWithKey, from, {
               from
             })
@@ -144,8 +144,8 @@ contract('Lock ERC721', (accounts) => {
             .then((expirationTimestamp) => {
               const now = Math.floor(new Date().getTime() / 1000)
               // Check +/- 10 seconds
-              assert(expirationTimestamp.toNumber() > previousExpirationTimestamp + transferedKeyTimestamp - now - 10)
-              assert(expirationTimestamp.toNumber() < previousExpirationTimestamp + transferedKeyTimestamp - now + 10)
+              assert(expirationTimestamp.gt(previousExpirationTimestamp.add(transferedKeyTimestamp).sub(now + 10)))
+              assert(expirationTimestamp.lt(previousExpirationTimestamp.add(transferedKeyTimestamp).sub(now - 10)))
             })
         })
 
@@ -154,7 +154,7 @@ contract('Lock ERC721', (accounts) => {
             .then((expirationTimestamp) => {
               const now = Math.floor(new Date().getTime() / 1000)
               // Check only 10 seconds in the future to ensure deterministic test
-              assert(expirationTimestamp.toNumber() < now + 10)
+              assert(expirationTimestamp.lt(now + 10))
             })
         })
       })
@@ -177,7 +177,7 @@ contract('Lock ERC721', (accounts) => {
               // Ensuring that ownership of the key did not change
               return locks['FIRST'].keyExpirationTimestampFor(from)
             }).then((expirationTimestamp) => {
-              assert.equal(previousExpirationTimestamp.toNumber(), expirationTimestamp.toNumber())
+              assert(previousExpirationTimestamp.eq(expirationTimestamp))
             })
         })
 
@@ -210,7 +210,7 @@ contract('Lock ERC721', (accounts) => {
           }).then(() => {
             return locks['FIRST'].keyExpirationTimestampFor(from)
               .then((expirationTimestamp) => {
-                keyExpiration = expirationTimestamp.toNumber()
+                keyExpiration = expirationTimestamp
                 return locks['FIRST'].transferFrom(from, to, from, {
                   from
                 })
@@ -221,15 +221,15 @@ contract('Lock ERC721', (accounts) => {
         it('should mark the previous owner`s key as expired', () => {
           return locks['FIRST'].keyExpirationTimestampFor(from)
             .then((expirationTimestamp) => {
-              assert(expirationTimestamp.toNumber() > 0)
-              assert(expirationTimestamp.toNumber() < keyExpiration)
+              assert(expirationTimestamp.gt(0))
+              assert(expirationTimestamp.lt(keyExpiration))
             })
         })
 
         it('should have assigned the key`s previous expiration to the new owner', () => {
           return locks['FIRST'].keyExpirationTimestampFor(to)
             .then((expirationTimestamp) => {
-              assert.equal(expirationTimestamp.toNumber(), keyExpiration)
+              assert(expirationTimestamp.eq(keyExpiration))
             })
         })
 

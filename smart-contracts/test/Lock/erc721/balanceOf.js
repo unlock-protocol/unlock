@@ -35,7 +35,7 @@ contract('Lock ERC721', (accounts) => {
       }).then(() => {
         return locks['FIRST'].balanceOf(accounts[1])
       }).then(balance => {
-        assert.equal(balance.toNumber(), 1)
+        assert(balance.eq(1))
       })
     })
 
@@ -50,7 +50,7 @@ contract('Lock ERC721', (accounts) => {
       }).then(() => {
         return locks['FIRST'].balanceOf(accounts[5])
       }).then(balance => {
-        assert.equal(balance.toNumber(), 1)
+        assert(balance.eq(1))
       })
     })
   })
