@@ -13,7 +13,7 @@ const Demo = ({ lock, domain }) => {
       <GlobalStyle />
       <Head>
         <title>Unlock Demo Example - Unlock Times</title>
-        <script src="/static/paywall.min.js" />
+        <script src="/static/paywall.min.js" data-unlock-url={domain} />
         {lock && <meta name="lock" content={lock} />}
       </Head>
       <Left />
