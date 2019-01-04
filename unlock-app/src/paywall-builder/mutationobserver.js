@@ -2,7 +2,7 @@ import { findLocks } from './script'
 
 export function changeListener(callback, list) {
   list.forEach(mutation => {
-    if (!mutation.addedNodes.length || !mutation.addedNodes.length) return
+    if (!mutation.addedNodes || !mutation.addedNodes.length) return
     for (let info of mutation.addedNodes.entries()) {
       const entry = info[1]
       if (entry.nodeName !== 'META' || entry.name !== 'lock') continue
