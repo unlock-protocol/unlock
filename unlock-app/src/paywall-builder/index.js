@@ -1,5 +1,5 @@
 import { getIframe, add, show, hide } from './iframe'
-import { getPaywallUrl, findPaywallUrl, findLocks } from './script'
+import { findPaywallUrl, findLocks } from './script'
 import { listenForNewLocks } from './mutationobserver'
 
 //window.onload = () => lockAndLoad(window, document)
@@ -10,11 +10,7 @@ function openPaywall(lock) {
 }
 
 export default function lockAndLoad(window, document, lockAddress) {
-  let paywallUrl = getPaywallUrl(window)
-  // Setting window.unlock_url hard sets the domain and URI scheme - if this is set, no need to auto-detect
-  if (!paywallUrl) {
-    paywallUrl = findPaywallUrl(document)
-  }
+  let paywallUrl = findPaywallUrl(document)
 
   // If there is no lock, do nothing!
   if (!lockAddress) {

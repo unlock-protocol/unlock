@@ -2,8 +2,17 @@ import {
   findPaywallUrl,
   DEFAULT_URL,
   findLocks,
-  getPaywallUrl,
 } from '../../paywall-builder/script'
+
+function makeFakeScript(src, domain) {
+  return {
+    getAttribute(attr) {
+      if (attr === 'src') return src
+      if (attr === 'data-unlock-url') return domain
+      return ''
+    },
+  }
+}
 
 describe('script', () => {
   describe('findPaywallUrl', () => {
@@ -13,16 +22,8 @@ describe('script', () => {
         (fakeDoc = {
           getElementsByTagName() {
             return [
-              {
-                getAttribute() {
-                  return 'foobar'
-                },
-              },
-              {
-                getAttribute() {
-                  return 'hooby/booby/static/paywall.min.js'
-                },
-              },
+              makeFakeScript('foobar'),
+              makeFakeScript('hooby/booby/static/paywall.min.js'),
             ]
           },
         })
@@ -63,12 +64,5 @@ describe('script', () => {
     }
     expect(findLocks(document)).toBe('hi')
     expect(document.querySelector).toHaveBeenCalledWith('meta[name=lock]')
-  })
-
-  it('getPaywallUrl', () => {
-    const window = {
-      unlock_url: 'hi',
-    }
-    expect(getPaywallUrl(window)).toBe('hi')
   })
 })

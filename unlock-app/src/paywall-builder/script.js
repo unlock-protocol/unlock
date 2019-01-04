@@ -1,9 +1,5 @@
 export const DEFAULT_URL = 'http://localhost:3000'
 
-export function getPaywallUrl(window) {
-  return false
-}
-
 export function findPaywallUrl(document) {
   // Get the domain and URI scheme of host we're loading this script from
   const scripts = document.getElementsByTagName('script')
