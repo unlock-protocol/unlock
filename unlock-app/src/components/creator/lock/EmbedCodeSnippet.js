@@ -76,4 +76,4 @@ const CodeSnippet = styled.textarea`
   font-weight: 300;
   color: var(--darkgrey);
   min-height: 170px;
-`~
+`
