@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import Demo from '../../pages/demo'
+import Demo from '../../pages/staticdemo'
 import createUnlockStore from '../../createUnlockStore'
 
 const myLock = {

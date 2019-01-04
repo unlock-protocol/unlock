@@ -20275,6 +20275,9 @@ Object {
         <div
           class=""
         />
+        <div
+          style="position: fixed; top: 0px; left: 0px; height: 100%; width: 100vw;"
+        />
       </div>
     </div>
   </body>,
@@ -20284,38 +20287,38 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="rw70pt-0 endWhR"
+      class="sc-640fpx-0 fbQii"
     >
       <div
-        class="rw70pt-1 eGumnH"
+        class="sc-640fpx-1 hpEGGl"
       />
       <div
-        class="rw70pt-3 kCDuKz"
+        class="sc-640fpx-3 bbqRWP"
       >
         <h1
-          class="rw70pt-4 eGnAog"
+          class="sc-640fpx-4 iVqmRW"
         >
           Unlock Times
         </h1>
         <div
-          class="rw70pt-5 kqIUHi"
+          class="sc-640fpx-5 hOavml"
         >
           <h1
-            class="rw70pt-6 iBpErE"
+            class="sc-640fpx-6 lfunBL"
           >
             Demoing the Unlock Paywall
           </h1>
           <div
-            class="rw70pt-7 fsNqHf"
+            class="sc-640fpx-7 kLEjBD"
           >
             Unlock Times shows off its new subscription paywall that’s easy to use and streamlined for readers and publishers.
              
           </div>
           <div
-            class="rw70pt-8 cNOMim"
+            class="sc-640fpx-8 jTppft"
           >
             <div
-              class="rw70pt-9 gvscWn"
+              class="sc-640fpx-9 vIlza"
             >
               <p>
                 It’s become dangerously clear in the last few years that the business model we thought would support a vibrant, open web just isn’t going to work any more. Driving more and more eyeballs to ads was always considered ethically and morally borderline, but today, monetizing clickbait isn’t just economically fragile: it’s feeding our democracies with more misinformation and fake news.
@@ -20331,13 +20334,16 @@ Object {
               </p>
             </div>
             <div
-              class="rw70pt-10 dQNUcS"
+              class="sc-640fpx-10 fHtiru"
             />
           </div>
         </div>
       </div>
       <div
-        class="rw70pt-2 fXRHAi"
+        class="sc-640fpx-2 hYuopk"
+      />
+      <div
+        style="position: fixed; top: 0px; left: 0px; height: 100%; width: 100vw;"
       />
     </div>
   </div>,
