@@ -1,113 +1,29 @@
-import mockdoc from './mockdoc'
+import * as mutations from '../../paywall-builder/mutationobserver'
+import * as buildManager from '../../paywall-builder/build'
 
-global.window = {} // this is fun...
-const lockAndLoad = require('../../paywall-builder').default
-
-describe('lockAndLoad', () => {
-  let listenChildren
-  let listenIframe
-  let listenScripts
-  let listenQuery
-  let iframe
-  let document
-
+describe('paywall builder integration', () => {
+  let listenForNewLocks
+  let buildPaywall
   beforeEach(() => {
-    listenChildren = jest.fn()
-    listenIframe = jest.fn()
-    listenScripts = jest.fn()
-    listenQuery = jest.fn()
-    document = mockdoc(
-      ['first', 'second/static/paywall.js'],
-      'lock',
-      listenScripts,
-      listenQuery,
-      listenChildren,
-      listenIframe,
-      ifr => (iframe = ifr)
-    )
-  })
-  describe('sets up the iframe on load', () => {
-    it('explicit unlock_url', () => {
-      const window = {
-        unlock_url: 'unlock/it',
-        addEventListener(type, listener) {
-          expect(type).toBe('message')
-          expect(listener).not.toBe(null)
-        },
-      }
-      lockAndLoad(window, document)
-
-      // we don't look for the unlock url if passed explicitly
-      expect(listenScripts).not.toHaveBeenCalled()
-      expect(listenQuery).toHaveBeenCalled()
-      expect(listenIframe).toHaveBeenCalled()
-      expect(listenChildren).toHaveBeenCalledWith(iframe, 'append')
-    })
-
-    it('implied unlock_url', () => {
-      const window = {
-        addEventListener(type, listener) {
-          expect(type).toBe('message')
-          expect(listener).not.toBe(null)
-        },
-      }
-      lockAndLoad(window, document)
-
-      // we do look for the unlock url if not passed
-      expect(listenScripts).toHaveBeenCalled()
-      expect(listenQuery).toHaveBeenCalled()
-      expect(listenIframe).toHaveBeenCalled()
-      expect(listenChildren).toHaveBeenCalledWith(iframe, 'append')
-    })
-
-    it('no locks present', () => {
-      document = mockdoc(
-        ['first', 'second'],
-        false,
-        listenScripts,
-        listenQuery,
-        listenChildren,
-        listenIframe,
-        ifr => (iframe = ifr)
-      )
-      const window = {
-        addEventListener(type, listener) {
-          expect(type).toBe('message')
-          expect(listener).not.toBe(null)
-        },
-      }
-      lockAndLoad(window, document)
-
-      expect(listenScripts).toHaveBeenCalled()
-      expect(listenQuery).toHaveBeenCalled()
-
-      // we exit early if no locks are found
-      expect(listenIframe).not.toHaveBeenCalled()
-      expect(listenChildren).not.toHaveBeenCalled()
-    })
+    listenForNewLocks = jest
+      .spyOn(mutations, 'listenForNewLocks')
+      .mockImplementation(() => 'listen')
+    buildPaywall = jest
+      .spyOn(buildManager, 'default')
+      .mockImplementation(() => 'paywall')
   })
 
-  it('event listeners', () => {
-    let listener
-    const window = {
-      addEventListener(type, l) {
-        listener = l
-      },
-    }
-    lockAndLoad(window, document)
+  afterEach(() => jest.restoreAllMocks())
 
-    listener({ data: 'locked' })
+  it('calls listenForLocks', () => {
+    require('../../paywall-builder')
 
-    // this next line proves that "show" was called
-    expect(Object.keys(iframe.style)).toEqual(['display', 'z-index'])
+    expect(listenForNewLocks.mock.calls[0][1]).toBe(document.head)
 
-    listener({ data: 'locked' })
-    expect(listenChildren).toHaveBeenCalledTimes(1)
+    const paywall = listenForNewLocks.mock.calls[0][0]
+    expect(paywall).toBeInstanceOf(Function)
+    paywall('lock')
 
-    listener({ data: 'unlocked' })
-    expect(listenChildren).toHaveBeenCalledTimes(1)
-
-    expect(iframe.style.backgroundColor).toBe('transparent')
-    expect(iframe.style.backgroundImage).toBe('none')
+    expect(buildPaywall).toHaveBeenCalledWith(window, document, 'lock')
   })
 })
