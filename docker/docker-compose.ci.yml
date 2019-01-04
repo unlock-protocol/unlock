@@ -9,7 +9,7 @@ services:
   unlock:
     image: unlock
     user: node
-    working_dir: /home/unlock/unlock-app
+    working_dir: /home/unlock
     depends_on:
       - ganache
     expose:
