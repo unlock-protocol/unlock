@@ -23,7 +23,7 @@ MESSAGE="Deploying $GIT_HEAD to draft";
 
 PROD="";
 
-if [ "$TRAVIS_BRANCH" = "master" && "$TRAVIS_PULL_REQUEST" = "false"]; then
+if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
   PROD="--prod";
 
   MESSAGE="Deploying $GIT_HEAD to production";
