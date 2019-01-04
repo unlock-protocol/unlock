@@ -77,11 +77,11 @@
   },
   "engineStrict": true,
   "scripts": {
-    "dev": "npm run setup-dev && npm run set-link && nodemon src/server.js",
+    "dev": "npm run build-paywall && npm run setup-dev && npm run set-link && nodemon src/server.js",
     "set-link": "run-script-os",
     "set-link:darwin:freebsd:linux:sunos": "pushd src && (test -e artifacts && rm -f artifacts) && ln -s ../../smart-contracts/build artifacts",
     "set-link:win32": "cd src && if exist artifacts (rmdir artifacts /q /s || del artifacts) && cmd /c mklink /d artifacts ..\\..\\smart-contracts\\build",
-    "build": "next build src",
+    "build": "npm run build-paywall && next build src",
     "build-paywall": "NODE_ENV=production rollup -c rollup.paywall.config.js -o ./src/static/paywall.min.js",
 <<<<<<< HEAD
     "deploy": "next export src",
