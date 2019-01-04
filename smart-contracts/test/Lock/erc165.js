@@ -1,10 +1,9 @@
-// const Units = require('ethereumjs-units')
 const deployLocks = require('../helpers/deployLocks')
 const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock, locks
 
-contract('Lock ERC165', (accounts) => {
+contract('Lock ERC165', accounts => {
   before(() => {
     return Unlock.deployed()
       .then(_unlock => {
