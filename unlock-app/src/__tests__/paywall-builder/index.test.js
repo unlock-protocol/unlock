@@ -1,7 +1,7 @@
 import mockdoc from './mockdoc'
 
 global.window = {} // this is fun...
-const lockAndLoad = require('../src').default
+const lockAndLoad = require('../../paywall-builder').default
 
 describe('lockAndLoad', () => {
   let listenChildren

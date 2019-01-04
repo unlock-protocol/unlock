@@ -1,4 +1,10 @@
-import { getIframe, iframeStyles, add, show, hide } from '../src/iframe'
+import {
+  getIframe,
+  iframeStyles,
+  add,
+  show,
+  hide,
+} from '../../paywall-builder/iframe'
 
 describe('iframe', () => {
   it('add appends the iframe to document.body', () => {

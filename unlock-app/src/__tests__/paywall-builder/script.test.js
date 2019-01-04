@@ -3,7 +3,7 @@ import {
   DEFAULT_URL,
   findLocks,
   getPaywallUrl,
-} from '../src/script'
+} from '../../paywall-builder/script'
 
 describe('script', () => {
   describe('findPaywallUrl', () => {

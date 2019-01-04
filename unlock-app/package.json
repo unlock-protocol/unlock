@@ -83,7 +83,11 @@
     "set-link:win32": "cd src && if exist artifacts (rmdir artifacts /q /s || del artifacts) && cmd /c mklink /d artifacts ..\\..\\smart-contracts\\build",
     "build": "next build src",
     "build-paywall": "NODE_ENV=production rollup -c rollup.paywall.config.js -o ./src/static/paywall.min.js",
+<<<<<<< HEAD
     "deploy": "next export src",
+=======
+    "export": "next export src",
+>>>>>>> cfbc06e... make it possible to build paywall.min.js, adjust paths
     "start": "next start src",
     "setup-dev": "run-script-os",
     "setup-dev:darwin:freebsd:linux:sunos": "cd .. && (npm run start-ganache -- -b 3 &) && npm run deploy-lock",
