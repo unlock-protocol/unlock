@@ -19,24 +19,44 @@ describe('iframe', () => {
 
     expect(getIframe(document, 'hi')).toBe(el)
 
-    expect(el.setAttribute).toHaveBeenCalledTimes(2)
-    expect(el.setAttribute).toHaveBeenLastCalledWith('src', 'hi')
+    expect(el.setAttribute).toHaveBeenCalledTimes(3)
+
     expect(el.setAttribute).toHaveBeenNthCalledWith(
       1,
       'style',
       iframeStyles.join('; ')
     )
+    expect(el.setAttribute).toHaveBeenNthCalledWith(2, 'src', 'hi')
+    expect(el.setAttribute).toHaveBeenNthCalledWith(3, 'data-unlock', 'yes')
   })
 
-  it('add', () => {
-    const document = {
-      body: {
-        appendChild: jest.fn(),
-      },
-    }
-    add(document, 'hi')
+  describe('add', () => {
+    it('adds iframe if not present', () => {
+      const document = {
+        body: {
+          appendChild: jest.fn(),
+        },
+        querySelector() {
+          return false
+        },
+      }
+      add(document, 'hi')
 
-    expect(document.body.appendChild).toHaveBeenCalledWith('hi')
+      expect(document.body.appendChild).toHaveBeenCalledWith('hi')
+    })
+    it('ignores add if present', () => {
+      const document = {
+        body: {
+          appendChild: jest.fn(),
+        },
+        querySelector() {
+          return true
+        },
+      }
+      add(document, 'hi')
+
+      expect(document.body.appendChild).not.toHaveBeenCalled()
+    })
   })
 
   it('show', () => {
