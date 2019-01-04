@@ -59,3 +59,9 @@ export const MONTH_NAMES = [
   'Nov',
   'Dec',
 ]
+
+export const MAX_DEVICE_WIDTHS = {
+  PHONE: 736,
+  TABLET: 1000,
+  DESKTOP: false,
+}

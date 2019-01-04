@@ -1,17 +1,18 @@
 import styled, { css } from 'styled-components'
+import { MAX_DEVICE_WIDTHS } from '../constants'
 
 let sizes = {
   desktop: {
-    min: 1200,
-    max: false,
+    min: MAX_DEVICE_WIDTHS.TABLET,
+    max: MAX_DEVICE_WIDTHS.DESKTOP,
   },
   tablet: {
-    min: 737,
-    max: 1200,
+    min: MAX_DEVICE_WIDTHS.PHONE,
+    max: MAX_DEVICE_WIDTHS.TABLET,
   },
   phone: {
-    min: 300,
-    max: 736,
+    min: 0,
+    max: MAX_DEVICE_WIDTHS.PHONE,
   },
 }
 
