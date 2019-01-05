@@ -28,7 +28,7 @@ export function EmbedCodeSnippet({ lock }) {
         <CopyToClipboard text={embedCode(lock)}>
           <Buttons.Copy as="button" />
         </CopyToClipboard>
-        <Buttons.Preview lock={lock} />
+        <Buttons.Preview lock={lock} target="_blank" />
       </Actions>
     </CodeControls>
   )
