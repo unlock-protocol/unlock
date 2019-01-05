@@ -20287,7 +20287,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-640fpx-0 fbQii"
+      class="sc-640fpx-0 jMCmMh"
     >
       <div
         class="sc-640fpx-1 hpEGGl"
@@ -30367,6 +30367,7 @@ Object {
           <a
             class="c4 c5"
             href="/demo/0xa62142888aba8370742be823c1782d17a0389da1"
+            target="_blank"
             title="Preview lock"
           >
             <svg
@@ -30445,6 +30446,7 @@ Object {
         <a
           class="sc-850ddk-0 iWrhly"
           href="/demo/0xa62142888aba8370742be823c1782d17a0389da1"
+          target="_blank"
           title="Preview lock"
         >
           <svg
