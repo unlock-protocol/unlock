@@ -1,20 +1,23 @@
 import React from 'react'
 import Head from 'next/head'
 import { connect } from 'react-redux'
+import NoSSR from 'react-no-ssr'
 import styled, { createGlobalStyle } from 'styled-components'
 import PropTypes from 'prop-types'
+import UnlockPropTypes from '../propTypes'
 import withConfig from '../utils/withConfig'
+import Overlay from '../components/lock/Overlay'
+import DeveloperOverlay from '../components/developer/DeveloperOverlay'
+import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
 import { LOCK_PATH_NAME_REGEXP } from '../constants'
 import Media from '../theme/media'
 
-const Demo = ({ lock, domain }) => {
+const Demo = ({ lock, locks }) => {
   return (
     <Container>
       <GlobalStyle />
       <Head>
         <title>Unlock Demo Example - Unlock Times</title>
-        <script src="/static/paywall.min.js" data-unlock-url={domain} />
-        {lock && <meta name="lock" content={lock} />}
       </Head>
       <Left />
       <Content>
@@ -68,29 +71,43 @@ const Demo = ({ lock, domain }) => {
         </Body>
       </Content>
       <Right />
+      <NoSSR>
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            height: '100%',
+            width: '100vw',
+            background:
+              'linear-gradient(rgba(255,255,255,0) 18%, rgba(255,255,255,0) 29%, rgb(255,255,255) 48%)',
+          }}
+        >
+          <ShowUnlessUserHasKeyToAnyLock locks={[locks[lock]]}>
+            <Overlay locks={[locks[lock]]} />
+            <DeveloperOverlay />
+          </ShowUnlessUserHasKeyToAnyLock>
+        </div>
+      </NoSSR>
     </Container>
   )
 }
 
 Demo.propTypes = {
   lock: PropTypes.string,
-  domain: PropTypes.string.isRequired,
+  locks: UnlockPropTypes.locks.isRequired,
 }
 
 Demo.defaultProps = {
   lock: '',
 }
 
-export const mapStateToProps = ({ router }) => {
+export const mapStateToProps = ({ locks, router }) => {
   const match = router.location.pathname.match(LOCK_PATH_NAME_REGEXP)
   const lock = match ? match[1] : null
-  const domain =
-    global.document && document.location
-      ? document.location.protocol + '//' + document.location.host
-      : ''
   return {
     lock,
-    domain,
+    locks,
   }
 }
 
