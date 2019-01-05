@@ -7,7 +7,7 @@ import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
 import { TRANSACTION_TYPES } from '../constants'
 
-const { providers } = configure()
+const { providers, unlockAddress } = configure()
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
@@ -99,13 +99,17 @@ export default class Web3Service extends EventEmitter {
       this.web3 = new Web3(provider)
 
       const networkId = await this.web3.eth.net.getId()
-      if (!UnlockContract.networks[networkId]) {
+      if (unlockAddress) {
+        this.unlockContractAddress = Web3Utils.toChecksumAddress(unlockAddress)
+      } else if (UnlockContract.networks[networkId]) {
+        // If we do not have an address from config let's use the artifact files
+        this.unlockContractAddress = Web3Utils.toChecksumAddress(
+          UnlockContract.networks[networkId].address
+        )
+      } else {
         throw new Error(`Unlock is not deployed on network ${networkId}`)
       }
 
-      this.unlockContractAddress = Web3Utils.toChecksumAddress(
-        UnlockContract.networks[networkId].address
-      )
       if (this.networkId !== networkId) {
         this.networkId = networkId
         this.emit('network.changed', networkId)
