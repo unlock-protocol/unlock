@@ -19,23 +19,32 @@ import OpenGraphTags from '../components/page/OpenGraphTags'
 
 const Stories = [
   {
+    date: new Date('2018-12-14'),
+    summary: `Using ads to support content creation is broken, whether from a purely technical or an
+    economic standpoint. Aside from an ever-shrinking group of the largest platforms, most can only
+    scrape a few cents per hour from ads.`,
+    link:
+      'https://medium.com/unlock-protocol/the-end-of-the-ad-supported-web-d4d093fb462f',
+  },
+  {
     date: new Date('2018-04-27T21:00:37.411Z'),
-    summary:
-      'The web needs a better business model — and we believe the technology is finally here to do it.',
+    summary: `The web needs a better business model - and we believe the technology is finally here
+    to do it.`,
     link:
       'https://medium.com/unlock-protocol/its-time-to-unlock-the-web-b98e9b94add1',
   },
   {
     date: new Date('2018-07-23T21:00:37.411Z'),
-    summary:
-      'We received $1.7M in funding from the following investors: General Catalyst and by Cherry Ventures and with participations from Consensys Ventures, Kindred Ventures, Betaworks, 122 West, La Famiglia, Coinbase Ventures and a group of stellar business angels. ',
+    summary: `We received $1.7M in funding from the following investors: General Catalyst and by
+    Cherry Ventures and with participations from Consensys Ventures, Kindred Ventures, Betaworks,
+    122 West, La Famiglia, Coinbase Ventures and a group of stellar business angels.`,
     link:
       'https://medium.com/unlock-protocol/unlocking-some-exciting-news-5ad0f3889375',
   },
   {
     date: new Date('2018-10-15T17:17:51.940Z'),
-    summary:
-      'In a world where corporations control our conversations, removing middlemen is more important than ever.',
+    summary: `In a world where corporations control our conversations, removing middlemen is more
+    important than ever.`,
     link:
       'https://medium.com/unlock-protocol/to-save-freedom-of-speech-we-must-decentralize-the-web-19b2eb92f3b8',
   },
@@ -66,7 +75,9 @@ const Post = ({ date, summary, link }) => (
     <p>
       {summary}
       &nbsp;
-      <a href={link}>More...</a>
+      <a href={link} target="_blank" rel="noopener noreferrer">
+        More...
+      </a>
     </p>
   </>
 )
@@ -112,6 +123,15 @@ const People = [
             Prior to joining Unlock, I worked to launch and scale projects at
             Facebook.`,
   },
+  {
+    name: 'Gregory Beaver',
+    picture: '/static/images/illustrations/greg.jpg',
+    personalLink: 'https://gregorybeaver.com',
+    linkedIn: 'https://www.linkedin.com/in/gbeaver/',
+    bio: `I am a symbiotic organism, thriving in both music and the art of
+          software development. 18 years as cellist of The Chiara Quartet, and now
+          a soloist and composer matches equal experience in open source.`,
+  },
 ].sort((bonnie, clyde) => (bonnie.name < clyde.name ? -1 : 1))
 
 const Person = ({ name, picture, personalLink, linkedIn, bio }) => (
@@ -120,9 +140,13 @@ const Person = ({ name, picture, personalLink, linkedIn, bio }) => (
     <Photo src={picture} />
     <p>{bio}</p>
     <small>
-      <a href={personalLink}>Personal site</a>
+      <a href={personalLink} target="_blank" rel="noopener noreferrer">
+        Personal site
+      </a>
       &nbsp;-&nbsp;
-      <a href={linkedIn}>LinkedIn</a>
+      <a href={linkedIn} target="_blank" rel="noopener noreferrer">
+        LinkedIn
+      </a>
     </small>
   </Column>
 )

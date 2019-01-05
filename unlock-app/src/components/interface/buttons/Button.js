@@ -8,88 +8,13 @@ const clickAction = (e, action) => {
   if (action) action()
 }
 
-export const LayoutButton = ({
-  children,
-  backgroundColor,
-  backgroundHoverColor,
-  fillColor,
-  fillHoverColor,
-  ...props
-}) => {
-  return (
-    <BaseButton
-      backgroundColor={backgroundColor}
-      backgroundHoverColor={backgroundHoverColor}
-      fillColor={fillColor}
-      fillHoverColor={fillHoverColor}
-      {...props}
-    >
-      {children}
-    </BaseButton>
-  )
-}
-
-LayoutButton.propTypes = {
-  children: PropTypes.node,
-  backgroundColor: PropTypes.string,
-  backgroundHoverColor: PropTypes.string,
-  fillColor: PropTypes.string,
-  fillHoverColor: PropTypes.string,
-}
-
-LayoutButton.defaultProps = {
-  children: null,
-  backgroundColor: 'var(--grey)',
-  backgroundHoverColor: 'var(--link)',
-  fillColor: 'white',
-  fillHoverColor: 'white',
-}
-
-export const DisabledButton = ({
-  children,
-  backgroundColor,
-  backgroundHoverColor,
-  fillColor,
-  fillHoverColor,
-  ...props
-}) => {
-  return (
-    <BaseButton
-      backgroundColor={backgroundColor}
-      backgroundHoverColor={backgroundHoverColor}
-      fillColor={fillColor}
-      fillHoverColor={fillHoverColor}
-      {...props}
-    >
-      {children}
-    </BaseButton>
-  )
-}
-
-DisabledButton.propTypes = {
-  children: PropTypes.node,
-  backgroundColor: PropTypes.string,
-  backgroundHoverColor: PropTypes.string,
-  fillColor: PropTypes.string,
-  fillHoverColor: PropTypes.string,
-  disabled: PropTypes.bool,
-}
-
-DisabledButton.defaultProps = {
-  children: null,
-  disabled: true,
-  backgroundColor: 'white',
-  backgroundHoverColor: 'white',
-  fillColor: 'var(--lightgrey)',
-  fillHoverColor: 'var(--lightgrey)',
-}
-
-export const BaseButton = ({
+const BaseButton = ({
   href,
   label,
   children,
   action,
   disabled,
+  title,
   ...props
 }) => {
   const button = (
@@ -98,6 +23,7 @@ export const BaseButton = ({
       onClick={e => {
         if (!disabled) return clickAction(e, action)
       }}
+      title={label ? label : title}
       {...props}
     >
       {children}

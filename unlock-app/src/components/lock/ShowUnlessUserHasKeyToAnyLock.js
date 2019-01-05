@@ -1,65 +1,68 @@
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import React, { Component } from 'react'
+import SuspendedRender from '../helpers/SuspendedRender'
 import UnlockPropTypes from '../../propTypes'
-import { showModal } from '../../actions/modal'
 import { lockPage, unlockPage } from '../../services/iframeService'
 
-export const ShowUnlessUserHasKeyToAnyLock = ({
-  keys,
-  modalShown,
-  showModal,
-  children,
-}) => {
-  // We have at least one valid key and the modal was not shown
-  if (keys.length > 0 && !modalShown) {
-    return null
+export class ShowUnlessUserHasKeyToAnyLock extends Component {
+  componentDidMount() {
+    this.handleIframeService()
+  }
+  componentDidUpdate() {
+    this.handleIframeService()
   }
 
-  // There is a valid key, but we shown the modal previously
-  if (keys.length > 0 && !!modalShown) {
-    unlockPage()
-    return children
+  handleIframeService() {
+    const { keys } = this.props
+    if (keys.length > 0) {
+      unlockPage()
+    } else {
+      lockPage()
+    }
   }
 
-  // There is no valid key, but the modal has not been set so we set it
-  if (!modalShown) {
-    showModal()
+  render() {
+    const { keys, modalShown, children } = this.props
+
+    // We have at least one valid key and the modal was not shown
+    if (keys.length > 0 && !modalShown) {
+      return null
+    }
+
+    // There is no valid key or we shown the modal previously
+    return <SuspendedRender>{children}</SuspendedRender>
   }
-  return children
 }
 
 ShowUnlessUserHasKeyToAnyLock.propTypes = {
   keys: PropTypes.arrayOf(UnlockPropTypes.key),
-  showModal: PropTypes.func,
   modalShown: PropTypes.bool,
   children: PropTypes.node,
 }
 
-export const mapDispatchToProps = (dispatch, { locks }) => ({
-  showModal: () => {
-    lockPage()
-    dispatch(showModal(locks.map(l => l.address).join('-')))
-  },
-})
+ShowUnlessUserHasKeyToAnyLock.defaultProps = {
+  keys: [],
+  children: null,
+  modalShown: false,
+}
 
 export const mapStateToProps = ({ keys, modals }, { locks }) => {
   let validKeys = []
-  const now = new Date().getTime() / 1000
   locks.forEach(lock => {
     for (let k of Object.values(keys)) {
-      if (k.lock === lock.address && k.expiration > now) {
+      if (
+        k.lock === lock.address &&
+        k.expiration > new Date().getTime() / 1000
+      ) {
         validKeys.push(k)
       }
     }
   })
-
   return {
     modalShown: !!modals[locks.map(l => l.address).join('-')],
     keys: validKeys,
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ShowUnlessUserHasKeyToAnyLock)
+export default connect(mapStateToProps)(ShowUnlessUserHasKeyToAnyLock)

@@ -23,6 +23,20 @@ export const pageTitle = title => {
   return (pageTitle += 'Unlock: The Web\'s new business model')
 }
 
+/**
+ * Transaction types
+ */
+export const TRANSACTION_TYPES = {
+  LOCK_CREATION: 'LOCK_CREATION',
+  KEY_PURCHASE: 'KEY_PURCHASE',
+  WITHDRAWAL: 'WITHDRAWAL',
+}
+
+/**
+ * Matches /lock /demo or /paywall
+ */
+export const LOCK_PATH_NAME_REGEXP = /\/[a-z0-9]+\/(0x[a-fA-F0-9]{40}).*/
+
 export const PAGE_DESCRIPTION =
   'Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.'
 
@@ -49,3 +63,9 @@ export const MONTH_NAMES = [
 // constants related to pagination
 export const PGN_ITEMS_PER_PAGE = 10
 export const PGN_MAX_NUMBER_OF_PAGES_TO_SHOW_ALL = 10
+
+export const MAX_DEVICE_WIDTHS = {
+  PHONE: 736,
+  TABLET: 1000,
+  DESKTOP: false,
+}

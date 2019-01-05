@@ -4,7 +4,11 @@ import { storiesOf } from '@storybook/react'
 import { Overlay } from '../../components/lock/Overlay'
 import createUnlockStore from '../../createUnlockStore'
 
-const store = createUnlockStore()
+const store = createUnlockStore({
+  currency: {
+    USD: 195.99,
+  },
+})
 
 const render = locks => (
   <section>
@@ -55,11 +59,11 @@ in turpis pulvinar facilisis. Ut felis.
       <li>Aliquam tincidunt mauris eu risus.</li>
     </ul>
 
-    <Overlay locks={locks} />
+    <Overlay locks={locks} hideModal={() => {}} showModal={() => {}} />
   </section>
 )
 
-storiesOf('Overlay', Overlay)
+storiesOf('Overlay', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('with a single Lock', () => {
     const locks = [

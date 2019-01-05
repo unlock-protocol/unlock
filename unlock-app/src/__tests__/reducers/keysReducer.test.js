@@ -41,7 +41,7 @@ describe('keys reducer', () => {
   })
 
   describe('ADD_KEY', () => {
-    it('should refuse to add a key with the wrong id', () => {
+    it('should refuse to add a key with the wrong id and keep state intact', () => {
       const id = '0x123'
 
       const state = {}
@@ -54,12 +54,10 @@ describe('keys reducer', () => {
         },
       }
 
-      expect(() => {
-        reducer(state, action)
-      }).toThrowError('Could not add key with wrong id')
+      expect(reducer(state, action)).toEqual(state)
     })
 
-    it('should refuse to overwrite keys', () => {
+    it('should refuse to overwrite keys and keep state unchanged', () => {
       const id = '0x123'
 
       const state = {
@@ -76,9 +74,7 @@ describe('keys reducer', () => {
         },
       }
 
-      expect(() => {
-        reducer(state, action)
-      }).toThrowError('Could not add already existing key')
+      expect(reducer(state, action)).toEqual(state)
     })
 
     it('should add the key by its id accordingly when receiving ADD_KEY', () => {
@@ -106,22 +102,46 @@ describe('keys reducer', () => {
     })
   })
 
-  it('should add a ley when receiving PURCHASE_KEY', () => {
-    expect(
-      reducer(
-        {},
-        {
-          type: PURCHASE_KEY,
-          key,
-        }
-      )
-    ).toEqual({
-      [key.id]: key,
+  describe('PURCHASE_KEY', () => {
+    it('should add a key when receiving PURCHASE_KEY if the key has an id', () => {
+      expect(
+        reducer(
+          {},
+          {
+            type: PURCHASE_KEY,
+            key,
+          }
+        )
+      ).toEqual({
+        [key.id]: key,
+      })
+    })
+
+    it('should add a key when receiving PURCHASE_KEY and construct a key id if needed', () => {
+      const newKey = {
+        lock: '0x123',
+        owner: '0x456',
+      }
+      expect(
+        reducer(
+          {},
+          {
+            type: PURCHASE_KEY,
+            key: newKey,
+          }
+        )
+      ).toEqual({
+        '0x123-0x456': {
+          id: '0x123-0x456',
+          lock: '0x123',
+          owner: '0x456',
+        },
+      })
     })
   })
 
   describe('UPDATE_KEY', () => {
-    it('should trigger an error if trying to update the key id', () => {
+    it('should keep state unchanged if trying to update the key id', () => {
       const key = {
         id: 'keyId',
         expiration: 0,
@@ -138,12 +158,10 @@ describe('keys reducer', () => {
           id: 'newKeyId',
         },
       }
-      expect(() => {
-        reducer(state, action)
-      }).toThrowError('Could not change the key id')
+      expect(reducer(state, action)).toEqual(state)
     })
 
-    it('should throw when the key being updated does not exist', () => {
+    it('should keep state unchanged when the key being updated does not exist', () => {
       const key = {
         id: 'keyId',
         expiration: 0,
@@ -160,9 +178,7 @@ describe('keys reducer', () => {
           data: 'world',
         },
       }
-      expect(() => {
-        reducer(state, action)
-      }).toThrowError('Could not update missing key')
+      expect(reducer(state, action)).toEqual(state)
     })
 
     it('should update the keys values', () => {

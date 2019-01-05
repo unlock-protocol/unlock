@@ -1,7 +1,10 @@
 pragma solidity 0.4.24;
 
-import "./interfaces/ILockPublic.sol";
 import "./interfaces/IUnlock.sol";
+import "./interfaces/IERC721.sol";
+import "./interfaces/ILockCore.sol";
+import "openzeppelin-eth/contracts/ownership/Ownable.sol";
+import "openzeppelin-eth/contracts/introspection/ERC165.sol";
 
 /**
  * TODO: consider error codes rather than strings
@@ -11,16 +14,24 @@ import "./interfaces/IUnlock.sol";
  * @title The Lock contract
  * @author Julien Genestoux (unlock-protocol.com)
  * Eventually: implement ERC721.
- *  TODO: consider using a _private version for each method that is being invoked by the
- * public one as this seems to be a pattern.
+ * @dev ERC165 allows our contract to be queried to determine whether it implements a given interface.
+ * Every ERC-721 compliant contract must implement the ERC165 interface.
+ * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
  */
-contract PublicLock is ILockPublic {
+contract PublicLock is ILockCore, ERC165, IERC721, Ownable {
 
   // The struct for a key
   struct Key {
     uint expirationTimestamp;
     bytes data; // Note: This can be expensive?
   }
+
+  // Events
+  event PriceChanged(
+    uint indexed oldKeyPrice,
+    uint indexed keyPrice
+  );
+
 
   // Fields
   // Unlock Protocol address
@@ -119,10 +130,10 @@ contract PublicLock is ILockPublic {
     uint _keyPrice,
     uint _maxNumberOfKeys
   )
-    public
-  {
+  public {
     unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract.
-    transferOwnership(_owner);
+    Ownable.initialize(_owner);
+    ERC165.initialize();
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
@@ -253,7 +264,9 @@ contract PublicLock is ILockPublic {
     external
     onlyOwner
   {
+    uint256 oldKeyPrice = keyPrice;
     keyPrice = _keyPrice;
+    emit PriceChanged(oldKeyPrice, keyPrice);
   }
 
   /**

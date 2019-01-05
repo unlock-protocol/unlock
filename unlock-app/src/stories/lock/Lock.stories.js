@@ -23,7 +23,7 @@ const store = createUnlockStore({
   },
 })
 
-storiesOf('Lock', Lock)
+storiesOf('Lock', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('with no key (check hover state too)', () => {
     return (
@@ -33,6 +33,7 @@ storiesOf('Lock', Lock)
         lockKey={null}
         purchaseKey={purchaseKey}
         config={config}
+        hideModal={() => {}}
       />
     )
   })
@@ -45,6 +46,7 @@ storiesOf('Lock', Lock)
         lockKey={null}
         purchaseKey={purchaseKey}
         config={config}
+        hideModal={() => {}}
       />
     )
   })
@@ -62,6 +64,7 @@ storiesOf('Lock', Lock)
         lockKey={k}
         purchaseKey={purchaseKey}
         config={config}
+        hideModal={() => {}}
       />
     )
   })
@@ -80,6 +83,7 @@ storiesOf('Lock', Lock)
         lockKey={k}
         purchaseKey={purchaseKey}
         config={config}
+        hideModal={() => {}}
       />
     )
   })
@@ -98,6 +102,7 @@ storiesOf('Lock', Lock)
         lockKey={k}
         purchaseKey={purchaseKey}
         config={config}
+        hideModal={() => {}}
       />
     )
   })
@@ -116,6 +121,7 @@ storiesOf('Lock', Lock)
         lockKey={null}
         purchaseKey={purchaseKey}
         config={config}
+        hideModal={() => {}}
       />
     )
   })

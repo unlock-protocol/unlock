@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import UnlockPropTypes from '../../propTypes'
-import CreatorLock, { LockRowGrid } from './CreatorLock'
+import CreatorLock, { LockRowGrid, PhoneLockRowGrid } from './CreatorLock'
 import CreatorLockForm from './CreatorLockForm'
 import Error from '../interface/Error'
+import Media, { NoPhone, Phone } from '../../theme/media'
 
 export class CreatorLocks extends React.Component {
   constructor(props, context) {
@@ -32,9 +33,12 @@ export class CreatorLocks extends React.Component {
           <LockHeader>Locks</LockHeader>
           <LockMinorHeader>Name / Address</LockMinorHeader>
           <LockMinorHeader>Duration</LockMinorHeader>
-          <LockMinorHeader>Quantity</LockMinorHeader>
+          <Quantity>Quantity</Quantity>
           <LockMinorHeader>Price</LockMinorHeader>
-          <LockMinorHeader>Balance / Earnings</LockMinorHeader>
+          <LockMinorHeader>
+            <NoPhone>Balance</NoPhone>
+            <Phone>Balance</Phone>
+          </LockMinorHeader>
           <CreateButton onClick={this.toggleForm}>Create Lock</CreateButton>
         </LockHeaderRow>
         <Error />
@@ -72,6 +76,10 @@ const LockHeaderRow = styled.div`
   display: grid;
   grid-gap: 16px;
   ${LockRowGrid} align-items: center;
+  ${Media.phone`
+    ${PhoneLockRowGrid} align-items: start;
+    grid-gap: 4px;
+  `};
 `
 
 const LockHeader = styled.div`
@@ -83,6 +91,9 @@ const LockHeader = styled.div`
   line-height: normal;
   letter-spacing: normal;
   color: var(--grey);
+  ${Media.phone`
+    grid-row: span 2;
+  `};
 `
 
 const LockMinorHeader = styled.div`
@@ -95,6 +106,12 @@ const LockMinorHeader = styled.div`
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--darkgrey);
+`
+
+export const Quantity = styled(LockMinorHeader)`
+  ${Media.phone`
+    grid-row: span 2;
+  `};
 `
 
 export const ActionButton = styled.button`
@@ -111,4 +128,7 @@ export const ActionButton = styled.button`
 const CreateButton = styled(ActionButton)`
   padding: 10px;
   align-self: end;
+  ${Media.phone`
+    display: none;
+  `};
 `

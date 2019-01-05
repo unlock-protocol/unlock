@@ -7,7 +7,8 @@
     "doc": "docs"
   },
   "dependencies": {
-    "eslint-plugin-jest": "^21.22.1"
+    "eslint-plugin-jest": "^21.22.1",
+    "netlify-cli": "^2.6.0"
   },
   "devDependencies": {
     "husky": "^1.2.0",
@@ -16,8 +17,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-ganache": "ganache-cli -i 1984 --mnemonic 'hello unlock save the web'",
-    "postinstall": "cd smart-contracts && npm install && cd ../unlock-app && npm install",
-    "deploy-lock": "cd smart-contracts && truffle deploy --reset"
+    "postinstall": "cd smart-contracts && npm ci && cd ../unlock-app && npm ci && cd ../tests && npm ci",
+    "deploy-lock": "cd smart-contracts && npm run deploy",
+    "build": "cd smart-contracts && npm run build && cd ../unlock-app && npm run build",
+    "start": "cd unlock-app && npm run start",
+    "deploy": "./scripts/deploy.sh"
   },
   "repository": {
     "type": "git",

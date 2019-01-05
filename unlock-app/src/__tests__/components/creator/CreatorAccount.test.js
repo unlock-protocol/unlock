@@ -37,6 +37,6 @@ describe('CreatorAccount', () => {
     // eth value
     expect(wrapper.queryByText('0.2')).not.toBeNull()
     // usd value
-    expect(wrapper.queryByText('39.20')).not.toBeNull()
+    expect(wrapper.queryByText('39.20')).toBeNull()
   })
 })

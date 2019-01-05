@@ -10,19 +10,27 @@ const keysReducer = (state = initialState, action) => {
   }
 
   if (action.type === PURCHASE_KEY) {
+    const id = action.key.id
+      ? action.key.id
+      : [action.key.lock, action.key.owner].join('-')
     return {
-      [action.key.id]: action.key,
+      [id]: {
+        ...action.key,
+        id,
+      },
       ...state,
     }
   }
 
   if (action.type === ADD_KEY) {
     if (action.key.id && action.key.id !== action.id) {
-      throw new Error('Could not add key with wrong id')
+      // 'Could not add key with wrong id' => Let's not change state
+      return state
     }
 
     if (state[action.id]) {
-      throw new Error('Could not add already existing key')
+      // 'Could not add already existing key' => Let's not change state
+      return state
     }
 
     return {
@@ -36,11 +44,13 @@ const keysReducer = (state = initialState, action) => {
 
   if (action.type === UPDATE_KEY) {
     if (action.update.id && action.update.id !== action.id) {
-      throw new Error('Could not change the key id')
+      // 'Could not change the key id' => Let's not change state
+      return state
     }
 
     if (!state[action.id]) {
-      throw new Error('Could not update missing key')
+      // 'Could not update missing key' => Let's not change state
+      return state
     }
 
     return {

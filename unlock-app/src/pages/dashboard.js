@@ -6,14 +6,11 @@ import UnlockPropTypes from '../propTypes'
 import Layout from '../components/interface/Layout'
 import CreatorAccount from '../components/creator/CreatorAccount'
 import CreatorLocks from '../components/creator/CreatorLocks'
+import DeveloperOverlay from '../components/developer/DeveloperOverlay'
 import withConfig from '../utils/withConfig'
 import { pageTitle } from '../constants'
 
 export const Dashboard = ({ account, network, locks }) => {
-  if (!account) {
-    return null //loading
-  }
-
   return (
     <Layout title="Creator Dashboard">
       <Head>
@@ -22,6 +19,7 @@ export const Dashboard = ({ account, network, locks }) => {
       <NoSSR>
         <CreatorAccount network={network} account={account} />
         <CreatorLocks locks={locks} />
+        <DeveloperOverlay />
       </NoSSR>
     </Layout>
   )

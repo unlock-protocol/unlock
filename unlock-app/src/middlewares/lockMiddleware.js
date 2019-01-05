@@ -3,8 +3,10 @@
 import React from 'react'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import {
+  ADD_LOCK,
   CREATE_LOCK,
   WITHDRAW_FROM_LOCK,
+  UPDATE_LOCK,
   addLock,
   lockDeployed,
   updateLock,
@@ -15,6 +17,7 @@ import { setNetwork, SET_NETWORK } from '../actions/network'
 import { setError } from '../actions/error'
 import { SET_PROVIDER } from '../actions/provider'
 import { addTransaction, updateTransaction } from '../actions/transaction'
+import { LOCK_PATH_NAME_REGEXP } from '../constants'
 
 import Web3Service from '../services/web3Service'
 
@@ -60,8 +63,9 @@ export default function lockMiddleware({ getState, dispatch }) {
    * Should we get the balance of the lock owner?
    */
   web3Service.on('lock.updated', (address, update) => {
-    if (getState().locks[address]) {
-      dispatch(updateLock(address, update))
+    const lock = getState().locks[address]
+    if (lock) {
+      dispatch(updateLock(lock.address, update))
     } else {
       dispatch(addLock(address, update))
     }
@@ -71,9 +75,10 @@ export default function lockMiddleware({ getState, dispatch }) {
    * When a key was saved, we reload the corresponding lock because
    * it might have been updated (balance, outstanding keys...)
    */
-  web3Service.on('key.saved', key => {
+  web3Service.on('key.saved', (keyId, key) => {
     web3Service.getLock(key.lock)
-    web3Service.refreshAccountBalance(getState().account)
+    web3Service.refreshAccountBalance(key.owner)
+    web3Service.getKeyByLockForOwner(key.lock, key.owner)
   })
 
   web3Service.on('key.updated', (id, update) => {
@@ -139,7 +144,13 @@ export default function lockMiddleware({ getState, dispatch }) {
         const lock = Object.values(getState().locks).find(
           lock => lock.address === action.key.lock
         )
-        web3Service.purchaseKey(action.key, account, lock)
+        web3Service.purchaseKey(
+          action.key.lock,
+          action.key.owner,
+          lock.keyPrice,
+          account,
+          action.key.data
+        )
       } else if (action.type === WITHDRAW_FROM_LOCK) {
         const account = getState().account
         web3Service.withdrawFromLock(action.lock, account)
@@ -147,14 +158,22 @@ export default function lockMiddleware({ getState, dispatch }) {
 
       next(action)
 
-      if (
+      if (action.type === ADD_LOCK || action.type == UPDATE_LOCK) {
+        const lock = getState().locks[action.address]
+        if (!lock.pending) {
+          web3Service.getKeyByLockForOwner(
+            lock.address,
+            getState().account.address
+          )
+        }
+      } else if (
         action.type === LOCATION_CHANGE &&
         action.payload.location &&
         action.payload.location.pathname
       ) {
         // Location was changed, get the matching lock
         const match = action.payload.location.pathname.match(
-          /\/lock|demo\/(0x[a-fA-F0-9]{40})$/
+          LOCK_PATH_NAME_REGEXP
         )
         if (match) {
           web3Service.getLock(match[1])

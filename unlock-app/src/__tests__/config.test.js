@@ -2,7 +2,10 @@ import configure from '../config'
 
 describe('config', () => {
   describe('dev', () => {
-    let config = configure(global, { NODE_ENV: 'dev' })
+    let config = configure(global, {
+      unlockEnv: 'dev',
+      httpProvider: '127.0.0.1',
+    })
 
     it('should require a dev network', () => {
       expect(config.isRequiredNetwork(0)).toEqual(false)
@@ -31,11 +34,11 @@ describe('config', () => {
               isMetaMask: true,
             },
           },
-          location: {
-            hostname: 'localhost',
-          },
         },
-        { NODE_ENV: 'dev' }
+        {
+          unlockEnv: 'dev',
+          httpProvider: '127.0.0.1',
+        }
       )
       expect(config.providers).toMatchObject({
         HTTP: {
@@ -52,16 +55,19 @@ describe('config', () => {
   })
 
   describe('staging', () => {
-    let config = configure({
-      web3: {
-        currentProvider: {
-          isMetaMask: true,
+    let config = configure(
+      {
+        web3: {
+          currentProvider: {
+            isMetaMask: true,
+          },
         },
       },
-      location: {
-        hostname: 'staging.unlock-protocol.com',
-      },
-    })
+      {
+        unlockEnv: 'staging',
+        httpProvider: '127.0.0.1',
+      }
+    )
 
     it('should require rinkeby', () => {
       expect(config.isRequiredNetwork(0)).toEqual(false)
@@ -81,10 +87,9 @@ describe('config', () => {
   })
 
   describe('production', () => {
-    let config = configure({
-      location: {
-        hostname: 'unlock-protocol.com',
-      },
+    let config = configure(global, {
+      unlockEnv: 'prod',
+      httpProvider: '127.0.0.1',
     })
 
     it('should require mainnet', () => {

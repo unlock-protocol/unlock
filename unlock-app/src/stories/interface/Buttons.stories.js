@@ -1,39 +1,44 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { Provider } from 'react-redux'
-import LayoutButtons from '../../components/interface/buttons/layout'
 import Buttons from '../../components/interface/buttons/lock'
-import OverlayButtons from '../../components/interface/buttons/overlay'
 
 import createUnlockStore from '../../createUnlockStore'
 
 const store = createUnlockStore({})
 
-storiesOf('Buttons')
+storiesOf('Buttons/Lock Buttons', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
-  .add('Github', () => {
-    return <LayoutButtons.Github />
-  })
-  .add('About', () => {
-    return <LayoutButtons.About />
-  })
-  .add('Jobs', () => {
-    return <LayoutButtons.Jobs />
-  })
-  .add('Close', () => {
-    return <LayoutButtons.Close as="button" />
-  })
-  .add('Close Large', () => {
-    return <LayoutButtons.Close as="button" size="100px" />
-  })
-  .add('Close Small', () => {
-    return <LayoutButtons.Close as="button" size="16px" />
-  })
-  .add('Withdraw', () => {
+  .add('Withdraw, no balance', () => {
     const lock = {
       address: '0xabc',
     }
     return <Buttons.Withdraw lock={lock} />
+  })
+  .add('Withdraw, positive balance', () => {
+    const lock = {
+      address: '0xabc',
+      balance: 1,
+    }
+    return <Buttons.Withdraw lock={lock} />
+  })
+  .add('Show Embed Code', () => {
+    return <Buttons.Code />
+  })
+  .add('Copy', () => {
+    return <Buttons.Copy />
+  })
+  .add('Download', () => {
+    return <Buttons.Download />
+  })
+  .add('Edit', () => {
+    return <Buttons.Edit />
+  })
+  .add('Etherscan', () => {
+    return <Buttons.Etherscan />
+  })
+  .add('Export', () => {
+    return <Buttons.ExportLock />
   })
   .add('Preview', () => {
     const lock = {
@@ -41,6 +46,6 @@ storiesOf('Buttons')
     }
     return <Buttons.Preview lock={lock} />
   })
-  .add('Confirmed Key', () => {
-    return <OverlayButtons.ConfirmedKey />
+  .add('Upload', () => {
+    return <Buttons.Upload />
   })

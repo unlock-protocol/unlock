@@ -8,6 +8,7 @@ import EmbedCodeSnippet from './lock/EmbedCodeSnippet'
 import KeyList from './lock/KeyList'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
+import Media, { NoPhone, Phone } from '../../theme/media'
 
 const LockKeysNumbers = ({ lock }) => (
   <LockKeys>
@@ -15,7 +16,9 @@ const LockKeysNumbers = ({ lock }) => (
     lock.maxNumberOfKeys !== null &&
     typeof lock.outstandingKeys !== 'undefined' &&
     typeof lock.maxNumberOfKeys !== 'undefined'
-      ? `${lock.outstandingKeys}/${lock.maxNumberOfKeys}`
+      ? `${lock.outstandingKeys}/${
+        lock.maxNumberOfKeys > 0 ? lock.maxNumberOfKeys : '∞'
+      }`
       : ' - '}
   </LockKeys>
 )
@@ -62,10 +65,11 @@ export class CreatorLock extends React.Component {
     let name = lock.name || 'New Lock'
     return (
       <LockRow onClick={this.toggleKeys}>
-        <Icon lock={lock} />
+        <DoubleHeightCell>
+          <Icon lock={lock} />
+        </DoubleHeightCell>
         <LockName>
           {name}
-
           <LockAddress>{!lock.pending && lock.address}</LockAddress>
         </LockName>
         <LockDuration>
@@ -73,7 +77,14 @@ export class CreatorLock extends React.Component {
         </LockDuration>
         <LockKeysNumbers lock={lock} />
         <Balance amount={lock.keyPrice} />
-        <Balance amount={lock.balance} />
+        <BalanceContainer>
+          <NoPhone>
+            <Balance amount={lock.balance} />
+          </NoPhone>
+          <Phone>
+            <Balance amount={lock.balance} convertCurrency={false} />
+          </Phone>
+        </BalanceContainer>
         <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
         {showEmbedCode && (
           <LockPanel>
@@ -81,8 +92,7 @@ export class CreatorLock extends React.Component {
             <EmbedCodeSnippet lock={lock} />
           </LockPanel>
         )}
-        {!showEmbedCode &&
-          showKeys && (
+        {!showEmbedCode && showKeys && (
           <LockPanel onClick={this.preventPropagation}>
             <LockDivider />
             <KeyList lock={lock} />
@@ -102,6 +112,9 @@ export default CreatorLock
 export const LockRowGrid =
   'grid-template-columns: 32px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
 
+export const PhoneLockRowGrid =
+  'grid-template-columns: 43px minmax(80px, 140px) repeat(2, minmax(56px, 80px)); grid-auto-flow: column;'
+
 export const LockRow = styled.div`
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
   font-weight: 200;
@@ -112,10 +125,14 @@ export const LockRow = styled.div`
   box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.08);
   border-radius: 4px;
   display: grid;
-  grid-gap: 16px;
-  ${LockRowGrid} grid-template-rows: 84px;
-  grid-column-gap: 16px;
   grid-row-gap: 0;
+  ${Media.nophone`
+    ${LockRowGrid} grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  `} ${Media.phone`
+    grid-column-gap: 4px;
+    ${PhoneLockRowGrid}
+  `}
   align-items: start;
   cursor: pointer;
 
@@ -124,9 +141,24 @@ export const LockRow = styled.div`
   }
 `
 
+export const LockLabel = styled.div`
+  color: var(--link);
+`
+
+export const DoubleHeightCell = styled.div`
+  grid-row: span 2;
+`
+
+export const BalanceContainer = styled.div``
+
 export const LockName = styled.div`
   color: var(--link);
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  ${Media.phone`
+    grid-column: span 2;
+  `};
 `
 
 export const LockAddress = styled.div`
@@ -144,6 +176,9 @@ export const LockKeys = styled.div``
 
 const LockPanel = styled.div`
   grid-column: 1 / span 7;
+  ${Media.phone`
+    display: none;
+  `};
 `
 
 const LockDivider = styled.div`

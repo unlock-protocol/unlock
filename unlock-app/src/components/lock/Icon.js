@@ -74,7 +74,7 @@ export function Icon({ lock }) {
     scheme
       .from_hex(mainColor)
       .scheme('triade')
-      .variation('light')
+      .variation('pastel')
     colors = scheme.colors().map(c => `#${c}`)
   }
   const innerCircles = circles(address)

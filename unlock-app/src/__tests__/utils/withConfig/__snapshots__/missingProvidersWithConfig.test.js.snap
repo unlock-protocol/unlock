@@ -202,6 +202,7 @@ exports[`withConfig High Order Component when the current network is not in the 
   color: var(--darkgrey);
   display: grid;
   row-gap: 24px;
+  width: 100%;
 }
 
 .c13 {
@@ -244,9 +245,10 @@ exports[`withConfig High Order Component when the current network is not in the 
   color: var(--dimgrey);
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c4 {
     grid-template-columns: 1fr 48px;
+    height: 35px;
   }
 }
 
@@ -256,7 +258,7 @@ exports[`withConfig High Order Component when the current network is not in the 
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c10 {
     display: grid;
   }
@@ -268,14 +270,25 @@ exports[`withConfig High Order Component when the current network is not in the 
   }
 }
 
-@media (max-width:500px) {
-  .c1 > * {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c1 {
     display: none;
   }
 }
 
-@media (max-width:500px) {
-  .c16 > * {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c16 {
     display: none;
   }
 }
@@ -331,6 +344,7 @@ exports[`withConfig High Order Component when the current network is not in the 
           className="c7 c8"
           href="/about"
           onClick={[Function]}
+          title="About"
         >
           <svg
             viewBox="0 0 24 24"
@@ -354,6 +368,7 @@ exports[`withConfig High Order Component when the current network is not in the 
           className="c7 c8"
           href="/jobs"
           onClick={[Function]}
+          title="Join us"
         >
           <svg
             name="Jobs"
@@ -376,6 +391,7 @@ exports[`withConfig High Order Component when the current network is not in the 
           className="c7 c8"
           href="https://github.com/unlock-protocol/unlock"
           onClick={[Function]}
+          title="Source Code"
         >
           <svg
             name="Github"
@@ -390,6 +406,29 @@ exports[`withConfig High Order Component when the current network is not in the 
             className="c9"
           >
             Source Code
+          </small>
+        </a>
+        <a
+          className="c7 c8"
+          href="https://t.me/unlockprotocol"
+          onClick={[Function]}
+          title="Telegram"
+        >
+          <svg
+            name="Telegram"
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clipRule="evenodd"
+              d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+              fillRule="evenodd"
+            />
+          </svg>
+          <small
+            className="c9"
+          >
+            Telegram
           </small>
         </a>
       </div>
@@ -428,7 +467,9 @@ exports[`withConfig High Order Component when the current network is not in the 
               Chevron Up
             </title>
             <path
-              d="M3 29L29 5l26 24"
+              clipRule="evenodd"
+              d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
+              fillRule="evenodd"
             />
           </svg>
           
@@ -442,6 +483,7 @@ exports[`withConfig High Order Component when the current network is not in the 
           href="/about"
           onClick={[Function]}
           size="48px"
+          title="About"
         >
           <svg
             viewBox="0 0 24 24"
@@ -466,6 +508,7 @@ exports[`withConfig High Order Component when the current network is not in the 
           href="/jobs"
           onClick={[Function]}
           size="48px"
+          title="Join us"
         >
           <svg
             name="Jobs"
@@ -489,6 +532,7 @@ exports[`withConfig High Order Component when the current network is not in the 
           href="https://github.com/unlock-protocol/unlock"
           onClick={[Function]}
           size="48px"
+          title="Source Code"
         >
           <svg
             name="Github"
@@ -503,6 +547,30 @@ exports[`withConfig High Order Component when the current network is not in the 
             className="c9"
           >
             Source Code
+          </small>
+        </a>
+        <a
+          className="c7 c11"
+          href="https://t.me/unlockprotocol"
+          onClick={[Function]}
+          size="48px"
+          title="Telegram"
+        >
+          <svg
+            name="Telegram"
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clipRule="evenodd"
+              d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+              fillRule="evenodd"
+            />
+          </svg>
+          <small
+            className="c9"
+          >
+            Telegram
           </small>
         </a>
       </div>

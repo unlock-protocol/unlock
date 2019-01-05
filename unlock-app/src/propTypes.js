@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { TRANSACTION_TYPES } from './constants'
 
 export const address = PropTypes.string
 
@@ -22,6 +23,7 @@ export const transaction = PropTypes.shape({
   hash: PropTypes.string,
   lock: PropTypes.string,
   name: PropTypes.string,
+  type: PropTypes.oneOf(Object.values(TRANSACTION_TYPES)),
 })
 
 export const conversion = PropTypes.objectOf(PropTypes.number)
@@ -60,6 +62,10 @@ export const name = PropTypes.string
 
 export const showDashboardForm = PropTypes.bool
 
+export const element = PropTypes.oneOfType([PropTypes.func, PropTypes.element])
+
+export const delay = PropTypes.number
+
 export default {
   account,
   address,
@@ -67,6 +73,8 @@ export default {
   component,
   configuration,
   conversion,
+  delay,
+  element,
   layout,
   lock,
   locks,

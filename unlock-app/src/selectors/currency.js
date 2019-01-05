@@ -12,7 +12,7 @@ export function formatEth(eth) {
   if (numericalEth < MINIMUM_THRESHOLD && numericalEth > 0) return '< 0.0001'
   if (numericalEth < 1)
     return parseFloat(numericalEth.toPrecision(SIGNIFICANT_DIGITS)).toString()
-  return numericalEth.toFixed(DECIMAL_PLACES)
+  return numericalEth.toFixed(DECIMAL_PLACES + 6).slice(0, -6) // Using extra decimal places and slicing them to prevent adverse rounding up
 }
 
 /**

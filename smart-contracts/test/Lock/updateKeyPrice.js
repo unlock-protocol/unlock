@@ -3,48 +3,54 @@ const Units = require('ethereumjs-units')
 const deployLocks = require('../helpers/deployLocks')
 const Unlock = artifacts.require('../Unlock.sol')
 
-let unlock, locks
+let unlock, locks, keyPriceBefore, transaction
 
 contract('Lock', (accounts) => {
-  before(() => {
-    return Unlock.deployed()
-      .then(_unlock => {
-        unlock = _unlock
-        return deployLocks(unlock)
-      })
-      .then(_locks => {
-        locks = _locks
-      })
-      .then(() => {
-        // Increases the price from the default 0.01, 'eth'.
-        locks['FIRST'].updateKeyPrice(Units.convert('0.1', 'eth', 'wei'))
-      })
-  })
-
   describe('updateKeyPrice', () => {
-    it('should fail if the price is not enough', () => {
-      return locks['FIRST']
-        .purchaseFor(accounts[0], 'Julien', {
-          value: Units.convert('0.01', 'eth', 'wei')
-        })
-        .then(() => {
-          assert.fail()
-        })
-        .catch(error => {
-          assert.equal(error.message, 'VM Exception while processing transaction: revert Insufficient funds')
-          // Making sure we do not have a key set!
-          return locks['FIRST'].keyExpirationTimestampFor(accounts[0])
-            .catch(error => {
-              assert.equal(error.message, 'VM Exception while processing transaction: revert No such key')
-            })
-        })
+    before(async () => {
+      unlock = await Unlock.deployed()
+      locks = await deployLocks(unlock)
+      keyPriceBefore = await locks['FIRST'].keyPrice()
+      assert.equal(keyPriceBefore.toNumber(), 10000000000000000)
+      transaction = await locks['FIRST'].updateKeyPrice(Units.convert('0.3', 'eth', 'wei'))
     })
 
-    it('should purchase when the correct amount of ETH is sent', () => {
-      return locks['FIRST']
-        .purchaseFor(accounts[0], 'Julien', {
-          value: Units.convert('0.1', 'eth', 'wei')
-        })
+    it('should change the actual keyPrice', async () => {
+      const keyPriceAfter = await locks['FIRST'].keyPrice()
+      assert.equal(keyPriceAfter.toNumber(), 300000000000000000)
+    })
+
+    it('should trigger an event', () => {
+      const event = transaction.logs.find((log) => {
+        return log.event === 'PriceChanged'
+      })
+      assert(event)
+      assert.equal(event.args.keyPrice.toNumber(), 300000000000000000)
+    })
+
+    describe('when the sender is not the lock owner', () => {
+      let keyPrice, error
+      before(async () => {
+        keyPrice = await locks['FIRST'].keyPrice()
+        try {
+          await locks['FIRST'].updateKeyPrice(
+            Units.convert('0.3', 'eth', 'wei'),
+            {
+              from: accounts[3]
+            })
+        } catch (_error) {
+          error = _error
+        }
+      })
+
+      it('should fail', async () => {
+        assert(error)
+      })
+
+      it('should leave the price unchanged', async () => {
+        const keyPriceAfter = await locks['FIRST'].keyPrice()
+        assert.equal(keyPrice.toNumber(), keyPriceAfter)
+      })
     })
   })
 })
