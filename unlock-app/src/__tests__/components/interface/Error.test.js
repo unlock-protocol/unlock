@@ -35,8 +35,10 @@ describe('Error Component', () => {
 
   describe('the the component has an error message', () => {
     it('should display the content of the children', () => {
-      const message = <p>There was an error.</p>
-      const wrapper = rtl.render(<Error close={close} error={message} />)
+      const error = {
+        message: 'There was an error.',
+      }
+      const wrapper = rtl.render(<Error close={close} error={error} />)
       expect(wrapper.queryByText('There was an error.')).not.toBeNull()
     })
   })

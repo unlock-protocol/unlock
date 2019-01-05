@@ -1,10 +1,21 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { Error } from '../../components/interface/Error'
+import { Provider } from 'react-redux'
+import ConnectedError, { Error } from '../../components/interface/Error'
+
+import createUnlockStore from '../../createUnlockStore'
 
 const close = () => {}
 
+const store = createUnlockStore({
+  error: {
+    message: 'The blockchain may have made your head explode',
+    context: 'awesomeness',
+  },
+})
+
 storiesOf('Error', module)
+  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Simple Error', () => {
     return (
       <Error close={close}>
@@ -23,4 +34,7 @@ storiesOf('Error', module)
         </p>
       </Error>
     )
+  })
+  .add('Error from redux store', () => {
+    return <ConnectedError close={close} />
   })

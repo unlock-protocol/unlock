@@ -1,15 +1,40 @@
-import React from 'react'
-import { setError, SET_ERROR } from '../../actions/error'
+import { setError, web3Error, SET_ERROR } from '../../actions/error'
 
 describe('error actions', () => {
   it('should create an action to set the error', () => {
     const error = {
-      message: <p>This is not right</p>,
+      message: 'This is not right',
     }
     const expectedAction = {
       type: SET_ERROR,
       error,
     }
+
     expect(setError(error)).toEqual(expectedAction)
+  })
+
+  it('should format an error message correctly if passed as a string', () => {
+    const error = 'This is not right'
+    const expectedAction = {
+      type: SET_ERROR,
+      error: {
+        message: error,
+      },
+    }
+
+    expect(setError(error)).toEqual(expectedAction)
+  })
+
+  it('should create an action for web3Service errors', () => {
+    const error = 'the blockchain exploded'
+    const expectedAction = {
+      type: SET_ERROR,
+      error: {
+        message: error,
+        context: 'web3',
+      },
+    }
+
+    expect(web3Error(error)).toEqual(expectedAction)
   })
 })

@@ -5,14 +5,23 @@ import styled from 'styled-components'
 import { setError } from '../../actions/error'
 import Buttons from './buttons/layout'
 
+const dev = process.env.NODE_ENV !== 'production'
+
 export const Error = ({ children, error, close }) => {
-  const content = children || error
+  const content = children || (error && error.message)
   if (!content) {
     return null
   }
   return (
     <Wrapper>
-      {content}
+      <ErrorInfo>
+        {dev && error && error.context ? (
+          <p className="context">{error.context}</p>
+        ) : (
+          ''
+        )}
+        <p>{content}</p>
+      </ErrorInfo>
       <Buttons.Close as="button" onClick={close} size="16px">
         X
       </Buttons.Close>
@@ -45,6 +54,20 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Error)
+
+const ErrorInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 8px;
+  & p.context {
+    color: red;
+  }
+
+  & p.context::after {
+    content: ':';
+    padding-right: 10px;
+  }
+`
 
 const Wrapper = styled.section`
   grid-template-columns: 1fr 20px;
