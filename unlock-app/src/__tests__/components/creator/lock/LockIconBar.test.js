@@ -88,6 +88,8 @@ describe('LockIconBar', () => {
     expect(
       wrapper.queryByText('Confirming Withdrawal', { exact: false })
     ).not.toBeNull()
-    expect(wrapper.queryByText('2/12', { exact: false })).not.toBeNull()
+    expect(
+      wrapper.queryByText(`2/${config.requiredConfirmations}`, { exact: false })
+    ).not.toBeNull()
   })
 })
