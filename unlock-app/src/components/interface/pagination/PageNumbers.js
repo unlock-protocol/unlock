@@ -34,55 +34,63 @@ const PageNumbers = ({ numberOfPages, currentPage, goToPage }) => {
 
   const HALF_MAX_PAGES_TO_SHOW_ALL = PGN_MAX_NUMBER_OF_PAGES_TO_SHOW_ALL / 2
 
+  const firstVisiblePages = Array(HALF_MAX_PAGES_TO_SHOW_ALL)
+    .fill()
+    .map((_, pn) => {
+      return pageNumber(pn + 1)
+    })
+  const formerDots =
+    currentPage - 1 === HALF_MAX_PAGES_TO_SHOW_ALL ? (
+      pageNumber(HALF_MAX_PAGES_TO_SHOW_ALL + 1)
+    ) : (
+      <PageNumber>
+        {currentPage === numberOfPages / 2 ||
+        currentPage <= HALF_MAX_PAGES_TO_SHOW_ALL ||
+        currentPage >= numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL
+          ? '....'
+          : currentPage < numberOfPages / 2
+            ? '..'
+            : '....'}
+      </PageNumber>
+    )
+  const currentIsolatedPageNumber = currentPage >
+    HALF_MAX_PAGES_TO_SHOW_ALL + 1 &&
+    currentPage < numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL && (
+    <PageNumberActive>{currentPage}</PageNumberActive>
+  )
+  const latterDots = currentPage > HALF_MAX_PAGES_TO_SHOW_ALL &&
+    currentPage < numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL && (
+    <PageNumber>
+      {' '}
+      {currentPage === numberOfPages / 2
+        ? '....'
+        : currentPage < numberOfPages / 2
+          ? '....'
+          : '..'}
+      {' '}
+    </PageNumber>
+  )
+
+  const lastVisiblePages = (
+    <div style={{ display: 'flex', flexDirection: 'row' }}>
+      {currentPage === numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL &&
+        pageNumber(currentPage)}
+      {Array(HALF_MAX_PAGES_TO_SHOW_ALL)
+        .fill()
+        .map((_, pn) => {
+          return pageNumber(numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL + 1 + pn)
+        })}
+    </div>
+  )
+
   // If number of pages greater than 10,  show first five and last five (1 2 3 4 5 .... 26 27 28 29 30)
   return (
     <PageGroup>
-      {//show first five page numbers
-        Array(HALF_MAX_PAGES_TO_SHOW_ALL)
-          .fill()
-          .map((_, pn) => {
-            return pageNumber(pn + 1)
-          })}
-      {//show first few dots
-        currentPage - 1 === HALF_MAX_PAGES_TO_SHOW_ALL ? (
-          pageNumber(HALF_MAX_PAGES_TO_SHOW_ALL + 1)
-        ) : (
-          <PageNumber>
-            {currentPage === numberOfPages / 2 ||
-          currentPage <= HALF_MAX_PAGES_TO_SHOW_ALL ||
-          currentPage >= numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL
-              ? '....'
-              : currentPage < numberOfPages / 2
-                ? '..'
-                : '....'}
-          </PageNumber>
-        )}
-      {// show the current page number if it is between first five and last five elements
-        currentPage > HALF_MAX_PAGES_TO_SHOW_ALL + 1 &&
-        currentPage < numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL && (
-          <PageNumberActive>{currentPage}</PageNumberActive>
-        )}
-      {// show last few dots
-        currentPage > HALF_MAX_PAGES_TO_SHOW_ALL &&
-        currentPage < numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL && (
-          <PageNumber>
-            {' '}
-            {currentPage === numberOfPages / 2
-              ? '....'
-              : currentPage < numberOfPages / 2
-                ? '....'
-                : '..'}
-            {' '}
-          </PageNumber>
-        )}
-      {currentPage === numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL &&
-        pageNumber(currentPage)}
-      {// show last five page numbers
-        Array(HALF_MAX_PAGES_TO_SHOW_ALL)
-          .fill()
-          .map((_, pn) => {
-            return pageNumber(numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL + 1 + pn)
-          })}
+      {firstVisiblePages}
+      {formerDots}
+      {currentIsolatedPageNumber}
+      {latterDots}
+      {lastVisiblePages}
     </PageGroup>
   )
 }

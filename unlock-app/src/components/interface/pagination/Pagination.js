@@ -4,8 +4,19 @@ import PreviousButtons from './Previous'
 import NextButtons from './Next'
 import PageNumbers from './PageNumbers'
 import { PGN_ITEMS_PER_PAGE } from '../../../constants'
+import UnlockPropTypes from '../../../propTypes'
 
 class Paginate extends React.Component {
+  static propTypes = {
+    items: UnlockPropTypes.items,
+    renderItems: UnlockPropTypes.method,
+  }
+
+  static defaultProps = {
+    items: [],
+    renderItems: () => null,
+  }
+
   constructor(props) {
     super(props)
     const itemCount = props.items.length

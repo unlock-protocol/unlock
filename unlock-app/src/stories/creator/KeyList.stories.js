@@ -72,7 +72,7 @@ const store = createUnlockStore({
   },
 })
 
-storiesOf('Keylist')
+storiesOf('KeyList', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('0 keys', () => {
     return <KeyList lock={sampleLocks['0']} />

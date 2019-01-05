@@ -42,7 +42,7 @@ const store = createUnlockStore({
   },
 })
 
-storiesOf('Pagination page numbers')
+storiesOf('PaginationPageNumbers', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('5 Pages', () => {
     return <PageNumbers numberOfPages={5} currentPage={1} />
