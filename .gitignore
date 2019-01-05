@@ -6,3 +6,6 @@ node_modules/
 # ZeppelinOS
 zos.dev-*.json
 .zos.session
+
+# Artifacts
+smart-contracts/build/contracts/*.json

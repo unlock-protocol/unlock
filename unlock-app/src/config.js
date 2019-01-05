@@ -59,6 +59,7 @@ export default function configure(
   let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
   let requiredConfirmations = 12
+  let unlockAddress = ''
 
   if (env === 'test') {
     // In test, we fake the HTTP provider
@@ -97,6 +98,9 @@ export default function configure(
     // In staging, the network can only be rinkeby
     isRequiredNetwork = networkId => networkId === 4
     requiredNetwork = ETHEREUM_NETWORKS_NAMES[4][0]
+
+    // Address for the Unlock smart contract
+    unlockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
   }
 
   if (env === 'prod') {
@@ -118,5 +122,6 @@ export default function configure(
     isRequiredNetwork,
     requiredNetwork,
     requiredConfirmations,
+    unlockAddress,
   }
 }
