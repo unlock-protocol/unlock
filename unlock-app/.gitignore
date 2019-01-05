@@ -22,3 +22,5 @@ yarn-error.log*
 
 /src/.next
 /src/out
+
+paywall.min.js
