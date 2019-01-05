@@ -1,6 +1,5 @@
 /* eslint no-console: 0 */ // TODO: remove me when this is clean
 
-import React from 'react'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   ADD_LOCK,

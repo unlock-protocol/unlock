@@ -5,9 +5,7 @@ import styled from 'styled-components'
 import { setError } from '../../actions/error'
 import Buttons from './buttons/layout'
 
-const dev = process.env.NODE_ENV !== 'production'
-
-export const Error = ({ children, error, close }) => {
+export const Error = ({ children, error, close, dev }) => {
   const content = children || (error && error.message)
   if (!content) {
     return null
@@ -41,13 +39,18 @@ const mapDispatchToProps = dispatch => ({
 
 Error.propTypes = {
   children: PropTypes.node,
-  error: PropTypes.node,
+  error: PropTypes.shape({
+    message: PropTypes.string.isRequired,
+    context: PropTypes.string,
+  }),
+  dev: PropTypes.string,
   close: PropTypes.func.isRequired,
 }
 
 Error.defaultProps = {
   children: null,
   error: null,
+  dev: process.env.NODE_ENV !== 'production',
 }
 
 export default connect(

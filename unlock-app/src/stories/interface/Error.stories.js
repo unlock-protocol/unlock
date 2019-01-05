@@ -10,7 +10,7 @@ const close = () => {}
 const store = createUnlockStore({
   error: {
     message: 'The blockchain may have made your head explode',
-    context: 'awesomeness',
+    context: 'Context',
   },
 })
 
@@ -35,6 +35,9 @@ storiesOf('Error', module)
       </Error>
     )
   })
-  .add('Error from redux store', () => {
+  .add('Error from redux store (dev)', () => {
     return <ConnectedError close={close} />
+  })
+  .add('Error from redux store (production)', () => {
+    return <ConnectedError close={close} dev={false} />
   })
