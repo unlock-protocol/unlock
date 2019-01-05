@@ -19,23 +19,23 @@ const PageNumbers = ({ numberOfPages, currentPage, goToPage }) => {
     )
   }
 
+  const pageNumberArray = Array(numberOfPages).fill()
+
   // If number of pages less than 10, show all 10 page numbers
   if (numberOfPages <= PGN_MAX_NUMBER_OF_PAGES_TO_SHOW_ALL) {
     return (
       <PageGroup>
-        {Array(numberOfPages)
-          .fill()
-          .map((_, pn) => {
-            return pageNumber(pn + 1)
-          })}
+        {pageNumberArray.slice(0, numberOfPages).map((_, pn) => {
+          return pageNumber(pn + 1)
+        })}
       </PageGroup>
     )
   }
 
   const HALF_MAX_PAGES_TO_SHOW_ALL = PGN_MAX_NUMBER_OF_PAGES_TO_SHOW_ALL / 2
 
-  const firstVisiblePages = Array(HALF_MAX_PAGES_TO_SHOW_ALL)
-    .fill()
+  const firstVisiblePages = pageNumberArray
+    .slice(0, HALF_MAX_PAGES_TO_SHOW_ALL)
     .map((_, pn) => {
       return pageNumber(pn + 1)
     })
@@ -75,11 +75,9 @@ const PageNumbers = ({ numberOfPages, currentPage, goToPage }) => {
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       {currentPage === numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL &&
         pageNumber(currentPage)}
-      {Array(HALF_MAX_PAGES_TO_SHOW_ALL)
-        .fill()
-        .map((_, pn) => {
-          return pageNumber(numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL + 1 + pn)
-        })}
+      {pageNumberArray.slice(HALF_MAX_PAGES_TO_SHOW_ALL).map((_, pn) => {
+        return pageNumber(numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL + 1 + pn)
+      })}
     </div>
   )
 
