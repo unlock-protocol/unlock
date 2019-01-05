@@ -37,9 +37,13 @@ router.post('/lock', function(req, res) {
       name: lock.name,
       address: lock.address,
       owner: req.owner,
-    }).then(() => {
-      res.sendStatus(200)
     })
+      .then(() => {
+        res.sendStatus(200)
+      })
+      .catch(() => {
+        res.sendStatus(412)
+      })
   } else {
     res.sendStatus(400)
   }
