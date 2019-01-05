@@ -105,7 +105,27 @@ describe('Requesting lock details', () => {
           done()
         })
     })
+
+    describe('when attempting to set details for an existing lock', () =>{
+      test('it return a 412 status code', done => {
+        Date.now = jest.fn(() => 1546130837000)
+        Lock.create({
+          address: validLockDetails.address,
+          owner: validLockDetails.owner,
+        }).then(() => {
+        request(app)
+          .post('/lock')
+          .set('Accept', /json/)
+          .set('Authorization', savingLockHeader)
+          .send(validLockDetails)
+          .then(response => {
+            expect(response.statusCode).toBe(412)
+            done()
+          })        
+      })
+    })
   })
+})
 
   describe('Updating lock details', () => {
     describe('when the lock exists', () => {
@@ -145,6 +165,27 @@ describe('Requesting lock details', () => {
             expect(response.statusCode).toBe(412)
             done()
           })
+      })
+    })
+
+    describe('when the update requester is not the lock owner', () => {
+      test('it returns a 412 status code', done => {
+        Date.now = jest.fn(() => 1546467262000)
+        Lock.create({
+          name: 'a mighty fine lock',
+          address: 'jqfqod74',
+          owner: '0x423893453',
+        }).then(() => {
+          request(app)
+            .put('/lock/jqfqod74')
+            .set('Accept', /json/)
+            .set('Authorization', updatingLockHeader)
+            .send(lockUpdateDetails)
+            .then(response => {
+              expect(response.statusCode).toBe(412)
+              done()
+            })
+        })        
       })
     })
   })
