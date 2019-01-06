@@ -48,10 +48,16 @@ export default class Header extends React.PureComponent {
           <Buttons.ChevronUp size="48px" />
         </MobileToggle>
         <MobilePopover visibilityToggle={!!menu}>
-          <Buttons.About size="48px" />
-          <Buttons.Jobs size="48px" />
-          <Buttons.Github size="48px" />
-          <Buttons.Telegram size="48px" />
+          {menu ? (
+            <>
+              <Buttons.About size="48px" onClick={this.toggleMenu} />
+              <Buttons.Jobs size="48px" onClick={this.toggleMenu} />
+              <Buttons.Github size="48px" onClick={this.toggleMenu} />
+              <Buttons.Telegram size="48px" onClick={this.toggleMenu} />
+            </>
+          ) : (
+            ''
+          )}
         </MobilePopover>
       </TopHeader>
     )
@@ -70,15 +76,19 @@ Header.defaultProps = {
 
 const TopHeader = styled.header`
   display: grid;
-  grid-gap: 16px;
+  grid-gap: 0;
   grid-template-columns: 1fr repeat(3, 24px);
   grid-auto-flow: column;
   align-items: center;
   height: 70px;
 
   ${Media.phone`
-    grid-template-columns: 1fr 48px;
-    height: 35px;
+    grid-template-columns: [first] 1fr [second] 48px;
+    ${props =>
+    props.visibilityToggle
+      ? 'grid-template-rows: [first] auto [second] auto;'
+      : 'grid-template-rows: [first] auto'}
+    height: auto;
   `};
 `
 
@@ -94,14 +104,15 @@ const DesktopButtons = styled.div`
   align-items: center;
   height: 100%;
 
-  @media (max-width: 600px) {
+  ${Media.phone`
     display: none;
-  }
+  `};
 `
 
 const MobileToggle = styled.div`
   display: none;
-  height: 100%;
+  height: auto;
+  grid-column: second;
 
   ${ButtonLink} {
     background-color: var(--white);
@@ -111,12 +122,10 @@ const MobileToggle = styled.div`
     align-self: center;
 
     ${props => (props.visibilityToggle ? '&:nth-child(2)' : '&:nth-child(1)')} {
-      grid-row: 0;
       pointer-events: none;
     }
 
     ${props => (props.visibilityToggle ? '&:nth-child(1)' : '&:nth-child(2)')} {
-      grid-row: 1;
       pointer-events: none;
       display: none;
     }
@@ -139,25 +148,25 @@ const MobileToggle = styled.div`
 
 const MobilePopover = styled.div`
   background-color: var(--white);
-  position: absolute;
-  left: 0;
-  top: 70px;
   width: 100%;
-  height: auto;
+  height: ${props => (props.visibilityToggle ? '0' : 'auto')};
   z-index: var(--foreground);
   padding-bottom: 30px;
 
-  display: none;
-  grid-template-columns: 92px 92px 92px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
   align-items: center;
   justify-content: center;
 
   transition: all 500ms cubic-bezier(0.165, 0.84, 0.44, 1);
   ${props =>
     props.visibilityToggle
-      ? 'opacity: 1; pointer-events: visible; top: 70px;'
-      : 'opacity: 0; pointer-events: none; top: 50px;'} ${ButtonLink} {
+      ? 'height: 100%; pointer-events: visible; top: 70px;'
+      : 'height: 0%; pointer-events: none; top: 50px;'} ${ButtonLink} {
     margin: 24px;
 
     small {
@@ -170,7 +179,7 @@ const MobilePopover = styled.div`
     }
   }
 
-  @media (max-width: 600px) {
+  ${Media.phone`
     display: grid;
-  }
+  `};
 `
