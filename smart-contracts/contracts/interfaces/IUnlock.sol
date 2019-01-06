@@ -17,7 +17,7 @@ interface IUnlock {
   );
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
-  function initialize(address _owner) public;
+  function initialize(address _owner) external;
 
   /**
   * @dev Create lock
@@ -29,7 +29,7 @@ interface IUnlock {
     uint _keyPrice,
     uint _maxNumberOfKeys
   )
-    public
+    external
     returns (ILockCore lock);
 
     /**
@@ -42,7 +42,7 @@ interface IUnlock {
     address _purchaser, // solhint-disable-line no-unused-vars
     uint _keyPrice // solhint-disable-line no-unused-vars
   )
-    public
+    external
     view
     returns (uint discount, uint tokens);
 
@@ -57,7 +57,7 @@ interface IUnlock {
     uint _value,
     address _referrer // solhint-disable-line no-unused-vars
   )
-    public;
+    external;
 
     /**
    * This function will keep track of consumed discounts by a given user.
@@ -69,5 +69,5 @@ interface IUnlock {
     uint _discount,
     uint _tokens // solhint-disable-line no-unused-vars
   )
-    public;
+    external;
 }
