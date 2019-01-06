@@ -197,6 +197,10 @@ exports[`withConfig High Order Component when the current network is not in the 
   height: 24px;
 }
 
+.c16 {
+  z-index: -1;
+}
+
 .c3 {
   color: var(--darkgrey);
   display: grid;
