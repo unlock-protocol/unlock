@@ -10,8 +10,6 @@ import Media from '../../theme/media'
 export default class Header extends React.PureComponent {
   constructor(props) {
     super(props)
-    this.forContent = props.forContent
-    this.title = props.title
     this.toggleMenu = this.toggleMenu.bind(this)
     this.state = { menu: false }
   }
@@ -22,11 +20,11 @@ export default class Header extends React.PureComponent {
 
   render() {
     const { menu } = this.state
+    const { forContent, title } = this.props
 
     return (
       <TopHeader>
-        {!this.forContent && <Title>{this.title}</Title>}
-        {!!this.forContent && (
+        {forContent ? (
           <Link href="/">
             <a>
               <WordMarkLogo
@@ -36,6 +34,8 @@ export default class Header extends React.PureComponent {
               />
             </a>
           </Link>
+        ) : (
+          <Title>{title}</Title>
         )}
         <DesktopButtons>
           <Buttons.About />
