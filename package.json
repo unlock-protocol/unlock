@@ -21,7 +21,7 @@
     "deploy-lock": "cd smart-contracts && npm run deploy",
     "build": "cd smart-contracts && npm run build && cd ../unlock-app && npm run build",
     "start": "cd unlock-app && npm run start",
-    "deploy": "./scripts/deploy.sh"
+    "deploy-netlify": "./scripts/deploy-netlify.sh"
   },
   "repository": {
     "type": "git",

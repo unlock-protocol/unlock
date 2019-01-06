@@ -1,33 +1,17 @@
 #!/usr/bin/env bash
 
-# This script deploys a static build to netlify.
-# It requires both NETLIFY_STAGING_SITE_ID and NETLIFY_AUTH_TOKEN to be set, as well as
-# TRAVIS_BRANCH to identify whether we deploy a 'draft' or a 'production' version (note that this
-# is production in the netlify sense, so it could be on staging.unlock-protocol.com).
+# This script invokes the deployment script for the target (as first arg) inside the default docker
+# image. Default env variables are passed: $TRAVIS_PULL_REQUEST and $TRAVIS_BRANCH
 
-CURRENT_DIR=`pwd`;
+TARGET=$1
+NPM_SCRIPT="npm run deploy-$TARGET"
+SERVICE="unlock"
+REPO_ROOT=`dirname "$0"`/..
+DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
+ENV_VARS="-e TRAVIS_PULL_REQUEST=$TRAVIS_PULL_REQUEST -e TRAVIS_BRANCH=$TRAVIS_BRANCH"
 
-UNLOCK_APP_PATH="unlock-app";
-
-cd $UNLOCK_APP_PATH;
-
-UNLOCK_ENV=staging npm run deploy;
-
-cd $CURRENT_DIR
-
-BUILD_PATH="$UNLOCK_APP_PATH/src/out/";
-
-GIT_HEAD=`git rev-parse HEAD`;
-
-MESSAGE="Deploying $GIT_HEAD to draft";
-
-PROD="";
-
-if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
-  PROD="--prod";
-
-  MESSAGE="Deploying $GIT_HEAD to production";
+if [ "$TARGET" = "netlify" ]; then
+  ENV_VARS="$ENV_VARS -e NETLIFY_STAGING_SITE_ID=$NETLIFY_STAGING_SITE_ID -e NETLIFY_AUTH_TOKEN=$NETLIFY_AUTH_TOKEN"
 fi
 
-echo $MESSAGE
-netlify deploy -s $NETLIFY_STAGING_SITE_ID --dir=$BUILD_PATH $PROD --message='$MESSAGE'
+docker-compose -f $DOCKER_COMPOSE_FILE run $ENV_VARS $SERVICE $NPM_SCRIPT
