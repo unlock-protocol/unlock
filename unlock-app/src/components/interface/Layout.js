@@ -62,6 +62,7 @@ const Left = styled.div`
 `
 
 const Right = styled.div`
+  z-index: -1;
   ${Media.phone`
     display: none;
   `};
