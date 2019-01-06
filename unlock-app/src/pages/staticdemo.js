@@ -1,7 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
 import { connect } from 'react-redux'
-import NoSSR from 'react-no-ssr'
 import styled, { createGlobalStyle } from 'styled-components'
 import PropTypes from 'prop-types'
 import UnlockPropTypes from '../propTypes'
@@ -11,6 +10,7 @@ import DeveloperOverlay from '../components/developer/DeveloperOverlay'
 import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
 import { LOCK_PATH_NAME_REGEXP } from '../constants'
 import Media from '../theme/media'
+import BrowserOnly from '../components/helpers/BrowserOnly'
 
 const Demo = ({ lock, locks }) => {
   return (
@@ -71,7 +71,7 @@ const Demo = ({ lock, locks }) => {
         </Body>
       </Content>
       <Right />
-      <NoSSR>
+      <BrowserOnly>
         <div
           style={{
             position: 'fixed',
@@ -88,7 +88,7 @@ const Demo = ({ lock, locks }) => {
             <DeveloperOverlay />
           </ShowUnlessUserHasKeyToAnyLock>
         </div>
-      </NoSSR>
+      </BrowserOnly>
     </Container>
   )
 }

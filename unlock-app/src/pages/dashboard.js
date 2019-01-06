@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import NoSSR from 'react-no-ssr'
 import Head from 'next/head'
 import UnlockPropTypes from '../propTypes'
 import Layout from '../components/interface/Layout'
 import CreatorAccount from '../components/creator/CreatorAccount'
 import CreatorLocks from '../components/creator/CreatorLocks'
 import DeveloperOverlay from '../components/developer/DeveloperOverlay'
+import BrowserOnly from '../components/helpers/BrowserOnly'
 import withConfig from '../utils/withConfig'
 import { pageTitle } from '../constants'
 
@@ -16,11 +16,11 @@ export const Dashboard = ({ account, network, locks }) => {
       <Head>
         <title>{pageTitle('Dashboard')}</title>
       </Head>
-      <NoSSR>
+      <BrowserOnly>
         <CreatorAccount network={network} account={account} />
         <CreatorLocks locks={locks} />
         <DeveloperOverlay />
-      </NoSSR>
+      </BrowserOnly>
     </Layout>
   )
 }
