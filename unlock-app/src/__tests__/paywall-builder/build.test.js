@@ -97,10 +97,13 @@ describe('buildPaywall', () => {
         expect(mockHide).not.toHaveBeenCalled()
       })
       it('triggers hide on unlock event', () => {
+        callbacks.message({ data: 'locked' })
+        callbacks.message({ data: 'unlocked' })
         callbacks.message({ data: 'unlocked' })
 
         expect(mockHide).toHaveBeenCalledWith('iframe')
-        expect(mockShow).not.toHaveBeenCalled()
+        expect(mockHide).toHaveBeenCalledTimes(1)
+        expect(mockShow).toHaveBeenCalledTimes(1)
       })
     })
   })
