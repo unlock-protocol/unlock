@@ -17,14 +17,22 @@ contract('Lock ERC721', (accounts) => {
   })
 
   describe('balanceOf', () => {
-    it('should fail if the user has no key', () => {
+    it('should fail if the user address is 0', () => {
       return locks['FIRST']
-        .balanceOf(accounts[3])
+        .balanceOf(0)
         .then(balance => {
           assert(false)
         })
         .catch(error => {
-          assert.equal(error.message, 'VM Exception while processing transaction: revert No such key')
+          assert.equal(error.message, 'VM Exception while processing transaction: revert Invalid address')
+        })
+    })
+
+    it('should return 0 if the user has no key', () => {
+      return locks['FIRST']
+        .balanceOf(accounts[3])
+        .then(balance => {
+          assert(balance.eq(0))
         })
     })
 

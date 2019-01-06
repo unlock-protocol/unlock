@@ -279,9 +279,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   )
     external
     view
-    hasKey(_owner)
     returns (uint256)
   {
+    require(_owner != address(0), "Invalid address");
     return keyByOwner[_owner].expirationTimestamp > 0 ? 1 : 0;
   }
 
