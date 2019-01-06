@@ -18,20 +18,20 @@ var base64Decode = data => {
 }
 
 const validateHeaders = headers => {
-  return headers.alg && headers.typ && headers.typ == 'JWT'
+  return headers.alg && headers.typ && headers.typ === 'JWT'
 }
 
 const validatePayload = (payload, signee) => {
   if (payload.lock) {
-    return payload.lock.owner == signee
+    return payload.lock.owner === signee
   } else {
-    return payload.owner == signee
+    return payload.owner === signee
   }
 }
 const validatePayloadClaims = (payload, signee) => {
   if (payload.iss && payload.iat && payload.exp) {
-    const selfSigned = payload.iss == signee
-    const validTokenRange = payload.exp - payload.iat == 3
+    const selfSigned = (payload.iss === signee)
+    const validTokenRange = (payload.exp - payload.iat === 3)
     const recentlyIssued = Math.abs(Date.now() / 1000 - payload.iat) < 5
     return selfSigned && validTokenRange && recentlyIssued
   } else {
@@ -40,33 +40,25 @@ const validatePayloadClaims = (payload, signee) => {
 }
 
 const validatePayloadBodyMatch = (payload, body) => {
-  const reservedFields = ['iat', 'exp', 'iss']
-  const bodyPrune = ['pending']
+  const evaluatingPayload = payload.lock ? { ... payload.lock } : { ... payload }
+  const evaluatingBody = {... body };
 
-  var workingPayload
+  ['iat', 'exp', 'iss'].forEach(reservedField => {
+    delete evaluatingPayload[reservedField]
+  });
 
-  if (payload.lock) {
-    workingPayload = payload.lock
-  } else {
-    workingPayload = payload
-  }
-
-  reservedFields.forEach(reservedField => {
-    delete workingPayload[reservedField]
+  ['pending'].forEach(prune => {
+    delete evaluatingBody[prune]
   })
 
-  bodyPrune.forEach(prune => {
-    delete body[prune]
-  })
-
-  return isEqual(workingPayload, body)
+  return isEqual(evaluatingPayload, evaluatingBody)
 }
 
 function process(req, res, next) {
   var web3 = new Web3(null)
   var token = extractToken(req)
 
-  if (token == null) {
+  if (token === null) {
     res.sendStatus(401)
     return
   }
