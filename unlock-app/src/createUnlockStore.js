@@ -1,5 +1,4 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import { connectRouter, routerMiddleware } from 'connected-react-router'
 import { createMemoryHistory } from 'history'
 
@@ -89,10 +88,13 @@ export const createUnlockStore = (
     routerMiddleware(history),
   ]
 
+  const composeEnhancers =
+    global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+
   return createStore(
     combineReducers(reducers),
     initialState,
-    composeWithDevTools(applyMiddleware(...middlewares))
+    composeEnhancers(applyMiddleware(...middlewares))
   )
 }
 
