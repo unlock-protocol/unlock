@@ -1,11 +1,10 @@
-import React from 'react'
 import reducer from '../../reducers/errorReducer'
 import { SET_ERROR } from '../../actions/error'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
 
 describe('error reducer', () => {
-  const error = <p>Something was wrong</p>
+  const error = 'Something was wrong'
 
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(null)

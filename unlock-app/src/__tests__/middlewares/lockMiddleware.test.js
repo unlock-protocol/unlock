@@ -13,7 +13,7 @@ import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { SET_PROVIDER } from '../../actions/provider'
 import { ADD_TRANSACTION, UPDATE_TRANSACTION } from '../../actions/transaction'
-import { SET_ERROR } from '../../actions/error'
+import { setError } from '../../actions/error'
 
 /**
  * Fake state
@@ -336,11 +336,12 @@ describe('Lock middleware', () => {
 
   it('it should handle error events triggered by the web3Service', () => {
     const { store } = create()
-    mockWeb3Service.emit('error', { message: 'this was broken' })
+    mockWeb3Service.emit('error', { message: 'this was broken', code: 1 })
     expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: SET_ERROR,
-        error: expect.anything(), // not sure how to test against jsx
+      setError({
+        message: 'this was broken',
+        context: 'Web3',
+        originalError: { message: 'this was broken', code: 1 },
       })
     )
   })

@@ -13,12 +13,12 @@ export const Error = ({ children, error, close, dev }) => {
   return (
     <Wrapper>
       <ErrorInfo>
+        <p>{content}</p>
         {dev && error && error.context ? (
           <p className="context">{error.context}</p>
         ) : (
           ''
         )}
-        <p>{content}</p>
       </ErrorInfo>
       <Buttons.Close as="button" onClick={close} size="16px">
         X
@@ -43,7 +43,7 @@ Error.propTypes = {
     message: PropTypes.string.isRequired,
     context: PropTypes.string,
   }),
-  dev: PropTypes.string,
+  dev: PropTypes.bool,
   close: PropTypes.func.isRequired,
 }
 
@@ -60,14 +60,17 @@ export default connect(
 
 const ErrorInfo = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   padding: 8px;
   & p.context {
     color: red;
+    font-style: italic;
+    font-size: 14px;
+    margin-top: 0;
   }
 
-  & p.context::after {
-    content: ':';
+  & p.context::before {
+    content: 'Context:';
     padding-right: 10px;
   }
 `

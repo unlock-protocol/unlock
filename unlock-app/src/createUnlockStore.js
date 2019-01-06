@@ -33,6 +33,8 @@ import modalReducer, {
   initialState as defaultModals,
 } from './reducers/modalsReducer'
 
+import errorConditionsReducer from './reducers/errorConditionsReducer'
+
 // Middlewares
 import lockMiddleware from './middlewares/lockMiddleware'
 import currencyConversionMiddleware from './middlewares/currencyConversionMiddleware'
@@ -74,7 +76,7 @@ export const createUnlockStore = (
       provider: defaultProvider,
       transactions: defaultTransactions,
       currency: defaultCurrency,
-      error: defaultError,
+      errors: defaultError,
     },
     {
       provider: Object.keys(config.providers)[0],
@@ -92,7 +94,7 @@ export const createUnlockStore = (
     global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
   return createStore(
-    combineReducers(reducers),
+    errorConditionsReducer(combineReducers(reducers)),
     initialState,
     composeEnhancers(applyMiddleware(...middlewares))
   )

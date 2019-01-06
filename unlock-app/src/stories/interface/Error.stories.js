@@ -10,28 +10,21 @@ const close = () => {}
 const store = createUnlockStore({
   error: {
     message: 'The blockchain may have made your head explode',
-    context: 'Context',
+    context: 'Is too sexy',
   },
 })
 
 storiesOf('Error', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Simple Error', () => {
-    return (
-      <Error close={close}>
-        <p>We could not process that transaction.</p>
-      </Error>
-    )
+    return <Error close={close}>We could not process that transaction.</Error>
   })
   .add('Error with Markup', () => {
     return (
       <Error close={close}>
-        <p>
-          We could not process that transaction. 
-          {' '}
-          <a href=".">Retry</a>
-.
-        </p>
+        We could not process that transaction. 
+        {' '}
+        <a href=".">Retry</a>
       </Error>
     )
   })

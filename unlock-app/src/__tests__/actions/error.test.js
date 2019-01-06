@@ -1,4 +1,4 @@
-import { setError, web3Error, SET_ERROR } from '../../actions/error'
+import { setError, SET_ERROR } from '../../actions/error'
 
 describe('error actions', () => {
   it('should create an action to set the error', () => {
@@ -23,18 +23,5 @@ describe('error actions', () => {
     }
 
     expect(setError(error)).toEqual(expectedAction)
-  })
-
-  it('should create an action for web3Service errors', () => {
-    const error = 'the blockchain exploded'
-    const expectedAction = {
-      type: SET_ERROR,
-      error: {
-        message: error,
-        context: 'web3',
-      },
-    }
-
-    expect(web3Error(error)).toEqual(expectedAction)
   })
 })

@@ -98,7 +98,13 @@ export default function lockMiddleware({ getState, dispatch }) {
   })
 
   web3Service.on('error', error => {
-    dispatch(setError(error.message))
+    dispatch(
+      setError({
+        message: error.message,
+        context: 'Web3',
+        originalError: error,
+      })
+    )
   })
 
   /**
