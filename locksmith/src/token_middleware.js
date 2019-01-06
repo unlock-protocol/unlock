@@ -30,8 +30,8 @@ const validatePayload = (payload, signee) => {
 }
 const validatePayloadClaims = (payload, signee) => {
   if (payload.iss && payload.iat && payload.exp) {
-    const selfSigned = (payload.iss === signee)
-    const validTokenRange = (payload.exp - payload.iat === 3)
+    const selfSigned = payload.iss === signee
+    const validTokenRange = payload.exp - payload.iat === 3
     const recentlyIssued = Math.abs(Date.now() / 1000 - payload.iat) < 5
     return selfSigned && validTokenRange && recentlyIssued
   } else {
@@ -40,14 +40,13 @@ const validatePayloadClaims = (payload, signee) => {
 }
 
 const validatePayloadBodyMatch = (payload, body) => {
-  const evaluatingPayload = payload.lock ? { ... payload.lock } : { ... payload }
-  const evaluatingBody = {... body };
+  const evaluatingPayload = payload.lock ? { ...payload.lock } : { ...payload }
+  const evaluatingBody = { ...body }
 
-  ['iat', 'exp', 'iss'].forEach(reservedField => {
+  ;['iat', 'exp', 'iss'].forEach(reservedField => {
     delete evaluatingPayload[reservedField]
-  });
-
-  ['pending'].forEach(prune => {
+  })
+  ;['pending'].forEach(prune => {
     delete evaluatingBody[prune]
   })
 
