@@ -83,7 +83,7 @@ exports[`withConfig High Order Component when the current network is not in the 
 
 .c4 {
   display: grid;
-  grid-gap: 16px;
+  grid-gap: 0;
   grid-template-columns: 1fr repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
@@ -111,7 +111,8 @@ exports[`withConfig High Order Component when the current network is not in the 
 
 .c10 {
   display: none;
-  height: 100%;
+  height: auto;
+  grid-column: second;
 }
 
 .c10 .c7 {
@@ -126,12 +127,10 @@ exports[`withConfig High Order Component when the current network is not in the 
 }
 
 .c10 .c7:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c10 .c7:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -146,16 +145,16 @@ exports[`withConfig High Order Component when the current network is not in the 
 
 .c12 {
   background-color: var(--white);
-  position: absolute;
-  left: 0;
-  top: 70px;
   width: 100%;
   height: auto;
   z-index: var(--foreground);
   padding-bottom: 30px;
-  display: none;
-  grid-template-columns: 92px 92px 92px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -166,7 +165,7 @@ exports[`withConfig High Order Component when the current network is not in the 
   justify-content: center;
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 0;
+  height: 0%;
   pointer-events: none;
   top: 50px;
 }
@@ -247,12 +246,13 @@ exports[`withConfig High Order Component when the current network is not in the 
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c4 {
-    grid-template-columns: 1fr 48px;
-    height: 35px;
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c6 {
     display: none;
   }
@@ -264,7 +264,7 @@ exports[`withConfig High Order Component when the current network is not in the 
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c12 {
     display: grid;
   }
@@ -478,101 +478,7 @@ exports[`withConfig High Order Component when the current network is not in the 
       <div
         className="c12"
       >
-        <a
-          className="c7 c11"
-          href="/about"
-          onClick={[Function]}
-          size="48px"
-          title="About"
-        >
-          <svg
-            viewBox="0 0 24 24"
-          >
-            <title>
-              About
-            </title>
-            <path
-              clipRule="evenodd"
-              d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-              fillRule="evenodd"
-            />
-          </svg>
-          <small
-            className="c9"
-          >
-            About
-          </small>
-        </a>
-        <a
-          className="c7 c11"
-          href="/jobs"
-          onClick={[Function]}
-          size="48px"
-          title="Join us"
-        >
-          <svg
-            name="Jobs"
-            viewBox="0 0 24 24"
-          >
-            <title />
-            <path
-              clipRule="evenodd"
-              d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-              fillRule="evenodd"
-            />
-          </svg>
-          <small
-            className="c9"
-          >
-            Join us
-          </small>
-        </a>
-        <a
-          className="c7 c11"
-          href="https://github.com/unlock-protocol/unlock"
-          onClick={[Function]}
-          size="48px"
-          title="Source Code"
-        >
-          <svg
-            name="Github"
-            viewBox="0 0 24 24"
-          >
-            <title />
-            <path
-              d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-            />
-          </svg>
-          <small
-            className="c9"
-          >
-            Source Code
-          </small>
-        </a>
-        <a
-          className="c7 c11"
-          href="https://t.me/unlockprotocol"
-          onClick={[Function]}
-          size="48px"
-          title="Telegram"
-        >
-          <svg
-            name="Telegram"
-            viewBox="0 0 24 24"
-          >
-            <title />
-            <path
-              clipRule="evenodd"
-              d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-              fillRule="evenodd"
-            />
-          </svg>
-          <small
-            className="c9"
-          >
-            Telegram
-          </small>
-        </a>
+        
       </div>
     </header>
     <section

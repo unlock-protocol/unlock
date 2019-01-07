@@ -17,11 +17,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-ganache": "ganache-cli -i 1984 --mnemonic 'hello unlock save the web'",
-    "postinstall": "cd smart-contracts && npm ci && cd ../unlock-app && npm ci && cd ../tests && npm ci",
+    "postinstall": "./scripts/postinstall.sh",
     "deploy-lock": "cd smart-contracts && npm run deploy",
     "build": "cd smart-contracts && npm run build && cd ../unlock-app && npm run build",
     "start": "cd unlock-app && npm run start",
-    "deploy": "./scripts/deploy.sh"
+    "deploy-netlify": "./scripts/deploy-netlify.sh"
   },
   "repository": {
     "type": "git",

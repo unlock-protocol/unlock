@@ -3,15 +3,16 @@ services:
   - docker
 before_script:
   - scripts/pull-image.sh
-  - docker build -t unlock -f docker/unlock.dockerfile --cache-from 461040265176.dkr.ecr.us-east-1.amazonaws.com/unlock:latest .
-  - docker build -t unlock-integration -f docker/unlock-integration.dockerfile .
-  - docker-compose -f docker/docker-compose.ci.yml build
+  - scripts/build-image.sh unlock 461040265176.dkr.ecr.us-east-1.amazonaws.com/unlock:latest
+  - scripts/build-image.sh unlock-integration
+  - scripts/docker-compose-build.sh
 script:
-  - docker-compose -f docker/docker-compose.ci.yml run -e CI=true smart-contracts npm run ci
-  - docker-compose -f docker/docker-compose.ci.yml run -e CI=true unlock-app npm run ci
-  - docker-compose -f docker/docker-compose.ci.yml run -e CI=true integration-tests npm run ci
+  - scripts/tests.sh smart-contracts
+  - scripts/tests.sh unlock-app
+  - scripts/tests.sh integration-tests
+  - scripts/tests.sh locksmith 
 after_success:
-  - docker-compose -f docker/docker-compose.ci.yml run -e TRAVIS_PULL_REQUEST=$TRAVIS_PULL_REQUEST -e TRAVIS_BRANCH=$TRAVIS_BRANCH -e NETLIFY_STAGING_SITE_ID=$NETLIFY_STAGING_SITE_ID -e NETLIFY_AUTH_TOKEN=$NETLIFY_AUTH_TOKEN unlock npm run deploy
+  - scripts/deploy.sh netlify
   - scripts/push-image.sh
 notifications:
   slack:
