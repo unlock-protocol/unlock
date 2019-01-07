@@ -1,0 +1,17 @@
+{
+  "development": {
+    "username": "locksmith_development",
+    "password": "password",
+    "database": "locksmith_development",
+    "host": "db",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "locksmith_test",
+    "database": "locksmith_test",
+    "password": "password",
+    "host": "db",
+    "dialect": "postgres",
+    "logging" : false
+  }
+}
