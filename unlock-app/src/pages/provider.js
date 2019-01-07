@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import NoSSR from 'react-no-ssr'
 import Link from 'next/link'
 import Head from 'next/head'
 import { connect } from 'react-redux'
@@ -9,6 +8,7 @@ import UnlockPropTypes from '../propTypes'
 import { setProvider } from '../actions/provider'
 import withConfig from '../utils/withConfig'
 import { pageTitle } from '../constants'
+import BrowserOnly from '../components/helpers/BrowserOnly'
 
 export function Web3Provider({ setProvider, config, provider }) {
   return (
@@ -16,7 +16,7 @@ export function Web3Provider({ setProvider, config, provider }) {
       <Head>
         <title>{pageTitle('Pick Web3 Provider')}</title>
       </Head>
-      <NoSSR>
+      <BrowserOnly>
         <div>
           <p>Pick web3 provider:</p>
           <select
@@ -37,7 +37,7 @@ export function Web3Provider({ setProvider, config, provider }) {
             <a>Return</a>
           </Link>
         </p>
-      </NoSSR>
+      </BrowserOnly>
     </Layout>
   )
 }
@@ -68,9 +68,9 @@ const Page = withConfig(
 )
 
 const ProviderPage = pageProps => (
-  <NoSSR>
+  <BrowserOnly>
     <Page {...pageProps} />
-  </NoSSR>
+  </BrowserOnly>
 )
 
 export default ProviderPage

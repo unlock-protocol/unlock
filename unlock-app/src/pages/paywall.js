@@ -1,20 +1,20 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import NoSSR from 'react-no-ssr'
 import UnlockPropTypes from '../propTypes'
 import Overlay from '../components/lock/Overlay'
 import DeveloperOverlay from '../components/developer/DeveloperOverlay'
 import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
 import { LOCK_PATH_NAME_REGEXP } from '../constants'
+import BrowserOnly from '../components/helpers/BrowserOnly'
 
 const Paywall = ({ lock }) => {
   return (
-    <NoSSR>
+    <BrowserOnly>
       <ShowUnlessUserHasKeyToAnyLock locks={lock ? [lock] : []}>
         <Overlay locks={lock ? [lock] : []} />
         <DeveloperOverlay />
       </ShowUnlessUserHasKeyToAnyLock>
-    </NoSSR>
+    </BrowserOnly>
   )
 }
 
