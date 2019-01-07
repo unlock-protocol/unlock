@@ -14,4 +14,4 @@ if [ "$IMAGE_CACHE" != "" ]; then
  ARGS="$ARGS --cache-from $IMAGE_CACHE"
 fi
 
-docker build -t $IMAGE_NAME -f $DOCKERFILE $REPO_ROOT
+docker build -t $IMAGE_NAME -f $DOCKERFILE $ARGS $REPO_ROOT
