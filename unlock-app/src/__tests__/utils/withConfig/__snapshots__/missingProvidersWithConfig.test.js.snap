@@ -65,7 +65,7 @@ exports[`withConfig High Order Component when the current network is not in the 
 .c9 {
   display: none;
   position: relative;
-  z-index: 1000;
+  z-index: 30000;
   white-space: nowrap;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
