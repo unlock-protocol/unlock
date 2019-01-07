@@ -86,7 +86,7 @@ export const ButtonLink = styled.a`
 export const Label = styled.small`
   display: none;
   position: relative;
-  z-index: 1000;
+  z-index: 30000;
   white-space: nowrap;
   font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 400;
