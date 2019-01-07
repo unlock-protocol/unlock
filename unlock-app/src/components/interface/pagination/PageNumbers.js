@@ -75,7 +75,7 @@ const PageNumbers = ({ numberOfPages, currentPage, goToPage }) => {
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       {currentPage === numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL &&
         pageNumber(currentPage)}
-      {pageNumberArray.slice(HALF_MAX_PAGES_TO_SHOW_ALL).map((_, pn) => {
+      {pageNumberArray.slice(0, HALF_MAX_PAGES_TO_SHOW_ALL).map((_, pn) => {
         return pageNumber(numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL + 1 + pn)
       })}
     </div>
