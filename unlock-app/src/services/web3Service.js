@@ -53,6 +53,11 @@ export default class Web3Service extends EventEmitter {
           owner,
         })
       },
+      PriceChanged: (transaction, { keyPrice }) => {
+        return this.emit('lock.updated', transaction.lock, {
+          keyPrice,
+        })
+      },
     }
 
     this.on('ready', () => {
@@ -187,6 +192,10 @@ export default class Web3Service extends EventEmitter {
       return TRANSACTION_TYPES.WITHDRAW
     }
 
+    if (method.name === 'updateKeyPrice') {
+      return TRANSACTION_TYPES.UPDATE_KEY_PRICE
+    }
+
     // Unknown transaction
     return null
   }
@@ -287,6 +296,41 @@ export default class Web3Service extends EventEmitter {
           this.emit('transaction.new', transaction)
           this.getTransaction(transaction)
         })
+      }
+    )
+  }
+
+  /**
+   *
+   * @param {*} lock : address of the lock for which we update the price
+   * @param {*} account: account who owns the lock
+   * @param {*} price : new price for the lock
+   */
+  updateKeyPrice(lock, account, price) {
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
+    const data = lockContract.methods.updateKeyPrice(price).encodeABI()
+
+    const transaction = {
+      status: 'pending',
+      confirmations: 0,
+      createdAt: new Date().getTime(),
+      lock: lock,
+      priceUpdate: price,
+    }
+
+    this.sendTransaction(
+      transaction,
+      {
+        to: lock,
+        from: account.address,
+        data,
+        gas: 1000000,
+        contractAbi: LockContract.abi,
+      },
+      (error, { event } = {}) => {
+        if (event === 'receipt') {
+          return this.getLock(lock)
+        }
       }
     )
   }
