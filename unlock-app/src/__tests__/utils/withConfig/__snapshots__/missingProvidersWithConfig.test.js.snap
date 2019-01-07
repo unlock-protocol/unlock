@@ -83,7 +83,7 @@ exports[`withConfig High Order Component when the current network is not in the 
 
 .c4 {
   display: grid;
-  grid-gap: 16px;
+  grid-gap: 0px;
   grid-template-columns: 1fr repeat(4,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
