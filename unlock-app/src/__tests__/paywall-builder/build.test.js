@@ -86,7 +86,7 @@ describe('buildPaywall', () => {
       it('triggers show on locked event', () => {
         callbacks.message({ data: 'locked' })
 
-        expect(mockShow).toHaveBeenCalledWith('iframe')
+        expect(mockShow).toHaveBeenCalledWith('iframe', document)
         expect(mockHide).not.toHaveBeenCalled()
       })
       it('does not trigger show on locked event if already unlocked', () => {
@@ -101,7 +101,7 @@ describe('buildPaywall', () => {
         callbacks.message({ data: 'unlocked' })
         callbacks.message({ data: 'unlocked' })
 
-        expect(mockHide).toHaveBeenCalledWith('iframe')
+        expect(mockHide).toHaveBeenCalledWith('iframe', document)
         expect(mockHide).toHaveBeenCalledTimes(1)
         expect(mockShow).toHaveBeenCalledTimes(1)
       })

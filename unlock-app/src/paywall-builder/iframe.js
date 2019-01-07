@@ -21,19 +21,19 @@ export function getIframe(document, src) {
 
 export function add(document, iframe) {
   if (document.querySelector('iframe[data-unlock]')) return false
-  // TODO use insertAdjacentElement, requires changing the way messages are passed, but this will put the iframe on top of locked content
-  // document.body.insertAdjacentElement('afterbegin', iframe)
+  document.body.insertAdjacentElement('afterbegin', iframe)
 
-  document.body.appendChild(iframe)
   return iframe
 }
 
-export function show(iframe) {
+export function show(iframe, document) {
+  document.body.style.overflow = 'hidden'
   iframe.style.display = 'block'
   iframe.style['z-index'] = '2147483647'
 }
 
-export function hide(iframe) {
+export function hide(iframe, document) {
+  document.body.style.overflow = ''
   iframe.style.backgroundColor = 'transparent'
   iframe.style.backgroundImage = 'none'
 }

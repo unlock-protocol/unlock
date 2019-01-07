@@ -34,7 +34,8 @@ describe('iframe', () => {
     it('adds iframe if not present', () => {
       const document = {
         body: {
-          appendChild: jest.fn(),
+          insertAdjacentElement: jest.fn(),
+          style: {},
         },
         querySelector() {
           return false
@@ -42,7 +43,10 @@ describe('iframe', () => {
       }
       add(document, 'hi')
 
-      expect(document.body.appendChild).toHaveBeenCalledWith('hi')
+      expect(document.body.insertAdjacentElement).toHaveBeenCalledWith(
+        'afterbegin',
+        'hi'
+      )
     })
     it('ignores add if present', () => {
       const document = {
@@ -63,11 +67,20 @@ describe('iframe', () => {
     const iframe = {
       style: {},
     }
+    const document = {
+      body: {
+        style: {},
+      },
+    }
 
-    show(iframe)
+    show(iframe, document)
     expect(iframe.style).toEqual({
       display: 'block',
       'z-index': '2147483647',
+    })
+
+    expect(document.body.style).toEqual({
+      overflow: 'hidden',
     })
   })
 
@@ -75,11 +88,20 @@ describe('iframe', () => {
     const iframe = {
       style: {},
     }
-    hide(iframe)
+    const document = {
+      body: {
+        style: { overflow: 'hidden' },
+      },
+    }
+    hide(iframe, document)
 
     expect(iframe.style).toEqual({
       backgroundColor: 'transparent',
       backgroundImage: 'none',
+    })
+
+    expect(document.body.style).toEqual({
+      overflow: '',
     })
   })
 })
