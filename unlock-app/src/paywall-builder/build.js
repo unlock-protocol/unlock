@@ -20,7 +20,7 @@ export default function buildPaywall(window, document, lockAddress) {
         locked = true
         show(iframe)
       }
-      if (event.data === 'unlocked') {
+      if (event.data === 'unlocked' && locked) {
         locked = false
         hide(iframe)
       }
