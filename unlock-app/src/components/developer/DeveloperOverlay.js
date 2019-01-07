@@ -1,19 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import NoSSR from 'react-no-ssr'
 import styled from 'styled-components'
 import { func } from 'prop-types'
 
 import UnlockPropTypes from '../../propTypes'
 import { setProvider } from '../../actions/provider'
 import withConfig from '../../utils/withConfig'
+import BrowserOnly from '../helpers/BrowserOnly'
 
 export function DeveloperOverlay({ config, selected, setProvider }) {
   const providers = Object.keys(config.providers)
   if (config.env !== 'dev') return null
 
   return (
-    <NoSSR>
+    <BrowserOnly>
       <Overlay>
         <Inner>
           <select
@@ -31,7 +31,7 @@ export function DeveloperOverlay({ config, selected, setProvider }) {
           <div>Choose Provider</div>
         </Inner>
       </Overlay>
-    </NoSSR>
+    </BrowserOnly>
   )
 }
 
