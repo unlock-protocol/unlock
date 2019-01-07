@@ -78,7 +78,7 @@ Header.defaultProps = {
 
 const TopHeader = styled.header`
   display: grid;
-  grid-gap: 0px;
+  grid-gap: 0;
   grid-template-columns: 1fr repeat(${() => navigationButtons.length}, 24px);
   grid-auto-flow: column;
   align-items: center;
