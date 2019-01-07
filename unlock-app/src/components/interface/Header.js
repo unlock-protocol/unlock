@@ -43,8 +43,8 @@ export default class Header extends React.PureComponent {
             </a>
           </Link>
         ) : (
-          <Title>{title}</Title>
-        )}
+            <Title>{title}</Title>
+          )}
         <DesktopButtons>
           {navigationButtons.map(El => (
             <El key={El} />
@@ -55,22 +55,9 @@ export default class Header extends React.PureComponent {
           <Buttons.ChevronUp size="48px" />
         </MobileToggle>
         <MobilePopover visibilityToggle={!!menu}>
-<<<<<<< HEAD
-          {menu ? (
-            <>
-              <Buttons.About size="48px" onClick={this.toggleMenu} />
-              <Buttons.Jobs size="48px" onClick={this.toggleMenu} />
-              <Buttons.Github size="48px" onClick={this.toggleMenu} />
-              <Buttons.Telegram size="48px" onClick={this.toggleMenu} />
-            </>
-          ) : (
-            ''
-          )}
-=======
           {menu ? navigationButtons.map(El => (
             <El key={El} size="48px" onClick={this.toggleMenu} />
           )) : ''}
->>>>>>> actual fix for the button issue
         </MobilePopover>
       </TopHeader>
     )
@@ -89,13 +76,8 @@ Header.defaultProps = {
 
 const TopHeader = styled.header`
   display: grid;
-<<<<<<< HEAD
-  grid-gap: 0;
-  grid-template-columns: 1fr repeat(3, 24px);
-=======
   grid-gap: 16px;
   grid-template-columns: 1fr repeat(${() => navigationButtons.length}, 24px);
->>>>>>> actual fix for the button issue
   grid-auto-flow: column;
   align-items: center;
   height: 70px;
@@ -103,7 +85,7 @@ const TopHeader = styled.header`
   ${Media.phone`
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: ${props =>
-    props.visibilityToggle ? '[first] auto [second]' : '[first]'} auto;
+      props.visibilityToggle ? '[first] auto [second]' : '[first]'} auto;
     height: auto;
   `};
 `
