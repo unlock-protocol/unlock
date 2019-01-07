@@ -5,29 +5,37 @@
 # TRAVIS_BRANCH to identify whether we deploy a 'draft' or a 'production' version (note that this
 # is production in the netlify sense, so it could be on staging.unlock-protocol.com).
 
-CURRENT_DIR=`pwd`;
 
-UNLOCK_APP_PATH="unlock-app";
+if [ -n "$NETLIFY_STAGING_SITE_ID" ] && [ -n "$NETLIFY_AUTH_TOKEN" ]; then
 
-cd $UNLOCK_APP_PATH;
+  CURRENT_DIR=`pwd`;
 
-UNLOCK_ENV=staging npm run deploy;
+  UNLOCK_APP_PATH="unlock-app";
 
-cd $CURRENT_DIR
+  cd $UNLOCK_APP_PATH;
 
-BUILD_PATH="$UNLOCK_APP_PATH/src/out/";
+  UNLOCK_ENV=staging npm run deploy;
 
-GIT_HEAD=`git rev-parse HEAD`;
+  cd $CURRENT_DIR
 
-MESSAGE="Deploying $GIT_HEAD to draft";
+  BUILD_PATH="$UNLOCK_APP_PATH/src/out/";
 
-PROD="";
+  GIT_HEAD=`git rev-parse HEAD`;
 
-if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
-  PROD="--prod";
+  MESSAGE="Deploying $GIT_HEAD to draft";
 
-  MESSAGE="Deploying $GIT_HEAD to production";
+  PROD="";
+
+  if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
+    PROD="--prod";
+
+    MESSAGE="Deploying $GIT_HEAD to production";
+  fi
+
+  echo $MESSAGE
+  netlify deploy -s $NETLIFY_STAGING_SITE_ID --dir=$BUILD_PATH $PROD --message='$MESSAGE'
+
+else
+  echo "Skipping deployment to Netlify"
 fi
 
-echo $MESSAGE
-netlify deploy -s $NETLIFY_STAGING_SITE_ID --dir=$BUILD_PATH $PROD --message='$MESSAGE'
