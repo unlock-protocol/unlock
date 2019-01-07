@@ -60,12 +60,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -241,12 +239,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -406,12 +402,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -575,12 +569,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -744,12 +736,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -928,12 +918,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -1118,12 +1106,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -1312,12 +1298,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -1506,12 +1490,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -1700,12 +1682,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -1894,12 +1874,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -2086,12 +2064,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -2278,12 +2254,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -2476,12 +2450,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -2668,12 +2640,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -2860,12 +2830,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -3066,12 +3034,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -3258,12 +3224,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -3450,12 +3414,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -3642,12 +3604,10 @@ Object {
 }
 
 .c3 .c0:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c3 .c0:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -3819,12 +3779,10 @@ Object {
 }
 
 .c7 .c1:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c7 .c1:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -4313,7 +4271,7 @@ Object {
 
 .c3 {
   display: grid;
-  grid-gap: 16px;
+  grid-gap: 0;
   grid-template-columns: 1fr repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
@@ -4337,7 +4295,8 @@ Object {
 
 .c9 {
   display: none;
-  height: 100%;
+  height: auto;
+  grid-column: second;
 }
 
 .c9 .c6 {
@@ -4352,12 +4311,10 @@ Object {
 }
 
 .c9 .c6:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c9 .c6:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -4372,16 +4329,16 @@ Object {
 
 .c11 {
   background-color: var(--white);
-  position: absolute;
-  left: 0;
-  top: 70px;
   width: 100%;
   height: auto;
   z-index: var(--foreground);
   padding-bottom: 30px;
-  display: none;
-  grid-template-columns: 92px 92px 92px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -4392,7 +4349,7 @@ Object {
   justify-content: center;
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 0;
+  height: 0%;
   pointer-events: none;
   top: 50px;
 }
@@ -4546,12 +4503,13 @@ Object {
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c3 {
-    grid-template-columns: 1fr 48px;
-    height: 35px;
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c5 {
     display: none;
   }
@@ -4563,7 +4521,7 @@ Object {
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c11 {
     display: grid;
   }
@@ -4753,95 +4711,7 @@ Object {
             </div>
             <div
               class="c11"
-            >
-              <a
-                class="c6 c10"
-                href="/about"
-                title="About"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    About
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c8"
-                >
-                  About
-                </small>
-              </a>
-              <a
-                class="c6 c10"
-                href="/jobs"
-                title="Join us"
-              >
-                <svg
-                  name="Jobs"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c8"
-                >
-                  Join us
-                </small>
-              </a>
-              <a
-                class="c6 c10"
-                href="https://github.com/unlock-protocol/unlock"
-                title="Source Code"
-              >
-                <svg
-                  name="Github"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                  />
-                </svg>
-                <small
-                  class="c8"
-                >
-                  Source Code
-                </small>
-              </a>
-              <a
-                class="c6 c10"
-                href="https://t.me/unlockprotocol"
-                title="Telegram"
-              >
-                <svg
-                  name="Telegram"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c8"
-                >
-                  Telegram
-                </small>
-              </a>
-            </div>
+            />
           </header>
           <section
             class="c12"
@@ -5298,7 +5168,7 @@ Object {
         class="hm3mhg-3 yKIjT"
       >
         <header
-          class="sc-1glv5oz-0 gwDDxU"
+          class="sc-1glv5oz-0 jhDxiy"
         >
           <a
             href="/"
@@ -5316,7 +5186,7 @@ Object {
             </svg>
           </a>
           <div
-            class="sc-1glv5oz-2 bHzhFn"
+            class="sc-1glv5oz-2 ebyHxu"
           >
             <a
               class="sc-850ddk-0 fgimlS"
@@ -5407,7 +5277,7 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-3 ccexsu"
+            class="sc-1glv5oz-3 hEoKnM"
           >
             <a
               class="sc-850ddk-0 kIaKVN"
@@ -5443,96 +5313,8 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-4 dgaVjR"
-          >
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/about"
-              title="About"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  About
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                About
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/jobs"
-              title="Join us"
-            >
-              <svg
-                name="Jobs"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Join us
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://github.com/unlock-protocol/unlock"
-              title="Source Code"
-            >
-              <svg
-                name="Github"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Source Code
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://t.me/unlockprotocol"
-              title="Telegram"
-            >
-              <svg
-                name="Telegram"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Telegram
-              </small>
-            </a>
-          </div>
+            class="sc-1glv5oz-4 fsowbd"
+          />
         </header>
         <section
           class="sc-1mz6j63-0 HVtYL"
@@ -6098,7 +5880,7 @@ Object {
 
 .c3 {
   display: grid;
-  grid-gap: 16px;
+  grid-gap: 0;
   grid-template-columns: 1fr repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
@@ -6122,7 +5904,8 @@ Object {
 
 .c9 {
   display: none;
-  height: 100%;
+  height: auto;
+  grid-column: second;
 }
 
 .c9 .c6 {
@@ -6137,12 +5920,10 @@ Object {
 }
 
 .c9 .c6:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c9 .c6:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -6157,16 +5938,16 @@ Object {
 
 .c11 {
   background-color: var(--white);
-  position: absolute;
-  left: 0;
-  top: 70px;
   width: 100%;
   height: auto;
   z-index: var(--foreground);
   padding-bottom: 30px;
-  display: none;
-  grid-template-columns: 92px 92px 92px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -6177,7 +5958,7 @@ Object {
   justify-content: center;
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 0;
+  height: 0%;
   pointer-events: none;
   top: 50px;
 }
@@ -6391,12 +6172,13 @@ Object {
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c3 {
-    grid-template-columns: 1fr 48px;
-    height: 35px;
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c5 {
     display: none;
   }
@@ -6408,7 +6190,7 @@ Object {
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c11 {
     display: grid;
   }
@@ -6598,95 +6380,7 @@ Object {
             </div>
             <div
               class="c11"
-            >
-              <a
-                class="c6 c10"
-                href="/about"
-                title="About"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    About
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c8"
-                >
-                  About
-                </small>
-              </a>
-              <a
-                class="c6 c10"
-                href="/jobs"
-                title="Join us"
-              >
-                <svg
-                  name="Jobs"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c8"
-                >
-                  Join us
-                </small>
-              </a>
-              <a
-                class="c6 c10"
-                href="https://github.com/unlock-protocol/unlock"
-                title="Source Code"
-              >
-                <svg
-                  name="Github"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                  />
-                </svg>
-                <small
-                  class="c8"
-                >
-                  Source Code
-                </small>
-              </a>
-              <a
-                class="c6 c10"
-                href="https://t.me/unlockprotocol"
-                title="Telegram"
-              >
-                <svg
-                  name="Telegram"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c8"
-                >
-                  Telegram
-                </small>
-              </a>
-            </div>
+            />
           </header>
           <h1
             class="c12"
@@ -6920,7 +6614,7 @@ Object {
         class="hm3mhg-3 yKIjT"
       >
         <header
-          class="sc-1glv5oz-0 gwDDxU"
+          class="sc-1glv5oz-0 jhDxiy"
         >
           <a
             href="/"
@@ -6938,7 +6632,7 @@ Object {
             </svg>
           </a>
           <div
-            class="sc-1glv5oz-2 bHzhFn"
+            class="sc-1glv5oz-2 ebyHxu"
           >
             <a
               class="sc-850ddk-0 fgimlS"
@@ -7029,7 +6723,7 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-3 ccexsu"
+            class="sc-1glv5oz-3 hEoKnM"
           >
             <a
               class="sc-850ddk-0 kIaKVN"
@@ -7065,96 +6759,8 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-4 dgaVjR"
-          >
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/about"
-              title="About"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  About
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                About
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/jobs"
-              title="Join us"
-            >
-              <svg
-                name="Jobs"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Join us
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://github.com/unlock-protocol/unlock"
-              title="Source Code"
-            >
-              <svg
-                name="Github"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Source Code
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://t.me/unlockprotocol"
-              title="Telegram"
-            >
-              <svg
-                name="Telegram"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Telegram
-              </small>
-            </a>
-          </div>
+            class="sc-1glv5oz-4 fsowbd"
+          />
         </header>
         <h1
           class="sc-3na8w6-1 dJtvOQ"
@@ -7497,7 +7103,7 @@ Object {
 
 .c3 {
   display: grid;
-  grid-gap: 16px;
+  grid-gap: 0;
   grid-template-columns: 1fr repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
@@ -7521,7 +7127,8 @@ Object {
 
 .c9 {
   display: none;
-  height: 100%;
+  height: auto;
+  grid-column: second;
 }
 
 .c9 .c6 {
@@ -7536,12 +7143,10 @@ Object {
 }
 
 .c9 .c6:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c9 .c6:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -7556,16 +7161,16 @@ Object {
 
 .c11 {
   background-color: var(--white);
-  position: absolute;
-  left: 0;
-  top: 70px;
   width: 100%;
   height: auto;
   z-index: var(--foreground);
   padding-bottom: 30px;
-  display: none;
-  grid-template-columns: 92px 92px 92px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -7576,7 +7181,7 @@ Object {
   justify-content: center;
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 0;
+  height: 0%;
   pointer-events: none;
   top: 50px;
 }
@@ -7723,12 +7328,13 @@ Object {
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c3 {
-    grid-template-columns: 1fr 48px;
-    height: 35px;
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c5 {
     display: none;
   }
@@ -7740,7 +7346,7 @@ Object {
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c11 {
     display: grid;
   }
@@ -7930,95 +7536,7 @@ Object {
             </div>
             <div
               class="c11"
-            >
-              <a
-                class="c6 c10"
-                href="/about"
-                title="About"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    About
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c8"
-                >
-                  About
-                </small>
-              </a>
-              <a
-                class="c6 c10"
-                href="/jobs"
-                title="Join us"
-              >
-                <svg
-                  name="Jobs"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c8"
-                >
-                  Join us
-                </small>
-              </a>
-              <a
-                class="c6 c10"
-                href="https://github.com/unlock-protocol/unlock"
-                title="Source Code"
-              >
-                <svg
-                  name="Github"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                  />
-                </svg>
-                <small
-                  class="c8"
-                >
-                  Source Code
-                </small>
-              </a>
-              <a
-                class="c6 c10"
-                href="https://t.me/unlockprotocol"
-                title="Telegram"
-              >
-                <svg
-                  name="Telegram"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c8"
-                >
-                  Telegram
-                </small>
-              </a>
-            </div>
+            />
           </header>
           <section
             class="c12"
@@ -8689,7 +8207,7 @@ Object {
         class="hm3mhg-3 yKIjT"
       >
         <header
-          class="sc-1glv5oz-0 gwDDxU"
+          class="sc-1glv5oz-0 jhDxiy"
         >
           <a
             href="/"
@@ -8707,7 +8225,7 @@ Object {
             </svg>
           </a>
           <div
-            class="sc-1glv5oz-2 bHzhFn"
+            class="sc-1glv5oz-2 ebyHxu"
           >
             <a
               class="sc-850ddk-0 fgimlS"
@@ -8798,7 +8316,7 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-3 ccexsu"
+            class="sc-1glv5oz-3 hEoKnM"
           >
             <a
               class="sc-850ddk-0 kIaKVN"
@@ -8834,96 +8352,8 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-4 dgaVjR"
-          >
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/about"
-              title="About"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  About
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                About
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/jobs"
-              title="Join us"
-            >
-              <svg
-                name="Jobs"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Join us
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://github.com/unlock-protocol/unlock"
-              title="Source Code"
-            >
-              <svg
-                name="Github"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Source Code
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://t.me/unlockprotocol"
-              title="Telegram"
-            >
-              <svg
-                name="Telegram"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Telegram
-              </small>
-            </a>
-          </div>
+            class="sc-1glv5oz-4 fsowbd"
+          />
         </header>
         <section
           class="sc-1mz6j63-0 HVtYL"
@@ -17141,7 +16571,7 @@ Object {
 
 .c4 {
   display: grid;
-  grid-gap: 16px;
+  grid-gap: 0;
   grid-template-columns: 1fr repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
@@ -17169,7 +16599,8 @@ Object {
 
 .c10 {
   display: none;
-  height: 100%;
+  height: auto;
+  grid-column: second;
 }
 
 .c10 .c7 {
@@ -17184,12 +16615,10 @@ Object {
 }
 
 .c10 .c7:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c10 .c7:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -17204,16 +16633,16 @@ Object {
 
 .c12 {
   background-color: var(--white);
-  position: absolute;
-  left: 0;
-  top: 70px;
   width: 100%;
   height: auto;
   z-index: var(--foreground);
   padding-bottom: 30px;
-  display: none;
-  grid-template-columns: 92px 92px 92px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -17224,7 +16653,7 @@ Object {
   justify-content: center;
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 0;
+  height: 0%;
   pointer-events: none;
   top: 50px;
 }
@@ -17432,12 +16861,13 @@ Object {
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c4 {
-    grid-template-columns: 1fr 48px;
-    height: 35px;
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c6 {
     display: none;
   }
@@ -17449,7 +16879,7 @@ Object {
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c12 {
     display: grid;
   }
@@ -17704,95 +17134,7 @@ Object {
             </div>
             <div
               class="c12"
-            >
-              <a
-                class="c7 c11"
-                href="/about"
-                title="About"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    About
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  About
-                </small>
-              </a>
-              <a
-                class="c7 c11"
-                href="/jobs"
-                title="Join us"
-              >
-                <svg
-                  name="Jobs"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  Join us
-                </small>
-              </a>
-              <a
-                class="c7 c11"
-                href="https://github.com/unlock-protocol/unlock"
-                title="Source Code"
-              >
-                <svg
-                  name="Github"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  Source Code
-                </small>
-              </a>
-              <a
-                class="c7 c11"
-                href="https://t.me/unlockprotocol"
-                title="Telegram"
-              >
-                <svg
-                  name="Telegram"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  Telegram
-                </small>
-              </a>
-            </div>
+            />
           </header>
           <section
             class=""
@@ -18849,7 +18191,7 @@ Object {
         class="hm3mhg-3 yKIjT"
       >
         <header
-          class="sc-1glv5oz-0 gwDDxU"
+          class="sc-1glv5oz-0 jhDxiy"
         >
           <h1
             class="sc-1glv5oz-1 jZepcb"
@@ -18857,7 +18199,7 @@ Object {
             Creator Dashboard
           </h1>
           <div
-            class="sc-1glv5oz-2 bHzhFn"
+            class="sc-1glv5oz-2 ebyHxu"
           >
             <a
               class="sc-850ddk-0 fgimlS"
@@ -18948,7 +18290,7 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-3 ccexsu"
+            class="sc-1glv5oz-3 hEoKnM"
           >
             <a
               class="sc-850ddk-0 kIaKVN"
@@ -18984,96 +18326,8 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-4 dgaVjR"
-          >
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/about"
-              title="About"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  About
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                About
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/jobs"
-              title="Join us"
-            >
-              <svg
-                name="Jobs"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Join us
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://github.com/unlock-protocol/unlock"
-              title="Source Code"
-            >
-              <svg
-                name="Github"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Source Code
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://t.me/unlockprotocol"
-              title="Telegram"
-            >
-              <svg
-                name="Telegram"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Telegram
-              </small>
-            </a>
-          </div>
+            class="sc-1glv5oz-4 fsowbd"
+          />
         </header>
         <section
           class="sc-9u6rci-0 gDZljF"
@@ -20658,12 +19912,10 @@ Object {
 }
 
 .c4 .c1:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c4 .c1:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -20878,12 +20130,10 @@ Object {
 }
 
 .c4 .c1:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c4 .c1:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -21125,7 +20375,7 @@ Object {
 
 .c4 {
   display: grid;
-  grid-gap: 16px;
+  grid-gap: 0;
   grid-template-columns: 1fr repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
@@ -21153,7 +20403,8 @@ Object {
 
 .c10 {
   display: none;
-  height: 100%;
+  height: auto;
+  grid-column: second;
 }
 
 .c10 .c7 {
@@ -21168,12 +20419,10 @@ Object {
 }
 
 .c10 .c7:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c10 .c7:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -21188,16 +20437,16 @@ Object {
 
 .c12 {
   background-color: var(--white);
-  position: absolute;
-  left: 0;
-  top: 70px;
   width: 100%;
   height: auto;
   z-index: var(--foreground);
   padding-bottom: 30px;
-  display: none;
-  grid-template-columns: 92px 92px 92px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -21208,7 +20457,7 @@ Object {
   justify-content: center;
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 0;
+  height: 0%;
   pointer-events: none;
   top: 50px;
 }
@@ -21289,12 +20538,13 @@ Object {
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c4 {
-    grid-template-columns: 1fr 48px;
-    height: 35px;
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c6 {
     display: none;
   }
@@ -21306,7 +20556,7 @@ Object {
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c12 {
     display: grid;
   }
@@ -21509,95 +20759,7 @@ Object {
             </div>
             <div
               class="c12"
-            >
-              <a
-                class="c7 c11"
-                href="/about"
-                title="About"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    About
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  About
-                </small>
-              </a>
-              <a
-                class="c7 c11"
-                href="/jobs"
-                title="Join us"
-              >
-                <svg
-                  name="Jobs"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  Join us
-                </small>
-              </a>
-              <a
-                class="c7 c11"
-                href="https://github.com/unlock-protocol/unlock"
-                title="Source Code"
-              >
-                <svg
-                  name="Github"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  Source Code
-                </small>
-              </a>
-              <a
-                class="c7 c11"
-                href="https://t.me/unlockprotocol"
-                title="Telegram"
-              >
-                <svg
-                  name="Telegram"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  Telegram
-                </small>
-              </a>
-            </div>
+            />
           </header>
           <section
             class="c13"
@@ -21656,13 +20818,13 @@ Object {
         class="hm3mhg-3 yKIjT"
       >
         <header
-          class="sc-1glv5oz-0 gwDDxU"
+          class="sc-1glv5oz-0 jhDxiy"
         >
           <h1
             class="sc-1glv5oz-1 jZepcb"
           />
           <div
-            class="sc-1glv5oz-2 bHzhFn"
+            class="sc-1glv5oz-2 ebyHxu"
           >
             <a
               class="sc-850ddk-0 fgimlS"
@@ -21753,7 +20915,7 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-3 ccexsu"
+            class="sc-1glv5oz-3 hEoKnM"
           >
             <a
               class="sc-850ddk-0 kIaKVN"
@@ -21789,96 +20951,8 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-4 dgaVjR"
-          >
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/about"
-              title="About"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  About
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                About
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/jobs"
-              title="Join us"
-            >
-              <svg
-                name="Jobs"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Join us
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://github.com/unlock-protocol/unlock"
-              title="Source Code"
-            >
-              <svg
-                name="Github"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Source Code
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://t.me/unlockprotocol"
-              title="Telegram"
-            >
-              <svg
-                name="Telegram"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Telegram
-              </small>
-            </a>
-          </div>
+            class="sc-1glv5oz-4 fsowbd"
+          />
         </header>
         <section
           class="sc-1g6piw8-0 jXGMmL"
@@ -22036,7 +21110,7 @@ Object {
 
 .c4 {
   display: grid;
-  grid-gap: 16px;
+  grid-gap: 0;
   grid-template-columns: 1fr repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
@@ -22064,7 +21138,8 @@ Object {
 
 .c10 {
   display: none;
-  height: 100%;
+  height: auto;
+  grid-column: second;
 }
 
 .c10 .c7 {
@@ -22079,12 +21154,10 @@ Object {
 }
 
 .c10 .c7:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c10 .c7:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -22099,16 +21172,16 @@ Object {
 
 .c12 {
   background-color: var(--white);
-  position: absolute;
-  left: 0;
-  top: 70px;
   width: 100%;
   height: auto;
   z-index: var(--foreground);
   padding-bottom: 30px;
-  display: none;
-  grid-template-columns: 92px 92px 92px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -22119,7 +21192,7 @@ Object {
   justify-content: center;
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 0;
+  height: 0%;
   pointer-events: none;
   top: 50px;
 }
@@ -22200,12 +21273,13 @@ Object {
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c4 {
-    grid-template-columns: 1fr 48px;
-    height: 35px;
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c6 {
     display: none;
   }
@@ -22217,7 +21291,7 @@ Object {
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c12 {
     display: grid;
   }
@@ -22420,95 +21494,7 @@ Object {
             </div>
             <div
               class="c12"
-            >
-              <a
-                class="c7 c11"
-                href="/about"
-                title="About"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    About
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  About
-                </small>
-              </a>
-              <a
-                class="c7 c11"
-                href="/jobs"
-                title="Join us"
-              >
-                <svg
-                  name="Jobs"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  Join us
-                </small>
-              </a>
-              <a
-                class="c7 c11"
-                href="https://github.com/unlock-protocol/unlock"
-                title="Source Code"
-              >
-                <svg
-                  name="Github"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  Source Code
-                </small>
-              </a>
-              <a
-                class="c7 c11"
-                href="https://t.me/unlockprotocol"
-                title="Telegram"
-              >
-                <svg
-                  name="Telegram"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  Telegram
-                </small>
-              </a>
-            </div>
+            />
           </header>
           <section
             class="c13"
@@ -22574,13 +21560,13 @@ Object {
         class="hm3mhg-3 yKIjT"
       >
         <header
-          class="sc-1glv5oz-0 gwDDxU"
+          class="sc-1glv5oz-0 jhDxiy"
         >
           <h1
             class="sc-1glv5oz-1 jZepcb"
           />
           <div
-            class="sc-1glv5oz-2 bHzhFn"
+            class="sc-1glv5oz-2 ebyHxu"
           >
             <a
               class="sc-850ddk-0 fgimlS"
@@ -22671,7 +21657,7 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-3 ccexsu"
+            class="sc-1glv5oz-3 hEoKnM"
           >
             <a
               class="sc-850ddk-0 kIaKVN"
@@ -22707,96 +21693,8 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-4 dgaVjR"
-          >
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/about"
-              title="About"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  About
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                About
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/jobs"
-              title="Join us"
-            >
-              <svg
-                name="Jobs"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Join us
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://github.com/unlock-protocol/unlock"
-              title="Source Code"
-            >
-              <svg
-                name="Github"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Source Code
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://t.me/unlockprotocol"
-              title="Telegram"
-            >
-              <svg
-                name="Telegram"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Telegram
-              </small>
-            </a>
-          </div>
+            class="sc-1glv5oz-4 fsowbd"
+          />
         </header>
         <section
           class="sc-1g6piw8-0 jXGMmL"
@@ -22961,7 +21859,7 @@ Object {
 
 .c4 {
   display: grid;
-  grid-gap: 16px;
+  grid-gap: 0;
   grid-template-columns: 1fr repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
@@ -22989,7 +21887,8 @@ Object {
 
 .c10 {
   display: none;
-  height: 100%;
+  height: auto;
+  grid-column: second;
 }
 
 .c10 .c7 {
@@ -23004,12 +21903,10 @@ Object {
 }
 
 .c10 .c7:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c10 .c7:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -23024,16 +21921,16 @@ Object {
 
 .c12 {
   background-color: var(--white);
-  position: absolute;
-  left: 0;
-  top: 70px;
   width: 100%;
   height: auto;
   z-index: var(--foreground);
   padding-bottom: 30px;
-  display: none;
-  grid-template-columns: 92px 92px 92px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -23044,7 +21941,7 @@ Object {
   justify-content: center;
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 0;
+  height: 0%;
   pointer-events: none;
   top: 50px;
 }
@@ -23125,12 +22022,13 @@ Object {
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c4 {
-    grid-template-columns: 1fr 48px;
-    height: 35px;
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c6 {
     display: none;
   }
@@ -23142,7 +22040,7 @@ Object {
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c12 {
     display: grid;
   }
@@ -23345,95 +22243,7 @@ Object {
             </div>
             <div
               class="c12"
-            >
-              <a
-                class="c7 c11"
-                href="/about"
-                title="About"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    About
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  About
-                </small>
-              </a>
-              <a
-                class="c7 c11"
-                href="/jobs"
-                title="Join us"
-              >
-                <svg
-                  name="Jobs"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  Join us
-                </small>
-              </a>
-              <a
-                class="c7 c11"
-                href="https://github.com/unlock-protocol/unlock"
-                title="Source Code"
-              >
-                <svg
-                  name="Github"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  Source Code
-                </small>
-              </a>
-              <a
-                class="c7 c11"
-                href="https://t.me/unlockprotocol"
-                title="Telegram"
-              >
-                <svg
-                  name="Telegram"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  Telegram
-                </small>
-              </a>
-            </div>
+            />
           </header>
           <section
             class="c13"
@@ -23492,13 +22302,13 @@ Object {
         class="hm3mhg-3 yKIjT"
       >
         <header
-          class="sc-1glv5oz-0 gwDDxU"
+          class="sc-1glv5oz-0 jhDxiy"
         >
           <h1
             class="sc-1glv5oz-1 jZepcb"
           />
           <div
-            class="sc-1glv5oz-2 bHzhFn"
+            class="sc-1glv5oz-2 ebyHxu"
           >
             <a
               class="sc-850ddk-0 fgimlS"
@@ -23589,7 +22399,7 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-3 ccexsu"
+            class="sc-1glv5oz-3 hEoKnM"
           >
             <a
               class="sc-850ddk-0 kIaKVN"
@@ -23625,96 +22435,8 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-4 dgaVjR"
-          >
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/about"
-              title="About"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  About
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                About
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/jobs"
-              title="Join us"
-            >
-              <svg
-                name="Jobs"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Join us
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://github.com/unlock-protocol/unlock"
-              title="Source Code"
-            >
-              <svg
-                name="Github"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Source Code
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://t.me/unlockprotocol"
-              title="Telegram"
-            >
-              <svg
-                name="Telegram"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Telegram
-              </small>
-            </a>
-          </div>
+            class="sc-1glv5oz-4 fsowbd"
+          />
         </header>
         <section
           class="sc-1g6piw8-0 jXGMmL"
@@ -23846,12 +22568,10 @@ Object {
 }
 
 .c5 .c1:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c5 .c1:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -24228,7 +22948,7 @@ Object {
 
 .c0 {
   display: grid;
-  grid-gap: 16px;
+  grid-gap: 0;
   grid-template-columns: 1fr repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
@@ -24252,7 +22972,8 @@ Object {
 
 .c6 {
   display: none;
-  height: 100%;
+  height: auto;
+  grid-column: second;
 }
 
 .c6 .c3 {
@@ -24267,12 +22988,10 @@ Object {
 }
 
 .c6 .c3:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c6 .c3:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -24287,16 +23006,16 @@ Object {
 
 .c8 {
   background-color: var(--white);
-  position: absolute;
-  left: 0;
-  top: 70px;
   width: 100%;
   height: auto;
   z-index: var(--foreground);
   padding-bottom: 30px;
-  display: none;
-  grid-template-columns: 92px 92px 92px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -24307,7 +23026,7 @@ Object {
   justify-content: center;
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 0;
+  height: 0%;
   pointer-events: none;
   top: 50px;
 }
@@ -24327,12 +23046,13 @@ Object {
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c0 {
-    grid-template-columns: 1fr 48px;
-    height: 35px;
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c2 {
     display: none;
   }
@@ -24344,7 +23064,7 @@ Object {
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c8 {
     display: grid;
   }
@@ -24502,95 +23222,7 @@ Object {
         </div>
         <div
           class="c8"
-        >
-          <a
-            class="c3 c7"
-            href="/about"
-            title="About"
-          >
-            <svg
-              viewBox="0 0 24 24"
-            >
-              <title>
-                About
-              </title>
-              <path
-                clip-rule="evenodd"
-                d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            <small
-              class="c5"
-            >
-              About
-            </small>
-          </a>
-          <a
-            class="c3 c7"
-            href="/jobs"
-            title="Join us"
-          >
-            <svg
-              name="Jobs"
-              viewBox="0 0 24 24"
-            >
-              <title />
-              <path
-                clip-rule="evenodd"
-                d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            <small
-              class="c5"
-            >
-              Join us
-            </small>
-          </a>
-          <a
-            class="c3 c7"
-            href="https://github.com/unlock-protocol/unlock"
-            title="Source Code"
-          >
-            <svg
-              name="Github"
-              viewBox="0 0 24 24"
-            >
-              <title />
-              <path
-                d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-              />
-            </svg>
-            <small
-              class="c5"
-            >
-              Source Code
-            </small>
-          </a>
-          <a
-            class="c3 c7"
-            href="https://t.me/unlockprotocol"
-            title="Telegram"
-          >
-            <svg
-              name="Telegram"
-              viewBox="0 0 24 24"
-            >
-              <title />
-              <path
-                clip-rule="evenodd"
-                d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            <small
-              class="c5"
-            >
-              Telegram
-            </small>
-          </a>
-        </div>
+        />
       </header>
     </div>
   </body>,
@@ -24600,7 +23232,7 @@ Object {
       rel="stylesheet"
     />
     <header
-      class="sc-1glv5oz-0 gwDDxU"
+      class="sc-1glv5oz-0 jhDxiy"
     >
       <a
         href="/"
@@ -24618,7 +23250,7 @@ Object {
         </svg>
       </a>
       <div
-        class="sc-1glv5oz-2 bHzhFn"
+        class="sc-1glv5oz-2 ebyHxu"
       >
         <a
           class="sc-850ddk-0 fgimlS"
@@ -24709,7 +23341,7 @@ Object {
         </a>
       </div>
       <div
-        class="sc-1glv5oz-3 ccexsu"
+        class="sc-1glv5oz-3 hEoKnM"
       >
         <a
           class="sc-850ddk-0 kIaKVN"
@@ -24745,96 +23377,8 @@ Object {
         </a>
       </div>
       <div
-        class="sc-1glv5oz-4 dgaVjR"
-      >
-        <a
-          class="sc-850ddk-0 kIaKVN"
-          href="/about"
-          title="About"
-        >
-          <svg
-            viewBox="0 0 24 24"
-          >
-            <title>
-              About
-            </title>
-            <path
-              clip-rule="evenodd"
-              d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-              fill-rule="evenodd"
-            />
-          </svg>
-          <small
-            class="sc-850ddk-1 gmXpSv"
-          >
-            About
-          </small>
-        </a>
-        <a
-          class="sc-850ddk-0 kIaKVN"
-          href="/jobs"
-          title="Join us"
-        >
-          <svg
-            name="Jobs"
-            viewBox="0 0 24 24"
-          >
-            <title />
-            <path
-              clip-rule="evenodd"
-              d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-              fill-rule="evenodd"
-            />
-          </svg>
-          <small
-            class="sc-850ddk-1 gmXpSv"
-          >
-            Join us
-          </small>
-        </a>
-        <a
-          class="sc-850ddk-0 kIaKVN"
-          href="https://github.com/unlock-protocol/unlock"
-          title="Source Code"
-        >
-          <svg
-            name="Github"
-            viewBox="0 0 24 24"
-          >
-            <title />
-            <path
-              d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-            />
-          </svg>
-          <small
-            class="sc-850ddk-1 gmXpSv"
-          >
-            Source Code
-          </small>
-        </a>
-        <a
-          class="sc-850ddk-0 kIaKVN"
-          href="https://t.me/unlockprotocol"
-          title="Telegram"
-        >
-          <svg
-            name="Telegram"
-            viewBox="0 0 24 24"
-          >
-            <title />
-            <path
-              clip-rule="evenodd"
-              d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-              fill-rule="evenodd"
-            />
-          </svg>
-          <small
-            class="sc-850ddk-1 gmXpSv"
-          >
-            Telegram
-          </small>
-        </a>
-      </div>
+        class="sc-1glv5oz-4 fsowbd"
+      />
     </header>
   </div>,
   "debug": [Function],
@@ -24958,7 +23502,7 @@ Object {
 
 .c0 {
   display: grid;
-  grid-gap: 16px;
+  grid-gap: 0;
   grid-template-columns: 1fr repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
@@ -24986,7 +23530,8 @@ Object {
 
 .c6 {
   display: none;
-  height: 100%;
+  height: auto;
+  grid-column: second;
 }
 
 .c6 .c3 {
@@ -25001,12 +23546,10 @@ Object {
 }
 
 .c6 .c3:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c6 .c3:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -25021,16 +23564,16 @@ Object {
 
 .c8 {
   background-color: var(--white);
-  position: absolute;
-  left: 0;
-  top: 70px;
   width: 100%;
   height: auto;
   z-index: var(--foreground);
   padding-bottom: 30px;
-  display: none;
-  grid-template-columns: 92px 92px 92px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -25041,7 +23584,7 @@ Object {
   justify-content: center;
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 0;
+  height: 0%;
   pointer-events: none;
   top: 50px;
 }
@@ -25061,12 +23604,13 @@ Object {
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c0 {
-    grid-template-columns: 1fr 48px;
-    height: 35px;
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c2 {
     display: none;
   }
@@ -25078,7 +23622,7 @@ Object {
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c8 {
     display: grid;
   }
@@ -25226,95 +23770,7 @@ Object {
         </div>
         <div
           class="c8"
-        >
-          <a
-            class="c3 c7"
-            href="/about"
-            title="About"
-          >
-            <svg
-              viewBox="0 0 24 24"
-            >
-              <title>
-                About
-              </title>
-              <path
-                clip-rule="evenodd"
-                d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            <small
-              class="c5"
-            >
-              About
-            </small>
-          </a>
-          <a
-            class="c3 c7"
-            href="/jobs"
-            title="Join us"
-          >
-            <svg
-              name="Jobs"
-              viewBox="0 0 24 24"
-            >
-              <title />
-              <path
-                clip-rule="evenodd"
-                d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            <small
-              class="c5"
-            >
-              Join us
-            </small>
-          </a>
-          <a
-            class="c3 c7"
-            href="https://github.com/unlock-protocol/unlock"
-            title="Source Code"
-          >
-            <svg
-              name="Github"
-              viewBox="0 0 24 24"
-            >
-              <title />
-              <path
-                d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-              />
-            </svg>
-            <small
-              class="c5"
-            >
-              Source Code
-            </small>
-          </a>
-          <a
-            class="c3 c7"
-            href="https://t.me/unlockprotocol"
-            title="Telegram"
-          >
-            <svg
-              name="Telegram"
-              viewBox="0 0 24 24"
-            >
-              <title />
-              <path
-                clip-rule="evenodd"
-                d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            <small
-              class="c5"
-            >
-              Telegram
-            </small>
-          </a>
-        </div>
+        />
       </header>
     </div>
   </body>,
@@ -25324,7 +23780,7 @@ Object {
       rel="stylesheet"
     />
     <header
-      class="sc-1glv5oz-0 gwDDxU"
+      class="sc-1glv5oz-0 jhDxiy"
     >
       <h1
         class="sc-1glv5oz-1 jZepcb"
@@ -25332,7 +23788,7 @@ Object {
         Roses are red
       </h1>
       <div
-        class="sc-1glv5oz-2 bHzhFn"
+        class="sc-1glv5oz-2 ebyHxu"
       >
         <a
           class="sc-850ddk-0 fgimlS"
@@ -25423,7 +23879,7 @@ Object {
         </a>
       </div>
       <div
-        class="sc-1glv5oz-3 ccexsu"
+        class="sc-1glv5oz-3 hEoKnM"
       >
         <a
           class="sc-850ddk-0 kIaKVN"
@@ -25459,96 +23915,8 @@ Object {
         </a>
       </div>
       <div
-        class="sc-1glv5oz-4 dgaVjR"
-      >
-        <a
-          class="sc-850ddk-0 kIaKVN"
-          href="/about"
-          title="About"
-        >
-          <svg
-            viewBox="0 0 24 24"
-          >
-            <title>
-              About
-            </title>
-            <path
-              clip-rule="evenodd"
-              d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-              fill-rule="evenodd"
-            />
-          </svg>
-          <small
-            class="sc-850ddk-1 gmXpSv"
-          >
-            About
-          </small>
-        </a>
-        <a
-          class="sc-850ddk-0 kIaKVN"
-          href="/jobs"
-          title="Join us"
-        >
-          <svg
-            name="Jobs"
-            viewBox="0 0 24 24"
-          >
-            <title />
-            <path
-              clip-rule="evenodd"
-              d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-              fill-rule="evenodd"
-            />
-          </svg>
-          <small
-            class="sc-850ddk-1 gmXpSv"
-          >
-            Join us
-          </small>
-        </a>
-        <a
-          class="sc-850ddk-0 kIaKVN"
-          href="https://github.com/unlock-protocol/unlock"
-          title="Source Code"
-        >
-          <svg
-            name="Github"
-            viewBox="0 0 24 24"
-          >
-            <title />
-            <path
-              d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-            />
-          </svg>
-          <small
-            class="sc-850ddk-1 gmXpSv"
-          >
-            Source Code
-          </small>
-        </a>
-        <a
-          class="sc-850ddk-0 kIaKVN"
-          href="https://t.me/unlockprotocol"
-          title="Telegram"
-        >
-          <svg
-            name="Telegram"
-            viewBox="0 0 24 24"
-          >
-            <title />
-            <path
-              clip-rule="evenodd"
-              d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-              fill-rule="evenodd"
-            />
-          </svg>
-          <small
-            class="sc-850ddk-1 gmXpSv"
-          >
-            Telegram
-          </small>
-        </a>
-      </div>
+        class="sc-1glv5oz-4 fsowbd"
+      />
     </header>
   </div>,
   "debug": [Function],
@@ -25672,7 +24040,7 @@ Object {
 
 .c0 {
   display: grid;
-  grid-gap: 16px;
+  grid-gap: 0;
   grid-template-columns: 1fr repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
@@ -25700,7 +24068,8 @@ Object {
 
 .c6 {
   display: none;
-  height: 100%;
+  height: auto;
+  grid-column: second;
 }
 
 .c6 .c3 {
@@ -25715,12 +24084,10 @@ Object {
 }
 
 .c6 .c3:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c6 .c3:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -25735,16 +24102,16 @@ Object {
 
 .c8 {
   background-color: var(--white);
-  position: absolute;
-  left: 0;
-  top: 70px;
   width: 100%;
   height: auto;
   z-index: var(--foreground);
   padding-bottom: 30px;
-  display: none;
-  grid-template-columns: 92px 92px 92px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -25755,7 +24122,7 @@ Object {
   justify-content: center;
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 0;
+  height: 0%;
   pointer-events: none;
   top: 50px;
 }
@@ -25775,12 +24142,13 @@ Object {
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c0 {
-    grid-template-columns: 1fr 48px;
-    height: 35px;
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c2 {
     display: none;
   }
@@ -25792,7 +24160,7 @@ Object {
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c8 {
     display: grid;
   }
@@ -25940,95 +24308,7 @@ Object {
         </div>
         <div
           class="c8"
-        >
-          <a
-            class="c3 c7"
-            href="/about"
-            title="About"
-          >
-            <svg
-              viewBox="0 0 24 24"
-            >
-              <title>
-                About
-              </title>
-              <path
-                clip-rule="evenodd"
-                d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            <small
-              class="c5"
-            >
-              About
-            </small>
-          </a>
-          <a
-            class="c3 c7"
-            href="/jobs"
-            title="Join us"
-          >
-            <svg
-              name="Jobs"
-              viewBox="0 0 24 24"
-            >
-              <title />
-              <path
-                clip-rule="evenodd"
-                d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            <small
-              class="c5"
-            >
-              Join us
-            </small>
-          </a>
-          <a
-            class="c3 c7"
-            href="https://github.com/unlock-protocol/unlock"
-            title="Source Code"
-          >
-            <svg
-              name="Github"
-              viewBox="0 0 24 24"
-            >
-              <title />
-              <path
-                d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-              />
-            </svg>
-            <small
-              class="c5"
-            >
-              Source Code
-            </small>
-          </a>
-          <a
-            class="c3 c7"
-            href="https://t.me/unlockprotocol"
-            title="Telegram"
-          >
-            <svg
-              name="Telegram"
-              viewBox="0 0 24 24"
-            >
-              <title />
-              <path
-                clip-rule="evenodd"
-                d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            <small
-              class="c5"
-            >
-              Telegram
-            </small>
-          </a>
-        </div>
+        />
       </header>
     </div>
   </body>,
@@ -26038,7 +24318,7 @@ Object {
       rel="stylesheet"
     />
     <header
-      class="sc-1glv5oz-0 gwDDxU"
+      class="sc-1glv5oz-0 jhDxiy"
     >
       <h1
         class="sc-1glv5oz-1 jZepcb"
@@ -26046,7 +24326,7 @@ Object {
         Unlock
       </h1>
       <div
-        class="sc-1glv5oz-2 bHzhFn"
+        class="sc-1glv5oz-2 ebyHxu"
       >
         <a
           class="sc-850ddk-0 fgimlS"
@@ -26137,7 +24417,7 @@ Object {
         </a>
       </div>
       <div
-        class="sc-1glv5oz-3 ccexsu"
+        class="sc-1glv5oz-3 hEoKnM"
       >
         <a
           class="sc-850ddk-0 kIaKVN"
@@ -26173,96 +24453,8 @@ Object {
         </a>
       </div>
       <div
-        class="sc-1glv5oz-4 dgaVjR"
-      >
-        <a
-          class="sc-850ddk-0 kIaKVN"
-          href="/about"
-          title="About"
-        >
-          <svg
-            viewBox="0 0 24 24"
-          >
-            <title>
-              About
-            </title>
-            <path
-              clip-rule="evenodd"
-              d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-              fill-rule="evenodd"
-            />
-          </svg>
-          <small
-            class="sc-850ddk-1 gmXpSv"
-          >
-            About
-          </small>
-        </a>
-        <a
-          class="sc-850ddk-0 kIaKVN"
-          href="/jobs"
-          title="Join us"
-        >
-          <svg
-            name="Jobs"
-            viewBox="0 0 24 24"
-          >
-            <title />
-            <path
-              clip-rule="evenodd"
-              d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-              fill-rule="evenodd"
-            />
-          </svg>
-          <small
-            class="sc-850ddk-1 gmXpSv"
-          >
-            Join us
-          </small>
-        </a>
-        <a
-          class="sc-850ddk-0 kIaKVN"
-          href="https://github.com/unlock-protocol/unlock"
-          title="Source Code"
-        >
-          <svg
-            name="Github"
-            viewBox="0 0 24 24"
-          >
-            <title />
-            <path
-              d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-            />
-          </svg>
-          <small
-            class="sc-850ddk-1 gmXpSv"
-          >
-            Source Code
-          </small>
-        </a>
-        <a
-          class="sc-850ddk-0 kIaKVN"
-          href="https://t.me/unlockprotocol"
-          title="Telegram"
-        >
-          <svg
-            name="Telegram"
-            viewBox="0 0 24 24"
-          >
-            <title />
-            <path
-              clip-rule="evenodd"
-              d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-              fill-rule="evenodd"
-            />
-          </svg>
-          <small
-            class="sc-850ddk-1 gmXpSv"
-          >
-            Telegram
-          </small>
-        </a>
-      </div>
+        class="sc-1glv5oz-4 fsowbd"
+      />
     </header>
   </div>,
   "debug": [Function],
@@ -27011,7 +25203,7 @@ Object {
 
 .c3 {
   display: grid;
-  grid-gap: 16px;
+  grid-gap: 0;
   grid-template-columns: 1fr repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
@@ -27035,7 +25227,8 @@ Object {
 
 .c9 {
   display: none;
-  height: 100%;
+  height: auto;
+  grid-column: second;
 }
 
 .c9 .c6 {
@@ -27050,12 +25243,10 @@ Object {
 }
 
 .c9 .c6:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c9 .c6:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -27070,16 +25261,16 @@ Object {
 
 .c11 {
   background-color: var(--white);
-  position: absolute;
-  left: 0;
-  top: 70px;
   width: 100%;
   height: auto;
   z-index: var(--foreground);
   padding-bottom: 30px;
-  display: none;
-  grid-template-columns: 92px 92px 92px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -27090,7 +25281,7 @@ Object {
   justify-content: center;
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 0;
+  height: 0%;
   pointer-events: none;
   top: 50px;
 }
@@ -27152,12 +25343,13 @@ Object {
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c3 {
-    grid-template-columns: 1fr 48px;
-    height: 35px;
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c5 {
     display: none;
   }
@@ -27169,7 +25361,7 @@ Object {
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c11 {
     display: grid;
   }
@@ -27359,95 +25551,7 @@ Object {
             </div>
             <div
               class="c11"
-            >
-              <a
-                class="c6 c10"
-                href="/about"
-                title="About"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    About
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c8"
-                >
-                  About
-                </small>
-              </a>
-              <a
-                class="c6 c10"
-                href="/jobs"
-                title="Join us"
-              >
-                <svg
-                  name="Jobs"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c8"
-                >
-                  Join us
-                </small>
-              </a>
-              <a
-                class="c6 c10"
-                href="https://github.com/unlock-protocol/unlock"
-                title="Source Code"
-              >
-                <svg
-                  name="Github"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                  />
-                </svg>
-                <small
-                  class="c8"
-                >
-                  Source Code
-                </small>
-              </a>
-              <a
-                class="c6 c10"
-                href="https://t.me/unlockprotocol"
-                title="Telegram"
-              >
-                <svg
-                  name="Telegram"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c8"
-                >
-                  Telegram
-                </small>
-              </a>
-            </div>
+            />
           </header>
           <footer
             class="c12"
@@ -27567,7 +25671,7 @@ Object {
         class="hm3mhg-3 yKIjT"
       >
         <header
-          class="sc-1glv5oz-0 gwDDxU"
+          class="sc-1glv5oz-0 jhDxiy"
         >
           <a
             href="/"
@@ -27585,7 +25689,7 @@ Object {
             </svg>
           </a>
           <div
-            class="sc-1glv5oz-2 bHzhFn"
+            class="sc-1glv5oz-2 ebyHxu"
           >
             <a
               class="sc-850ddk-0 fgimlS"
@@ -27676,7 +25780,7 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-3 ccexsu"
+            class="sc-1glv5oz-3 hEoKnM"
           >
             <a
               class="sc-850ddk-0 kIaKVN"
@@ -27712,96 +25816,8 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-4 dgaVjR"
-          >
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/about"
-              title="About"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  About
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                About
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/jobs"
-              title="Join us"
-            >
-              <svg
-                name="Jobs"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Join us
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://github.com/unlock-protocol/unlock"
-              title="Source Code"
-            >
-              <svg
-                name="Github"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Source Code
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://t.me/unlockprotocol"
-              title="Telegram"
-            >
-              <svg
-                name="Telegram"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Telegram
-              </small>
-            </a>
-          </div>
+            class="sc-1glv5oz-4 fsowbd"
+          />
         </header>
         <footer
           class="sc-2ix2yp-0 clvjsX"
@@ -28037,7 +26053,7 @@ Object {
 
 .c4 {
   display: grid;
-  grid-gap: 16px;
+  grid-gap: 0;
   grid-template-columns: 1fr repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
@@ -28065,7 +26081,8 @@ Object {
 
 .c10 {
   display: none;
-  height: 100%;
+  height: auto;
+  grid-column: second;
 }
 
 .c10 .c7 {
@@ -28080,12 +26097,10 @@ Object {
 }
 
 .c10 .c7:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c10 .c7:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -28100,16 +26115,16 @@ Object {
 
 .c12 {
   background-color: var(--white);
-  position: absolute;
-  left: 0;
-  top: 70px;
   width: 100%;
   height: auto;
   z-index: var(--foreground);
   padding-bottom: 30px;
-  display: none;
-  grid-template-columns: 92px 92px 92px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -28120,7 +26135,7 @@ Object {
   justify-content: center;
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 0;
+  height: 0%;
   pointer-events: none;
   top: 50px;
 }
@@ -28161,12 +26176,13 @@ Object {
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c4 {
-    grid-template-columns: 1fr 48px;
-    height: 35px;
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c6 {
     display: none;
   }
@@ -28178,7 +26194,7 @@ Object {
   }
 }
 
-@media (max-width:600px) {
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c12 {
     display: grid;
   }
@@ -28375,95 +26391,7 @@ Object {
             </div>
             <div
               class="c12"
-            >
-              <a
-                class="c7 c11"
-                href="/about"
-                title="About"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    About
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  About
-                </small>
-              </a>
-              <a
-                class="c7 c11"
-                href="/jobs"
-                title="Join us"
-              >
-                <svg
-                  name="Jobs"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  Join us
-                </small>
-              </a>
-              <a
-                class="c7 c11"
-                href="https://github.com/unlock-protocol/unlock"
-                title="Source Code"
-              >
-                <svg
-                  name="Github"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  Source Code
-                </small>
-              </a>
-              <a
-                class="c7 c11"
-                href="https://t.me/unlockprotocol"
-                title="Telegram"
-              >
-                <svg
-                  name="Telegram"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c9"
-                >
-                  Telegram
-                </small>
-              </a>
-            </div>
+            />
           </header>
         </div>
         <div
@@ -28504,7 +26432,7 @@ Object {
         class="hm3mhg-3 yKIjT"
       >
         <header
-          class="sc-1glv5oz-0 gwDDxU"
+          class="sc-1glv5oz-0 jhDxiy"
         >
           <h1
             class="sc-1glv5oz-1 jZepcb"
@@ -28512,7 +26440,7 @@ Object {
             Unlock Dashboard
           </h1>
           <div
-            class="sc-1glv5oz-2 bHzhFn"
+            class="sc-1glv5oz-2 ebyHxu"
           >
             <a
               class="sc-850ddk-0 fgimlS"
@@ -28603,7 +26531,7 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-3 ccexsu"
+            class="sc-1glv5oz-3 hEoKnM"
           >
             <a
               class="sc-850ddk-0 kIaKVN"
@@ -28639,96 +26567,8 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-4 dgaVjR"
-          >
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/about"
-              title="About"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  About
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                About
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="/jobs"
-              title="Join us"
-            >
-              <svg
-                name="Jobs"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Join us
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://github.com/unlock-protocol/unlock"
-              title="Source Code"
-            >
-              <svg
-                name="Github"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Source Code
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 kIaKVN"
-              href="https://t.me/unlockprotocol"
-              title="Telegram"
-            >
-              <svg
-                name="Telegram"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 gmXpSv"
-              >
-                Telegram
-              </small>
-            </a>
-          </div>
+            class="sc-1glv5oz-4 fsowbd"
+          />
         </header>
       </div>
       <div
@@ -29462,12 +27302,10 @@ Object {
 }
 
 .c12 .c4:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c12 .c4:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -30249,12 +28087,10 @@ Object {
 }
 
 .c7 .c4:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c7 .c4:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -30581,12 +28417,10 @@ Object {
 }
 
 .c6 .c2:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c6 .c2:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
