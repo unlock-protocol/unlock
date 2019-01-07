@@ -46,8 +46,8 @@ export default class Header extends React.PureComponent {
           <Title>{title}</Title>
         )}
         <DesktopButtons>
-          {navigationButtons.map(El => (
-            <El key={El} />
+          {navigationButtons.map(NavButton => (
+            <NavButton key={NavButton} />
           ))}
         </DesktopButtons>
         <MobileToggle visibilityToggle={!!menu} onClick={this.toggleMenu}>
@@ -56,8 +56,12 @@ export default class Header extends React.PureComponent {
         </MobileToggle>
         <MobilePopover visibilityToggle={!!menu}>
           {menu
-            ? navigationButtons.map(El => (
-              <El key={El} size="48px" onClick={this.toggleMenu} />
+            ? navigationButtons.map(NavButton => (
+              <NavButton
+                key={NavButton}
+                size="48px"
+                onClick={this.toggleMenu}
+              />
             ))
             : ''}
         </MobilePopover>
