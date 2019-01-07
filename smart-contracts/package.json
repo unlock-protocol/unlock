@@ -18,6 +18,7 @@
     "ethereumjs-units": "^0.2.0",
     "openzeppelin-eth": "^2.0.2",
     "shelljs": "^0.8.3",
+    "solhint": "^1.4.0",
     "truffle": "^4.1.14",
     "truffle-contract": "^3.0.6",
     "web3-utils": "^1.0.0-beta.36",
@@ -32,8 +33,7 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
     "remix-ide": "^0.7.5",
-    "remixd": "^0.1.8-alpha.6",
-    "solhint": "^1.4.0"
+    "remixd": "^0.1.8-alpha.6"
   },
   "scripts": {
     "remix": "remixd -s contracts --remix-ide http://localhost:8080 --read-only",
