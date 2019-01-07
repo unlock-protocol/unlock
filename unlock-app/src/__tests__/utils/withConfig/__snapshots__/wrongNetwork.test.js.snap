@@ -65,7 +65,7 @@ exports[`withConfig High Order Component when the current network is not in the 
 .c9 {
   display: none;
   position: relative;
-  z-index: 1000;
+  z-index: 30000;
   white-space: nowrap;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
@@ -84,7 +84,7 @@ exports[`withConfig High Order Component when the current network is not in the 
 .c4 {
   display: grid;
   grid-gap: 0;
-  grid-template-columns: 1fr repeat(3,24px);
+  grid-template-columns: 1fr repeat(4,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -100,7 +100,7 @@ exports[`withConfig High Order Component when the current network is not in the 
 .c6 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: 1fr repeat(3,24px);
+  grid-template-columns: 1fr repeat(4,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
