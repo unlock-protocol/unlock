@@ -10,6 +10,7 @@ script:
   - scripts/tests.sh smart-contracts
   - scripts/tests.sh unlock-app
   - scripts/tests.sh integration-tests
+  - scripts/tests.sh locksmith 
 after_success:
   - scripts/deploy.sh netlify
   - scripts/push-image.sh
