@@ -14,8 +14,8 @@ export class ShowUnlessUserHasKeyToAnyLock extends Component {
   }
 
   handleIframeService() {
-    const { keys } = this.props
-    if (keys.length > 0) {
+    const { keys, modalShown } = this.props
+    if (keys.length > 0 && !modalShown) {
       unlockPage()
     } else {
       lockPage()
