@@ -43,8 +43,8 @@ export default class Header extends React.PureComponent {
             </a>
           </Link>
         ) : (
-            <Title>{title}</Title>
-          )}
+          <Title>{title}</Title>
+        )}
         <DesktopButtons>
           {navigationButtons.map(El => (
             <El key={El} />
@@ -55,9 +55,11 @@ export default class Header extends React.PureComponent {
           <Buttons.ChevronUp size="48px" />
         </MobileToggle>
         <MobilePopover visibilityToggle={!!menu}>
-          {menu ? navigationButtons.map(El => (
-            <El key={El} size="48px" onClick={this.toggleMenu} />
-          )) : ''}
+          {menu
+            ? navigationButtons.map(El => (
+              <El key={El} size="48px" onClick={this.toggleMenu} />
+            ))
+            : ''}
         </MobilePopover>
       </TopHeader>
     )
@@ -85,7 +87,7 @@ const TopHeader = styled.header`
   ${Media.phone`
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: ${props =>
-      props.visibilityToggle ? '[first] auto [second]' : '[first]'} auto;
+    props.visibilityToggle ? '[first] auto [second]' : '[first]'} auto;
     height: auto;
   `};
 `
