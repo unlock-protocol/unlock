@@ -13,7 +13,7 @@ services:
     environment:
       POSTGRES_USER: "locksmith_test"
       POSTGRES_PASSWORD: "password" 
-      POSTGRES_DB: "locksmith_test"        
+      POSTGRES_DB: "locksmith_test"     
   unlock:
     image: unlock
     user: node
@@ -45,6 +45,11 @@ services:
       - unlock
     working_dir: /home/unlock/tests
   locksmith:
+    environment:
+      - DB_USERNAME
+      - DB_PASSWORD
+      - DB_NAME
+      - DB_HOSTNAME
     image: unlock
     user: node
     working_dir: /home/unlock/locksmith
