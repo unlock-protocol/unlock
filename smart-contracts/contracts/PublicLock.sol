@@ -4,6 +4,7 @@ import "./interfaces/IUnlock.sol";
 import "./interfaces/IERC721.sol";
 import "./interfaces/ILockCore.sol";
 import "openzeppelin-eth/contracts/ownership/Ownable.sol";
+import "./interfaces/IERC721Receiver.sol";
 import "openzeppelin-eth/contracts/introspection/ERC165.sol";
 
 /**
@@ -18,7 +19,7 @@ import "openzeppelin-eth/contracts/introspection/ERC165.sol";
  * Every ERC-721 compliant contract must implement the ERC165 interface.
  * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
  */
-contract PublicLock is ILockCore, ERC165, IERC721, Ownable {
+contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   // The struct for a key
   struct Key {
@@ -365,6 +366,32 @@ contract PublicLock is ILockCore, ERC165, IERC721, Ownable {
     returns (uint timestamp)
   {
     return keyByOwner[_owner].expirationTimestamp;
+  }
+
+  /**
+   * @notice Handle the receipt of an NFT
+   * @dev The ERC721 smart contract calls this function on the recipient
+   * after a `safeTransfer`. This function MUST return the function selector,
+   * otherwise the caller will revert the transaction. The selector to be
+   * returned can be obtained as `this.onERC721Received.selector`. This
+   * function MAY throw to revert and reject the transfer.
+   * Note: the ERC721 contract address is always the message sender.
+   * @param operator The address which called `safeTransferFrom` function
+   * @param from The address which previously owned the token
+   * @param tokenId The NFT identifier which is being transferred
+   * @param data Additional data with no specified format
+   * @return `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`
+   */
+  function onERC721Received(
+    address operator, // solhint-disable-line no-unused-vars
+    address from, // solhint-disable-line no-unused-vars
+    uint256 tokenId, // solhint-disable-line no-unused-vars
+    bytes data // solhint-disable-line no-unused-vars
+  )
+    public
+    returns(bytes4)
+  {
+    return this.onERC721Received.selector;
   }
 
   /**
