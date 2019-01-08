@@ -1,6 +1,5 @@
 import * as mutations from '../../paywall-builder/mutationobserver'
 import * as buildManager from '../../paywall-builder/build'
-import { initializePaywall } from '../../paywall-builder/index'
 
 describe('paywall builder integration', () => {
   let listenForNewLocks
