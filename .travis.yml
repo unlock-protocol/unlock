@@ -1,4 +1,9 @@
 language: generic
+env:
+  - DB_USERNAME='locksmith_test'
+  - DB_PASSWORD='password'
+  - DB_NAME='locksmith_test'
+  - DB_HOSTNAME='db'
 services:
   - docker
 before_script:
