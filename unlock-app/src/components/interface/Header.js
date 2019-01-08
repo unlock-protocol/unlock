@@ -7,6 +7,14 @@ import Buttons from './buttons/layout'
 import { ButtonLink } from './buttons/Button'
 import Media from '../../theme/media'
 
+// add new navigation buttons here, layout will reflow appropriately
+const navigationButtons = [
+  Buttons.About,
+  Buttons.Jobs,
+  Buttons.Github,
+  Buttons.Telegram,
+]
+
 export default class Header extends React.PureComponent {
   constructor(props) {
     super(props)
@@ -38,26 +46,24 @@ export default class Header extends React.PureComponent {
           <Title>{title}</Title>
         )}
         <DesktopButtons>
-          <Buttons.About />
-          <Buttons.Jobs />
-          <Buttons.Github />
-          <Buttons.Telegram />
+          {navigationButtons.map(NavButton => (
+            <NavButton key={NavButton} />
+          ))}
         </DesktopButtons>
         <MobileToggle visibilityToggle={!!menu} onClick={this.toggleMenu}>
           <Buttons.Bars size="48px" />
           <Buttons.ChevronUp size="48px" />
         </MobileToggle>
         <MobilePopover visibilityToggle={!!menu}>
-          {menu ? (
-            <>
-              <Buttons.About size="48px" onClick={this.toggleMenu} />
-              <Buttons.Jobs size="48px" onClick={this.toggleMenu} />
-              <Buttons.Github size="48px" onClick={this.toggleMenu} />
-              <Buttons.Telegram size="48px" onClick={this.toggleMenu} />
-            </>
-          ) : (
-            ''
-          )}
+          {menu
+            ? navigationButtons.map(NavButton => (
+              <NavButton
+                key={NavButton}
+                size="48px"
+                onClick={this.toggleMenu}
+              />
+            ))
+            : ''}
         </MobilePopover>
       </TopHeader>
     )
@@ -77,7 +83,7 @@ Header.defaultProps = {
 const TopHeader = styled.header`
   display: grid;
   grid-gap: 0;
-  grid-template-columns: 1fr repeat(3, 24px);
+  grid-template-columns: 1fr repeat(${() => navigationButtons.length}, 24px);
   grid-auto-flow: column;
   align-items: center;
   height: 70px;
@@ -97,7 +103,7 @@ const Title = styled.h1`
 const DesktopButtons = styled.div`
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: 1fr repeat(3, 24px);
+  grid-template-columns: 1fr repeat(${() => navigationButtons.length}, 24px);
   grid-auto-flow: column;
   align-items: center;
   height: 100%;
