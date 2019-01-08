@@ -11,9 +11,9 @@ services:
     expose:
       - 5432
     environment:
-      POSTGRES_USER: "locksmith_test"
-      POSTGRES_PASSWORD: "password" 
-      POSTGRES_DB: "locksmith_test"     
+      POSTGRES_USER: "${DB_USERNAME}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}" 
+      POSTGRES_DB: "${DB_NAME}"     
   unlock:
     image: unlock
     user: node
