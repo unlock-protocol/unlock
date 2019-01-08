@@ -1,5 +1,6 @@
 import * as mutations from '../../paywall-builder/mutationobserver'
 import * as buildManager from '../../paywall-builder/build'
+import { initializePaywall } from '../../paywall-builder/index'
 
 describe('paywall builder integration', () => {
   let listenForNewLocks
@@ -16,7 +17,10 @@ describe('paywall builder integration', () => {
   afterEach(() => jest.restoreAllMocks())
 
   it('calls listenForLocks', () => {
+    global.window = {}
+
     require('../../paywall-builder')
+    window.onload()
 
     expect(listenForNewLocks.mock.calls[0][1]).toBe(document.head)
 
