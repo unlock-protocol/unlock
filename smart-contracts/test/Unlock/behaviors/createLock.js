@@ -19,8 +19,8 @@ exports.shouldCreateLock = function (accounts) {
       // This is a bit of a dumb test because when the lock is missing, the value are 0 anyway...
       let [deployed, totalSales, yieldedDiscountTokens] = await this.unlock.locks(publicLock.address)
       assert(deployed)
-      assert.equal(totalSales.toNumber(), 0)
-      assert.equal(yieldedDiscountTokens.toNumber(), 0)
+      assert(totalSales.eq(0))
+      assert(yieldedDiscountTokens.eq(0))
     })
 
     it('should trigger the NewLock event', function () {
