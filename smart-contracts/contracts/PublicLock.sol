@@ -454,7 +454,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
     // trigger event
     emit Transfer(
-      0, // This is a creation.
+      address(0), // This is a creation.
       _recipient,
       uint256(_recipient) // Note: since each user can own a single token, we use the current
       // owner (new!) for the token id
