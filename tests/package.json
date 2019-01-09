@@ -6,7 +6,6 @@
   "scripts": {
     "test": "jest --detectOpenHandles",
     "lint": "eslint .",
-    "pretest": "cd ../smart-contracts && npm run deploy -- --network test",
     "ci": "npm run test"
   },
   "jest": {
