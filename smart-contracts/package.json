@@ -22,7 +22,7 @@
     "truffle-contract": "^3.0.6",
     "web3-utils": "^1.0.0-beta.36",
     "zos": "^v2.1.0-rc.0",
-    "zos-lib": "^2.0.2"
+    "zos-lib": "^v2.1.0-rc.0"
   },
   "devDependencies": {
     "eslint-config-standard": "^12.0.0",
