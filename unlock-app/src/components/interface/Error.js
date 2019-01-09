@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { resetError } from '../../actions/error'
 import Buttons from './buttons/layout'
 
-export const Error = ({ children, error, close, dev }) => {
+export const Error = ({ children, error, close, dev, title }) => {
   const content = children || (error && error.message)
   const context = dev && error && error.context
   if (!content) {
@@ -17,29 +17,33 @@ export const Error = ({ children, error, close, dev }) => {
         <p>{content}</p>
         {context ? <p className="context">{context}</p> : null}
       </ErrorInfo>
-      <Buttons.Close as="button" onClick={() => close(error)} size="16px">
+      <Buttons.Close
+        as="button"
+        size="16px"
+        onClick={() => close(error)}
+        title={title || `dismiss "${content}" error`}
+      >
         X
       </Buttons.Close>
     </Wrapper>
   )
 }
 
-export const Errors = ({ errors, ...props }) => {
+export const Errors = ({ errors, close, ...props }) => {
   return (
     <>
       {errors.map((error, i) => (
-        <Error tabIndex={i} key={error} error={error} {...props} />
+        <Error
+          tabIndex={i}
+          key={error.message}
+          error={error}
+          close={close}
+          {...props}
+        />
       ))}
       {errors.length ? (
-        <Error>
-          <span
-            onKeypress={e => e.which === 13 && props.close()}
-            tabIndex={errors.length}
-            role="button"
-            onClick={props.close()}
-          >
-            Close all
-          </span>
+        <Error close={close} title="Close All">
+          Close all
         </Error>
       ) : null}
     </>
@@ -80,12 +84,14 @@ Error.propTypes = {
   }),
   dev: PropTypes.bool,
   close: PropTypes.func.isRequired,
+  title: PropTypes.string,
 }
 
 Error.defaultProps = {
   children: null,
   error: null,
   dev: process.env.NODE_ENV !== 'production',
+  title: '',
 }
 
 export default connect(

@@ -20009,6 +20009,70 @@ Object {
         </div>
         <button
           class="c2 c3"
+          title="dismiss \\"The blockchain may have made your head explode\\" error"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </button>
+      </section>
+      <section
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <p>
+            Secondary error
+          </p>
+          <p
+            class="context"
+          >
+            Thing
+          </p>
+        </div>
+        <button
+          class="c2 c3"
+          title="dismiss \\"Secondary error\\" error"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </button>
+      </section>
+      <section
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <p>
+            Close all
+          </p>
+        </div>
+        <button
+          class="c2 c3"
+          title="Close All"
         >
           <svg
             viewBox="0 0 24 24"
@@ -20049,6 +20113,70 @@ Object {
       </div>
       <button
         class="sc-850ddk-0 hOXoMo"
+        title="dismiss \\"The blockchain may have made your head explode\\" error"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </button>
+    </section>
+    <section
+      class="sc-1jlw4h4-1 jJUArm"
+    >
+      <div
+        class="sc-1jlw4h4-0 hYVayb"
+      >
+        <p>
+          Secondary error
+        </p>
+        <p
+          class="context"
+        >
+          Thing
+        </p>
+      </div>
+      <button
+        class="sc-850ddk-0 hOXoMo"
+        title="dismiss \\"Secondary error\\" error"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </button>
+    </section>
+    <section
+      class="sc-1jlw4h4-1 jJUArm"
+    >
+      <div
+        class="sc-1jlw4h4-0 hYVayb"
+      >
+        <p>
+          Close all
+        </p>
+      </div>
+      <button
+        class="sc-850ddk-0 hOXoMo"
+        title="Close All"
       >
         <svg
           viewBox="0 0 24 24"
@@ -20246,10 +20374,68 @@ Object {
           <p>
             The blockchain may have made your head explode
           </p>
-          
         </div>
         <button
           class="c2 c3"
+          title="dismiss \\"The blockchain may have made your head explode\\" error"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </button>
+      </section>
+      <section
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <p>
+            Secondary error
+          </p>
+        </div>
+        <button
+          class="c2 c3"
+          title="dismiss \\"Secondary error\\" error"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </button>
+      </section>
+      <section
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <p>
+            Close all
+          </p>
+        </div>
+        <button
+          class="c2 c3"
+          title="Close All"
         >
           <svg
             viewBox="0 0 24 24"
@@ -20282,10 +20468,68 @@ Object {
         <p>
           The blockchain may have made your head explode
         </p>
-        
       </div>
       <button
         class="sc-850ddk-0 hOXoMo"
+        title="dismiss \\"The blockchain may have made your head explode\\" error"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </button>
+    </section>
+    <section
+      class="sc-1jlw4h4-1 jJUArm"
+    >
+      <div
+        class="sc-1jlw4h4-0 hYVayb"
+      >
+        <p>
+          Secondary error
+        </p>
+      </div>
+      <button
+        class="sc-850ddk-0 hOXoMo"
+        title="dismiss \\"Secondary error\\" error"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </button>
+    </section>
+    <section
+      class="sc-1jlw4h4-1 jJUArm"
+    >
+      <div
+        class="sc-1jlw4h4-0 hYVayb"
+      >
+        <p>
+          Close all
+        </p>
+      </div>
+      <button
+        class="sc-850ddk-0 hOXoMo"
+        title="Close All"
       >
         <svg
           viewBox="0 0 24 24"
@@ -20489,10 +20733,10 @@ Object {
               Retry
             </a>
           </p>
-          
         </div>
         <button
           class="c2 c3"
+          title="dismiss \\"We could not process that transaction., ,[object Object]\\" error"
         >
           <svg
             viewBox="0 0 24 24"
@@ -20531,10 +20775,446 @@ Object {
             Retry
           </a>
         </p>
-        
       </div>
       <button
         class="sc-850ddk-0 hOXoMo"
+        title="dismiss \\"We could not process that transaction., ,[object Object]\\" error"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </button>
+    </section>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Error Errors (no errors) 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700"
+        rel="stylesheet"
+      />
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700"
+      rel="stylesheet"
+    />
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Error Errors 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c3 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 16px;
+  width: 16px;
+  display: grid;
+  padding: 0;
+  border: 0;
+}
+
+.c3 > svg {
+  fill: white;
+  height: 16px;
+  width: 16px;
+}
+
+.c3:hover {
+  background-color: var(--link);
+}
+
+.c3:hover > svg {
+  fill: white;
+}
+
+.c2:hover .c4 {
+  display: grid;
+}
+
+.c5 .c2 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c5 .c2:nth-child(1) {
+  pointer-events: none;
+}
+
+.c5 .c2:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c5 .c2 > svg {
+  fill: var(--grey);
+}
+
+.c5 .c2:hover > svg {
+  fill: var(--grey);
+}
+
+.c6 .c2 {
+  margin: 24px;
+}
+
+.c6 .c2 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 8px;
+}
+
+.c1 p.context {
+  color: red;
+  font-style: italic;
+  font-size: 14px;
+  margin-top: 0;
+}
+
+.c1 p.context::before {
+  content: 'Context:';
+  padding-right: 10px;
+}
+
+.c0 {
+  grid-template-columns: 1fr 20px;
+  display: grid;
+  border: 1px solid var(--lightgrey);
+  border-radius: 4px;
+  font-size: 16px;
+  justify-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-right: 8px;
+  grid-gap: 8px;
+}
+
+.c0 a {
+  color: var(--red);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700"
+        rel="stylesheet"
+      />
+      <section
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <p>
+            The blockchain may have made your head explode
+          </p>
+          <p
+            class="context"
+          >
+            Is too sexy
+          </p>
+        </div>
+        <button
+          class="c2 c3"
+          title="dismiss \\"The blockchain may have made your head explode\\" error"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </button>
+      </section>
+      <section
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <p>
+            Secondary error
+          </p>
+          <p
+            class="context"
+          >
+            Thing
+          </p>
+        </div>
+        <button
+          class="c2 c3"
+          title="dismiss \\"Secondary error\\" error"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </button>
+      </section>
+      <section
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <p>
+            Close all
+          </p>
+        </div>
+        <button
+          class="c2 c3"
+          title="Close All"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </button>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="sc-1jlw4h4-1 jJUArm"
+    >
+      <div
+        class="sc-1jlw4h4-0 hYVayb"
+      >
+        <p>
+          The blockchain may have made your head explode
+        </p>
+        <p
+          class="context"
+        >
+          Is too sexy
+        </p>
+      </div>
+      <button
+        class="sc-850ddk-0 hOXoMo"
+        title="dismiss \\"The blockchain may have made your head explode\\" error"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </button>
+    </section>
+    <section
+      class="sc-1jlw4h4-1 jJUArm"
+    >
+      <div
+        class="sc-1jlw4h4-0 hYVayb"
+      >
+        <p>
+          Secondary error
+        </p>
+        <p
+          class="context"
+        >
+          Thing
+        </p>
+      </div>
+      <button
+        class="sc-850ddk-0 hOXoMo"
+        title="dismiss \\"Secondary error\\" error"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </button>
+    </section>
+    <section
+      class="sc-1jlw4h4-1 jJUArm"
+    >
+      <div
+        class="sc-1jlw4h4-0 hYVayb"
+      >
+        <p>
+          Close all
+        </p>
+      </div>
+      <button
+        class="sc-850ddk-0 hOXoMo"
+        title="Close All"
       >
         <svg
           viewBox="0 0 24 24"
@@ -20732,10 +21412,10 @@ Object {
           <p>
             We could not process that transaction.
           </p>
-          
         </div>
         <button
           class="c2 c3"
+          title="dismiss \\"We could not process that transaction.\\" error"
         >
           <svg
             viewBox="0 0 24 24"
@@ -20768,10 +21448,10 @@ Object {
         <p>
           We could not process that transaction.
         </p>
-        
       </div>
       <button
         class="sc-850ddk-0 hOXoMo"
+        title="dismiss \\"We could not process that transaction.\\" error"
       >
         <svg
           viewBox="0 0 24 24"

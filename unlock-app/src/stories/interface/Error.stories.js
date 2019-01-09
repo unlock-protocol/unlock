@@ -1,11 +1,10 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
 import { Provider } from 'react-redux'
 import ConnectedError, { Error, Errors } from '../../components/interface/Error'
 
 import createUnlockStore from '../../createUnlockStore'
-
-const close = () => {}
 
 const manyErrors = [
   {
@@ -25,9 +24,11 @@ const store = createUnlockStore({
 storiesOf('Error', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Simple Error', () => {
+    const close = action('close')
     return <Error close={close}>We could not process that transaction.</Error>
   })
   .add('Error with Markup', () => {
+    const close = action('close')
     return (
       <Error close={close}>
         We could not process that transaction. 
@@ -37,14 +38,16 @@ storiesOf('Error', module)
     )
   })
   .add('Errors', () => {
+    const close = action('close')
     return <Errors close={close} errors={manyErrors} />
   })
   .add('Errors (no errors)', () => {
+    const close = action('close')
     return <Errors close={close} errors={[]} />
   })
   .add('Error from redux store (dev)', () => {
-    return <ConnectedError close={close} />
+    return <ConnectedError />
   })
   .add('Error from redux store (production)', () => {
-    return <ConnectedError close={close} dev={false} />
+    return <ConnectedError dev={false} />
   })
