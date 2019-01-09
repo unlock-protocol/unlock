@@ -36,7 +36,7 @@
     "@storybook/addon-actions": "^4.1.4",
     "@storybook/addon-knobs": "^4.1.4",
     "@storybook/addon-storyshots": "^4.1.4",
-    "@storybook/addons": "^4.1.4",
+    "@storybook/addons": "^4.1.6",
     "@storybook/react": "4.1.4",
     "@svgr/cli": "^4.1.0",
     "babel-eslint": "^10.0.1",
