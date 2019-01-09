@@ -348,7 +348,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     public
     view
     hasKey(_owner)
-    returns (bytes data)
+    returns (bytes memory data)
   {
     return keyByOwner[_owner].data;
   }
@@ -408,7 +408,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   function _purchaseFor(
     address _recipient,
     address _referrer,
-    bytes _data
+    bytes memory _data
   )
     internal
     notSoldOut()
