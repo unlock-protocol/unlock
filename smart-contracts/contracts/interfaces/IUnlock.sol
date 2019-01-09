@@ -33,20 +33,6 @@ interface IUnlock {
     returns (ILockCore lock);
 
     /**
-   * This function returns the discount available for a user, when purchasing a
-   * a key from a lock.
-   * This does not modify the state. It returns both the discount and the number of tokens
-   * consumed to grant that discount.
-   */
-  function computeAvailableDiscountFor(
-    address _purchaser, // solhint-disable-line no-unused-vars
-    uint _keyPrice // solhint-disable-line no-unused-vars
-  )
-    external
-    view
-    returns (uint discount, uint tokens);
-
-    /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
    * to the referrer, if applicable.
    * The number of discount tokens granted is based on the value of the referal,
@@ -70,4 +56,18 @@ interface IUnlock {
     uint _tokens // solhint-disable-line no-unused-vars
   )
     external;
+
+    /**
+   * This function returns the discount available for a user, when purchasing a
+   * a key from a lock.
+   * This does not modify the state. It returns both the discount and the number of tokens
+   * consumed to grant that discount.
+   */
+  function computeAvailableDiscountFor(
+    address _purchaser, // solhint-disable-line no-unused-vars
+    uint _keyPrice // solhint-disable-line no-unused-vars
+  )
+    external
+    view
+    returns (uint discount, uint tokens);
 }
