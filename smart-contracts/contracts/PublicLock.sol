@@ -4,6 +4,7 @@ import "./interfaces/IUnlock.sol";
 import "./interfaces/IERC721.sol";
 import "./interfaces/ILockCore.sol";
 import "openzeppelin-eth/contracts/ownership/Ownable.sol";
+import "./interfaces/IERC721Receiver.sol";
 import "openzeppelin-eth/contracts/introspection/ERC165.sol";
 
 /**
@@ -18,7 +19,7 @@ import "openzeppelin-eth/contracts/introspection/ERC165.sol";
  * Every ERC-721 compliant contract must implement the ERC165 interface.
  * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
  */
-contract PublicLock is ILockCore, ERC165, IERC721, Ownable {
+contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   // The struct for a key
   struct Key {
@@ -28,8 +29,8 @@ contract PublicLock is ILockCore, ERC165, IERC721, Ownable {
 
   // Events
   event PriceChanged(
-    uint indexed oldKeyPrice,
-    uint indexed keyPrice
+    uint oldKeyPrice,
+    uint keyPrice
   );
 
 
@@ -278,9 +279,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, Ownable {
   )
     external
     view
-    hasKey(_owner)
     returns (uint256)
   {
+    require(_owner != address(0), "Invalid address");
     return keyByOwner[_owner].expirationTimestamp > 0 ? 1 : 0;
   }
 
@@ -347,7 +348,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, Ownable {
     public
     view
     hasKey(_owner)
-    returns (bytes data)
+    returns (bytes memory data)
   {
     return keyByOwner[_owner].data;
   }
@@ -368,6 +369,32 @@ contract PublicLock is ILockCore, ERC165, IERC721, Ownable {
   }
 
   /**
+   * @notice Handle the receipt of an NFT
+   * @dev The ERC721 smart contract calls this function on the recipient
+   * after a `safeTransfer`. This function MUST return the function selector,
+   * otherwise the caller will revert the transaction. The selector to be
+   * returned can be obtained as `this.onERC721Received.selector`. This
+   * function MAY throw to revert and reject the transfer.
+   * Note: the ERC721 contract address is always the message sender.
+   * @param operator The address which called `safeTransferFrom` function
+   * @param from The address which previously owned the token
+   * @param tokenId The NFT identifier which is being transferred
+   * @param data Additional data with no specified format
+   * @return `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`
+   */
+  function onERC721Received(
+    address operator, // solhint-disable-line no-unused-vars
+    address from, // solhint-disable-line no-unused-vars
+    uint256 tokenId, // solhint-disable-line no-unused-vars
+    bytes data // solhint-disable-line no-unused-vars
+  )
+    public
+    returns(bytes4)
+  {
+    return this.onERC721Received.selector;
+  }
+
+  /**
   * @dev Purchase function: this lets a user purchase a key from the lock for another user
   * @param _recipient address of the recipient of the purchased key
   * @param _data optional marker for the key
@@ -381,7 +408,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, Ownable {
   function _purchaseFor(
     address _recipient,
     address _referrer,
-    bytes _data
+    bytes memory _data
   )
     internal
     notSoldOut()
@@ -427,7 +454,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, Ownable {
 
     // trigger event
     emit Transfer(
-      0, // This is a creation.
+      address(0), // This is a creation.
       _recipient,
       uint256(_recipient) // Note: since each user can own a single token, we use the current
       // owner (new!) for the token id

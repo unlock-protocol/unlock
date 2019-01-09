@@ -1,4 +1,10 @@
 language: generic
+env:
+  global:
+    - DB_USERNAME='locksmith_test'
+    - DB_PASSWORD='password'
+    - DB_NAME='locksmith_test'
+    - DB_HOSTNAME='db'
 services:
   - docker
 before_script:
@@ -9,8 +15,8 @@ before_script:
 script:
   - scripts/tests.sh smart-contracts
   - scripts/tests.sh unlock-app
+  - scripts/tests.sh locksmith
   - scripts/tests.sh integration-tests
-  - scripts/tests.sh locksmith 
 after_success:
   - scripts/deploy.sh netlify
   - scripts/push-image.sh

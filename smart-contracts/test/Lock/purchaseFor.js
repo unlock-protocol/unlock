@@ -92,8 +92,8 @@ contract('Lock', (accounts) => {
           }).then((expirationTimestamp) => {
             const now = parseInt(new Date().getTime() / 1000)
             // we check +/- 10 seconds to fix for now being different inside the EVM and here... :(
-            assert(expirationTimestamp.toNumber() > now + locks['SECOND'].params.expirationDuration - 10)
-            assert(expirationTimestamp.toNumber() < now + locks['SECOND'].params.expirationDuration + 10)
+            assert(expirationTimestamp.gt(locks['SECOND'].params.expirationDuration + now - 10))
+            assert(expirationTimestamp.lt(locks['SECOND'].params.expirationDuration + now + 10))
           })
         })
       })
@@ -112,8 +112,8 @@ contract('Lock', (accounts) => {
             })
             .then(([keyData, expirationTimestamp]) => {
               assert.equal(Web3Utils.toUtf8(keyData), 'Satoshi')
-              firstExpiration = expirationTimestamp.toNumber()
-              assert(firstExpiration > 0)
+              firstExpiration = expirationTimestamp
+              assert(firstExpiration.gt(0))
               return locks['FIRST'].purchaseFor(accounts[1], 'Szabo', {
                 value: Units.convert('0.01', 'eth', 'wei')
               })
@@ -126,7 +126,7 @@ contract('Lock', (accounts) => {
             })
             .then(([keyData, expirationTimestamp]) => {
               assert.equal(Web3Utils.toUtf8(keyData), 'Szabo')
-              assert.equal(expirationTimestamp.toNumber(), firstExpiration + locks['FIRST'].params.expirationDuration)
+              assert(expirationTimestamp.eq(firstExpiration.add(locks['FIRST'].params.expirationDuration)))
             })
         })
       })
@@ -159,7 +159,7 @@ contract('Lock', (accounts) => {
             locks['FIRST'].keyExpirationTimestampFor(accounts[0]),
             locks['FIRST'].expirationDuration()
           ]).then(([expirationTimestamp, expirationDuration]) => {
-            assert.isAtLeast(expirationTimestamp.toNumber(), now + expirationDuration.toNumber())
+            assert(expirationTimestamp.gte(expirationDuration.add(now)))
           })
         })
 
