@@ -30,6 +30,12 @@ COPY --chown=node smart-contracts/package.json /home/unlock/smart-contracts/.
 WORKDIR /home/unlock/smart-contracts
 RUN npm ci
 
+RUN mkdir /home/unlock/locksmith
+COPY --chown=node locksmith/package-lock.json /home/unlock/locksmith/.
+COPY --chown=node locksmith/package.json /home/unlock/locksmith/.
+WORKDIR /home/unlock/locksmith
+RUN npm ci
+
 RUN mkdir /home/unlock/unlock-app
 COPY --chown=node unlock-app/package-lock.json /home/unlock/unlock-app/.
 COPY --chown=node unlock-app/package.json /home/unlock/unlock-app/.
