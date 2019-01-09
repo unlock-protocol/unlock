@@ -3,15 +3,10 @@ export const RESET_ERROR = 'RESET_ERROR'
 
 export const setError = error => ({
   type: SET_ERROR,
-  error:
-    !error || error.message
-      ? error
-      : {
-        message: error,
-      },
+  error,
 })
 
-export const resetError = id => ({
+export const resetError = error => ({
   type: RESET_ERROR,
-  id,
+  error,
 })

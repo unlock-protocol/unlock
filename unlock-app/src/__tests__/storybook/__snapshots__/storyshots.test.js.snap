@@ -19912,12 +19912,10 @@ Object {
 }
 
 .c5 .c2:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c5 .c2:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -20159,12 +20157,10 @@ Object {
 }
 
 .c5 .c2:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c5 .c2:nth-child(2) {
-  grid-row: 1;
   pointer-events: none;
   display: none;
 }
@@ -20397,21 +20393,11 @@ Object {
   align-self: center;
 }
 
-<<<<<<< HEAD
-.c4 .c1:nth-child(1) {
-  pointer-events: none;
-}
-
-.c4 .c1:nth-child(2) {
-=======
 .c5 .c2:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c5 .c2:nth-child(2) {
-  grid-row: 1;
->>>>>>> more work on error reform
   pointer-events: none;
   display: none;
 }
@@ -20656,21 +20642,11 @@ Object {
   align-self: center;
 }
 
-<<<<<<< HEAD
-.c4 .c1:nth-child(1) {
-  pointer-events: none;
-}
-
-.c4 .c1:nth-child(2) {
-=======
 .c5 .c2:nth-child(1) {
-  grid-row: 0;
   pointer-events: none;
 }
 
 .c5 .c2:nth-child(2) {
-  grid-row: 1;
->>>>>>> more work on error reform
   pointer-events: none;
   display: none;
 }

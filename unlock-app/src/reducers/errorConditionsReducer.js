@@ -4,6 +4,7 @@ import { ADD_KEY, UPDATE_KEY } from '../actions/key'
 import { setError } from '../actions/error'
 
 const errorConditionsReducers = next => (state, action) => {
+  const nextState = next(state, action)
   if (action.type === ADD_LOCK) {
     if (action.lock.address && action.lock.address !== action.address) {
       return next(
@@ -93,7 +94,7 @@ const errorConditionsReducers = next => (state, action) => {
     }
   }
 
-  return next(state, action)
+  return next(nextState, action)
 }
 
 export default errorConditionsReducers

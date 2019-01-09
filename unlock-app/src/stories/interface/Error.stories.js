@@ -1,17 +1,25 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { Provider } from 'react-redux'
-import ConnectedError, { Error } from '../../components/interface/Error'
+import ConnectedError, { Error, Errors } from '../../components/interface/Error'
 
 import createUnlockStore from '../../createUnlockStore'
 
 const close = () => {}
 
-const store = createUnlockStore({
-  error: {
+const manyErrors = [
+  {
     message: 'The blockchain may have made your head explode',
     context: 'Is too sexy',
   },
+  {
+    message: 'Secondary error',
+    context: 'Thing',
+  },
+]
+
+const store = createUnlockStore({
+  errors: manyErrors,
 })
 
 storiesOf('Error', module)
@@ -27,6 +35,12 @@ storiesOf('Error', module)
         <a href=".">Retry</a>
       </Error>
     )
+  })
+  .add('Errors', () => {
+    return <Errors close={close} errors={manyErrors} />
+  })
+  .add('Errors (no errors)', () => {
+    return <Errors close={close} errors={[]} />
   })
   .add('Error from redux store (dev)', () => {
     return <ConnectedError close={close} />

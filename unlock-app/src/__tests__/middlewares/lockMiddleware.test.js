@@ -340,7 +340,7 @@ describe('Lock middleware', () => {
     expect(store.dispatch).toHaveBeenCalledWith(
       setError({
         message: 'this was broken',
-        context: 'Web3',
+        context: 'Web3 error: this was broken',
         originalError: { message: 'this was broken', code: 1 },
       })
     )

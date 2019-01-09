@@ -101,7 +101,7 @@ export default function lockMiddleware({ getState, dispatch }) {
     dispatch(
       setError({
         message: error.message,
-        context: 'Web3',
+        context: `Web3 error: ${error.message}`,
         originalError: error,
       })
     )
