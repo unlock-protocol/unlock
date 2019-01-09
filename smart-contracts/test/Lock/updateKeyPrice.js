@@ -11,13 +11,13 @@ contract('Lock', (accounts) => {
       unlock = await Unlock.deployed()
       locks = await deployLocks(unlock)
       keyPriceBefore = await locks['FIRST'].keyPrice()
-      assert.equal(keyPriceBefore.toNumber(), 10000000000000000)
+      assert(keyPriceBefore.eq(10000000000000000))
       transaction = await locks['FIRST'].updateKeyPrice(Units.convert('0.3', 'eth', 'wei'))
     })
 
     it('should change the actual keyPrice', async () => {
       const keyPriceAfter = await locks['FIRST'].keyPrice()
-      assert.equal(keyPriceAfter.toNumber(), 300000000000000000)
+      assert(keyPriceAfter.eq(300000000000000000))
     })
 
     it('should trigger an event', () => {
@@ -25,7 +25,7 @@ contract('Lock', (accounts) => {
         return log.event === 'PriceChanged'
       })
       assert(event)
-      assert.equal(event.args.keyPrice.toNumber(), 300000000000000000)
+      assert(event.args.keyPrice.eq(300000000000000000))
     })
 
     describe('when the sender is not the lock owner', () => {
@@ -49,7 +49,7 @@ contract('Lock', (accounts) => {
 
       it('should leave the price unchanged', async () => {
         const keyPriceAfter = await locks['FIRST'].keyPrice()
-        assert.equal(keyPrice.toNumber(), keyPriceAfter)
+        assert(keyPrice.eq(keyPriceAfter))
       })
     })
   })

@@ -48,7 +48,7 @@ contract('Lock', (accounts) => {
         return locks['FIRST'].keyExpirationTimestampFor(accounts[2])
       }).then((expirationTimestamp) => {
         const now = Math.floor(new Date().getTime() / 1000)
-        assert(expirationTimestamp.toNumber() > now)
+        assert(expirationTimestamp.gt(now))
         return locks['FIRST'].expireKeyFor(accounts[2], {
           from: accounts[0]
         })
@@ -72,7 +72,7 @@ contract('Lock', (accounts) => {
         return locks['FIRST'].keyExpirationTimestampFor(accounts[1])
       }).then((expirationTimestamp) => {
         const now = Math.floor(new Date().getTime() / 1000)
-        assert(expirationTimestamp.toNumber() > now)
+        assert(expirationTimestamp.gt(now))
         return locks['FIRST'].expireKeyFor(accounts[1], {
           from: accounts[0]
         })
@@ -80,7 +80,7 @@ contract('Lock', (accounts) => {
         return locks['FIRST'].keyExpirationTimestampFor(accounts[1])
       }).then((expirationTimestamp) => {
         const now = Math.floor(new Date().getTime() / 1000)
-        assert(expirationTimestamp.toNumber() <= now)
+        assert(expirationTimestamp.lte(now))
       })
     })
   })
