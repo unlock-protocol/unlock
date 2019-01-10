@@ -86,7 +86,7 @@
     "setup-dev": "run-script-os",
     "setup-dev:darwin:freebsd:linux:sunos": "cd .. && (npm run start-ganache -- -b 3 &) && npm run deploy-lock",
     "setup-dev:win32": "cd .. && (START /b npm run start-ganache -- -b 3 ) && npm run deploy-lock",
-    "test": "UNLOCK_ENV=test jest --env=jsdom",
+    "test": "cd ../smart-contracts && truffle compile && cd ../unlock-app && UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint .",
     "reformat": "prettier-eslint \"src/**/*.js\" --write",
     "fail-pending-changes": "./scripts/pending-changes.sh",
