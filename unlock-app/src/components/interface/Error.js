@@ -20,8 +20,8 @@ export const Error = ({ children, error, close }) => {
   )
 }
 
-const mapStateToProps = ({ error }) => ({
-  error,
+const mapStateToProps = ({ errors }) => ({
+  error: errors.length ? errors[errors.length - 1] : null,
 })
 
 const mapDispatchToProps = dispatch => ({
