@@ -9,6 +9,25 @@ describe('error actions', () => {
       type: SET_ERROR,
       error,
     }
+
     expect(setError(error)).toEqual(expectedAction)
+  })
+
+  it('should create an action to reset errors', () => {
+    const error = 'error'
+    const expectedAction = {
+      type: RESET_ERROR,
+      error,
+    }
+
+    expect(resetError(error)).toEqual(expectedAction)
+  })
+
+  it('should create an action with empty error to reset all errors', () => {
+    const expectedAction = {
+      type: RESET_ERROR,
+      error: undefined,
+    }
+    expect(resetError()).toEqual(expectedAction)
   })
 })

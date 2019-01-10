@@ -53,7 +53,7 @@ export const createUnlockStore = (
     provider: providerReducer,
     transactions: transactionsReducer,
     currency: currencyReducer,
-    error: errorReducer,
+    errors: errorReducer,
   }
 
   // Cleanup the defaultState to remove all null values so that we do not overwrite existing
@@ -74,7 +74,7 @@ export const createUnlockStore = (
       provider: defaultProvider,
       transactions: defaultTransactions,
       currency: defaultCurrency,
-      error: defaultError,
+      errors: defaultError,
     },
     {
       provider: Object.keys(config.providers)[0],
