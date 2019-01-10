@@ -9,7 +9,7 @@ import UnlockPropTypes from '../../../propTypes'
 
 class Paginate extends React.Component {
   static propTypes = {
-    items: UnlockPropTypes.items,
+    items: UnlockPropTypes.keyList,
     renderItems: PropTypes.func,
   }
 

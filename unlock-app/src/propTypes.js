@@ -66,7 +66,7 @@ export const element = PropTypes.oneOfType([PropTypes.func, PropTypes.element])
 
 export const delay = PropTypes.number
 
-export const items = PropTypes.array
+export const keyList = PropTypes.arrayOf(key)
 
 export default {
   account,
@@ -77,11 +77,11 @@ export default {
   conversion,
   delay,
   element,
-  items,
   layout,
   lock,
   locks,
   key,
+  keyList,
   keys,
   name,
   network,
