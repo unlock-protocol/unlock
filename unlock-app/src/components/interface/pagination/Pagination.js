@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 import PreviousButtons from './Previous'
 import NextButtons from './Next'
 import PageNumbers from './PageNumbers'
@@ -9,7 +10,7 @@ import UnlockPropTypes from '../../../propTypes'
 class Paginate extends React.Component {
   static propTypes = {
     items: UnlockPropTypes.items,
-    renderItems: UnlockPropTypes.method,
+    renderItems: PropTypes.func,
   }
 
   static defaultProps = {

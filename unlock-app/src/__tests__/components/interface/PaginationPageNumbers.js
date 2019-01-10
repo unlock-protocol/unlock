@@ -7,7 +7,6 @@ jest.mock('next/link', () => {
   return ({ children }) => children
 })
 
-afterEach(rtl.cleanup)
 describe('Pagination page numbers', () => {
   it('clicking page number should trigger that page number', () => {
     let pageClicked = 0

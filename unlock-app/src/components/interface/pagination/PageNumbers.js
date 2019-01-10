@@ -43,7 +43,7 @@ const PageNumbers = ({ numberOfPages, currentPage, goToPage }) => {
     currentPage - 1 === HALF_MAX_PAGES_TO_SHOW_ALL ? (
       pageNumber(HALF_MAX_PAGES_TO_SHOW_ALL + 1)
     ) : (
-      <PageNumber>
+      <PageNumber style={{ cursor: 'default' }}>
         {currentPage === numberOfPages / 2 ||
         currentPage <= HALF_MAX_PAGES_TO_SHOW_ALL ||
         currentPage >= numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL
@@ -60,7 +60,7 @@ const PageNumbers = ({ numberOfPages, currentPage, goToPage }) => {
   )
   const latterDots = currentPage > HALF_MAX_PAGES_TO_SHOW_ALL &&
     currentPage < numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL && (
-    <PageNumber>
+    <PageNumber style={{ cursor: 'default' }}>
       {' '}
       {currentPage === numberOfPages / 2
         ? '....'

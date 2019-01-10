@@ -33,7 +33,9 @@ const store = createUnlockStore({
     keyid: {
       transaction: '0x23749328748932748932473298473289473298',
       lock: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
-      expiration: Math.floor(new Date().getTime() / 1000) + 86400 * 30, // 30 days from right now
+      expiration:
+        Math.floor(new Date('Jan 8, 2019 00:00:00').getTime() / 1000) +
+        86400 * 30, // 30 days from right now
       data: 'ben@unlock-protocol.com',
     },
   },
