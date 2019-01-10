@@ -57,12 +57,12 @@ export default class Header extends React.PureComponent {
         <MobilePopover visibilityToggle={!!menu}>
           {menu
             ? navigationButtons.map(NavButton => (
-              <NavButton
-                key={NavButton}
-                size="48px"
-                onClick={this.toggleMenu}
-              />
-            ))
+                <NavButton
+                  key={NavButton}
+                  size="48px"
+                  onClick={this.toggleMenu}
+                />
+              ))
             : ''}
         </MobilePopover>
       </TopHeader>
@@ -91,7 +91,7 @@ const TopHeader = styled.header`
   ${Media.phone`
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: ${props =>
-    props.visibilityToggle ? '[first] auto [second]' : '[first]'} auto;
+      props.visibilityToggle ? '[first] auto [second]' : '[first]'} auto;
     height: auto;
   `};
 `

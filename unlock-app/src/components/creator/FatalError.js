@@ -101,10 +101,8 @@ export const MissingProvider = () => (
   >
     <p>
       It looks like you’re using an incompatible browser or are missig a crypto
-      wallet. If you’re using Chrome or Firefox you can install
-      {' '}
-      <a href="https://metamask.io/">Metamask</a>
-.
+      wallet. If you’re using Chrome or Firefox you can install{' '}
+      <a href="https://metamask.io/">Metamask</a>.
     </p>
   </DefaultError>
 )

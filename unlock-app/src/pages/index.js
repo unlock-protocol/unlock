@@ -90,13 +90,13 @@ const ImageWithHover = styled.div`
   height: 200px;
   &:hover {
     background: url(${props =>
-    `/static/images/pages/png/${props.base}-hover.png`})
+        `/static/images/pages/png/${props.base}-hover.png`})
       no-repeat center/contain;
   }
   /* // Preload to avoid flickering effect */
   &:after {
     content: url(${props =>
-    `/static/images/pages/png/${props.base}-hover.png`});
+      `/static/images/pages/png/${props.base}-hover.png`});
     display: none;
   }
 `

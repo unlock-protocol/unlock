@@ -12,19 +12,19 @@ describe('OpenGraphTags', () => {
   it('should render open graph tags based on default values', () => {
     const tags = rtl.render(<OpenGraphTags />)
     expect(
-      tags.container.querySelector('meta[property=\'og:title\']').content
+      tags.container.querySelector("meta[property='og:title']").content
     ).toBe(pageTitle())
     expect(
-      tags.container.querySelector('meta[property=\'og:description\']').content
+      tags.container.querySelector("meta[property='og:description']").content
     ).toBe(PAGE_DESCRIPTION)
     expect(
-      tags.container.querySelector('meta[property=\'og:image\']').content
+      tags.container.querySelector("meta[property='og:image']").content
     ).toBe(PAGE_DEFAULT_IMAGE)
     expect(
-      tags.container.querySelector('meta[property=\'og:type\']').content
+      tags.container.querySelector("meta[property='og:type']").content
     ).toBe('website')
     expect(
-      tags.container.querySelector('meta[property=\'og:url\']').content
+      tags.container.querySelector("meta[property='og:url']").content
     ).toBe(CANONICAL_BASE_URL + '/')
   })
 
@@ -42,19 +42,19 @@ describe('OpenGraphTags', () => {
       />
     )
     expect(
-      tags.container.querySelector('meta[property=\'og:title\']').content
+      tags.container.querySelector("meta[property='og:title']").content
     ).toBe(title)
     expect(
-      tags.container.querySelector('meta[property=\'og:description\']').content
+      tags.container.querySelector("meta[property='og:description']").content
     ).toBe(description)
     expect(
-      tags.container.querySelector('meta[property=\'og:image\']').content
+      tags.container.querySelector("meta[property='og:image']").content
     ).toBe(image)
     expect(
-      tags.container.querySelector('meta[property=\'og:type\']').content
+      tags.container.querySelector("meta[property='og:type']").content
     ).toBe('website')
     expect(
-      tags.container.querySelector('meta[property=\'og:url\']').content
+      tags.container.querySelector("meta[property='og:url']").content
     ).toBe(CANONICAL_BASE_URL + path)
   })
 })

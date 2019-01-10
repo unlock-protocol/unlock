@@ -48,15 +48,8 @@ export const Lock = ({
           amount={lock.keyPrice}
           render={(ethPrice, fiatPrice) => (
             <LockBody>
-              <EthPrice>
-                {ethPrice}
-                {' '}
-Eth
-              </EthPrice>
-              <FiatPrice>
-$
-                {fiatPrice}
-              </FiatPrice>
+              <EthPrice>{ethPrice} Eth</EthPrice>
+              <FiatPrice>${fiatPrice}</FiatPrice>
             </LockBody>
           )}
         />

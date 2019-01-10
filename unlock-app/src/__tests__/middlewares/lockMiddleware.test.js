@@ -392,7 +392,7 @@ describe('Lock middleware', () => {
     })
   })
 
-  it('should handle CREATE_LOCK by calling web3Service\'s createLock', () => {
+  it("should handle CREATE_LOCK by calling web3Service's createLock", () => {
     const { next, invoke, store } = create()
     const action = { type: CREATE_LOCK, lock }
     mockWeb3Service.createLock = jest.fn()
@@ -405,7 +405,7 @@ describe('Lock middleware', () => {
     expect(next).toHaveBeenCalledWith(action)
   })
 
-  it('should handle PURCHASE_KEY by calling web3Service\'s purchaseKey', () => {
+  it("should handle PURCHASE_KEY by calling web3Service's purchaseKey", () => {
     const { next, invoke } = create()
     const action = { type: PURCHASE_KEY, key }
     mockWeb3Service.purchaseKey = jest.fn()
@@ -421,7 +421,7 @@ describe('Lock middleware', () => {
     expect(next).toHaveBeenCalledWith(action)
   })
 
-  it('should handle LOCATION_CHANGE by calling web3Service\'s getLock', () => {
+  it("should handle LOCATION_CHANGE by calling web3Service's getLock", () => {
     const { next, invoke } = create()
     const action = {
       type: LOCATION_CHANGE,

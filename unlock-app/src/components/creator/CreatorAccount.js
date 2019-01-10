@@ -35,7 +35,7 @@ export function CreatorAccount({ account, network }) {
         <Label>Balance</Label>
         <Label>Earning</Label>
         {/* reinstate upload / etherscan / download / export functionality when we're ready  */
-          enableTheseButtons ? (
+        enableTheseButtons ? (
           <>
             <DoubleHeightCell>
               <NoPhone>
@@ -58,15 +58,14 @@ export function CreatorAccount({ account, network }) {
               </NoPhone>
             </DoubleHeightCell>
           </>
-          ) : (
+        ) : (
           <>
             <DoubleHeightCell />
             <DoubleHeightCell />
             <DoubleHeightCell />
             <DoubleHeightCell />
           </>
-          )}
-        {' '}
+        )}{' '}
         {/* eslint-disable-line */
         /* prettier formats this as 12 spaces, eslint wants 10 :/ */}
         <Address>{account.address}</Address>

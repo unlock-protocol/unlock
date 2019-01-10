@@ -26,8 +26,7 @@ const Demo = ({ lock, locks }) => {
           <Title>Demoing the Unlock Paywall</Title>
           <Subtitle>
             Unlock Times shows off its new subscription paywall that’s easy to
-            use and streamlined for readers and publishers.
-            {' '}
+            use and streamlined for readers and publishers.{' '}
           </Subtitle>
           <Section>
             <Article>

@@ -48,7 +48,7 @@ export function LockIconBar({
         {withdrawalTransaction &&
           withdrawalTransaction.status === 'submitted' && (
             <>Submitted to Network...</>
-        )}
+          )}
         {withdrawalTransaction &&
           withdrawalTransaction.status === 'mined' &&
           withdrawalTransaction.confirmations <
@@ -57,7 +57,7 @@ export function LockIconBar({
               Confirming Withdrawal {withdrawalTransaction.confirmations}/
               {config.requiredConfirmations}
             </>
-        )}
+          )}
       </SubStatus>
     </StatusBlock>
   )

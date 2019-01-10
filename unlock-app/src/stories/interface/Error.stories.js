@@ -16,10 +16,7 @@ storiesOf('Error', module)
     return (
       <Error close={close}>
         <p>
-          We could not process that transaction. 
-          {' '}
-          <a href=".">Retry</a>
-.
+          We could not process that transaction. <a href=".">Retry</a>.
         </p>
       </Error>
     )

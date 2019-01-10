@@ -22,15 +22,8 @@ export const PendingKeyLock = ({ lock }) => (
         render={(ethPrice, fiatPrice) => (
           <>
             <LockDetails>
-              <LockDetail bold>
-                {ethPrice}
-                {' '}
-ETH
-              </LockDetail>
-              <LockDetail>
-$
-                {fiatPrice}
-              </LockDetail>
+              <LockDetail bold>{ethPrice} ETH</LockDetail>
+              <LockDetail>${fiatPrice}</LockDetail>
             </LockDetails>
           </>
         )}

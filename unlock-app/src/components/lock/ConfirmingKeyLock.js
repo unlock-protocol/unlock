@@ -19,24 +19,15 @@ export const ConfirmingKeyLock = ({ lock, transaction, config }) => (
       <TransactionStatus>
         Waiting for confirmation.
         <br />
-        {transaction.confirmations}
-/
-        {config.requiredConfirmations}
+        {transaction.confirmations}/{config.requiredConfirmations}
       </TransactionStatus>
       <BalanceProvider
         amount={lock.keyPrice}
         render={(ethPrice, fiatPrice) => (
           <>
             <LockDetails>
-              <LockDetail bold>
-                {ethPrice}
-                {' '}
-ETH
-              </LockDetail>
-              <LockDetail>
-$
-                {fiatPrice}
-              </LockDetail>
+              <LockDetail bold>{ethPrice} ETH</LockDetail>
+              <LockDetail>${fiatPrice}</LockDetail>
             </LockDetails>
           </>
         )}
