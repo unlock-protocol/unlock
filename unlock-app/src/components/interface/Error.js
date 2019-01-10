@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { setError } from '../../actions/error'
+import { resetError } from '../../actions/error'
 import Buttons from './buttons/layout'
 
 export const Error = ({ children, error, close }) => {
@@ -26,7 +26,7 @@ const mapStateToProps = ({ errors }) => ({
 
 const mapDispatchToProps = dispatch => ({
   close: () => {
-    dispatch(setError(null))
+    dispatch(resetError())
   },
 })
 
