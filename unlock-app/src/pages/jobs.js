@@ -25,13 +25,13 @@ export const Jobs = () => (
       <TwitterTags
         title={pageTitle('Work at Unlock')}
         description={
-          'We\'re looking for world-class engineers who want to fix the Web forever.'
+          "We're looking for world-class engineers who want to fix the Web forever."
         }
       />
       <OpenGraphTags
         title={pageTitle('Work at Unlock')}
         description={
-          'We\'re looking for world-class engineers who want to fix the Web forever.'
+          "We're looking for world-class engineers who want to fix the Web forever."
         }
         canonicalPath="/jobs"
       />
@@ -56,8 +56,7 @@ export const Jobs = () => (
         <UnorderedList>
           <ListItem>
             Comprehensive health care (including dental and vision) for you,
-            100% paid by Unlock (75% for your dependents).
-            {' '}
+            100% paid by Unlock (75% for your dependents).{' '}
           </ListItem>
           <ListItem>Unlimited personal and vacation days.</ListItem>
           <ListItem>
@@ -66,8 +65,7 @@ export const Jobs = () => (
           <ListItem>
             Monthly wellness stipend that can be used for a gym membership,
             nutrition counseling, yoga or meditation classes, or any other
-            wellness activity of your choice.
-            {' '}
+            wellness activity of your choice.{' '}
           </ListItem>
           <ListItem>
             Your choice of technical setup (laptop, monitors and software
@@ -89,27 +87,23 @@ export const Jobs = () => (
       <ShortColumn>
         <OrderedList>
           <ListItem>
-            Initial chat conversation with our founder Julien (find him in our
-            {' '}
+            Initial chat conversation with our founder Julien (find him in our{' '}
             <a href="https://t.me/unlockprotocol">Telegram group</a>
             !).
           </ListItem>
           <ListItem>
             Open Source Bounty assignment: all of Unlock&#39;s code is public.
-            We&#39;ll ask you to submit a pull request for
-            {' '}
+            We&#39;ll ask you to submit a pull request for{' '}
             <a href="https://github.com/unlock-protocol/unlock/issues">
               one of the issues
-            </a>
-            {' '}
+            </a>{' '}
             which has a bounty (look for the
             <Gitcoin>
               <span role="img" aria-label="bounty">
                 💰
               </span>
               gitcoin
-            </Gitcoin>
-            {' '}
+            </Gitcoin>{' '}
             label).
           </ListItem>
           <ListItem>
@@ -135,12 +129,10 @@ export const Jobs = () => (
         <SubTitle>About You</SubTitle>
 
         <Paragraph>
-          Do you think that the web&#39;s
-          {' '}
+          Do you think that the web&#39;s{' '}
           <a href="https://www.theatlantic.com/technology/archive/2014/08/advertising-is-the-internets-original-sin/376041/">
             original sin
-          </a>
-          {' '}
+          </a>{' '}
           is its lack of business model? Do you think that individuals,
           democracies and the web, deserve better than click-bait, information
           overload and fake news?
@@ -238,13 +230,11 @@ export const Jobs = () => (
         <Title>Applications</Title>
         <Paragraph>
           If you are interested in applying for a position at Unlock, please
-          send an email containing your resume, Github, and LinkedIn to
-          {' '}
+          send an email containing your resume, Github, and LinkedIn to{' '}
           <a href="mailto:julien@unlock-protocol.com">
             julien@unlock-protocol.com
           </a>
-          , and reach out to Julien in our
-          {' '}
+          , and reach out to Julien in our{' '}
           <a href="https://t.me/unlockprotocol">Telegram group</a>
           !).
         </Paragraph>
@@ -258,12 +248,10 @@ export const Jobs = () => (
         <SubTitle>About You</SubTitle>
 
         <Paragraph>
-          Do you think that the web&#39;s
-          {' '}
+          Do you think that the web&#39;s{' '}
           <a href="https://www.theatlantic.com/technology/archive/2014/08/advertising-is-the-internets-original-sin/376041/">
             original sin
-          </a>
-          {' '}
+          </a>{' '}
           is its lack of business model? Do you think that individuals,
           democracies and the web, deserve better than click-bait, information
           overload and fake news?
@@ -325,8 +313,7 @@ export const Jobs = () => (
           <ListItem>2+ years of experience in software engineering</ListItem>
           <ListItem>
             Deep working knowledge/expertise with modern client side JavaScript
-            applications and frameworks (React, Redux, SASS...)
-            {' '}
+            applications and frameworks (React, Redux, SASS...){' '}
           </ListItem>
           <ListItem>
             Advanced knowledge of the web stack and standards (ES6/7, PWA...)

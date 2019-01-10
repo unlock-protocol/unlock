@@ -20,7 +20,7 @@ export const ETHEREUM_NETWORKS_NAMES = {
 export const pageTitle = title => {
   let pageTitle = ''
   if (title) pageTitle += `${title} | `
-  return (pageTitle += 'Unlock: The Web\'s new business model')
+  return (pageTitle += "Unlock: The Web's new business model")
 }
 
 /**
