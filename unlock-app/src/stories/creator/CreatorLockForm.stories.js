@@ -1,4 +1,5 @@
 import { Provider } from 'react-redux'
+import { action } from '@storybook/addon-actions'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import CreatorLockForm from '../../components/creator/CreatorLockForm'
@@ -17,7 +18,12 @@ storiesOf('CreatorLockForm', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Default', () => {
     return (
-      <CreatorLockForm hideAction={() => {}} createLock={() => {}} pending />
+      <CreatorLockForm
+        createLock={action('createLock')}
+        hideAction={action('hide')}
+        setError={action('setError')}
+        pending
+      />
     )
   })
   .add('With existing lock', () => {
@@ -31,6 +37,11 @@ storiesOf('CreatorLockForm', module)
       name: 'Existing Lock',
     }
     return (
-      <CreatorLockForm hideAction={() => {}} createLock={() => {}} {...lock} />
+      <CreatorLockForm
+        {...lock}
+        createLock={action('createLock')}
+        hideAction={action('hide')}
+        setError={action('setError')}
+      />
     )
   })

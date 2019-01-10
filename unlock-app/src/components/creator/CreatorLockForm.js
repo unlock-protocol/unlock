@@ -53,14 +53,53 @@ export class CreatorLockForm extends React.Component {
   }
 
   validate(name, value) {
-    return (
-      (name === 'name' && typeof value === 'string' && value.length > 0) ||
-      ((name === 'expirationDuration' || name === 'maxNumberOfKeys') &&
-        !isNaN(value) &&
-        value > 0) ||
-      (name === 'maxNumberOfKeys' && value === '∞') ||
-      (name === 'keyPrice' && !isNaN(value) && value >= 0)
-    )
+    const { setError } = this.props
+    const missing = val => val === undefined || val === null || val === ''
+    const isPositiveInteger = val =>
+      !isNaN(val) && +val === parseInt(val) && +val > 0
+    const isPositiveNumber = val => !isNaN(val) && +val > 0
+    const makeSure = ' Please make sure you complete all form fields.'
+    switch (name) {
+      case 'name':
+        if (missing(value)) {
+          setError('Lock Name Missing.' + makeSure)
+          this.setState({ valid: false })
+          return false
+        }
+        break
+      case 'expirationDuration':
+      case 'maxNumberOfKeys':
+        const field = {
+          expirationDuration: 'Key Expiration',
+          maxNumberOfKeys: 'Number of Keys',
+        }[name]
+        if (missing(value)) {
+          setError(`${field} Missing. ${makeSure}`)
+          this.setState({ valid: false })
+          return false
+        }
+        if (!isPositiveInteger(value)) {
+          setError(`${field} must be a whole number greater than 0`)
+          this.setState({ valid: false })
+          return false
+        }
+        break
+      case 'keyPrice':
+        if (missing(value)) {
+          setError('Key Price Missing.' + makeSure)
+          this.setState({ valid: false })
+          return false
+        }
+        if (!isPositiveNumber(value)) {
+          setError('Key Price must be a positive number')
+          this.setState({ valid: false })
+          return false
+        }
+        break
+    }
+    this.setState({ valid: true })
+    setError(null)
+    return true
   }
 
   saveLock() {
@@ -205,7 +244,9 @@ export class CreatorLockForm extends React.Component {
         </FormBalanceWithUnit>
         <div>-</div>
         <Status>
-          <Button onClick={this.handleSubmit}>Submit</Button>
+          <Button onClick={this.handleSubmit} disabled={valid}>
+            {valid ? 'Submit' : 'Fix Errors'}
+          </Button>
           <Button cancel onClick={this.handleCancel}>
             Cancel
           </Button>
