@@ -37,4 +37,12 @@ describe('error actions', () => {
 
     expect(resetError(error)).toEqual(expectedAction)
   })
+
+  it('should create an action with empty error to reset all errors', () => {
+    const expectedAction = {
+      type: RESET_ERROR,
+      error: undefined,
+    }
+    expect(resetError()).toEqual(expectedAction)
+  })
 })
