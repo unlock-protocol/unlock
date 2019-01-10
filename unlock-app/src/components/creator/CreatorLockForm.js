@@ -127,8 +127,7 @@ class CreatorLockForm extends React.Component {
             name="expirationDuration"
             onChange={this.handleChange}
             defaultValue={expirationDuration}
-          />
-          {' '}
+          />{' '}
           days
         </FormLockDuration>
         <FormLockKeys>

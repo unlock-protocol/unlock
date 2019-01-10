@@ -5,6 +5,8 @@ module.exports = {
     'eslint:recommended',
     'plugin:react/recommended',
     'prettier',
+    'prettier/react',
+    'prettier/standard',
   ],
   env: {
     es6: true,
@@ -14,25 +16,22 @@ module.exports = {
   },
   plugins: ['mocha'],
   parser: 'babel-eslint',
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   rules: {
-    'react/jsx-wrap-multilines': false,
     'react/prefer-stateless-function': [2],
-    indent: ['error', 2],
     'linebreak-style': ['error', 'unix'],
-    quotes: ['error', 'single'],
-    semi: ['error', 'never'],
-    'no-multiple-empty-lines': [
+    quotes: [
       'error',
-      {
-        max: 1,
-        maxEOF: 0,
-        maxBOF: 0,
-      },
+      'single',
+      { avoidEscape: true, allowTemplateLiterals: false },
     ],
     'brace-style': 0,
     'react/forbid-prop-types': 2,
-    'comma-dangle': [2, 'always-multiline'],
-    'eol-last': ['error'],
+    indent: 0, // this conflicts with prettier and is not needed
     'jsx-a11y/anchor-is-valid': [
       'error',
       {

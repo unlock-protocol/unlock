@@ -43,7 +43,7 @@ describe('Currency conversion service retrieval middleware', () => {
       setConversionRate('USD', '198.20')
     )
   })
-  it('service called, values are the same, so don\'t dispatch', () => {
+  it("service called, values are the same, so don't dispatch", () => {
     jest.useFakeTimers()
     const middleware = require('../../middlewares/currencyConversionMiddleware')
       .default
