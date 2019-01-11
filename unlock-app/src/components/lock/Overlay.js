@@ -73,6 +73,7 @@ const Banner = styled.div`
   bottom: 0;
   background-color: var(--offwhite);
   border: solid 1px var(--lightgrey);
+  border-top: 2px solid var(--darkgreen);
   justify-items: center;
   padding: 32px;
   padding-bottom: 100px;
@@ -95,17 +96,43 @@ const Locks = styled.ul`
   list-style: none;
   margin: 0px;
   padding: 0px;
+  grid-row: 2;
+  grid-column: 1;
 `
 
 const Colophon = styled.footer`
-  display: grid;
-  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
   font-size: 12px;
   color: var(--darkgrey);
+  background-color: var(--white);
+  justify-self: right;
+  align-self: center;
+  grid-row: 2;
+  grid-column: 1;
+  width: 120px;
+  height: 80px;
+  margin-right: -30px;
 
   & > * {
+    justify-self: left;
+    align-self: center;
+    margin-left: -14px;
+  }
+  & > p {
+    margin-left: auto;
+    margin-right: auto;
+    width: 63px;
+    align-self: center;
     justify-self: center;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 12px;
+    color: var(--darkgrey);
   }
 `
