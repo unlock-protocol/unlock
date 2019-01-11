@@ -6,6 +6,12 @@ import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
 import { TRANSACTION_TYPES } from '../constants'
+import {
+  MISSING_PROVIDER,
+  MISSING_TRANSACTION,
+  NON_DEPLOYED_CONTRACT,
+  NOT_ENABLED_IN_PROVIDER,
+} from '../errors'
 
 const { providers, unlockAddress } = configure()
 
@@ -84,7 +90,7 @@ export default class Web3Service extends EventEmitter {
     // We fail: it appears that we are trying to connect but do not have a provider available...
     const provider = this.providers[providerName]
     if (!provider) {
-      return this.emit('error', new Error('Provider does not exist'))
+      return this.emit('error', new Error(MISSING_PROVIDER))
     }
 
     try {
@@ -94,33 +100,26 @@ export default class Web3Service extends EventEmitter {
         await provider.enable()
       }
     } catch (error) {
-      this.emit(
-        'error',
-        new Error('User canceled access to ethereum wallet, cannot continue')
-      )
+      this.emit('error', new Error(NOT_ENABLED_IN_PROVIDER))
     }
 
-    try {
-      this.web3 = new Web3(provider)
+    this.web3 = new Web3(provider)
 
-      const networkId = await this.web3.eth.net.getId()
-      if (unlockAddress) {
-        this.unlockContractAddress = Web3Utils.toChecksumAddress(unlockAddress)
-      } else if (UnlockContract.networks[networkId]) {
-        // If we do not have an address from config let's use the artifact files
-        this.unlockContractAddress = Web3Utils.toChecksumAddress(
-          UnlockContract.networks[networkId].address
-        )
-      } else {
-        throw new Error(`Unlock is not deployed on network ${networkId}`)
-      }
+    const networkId = await this.web3.eth.net.getId()
+    if (unlockAddress) {
+      this.unlockContractAddress = Web3Utils.toChecksumAddress(unlockAddress)
+    } else if (UnlockContract.networks[networkId]) {
+      // If we do not have an address from config let's use the artifact files
+      this.unlockContractAddress = Web3Utils.toChecksumAddress(
+        UnlockContract.networks[networkId].address
+      )
+    } else {
+      return this.emit('error', new Error(NON_DEPLOYED_CONTRACT))
+    }
 
-      if (this.networkId !== networkId) {
-        this.networkId = networkId
-        this.emit('network.changed', networkId)
-      }
-    } catch (error) {
-      this.emit('error', error)
+    if (this.networkId !== networkId) {
+      this.networkId = networkId
+      this.emit('network.changed', networkId)
     }
   }
 
@@ -467,7 +466,7 @@ export default class Web3Service extends EventEmitter {
       this.web3.eth.getTransaction(transaction.hash),
     ]).then(([blockNumber, blockTransaction]) => {
       if (!blockTransaction) {
-        return this.emit('error', new Error('Missing transaction'))
+        return this.emit('error', new Error(MISSING_TRANSACTION))
       }
 
       const contractAbi =
