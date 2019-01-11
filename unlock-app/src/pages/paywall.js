@@ -6,11 +6,15 @@ import DeveloperOverlay from '../components/developer/DeveloperOverlay'
 import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
 import { LOCK_PATH_NAME_REGEXP } from '../constants'
 import BrowserOnly from '../components/helpers/BrowserOnly'
+import UnlockedFlag from '../components/lock/UnlockedFlag'
 
 const Paywall = ({ lock }) => {
   return (
     <BrowserOnly>
-      <ShowUnlessUserHasKeyToAnyLock locks={lock ? [lock] : []}>
+      <ShowUnlessUserHasKeyToAnyLock
+        locks={lock ? [lock] : []}
+        else={<UnlockedFlag locks={lock ? [lock] : []} />}
+      >
         <Overlay locks={lock ? [lock] : []} />
         <DeveloperOverlay />
       </ShowUnlessUserHasKeyToAnyLock>

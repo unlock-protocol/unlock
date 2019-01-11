@@ -23,11 +23,11 @@ export class ShowUnlessUserHasKeyToAnyLock extends Component {
   }
 
   render() {
-    const { keys, modalShown, children } = this.props
+    const { keys, modalShown, children, else: fallback } = this.props
 
     // We have at least one valid key and the modal was not shown
     if (keys.length > 0 && !modalShown) {
-      return null
+      return fallback
     }
 
     // There is no valid key or we shown the modal previously
@@ -39,12 +39,14 @@ ShowUnlessUserHasKeyToAnyLock.propTypes = {
   keys: PropTypes.arrayOf(UnlockPropTypes.key),
   modalShown: PropTypes.bool,
   children: PropTypes.node,
+  else: PropTypes.node,
 }
 
 ShowUnlessUserHasKeyToAnyLock.defaultProps = {
   keys: [],
   children: null,
   modalShown: false,
+  else: null,
 }
 
 export const mapStateToProps = ({ keys, modals }, { locks }) => {
