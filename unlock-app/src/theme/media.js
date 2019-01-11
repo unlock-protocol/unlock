@@ -28,10 +28,10 @@ sizes.nodesktop = {
 const Media = Object.keys(sizes).reduce((acc, label) => {
   acc[label] = (...args) => css`
     @media only screen and (min-device-width: ${sizes[label].min}px) ${sizes[
-  label
-].max
-  ? `and (max-device-width: ${sizes[label].max}px)`
-  : ''} {
+        label
+      ].max
+        ? `and (max-device-width: ${sizes[label].max}px)`
+        : ''} {
       ${css(...args)};
     }
   `
