@@ -8,6 +8,12 @@ import UnlockContract from '../../artifacts/contracts/Unlock.json'
 import LockContract from '../../artifacts/contracts/PublicLock.json'
 import configure from '../../config'
 import { TRANSACTION_TYPES } from '../../constants'
+import {
+  MISSING_TRANSACTION,
+  NOT_ENABLED_IN_PROVIDER,
+  MISSING_PROVIDER,
+  NON_DEPLOYED_CONTRACT,
+} from '../../errors'
 
 const defaultState = {
   network: {
@@ -150,9 +156,7 @@ describe('Web3Service', () => {
 
       expect(web3Service.ready).toBe(false)
       web3Service.on('error', error => {
-        expect(error.message).toBe(
-          `Unlock is not deployed on network ${netVersion}`
-        )
+        expect(error.message).toBe(NON_DEPLOYED_CONTRACT)
         done()
       })
 
@@ -163,7 +167,7 @@ describe('Web3Service', () => {
       expect.assertions(1)
 
       web3Service.once('error', error => {
-        expect(error.message).toBe('Provider does not exist')
+        expect(error.message).toBe(MISSING_PROVIDER)
 
         web3Service.once('error', () => {
           // This should not trigger
@@ -183,7 +187,7 @@ describe('Web3Service', () => {
 
       expect(web3Service.ready).toBe(false)
       web3Service.on('error', error => {
-        expect(error.message).toBe('Provider does not exist')
+        expect(error.message).toBe(MISSING_PROVIDER)
         done()
       })
       web3Service.connect({ provider: 'CLOUD' })
@@ -260,9 +264,7 @@ describe('Web3Service', () => {
 
     it('should error if a user rejects access', () => {
       expect(enable).toHaveBeenCalled()
-      expect(error.message).toBe(
-        'User canceled access to ethereum wallet, cannot continue'
-      )
+      expect(error.message).toBe(NOT_ENABLED_IN_PROVIDER)
     })
   })
 
@@ -468,7 +470,7 @@ describe('Web3Service', () => {
         ethGetTransactionByHash(transaction.hash, null)
 
         web3Service.once('error', error => {
-          expect(error.message).toEqual('Missing transaction')
+          expect(error.message).toEqual(MISSING_TRANSACTION)
           done()
         })
 

@@ -1,11 +1,10 @@
-import React from 'react'
 import { setError, SET_ERROR } from '../../actions/error'
+
+const MY_ERROR = 'MY ERROR'
 
 describe('error actions', () => {
   it('should create an action to set the error', () => {
-    const error = {
-      message: <p>This is not right</p>,
-    }
+    const error = MY_ERROR
     const expectedAction = {
       type: SET_ERROR,
       error,
