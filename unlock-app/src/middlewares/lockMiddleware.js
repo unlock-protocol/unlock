@@ -128,7 +128,8 @@ export default function lockMiddleware({ getState, dispatch }) {
   return function(next) {
     return function(action) {
       if (
-        !(web3Service.ready || [SET_NETWORK, SET_ACCOUNT].includes(action.type))
+        !web3Service.ready &&
+        [SET_NETWORK, SET_ACCOUNT].indexOf(action.type) == -1
       ) {
         // As long as middleware is not ready
         // we store the action

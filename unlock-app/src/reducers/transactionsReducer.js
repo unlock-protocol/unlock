@@ -10,7 +10,7 @@ import { SET_NETWORK } from '../actions/network'
 export const initialState = {}
 
 const transactionsReducer = (transactions = initialState, action) => {
-  if ([SET_PROVIDER, SET_NETWORK].includes(action.type)) {
+  if ([SET_PROVIDER, SET_NETWORK].indexOf(action.type) > -1) {
     return initialState
   }
 
