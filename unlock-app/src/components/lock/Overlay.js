@@ -54,6 +54,7 @@ export default connect(
 )(Overlay)
 
 const FullPage = styled.div`
+  @import url('https://fonts.googleapis.com/css?family=Roboto');
   position: fixed; /* Sit on top of the page content */
   width: 100%; /* Full width (cover the whole page) */
   height: 100%; /* Full height (cover the whole page) */
