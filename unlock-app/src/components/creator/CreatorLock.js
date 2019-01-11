@@ -88,7 +88,7 @@ export class CreatorLock extends React.Component {
           </LockPanel>
         )}
         {!showEmbedCode && showKeys && (
-          <LockPanel>
+          <LockPanel onClick={e => e.stopPropagation()}>
             <LockDivider />
             <KeyList lock={lock} />
           </LockPanel>
