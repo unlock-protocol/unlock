@@ -1,12 +1,13 @@
 import reducer, { initialState } from '../../reducers/errorReducer'
-import { setError, resetError } from '../../actions/error'
+import { setError } from '../../actions/error'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
 
 describe('error reducer', () => {
-  const action = setError({ message: 'hi', context: 'there' })
+  const action = setError('something was wrong')
   const error = action.error
-  const error2 = setError({ message: 'two', context: 'hi' }).error
+  const action2 = setError('error 2')
+  const error2 = action2.error
 
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual([])
@@ -32,14 +33,11 @@ describe('error reducer', () => {
     expect(reducer(undefined, action)).toEqual([error])
   })
 
-  it('should reset all errors if RESET_ERROR with no specific error received', () => {
-    expect(reducer([1, 2], resetError())).toBe(initialState)
+  it('should set add an error when receiving SET_ERROR again', () => {
+    expect(reducer([error], action2)).toEqual([error, error2])
   })
 
-  it('should reset only a specific error if RESET_ERROR is called with that error', () => {
-    const startState = [error, error2]
-
-    expect(reducer(startState, resetError(error))).toEqual([error2])
-    expect(reducer(startState, resetError(error2))).toEqual([error])
+  it('should reset all errors if SET_ERROR with no specific error received', () => {
+    expect(reducer([1, 2], setError())).toBe(initialState)
   })
 })
