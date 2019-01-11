@@ -115,7 +115,7 @@ const Colophon = styled.footer`
   grid-column: 1;
   width: 120px;
   height: 80px;
-  margin-right: -33px;
+  margin-right: -30px;
 
   & > * {
     justify-self: left;
