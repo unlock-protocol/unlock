@@ -49,27 +49,26 @@ const PageNumbers = ({ numberOfPages, currentPage, goToPage }) => {
         currentPage >= numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL
           ? '....'
           : currentPage < numberOfPages / 2
-            ? '..'
-            : '....'}
+          ? '..'
+          : '....'}
       </PageNumber>
     )
   const currentIsolatedPageNumber = currentPage >
     HALF_MAX_PAGES_TO_SHOW_ALL + 1 &&
     currentPage < numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL && (
-    <PageNumberActive>{currentPage}</PageNumberActive>
-  )
+      <PageNumberActive>{currentPage}</PageNumberActive>
+    )
   const latterDots = currentPage > HALF_MAX_PAGES_TO_SHOW_ALL &&
     currentPage < numberOfPages - HALF_MAX_PAGES_TO_SHOW_ALL && (
-    <PageNumber style={{ cursor: 'default' }}>
-      {' '}
-      {currentPage === numberOfPages / 2
-        ? '....'
-        : currentPage < numberOfPages / 2
+      <PageNumber style={{ cursor: 'default' }}>
+        {' '}
+        {currentPage === numberOfPages / 2
           ? '....'
-          : '..'}
-      {' '}
-    </PageNumber>
-  )
+          : currentPage < numberOfPages / 2
+          ? '....'
+          : '..'}{' '}
+      </PageNumber>
+    )
 
   const lastVisiblePages = (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
