@@ -100,7 +100,7 @@ const Locks = styled.ul`
   grid-column: 1;
 `
 
-const Colophon = styled.footer`
+export const Colophon = styled.footer`
   display: flex;
   flex-direction: row;
   align-content: center;
