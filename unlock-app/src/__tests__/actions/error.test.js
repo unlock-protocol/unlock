@@ -3,6 +3,9 @@ import {
   SET_ERROR,
   RESET_ERROR,
   resetError,
+  metadataError,
+  WEB3_ERROR,
+  web3Error,
 } from '../../actions/error'
 
 describe('error actions', () => {
@@ -32,5 +35,31 @@ describe('error actions', () => {
       error: undefined,
     }
     expect(resetError()).toEqual(expectedAction)
+  })
+
+  it('metadataError', () => {
+    const expectedAction = {
+      type: 'hi',
+      error: {
+        metadata: 'there',
+        type: 'hi',
+      },
+    }
+    expect(metadataError('there', 'hi')).toEqual(expectedAction)
+  })
+
+  it('web3Error', () => {
+    const expectedAction = {
+      type: WEB3_ERROR,
+      error: {
+        metadata: {
+          originalError: {
+            message: 'hi',
+          },
+        },
+        type: WEB3_ERROR,
+      },
+    }
+    expect(web3Error({ message: 'hi' })).toEqual(expectedAction)
   })
 })

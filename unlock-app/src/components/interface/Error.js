@@ -2,11 +2,14 @@ import { connect } from 'react-redux'
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { resetError } from '../../actions/error'
 import Buttons from './buttons/layout'
 
-export const Error = ({ children, error, close }) => {
-  const content = children || error
+import { resetError } from '../../actions/error'
+import { ErrorMapper } from '../helpers/ErrorMapper'
+
+export const Error = ({ children, error, close, locale = 'en' }) => {
+  const content =
+    children || (error && <ErrorMapper error={error} locale={locale} />)
   if (!content) {
     return null
   }
@@ -20,8 +23,9 @@ export const Error = ({ children, error, close }) => {
   )
 }
 
-const mapStateToProps = ({ errors }) => ({
+const mapStateToProps = ({ errors, locale = 'en' }) => ({
   error: errors.length ? errors[errors.length - 1] : null,
+  locale,
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -32,13 +36,15 @@ const mapDispatchToProps = dispatch => ({
 
 Error.propTypes = {
   children: PropTypes.node,
-  error: PropTypes.node,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   close: PropTypes.func.isRequired,
+  locale: PropTypes.string,
 }
 
 Error.defaultProps = {
   children: null,
   error: null,
+  locale: 'en',
 }
 
 export default connect(

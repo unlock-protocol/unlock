@@ -3,6 +3,7 @@ import * as rtl from 'react-testing-library'
 import 'jest-dom/extend-expect'
 
 import { Error } from '../../../components/interface/Error'
+import { web3Error } from '../../../actions/error'
 
 const close = jest.fn()
 
@@ -15,7 +16,7 @@ describe('Error Component', () => {
     })
   })
 
-  describe('when the component has a children', () => {
+  describe('when the component has children', () => {
     it('should display the content of the children', () => {
       const wrapper = rtl.render(
         <Error close={close}>There was an error.</Error>
@@ -33,11 +34,20 @@ describe('Error Component', () => {
     })
   })
 
-  describe('the the component has an error message', () => {
-    it('should display the content of the children', () => {
-      const message = <p>There was an error.</p>
-      const wrapper = rtl.render(<Error close={close} error={message} />)
-      expect(wrapper.queryByText('There was an error.')).not.toBeNull()
+  describe('when the component is passed error metadata', () => {
+    it('should display a formatted error message based on the metadata', () => {
+      const error = web3Error({ message: 'error message' }).error
+      const close = () => {}
+      const wrapper = rtl.render(<Error close={close} error={error} />)
+      expect(wrapper.queryByText('Web3 error: error message')).not.toBeNull()
+    })
+    it('should display a formatted error message based on the metadata and locale', () => {
+      const error = web3Error({ message: 'error message' }).error
+      const close = () => {}
+      const wrapper = rtl.render(
+        <Error close={close} error={error} locale="fr" />
+      )
+      expect(wrapper.queryByText('Web3 erreur: error message')).not.toBeNull()
     })
   })
 })

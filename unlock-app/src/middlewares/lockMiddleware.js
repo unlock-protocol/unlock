@@ -1,6 +1,5 @@
 /* eslint no-console: 0 */ // TODO: remove me when this is clean
 
-import React from 'react'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   ADD_LOCK,
@@ -14,7 +13,7 @@ import {
 import { PURCHASE_KEY, updateKey, addKey } from '../actions/key'
 import { setAccount, updateAccount, SET_ACCOUNT } from '../actions/accounts'
 import { setNetwork, SET_NETWORK } from '../actions/network'
-import { setError } from '../actions/error'
+import { web3Error } from '../actions/error'
 import { SET_PROVIDER } from '../actions/provider'
 import { addTransaction, updateTransaction } from '../actions/transaction'
 import { LOCK_PATH_NAME_REGEXP } from '../constants'
@@ -99,7 +98,7 @@ export default function lockMiddleware({ getState, dispatch }) {
   })
 
   web3Service.on('error', error => {
-    dispatch(setError(<p>{error.message}</p>))
+    dispatch(web3Error(error))
   })
 
   /**
