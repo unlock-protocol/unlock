@@ -100,9 +100,10 @@ const Locks = styled.ul`
   grid-column: 1;
 `
 
-export const Colophon = styled.footer`
-  display: grid;
-  justify-content: center;
+const Colophon = styled.footer`
+  display: flex;
+  flex-direction: row;
+  align-content: center;
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
   font-size: 12px;
