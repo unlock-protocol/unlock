@@ -10,7 +10,7 @@ describe('error reducer', () => {
   const error2 = action2.error
 
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual([])
+    expect(reducer(undefined, {})).toEqual(initialState)
   })
 
   it('should return the initial state when receveing SET_PROVIDER', () => {
