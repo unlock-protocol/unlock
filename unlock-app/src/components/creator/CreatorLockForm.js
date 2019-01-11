@@ -195,7 +195,7 @@ class CreatorLockForm extends React.Component {
 
 CreatorLockForm.propTypes = {
   account: UnlockPropTypes.account.isRequired,
-  hideAction: PropTypes.func,
+  hideAction: PropTypes.func.isRequired,
   createLock: PropTypes.func.isRequired,
   updateLockPrice: PropTypes.func.isRequired,
   lock: UnlockPropTypes.lock,

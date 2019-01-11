@@ -74,7 +74,6 @@ export class CreatorLock extends React.Component {
         </LockDuration>
         <LockKeysNumbers lock={lock} />
         <Balance amount={lock.keyPrice} />
-
         <BalanceContainer>
           <NoPhone>
             <Balance amount={lock.balance} />
@@ -94,12 +93,13 @@ export class CreatorLock extends React.Component {
             <EmbedCodeSnippet lock={lock} />
           </LockPanel>
         )}
-        {!showEmbedCode && showKeys && (
-          <LockPanel onClick={e => e.stopPropagation()}>
-            <LockDivider />
-            <KeyList lock={lock} />
-          </LockPanel>
-        )}
+        {!showEmbedCode &&
+          showKeys && (
+            <LockPanel onClick={e => e.stopPropagation()}>
+              <LockDivider />
+              <KeyList lock={lock} />
+            </LockPanel>
+          )}
       </LockRow>
     )
   }

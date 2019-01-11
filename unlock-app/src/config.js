@@ -26,13 +26,13 @@ export function getCurrentProvider(environment) {
 
   if (
     environment.web3.currentProvider.host &&
-    environment.web3.currentProvider.host.includes('infura')
+    environment.web3.currentProvider.host.indexOf('infura') !== -1
   )
     return 'Infura'
 
   if (
     environment.web3.currentProvider.host &&
-    environment.web3.currentProvider.host.includes('localhost')
+    environment.web3.currentProvider.host.indexOf('localhost') !== -1
   )
     return 'localhost'
 

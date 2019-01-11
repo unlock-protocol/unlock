@@ -25,7 +25,10 @@ export const Lock = ({
   hideModal,
   updateLockPrice,
 }) => {
-  if (transaction && ['submitted', 'pending'].includes(transaction.status)) {
+  if (
+    transaction &&
+    ['submitted', 'pending'].indexOf(transaction.status) > -1
+  ) {
     return <PendingKeyLock lock={lock} />
   } else if (
     transaction &&
