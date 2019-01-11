@@ -19859,11 +19859,11 @@ Object {
 }
 `;
 
-exports[`Storyshots Error Simple Error 1`] = `
+exports[`Storyshots Error Multiple errors 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c2 {
+    .c4 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -19874,25 +19874,25 @@ Object {
   border: 0;
 }
 
-.c2 > svg {
+.c4 > svg {
   fill: white;
   height: 16px;
   width: 16px;
 }
 
-.c2:hover {
+.c4:hover {
   background-color: var(--link);
 }
 
-.c2:hover > svg {
+.c4:hover > svg {
   fill: white;
 }
 
-.c1:hover .c3 {
+.c3:hover .c5 {
   display: grid;
 }
 
-.c4 .c1 {
+.c6 .c3 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -19903,28 +19903,28 @@ Object {
   align-self: center;
 }
 
-.c4 .c1:nth-child(1) {
+.c6 .c3:nth-child(1) {
   pointer-events: none;
 }
 
-.c4 .c1:nth-child(2) {
+.c6 .c3:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c4 .c1 > svg {
+.c6 .c3 > svg {
   fill: var(--grey);
 }
 
-.c4 .c1:hover > svg {
+.c6 .c3:hover > svg {
   fill: var(--grey);
 }
 
-.c5 .c1 {
+.c7 .c3 {
   margin: 24px;
 }
 
-.c5 .c1 small {
+.c7 .c3 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -19948,12 +19948,23 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding-right: 8px;
+  padding: 8px 16px 8px 16px;
   grid-gap: 8px;
 }
 
 .c0 a {
   color: var(--red);
+}
+
+.c1 {
+  grid-column: 1;
+  color: var(--red);
+}
+
+.c2 {
+  display: grid;
+  grid-column: 2;
+  grid-row: 1;
 }
 
 <div>
@@ -19964,13 +19975,99 @@ Object {
       <section
         class="c0"
       >
+        <div
+          class="c1"
+        >
+          <p>
+            There was an error (
+            error 1
+            ). Please retry and report if it happens again.
+          </p>
+        </div>
+        <div
+          class="c1"
+        >
+          <p>
+            There was an error (
+            error 2
+            ). Please retry and report if it happens again.
+          </p>
+        </div>
+        <div
+          class="c1"
+        >
+          <p>
+            There was an error (
+            error 3
+            ). Please retry and report if it happens again.
+          </p>
+        </div>
+        <div
+          class="c2"
+          cols="3"
+        >
+          <button
+            class="c3 c4"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Close
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            
+          </button>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="sc-1jlw4h4-0 hfueRE"
+    >
+      <div
+        class="sc-1jlw4h4-1 iufKum"
+      >
         <p>
           There was an error (
-          We could not process that transaction.
+          error 1
           ). Please retry and report if it happens again.
         </p>
+      </div>
+      <div
+        class="sc-1jlw4h4-1 iufKum"
+      >
+        <p>
+          There was an error (
+          error 2
+          ). Please retry and report if it happens again.
+        </p>
+      </div>
+      <div
+        class="sc-1jlw4h4-1 iufKum"
+      >
+        <p>
+          There was an error (
+          error 3
+          ). Please retry and report if it happens again.
+        </p>
+      </div>
+      <div
+        class="sc-1jlw4h4-2 fLPhMq"
+        cols="3"
+      >
         <button
-          class="c1 c2"
+          class="sc-850ddk-0 hOXoMo"
         >
           <svg
             viewBox="0 0 24 24"
@@ -19986,7 +20083,64 @@ Object {
           </svg>
           
         </button>
-      </section>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Error Simple Error 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700"
+        rel="stylesheet"
+      />
     </div>
   </body>,
   "container": <div>
@@ -19994,32 +20148,6 @@ Object {
       href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
       rel="stylesheet"
     />
-    <section
-      class="sc-1jlw4h4-0 iuQwRB"
-    >
-      <p>
-        There was an error (
-        We could not process that transaction.
-        ). Please retry and report if it happens again.
-      </p>
-      <button
-        class="sc-850ddk-0 hOXoMo"
-      >
-        <svg
-          viewBox="0 0 24 24"
-        >
-          <title>
-            Close
-          </title>
-          <path
-            clip-rule="evenodd"
-            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
-            fill-rule="evenodd"
-          />
-        </svg>
-        
-      </button>
-    </section>
   </div>,
   "debug": [Function],
   "getAllByAltText": [Function],

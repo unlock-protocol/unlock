@@ -6,52 +6,47 @@ import { resetError } from '../../actions/error'
 import Buttons from './buttons/layout'
 import ErrorMessage from '../helpers/ErrorMessage'
 
-export const Error = ({ error, close }) => {
-  if (!error) {
+export const Errors = ({ errors, close }) => {
+  const content = errors.map(error => (
+    <Error key={error}>{ErrorMessage(error)}</Error>
+  ))
+  if (!content || !content.length) {
     return null
   }
-
-  let content = ErrorMessage(error)
 
   return (
     <Wrapper>
       {content}
-      <Buttons.Close
-        as="button"
-        onClick={() => error && close(error)}
-        size="16px"
-      >
-        X
-      </Buttons.Close>
+      <SecondColumn cols={errors.length ? errors.length : 1}>
+        <Buttons.Close as="button" onClick={close} size="16px">
+          X
+        </Buttons.Close>
+      </SecondColumn>
     </Wrapper>
   )
 }
 
-const mapStateToProps = ({ errors }) => ({
-  // note: this is only showing the latest error. Soon we will rework
-  // the UI to support displaying multiple errors
-  error: errors.length ? errors[errors.length - 1] : null,
-})
+export const mapStateToProps = ({ errors }) => ({ errors })
 
 const mapDispatchToProps = dispatch => ({
-  close: error => {
-    dispatch(resetError(error))
+  close: () => {
+    dispatch(resetError())
   },
 })
 
-Error.propTypes = {
-  error: PropTypes.node,
+Errors.propTypes = {
+  errors: PropTypes.arrayOf(PropTypes.string),
   close: PropTypes.func.isRequired,
 }
 
-Error.defaultProps = {
-  error: null,
+Errors.defaultProps = {
+  errors: [],
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Error)
+)(Errors)
 
 const Wrapper = styled.section`
   grid-template-columns: 1fr 20px;
@@ -62,9 +57,20 @@ const Wrapper = styled.section`
   justify-items: center;
   justify-content: center;
   align-items: center;
-  padding-right: 8px;
+  padding: 8px 16px 8px 16px;
   grid-gap: 8px;
   a {
     color: var(--red);
   }
+`
+
+const Error = styled.div`
+  grid-column: 1;
+  color: var(--red);
+`
+
+const SecondColumn = styled.div`
+  display: grid;
+  grid-column: 2;
+  grid-row: 1;
 `
