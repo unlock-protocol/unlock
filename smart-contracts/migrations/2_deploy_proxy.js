@@ -1,7 +1,7 @@
 const Unlock = artifacts.require('./Unlock.sol')
 const shell = require('shelljs')
 
-module.exports = function (deployer, network, accounts) {
+module.exports = function deployProxy (deployer, network, accounts) {
   // default account used by ganache
   const unlockOwner = accounts[0]
   // zos proxy admin can be any account other than accounts[0]
