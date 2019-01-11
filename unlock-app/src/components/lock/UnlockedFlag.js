@@ -9,7 +9,7 @@ export const UnlockedFlag = () => {
   return (
     <Flag>
       <RoundedLogo size="28px" />
-      <p>Subscribed by Unlock</p>
+      <p>Subscribed with Unlock</p>
     </Flag>
   )
 }
@@ -22,4 +22,5 @@ const Flag = styled(Colophon)`
   position: fixed;
   right: 0;
   bottom: 105px;
+  margin-right: initial;
 `
