@@ -1,4 +1,3 @@
-import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { UnlockedFlag } from '../../components/lock/UnlockedFlag'
