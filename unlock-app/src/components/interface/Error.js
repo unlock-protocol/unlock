@@ -4,12 +4,15 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { setError } from '../../actions/error'
 import Buttons from './buttons/layout'
+import ErrorMessage from '../helpers/ErrorMessage'
 
 export const Error = ({ children, error, close }) => {
-  const content = children || error
-  if (!content) {
+  if (!error && !children) {
     return null
   }
+
+  let content = children || ErrorMessage(error)
+
   return (
     <Wrapper>
       {content}
@@ -21,7 +24,7 @@ export const Error = ({ children, error, close }) => {
 }
 
 const mapStateToProps = ({ error }) => ({
-  error,
+  error: error,
 })
 
 const mapDispatchToProps = dispatch => ({
