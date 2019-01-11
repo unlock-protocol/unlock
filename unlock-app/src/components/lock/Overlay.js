@@ -100,16 +100,9 @@ const Locks = styled.ul`
   grid-column: 1;
 `
 
-<<<<<<< HEAD
-const Colophon = styled.footer`
-  display: flex;
-  flex-direction: row;
-  align-content: center;
-=======
 export const Colophon = styled.footer`
   display: grid;
   justify-content: center;
->>>>>>> begin work on unlocked flag
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
   font-size: 12px;
