@@ -1,72 +1,26 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
-import { Provider } from 'react-redux'
 
-import { CreatorLocks } from '../../../components/creator/CreatorLocks'
-import createUnlockStore from '../../../createUnlockStore'
-
-jest.mock('next/link', () => {
-  return ({ children }) => children
-})
+import { CreatorLockForm } from '../../../components/creator/CreatorLockForm'
 
 describe('CreatorLockForm', () => {
-  it('should display when create lock button is clicked', () => {
-    const store = createUnlockStore({
-      account: {},
-    })
+  let hideAction
+  let createLock
+  let wrapper
 
-    let wrapper = rtl.render(
-      <Provider store={store}>
-        <CreatorLocks />
-      </Provider>
+  beforeEach(() => {
+    hideAction = jest.fn()
+    createLock = jest.fn()
+
+    wrapper = rtl.render(
+      <CreatorLockForm
+        hideAction={hideAction}
+        createLock={createLock}
+        account={{ address: 'hi' }}
+      />
     )
-
-    expect(wrapper.queryByValue('New Lock')).toBeNull()
-    expect(wrapper.queryByText('Submit')).toBeNull()
-
-    let createButton = wrapper.getByText('Create Lock')
-    rtl.fireEvent.click(createButton)
-
-    expect(wrapper.queryByValue('New Lock')).not.toBeNull()
-    expect(wrapper.queryByText('Submit')).not.toBeNull()
-  })
-  it('should disappear when cancel button is clicked', () => {
-    const store = createUnlockStore({
-      account: {},
-    })
-
-    let wrapper = rtl.render(
-      <Provider store={store}>
-        <CreatorLocks />
-      </Provider>
-    )
-
-    let createButton = wrapper.getByText('Create Lock')
-    rtl.fireEvent.click(createButton)
-
-    expect(wrapper.queryByValue('New Lock')).not.toBeNull()
-    expect(wrapper.queryByText('Submit')).not.toBeNull()
-
-    let cancelButton = wrapper.getByText('Cancel')
-    rtl.fireEvent.click(cancelButton)
-
-    expect(wrapper.queryByValue('New Lock')).toBeNull()
-    expect(wrapper.queryByText('Submit')).toBeNull()
   })
   it('should not allow a form with invalid data to be submitted', () => {
-    const store = createUnlockStore({
-      account: {},
-    })
-
-    let wrapper = rtl.render(
-      <Provider store={store}>
-        <CreatorLocks />
-      </Provider>
-    )
-
-    let createButton = wrapper.getByText('Create Lock')
-    rtl.fireEvent.click(createButton)
-
     // Setting name to be an invalid value (empty)
     let name = wrapper.queryByValue('New Lock')
     rtl.fireEvent.change(name, { target: { value: '' } })
@@ -78,18 +32,6 @@ describe('CreatorLockForm', () => {
   })
   it('should signal field as invalid if the data is not valid', () => {
     expect.assertions(12)
-    const store = createUnlockStore({
-      account: {},
-    })
-
-    let wrapper = rtl.render(
-      <Provider store={store}>
-        <CreatorLocks />
-      </Provider>
-    )
-
-    let createButton = wrapper.getByText('Create Lock')
-    rtl.fireEvent.click(createButton)
 
     // Setting name to be an invalid value (empty)
     let name = wrapper.queryByValue('New Lock')
@@ -126,18 +68,6 @@ describe('CreatorLockForm', () => {
 
   it('should not consider maxNumberOfKeys to be invalid when using the infinity symbol', () => {
     expect.assertions(5)
-    const store = createUnlockStore({
-      account: {},
-    })
-
-    let wrapper = rtl.render(
-      <Provider store={store}>
-        <CreatorLocks />
-      </Provider>
-    )
-
-    let createButton = wrapper.getByText('Create Lock')
-    rtl.fireEvent.click(createButton)
 
     // Setting maxNumberOfKeys to be an invalid value (a string)
     let maxNumberOfKeys = wrapper.queryByValue('10')
@@ -156,21 +86,6 @@ describe('CreatorLockForm', () => {
   })
 
   it('should display infinity symbol when unlimited is clicked and mark the field as valid', () => {
-    const store = createUnlockStore({
-      account: {},
-    })
-
-    let wrapper = rtl.render(
-      <Provider store={store}>
-        <CreatorLocks />
-      </Provider>
-    )
-
-    expect(wrapper.queryByText('Unlimited')).toBeNull()
-
-    let createButton = wrapper.getByText('Create Lock')
-    rtl.fireEvent.click(createButton)
-
     let unlimitedLabel = wrapper.queryByText('Unlimited')
     expect(unlimitedLabel).not.toBeNull()
     expect(wrapper.queryByText('Submit')).not.toBeNull()
@@ -180,21 +95,6 @@ describe('CreatorLockForm', () => {
     expect(wrapper.queryByValue('∞')).not.toBeNull()
   })
   it('should enable the "Unlimited" label after infinity is replaced with a finite number', () => {
-    const store = createUnlockStore({
-      account: {},
-    })
-
-    let wrapper = rtl.render(
-      <Provider store={store}>
-        <CreatorLocks />
-      </Provider>
-    )
-
-    expect(wrapper.queryByText('Unlimited')).toBeNull()
-
-    let createButton = wrapper.getByText('Create Lock')
-    rtl.fireEvent.click(createButton)
-
     let unlimitedLabel = wrapper.queryByText('Unlimited')
     expect(unlimitedLabel).not.toBeNull()
     expect(wrapper.queryByText('Submit')).not.toBeNull()
