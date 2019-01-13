@@ -19,7 +19,7 @@ import {
 import { LockStatus } from './lock/CreatorLockStatus'
 import { createLock } from '../../actions/lock'
 
-class CreatorLockForm extends React.Component {
+export class CreatorLockForm extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
