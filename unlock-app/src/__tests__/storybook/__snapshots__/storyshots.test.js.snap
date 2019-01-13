@@ -19727,6 +19727,360 @@ Object {
 }
 `;
 
+exports[`Storyshots Demo the demo, unlocked 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c9 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c9 > svg {
+  fill: white;
+}
+
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-family: 'Roboto',sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  color: var(--darkgrey);
+  background-color: var(--white);
+  justify-self: right;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  grid-row: 2;
+  grid-column: 1;
+  width: 120px;
+  height: 80px;
+  margin-right: -33px;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  background: var(--white);
+  position: fixed;
+  right: 0;
+  bottom: 105px;
+  margin-right: initial;
+}
+
+.c8 > * {
+  justify-self: left;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  margin-left: -14px;
+}
+
+.c8 > p {
+  margin-left: auto;
+  margin-right: auto;
+  width: 63px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-self: center;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  font-size: 12px;
+  color: var(--darkgrey);
+}
+
+.c0 {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr minmax(500px,800px) 1fr;
+}
+
+.c1 {
+  font-family: 'UnifrakturCook',cursive;
+  font-weight: bold;
+  font-size: 36px;
+  color: #6a6a6a;
+  margin-bottom: 50px;
+}
+
+.c2:before {
+  display: block;
+  content: '';
+  width: 87px;
+  height: 3px;
+  background-color: var(--silver);
+  margin-bottom: 16px;
+}
+
+.c3 {
+  font-size: 36px;
+  font-weight: bold;
+  color: #6a6a6a;
+  margin-bottom: 18px;
+}
+
+.c4 {
+  font-size: 32px;
+  color: #4a4a4a;
+  margin-bottom: 38px;
+}
+
+.c5 {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  grid-gap: 40px;
+}
+
+.c6 {
+  color: #4a4a4a;
+  line-height: 1.75;
+  font-size: 16px;
+}
+
+.c7 {
+  width: 250px;
+  height: 250px;
+  opacity: 0.52;
+  background-color: #74ce63;
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c0 {
+    grid-template-columns: 0px 1fr 0px;
+  }
+}
+
+@media (max-width:650px) {
+  .c5 {
+    grid-template-columns: 1fr;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class=""
+        />
+        <div
+          class=""
+        >
+          <h1
+            class="c1"
+          >
+            Unlock Times
+          </h1>
+          <div
+            class="c2"
+          >
+            <h1
+              class="c3"
+            >
+              Demoing the Unlock Paywall
+            </h1>
+            <div
+              class="c4"
+            >
+              Unlock Times shows off its new subscription paywall that’s easy to use and streamlined for readers and publishers.
+               
+            </div>
+            <div
+              class="c5"
+            >
+              <div
+                class="c6"
+              >
+                <p>
+                  It’s become dangerously clear in the last few years that the business model we thought would support a vibrant, open web just isn’t going to work any more. Driving more and more eyeballs to ads was always considered ethically and morally borderline, but today, monetizing clickbait isn’t just economically fragile: it’s feeding our democracies with more misinformation and fake news.
+                </p>
+                <p>
+                  The thing is, plenty of publishers and creators have been ahead of the curve on this one, even if we don’t give them much credit for it. They knew that free content can, in fact, be very costly and that real freedom comes from knowledge that’s expensive to produce. They understood that when Stewart Brand famously said that “information wants to be free” he meant free as in “speech” (libre), not free as in “beer” (gratis).
+                </p>
+                <p>
+                  Some publishers, like the New York Times, got a lot of heat when they introduced their paywall, but the trend they set isn’t reversing: they now have 3M subscribers and aim for 10M by 2020. Hundreds of other news and content organizations are going in the same direction, including this very platform.
+                </p>
+                <p>
+                  Another trend emerged in the last 10 years: ownership does not seem to matter as much as it used to. People are getting rid of their meticulously amassed records and DVD collections to replace them with monthly subscriptions to Spotify and Netflix. Ride sharing platforms have put yet another dent in the car ownership status symbol… etc. My generation is putting access above ownership.
+                </p>
+              </div>
+              <div
+                class="0 c7"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class=""
+        />
+        <div>
+          <footer
+            class="c8"
+          >
+            <div
+              class="c9"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+            <p>
+              Subscribed with Unlock
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-640fpx-0 jMCmMh"
+    >
+      <div
+        class="sc-640fpx-1 hpEGGl"
+      />
+      <div
+        class="sc-640fpx-3 bbqRWP"
+      >
+        <h1
+          class="sc-640fpx-4 iVqmRW"
+        >
+          Unlock Times
+        </h1>
+        <div
+          class="sc-640fpx-5 hOavml"
+        >
+          <h1
+            class="sc-640fpx-6 lfunBL"
+          >
+            Demoing the Unlock Paywall
+          </h1>
+          <div
+            class="sc-640fpx-7 kLEjBD"
+          >
+            Unlock Times shows off its new subscription paywall that’s easy to use and streamlined for readers and publishers.
+             
+          </div>
+          <div
+            class="sc-640fpx-8 jTppft"
+          >
+            <div
+              class="sc-640fpx-9 vIlza"
+            >
+              <p>
+                It’s become dangerously clear in the last few years that the business model we thought would support a vibrant, open web just isn’t going to work any more. Driving more and more eyeballs to ads was always considered ethically and morally borderline, but today, monetizing clickbait isn’t just economically fragile: it’s feeding our democracies with more misinformation and fake news.
+              </p>
+              <p>
+                The thing is, plenty of publishers and creators have been ahead of the curve on this one, even if we don’t give them much credit for it. They knew that free content can, in fact, be very costly and that real freedom comes from knowledge that’s expensive to produce. They understood that when Stewart Brand famously said that “information wants to be free” he meant free as in “speech” (libre), not free as in “beer” (gratis).
+              </p>
+              <p>
+                Some publishers, like the New York Times, got a lot of heat when they introduced their paywall, but the trend they set isn’t reversing: they now have 3M subscribers and aim for 10M by 2020. Hundreds of other news and content organizations are going in the same direction, including this very platform.
+              </p>
+              <p>
+                Another trend emerged in the last 10 years: ownership does not seem to matter as much as it used to. People are getting rid of their meticulously amassed records and DVD collections to replace them with monthly subscriptions to Spotify and Netflix. Ride sharing platforms have put yet another dent in the car ownership status symbol… etc. My generation is putting access above ownership.
+              </p>
+            </div>
+            <div
+              class="sc-640fpx-10 fHtiru"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="sc-640fpx-2 hYuopk"
+      />
+      <div>
+        <footer
+          class="vaayz9-4 pn67z3-0 cvzVcd"
+        >
+          <div
+            class="cenpj1-0 dhCRxc"
+          >
+            <svg
+              viewBox="0 0 56 56"
+            >
+              <title />
+              <path
+                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+              />
+            </svg>
+          </div>
+          <p>
+            Subscribed with Unlock
+          </p>
+        </footer>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots DeveloperOverlay the developer overlay (invisible outside development) 1`] = `
 Object {
   "asFragment": [Function],
