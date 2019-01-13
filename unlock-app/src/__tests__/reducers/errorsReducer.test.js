@@ -1,9 +1,9 @@
-import reducer, { initialState } from '../../reducers/errorReducer'
+import reducer, { initialState } from '../../reducers/errorsReducer'
 import { setError } from '../../actions/error'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
 
-describe('error reducer', () => {
+describe('errors reducer', () => {
   const action = setError('something was wrong')
   const error = action.error
   const action2 = setError('error 2')

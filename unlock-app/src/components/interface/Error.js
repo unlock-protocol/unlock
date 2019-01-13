@@ -24,6 +24,8 @@ export const Error = ({ children, error, close }) => {
 }
 
 const mapStateToProps = ({ errors }) => ({
+  // note: this is only showing the latest error. Soon we will rework
+  // the UI to support displaying multiple errors
   error: errors.length ? errors[errors.length - 1] : null,
 })
 

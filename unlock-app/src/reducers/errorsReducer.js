@@ -4,7 +4,7 @@ import { SET_NETWORK } from '../actions/network'
 
 export const initialState = []
 
-const errorReducer = (state = initialState, action) => {
+const errorsReducer = (state = initialState, action) => {
   if ([SET_PROVIDER, SET_NETWORK].indexOf(action.type) > -1) {
     return initialState
   }
@@ -17,4 +17,4 @@ const errorReducer = (state = initialState, action) => {
   return state
 }
 
-export default errorReducer
+export default errorsReducer
