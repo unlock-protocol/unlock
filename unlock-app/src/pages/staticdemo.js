@@ -103,6 +103,7 @@ const Demo = ({ lock, locks, haskey }) => {
 Demo.propTypes = {
   lock: PropTypes.string,
   locks: UnlockPropTypes.locks.isRequired,
+  haskey: PropTypes.bool.isRequired,
 }
 
 Demo.defaultProps = {
