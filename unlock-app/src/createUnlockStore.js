@@ -23,9 +23,9 @@ import transactionsReducer, {
 import currencyReducer, {
   initialState as defaultCurrency,
 } from './reducers/currencyReducer'
-import errorReducer, {
+import errorsReducer, {
   initialState as defaultError,
-} from './reducers/errorReducer'
+} from './reducers/errorsReducer'
 import accountReducer, {
   initialState as defaultAccount,
 } from './reducers/accountReducer'
@@ -53,7 +53,7 @@ export const createUnlockStore = (
     provider: providerReducer,
     transactions: transactionsReducer,
     currency: currencyReducer,
-    error: errorReducer,
+    errors: errorsReducer,
   }
 
   // Cleanup the defaultState to remove all null values so that we do not overwrite existing
@@ -74,7 +74,7 @@ export const createUnlockStore = (
       provider: defaultProvider,
       transactions: defaultTransactions,
       currency: defaultCurrency,
-      error: defaultError,
+      errors: defaultError,
     },
     {
       provider: Object.keys(config.providers)[0],
