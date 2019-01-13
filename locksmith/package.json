@@ -7,7 +7,8 @@
     "dev-setup": "NODE_ENV=development sequelize db:migrate",
     "dev": "npm run dev-setup && nodemon server.js",
     "test-setup": "NODE_ENV=test sequelize db:migrate",
-    "test": "npm run test-setup && jest --forceExit",
+    "pretest": "npm run test-setup",
+    "test": "jest --forceExit",
     "lint": "eslint .",
     "reformat": "prettier-eslint \"src/**/*.js\" --write",
     "eslint-check": "eslint --print-config . | eslint-config-prettier-check",
@@ -26,6 +27,7 @@
     "eslint": "^5.10.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-standard": "^12.0.0",
+    "eslint-config-prettier": "^3.3.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-mocha": "^5.2.0",
@@ -35,23 +37,22 @@
     "eslint-plugin-standard": "^4.0.0",
     "express": "^4.16.4",
     "express-jwt": "^5.3.1",
+    "jest": "^23.6.0",
     "jsontokens": "^1.0.0",
     "lodash.isequal": "^4.5.0",
+    "node-mocks-http": "^1.7.3",
     "pg": "^7.7.1",
+    "prettier": "^1.14.3",
+    "prettier-eslint-cli": "^4.7.1",
     "sequelize": "^4.41.2",
     "sequelize-cli": "^5.4.0",
+    "supertest": "^3.3.0",
     "web3": "^1.0.0-beta.37",
     "winston": "^3.1.0"
   },
   "devDependencies": {
-    "eslint-config-prettier": "^3.3.0",
-    "jest": "^23.6.0",
     "lint-staged": "^8.0.5",
-    "node-mocks-http": "^1.7.3",
-    "nodemon": "^1.18.8",
-    "prettier": "^1.14.3",
-    "prettier-eslint-cli": "^4.7.1",
-    "supertest": "^3.3.0"
+    "nodemon": "^1.18.8"
   },
   "jest": {
     "testMatch": [
