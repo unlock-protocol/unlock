@@ -23,13 +23,15 @@ export const Error = ({ children, error, close }) => {
   )
 }
 
-const mapStateToProps = ({ error }) => ({
-  error: error,
+const mapStateToProps = ({ errors }) => ({
+  // note: this is only showing the latest error. Soon we will rework
+  // the UI to support displaying multiple errors
+  error: errors.length ? errors[errors.length - 1] : null,
 })
 
 const mapDispatchToProps = dispatch => ({
   close: () => {
-    dispatch(setError(null))
+    dispatch(setError())
   },
 })
 

@@ -9,6 +9,17 @@ describe('error actions', () => {
       type: SET_ERROR,
       error,
     }
+
+    expect(setError(error)).toEqual(expectedAction)
+  })
+
+  it('should create an action to reset all errors', () => {
+    const error = null
+    const expectedAction = {
+      type: SET_ERROR,
+      error,
+    }
+
     expect(setError(error)).toEqual(expectedAction)
   })
 })
