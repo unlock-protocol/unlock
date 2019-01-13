@@ -35612,7 +35612,7 @@ Object {
 }
 `;
 
-exports[`Storyshots Paywall, unlocked the paywall overlay 1`] = `
+exports[`Storyshots Paywall the paywall overlay, unlocked 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
