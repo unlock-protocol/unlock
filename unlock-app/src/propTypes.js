@@ -48,7 +48,7 @@ export const key = PropTypes.shape({
   expiration: PropTypes.number,
 })
 
-export const keys = PropTypes.shape({})
+export const keys = PropTypes.objectOf(key)
 
 export const network = PropTypes.shape({})
 
