@@ -16,7 +16,11 @@ export const Error = ({ error, close }) => {
   return (
     <Wrapper>
       {content}
-      <Buttons.Close as="button" onClick={close} size="16px">
+      <Buttons.Close
+        as="button"
+        onClick={() => error && close(error)}
+        size="16px"
+      >
         X
       </Buttons.Close>
     </Wrapper>
@@ -30,8 +34,8 @@ const mapStateToProps = ({ errors }) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  close: () => {
-    dispatch(resetError())
+  close: error => {
+    dispatch(resetError(error))
   },
 })
 
