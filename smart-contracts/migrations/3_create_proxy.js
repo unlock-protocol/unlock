@@ -11,7 +11,6 @@ module.exports = function deployProxy (deployer, network, accounts) {
   deployer.then(() => {
     if (network === 'test') {
       console.log("Skipping proxy creation in 3_create_proxy.js while on network 'test'. Exiting...")
-      return deployer.deploy(Unlock, unlockOwner)
     } else {
       if (
         shell.exec(
