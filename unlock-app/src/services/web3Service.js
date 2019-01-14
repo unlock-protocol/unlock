@@ -668,7 +668,17 @@ export default class Web3Service extends EventEmitter {
         .owners(n + startIndex)
         .call()
         .then(ownerAddress => {
-          return this._getKeyByLockForOwner(lockContract, ownerAddress)
+          return this._getKeyByLockForOwner(lockContract, ownerAddress).then(
+            ([expiration, data]) => {
+              return {
+                id: keyId(lock, ownerAddress),
+                lock,
+                owner: ownerAddress,
+                expiration,
+                data,
+              }
+            }
+          )
         })
     })
     return Promise.all(keyPromises).then(keys => {
