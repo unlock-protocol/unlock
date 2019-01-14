@@ -10,11 +10,13 @@ const errorsReducer = (state = initialState, action) => {
   }
 
   if (action.type === SET_ERROR) {
+    if (state.includes(action.error)) return state
     return [...state, action.error]
   }
 
   if (action.type === RESET_ERROR) {
     if (!action.error) return initialState
+    if (!state.includes(action.error)) return state
     const newState = [...state]
     const newIndex = newState.indexOf(action.error)
     if (newIndex >= 0) newState.splice(newIndex, 1)
