@@ -11,11 +11,11 @@ const keysPagesReducer = (state = initialState, action) => {
 
   if (action.type === SET_KEYS_ON_PAGE_FOR_LOCK) {
     return {
+      ...state,
       [action.lock]: {
         page: action.page,
         keys: action.keys,
       },
-      ...state,
     }
   }
 
