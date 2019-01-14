@@ -5,13 +5,30 @@ import { RoundedLogo } from '../interface/Logo'
 import { Colophon } from './Overlay'
 import { mapStateToProps } from './ShowUnlessUserHasKeyToAnyLock'
 
-export const UnlockedFlag = () => {
-  return (
-    <Flag>
-      <RoundedLogo size="28px" />
-      <p>Subscribed with Unlock</p>
-    </Flag>
-  )
+export class UnlockedFlag extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      hidden: false,
+    }
+  }
+
+  componentDidMount() {
+    setTimeout(() => this.setState({ hidden: true }), 2000)
+  }
+
+  render() {
+    const { hidden } = this.state
+    return (
+      <Flag
+        hidden={hidden}
+        onTouchStart={() => this.setState(state => ({ hidden: !state.hidden }))}
+      >
+        <RoundedLogo size="28px" />
+        <p>Subscribed with Unlock</p>
+      </Flag>
+    )
+  }
 }
 
 export default connect(mapStateToProps)(UnlockedFlag)
@@ -22,5 +39,22 @@ const Flag = styled(Colophon)`
   position: fixed;
   right: 0;
   bottom: 105px;
-  margin-right: initial;
+  margin-right: -106px;
+  opacity: 0.5;
+  transition: opacity 0.4s ease-in, margin-right 0.4s ease-in;
+
+  ${props =>
+    props.hidden
+      ? ''
+      : `
+  opacity: 1;
+  margin-right: 0;
+`}
+
+  &:hover {
+    opacity: 1;
+    margin-right: 0;
+    height: 80px;
+    transition: opacity 0.4s ease-in, margin-right 0.4s ease-in;
+  }
 `
