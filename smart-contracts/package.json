@@ -13,8 +13,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
-    "bignumber.js": "^8.0.1",
-    "eslint": "^5.10.0",
+    "bignumber.js": "^8.0.2",
     "ethereumjs-units": "^0.2.0",
     "openzeppelin-eth": "^2.0.2",
     "shelljs": "^0.8.3",
@@ -25,12 +24,6 @@
     "zos-lib": "^2.1.0"
   },
   "devDependencies": {
-    "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-mocha": "^5.2.0",
-    "eslint-plugin-node": "^8.0.0",
-    "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-standard": "^4.0.0",
     "remix-ide": "^0.7.5",
     "remixd": "^0.1.8-alpha.6"
   },
