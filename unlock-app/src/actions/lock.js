@@ -3,6 +3,7 @@ export const ADD_LOCK = 'ADD_LOCK'
 export const UPDATE_LOCK = 'UPDATE_LOCK'
 export const WITHDRAW_FROM_LOCK = 'WITHDRAW_FROM_LOCK'
 export const LOCK_DEPLOYED = 'LOCK_DEPLOYED'
+export const UPDATE_LOCK_KEY_PRICE = 'UPDATE_LOCK_KEY_PRICE'
 
 export const createLock = lock => ({
   type: CREATE_LOCK,
@@ -30,4 +31,10 @@ export const lockDeployed = (lock, address) => ({
   type: LOCK_DEPLOYED,
   lock,
   address,
+})
+
+export const updateKeyPrice = (lock, price) => ({
+  type: UPDATE_LOCK_KEY_PRICE,
+  lock,
+  price,
 })

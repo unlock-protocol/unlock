@@ -4,11 +4,13 @@ import {
   updateLock,
   withdrawFromLock,
   lockDeployed,
+  updateKeyPrice,
   CREATE_LOCK,
   ADD_LOCK,
   UPDATE_LOCK,
   WITHDRAW_FROM_LOCK,
   LOCK_DEPLOYED,
+  UPDATE_LOCK_KEY_PRICE,
 } from '../../actions/lock'
 
 describe('lock actions', () => {
@@ -61,5 +63,17 @@ describe('lock actions', () => {
       address,
     }
     expect(lockDeployed(lock, address)).toEqual(expectedAction)
+  })
+
+  it('should create an action to update the key price', () => {
+    const lock = {}
+    const price = '0.02'
+    const expectedAction = {
+      type: UPDATE_LOCK_KEY_PRICE,
+      lock,
+      price,
+    }
+
+    expect(updateKeyPrice(lock, price)).toEqual(expectedAction)
   })
 })
