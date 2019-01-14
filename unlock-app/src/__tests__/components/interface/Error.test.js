@@ -19,10 +19,11 @@ describe('Error Component', () => {
     it('should dispatch a setError element when clicking on the close icon', () => {
       const close = jest.fn()
       const wrapper = rtl.render(
-        <Error close={close} error="There was an error" />
+        <Error close={close} error="There was an error." />
       )
       rtl.fireEvent.click(wrapper.getByTitle(/close/i))
       expect(close).toHaveBeenCalledTimes(1)
+      expect(close).toHaveBeenCalledWith('There was an error.')
     })
   })
 
