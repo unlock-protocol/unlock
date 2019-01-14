@@ -1,3 +1,18 @@
+##
+# This the travis config for Unlock's all project
+# We use docker to run CI
+# We need 2 images for this purpose:
+#  - a generic `unlock` image which contains the code for the app, ready to run (deps installed)
+#  - an image for puppeteer tests (`unlock-integration`) which contains only the required file for that purpose.
+# (The generic unlock image can/will be used for actual deployment)
+# TODO: To speed things up both images are cached on AWS's docker registry (the latest version is loaded before being built and pushed on master builds)
+# TODO: To speed things up, both image building processes could be runnning in parallel.
+# Once the images are built, we run test script using them.
+# The `unlock` image is used for all services tests (smart-contracts, unlock-app, locksmith)
+# The `unlock-integration` is used to run the integration tests
+# TODO: To speed things up, all of the test scripts could be run in parallel.
+# If tests are run successfully, we deploy to netlify and push the updated images.
+# Both of these steps could be run in parallel
 language: generic
 env:
   global:
@@ -16,7 +31,7 @@ script:
   - scripts/tests.sh smart-contracts
   - scripts/tests.sh unlock-app
   - scripts/tests.sh locksmith
-  - scripts/tests.sh integration-tests
+  - scripts/integration-tests.sh
 after_success:
   - scripts/deploy.sh netlify
   - scripts/push-image.sh
