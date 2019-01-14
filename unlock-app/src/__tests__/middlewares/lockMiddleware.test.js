@@ -15,6 +15,8 @@ import { SET_NETWORK } from '../../actions/network'
 import { SET_PROVIDER } from '../../actions/provider'
 import { ADD_TRANSACTION, UPDATE_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
+import { SET_KEYS_ON_PAGE_FOR_LOCK } from '../../actions/keysPages'
+import { PGN_ITEMS_PER_PAGE } from '../../constants'
 
 /**
  * Fake state
@@ -306,6 +308,24 @@ describe('Lock middleware', () => {
     })
   })
 
+  describe('when receiving a keys.page event triggered by the web3Service', () => {
+    it('should dispatch setKeysOnPageForLock', () => {
+      const { store } = create()
+      const lock = '0x123'
+      const page = 1336
+      const keys = []
+      mockWeb3Service.emit('keys.page', lock, page, keys)
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: SET_KEYS_ON_PAGE_FOR_LOCK,
+          page,
+          lock,
+          keys,
+        })
+      )
+    })
+  })
+
   describe('when receiving a network.changed event triggered by the web3Service', () => {
     describe('when the network.changed is different from the store value', () => {
       it('should get a new account', () => {
@@ -432,6 +452,43 @@ describe('Lock middleware', () => {
     invoke(action)
     expect(mockWeb3Service.getLock).toHaveBeenCalled()
     expect(next).toHaveBeenCalledWith(action)
+  })
+
+  describe('SET_KEYS_ON_PAGE_FOR_LOCK', () => {
+    it('should call getKeysForLockOnPage on web3Service only if the keys variable is falsy', () => {
+      const { next, invoke } = create()
+      const page = 1
+      const action = {
+        type: SET_KEYS_ON_PAGE_FOR_LOCK,
+        lock: lock.address,
+        page,
+      }
+      mockWeb3Service.getKeysForLockOnPage = jest.fn()
+      invoke(action)
+
+      expect(mockWeb3Service.getKeysForLockOnPage).toHaveBeenCalledWith(
+        lock.address,
+        page,
+        PGN_ITEMS_PER_PAGE
+      )
+      expect(next).toHaveBeenCalledWith(action)
+    })
+
+    it('should not call getKeysForLockOnPage if the keys are sert', () => {
+      const { next, invoke } = create()
+      const page = 1
+      const action = {
+        type: SET_KEYS_ON_PAGE_FOR_LOCK,
+        lock: lock.address,
+        page,
+        keys: [],
+      }
+      mockWeb3Service.getKeysForLockOnPage = jest.fn()
+      invoke(action)
+
+      expect(mockWeb3Service.getKeysForLockOnPage).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(action)
+    })
   })
 
   it('should handle WITHDRAW_FROM_LOCK by calling withdrawFromLock from web3Service', () => {

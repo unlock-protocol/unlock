@@ -17,9 +17,13 @@ import { setNetwork, SET_NETWORK } from '../actions/network'
 import { setError } from '../actions/error'
 import { SET_PROVIDER } from '../actions/provider'
 import { addTransaction, updateTransaction } from '../actions/transaction'
-import { LOCK_PATH_NAME_REGEXP } from '../constants'
+import { LOCK_PATH_NAME_REGEXP, PGN_ITEMS_PER_PAGE } from '../constants'
 
 import Web3Service from '../services/web3Service'
+import {
+  SET_KEYS_ON_PAGE_FOR_LOCK,
+  setKeysOnPageForLock,
+} from '../actions/keysPages'
 
 // This middleware listen to redux events and invokes the services APIs.
 // It also listen to events from web3Service and dispatches corresponding actions
@@ -102,6 +106,10 @@ export default function lockMiddleware({ getState, dispatch }) {
     dispatch(setError(error.message))
   })
 
+  web3Service.on('keys.page', (lock, page, keys) => {
+    dispatch(setKeysOnPageForLock(page, lock, keys))
+  })
+
   /**
    * When the network has changed, we need to get a new account
    * as well as reset all the reducers
@@ -157,6 +165,14 @@ export default function lockMiddleware({ getState, dispatch }) {
       } else if (action.type === UPDATE_LOCK_KEY_PRICE) {
         const account = getState().account
         web3Service.updateKeyPrice(action.address, account, action.price)
+      } else if (action.type === SET_KEYS_ON_PAGE_FOR_LOCK) {
+        if (!action.keys) {
+          web3Service.getKeysForLockOnPage(
+            action.lock,
+            action.page,
+            PGN_ITEMS_PER_PAGE
+          )
+        }
       }
 
       next(action)
