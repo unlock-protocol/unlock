@@ -56,6 +56,7 @@ const Wrapper = styled.section`
   justify-content: center;
   align-items: center;
   padding: 8px 16px 8px 16px;
+  margin-bottom: 8px;
   grid-gap: 8px;
   a {
     color: var(--red);
