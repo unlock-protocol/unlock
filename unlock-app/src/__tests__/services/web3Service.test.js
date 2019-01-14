@@ -1244,7 +1244,7 @@ describe('Web3Service', () => {
 
     describe('getKeysForLockOnPage', () => {
       it('should get as many owners as there are per page, starting at the right index', done => {
-        expect.assertions(3)
+        expect.assertions(8)
 
         web3Service._getKeyByLockForOwner = jest.fn(() => {
           return new Promise(resolve => {
@@ -1267,6 +1267,16 @@ describe('Web3Service', () => {
           expect(lockAddress).toEqual(lock)
           expect(page).toEqual(onPage)
           expect(keys.length).toEqual(byPage)
+          const key = keys[0]
+          expect(key.id).toEqual(
+            '0x0d370b0974454d7b0e0e3b4512c0735a6489a71a-0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+          )
+          expect(key.owner).toEqual(
+            '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+          )
+          expect(key.lock).toEqual(lockAddress)
+          expect(key.expiration).toEqual(100)
+          expect(key.data).toEqual('hello')
           done()
         })
 
