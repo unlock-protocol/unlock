@@ -4,6 +4,7 @@ import {
   CREATE_LOCK,
   UPDATE_LOCK,
   LOCK_DEPLOYED,
+  UPDATE_LOCK_KEY_PRICE,
 } from '../../actions/lock'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { DELETE_TRANSACTION } from '../../actions/transaction'
@@ -290,6 +291,28 @@ describe('locks reducer', () => {
           })
         })
       })
+    })
+  })
+
+  it("should update a lock's key price when UPDATE_LOCK_KEY_PRICE is called", () => {
+    const state = {
+      '0x123': {
+        name: 'hello',
+        address: '0x123',
+        keyPrice: '0.01',
+      },
+    }
+    const action = {
+      type: UPDATE_LOCK_KEY_PRICE,
+      address: '0x123',
+      price: '0.02',
+    }
+    expect(reducer(state, action)).toEqual({
+      '0x123': {
+        name: 'hello',
+        address: '0x123',
+        keyPrice: '0.02',
+      },
     })
   })
 })

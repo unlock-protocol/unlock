@@ -3,6 +3,7 @@ import {
   ADD_LOCK,
   UPDATE_LOCK,
   LOCK_DEPLOYED,
+  UPDATE_LOCK_KEY_PRICE,
 } from '../actions/lock'
 import { DELETE_TRANSACTION } from '../actions/transaction'
 import { SET_PROVIDER } from '../actions/provider'
@@ -82,6 +83,16 @@ const locksReducer = (state = initialState, action) => {
     return {
       ...state,
       [action.address]: Object.assign(state[action.address], action.update),
+    }
+  }
+
+  if (action.type === UPDATE_LOCK_KEY_PRICE) {
+    return {
+      ...state,
+      [action.address]: {
+        ...state[action.address],
+        keyPrice: action.price,
+      },
     }
   }
 
