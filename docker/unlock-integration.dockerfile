@@ -1,24 +1,25 @@
-FROM unlock
+FROM alekzonder/puppeteer:1.1.1
+LABEL Unlock <ops@unlock-protocol.com>
 
 USER root
-# Everything below has been taken from https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#running-puppeteer-in-docker
 
-RUN  apt-get update \
-     # See https://crbug.com/795759
-     && apt-get install -yq libgconf-2-4 \
-     # Install latest chrome dev package, which installs the necessary libs to
-     # make the bundled version of Chromium that Puppeteer installs work.
-     && apt-get install -y wget --no-install-recommends \
-     && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-     && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
-     && apt-get update \
-     && apt-get install -y google-chrome-unstable --no-install-recommends \
-     && rm -rf /var/lib/apt/lists/*
+# update npm which is out of date on that image and does not have npm ci
+RUN npm install -g npm@6.4.1
 
-# Run everything after as non-privileged user.
-USER node
+RUN mkdir /home/unlock
+RUN chown -R pptruser /home/unlock
 
+USER pptruser
+
+# Let's now copy all the tests stuff from unlock/tests
+# And install things
+RUN mkdir /home/unlock/tests
+COPY tests/package-lock.json /home/unlock/tests/.
+COPY tests/package.json /home/unlock/tests/.
 WORKDIR /home/unlock/tests
+RUN npm ci --production
 
-# install the missing dependencies
-RUN npm ci
+# Copy the rest of files
+COPY tests/ /home/unlock/tests/.
+
+# Before running the test suite we will need to run deploy inside the unlock image

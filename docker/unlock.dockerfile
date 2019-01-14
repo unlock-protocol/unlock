@@ -1,5 +1,5 @@
 FROM node:8.11.4
-MAINTAINER Unlock <ops@unlock-protocol.com>
+LABEL Unlock <ops@unlock-protocol.com>
 RUN npm install -g npm@6.4.1
 
 RUN mkdir /home/unlock
@@ -18,13 +18,7 @@ COPY --chown=node package-lock.json /home/unlock/.
 COPY --chown=node package.json /home/unlock/.
 RUN SKIP_SERVICES=true npm ci --production
 
-RUN mkdir /home/unlock/tests
-COPY --chown=node tests/package-lock.json /home/unlock/tests/.
-COPY --chown=node tests/package.json /home/unlock/tests/.
-WORKDIR /home/unlock/tests
-RUN npm ci --production
-COPY --chown=node tests/ /home/unlock/tests/.
-# RUN npm run build # No build script yet for integration tests
+# Note: we do not build the test directory because it is built in its own image
 
 RUN mkdir /home/unlock/smart-contracts
 COPY --chown=node smart-contracts/package-lock.json /home/unlock/smart-contracts/.
