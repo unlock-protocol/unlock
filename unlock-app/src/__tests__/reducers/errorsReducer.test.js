@@ -1,5 +1,5 @@
 import reducer, { initialState } from '../../reducers/errorsReducer'
-import { setError } from '../../actions/error'
+import { setError, resetError } from '../../actions/error'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
 
@@ -37,7 +37,13 @@ describe('errors reducer', () => {
     expect(reducer([error], action2)).toEqual([error, error2])
   })
 
-  it('should reset all errors if SET_ERROR with no specific error received', () => {
-    expect(reducer([1, 2], setError())).toBe(initialState)
+  it('should reset all errors if RESET_ERROR with no specific error received', () => {
+    expect(reducer([1, 2], resetError())).toBe(initialState)
+  })
+
+  it('should reset a specific error if RESET_ERROR is called with a specific error', () => {
+    expect(reducer([1, 2], resetError(1))).toEqual([2])
+    expect(reducer([1, 2], resetError(2))).toEqual([1])
+    expect(reducer([1, 2], resetError(3))).toEqual([1, 2])
   })
 })

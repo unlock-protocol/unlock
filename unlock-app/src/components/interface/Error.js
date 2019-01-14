@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { setError } from '../../actions/error'
+import { resetError } from '../../actions/error'
 import Buttons from './buttons/layout'
 import ErrorMessage from '../helpers/ErrorMessage'
 
@@ -16,7 +16,11 @@ export const Error = ({ error, close }) => {
   return (
     <Wrapper>
       {content}
-      <Buttons.Close as="button" onClick={close} size="16px">
+      <Buttons.Close
+        as="button"
+        onClick={() => error && close(error)}
+        size="16px"
+      >
         X
       </Buttons.Close>
     </Wrapper>
@@ -30,8 +34,8 @@ const mapStateToProps = ({ errors }) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  close: () => {
-    dispatch(setError())
+  close: error => {
+    dispatch(resetError(error))
   },
 })
 
