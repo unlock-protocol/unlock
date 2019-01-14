@@ -16,17 +16,10 @@ describe('Error Component', () => {
   })
 
   describe('when the component has a children', () => {
-    it('should display the content of the children', () => {
-      const wrapper = rtl.render(
-        <Error close={close}>There was an error.</Error>
-      )
-      expect(wrapper.queryByText('There was an error.')).not.toBeNull()
-    })
-
     it('should dispatch a setError element when clicking on the close icon', () => {
       const close = jest.fn()
       const wrapper = rtl.render(
-        <Error close={close}>There was an error.</Error>
+        <Error close={close} error="There was an error" />
       )
       rtl.fireEvent.click(wrapper.getByTitle(/close/i))
       expect(close).toHaveBeenCalledTimes(1)

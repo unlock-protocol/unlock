@@ -6,12 +6,12 @@ import { setError } from '../../actions/error'
 import Buttons from './buttons/layout'
 import ErrorMessage from '../helpers/ErrorMessage'
 
-export const Error = ({ children, error, close }) => {
-  if (!error && !children) {
+export const Error = ({ error, close }) => {
+  if (!error) {
     return null
   }
 
-  let content = children || ErrorMessage(error)
+  let content = ErrorMessage(error)
 
   return (
     <Wrapper>
@@ -36,13 +36,11 @@ const mapDispatchToProps = dispatch => ({
 })
 
 Error.propTypes = {
-  children: PropTypes.node,
   error: PropTypes.node,
   close: PropTypes.func.isRequired,
 }
 
 Error.defaultProps = {
-  children: null,
   error: null,
 }
 
