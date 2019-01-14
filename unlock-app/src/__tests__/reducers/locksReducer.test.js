@@ -304,7 +304,7 @@ describe('locks reducer', () => {
     }
     const action = {
       type: UPDATE_LOCK_KEY_PRICE,
-      lock: state['0x123'],
+      address: '0x123',
       price: '0.02',
     }
     expect(reducer(state, action)).toEqual({

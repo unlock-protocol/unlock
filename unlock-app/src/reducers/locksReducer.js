@@ -89,8 +89,8 @@ const locksReducer = (state = initialState, action) => {
   if (action.type === UPDATE_LOCK_KEY_PRICE) {
     return {
       ...state,
-      [action.lock.address]: {
-        ...state[action.lock.address],
+      [action.address]: {
+        ...state[action.address],
         keyPrice: action.price,
       },
     }

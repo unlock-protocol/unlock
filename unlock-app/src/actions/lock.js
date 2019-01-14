@@ -33,8 +33,8 @@ export const lockDeployed = (lock, address) => ({
   address,
 })
 
-export const updateKeyPrice = (lock, price) => ({
+export const updateKeyPrice = (address, price) => ({
   type: UPDATE_LOCK_KEY_PRICE,
-  lock,
+  address,
   price,
 })

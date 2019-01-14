@@ -66,14 +66,14 @@ describe('lock actions', () => {
   })
 
   it('should create an action to update the key price', () => {
-    const lock = {}
+    const address = '0x123'
     const price = '0.02'
     const expectedAction = {
       type: UPDATE_LOCK_KEY_PRICE,
-      lock,
+      address,
       price,
     }
 
-    expect(updateKeyPrice(lock, price)).toEqual(expectedAction)
+    expect(updateKeyPrice(address, price)).toEqual(expectedAction)
   })
 })
