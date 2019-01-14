@@ -7,6 +7,7 @@ import {
   CREATE_LOCK,
   LOCK_DEPLOYED,
   WITHDRAW_FROM_LOCK,
+  UPDATE_LOCK_KEY_PRICE,
 } from '../../actions/lock'
 import { PURCHASE_KEY, UPDATE_KEY } from '../../actions/key'
 import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
@@ -494,6 +495,26 @@ describe('Lock middleware', () => {
       invoke(action)
 
       expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(action)
+    })
+  })
+
+  describe('UPDATE_LOCK_KEY_PRICE', () => {
+    it('should invoke updateKeyPrice on receiving an update request', () => {
+      const { next, invoke, store } = create()
+      const action = {
+        type: UPDATE_LOCK_KEY_PRICE,
+        address: lock.address,
+        price: '0.03',
+      }
+      mockWeb3Service.updateKeyPrice = jest.fn()
+      invoke(action)
+
+      expect(mockWeb3Service.updateKeyPrice).toHaveBeenCalledWith(
+        lock.address,
+        store.getState().account,
+        '0.03'
+      )
       expect(next).toHaveBeenCalledWith(action)
     })
   })
