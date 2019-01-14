@@ -66,5 +66,28 @@ describe('keys page reducer', () => {
         },
       })
     })
+
+    it('should set the keys on that page accordingly even when a value was previously set', () => {
+      const state = {
+        '0x123': {
+          page: 1,
+          keys: [],
+        },
+      }
+
+      const action = {
+        type: SET_KEYS_ON_PAGE_FOR_LOCK,
+        page: 0,
+        lock: '0x123',
+        keys: [oneKey, anotherKey],
+      }
+
+      expect(reducer(state, action)).toEqual({
+        '0x123': {
+          page: 0,
+          keys: [oneKey, anotherKey],
+        },
+      })
+    })
   })
 })
