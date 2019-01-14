@@ -19965,13 +19965,9 @@ Object {
         class="c0"
       >
         <p>
-          We could not process that transaction. 
-          <a
-            href="."
-          >
-            Retry
-          </a>
-          .
+          There was an error (
+          We could not process that transaction.
+          ). Please retry and report if it happens again.
         </p>
         <button
           class="c1 c2"
@@ -20002,13 +19998,9 @@ Object {
       class="sc-1jlw4h4-0 iuQwRB"
     >
       <p>
-        We could not process that transaction. 
-        <a
-          href="."
-        >
-          Retry
-        </a>
-        .
+        There was an error (
+        We could not process that transaction.
+        ). Please retry and report if it happens again.
       </p>
       <button
         class="sc-850ddk-0 hOXoMo"
@@ -20181,7 +20173,9 @@ Object {
         class="c0"
       >
         <p>
+          There was an error (
           We could not process that transaction.
+          ). Please retry and report if it happens again.
         </p>
         <button
           class="c1 c2"
@@ -20212,7 +20206,9 @@ Object {
       class="sc-1jlw4h4-0 iuQwRB"
     >
       <p>
+        There was an error (
         We could not process that transaction.
+        ). Please retry and report if it happens again.
       </p>
       <button
         class="sc-850ddk-0 hOXoMo"

@@ -7,17 +7,11 @@ const close = () => {}
 storiesOf('Error', module)
   .add('Simple Error', () => {
     return (
-      <Error close={close}>
-        <p>We could not process that transaction.</p>
-      </Error>
+      <Error close={close} error="We could not process that transaction." />
     )
   })
   .add('Error with Markup', () => {
     return (
-      <Error close={close}>
-        <p>
-          We could not process that transaction. <a href=".">Retry</a>.
-        </p>
-      </Error>
+      <Error close={close} error="We could not process that transaction." />
     )
   })
