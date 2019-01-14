@@ -8,22 +8,20 @@ import ErrorMessage from '../helpers/ErrorMessage'
 
 export const Errors = ({ errors, close }) => {
   const content = errors.map(error => (
-    <Error key={error}>{ErrorMessage(error)}</Error>
-  ))
-  if (!content || !content.length) {
-    return null
-  }
-
-  return (
-    <Wrapper>
-      {content}
+    <Wrapper key={error}>
+      <Error>{ErrorMessage(error)}</Error>
       <SecondColumn cols={errors.length ? errors.length : 1}>
         <Buttons.Close as="button" onClick={close} size="16px">
           X
         </Buttons.Close>
       </SecondColumn>
     </Wrapper>
-  )
+  ))
+  if (!content || !content.length) {
+    return null
+  }
+
+  return <>{content}</>
 }
 
 export const mapStateToProps = ({ errors }) => ({ errors })
