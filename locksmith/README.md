@@ -87,10 +87,3 @@ The payload is expected to be JSON and include the following claims:
 
 The Signature is expected to be `header.payload` signed with the owner's private key. This is a fairly 
 standard approach to generating an Asymmetriclly signed JWT
-
-
-
-
-
-
-
