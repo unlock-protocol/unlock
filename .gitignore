@@ -8,4 +8,5 @@ zos.dev-*.json
 .zos.session
 
 # Artifacts
+unlock-app/src/artifacts/
 smart-contracts/build/contracts/*.json
