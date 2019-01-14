@@ -37,6 +37,15 @@ describe('errors reducer', () => {
     expect(reducer([error], action2)).toEqual([error, error2])
   })
 
+  it('should not set the same error twice', () => {
+    expect(reducer([error], action)).toEqual([error])
+  })
+
+  it('should not change state if RESET_ERROR with non-existing error is called', () => {
+    const state = ['some other error']
+    expect(reducer(state, resetError('non-existing'))).toBe(state)
+  })
+
   it('should reset all errors if RESET_ERROR with no specific error received', () => {
     expect(reducer([1, 2], resetError())).toBe(initialState)
   })
