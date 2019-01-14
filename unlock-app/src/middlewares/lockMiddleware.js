@@ -9,6 +9,7 @@ import {
   addLock,
   lockDeployed,
   updateLock,
+  UPDATE_LOCK_KEY_PRICE,
 } from '../actions/lock'
 import { PURCHASE_KEY, updateKey, addKey } from '../actions/key'
 import { setAccount, updateAccount, SET_ACCOUNT } from '../actions/accounts'
@@ -153,6 +154,9 @@ export default function lockMiddleware({ getState, dispatch }) {
       } else if (action.type === WITHDRAW_FROM_LOCK) {
         const account = getState().account
         web3Service.withdrawFromLock(action.lock, account)
+      } else if (action.type === UPDATE_LOCK_KEY_PRICE) {
+        const account = getState().account
+        web3Service.updateKeyPrice(action.address, account, action.price)
       }
 
       next(action)
