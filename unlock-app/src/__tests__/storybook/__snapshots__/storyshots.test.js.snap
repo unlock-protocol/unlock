@@ -19772,7 +19772,12 @@ Object {
   position: fixed;
   right: 0;
   bottom: 105px;
-  margin-right: initial;
+  margin-right: -106px;
+  opacity: 0.5;
+  -webkit-transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
+  transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
+  opacity: 1;
+  margin-right: 0;
 }
 
 .c8 > * {
@@ -19797,6 +19802,14 @@ Object {
   line-height: normal;
   font-size: 12px;
   color: var(--darkgrey);
+}
+
+.c8:hover {
+  opacity: 1;
+  margin-right: 0;
+  height: 80px;
+  -webkit-transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
+  transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
 }
 
 .c0 {
@@ -20014,7 +20027,7 @@ Object {
       />
       <div>
         <footer
-          class="vaayz9-4 pn67z3-0 cvzVcd"
+          class="vaayz9-4 pn67z3-0 gZEfCV"
         >
           <div
             class="cenpj1-0 dhCRxc"
@@ -35657,7 +35670,12 @@ Object {
   position: fixed;
   right: 0;
   bottom: 105px;
-  margin-right: initial;
+  margin-right: -106px;
+  opacity: 0.5;
+  -webkit-transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
+  transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
+  opacity: 1;
+  margin-right: 0;
 }
 
 .c0 > * {
@@ -35682,6 +35700,14 @@ Object {
   line-height: normal;
   font-size: 12px;
   color: var(--darkgrey);
+}
+
+.c0:hover {
+  opacity: 1;
+  margin-right: 0;
+  height: 80px;
+  -webkit-transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
+  transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
 }
 
 <div>
@@ -35716,7 +35742,7 @@ Object {
       rel="stylesheet"
     />
     <footer
-      class="vaayz9-4 pn67z3-0 cvzVcd"
+      class="vaayz9-4 pn67z3-0 gZEfCV"
     >
       <div
         class="cenpj1-0 dhCRxc"
@@ -37415,7 +37441,12 @@ Object {
   position: fixed;
   right: 0;
   bottom: 105px;
-  margin-right: initial;
+  margin-right: -106px;
+  opacity: 0.5;
+  -webkit-transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
+  transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
+  opacity: 1;
+  margin-right: 0;
 }
 
 .c0 > * {
@@ -37440,6 +37471,14 @@ Object {
   line-height: normal;
   font-size: 12px;
   color: var(--darkgrey);
+}
+
+.c0:hover {
+  opacity: 1;
+  margin-right: 0;
+  height: 80px;
+  -webkit-transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
+  transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
 }
 
 <div>
@@ -37474,7 +37513,7 @@ Object {
       rel="stylesheet"
     />
     <footer
-      class="vaayz9-4 pn67z3-0 cvzVcd"
+      class="vaayz9-4 pn67z3-0 gZEfCV"
     >
       <div
         class="cenpj1-0 dhCRxc"
