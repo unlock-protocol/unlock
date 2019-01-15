@@ -29,7 +29,7 @@ export default class StorageService {
         headers: this.genAuthorizationHeader(token),
       })
     } else {
-      return axios.put(`${this.HOST}/lock/${address}`, update)
+      return axios.put(`${this.host}/lock/${address}`, update)
     }
   }
 }
