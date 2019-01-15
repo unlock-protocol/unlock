@@ -10,11 +10,9 @@ export const Errors = ({ errors, close }) => {
   const content = errors.map(error => (
     <Wrapper key={error}>
       <Error>{ErrorMessage(error)}</Error>
-      <div cols={errors.length ? errors.length : 1}>
-        <Buttons.Close as="button" onClick={() => close(error)} size="16px">
-          X
-        </Buttons.Close>
-      </div>
+      <Buttons.Close as="button" onClick={() => close(error)} size="16px">
+        X
+      </Buttons.Close>
     </Wrapper>
   ))
   if (!content || !content.length) {
