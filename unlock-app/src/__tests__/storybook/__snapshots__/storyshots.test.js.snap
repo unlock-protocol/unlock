@@ -19979,27 +19979,23 @@ Object {
             ). Please retry and report if it happens again.
           </p>
         </div>
-        <div
-          cols="3"
+        <button
+          class="c2 c3"
         >
-          <button
-            class="c2 c3"
+          <svg
+            viewBox="0 0 24 24"
           >
-            <svg
-              viewBox="0 0 24 24"
-            >
-              <title>
-                Close
-              </title>
-              <path
-                clip-rule="evenodd"
-                d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            
-          </button>
-        </div>
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </button>
       </section>
       <section
         class="c0"
@@ -20013,27 +20009,23 @@ Object {
             ). Please retry and report if it happens again.
           </p>
         </div>
-        <div
-          cols="3"
+        <button
+          class="c2 c3"
         >
-          <button
-            class="c2 c3"
+          <svg
+            viewBox="0 0 24 24"
           >
-            <svg
-              viewBox="0 0 24 24"
-            >
-              <title>
-                Close
-              </title>
-              <path
-                clip-rule="evenodd"
-                d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            
-          </button>
-        </div>
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </button>
       </section>
       <section
         class="c0"
@@ -20047,27 +20039,23 @@ Object {
             ). Please retry and report if it happens again.
           </p>
         </div>
-        <div
-          cols="3"
+        <button
+          class="c2 c3"
         >
-          <button
-            class="c2 c3"
+          <svg
+            viewBox="0 0 24 24"
           >
-            <svg
-              viewBox="0 0 24 24"
-            >
-              <title>
-                Close
-              </title>
-              <path
-                clip-rule="evenodd"
-                d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            
-          </button>
-        </div>
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </button>
       </section>
     </div>
   </body>,
@@ -20088,27 +20076,23 @@ Object {
           ). Please retry and report if it happens again.
         </p>
       </div>
-      <div
-        cols="3"
+      <button
+        class="sc-850ddk-0 hOXoMo"
       >
-        <button
-          class="sc-850ddk-0 hOXoMo"
+        <svg
+          viewBox="0 0 24 24"
         >
-          <svg
-            viewBox="0 0 24 24"
-          >
-            <title>
-              Close
-            </title>
-            <path
-              clip-rule="evenodd"
-              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
-              fill-rule="evenodd"
-            />
-          </svg>
-          
-        </button>
-      </div>
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </button>
     </section>
     <section
       class="sc-1rx37wg-0 bTEaAS"
@@ -20122,27 +20106,23 @@ Object {
           ). Please retry and report if it happens again.
         </p>
       </div>
-      <div
-        cols="3"
+      <button
+        class="sc-850ddk-0 hOXoMo"
       >
-        <button
-          class="sc-850ddk-0 hOXoMo"
+        <svg
+          viewBox="0 0 24 24"
         >
-          <svg
-            viewBox="0 0 24 24"
-          >
-            <title>
-              Close
-            </title>
-            <path
-              clip-rule="evenodd"
-              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
-              fill-rule="evenodd"
-            />
-          </svg>
-          
-        </button>
-      </div>
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </button>
     </section>
     <section
       class="sc-1rx37wg-0 bTEaAS"
@@ -20156,27 +20136,23 @@ Object {
           ). Please retry and report if it happens again.
         </p>
       </div>
-      <div
-        cols="3"
+      <button
+        class="sc-850ddk-0 hOXoMo"
       >
-        <button
-          class="sc-850ddk-0 hOXoMo"
+        <svg
+          viewBox="0 0 24 24"
         >
-          <svg
-            viewBox="0 0 24 24"
-          >
-            <title>
-              Close
-            </title>
-            <path
-              clip-rule="evenodd"
-              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
-              fill-rule="evenodd"
-            />
-          </svg>
-          
-        </button>
-      </div>
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </button>
     </section>
   </div>,
   "debug": [Function],
@@ -20345,27 +20321,23 @@ Object {
             ). Please retry and report if it happens again.
           </p>
         </div>
-        <div
-          cols="1"
+        <button
+          class="c2 c3"
         >
-          <button
-            class="c2 c3"
+          <svg
+            viewBox="0 0 24 24"
           >
-            <svg
-              viewBox="0 0 24 24"
-            >
-              <title>
-                Close
-              </title>
-              <path
-                clip-rule="evenodd"
-                d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            
-          </button>
-        </div>
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </button>
       </section>
     </div>
   </body>,
@@ -20386,27 +20358,23 @@ Object {
           ). Please retry and report if it happens again.
         </p>
       </div>
-      <div
-        cols="1"
+      <button
+        class="sc-850ddk-0 hOXoMo"
       >
-        <button
-          class="sc-850ddk-0 hOXoMo"
+        <svg
+          viewBox="0 0 24 24"
         >
-          <svg
-            viewBox="0 0 24 24"
-          >
-            <title>
-              Close
-            </title>
-            <path
-              clip-rule="evenodd"
-              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
-              fill-rule="evenodd"
-            />
-          </svg>
-          
-        </button>
-      </div>
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </button>
     </section>
   </div>,
   "debug": [Function],
