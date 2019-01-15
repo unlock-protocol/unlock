@@ -11,6 +11,7 @@ import { SET_ACCOUNT } from '../../actions/accounts'
 import { DELETE_TRANSACTION } from '../../actions/transaction'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
+import { SET_LOCK_NAME } from '../../actions/storage'
 
 describe('locks reducer', () => {
   const lock = {
@@ -110,6 +111,23 @@ describe('locks reducer', () => {
     ).toEqual({
       [lock.address]: lock,
     })
+  })
+
+  it('should add the name and address of a lock when receiving SET_LOCK_NAME', () => {
+    const lockName = 'foo'
+    const state = reducer(
+      {
+        [lock.address]: lock,
+      },
+      {
+        type: SET_LOCK_NAME,
+        address: lock.address,
+        name: lockName,
+      }
+    )
+
+    expect(state).toHaveProperty(`${lock.address}.name`, lockName)
+    expect(state).toHaveProperty(`${lock.address}.address`, '123')
   })
 
   describe('DELETE_LOCK', () => {

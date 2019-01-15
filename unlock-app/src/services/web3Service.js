@@ -728,4 +728,11 @@ export default class Web3Service extends EventEmitter {
       }
     )
   }
+
+  /*
+   *  Signs data for the given account
+   */
+  signData(account, data, callback) {
+    this.web3.eth.sign(data, account, callback)
+  }
 }
