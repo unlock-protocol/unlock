@@ -10,7 +10,7 @@ export default class StorageService {
   }
 
   lockLookUp(address) {
-    return axios.get(`${this.HOST}/lock/${address}`)
+    return axios.get(`${this.host}/lock/${address}`)
   }
 
   storeLockDetails(lock, token) {
