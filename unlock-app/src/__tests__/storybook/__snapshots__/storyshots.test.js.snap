@@ -15385,24 +15385,36 @@ Object {
   -ms-flex-align: start;
   align-items: start;
   cursor: pointer;
-  grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
-  grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
 }
 
 .c0 > * {
   padding-top: 16px;
 }
 
-.c0 input[type='text'] {
-  background-color: var(--lightgrey);
-  border: 0;
-  padding: 5px;
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-size: 13px;
+.c0 input[type='number'] {
+  -moz-appearance: textfield;
 }
 
-.c0 input[type='text'][data-valid="false"] {
-  background-color: var(--lightred);
+.c0 input::-webkit-outer-spin-button,
+.c0 input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.c0 input {
+  background: var(--lightgrey);
+  border: none;
+  border-radius: 4px;
+  height: 21.5px;
+  font-family: 'IBM Plex Mono',sans serif;
+}
+
+.c0 input:focus {
+  border: 1px solid var(--grey);
+}
+
+.c0 input[data-valid='false'] {
+  border: 1px solid var(--red);
 }
 
 .c7 {
@@ -15429,17 +15441,20 @@ Object {
   text-overflow: ellipsis;
 }
 
-.c1 input[type='text'] {
+.c1 input[type='text'],
+.c1 input[type='number'] {
   min-width: 70px;
   width: 80%;
 }
 
-.c2 input[type='text'] {
+.c2 input[type='text'],
+.c2 input[type='number'] {
   min-width: 30px;
   width: 50%;
 }
 
-.c3 input[type='text'] {
+.c3 input[type='text'],
+.c3 input[type='number'] {
   min-width: 30px;
   width: 80%;
 }
@@ -15450,7 +15465,8 @@ Object {
   white-space: nowrap;
 }
 
-.c5 input[type='text'] {
+.c5 input[type='text'],
+.c5 input[type='number'] {
   min-width: 30px;
   width: 50%;
 }
@@ -15591,6 +15607,7 @@ Object {
           <input
             data-valid="true"
             name="name"
+            required=""
             type="text"
             value="New Lock"
           />
@@ -15600,8 +15617,11 @@ Object {
         >
           <input
             data-valid="true"
+            inputmode="numeric"
             name="expirationDuration"
-            type="text"
+            required=""
+            step="1"
+            type="number"
             value="30"
           />
            
@@ -15612,8 +15632,11 @@ Object {
         >
           <input
             data-valid="true"
+            inputmode="numeric"
             name="maxNumberOfKeys"
-            type="text"
+            required=""
+            step="1"
+            type="number"
             value="10"
           />
           <div
@@ -15630,8 +15653,11 @@ Object {
           />
           <input
             data-valid="true"
+            inputmode="numeric"
             name="keyPrice"
-            type="text"
+            required=""
+            step="0.00001"
+            type="number"
             value="0.01"
           />
         </span>
@@ -15661,7 +15687,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="xrsnj2-0 sc-1u8ov25-1 jhCVxJ"
+      class="xrsnj2-0 sc-1u8ov25-1 dBHNok"
     >
       <svg
         viewBox="0 0 216 216"
@@ -15736,34 +15762,41 @@ Object {
         </g>
       </svg>
       <div
-        class="xrsnj2-4 sc-1u8ov25-3 fqlINd"
+        class="xrsnj2-4 sc-1u8ov25-3 fKkLvd"
       >
         <input
           data-valid="true"
           name="name"
+          required=""
           type="text"
           value="New Lock"
         />
       </div>
       <div
-        class="xrsnj2-6 sc-1u8ov25-4 gyQDKm"
+        class="xrsnj2-6 sc-1u8ov25-4 ihIdLc"
       >
         <input
           data-valid="true"
+          inputmode="numeric"
           name="expirationDuration"
-          type="text"
+          required=""
+          step="1"
+          type="number"
           value="30"
         />
          
         days
       </div>
       <div
-        class="xrsnj2-7 sc-1u8ov25-5 jveGuT"
+        class="xrsnj2-7 sc-1u8ov25-5 hzTKUl"
       >
         <input
           data-valid="true"
+          inputmode="numeric"
           name="maxNumberOfKeys"
-          type="text"
+          required=""
+          step="1"
+          type="number"
           value="10"
         />
         <div
@@ -15773,15 +15806,18 @@ Object {
         </div>
       </div>
       <span
-        class="buwkmd-5 sc-1u8ov25-6 drZRxT"
+        class="buwkmd-5 sc-1u8ov25-6 jyspKX"
       >
         <span
           class="buwkmd-2 buwkmd-3 cwENmW"
         />
         <input
           data-valid="true"
+          inputmode="numeric"
           name="keyPrice"
-          type="text"
+          required=""
+          step="0.00001"
+          type="number"
           value="0.01"
         />
       </span>
@@ -15887,24 +15923,36 @@ Object {
   -ms-flex-align: start;
   align-items: start;
   cursor: pointer;
-  grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
-  grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
 }
 
 .c0 > * {
   padding-top: 16px;
 }
 
-.c0 input[type='text'] {
-  background-color: var(--lightgrey);
-  border: 0;
-  padding: 5px;
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-size: 13px;
+.c0 input[type='number'] {
+  -moz-appearance: textfield;
 }
 
-.c0 input[type='text'][data-valid="false"] {
-  background-color: var(--lightred);
+.c0 input::-webkit-outer-spin-button,
+.c0 input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.c0 input {
+  background: var(--lightgrey);
+  border: none;
+  border-radius: 4px;
+  height: 21.5px;
+  font-family: 'IBM Plex Mono',sans serif;
+}
+
+.c0 input:focus {
+  border: 1px solid var(--grey);
+}
+
+.c0 input[data-valid='false'] {
+  border: 1px solid var(--red);
 }
 
 .c7 {
@@ -15931,17 +15979,20 @@ Object {
   text-overflow: ellipsis;
 }
 
-.c1 input[type='text'] {
+.c1 input[type='text'],
+.c1 input[type='number'] {
   min-width: 70px;
   width: 80%;
 }
 
-.c2 input[type='text'] {
+.c2 input[type='text'],
+.c2 input[type='number'] {
   min-width: 30px;
   width: 50%;
 }
 
-.c3 input[type='text'] {
+.c3 input[type='text'],
+.c3 input[type='number'] {
   min-width: 30px;
   width: 80%;
 }
@@ -15952,7 +16003,8 @@ Object {
   white-space: nowrap;
 }
 
-.c5 input[type='text'] {
+.c5 input[type='text'],
+.c5 input[type='number'] {
   min-width: 30px;
   width: 50%;
 }
@@ -16093,6 +16145,7 @@ Object {
           <input
             data-valid="true"
             name="name"
+            required=""
             type="text"
             value="New Lock"
           />
@@ -16102,8 +16155,11 @@ Object {
         >
           <input
             data-valid="true"
+            inputmode="numeric"
             name="expirationDuration"
-            type="text"
+            required=""
+            step="1"
+            type="number"
             value="30"
           />
            
@@ -16114,8 +16170,11 @@ Object {
         >
           <input
             data-valid="true"
+            inputmode="numeric"
             name="maxNumberOfKeys"
-            type="text"
+            required=""
+            step="1"
+            type="number"
             value="10"
           />
           <div
@@ -16132,8 +16191,11 @@ Object {
           />
           <input
             data-valid="true"
+            inputmode="numeric"
             name="keyPrice"
-            type="text"
+            required=""
+            step="0.00001"
+            type="number"
             value="0.01"
           />
         </span>
@@ -16163,7 +16225,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="xrsnj2-0 sc-1u8ov25-1 jhCVxJ"
+      class="xrsnj2-0 sc-1u8ov25-1 dBHNok"
     >
       <svg
         viewBox="0 0 216 216"
@@ -16238,34 +16300,41 @@ Object {
         </g>
       </svg>
       <div
-        class="xrsnj2-4 sc-1u8ov25-3 fqlINd"
+        class="xrsnj2-4 sc-1u8ov25-3 fKkLvd"
       >
         <input
           data-valid="true"
           name="name"
+          required=""
           type="text"
           value="New Lock"
         />
       </div>
       <div
-        class="xrsnj2-6 sc-1u8ov25-4 gyQDKm"
+        class="xrsnj2-6 sc-1u8ov25-4 ihIdLc"
       >
         <input
           data-valid="true"
+          inputmode="numeric"
           name="expirationDuration"
-          type="text"
+          required=""
+          step="1"
+          type="number"
           value="30"
         />
          
         days
       </div>
       <div
-        class="xrsnj2-7 sc-1u8ov25-5 jveGuT"
+        class="xrsnj2-7 sc-1u8ov25-5 hzTKUl"
       >
         <input
           data-valid="true"
+          inputmode="numeric"
           name="maxNumberOfKeys"
-          type="text"
+          required=""
+          step="1"
+          type="number"
           value="10"
         />
         <div
@@ -16275,15 +16344,18 @@ Object {
         </div>
       </div>
       <span
-        class="buwkmd-5 sc-1u8ov25-6 drZRxT"
+        class="buwkmd-5 sc-1u8ov25-6 jyspKX"
       >
         <span
           class="buwkmd-2 buwkmd-3 cwENmW"
         />
         <input
           data-valid="true"
+          inputmode="numeric"
           name="keyPrice"
-          type="text"
+          required=""
+          step="0.00001"
+          type="number"
           value="0.01"
         />
       </span>
