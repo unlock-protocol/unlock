@@ -52,7 +52,8 @@
   },
   "devDependencies": {
     "lint-staged": "^8.0.5",
-    "nodemon": "^1.18.8"
+    "nodemon": "^1.18.8",
+    "sqlite3": "^4.0.6"
   },
   "jest": {
     "testMatch": [
