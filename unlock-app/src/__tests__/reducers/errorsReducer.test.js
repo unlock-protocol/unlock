@@ -13,7 +13,7 @@ describe('errors reducer', () => {
     expect(reducer(undefined, {})).toBe(initialState)
   })
 
-  it('should return the initial state when receveing SET_PROVIDER', () => {
+  it('should return the initial state when receiving SET_PROVIDER', () => {
     expect(
       reducer([error], {
         type: SET_PROVIDER,
@@ -21,7 +21,7 @@ describe('errors reducer', () => {
     ).toBe(initialState)
   })
 
-  it('should return the initial state when receveing SET_NETWORK', () => {
+  it('should return the initial state when receiving SET_NETWORK', () => {
     expect(
       reducer([error], {
         type: SET_NETWORK,
