@@ -680,9 +680,13 @@ export default class Web3Service extends EventEmitter {
             }
           )
         })
+        .catch(() => {
+          // Triggered when there are missing keys
+          return null
+        })
     })
     return Promise.all(keyPromises).then(keys => {
-      this.emit('keys.page', lock, page, keys)
+      this.emit('keys.page', lock, page, keys.filter(key => !!key))
     })
   }
 
