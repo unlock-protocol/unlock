@@ -23,13 +23,13 @@ export class CreatorLockForm extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      expirationDuration: 30,
-      expirationDurationUnit: 86400, // Days
-      keyPrice: '0.01',
-      keyPriceCurrency: 'ether',
-      maxNumberOfKeys: 10,
-      unlimitedKeys: false,
-      name: 'New Lock',
+      expirationDuration: props.expirationDuration,
+      expirationDurationUnit: props.expirationDurationUnit, // Days
+      keyPrice: props.keyPrice,
+      keyPriceCurrency: props.keyPriceCurrency,
+      maxNumberOfKeys: props.maxNumberOfKeys,
+      unlimitedKeys: props.unlimitedKeys,
+      name: props.name,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
@@ -169,9 +169,24 @@ CreatorLockForm.propTypes = {
   account: UnlockPropTypes.account.isRequired,
   hideAction: PropTypes.func.isRequired,
   createLock: PropTypes.func.isRequired,
+  expirationDuration: PropTypes.number,
+  expirationDurationUnit: PropTypes.number,
+  keyPrice: PropTypes.string,
+  keyPriceCurrency: PropTypes.string,
+  maxNumberOfKeys: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // string is for '∞'
+  unlimitedKeys: PropTypes.bool,
+  name: PropTypes.string,
 }
 
-CreatorLockForm.defaultProps = {}
+CreatorLockForm.defaultProps = {
+  expirationDuration: 30,
+  expirationDurationUnit: 86400, // Days
+  keyPrice: '0.01',
+  keyPriceCurrency: 'ether',
+  maxNumberOfKeys: 10,
+  unlimitedKeys: false,
+  name: 'New Lock',
+}
 
 const mapStateToProps = state => {
   return {
