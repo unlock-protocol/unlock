@@ -854,7 +854,7 @@ describe('Web3Service', () => {
       })
 
       it('should handle errors', done => {
-        expect.assertions(1)
+        expect.assertions(2)
         const callback = jest.fn()
         const transaction = {
           hash: '0x456',
@@ -862,8 +862,9 @@ describe('Web3Service', () => {
         const sendTransaction = new EventEmitter()
         const error = 'There was a problem'
 
-        web3Service.on('error', error => {
+        web3Service.on('error', (error, failedTransaction) => {
           expect(error).toBe('There was a problem')
+          expect(failedTransaction).toBe(transaction)
           done()
         })
 

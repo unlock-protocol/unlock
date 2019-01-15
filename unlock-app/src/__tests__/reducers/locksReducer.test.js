@@ -2,6 +2,7 @@ import reducer from '../../reducers/locksReducer'
 import {
   ADD_LOCK,
   CREATE_LOCK,
+  DELETE_LOCK,
   UPDATE_LOCK,
   LOCK_DEPLOYED,
   UPDATE_LOCK_KEY_PRICE,
@@ -108,6 +109,21 @@ describe('locks reducer', () => {
       )
     ).toEqual({
       [lock.address]: lock,
+    })
+  })
+
+  describe('DELETE_LOCK', () => {
+    it('should delete a lock', () => {
+      const state = {
+        '0x123': {
+          address: '0x123',
+        },
+      }
+      const action = {
+        type: DELETE_LOCK,
+        address: '0x123',
+      }
+      expect(reducer(state, action)).toEqual({})
     })
   })
 
