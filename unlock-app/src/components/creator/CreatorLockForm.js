@@ -28,49 +28,71 @@ export class CreatorLockForm extends React.Component {
       keyPrice: props.keyPrice,
       keyPriceCurrency: props.keyPriceCurrency,
       maxNumberOfKeys: props.maxNumberOfKeys,
-      unlimitedKeys: props.unlimitedKeys,
+      unlimitedKeys: props.maxNumberOfKeys === '∞',
       name: props.name,
     }
+    this.state.valid = {
+      name: this.validate('name', props.name),
+      expirationDuration: this.validate(
+        'expirationDuration',
+        props.expirationDuration
+      ),
+      keyPrice: this.validate('keyPrice', props.keyPrice),
+      maxNumberOfKeys: this.validate('maxNumberOfKeys', props.maxNumberOfKeys),
+    }
+
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleUnlimitedClick = this.handleUnlimitedClick.bind(this)
-    this.maxNumberOfKeysRef = React.createRef()
   }
 
   validate(name, value) {
-    let { unlimitedKeys } = this.state
     return (
       (name === 'name' && typeof value === 'string' && value.length > 0) ||
       ((name === 'expirationDuration' || name === 'maxNumberOfKeys') &&
         !isNaN(value) &&
         value > 0) ||
-      (name === 'maxNumberOfKeys' && value === '∞' && unlimitedKeys) ||
+      (name === 'maxNumberOfKeys' && value === '∞') ||
       (name === 'keyPrice' && !isNaN(value) && value >= 0)
     )
   }
 
   handleUnlimitedClick() {
-    this.setState({ unlimitedKeys: true, maxNumberOfKeys: '∞' })
-    // Marking the maxNumberOfKeysRef field as valid.
-    this.maxNumberOfKeysRef.current.dataset.valid = true
+    this.setState(state => ({
+      ...state,
+      valid: {
+        ...state.valid,
+        maxNumberOfKeys: true,
+      },
+      unlimitedKeys: true,
+      maxNumberOfKeys: '∞',
+    }))
   }
 
-  handleChange(event) {
-    let { name, value, dataset } = event.target
-
+  handleChange({ name, value }) {
     if (name === 'maxNumberOfKeys') {
-      dataset.valid = value === '∞' ? true : this.validate(name, value)
-      this.setState({ unlimitedKeys: value === '∞' })
+      this.setState(state => ({
+        ...state,
+        valid: {
+          ...state.valid,
+          maxNumberOfKeys: value === '∞' ? true : this.validate(name, value),
+        },
+        maxNumberOfKeys: value,
+        unlimitedKeys: value === '∞',
+      }))
     } else {
-      dataset.valid = this.validate(name, value)
+      this.setState(state => ({
+        ...state,
+        valid: { ...state.valid, [name]: this.validate(name, value) },
+        [name]: value,
+      }))
     }
-
-    this.setState({ [name]: value })
   }
 
   handleSubmit() {
-    if (document.querySelector('[data-valid="false"]')) return false
+    const { valid } = this.state
+    if (Object.keys(valid).filter(key => !valid[key]).length) return false
 
     const { account, createLock, hideAction } = this.props
     const {
@@ -108,6 +130,7 @@ export class CreatorLockForm extends React.Component {
       keyPrice,
       name,
       unlimitedKeys,
+      valid,
     } = this.state
 
     return (
@@ -119,6 +142,7 @@ export class CreatorLockForm extends React.Component {
             name="name"
             onChange={this.handleChange}
             defaultValue={name}
+            data-valid={valid.name}
           />
         </FormLockName>
         <FormLockDuration>
@@ -127,16 +151,17 @@ export class CreatorLockForm extends React.Component {
             name="expirationDuration"
             onChange={this.handleChange}
             defaultValue={expirationDuration}
+            data-valid={valid.expirationDuration}
           />{' '}
           days
         </FormLockDuration>
         <FormLockKeys>
           <input
-            ref={this.maxNumberOfKeysRef}
             type="text"
             name="maxNumberOfKeys"
             onChange={this.handleChange}
             value={maxNumberOfKeys}
+            data-valid={valid.maxNumberOfKeys}
           />
           {!unlimitedKeys && (
             <LockLabelUnlimited onClick={this.handleUnlimitedClick}>
@@ -151,6 +176,7 @@ export class CreatorLockForm extends React.Component {
             name="keyPrice"
             onChange={this.handleChange}
             defaultValue={keyPrice}
+            data-valid={valid.keyPrice}
           />
         </FormBalanceWithUnit>
         <div>-</div>
@@ -174,7 +200,6 @@ CreatorLockForm.propTypes = {
   keyPrice: PropTypes.string,
   keyPriceCurrency: PropTypes.string,
   maxNumberOfKeys: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // string is for '∞'
-  unlimitedKeys: PropTypes.bool,
   name: PropTypes.string,
 }
 
@@ -184,7 +209,6 @@ CreatorLockForm.defaultProps = {
   keyPrice: '0.01',
   keyPriceCurrency: 'ether',
   maxNumberOfKeys: 10,
-  unlimitedKeys: false,
   name: 'New Lock',
 }
 
