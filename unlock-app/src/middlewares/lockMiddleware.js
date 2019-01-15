@@ -11,6 +11,7 @@ import {
   lockDeployed,
   updateLock,
   UPDATE_LOCK_KEY_PRICE,
+  LOCK_DEPLOYED,
 } from '../actions/lock'
 import { PURCHASE_KEY, updateKey, addKey } from '../actions/key'
 import { setAccount, updateAccount, SET_ACCOUNT } from '../actions/accounts'
@@ -24,11 +25,14 @@ import {
   TRANSACTION_TYPES,
 } from '../constants'
 
+import generateJWTToken from '../utils/signature'
 import Web3Service from '../services/web3Service'
 import {
   SET_KEYS_ON_PAGE_FOR_LOCK,
   setKeysOnPageForLock,
 } from '../actions/keysPages'
+import { signatureError } from '../actions/signature'
+import { storeLockCreation, storeLockUpdate } from '../actions/storage'
 
 // This middleware listen to redux events and invokes the services APIs.
 // It also listen to events from web3Service and dispatches corresponding actions
@@ -159,6 +163,17 @@ export default function lockMiddleware({ getState, dispatch }) {
         web3Service.connect({ provider: action.provider })
       } else if (action.type === CREATE_LOCK) {
         web3Service.createLock(action.lock, getState().account)
+        generateJWTToken(web3Service, getState().account.address, {
+          lock: action.lock,
+        })
+          .then(token => {
+            dispatch(
+              storeLockCreation(getState().account.address, action.lock, token)
+            )
+          })
+          .catch(error => {
+            dispatch(signatureError(error))
+          })
       } else if (action.type === PURCHASE_KEY) {
         const account = getState().account
         const lock = Object.values(getState().locks).find(
@@ -184,6 +199,23 @@ export default function lockMiddleware({ getState, dispatch }) {
             action.page,
             PGN_ITEMS_PER_PAGE
           )
+        }
+      } else if (action.type === LOCK_DEPLOYED) {
+        if (action.lock && action.lock.address && action.address) {
+          generateJWTToken(web3Service, getState().account.address, {
+            currentAddress: action.lock.address,
+            address: action.address,
+            owner: getState().account.address,
+          }).then(token => {
+            dispatch(
+              storeLockUpdate(
+                getState().account.address,
+                action.lock.address,
+                token,
+                action.address
+              )
+            )
+          })
         }
       }
 
