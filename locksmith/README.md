@@ -7,19 +7,25 @@ In the current iteration, reads are public and do not require authorization.
 
 ## Getting Started
 
-Locksmith currently utilizes [Postgres](https://www.postgresql.org/) as its datastore, and will require access to a running Instance. 
+### Running in Development
+
+Locksmith utilizes SQLite to make it easy to get thing up and running. Upon startup
+ the local database will be created and unprocessed migrations will be run.
+
+You can start Locksmith in development with the following command: `npm run dev`.
+
+### Running in Production
+
+Locksmith's suggested production datastore is [Postgres](https://www.postgresql.org/), and will require access to a running Instance. 
 
 You can configure your connection details in a few ways, here are the suggested methods:
 
-1. Configure environment variables (Locksmith with recognize these placed in
+1. Configure environment variables (Locksmith will recognize these placed in
  an .env file at the root of the application)
    * **DB_USERNAME** - Database User
    * **DB_PASSWORD** - Password of User
    * **DB_NAME** - Database Name
    * **DB_HOSTNAME** - Database Host
-
-
-
 
    __Note__: The following can be used to quickly get started setting up your __local development__ database.
    ```sql
