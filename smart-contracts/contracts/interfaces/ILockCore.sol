@@ -43,7 +43,8 @@ interface ILockCore {
   /**
    * @dev Called by owner to partially withdraw funds from the lock.
    */
-  function partialWithdraw(uint
+  function partialWithdraw(
+    uint _amount
   )
     external;
 

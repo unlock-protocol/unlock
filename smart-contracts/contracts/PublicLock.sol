@@ -33,6 +33,11 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint keyPrice
   );
 
+  event Withdrawal(
+    address indexed _sender,
+    uint _amount
+    );
+
 
   // Fields
   // Unlock Protocol address
@@ -227,20 +232,42 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   }
 
   /**
-   * @dev Called by owner to wiwthdraw all funds from the lock.
+   * @dev Called by owner to withdraw all funds from the lock.
    * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
-   * TODO: consider partial withdraws?
    * TODO: check for re-entrency?
    */
-  function withdraw(
-  )
+  function withdraw()
     external
     onlyOwner
   {
     uint balance = address(this).balance;
     require(balance > 0, "Not enough funds");
-    address owner = Ownable.owner();
-    owner.transfer(balance);
+    _withdraw(balance);
+  }
+
+  /**
+   * @dev Called by owner to partially withdraw funds from the lock.
+   * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
+   * TODO: check for re-entrency?
+   */
+  function partialWithdraw(uint _amount)
+    external
+    onlyOwner
+  {
+    uint256 balance = address(this).balance;
+    require(balance > 0 && balance >= _amount, "Not enough funds");
+    _withdraw(_amount);
+  }
+
+  /**
+   * @dev private version of the withdraw function which handles all withdrawals from the lock.
+   * TODO: check for re-entrency?
+   */
+  function _withdraw(uint _amount)
+    private
+  {
+    Ownable.owner().transfer(_amount);
+    emit Withdrawal(msg.sender, _amount);
   }
 
   /**
