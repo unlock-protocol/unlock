@@ -19,7 +19,7 @@ export default class StorageService {
         headers: this.genAuthorizationHeader(token),
       })
     } else {
-      return axios.post(`${this.HOST}/lock`, lock)
+      return axios.post(`${this.host}/lock`, lock)
     }
   }
 
