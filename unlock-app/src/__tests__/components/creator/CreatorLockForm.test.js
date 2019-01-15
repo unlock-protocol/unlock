@@ -11,7 +11,6 @@ describe('CreatorLockForm', () => {
   beforeEach(() => {
     hideAction = jest.fn()
     createLock = jest.fn()
-
     wrapper = rtl.render(
       <CreatorLockForm
         hideAction={hideAction}

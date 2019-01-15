@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import UnlockPropTypes from '../../propTypes'
 import CreatorLock, { LockRowGrid, PhoneLockRowGrid } from './CreatorLock'
 import CreatorLockForm from './CreatorLockForm'
-import Error from '../interface/Error'
+import Errors from '../interface/Errors'
 import Media, { NoPhone, Phone } from '../../theme/media'
 
 export class CreatorLocks extends React.Component {
@@ -41,7 +41,7 @@ export class CreatorLocks extends React.Component {
           </LockMinorHeader>
           <CreateButton onClick={this.toggleForm}>Create Lock</CreateButton>
         </LockHeaderRow>
-        <Error />
+        <Errors />
         {showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
         {lockFeed.map(lock => {
           return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
