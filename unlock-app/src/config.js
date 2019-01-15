@@ -60,12 +60,14 @@ export default function configure(
   let requiredNetwork = 'Dev'
   let requiredConfirmations = 12
   let unlockAddress = ''
+  let services = {}
 
   if (env === 'test') {
     // In test, we fake the HTTP provider
     providers['HTTP'] = new Web3.providers.HttpProvider(
       `http://${runtimeConfig.httpProvider}:8545`
     )
+    services['storage'] = { host: 'http://127.0.0.1:8080' }
   }
 
   if (env === 'dev') {
@@ -74,6 +76,7 @@ export default function configure(
     providers['HTTP'] = new Web3.providers.HttpProvider(
       `http://${runtimeConfig.httpProvider}:8545`
     )
+    services['storage'] = { host: 'http://127.0.0.1:8080' }
 
     // If there is an existing web3 injected provider, we also add this one to the list of possible providers
     if (typeof environment.web3 !== 'undefined') {
@@ -123,5 +126,6 @@ export default function configure(
     requiredNetwork,
     requiredConfirmations,
     unlockAddress,
+    services,
   }
 }

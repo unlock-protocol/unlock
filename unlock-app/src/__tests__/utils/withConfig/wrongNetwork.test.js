@@ -22,6 +22,7 @@ jest.mock('../../../config', () =>
       },
       isRequiredNetwork: () => false,
       requiredNetwork: 'dev',
+      services: { storage: { host: 'http://atest.url' } },
     }
   })
 )
