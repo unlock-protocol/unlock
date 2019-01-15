@@ -1282,6 +1282,44 @@ describe('Web3Service', () => {
 
         web3Service.getKeysForLockOnPage(lockAddress, onPage, byPage)
       })
+
+      it('should get as many owners as there are per page, and not fail on missing keys', done => {
+        expect.assertions(3)
+
+        web3Service._getKeyByLockForOwner = jest.fn(() => {
+          return new Promise(resolve => {
+            return resolve([100, 'hello'])
+          })
+        })
+
+        const onPage = 3
+        const byPage = 5
+        for (let i = 0; i < byPage - 1; i++) {
+          const start = onPage * byPage + i
+          ethCallAndYield(
+            `0x025e7c27${start.toString(16).padStart(64, '0')}`,
+            lockAddress,
+            '0x000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
+          )
+        }
+        // The page only has byPage -1 elements, so that last one fails
+        ethCallAndFail(
+          `0x025e7c27${((onPage + 1) * byPage - 1)
+            .toString(16)
+            .padStart(64, '0')}`,
+          lockAddress,
+          { message: 'VM Exception while processing transaction: revert' }
+        )
+
+        web3Service.on('keys.page', (lock, page, keys) => {
+          expect(lockAddress).toEqual(lock)
+          expect(page).toEqual(onPage)
+          expect(keys.length).toEqual(byPage - 1)
+          done()
+        })
+
+        web3Service.getKeysForLockOnPage(lockAddress, onPage, byPage)
+      })
     })
   })
 })
