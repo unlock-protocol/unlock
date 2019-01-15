@@ -1,12 +1,12 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
 
-import { Errors, mapStateToProps } from '../../../components/interface/Error'
+import { Errors, mapStateToProps } from '../../../components/interface/Errors'
 
 const close = jest.fn()
 
 afterEach(rtl.cleanup)
-describe('Error Component', () => {
+describe('Errors Component', () => {
   describe('when the component has no children or no message', () => {
     it('should not render anything', () => {
       const wrapper = rtl.render(<Errors close={close} />)
@@ -26,6 +26,7 @@ describe('Error Component', () => {
       )
       rtl.fireEvent.click(wrapper.getByTitle(/close/i))
       expect(close).toHaveBeenCalledTimes(1)
+      expect(close).toHaveBeenCalledWith('There was an error.')
     })
   })
 

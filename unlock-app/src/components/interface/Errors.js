@@ -10,11 +10,11 @@ export const Errors = ({ errors, close }) => {
   const content = errors.map(error => (
     <Wrapper key={error}>
       <Error>{ErrorMessage(error)}</Error>
-      <SecondColumn cols={errors.length ? errors.length : 1}>
-        <Buttons.Close as="button" onClick={close} size="16px">
+      <div cols={errors.length ? errors.length : 1}>
+        <Buttons.Close as="button" onClick={() => close(error)} size="16px">
           X
         </Buttons.Close>
-      </SecondColumn>
+      </div>
     </Wrapper>
   ))
   if (!content || !content.length) {
@@ -27,8 +27,8 @@ export const Errors = ({ errors, close }) => {
 export const mapStateToProps = ({ errors }) => ({ errors })
 
 const mapDispatchToProps = dispatch => ({
-  close: () => {
-    dispatch(resetError())
+  close: error => {
+    dispatch(resetError(error))
   },
 })
 
@@ -66,10 +66,4 @@ const Wrapper = styled.section`
 const Error = styled.div`
   grid-column: 1;
   color: var(--red);
-`
-
-const SecondColumn = styled.div`
-  display: grid;
-  grid-column: 2;
-  grid-row: 1;
 `

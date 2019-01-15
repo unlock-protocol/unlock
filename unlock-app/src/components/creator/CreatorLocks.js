@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import UnlockPropTypes from '../../propTypes'
 import CreatorLock, { LockRowGrid, PhoneLockRowGrid } from './CreatorLock'
 import CreatorLockForm from './CreatorLockForm'
-import Error from '../interface/Error'
+import Error from '../interface/Errors'
 import Media, { NoPhone, Phone } from '../../theme/media'
 
 export class CreatorLocks extends React.Component {
