@@ -23,6 +23,17 @@ const defaultMessages = {
   NON_DEPLOYED_CONTRACT: (
     <p>Unlock has not been deployed on the current network.</p>
   ),
+
+  FORM_LOCK_NAME_MISSING: (
+    <p>Please provide a name for the lock you are creating</p>
+  ),
+  FORM_EXPIRATION_DURATION_INVALID: (
+    <p>Expiration must be a positive whole number</p>
+  ),
+  FORM_MAX_KEYS_INVALID: (
+    <p>Maximum keys allowed must be a positive whole number, or infinite</p>
+  ),
+  FORM_KEY_PRICE_INVALID: <p>Key price must be a positive number</p>,
 }
 
 /**
