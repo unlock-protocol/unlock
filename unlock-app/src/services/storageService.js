@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default class StorageService {
   constructor(host) {
-    this.HOST = host
+    this.host = host
   }
 
   genAuthorizationHeader = token => {
