@@ -25,7 +25,7 @@ export default class StorageService {
 
   updateLockDetails(address, update, token) {
     if (token) {
-      return axios.put(`${this.HOST}/lock/${address}`, update, {
+      return axios.put(`${this.host}/lock/${address}`, update, {
         headers: this.genAuthorizationHeader(token),
       })
     } else {
