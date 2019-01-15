@@ -7,6 +7,7 @@ import {
   WITHDRAW_FROM_LOCK,
   UPDATE_LOCK,
   addLock,
+  deleteLock,
   lockDeployed,
   updateLock,
   UPDATE_LOCK_KEY_PRICE,
@@ -17,7 +18,11 @@ import { setNetwork, SET_NETWORK } from '../actions/network'
 import { setError } from '../actions/error'
 import { SET_PROVIDER } from '../actions/provider'
 import { addTransaction, updateTransaction } from '../actions/transaction'
-import { LOCK_PATH_NAME_REGEXP, PGN_ITEMS_PER_PAGE } from '../constants'
+import {
+  LOCK_PATH_NAME_REGEXP,
+  PGN_ITEMS_PER_PAGE,
+  TRANSACTION_TYPES,
+} from '../constants'
 
 import Web3Service from '../services/web3Service'
 import {
@@ -102,7 +107,14 @@ export default function lockMiddleware({ getState, dispatch }) {
     dispatch(updateTransaction(transaction.hash, update))
   })
 
-  web3Service.on('error', error => {
+  web3Service.on('error', (error, transaction) => {
+    if (transaction && transaction.type === TRANSACTION_TYPES.LOCK_CREATION) {
+      // delete the lock
+      dispatch(deleteLock(transaction.lock))
+      return dispatch(
+        setError('Failed to create lock. Did you decline the transaction?')
+      )
+    }
     dispatch(setError(error.message))
   })
 

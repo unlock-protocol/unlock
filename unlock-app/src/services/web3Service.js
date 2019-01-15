@@ -262,7 +262,7 @@ export default class Web3Service extends EventEmitter {
         this.parseTransactionLogsFromReceipt(transaction, contractAbi, receipt)
       })
       .on('error', error => {
-        this.emit('error', error)
+        this.emit('error', error, transaction)
         callback(error)
       })
   }
