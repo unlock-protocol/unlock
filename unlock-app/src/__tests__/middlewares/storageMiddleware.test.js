@@ -100,16 +100,5 @@ describe('Storage middleware', () => {
         expect(next).toHaveBeenCalledTimes(1)
       })
     })
-
-    // describe('when lock or new details are not provided', () => {
-    //   it('does not dispatch to the appropriate storage middleware handler', () => {
-    //     mockWeb3Service.ready = true
-    //     const { next, invoke } = create()
-    //     const action = { type: 'LOCK_DEPLOYED', address: '0x2223' }
-    //     invoke(action)
-    //     expect(storageMiddlewareHander.lockDeployed).not.toBeCalled()
-    //     expect(next).toHaveBeenCalledTimes(1)
-    //   })
-    // })
   })
 })
