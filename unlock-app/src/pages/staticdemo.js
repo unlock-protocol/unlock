@@ -13,7 +13,7 @@ import Media from '../theme/media'
 import BrowserOnly from '../components/helpers/BrowserOnly'
 import UnlockedFlag from '../components/lock/UnlockedFlag'
 
-const Demo = ({ lock, locks, haskey }) => {
+const Demo = ({ lock, locks, hasKey }) => {
   return (
     <Container>
       <GlobalStyle />
@@ -74,7 +74,7 @@ const Demo = ({ lock, locks, haskey }) => {
       <BrowserOnly>
         <div
           style={
-            haskey
+            hasKey
               ? {}
               : {
                   position: 'fixed',
@@ -103,7 +103,7 @@ const Demo = ({ lock, locks, haskey }) => {
 Demo.propTypes = {
   lock: PropTypes.string,
   locks: UnlockPropTypes.locks.isRequired,
-  haskey: PropTypes.bool.isRequired,
+  hasKey: PropTypes.bool.isRequired,
 }
 
 Demo.defaultProps = {
@@ -113,7 +113,7 @@ Demo.defaultProps = {
 export const mapStateToProps = ({ locks, keys, router }) => {
   const match = router.location.pathname.match(LOCK_PATH_NAME_REGEXP)
   const lock = match ? match[1] : null
-  let haskey = false
+  let hasKey = false
   const thislock = locks[lock]
   if (thislock) {
     for (let k of Object.values(keys)) {
@@ -121,14 +121,14 @@ export const mapStateToProps = ({ locks, keys, router }) => {
         k.lock === thislock.address &&
         k.expiration > new Date().getTime() / 1000
       ) {
-        haskey = true
+        hasKey = true
       }
     }
   }
   return {
     lock,
     locks,
-    haskey,
+    hasKey,
   }
 }
 
