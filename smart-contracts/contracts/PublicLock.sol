@@ -325,6 +325,41 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     return owners.length;
   }
 
+ /**
+  * A function which returns a subset of the keys for this Lock as an array
+  * @param _page the page of key owners requested when faceted by page size
+  * @param _pageSize the number of Key Owners requested per page
+  */
+  function getOwnersByPage(uint _page, uint _pageSize)
+    public
+    view
+    returns (address[])
+  {
+    require(outstandingKeys() > 0, "No keys to retrieve");
+    uint _startIndex = _page * _pageSize;
+    require(_startIndex >= 0 && _startIndex < outstandingKeys(), "Index must be in-bounds");
+    uint endOfPageIndex;
+
+    if (_startIndex + _pageSize > owners.length) {
+      endOfPageIndex = owners.length;
+      _pageSize =  owners.length - _startIndex;
+    } else {
+      endOfPageIndex = (_startIndex + _pageSize);
+    }
+
+    // new temp in-memory array to hold pageSize number of requested owners:
+    address[] memory ownersByPage = new address[](_pageSize);
+    uint pageIndex = 0;
+
+    // Build the requested set of owners into a new temporary array:
+    for (uint256 i = _startIndex; i < endOfPageIndex; i++) {
+      ownersByPage[pageIndex] = owners[i];
+      pageIndex++;
+    }
+
+    return ownersByPage;
+  }
+
   /**
    * A function which lets the owner of the lock expire a users' key.
    */

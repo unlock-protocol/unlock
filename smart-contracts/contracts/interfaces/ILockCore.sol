@@ -85,4 +85,16 @@ interface ILockCore {
     external
     view
     returns (uint timestamp);
+
+  /**
+  * @param _page the page of key owners requested when faceted by page size
+  * @param _pageSize the number of Key Owners requested per page
+  */
+  function getOwnersByPage(
+    uint _page,
+    uint _pageSize
+  )
+    external
+    view
+    returns (address[]);
 }
