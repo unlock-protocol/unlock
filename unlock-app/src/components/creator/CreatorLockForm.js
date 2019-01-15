@@ -70,7 +70,7 @@ export class CreatorLockForm extends React.Component {
     }))
   }
 
-  handleChange({ name, value }) {
+  handleChange({ target: { name, value } }) {
     if (name === 'maxNumberOfKeys') {
       this.setState(state => ({
         ...state,
