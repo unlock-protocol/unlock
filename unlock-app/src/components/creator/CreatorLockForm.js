@@ -143,25 +143,32 @@ export class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             defaultValue={name}
             data-valid={valid.name}
+            required
           />
         </FormLockName>
         <FormLockDuration>
           <input
-            type="text"
+            type="number"
+            step="1"
+            inputMode="numeric"
             name="expirationDuration"
             onChange={this.handleChange}
             defaultValue={expirationDuration}
             data-valid={valid.expirationDuration}
+            required
           />{' '}
           days
         </FormLockDuration>
         <FormLockKeys>
           <input
-            type="text"
+            type="number"
+            step="1"
+            inputMode="numeric"
             name="maxNumberOfKeys"
             onChange={this.handleChange}
             value={maxNumberOfKeys}
             data-valid={valid.maxNumberOfKeys}
+            required
           />
           {!unlimitedKeys && (
             <LockLabelUnlimited onClick={this.handleUnlimitedClick}>
@@ -172,11 +179,14 @@ export class CreatorLockForm extends React.Component {
         <FormBalanceWithUnit>
           <Eth />
           <input
-            type="text"
+            type="number"
+            step="0.00001"
+            inputMode="numeric"
             name="keyPrice"
             onChange={this.handleChange}
             defaultValue={keyPrice}
             data-valid={valid.keyPrice}
+            required
           />
         </FormBalanceWithUnit>
         <div>-</div>
@@ -234,15 +244,30 @@ const LockLabelUnlimited = styled(LockLabel)`
 `
 
 const FormLockRow = styled(LockRow)`
-  ${LockRowGrid} input[type='text'] {
-    background-color: var(--lightgrey);
-    border: 0;
-    padding: 5px;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 13px;
+  input[type='number'] {
+    -moz-appearance: textfield;
   }
-  ${LockRowGrid} input[type='text'][data-valid="false"] {
-    background-color: var(--lightred);
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input {
+    background: var(--lightgrey);
+    border: none;
+    border-radius: 4px;
+    height: 21.5px;
+    font-family: 'IBM Plex Mono', sans serif;
+  }
+
+  input:focus {
+    border: 1px solid var(--grey);
+  }
+
+  input[data-valid='false'] {
+    border: 1px solid var(--red);
   }
 `
 
@@ -251,21 +276,24 @@ const Status = styled(LockStatus)`
 `
 
 const FormLockName = styled(LockName)`
-  input[type='text'] {
+  input[type='text'],
+  input[type='number'] {
     min-width: 70px;
     width: 80%;
   }
 `
 
 const FormLockDuration = styled(LockDuration)`
-  input[type='text'] {
+  input[type='text'],
+  input[type='number'] {
     min-width: 30px;
     width: 50%;
   }
 `
 
 const FormLockKeys = styled(LockKeys)`
-  input[type='text'] {
+  input[type='text'],
+  input[type='number'] {
     min-width: 30px;
     width: 80%;
   }
@@ -273,7 +301,8 @@ const FormLockKeys = styled(LockKeys)`
 
 const FormBalanceWithUnit = styled(BalanceWithUnit)`
   white-space: nowrap;
-  input[type='text'] {
+  input[type='text'],
+  input[type='number'] {
     min-width: 30px;
     width: 50%;
   }
