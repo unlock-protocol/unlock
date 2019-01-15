@@ -7,63 +7,47 @@ import PageNumbers from './PageNumbers'
 import { PGN_ITEMS_PER_PAGE } from '../../../constants'
 import UnlockPropTypes from '../../../propTypes'
 
-class Paginate extends React.Component {
-  static propTypes = {
-    items: UnlockPropTypes.keyList,
-    renderItems: PropTypes.func,
+export function Paginate({
+  goToPage,
+  itemCount,
+  currentPage,
+  renderItems,
+  items,
+}) {
+  const pageInfo = {
+    numberOfPages: Math.ceil(itemCount / PGN_ITEMS_PER_PAGE),
+    currentPage,
+    goToPage,
   }
+  return (
+    <PaginationWrapper>
+      {renderItems(items)}
+      {itemCount > PGN_ITEMS_PER_PAGE && (
+        <div>
+          <LockDivider />
+          <Pagination>
+            <PreviousButtons {...pageInfo} />
+            <PageNumbers {...pageInfo} />
+            <NextButtons {...pageInfo} />
+          </Pagination>
+        </div>
+      )}
+    </PaginationWrapper>
+  )
+}
 
-  static defaultProps = {
-    items: [],
-    renderItems: () => null,
-  }
+Paginate.propTypes = {
+  goToPage: PropTypes.func.isRequired,
+  itemCount: PropTypes.number,
+  currentPage: PropTypes.number,
+  renderItems: PropTypes.func.isRequired,
+  items: UnlockPropTypes.keyList,
+}
 
-  constructor(props) {
-    super(props)
-    const itemCount = props.items.length
-    this.state = {
-      currentPage: 1,
-      itemsPerPage: PGN_ITEMS_PER_PAGE,
-      count: itemCount,
-      numberOfPages: Math.ceil(itemCount / PGN_ITEMS_PER_PAGE),
-    }
-  }
-
-  itemList = () => {
-    const { currentPage, itemsPerPage } = this.state
-    const { items, renderItems } = this.props
-    return renderItems(
-      [...items].splice((currentPage - 1) * itemsPerPage, itemsPerPage)
-    )
-  }
-
-  goToPage = page => {
-    this.setState(state => {
-      return {
-        ...state,
-        currentPage: page,
-      }
-    })
-  }
-
-  render() {
-    const { count } = this.state
-    return (
-      <PaginationWrapper>
-        {this.itemList()}
-        {count > 10 && (
-          <div>
-            <LockDivider />
-            <Pagination>
-              <PreviousButtons {...this.state} goToPage={this.goToPage} />
-              <PageNumbers {...this.state} goToPage={this.goToPage} />
-              <NextButtons {...this.state} goToPage={this.goToPage} />
-            </Pagination>
-          </div>
-        )}
-      </PaginationWrapper>
-    )
-  }
+Paginate.defaultProps = {
+  itemCount: 0,
+  currentPage: 0,
+  items: [],
 }
 
 const Pagination = styled.div`
