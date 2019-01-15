@@ -39,6 +39,7 @@ import modalReducer, {
 // Middlewares
 import lockMiddleware from './middlewares/lockMiddleware'
 import currencyConversionMiddleware from './middlewares/currencyConversionMiddleware'
+import storageMiddleware from './middlewares/storageMiddleware'
 
 const config = configure()
 
@@ -92,6 +93,10 @@ export const createUnlockStore = (
     currencyConversionMiddleware,
     routerMiddleware(history),
   ]
+
+  if (config.services.storage) {
+    middlewares.push(storageMiddleware)
+  }
 
   const composeEnhancers =
     global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

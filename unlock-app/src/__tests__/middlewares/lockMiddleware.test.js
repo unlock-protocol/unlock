@@ -83,9 +83,16 @@ jest.mock('../../services/web3Service', () => {
   }
 })
 
+let mockGenerateJWTToken = jest.fn(() => Promise.resolve())
+
+jest.mock('../../utils/signature', () => () => {
+  return mockGenerateJWTToken()
+})
+
 beforeEach(() => {
   // Reset the mock
   mockWeb3Service = new MockWebService()
+  mockGenerateJWTToken = jest.fn(() => Promise.resolve())
 
   // Reset state!
   account = {
@@ -447,6 +454,7 @@ describe('Lock middleware', () => {
       lock,
       store.getState().account
     )
+    expect(mockGenerateJWTToken).toHaveBeenCalled()
     expect(next).toHaveBeenCalledWith(action)
   })
 
@@ -597,6 +605,28 @@ describe('Lock middleware', () => {
         '0.03'
       )
       expect(next).toHaveBeenCalledWith(action)
+    })
+  })
+
+  describe('LOCK_DEPLOYED', () => {
+    describe('when the action contains the lock address on chain', () => {
+      it('should store the update', () => {
+        const { next, invoke } = create()
+        let action = { type: LOCK_DEPLOYED, address: '0x4242424242', lock }
+
+        invoke(action)
+        expect(mockGenerateJWTToken).toHaveBeenCalled()
+        expect(next).toHaveBeenCalledWith(action)
+      })
+
+      it('should not store the update', () => {
+        const { next, invoke } = create()
+        let action = { type: LOCK_DEPLOYED }
+
+        invoke(action)
+        expect(mockGenerateJWTToken).not.toHaveBeenCalled()
+        expect(next).toHaveBeenCalledWith(action)
+      })
     })
   })
 })
