@@ -15589,6 +15589,7 @@ Object {
           class="c1"
         >
           <input
+            data-valid="true"
             name="name"
             type="text"
             value="New Lock"
@@ -15598,6 +15599,7 @@ Object {
           class="c2"
         >
           <input
+            data-valid="true"
             name="expirationDuration"
             type="text"
             value="30"
@@ -15609,6 +15611,7 @@ Object {
           class="c3"
         >
           <input
+            data-valid="true"
             name="maxNumberOfKeys"
             type="text"
             value="10"
@@ -15626,6 +15629,7 @@ Object {
             class="c6"
           />
           <input
+            data-valid="true"
             name="keyPrice"
             type="text"
             value="0.01"
@@ -15735,6 +15739,7 @@ Object {
         class="xrsnj2-4 sc-1u8ov25-3 fqlINd"
       >
         <input
+          data-valid="true"
           name="name"
           type="text"
           value="New Lock"
@@ -15744,6 +15749,7 @@ Object {
         class="xrsnj2-6 sc-1u8ov25-4 gyQDKm"
       >
         <input
+          data-valid="true"
           name="expirationDuration"
           type="text"
           value="30"
@@ -15755,6 +15761,7 @@ Object {
         class="xrsnj2-7 sc-1u8ov25-5 jveGuT"
       >
         <input
+          data-valid="true"
           name="maxNumberOfKeys"
           type="text"
           value="10"
@@ -15772,6 +15779,7 @@ Object {
           class="buwkmd-2 buwkmd-3 cwENmW"
         />
         <input
+          data-valid="true"
           name="keyPrice"
           type="text"
           value="0.01"
@@ -16083,6 +16091,7 @@ Object {
           class="c1"
         >
           <input
+            data-valid="true"
             name="name"
             type="text"
             value="New Lock"
@@ -16092,6 +16101,7 @@ Object {
           class="c2"
         >
           <input
+            data-valid="true"
             name="expirationDuration"
             type="text"
             value="30"
@@ -16103,6 +16113,7 @@ Object {
           class="c3"
         >
           <input
+            data-valid="true"
             name="maxNumberOfKeys"
             type="text"
             value="10"
@@ -16120,6 +16131,7 @@ Object {
             class="c6"
           />
           <input
+            data-valid="true"
             name="keyPrice"
             type="text"
             value="0.01"
@@ -16229,6 +16241,7 @@ Object {
         class="xrsnj2-4 sc-1u8ov25-3 fqlINd"
       >
         <input
+          data-valid="true"
           name="name"
           type="text"
           value="New Lock"
@@ -16238,6 +16251,7 @@ Object {
         class="xrsnj2-6 sc-1u8ov25-4 gyQDKm"
       >
         <input
+          data-valid="true"
           name="expirationDuration"
           type="text"
           value="30"
@@ -16249,6 +16263,7 @@ Object {
         class="xrsnj2-7 sc-1u8ov25-5 jveGuT"
       >
         <input
+          data-valid="true"
           name="maxNumberOfKeys"
           type="text"
           value="10"
@@ -16266,6 +16281,7 @@ Object {
           class="buwkmd-2 buwkmd-3 cwENmW"
         />
         <input
+          data-valid="true"
           name="keyPrice"
           type="text"
           value="0.01"

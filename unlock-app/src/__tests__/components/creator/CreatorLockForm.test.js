@@ -4,106 +4,246 @@ import * as rtl from 'react-testing-library'
 import { CreatorLockForm } from '../../../components/creator/CreatorLockForm'
 
 describe('CreatorLockForm', () => {
-  let hideAction
   let createLock
-  let wrapper
-
-  beforeEach(() => {
-    hideAction = jest.fn()
+  let hideAction
+  function makeLockForm(values = {}) {
     createLock = jest.fn()
-    wrapper = rtl.render(
+    hideAction = jest.fn()
+    const ret = rtl.render(
       <CreatorLockForm
         hideAction={hideAction}
         createLock={createLock}
         account={{ address: 'hi' }}
+        {...values}
       />
     )
+    return ret
+  }
+
+  describe('invalid values', () => {
+    it('name is empty', () => {
+      const wrapper = makeLockForm({ name: '' })
+
+      expect(wrapper.getByValue('').dataset.valid).toBe('false')
+    })
+    it('key expiration is not a number', () => {
+      const save = console.error // eslint-disable-line
+      console.error = () => {} // eslint-disable-line
+      try {
+        const wrapper = makeLockForm({ expirationDuration: 'abc' })
+
+        expect(wrapper.getByValue('abc').dataset.valid).toBe('false')
+      } finally {
+        console.error = save // eslint-disable-line
+      }
+    })
+    it('key expiration is missing', () => {
+      const save = console.error // eslint-disable-line
+      console.error = () => {} // eslint-disable-line
+      try {
+        const wrapper = makeLockForm({ expirationDuration: '' })
+
+        expect(wrapper.getByValue('').dataset.valid).toBe('false')
+      } finally {
+        console.error = save // eslint-disable-line
+      }
+    })
+    it('key expiration is a negative number', () => {
+      const wrapper = makeLockForm({ expirationDuration: -1 })
+
+      expect(wrapper.getByValue('-1').dataset.valid).toBe('false')
+    })
+    it('max number of keys is missing', () => {
+      const save = console.error // eslint-disable-line
+      console.error = () => {} // eslint-disable-line
+      try {
+        const wrapper = makeLockForm({ maxNumberOfKeys: '' })
+
+        expect(wrapper.getByValue('').dataset.valid).toBe('false')
+      } finally {
+        console.error = save // eslint-disable-line
+      }
+    })
+    it('max number of keys is not a number', () => {
+      const save = console.error // eslint-disable-line
+      console.error = () => {} // eslint-disable-line
+      try {
+        const wrapper = makeLockForm({ maxNumberOfKeys: 'abc' })
+
+        expect(wrapper.getByValue('abc').dataset.valid).toBe('false')
+      } finally {
+        console.error = save // eslint-disable-line
+      }
+    })
+    it('max number of keys is a negative number', () => {
+      const wrapper = makeLockForm({ maxNumberOfKeys: -1 })
+
+      expect(wrapper.getByValue('-1').dataset.valid).toBe('false')
+    })
+    it('key price is not a number', () => {
+      const save = console.error // eslint-disable-line
+      console.error = () => {} // eslint-disable-line
+      try {
+        const wrapper = makeLockForm({ keyPrice: 'abc' })
+
+        expect(wrapper.getByValue('abc').dataset.valid).toBe('false')
+      } finally {
+        console.error = save // eslint-disable-line
+      }
+    })
+    it('key price is a negative number', () => {
+      const wrapper = makeLockForm({ keyPrice: '-1' })
+
+      expect(wrapper.getByValue('-1').dataset.valid).toBe('false')
+    })
+    describe('submit button triggers setError once for each possible error', () => {
+      it('name is empty', () => {
+        const wrapper = makeLockForm({ name: '' })
+
+        const submit = wrapper.getByText('Submit')
+        expect(submit).not.toBeNull()
+
+        rtl.fireEvent.click(submit)
+      })
+      it('key expiration is not a number', () => {
+        const save = console.error // eslint-disable-line
+        console.error = () => {} // eslint-disable-line
+        try {
+          const wrapper = makeLockForm({ expirationDuration: 'abc' })
+
+          const submit = wrapper.getByText('Submit')
+          expect(submit).not.toBeNull()
+
+          rtl.fireEvent.click(submit)
+        } finally {
+          console.error = save // eslint-disable-line
+        }
+      })
+      it('key expiration is a negative number', () => {
+        const wrapper = makeLockForm({ expirationDuration: -1 })
+
+        const submit = wrapper.getByText('Submit')
+        expect(submit).not.toBeNull()
+
+        rtl.fireEvent.click(submit)
+      })
+      it('max number of keys is not a number', () => {
+        const save = console.error // eslint-disable-line
+        console.error = () => {} // eslint-disable-line
+        try {
+          const wrapper = makeLockForm({ maxNumberOfKeys: 'abc' })
+
+          const submit = wrapper.getByText('Submit')
+          expect(submit).not.toBeNull()
+
+          rtl.fireEvent.click(submit)
+        } finally {
+          console.error = save // eslint-disable-line
+        }
+      })
+      it('max number of keys is a negative number', () => {
+        const wrapper = makeLockForm({ maxNumberOfKeys: -1 })
+
+        const submit = wrapper.getByText('Submit')
+        expect(submit).not.toBeNull()
+
+        rtl.fireEvent.click(submit)
+      })
+      it('key price is not a number', () => {
+        const save = console.error // eslint-disable-line
+        console.error = () => {} // eslint-disable-line
+        try {
+          const wrapper = makeLockForm({ keyPrice: 'abc' })
+
+          const submit = wrapper.getByText('Submit')
+          expect(submit).not.toBeNull()
+
+          rtl.fireEvent.click(submit)
+        } finally {
+          console.error = save // eslint-disable-line
+        }
+      })
+      it('key price is a negative number', () => {
+        const wrapper = makeLockForm({ keyPrice: '-1' })
+
+        const submit = wrapper.getByText('Submit')
+        expect(submit).not.toBeNull()
+
+        rtl.fireEvent.click(submit)
+      })
+      it('multiple errors', () => {
+        const wrapper = makeLockForm({ keyPrice: '-1', name: '' })
+
+        const submit = wrapper.getByText('Submit')
+        expect(submit).not.toBeNull()
+
+        rtl.fireEvent.click(submit)
+      })
+    })
   })
-  it('should not allow a form with invalid data to be submitted', () => {
-    // Setting name to be an invalid value (empty)
-    let name = wrapper.queryByValue('New Lock')
-    rtl.fireEvent.change(name, { target: { value: '' } })
+  describe('valid values', () => {
+    it('calls resetErrors', () => {
+      makeLockForm({ name: 'One Month Subscription' })
+    })
+    it('name is a string', () => {
+      const wrapper = makeLockForm({ name: 'One Month Subscription' })
+      expect(wrapper.getByValue('One Month Subscription').dataset.valid).toBe(
+        'true'
+      )
+    })
+    it('key expiration is a positive number', () => {
+      const wrapper = makeLockForm({ expirationDuration: 35 })
 
-    rtl.fireEvent.click(wrapper.queryByText('Submit'))
+      expect(wrapper.getByValue('35').dataset.valid).toBe('true')
+    })
+    it('max number of keys is a positive number', () => {
+      const wrapper = makeLockForm({ maxNumberOfKeys: 35 })
 
-    // Form should still exist
-    expect(wrapper.queryByText('Submit')).not.toBeNull()
+      expect(wrapper.getByValue('35').dataset.valid).toBe('true')
+    })
+    it('max number of keys is infinity', () => {
+      const wrapper = makeLockForm({ maxNumberOfKeys: '∞' })
+
+      expect(wrapper.getByValue('∞').dataset.valid).toBe('true')
+    })
+    it('key price is a positive number', () => {
+      const wrapper = makeLockForm({ keyPrice: '0.01' })
+
+      expect(wrapper.getByValue('0.01').dataset.valid).toBe('true')
+    })
+    it('submit button is enabled and activates on submit', () => {
+      const wrapper = makeLockForm()
+
+      const submit = wrapper.getByText('Submit')
+      expect(submit).not.toBeNull()
+
+      rtl.fireEvent.click(submit)
+
+      expect(createLock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          expirationDuration: 2592000,
+          keyPrice: '10000000000000000',
+          maxNumberOfKeys: 10,
+          name: 'New Lock',
+          owner: 'hi',
+        })
+      )
+    })
+    it('submit button triggers resetError once for each possible error', () => {
+      const wrapper = makeLockForm()
+
+      const submit = wrapper.getByText('Submit')
+      expect(submit).not.toBeNull()
+
+      rtl.fireEvent.click(submit)
+    })
   })
-  it('should signal field as invalid if the data is not valid', () => {
-    expect.assertions(12)
+  it('cancel dismisses the form', () => {
+    const wrapper = makeLockForm()
 
-    // Setting name to be an invalid value (empty)
-    let name = wrapper.queryByValue('New Lock')
-    expect(name.dataset.valid).toBe(undefined)
-    rtl.fireEvent.change(name, { target: { value: '' } })
-    expect(name.dataset.valid).toBe('false')
-    rtl.fireEvent.change(name, { target: { value: 'My lock' } })
-    expect(name.dataset.valid).toBe('true')
+    const cancel = wrapper.getByText('Cancel')
+    rtl.fireEvent.click(cancel)
 
-    // Setting expirationDuration to be an invalid value (a string)
-    let expirationDuration = wrapper.queryByValue('30')
-    expect(expirationDuration.dataset.valid).toBe(undefined)
-    rtl.fireEvent.change(expirationDuration, { target: { value: 'abc' } })
-    expect(expirationDuration.dataset.valid).toBe('false')
-    rtl.fireEvent.change(expirationDuration, { target: { value: '100' } })
-    expect(expirationDuration.dataset.valid).toBe('true')
-
-    // Setting maxNumberOfKeys to be an invalid value (a string)
-    let maxNumberOfKeys = wrapper.queryByValue('10')
-    expect(maxNumberOfKeys.dataset.valid).toBe(undefined)
-    rtl.fireEvent.change(maxNumberOfKeys, { target: { value: 'abc' } })
-    expect(maxNumberOfKeys.dataset.valid).toBe('false')
-    rtl.fireEvent.change(maxNumberOfKeys, { target: { value: '1000' } })
-    expect(maxNumberOfKeys.dataset.valid).toBe('true')
-
-    // Setting keyPrice to be an invalid value (a string)
-    let keyPrice = wrapper.queryByValue('0.01')
-    expect(keyPrice.dataset.valid).toBe(undefined)
-    rtl.fireEvent.change(keyPrice, { target: { value: 'abc' } })
-    expect(keyPrice.dataset.valid).toBe('false')
-    rtl.fireEvent.change(keyPrice, { target: { value: '0.1' } })
-    expect(keyPrice.dataset.valid).toBe('true')
-  })
-
-  it('should not consider maxNumberOfKeys to be invalid when using the infinity symbol', () => {
-    expect.assertions(5)
-
-    // Setting maxNumberOfKeys to be an invalid value (a string)
-    let maxNumberOfKeys = wrapper.queryByValue('10')
-    expect(maxNumberOfKeys.dataset.valid).toBe(undefined)
-    rtl.fireEvent.change(maxNumberOfKeys, { target: { value: 'abc' } })
-    expect(maxNumberOfKeys.dataset.valid).toBe('false')
-
-    // Let's now change
-
-    let unlimitedLabel = wrapper.queryByText('Unlimited')
-    expect(unlimitedLabel).not.toBeNull()
-
-    rtl.fireEvent.click(unlimitedLabel)
-    expect(wrapper.queryByValue('∞')).not.toBeNull()
-    expect(maxNumberOfKeys.dataset.valid).toBe('true')
-  })
-
-  it('should display infinity symbol when unlimited is clicked and mark the field as valid', () => {
-    let unlimitedLabel = wrapper.queryByText('Unlimited')
-    expect(unlimitedLabel).not.toBeNull()
-    expect(wrapper.queryByText('Submit')).not.toBeNull()
-
-    rtl.fireEvent.click(unlimitedLabel)
-    expect(wrapper.queryByText('Unlimited')).toBeNull()
-    expect(wrapper.queryByValue('∞')).not.toBeNull()
-  })
-  it('should enable the "Unlimited" label after infinity is replaced with a finite number', () => {
-    let unlimitedLabel = wrapper.queryByText('Unlimited')
-    expect(unlimitedLabel).not.toBeNull()
-    expect(wrapper.queryByText('Submit')).not.toBeNull()
-
-    rtl.fireEvent.click(unlimitedLabel)
-    expect(wrapper.queryByText('Unlimited')).toBeNull()
-    expect(wrapper.queryByValue('∞')).not.toBeNull()
-
-    let numberOfKeys = wrapper.queryByValue('∞')
-    rtl.fireEvent.change(numberOfKeys, { target: { value: '12' } })
-    expect(wrapper.queryByText('Unlimited')).not.toBeNull()
+    expect(hideAction).toHaveBeenCalled()
   })
 })
