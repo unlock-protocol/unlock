@@ -283,7 +283,7 @@ const FormLockRow = styled(LockRow)`
   }
 
   input:disabled {
-    color: var(--dimgrey);
+    color: var(--silver);
   }
 `
 
