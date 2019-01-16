@@ -1,4 +1,4 @@
-pragma solidity 0.4.24;
+pragma solidity 0.4.25;
 
 import "./interfaces/IUnlock.sol";
 import "./interfaces/IERC721.sol";
