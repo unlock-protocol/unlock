@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 
 import UnlockPropTypes from '../../propTypes'
 import CreatorLock, { LockRowGrid, PhoneLockRowGrid } from './CreatorLock'
@@ -26,7 +27,7 @@ export class CreatorLocks extends React.Component {
   }
 
   render() {
-    const { locks } = this.props
+    const { locks, createLock } = this.props
     const { showDashboardForm } = this.state
     let lockFeed = Object.values(locks).reverse() // We want to display newer locks first
 
@@ -60,6 +61,7 @@ export class CreatorLocks extends React.Component {
 }
 
 CreatorLocks.propTypes = {
+  createLock: PropTypes.func.isRequired,
   locks: UnlockPropTypes.locks,
   showForm: UnlockPropTypes.showDashboardForm,
 }
