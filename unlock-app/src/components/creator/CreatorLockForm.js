@@ -135,6 +135,8 @@ export class CreatorLockForm extends React.Component {
   }
 
   render() {
+    const { address } = this.props
+    const disableEdit = !!address
     const {
       expirationDuration,
       maxNumberOfKeys,
@@ -155,7 +157,8 @@ export class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             defaultValue={name}
             data-valid={valid.name}
-            required
+            required={!disableEdit}
+            disabled={disableEdit}
           />
         </FormLockName>
         <FormLockDuration>
@@ -167,7 +170,8 @@ export class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             defaultValue={expirationDuration}
             data-valid={valid.expirationDuration}
-            required
+            required={!disableEdit}
+            disabled={disableEdit}
           />{' '}
           days
         </FormLockDuration>
@@ -178,9 +182,10 @@ export class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             value={maxNumberOfKeys}
             data-valid={valid.maxNumberOfKeys}
-            required
+            required={!disableEdit}
+            disabled={disableEdit}
           />
-          {!unlimitedKeys && (
+          {!disableEdit && !unlimitedKeys && (
             <LockLabelUnlimited onClick={this.handleUnlimitedClick}>
               Unlimited
             </LockLabelUnlimited>
@@ -275,6 +280,10 @@ const FormLockRow = styled(LockRow)`
 
   input[data-valid='false'] {
     border: 1px solid var(--red);
+  }
+
+  input:disabled {
+    color: var(--dimgrey);
   }
 `
 
