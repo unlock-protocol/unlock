@@ -76,7 +76,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(
-  undefined,
+  undefined, // no mapStateToProps for CreatorLocks, we only use mapDispatchToProps
   mapDispatchToProps
 )(CreatorLocks)
 
