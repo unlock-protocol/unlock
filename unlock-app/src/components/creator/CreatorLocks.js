@@ -16,8 +16,45 @@ export class CreatorLocks extends React.Component {
     const { showForm } = this.props
     this.state = {
       showDashboardForm: !!showForm,
+      editingLocks: {},
     }
     this.toggleForm = this.toggleForm.bind(this)
+  }
+
+  getLockElement(lock) {
+    const key = JSON.stringify(lock)
+    const { editingLocks } = this.state
+    if (editingLocks[lock.address]) {
+      return (
+        <CreatorLockForm
+          key={key}
+          createLock={() => {}}
+          hideAction={() => this.stopEditingLock(lock.address)}
+          {...lock}
+        />
+      )
+    }
+    return (
+      <CreatorLock
+        key={key}
+        lock={lock}
+        edit={() => this.editLock(lock.address)}
+      />
+    )
+  }
+
+  editLock(address) {
+    this.setState(state => ({
+      editingLocks: { ...state.editingLocks, [address]: true },
+    }))
+  }
+
+  stopEditingLock(address) {
+    this.setState(state => {
+      const editingLocks = { ...state.editingLocks }
+      delete editingLocks[address]
+      return { editingLocks }
+    })
   }
 
   toggleForm() {
@@ -52,9 +89,7 @@ export class CreatorLocks extends React.Component {
             createLock={createLock}
           />
         )}
-        {lockFeed.map(lock => {
-          return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
-        })}
+        {lockFeed.map(lock => this.getLockElement(lock))}
       </Locks>
     )
   }

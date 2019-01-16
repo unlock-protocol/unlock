@@ -75,4 +75,29 @@ describe('CreatorLocks', () => {
 
     expect(createLock).toHaveBeenCalled()
   })
+  it('should enable editing of an existing lock when edit is pressed', () => {
+    const locks = {
+      '0x1234567890': {
+        address: '0x1234567890',
+        transaction: 'transactionid',
+        keyPrice: '100000000000000000',
+        balance: '1',
+        expirationDuration: 100,
+      },
+    }
+
+    const store = createUnlockStore({})
+
+    const wrapper = rtl.render(
+      <Provider store={store}>
+        <CreatorLocks createLock={() => {}} locks={locks} />
+      </Provider>
+    )
+    wrapper.debug()
+
+    const editButton = wrapper.getByTitle('Edit')
+    rtl.fireEvent.click(editButton)
+
+    expect(wrapper.queryByValue('0.01')).not.toBeNull()
+  })
 })
