@@ -20,10 +20,16 @@ import { LockStatus } from './lock/CreatorLockStatus'
 export class CreatorLockForm extends React.Component {
   constructor(props, context) {
     super(props, context)
+    let expirationDuration = props.expirationDuration
+    let keyPrice = props.keyPrice
+    if (props.convert) {
+      keyPrice = Web3Utils.fromWei(keyPrice, props.keyPriceCurrency)
+      expirationDuration = expirationDuration / props.expirationDurationUnit
+    }
     this.state = {
-      expirationDuration: props.expirationDuration,
+      expirationDuration: expirationDuration,
       expirationDurationUnit: props.expirationDurationUnit, // Days
-      keyPrice: props.keyPrice,
+      keyPrice: keyPrice,
       keyPriceCurrency: props.keyPriceCurrency,
       maxNumberOfKeys: props.maxNumberOfKeys,
       unlimitedKeys: props.maxNumberOfKeys === '∞',
@@ -217,16 +223,18 @@ CreatorLockForm.propTypes = {
   maxNumberOfKeys: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // string is for '∞'
   name: PropTypes.string,
   address: PropTypes.string,
+  convert: PropTypes.bool, // this prop is to allow form field validation tests to test edge cases
 }
 
 CreatorLockForm.defaultProps = {
-  expirationDuration: 30,
+  expirationDuration: 30 * 86400,
   expirationDurationUnit: 86400, // Days
-  keyPrice: '0.01',
+  keyPrice: '10000000000000000',
   keyPriceCurrency: 'ether',
   maxNumberOfKeys: 10,
   name: 'New Lock',
   address: uniqid(), // for new locks, we don't have an address, so use a temporary one
+  convert: true,
 }
 
 const mapStateToProps = state => {
