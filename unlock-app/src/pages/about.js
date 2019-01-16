@@ -134,7 +134,7 @@ const People = [
   },
   {
     name: 'Christopher Nascone',
-    picture: '',
+    picture: '/static/images/illustrations/chris.jpg',
     personalLink: 'https://nasc.one',
     linkedIn: '',
     bio: `I'm a software engineer from New Jersey, which means I have only
