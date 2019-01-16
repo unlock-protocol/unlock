@@ -29,6 +29,7 @@ export class CreatorLockForm extends React.Component {
       maxNumberOfKeys: props.maxNumberOfKeys,
       unlimitedKeys: props.maxNumberOfKeys === '∞',
       name: props.name,
+      address: props.address,
     }
     this.state.valid = {
       name: this.validate('name', props.name),
