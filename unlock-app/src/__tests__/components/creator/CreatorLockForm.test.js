@@ -14,6 +14,7 @@ describe('CreatorLockForm', () => {
         hideAction={hideAction}
         createLock={createLock}
         account={{ address: 'hi' }}
+        convert={false}
         {...values}
       />
     )
@@ -212,7 +213,7 @@ describe('CreatorLockForm', () => {
       expect(wrapper.getByValue('0.01').dataset.valid).toBe('true')
     })
     it('submit button is enabled and activates on submit', () => {
-      const wrapper = makeLockForm()
+      const wrapper = makeLockForm({ convert: true })
 
       const submit = wrapper.getByText('Submit')
       expect(submit).not.toBeNull()
