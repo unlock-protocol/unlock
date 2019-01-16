@@ -135,9 +135,11 @@ const People = [
   {
     name: 'Christopher Nascone',
     picture: '',
-    personalLink: 'https://www.nasc.one',
+    personalLink: 'https://nasc.one',
     linkedIn: '',
-    bio: '',
+    bio: `I'm a software engineer from New Jersey, which means I have only
+          one degree of separation from the entire staff of Bell Labs. When I'm
+          not on the computer, you might find me wandering around in the woods.`,
   },
 ].sort((bonnie, clyde) => (bonnie.name < clyde.name ? -1 : 1))
 
