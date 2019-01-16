@@ -4839,7 +4839,7 @@ Object {
                 </h2>
                 <img
                   class="c19"
-                  src=""
+                  src="/static/images/illustrations/chris.jpg"
                 />
                 <p>
                   I'm a software engineer from New Jersey, which means I have only
@@ -4854,14 +4854,7 @@ Object {
                   >
                     Personal site
                   </a>
-                   - 
-                  <a
-                    href=""
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    LinkedIn
-                  </a>
+                  
                 </small>
               </div>
               <div
@@ -5486,7 +5479,7 @@ Object {
               </h2>
               <img
                 class="sc-1y07p1o-0 ekCmWE"
-                src=""
+                src="/static/images/illustrations/chris.jpg"
               />
               <p>
                 I'm a software engineer from New Jersey, which means I have only
@@ -5501,14 +5494,7 @@ Object {
                 >
                   Personal site
                 </a>
-                 - 
-                <a
-                  href=""
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  LinkedIn
-                </a>
+                
               </small>
             </div>
             <div
