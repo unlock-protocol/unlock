@@ -17,7 +17,7 @@ describe('CreatorLocks', () => {
 
     const wrapper = rtl.render(
       <Provider store={store}>
-        <CreatorLocks />
+        <CreatorLocks account={{}} createLock={() => {}} />
       </Provider>
     )
 
@@ -38,7 +38,7 @@ describe('CreatorLocks', () => {
 
     let wrapper = rtl.render(
       <Provider store={store}>
-        <CreatorLocks />
+        <CreatorLocks account={{}} createLock={() => {}} />
       </Provider>
     )
 
@@ -63,7 +63,7 @@ describe('CreatorLocks', () => {
 
     const wrapper = rtl.render(
       <Provider store={store}>
-        <CreatorLocks createLock={createLock} />
+        <CreatorLocks createLock={createLock} account={{}} />
       </Provider>
     )
 
@@ -86,18 +86,19 @@ describe('CreatorLocks', () => {
       },
     }
 
-    const store = createUnlockStore({})
+    const store = createUnlockStore({
+      account: {},
+    })
 
     const wrapper = rtl.render(
       <Provider store={store}>
-        <CreatorLocks createLock={() => {}} locks={locks} />
+        <CreatorLocks createLock={() => {}} locks={locks} account={{}} />
       </Provider>
     )
-    wrapper.debug()
 
     const editButton = wrapper.getByTitle('Edit')
     rtl.fireEvent.click(editButton)
 
-    expect(wrapper.queryByValue('0.01')).not.toBeNull()
+    expect(wrapper.queryByValue('0.1')).not.toBeNull() // queryByValue only matches form fields
   })
 })
