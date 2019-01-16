@@ -12,7 +12,4 @@ if [ -n "$AWS_ACCESS_KEY_ID" ] && [ -n "$AWS_SECRET_ACCESS_KEY" ]; then
 
   # log in
   eval $(aws ecr get-login --no-include-email --region us-east-1);
-
-  # Mark as connected
-  export AWS_ENABLED=1
 fi
