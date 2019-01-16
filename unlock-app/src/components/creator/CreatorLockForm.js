@@ -223,7 +223,7 @@ CreatorLockForm.propTypes = {
   maxNumberOfKeys: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // string is for '∞'
   name: PropTypes.string,
   address: PropTypes.string,
-  convert: PropTypes.bool,
+  convert: PropTypes.bool, // this prop is to allow form field validation tests to test edge cases
 }
 
 CreatorLockForm.defaultProps = {

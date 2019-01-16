@@ -14,10 +14,15 @@ describe('CreatorLockForm', () => {
         hideAction={hideAction}
         createLock={createLock}
         account={{ address: 'hi' }}
-        convert={false}
+        convert={false} // * see comment below
         {...values}
       />
     )
+    // * (regarding the convert prop)
+    // tests that do not explicitly pass "{ convert: true }" will instruct
+    // CreatorLockForm to accept all values "as is" and not convert keyPrice or expirationDuration
+    // from wei and seconds to eth and days, respectively.
+    // this will be removed when a way is found to test form field validation edge cases
     return ret
   }
 
@@ -213,7 +218,7 @@ describe('CreatorLockForm', () => {
       expect(wrapper.getByValue('0.01').dataset.valid).toBe('true')
     })
     it('submit button is enabled and activates on submit', () => {
-      const wrapper = makeLockForm({ convert: true })
+      const wrapper = makeLockForm({ convert: true }) // remove the "convert" prop when it is no longer necessary
 
       const submit = wrapper.getByText('Submit')
       expect(submit).not.toBeNull()
