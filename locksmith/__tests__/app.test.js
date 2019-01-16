@@ -2,13 +2,20 @@ const request = require('supertest')
 const app = require('../src/app')
 const Lock = require('../src/lock')
 
+const validLockOwner = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+
 const testLockDetails = {
   name: 'Test Lock',
   address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
   owner: '0xdeadbed123',
+}
+
+const lockUpdateDetails = {
+  currentAddress: 'jqfqod74',
+  address: '0x4983D5ECDc5cc0E499c2D23BF4Ac32B982bAe53a',
+  owner: validLockOwner,
 } 
 
-const validLockOwner = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const validLockDetails  =  {
   address: 'jqa6dnp1',
   name: 'oioioi',
@@ -18,11 +25,15 @@ const validLockDetails  =  {
   owner: validLockOwner,
 }
 
-const lockUpdateDetails = {
-  currentAddress: 'jqfqod74',
-  address: '0x4983D5ECDc5cc0E499c2D23BF4Ac32B982bAe53a',
-  owner: validLockOwner,
-} 
+const ownedLocks = [{
+  name: 'a mighty fine lock',
+  address: 'jqfqod74',
+  owner: '0x423893453',
+},{
+  name: 'A random other lock',
+  address: 'jqfqod75',
+  owner: '0x423893453',
+}]
 
 const savingLockHeader = 'Bearer eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJsb2NrIjp7ImFkZHJlc3MiOiJqcWE2ZG5wMSIsIm5hbWUiOiJva' + 
                          'W9pb2kiLCJleHBpcmF0aW9uRHVyYXRpb24iOjI1OTIwMDAsImtleVByaWNlIjoiMTAwMDAwMDAwMDAwMDAwMDAiLCJtYXhOd' +
@@ -36,16 +47,12 @@ const updatingLockHeader ='Bearer eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJjdXJyZW
                           'FBZEVFRDRjMEI4NjFjQjM2ZjRjRTAwNmE5QzkwQkEyRTQzZmRjMiJ9.0x0c3affb75a12cbf7e3c732aed4bf82dbe5c4ba' +
                           'ddf10ecb354585a5b7e328d25552a9092d7fd518c4ff21b0f5860fda6041a2340d2ad86b7150a0dfbf15c82c1500'
 
-beforeEach(done => {
-  Lock.create(testLockDetails).then(() => {
-    done()
-  })
+beforeEach (done => {
+  Lock.create(testLockDetails).then(() => done())
 })
 
 afterEach(done => {
-  Lock.truncate().then(() => {
-    done()
-  })
+  Lock.truncate().then(() => done() )
 })
 
 describe('Requesting lock details', () => {
@@ -187,6 +194,45 @@ describe('Requesting lock details', () => {
             })
         })        
       })
+    })
+  })
+})
+
+describe('Requesting Lock details of a given address', () => {
+  beforeAll((done) => {
+    Lock.bulkCreate(ownedLocks).then(() => done())
+  })
+
+  describe('when the address owns locks', () => {
+    const owner = '0x423893453' 
+    it('return the details of the owned locks', done => {
+      request(app)
+        .get(`/${owner}/locks`)
+        .set('Accept', /json/)
+        .then(response => {
+          expect(response.body.locks.sort()).toEqual([
+            {
+              name: 'a mighty fine lock',
+              address: 'jqfqod74',
+            },
+            {
+              name: 'A random other lock',
+              address: 'jqfqod75',
+            }].sort())
+          done()
+        })      
+    })
+  })
+
+  describe('when the address does not own locks', () => {
+    it('returns an empty collection', done => {
+      request(app)
+        .get('/0xd489fF3/locks')
+        .set('Accept', /json/)
+        .then(response => {
+          expect(response.body).toEqual({locks : [] })
+          done()
+        })
     })
   })
 })
