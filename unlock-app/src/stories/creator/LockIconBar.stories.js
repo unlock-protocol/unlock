@@ -1,5 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
 
 import { Provider } from 'react-redux'
 import LockIconBar from '../../components/creator/lock/LockIconBar'
@@ -17,5 +18,11 @@ storiesOf('LockIconBar', module)
       outstandingKeys: 3,
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
     }
-    return <LockIconBar lock={lock} toggleCode={() => {}} />
+    return (
+      <LockIconBar
+        lock={lock}
+        toggleCode={action('toggleCode')}
+        edit={action('edit')}
+      />
+    )
   })

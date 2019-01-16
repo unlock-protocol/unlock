@@ -57,6 +57,28 @@ describe('LockIconBar', () => {
     ).not.toBeNull()
   })
 
+  it('should trigger edit when clicked', () => {
+    const edit = jest.fn()
+
+    let wrapper = rtl.render(
+      <Provider store={store}>
+        <LockIconBar
+          lock={lock}
+          transaction={transaction}
+          withdrawalTransaction={withdrawalTransaction}
+          toggleCode={toggleCode}
+          config={config}
+          edit={edit}
+        />
+      </Provider>
+    )
+
+    rtl.fireEvent.click(wrapper.getByTitle('Edit'))
+
+    expect(edit).toHaveBeenCalledTimes(1)
+    expect(edit).toHaveBeenCalledWith(lock.address)
+  })
+
   it('should display a confirming label when withdrawal is confirming', () => {
     config.requiredConfirmations = 12
     withdrawalTransaction = {
