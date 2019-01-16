@@ -106,6 +106,12 @@ const ethGetLogs = (fromBlock, toBlock, topics, address, result) => {
   )
 }
 
+const pad64 = data => {
+  return `${data.toString().padStart(64, '0')}`
+}
+
+const abiPaddedString = parameters => parameters.map(pad64).join('')
+
 nock.emitter.on('no match', function(clientRequestObject, options, body) {
   if (debug) {
     console.log(`NO HTTP MOCK EXISTS FOR THAT REQUEST\n${body}`)
@@ -1245,7 +1251,14 @@ describe('Web3Service', () => {
 
     describe('getKeysForLockOnPage', () => {
       it('should get as many owners as there are per page, starting at the right index', done => {
-        expect.assertions(8)
+        const onPage = 0
+        const byPage = 5
+        const keyHolder = [
+          '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+          '0xC66Ef2E0D0eDCce723b3fdd4307db6c5F0Dda1b8',
+        ]
+
+        expect.assertions(9)
 
         web3Service._getKeyByLockForOwner = jest.fn(() => {
           return new Promise(resolve => {
@@ -1253,38 +1266,32 @@ describe('Web3Service', () => {
           })
         })
 
-        const onPage = 3
-        const byPage = 5
-        for (let i = 0; i < byPage; i++) {
-          const start = onPage * byPage + i
-          ethCallAndYield(
-            `0x025e7c27${start.toString(16).padStart(64, '0')}`,
-            lockAddress,
-            '0x000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
-          )
-        }
+        ethCallAndYield(
+          `0x10803b72${abiPaddedString([onPage, byPage])}`,
+          lockAddress,
+          `0x${abiPaddedString(['20', '2', keyHolder[0], keyHolder[1]])}`
+        )
+
+        web3Service.getKeysForLockOnPage(lockAddress, onPage, byPage)
 
         web3Service.on('keys.page', (lock, page, keys) => {
           expect(lockAddress).toEqual(lock)
           expect(page).toEqual(onPage)
-          expect(keys.length).toEqual(byPage)
-          const key = keys[0]
-          expect(key.id).toEqual(
-            '0x0d370b0974454d7b0e0e3b4512c0735a6489a71a-0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
-          )
-          expect(key.owner).toEqual(
-            '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
-          )
-          expect(key.lock).toEqual(lockAddress)
-          expect(key.expiration).toEqual(100)
-          expect(key.data).toEqual('hello')
+          expect(keys.length).toEqual(2)
+          expect(keys[0].id).toEqual(`${lockAddress}-${keyHolder[0]}`)
+          expect(keys[0].owner).toEqual(keyHolder[0])
+          expect(keys[0].lock).toEqual(lockAddress)
+          expect(keys[0].expiration).toEqual(100)
+          expect(keys[0].data).toEqual('hello')
+          expect(keys[1].owner).toEqual(keyHolder[1])
           done()
         })
-
-        web3Service.getKeysForLockOnPage(lockAddress, onPage, byPage)
       })
 
-      it('should get as many owners as there are per page, and not fail on missing keys', done => {
+      it('should not fail when keys do not exist for the requested page', done => {
+        const onPage = 3
+        const byPage = 5
+
         expect.assertions(3)
 
         web3Service._getKeyByLockForOwner = jest.fn(() => {
@@ -1293,29 +1300,16 @@ describe('Web3Service', () => {
           })
         })
 
-        const onPage = 3
-        const byPage = 5
-        for (let i = 0; i < byPage - 1; i++) {
-          const start = onPage * byPage + i
-          ethCallAndYield(
-            `0x025e7c27${start.toString(16).padStart(64, '0')}`,
-            lockAddress,
-            '0x000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
-          )
-        }
-        // The page only has byPage -1 elements, so that last one fails
-        ethCallAndFail(
-          `0x025e7c27${((onPage + 1) * byPage - 1)
-            .toString(16)
-            .padStart(64, '0')}`,
+        ethCallAndYield(
+          `0x10803b72${abiPaddedString([onPage, byPage])}`,
           lockAddress,
-          { message: 'VM Exception while processing transaction: revert' }
+          '0x'
         )
 
         web3Service.on('keys.page', (lock, page, keys) => {
           expect(lockAddress).toEqual(lock)
           expect(page).toEqual(onPage)
-          expect(keys.length).toEqual(byPage - 1)
+          expect(keys.length).toEqual(0)
           done()
         })
 

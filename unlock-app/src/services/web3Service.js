@@ -652,9 +652,7 @@ export default class Web3Service extends EventEmitter {
 
   /**
    * This loads and returns the keys for a lock per page
-   * This function is performing quite badly because it retrieves n owners one by one
-   * and then gets their keys. We need to implement functions on the smart contract
-   * to make that better.
+   * we fetch byPage number of keyOwners and dispatch for futher details.
    * @param {PropTypes.string}
    * @param {PropTypes.integer}
    * @param {PropTypes.integer}
@@ -662,12 +660,11 @@ export default class Web3Service extends EventEmitter {
   getKeysForLockOnPage(lock, page, byPage) {
     const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
 
-    const startIndex = page * byPage
-    const keyPromises = Array.from(Array(byPage).keys()).map(n => {
-      return lockContract.methods
-        .owners(n + startIndex)
-        .call()
-        .then(ownerAddress => {
+    lockContract.methods
+      .getOwnersByPage(page, byPage)
+      .call()
+      .then(ownerAddresses => {
+        const keyPromises = ownerAddresses.map(ownerAddress => {
           return this._getKeyByLockForOwner(lockContract, ownerAddress).then(
             ([expiration, data]) => {
               return {
@@ -680,14 +677,11 @@ export default class Web3Service extends EventEmitter {
             }
           )
         })
-        .catch(() => {
-          // Triggered when there are missing keys
-          return null
+
+        return Promise.all(keyPromises).then(keys => {
+          this.emit('keys.page', lock, page, keys)
         })
-    })
-    return Promise.all(keyPromises).then(keys => {
-      this.emit('keys.page', lock, page, keys.filter(key => !!key))
-    })
+      })
   }
 
   /**
