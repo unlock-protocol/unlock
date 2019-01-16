@@ -72,6 +72,25 @@ describe('CreatorLock', () => {
       )
     ).not.toBeNull()
   })
+  it('should call edit when the button is clicked', () => {
+    const config = configure()
+
+    const store = createUnlockStore()
+
+    const edit = jest.fn()
+
+    let wrapper = rtl.render(
+      <Provider store={store} config={config}>
+        <CreatorLock lock={lock} transaction={transaction} edit={edit} />
+      </Provider>
+    )
+
+    let editButton = wrapper.getByTitle('Edit')
+    rtl.fireEvent.click(editButton)
+
+    expect(edit).toHaveBeenCalledTimes(1)
+    expect(edit).toHaveBeenCalledWith(lock.address)
+  })
   it('should display the correct number of keys', () => {
     const config = configure()
 
