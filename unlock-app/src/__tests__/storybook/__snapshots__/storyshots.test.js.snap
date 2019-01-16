@@ -4779,14 +4779,16 @@ Object {
                   >
                     Personal site
                   </a>
-                   - 
-                  <a
-                    href="https://www.linkedin.com/in/akeemadeniji"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    LinkedIn
-                  </a>
+                  <span>
+                     - 
+                    <a
+                      href="https://www.linkedin.com/in/akeemadeniji"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      LinkedIn
+                    </a>
+                  </span>
                 </small>
               </div>
               <div
@@ -4815,14 +4817,16 @@ Object {
                   >
                     Personal site
                   </a>
-                   - 
-                  <a
-                    href="https://www.linkedin.com/in/benwerd/"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    LinkedIn
-                  </a>
+                  <span>
+                     - 
+                    <a
+                      href="https://www.linkedin.com/in/benwerd/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      LinkedIn
+                    </a>
+                  </span>
                 </small>
               </div>
               <div
@@ -4885,14 +4889,16 @@ Object {
                   >
                     Personal site
                   </a>
-                   - 
-                  <a
-                    href="https://www.linkedin.com/in/gbeaver/"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    LinkedIn
-                  </a>
+                  <span>
+                     - 
+                    <a
+                      href="https://www.linkedin.com/in/gbeaver/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      LinkedIn
+                    </a>
+                  </span>
                 </small>
               </div>
               <div
@@ -4921,14 +4927,16 @@ Object {
                   >
                     Personal site
                   </a>
-                   - 
-                  <a
-                    href="https://www.linkedin.com/in/juliengenestoux/"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    LinkedIn
-                  </a>
+                  <span>
+                     - 
+                    <a
+                      href="https://www.linkedin.com/in/juliengenestoux/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      LinkedIn
+                    </a>
+                  </span>
                 </small>
               </div>
               <div
@@ -4957,14 +4965,16 @@ Object {
                   >
                     Personal site
                   </a>
-                   - 
-                  <a
-                    href="https://www.linkedin.com/in/smombartz/"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    LinkedIn
-                  </a>
+                  <span>
+                     - 
+                    <a
+                      href="https://www.linkedin.com/in/smombartz/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      LinkedIn
+                    </a>
+                  </span>
                 </small>
               </div>
             </div>
@@ -5416,14 +5426,16 @@ Object {
                 >
                   Personal site
                 </a>
-                 - 
-                <a
-                  href="https://www.linkedin.com/in/akeemadeniji"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  LinkedIn
-                </a>
+                <span>
+                   - 
+                  <a
+                    href="https://www.linkedin.com/in/akeemadeniji"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    LinkedIn
+                  </a>
+                </span>
               </small>
             </div>
             <div
@@ -5452,14 +5464,16 @@ Object {
                 >
                   Personal site
                 </a>
-                 - 
-                <a
-                  href="https://www.linkedin.com/in/benwerd/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  LinkedIn
-                </a>
+                <span>
+                   - 
+                  <a
+                    href="https://www.linkedin.com/in/benwerd/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    LinkedIn
+                  </a>
+                </span>
               </small>
             </div>
             <div
@@ -5522,14 +5536,16 @@ Object {
                 >
                   Personal site
                 </a>
-                 - 
-                <a
-                  href="https://www.linkedin.com/in/gbeaver/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  LinkedIn
-                </a>
+                <span>
+                   - 
+                  <a
+                    href="https://www.linkedin.com/in/gbeaver/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    LinkedIn
+                  </a>
+                </span>
               </small>
             </div>
             <div
@@ -5558,14 +5574,16 @@ Object {
                 >
                   Personal site
                 </a>
-                 - 
-                <a
-                  href="https://www.linkedin.com/in/juliengenestoux/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  LinkedIn
-                </a>
+                <span>
+                   - 
+                  <a
+                    href="https://www.linkedin.com/in/juliengenestoux/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    LinkedIn
+                  </a>
+                </span>
               </small>
             </div>
             <div
@@ -5594,14 +5612,16 @@ Object {
                 >
                   Personal site
                 </a>
-                 - 
-                <a
-                  href="https://www.linkedin.com/in/smombartz/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  LinkedIn
-                </a>
+                <span>
+                   - 
+                  <a
+                    href="https://www.linkedin.com/in/smombartz/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    LinkedIn
+                  </a>
+                </span>
               </small>
             </div>
           </div>

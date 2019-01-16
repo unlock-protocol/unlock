@@ -152,10 +152,14 @@ const Person = ({ name, picture, personalLink, linkedIn, bio }) => (
       <a href={personalLink} target="_blank" rel="noopener noreferrer">
         Personal site
       </a>
-      &nbsp;-&nbsp;
-      <a href={linkedIn} target="_blank" rel="noopener noreferrer">
-        LinkedIn
-      </a>
+      {linkedIn && (
+        <span>
+          &nbsp;-&nbsp;
+          <a href={linkedIn} target="_blank" rel="noopener noreferrer">
+            LinkedIn
+          </a>
+        </span>
+      )}
     </small>
   </Column>
 )
