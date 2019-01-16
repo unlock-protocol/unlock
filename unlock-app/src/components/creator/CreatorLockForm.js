@@ -93,7 +93,7 @@ export class CreatorLockForm extends React.Component {
     const { valid } = this.state
     if (Object.keys(valid).filter(key => !valid[key]).length) return false
 
-    const { account, createLock, hideAction } = this.props
+    const { account, createLock, hideAction, address } = this.props
     const {
       expirationDuration,
       expirationDurationUnit,
@@ -105,7 +105,7 @@ export class CreatorLockForm extends React.Component {
     } = this.state
 
     const lock = {
-      address: uniqid(), // The lock does not have an address yet, so we use a 'temporary' one
+      address: address,
       name: name,
       expirationDuration: expirationDuration * expirationDurationUnit,
       keyPrice: Web3Utils.toWei(keyPrice.toString(10), keyPriceCurrency),
@@ -210,6 +210,7 @@ CreatorLockForm.propTypes = {
   keyPriceCurrency: PropTypes.string,
   maxNumberOfKeys: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // string is for '∞'
   name: PropTypes.string,
+  address: PropTypes.string,
 }
 
 CreatorLockForm.defaultProps = {
@@ -219,6 +220,7 @@ CreatorLockForm.defaultProps = {
   keyPriceCurrency: 'ether',
   maxNumberOfKeys: 10,
   name: 'New Lock',
+  address: uniqid(), // for new locks, we don't have an address, so use a temporary one
 }
 
 const mapStateToProps = state => {
