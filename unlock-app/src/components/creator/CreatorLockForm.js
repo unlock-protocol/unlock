@@ -57,6 +57,31 @@ export class CreatorLockForm extends React.Component {
     )
   }
 
+  saveLock() {
+    const { account, createLock } = this.props
+    const {
+      expirationDuration,
+      expirationDurationUnit,
+      keyPriceCurrency,
+      maxNumberOfKeys,
+      unlimitedKeys,
+      keyPrice,
+      name,
+      address,
+    } = this.state
+
+    const lock = {
+      address: address,
+      name: name,
+      expirationDuration: expirationDuration * expirationDurationUnit,
+      keyPrice: Web3Utils.toWei(keyPrice.toString(10), keyPriceCurrency),
+      maxNumberOfKeys: unlimitedKeys ? 0 : maxNumberOfKeys,
+      owner: account.address,
+    }
+
+    createLock(lock)
+  }
+
   handleUnlimitedClick() {
     this.setState(state => ({
       ...state,
@@ -93,27 +118,8 @@ export class CreatorLockForm extends React.Component {
     const { valid } = this.state
     if (Object.keys(valid).filter(key => !valid[key]).length) return false
 
-    const { account, createLock, hideAction, address } = this.props
-    const {
-      expirationDuration,
-      expirationDurationUnit,
-      keyPriceCurrency,
-      maxNumberOfKeys,
-      unlimitedKeys,
-      keyPrice,
-      name,
-    } = this.state
-
-    const lock = {
-      address: address,
-      name: name,
-      expirationDuration: expirationDuration * expirationDurationUnit,
-      keyPrice: Web3Utils.toWei(keyPrice.toString(10), keyPriceCurrency),
-      maxNumberOfKeys: unlimitedKeys ? 0 : maxNumberOfKeys,
-      owner: account.address,
-    }
-
-    createLock(lock)
+    this.saveLock()
+    const { hideAction } = this.props
     if (hideAction) hideAction()
   }
 
