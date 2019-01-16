@@ -132,6 +132,13 @@ const People = [
           software development. 18 years as cellist of The Chiara Quartet, and now
           a soloist and composer matches equal experience in open source.`,
   },
+  {
+    name: 'Christopher Nascone',
+    picture: '',
+    personalLink: 'https://www.nasc.one',
+    linkedIn: '',
+    bio: '',
+  },
 ].sort((bonnie, clyde) => (bonnie.name < clyde.name ? -1 : 1))
 
 const Person = ({ name, picture, personalLink, linkedIn, bio }) => (
