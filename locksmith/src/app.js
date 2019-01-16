@@ -76,6 +76,19 @@ router.get('/lock/:lockAddress', function(req, res) {
   })
 })
 
+router.get('/:owner/locks', function(req, res) {
+  const owner = req.params.owner
+
+  Lock.findAll({
+    attributes: ['name', 'address'],
+    where: {
+      owner: { [Op.eq]: owner },
+    },
+  }).then(locks => {
+    res.json({ locks: locks })
+  })
+})
+
 app.use(cors())
 app.use(bodyParser.json())
 app.put(/^\/lock\/\S+/i, tokenMiddleware)
