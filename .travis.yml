@@ -5,7 +5,6 @@
 #  - a generic `unlock` image which contains the code for the app, ready to run (deps installed)
 #  - an image for puppeteer tests (`unlock-integration`) which contains only the required file for that purpose.
 # (The generic unlock image can/will be used for actual deployment)
-# TODO: To speed things up both images are cached on AWS's docker registry (the latest version is loaded before being built and pushed on master builds)
 # TODO: To speed things up, both image building processes could be runnning in parallel.
 # Once the images are built, we run test script using them.
 # The `unlock` image is used for all services tests (smart-contracts, unlock-app, locksmith)
@@ -23,8 +22,8 @@ env:
 services:
   - docker
 before_script:
-  - scripts/pull-image.sh
-  - scripts/build-image.sh unlock 461040265176.dkr.ecr.us-east-1.amazonaws.com/unlock:latest
+  - scripts/setup-aws.sh
+  - scripts/build-image.sh unlock
   - scripts/build-image.sh unlock-integration
   - scripts/docker-compose-build.sh
 script:
@@ -34,7 +33,8 @@ script:
   - scripts/integration-tests.sh
 after_success:
   - scripts/deploy.sh netlify
-  - scripts/push-image.sh
+  - scripts/push-image.sh unlock
+  - scripts/push-image.sh unlock-integration
 notifications:
   slack:
     secure: q4BMSH3FifcaoPwQ2QFocbv8OuNT4JWgeJuE7jxppw86rCJHOyp6SdLpzp4944cWTlEGFdbQsp83OE2fx99i9OncvlJM5Is1IQgIDUfOD2l8mKx+HPlWvuBLaRB5j7vdamzODaHU2NlS+XSU7I0ytxp39x5arYY5hR9yqETvkyjAsSWBjY74Vv+eED+ALtQD9HKoH3xaxgV5rolujR3MEzdMSoNpenivz+BIfKhGQlOHyEN0FOsZtBkCmJTZ9mQbPApu2NKQZRU2cTn7h4Pp4Gpy6mVPWtesUd9OtblsA658qw9Sn/C9hIO1uKgGb4G1PJrKaa/qs2WeMj3VNQ0CkubXYNUS+OfnRb0CT+eTRCndnhFsDdt0zgIBtFeG2FT83OD0sT1SHduY69uETxxstTJw6F8+q/n4JNImBT7klBn2tLrS8kOpk2dqIkpQsvKst67UaYVNa4x2wOcbBxwE+RXP3i3Hs+NpNW/3W9IJOXA2Twx6Q70ORlg3Lnfw28gTDOnh3ZYx48b8y17U4J4KJgEu7aaQCUtoPK/dSwGl0atMQn/FRwEHvIs7zIh/PqyWYRA+y0V3VAe2bAuLf5WTjUijN5w+wfHDGjo6fxZ6dPwBXhhbeFWl4Tz6GEiOGJsebJTtDKWYD/uItNqb3uFiEwEeUEFJCY1zVU5jT8NL3TY=
