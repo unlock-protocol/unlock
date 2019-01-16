@@ -41,6 +41,7 @@ describe('LockIconBar', () => {
           withdrawalTransaction={withdrawalTransaction}
           toggleCode={toggleCode}
           config={config}
+          edit={() => {}}
         />
       </Provider>
     )
@@ -81,6 +82,7 @@ describe('LockIconBar', () => {
           withdrawalTransaction={withdrawalTransaction}
           toggleCode={toggleCode}
           config={config}
+          edit={() => {}}
         />
       </Provider>
     )
@@ -88,6 +90,49 @@ describe('LockIconBar', () => {
     expect(
       wrapper.queryByText('Confirming Withdrawal', { exact: false })
     ).not.toBeNull()
-    expect(wrapper.queryByText('2/12', { exact: false })).not.toBeNull()
+    expect(
+      wrapper.queryByText(`2/${config.requiredConfirmations}`, { exact: false })
+    ).not.toBeNull()
+  })
+
+  it('should call edit when edit button is clicked', () => {
+    const config = configure()
+    const lock = {
+      id: 'lockwithdrawalconfirmingid',
+      keyPrice: '10000000000000000000',
+      expirationDuration: '172800',
+      maxNumberOfKeys: 240,
+      outstandingKeys: 3,
+      address: '0xba7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
+      transaction: 'deployedid',
+    }
+    const transaction = {
+      status: 'mined',
+      confirmations: 24,
+    }
+    const withdrawalTransaction = {
+      status: 'mined',
+      confirmations: 2,
+      withdrawal: 'lockwithdrawalconfirmingid',
+    }
+
+    const edit = jest.fn()
+    const store = createUnlockStore({})
+    const wrapper = rtl.render(
+      <Provider store={store}>
+        <LockIconBar
+          lock={lock}
+          transaction={transaction}
+          withdrawalTransaction={withdrawalTransaction}
+          toggleCode={toggleCode}
+          config={config}
+          edit={edit}
+        />
+      </Provider>
+    )
+
+    rtl.fireEvent.click(wrapper.getByTitle('Edit'))
+
+    expect(edit).toHaveBeenCalledWith(lock.address)
   })
 })

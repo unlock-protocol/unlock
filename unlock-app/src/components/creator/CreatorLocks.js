@@ -43,9 +43,9 @@ export class CreatorLocks extends React.Component {
         </LockHeaderRow>
         <Errors />
         {showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
-        {lockFeed.map(lock => {
-          return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
-        })}
+        {lockFeed.map(lock => (
+          <CreatorLock key={lock.address} lock={lock} edit={() => {}} />
+        ))}
       </Locks>
     )
   }

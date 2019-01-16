@@ -51,7 +51,7 @@ describe('CreatorLock', () => {
 
     let wrapper = rtl.render(
       <Provider store={store} config={config}>
-        <CreatorLock lock={lock} transaction={transaction} />
+        <CreatorLock lock={lock} transaction={transaction} edit={() => {}} />
       </Provider>
     )
 
@@ -72,6 +72,24 @@ describe('CreatorLock', () => {
       )
     ).not.toBeNull()
   })
+
+  it('should call edit when clicked', () => {
+    const config = configure()
+    const edit = jest.fn()
+
+    const store = createUnlockStore()
+
+    let wrapper = rtl.render(
+      <Provider store={store} config={config}>
+        <CreatorLock lock={lock} transaction={transaction} edit={edit} />
+      </Provider>
+    )
+
+    rtl.fireEvent.click(wrapper.getByTitle('Edit'))
+
+    expect(edit).toHaveBeenCalled()
+  })
+
   it('should display the correct number of keys', () => {
     const config = configure()
 
@@ -86,7 +104,7 @@ describe('CreatorLock', () => {
 
     let wrapper = rtl.render(
       <Provider store={store} config={config}>
-        <CreatorLock lock={keylock} transaction={transaction} />
+        <CreatorLock lock={keylock} transaction={transaction} edit={() => {}} />
       </Provider>
     )
 
@@ -106,7 +124,11 @@ describe('CreatorLock', () => {
 
     let wrapper = rtl.render(
       <Provider store={store} config={config}>
-        <CreatorLock lock={unlimitedlock} transaction={transaction} />
+        <CreatorLock
+          lock={unlimitedlock}
+          transaction={transaction}
+          edit={() => {}}
+        />
       </Provider>
     )
 

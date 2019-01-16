@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
@@ -53,7 +54,7 @@ export class CreatorLock extends React.Component {
   render() {
     // TODO add all-time balance to lock
 
-    const { lock } = this.props
+    const { lock, edit } = this.props
     const { showEmbedCode, showKeys } = this.state
 
     // Some sanitization of strings to display
@@ -80,7 +81,11 @@ export class CreatorLock extends React.Component {
             <Balance amount={lock.balance} convertCurrency={false} />
           </Phone>
         </BalanceContainer>
-        <LockIconBar lock={lock} toggleCode={this.toggleEmbedCode} />
+        <LockIconBar
+          lock={lock}
+          toggleCode={this.toggleEmbedCode}
+          edit={edit}
+        />
         {showEmbedCode && (
           <LockPanel>
             <LockDivider />
@@ -100,6 +105,7 @@ export class CreatorLock extends React.Component {
 
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
+  edit: PropTypes.func.isRequired,
 }
 
 export default CreatorLock

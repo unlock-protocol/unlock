@@ -15,6 +15,7 @@ export function LockIconBar({
   transaction,
   withdrawalTransaction,
   config,
+  edit,
 }) {
   if (!transaction) {
     // We assume that the lock has been succeesfuly deployed?
@@ -39,7 +40,7 @@ export function LockIconBar({
       <IconBarContainer>
         <IconBar>
           <Buttons.Withdraw as="button" lock={lock} />
-          <Buttons.Edit as="button" />
+          <Buttons.Edit as="button" action={() => edit(lock.address)} />
           {/* Reinstate when we're ready <Buttons.ExportLock /> */}
           <Buttons.Code action={toggleCode} as="button" />
         </IconBar>
@@ -66,6 +67,7 @@ export function LockIconBar({
 LockIconBar.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   toggleCode: PropTypes.func.isRequired,
+  edit: PropTypes.func.isRequired,
   transaction: UnlockPropTypes.transaction,
   withdrawalTransaction: UnlockPropTypes.transaction,
   config: UnlockPropTypes.configuration.isRequired,
