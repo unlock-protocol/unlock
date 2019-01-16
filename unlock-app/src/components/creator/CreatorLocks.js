@@ -27,6 +27,7 @@ export class CreatorLocks extends React.Component {
     const { showDashboardForm } = this.state
     let lockFeed = Object.values(locks).reverse() // We want to display newer locks first
 
+    // key must be JSON.stringify(lock) to guarantee re-render when props change beneath
     return (
       <Locks>
         <LockHeaderRow>
@@ -44,7 +45,7 @@ export class CreatorLocks extends React.Component {
         <Errors />
         {showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
         {lockFeed.map(lock => (
-          <CreatorLock key={lock.address} lock={lock} edit={() => {}} />
+          <CreatorLock key={JSON.stringify(lock)} lock={lock} edit={() => {}} />
         ))}
       </Locks>
     )
