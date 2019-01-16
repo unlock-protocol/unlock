@@ -73,9 +73,10 @@ describe('LockIconBar', () => {
       </Provider>
     )
 
-    expect(
-      wrapper.queryByText('Submitted to Network', { exact: false })
-    ).not.toBeNull()
+    rtl.fireEvent.click(wrapper.getByTitle('Edit'))
+
+    expect(edit).toHaveBeenCalledTimes(1)
+    expect(edit).toHaveBeenCalledWith(lock.address)
   })
 
   it('should display a confirming label when withdrawal is confirming', () => {
