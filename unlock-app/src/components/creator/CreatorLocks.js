@@ -1,10 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+
 import UnlockPropTypes from '../../propTypes'
 import CreatorLock, { LockRowGrid, PhoneLockRowGrid } from './CreatorLock'
 import CreatorLockForm from './CreatorLockForm'
 import Errors from '../interface/Errors'
 import Media, { NoPhone, Phone } from '../../theme/media'
+import { createLock } from '../../actions/lock'
 
 export class CreatorLocks extends React.Component {
   constructor(props, context) {
@@ -61,7 +64,14 @@ CreatorLocks.defaultProps = {
   showForm: false,
 }
 
-export default CreatorLocks
+const mapDispatchToProps = dispatch => ({
+  createLock: lock => dispatch(createLock(lock)),
+})
+
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(CreatorLocks)
 
 const Locks = styled.section`
   display: grid;
