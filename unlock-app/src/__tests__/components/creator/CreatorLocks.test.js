@@ -17,7 +17,7 @@ describe('CreatorLocks', () => {
 
     const wrapper = rtl.render(
       <Provider store={store}>
-        <CreatorLocks edit={() => {}} />
+        <CreatorLocks />
       </Provider>
     )
 
@@ -38,7 +38,7 @@ describe('CreatorLocks', () => {
 
     let wrapper = rtl.render(
       <Provider store={store}>
-        <CreatorLocks edit={() => {}} />
+        <CreatorLocks />
       </Provider>
     )
 
