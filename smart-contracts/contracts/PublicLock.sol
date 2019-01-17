@@ -100,7 +100,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   // Ensure that the caller owns the key
   modifier onlyKeyOwner(
-    uint256 _tokenId
+    uint _tokenId
   ) {
     require(
       address(_tokenId) == msg.sender
@@ -112,7 +112,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   // or that the caller has been approved
   // for ownership of that key
   modifier onlyKeyOwnerOrApproved(
-    uint256 _tokenId
+    uint _tokenId
   ) {
     require(
       address(_tokenId) == msg.sender
@@ -183,7 +183,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   function transferFrom(
     address _from,
     address _recipient,
-    uint256 _tokenId
+    uint _tokenId
   )
     external
     payable
@@ -237,7 +237,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     external
     onlyOwner
   {
-    uint256 balance = address(this).balance;
+    uint balance = address(this).balance;
     require(balance > 0, "Not enough funds");
     address owner = Ownable.owner();
     owner.transfer(balance);
@@ -250,7 +250,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
    */
   function approve(
     address _approved,
-    uint256 _tokenId
+    uint _tokenId
   )
     external
     payable
@@ -271,7 +271,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     external
     onlyOwner
   {
-    uint256 oldKeyPrice = keyPrice;
+    uint oldKeyPrice = keyPrice;
     keyPrice = _keyPrice;
     emit PriceChanged(oldKeyPrice, keyPrice);
   }
@@ -285,7 +285,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   )
     external
     view
-    returns (uint256)
+    returns (uint)
   {
     require(_owner != address(0), "Invalid address");
     return keyByOwner[_owner].expirationTimestamp > 0 ? 1 : 0;
@@ -296,7 +296,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
    * @return The address of the owner of the NFT, if applicable
   */
   function ownerOf(
-    uint256 _tokenId
+    uint _tokenId
   )
     external
     view
@@ -311,7 +311,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
    * Will return the approved recipient for a key, if any.
    */
   function getApproved(
-    uint256 _tokenId
+    uint _tokenId
   )
     external
     view
@@ -371,7 +371,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint pageIndex = 0;
 
     // Build the requested set of owners into a new temporary array:
-    for (uint256 i = _startIndex; i < endOfPageIndex; i++) {
+    for (uint i = _startIndex; i < endOfPageIndex; i++) {
       ownersByPage[pageIndex] = owners[i];
       pageIndex++;
     }
@@ -434,12 +434,12 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
    * @param from The address which previously owned the token
    * @param tokenId The NFT identifier which is being transferred
    * @param data Additional data with no specified format
-   * @return `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`
+   * @return `bytes4(keccak256("onERC721Received(address,address,uint,bytes)"))`
    */
   function onERC721Received(
     address operator, // solhint-disable-line no-unused-vars
     address from, // solhint-disable-line no-unused-vars
-    uint256 tokenId, // solhint-disable-line no-unused-vars
+    uint tokenId, // solhint-disable-line no-unused-vars
     bytes data // solhint-disable-line no-unused-vars
   )
     public
@@ -514,7 +514,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     emit Transfer(
       address(0), // This is a creation.
       _recipient,
-      uint256(_recipient) // Note: since each user can own a single token, we use the current
+      uint(_recipient) // Note: since each user can own a single token, we use the current
       // owner (new!) for the token id
     );
   }
@@ -525,7 +525,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
    * actually exists.
    */
   function _getApproved(
-    uint256 _tokenId
+    uint _tokenId
   )
     internal
     view
