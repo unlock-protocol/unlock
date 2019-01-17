@@ -39,7 +39,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint _amount
     );
 
-
   // Fields
   // Unlock Protocol address
   // TODO: should we make that private/internal?
@@ -283,17 +282,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   }
 
   /**
-   * @dev private version of the withdraw function which handles all withdrawals from the lock.
-   * TODO: check for re-entrency?
-   */
-  function _withdraw(uint _amount)
-    private
-  {
-    Ownable.owner().transfer(_amount);
-    emit Withdrawal(msg.sender, _amount);
-  }
-
-  /**
    * This approves _approved to get ownership of _tokenId.
    * Note: that since this is used for both purchase and transfer approvals
    * the approved token may not exist.
@@ -426,7 +414,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
     if (_startIndex + _pageSize > owners.length) {
       endOfPageIndex = owners.length;
-      _pageSize =  owners.length - _startIndex;
+      _pageSize = owners.length - _startIndex;
     } else {
       endOfPageIndex = (_startIndex + _pageSize);
     }
@@ -530,8 +518,8 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     bytes memory _data
   )
     internal
-    notSoldOut()
-  {
+    notSoldOut() 
+  { // solhint-disable-line function-max-lines
     require(_recipient != address(0));
 
     // Let's get the actual price for the key from the Unlock smart contract
@@ -556,8 +544,8 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     // Assign the key
     uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
     if (previousExpiration < now) {
-      if(previousExpiration == 0)
-      { // This is a brand new owner, else an owner of an expired key buying an extension
+      if (previousExpiration == 0) { 
+        // This is a brand new owner, else an owner of an expired key buying an extension
         numberOfKeysSold++;
         owners.push(_recipient);
         // Note: for ERC721 support we will be changing tokenId to be a sequence id instead
@@ -604,6 +592,17 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     address approvedRecipient = approved[_tokenId];
     require(approvedRecipient != address(0));
     return approvedRecipient;
+  }
+
+  /**
+   * @dev private version of the withdraw function which handles all withdrawals from the lock.
+   * TODO: check for re-entrency?
+   */
+  function _withdraw(uint _amount)
+    private
+  {
+    Ownable.owner().transfer(_amount);
+    emit Withdrawal(msg.sender, _amount);
   }
 
 }
