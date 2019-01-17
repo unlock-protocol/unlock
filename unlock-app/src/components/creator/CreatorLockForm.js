@@ -14,7 +14,7 @@ import {
   LockLabel,
   LockDuration,
   LockKeys,
-} from './CreatorLock'
+} from './LockStyles'
 import { LockStatus } from './lock/CreatorLockStatus'
 
 export class CreatorLockForm extends React.Component {
