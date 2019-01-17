@@ -15652,11 +15652,9 @@ Object {
         >
           <input
             data-valid="true"
-            inputmode="numeric"
             name="maxNumberOfKeys"
             required=""
-            step="1"
-            type="number"
+            type="text"
             value="10"
           />
           <div
@@ -15812,11 +15810,9 @@ Object {
       >
         <input
           data-valid="true"
-          inputmode="numeric"
           name="maxNumberOfKeys"
           required=""
-          step="1"
-          type="number"
+          type="text"
           value="10"
         />
         <div
@@ -16190,11 +16186,9 @@ Object {
         >
           <input
             data-valid="true"
-            inputmode="numeric"
             name="maxNumberOfKeys"
             required=""
-            step="1"
-            type="number"
+            type="text"
             value="10"
           />
           <div
@@ -16350,11 +16344,9 @@ Object {
       >
         <input
           data-valid="true"
-          inputmode="numeric"
           name="maxNumberOfKeys"
           required=""
-          step="1"
-          type="number"
+          type="text"
           value="10"
         />
         <div
