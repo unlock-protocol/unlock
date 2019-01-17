@@ -132,7 +132,7 @@ contract('Lock', (accounts) => {
       })
 
       describe('when the key was successfuly purchased', () => {
-        let outstandingKeys, balance, now
+        let outstandingKeys, numberOfOwners, balance, now
 
         before(() => {
           balance = web3.eth.getBalance(locks['FIRST'].address)
@@ -140,9 +140,13 @@ contract('Lock', (accounts) => {
             .then(_outstandingKeys => {
               outstandingKeys = parseInt(_outstandingKeys)
               now = parseInt(new Date().getTime() / 1000)
-              return locks['FIRST'].purchaseFor(accounts[0], 'Julien', {
-                value: Units.convert('0.01', 'eth', 'wei')
-              })
+              return locks['FIRST'].numberOfOwners()
+                .then(_numberOfOwners => {
+                  numberOfOwners = parseInt(_numberOfOwners)
+                  return locks['FIRST'].purchaseFor(accounts[0], 'Julien', {
+                    value: Units.convert('0.01', 'eth', 'wei')
+                  })
+                })
             })
         })
 
@@ -175,6 +179,17 @@ contract('Lock', (accounts) => {
               assert.equal(
                 parseInt(_outstandingKeys),
                 outstandingKeys + 1
+              )
+            })
+        })
+
+        it('should have increased the number of owners', () => {
+          return locks['FIRST'].numberOfOwners
+            .call()
+            .then(_numberOfOwners => {
+              assert.equal(
+                parseInt(_numberOfOwners),
+                numberOfOwners + 1
               )
             })
         })
