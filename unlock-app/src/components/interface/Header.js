@@ -83,7 +83,7 @@ Header.defaultProps = {
 const TopHeader = styled.header`
   display: grid;
   grid-gap: 0;
-  grid-template-columns: 1fr repeat(${() => navigationButtons.length}, 24px);
+  grid-template-columns: 1fr auto;
   grid-auto-flow: column;
   align-items: center;
   height: 70px;
@@ -103,7 +103,7 @@ const Title = styled.h1`
 const DesktopButtons = styled.div`
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: 1fr repeat(${() => navigationButtons.length}, 24px);
+  grid-template-columns: repeat(${() => navigationButtons.length}, 24px);
   grid-auto-flow: column;
   align-items: center;
   height: 100%;
@@ -148,6 +148,9 @@ const MobileToggle = styled.div`
   ${Media.phone`
     display: grid;
   `};
+  ${Media.nophone`
+    display: none;
+  `};
 `
 
 const MobilePopover = styled.div`
@@ -185,5 +188,8 @@ const MobilePopover = styled.div`
 
   ${Media.phone`
     display: grid;
+  `};
+  ${Media.nophone`
+    display: none;
   `};
 `
