@@ -19,12 +19,12 @@ interface IERC721Receiver {
    * @param from The address which previously owned the token
    * @param tokenId The NFT identifier which is being transferred
    * @param data Additional data with no specified format
-   * @return `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`
+   * @return `bytes4(keccak256("onERC721Received(address,address,uint,bytes)"))`
    */
   function onERC721Received(
     address operator,
     address from,
-    uint256 tokenId,
+    uint tokenId,
     bytes data
   )
     public
