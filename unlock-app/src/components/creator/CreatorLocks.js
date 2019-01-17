@@ -55,13 +55,7 @@ export class CreatorLocks extends React.Component {
           />
         )}
         {lockFeed.map(lock => {
-          return (
-            <CreatorLock
-              key={JSON.stringify(lock)}
-              lock={lock}
-              form={CreatorLockForm}
-            />
-          )
+          return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
         })}
       </Locks>
     )

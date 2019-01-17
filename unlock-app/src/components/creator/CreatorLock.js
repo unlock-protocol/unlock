@@ -9,6 +9,7 @@ import EmbedCodeSnippet from './lock/EmbedCodeSnippet'
 import KeyList from './lock/KeyList'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
+import CreatorLockForm from './CreatorLockForm'
 import { NoPhone, Phone } from '../../theme/media'
 
 import {
@@ -73,7 +74,7 @@ export class CreatorLock extends React.Component {
   render() {
     // TODO add all-time balance to lock
 
-    const { lock, form: CreatorLockForm } = this.props
+    const { lock } = this.props
     const { showEmbedCode, showKeys, editing } = this.state
 
     if (editing) {
