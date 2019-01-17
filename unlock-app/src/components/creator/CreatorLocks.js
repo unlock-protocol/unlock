@@ -50,6 +50,7 @@ export class CreatorLocks extends React.Component {
           <CreatorLockForm
             hideAction={this.toggleForm}
             createLock={createLock}
+            pending
           />
         )}
         {lockFeed.map(lock => {
