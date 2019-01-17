@@ -34,9 +34,17 @@ interface ILockCore {
     payable;
 
   /**
-   * @dev Called by owner to wiwthdraw all funds from the lock.
+   * @dev Called by owner to withdraw all funds from the lock.
    */
   function withdraw(
+  )
+    external;
+
+  /**
+   * @dev Called by owner to partially withdraw funds from the lock.
+   */
+  function partialWithdraw(
+    uint _amount
   )
     external;
 
@@ -55,6 +63,15 @@ interface ILockCore {
     uint _keyPrice
   )
     external;
+
+  /**
+   * Public function which returns the total number of unique owners (both expired
+   * and valid).  This may be larger than outstandingKeys.
+   */
+  function numberOfOwners()
+    external
+    view
+    returns (uint);
 
   /**
    * Public function which returns the total number of keys (both expired and valid)

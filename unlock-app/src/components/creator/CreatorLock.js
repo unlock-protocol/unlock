@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
 import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
@@ -8,6 +9,7 @@ import EmbedCodeSnippet from './lock/EmbedCodeSnippet'
 import KeyList from './lock/KeyList'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
+import CreatorLockForm from './CreatorLockForm'
 import { NoPhone, Phone } from '../../theme/media'
 
 import {
@@ -21,6 +23,7 @@ import {
   DoubleHeightCell,
   BalanceContainer,
 } from './LockStyles'
+import { updateKeyPrice } from '../../actions/lock'
 
 const LockKeysNumbers = ({ lock }) => (
   <LockKeys>
@@ -45,9 +48,15 @@ export class CreatorLock extends React.Component {
     this.state = {
       showEmbedCode: false,
       showKeys: false,
+      editing: false,
     }
     this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
     this.toggleKeys = this.toggleKeys.bind(this)
+  }
+
+  updateLock(lock) {
+    const { updateKeyPrice } = this.props
+    updateKeyPrice(lock.address, lock.keyPrice)
   }
 
   toggleEmbedCode() {
@@ -65,8 +74,18 @@ export class CreatorLock extends React.Component {
   render() {
     // TODO add all-time balance to lock
 
-    const { lock, edit } = this.props
-    const { showEmbedCode, showKeys } = this.state
+    const { lock } = this.props
+    const { showEmbedCode, showKeys, editing } = this.state
+
+    if (editing) {
+      return (
+        <CreatorLockForm
+          {...lock}
+          hideAction={() => this.setState({ editing: false })}
+          createLock={lock => this.updateLock(lock)}
+        />
+      )
+    }
 
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
@@ -95,7 +114,13 @@ export class CreatorLock extends React.Component {
         <LockIconBar
           lock={lock}
           toggleCode={this.toggleEmbedCode}
-          edit={edit}
+          edit={() =>
+            this.setState({
+              editing: true,
+              showEmbedCode: false,
+              showKeys: false,
+            })
+          }
         />
         {showEmbedCode && (
           <LockPanel>
@@ -115,12 +140,13 @@ export class CreatorLock extends React.Component {
 }
 
 CreatorLock.propTypes = {
+  updateKeyPrice: PropTypes.func.isRequired,
   lock: UnlockPropTypes.lock.isRequired,
-  edit: PropTypes.func, // no-op for now, we will change to isRequired when wiring up the action
 }
 
-CreatorLock.defaultProps = {
-  edit: () => {},
-}
+const mapDispatchToProps = { updateKeyPrice }
 
-export default CreatorLock
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(CreatorLock)

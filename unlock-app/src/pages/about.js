@@ -82,6 +82,12 @@ const Post = ({ date, summary, link }) => (
   </>
 )
 
+Post.propTypes = {
+  date: PropTypes.instanceOf(Date).isRequired,
+  summary: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired,
+}
+
 const People = [
   {
     name: 'Julien Genestoux',

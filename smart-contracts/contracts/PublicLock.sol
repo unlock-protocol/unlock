@@ -23,6 +23,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   // The struct for a key
   struct Key {
+    uint tokenId;
     uint expirationTimestamp;
     bytes data; // Note: This can be expensive?
   }
@@ -32,6 +33,11 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint oldKeyPrice,
     uint keyPrice
   );
+
+  event Withdrawal(
+    address indexed _sender,
+    uint _amount
+    );
 
 
   // Fields
@@ -217,6 +223,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
       // Note: not using the tokenId above since ATM we do not transfer tokenId's
       // this will change when we decouple tokenId from address
       ownerByTokenId[uint(_recipient)] = _recipient;
+      // At the moment tokenId is the user's address, but as we work towards ERC721
+      // support this will change to a sequenceId assigned at purchase.
+      keyByOwner[_recipient].tokenId = uint(_recipient);
     }
 
     if (previousExpiration <= now) {
@@ -246,20 +255,42 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   }
 
   /**
-   * @dev Called by owner to wiwthdraw all funds from the lock.
+   * @dev Called by owner to withdraw all funds from the lock.
    * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
-   * TODO: consider partial withdraws?
    * TODO: check for re-entrency?
    */
-  function withdraw(
-  )
+  function withdraw()
     external
     onlyOwner
   {
     uint balance = address(this).balance;
     require(balance > 0, "Not enough funds");
-    address owner = Ownable.owner();
-    owner.transfer(balance);
+    _withdraw(balance);
+  }
+
+  /**
+   * @dev Called by owner to partially withdraw funds from the lock.
+   * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
+   * TODO: check for re-entrency?
+   */
+  function partialWithdraw(uint _amount)
+    external
+    onlyOwner
+  {
+    uint256 balance = address(this).balance;
+    require(balance > 0 && balance >= _amount, "Not enough funds");
+    _withdraw(_amount);
+  }
+
+  /**
+   * @dev private version of the withdraw function which handles all withdrawals from the lock.
+   * TODO: check for re-entrency?
+   */
+  function _withdraw(uint _amount)
+    private
+  {
+    Ownable.owner().transfer(_amount);
+    emit Withdrawal(msg.sender, _amount);
   }
 
   /**
@@ -326,6 +357,21 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   }
 
   /**
+   * @notice Find the tokenId for a given user
+   * @return The tokenId of the NFT, else revert
+  */
+  function getTokenIdFor(
+    address _account
+  )
+    external
+    view
+    hasKey(_account)
+    returns (uint)
+  {
+    return keyByOwner[_account].tokenId;
+  }
+
+  /**
    * external version
    * Will return the approved recipient for a key, if any.
    */
@@ -340,18 +386,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   }
 
   /**
-   * Public function which returns the total number of unique keys sold (both 
-   * expired and valid)
-   */
-  function outstandingKeys()
-    public
-    view
-    returns (uint)
-  {
-    return numberOfKeysSold;
-  }
-
-  /**
    * Public function which returns the total number of unique owners (both expired
    * and valid).  This may be larger than outstandingKeys.
    */
@@ -361,6 +395,18 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     returns (uint)
   {
     return owners.length;
+  }
+
+  /**
+   * Public function which returns the total number of unique keys sold (both 
+   * expired and valid)
+   */
+  function outstandingKeys()
+    public
+    view
+    returns (uint)
+  {
+    return numberOfKeysSold;
   }
 
  /**
@@ -516,6 +562,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
         owners.push(_recipient);
         // Note: for ERC721 support we will be changing tokenId to be a sequence id instead
         ownerByTokenId[uint(_recipient)] = _recipient;
+        // At the moment tokenId is the user's address, but as we work towards ERC721
+        // support this will change to a sequenceId assigned at purchase.
+        keyByOwner[_recipient].tokenId = uint(_recipient);
       }
       keyByOwner[_recipient].expirationTimestamp = now + expirationDuration;
     } else {
