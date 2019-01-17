@@ -51,6 +51,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   // Max number of keys sold if the keyReleaseMechanism is public
   uint public maxNumberOfKeys;
 
+  // A count of how many new key purchases there have been
+  uint public numberOfKeysSold;
+
   // Keys
   // Each owner can have at most exactly one key
   // TODO: could we use public here? (this could be confusing though because it getter will
@@ -120,7 +123,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
-    require(maxNumberOfKeys > owners.length, "Maximum number of keys already sold");
+    require(maxNumberOfKeys > numberOfKeysSold, "Maximum number of keys already sold");
     _;
   }
 
@@ -315,9 +318,22 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   }
 
   /**
-   * Public function which returns the total number of keys (both expired and valid)
+   * Public function which returns the total number of unique keys sold (both 
+   * expired and valid)
    */
   function outstandingKeys()
+    public
+    view
+    returns (uint)
+  {
+    return numberOfKeysSold;
+  }
+
+  /**
+   * Public function which returns the total number of unique owners (both expired
+   * and valid).  This may be larger than outstandingKeys.
+   */
+  function numberOfOwners()
     public
     view
     returns (uint)
@@ -472,7 +488,11 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     // Assign the key
     uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
     if (previousExpiration < now) {
-      owners.push(_recipient);
+      if(previousExpiration == 0)
+      { // This is a brand new owner, else an owner of an expired key buying an extension
+        numberOfKeysSold++;
+        owners.push(_recipient);
+      }
       keyByOwner[_recipient].expirationTimestamp = now + expirationDuration;
     } else {
       // This is an existing owner trying to extend their key
