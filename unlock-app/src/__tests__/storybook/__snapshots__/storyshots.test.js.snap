@@ -16487,21 +16487,14 @@ exports[`Storyshots CreatorLockForm/invalid invalid duration 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c6 {
+    .c5 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c6:before {
+.c5:before {
   content: '三';
-}
-
-.c4 {
-  color: var(--link);
-  font-size: 11px;
-  width: 100%;
-  padding: 5px;
 }
 
 .c0 {
@@ -16552,7 +16545,11 @@ Object {
   border: 1px solid var(--red);
 }
 
-.c7 {
+.c0 input:disabled {
+  color: var(--silver);
+}
+
+.c6 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -16594,19 +16591,19 @@ Object {
   width: 80%;
 }
 
-.c5 {
+.c4 {
   white-space: nowrap;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-.c5 input[type='text'],
-.c5 input[type='number'] {
+.c4 input[type='text'],
+.c4 input[type='number'] {
   min-width: 30px;
   width: 50%;
 }
 
-.c8 {
+.c7 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -16620,7 +16617,7 @@ Object {
   padding: 0;
 }
 
-.c9 {
+.c8 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -16741,8 +16738,8 @@ Object {
         >
           <input
             data-valid="true"
+            disabled=""
             name="name"
-            required=""
             type="text"
             value="New Lock"
           />
@@ -16752,9 +16749,9 @@ Object {
         >
           <input
             data-valid="false"
+            disabled=""
             inputmode="numeric"
             name="expirationDuration"
-            required=""
             step="1"
             type="number"
             value="-0.000011574074074074073"
@@ -16767,24 +16764,17 @@ Object {
         >
           <input
             data-valid="true"
-            inputmode="numeric"
+            disabled=""
             name="maxNumberOfKeys"
-            required=""
-            step="1"
-            type="number"
+            type="text"
             value="10"
           />
-          <div
-            class="c4"
-          >
-            Unlimited
-          </div>
         </div>
         <span
-          class="c5"
+          class="c4"
         >
           <span
-            class="c6"
+            class="c5"
           />
           <input
             data-valid="true"
@@ -16800,15 +16790,15 @@ Object {
           -
         </div>
         <div
-          class="c7"
+          class="c6"
         >
           <button
-            class="c8"
+            class="c7"
           >
             Submit
           </button>
           <button
-            class="c9"
+            class="c8"
           >
             Cancel
           </button>
@@ -16822,7 +16812,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="xrsnj2-0 sc-1u8ov25-1 dBHNok"
+      class="mlglvd-0 sc-1u8ov25-1 brhahk"
     >
       <svg
         viewBox="0 0 216 216"
@@ -16897,24 +16887,24 @@ Object {
         </g>
       </svg>
       <div
-        class="xrsnj2-4 sc-1u8ov25-3 fKkLvd"
+        class="mlglvd-4 sc-1u8ov25-3 cRRiTm"
       >
         <input
           data-valid="true"
+          disabled=""
           name="name"
-          required=""
           type="text"
           value="New Lock"
         />
       </div>
       <div
-        class="xrsnj2-6 sc-1u8ov25-4 ihIdLc"
+        class="mlglvd-6 sc-1u8ov25-4 ihIdLc"
       >
         <input
           data-valid="false"
+          disabled=""
           inputmode="numeric"
           name="expirationDuration"
-          required=""
           step="1"
           type="number"
           value="-0.000011574074074074073"
@@ -16923,22 +16913,15 @@ Object {
         days
       </div>
       <div
-        class="xrsnj2-7 sc-1u8ov25-5 hzTKUl"
+        class="mlglvd-7 sc-1u8ov25-5 hzTKUl"
       >
         <input
           data-valid="true"
-          inputmode="numeric"
+          disabled=""
           name="maxNumberOfKeys"
-          required=""
-          step="1"
-          type="number"
+          type="text"
           value="10"
         />
-        <div
-          class="xrsnj2-1 sc-1u8ov25-0 eiQcmf"
-        >
-          Unlimited
-        </div>
       </div>
       <span
         class="buwkmd-5 sc-1u8ov25-6 jyspKX"
@@ -17025,21 +17008,14 @@ exports[`Storyshots CreatorLockForm/invalid invalid key price 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c6 {
+    .c5 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c6:before {
+.c5:before {
   content: '三';
-}
-
-.c4 {
-  color: var(--link);
-  font-size: 11px;
-  width: 100%;
-  padding: 5px;
 }
 
 .c0 {
@@ -17090,7 +17066,11 @@ Object {
   border: 1px solid var(--red);
 }
 
-.c7 {
+.c0 input:disabled {
+  color: var(--silver);
+}
+
+.c6 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -17132,19 +17112,19 @@ Object {
   width: 80%;
 }
 
-.c5 {
+.c4 {
   white-space: nowrap;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-.c5 input[type='text'],
-.c5 input[type='number'] {
+.c4 input[type='text'],
+.c4 input[type='number'] {
   min-width: 30px;
   width: 50%;
 }
 
-.c8 {
+.c7 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -17158,7 +17138,7 @@ Object {
   padding: 0;
 }
 
-.c9 {
+.c8 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -17279,8 +17259,8 @@ Object {
         >
           <input
             data-valid="true"
+            disabled=""
             name="name"
-            required=""
             type="text"
             value="New Lock"
           />
@@ -17290,9 +17270,9 @@ Object {
         >
           <input
             data-valid="true"
+            disabled=""
             inputmode="numeric"
             name="expirationDuration"
-            required=""
             step="1"
             type="number"
             value="30"
@@ -17305,24 +17285,17 @@ Object {
         >
           <input
             data-valid="true"
-            inputmode="numeric"
+            disabled=""
             name="maxNumberOfKeys"
-            required=""
-            step="1"
-            type="number"
+            type="text"
             value="10"
           />
-          <div
-            class="c4"
-          >
-            Unlimited
-          </div>
         </div>
         <span
-          class="c5"
+          class="c4"
         >
           <span
-            class="c6"
+            class="c5"
           />
           <input
             data-valid="false"
@@ -17338,15 +17311,15 @@ Object {
           -
         </div>
         <div
-          class="c7"
+          class="c6"
         >
           <button
-            class="c8"
+            class="c7"
           >
             Submit
           </button>
           <button
-            class="c9"
+            class="c8"
           >
             Cancel
           </button>
@@ -17360,7 +17333,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="xrsnj2-0 sc-1u8ov25-1 dBHNok"
+      class="mlglvd-0 sc-1u8ov25-1 brhahk"
     >
       <svg
         viewBox="0 0 216 216"
@@ -17435,24 +17408,24 @@ Object {
         </g>
       </svg>
       <div
-        class="xrsnj2-4 sc-1u8ov25-3 fKkLvd"
+        class="mlglvd-4 sc-1u8ov25-3 cRRiTm"
       >
         <input
           data-valid="true"
+          disabled=""
           name="name"
-          required=""
           type="text"
           value="New Lock"
         />
       </div>
       <div
-        class="xrsnj2-6 sc-1u8ov25-4 ihIdLc"
+        class="mlglvd-6 sc-1u8ov25-4 ihIdLc"
       >
         <input
           data-valid="true"
+          disabled=""
           inputmode="numeric"
           name="expirationDuration"
-          required=""
           step="1"
           type="number"
           value="30"
@@ -17461,22 +17434,15 @@ Object {
         days
       </div>
       <div
-        class="xrsnj2-7 sc-1u8ov25-5 hzTKUl"
+        class="mlglvd-7 sc-1u8ov25-5 hzTKUl"
       >
         <input
           data-valid="true"
-          inputmode="numeric"
+          disabled=""
           name="maxNumberOfKeys"
-          required=""
-          step="1"
-          type="number"
+          type="text"
           value="10"
         />
-        <div
-          class="xrsnj2-1 sc-1u8ov25-0 eiQcmf"
-        >
-          Unlimited
-        </div>
       </div>
       <span
         class="buwkmd-5 sc-1u8ov25-6 jyspKX"
@@ -17563,21 +17529,14 @@ exports[`Storyshots CreatorLockForm/invalid invalid num keys 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c6 {
+    .c5 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c6:before {
+.c5:before {
   content: '三';
-}
-
-.c4 {
-  color: var(--link);
-  font-size: 11px;
-  width: 100%;
-  padding: 5px;
 }
 
 .c0 {
@@ -17628,7 +17587,11 @@ Object {
   border: 1px solid var(--red);
 }
 
-.c7 {
+.c0 input:disabled {
+  color: var(--silver);
+}
+
+.c6 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -17670,19 +17633,19 @@ Object {
   width: 80%;
 }
 
-.c5 {
+.c4 {
   white-space: nowrap;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-.c5 input[type='text'],
-.c5 input[type='number'] {
+.c4 input[type='text'],
+.c4 input[type='number'] {
   min-width: 30px;
   width: 50%;
 }
 
-.c8 {
+.c7 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -17696,7 +17659,7 @@ Object {
   padding: 0;
 }
 
-.c9 {
+.c8 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -17817,8 +17780,8 @@ Object {
         >
           <input
             data-valid="true"
+            disabled=""
             name="name"
-            required=""
             type="text"
             value="New Lock"
           />
@@ -17828,9 +17791,9 @@ Object {
         >
           <input
             data-valid="true"
+            disabled=""
             inputmode="numeric"
             name="expirationDuration"
-            required=""
             step="1"
             type="number"
             value="30"
@@ -17843,24 +17806,17 @@ Object {
         >
           <input
             data-valid="false"
-            inputmode="numeric"
+            disabled=""
             name="maxNumberOfKeys"
-            required=""
-            step="1"
-            type="number"
+            type="text"
             value="-1"
           />
-          <div
-            class="c4"
-          >
-            Unlimited
-          </div>
         </div>
         <span
-          class="c5"
+          class="c4"
         >
           <span
-            class="c6"
+            class="c5"
           />
           <input
             data-valid="true"
@@ -17876,15 +17832,15 @@ Object {
           -
         </div>
         <div
-          class="c7"
+          class="c6"
         >
           <button
-            class="c8"
+            class="c7"
           >
             Submit
           </button>
           <button
-            class="c9"
+            class="c8"
           >
             Cancel
           </button>
@@ -17898,7 +17854,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="xrsnj2-0 sc-1u8ov25-1 dBHNok"
+      class="mlglvd-0 sc-1u8ov25-1 brhahk"
     >
       <svg
         viewBox="0 0 216 216"
@@ -17973,24 +17929,24 @@ Object {
         </g>
       </svg>
       <div
-        class="xrsnj2-4 sc-1u8ov25-3 fKkLvd"
+        class="mlglvd-4 sc-1u8ov25-3 cRRiTm"
       >
         <input
           data-valid="true"
+          disabled=""
           name="name"
-          required=""
           type="text"
           value="New Lock"
         />
       </div>
       <div
-        class="xrsnj2-6 sc-1u8ov25-4 ihIdLc"
+        class="mlglvd-6 sc-1u8ov25-4 ihIdLc"
       >
         <input
           data-valid="true"
+          disabled=""
           inputmode="numeric"
           name="expirationDuration"
-          required=""
           step="1"
           type="number"
           value="30"
@@ -17999,22 +17955,15 @@ Object {
         days
       </div>
       <div
-        class="xrsnj2-7 sc-1u8ov25-5 hzTKUl"
+        class="mlglvd-7 sc-1u8ov25-5 hzTKUl"
       >
         <input
           data-valid="false"
-          inputmode="numeric"
+          disabled=""
           name="maxNumberOfKeys"
-          required=""
-          step="1"
-          type="number"
+          type="text"
           value="-1"
         />
-        <div
-          class="xrsnj2-1 sc-1u8ov25-0 eiQcmf"
-        >
-          Unlimited
-        </div>
       </div>
       <span
         class="buwkmd-5 sc-1u8ov25-6 jyspKX"
@@ -18101,21 +18050,14 @@ exports[`Storyshots CreatorLockForm/invalid missing name 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c6 {
+    .c5 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c6:before {
+.c5:before {
   content: '三';
-}
-
-.c4 {
-  color: var(--link);
-  font-size: 11px;
-  width: 100%;
-  padding: 5px;
 }
 
 .c0 {
@@ -18166,7 +18108,11 @@ Object {
   border: 1px solid var(--red);
 }
 
-.c7 {
+.c0 input:disabled {
+  color: var(--silver);
+}
+
+.c6 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -18208,19 +18154,19 @@ Object {
   width: 80%;
 }
 
-.c5 {
+.c4 {
   white-space: nowrap;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-.c5 input[type='text'],
-.c5 input[type='number'] {
+.c4 input[type='text'],
+.c4 input[type='number'] {
   min-width: 30px;
   width: 50%;
 }
 
-.c8 {
+.c7 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -18234,7 +18180,7 @@ Object {
   padding: 0;
 }
 
-.c9 {
+.c8 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -18355,8 +18301,8 @@ Object {
         >
           <input
             data-valid="false"
+            disabled=""
             name="name"
-            required=""
             type="text"
             value=""
           />
@@ -18366,9 +18312,9 @@ Object {
         >
           <input
             data-valid="true"
+            disabled=""
             inputmode="numeric"
             name="expirationDuration"
-            required=""
             step="1"
             type="number"
             value="30"
@@ -18381,24 +18327,17 @@ Object {
         >
           <input
             data-valid="true"
-            inputmode="numeric"
+            disabled=""
             name="maxNumberOfKeys"
-            required=""
-            step="1"
-            type="number"
+            type="text"
             value="10"
           />
-          <div
-            class="c4"
-          >
-            Unlimited
-          </div>
         </div>
         <span
-          class="c5"
+          class="c4"
         >
           <span
-            class="c6"
+            class="c5"
           />
           <input
             data-valid="true"
@@ -18414,15 +18353,15 @@ Object {
           -
         </div>
         <div
-          class="c7"
+          class="c6"
         >
           <button
-            class="c8"
+            class="c7"
           >
             Submit
           </button>
           <button
-            class="c9"
+            class="c8"
           >
             Cancel
           </button>
@@ -18436,7 +18375,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="xrsnj2-0 sc-1u8ov25-1 dBHNok"
+      class="mlglvd-0 sc-1u8ov25-1 brhahk"
     >
       <svg
         viewBox="0 0 216 216"
@@ -18511,24 +18450,24 @@ Object {
         </g>
       </svg>
       <div
-        class="xrsnj2-4 sc-1u8ov25-3 fKkLvd"
+        class="mlglvd-4 sc-1u8ov25-3 cRRiTm"
       >
         <input
           data-valid="false"
+          disabled=""
           name="name"
-          required=""
           type="text"
           value=""
         />
       </div>
       <div
-        class="xrsnj2-6 sc-1u8ov25-4 ihIdLc"
+        class="mlglvd-6 sc-1u8ov25-4 ihIdLc"
       >
         <input
           data-valid="true"
+          disabled=""
           inputmode="numeric"
           name="expirationDuration"
-          required=""
           step="1"
           type="number"
           value="30"
@@ -18537,22 +18476,15 @@ Object {
         days
       </div>
       <div
-        class="xrsnj2-7 sc-1u8ov25-5 hzTKUl"
+        class="mlglvd-7 sc-1u8ov25-5 hzTKUl"
       >
         <input
           data-valid="true"
-          inputmode="numeric"
+          disabled=""
           name="maxNumberOfKeys"
-          required=""
-          step="1"
-          type="number"
+          type="text"
           value="10"
         />
-        <div
-          class="xrsnj2-1 sc-1u8ov25-0 eiQcmf"
-        >
-          Unlimited
-        </div>
       </div>
       <span
         class="buwkmd-5 sc-1u8ov25-6 jyspKX"
