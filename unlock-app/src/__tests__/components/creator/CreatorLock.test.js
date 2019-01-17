@@ -3,8 +3,6 @@ import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
 
 import { CreatorLock } from '../../../components/creator/CreatorLock'
-// the next line is part of an extraordinary hack to circumvent a weird styled components bug
-import CreatorLockForm from '../../../components/creator/CreatorLockForm'
 import configure from '../../../config'
 import createUnlockStore from '../../../createUnlockStore'
 
@@ -56,7 +54,6 @@ describe('CreatorLock', () => {
         <CreatorLock
           lock={lock}
           transaction={transaction}
-          form={CreatorLockForm}
           updateKeyPrice={() => {}}
         />
       </Provider>
@@ -91,7 +88,6 @@ describe('CreatorLock', () => {
         <CreatorLock
           lock={lock}
           transaction={transaction}
-          form={CreatorLockForm}
           updateKeyPrice={() => {}}
         />
       </Provider>
@@ -119,7 +115,6 @@ describe('CreatorLock', () => {
         <CreatorLock
           lock={keylock}
           transaction={transaction}
-          form={CreatorLockForm}
           updateKeyPrice={() => {}}
         />
       </Provider>
@@ -145,7 +140,6 @@ describe('CreatorLock', () => {
           lock={unlimitedlock}
           transaction={transaction}
           updateKeyPrice={() => {}}
-          form={CreatorLockForm}
         />
       </Provider>
     )
