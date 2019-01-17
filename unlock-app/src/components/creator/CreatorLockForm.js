@@ -135,6 +135,7 @@ export class CreatorLockForm extends React.Component {
   }
 
   render() {
+    const { pending } = this.props
     const {
       expirationDuration,
       maxNumberOfKeys,
@@ -155,7 +156,8 @@ export class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             defaultValue={name}
             data-valid={valid.name}
-            required
+            required={pending}
+            disabled={!pending}
           />
         </FormLockName>
         <FormLockDuration>
@@ -167,7 +169,8 @@ export class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             defaultValue={expirationDuration}
             data-valid={valid.expirationDuration}
-            required
+            required={pending}
+            disabled={!pending}
           />{' '}
           days
         </FormLockDuration>
@@ -178,9 +181,10 @@ export class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             value={maxNumberOfKeys}
             data-valid={valid.maxNumberOfKeys}
-            required
+            required={pending}
+            disabled={!pending}
           />
-          {!unlimitedKeys && (
+          {pending && !unlimitedKeys && (
             <LockLabelUnlimited onClick={this.handleUnlimitedClick}>
               Unlimited
             </LockLabelUnlimited>
@@ -222,6 +226,7 @@ CreatorLockForm.propTypes = {
   maxNumberOfKeys: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // string is for '∞'
   name: PropTypes.string,
   address: PropTypes.string,
+  pending: PropTypes.bool,
   convert: PropTypes.bool, // this prop is to allow form field validation tests to test edge cases
 }
 
@@ -234,6 +239,7 @@ CreatorLockForm.defaultProps = {
   name: 'New Lock',
   address: uniqid(), // for new locks, we don't have an address, so use a temporary one
   convert: true,
+  pending: false,
 }
 
 const mapStateToProps = state => {
@@ -275,6 +281,10 @@ const FormLockRow = styled(LockRow)`
 
   input[data-valid='false'] {
     border: 1px solid var(--red);
+  }
+
+  input:disabled {
+    color: var(--silver);
   }
 `
 
