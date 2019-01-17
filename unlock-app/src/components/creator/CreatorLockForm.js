@@ -16,7 +16,6 @@ import {
   LockKeys,
 } from './LockStyles'
 import { LockStatus } from './lock/CreatorLockStatus'
-import { createLock } from '../../actions/lock'
 import { setError, resetError } from '../../actions/error'
 import {
   FORM_LOCK_NAME_MISSING,
