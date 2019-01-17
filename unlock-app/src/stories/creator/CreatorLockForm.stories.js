@@ -29,10 +29,6 @@ storiesOf('CreatorLockForm', module)
       name: 'Existing Lock',
     }
     return (
-      <CreatorLockForm
-        lock={lock}
-        hideAction={() => {}}
-        createLock={() => {}}
-      />
+      <CreatorLockForm {...lock} hideAction={() => {}} createLock={() => {}} />
     )
   })

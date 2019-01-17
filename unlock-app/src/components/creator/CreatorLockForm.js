@@ -136,7 +136,7 @@ export class CreatorLockForm extends React.Component {
 
   render() {
     const { address } = this.props
-    const disableEdit = !!address
+    const disableEdit = address.length === 42
     const {
       expirationDuration,
       maxNumberOfKeys,
