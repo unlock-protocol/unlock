@@ -126,6 +126,7 @@ export default function configure(
     env,
     providers,
     isRequiredNetwork,
+    requiredNetworkId,
     requiredNetwork,
     requiredConfirmations,
     unlockAddress,
