@@ -4835,6 +4835,34 @@ Object {
                 <h2
                   class="c18"
                 >
+                  Christopher Nascone
+                </h2>
+                <img
+                  class="c19"
+                  src="/static/images/illustrations/chris.jpg"
+                />
+                <p>
+                  I'm a software engineer from New Jersey, which means I have only
+          one degree of separation from the entire staff of Bell Labs. When I'm
+          not on the computer, you might find me wandering around in the woods.
+                </p>
+                <small>
+                  <a
+                    href="https://nasc.one"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Personal site
+                  </a>
+                  
+                </small>
+              </div>
+              <div
+                class="2 c16"
+              >
+                <h2
+                  class="c18"
+                >
                   Gregory Beaver
                 </h2>
                 <img
@@ -5439,6 +5467,34 @@ Object {
                     LinkedIn
                   </a>
                 </span>
+              </small>
+            </div>
+            <div
+              class="sc-1mz6j63-12 cyhuRc"
+            >
+              <h2
+                class="sc-1mz6j63-4 eeuIDV"
+              >
+                Christopher Nascone
+              </h2>
+              <img
+                class="sc-1y07p1o-0 ekCmWE"
+                src="/static/images/illustrations/chris.jpg"
+              />
+              <p>
+                I'm a software engineer from New Jersey, which means I have only
+          one degree of separation from the entire staff of Bell Labs. When I'm
+          not on the computer, you might find me wandering around in the woods.
+              </p>
+              <small>
+                <a
+                  href="https://nasc.one"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Personal site
+                </a>
+                
               </small>
             </div>
             <div
