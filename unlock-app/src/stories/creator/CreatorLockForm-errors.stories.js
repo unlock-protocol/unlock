@@ -14,34 +14,49 @@ const store = createUnlockStore({
   },
 })
 
-storiesOf('CreatorLockForm', module)
+storiesOf('CreatorLockForm/invalid', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
-  .add('Default', () => {
+  .add('missing name', () => {
     return (
       <CreatorLockForm
-        createLock={action('createLock')}
+        name=""
+        valid={false}
         hideAction={action('hide')}
         setError={action('setError')}
-        pending
+        createLock={action('createLock')}
       />
     )
   })
-  .add('With existing lock', () => {
-    // TODO: implement this
-    const lock = {
-      keyPrice: '10000000000000000000',
-      expirationDuration: 172800,
-      maxNumberOfKeys: 240,
-      outstandingKeys: 3,
-      address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
-      name: 'Existing Lock',
-    }
+  .add('invalid duration', () => {
     return (
       <CreatorLockForm
-        {...lock}
-        createLock={action('createLock')}
+        expirationDuration={-1}
+        valid={false}
         hideAction={action('hide')}
         setError={action('setError')}
+        createLock={action('createLock')}
+      />
+    )
+  })
+  .add('invalid num keys', () => {
+    return (
+      <CreatorLockForm
+        maxNumberOfKeys={-1}
+        valid={false}
+        hideAction={action('hide')}
+        setError={action('setError')}
+        createLock={action('createLock')}
+      />
+    )
+  })
+  .add('invalid key price', () => {
+    return (
+      <CreatorLockForm
+        keyPrice="-1"
+        valid={false}
+        hideAction={action('hide')}
+        setError={action('setError')}
+        createLock={action('createLock')}
       />
     )
   })

@@ -16,6 +16,18 @@ import {
   LockKeys,
 } from './LockStyles'
 import { LockStatus } from './lock/CreatorLockStatus'
+import { setError, resetError } from '../../actions/error'
+import {
+  FORM_LOCK_NAME_MISSING,
+  FORM_EXPIRATION_DURATION_INVALID,
+  FORM_MAX_KEYS_INVALID,
+  FORM_KEY_PRICE_INVALID,
+} from '../../errors'
+import {
+  isNotEmpty,
+  isPositiveInteger,
+  isPositiveNumber,
+} from '../../utils/validators'
 
 export class CreatorLockForm extends React.Component {
   constructor(props, context) {
@@ -36,31 +48,76 @@ export class CreatorLockForm extends React.Component {
       name: props.name,
       address: props.address,
     }
-    this.state.valid = {
-      name: this.validate('name', props.name),
-      expirationDuration: this.validate(
-        'expirationDuration',
-        props.expirationDuration
-      ),
-      keyPrice: this.validate('keyPrice', props.keyPrice),
-      maxNumberOfKeys: this.validate('maxNumberOfKeys', props.maxNumberOfKeys),
-    }
-
+    const { validityState: valid, errors } = this.formValidity(this.state)
+    this.state.valid = valid
+    this.state.errors = errors
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleUnlimitedClick = this.handleUnlimitedClick.bind(this)
+    this.saveLock = this.saveLock.bind(this)
+    this.processFormErrors = this.sendErrorsToRedux.bind(this)
   }
 
+  /**
+   * Traverses each form field and verifies its validity.
+   * returns a hash of fields to error message and all errors triggered.
+   * valid fields hash to the value false
+   * invalid fields hash to the error constant (a string) that represents the error condition
+   */
+  formValidity(state) {
+    // the list of errors we will pass to setError
+    const errors = []
+    // for each field, retrieve the error triggered by current state
+    // and then make sure we set it as existing.
+    const validityState = [
+      'expirationDuration',
+      //'expirationDurationUnit',
+      'keyPrice',
+      //'keyPriceCurrency',
+      'maxNumberOfKeys',
+      'name',
+    ].reduce((fieldValidity, field) => {
+      // invalidError will either be the error name or false
+      const invalidError = this.validate(field, state[field])
+      fieldValidity[field] = !invalidError
+      if (!invalidError) {
+        return fieldValidity
+      }
+      errors.push(invalidError)
+      return fieldValidity
+    }, {})
+
+    // the form can be submitted if and only if there are no errors triggered by any field
+    validityState.formValid = errors.length === 0
+    return { validityState, errors }
+  }
+
+  /**
+   * validate an individual form field
+   */
   validate(name, value) {
-    return (
-      (name === 'name' && typeof value === 'string' && value.length > 0) ||
-      ((name === 'expirationDuration' || name === 'maxNumberOfKeys') &&
-        !isNaN(value) &&
-        value > 0) ||
-      (name === 'maxNumberOfKeys' && value === '∞') ||
-      (name === 'keyPrice' && !isNaN(value) && value >= 0)
-    )
+    switch (name) {
+      case 'name':
+        if (!isNotEmpty(value)) {
+          return FORM_LOCK_NAME_MISSING
+        }
+        break
+      case 'expirationDuration':
+        if (!isPositiveInteger(value)) return FORM_EXPIRATION_DURATION_INVALID
+        break
+      case 'maxNumberOfKeys':
+        if (value !== '∞' && !isPositiveInteger(value)) {
+          return FORM_MAX_KEYS_INVALID
+        }
+        break
+      case 'keyPrice':
+        if (!isPositiveNumber(value)) {
+          return FORM_KEY_PRICE_INVALID
+        }
+        break
+    }
+    return false
   }
 
   saveLock() {
@@ -88,45 +145,54 @@ export class CreatorLockForm extends React.Component {
     createLock(lock)
   }
 
+  /**
+   * calculate form errors, and propagate them to redux
+   */
+  sendErrorsToRedux(state) {
+    const { validityState: valid, errors } = this.formValidity(state)
+    const { setError, resetError } = this.props
+    const allFormErrors = [
+      FORM_EXPIRATION_DURATION_INVALID,
+      FORM_KEY_PRICE_INVALID,
+      FORM_MAX_KEYS_INVALID,
+      FORM_LOCK_NAME_MISSING,
+    ]
+    allFormErrors.forEach(error => {
+      if (errors.indexOf(error) >= 0) {
+        setError(error)
+      } else {
+        resetError(error)
+      }
+    })
+    return { valid, errors }
+  }
+
   handleUnlimitedClick() {
     this.setState(state => ({
       ...state,
-      valid: {
-        ...state.valid,
-        maxNumberOfKeys: true,
-      },
       unlimitedKeys: true,
       maxNumberOfKeys: '∞',
+      valid: this.formValidity({ ...state, [name]: '∞' }),
     }))
   }
 
   handleChange({ target: { name, value } }) {
-    if (name === 'maxNumberOfKeys') {
-      this.setState(state => ({
-        ...state,
-        valid: {
-          ...state.valid,
-          maxNumberOfKeys: value === '∞' ? true : this.validate(name, value),
-        },
-        maxNumberOfKeys: value,
-        unlimitedKeys: value === '∞',
-      }))
-    } else {
-      this.setState(state => ({
-        ...state,
-        valid: { ...state.valid, [name]: this.validate(name, value) },
-        [name]: value,
-      }))
-    }
+    this.setState(state => ({
+      unlimitedKeys:
+        name === 'maxNumberOfKeys' ? value === '∞' : state.unlimitedKeys,
+      [name]: value,
+      valid: this.formValidity({ ...state.valid, [name]: value }),
+    }))
   }
 
   handleSubmit() {
-    const { valid } = this.state
-    if (Object.keys(valid).filter(key => !valid[key]).length) return false
-
-    this.saveLock()
-    const { hideAction } = this.props
-    if (hideAction) hideAction()
+    this.setState(state => {
+      const { valid, errors } = this.sendErrorsToRedux(state)
+      if (!valid.formValid) return { valid, errors }
+      const { hideAction } = this.props
+      if (hideAction) hideAction()
+      return this.saveLock(state, valid, errors)
+    })
   }
 
   handleCancel() {
@@ -219,6 +285,8 @@ CreatorLockForm.propTypes = {
   account: UnlockPropTypes.account.isRequired,
   hideAction: PropTypes.func.isRequired,
   createLock: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
+  resetError: PropTypes.func.isRequired,
   expirationDuration: PropTypes.number,
   expirationDurationUnit: PropTypes.number,
   keyPrice: PropTypes.string,
@@ -248,7 +316,12 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(CreatorLockForm)
+const mapDispatchToProps = { setError, resetError }
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreatorLockForm)
 
 const LockLabelUnlimited = styled(LockLabel)`
   font-size: 11px;
