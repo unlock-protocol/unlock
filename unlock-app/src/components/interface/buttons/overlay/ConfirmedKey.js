@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import Svg from '../../svg'
@@ -9,6 +10,10 @@ const ConfirmedKey = ({ hideModal, ...props }) => (
     <Hover onClick={hideModal} />
   </ConfirmedKeyButton>
 )
+
+ConfirmedKey.propTypes = {
+  hideModal: PropTypes.func.isRequired,
+}
 
 const NotHover = styled(Svg.Checkmark)``
 

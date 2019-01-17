@@ -1,5 +1,7 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
+import UnlockPropTypes from '../propTypes'
 import configure from '../config'
 import {
   WrongNetwork,
@@ -67,6 +69,25 @@ export default function withConfig(Component) {
         {config => <Component {...props} config={config} />}
       </ConfigContext.Consumer>
     )
+  }
+
+  componentWithConfig.propTypes = {
+    router: PropTypes.shape({
+      location: PropTypes.shape({
+        pathname: PropTypes.string.isRequired,
+        search: PropTypes.string.isRequired,
+        hash: PropTypes.string.isRequired,
+      }),
+      action: PropTypes.string,
+    }),
+    network: UnlockPropTypes.network,
+    account: UnlockPropTypes.network,
+  }
+
+  componentWithConfig.defaultProps = {
+    account: null,
+    network: null,
+    router: null,
   }
 
   function mapStateToProps(state) {
