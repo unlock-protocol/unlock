@@ -210,6 +210,7 @@ describe('CreatorLockForm', () => {
     it('max number of keys is infinity', () => {
       const wrapper = makeLockForm({ maxNumberOfKeys: '∞' })
 
+      expect(wrapper.getByDisplayValue('∞')).not.toBeNull()
       expect(wrapper.getByValue('∞').dataset.valid).toBe('true')
     })
     it('key price is a positive number', () => {
