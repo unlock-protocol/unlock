@@ -58,7 +58,7 @@ export default function configure(
   let providers = {}
   let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
-  let requiredNetworkId = 101
+  let requiredNetworkId = 1984
   let requiredConfirmations = 12
   let unlockAddress = ''
   let services = {}
@@ -102,7 +102,6 @@ export default function configure(
     // In staging, the network can only be rinkeby
     isRequiredNetwork = networkId => networkId === 4
     requiredNetworkId = 4
-    requiredNetwork = ETHEREUM_NETWORKS_NAMES[4][0]
 
     // Address for the Unlock smart contract
     unlockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
@@ -118,7 +117,10 @@ export default function configure(
     // In prod, the network can only be mainnet
     isRequiredNetwork = networkId => networkId === 1
     requiredNetworkId = 1
-    requiredNetwork = ETHEREUM_NETWORKS_NAMES[1][0]
+  }
+
+  if (env === 'prod' || env === 'staging') {
+    requiredNetwork = ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
   }
 
   return {
