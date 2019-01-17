@@ -144,6 +144,7 @@ export class CreatorLockForm extends React.Component {
       valid,
     } = this.state
 
+    // NOTE: maxNumberOfKeys must be a text input in order to support the infinity symbol
     return (
       <FormLockRow>
         <Icon />
@@ -172,9 +173,7 @@ export class CreatorLockForm extends React.Component {
         </FormLockDuration>
         <FormLockKeys>
           <input
-            type="number"
-            step="1"
-            inputMode="numeric"
+            type="text"
             name="maxNumberOfKeys"
             onChange={this.handleChange}
             value={maxNumberOfKeys}
