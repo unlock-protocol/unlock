@@ -21,8 +21,8 @@
     "solhint": "^1.4.0",
     "truffle": "^4.1.15",
     "web3-utils": "^1.0.0-beta.36",
-    "zos": "^v2.1.0-rc.0",
-    "zos-lib": "^v2.1.0-rc.0"
+    "zos": "^2.1.0",
+    "zos-lib": "^2.1.0"
   },
   "devDependencies": {
     "eslint-config-standard": "^12.0.0",
