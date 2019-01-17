@@ -48,7 +48,7 @@ export class CreatorLockForm extends React.Component {
       name: props.name,
       address: props.address,
     }
-    const { validityState: valid, errors } = this.valid(this.state)
+    const { validityState: valid, errors } = this.formValidity(this.state)
     this.state.valid = valid
     this.state.errors = errors
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -56,10 +56,16 @@ export class CreatorLockForm extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleUnlimitedClick = this.handleUnlimitedClick.bind(this)
     this.saveLock = this.saveLock.bind(this)
-    this.processFormErrors = this.processFormErrors.bind(this)
+    this.processFormErrors = this.sendErrorsToRedux.bind(this)
   }
 
-  valid(state) {
+  /**
+   * Traverses each form field and verifies its validity.
+   * returns a hash of fields to error message and all errors triggered.
+   * valid fields hash to the value false
+   * invalid fields hash to the error constant (a string) that represents the error condition
+   */
+  formValidity(state) {
     // the list of errors we will pass to setError
     const errors = []
     // for each field, retrieve the error triggered by current state
@@ -87,6 +93,9 @@ export class CreatorLockForm extends React.Component {
     return { validityState, errors }
   }
 
+  /**
+   * validate an individual form field
+   */
   validate(name, value) {
     switch (name) {
       case 'name':
@@ -136,8 +145,11 @@ export class CreatorLockForm extends React.Component {
     createLock(lock)
   }
 
-  processFormErrors(state) {
-    const { validityState: valid, errors } = this.valid(state)
+  /**
+   * calculate form errors, and propagate them to redux
+   */
+  sendErrorsToRedux(state) {
+    const { validityState: valid, errors } = this.formValidity(state)
     const { setError, resetError } = this.props
     const allFormErrors = [
       FORM_EXPIRATION_DURATION_INVALID,
@@ -160,7 +172,7 @@ export class CreatorLockForm extends React.Component {
       ...state,
       unlimitedKeys: true,
       maxNumberOfKeys: '∞',
-      valid: this.valid({ ...state, [name]: '∞' }),
+      valid: this.formValidity({ ...state, [name]: '∞' }),
     }))
   }
 
@@ -169,13 +181,13 @@ export class CreatorLockForm extends React.Component {
       unlimitedKeys:
         name === 'maxNumberOfKeys' ? value === '∞' : state.unlimitedKeys,
       [name]: value,
-      valid: this.valid({ ...state.valid, [name]: value }),
+      valid: this.formValidity({ ...state.valid, [name]: value }),
     }))
   }
 
   handleSubmit() {
     this.setState(state => {
-      const { valid, errors } = this.processFormErrors(state)
+      const { valid, errors } = this.sendErrorsToRedux(state)
       if (!valid.formValid) return { valid, errors }
       const { hideAction } = this.props
       if (hideAction) hideAction()
