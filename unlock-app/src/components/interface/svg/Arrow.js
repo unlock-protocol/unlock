@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgArrow = ({ title, ...props }) => (
   <svg {...props}>
@@ -11,4 +12,10 @@ const SvgArrow = ({ title, ...props }) => (
   </svg>
 )
 
+SvgArrow.propTypes = {
+  title: PropTypes.string,
+}
+SvgArrow.defaultProps = {
+  title: '',
+}
 export default SvgArrow

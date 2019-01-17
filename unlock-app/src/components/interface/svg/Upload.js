@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgUpload = ({ title, ...props }) => (
   <svg {...props}>
@@ -11,4 +12,10 @@ const SvgUpload = ({ title, ...props }) => (
   </svg>
 )
 
+SvgUpload.propTypes = {
+  title: PropTypes.string,
+}
+SvgUpload.defaultProps = {
+  title: '',
+}
 export default SvgUpload
