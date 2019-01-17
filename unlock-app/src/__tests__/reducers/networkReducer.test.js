@@ -6,7 +6,7 @@ describe('network reducer', () => {
 
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual({
-      name: 0,
+      name: 1984,
     })
   })
 

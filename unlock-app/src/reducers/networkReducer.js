@@ -1,7 +1,11 @@
 import { SET_NETWORK } from '../actions/network'
+import configure from '../config'
+
+const config = configure()
+const name = config.requiredNetworkId
 
 export const initialState = {
-  name: 0,
+  name,
 }
 
 const networkReducer = (state = initialState, action) => {
