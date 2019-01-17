@@ -23,6 +23,7 @@ storiesOf('CreatorLockForm/invalid', module)
         valid={false}
         hideAction={action('hide')}
         setError={action('setError')}
+        createLock={action('createLock')}
       />
     )
   })
@@ -33,6 +34,7 @@ storiesOf('CreatorLockForm/invalid', module)
         valid={false}
         hideAction={action('hide')}
         setError={action('setError')}
+        createLock={action('createLock')}
       />
     )
   })
@@ -43,6 +45,7 @@ storiesOf('CreatorLockForm/invalid', module)
         valid={false}
         hideAction={action('hide')}
         setError={action('setError')}
+        createLock={action('createLock')}
       />
     )
   })
@@ -53,6 +56,7 @@ storiesOf('CreatorLockForm/invalid', module)
         valid={false}
         hideAction={action('hide')}
         setError={action('setError')}
+        createLock={action('createLock')}
       />
     )
   })
