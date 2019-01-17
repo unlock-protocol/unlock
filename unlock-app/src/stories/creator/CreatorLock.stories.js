@@ -3,6 +3,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import CreatorLock from '../../components/creator/CreatorLock'
+import CreatorLockForm from '../../components/creator/CreatorLockForm'
 import createUnlockStore from '../../createUnlockStore'
 
 const withdrawalConfirmingAddress = '0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298'
@@ -56,7 +57,7 @@ storiesOf('CreatorLock', module)
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
       transaction: 'deployedid',
     }
-    return <CreatorLock lock={lock} edit={action('edit')} />
+    return <CreatorLock lock={lock} form={CreatorLockForm} />
   })
   .add('Submitted', () => {
     const lock = {
@@ -67,7 +68,7 @@ storiesOf('CreatorLock', module)
       address: '0x127c74abc0c4d48d1bdad5dcb26153fc8780f83e',
       transaction: 'submittedid',
     }
-    return <CreatorLock lock={lock} edit={action('edit')} />
+    return <CreatorLock lock={lock} form={CreatorLockForm} />
   })
   .add('Confirming', () => {
     const lock = {
@@ -99,7 +100,7 @@ storiesOf('CreatorLock', module)
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
       transaction: '0x789',
     }
-    return <CreatorLock lock={lock} transaction={null} edit={action('edit')} />
+    return <CreatorLock lock={lock} transaction={null} form={CreatorLockForm} />
   })
   .add('With key', () => {
     const lock = {
@@ -132,7 +133,7 @@ storiesOf('CreatorLock', module)
       address: withdrawalSubmittedAddress,
       transaction: 'deployedid',
     }
-    return <CreatorLock lock={lock} edit={action('edit')} />
+    return <CreatorLock lock={lock} form={CreatorLockForm} />
   })
   .add('Withdrawing', () => {
     const lock = {
@@ -144,5 +145,5 @@ storiesOf('CreatorLock', module)
       address: withdrawalConfirmingAddress,
       transaction: 'deployedid',
     }
-    return <CreatorLock lock={lock} edit={action('edit')} />
+    return <CreatorLock lock={lock} form={CreatorLockForm} />
   })
