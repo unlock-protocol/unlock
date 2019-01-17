@@ -84,7 +84,7 @@ exports[`withConfig High Order Component when the current network is not in the 
 .c4 {
   display: grid;
   grid-gap: 0;
-  grid-template-columns: 1fr repeat(4,24px);
+  grid-template-columns: 1fr auto;
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -100,7 +100,7 @@ exports[`withConfig High Order Component when the current network is not in the 
 .c6 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: 1fr repeat(4,24px);
+  grid-template-columns: repeat(4,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -264,9 +264,21 @@ exports[`withConfig High Order Component when the current network is not in the 
   }
 }
 
+@media only screen and (min-device-width:736px) {
+  .c10 {
+    display: none;
+  }
+}
+
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c12 {
     display: grid;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
+  .c12 {
+    display: none;
   }
 }
 
