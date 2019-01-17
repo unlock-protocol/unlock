@@ -66,6 +66,12 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   // return 0 values when missing a key)
   mapping (address => Key) internal keyByOwner;
 
+  // Each tokenId can have at most exactly one owner at a time.
+  // Returns 0 if the token does not exist
+  // TODO: once we decouple tokenId from owner address (incl in js), then we can consider
+  // merging this with numberOfKeysSold into an array instead.
+  mapping (uint => address) internal ownerByTokenId;
+
   // Addresses of owners are also stored in an array.
   // Addresses are never removed by design to avoid abuses around referals
   address[] public owners;
@@ -109,7 +115,17 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint _tokenId
   ) {
     require(
-      address(_tokenId) == msg.sender
+      ownerByTokenId[_tokenId] == msg.sender
+    );
+    _;
+  }
+  
+  // Ensures that a key has an owner
+  modifier isKey(
+    uint _tokenId
+  ) {
+    require(
+      ownerByTokenId[_tokenId] != address(0), "No such key"
     );
     _;
   }
@@ -121,7 +137,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint _tokenId
   ) {
     require(
-      address(_tokenId) == msg.sender
+      ownerByTokenId[_tokenId] == msg.sender
       || _getApproved(_tokenId) == msg.sender
     , "Only key owner or approved owner");
     _;
@@ -194,7 +210,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     external
     payable
     notSoldOut()
-    hasKey(address(_tokenId))
+    hasKey(_from)
     onlyKeyOwnerOrApproved(_tokenId)
   {
     require(_recipient != address(0));
@@ -204,6 +220,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     if (previousExpiration == 0) {
       // The recipient did not have a key previously
       owners.push(_recipient);
+      // Note: not using the tokenId above since ATM we do not transfer tokenId's
+      // this will change when we decouple tokenId from address
+      ownerByTokenId[uint(_recipient)] = _recipient;
       // At the moment tokenId is the user's address, but as we work towards ERC721
       // support this will change to a sequenceId assigned at purchase.
       keyByOwner[_recipient].tokenId = uint(_recipient);
@@ -290,7 +309,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     require(_approved != address(0));
 
     approved[_tokenId] = _approved;
-    emit Approval(address(_tokenId), _approved, _tokenId);
+    emit Approval(ownerByTokenId[_tokenId], _approved, _tokenId);
   }
 
   /**
@@ -331,10 +350,10 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   )
     external
     view
-    hasKey(address(_tokenId))
+    isKey(_tokenId)
     returns (address)
   {
-    return address(_tokenId);
+    return ownerByTokenId[_tokenId];
   }
 
   /**
@@ -541,6 +560,8 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
       { // This is a brand new owner, else an owner of an expired key buying an extension
         numberOfKeysSold++;
         owners.push(_recipient);
+        // Note: for ERC721 support we will be changing tokenId to be a sequence id instead
+        ownerByTokenId[uint(_recipient)] = _recipient;
         // At the moment tokenId is the user's address, but as we work towards ERC721
         // support this will change to a sequenceId assigned at purchase.
         keyByOwner[_recipient].tokenId = uint(_recipient);
