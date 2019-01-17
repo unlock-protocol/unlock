@@ -16,7 +16,9 @@ const store = createUnlockStore({
 storiesOf('CreatorLockForm', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Default', () => {
-    return <CreatorLockForm hideAction={() => {}} createLock={() => {}} />
+    return (
+      <CreatorLockForm hideAction={() => {}} createLock={() => {}} pending />
+    )
   })
   .add('With existing lock', () => {
     // TODO: implement this
