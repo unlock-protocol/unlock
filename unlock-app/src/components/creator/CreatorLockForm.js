@@ -172,9 +172,7 @@ export class CreatorLockForm extends React.Component {
         </FormLockDuration>
         <FormLockKeys>
           <input
-            type="number"
-            step="1"
-            inputMode="numeric"
+            type="text"
             name="maxNumberOfKeys"
             onChange={this.handleChange}
             value={maxNumberOfKeys}
