@@ -25,14 +25,16 @@ contract('Lock', (accounts) => {
       lock.expirationDuration.call(),
       lock.keyPrice.call(),
       lock.maxNumberOfKeys.call(),
-      lock.outstandingKeys.call()
+      lock.outstandingKeys.call(),
+      lock.numberOfOwners.call()
     ]).then(
       ([
         owner,
         expirationDuration,
         keyPrice,
         maxNumberOfKeys,
-        outstandingKeys
+        outstandingKeys,
+        numberOfOwners
       ]) => {
         assert.strictEqual(owner, accounts[0])
         assert(expirationDuration.eq(60 * 60 * 24 * 30))
@@ -42,6 +44,7 @@ contract('Lock', (accounts) => {
         )
         assert(maxNumberOfKeys.eq(10))
         assert(outstandingKeys.eq(0))
+        assert(numberOfOwners.eq(0))
       }
     )
   })

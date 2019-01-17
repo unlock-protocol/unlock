@@ -47,6 +47,12 @@ contract('Lock ERC721', (accounts) => {
       })
     })
 
+    it('should have the right number of owners', () => {
+      return lock.numberOfOwners().then((numberOfOwners) => {
+        assert.equal(numberOfOwners, 4)
+      })
+    })
+
     it('should allow for access to an individual key owner', () => {
       return Promise.all([
         lock.owners(0),
@@ -59,10 +65,52 @@ contract('Lock ERC721', (accounts) => {
     })
 
     it('should fail to access to an individual key owner when out of bounds', () => {
-      return lock.owners(5).then((missing) => {
+      return lock.owners(6).then((missing) => {
         assert(false, 'This should have failed')
       }).catch(error => {
         assert.equal(error.message, 'VM Exception while processing transaction: invalid opcode')
+      })
+    })
+
+    describe('after a transfer to a new address', () => {
+      let numberOfOwners
+
+      before(async () => {
+        numberOfOwners = await lock.numberOfOwners()
+        await lock.transferFrom(accounts[1], accounts[5], accounts[1], { from: accounts[1] })
+      })
+  
+      it('should have the right number of keys', () => {
+        return lock.outstandingKeys().then((outstandingKeys) => {
+          assert.equal(outstandingKeys, 4)
+        })
+      })
+  
+      it('should have the right number of owners', () => {
+        return lock.numberOfOwners().then((_numberOfOwners) => {
+          assert(_numberOfOwners.eq(numberOfOwners.plus(1)))
+        })
+      })
+    })
+
+    describe('after a transfer to an existing owner', () => {
+      let numberOfOwners
+
+      before(async () => {
+        numberOfOwners = await lock.numberOfOwners()
+        await lock.transferFrom(accounts[1], accounts[2], accounts[1], { from: accounts[1] })
+      })
+  
+      it('should have the right number of keys', () => {
+        return lock.outstandingKeys().then((outstandingKeys) => {
+          assert.equal(outstandingKeys, 4)
+        })
+      })
+  
+      it('should have the right number of owners', () => {
+        return lock.numberOfOwners().then((_numberOfOwners) => {
+          assert(_numberOfOwners.eq(numberOfOwners))
+        })
       })
     })
   })
