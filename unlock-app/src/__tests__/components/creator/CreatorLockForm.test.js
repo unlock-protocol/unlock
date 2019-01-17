@@ -2,19 +2,31 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 
 import { CreatorLockForm } from '../../../components/creator/CreatorLockForm'
+import {
+  FORM_LOCK_NAME_MISSING,
+  FORM_MAX_KEYS_INVALID,
+  FORM_EXPIRATION_DURATION_INVALID,
+  FORM_KEY_PRICE_INVALID,
+} from '../../../errors'
 
 describe('CreatorLockForm', () => {
   let createLock
   let hideAction
+  let setError
+  let resetError
   function makeLockForm(values = {}) {
     createLock = jest.fn()
     hideAction = jest.fn()
+    setError = jest.fn()
+    resetError = jest.fn()
     const ret = rtl.render(
       <CreatorLockForm
-        hideAction={hideAction}
-        createLock={createLock}
         account={{ address: 'hi' }}
         convert={false} // * see comment below
+        createLock={createLock}
+        hideAction={hideAction}
+        setError={setError}
+        resetError={resetError}
         {...values}
       />
     )
@@ -24,6 +36,22 @@ describe('CreatorLockForm', () => {
     // from wei and seconds to eth and days, respectively.
     // this will be removed when a way is found to test form field validation edge cases
     return ret
+  }
+  const allFormErrors = [
+    FORM_EXPIRATION_DURATION_INVALID,
+    FORM_KEY_PRICE_INVALID,
+    FORM_MAX_KEYS_INVALID,
+    FORM_LOCK_NAME_MISSING,
+  ]
+  function expectErrors(errorList = []) {
+    expect(resetError).toHaveBeenCalledTimes(
+      allFormErrors.length - errorList.length
+    )
+    expect(setError).toHaveBeenCalledTimes(errorList.length)
+    errorList.forEach(error => expect(setError).toHaveBeenCalledWith(error))
+    allFormErrors
+      .filter(error => !errorList.includes(error))
+      .forEach(error => expect(resetError).toHaveBeenCalledWith(error))
   }
 
   describe('invalid values', () => {
@@ -110,6 +138,7 @@ describe('CreatorLockForm', () => {
         expect(submit).not.toBeNull()
 
         rtl.fireEvent.click(submit)
+        expectErrors([FORM_LOCK_NAME_MISSING])
       })
       it('key expiration is not a number', () => {
         const save = console.error // eslint-disable-line
@@ -121,6 +150,7 @@ describe('CreatorLockForm', () => {
           expect(submit).not.toBeNull()
 
           rtl.fireEvent.click(submit)
+          expectErrors([FORM_EXPIRATION_DURATION_INVALID])
         } finally {
           console.error = save // eslint-disable-line
         }
@@ -132,6 +162,7 @@ describe('CreatorLockForm', () => {
         expect(submit).not.toBeNull()
 
         rtl.fireEvent.click(submit)
+        expectErrors([FORM_EXPIRATION_DURATION_INVALID])
       })
       it('max number of keys is not a number', () => {
         const save = console.error // eslint-disable-line
@@ -143,6 +174,7 @@ describe('CreatorLockForm', () => {
           expect(submit).not.toBeNull()
 
           rtl.fireEvent.click(submit)
+          expectErrors([FORM_MAX_KEYS_INVALID])
         } finally {
           console.error = save // eslint-disable-line
         }
@@ -154,6 +186,7 @@ describe('CreatorLockForm', () => {
         expect(submit).not.toBeNull()
 
         rtl.fireEvent.click(submit)
+        expectErrors([FORM_MAX_KEYS_INVALID])
       })
       it('key price is not a number', () => {
         const save = console.error // eslint-disable-line
@@ -165,6 +198,7 @@ describe('CreatorLockForm', () => {
           expect(submit).not.toBeNull()
 
           rtl.fireEvent.click(submit)
+          expectErrors([FORM_KEY_PRICE_INVALID])
         } finally {
           console.error = save // eslint-disable-line
         }
@@ -176,6 +210,7 @@ describe('CreatorLockForm', () => {
         expect(submit).not.toBeNull()
 
         rtl.fireEvent.click(submit)
+        expectErrors([FORM_KEY_PRICE_INVALID])
       })
       it('multiple errors', () => {
         const wrapper = makeLockForm({ keyPrice: '-1', name: '' })
@@ -184,6 +219,7 @@ describe('CreatorLockForm', () => {
         expect(submit).not.toBeNull()
 
         rtl.fireEvent.click(submit)
+        expectErrors([FORM_KEY_PRICE_INVALID, FORM_LOCK_NAME_MISSING])
       })
     })
   })
@@ -243,6 +279,7 @@ describe('CreatorLockForm', () => {
       expect(submit).not.toBeNull()
 
       rtl.fireEvent.click(submit)
+      expectErrors()
     })
   })
   it('cancel dismisses the form', () => {
