@@ -54,25 +54,4 @@ describe('CreatorLocks', () => {
     expect(wrapper.queryByValue('New Lock')).toBeNull()
     expect(wrapper.queryByText('Submit')).toBeNull()
   })
-  it('should call createLock when submit button is pressed', () => {
-    const createLock = jest.fn()
-
-    const store = createUnlockStore({
-      account: {},
-    })
-
-    const wrapper = rtl.render(
-      <Provider store={store}>
-        <CreatorLocks createLock={createLock} />
-      </Provider>
-    )
-
-    const createButton = wrapper.getByText('Create Lock')
-    rtl.fireEvent.click(createButton)
-
-    const submitButton = wrapper.getByText('Submit')
-    rtl.fireEvent.click(submitButton)
-
-    expect(createLock).toHaveBeenCalled()
-  })
 })

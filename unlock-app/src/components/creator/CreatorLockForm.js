@@ -16,6 +16,7 @@ import {
   LockKeys,
 } from './CreatorLock'
 import { LockStatus } from './lock/CreatorLockStatus'
+import { createLock } from '../../actions/lock'
 
 export class CreatorLockForm extends React.Component {
   constructor(props, context) {
@@ -242,7 +243,14 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(CreatorLockForm)
+const mapDispatchToProps = dispatch => ({
+  createLock: lock => dispatch(createLock(lock)),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreatorLockForm)
 
 const LockLabelUnlimited = styled(LockLabel)`
   font-size: 11px;

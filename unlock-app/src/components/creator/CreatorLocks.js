@@ -1,14 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
-
 import UnlockPropTypes from '../../propTypes'
 import CreatorLock, { LockRowGrid, PhoneLockRowGrid } from './CreatorLock'
 import CreatorLockForm from './CreatorLockForm'
 import Errors from '../interface/Errors'
 import Media, { NoPhone, Phone } from '../../theme/media'
-import { createLock } from '../../actions/lock'
 
 export class CreatorLocks extends React.Component {
   constructor(props, context) {
@@ -27,7 +23,7 @@ export class CreatorLocks extends React.Component {
   }
 
   render() {
-    const { locks, createLock } = this.props
+    const { locks } = this.props
     const { showDashboardForm } = this.state
     let lockFeed = Object.values(locks).reverse() // We want to display newer locks first
 
@@ -46,12 +42,7 @@ export class CreatorLocks extends React.Component {
           <CreateButton onClick={this.toggleForm}>Create Lock</CreateButton>
         </LockHeaderRow>
         <Errors />
-        {showDashboardForm && (
-          <CreatorLockForm
-            hideAction={this.toggleForm}
-            createLock={createLock}
-          />
-        )}
+        {showDashboardForm && <CreatorLockForm hideAction={this.toggleForm} />}
         {lockFeed.map(lock => {
           return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
         })}
@@ -61,7 +52,6 @@ export class CreatorLocks extends React.Component {
 }
 
 CreatorLocks.propTypes = {
-  createLock: PropTypes.func.isRequired,
   locks: UnlockPropTypes.locks,
   showForm: UnlockPropTypes.showDashboardForm,
 }
@@ -71,14 +61,7 @@ CreatorLocks.defaultProps = {
   showForm: false,
 }
 
-const mapDispatchToProps = dispatch => ({
-  createLock: lock => dispatch(createLock(lock)),
-})
-
-export default connect(
-  undefined, // no mapStateToProps for CreatorLocks, we only use mapDispatchToProps
-  mapDispatchToProps
-)(CreatorLocks)
+export default CreatorLocks
 
 const Locks = styled.section`
   display: grid;
