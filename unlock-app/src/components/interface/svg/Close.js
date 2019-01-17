@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgClose = ({ title, ...props }) => (
   <svg {...props}>
@@ -11,4 +12,10 @@ const SvgClose = ({ title, ...props }) => (
   </svg>
 )
 
+SvgClose.propTypes = {
+  title: PropTypes.string,
+}
+SvgClose.defaultProps = {
+  title: '',
+}
 export default SvgClose

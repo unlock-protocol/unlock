@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgCopy = ({ title, ...props }) => (
   <svg {...props}>
@@ -11,4 +12,10 @@ const SvgCopy = ({ title, ...props }) => (
   </svg>
 )
 
+SvgCopy.propTypes = {
+  title: PropTypes.string,
+}
+SvgCopy.defaultProps = {
+  title: '',
+}
 export default SvgCopy

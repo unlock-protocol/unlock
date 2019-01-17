@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgGithub = ({ title, ...props }) => (
   <svg {...props}>
@@ -7,4 +8,10 @@ const SvgGithub = ({ title, ...props }) => (
   </svg>
 )
 
+SvgGithub.propTypes = {
+  title: PropTypes.string,
+}
+SvgGithub.defaultProps = {
+  title: '',
+}
 export default SvgGithub

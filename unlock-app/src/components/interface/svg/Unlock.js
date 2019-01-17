@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgUnlock = ({ title, ...props }) => (
   <svg viewBox="0 0 56 56" {...props}>
@@ -7,4 +8,10 @@ const SvgUnlock = ({ title, ...props }) => (
   </svg>
 )
 
+SvgUnlock.propTypes = {
+  title: PropTypes.string,
+}
+SvgUnlock.defaultProps = {
+  title: '',
+}
 export default SvgUnlock

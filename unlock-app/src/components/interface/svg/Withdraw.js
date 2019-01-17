@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgWithdraw = ({ title, ...props }) => (
   <svg {...props}>
@@ -11,4 +12,10 @@ const SvgWithdraw = ({ title, ...props }) => (
   </svg>
 )
 
+SvgWithdraw.propTypes = {
+  title: PropTypes.string,
+}
+SvgWithdraw.defaultProps = {
+  title: '',
+}
 export default SvgWithdraw

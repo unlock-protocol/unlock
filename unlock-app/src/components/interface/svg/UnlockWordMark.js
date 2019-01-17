@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgUnlockWordMark = ({ title, ...props }) => (
   <svg viewBox="0 0 1200 256" {...props}>
@@ -7,4 +8,10 @@ const SvgUnlockWordMark = ({ title, ...props }) => (
   </svg>
 )
 
+SvgUnlockWordMark.propTypes = {
+  title: PropTypes.string,
+}
+SvgUnlockWordMark.defaultProps = {
+  title: '',
+}
 export default SvgUnlockWordMark

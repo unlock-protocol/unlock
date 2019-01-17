@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgAppStore = ({ title, ...props }) => (
   <svg {...props}>
@@ -11,4 +12,10 @@ const SvgAppStore = ({ title, ...props }) => (
   </svg>
 )
 
+SvgAppStore.propTypes = {
+  title: PropTypes.string,
+}
+SvgAppStore.defaultProps = {
+  title: '',
+}
 export default SvgAppStore

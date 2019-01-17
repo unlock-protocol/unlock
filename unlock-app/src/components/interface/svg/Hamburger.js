@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgHamburger = ({ title, ...props }) => (
   <svg {...props}>
@@ -11,4 +12,10 @@ const SvgHamburger = ({ title, ...props }) => (
   </svg>
 )
 
+SvgHamburger.propTypes = {
+  title: PropTypes.string,
+}
+SvgHamburger.defaultProps = {
+  title: '',
+}
 export default SvgHamburger

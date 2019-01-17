@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgLockClosed = ({ title, ...props }) => (
   <svg {...props}>
@@ -11,4 +12,10 @@ const SvgLockClosed = ({ title, ...props }) => (
   </svg>
 )
 
+SvgLockClosed.propTypes = {
+  title: PropTypes.string,
+}
+SvgLockClosed.defaultProps = {
+  title: '',
+}
 export default SvgLockClosed

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgTelegram = ({ title, ...props }) => (
   <svg {...props}>
@@ -11,4 +12,10 @@ const SvgTelegram = ({ title, ...props }) => (
   </svg>
 )
 
+SvgTelegram.propTypes = {
+  title: PropTypes.string,
+}
+SvgTelegram.defaultProps = {
+  title: '',
+}
 export default SvgTelegram

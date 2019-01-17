@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgLemniscate = ({ title, ...props }) => (
   <svg {...props}>
@@ -8,4 +9,10 @@ const SvgLemniscate = ({ title, ...props }) => (
   </svg>
 )
 
+SvgLemniscate.propTypes = {
+  title: PropTypes.string,
+}
+SvgLemniscate.defaultProps = {
+  title: '',
+}
 export default SvgLemniscate
