@@ -91,6 +91,15 @@ contract('Lock ERC721', (accounts) => {
           assert(_numberOfOwners.eq(numberOfOwners.plus(1)))
         })
       })
+
+      it('should fail if I transfer from the same account again', async () => {
+        try {
+          await lock.transferFrom(accounts[1], accounts[5], accounts[1], { from: accounts[1] })
+          assert.fail('Expected revert')
+        } catch (error) {
+          assert.equal(error.message, 'VM Exception while processing transaction: revert Key is not valid')
+        }
+      })
     })
 
     describe('after a transfer to an existing owner', () => {
@@ -98,7 +107,7 @@ contract('Lock ERC721', (accounts) => {
 
       before(async () => {
         numberOfOwners = await lock.numberOfOwners()
-        await lock.transferFrom(accounts[1], accounts[2], accounts[1], { from: accounts[1] })
+        await lock.transferFrom(accounts[2], accounts[3], accounts[2], { from: accounts[2] })
       })
   
       it('should have the right number of keys', () => {

@@ -210,7 +210,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     external
     payable
     notSoldOut()
-    hasKey(_from)
+    hasValidKey(_from)
     onlyKeyOwnerOrApproved(_tokenId)
   {
     require(_recipient != address(0));
