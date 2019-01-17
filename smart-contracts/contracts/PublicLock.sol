@@ -340,18 +340,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   }
 
   /**
-   * Public function which returns the total number of unique keys sold (both 
-   * expired and valid)
-   */
-  function outstandingKeys()
-    public
-    view
-    returns (uint)
-  {
-    return numberOfKeysSold;
-  }
-
-  /**
    * Public function which returns the total number of unique owners (both expired
    * and valid).  This may be larger than outstandingKeys.
    */
@@ -361,6 +349,18 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     returns (uint)
   {
     return owners.length;
+  }
+
+  /**
+   * Public function which returns the total number of unique keys sold (both 
+   * expired and valid)
+   */
+  function outstandingKeys()
+    public
+    view
+    returns (uint)
+  {
+    return numberOfKeysSold;
   }
 
  /**
