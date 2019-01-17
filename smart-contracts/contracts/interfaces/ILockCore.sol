@@ -65,6 +65,15 @@ interface ILockCore {
     external;
 
   /**
+   * Public function which returns the total number of unique owners (both expired
+   * and valid).  This may be larger than outstandingKeys.
+   */
+  function numberOfOwners()
+    external
+    view
+    returns (uint);
+
+  /**
    * Public function which returns the total number of keys (both expired and valid)
    */
   function outstandingKeys()
