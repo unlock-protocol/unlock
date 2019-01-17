@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import {
   pageTitle,
@@ -21,6 +22,20 @@ export const OpenGraphTags = ({ title, description, image, canonicalPath }) => {
       <meta property="og:image" content={image} />
     </>
   )
+}
+
+OpenGraphTags.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  image: PropTypes.string,
+  canonicalPath: PropTypes.string,
+}
+
+OpenGraphTags.defaultProps = {
+  title: pageTitle(),
+  description: PAGE_DESCRIPTION,
+  image: PAGE_DEFAULT_IMAGE,
+  canonicalPath: '/',
 }
 
 export default OpenGraphTags
