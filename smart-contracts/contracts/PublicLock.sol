@@ -23,6 +23,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   // The struct for a key
   struct Key {
+    uint tokenId;
     uint expirationTimestamp;
     bytes data; // Note: This can be expensive?
   }
@@ -198,6 +199,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     if (previousExpiration == 0) {
       // The recipient did not have a key previously
       owners.push(_recipient);
+      // At the moment tokenId is the user's address, but as we work towards ERC721
+      // support this will change to a sequenceId assigned at purchase.
+      keyByOwner[_recipient].tokenId = uint(_recipient);
     }
 
     if (previousExpiration <= now) {
@@ -304,6 +308,21 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     returns (address)
   {
     return address(_tokenId);
+  }
+
+  /**
+   * @notice Find the tokenId for a given user
+   * @return The tokenId of the NFT, else revert
+  */
+  function getTokenIdFor(
+    address _account
+  )
+    external
+    view
+    hasKey(_account)
+    returns (uint)
+  {
+    return keyByOwner[_account].tokenId;
   }
 
   /**
@@ -495,6 +514,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
       { // This is a brand new owner, else an owner of an expired key buying an extension
         numberOfKeysSold++;
         owners.push(_recipient);
+        // At the moment tokenId is the user's address, but as we work towards ERC721
+        // support this will change to a sequenceId assigned at purchase.
+        keyByOwner[_recipient].tokenId = uint(_recipient);
       }
       keyByOwner[_recipient].expirationTimestamp = now + expirationDuration;
     } else {
