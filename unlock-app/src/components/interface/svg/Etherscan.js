@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgEtherscan = ({ title, ...props }) => (
   <svg {...props}>
@@ -11,4 +12,10 @@ const SvgEtherscan = ({ title, ...props }) => (
   </svg>
 )
 
+SvgEtherscan.propTypes = {
+  title: PropTypes.string,
+}
+SvgEtherscan.defaultProps = {
+  title: '',
+}
 export default SvgEtherscan

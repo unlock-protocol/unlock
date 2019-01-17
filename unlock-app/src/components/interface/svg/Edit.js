@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgEdit = ({ title, ...props }) => (
   <svg {...props}>
@@ -12,4 +13,10 @@ const SvgEdit = ({ title, ...props }) => (
   </svg>
 )
 
+SvgEdit.propTypes = {
+  title: PropTypes.string,
+}
+SvgEdit.defaultProps = {
+  title: '',
+}
 export default SvgEdit

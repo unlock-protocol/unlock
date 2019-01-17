@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgCheckmark = ({ title, ...props }) => (
   <svg {...props}>
@@ -11,4 +12,10 @@ const SvgCheckmark = ({ title, ...props }) => (
   </svg>
 )
 
+SvgCheckmark.propTypes = {
+  title: PropTypes.string,
+}
+SvgCheckmark.defaultProps = {
+  title: '',
+}
 export default SvgCheckmark

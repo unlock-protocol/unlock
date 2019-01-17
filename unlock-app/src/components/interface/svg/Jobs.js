@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const SvgJobs = ({ title, ...props }) => (
   <svg {...props}>
@@ -11,4 +12,10 @@ const SvgJobs = ({ title, ...props }) => (
   </svg>
 )
 
+SvgJobs.propTypes = {
+  title: PropTypes.string,
+}
+SvgJobs.defaultProps = {
+  title: '',
+}
 export default SvgJobs
