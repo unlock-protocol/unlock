@@ -136,7 +136,6 @@ export class CreatorLockForm extends React.Component {
 
   render() {
     const { pending } = this.props
-    const disableEdit = !pending
     const {
       expirationDuration,
       maxNumberOfKeys,
@@ -157,8 +156,8 @@ export class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             defaultValue={name}
             data-valid={valid.name}
-            required={!disableEdit}
-            disabled={disableEdit}
+            required={pending}
+            disabled={!pending}
           />
         </FormLockName>
         <FormLockDuration>
@@ -170,8 +169,8 @@ export class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             defaultValue={expirationDuration}
             data-valid={valid.expirationDuration}
-            required={!disableEdit}
-            disabled={disableEdit}
+            required={pending}
+            disabled={!pending}
           />{' '}
           days
         </FormLockDuration>
@@ -182,10 +181,10 @@ export class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             value={maxNumberOfKeys}
             data-valid={valid.maxNumberOfKeys}
-            required={!disableEdit}
-            disabled={disableEdit}
+            required={pending}
+            disabled={!pending}
           />
-          {!disableEdit && !unlimitedKeys && (
+          {pending && !unlimitedKeys && (
             <LockLabelUnlimited onClick={this.handleUnlimitedClick}>
               Unlimited
             </LockLabelUnlimited>
