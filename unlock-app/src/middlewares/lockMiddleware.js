@@ -131,12 +131,10 @@ export default function lockMiddleware({ getState, dispatch }) {
    * as well as reset all the reducers
    */
   web3Service.on('network.changed', networkId => {
-    if (getState().network.name !== networkId) {
-      // Set the new network, which should also clean up all reducers
-      // And we need a new account!
-      dispatch(setNetwork(networkId))
-      return web3Service.refreshOrGetAccount()
-    }
+    // Set the new network, which should also clean up all reducers
+    // And we need a new account!
+    dispatch(setNetwork(networkId))
+    return web3Service.refreshOrGetAccount()
   })
 
   /**
