@@ -73,7 +73,7 @@ export class CreatorLock extends React.Component {
   render() {
     // TODO add all-time balance to lock
 
-    const { lock, edit, form: CreatorLockForm } = this.props
+    const { lock, form: CreatorLockForm } = this.props
     const { showEmbedCode, showKeys, editing } = this.state
 
     if (editing) {

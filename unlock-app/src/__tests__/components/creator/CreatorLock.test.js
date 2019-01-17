@@ -3,6 +3,8 @@ import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
 
 import { CreatorLock } from '../../../components/creator/CreatorLock'
+// the next line is part of an extraordinary hack to circumvent a weird styled components bug
+import CreatorLockForm from '../../../components/creator/CreatorLockForm'
 import configure from '../../../config'
 import createUnlockStore from '../../../createUnlockStore'
 
@@ -13,7 +15,7 @@ jest.mock('next/link', () => {
 const lock = {
   address: '0x1234567890',
   transaction: 'transactionid',
-  keyPrice: '1',
+  keyPrice: '100000000000000000',
   balance: '1',
   expirationDuration: 100,
 }
@@ -51,7 +53,12 @@ describe('CreatorLock', () => {
 
     let wrapper = rtl.render(
       <Provider store={store} config={config}>
-        <CreatorLock lock={lock} transaction={transaction} />
+        <CreatorLock
+          lock={lock}
+          transaction={transaction}
+          form={CreatorLockForm}
+          updateKeyPrice={() => {}}
+        />
       </Provider>
     )
 
@@ -72,24 +79,28 @@ describe('CreatorLock', () => {
       )
     ).not.toBeNull()
   })
-  it('should call edit when the button is clicked', () => {
+  it('should open the edit form when the button is clicked', () => {
     const config = configure()
 
-    const store = createUnlockStore()
-
-    const edit = jest.fn()
+    const store = createUnlockStore({
+      account: {},
+    })
 
     let wrapper = rtl.render(
       <Provider store={store} config={config}>
-        <CreatorLock lock={lock} transaction={transaction} edit={edit} />
+        <CreatorLock
+          lock={lock}
+          transaction={transaction}
+          form={CreatorLockForm}
+          updateKeyPrice={() => {}}
+        />
       </Provider>
     )
 
     let editButton = wrapper.getByTitle('Edit')
     rtl.fireEvent.click(editButton)
 
-    expect(edit).toHaveBeenCalledTimes(1)
-    expect(edit).toHaveBeenCalledWith(lock.address)
+    expect(wrapper.getByValue('0.1')).not.toBeNull()
   })
   it('should display the correct number of keys', () => {
     const config = configure()
@@ -105,7 +116,12 @@ describe('CreatorLock', () => {
 
     let wrapper = rtl.render(
       <Provider store={store} config={config}>
-        <CreatorLock lock={keylock} transaction={transaction} />
+        <CreatorLock
+          lock={keylock}
+          transaction={transaction}
+          form={CreatorLockForm}
+          updateKeyPrice={() => {}}
+        />
       </Provider>
     )
 
@@ -125,7 +141,12 @@ describe('CreatorLock', () => {
 
     let wrapper = rtl.render(
       <Provider store={store} config={config}>
-        <CreatorLock lock={unlimitedlock} transaction={transaction} />
+        <CreatorLock
+          lock={unlimitedlock}
+          transaction={transaction}
+          updateKeyPrice={() => {}}
+          form={CreatorLockForm}
+        />
       </Provider>
     )
 
