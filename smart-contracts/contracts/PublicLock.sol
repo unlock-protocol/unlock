@@ -68,7 +68,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   // be a single approved beneficiary
   // Note 2: for transfer, both addresses will be different
   // Note 3: for sales (new keys on restricted locks), both addresses will be the same
-  mapping (address => address) internal approved;
+  mapping (uint => address) internal approved;
 
   /**
    * MODIFIERS
@@ -212,6 +212,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     // Effectively expiring the key for the previous owner
     keyByOwner[_from].expirationTimestamp = now;
 
+    // Clear any previous approvals
+    approved[_tokenId] = address(0);
+
     // trigger event
     emit Transfer(
       _from,
@@ -252,7 +255,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   {
     require(_approved != address(0));
 
-    approved[address(_tokenId)] = _approved;
+    approved[_tokenId] = _approved;
     emit Approval(address(_tokenId), _approved, _tokenId);
   }
 
@@ -508,7 +511,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     view
     returns (address)
   {
-    address approvedRecipient = approved[address(_tokenId)];
+    address approvedRecipient = approved[_tokenId];
     require(approvedRecipient != address(0));
     return approvedRecipient;
   }
