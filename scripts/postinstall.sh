@@ -26,4 +26,7 @@ if [ "$SKIP_SERVICES" != "true" ]; then
     npm $CMD
     cd .. # back to root
   done
+
+  # Copy the parent binaries into the sub projects
+  npm run link-parent-bin
 fi

@@ -44,8 +44,11 @@ RUN npm ci --production
 COPY --chown=node unlock-app/ /home/unlock/unlock-app/.
 RUN npm run build
 
+WORKDIR /home/unlock/
+
+# Copy the parent binaries into the children
+RUN npm run link-parent-bin
+
 # Copy the rest
 COPY --chown=node . /home/unlock
-
-WORKDIR /home/unlock/
 
