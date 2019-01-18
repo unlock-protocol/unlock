@@ -203,7 +203,7 @@ export class CreatorLockForm extends React.Component {
   }
 
   render() {
-    const { pending } = this.props
+    const { pending, editing } = this.props
     const {
       expirationDuration,
       maxNumberOfKeys,
@@ -229,29 +229,37 @@ export class CreatorLockForm extends React.Component {
           />
         </FormLockName>
         <FormLockDuration>
-          <input
-            type="number"
-            step="1"
-            inputMode="numeric"
-            name="expirationDuration"
-            onChange={this.handleChange}
-            defaultValue={expirationDuration}
-            data-valid={valid.expirationDuration}
-            required={pending}
-            disabled={!pending}
-          />{' '}
+          {editing ? (
+            expirationDuration
+          ) : (
+            <input
+              type="number"
+              step="1"
+              inputMode="numeric"
+              name="expirationDuration"
+              onChange={this.handleChange}
+              defaultValue={expirationDuration}
+              data-valid={valid.expirationDuration}
+              required={pending}
+              disabled={!pending}
+            />
+          )}{' '}
           days
         </FormLockDuration>
         <FormLockKeys>
-          <input
-            type="text"
-            name="maxNumberOfKeys"
-            onChange={this.handleChange}
-            value={maxNumberOfKeys}
-            data-valid={valid.maxNumberOfKeys}
-            required={pending}
-            disabled={!pending}
-          />
+          {editing ? (
+            maxNumberOfKeys || '∞'
+          ) : (
+            <input
+              type="text"
+              name="maxNumberOfKeys"
+              onChange={this.handleChange}
+              value={maxNumberOfKeys}
+              data-valid={valid.maxNumberOfKeys}
+              required={pending}
+              disabled={!pending}
+            />
+          )}
           {pending && !unlimitedKeys && (
             <LockLabelUnlimited onClick={this.handleUnlimitedClick}>
               Unlimited
@@ -298,6 +306,7 @@ CreatorLockForm.propTypes = {
   address: PropTypes.string,
   pending: PropTypes.bool,
   convert: PropTypes.bool, // this prop is to allow form field validation tests to test edge cases
+  editing: PropTypes.bool,
 }
 
 CreatorLockForm.defaultProps = {
@@ -310,6 +319,7 @@ CreatorLockForm.defaultProps = {
   address: uniqid(), // for new locks, we don't have an address, so use a temporary one
   convert: true,
   pending: false,
+  editing: false,
 }
 
 const mapStateToProps = state => {
