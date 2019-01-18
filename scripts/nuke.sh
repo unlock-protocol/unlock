@@ -22,7 +22,7 @@ if [ $? -eq 0 ]; then
 fi
 
 # Then check if locksmith is running
-LOCKSMITH_PORT=3000
+LOCKSMITH_PORT=8080
 lsof -i :$LOCKSMITH_PORT >> /dev/null
 if [ $? -eq 0 ]; then
   echo "Please make sure you stop the locksmith application first"
