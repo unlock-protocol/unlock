@@ -32,15 +32,11 @@ export const Home = ({ config, acceptedTerms }) => (
     </Headline>
     <Action>
       {config.env !== 'prod' && (
-        <>
-          {acceptedTerms == true && (
-            <Link href="/dashboard">
-              <a>
-                <HomepageButton>Go to Your Dashboard</HomepageButton>
-              </a>
-            </Link>
-          )}
-        </>
+        <Link href="/dashboard">
+          <a>
+            <HomepageButton>Go to Your Dashboard</HomepageButton>
+          </a>
+        </Link>
       )}
 
       {config.env === 'prod' && (
@@ -49,6 +45,7 @@ export const Home = ({ config, acceptedTerms }) => (
 
       <ButtonLabel>Requires a browser with an Ethereum wallet</ButtonLabel>
     </Action>
+    {acceptedTerms !== true && <>Nowt</>}
     <ThreeColumns>
       <Column>
         <SubTitle>No More Middlemen</SubTitle>
