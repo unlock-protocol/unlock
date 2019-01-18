@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
+import Link from 'next/link'
 import UnlockPropTypes from '../../../propTypes'
 import { expirationAsDate } from '../../../utils/durations'
 import Pagination from '../../interface/pagination/Pagination'
@@ -39,14 +40,24 @@ export class KeyList extends React.Component {
           <Pagination> takes a list of items
           and a function that takes list of items and renders the list.
           This is so that the Pagination component can be reused across the app
-      */}
-        <Pagination
-          items={keys}
-          currentPage={page + 1}
-          itemCount={lock.outstandingKeys}
-          renderItems={renderItems}
-          goToPage={loadPage}
-        />
+          */
+        keys.length > 0 ? (
+          <Pagination
+            items={keys}
+            currentPage={page + 1}
+            itemCount={lock.outstandingKeys}
+            renderItems={renderItems}
+            goToPage={loadPage}
+          />
+        ) : (
+          <Message>
+            No keys have been purchased yet.{' '}
+            <Link href="https://github.com/unlock-protocol/unlock/wiki/Introduction-to-Unlock#access-permissions-on-the-blockchain">
+              Embed your code snippet
+            </Link>{' '}
+            to sell keys.
+          </Message>
+        )}
       </KeyListWrapper>
     )
   }
@@ -116,4 +127,11 @@ const Cell = styled.div``
 const Data = styled(Cell)`
   overflow: hidden;
   text-overflow: ellipsis;
+`
+
+const Message = styled.div`
+  margin-top: 20px;
+  margin-left: 48px;
+  margin-bottom: 30px;
+  color: var(--grey);
 `
