@@ -650,9 +650,68 @@ export default class Web3Service extends EventEmitter {
     })
   }
 
+  _emitKeyOwners(lock, page, keyPromises) {
+    return Promise.all(keyPromises).then(keys => {
+      this.emit('keys.page', lock, page, keys.filter(key => !!key))
+    })
+  }
+
+  _packageKeyholderInfo(lock, lockContract, ownerAddress) {
+    return this._getKeyByLockForOwner(lockContract, ownerAddress).then(
+      ([expiration, data]) => {
+        return {
+          id: keyId(lock, ownerAddress),
+          lock,
+          owner: ownerAddress,
+          expiration,
+          data,
+        }
+      }
+    )
+  }
+
+  _genKeyOwnersFromLockContractIterative(lock, lockContract, page, byPage) {
+    const startIndex = page * byPage
+    return new Promise(resolve => {
+      let keyPromises = Array.from(Array(byPage).keys()).map(n => {
+        return lockContract.methods
+          .owners(n + startIndex)
+          .call()
+          .then(ownerAddress => {
+            return this._packageKeyholderInfo(lock, lockContract, ownerAddress)
+          })
+          .catch(() => {
+            return null
+          })
+      })
+
+      resolve(keyPromises)
+    })
+  }
+
+  _genKeyOwnersFromLockContract(lock, lockContract, page, byPage) {
+    return new Promise((resolve, reject) => {
+      lockContract.methods
+        .getOwnersByPage(page, byPage)
+        .call()
+        .then(ownerAddresses => {
+          let keyPromises = ownerAddresses.map(ownerAddress => {
+            return this._packageKeyholderInfo(lock, lockContract, ownerAddress)
+          })
+
+          resolve(keyPromises)
+        })
+        .catch(error => reject(error))
+    })
+  }
+
   /**
    * This loads and returns the keys for a lock per page
    * we fetch byPage number of keyOwners and dispatch for futher details.
+   *
+   * This method will attempt to retrieve keyholders directly from the smart contract, if this
+   * raises and exception the code will attempt to iteratively retrieve the keyholders.
+   * (Relevant to issue #1116)
    * @param {PropTypes.string}
    * @param {PropTypes.integer}
    * @param {PropTypes.integer}
@@ -660,27 +719,15 @@ export default class Web3Service extends EventEmitter {
   getKeysForLockOnPage(lock, page, byPage) {
     const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
 
-    lockContract.methods
-      .getOwnersByPage(page, byPage)
-      .call()
-      .then(ownerAddresses => {
-        const keyPromises = ownerAddresses.map(ownerAddress => {
-          return this._getKeyByLockForOwner(lockContract, ownerAddress).then(
-            ([expiration, data]) => {
-              return {
-                id: keyId(lock, ownerAddress),
-                lock,
-                owner: ownerAddress,
-                expiration,
-                data,
-              }
-            }
-          )
-        })
-
-        return Promise.all(keyPromises).then(keys => {
-          this.emit('keys.page', lock, page, keys)
-        })
+    this._genKeyOwnersFromLockContract(lock, lockContract, page, byPage)
+      .then(keyPromises => this._emitKeyOwners(lock, page, keyPromises))
+      .catch(() => {
+        this._genKeyOwnersFromLockContractIterative(
+          lock,
+          lockContract,
+          page,
+          byPage
+        ).then(keyPromises => this._emitKeyOwners(lock, page, keyPromises))
       })
   }
 

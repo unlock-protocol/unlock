@@ -1315,6 +1315,37 @@ describe('Web3Service', () => {
 
         web3Service.getKeysForLockOnPage(lockAddress, onPage, byPage)
       })
+
+      describe('when the on contract method raises an error', () => {
+        it('should use the iterative method of providing keyholder', done => {
+          const onPage = 0
+          const byPage = 5
+
+          expect.assertions(3)
+
+          jest
+            .spyOn(web3Service, '_genKeyOwnersFromLockContract')
+            .mockImplementation(() => {
+              return Promise.reject()
+            })
+          jest
+            .spyOn(web3Service, '_genKeyOwnersFromLockContractIterative')
+            .mockImplementation(() => {
+              return Promise.resolve([])
+            })
+
+          web3Service.getKeysForLockOnPage(lockAddress, onPage, byPage)
+
+          web3Service.on('keys.page', (lock, page) => {
+            expect(lockAddress).toEqual(lock)
+            expect(page).toEqual(onPage)
+            expect(
+              web3Service._genKeyOwnersFromLockContractIterative
+            ).toHaveBeenCalledTimes(1)
+            done()
+          })
+        })
+      })
     })
   })
 })
