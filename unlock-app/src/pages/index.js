@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import React from 'react'
+import Link from 'next/link'
 import Head from 'next/head'
+import PropTypes from 'prop-types'
 import Layout from '../components/interface/Layout'
 import Signature from '../components/interface/Signature'
 import {
@@ -9,14 +11,14 @@ import {
   ThreeColumns,
   Column,
 } from '../components/Components'
+import { ActionButton } from '../components/creator/CreatorLocks'
+import withConfig from '../utils/withConfig'
+import UnlockPropTypes from '../propTypes'
 import { pageTitle } from '../constants'
 import { TwitterTags } from '../components/page/TwitterTags'
 import { OpenGraphTags } from '../components/page/OpenGraphTags'
-import { HomepageButton } from '../components/interface/buttons/homepage/HomepageButton'
-import withConfig from '../utils/withConfig'
-import UnlockPropTypes from '../propTypes'
 
-export const Home = ({ config }) => (
+export const Home = ({ config, acceptedTerms }) => (
   <Layout forContent>
     <Head>
       <title>{pageTitle()}</title>
@@ -28,7 +30,25 @@ export const Home = ({ config }) => (
       Unlock is a protocol which enables creators to monetize their content with
       a few lines of code in a fully decentralized way.
     </Headline>
-    <HomepageButton env={config.env} />
+    <Action>
+      {config.env !== 'prod' && (
+        <>
+          {acceptedTerms == true && (
+            <Link href="/dashboard">
+              <a>
+                <HomepageButton>Go to Your Dashboard</HomepageButton>
+              </a>
+            </Link>
+          )}
+        </>
+      )}
+
+      {config.env === 'prod' && (
+        <HomepageButton disabled>Dashboard coming soon</HomepageButton>
+      )}
+
+      <ButtonLabel>Requires a browser with an Ethereum wallet</ButtonLabel>
+    </Action>
     <ThreeColumns>
       <Column>
         <SubTitle>No More Middlemen</SubTitle>
@@ -63,6 +83,11 @@ Home.skipConstraints = true
 
 Home.propTypes = {
   config: UnlockPropTypes.configuration.isRequired,
+  acceptedTerms: PropTypes.bool,
+}
+
+Home.defaultProps = {
+  acceptedTerms: false,
 }
 
 export default withConfig(Home)
@@ -94,8 +119,31 @@ const Hero = styled.h1`
   font-weight: 700;
 `
 
+const Action = styled.div`
+  display: grid;
+  justify-items: center;
+  grid-gap: 16px;
+  margin-bottom: 50px;
+`
+
+const ButtonLabel = styled.small`
+  font-size: 12px;
+  font-weight: 200;
+  font-family: 'IBM Plex Mono', 'Courier New', Serif;
+  color: var(--darkgrey);
+  display: grid;
+  grid-row: 2;
+  justify-content: center;
+  text-align: center;
+`
+
 const Paragraph = styled.p`
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
   font-size: 20px;
+`
+
+const HomepageButton = styled(ActionButton)`
+  max-width: 400px;
+  padding: 20px 50px;
 `
