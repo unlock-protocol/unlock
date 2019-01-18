@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+import PropTypes from 'prop-types'
 import Layout from '../components/interface/Layout'
 import Signature from '../components/interface/Signature'
 import {
@@ -17,7 +18,7 @@ import { pageTitle } from '../constants'
 import { TwitterTags } from '../components/page/TwitterTags'
 import { OpenGraphTags } from '../components/page/OpenGraphTags'
 
-export const Home = ({ config }) => (
+export const Home = ({ config, acceptedTerms }) => (
   <Layout forContent>
     <Head>
       <title>{pageTitle()}</title>
@@ -31,11 +32,15 @@ export const Home = ({ config }) => (
     </Headline>
     <Action>
       {config.env !== 'prod' && (
-        <Link href="/dashboard">
-          <a>
-            <HomepageButton>Go to Your Dashboard</HomepageButton>
-          </a>
-        </Link>
+        <>
+          {acceptedTerms == true && (
+            <Link href="/dashboard">
+              <a>
+                <HomepageButton>Go to Your Dashboard</HomepageButton>
+              </a>
+            </Link>
+          )}
+        </>
       )}
 
       {config.env === 'prod' && (
@@ -78,6 +83,11 @@ Home.skipConstraints = true
 
 Home.propTypes = {
   config: UnlockPropTypes.configuration.isRequired,
+  acceptedTerms: PropTypes.bool,
+}
+
+Home.defaultProps = {
+  acceptedTerms: false,
 }
 
 export default withConfig(Home)
