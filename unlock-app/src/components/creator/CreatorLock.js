@@ -25,8 +25,6 @@ import {
 } from './LockStyles'
 import { updateKeyPrice } from '../../actions/lock'
 
-import { INFINITY } from '../../constants'
-
 const LockKeysNumbers = ({ lock }) => (
   <LockKeys>
     {lock.outstandingKeys !== null &&
@@ -34,7 +32,7 @@ const LockKeysNumbers = ({ lock }) => (
     typeof lock.outstandingKeys !== 'undefined' &&
     typeof lock.maxNumberOfKeys !== 'undefined'
       ? `${lock.outstandingKeys}/${
-          lock.maxNumberOfKeys > 0 ? lock.maxNumberOfKeys : INFINITY
+          lock.maxNumberOfKeys > 0 ? lock.maxNumberOfKeys : '∞'
         }`
       : ' - '}
   </LockKeys>
@@ -85,7 +83,6 @@ export class CreatorLock extends React.Component {
           {...lock}
           hideAction={() => this.setState({ editing: false })}
           createLock={lock => this.updateLock(lock)}
-          editing={editing}
         />
       )
     }
