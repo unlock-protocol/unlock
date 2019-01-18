@@ -18,7 +18,7 @@ exports[`withConfig High Order Component when the current network is not in the 
   border-radius: 50%;
   height: 24px;
   width: 24px;
-  display: grid;
+  display: inline-block;
   padding: 0;
   border: 0;
 }
@@ -43,7 +43,7 @@ exports[`withConfig High Order Component when the current network is not in the 
   border-radius: 50%;
   height: 48px;
   width: 48px;
-  display: grid;
+  display: inline-block;
   padding: 0;
   border: 0;
 }
@@ -70,15 +70,15 @@ exports[`withConfig High Order Component when the current network is not in the 
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
-  top: 12px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
   transform: translateX(-50%);
+  color: var(--link);
 }
 
 .c7:hover .c9 {
-  display: grid;
+  display: inline-block;
 }
 
 .c4 {
