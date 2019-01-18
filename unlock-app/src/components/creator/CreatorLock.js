@@ -25,6 +25,8 @@ import {
 } from './LockStyles'
 import { updateKeyPrice } from '../../actions/lock'
 
+import { INFINITY } from '../../constants'
+
 const LockKeysNumbers = ({ lock }) => (
   <LockKeys>
     {lock.outstandingKeys !== null &&
@@ -32,7 +34,7 @@ const LockKeysNumbers = ({ lock }) => (
     typeof lock.outstandingKeys !== 'undefined' &&
     typeof lock.maxNumberOfKeys !== 'undefined'
       ? `${lock.outstandingKeys}/${
-          lock.maxNumberOfKeys > 0 ? lock.maxNumberOfKeys : '∞'
+          lock.maxNumberOfKeys > 0 ? lock.maxNumberOfKeys : INFINITY
         }`
       : ' - '}
   </LockKeys>
