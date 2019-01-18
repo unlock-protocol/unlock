@@ -85,6 +85,7 @@ export class CreatorLock extends React.Component {
           {...lock}
           hideAction={() => this.setState({ editing: false })}
           createLock={lock => this.updateLock(lock)}
+          editing={editing}
         />
       )
     }
