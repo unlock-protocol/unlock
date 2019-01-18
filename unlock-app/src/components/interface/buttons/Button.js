@@ -93,6 +93,7 @@ export const Label = styled.small`
   font-size: 12px;
   left: 50%;
   transform: translateX(-50%);
+  color: var(--link);
 
   ${ButtonLink}:hover & {
     display: inline-block;
