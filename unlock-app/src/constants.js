@@ -70,3 +70,5 @@ export const MAX_DEVICE_WIDTHS = {
   TABLET: 1000,
   DESKTOP: false,
 }
+
+export const INFINITY = '∞'

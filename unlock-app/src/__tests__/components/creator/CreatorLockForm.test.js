@@ -9,6 +9,8 @@ import {
   FORM_KEY_PRICE_INVALID,
 } from '../../../errors'
 
+import { INFINITY } from '../../../constants'
+
 describe('CreatorLockForm', () => {
   let createLock
   let hideAction
@@ -244,10 +246,10 @@ describe('CreatorLockForm', () => {
       expect(wrapper.getByValue('35').dataset.valid).toBe('true')
     })
     it('max number of keys is infinity', () => {
-      const wrapper = makeLockForm({ maxNumberOfKeys: '∞' })
+      const wrapper = makeLockForm({ maxNumberOfKeys: INFINITY })
 
-      expect(wrapper.getByDisplayValue('∞')).not.toBeNull()
-      expect(wrapper.getByValue('∞').dataset.valid).toBe('true')
+      expect(wrapper.getByDisplayValue(INFINITY)).not.toBeNull()
+      expect(wrapper.getByValue(INFINITY).dataset.valid).toBe('true')
     })
     it('key price is a positive number', () => {
       const wrapper = makeLockForm({ keyPrice: '0.01' })
