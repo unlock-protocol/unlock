@@ -132,6 +132,6 @@ const Data = styled(Cell)`
 const Message = styled.div`
   margin-top: 20px;
   margin-left: 48px;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   color: var(--grey);
 `

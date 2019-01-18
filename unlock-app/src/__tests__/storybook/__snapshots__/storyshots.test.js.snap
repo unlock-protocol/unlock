@@ -27685,7 +27685,7 @@ Object {
 .c2 {
   margin-top: 20px;
   margin-left: 48px;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   color: var(--grey);
 }
 
@@ -27768,7 +27768,7 @@ Object {
         </div>
       </div>
       <div
-        class="sc-4ambxn-6 bYreEG"
+        class="sc-4ambxn-6 cKnhun"
       >
         No keys have been purchased yet.
          
