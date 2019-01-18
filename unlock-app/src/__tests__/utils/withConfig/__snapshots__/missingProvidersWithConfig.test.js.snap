@@ -21,6 +21,7 @@ exports[`withConfig High Order Component when the current network is not in the 
   display: inline-block;
   padding: 0;
   border: 0;
+  line-height: 24px;
 }
 
 .c8 > svg {
@@ -46,6 +47,7 @@ exports[`withConfig High Order Component when the current network is not in the 
   display: inline-block;
   padding: 0;
   border: 0;
+  line-height: 48px;
 }
 
 .c11 > svg {

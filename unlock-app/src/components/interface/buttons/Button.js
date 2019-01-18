@@ -67,6 +67,7 @@ export const ButtonLink = styled.a`
   display: inline-block;
   padding: 0;
   border: 0;
+  line-height: ${props => props.size || ' 24px'};
 
   > svg {
     fill: ${props => props.fillColor || 'white'};
