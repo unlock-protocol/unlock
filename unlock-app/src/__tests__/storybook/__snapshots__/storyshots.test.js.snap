@@ -27664,11 +27664,7 @@ exports[`Storyshots KeyList 0 keys 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c2 {
-  margin-top: 20px;
-}
-
-.c0 {
+    .c0 {
   cursor: default;
 }
 
@@ -27684,6 +27680,13 @@ Object {
   font-family: 'IBM Plex Sans';
   font-size: 10px;
   text-transform: uppercase;
+}
+
+.c2 {
+  margin-top: 20px;
+  margin-left: 48px;
+  margin-bottom: 10px;
+  color: var(--grey);
 }
 
 <div>
@@ -27719,7 +27722,17 @@ Object {
         </div>
         <div
           class="c2"
-        />
+        >
+          No keys have been purchased yet.
+           
+          <a
+            href="https://github.com/unlock-protocol/unlock/wiki/Introduction-to-Unlock#access-permissions-on-the-blockchain"
+          >
+            Embed your code snippet
+          </a>
+           
+          to sell keys.
+        </div>
       </div>
     </div>
   </body>,
@@ -27755,8 +27768,18 @@ Object {
         </div>
       </div>
       <div
-        class="sc-14bj30x-1 fYDZXe"
-      />
+        class="sc-4ambxn-6 bYreEG"
+      >
+        No keys have been purchased yet.
+         
+        <a
+          href="https://github.com/unlock-protocol/unlock/wiki/Introduction-to-Unlock#access-permissions-on-the-blockchain"
+        >
+          Embed your code snippet
+        </a>
+         
+        to sell keys.
+      </div>
     </div>
   </div>,
   "debug": [Function],
