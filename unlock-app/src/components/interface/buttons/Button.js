@@ -64,7 +64,7 @@ export const ButtonLink = styled.a`
   border-radius: 50%;
   height: ${props => props.size || ' 24px'};
   width: ${props => props.size || ' 24px'};
-  display: grid;
+  display: inline-block;
   padding: 0;
   border: 0;
 
@@ -91,12 +91,11 @@ export const Label = styled.small`
   font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 400;
   font-size: 12px;
-  top: 12px;
   left: 50%;
   transform: translateX(-50%);
 
   ${ButtonLink}:hover & {
-    display: grid;
+    display: inline-block;
   }
 `
 
