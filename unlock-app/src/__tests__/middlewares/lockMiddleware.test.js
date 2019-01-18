@@ -152,16 +152,20 @@ describe('Lock middleware', () => {
   })
 
   it('it should handle lock.saved events triggered by the web3Service', () => {
-    expect.assertions(3)
+    expect.assertions(4)
     const { store } = create()
     const lock = {}
     const address = '0x123'
     mockWeb3Service.refreshAccountBalance = jest.fn()
     mockWeb3Service.getLock = jest.fn()
+    mockWeb3Service.getPastLockTransactions = jest.fn()
 
     mockWeb3Service.emit('lock.saved', lock, address)
     expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
       state.account
+    )
+    expect(mockWeb3Service.getPastLockTransactions).toHaveBeenCalledWith(
+      address
     )
     expect(mockWeb3Service.getLock).toHaveBeenCalledWith(address)
     expect(store.dispatch).toHaveBeenCalledWith(

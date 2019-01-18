@@ -300,6 +300,35 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
+   * This function is able to retrieve the past transaction on a lock as long as these transactions
+   * triggered events.
+   * @param {*} lockAddress
+   */
+  getPastLockTransactions(lockAddress) {
+    const lockContract = new this.web3.eth.Contract(
+      LockContract.abi,
+      lockAddress
+    )
+    lockContract.getPastEvents(
+      'allevents',
+      {
+        fromBlock: 0, // TODO start only when the smart contract was deployed?
+        toBlock: 'latest',
+      },
+      (error, events = []) => {
+        events.forEach(event => {
+          const transaction = {
+            hash: event.transactionHash,
+            lock: lockAddress,
+          }
+          this.emit('transaction.new', transaction)
+          this.getTransaction(transaction)
+        })
+      }
+    )
+  }
+
+  /**
    *
    * @param {*} lock : address of the lock for which we update the price
    * @param {*} account: account who owns the lock
@@ -468,7 +497,6 @@ export default class Web3Service extends EventEmitter {
       if (!blockTransaction) {
         return this.emit('error', new Error(MISSING_TRANSACTION))
       }
-
       const contractAbi =
         this.unlockContractAddress ===
         Web3Utils.toChecksumAddress(blockTransaction.to)
@@ -479,7 +507,6 @@ export default class Web3Service extends EventEmitter {
         contractAbi,
         blockTransaction.input
       )
-
       if (blockTransaction.transactionIndex === null) {
         // This means the transaction is not in a block yet (ie. not mined)
         return this.emit('transaction.updated', transaction, {
