@@ -36,17 +36,21 @@ export class CreatorLockForm extends React.Component {
     super(props, context)
     let expirationDuration = props.expirationDuration
     let keyPrice = props.keyPrice
+    let maxNumberOfKeys = props.maxNumberOfKeys
     if (props.convert) {
       keyPrice = Web3Utils.fromWei(keyPrice, props.keyPriceCurrency)
       expirationDuration = expirationDuration / props.expirationDurationUnit
+      if (maxNumberOfKeys === 0) {
+        maxNumberOfKeys = INFINITY
+      }
     }
     this.state = {
       expirationDuration: expirationDuration,
       expirationDurationUnit: props.expirationDurationUnit, // Days
       keyPrice: keyPrice,
       keyPriceCurrency: props.keyPriceCurrency,
-      maxNumberOfKeys: props.maxNumberOfKeys,
-      unlimitedKeys: props.maxNumberOfKeys === INFINITY,
+      maxNumberOfKeys,
+      unlimitedKeys: maxNumberOfKeys === INFINITY,
       name: props.name,
       address: props.address,
     }
