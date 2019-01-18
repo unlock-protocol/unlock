@@ -29,6 +29,8 @@ import {
   isPositiveNumber,
 } from '../../utils/validators'
 
+import { INFINITY } from '../../constants'
+
 export class CreatorLockForm extends React.Component {
   constructor(props, context) {
     super(props, context)
@@ -44,7 +46,7 @@ export class CreatorLockForm extends React.Component {
       keyPrice: keyPrice,
       keyPriceCurrency: props.keyPriceCurrency,
       maxNumberOfKeys: props.maxNumberOfKeys,
-      unlimitedKeys: props.maxNumberOfKeys === '∞',
+      unlimitedKeys: props.maxNumberOfKeys === INFINITY,
       name: props.name,
       address: props.address,
     }
@@ -107,7 +109,7 @@ export class CreatorLockForm extends React.Component {
         if (!isPositiveInteger(value)) return FORM_EXPIRATION_DURATION_INVALID
         break
       case 'maxNumberOfKeys':
-        if (value !== '∞' && !isPositiveInteger(value)) {
+        if (value !== INFINITY && !isPositiveInteger(value)) {
           return FORM_MAX_KEYS_INVALID
         }
         break
@@ -171,15 +173,15 @@ export class CreatorLockForm extends React.Component {
     this.setState(state => ({
       ...state,
       unlimitedKeys: true,
-      maxNumberOfKeys: '∞',
-      valid: this.formValidity({ ...state, [name]: '∞' }),
+      maxNumberOfKeys: INFINITY,
+      valid: this.formValidity({ ...state, [name]: INFINITY }),
     }))
   }
 
   handleChange({ target: { name, value } }) {
     this.setState(state => ({
       unlimitedKeys:
-        name === 'maxNumberOfKeys' ? value === '∞' : state.unlimitedKeys,
+        name === 'maxNumberOfKeys' ? value === INFINITY : state.unlimitedKeys,
       [name]: value,
       valid: this.formValidity({ ...state.valid, [name]: value }),
     }))
