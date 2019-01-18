@@ -7,14 +7,30 @@
     "doc": "docs"
   },
   "dependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-mocha": "^5.2.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-jest": "^22.1.3",
-    "netlify-cli": "^2.6.0"
+    "link-parent-bin": "^0.2.3",
+    "netlify-cli": "^2.6.0",
+    "prettier": "^1.15.3",
+    "prettier-eslint-cli": "^4.7.1"
   },
   "devDependencies": {
-    "husky": "^1.2.0",
-    "ganache-cli": "^6.2.3"
+    "ganache-cli": "^6.2.3",
+    "husky": "^1.2.0"
   },
   "scripts": {
+    "link-parent-bin": "link-parent-bin -c . -s true",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-ganache": "ganache-cli -i 1984 --mnemonic 'hello unlock save the web'",
     "postinstall": "./scripts/postinstall.sh",
