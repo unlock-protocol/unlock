@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { RoundedLogo } from '../interface/Logo'
 import { Colophon } from './LockStyles'
 import { mapStateToProps } from './ShowUnlessUserHasKeyToAnyLock'
+import Media from '../../theme/media'
 
 export class UnlockedFlag extends React.Component {
   constructor(props) {
@@ -54,4 +55,8 @@ const Flag = styled(Colophon)`
     height: 80px;
     transition: opacity 0.4s ease-in, margin-right 0.4s ease-in;
   }
+
+  ${Media.phone`
+    display: none;
+  `}
 `
