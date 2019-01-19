@@ -72,3 +72,5 @@ export const MAX_DEVICE_WIDTHS = {
 }
 
 export const INFINITY = '∞'
+
+export const SHOW_FLAG_FOR = 2000 // milliseconds
