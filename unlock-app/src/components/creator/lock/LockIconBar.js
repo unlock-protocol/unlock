@@ -8,31 +8,44 @@ import UnlockPropTypes from '../../../propTypes'
 import CreatorLockStatus from './CreatorLockStatus'
 import Media from '../../../theme/media'
 import withConfig from '../../../utils/withConfig'
+import { TRANSACTION_TYPES } from '../../../constants'
+
+import configure from '../../../config'
+
+const config = configure()
 
 export function LockIconBar({
   lock,
+  priceUpdateTransaction,
   toggleCode,
   transaction,
   withdrawalTransaction,
   config,
   edit,
 }) {
-  if (!transaction) {
-    // We assume that the lock has been succeesfuly deployed?
-    // TODO if the transaction is missing we should try to look it up from the lock address
-  } else if (transaction.status === 'submitted') {
-    return <CreatorLockStatus lock={lock} status="Submitted" />
-  } else if (
-    transaction.status === 'mined' &&
-    transaction.confirmations < config.requiredConfirmations
-  ) {
-    return (
-      <CreatorLockStatus
-        lock={lock}
-        status="Confirming"
-        confirmations={transaction.confirmations}
-      />
-    )
+  // These 2 transactions, if not mined or confirmed will trigger the display of CreatorLockStatus
+  // instead of the regular iconBar
+  const blockingTransactions = [transaction, priceUpdateTransaction].filter(
+    t => !!t
+  )
+
+  // TODO: move that logic to mapStateToProps
+  for (let i = 0; i < blockingTransactions.length; i++) {
+    const blockingTransaction = blockingTransactions[i]
+    if (blockingTransaction.status === 'submitted') {
+      return <CreatorLockStatus lock={lock} status="Submitted" />
+    } else if (
+      blockingTransaction.status === 'mined' &&
+      blockingTransaction.confirmations < config.requiredConfirmations
+    ) {
+      return (
+        <CreatorLockStatus
+          lock={lock}
+          status="Confirming"
+          confirmations={blockingTransaction.confirmations}
+        />
+      )
+    }
   }
 
   return (
@@ -70,18 +83,21 @@ LockIconBar.propTypes = {
   edit: PropTypes.func, // this will be required when we wire it up, no-op for now
   transaction: UnlockPropTypes.transaction,
   withdrawalTransaction: UnlockPropTypes.transaction,
+  priceUpdateTransaction: UnlockPropTypes.transaction,
   config: UnlockPropTypes.configuration.isRequired,
 }
 
 LockIconBar.defaultProps = {
   transaction: null,
+  priceUpdateTransaction: null,
   withdrawalTransaction: null,
   edit: () => {},
 }
 
 const mapStateToProps = ({ transactions }, { lock }) => {
-  const transaction = transactions[lock.transaction]
   let withdrawalTransaction = null
+  // TODO: only keep withdrawal transaction which are pending
+  // TODO: Use transaction.type rather than withdrawal?
   Object.keys(transactions).forEach(el => {
     if (
       transactions[el].withdrawal &&
@@ -89,9 +105,24 @@ const mapStateToProps = ({ transactions }, { lock }) => {
     )
       withdrawalTransaction = transactions[el]
   })
+  let priceUpdateTransaction = null
+  Object.values(transactions).forEach(transaction => {
+    if (
+      transaction.type === TRANSACTION_TYPES.UPDATE_KEY_PRICE &&
+      transaction.lock === lock.address &&
+      transaction.confirmations < config.requiredConfirmations
+    ) {
+      priceUpdateTransaction = transaction
+    }
+  })
+
+  // TODO change that to lockCreationTransaction
+  const transaction = transactions[lock.transaction]
+
   return {
     transaction,
     withdrawalTransaction,
+    priceUpdateTransaction,
   }
 }
 
