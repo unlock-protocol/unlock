@@ -12,7 +12,7 @@ import { LOCK_PATH_NAME_REGEXP } from '../constants'
 import Media from '../theme/media'
 import BrowserOnly from '../components/helpers/BrowserOnly'
 
-const Demo = ({ lock, locks }) => {
+const Demo = ({ lock, locks, hasKey }) => {
   return (
     <Container>
       <GlobalStyle />
@@ -72,15 +72,19 @@ const Demo = ({ lock, locks }) => {
       <Right />
       <BrowserOnly>
         <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            height: '100%',
-            width: '100vw',
-            background:
-              'linear-gradient(rgba(255,255,255,0) 18%, rgba(255,255,255,0) 29%, rgb(255,255,255) 48%)',
-          }}
+          style={
+            hasKey
+              ? {}
+              : {
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  height: '100%',
+                  width: '100vw',
+                  background:
+                    'linear-gradient(rgba(255,255,255,0) 18%, rgba(255,255,255,0) 29%, rgb(255,255,255) 48%)',
+                }
+          }
         >
           <ShowUnlessUserHasKeyToAnyLock locks={[locks[lock]]}>
             <Overlay locks={[locks[lock]]} />
@@ -95,18 +99,32 @@ const Demo = ({ lock, locks }) => {
 Demo.propTypes = {
   lock: PropTypes.string,
   locks: UnlockPropTypes.locks.isRequired,
+  hasKey: PropTypes.bool.isRequired,
 }
 
 Demo.defaultProps = {
   lock: '',
 }
 
-export const mapStateToProps = ({ locks, router }) => {
+export const mapStateToProps = ({ locks, keys, router }) => {
   const match = router.location.pathname.match(LOCK_PATH_NAME_REGEXP)
   const lock = match ? match[1] : null
+  let hasKey = false
+  const thislock = locks[lock]
+  if (thislock) {
+    for (let k of Object.values(keys)) {
+      if (
+        k.lock === thislock.address &&
+        k.expiration > new Date().getTime() / 1000
+      ) {
+        hasKey = true
+      }
+    }
+  }
   return {
     lock,
     locks,
+    hasKey,
   }
 }
 
