@@ -69,6 +69,7 @@ export default function configure(
       `http://${runtimeConfig.httpProvider}:8545`
     )
     services['storage'] = { host: 'http://127.0.0.1:8080' }
+    isRequiredNetwork = networkId => networkId === 1337
   }
 
   if (env === 'dev') {
