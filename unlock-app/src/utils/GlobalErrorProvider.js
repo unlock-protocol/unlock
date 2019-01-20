@@ -100,9 +100,12 @@ export class GlobalErrorProvider extends Component {
 
     // Ensuring that an account is defined
     if (!account) {
-      return this.setState({
-        error: 'NO_USER_ACCOUNT',
-        errorMetadata: {},
+      return this.setState(state => {
+        if (state.error === 'NO_USER_ACCOUNT') return null
+        return {
+          error: 'NO_USER_ACCOUNT',
+          errorMetadata: {},
+        }
       })
     }
 

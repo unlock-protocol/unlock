@@ -130,5 +130,21 @@ describe('GlobalErrorProvider', () => {
       )
     })
   })
-  xit('should populate with missing account error if account is not set', () => {})
+  it('should populate with missing account error if account is not set', () => {
+    expect.assertions(2)
+
+    const store = makeTestStore({
+      account: false,
+    })
+    const wrapper = rtl.render(
+      <Provider store={store}>
+        <GlobalErrorProvider>
+          <PeekAtContextConsumer />
+        </GlobalErrorProvider>
+      </Provider>
+    )
+
+    expect(wrapper.getByTestId('error')).toHaveTextContent('NO_USER_ACCOUNT')
+    expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent('')
+  })
 })
