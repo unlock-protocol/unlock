@@ -2,12 +2,11 @@ import styled from 'styled-components'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { RoundedLogo } from '../interface/Logo'
 import Lock from './Lock'
 import UnlockPropTypes from '../../propTypes'
 import { hideModal, showModal } from '../../actions/modal'
 import { unlockPage } from '../../services/iframeService'
-import { Colophon } from './LockStyles'
+import LockedFlag from './UnlockFlag'
 
 export const Overlay = ({ locks, hideModal, showModal }) => (
   <FullPage>
@@ -25,10 +24,7 @@ export const Overlay = ({ locks, hideModal, showModal }) => (
           />
         ))}
       </Locks>
-      <Colophon>
-        <RoundedLogo size="28px" />
-        <p>Powered by Unlock</p>
-      </Colophon>
+      <LockedFlag />
     </Banner>
   </FullPage>
 )
