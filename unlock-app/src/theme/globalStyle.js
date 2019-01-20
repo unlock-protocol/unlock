@@ -23,6 +23,7 @@ const globalStyle = `
     --pink: #ed6e82;
 
     --foreground: 9001;
+    --alwaysontop: 100000;
   }
 
   * {
