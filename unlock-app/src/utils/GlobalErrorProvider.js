@@ -66,7 +66,10 @@ export class GlobalErrorProvider extends Component {
 
     // Ensuring that we have at least 1 provider
     if (Object.keys(config.providers).length === 0) {
-      return this.setState({ error: 'MISSING_PROVIDER', errorMetadata: {} }) // TODO: put in constants
+      return this.setState(state => {
+        if (state.error === 'MISSING_PROVIDER') return null
+        return { error: 'MISSING_PROVIDER', errorMetadata: {} }
+      }) // TODO: put in constants
     }
 
     // Ensuring that the provider is using the right network!
@@ -75,7 +78,6 @@ export class GlobalErrorProvider extends Component {
       config.isRequiredNetwork &&
       !config.isRequiredNetwork(network.name)
     ) {
-      console.log(config.isRequiredNetwork())
       return this.setState(state => {
         if (
           state.error === 'WRONG_NETWORK' &&
