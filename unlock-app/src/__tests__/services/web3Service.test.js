@@ -275,7 +275,7 @@ describe('Web3Service', () => {
   })
 
   describe('once connected', () => {
-    const lockAddress = '0x0d370b0974454d7b0e0e3b4512c0735a6489a71a'
+    const lockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
     const netVersion = Math.floor(Math.random() * 100000)
 
     beforeEach(done => {
@@ -380,6 +380,43 @@ describe('Web3Service', () => {
 
           return web3Service.refreshOrGetAccount(account)
         })
+      })
+    })
+
+    describe('getPastLockTransactions', () => {
+      it('should getPastEvents for the Lock contract', done => {
+        expect.assertions(1)
+
+        const events = [
+          {
+            logIndex: '0x0',
+            transactionIndex: '0x0',
+            transactionHash:
+              '0x7fffd5b8afefc854b04a06330dcf1a5b098c1b8df78da2f7b549fd2cfdd8eab7',
+            blockHash:
+              '0x249aaf2ec8abc3b45fc63d346170d6d9eebb1750e12808153667ba01bef9757f',
+            blockNumber: '0x5d',
+            address: '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f',
+            data:
+              '0x000000000000000000000000000000000000000000000000002386f26fc100000000000000000000000000000000000000000000000000000de0b6b3a7640000',
+            topics: [
+              '0x8aa4fa52648a6d15edce8a179c792c86f3719d0cc3c572cf90f91948f0f2cb68',
+            ],
+            type: 'mined',
+          },
+        ]
+
+        ethGetLogs('0x0', 'latest', [], lockAddress, events)
+
+        web3Service.once('transaction.new', transaction => {
+          expect(transaction.hash).toEqual(
+            '0x7fffd5b8afefc854b04a06330dcf1a5b098c1b8df78da2f7b549fd2cfdd8eab7'
+          )
+          done()
+        })
+
+        web3Service.getTransaction = jest.fn()
+        web3Service.getPastLockTransactions(lockAddress)
       })
     })
 
