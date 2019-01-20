@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { UnlockedFlag } from '../../components/lock/UnlockedFlag'
+import { UnlockedFlag } from '../../components/lock/UnlockFlag'
 
 const key = {
   address: '0xab7c74abc0c4d48d1bdad5dcb26153fc87eeeeee',
