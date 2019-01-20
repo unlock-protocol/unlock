@@ -56,6 +56,79 @@ describe('GlobalErrorProvider', () => {
     expect(wrapper.getByTestId('error')).toHaveTextContent('false')
     expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent('{}')
   })
-  xit('should populate with wrong network error if the wallet is set up on a different network', () => {})
+  describe('should populate with wrong network error if the wallet is set up on a different network', () => {
+    it('mainnet', () => {
+      expect.assertions(2)
+
+      const store = makeTestStore({
+        network: {
+          name: 1,
+        },
+      })
+      const wrapper = rtl.render(
+        <Provider store={store}>
+          <GlobalErrorProvider>
+            <PeekAtContextConsumer />
+          </GlobalErrorProvider>
+        </Provider>
+      )
+
+      expect(wrapper.getByTestId('error')).toHaveTextContent('WRONG_NETWORK')
+      expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent(
+        JSON.stringify({
+          currentNetwork: 'Mainnet',
+          requiredNetwork: 'Dev',
+        })
+      )
+    })
+    it('rinkeby', () => {
+      expect.assertions(2)
+
+      const store = makeTestStore({
+        network: {
+          name: 4,
+        },
+      })
+      const wrapper = rtl.render(
+        <Provider store={store}>
+          <GlobalErrorProvider>
+            <PeekAtContextConsumer />
+          </GlobalErrorProvider>
+        </Provider>
+      )
+
+      expect(wrapper.getByTestId('error')).toHaveTextContent('WRONG_NETWORK')
+      expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent(
+        JSON.stringify({
+          currentNetwork: 'Rinkeby',
+          requiredNetwork: 'Dev',
+        })
+      )
+    })
+    it('unknown network', () => {
+      expect.assertions(2)
+
+      const store = makeTestStore({
+        network: {
+          name: 6,
+        },
+      })
+      const wrapper = rtl.render(
+        <Provider store={store}>
+          <GlobalErrorProvider>
+            <PeekAtContextConsumer />
+          </GlobalErrorProvider>
+        </Provider>
+      )
+
+      expect(wrapper.getByTestId('error')).toHaveTextContent('WRONG_NETWORK')
+      expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent(
+        JSON.stringify({
+          currentNetwork: 'Unknown Network',
+          requiredNetwork: 'Dev',
+        })
+      )
+    })
+  })
   xit('should populate with missing account error if account is not set', () => {})
 })

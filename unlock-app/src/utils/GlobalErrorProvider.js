@@ -79,16 +79,19 @@ export class GlobalErrorProvider extends Component {
       !config.isRequiredNetwork(network.name)
     ) {
       return this.setState(state => {
+        const currentNetwork = ETHEREUM_NETWORKS_NAMES[network.name]
+          ? ETHEREUM_NETWORKS_NAMES[network.name][0]
+          : 'Unknown Network'
         if (
           state.error === 'WRONG_NETWORK' &&
-          state.currentNetwork === ETHEREUM_NETWORKS_NAMES[network.name][0]
+          state.errorMetadata.currentNetwork === currentNetwork
         ) {
           return null
         }
         return {
           error: 'WRONG_NETWORK', // TODO: put this in constants
           errorMetadata: {
-            currentNetwork: ETHEREUM_NETWORKS_NAMES[network.name][0],
+            currentNetwork: currentNetwork,
             requiredNetwork: config.requiredNetwork,
           },
         }
