@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react'
 import Paywall from '../../pages/paywall'
 import createUnlockStore from '../../createUnlockStore'
 
-const myLock = {
+const lock = {
   address: '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e',
   name: 'My Blog',
   keyPrice: '27000000000000000',
@@ -21,11 +21,11 @@ const lockedState = {
       maxNumberOfKeys: 800,
       outstandingKeys: 32,
     },
-    '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e': myLock,
+    '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e': lock,
   },
   router: {
     location: {
-      pathname: '/demo/' + myLock.address,
+      pathname: '/demo/' + lock.address,
     },
   },
   currency: {
