@@ -5,6 +5,7 @@ import createUnlockStore from '../../../createUnlockStore'
 import GlobalErrorProvider, {
   GlobalErrorContext,
 } from '../../../utils/GlobalErrorProvider'
+import { FATAL_NO_USER_ACCOUNT, FATAL_WRONG_NETWORK } from '../../../errors'
 
 describe('GlobalErrorProvider', () => {
   function makeTestStore(newValues = {}) {
@@ -73,7 +74,9 @@ describe('GlobalErrorProvider', () => {
         </Provider>
       )
 
-      expect(wrapper.getByTestId('error')).toHaveTextContent('WRONG_NETWORK')
+      expect(wrapper.getByTestId('error')).toHaveTextContent(
+        FATAL_WRONG_NETWORK
+      )
       expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent(
         JSON.stringify({
           currentNetwork: 'Mainnet',
@@ -97,7 +100,9 @@ describe('GlobalErrorProvider', () => {
         </Provider>
       )
 
-      expect(wrapper.getByTestId('error')).toHaveTextContent('WRONG_NETWORK')
+      expect(wrapper.getByTestId('error')).toHaveTextContent(
+        FATAL_WRONG_NETWORK
+      )
       expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent(
         JSON.stringify({
           currentNetwork: 'Rinkeby',
@@ -121,7 +126,9 @@ describe('GlobalErrorProvider', () => {
         </Provider>
       )
 
-      expect(wrapper.getByTestId('error')).toHaveTextContent('WRONG_NETWORK')
+      expect(wrapper.getByTestId('error')).toHaveTextContent(
+        FATAL_WRONG_NETWORK
+      )
       expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent(
         JSON.stringify({
           currentNetwork: 'Unknown Network',
@@ -144,7 +151,9 @@ describe('GlobalErrorProvider', () => {
       </Provider>
     )
 
-    expect(wrapper.getByTestId('error')).toHaveTextContent('NO_USER_ACCOUNT')
+    expect(wrapper.getByTestId('error')).toHaveTextContent(
+      FATAL_NO_USER_ACCOUNT
+    )
     expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent('')
   })
 })

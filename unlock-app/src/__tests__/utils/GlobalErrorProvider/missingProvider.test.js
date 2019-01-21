@@ -2,6 +2,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import * as rtl from 'react-testing-library'
 import createUnlockStore from '../../../createUnlockStore'
+import { FATAL_MISSING_PROVIDER } from '../../../errors'
 
 jest.mock('../../../config', () =>
   jest.fn().mockImplementation(() => {
@@ -67,7 +68,9 @@ describe('GlobalErrorProvider', () => {
       </Provider>
     )
 
-    expect(wrapper.getByTestId('error')).toHaveTextContent('MISSING_PROVIDER')
+    expect(wrapper.getByTestId('error')).toHaveTextContent(
+      FATAL_MISSING_PROVIDER
+    )
     expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent('{}')
   })
 })

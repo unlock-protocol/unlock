@@ -9,6 +9,11 @@ import PropTypes from 'prop-types'
 import configure from '../config'
 import UnlockPropTypes from '../propTypes'
 import { ETHEREUM_NETWORKS_NAMES } from '../constants'
+import {
+  FATAL_MISSING_PROVIDER,
+  FATAL_WRONG_NETWORK,
+  FATAL_NO_USER_ACCOUNT,
+} from '../errors'
 
 export const GlobalErrorContext = createContext()
 
@@ -56,8 +61,8 @@ export class GlobalErrorProvider extends Component {
   detectMissingProvider(state) {
     // Ensuring that we have at least 1 provider
     if (Object.keys(config.providers).length === 0) {
-      if (state.error === 'MISSING_PROVIDER') return null
-      return { error: 'MISSING_PROVIDER', errorMetadata: {} }
+      if (state.error === FATAL_MISSING_PROVIDER) return null
+      return { error: FATAL_MISSING_PROVIDER, errorMetadata: {} }
     }
   }
 
@@ -73,13 +78,13 @@ export class GlobalErrorProvider extends Component {
         ? ETHEREUM_NETWORKS_NAMES[network.name][0]
         : 'Unknown Network'
       if (
-        state.error === 'WRONG_NETWORK' &&
+        state.error === FATAL_WRONG_NETWORK &&
         state.errorMetadata.currentNetwork === currentNetwork
       ) {
         return null
       }
       return {
-        error: 'WRONG_NETWORK', // TODO: put this in constants
+        error: FATAL_WRONG_NETWORK,
         errorMetadata: {
           currentNetwork: currentNetwork,
           requiredNetwork: config.requiredNetwork,
@@ -92,9 +97,9 @@ export class GlobalErrorProvider extends Component {
     const { account } = this.props
     // Ensuring that an account is defined
     if (!account) {
-      if (state.error === 'NO_USER_ACCOUNT') return null
+      if (state.error === FATAL_NO_USER_ACCOUNT) return null
       return {
-        error: 'NO_USER_ACCOUNT',
+        error: FATAL_NO_USER_ACCOUNT,
         errorMetadata: {},
       }
     }
