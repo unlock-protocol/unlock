@@ -53,63 +53,75 @@ export class GlobalErrorProvider extends Component {
     this.detectErrors()
   }
 
-  detectErrors() {
-    const { router, network, account } = this.props
-    if (config.isServer) {
-      return this.setState(state => {
-        if (state.error) {
-          return { error: false, errorMetadata: {} }
-        }
-        return null // don't modify errors state unless we have an error condition to clear
-      })
-    }
-
+  detectMissingProvider(state) {
     // Ensuring that we have at least 1 provider
     if (Object.keys(config.providers).length === 0) {
-      return this.setState(state => {
-        if (state.error === 'MISSING_PROVIDER') return null
-        return { error: 'MISSING_PROVIDER', errorMetadata: {} }
-      }) // TODO: put in constants
+      if (state.error === 'MISSING_PROVIDER') return null
+      return { error: 'MISSING_PROVIDER', errorMetadata: {} }
     }
+  }
 
+  detectWrongNetwork(state) {
+    const { router, network } = this.props
     // Ensuring that the provider is using the right network!
     if (
       router.route !== '/provider' &&
       config.isRequiredNetwork &&
       !config.isRequiredNetwork(network.name)
     ) {
-      return this.setState(state => {
-        const currentNetwork = ETHEREUM_NETWORKS_NAMES[network.name]
-          ? ETHEREUM_NETWORKS_NAMES[network.name][0]
-          : 'Unknown Network'
-        if (
-          state.error === 'WRONG_NETWORK' &&
-          state.errorMetadata.currentNetwork === currentNetwork
-        ) {
-          return null
-        }
-        return {
-          error: 'WRONG_NETWORK', // TODO: put this in constants
-          errorMetadata: {
-            currentNetwork: currentNetwork,
-            requiredNetwork: config.requiredNetwork,
-          },
-        }
-      })
+      const currentNetwork = ETHEREUM_NETWORKS_NAMES[network.name]
+        ? ETHEREUM_NETWORKS_NAMES[network.name][0]
+        : 'Unknown Network'
+      if (
+        state.error === 'WRONG_NETWORK' &&
+        state.errorMetadata.currentNetwork === currentNetwork
+      ) {
+        return null
+      }
+      return {
+        error: 'WRONG_NETWORK', // TODO: put this in constants
+        errorMetadata: {
+          currentNetwork: currentNetwork,
+          requiredNetwork: config.requiredNetwork,
+        },
+      }
     }
+  }
 
+  detectNoAccount(state) {
+    const { account } = this.props
     // Ensuring that an account is defined
     if (!account) {
-      return this.setState(state => {
-        if (state.error === 'NO_USER_ACCOUNT') return null
-        return {
-          error: 'NO_USER_ACCOUNT',
-          errorMetadata: {},
-        }
-      })
+      if (state.error === 'NO_USER_ACCOUNT') return null
+      return {
+        error: 'NO_USER_ACCOUNT',
+        errorMetadata: {},
+      }
     }
+  }
 
-    this.setState(state => {
+  detectErrors() {
+    return this.setState(state => {
+      if (config.isServer) {
+        if (state.error) {
+          return { error: false, errorMetadata: {} }
+        }
+        return null // don't modify errors state unless we have an error condition to clear
+      }
+
+      // Ensuring that we have at least 1 provider
+      const testProvider = this.detectMissingProvider(state)
+      if (testProvider !== undefined) return testProvider
+
+      // Ensuring that the provider is using the right network!
+      const testNetwork = this.detectWrongNetwork(state)
+      if (testNetwork !== undefined) return testNetwork
+
+      // Ensuring that an account is defined
+      const testAccount = this.detectNoAccount(state)
+      if (testAccount !== undefined) return testAccount
+
+      // reset any existing errors
       if (state.error) {
         return { error: false, errorMetadata: {} }
       }
