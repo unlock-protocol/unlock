@@ -38,7 +38,8 @@
     "build": "cd smart-contracts && npm run build && cd ../unlock-app && npm run build && cd ../locksmith && npm run build",
     "start": "cd unlock-app && npm run start",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
-    "nuke": "./scripts/nuke.sh"
+    "nuke": "./scripts/nuke.sh",
+    "start-locksmith" : "cd locksmith && npm start"
   },
   "repository": {
     "type": "git",
