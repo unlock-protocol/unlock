@@ -227,12 +227,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     if (previousExpiration == 0) {
       // The recipient did not have a key previously
       owners.push(_recipient);
-      // Note: not using the tokenId above since ATM we do not transfer tokenId's
-      // this will change when we decouple tokenId from address
-      ownerByTokenId[uint(_recipient)] = _recipient;
-      // At the moment tokenId is the user's address, but as we work towards ERC721
-      // support this will change to a sequenceId assigned at purchase.
-      keyByOwner[_recipient].tokenId = uint(_recipient);
+      ownerByTokenId[_tokenId] = _recipient;
     }
 
     if (previousExpiration <= now) {
@@ -572,12 +567,13 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
       if (previousExpiration == 0) {
         // This is a brand new owner, else an owner of an expired key buying an extension
         numberOfKeysSold++;
+        // We increment the tokenId counter
+        currentTokenID++;
         owners.push(_recipient);
-        // Note: for ERC721 support we will be changing tokenId to be a sequence id instead
-        ownerByTokenId[uint(_recipient)] = _recipient;
-        // At the moment tokenId is the user's address, but as we work towards ERC721
-        // support this will change to a sequenceId assigned at purchase.
-        keyByOwner[_recipient].tokenId = uint(_recipient);
+        // We register the owner of the new tokenID
+        ownerByTokenId[currentTokenID] = _recipient;
+        // we assign the incremented `currentTokenID` as the tokenId for the new key
+        keyByOwner[_recipient].tokenId = currentTokenID;
       }
       // SafeAdd is not required here since expirationDuration is capped to a tiny value
       // (relative to the size of a uint)
@@ -599,8 +595,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     emit Transfer(
       address(0), // This is a creation.
       _recipient,
-      uint(_recipient) // Note: since each user can own a single token, we use the current
-      // owner (new!) for the token id
+      currentTokenID
     );
   }
 
@@ -632,5 +627,4 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     Ownable.owner().transfer(_amount);
     emit Withdrawal(msg.sender, _amount);
   }
-
 }
