@@ -383,7 +383,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   {
     return _getApproved(_tokenId);
   }
-  
+
   /**
    * Checks if the user has a non-expired key.
    */
@@ -392,7 +392,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   )
     public
     view
-    returns (bool) 
+    returns (bool)
   {
     return keyByOwner[_owner].expirationTimestamp > now;
   }
@@ -623,7 +623,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   /**
    * @dev private version of the withdraw function which handles all withdrawals from the lock.
-   * 
+   *
    * Security: Be wary of re-entrancy when calling this.
    */
   function _withdraw(uint _amount)
