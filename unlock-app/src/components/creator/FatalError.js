@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import Layout from '../interface/Layout'
-
 const defaultError = (
   <p>
     This is a generic error because something just broke but we’re not sure
@@ -13,15 +11,13 @@ const defaultError = (
 )
 
 export const DefaultError = ({ title, children, illustration }) => (
-  <Layout title="">
-    <Container>
-      <Image src={illustration} />
-      <Message>
-        <h1>{title}</h1>
-        {children}
-      </Message>
-    </Container>
-  </Layout>
+  <Container>
+    <Image src={illustration} />
+    <Message>
+      <h1>{title}</h1>
+      {children}
+    </Message>
+  </Container>
 )
 
 DefaultError.propTypes = {
