@@ -31261,6 +31261,12 @@ Object {
   color: var(--grey);
 }
 
+.c5 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -31275,20 +31281,32 @@ Object {
         >
           Monthly
         </header>
-        <div
-          class="c2"
-        >
+        <div>
           <div
-            class="c3"
+            class="c2"
           >
-            1.20
-             Eth
-          </div>
-          <div
-            class="c4"
-          >
-            $
-            235.80
+            <div
+              class="c3"
+            >
+              1.20
+               Eth
+            </div>
+            <div>
+              <span
+                class="c4"
+              >
+                $
+                235.80
+              </span>
+               | 
+              <span
+                class="c5"
+              >
+                <span>
+                  30 days
+                </span>
+              </span>
+            </div>
           </div>
         </div>
       </li>
@@ -31308,20 +31326,32 @@ Object {
       >
         Monthly
       </header>
-      <div
-        class="sc-1ws9jnj-2 gOgmYt"
-      >
+      <div>
         <div
-          class="pehlmj-2 eKLwob"
+          class="sc-1ws9jnj-2 gOgmYt"
         >
-          1.20
-           Eth
-        </div>
-        <div
-          class="pehlmj-3 cblYxB"
-        >
-          $
-          235.80
+          <div
+            class="pehlmj-2 eKLwob"
+          >
+            1.20
+             Eth
+          </div>
+          <div>
+            <span
+              class="pehlmj-3 cblYxB"
+            >
+              $
+              235.80
+            </span>
+             | 
+            <span
+              class="pehlmj-3 pehlmj-4 guCTqX"
+            >
+              <span>
+                30 days
+              </span>
+            </span>
+          </div>
         </div>
       </div>
     </li>
@@ -31450,6 +31480,12 @@ Object {
   color: var(--grey);
 }
 
+.c5 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -31463,20 +31499,32 @@ Object {
         >
           Monthly
         </header>
-        <div
-          class="c2"
-        >
+        <div>
           <div
-            class="c3"
+            class="c2"
           >
-            1.20
-             Eth
-          </div>
-          <div
-            class="c4"
-          >
-            $
-            235.80
+            <div
+              class="c3"
+            >
+              1.20
+               Eth
+            </div>
+            <div>
+              <span
+                class="c4"
+              >
+                $
+                235.80
+              </span>
+               | 
+              <span
+                class="c5"
+              >
+                <span>
+                   - 
+                </span>
+              </span>
+            </div>
           </div>
         </div>
       </li>
@@ -31495,20 +31543,32 @@ Object {
       >
         Monthly
       </header>
-      <div
-        class="sc-1ws9jnj-2 gOgmYt"
-      >
+      <div>
         <div
-          class="pehlmj-2 eKLwob"
+          class="sc-1ws9jnj-2 gOgmYt"
         >
-          1.20
-           Eth
-        </div>
-        <div
-          class="pehlmj-3 cblYxB"
-        >
-          $
-          235.80
+          <div
+            class="pehlmj-2 eKLwob"
+          >
+            1.20
+             Eth
+          </div>
+          <div>
+            <span
+              class="pehlmj-3 cblYxB"
+            >
+              $
+              235.80
+            </span>
+             | 
+            <span
+              class="pehlmj-3 pehlmj-4 guCTqX"
+            >
+              <span>
+                 - 
+              </span>
+            </span>
+          </div>
         </div>
       </div>
     </li>
@@ -32474,6 +32534,12 @@ Object {
   color: var(--grey);
 }
 
+.c5 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -32487,20 +32553,32 @@ Object {
         >
           Monthly
         </header>
-        <div
-          class="c2"
-        >
+        <div>
           <div
-            class="c3"
+            class="c2"
           >
-            1.20
-             Eth
-          </div>
-          <div
-            class="c4"
-          >
-            $
-            235.80
+            <div
+              class="c3"
+            >
+              1.20
+               Eth
+            </div>
+            <div>
+              <span
+                class="c4"
+              >
+                $
+                235.80
+              </span>
+               | 
+              <span
+                class="c5"
+              >
+                <span>
+                  30 days
+                </span>
+              </span>
+            </div>
           </div>
         </div>
       </li>
@@ -32519,20 +32597,32 @@ Object {
       >
         Monthly
       </header>
-      <div
-        class="sc-1ws9jnj-2 gOgmYt"
-      >
+      <div>
         <div
-          class="pehlmj-2 eKLwob"
+          class="sc-1ws9jnj-2 gOgmYt"
         >
-          1.20
-           Eth
-        </div>
-        <div
-          class="pehlmj-3 cblYxB"
-        >
-          $
-          235.80
+          <div
+            class="pehlmj-2 eKLwob"
+          >
+            1.20
+             Eth
+          </div>
+          <div>
+            <span
+              class="pehlmj-3 cblYxB"
+            >
+              $
+              235.80
+            </span>
+             | 
+            <span
+              class="pehlmj-3 pehlmj-4 guCTqX"
+            >
+              <span>
+                30 days
+              </span>
+            </span>
+          </div>
         </div>
       </div>
     </li>
@@ -33551,14 +33641,14 @@ exports[`Storyshots Overlay with a single Lock 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c10 {
+    .c11 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c10 > svg {
+.c11 > svg {
   fill: white;
 }
 
@@ -33581,7 +33671,7 @@ Object {
   padding-top: 16px;
 }
 
-.c9 {
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -33608,7 +33698,7 @@ Object {
   margin-right: -33px;
 }
 
-.c9 > * {
+.c10 > * {
   justify-self: left;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
@@ -33616,7 +33706,7 @@ Object {
   margin-left: -14px;
 }
 
-.c9 > p {
+.c10 > p {
   margin-left: auto;
   margin-right: auto;
   width: 63px;
@@ -33682,6 +33772,12 @@ Object {
 }
 
 .c8 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+.c9 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
@@ -33814,29 +33910,41 @@ Object {
                 >
                   One Month
                 </header>
-                <div
-                  class="c6"
-                >
+                <div>
                   <div
-                    class="c7"
+                    class="c6"
                   >
-                    0.12
-                     Eth
-                  </div>
-                  <div
-                    class="c8"
-                  >
-                    $
-                    24.19
+                    <div
+                      class="c7"
+                    >
+                      0.12
+                       Eth
+                    </div>
+                    <div>
+                      <span
+                        class="c8"
+                      >
+                        $
+                        24.19
+                      </span>
+                       | 
+                      <span
+                        class="c9"
+                      >
+                        <span>
+                           - 
+                        </span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </li>
             </ul>
             <footer
-              class="c9"
+              class="c10"
             >
               <div
-                class="c10"
+                class="c11"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -33934,20 +34042,32 @@ Object {
               >
                 One Month
               </header>
-              <div
-                class="sc-1ws9jnj-2 gOgmYt"
-              >
+              <div>
                 <div
-                  class="pehlmj-2 eKLwob"
+                  class="sc-1ws9jnj-2 gOgmYt"
                 >
-                  0.12
-                   Eth
-                </div>
-                <div
-                  class="pehlmj-3 cblYxB"
-                >
-                  $
-                  24.19
+                  <div
+                    class="pehlmj-2 eKLwob"
+                  >
+                    0.12
+                     Eth
+                  </div>
+                  <div>
+                    <span
+                      class="pehlmj-3 cblYxB"
+                    >
+                      $
+                      24.19
+                    </span>
+                     | 
+                    <span
+                      class="pehlmj-3 pehlmj-4 guCTqX"
+                    >
+                      <span>
+                         - 
+                      </span>
+                    </span>
+                  </div>
                 </div>
               </div>
             </li>
@@ -34025,14 +34145,14 @@ exports[`Storyshots Overlay with multiple locks 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c10 {
+    .c11 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c10 > svg {
+.c11 > svg {
   fill: white;
 }
 
@@ -34055,7 +34175,7 @@ Object {
   padding-top: 16px;
 }
 
-.c9 {
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -34082,7 +34202,7 @@ Object {
   margin-right: -33px;
 }
 
-.c9 > * {
+.c10 > * {
   justify-self: left;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
@@ -34090,7 +34210,7 @@ Object {
   margin-left: -14px;
 }
 
-.c9 > p {
+.c10 > p {
   margin-left: auto;
   margin-right: auto;
   width: 63px;
@@ -34156,6 +34276,12 @@ Object {
 }
 
 .c8 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+.c9 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
@@ -34288,20 +34414,32 @@ Object {
                 >
                   One Month
                 </header>
-                <div
-                  class="c6"
-                >
+                <div>
                   <div
-                    class="c7"
+                    class="c6"
                   >
-                    0.01
-                     Eth
-                  </div>
-                  <div
-                    class="c8"
-                  >
-                    $
-                    1.96
+                    <div
+                      class="c7"
+                    >
+                      0.01
+                       Eth
+                    </div>
+                    <div>
+                      <span
+                        class="c8"
+                      >
+                        $
+                        1.96
+                      </span>
+                       | 
+                      <span
+                        class="c9"
+                      >
+                        <span>
+                           - 
+                        </span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </li>
@@ -34313,29 +34451,41 @@ Object {
                 >
                   One Year
                 </header>
-                <div
-                  class="c6"
-                >
+                <div>
                   <div
-                    class="c7"
+                    class="c6"
                   >
-                    0.1
-                     Eth
-                  </div>
-                  <div
-                    class="c8"
-                  >
-                    $
-                    19.60
+                    <div
+                      class="c7"
+                    >
+                      0.1
+                       Eth
+                    </div>
+                    <div>
+                      <span
+                        class="c8"
+                      >
+                        $
+                        19.60
+                      </span>
+                       | 
+                      <span
+                        class="c9"
+                      >
+                        <span>
+                           - 
+                        </span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </li>
             </ul>
             <footer
-              class="c9"
+              class="c10"
             >
               <div
-                class="c10"
+                class="c11"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -34433,20 +34583,32 @@ Object {
               >
                 One Month
               </header>
-              <div
-                class="sc-1ws9jnj-2 gOgmYt"
-              >
+              <div>
                 <div
-                  class="pehlmj-2 eKLwob"
+                  class="sc-1ws9jnj-2 gOgmYt"
                 >
-                  0.01
-                   Eth
-                </div>
-                <div
-                  class="pehlmj-3 cblYxB"
-                >
-                  $
-                  1.96
+                  <div
+                    class="pehlmj-2 eKLwob"
+                  >
+                    0.01
+                     Eth
+                  </div>
+                  <div>
+                    <span
+                      class="pehlmj-3 cblYxB"
+                    >
+                      $
+                      1.96
+                    </span>
+                     | 
+                    <span
+                      class="pehlmj-3 pehlmj-4 guCTqX"
+                    >
+                      <span>
+                         - 
+                      </span>
+                    </span>
+                  </div>
                 </div>
               </div>
             </li>
@@ -34458,20 +34620,32 @@ Object {
               >
                 One Year
               </header>
-              <div
-                class="sc-1ws9jnj-2 gOgmYt"
-              >
+              <div>
                 <div
-                  class="pehlmj-2 eKLwob"
+                  class="sc-1ws9jnj-2 gOgmYt"
                 >
-                  0.1
-                   Eth
-                </div>
-                <div
-                  class="pehlmj-3 cblYxB"
-                >
-                  $
-                  19.60
+                  <div
+                    class="pehlmj-2 eKLwob"
+                  >
+                    0.1
+                     Eth
+                  </div>
+                  <div>
+                    <span
+                      class="pehlmj-3 cblYxB"
+                    >
+                      $
+                      19.60
+                    </span>
+                     | 
+                    <span
+                      class="pehlmj-3 pehlmj-4 guCTqX"
+                    >
+                      <span>
+                         - 
+                      </span>
+                    </span>
+                  </div>
                 </div>
               </div>
             </li>
