@@ -34,7 +34,7 @@ export const makeConsumer = (
         {({ error, errorMetadata }) => {
           if (!error) return <>{children}</>
           const errorHandler = handlers[error] || defaultHandlers[error]
-          return errorHandler(errorMetadata)
+          return errorHandler(errorMetadata, children)
         }}
       </Consumer>
     )
