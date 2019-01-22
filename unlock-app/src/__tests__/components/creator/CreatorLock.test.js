@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import { CreatorLock } from '../../../components/creator/CreatorLock'
 import configure from '../../../config'
 import createUnlockStore from '../../../createUnlockStore'
+import { UNLIMITED_KEYS_COUNT } from '../../../constants'
 
 jest.mock('next/link', () => {
   return ({ children }) => children
@@ -32,7 +33,7 @@ const unlimitedlock = {
   keyPrice: '1',
   balance: '1',
   outstandingKeys: 1,
-  maxNumberOfKeys: 0,
+  maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
   expirationDuration: 100,
 }
 
