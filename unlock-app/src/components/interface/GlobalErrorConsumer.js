@@ -1,14 +1,15 @@
 /* eslint-disable react/display-name */
-import React, { createContext } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
+
 import {
   MissingProvider,
   WrongNetwork,
   MissingAccount,
 } from '../creator/FatalError'
+import { GlobalErrorContext } from '../../utils/GlobalErrorProvider'
 
 // this is a dummy value, to be replaced with the actual global error context when merging PRs
-export const DummyContext = createContext({})
-
 export const defaultHandlers = {
   FATAL_MISSING_PROVIDER: () => <MissingProvider />,
   // eslint-disable-next-line react/prop-types
@@ -24,7 +25,10 @@ export const defaultHandlers = {
 /**
  * create a wrapper that will display fatal errors instead of child content
  */
-export const makeConsumer = (handlers = {}, { Consumer } = DummyContext) =>
+export const makeConsumer = (
+  handlers = {},
+  { Consumer } = GlobalErrorContext
+) => {
   function GlobalErrorConsumer({ children }) {
     return (
       <Consumer>
@@ -36,5 +40,12 @@ export const makeConsumer = (handlers = {}, { Consumer } = DummyContext) =>
       </Consumer>
     )
   }
+
+  GlobalErrorConsumer.propTypes = {
+    children: PropTypes.node.isRequired,
+  }
+
+  return GlobalErrorConsumer
+}
 
 export default makeConsumer()

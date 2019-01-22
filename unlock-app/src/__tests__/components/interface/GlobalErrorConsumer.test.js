@@ -4,11 +4,11 @@ import * as rtl from 'react-testing-library'
 import GlobalErrorConsumer, {
   defaultHandlers,
   makeConsumer,
-  DummyContext,
 } from '../../../components/interface/GlobalErrorConsumer'
 import * as errors from '../../../errors'
+import { GlobalErrorContext } from '../../../utils/GlobalErrorProvider'
 
-const ErrorProvider = DummyContext.Provider
+const ErrorProvider = GlobalErrorContext.Provider
 const fatalErrors = Object.keys(errors)
   .reduce(
     (coll, error) => (error.match(/^FATAL_/) ? [...coll, error] : coll),
