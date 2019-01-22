@@ -107,8 +107,18 @@ export const MissingProvider = () => (
   </DefaultError>
 )
 
+export const MissingAccount = () => (
+  <DefaultError title="Need account">
+    <p>
+      In order to display this content, you need to connect a crypto-wallet to
+      your browser.
+    </p>
+  </DefaultError>
+)
+
 export default {
   DefaultError,
   WrongNetwork,
   MissingProvider,
+  MissingAccount,
 }
