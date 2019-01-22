@@ -265,7 +265,7 @@ export const Privacy = () => (
         hello@unlock-protocol.com.
       </Paragraph>
       <Paragraph>
-        <Em>Business Transfers:</Em> The Unlock may go through a business
+        <Em>Business Transfers:</Em> Unlock may go through a business
         transition, such as a merger, acquisition by another company, or sale of
         all or portion of our assets. In these types of transactions, user
         information is typically one of the business assets that are
