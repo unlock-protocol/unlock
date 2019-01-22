@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import React from 'react'
 import { connect } from 'react-redux'
 import BalanceProvider from '../helpers/BalanceProvider'
+import Duration from '../helpers/Duration'
 import UnlockPropTypes from '../../propTypes'
 import withConfig from '../../utils/withConfig'
 
@@ -47,10 +48,18 @@ export const Lock = ({
         <BalanceProvider
           amount={lock.keyPrice}
           render={(ethPrice, fiatPrice) => (
-            <LockBody>
-              <EthPrice>{ethPrice} Eth</EthPrice>
-              <FiatPrice>${fiatPrice}</FiatPrice>
-            </LockBody>
+            <div>
+              <LockBody>
+                <EthPrice>{ethPrice} Eth</EthPrice>
+                <div>
+                  <FiatPrice>${fiatPrice}</FiatPrice>
+                  {' | '}
+                  <ExpirationDuration>
+                    <Duration seconds={lock.expirationDuration} />
+                  </ExpirationDuration>
+                </div>
+              </LockBody>
+            </div>
           )}
         />
       </Wrapper>
@@ -134,8 +143,10 @@ const EthPrice = styled.div`
   font-weight: bold;
 `
 
-const FiatPrice = styled.div`
+const FiatPrice = styled.span`
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
 `
+
+const ExpirationDuration = styled(FiatPrice)``
