@@ -750,16 +750,20 @@ export default class Web3Service extends EventEmitter {
   getKeysForLockOnPage(lock, page, byPage) {
     const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
 
-    this._genKeyOwnersFromLockContract(lock, lockContract, page, byPage)
-      .then(keyPromises => this._emitKeyOwners(lock, page, keyPromises))
-      .catch(() => {
-        this._genKeyOwnersFromLockContractIterative(
-          lock,
-          lockContract,
-          page,
-          byPage
-        ).then(keyPromises => this._emitKeyOwners(lock, page, keyPromises))
-      })
+    this._genKeyOwnersFromLockContract(lock, lockContract, page, byPage).then(
+      keyPromises => {
+        if (keyPromises.length == 0) {
+          this._genKeyOwnersFromLockContractIterative(
+            lock,
+            lockContract,
+            page,
+            byPage
+          ).then(keyPromises => this._emitKeyOwners(lock, page, keyPromises))
+        } else {
+          this._emitKeyOwners(lock, page, keyPromises)
+        }
+      }
+    )
   }
 
   /**
