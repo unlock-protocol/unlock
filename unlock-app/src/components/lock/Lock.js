@@ -48,16 +48,18 @@ export const Lock = ({
         <BalanceProvider
           amount={lock.keyPrice}
           render={(ethPrice, fiatPrice) => (
-            <LockBody>
-              <EthPrice>{ethPrice} Eth</EthPrice>
-              <div>
-                <FiatPrice>${fiatPrice}</FiatPrice>
-                {' | '}
-                <ExpirationDuration>
-                  <Duration seconds={lock.expirationDuration} />
-                </ExpirationDuration>
-              </div>
-            </LockBody>
+            <div>
+              <LockBody>
+                <EthPrice>{ethPrice} Eth</EthPrice>
+                <div>
+                  <FiatPrice>${fiatPrice}</FiatPrice>
+                  {' | '}
+                  <ExpirationDuration>
+                    <Duration seconds={lock.expirationDuration} />
+                  </ExpirationDuration>
+                </div>
+              </LockBody>
+            </div>
           )}
         />
       </Wrapper>
@@ -140,8 +142,6 @@ const EthPrice = styled.div`
   color: var(--slate);
   font-weight: bold;
 `
-
-const FiatDurationContainer = styled.div``
 
 const FiatPrice = styled.span`
   font-size: 20px;
