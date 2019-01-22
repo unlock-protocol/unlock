@@ -9,7 +9,6 @@ import {
 } from '../creator/FatalError'
 import { GlobalErrorContext } from '../../utils/GlobalErrorProvider'
 
-// this is a dummy value, to be replaced with the actual global error context when merging PRs
 export const defaultHandlers = {
   FATAL_MISSING_PROVIDER: () => <MissingProvider />,
   // eslint-disable-next-line react/prop-types
