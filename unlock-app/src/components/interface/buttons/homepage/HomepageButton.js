@@ -9,8 +9,9 @@ import { ActionButton } from '../../../creator/CreatorLocks'
 export class HomepageButton extends React.Component {
   constructor(props, context) {
     super(props, context)
+    const { acceptedTerms } = this.props
     this.state = {
-      acceptedTerms: false,
+      acceptedTerms: acceptedTerms,
     }
     this.acceptTerms = this.acceptTerms.bind(this)
   }
@@ -107,10 +108,12 @@ const ButtonLabel = styled.small`
 
 HomepageButton.propTypes = {
   env: PropTypes.string,
+  acceptedTerms: PropTypes.bool,
 }
 
 HomepageButton.defaultProps = {
   env: 'dev',
+  acceptedTerms: false,
 }
 
 export default HomepageButton
