@@ -15,6 +15,7 @@ const lock = {
   name: 'Monthly',
   keyPrice: '1203120301203013000',
   fiatPrice: 240.38,
+  expirationDuration: 2592000,
 }
 
 const store = createUnlockStore({
