@@ -29,7 +29,7 @@ import {
   isPositiveNumber,
 } from '../../utils/validators'
 
-import { INFINITY } from '../../constants'
+import { UNLIMITED_KEYS_COUNT, INFINITY } from '../../constants'
 
 export class CreatorLockForm extends React.Component {
   constructor(props, context) {
@@ -43,7 +43,7 @@ export class CreatorLockForm extends React.Component {
       // Unlimited keys is represented as zero, so when we load a lock that
       // has `maxNumberOfKeys` set to zero, convert it to the infinity symbol
       // before displaying it.
-      if (maxNumberOfKeys === 0) {
+      if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
         maxNumberOfKeys = INFINITY
       }
     }
@@ -53,7 +53,7 @@ export class CreatorLockForm extends React.Component {
       keyPrice: keyPrice,
       keyPriceCurrency: props.keyPriceCurrency,
       maxNumberOfKeys,
-      unlimitedKeys: maxNumberOfKeys === INFINITY,
+      unlimitedKeys: props.maxNumberOfKeys === UNLIMITED_KEYS_COUNT,
       name: props.name,
       address: props.address,
     }
@@ -116,7 +116,7 @@ export class CreatorLockForm extends React.Component {
         if (!isPositiveInteger(value)) return FORM_EXPIRATION_DURATION_INVALID
         break
       case 'maxNumberOfKeys':
-        if (value !== INFINITY && !isPositiveInteger(value)) {
+        if (value !== UNLIMITED_KEYS_COUNT && !isPositiveInteger(value)) {
           return FORM_MAX_KEYS_INVALID
         }
         break
@@ -147,7 +147,7 @@ export class CreatorLockForm extends React.Component {
       name: name,
       expirationDuration: expirationDuration * expirationDurationUnit,
       keyPrice: Web3Utils.toWei(keyPrice.toString(10), keyPriceCurrency),
-      maxNumberOfKeys: unlimitedKeys ? 0 : maxNumberOfKeys,
+      maxNumberOfKeys: unlimitedKeys ? UNLIMITED_KEYS_COUNT : maxNumberOfKeys,
       owner: account.address,
     }
 
@@ -180,15 +180,17 @@ export class CreatorLockForm extends React.Component {
     this.setState(state => ({
       ...state,
       unlimitedKeys: true,
-      maxNumberOfKeys: INFINITY,
-      valid: this.formValidity({ ...state, [name]: INFINITY }),
+      maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+      valid: this.formValidity({ ...state, [name]: UNLIMITED_KEYS_COUNT }),
     }))
   }
 
   handleChange({ target: { name, value } }) {
     this.setState(state => ({
       unlimitedKeys:
-        name === 'maxNumberOfKeys' ? value === INFINITY : state.unlimitedKeys,
+        name === 'maxNumberOfKeys'
+          ? value === UNLIMITED_KEYS_COUNT
+          : state.unlimitedKeys,
       [name]: value,
       valid: this.formValidity({ ...state.valid, [name]: value }),
     }))
@@ -254,7 +256,11 @@ export class CreatorLockForm extends React.Component {
             type="text"
             name="maxNumberOfKeys"
             onChange={this.handleChange}
-            value={maxNumberOfKeys}
+            value={
+              maxNumberOfKeys === UNLIMITED_KEYS_COUNT
+                ? INFINITY
+                : maxNumberOfKeys
+            }
             data-valid={valid.maxNumberOfKeys}
             required={pending}
             disabled={!pending}

@@ -9,7 +9,7 @@ import {
   FORM_KEY_PRICE_INVALID,
 } from '../../../errors'
 
-import { INFINITY } from '../../../constants'
+import { INFINITY, UNLIMITED_KEYS_COUNT } from '../../../constants'
 
 describe('CreatorLockForm', () => {
   let createLock
@@ -125,10 +125,12 @@ describe('CreatorLockForm', () => {
         console.error = save // eslint-disable-line
       }
     })
-    it('max number of keys is a negative number', () => {
-      const wrapper = makeLockForm({ maxNumberOfKeys: -1 })
 
-      expect(wrapper.getByValue('-1').dataset.valid).toBe('false')
+    it('max number of keys is a negative number', () => {
+      // NOTE: -1 is UNLIMITED_KEYS_COUNT
+      const wrapper = makeLockForm({ maxNumberOfKeys: -2 })
+
+      expect(wrapper.getByValue('-2').dataset.valid).toBe('false')
     })
     it('key price is not a number', () => {
       const save = console.error // eslint-disable-line
@@ -196,7 +198,8 @@ describe('CreatorLockForm', () => {
         }
       })
       it('max number of keys is a negative number', () => {
-        const wrapper = makeLockForm({ maxNumberOfKeys: -1 })
+        // NOTE: -1 is UNLIMITED_KEYS_COUNT
+        const wrapper = makeLockForm({ maxNumberOfKeys: -2 })
 
         const submit = wrapper.getByText('Submit')
         expect(submit).not.toBeNull()
@@ -260,7 +263,7 @@ describe('CreatorLockForm', () => {
       expect(wrapper.getByValue('35').dataset.valid).toBe('true')
     })
     it('max number of keys is infinity', () => {
-      const wrapper = makeLockForm({ maxNumberOfKeys: INFINITY })
+      const wrapper = makeLockForm({ maxNumberOfKeys: UNLIMITED_KEYS_COUNT })
 
       expect(wrapper.getByDisplayValue(INFINITY)).not.toBeNull()
       expect(wrapper.getByValue(INFINITY).dataset.valid).toBe('true')

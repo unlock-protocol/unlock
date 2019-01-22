@@ -5,7 +5,7 @@ import Web3Utils from 'web3-utils'
 import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
-import { TRANSACTION_TYPES } from '../constants'
+import { TRANSACTION_TYPES, MAX_UINT } from '../constants'
 import {
   MISSING_PROVIDER,
   MISSING_TRANSACTION,
@@ -552,11 +552,15 @@ export default class Web3Service extends EventEmitter {
    */
   getLock(address) {
     const contract = new this.web3.eth.Contract(LockContract.abi, address)
-
     const attributes = {
       keyPrice: x => x, // this is a BigNumber (represented as string)
       expirationDuration: parseInt,
-      maxNumberOfKeys: parseInt,
+      maxNumberOfKeys: value => {
+        if (value === MAX_UINT) {
+          return -1
+        }
+        return parseInt(value)
+      },
       owner: x => x,
       outstandingKeys: parseInt,
     }
