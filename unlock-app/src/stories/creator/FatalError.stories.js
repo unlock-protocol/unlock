@@ -17,3 +17,6 @@ storiesOf('FatalError', module)
   .add('Wallet missing', () => {
     return <FatalError.MissingProvider />
   })
+  .add('Account missing', () => {
+    return <FatalError.MissingAccount />
+  })
