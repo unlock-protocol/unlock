@@ -55,6 +55,10 @@ export const OrderedList = styled.ol`
   padding-left: 30px;
 `
 
+export const Strong = styled.strong``
+
+export const Em = styled.em``
+
 export const ListItem = styled.li`
   line-height: 28px;
   margin: 4px 0px 12px 4px;
