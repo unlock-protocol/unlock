@@ -56,6 +56,20 @@ describe('CreatorLockForm', () => {
       .forEach(error => expect(resetError).toHaveBeenCalledWith(error))
   }
 
+  describe('things that should not fail', () => {
+    it('properly handle unlimited keys when editing', () => {
+      const wrapper = makeLockForm({ maxNumberOfKeys: 0, convert: true })
+
+      const submit = wrapper.getByText('Submit')
+      expect(submit).not.toBeNull()
+
+      rtl.fireEvent.click(submit)
+      // The error most likely to occur in this instance is
+      // FORM_MAX_KEYS_INVALID.
+      expectErrors([])
+    })
+  })
+
   describe('invalid values', () => {
     it('name is empty', () => {
       const wrapper = makeLockForm({ name: '' })
