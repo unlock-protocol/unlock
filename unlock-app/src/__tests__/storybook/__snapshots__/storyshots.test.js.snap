@@ -17874,11 +17874,11 @@ Object {
           class="c3"
         >
           <input
-            data-valid="false"
+            data-valid="true"
             disabled=""
             name="maxNumberOfKeys"
             type="text"
-            value="-1"
+            value="∞"
           />
         </div>
         <span
@@ -18027,11 +18027,11 @@ Object {
         class="mlglvd-7 sc-1u8ov25-5 hzTKUl"
       >
         <input
-          data-valid="false"
+          data-valid="true"
           disabled=""
           name="maxNumberOfKeys"
           type="text"
-          value="-1"
+          value="∞"
         />
       </div>
       <span
@@ -19729,7 +19729,7 @@ Object {
               <div
                 class=""
               >
-                10/∞
+                10/0
               </div>
               <div
                 class="c20"
@@ -20922,7 +20922,7 @@ Object {
             <div
               class="mlglvd-7 EehSr"
             >
-              10/∞
+              10/0
             </div>
             <div
               class="buwkmd-0 bYclZI"

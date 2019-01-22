@@ -29,7 +29,7 @@ import {
   isPositiveNumber,
 } from '../../utils/validators'
 
-import { INFINITY } from '../../constants'
+import { INFINITY, UNLIMITED_KEYS_COUNT } from '../../constants'
 
 export class CreatorLockForm extends React.Component {
   constructor(props, context) {
@@ -40,10 +40,10 @@ export class CreatorLockForm extends React.Component {
     if (props.convert) {
       keyPrice = Web3Utils.fromWei(keyPrice, props.keyPriceCurrency)
       expirationDuration = expirationDuration / props.expirationDurationUnit
-      // Unlimited keys is represented as zero, so when we load a lock that
-      // has `maxNumberOfKeys` set to zero, convert it to the infinity symbol
-      // before displaying it.
-      if (maxNumberOfKeys === 0) {
+      // unlimited keys is represented differently in the frontend and the backend,
+      // so when a lock has `maxNumberOfKeys` set to UNLIMITED_KEYS_COUNT,
+      // convert it to infinity symbol for frontend display
+      if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
         maxNumberOfKeys = INFINITY
       }
     }
@@ -147,7 +147,7 @@ export class CreatorLockForm extends React.Component {
       name: name,
       expirationDuration: expirationDuration * expirationDurationUnit,
       keyPrice: Web3Utils.toWei(keyPrice.toString(10), keyPriceCurrency),
-      maxNumberOfKeys: unlimitedKeys ? 0 : maxNumberOfKeys,
+      maxNumberOfKeys: unlimitedKeys ? UNLIMITED_KEYS_COUNT : maxNumberOfKeys,
       owner: account.address,
     }
 

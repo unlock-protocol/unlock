@@ -656,7 +656,9 @@ describe('Web3Service', () => {
     })
 
     describe('getLock', () => {
-      beforeEach(() => {
+      it('should trigger an event when it has been loaded woth an updated balance', done => {
+        expect.assertions(2)
+
         ethCallAndYield(
           '0x10e56973',
           lockAddress,
@@ -683,10 +685,6 @@ describe('Web3Service', () => {
           '0x0000000000000000000000000000000000000000000000000000000000000011'
         )
         getBalanceForAccountAndYieldBalance(lockAddress, '0xdeadfeed')
-      })
-
-      it('should trigger an event when it has been loaded woth an updated balance', done => {
-        expect.assertions(2)
 
         web3Service.on('lock.updated', (address, update) => {
           expect(address).toBe(lockAddress)
@@ -697,6 +695,46 @@ describe('Web3Service', () => {
             maxNumberOfKeys: 10,
             owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
             outstandingKeys: 17,
+          })
+          done()
+        })
+
+        return web3Service.getLock(lockAddress)
+      })
+
+      it('should successfully yield a lock with an unlimited number of keys', done => {
+        expect.assertions(2)
+        ethCallAndYield(
+          '0x10e56973',
+          lockAddress,
+          '0x000000000000000000000000000000000000000000000000002386f26fc10000'
+        )
+        ethCallAndYield(
+          '0x11a4c03a',
+          lockAddress,
+          '0x0000000000000000000000000000000000000000000000000000000000278d00'
+        )
+        ethCallAndYield(
+          '0x74b6c106',
+          lockAddress,
+          '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+        )
+        ethCallAndYield(
+          '0x8da5cb5b',
+          lockAddress,
+          '0x00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1'
+        )
+        ethCallAndYield(
+          '0x47dc1085',
+          lockAddress,
+          '0x0000000000000000000000000000000000000000000000000000000000000011'
+        )
+        getBalanceForAccountAndYieldBalance(lockAddress, '0xdeadfeed')
+
+        web3Service.on('lock.updated', (address, update) => {
+          expect(address).toBe(lockAddress)
+          expect(update).toMatchObject({
+            maxNumberOfKeys: -1,
           })
           done()
         })
