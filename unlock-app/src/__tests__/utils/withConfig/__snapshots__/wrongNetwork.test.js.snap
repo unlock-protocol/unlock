@@ -1,6 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`withConfig High Order Component when the current network is not in the list of required networks should show a message indicating that the network needs to be changed 1`] = `
+.c13 {
+  display: grid;
+  row-gap: 16px;
+  -webkit-column-gap: 32px;
+  column-gap: 32px;
+  border: solid 1px var(--lightgrey);
+  grid-template-columns: 72px;
+  grid-auto-flow: column;
+  border-radius: 4px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 32px;
+  padding-bottom: 40px;
+}
+
+.c14 {
+  width: 72px;
+}
+
+.c15 {
+  display: grid;
+  grid-gap: 16px;
+}
+
+.c15 > h1 {
+  font-weight: bold;
+  color: var(--red);
+  margin: 0px;
+  padding: 0px;
+}
+
+.c15 > p {
+  margin: 0px;
+  padding: 0px;
+  font-size: 16px;
+  color: var(--dimgrey);
+}
+
 .c2 {
   background-color: var(--brand);
   height: 56px;
@@ -206,44 +246,12 @@ exports[`withConfig High Order Component when the current network is not in the 
   width: 100%;
 }
 
-.c13 {
-  display: grid;
-  row-gap: 16px;
-  -webkit-column-gap: 32px;
-  column-gap: 32px;
-  border: solid 1px var(--lightgrey);
-  grid-template-columns: 72px;
-  grid-auto-flow: column;
-  border-radius: 4px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 32px;
-  padding-bottom: 40px;
-}
-
-.c14 {
-  width: 72px;
-}
-
-.c15 {
-  display: grid;
-  grid-gap: 16px;
-}
-
-.c15 > h1 {
-  font-weight: bold;
-  color: var(--red);
-  margin: 0px;
-  padding: 0px;
-}
-
-.c15 > p {
-  margin: 0px;
-  padding: 0px;
-  font-size: 16px;
-  color: var(--dimgrey);
+@media (max-width:500px) {
+  .c13 {
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+    padding: 16px;
+  }
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
@@ -304,14 +312,6 @@ exports[`withConfig High Order Component when the current network is not in the 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c16 {
     display: none;
-  }
-}
-
-@media (max-width:500px) {
-  .c13 {
-    grid-template-columns: 1fr;
-    grid-auto-flow: row;
-    padding: 16px;
   }
 }
 

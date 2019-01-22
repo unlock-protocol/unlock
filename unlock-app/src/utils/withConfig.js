@@ -8,6 +8,7 @@ import {
   MissingProvider,
   DefaultError,
 } from '../components/creator/FatalError'
+import Layout from '../components/interface/Layout'
 import SuspendedRender from '../components/helpers/SuspendedRender'
 import { ETHEREUM_NETWORKS_NAMES } from '../constants'
 
@@ -31,7 +32,11 @@ export default function withConfig(Component) {
       if (!config.isServer) {
         // Ensuring that we have at least a provider
         if (Object.keys(config.providers).length === 0) {
-          return <MissingProvider />
+          return (
+            <Layout title="">
+              <MissingProvider />
+            </Layout>
+          )
         }
 
         // Ensuring that the provider is using the right network!
@@ -41,10 +46,12 @@ export default function withConfig(Component) {
           !config.isRequiredNetwork(network.name)
         ) {
           return (
-            <WrongNetwork
-              currentNetwork={ETHEREUM_NETWORKS_NAMES[network.name][0]}
-              requiredNetwork={config.requiredNetwork}
-            />
+            <Layout title="">
+              <WrongNetwork
+                currentNetwork={ETHEREUM_NETWORKS_NAMES[network.name][0]}
+                requiredNetwork={config.requiredNetwork}
+              />
+            </Layout>
           )
         }
 
@@ -52,12 +59,14 @@ export default function withConfig(Component) {
         if (!account) {
           return (
             <SuspendedRender>
-              <DefaultError title="User account not initialized">
-                <p>
-                  In order to display your Unlock dashboard, you need to connect
-                  a crypto-wallet to your browser.
-                </p>
-              </DefaultError>
+              <Layout title="">
+                <DefaultError title="User account not initialized">
+                  <p>
+                    In order to display your Unlock dashboard, you need to
+                    connect a crypto-wallet to your browser.
+                  </p>
+                </DefaultError>
+              </Layout>
             </SuspendedRender>
           )
         }
