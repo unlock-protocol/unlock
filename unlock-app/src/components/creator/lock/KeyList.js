@@ -111,7 +111,7 @@ const Row = styled.div`
   margin-left: 48px;
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 3fr 3fr;
+  grid-template-columns: 450px 150px auto;
   grid-gap: 36px;
   margin-bottom: 10px;
 `
@@ -127,6 +127,7 @@ const Cell = styled.div``
 const Data = styled(Cell)`
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-right: 72px;
 `
 
 const Message = styled.div`

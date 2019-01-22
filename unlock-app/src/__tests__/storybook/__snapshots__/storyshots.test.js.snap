@@ -27674,7 +27674,7 @@ Object {
   margin-left: 48px;
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 3fr 3fr;
+  grid-template-columns: 450px 150px auto;
   grid-gap: 36px;
   margin-bottom: 10px;
   font-family: 'IBM Plex Sans';
@@ -27748,7 +27748,7 @@ Object {
         class="sc-4ambxn-1 hovMBr"
       >
         <div
-          class="sc-4ambxn-2 sc-4ambxn-3 kKDPTk"
+          class="sc-4ambxn-2 sc-4ambxn-3 ePVKG"
         >
           <div
             class="sc-4ambxn-4 PWHMN"
@@ -27927,7 +27927,7 @@ Object {
   margin-left: 48px;
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 3fr 3fr;
+  grid-template-columns: 450px 150px auto;
   grid-gap: 36px;
   margin-bottom: 10px;
 }
@@ -27938,7 +27938,7 @@ Object {
   margin-left: 48px;
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 3fr 3fr;
+  grid-template-columns: 450px 150px auto;
   grid-gap: 36px;
   margin-bottom: 10px;
   font-family: 'IBM Plex Sans';
@@ -27949,6 +27949,7 @@ Object {
 .c4 {
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-right: 72px;
 }
 
 <div>
@@ -28242,7 +28243,7 @@ Object {
         class="sc-4ambxn-1 hovMBr"
       >
         <div
-          class="sc-4ambxn-2 sc-4ambxn-3 kKDPTk"
+          class="sc-4ambxn-2 sc-4ambxn-3 ePVKG"
         >
           <div
             class="sc-4ambxn-4 PWHMN"
@@ -28265,10 +28266,10 @@ Object {
         class="sc-14bj30x-1 fYDZXe"
       >
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             0
           </div>
@@ -28278,16 +28279,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             1
           </div>
@@ -28297,16 +28298,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             2
           </div>
@@ -28316,16 +28317,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             3
           </div>
@@ -28335,16 +28336,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             4
           </div>
@@ -28354,16 +28355,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             5
           </div>
@@ -28373,16 +28374,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             6
           </div>
@@ -28392,16 +28393,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             7
           </div>
@@ -28411,16 +28412,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             8
           </div>
@@ -28430,16 +28431,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             9
           </div>
@@ -28449,7 +28450,7 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
@@ -28653,7 +28654,7 @@ Object {
   margin-left: 48px;
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 3fr 3fr;
+  grid-template-columns: 450px 150px auto;
   grid-gap: 36px;
   margin-bottom: 10px;
 }
@@ -28664,7 +28665,7 @@ Object {
   margin-left: 48px;
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 3fr 3fr;
+  grid-template-columns: 450px 150px auto;
   grid-gap: 36px;
   margin-bottom: 10px;
   font-family: 'IBM Plex Sans';
@@ -28675,6 +28676,7 @@ Object {
 .c4 {
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-right: 72px;
 }
 
 <div>
@@ -28968,7 +28970,7 @@ Object {
         class="sc-4ambxn-1 hovMBr"
       >
         <div
-          class="sc-4ambxn-2 sc-4ambxn-3 kKDPTk"
+          class="sc-4ambxn-2 sc-4ambxn-3 ePVKG"
         >
           <div
             class="sc-4ambxn-4 PWHMN"
@@ -28991,10 +28993,10 @@ Object {
         class="sc-14bj30x-1 fYDZXe"
       >
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             0
           </div>
@@ -29004,16 +29006,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             1
           </div>
@@ -29023,16 +29025,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             2
           </div>
@@ -29042,16 +29044,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             3
           </div>
@@ -29061,16 +29063,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             4
           </div>
@@ -29080,16 +29082,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             5
           </div>
@@ -29099,16 +29101,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             6
           </div>
@@ -29118,16 +29120,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             7
           </div>
@@ -29137,16 +29139,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             8
           </div>
@@ -29156,16 +29158,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             9
           </div>
@@ -29175,7 +29177,7 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
@@ -29361,7 +29363,7 @@ Object {
   margin-left: 48px;
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 3fr 3fr;
+  grid-template-columns: 450px 150px auto;
   grid-gap: 36px;
   margin-bottom: 10px;
 }
@@ -29372,7 +29374,7 @@ Object {
   margin-left: 48px;
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 3fr 3fr;
+  grid-template-columns: 450px 150px auto;
   grid-gap: 36px;
   margin-bottom: 10px;
   font-family: 'IBM Plex Sans';
@@ -29383,6 +29385,7 @@ Object {
 .c4 {
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-right: 72px;
 }
 
 <div>
@@ -29676,7 +29679,7 @@ Object {
         class="sc-4ambxn-1 hovMBr"
       >
         <div
-          class="sc-4ambxn-2 sc-4ambxn-3 kKDPTk"
+          class="sc-4ambxn-2 sc-4ambxn-3 ePVKG"
         >
           <div
             class="sc-4ambxn-4 PWHMN"
@@ -29699,10 +29702,10 @@ Object {
         class="sc-14bj30x-1 fYDZXe"
       >
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             0
           </div>
@@ -29712,16 +29715,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             1
           </div>
@@ -29731,16 +29734,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             2
           </div>
@@ -29750,16 +29753,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             3
           </div>
@@ -29769,16 +29772,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             4
           </div>
@@ -29788,16 +29791,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             5
           </div>
@@ -29807,16 +29810,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             6
           </div>
@@ -29826,16 +29829,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             7
           </div>
@@ -29845,16 +29848,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             8
           </div>
@@ -29864,16 +29867,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             9
           </div>
@@ -29883,7 +29886,7 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
@@ -30087,7 +30090,7 @@ Object {
   margin-left: 48px;
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 3fr 3fr;
+  grid-template-columns: 450px 150px auto;
   grid-gap: 36px;
   margin-bottom: 10px;
 }
@@ -30098,7 +30101,7 @@ Object {
   margin-left: 48px;
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 3fr 3fr;
+  grid-template-columns: 450px 150px auto;
   grid-gap: 36px;
   margin-bottom: 10px;
   font-family: 'IBM Plex Sans';
@@ -30109,6 +30112,7 @@ Object {
 .c4 {
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-right: 72px;
 }
 
 <div>
@@ -30402,7 +30406,7 @@ Object {
         class="sc-4ambxn-1 hovMBr"
       >
         <div
-          class="sc-4ambxn-2 sc-4ambxn-3 kKDPTk"
+          class="sc-4ambxn-2 sc-4ambxn-3 ePVKG"
         >
           <div
             class="sc-4ambxn-4 PWHMN"
@@ -30425,10 +30429,10 @@ Object {
         class="sc-14bj30x-1 fYDZXe"
       >
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             0
           </div>
@@ -30438,16 +30442,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             1
           </div>
@@ -30457,16 +30461,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             2
           </div>
@@ -30476,16 +30480,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             3
           </div>
@@ -30495,16 +30499,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             4
           </div>
@@ -30514,16 +30518,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             5
           </div>
@@ -30533,16 +30537,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             6
           </div>
@@ -30552,16 +30556,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             7
           </div>
@@ -30571,16 +30575,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             8
           </div>
@@ -30590,16 +30594,16 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
         </div>
         <div
-          class="sc-4ambxn-2 iAZJBH"
+          class="sc-4ambxn-2 kpFeDj"
         >
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             9
           </div>
@@ -30609,7 +30613,7 @@ Object {
             Feb 7, 2019
           </div>
           <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fDkXPV"
+            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
           >
             ben@unlock-protocol.com
           </div>
