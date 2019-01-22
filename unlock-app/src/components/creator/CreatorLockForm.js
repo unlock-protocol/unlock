@@ -40,6 +40,9 @@ export class CreatorLockForm extends React.Component {
     if (props.convert) {
       keyPrice = Web3Utils.fromWei(keyPrice, props.keyPriceCurrency)
       expirationDuration = expirationDuration / props.expirationDurationUnit
+      // Unlimited keys is represented as zero, so when we load a lock
+      // that has `maxNumberOfKeys` set to zero, convert it to the
+      // infinity symbol before displaying it.
       if (maxNumberOfKeys === 0) {
         maxNumberOfKeys = INFINITY
       }
