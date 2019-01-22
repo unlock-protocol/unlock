@@ -100,7 +100,7 @@ export const MissingProvider = () => (
     illustration="/static/images/illustrations/wallet.svg"
   >
     <p>
-      It looks like you’re using an incompatible browser or are missig a crypto
+      It looks like you’re using an incompatible browser or are missing a crypto
       wallet. If you’re using Chrome or Firefox you can install{' '}
       <a href="https://metamask.io/">Metamask</a>.
     </p>

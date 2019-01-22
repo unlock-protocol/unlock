@@ -517,7 +517,7 @@ exports[`withConfig High Order Component when the current network is not in the 
           Wallet missing
         </h1>
         <p>
-          It looks like you’re using an incompatible browser or are missig a crypto wallet. If you’re using Chrome or Firefox you can install
+          It looks like you’re using an incompatible browser or are missing a crypto wallet. If you’re using Chrome or Firefox you can install
            
           <a
             href="https://metamask.io/"
