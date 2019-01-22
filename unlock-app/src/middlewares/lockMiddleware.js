@@ -33,6 +33,9 @@ import {
 } from '../actions/keysPages'
 import { signatureError } from '../actions/signature'
 import { storeLockCreation, storeLockUpdate } from '../actions/storage'
+import configure from '../config'
+
+const config = configure()
 
 // This middleware listen to redux events and invokes the services APIs.
 // It also listen to events from web3Service and dispatches corresponding actions
@@ -162,17 +165,24 @@ export default function lockMiddleware({ getState, dispatch }) {
         web3Service.connect({ provider: action.provider })
       } else if (action.type === CREATE_LOCK) {
         web3Service.createLock(action.lock, getState().account)
-        generateJWTToken(web3Service, getState().account.address, {
-          lock: action.lock,
-        })
-          .then(token => {
-            dispatch(
-              storeLockCreation(getState().account.address, action.lock, token)
-            )
+
+        if (config.services.storage) {
+          generateJWTToken(web3Service, getState().account.address, {
+            lock: action.lock,
           })
-          .catch(error => {
-            dispatch(signatureError(error))
-          })
+            .then(token => {
+              dispatch(
+                storeLockCreation(
+                  getState().account.address,
+                  action.lock,
+                  token
+                )
+              )
+            })
+            .catch(error => {
+              dispatch(signatureError(error))
+            })
+        }
       } else if (action.type === PURCHASE_KEY) {
         const account = getState().account
         const lock = Object.values(getState().locks).find(
@@ -200,21 +210,23 @@ export default function lockMiddleware({ getState, dispatch }) {
           )
         }
       } else if (action.type === LOCK_DEPLOYED) {
-        if (action.lock && action.lock.address && action.address) {
-          generateJWTToken(web3Service, getState().account.address, {
-            currentAddress: action.lock.address,
-            address: action.address,
-            owner: getState().account.address,
-          }).then(token => {
-            dispatch(
-              storeLockUpdate(
-                getState().account.address,
-                action.lock.address,
-                token,
-                action.address
+        if (config.services.storage) {
+          if (action.lock && action.lock.address && action.address) {
+            generateJWTToken(web3Service, getState().account.address, {
+              currentAddress: action.lock.address,
+              address: action.address,
+              owner: getState().account.address,
+            }).then(token => {
+              dispatch(
+                storeLockUpdate(
+                  getState().account.address,
+                  action.lock.address,
+                  token,
+                  action.address
+                )
               )
-            )
-          })
+            })
+          }
         }
       }
 
