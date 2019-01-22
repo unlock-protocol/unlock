@@ -18,7 +18,7 @@ describe('Form field validators', () => {
       )
     ).toBeTruthy()
 
-    expect(validators.isPositiveInteger('0')).toBeFalsy()
+    expect(validators.isPositiveInteger('0')).toBeTruthy()
     expect(validators.isPositiveInteger('-1')).toBeFalsy()
     expect(validators.isPositiveInteger('1.1')).toBeFalsy()
     expect(validators.isPositiveInteger('av')).toBeFalsy()
@@ -29,7 +29,7 @@ describe('Form field validators', () => {
     expect(validators.isPositiveNumber('1.3')).toBeTruthy()
     expect(validators.isPositiveNumber('0.002')).toBeTruthy()
 
-    expect(validators.isPositiveNumber('0')).toBeFalsy()
+    expect(validators.isPositiveNumber('0')).toBeTruthy()
     expect(validators.isPositiveNumber('-1')).toBeFalsy()
     expect(validators.isPositiveNumber('av')).toBeFalsy()
     expect(validators.isPositiveNumber(null)).toBeFalsy()
