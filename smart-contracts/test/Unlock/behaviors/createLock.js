@@ -52,7 +52,7 @@ exports.shouldCreateLock = function (accounts) {
             })
           assert.fail('Expected revert')
         } catch (error) {
-          assert.equal(error.message, 'VM Exception while processing transaction: revert Expiration duration must be less than 100 years')
+          assert.equal(error.message, 'VM Exception while processing transaction: revert Expiration duration exceeds 100 years')
         }
       })
     })

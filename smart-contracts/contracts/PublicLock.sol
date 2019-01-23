@@ -156,7 +156,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint _maxNumberOfKeys
   )
   public {
-    require(_expirationDuration < 100 * 365 * 24 * 60 * 60, "Expiration duration must be less than 100 years");
+    require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, "Expiration duration exceeds 100 years");
     unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract.
     Ownable.initialize(_owner);
     ERC165.initialize();
