@@ -6,6 +6,7 @@ import "./interfaces/ILockCore.sol";
 import "openzeppelin-eth/contracts/ownership/Ownable.sol";
 import "./interfaces/IERC721Receiver.sol";
 import "openzeppelin-eth/contracts/introspection/ERC165.sol";
+import "openzeppelin-eth/contracts/math/SafeMath.sol";
 
 /**
  * TODO: consider error codes rather than strings
@@ -20,6 +21,8 @@ import "openzeppelin-eth/contracts/introspection/ERC165.sol";
  * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
  */
 contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
+
+  using SafeMath for uint;
 
   // The struct for a key
   struct Key {
@@ -233,8 +236,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
       keyByOwner[_recipient].expirationTimestamp = keyByOwner[_from].expirationTimestamp;
     } else {
       // The recipient has a non expired key. We just add them the corresponding remaining time
+      // SafeSub is not required since the if confirms `previousExpiration - now` cannot underflow
       keyByOwner[_recipient].expirationTimestamp =
-        keyByOwner[_from].expirationTimestamp + previousExpiration - now;
+        keyByOwner[_from].expirationTimestamp.add(previousExpiration - now);
     }
     // Overwite data in all cases
     keyByOwner[_recipient].data = keyByOwner[_from].data;
@@ -532,6 +536,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     if (discount > inMemoryKeyPrice) {
       netPrice = 0;
     } else {
+      // SafeSub not required as the if statement already confirmed `inMemoryKeyPrice - discount` cannot underflow
       netPrice = inMemoryKeyPrice - discount;
     }
 
@@ -554,10 +559,11 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
         // support this will change to a sequenceId assigned at purchase.
         keyByOwner[_recipient].tokenId = uint(_recipient);
       }
+      // SafeAdd is not required here since expirationDuration is capped to a tiny value (relative to the size of a uint)
       keyByOwner[_recipient].expirationTimestamp = now + expirationDuration;
     } else {
       // This is an existing owner trying to extend their key
-      keyByOwner[_recipient].expirationTimestamp = previousExpiration + expirationDuration;
+      keyByOwner[_recipient].expirationTimestamp = previousExpiration.add(expirationDuration);
     }
     // Overwite data in all cases
     keyByOwner[_recipient].data = _data;
