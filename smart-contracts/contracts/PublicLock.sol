@@ -559,7 +559,8 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
         // support this will change to a sequenceId assigned at purchase.
         keyByOwner[_recipient].tokenId = uint(_recipient);
       }
-      // SafeAdd is not required here since expirationDuration is capped to a tiny value (relative to the size of a uint)
+      // SafeAdd is not required here since expirationDuration is capped to a tiny value 
+      // (relative to the size of a uint)
       keyByOwner[_recipient].expirationTimestamp = now + expirationDuration;
     } else {
       // This is an existing owner trying to extend their key
