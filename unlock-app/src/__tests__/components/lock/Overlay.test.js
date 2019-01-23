@@ -1,6 +1,6 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
-import { connect, Provider } from 'react-redux'
+import { Provider } from 'react-redux'
 
 import { SHOW_MODAL, HIDE_MODAL } from '../../../actions/modal'
 
