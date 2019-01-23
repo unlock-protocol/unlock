@@ -77,9 +77,15 @@ export function secondsAsDays(seconds) {
  * @returns {string}
  */
 export function expirationAsDate(timestamp) {
-  if (!timestamp) return 'Never'
-  if (timestamp - new Date().getTime() / 1000 < 86400)
-    return durationsAsTextFromSeconds(timestamp)
+  if (!timestamp) {
+    return 'Never'
+  }
+
+  // If it is less than a day from now we provide more granular details, from now
+  if (timestamp - new Date().getTime() / 1000 < 86400) {
+    const secondsFromNow = timestamp - Math.floor(new Date().getTime() / 1000)
+    return durationsAsTextFromSeconds(secondsFromNow)
+  }
 
   let expirationDate = new Date(0)
   expirationDate.setUTCSeconds(timestamp)
