@@ -6130,7 +6130,7 @@ Object {
   text-align: center;
 }
 
-.c25 {
+.c26 {
   margin-top: 24px;
   margin-bottom: 24px;
   display: grid;
@@ -6143,7 +6143,7 @@ Object {
   align-items: center;
 }
 
-.c26 {
+.c27 {
   justify-self: end;
   font-size: 12px;
   font-weight: 200;
@@ -6180,27 +6180,36 @@ Object {
   font-family: 'IBM Plex Sans',sans-serif;
   border-radius: 4px;
   cursor: pointer;
+  max-width: 400px;
+  padding: 20px 50px;
 }
 
 .c14 {
-  width: 568px;
-  height: 72px;
-  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
-  border-radius: 4px;
   display: grid;
-  grid-template-columns: 400px 120px;
+  justify-items: center;
   grid-gap: 16px;
-  padding: 16px;
-  font-family: IBM Plex Mono;
-  font-size: 14px;
-  margin: auto;
+  margin-bottom: 50px;
 }
 
-.c23 {
+.c16 {
+  font-size: 12px;
+  font-weight: 200;
+  font-family: 'IBM Plex Mono','Courier New',Serif;
+  color: var(--darkgrey);
+  display: grid;
+  grid-row: 2;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.c24 {
   margin-top: 30px;
 }
 
-.c23:before {
+.c24:before {
   display: block;
   content: '';
   width: 87px;
@@ -6216,19 +6225,19 @@ Object {
   margin-top: 0px;
 }
 
-.c24 {
+.c25 {
   font-size: 32px;
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
 }
 
-.c18 {
+.c19 {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 500;
   font-size: 24px;
 }
 
-.c16 {
+.c17 {
   display: grid;
   grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
   grid-gap: 24px;
@@ -6248,55 +6257,55 @@ Object {
   text-align: center;
 }
 
-.c17 {
+.c18 {
   display: grid;
   justify-items: center;
 }
 
-.c19 {
+.c20 {
   border-style: none;
   background: url(/static/images/pages/png/simple.png) no-repeat center/contain;
   width: 280px;
   height: 200px;
 }
 
-.c19:hover {
+.c20:hover {
   background: url(/static/images/pages/png/simple-hover.png) no-repeat center/contain;
 }
 
-.c19:after {
+.c20:after {
   content: url(/static/images/pages/png/simple-hover.png);
   display: none;
 }
 
-.c21 {
+.c22 {
   border-style: none;
   background: url(/static/images/pages/png/code.png) no-repeat center/contain;
   width: 280px;
   height: 200px;
 }
 
-.c21:hover {
+.c22:hover {
   background: url(/static/images/pages/png/code-hover.png) no-repeat center/contain;
 }
 
-.c21:after {
+.c22:after {
   content: url(/static/images/pages/png/code-hover.png);
   display: none;
 }
 
-.c22 {
+.c23 {
   border-style: none;
   background: url(/static/images/pages/png/more.png) no-repeat center/contain;
   width: 280px;
   height: 200px;
 }
 
-.c22:hover {
+.c23:hover {
   background: url(/static/images/pages/png/more-hover.png) no-repeat center/contain;
 }
 
-.c22:after {
+.c23:after {
   content: url(/static/images/pages/png/more-hover.png);
   display: none;
 }
@@ -6309,7 +6318,7 @@ Object {
   font-weight: 700;
 }
 
-.c20 {
+.c21 {
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
   font-size: 20px;
@@ -6371,7 +6380,7 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c27 {
+  .c28 {
     display: none;
   }
 }
@@ -6552,86 +6561,77 @@ Object {
           <div
             class="c14"
           >
-            <div>
-              To access the dashboard you need to agree to our 
-              <a
-                href="/terms"
-              >
-                Terms of Service
-              </a>
-                and 
-              <a
-                href="/privacy"
-              >
-                Privacy Policy
-              </a>
-            </div>
             <button
               class="c15"
             >
-              I Agree
+              Go to Your Dashboard
             </button>
+            <small
+              class="c16"
+            >
+              Requires a browser with an Ethereum wallet
+            </small>
           </div>
           <div
-            class="3 c16"
+            class="3 c17"
           >
             <div
-              class="4 c17"
+              class="4 c18"
             >
               <h2
-                class="c18"
+                class="c19"
               >
                 No More Middlemen
               </h2>
               <div
-                class="c19"
+                class="c20"
               />
               <p
-                class="c20"
+                class="c21"
               >
                 There are no middlemen, no fees and no gatekeeper who could shut you down or control your distribution.
               </p>
             </div>
             <div
-              class="4 c17"
+              class="4 c18"
             >
               <h2
-                class="c18"
+                class="c19"
               >
                 Simple Integration
-              </h2>
-              <div
-                class="c21"
-              />
-              <p
-                class="c20"
-              >
-                Unlock provides a simple snippet of code to integrate easily with your website, as well as with several other integration tools...
-              </p>
-            </div>
-            <div
-              class="4 c17"
-            >
-              <h2
-                class="c18"
-              >
-                And Much More
               </h2>
               <div
                 class="c22"
               />
               <p
-                class="c20"
+                class="c21"
+              >
+                Unlock provides a simple snippet of code to integrate easily with your website, as well as with several other integration tools...
+              </p>
+            </div>
+            <div
+              class="4 c18"
+            >
+              <h2
+                class="c19"
+              >
+                And Much More
+              </h2>
+              <div
+                class="c23"
+              />
+              <p
+                class="c21"
               >
                 For example, Unlock comes with a points system to reward your most loyal fans when they share your content with their friends!
               </p>
             </div>
           </div>
           <section
-            class="c23"
+            class="c24"
           >
             <div
-              class="c24"
+              class="c25"
             >
               Check out our open source code on
                
@@ -6658,7 +6658,7 @@ Object {
             </div>
           </section>
           <footer
-            class="c25"
+            class="c26"
           >
             <a
               class="c6 c7"
@@ -6748,14 +6748,14 @@ Object {
               </small>
             </a>
             <span
-              class="c26"
+              class="c27"
             >
               Made with passion in Brooklyn, NY
             </span>
           </footer>
         </div>
         <div
-          class="c27"
+          class="c28"
         />
       </div>
     </div>
@@ -6934,27 +6934,18 @@ Object {
           Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.
         </p>
         <div
-          class="sc-9upljg-1 ilLeiq"
+          class="sc-9upljg-3 kjuFdI"
         >
-          <div>
-            To access the dashboard you need to agree to our 
-            <a
-              href="/terms"
-            >
-              Terms of Service
-            </a>
-              and 
-            <a
-              href="/privacy"
-            >
-              Privacy Policy
-            </a>
-          </div>
           <button
-            class="sc-1olgoav-5 dyUXgA"
+            class="sc-1olgoav-5 sc-9upljg-0 jERqoW"
           >
-            I Agree
+            Go to Your Dashboard
           </button>
+          <small
+            class="sc-9upljg-4 jmRvSo"
+          >
+            Requires a browser with an Ethereum wallet
+          </small>
         </div>
         <div
           class="sc-1mz6j63-13 gTdcXj"
@@ -30924,29 +30915,22 @@ Object {
   font-family: 'IBM Plex Sans',sans-serif;
   border-radius: 4px;
   cursor: pointer;
-  max-width: 400px;
-  padding: 20px 50px;
+  width: 100%;
+  height: 100%;
 }
 
 .c0 {
+  max-width: 540px;
+  min-height: 72px;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  border-radius: 4px;
   display: grid;
-  justify-items: center;
+  grid-template-columns: 3fr 1fr;
   grid-gap: 16px;
-  margin-bottom: 50px;
-}
-
-.c2 {
-  font-size: 12px;
-  font-weight: 200;
-  font-family: 'IBM Plex Mono','Courier New',Serif;
-  color: var(--darkgrey);
-  display: grid;
-  grid-row: 2;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
+  padding: 16px;
+  font-family: IBM Plex Mono;
+  font-size: 14px;
+  margin: auto;
 }
 
 <div>
@@ -30957,20 +30941,29 @@ Object {
       <div
         class="c0"
       >
+        <div>
+          To access the dashboard you need to agree to our 
+          <a
+            href="/terms"
+          >
+            Terms of Service
+          </a>
+            and 
+          <a
+            href="/privacy"
+          >
+            Privacy Policy
+          </a>
+        </div>
         <a
           href="/dashboard"
         >
           <button
             class="c1"
           >
-            Go to Your Dashboard
+            I Agree
           </button>
         </a>
-        <small
-          class="c2"
-        >
-          Requires a browser with an Ethereum wallet
-        </small>
       </div>
     </div>
   </body>,
@@ -30980,22 +30973,31 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-9upljg-2 mSTKx"
+      class="sc-9upljg-2 fOpZrU"
     >
+      <div>
+        To access the dashboard you need to agree to our 
+        <a
+          href="/terms"
+        >
+          Terms of Service
+        </a>
+          and 
+        <a
+          href="/privacy"
+        >
+          Privacy Policy
+        </a>
+      </div>
       <a
         href="/dashboard"
       >
         <button
-          class="sc-1olgoav-5 sc-9upljg-0 jERqoW"
+          class="sc-1olgoav-5 sc-9upljg-1 bYkGGu"
         >
-          Go to Your Dashboard
+          I Agree
         </button>
       </a>
-      <small
-        class="sc-9upljg-3 eoUtNY"
-      >
-        Requires a browser with an Ethereum wallet
-      </small>
     </div>
   </div>,
   "debug": [Function],
@@ -31056,20 +31058,29 @@ Object {
   font-family: 'IBM Plex Sans',sans-serif;
   border-radius: 4px;
   cursor: pointer;
+  max-width: 400px;
+  padding: 20px 50px;
 }
 
 .c0 {
-  width: 568px;
-  height: 72px;
-  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
-  border-radius: 4px;
   display: grid;
-  grid-template-columns: 400px 120px;
+  justify-items: center;
   grid-gap: 16px;
-  padding: 16px;
-  font-family: IBM Plex Mono;
-  font-size: 14px;
-  margin: auto;
+  margin-bottom: 50px;
+}
+
+.c2 {
+  font-size: 12px;
+  font-weight: 200;
+  font-family: 'IBM Plex Mono','Courier New',Serif;
+  color: var(--darkgrey);
+  display: grid;
+  grid-row: 2;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
 }
 
 <div>
@@ -31080,25 +31091,16 @@ Object {
       <div
         class="c0"
       >
-        <div>
-          To access the dashboard you need to agree to our 
-          <a
-            href="/terms"
-          >
-            Terms of Service
-          </a>
-            and 
-          <a
-            href="/privacy"
-          >
-            Privacy Policy
-          </a>
-        </div>
         <button
           class="c1"
         >
-          I Agree
+          Go to Your Dashboard
         </button>
+        <small
+          class="c2"
+        >
+          Requires a browser with an Ethereum wallet
+        </small>
       </div>
     </div>
   </body>,
@@ -31108,27 +31110,18 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-9upljg-1 ilLeiq"
+      class="sc-9upljg-3 kjuFdI"
     >
-      <div>
-        To access the dashboard you need to agree to our 
-        <a
-          href="/terms"
-        >
-          Terms of Service
-        </a>
-          and 
-        <a
-          href="/privacy"
-        >
-          Privacy Policy
-        </a>
-      </div>
       <button
-        class="sc-1olgoav-5 dyUXgA"
+        class="sc-1olgoav-5 sc-9upljg-0 jERqoW"
       >
-        I Agree
+        Go to Your Dashboard
       </button>
+      <small
+        class="sc-9upljg-4 jmRvSo"
+      >
+        Requires a browser with an Ethereum wallet
+      </small>
     </div>
   </div>,
   "debug": [Function],
@@ -39809,6 +39802,7 @@ Object {
   left: 0;
   right: 0;
   bottom: 0;
+  background: linear-gradient( rgba(255,255,255,0) 18%,rgba(255,255,255,0) 29%,var(--offwhite) 48% );
 }
 
 .c1 {
@@ -39820,8 +39814,6 @@ Object {
   right: 0;
   bottom: 0;
   background-color: var(--offwhite);
-  border: solid 1px var(--lightgrey);
-  border-top: 2px solid var(--darkgreen);
   justify-items: center;
   padding: 32px;
   padding-bottom: 100px;
@@ -40028,10 +40020,10 @@ Object {
         </li>
       </ul>
       <div
-        class="vaayz9-0 yWgRi"
+        class="vaayz9-0 bexHxF"
       >
         <div
-          class="vaayz9-1 djaIGN"
+          class="vaayz9-1 hjUKBy"
         >
           <h1
             class="vaayz9-2 fLUsTY"
