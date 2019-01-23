@@ -32,7 +32,7 @@ import "./PublicLock.sol";
 import "./interfaces/IUnlock.sol";
 
 
-/// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”. 
+/// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
 contract Unlock is IUnlock, Initializable, Ownable {
 
@@ -91,6 +91,8 @@ contract Unlock is IUnlock, Initializable, Ownable {
     public
     returns (ILockCore lock)
   {
+    // enforce the maximum _expirationDuration
+    require(_expirationDuration <= 3153600000, "Expiration Duration exceeds 100 years");
 
     // create lock
     PublicLock newPublicLock = new PublicLock(
