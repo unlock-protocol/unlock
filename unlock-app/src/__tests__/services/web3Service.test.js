@@ -1306,14 +1306,17 @@ describe('Web3Service', () => {
         }
         web3Service.emitContractEvent(transaction, 'NewLock', params)
       })
+
       it('should handle Transfer and emit key.save', done => {
         expect.assertions(1)
         const transaction = {
           hash: '0x123',
           lock: '0x456',
-          owner: '0x789',
         }
-        const params = {}
+
+        const params = {
+          _to: '0x789',
+        }
 
         web3Service.once('key.saved', keyId => {
           expect(keyId).toBe('0x456-0x789')

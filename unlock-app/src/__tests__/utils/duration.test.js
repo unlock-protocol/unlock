@@ -65,9 +65,21 @@ describe('durations', () => {
     expect(secondsAsDays(172000)).toEqual('2')
   })
 
-  it('should return the correct timestamp', () => {
-    let dateToTest = 'Jul 7, 2022'
-    let timestamp = Math.round(new Date(dateToTest).getTime() / 1000)
-    expect(expirationAsDate(timestamp)).toEqual(dateToTest)
+  describe('expirationAsDate', () => {
+    it('should return the correct timestamp if the date is far enough in the future', () => {
+      const dateToTest = 'Jul 7, 2022'
+      const timestamp = Math.round(new Date(dateToTest).getTime() / 1000)
+      expect(expirationAsDate(timestamp)).toEqual(dateToTest)
+    })
+
+    it('should return the elapsed time until the expiration if it is less than 1 day', () => {
+      const dateToTest = '12 hours, 35 minutes and 12 seconds'
+      const timestamp =
+        parseInt(new Date().getTime() / 1000) +
+        12 * 60 * 60 + // 12 hours
+        35 * 60 + // 35 minutes
+        12 // 12 seconds
+      expect(expirationAsDate(timestamp)).toEqual(dateToTest)
+    })
   })
 })

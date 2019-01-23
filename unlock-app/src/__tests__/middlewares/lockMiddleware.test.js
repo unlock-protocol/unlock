@@ -241,7 +241,7 @@ describe('Lock middleware', () => {
         state.account.address
       )
       expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
-        state.account.address
+        state.account
       )
     })
   })
