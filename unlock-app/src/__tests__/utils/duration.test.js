@@ -66,6 +66,11 @@ describe('durations', () => {
   })
 
   describe('expirationAsDate', () => {
+    it('should return expired for keys previously expired', () => {
+      const timestamp = Math.round(new Date().getTime() / 1000) - 60 * 60 // 1 hour ago
+      expect(expirationAsDate(timestamp)).toEqual('Expired')
+    })
+
     it('should return the correct timestamp if the date is far enough in the future', () => {
       const dateToTest = 'Jul 7, 2022'
       const timestamp = Math.round(new Date(dateToTest).getTime() / 1000)
