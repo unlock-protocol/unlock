@@ -5,13 +5,13 @@ import 'jest-dom/extend-expect'
 import { HomepageButton } from '../../../components/interface/buttons/homepage/HomepageButton'
 
 describe('HomepageButton', () => {
-  it('should display the dashboard button once terms are accepted', () => {
+  it('should display the terms once the dashboard button has been pressed', () => {
     let wrapper = rtl.render(<HomepageButton />)
 
-    let button = wrapper.getByText('I Agree')
+    let button = wrapper.getByText('Go to Your Dashboard')
     rtl.fireEvent.click(button)
 
-    let dashboardButton = wrapper.getByText('Go to Your Dashboard')
+    let dashboardButton = wrapper.getByText('I Agree')
 
     expect(dashboardButton).not.toBe(null)
   })

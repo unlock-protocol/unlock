@@ -3,7 +3,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 
-import BrowserOnly from '../../../helpers/BrowserOnly'
 import { ActionButton } from '../../../creator/CreatorLocks'
 
 export class HomepageButton extends React.Component {
@@ -28,14 +27,12 @@ export class HomepageButton extends React.Component {
 
     return (
       <>
-        {acceptedTerms === true && (
+        {acceptedTerms !== true && (
           <Action>
             {env !== 'prod' && (
-              <Link href="/dashboard">
-                <a>
-                  <DashboardButton>Go to Your Dashboard</DashboardButton>
-                </a>
-              </Link>
+              <DashboardButton onClick={this.acceptTerms}>
+                Go to Your Dashboard
+              </DashboardButton>
             )}
 
             {env === 'prod' && (
@@ -47,7 +44,7 @@ export class HomepageButton extends React.Component {
             </ButtonLabel>
           </Action>
         )}
-        {acceptedTerms !== true && (
+        {acceptedTerms === true && (
           <TermsBox>
             <div>
               To access the dashboard you need to agree to our&nbsp;
@@ -59,9 +56,11 @@ export class HomepageButton extends React.Component {
                 <a>Privacy Policy</a>
               </Link>
             </div>
-            <BrowserOnly>
-              <ActionButton onClick={this.acceptTerms}>I Agree</ActionButton>
-            </BrowserOnly>
+            <Link href="/dashboard">
+              <a>
+                <TermsButton>I Agree</TermsButton>
+              </a>
+            </Link>
           </TermsBox>
         )}
       </>
@@ -74,13 +73,18 @@ const DashboardButton = styled(ActionButton)`
   padding: 20px 50px;
 `
 
+const TermsButton = styled(ActionButton)`
+  width: 100%;
+  height: 100%;
+`
+
 const TermsBox = styled.div`
-  width: 568px;
-  height: 72px;
+  max-width: 540px;
+  min-height: 72px;
   box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.08);
   border-radius: 4px;
   display: grid;
-  grid-template-columns: 400px 120px;
+  grid-template-columns: 3fr 1fr;
   grid-gap: 16px;
   padding: 16px;
   font-family: IBM Plex Mono;
