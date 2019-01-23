@@ -3833,11 +3833,25 @@ Object {
   display: none;
 }
 
+.c0 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
 .c0:hover .c4 {
   display: block;
 }
 
 .c0:hover .c3 {
+  display: none;
+}
+
+.c0:hover ~ .c9 {
+  display: grid;
+}
+
+.c0:hover ~ .c10 {
   display: none;
 }
 
@@ -3881,7 +3895,7 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="nk4431-2 ewyzVv sc-850ddk-0 doxKED"
+      class="nk4431-2 kIuyEq sc-850ddk-0 doxKED"
     >
       <svg
         class="nk4431-0 jIPREr"
@@ -3963,97 +3977,13 @@ Object {
   justify-items: stretch;
   margin: 0px;
   padding: 0px;
-  width: 200px;
-  background-color: var(--white);
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  border-radius: 4px;
-  height: 152px;
+  width: 200px;
+  height: 180px;
   grid-gap: 0px;
-  border: 1px solid transparent;
   background-clip: padding-box;
-  grid-template-rows: 40px 112px;
+  grid-template-rows: 40px 140px;
   opacity: 1;
-}
-
-.c2 {
-  display: grid;
-  height: 120px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  justify-items: center;
-  text-align: center;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  padding: 0px;
-  grid-template-rows: 40px 30px;
-  grid-gap: 8px;
-  padding-top: 16px;
-}
-
-.c5 {
-  white-space: nowrap;
-  font-weight: bold;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c6 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c3 {
-  display: grid;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  text-align: center;
-  color: var(--dimgrey);
-  font-size: 15px;
-  font-weight: 300;
-  padding: 0px;
-}
-
-.c4 {
-  display: grid;
-  font-size: 15px;
-  grid-auto-columns: min-content;
-  grid-auto-flow: column;
-  color: var(--grey);
-  font-weight: 300;
-  grid-gap: 4px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  justify-items: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
 }
 
 .c1 {
@@ -4070,10 +4000,116 @@ Object {
   line-height: 20px;
   height: 40px;
   border-radius: 4px 4px 0px 0px;
-  text-transform: capitalize;
   padding: 0px;
-  background-color: var(--green);
-  color: var(--offwhite);
+  color: var(--grey);
+}
+
+.c4 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c5 {
+  white-space: nowrap;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c6 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  color: var(--dimgrey);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 0px;
+}
+
+.c3 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c2 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 13px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--yellow);
+  padding-top: 0;
+}
+
+.c7 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--yellow);
+  color: var(--white);
+  margin-top: 13px;
 }
 
 <div>
@@ -4087,7 +4123,7 @@ Object {
         <header
           class="c1"
         >
-          Payment Received
+          Monthly
         </header>
         <div
           class="c2"
@@ -4095,28 +4131,33 @@ Object {
           <div
             class="c3"
           >
-            Waiting for confirmation.
-            <br />
-            3
-            /
-            6
-          </div>
-          <div
-            class="c4"
-          >
             <div
-              class="c5"
+              class="c4"
             >
               1.20
                ETH
             </div>
             <div
-              class="c6"
+              class="c5"
             >
               $
               235.80
             </div>
           </div>
+          <div
+            class="c6"
+          >
+            Waiting for confirmations
+            <br />
+            3
+            /
+            6
+          </div>
+          <footer
+            class="c7"
+          >
+            Payment Pending
+          </footer>
         </div>
       </li>
     </div>
@@ -4127,41 +4168,46 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1ws9jnj-0 dJqYaa"
+      class="sc-1ws9jnj-0 hmrsSl"
     >
       <header
-        class="sc-1ws9jnj-1 sc-3bf6nh-0 ituboj"
+        class="sc-1ws9jnj-1 kgNRxZ"
       >
-        Payment Received
+        Monthly
       </header>
       <div
-        class="sc-1ws9jnj-2 gOgmYt"
+        class="sc-1ws9jnj-3 sc-3bf6nh-0 fpLrgI"
       >
         <div
-          class="sc-1ws9jnj-4 GigPs"
-        >
-          Waiting for confirmation.
-          <br />
-          3
-          /
-          6
-        </div>
-        <div
-          class="sc-1ws9jnj-5 kMsDNN"
+          class="sc-1ws9jnj-6 lnUjGf"
         >
           <div
-            class="sc-1ws9jnj-3 cLmyvU"
+            class="sc-1ws9jnj-4 fAXDZN"
           >
             1.20
              ETH
           </div>
           <div
-            class="sc-1ws9jnj-3 DzGdM"
+            class="sc-1ws9jnj-4 gjtfkI"
           >
             $
             235.80
           </div>
         </div>
+        <div
+          class="sc-1ws9jnj-5 gHCGqL"
+        >
+          Waiting for confirmations
+          <br />
+          3
+          /
+          6
+        </div>
+        <footer
+          class="sc-1ws9jnj-2 sc-3bf6nh-1 hEiEWm"
+        >
+          Payment Pending
+        </footer>
       </div>
     </li>
   </div>,
@@ -30589,44 +30635,7 @@ exports[`Storyshots Lock disabled - another lock has a pending key 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c2 {
-  display: grid;
-  height: 120px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  justify-items: center;
-  text-align: center;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  padding: 0px;
-  grid-template-rows: 40px 30px;
-  grid-gap: 8px;
-  padding-top: 16px;
-}
-
-.c0 {
-  display: grid;
-  justify-items: stretch;
-  margin: 0px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--white);
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  border-radius: 4px;
-  height: 152px;
-  grid-gap: 0px;
-  border: 1px solid transparent;
-  background-clip: padding-box;
-  grid-template-rows: 40px 112px;
-  opacity: 0.5;
-  cursor: pointer;
-}
-
-.c1 {
+    .c1 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -30640,10 +30649,74 @@ Object {
   line-height: 20px;
   height: 40px;
   border-radius: 4px 4px 0px 0px;
-  text-transform: capitalize;
   padding: 0px;
-  background-color: var(--lightgrey);
   color: var(--grey);
+}
+
+.c0 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.c8 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+}
+
+.c2 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 13px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+}
+
+.c2:hover {
+  border: 1px solid var(--activegreen);
+}
+
+.c2:hover .c7 {
+  background-color: var(--activegreen);
 }
 
 .c3 {
@@ -30659,10 +30732,14 @@ Object {
   color: var(--grey);
 }
 
-.c5 {
+.c6 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
+}
+
+.c5 {
+  color: var(--lightgrey);
 }
 
 <div>
@@ -30696,15 +30773,24 @@ Object {
                 $
                 235.80
               </span>
-               | 
               <span
                 class="c5"
+              >
+                 | 
+              </span>
+              <span
+                class="c6"
               >
                 <span>
                   30 days
                 </span>
               </span>
             </div>
+            <footer
+              class="c7 c8"
+            >
+              Purchase
+            </footer>
           </div>
         </div>
       </li>
@@ -30716,40 +30802,49 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1ws9jnj-0 pehlmj-0 iXUuqe"
+      class="sc-1ws9jnj-0 yqqxp4-0 gTmtWU"
       disabled=""
     >
       <header
-        class="sc-1ws9jnj-1 pehlmj-1 dNxKyp"
+        class="sc-1ws9jnj-1 kgNRxZ"
       >
         Monthly
       </header>
       <div>
         <div
-          class="sc-1ws9jnj-2 gOgmYt"
+          class="sc-1ws9jnj-3 yqqxp4-2 dZRtse"
         >
           <div
-            class="pehlmj-2 eKLwob"
+            class="yqqxp4-3 kxjMda"
           >
             1.20
              Eth
           </div>
           <div>
             <span
-              class="pehlmj-3 cblYxB"
+              class="yqqxp4-4 fcTWoc"
             >
               $
               235.80
             </span>
-             | 
             <span
-              class="pehlmj-3 pehlmj-4 guCTqX"
+              class="yqqxp4-6 gEUJdZ"
+            >
+               | 
+            </span>
+            <span
+              class="yqqxp4-4 yqqxp4-5 djpTSh"
             >
               <span>
                 30 days
               </span>
             </span>
           </div>
+          <footer
+            class="sc-1ws9jnj-2 yqqxp4-1 ghSrYu"
+          >
+            Purchase
+          </footer>
         </div>
       </div>
     </li>
@@ -30804,48 +30899,7 @@ exports[`Storyshots Lock with a balance 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c2 {
-  display: grid;
-  height: 120px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  justify-items: center;
-  text-align: center;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  padding: 0px;
-  grid-template-rows: 40px 30px;
-  grid-gap: 8px;
-  padding-top: 16px;
-}
-
-.c0 {
-  display: grid;
-  justify-items: stretch;
-  margin: 0px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--white);
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  border-radius: 4px;
-  height: 152px;
-  grid-gap: 0px;
-  border: 1px solid transparent;
-  background-clip: padding-box;
-  grid-template-rows: 40px 112px;
-  opacity: 1;
-  cursor: pointer;
-}
-
-.c0:hover {
-  border: 1px solid var(--grey);
-}
-
-.c1 {
+    .c1 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -30859,10 +30913,74 @@ Object {
   line-height: 20px;
   height: 40px;
   border-radius: 4px 4px 0px 0px;
-  text-transform: capitalize;
   padding: 0px;
-  background-color: var(--lightgrey);
   color: var(--grey);
+}
+
+.c0 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.c8 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+}
+
+.c2 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 13px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+}
+
+.c2:hover {
+  border: 1px solid var(--activegreen);
+}
+
+.c2:hover .c7 {
+  background-color: var(--activegreen);
 }
 
 .c3 {
@@ -30878,10 +30996,14 @@ Object {
   color: var(--grey);
 }
 
-.c5 {
+.c6 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
+}
+
+.c5 {
+  color: var(--lightgrey);
 }
 
 <div>
@@ -30914,15 +31036,24 @@ Object {
                 $
                 235.80
               </span>
-               | 
               <span
                 class="c5"
+              >
+                 | 
+              </span>
+              <span
+                class="c6"
               >
                 <span>
                    - 
                 </span>
               </span>
             </div>
+            <footer
+              class="c7 c8"
+            >
+              Purchase
+            </footer>
           </div>
         </div>
       </li>
@@ -30934,39 +31065,48 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1ws9jnj-0 pehlmj-0 kslpyx"
+      class="sc-1ws9jnj-0 yqqxp4-0 jbcRkc"
     >
       <header
-        class="sc-1ws9jnj-1 pehlmj-1 dNxKyp"
+        class="sc-1ws9jnj-1 kgNRxZ"
       >
         Monthly
       </header>
       <div>
         <div
-          class="sc-1ws9jnj-2 gOgmYt"
+          class="sc-1ws9jnj-3 yqqxp4-2 dZRtse"
         >
           <div
-            class="pehlmj-2 eKLwob"
+            class="yqqxp4-3 kxjMda"
           >
             1.20
              Eth
           </div>
           <div>
             <span
-              class="pehlmj-3 cblYxB"
+              class="yqqxp4-4 fcTWoc"
             >
               $
               235.80
             </span>
-             | 
             <span
-              class="pehlmj-3 pehlmj-4 guCTqX"
+              class="yqqxp4-6 gEUJdZ"
+            >
+               | 
+            </span>
+            <span
+              class="yqqxp4-4 yqqxp4-5 djpTSh"
             >
               <span>
                  - 
               </span>
             </span>
           </div>
+          <footer
+            class="sc-1ws9jnj-2 yqqxp4-1 ghSrYu"
+          >
+            Purchase
+          </footer>
         </div>
       </div>
     </li>
@@ -31026,97 +31166,13 @@ Object {
   justify-items: stretch;
   margin: 0px;
   padding: 0px;
-  width: 200px;
-  background-color: var(--white);
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  border-radius: 4px;
-  height: 152px;
+  width: 200px;
+  height: 180px;
   grid-gap: 0px;
-  border: 1px solid transparent;
   background-clip: padding-box;
-  grid-template-rows: 40px 112px;
+  grid-template-rows: 40px 140px;
   opacity: 1;
-}
-
-.c2 {
-  display: grid;
-  height: 120px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  justify-items: center;
-  text-align: center;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  padding: 0px;
-  grid-template-rows: 40px 30px;
-  grid-gap: 8px;
-  padding-top: 16px;
-}
-
-.c5 {
-  white-space: nowrap;
-  font-weight: bold;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c6 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c3 {
-  display: grid;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  text-align: center;
-  color: var(--dimgrey);
-  font-size: 15px;
-  font-weight: 300;
-  padding: 0px;
-}
-
-.c4 {
-  display: grid;
-  font-size: 15px;
-  grid-auto-columns: min-content;
-  grid-auto-flow: column;
-  color: var(--grey);
-  font-weight: 300;
-  grid-gap: 4px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  justify-items: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
 }
 
 .c1 {
@@ -31133,10 +31189,116 @@ Object {
   line-height: 20px;
   height: 40px;
   border-radius: 4px 4px 0px 0px;
-  text-transform: capitalize;
   padding: 0px;
-  background-color: var(--green);
-  color: var(--offwhite);
+  color: var(--grey);
+}
+
+.c4 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c5 {
+  white-space: nowrap;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c6 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  color: var(--dimgrey);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 0px;
+}
+
+.c3 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c2 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 13px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--yellow);
+  padding-top: 0;
+}
+
+.c7 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--yellow);
+  color: var(--white);
+  margin-top: 13px;
 }
 
 <div>
@@ -31150,7 +31312,7 @@ Object {
         <header
           class="c1"
         >
-          Payment Received
+          Monthly
         </header>
         <div
           class="c2"
@@ -31158,28 +31320,33 @@ Object {
           <div
             class="c3"
           >
-            Waiting for confirmation.
-            <br />
-            2
-            /
-            12
-          </div>
-          <div
-            class="c4"
-          >
             <div
-              class="c5"
+              class="c4"
             >
               1.20
                ETH
             </div>
             <div
-              class="c6"
+              class="c5"
             >
               $
               235.80
             </div>
           </div>
+          <div
+            class="c6"
+          >
+            Waiting for confirmations
+            <br />
+            2
+            /
+            12
+          </div>
+          <footer
+            class="c7"
+          >
+            Payment Pending
+          </footer>
         </div>
       </li>
     </div>
@@ -31190,41 +31357,46 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1ws9jnj-0 dJqYaa"
+      class="sc-1ws9jnj-0 hmrsSl"
     >
       <header
-        class="sc-1ws9jnj-1 sc-3bf6nh-0 ituboj"
+        class="sc-1ws9jnj-1 kgNRxZ"
       >
-        Payment Received
+        Monthly
       </header>
       <div
-        class="sc-1ws9jnj-2 gOgmYt"
+        class="sc-1ws9jnj-3 sc-3bf6nh-0 fpLrgI"
       >
         <div
-          class="sc-1ws9jnj-4 GigPs"
-        >
-          Waiting for confirmation.
-          <br />
-          2
-          /
-          12
-        </div>
-        <div
-          class="sc-1ws9jnj-5 kMsDNN"
+          class="sc-1ws9jnj-6 lnUjGf"
         >
           <div
-            class="sc-1ws9jnj-3 cLmyvU"
+            class="sc-1ws9jnj-4 fAXDZN"
           >
             1.20
              ETH
           </div>
           <div
-            class="sc-1ws9jnj-3 DzGdM"
+            class="sc-1ws9jnj-4 gjtfkI"
           >
             $
             235.80
           </div>
         </div>
+        <div
+          class="sc-1ws9jnj-5 gHCGqL"
+        >
+          Waiting for confirmations
+          <br />
+          2
+          /
+          12
+        </div>
+        <footer
+          class="sc-1ws9jnj-2 sc-3bf6nh-1 hEiEWm"
+        >
+          Payment Pending
+        </footer>
       </div>
     </li>
   </div>,
@@ -31278,7 +31450,7 @@ exports[`Storyshots Lock with a mined key. 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c5 {
+    .c8 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -31290,25 +31462,25 @@ Object {
   line-height: 50px;
 }
 
-.c5 > svg {
+.c8 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c5:hover {
+.c8:hover {
   background-color: var(--green);
 }
 
-.c5:hover > svg {
+.c8:hover > svg {
   fill: white;
 }
 
-.c4:hover .c11 {
+.c7:hover .c16 {
   display: inline-block;
 }
 
-.c12 .c4 {
+.c17 .c7 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -31319,28 +31491,28 @@ Object {
   align-self: center;
 }
 
-.c12 .c4:nth-child(1) {
+.c17 .c7:nth-child(1) {
   pointer-events: none;
 }
 
-.c12 .c4:nth-child(2) {
+.c17 .c7:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c12 .c4 > svg {
+.c17 .c7 > svg {
   fill: var(--grey);
 }
 
-.c12 .c4:hover > svg {
+.c17 .c7:hover > svg {
   fill: var(--grey);
 }
 
-.c13 .c4 {
+.c18 .c7 {
   margin: 24px;
 }
 
-.c13 .c4 small {
+.c18 .c7 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -31354,78 +31526,13 @@ Object {
   justify-items: stretch;
   margin: 0px;
   padding: 0px;
-  width: 200px;
-  background-color: var(--white);
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  border-radius: 4px;
-  height: 152px;
+  width: 200px;
+  height: 180px;
   grid-gap: 0px;
-  border: 1px solid transparent;
   background-clip: padding-box;
-  grid-template-rows: 40px 112px;
+  grid-template-rows: 40px 140px;
   opacity: 1;
-}
-
-.c2 {
-  display: grid;
-  height: 120px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  justify-items: center;
-  text-align: center;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  padding: 0px;
-  grid-template-rows: 40px 30px;
-  grid-gap: 8px;
-  padding-top: 16px;
-}
-
-.c10 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c9 {
-  display: grid;
-  font-size: 15px;
-  grid-auto-columns: min-content;
-  grid-auto-flow: column;
-  color: var(--grey);
-  font-weight: 300;
-  grid-gap: 4px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  justify-items: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-}
-
-.c8 {
-  display: none;
-}
-
-.c3:hover .c7 {
-  display: block;
-}
-
-.c3:hover .c6 {
-  display: none;
 }
 
 .c1 {
@@ -31442,10 +31549,152 @@ Object {
   line-height: 20px;
   height: 40px;
   border-radius: 4px 4px 0px 0px;
-  text-transform: capitalize;
   padding: 0px;
+  color: var(--grey);
+}
+
+.c4 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c5 {
+  white-space: nowrap;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c3 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c15 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
   background-color: var(--green);
-  color: var(--offwhite);
+  color: var(--white);
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+  display: none;
+}
+
+.c13 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+}
+
+.c11 {
+  display: none;
+}
+
+.c6 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c6:hover .c10 {
+  display: block;
+}
+
+.c6:hover .c9 {
+  display: none;
+}
+
+.c6:hover ~ .c14 {
+  display: grid;
+}
+
+.c6:hover ~ .c12 {
+  display: none;
+}
+
+.c2 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 13px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--green);
+  padding-top: 0;
 }
 
 <div>
@@ -31459,16 +31708,32 @@ Object {
         <header
           class="c1"
         >
-          Payment Confirmed
+          Monthly
         </header>
         <div
           class="c2"
         >
+          <div
+            class="c3"
+          >
+            <div
+              class="c4"
+            >
+              1.20
+               ETH
+            </div>
+            <div
+              class="c5"
+            >
+              $
+              235.80
+            </div>
+          </div>
           <a
-            class="c3 c4 c5"
+            class="c6 c7 c8"
           >
             <svg
-              class="c6 "
+              class="c9 "
               viewBox="0 0 24 24"
             >
               <title />
@@ -31479,7 +31744,7 @@ Object {
               />
             </svg>
             <svg
-              class="c7 c8"
+              class="c10 c11"
               viewBox="0 0 24 24"
             >
               <title />
@@ -31491,15 +31756,16 @@ Object {
             </svg>
             
           </a>
-          <div
-            class="c9"
+          <footer
+            class="c12 c13"
           >
-            <div
-              class="c10"
-            >
-              Go to Content
-            </div>
-          </div>
+            Payment Confirmed
+          </footer>
+          <footer
+            class="c14 c15"
+          >
+            Go to Content
+          </footer>
         </div>
       </li>
     </div>
@@ -31510,18 +31776,34 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1ws9jnj-0 dJqYaa"
+      class="sc-1ws9jnj-0 hmrsSl"
     >
       <header
-        class="sc-1ws9jnj-1 bcvo5x-0 fndfpC"
+        class="sc-1ws9jnj-1 kgNRxZ"
       >
-        Payment Confirmed
+        Monthly
       </header>
       <div
-        class="sc-1ws9jnj-2 gOgmYt"
+        class="sc-1ws9jnj-3 bcvo5x-0 dDzPEE"
       >
+        <div
+          class="sc-1ws9jnj-6 lnUjGf"
+        >
+          <div
+            class="sc-1ws9jnj-4 fAXDZN"
+          >
+            1.20
+             ETH
+          </div>
+          <div
+            class="sc-1ws9jnj-4 gjtfkI"
+          >
+            $
+            235.80
+          </div>
+        </div>
         <a
-          class="nk4431-2 ewyzVv sc-850ddk-0 jXTyKj"
+          class="nk4431-2 kIuyEq sc-850ddk-0 jXTyKj"
         >
           <svg
             class="nk4431-0 jIPREr"
@@ -31547,15 +31829,16 @@ Object {
           </svg>
           
         </a>
-        <div
-          class="sc-1ws9jnj-5 kMsDNN"
+        <footer
+          class="sc-1ws9jnj-2 sc-1df0ir5-0 sc-1df0ir5-2 kYwWxi"
         >
-          <div
-            class="sc-1ws9jnj-3 DzGdM"
-          >
-            Go to Content
-          </div>
-        </div>
+          Payment Confirmed
+        </footer>
+        <footer
+          class="sc-1ws9jnj-2 sc-1df0ir5-0 sc-1df0ir5-1 kYZHbV"
+        >
+          Go to Content
+        </footer>
       </div>
     </li>
   </div>,
@@ -31614,97 +31897,13 @@ Object {
   justify-items: stretch;
   margin: 0px;
   padding: 0px;
-  width: 200px;
-  background-color: var(--white);
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  border-radius: 4px;
-  height: 152px;
+  width: 200px;
+  height: 180px;
   grid-gap: 0px;
-  border: 1px solid transparent;
   background-clip: padding-box;
-  grid-template-rows: 40px 112px;
+  grid-template-rows: 40px 140px;
   opacity: 1;
-}
-
-.c2 {
-  display: grid;
-  height: 120px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  justify-items: center;
-  text-align: center;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  padding: 0px;
-  grid-template-rows: 40px 30px;
-  grid-gap: 8px;
-  padding-top: 16px;
-}
-
-.c5 {
-  white-space: nowrap;
-  font-weight: bold;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c6 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c3 {
-  display: grid;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  text-align: center;
-  color: var(--dimgrey);
-  font-size: 15px;
-  font-weight: 300;
-  padding: 0px;
-}
-
-.c4 {
-  display: grid;
-  font-size: 15px;
-  grid-auto-columns: min-content;
-  grid-auto-flow: column;
-  color: var(--grey);
-  font-weight: 300;
-  grid-gap: 4px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  justify-items: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
 }
 
 .c1 {
@@ -31721,10 +31920,116 @@ Object {
   line-height: 20px;
   height: 40px;
   border-radius: 4px 4px 0px 0px;
-  text-transform: capitalize;
   padding: 0px;
+  color: var(--grey);
+}
+
+.c4 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c5 {
+  white-space: nowrap;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c6 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  color: var(--dimgrey);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 0px;
+}
+
+.c3 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c7 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
   background-color: var(--link);
-  color: var(--offwhite);
+  color: var(--white);
+  margin-top: 13px;
+}
+
+.c2 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 13px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--link);
+  padding-top: 0;
 }
 
 <div>
@@ -31738,7 +32043,7 @@ Object {
         <header
           class="c1"
         >
-          Payment sent
+          Monthly
         </header>
         <div
           class="c2"
@@ -31746,24 +32051,29 @@ Object {
           <div
             class="c3"
           >
-            Waiting for mining confirmation.
-          </div>
-          <div
-            class="c4"
-          >
             <div
-              class="c5"
+              class="c4"
             >
               1.20
                ETH
             </div>
             <div
-              class="c6"
+              class="c5"
             >
               $
               235.80
             </div>
           </div>
+          <div
+            class="c6"
+          >
+            Waiting for mining confirmation.
+          </div>
+          <footer
+            class="c7"
+          >
+            Payment Sent
+          </footer>
         </div>
       </li>
     </div>
@@ -31774,37 +32084,42 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1ws9jnj-0 dJqYaa"
+      class="sc-1ws9jnj-0 hmrsSl"
     >
       <header
-        class="sc-1ws9jnj-1 sc-1ujxsth-0 guhQts"
+        class="sc-1ws9jnj-1 kgNRxZ"
       >
-        Payment sent
+        Monthly
       </header>
       <div
-        class="sc-1ws9jnj-2 gOgmYt"
+        class="sc-1ws9jnj-3 sc-1ujxsth-1 jdzMqI"
       >
         <div
-          class="sc-1ws9jnj-4 GigPs"
-        >
-          Waiting for mining confirmation.
-        </div>
-        <div
-          class="sc-1ws9jnj-5 kMsDNN"
+          class="sc-1ws9jnj-6 lnUjGf"
         >
           <div
-            class="sc-1ws9jnj-3 cLmyvU"
+            class="sc-1ws9jnj-4 fAXDZN"
           >
             1.20
              ETH
           </div>
           <div
-            class="sc-1ws9jnj-3 DzGdM"
+            class="sc-1ws9jnj-4 gjtfkI"
           >
             $
             235.80
           </div>
         </div>
+        <div
+          class="sc-1ws9jnj-5 gHCGqL"
+        >
+          Waiting for mining confirmation.
+        </div>
+        <footer
+          class="sc-1ws9jnj-2 sc-1ujxsth-0 kSiAqo"
+        >
+          Payment Sent
+        </footer>
       </div>
     </li>
   </div>,
@@ -31858,48 +32173,7 @@ exports[`Storyshots Lock with no key (check hover state too) 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c2 {
-  display: grid;
-  height: 120px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  justify-items: center;
-  text-align: center;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  padding: 0px;
-  grid-template-rows: 40px 30px;
-  grid-gap: 8px;
-  padding-top: 16px;
-}
-
-.c0 {
-  display: grid;
-  justify-items: stretch;
-  margin: 0px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--white);
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  border-radius: 4px;
-  height: 152px;
-  grid-gap: 0px;
-  border: 1px solid transparent;
-  background-clip: padding-box;
-  grid-template-rows: 40px 112px;
-  opacity: 1;
-  cursor: pointer;
-}
-
-.c0:hover {
-  border: 1px solid var(--grey);
-}
-
-.c1 {
+    .c1 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -31913,10 +32187,74 @@ Object {
   line-height: 20px;
   height: 40px;
   border-radius: 4px 4px 0px 0px;
-  text-transform: capitalize;
   padding: 0px;
-  background-color: var(--lightgrey);
   color: var(--grey);
+}
+
+.c0 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.c8 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+}
+
+.c2 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 13px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+}
+
+.c2:hover {
+  border: 1px solid var(--activegreen);
+}
+
+.c2:hover .c7 {
+  background-color: var(--activegreen);
 }
 
 .c3 {
@@ -31932,10 +32270,14 @@ Object {
   color: var(--grey);
 }
 
-.c5 {
+.c6 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
+}
+
+.c5 {
+  color: var(--lightgrey);
 }
 
 <div>
@@ -31968,15 +32310,24 @@ Object {
                 $
                 235.80
               </span>
-               | 
               <span
                 class="c5"
+              >
+                 | 
+              </span>
+              <span
+                class="c6"
               >
                 <span>
                   30 days
                 </span>
               </span>
             </div>
+            <footer
+              class="c7 c8"
+            >
+              Purchase
+            </footer>
           </div>
         </div>
       </li>
@@ -31988,39 +32339,48 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1ws9jnj-0 pehlmj-0 kslpyx"
+      class="sc-1ws9jnj-0 yqqxp4-0 jbcRkc"
     >
       <header
-        class="sc-1ws9jnj-1 pehlmj-1 dNxKyp"
+        class="sc-1ws9jnj-1 kgNRxZ"
       >
         Monthly
       </header>
       <div>
         <div
-          class="sc-1ws9jnj-2 gOgmYt"
+          class="sc-1ws9jnj-3 yqqxp4-2 dZRtse"
         >
           <div
-            class="pehlmj-2 eKLwob"
+            class="yqqxp4-3 kxjMda"
           >
             1.20
              Eth
           </div>
           <div>
             <span
-              class="pehlmj-3 cblYxB"
+              class="yqqxp4-4 fcTWoc"
             >
               $
               235.80
             </span>
-             | 
             <span
-              class="pehlmj-3 pehlmj-4 guCTqX"
+              class="yqqxp4-6 gEUJdZ"
+            >
+               | 
+            </span>
+            <span
+              class="yqqxp4-4 yqqxp4-5 djpTSh"
             >
               <span>
                 30 days
               </span>
             </span>
           </div>
+          <footer
+            class="sc-1ws9jnj-2 yqqxp4-1 ghSrYu"
+          >
+            Purchase
+          </footer>
         </div>
       </div>
     </li>
@@ -33039,37 +33399,36 @@ exports[`Storyshots Overlay with a single Lock 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c11 {
+    .c14 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c11 > svg {
+.c14 > svg {
   fill: white;
 }
 
-.c6 {
+.c5 {
   display: grid;
-  height: 120px;
+  font-weight: 300;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  justify-items: center;
-  text-align: center;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  grid-template-rows: 40px 30px;
-  grid-gap: 8px;
-  padding-top: 16px;
+  color: var(--grey);
 }
 
-.c10 {
+.c13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -33096,7 +33455,7 @@ Object {
   margin-right: -33px;
 }
 
-.c10 > * {
+.c13 > * {
   justify-self: left;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
@@ -33104,7 +33463,7 @@ Object {
   margin-left: -14px;
 }
 
-.c10 > p {
+.c13 > p {
   margin-left: auto;
   margin-right: auto;
   width: 63px;
@@ -33125,24 +33484,17 @@ Object {
   justify-items: stretch;
   margin: 0px;
   padding: 0px;
-  width: 200px;
-  background-color: var(--white);
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  border-radius: 4px;
-  height: 152px;
+  width: 200px;
+  height: 180px;
   grid-gap: 0px;
-  border: 1px solid transparent;
   background-clip: padding-box;
-  grid-template-rows: 40px 112px;
+  grid-template-rows: 40px 140px;
   opacity: 1;
   cursor: pointer;
 }
 
-.c4:hover {
-  border: 1px solid var(--grey);
-}
-
-.c5 {
+.c12 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -33155,11 +33507,42 @@ Object {
   font-size: 20px;
   line-height: 20px;
   height: 40px;
-  border-radius: 4px 4px 0px 0px;
-  text-transform: capitalize;
+  border-radius: 0px 0px 4px 4px;
   padding: 0px;
-  background-color: var(--lightgrey);
-  color: var(--grey);
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+}
+
+.c6 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 13px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+}
+
+.c6:hover {
+  border: 1px solid var(--activegreen);
+}
+
+.c6:hover .c11 {
+  background-color: var(--activegreen);
 }
 
 .c7 {
@@ -33175,10 +33558,14 @@ Object {
   color: var(--grey);
 }
 
-.c9 {
+.c10 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
+}
+
+.c9 {
+  color: var(--lightgrey);
 }
 
 .c0 {
@@ -33325,24 +33712,33 @@ Object {
                         $
                         24.19
                       </span>
-                       | 
                       <span
                         class="c9"
+                      >
+                         | 
+                      </span>
+                      <span
+                        class="c10"
                       >
                         <span>
                            - 
                         </span>
                       </span>
                     </div>
+                    <footer
+                      class="c11 c12"
+                    >
+                      Purchase
+                    </footer>
                   </div>
                 </div>
               </li>
             </ul>
             <footer
-              class="c10"
+              class="c13"
             >
               <div
-                class="c11"
+                class="c14"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -33433,45 +33829,54 @@ Object {
             class="vaayz9-3 bANiLD"
           >
             <li
-              class="sc-1ws9jnj-0 pehlmj-0 kslpyx"
+              class="sc-1ws9jnj-0 yqqxp4-0 jbcRkc"
             >
               <header
-                class="sc-1ws9jnj-1 pehlmj-1 dNxKyp"
+                class="sc-1ws9jnj-1 kgNRxZ"
               >
                 One Month
               </header>
               <div>
                 <div
-                  class="sc-1ws9jnj-2 gOgmYt"
+                  class="sc-1ws9jnj-3 yqqxp4-2 dZRtse"
                 >
                   <div
-                    class="pehlmj-2 eKLwob"
+                    class="yqqxp4-3 kxjMda"
                   >
                     0.12
                      Eth
                   </div>
                   <div>
                     <span
-                      class="pehlmj-3 cblYxB"
+                      class="yqqxp4-4 fcTWoc"
                     >
                       $
                       24.19
                     </span>
-                     | 
                     <span
-                      class="pehlmj-3 pehlmj-4 guCTqX"
+                      class="yqqxp4-6 gEUJdZ"
+                    >
+                       | 
+                    </span>
+                    <span
+                      class="yqqxp4-4 yqqxp4-5 djpTSh"
                     >
                       <span>
                          - 
                       </span>
                     </span>
                   </div>
+                  <footer
+                    class="sc-1ws9jnj-2 yqqxp4-1 ghSrYu"
+                  >
+                    Purchase
+                  </footer>
                 </div>
               </div>
             </li>
           </ul>
           <footer
-            class="sc-1ws9jnj-7 ctqObv"
+            class="sc-1ws9jnj-8 lxQGu"
           >
             <div
               class="cenpj1-0 dhCRxc"
@@ -33543,37 +33948,36 @@ exports[`Storyshots Overlay with multiple locks 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c11 {
+    .c14 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c11 > svg {
+.c14 > svg {
   fill: white;
 }
 
-.c6 {
+.c5 {
   display: grid;
-  height: 120px;
+  font-weight: 300;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  justify-items: center;
-  text-align: center;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  grid-template-rows: 40px 30px;
-  grid-gap: 8px;
-  padding-top: 16px;
+  color: var(--grey);
 }
 
-.c10 {
+.c13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -33600,7 +34004,7 @@ Object {
   margin-right: -33px;
 }
 
-.c10 > * {
+.c13 > * {
   justify-self: left;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
@@ -33608,7 +34012,7 @@ Object {
   margin-left: -14px;
 }
 
-.c10 > p {
+.c13 > p {
   margin-left: auto;
   margin-right: auto;
   width: 63px;
@@ -33629,24 +34033,17 @@ Object {
   justify-items: stretch;
   margin: 0px;
   padding: 0px;
-  width: 200px;
-  background-color: var(--white);
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  border-radius: 4px;
-  height: 152px;
+  width: 200px;
+  height: 180px;
   grid-gap: 0px;
-  border: 1px solid transparent;
   background-clip: padding-box;
-  grid-template-rows: 40px 112px;
+  grid-template-rows: 40px 140px;
   opacity: 1;
   cursor: pointer;
 }
 
-.c4:hover {
-  border: 1px solid var(--grey);
-}
-
-.c5 {
+.c12 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -33659,11 +34056,42 @@ Object {
   font-size: 20px;
   line-height: 20px;
   height: 40px;
-  border-radius: 4px 4px 0px 0px;
-  text-transform: capitalize;
+  border-radius: 0px 0px 4px 4px;
   padding: 0px;
-  background-color: var(--lightgrey);
-  color: var(--grey);
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+}
+
+.c6 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 13px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+}
+
+.c6:hover {
+  border: 1px solid var(--activegreen);
+}
+
+.c6:hover .c11 {
+  background-color: var(--activegreen);
 }
 
 .c7 {
@@ -33679,10 +34107,14 @@ Object {
   color: var(--grey);
 }
 
-.c9 {
+.c10 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
+}
+
+.c9 {
+  color: var(--lightgrey);
 }
 
 .c0 {
@@ -33829,15 +34261,24 @@ Object {
                         $
                         1.96
                       </span>
-                       | 
                       <span
                         class="c9"
+                      >
+                         | 
+                      </span>
+                      <span
+                        class="c10"
                       >
                         <span>
                            - 
                         </span>
                       </span>
                     </div>
+                    <footer
+                      class="c11 c12"
+                    >
+                      Purchase
+                    </footer>
                   </div>
                 </div>
               </li>
@@ -33866,24 +34307,33 @@ Object {
                         $
                         19.60
                       </span>
-                       | 
                       <span
                         class="c9"
+                      >
+                         | 
+                      </span>
+                      <span
+                        class="c10"
                       >
                         <span>
                            - 
                         </span>
                       </span>
                     </div>
+                    <footer
+                      class="c11 c12"
+                    >
+                      Purchase
+                    </footer>
                   </div>
                 </div>
               </li>
             </ul>
             <footer
-              class="c10"
+              class="c13"
             >
               <div
-                class="c11"
+                class="c14"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -33974,82 +34424,100 @@ Object {
             class="vaayz9-3 bANiLD"
           >
             <li
-              class="sc-1ws9jnj-0 pehlmj-0 kslpyx"
+              class="sc-1ws9jnj-0 yqqxp4-0 jbcRkc"
             >
               <header
-                class="sc-1ws9jnj-1 pehlmj-1 dNxKyp"
+                class="sc-1ws9jnj-1 kgNRxZ"
               >
                 One Month
               </header>
               <div>
                 <div
-                  class="sc-1ws9jnj-2 gOgmYt"
+                  class="sc-1ws9jnj-3 yqqxp4-2 dZRtse"
                 >
                   <div
-                    class="pehlmj-2 eKLwob"
+                    class="yqqxp4-3 kxjMda"
                   >
                     0.01
                      Eth
                   </div>
                   <div>
                     <span
-                      class="pehlmj-3 cblYxB"
+                      class="yqqxp4-4 fcTWoc"
                     >
                       $
                       1.96
                     </span>
-                     | 
                     <span
-                      class="pehlmj-3 pehlmj-4 guCTqX"
+                      class="yqqxp4-6 gEUJdZ"
+                    >
+                       | 
+                    </span>
+                    <span
+                      class="yqqxp4-4 yqqxp4-5 djpTSh"
                     >
                       <span>
                          - 
                       </span>
                     </span>
                   </div>
+                  <footer
+                    class="sc-1ws9jnj-2 yqqxp4-1 ghSrYu"
+                  >
+                    Purchase
+                  </footer>
                 </div>
               </div>
             </li>
             <li
-              class="sc-1ws9jnj-0 pehlmj-0 kslpyx"
+              class="sc-1ws9jnj-0 yqqxp4-0 jbcRkc"
             >
               <header
-                class="sc-1ws9jnj-1 pehlmj-1 dNxKyp"
+                class="sc-1ws9jnj-1 kgNRxZ"
               >
                 One Year
               </header>
               <div>
                 <div
-                  class="sc-1ws9jnj-2 gOgmYt"
+                  class="sc-1ws9jnj-3 yqqxp4-2 dZRtse"
                 >
                   <div
-                    class="pehlmj-2 eKLwob"
+                    class="yqqxp4-3 kxjMda"
                   >
                     0.1
                      Eth
                   </div>
                   <div>
                     <span
-                      class="pehlmj-3 cblYxB"
+                      class="yqqxp4-4 fcTWoc"
                     >
                       $
                       19.60
                     </span>
-                     | 
                     <span
-                      class="pehlmj-3 pehlmj-4 guCTqX"
+                      class="yqqxp4-6 gEUJdZ"
+                    >
+                       | 
+                    </span>
+                    <span
+                      class="yqqxp4-4 yqqxp4-5 djpTSh"
                     >
                       <span>
                          - 
                       </span>
                     </span>
                   </div>
+                  <footer
+                    class="sc-1ws9jnj-2 yqqxp4-1 ghSrYu"
+                  >
+                    Purchase
+                  </footer>
                 </div>
               </div>
             </li>
           </ul>
           <footer
-            class="sc-1ws9jnj-7 ctqObv"
+            class="sc-1ws9jnj-8 lxQGu"
           >
             <div
               class="cenpj1-0 dhCRxc"
@@ -36217,97 +36685,13 @@ Object {
   justify-items: stretch;
   margin: 0px;
   padding: 0px;
-  width: 200px;
-  background-color: var(--white);
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  border-radius: 4px;
-  height: 152px;
+  width: 200px;
+  height: 180px;
   grid-gap: 0px;
-  border: 1px solid transparent;
   background-clip: padding-box;
-  grid-template-rows: 40px 112px;
+  grid-template-rows: 40px 140px;
   opacity: 1;
-}
-
-.c2 {
-  display: grid;
-  height: 120px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  justify-items: center;
-  text-align: center;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  padding: 0px;
-  grid-template-rows: 40px 30px;
-  grid-gap: 8px;
-  padding-top: 16px;
-}
-
-.c5 {
-  white-space: nowrap;
-  font-weight: bold;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c6 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c3 {
-  display: grid;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  text-align: center;
-  color: var(--dimgrey);
-  font-size: 15px;
-  font-weight: 300;
-  padding: 0px;
-}
-
-.c4 {
-  display: grid;
-  font-size: 15px;
-  grid-auto-columns: min-content;
-  grid-auto-flow: column;
-  color: var(--grey);
-  font-weight: 300;
-  grid-gap: 4px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  justify-items: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
 }
 
 .c1 {
@@ -36324,10 +36708,116 @@ Object {
   line-height: 20px;
   height: 40px;
   border-radius: 4px 4px 0px 0px;
-  text-transform: capitalize;
   padding: 0px;
+  color: var(--grey);
+}
+
+.c4 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c5 {
+  white-space: nowrap;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c6 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  color: var(--dimgrey);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 0px;
+}
+
+.c3 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c7 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
   background-color: var(--link);
-  color: var(--offwhite);
+  color: var(--white);
+  margin-top: 13px;
+}
+
+.c2 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 13px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--link);
+  padding-top: 0;
 }
 
 <div>
@@ -36341,7 +36831,7 @@ Object {
         <header
           class="c1"
         >
-          Payment sent
+          Monthly
         </header>
         <div
           class="c2"
@@ -36349,24 +36839,29 @@ Object {
           <div
             class="c3"
           >
-            Waiting for mining confirmation.
-          </div>
-          <div
-            class="c4"
-          >
             <div
-              class="c5"
+              class="c4"
             >
               1.20
                ETH
             </div>
             <div
-              class="c6"
+              class="c5"
             >
               $
               235.80
             </div>
           </div>
+          <div
+            class="c6"
+          >
+            Waiting for mining confirmation.
+          </div>
+          <footer
+            class="c7"
+          >
+            Payment Sent
+          </footer>
         </div>
       </li>
     </div>
@@ -36377,37 +36872,42 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1ws9jnj-0 dJqYaa"
+      class="sc-1ws9jnj-0 hmrsSl"
     >
       <header
-        class="sc-1ws9jnj-1 sc-1ujxsth-0 guhQts"
+        class="sc-1ws9jnj-1 kgNRxZ"
       >
-        Payment sent
+        Monthly
       </header>
       <div
-        class="sc-1ws9jnj-2 gOgmYt"
+        class="sc-1ws9jnj-3 sc-1ujxsth-1 jdzMqI"
       >
         <div
-          class="sc-1ws9jnj-4 GigPs"
-        >
-          Waiting for mining confirmation.
-        </div>
-        <div
-          class="sc-1ws9jnj-5 kMsDNN"
+          class="sc-1ws9jnj-6 lnUjGf"
         >
           <div
-            class="sc-1ws9jnj-3 cLmyvU"
+            class="sc-1ws9jnj-4 fAXDZN"
           >
             1.20
              ETH
           </div>
           <div
-            class="sc-1ws9jnj-3 DzGdM"
+            class="sc-1ws9jnj-4 gjtfkI"
           >
             $
             235.80
           </div>
         </div>
+        <div
+          class="sc-1ws9jnj-5 gHCGqL"
+        >
+          Waiting for mining confirmation.
+        </div>
+        <footer
+          class="sc-1ws9jnj-2 sc-1ujxsth-0 kSiAqo"
+        >
+          Payment Sent
+        </footer>
       </div>
     </li>
   </div>,
