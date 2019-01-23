@@ -10,6 +10,9 @@ export const account = PropTypes.shape({
 })
 
 export const lock = PropTypes.shape({
+  address,
+  name: PropTypes.string,
+  expirationDuration: PropTypes.number,
   keyPrice: PropTypes.string,
   maxNumberOfKeys: PropTypes.number,
   owner: PropTypes.string,

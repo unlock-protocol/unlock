@@ -8,7 +8,7 @@ const lock = {
   address: '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e',
   name: 'My Blog',
   keyPrice: '27000000000000000',
-  expirationDuration: '172800',
+  expirationDuration: 172800,
   maxNumberOfKeys: 240,
   outstandingKeys: 3,
 }
@@ -17,7 +17,7 @@ const lockedState = {
     '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e': {
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
       keyPrice: '10000000000000000000',
-      expirationDuration: '86400',
+      expirationDuration: 86400,
       maxNumberOfKeys: 800,
       outstandingKeys: 32,
     },
