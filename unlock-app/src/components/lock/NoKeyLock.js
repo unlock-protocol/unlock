@@ -21,7 +21,7 @@ export const NoKeyLock = ({ lock, disabled, purchaseKey, lockKey }) => (
             <EthPrice>{ethPrice} Eth</EthPrice>
             <div>
               <FiatPrice>${fiatPrice}</FiatPrice>
-              {' | '}
+              <Separator> | </Separator>
               <ExpirationDuration>
                 <Duration seconds={lock.expirationDuration} />
               </ExpirationDuration>
@@ -74,3 +74,7 @@ const FiatPrice = styled.span`
 `
 
 const ExpirationDuration = styled(FiatPrice)``
+
+const Separator = styled.span`
+  color: var(--lightgrey);
+`
