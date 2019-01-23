@@ -16,9 +16,9 @@ ConfirmedKey.propTypes = {
   hideModal: PropTypes.func.isRequired,
 }
 
-export const NotHover = styled(Svg.Checkmark)``
+const NotHover = styled(Svg.Checkmark)``
 
-export const Hover = styled(Svg.Arrow)`
+const Hover = styled(Svg.Arrow)`
   display: none;
 `
 
