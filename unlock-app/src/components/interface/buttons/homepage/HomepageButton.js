@@ -50,11 +50,11 @@ export class HomepageButton extends React.Component {
         {acceptedTerms !== true && (
           <TermsBox>
             <div>
-              To access the dashboard you need to agree to our{' '}
+              To access the dashboard you need to agree to our&nbsp;
               <Link href="/terms">
                 <a>Terms of Service</a>
-              </Link>{' '}
-              and{' '}
+              </Link>
+              &nbsp; and&nbsp;
               <Link href="/privacy">
                 <a>Privacy Policy</a>
               </Link>
