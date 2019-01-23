@@ -6,14 +6,17 @@ import DeveloperOverlay from '../components/developer/DeveloperOverlay'
 import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
 import { LOCK_PATH_NAME_REGEXP } from '../constants'
 import BrowserOnly from '../components/helpers/BrowserOnly'
+import GlobalErrorProvider from '../utils/GlobalErrorProvider'
 
 const Paywall = ({ lock }) => {
   return (
     <BrowserOnly>
-      <ShowUnlessUserHasKeyToAnyLock locks={lock ? [lock] : []}>
-        <Overlay locks={lock ? [lock] : []} />
-        <DeveloperOverlay />
-      </ShowUnlessUserHasKeyToAnyLock>
+      <GlobalErrorProvider>
+        <ShowUnlessUserHasKeyToAnyLock locks={lock ? [lock] : []}>
+          <Overlay locks={lock ? [lock] : []} />
+          <DeveloperOverlay />
+        </ShowUnlessUserHasKeyToAnyLock>
+      </GlobalErrorProvider>
     </BrowserOnly>
   )
 }
