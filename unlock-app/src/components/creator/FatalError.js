@@ -112,6 +112,13 @@ export const MissingAccount = () => (
   </DefaultError>
 )
 
+export const mapping = {
+  FATAL_MISSING_PROVIDER: MissingProvider,
+  FATAL_NO_USER_ACCOUNT: MissingAccount,
+  FATAL_WRONG_NETWORK: WrongNetwork,
+  '*': DefaultError,
+}
+
 export default {
   DefaultError,
   WrongNetwork,
