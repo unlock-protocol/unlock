@@ -141,7 +141,7 @@ describe('GlobalErrorProvider', () => {
     expect.assertions(2)
 
     const store = makeTestStore({
-      account: false,
+      account: undefined,
     })
     const wrapper = rtl.render(
       <Provider store={store}>
