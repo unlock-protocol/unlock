@@ -63,6 +63,7 @@ storiesOf('Overlay', module)
       {
         name: 'One Month',
         keyPrice: '123400000000000000',
+        expirationDuration: 12345678,
         fiatPrice: '20',
       },
     ]
@@ -73,11 +74,13 @@ storiesOf('Overlay', module)
       {
         name: 'One Month',
         keyPrice: '10000000000000000',
+        expirationDuration: 12345678,
         fiatPrice: '20.54',
       },
       {
         name: 'One Year',
         keyPrice: '100000000000000000',
+        expirationDuration: 12345678,
         fiatPrice: '200.27',
       },
     ]
