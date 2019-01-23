@@ -8,15 +8,14 @@ import {
   LockDetails,
   TransactionStatus,
   LockDetail,
+  LockFooter,
 } from './LockStyles'
 import BalanceProvider from '../helpers/BalanceProvider'
 
 export const PendingKeyLock = ({ lock }) => (
   <LockWrapper>
-    <Header>Payment sent</Header>
-    <LockBody>
-      <TransactionStatus>Waiting for mining confirmation.</TransactionStatus>
-
+    <LockHeader>{lock.name}</LockHeader>
+    <Body>
       <BalanceProvider
         amount={lock.keyPrice}
         render={(ethPrice, fiatPrice) => (
@@ -28,7 +27,9 @@ export const PendingKeyLock = ({ lock }) => (
           </>
         )}
       />
-    </LockBody>
+      <TransactionStatus>Waiting for mining confirmation.</TransactionStatus>
+      <Footer>Payment Sent</Footer>
+    </Body>
   </LockWrapper>
 )
 
@@ -38,7 +39,13 @@ PendingKeyLock.propTypes = {
 
 export default PendingKeyLock
 
-const Header = styled(LockHeader)`
+const Footer = styled(LockFooter)`
   background-color: var(--link);
-  color: var(--offwhite);
+  color: var(--white);
+  margin-top: 16px;
+`
+
+const Body = styled(LockBody)`
+  border: 1px solid var(--link);
+  padding-top: 0;
 `
