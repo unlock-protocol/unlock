@@ -21,6 +21,7 @@ const globalStyle = `
     --green: #74ce63;
     --darkgreen: #368043;
     --pink: #ed6e82;
+    --yellow: #f6c61b;
 
     --foreground: 9001;
     --alwaysontop: 100000;
