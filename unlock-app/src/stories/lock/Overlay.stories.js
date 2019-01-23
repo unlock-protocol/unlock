@@ -3,6 +3,10 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { Overlay } from '../../components/lock/Overlay'
 import createUnlockStore from '../../createUnlockStore'
+import { GlobalErrorContext } from '../../utils/GlobalErrorProvider'
+import { FATAL_NO_USER_ACCOUNT } from '../../errors'
+
+const ErrorProvider = GlobalErrorContext.Provider
 
 const store = createUnlockStore({
   currency: {
@@ -10,7 +14,7 @@ const store = createUnlockStore({
   },
 })
 
-const render = locks => (
+const render = (locks, errors = { error: false, errorMetadata: {} }) => (
   <section>
     <h1>HTML Ipsum Presents</h1>
 
@@ -52,7 +56,9 @@ const render = locks => (
       <li>Aliquam tincidunt mauris eu risus.</li>
     </ul>
 
-    <Overlay locks={locks} hideModal={() => {}} showModal={() => {}} />
+    <ErrorProvider value={errors}>
+      <Overlay locks={locks} hideModal={() => {}} showModal={() => {}} />
+    </ErrorProvider>
   </section>
 )
 
@@ -82,4 +88,17 @@ storiesOf('Overlay', module)
       },
     ]
     return render(locks)
+  })
+  .add('with error', () => {
+    const locks = [
+      {
+        name: 'One Month',
+        keyPrice: '123400000000000000',
+        fiatPrice: '20',
+      },
+    ]
+    return render(locks, {
+      error: FATAL_NO_USER_ACCOUNT,
+      errorMetadata: {},
+    })
   })
