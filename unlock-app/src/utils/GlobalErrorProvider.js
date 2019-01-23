@@ -30,7 +30,10 @@ const config = configure()
 export class GlobalErrorProvider extends Component {
   static propTypes = {
     network: UnlockPropTypes.network.isRequired,
-    account: UnlockPropTypes.account.isRequired,
+    // note: account can be empty if we are not logged in. It's not required, but we don't want a default value
+    // so we need to disable eslint to prevent a warning
+    // eslint-disable-next-line
+    account: UnlockPropTypes.account,
     router: PropTypes.shape({
       location: PropTypes.shape({
         pathname: PropTypes.string.isRequired,
