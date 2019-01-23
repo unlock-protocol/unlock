@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import UnlockPropTypes from '../../propTypes'
 import {
   LockWrapper,
   LockHeader,
@@ -38,6 +39,7 @@ const ConfirmedKeyLock = ({ lock, hideModal }) => (
 
 ConfirmedKeyLock.propTypes = {
   hideModal: PropTypes.func.isRequired,
+  lock: UnlockPropTypes.lock.isRequired,
 }
 
 export default ConfirmedKeyLock

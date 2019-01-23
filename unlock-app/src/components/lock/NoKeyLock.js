@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 import UnlockPropTypes from '../../propTypes'
 import { LockWrapper, LockHeader, LockBody, LockFooter } from './LockStyles'
 import BalanceProvider from '../helpers/BalanceProvider'
@@ -36,6 +37,14 @@ export const NoKeyLock = ({ lock, disabled, purchaseKey, lockKey }) => (
 
 NoKeyLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
+  purchaseKey: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
+  lockKey: UnlockPropTypes.key,
+}
+
+NoKeyLock.defaultProps = {
+  disabled: false,
+  lockKey: null,
 }
 
 export default NoKeyLock
