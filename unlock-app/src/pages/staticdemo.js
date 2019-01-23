@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import styled, { createGlobalStyle } from 'styled-components'
 import PropTypes from 'prop-types'
 import UnlockPropTypes from '../propTypes'
-import withConfig from '../utils/withConfig'
 import Overlay from '../components/lock/Overlay'
 import DeveloperOverlay from '../components/developer/DeveloperOverlay'
 import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
@@ -110,7 +109,7 @@ export const mapStateToProps = ({ locks, router }) => {
   }
 }
 
-export default withConfig(connect(mapStateToProps)(Demo))
+export default connect(mapStateToProps)(Demo)
 
 const GlobalStyle = createGlobalStyle`
     @import url('https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|UnifrakturCook:700');
