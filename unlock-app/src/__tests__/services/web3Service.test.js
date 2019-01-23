@@ -1394,23 +1394,26 @@ describe('Web3Service', () => {
         web3Service.getKeysForLockOnPage(lockAddress, onPage, byPage)
       })
 
-      describe('when the on contract method raises an error', () => {
-        it('should use the iterative method of providing keyholder', done => {
+      describe('when the on contract method does not exist', () => {
+        it.skip('should use the iterative method of providing keyholder', done => {
           const onPage = 0
-          const byPage = 5
+          const byPage = 2
 
-          expect.assertions(3)
+          for (let i = 0; i < byPage; i++) {
+            const start = onPage * byPage + i
+            ethCallAndYield(
+              `0x025e7c27${start.toString(16).padStart(64, 0)}`,
+              lockAddress,
+              '0x'
+            )
+          }
 
           jest
             .spyOn(web3Service, '_genKeyOwnersFromLockContract')
             .mockImplementation(() => {
-              return Promise.reject()
-            })
-          jest
-            .spyOn(web3Service, '_genKeyOwnersFromLockContractIterative')
-            .mockImplementation(() => {
               return Promise.resolve([])
             })
+          jest.spyOn(web3Service, '_genKeyOwnersFromLockContractIterative')
 
           web3Service.getKeysForLockOnPage(lockAddress, onPage, byPage)
 
