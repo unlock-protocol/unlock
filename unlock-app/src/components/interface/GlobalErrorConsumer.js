@@ -8,7 +8,9 @@ import Layout from './Layout'
 const Consumer = GlobalErrorContext.Consumer
 
 export const displayError = (error, children) => {
-  if (error) return <Layout title="">{error}</Layout>
+  if (error) {
+    return <Layout title="">{error}</Layout>
+  }
   return <>{children}</>
 }
 
