@@ -8,19 +8,15 @@ import {
   LockDetails,
   TransactionStatus,
   LockDetail,
+  LockFooter,
 } from './LockStyles'
 import BalanceProvider from '../helpers/BalanceProvider'
 import withConfig from '../../utils/withConfig'
 
 export const ConfirmingKeyLock = ({ lock, transaction, config }) => (
   <LockWrapper>
-    <Header>Payment Received</Header>
-    <LockBody>
-      <TransactionStatus>
-        Waiting for confirmation.
-        <br />
-        {transaction.confirmations}/{config.requiredConfirmations}
-      </TransactionStatus>
+    <LockHeader>{lock.name}</LockHeader>
+    <Body>
       <BalanceProvider
         amount={lock.keyPrice}
         render={(ethPrice, fiatPrice) => (
@@ -32,7 +28,13 @@ export const ConfirmingKeyLock = ({ lock, transaction, config }) => (
           </>
         )}
       />
-    </LockBody>
+      <TransactionStatus>
+        Waiting for confirmations
+        <br />
+        {transaction.confirmations}/{config.requiredConfirmations}
+      </TransactionStatus>
+      <Footer>Payment Pending</Footer>
+    </Body>
   </LockWrapper>
 )
 
@@ -44,7 +46,13 @@ ConfirmingKeyLock.propTypes = {
 
 export default withConfig(ConfirmingKeyLock)
 
-const Header = styled(LockHeader)`
-  background-color: var(--green);
-  color: var(--offwhite);
+const Body = styled(LockBody)`
+  border: 1px solid var(--yellow);
+  padding-top: 0;
+`
+
+const Footer = styled(LockFooter)`
+  background-color: var(--yellow);
+  color: var(--white);
+  margin-top: 16px;
 `
