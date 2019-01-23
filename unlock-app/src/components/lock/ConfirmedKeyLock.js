@@ -7,18 +7,20 @@ import {
   LockBody,
   LockDetails,
   LockDetail,
+  LockFooter,
 } from './LockStyles'
 import ConfirmedKey from '../interface/buttons/overlay/ConfirmedKey'
 
-const ConfirmedKeyLock = ({ hideModal }) => (
+const ConfirmedKeyLock = ({ lock, hideModal }) => (
   <LockWrapper>
-    <Header>Payment Confirmed</Header>
-    <LockBody>
+    <LockHeader>{lock.name}</LockHeader>
+    <Body>
       <ConfirmedKey hideModal={hideModal} size="50px" />
       <LockDetails>
         <LockDetail>Go to Content</LockDetail>
       </LockDetails>
-    </LockBody>
+      <Footer>Payment Confirmed</Footer>
+    </Body>
   </LockWrapper>
 )
 
@@ -28,7 +30,11 @@ ConfirmedKeyLock.propTypes = {
 
 export default ConfirmedKeyLock
 
-const Header = styled(LockHeader)`
+const Footer = styled(LockFooter)`
   background-color: var(--green);
-  color: var(--offwhite);
+  color: var(--white);
+`
+
+const Body = styled(LockBody)`
+  border: 1px solid var(--green);
 `
