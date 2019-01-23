@@ -54,5 +54,5 @@ const Body = styled(LockBody)`
 const Footer = styled(LockFooter)`
   background-color: var(--yellow);
   color: var(--white);
-  margin-top: 16px;
+  margin-top: 13px;
 `

@@ -42,7 +42,7 @@ export default PendingKeyLock
 const Footer = styled(LockFooter)`
   background-color: var(--link);
   color: var(--white);
-  margin-top: 16px;
+  margin-top: 13px;
 `
 
 const Body = styled(LockBody)`

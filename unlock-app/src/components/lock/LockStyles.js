@@ -51,7 +51,7 @@ export const LockBody = styled.div`
   padding: 0px;
   grid-template-rows: 40px 30px;
   grid-gap: 8px;
-  padding-top: 16px;
+  padding-top: 13px;
   border: 1px solid transparent;
   border-radius: 4px;
   background-color: var(--white);
