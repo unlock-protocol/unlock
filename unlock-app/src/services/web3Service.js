@@ -53,9 +53,10 @@ export default class Web3Service extends EventEmitter {
           args.newLockAddress
         )
       },
-      Transfer: ({ lock, owner }) => {
-        return this.emit('key.saved', keyId(lock, owner), {
-          lock,
+      Transfer: (transaction, args) => {
+        const owner = args._to
+        return this.emit('key.saved', keyId(transaction.lock, owner), {
+          lock: transaction.lock,
           owner,
         })
       },
@@ -477,7 +478,6 @@ export default class Web3Service extends EventEmitter {
           args[input.name] = decoded[input.name]
           return args
         }, {})
-
         this.emitContractEvent(transaction, event.name, args)
       })
     })

@@ -94,7 +94,9 @@ export default function lockMiddleware({ getState, dispatch }) {
    */
   web3Service.on('key.saved', (keyId, key) => {
     web3Service.getLock(key.lock)
-    web3Service.refreshAccountBalance(key.owner)
+    if (getState().account.address === key.owner) {
+      web3Service.refreshAccountBalance(getState().account)
+    }
     web3Service.getKeyByLockForOwner(key.lock, key.owner)
   })
 
