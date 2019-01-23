@@ -19,6 +19,7 @@ const globalStyle = `
     --slate: #333333;
     --link: #4d8be8;
     --green: #74ce63;
+    --activegreen: #59c245;
     --darkgreen: #368043;
     --pink: #ed6e82;
     --yellow: #f6c61b;
