@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import React from 'react'
 import { connect } from 'react-redux'
-import BalanceProvider from '../helpers/BalanceProvider'
-import Duration from '../helpers/Duration'
 import UnlockPropTypes from '../../propTypes'
 import withConfig from '../../utils/withConfig'
 
@@ -12,7 +9,7 @@ import { purchaseKey } from '../../actions/key'
 import PendingKeyLock from './PendingKeyLock'
 import ConfirmingKeyLock from './ConfirmingKeyLock'
 import ConfirmedKeyLock from './ConfirmedKeyLock'
-import { LockWrapper, LockHeader, LockBody } from './LockStyles'
+import NoKeyLock from './NoKeyLock'
 
 export const Lock = ({
   lock,
@@ -38,31 +35,12 @@ export const Lock = ({
     return <ConfirmedKeyLock lock={lock} hideModal={hideModal} />
   } else {
     return (
-      <Wrapper
+      <NoKeyLock
+        lock={lock}
         disabled={disabled}
-        onClick={() => {
-          !disabled && purchaseKey(lockKey)
-        }}
-      >
-        <Header>{lock.name}</Header>
-        <BalanceProvider
-          amount={lock.keyPrice}
-          render={(ethPrice, fiatPrice) => (
-            <div>
-              <LockBody>
-                <EthPrice>{ethPrice} Eth</EthPrice>
-                <div>
-                  <FiatPrice>${fiatPrice}</FiatPrice>
-                  {' | '}
-                  <ExpirationDuration>
-                    <Duration seconds={lock.expirationDuration} />
-                  </ExpirationDuration>
-                </div>
-              </LockBody>
-            </div>
-          )}
-        />
-      </Wrapper>
+        purchaseKey={purchaseKey}
+        lockKey={lockKey}
+      />
     )
   }
 }
@@ -122,31 +100,3 @@ export default withConfig(
     mapDispatchToProps
   )(Lock)
 )
-
-const Wrapper = styled(LockWrapper)`
-  cursor: pointer;
-
-  &:hover {
-    border: ${props => (!props.disabled ? '1px solid var(--grey)' : null)};
-  }
-`
-
-const Header = styled(LockHeader)`
-  background-color: var(--lightgrey);
-  color: var(--grey);
-`
-
-const EthPrice = styled.div`
-  font-size: 30px;
-  text-transform: uppercase;
-  color: var(--slate);
-  font-weight: bold;
-`
-
-const FiatPrice = styled.span`
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-`
-
-const ExpirationDuration = styled(FiatPrice)``
