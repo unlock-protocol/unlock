@@ -3,6 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Svg from '../../svg'
 import Button from '../Button'
+import { HoverFooter, NotHoverFooter } from '../../../lock/HoverFooters'
 
 const ConfirmedKey = ({ hideModal, ...props }) => (
   <ConfirmedKeyButton {...props} backgroundHoverColor="var(--green)">
@@ -22,11 +23,18 @@ const Hover = styled(Svg.Arrow)`
 `
 
 const ConfirmedKeyButton = styled(Button)`
+  align-self: center;
   &:hover {
     ${Hover} {
       display: block;
     }
     ${NotHover} {
+      display: none;
+    }
+    ~ ${HoverFooter} {
+      display: grid;
+    }
+    ~ ${NotHoverFooter} {
       display: none;
     }
   }
