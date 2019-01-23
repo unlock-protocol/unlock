@@ -5,15 +5,14 @@ export const LockWrapper = styled.li`
   justify-items: stretch;
   margin: 0px;
   padding: 0px;
-  width: 200px;
-  background-color: var(--white);
+
   font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
-  border-radius: 4px;
-  height: 152px;
+
+  width: 200px;
+  height: 180px;
   grid-gap: 0px;
-  border: 1px solid transparent;
   background-clip: padding-box;
-  grid-template-rows: 40px 112px;
+  grid-template-rows: 40px 140px;
   opacity: ${props => (props.disabled ? 0.5 : 1)};
 `
 
@@ -26,13 +25,26 @@ export const LockHeader = styled.header`
   line-height: 20px;
   height: 40px;
   border-radius: 4px 4px 0px 0px;
-  text-transform: capitalize;
   padding: 0px;
+`
+
+export const LockFooter = styled.footer`
+  display: grid;
+  font-weight: 300;
+  justify-content: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
 `
 
 export const LockBody = styled.div`
   display: grid;
-  height: 120px;
+  height: 140px;
+  width: 200px;
   justify-content: center;
   justify-items: center;
   text-align: center;
@@ -41,6 +53,9 @@ export const LockBody = styled.div`
   grid-template-rows: 40px 30px;
   grid-gap: 8px;
   padding-top: 16px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
 `
 
 export const LockDetail = styled.div`
