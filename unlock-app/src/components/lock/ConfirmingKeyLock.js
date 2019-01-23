@@ -48,7 +48,6 @@ export default withConfig(ConfirmingKeyLock)
 
 const Body = styled(LockBody)`
   border: 1px solid var(--yellow);
-  padding-top: 0;
 `
 
 const Footer = styled(LockFooter)`

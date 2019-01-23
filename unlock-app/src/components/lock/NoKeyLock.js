@@ -59,6 +59,7 @@ const Footer = styled(LockFooter)`
 `
 
 const Body = styled(LockBody)`
+  padding-top: 13px;
   &:hover {
     border: ${props =>
       !props.disabled ? '1px solid var(--activegreen)' : null};

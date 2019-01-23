@@ -46,5 +46,4 @@ export default ConfirmedKeyLock
 
 const Body = styled(LockBody)`
   border: 1px solid var(--green);
-  padding-top: 0;
 `

@@ -47,5 +47,4 @@ const Footer = styled(LockFooter)`
 
 const Body = styled(LockBody)`
   border: 1px solid var(--link);
-  padding-top: 0;
 `
