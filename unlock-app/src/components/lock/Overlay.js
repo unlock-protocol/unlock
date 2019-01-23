@@ -7,22 +7,32 @@ import UnlockPropTypes from '../../propTypes'
 import { hideModal, showModal } from '../../actions/modal'
 import { unlockPage } from '../../services/iframeService'
 import LockedFlag from './UnlockFlag'
+import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
+
+export function displayError(error, children) {
+  if (error) {
+    return <>{error}</>
+  }
+  return <>{children}</>
+}
 
 export const Overlay = ({ locks, hideModal, showModal }) => (
   <FullPage>
     <Banner>
       <Headline>
-        You have reached your limit of free articles. Please purchase access:
+        You have reached your limit of free articles. Please purchase access
       </Headline>
       <Locks>
-        {locks.map(lock => (
-          <Lock
-            key={JSON.stringify(lock)}
-            lock={lock}
-            hideModal={hideModal}
-            showModal={showModal}
-          />
-        ))}
+        <GlobalErrorConsumer displayError={displayError}>
+          {locks.map(lock => (
+            <Lock
+              key={JSON.stringify(lock)}
+              lock={lock}
+              hideModal={hideModal}
+              showModal={showModal}
+            />
+          ))}
+        </GlobalErrorConsumer>
       </Locks>
       <LockedFlag />
     </Banner>
