@@ -81,8 +81,13 @@ export function expirationAsDate(timestamp) {
     return 'Never'
   }
 
-  // If it is less than a day from now we provide more granular details, from now
+  // If it is less than now, we show as expired
+  if (timestamp - new Date().getTime() / 1000 < 0) {
+    return 'Expired'
+  }
+
   if (timestamp - new Date().getTime() / 1000 < 86400) {
+    // If it is less than a day from now we provide more granular details, from now
     const secondsFromNow = timestamp - Math.floor(new Date().getTime() / 1000)
     return durationsAsTextFromSeconds(secondsFromNow)
   }
