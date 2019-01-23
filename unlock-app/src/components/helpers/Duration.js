@@ -1,24 +1,35 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { durationsAsTextFromSeconds } from '../../utils/durations'
+import {
+  durationsAsTextFromSeconds,
+  secondsAsDays,
+} from '../../utils/durations'
 
 /**
- * Component which shows a duration
+ * Component which shows a duration in days
  * @param {*} seconds: time in seconds
  */
-export function Duration({ seconds }) {
+export function Duration({ seconds, round }) {
   if (seconds === null) {
     return <span> - </span>
   }
-  return <span>{durationsAsTextFromSeconds(seconds)}</span>
+  const days = secondsAsDays(seconds)
+  const roundedSeconds = days * secondsInADay
+  return (
+    <span>{durationsAsTextFromSeconds(round ? roundedSeconds : seconds)}</span>
+  )
 }
 
 Duration.propTypes = {
   seconds: PropTypes.number,
+  round: PropTypes.bool,
 }
 
 Duration.defaultProps = {
   seconds: null,
+  round: false,
 }
 
 export default Duration
+
+const secondsInADay = 86400
