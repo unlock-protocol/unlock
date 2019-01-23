@@ -5,6 +5,8 @@ import { Provider } from 'react-redux'
 import Home from '../pages'
 import About from '../pages/about'
 import Jobs from '../pages/jobs'
+import Terms from '../pages/terms'
+import Privacy from '../pages/privacy'
 import createUnlockStore from '../createUnlockStore'
 
 const store = createUnlockStore({
@@ -23,4 +25,10 @@ storiesOf('Content pages', module)
   })
   .add('the Jobs page', () => {
     return <Jobs />
+  })
+  .add('the Terms of Service page', () => {
+    return <Terms />
+  })
+  .add('the Privacy Policy page', () => {
+    return <Privacy />
   })

@@ -39,6 +39,8 @@ module.exports = withSourceMaps({
       '/dashboard': { page: '/dashboard' },
       '/paywall': { page: '/paywall' },
       '/demo': { page: '/demo' },
+      '/terms': { page: '/terms' },
+      '/privacy': { page: '/privacy' },
     }
   },
 })
