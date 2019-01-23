@@ -37,8 +37,14 @@ module.exports = {
     rinkeby: {
       provider: new Web3.providers.HttpProvider(rinkebyProviderUrl),
       network_id: '4' // Network Id for Rinkeby
+    },
+    mainnet: {
+      host: 'localhost',
+      port: 8545,
+      network_id: 1,
+      gas: 7000000,
+      gasPrice: 35000000000
     }
-
   },
   solc: {
     optimizer: {
