@@ -26,6 +26,8 @@ const lockedState = {
   router: {
     location: {
       pathname: '/demo/' + lock.address,
+      search: '',
+      hash: '',
     },
   },
   currency: {
@@ -60,6 +62,8 @@ const unlockedState = {
   router: {
     location: {
       pathname: '/demo/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
+      search: '',
+      hash: '',
     },
   },
 }
