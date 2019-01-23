@@ -22,7 +22,7 @@ window.onload = function() {
 
     s.setAttribute(
       'style',
-      'display:none; position:fixed; top:0; left:0; width:100%; height:100vh; border:0px; background: linear-gradient(rgba(255,255,255,0) 18%, rgba(255,255,255,0) 29%, rgb(255,255,255) 48%); z-index: -2147483647;'
+      'display:none; position:fixed; top:0; left:0; width:100%; height:100vh; border:0px; z-index: -2147483647;'
     )
     s.setAttribute('src', src)
     document.getElementsByTagName('body')[0].appendChild(s)
