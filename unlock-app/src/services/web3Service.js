@@ -384,6 +384,7 @@ export default class Web3Service extends EventEmitter {
       confirmations: 0,
       createdAt: new Date().getTime(),
       lock: lock.address, // This is likely a temporary address
+      blockNumber: Number.MAX_SAFE_INTEGER,
     }
 
     return this.sendTransaction(
@@ -513,6 +514,7 @@ export default class Web3Service extends EventEmitter {
           status: 'pending',
           type: transactionType,
           confirmations: 0,
+          blockNumber: Number.MAX_SAFE_INTEGER,
         })
       }
 
@@ -521,6 +523,7 @@ export default class Web3Service extends EventEmitter {
         status: 'mined',
         type: transactionType,
         confirmations: blockNumber - blockTransaction.blockNumber,
+        blockNumber: blockTransaction.blockNumber,
       })
 
       // Let's check its receipt to see if it triggered any event!
