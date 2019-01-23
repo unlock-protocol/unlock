@@ -6,7 +6,7 @@ import {
 } from '../../utils/durations'
 
 /**
- * Component which shows a duration in days
+ * Component which shows a duration, rounded to next day if `round` is `true`
  * @param {*} seconds: time in seconds
  */
 export function Duration({ seconds, round }) {
