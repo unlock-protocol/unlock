@@ -44,9 +44,19 @@ const Wrapper = styled(LockWrapper)`
   cursor: pointer;
 `
 
+const Footer = styled(LockFooter)`
+  background-color: var(--green);
+  color: var(--white);
+`
+
 const Body = styled(LockBody)`
   &:hover {
-    border: ${props => (!props.disabled ? '1px solid var(--green)' : null)};
+    border: ${props =>
+      !props.disabled ? '1px solid var(--activegreen)' : null};
+  }
+  &:hover ${Footer} {
+    background-color: ${props =>
+      !props.disabled ? 'var(--activegreen)' : null};
   }
 `
 
@@ -64,8 +74,3 @@ const FiatPrice = styled.span`
 `
 
 const ExpirationDuration = styled(FiatPrice)``
-
-const Footer = styled(LockFooter)`
-  background-color: var(--green);
-  color: var(--white);
-`
