@@ -24,6 +24,7 @@ export const LockHeader = styled.header`
   height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
+  color: var(--grey);
 `
 
 export const LockFooter = styled.footer`

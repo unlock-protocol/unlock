@@ -12,7 +12,7 @@ export const NoKeyLock = ({ lock, disabled, purchaseKey, lockKey }) => (
       !disabled && purchaseKey(lockKey)
     }}
   >
-    <Header>{lock.name}</Header>
+    <LockHeader>{lock.name}</LockHeader>
     <BalanceProvider
       amount={lock.keyPrice}
       render={(ethPrice, fiatPrice) => (
@@ -48,10 +48,6 @@ const Body = styled(LockBody)`
   &:hover {
     border: ${props => (!props.disabled ? '1px solid var(--green)' : null)};
   }
-`
-
-const Header = styled(LockHeader)`
-  color: var(--grey);
 `
 
 const EthPrice = styled.div`
