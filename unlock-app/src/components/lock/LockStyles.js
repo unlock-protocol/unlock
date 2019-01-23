@@ -5,9 +5,7 @@ export const LockWrapper = styled.li`
   justify-items: stretch;
   margin: 0px;
   padding: 0px;
-
   font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
-
   width: 200px;
   height: 180px;
   grid-gap: 0px;
