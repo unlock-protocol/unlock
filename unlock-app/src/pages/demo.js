@@ -3,7 +3,6 @@ import Head from 'next/head'
 import { connect } from 'react-redux'
 import styled, { createGlobalStyle } from 'styled-components'
 import PropTypes from 'prop-types'
-import withConfig from '../utils/withConfig'
 import { LOCK_PATH_NAME_REGEXP } from '../constants'
 import Media from '../theme/media'
 
@@ -93,7 +92,7 @@ export const mapStateToProps = ({ router }) => {
   }
 }
 
-export default withConfig(connect(mapStateToProps)(Demo))
+export default connect(mapStateToProps)(Demo)
 
 const GlobalStyle = createGlobalStyle`
     @import url('https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|UnifrakturCook:700');
