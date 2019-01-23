@@ -30,7 +30,8 @@ const config = configure()
 export class GlobalErrorProvider extends Component {
   static propTypes = {
     network: UnlockPropTypes.network.isRequired,
-    account: UnlockPropTypes.account.isRequired,
+    // eslint-disable-next-line
+    account: UnlockPropTypes.account,
     router: PropTypes.shape({
       location: PropTypes.shape({
         pathname: PropTypes.string.isRequired,
