@@ -7,21 +7,26 @@ import CreatorAccount from '../components/creator/CreatorAccount'
 import CreatorLocks from '../components/creator/CreatorLocks'
 import DeveloperOverlay from '../components/developer/DeveloperOverlay'
 import BrowserOnly from '../components/helpers/BrowserOnly'
-import withConfig from '../utils/withConfig'
+import GlobalErrorConsumer from '../components/interface/GlobalErrorConsumer'
+import GlobalErrorProvider from '../utils/GlobalErrorProvider'
 import { pageTitle } from '../constants'
 
 export const Dashboard = ({ account, network, locks }) => {
   return (
-    <Layout title="Creator Dashboard">
-      <Head>
-        <title>{pageTitle('Dashboard')}</title>
-      </Head>
-      <BrowserOnly>
-        <CreatorAccount network={network} account={account} />
-        <CreatorLocks locks={locks} />
-        <DeveloperOverlay />
-      </BrowserOnly>
-    </Layout>
+    <GlobalErrorProvider>
+      <GlobalErrorConsumer>
+        <Layout title="Creator Dashboard">
+          <Head>
+            <title>{pageTitle('Dashboard')}</title>
+          </Head>
+          <BrowserOnly>
+            <CreatorAccount network={network} account={account} />
+            <CreatorLocks locks={locks} />
+            <DeveloperOverlay />
+          </BrowserOnly>
+        </Layout>
+      </GlobalErrorConsumer>
+    </GlobalErrorProvider>
   )
 }
 
@@ -45,4 +50,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default withConfig(connect(mapStateToProps)(Dashboard))
+export default connect(mapStateToProps)(Dashboard)
