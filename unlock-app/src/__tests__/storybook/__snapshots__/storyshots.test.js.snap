@@ -27374,9 +27374,6 @@ Object {
         <div
           class=""
         />
-        <div
-          style="position: fixed; top: 0px; left: 0px; height: 100%; width: 100vw;"
-        />
       </div>
     </div>
   </body>,
@@ -27440,9 +27437,6 @@ Object {
       </div>
       <div
         class="sc-640fpx-2 hYuopk"
-      />
-      <div
-        style="position: fixed; top: 0px; left: 0px; height: 100%; width: 100vw;"
       />
     </div>
   </div>,
@@ -39334,6 +39328,7 @@ Object {
   left: 0;
   right: 0;
   bottom: 0;
+  background: linear-gradient( rgba(255,255,255,0) 18%,rgba(255,255,255,0) 29%,var(--offwhite) 48% );
 }
 
 .c1 {
@@ -39345,8 +39340,6 @@ Object {
   right: 0;
   bottom: 0;
   background-color: var(--offwhite);
-  border: solid 1px var(--lightgrey);
-  border-top: 2px solid var(--darkgreen);
   justify-items: center;
   padding: 32px;
   padding-bottom: 100px;
@@ -39573,10 +39566,10 @@ Object {
         </li>
       </ul>
       <div
-        class="vaayz9-0 yWgRi"
+        class="vaayz9-0 bexHxF"
       >
         <div
-          class="vaayz9-1 djaIGN"
+          class="vaayz9-1 hjUKBy"
         >
           <h1
             class="vaayz9-2 fLUsTY"
@@ -39884,6 +39877,7 @@ Object {
   left: 0;
   right: 0;
   bottom: 0;
+  background: linear-gradient( rgba(255,255,255,0) 18%,rgba(255,255,255,0) 29%,var(--offwhite) 48% );
 }
 
 .c1 {
@@ -39895,8 +39889,6 @@ Object {
   right: 0;
   bottom: 0;
   background-color: var(--offwhite);
-  border: solid 1px var(--lightgrey);
-  border-top: 2px solid var(--darkgreen);
   justify-items: center;
   padding: 32px;
   padding-bottom: 100px;
@@ -40169,10 +40161,10 @@ Object {
         </li>
       </ul>
       <div
-        class="vaayz9-0 yWgRi"
+        class="vaayz9-0 bexHxF"
       >
         <div
-          class="vaayz9-1 djaIGN"
+          class="vaayz9-1 hjUKBy"
         >
           <h1
             class="vaayz9-2 fLUsTY"

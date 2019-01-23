@@ -6,7 +6,6 @@ export const iframeStyles = [
   'width:100%',
   'height:100vh',
   'border:0px',
-  'background: linear-gradient(rgba(255,255,255,0) 18%, rgba(255,255,255,0) 29%, rgb(255,255,255) 48%)',
   'z-index: -2147483647',
 ]
 

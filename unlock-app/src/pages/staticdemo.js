@@ -70,22 +70,10 @@ const Demo = ({ lock, locks }) => {
       </Content>
       <Right />
       <BrowserOnly>
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            height: '100%',
-            width: '100vw',
-            background:
-              'linear-gradient(rgba(255,255,255,0) 18%, rgba(255,255,255,0) 29%, rgb(255,255,255) 48%)',
-          }}
-        >
-          <ShowUnlessUserHasKeyToAnyLock locks={[locks[lock]]}>
-            <Overlay locks={[locks[lock]]} />
-            <DeveloperOverlay />
-          </ShowUnlessUserHasKeyToAnyLock>
-        </div>
+        <ShowUnlessUserHasKeyToAnyLock locks={[locks[lock]]}>
+          <Overlay locks={[locks[lock]]} />
+          <DeveloperOverlay />
+        </ShowUnlessUserHasKeyToAnyLock>
       </BrowserOnly>
     </Container>
   )

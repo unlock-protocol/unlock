@@ -58,6 +58,11 @@ const FullPage = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0) 18%,
+    rgba(255, 255, 255, 0) 29%,
+    var(--offwhite) 48%
+  );
 `
 
 const Banner = styled.div`
@@ -69,8 +74,6 @@ const Banner = styled.div`
   right: 0;
   bottom: 0;
   background-color: var(--offwhite);
-  border: solid 1px var(--lightgrey);
-  border-top: 2px solid var(--darkgreen);
   justify-items: center;
   padding: 32px;
   padding-bottom: 100px;
