@@ -6085,7 +6085,7 @@ Object {
   text-align: center;
 }
 
-.c26 {
+.c25 {
   margin-top: 24px;
   margin-bottom: 24px;
   display: grid;
@@ -6098,7 +6098,7 @@ Object {
   align-items: center;
 }
 
-.c27 {
+.c26 {
   justify-self: end;
   font-size: 12px;
   font-weight: 200;
@@ -6127,11 +6127,35 @@ Object {
   width: 100%;
 }
 
-.c24 {
+.c15 {
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--darkgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.c14 {
+  width: 568px;
+  height: 72px;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  border-radius: 4px;
+  display: grid;
+  grid-template-columns: 400px 120px;
+  grid-gap: 16px;
+  padding: 16px;
+  font-family: IBM Plex Mono;
+  font-size: 14px;
+  margin: auto;
+}
+
+.c23 {
   margin-top: 30px;
 }
 
-.c24:before {
+.c23:before {
   display: block;
   content: '';
   width: 87px;
@@ -6147,19 +6171,19 @@ Object {
   margin-top: 0px;
 }
 
-.c25 {
+.c24 {
   font-size: 32px;
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
 }
 
-.c19 {
+.c18 {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 500;
   font-size: 24px;
 }
 
-.c17 {
+.c16 {
   display: grid;
   grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
   grid-gap: 24px;
@@ -6179,55 +6203,55 @@ Object {
   text-align: center;
 }
 
-.c18 {
+.c17 {
   display: grid;
   justify-items: center;
 }
 
-.c20 {
+.c19 {
   border-style: none;
   background: url(/static/images/pages/png/simple.png) no-repeat center/contain;
   width: 280px;
   height: 200px;
 }
 
-.c20:hover {
+.c19:hover {
   background: url(/static/images/pages/png/simple-hover.png) no-repeat center/contain;
 }
 
-.c20:after {
+.c19:after {
   content: url(/static/images/pages/png/simple-hover.png);
   display: none;
 }
 
-.c22 {
+.c21 {
   border-style: none;
   background: url(/static/images/pages/png/code.png) no-repeat center/contain;
   width: 280px;
   height: 200px;
 }
 
-.c22:hover {
+.c21:hover {
   background: url(/static/images/pages/png/code-hover.png) no-repeat center/contain;
 }
 
-.c22:after {
+.c21:after {
   content: url(/static/images/pages/png/code-hover.png);
   display: none;
 }
 
-.c23 {
+.c22 {
   border-style: none;
   background: url(/static/images/pages/png/more.png) no-repeat center/contain;
   width: 280px;
   height: 200px;
 }
 
-.c23:hover {
+.c22:hover {
   background: url(/static/images/pages/png/more-hover.png) no-repeat center/contain;
 }
 
-.c23:after {
+.c22:after {
   content: url(/static/images/pages/png/more-hover.png);
   display: none;
 }
@@ -6240,43 +6264,10 @@ Object {
   font-weight: 700;
 }
 
-.c14 {
-  display: grid;
-  justify-items: center;
-  grid-gap: 16px;
-  margin-bottom: 50px;
-}
-
-.c16 {
-  font-size: 12px;
-  font-weight: 200;
-  font-family: 'IBM Plex Mono','Courier New',Serif;
-  color: var(--darkgrey);
-  display: grid;
-  grid-row: 2;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.c21 {
+.c20 {
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
   font-size: 20px;
-}
-
-.c15 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  cursor: pointer;
-  max-width: 400px;
-  padding: 20px 50px;
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
@@ -6335,7 +6326,7 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c28 {
+  .c27 {
     display: none;
   }
 }
@@ -6516,81 +6507,86 @@ Object {
           <div
             class="c14"
           >
-            <a
-              href="/dashboard"
-            >
-              <button
-                class="c15"
+            <div>
+              To access the dashboard you need to agree to our 
+              <a
+                href="/terms"
               >
-                Go to Your Dashboard
-              </button>
-            </a>
-            <small
-              class="c16"
+                Terms of Service
+              </a>
+                and 
+              <a
+                href="/privacy"
+              >
+                Privacy Policy
+              </a>
+            </div>
+            <button
+              class="c15"
             >
-              Requires a browser with an Ethereum wallet
-            </small>
+              I Agree
+            </button>
           </div>
           <div
-            class="3 c17"
+            class="3 c16"
           >
             <div
-              class="4 c18"
+              class="4 c17"
             >
               <h2
-                class="c19"
+                class="c18"
               >
                 No More Middlemen
               </h2>
               <div
-                class="c20"
+                class="c19"
               />
               <p
-                class="c21"
+                class="c20"
               >
                 There are no middlemen, no fees and no gatekeeper who could shut you down or control your distribution.
               </p>
             </div>
             <div
-              class="4 c18"
+              class="4 c17"
             >
               <h2
-                class="c19"
+                class="c18"
               >
                 Simple Integration
               </h2>
               <div
-                class="c22"
+                class="c21"
               />
               <p
-                class="c21"
+                class="c20"
               >
                 Unlock provides a simple snippet of code to integrate easily with your website, as well as with several other integration tools...
               </p>
             </div>
             <div
-              class="4 c18"
+              class="4 c17"
             >
               <h2
-                class="c19"
+                class="c18"
               >
                 And Much More
               </h2>
               <div
-                class="c23"
+                class="c22"
               />
               <p
-                class="c21"
+                class="c20"
               >
                 For example, Unlock comes with a points system to reward your most loyal fans when they share your content with their friends!
               </p>
             </div>
           </div>
           <section
-            class="c24"
+            class="c23"
           >
             <div
-              class="c25"
+              class="c24"
             >
               Check out our open source code on
                
@@ -6617,7 +6613,7 @@ Object {
             </div>
           </section>
           <footer
-            class="c26"
+            class="c25"
           >
             <a
               class="c6 c7"
@@ -6707,14 +6703,14 @@ Object {
               </small>
             </a>
             <span
-              class="c27"
+              class="c26"
             >
               Made with passion in Brooklyn, NY
             </span>
           </footer>
         </div>
         <div
-          class="c28"
+          class="c27"
         />
       </div>
     </div>
@@ -6893,22 +6889,27 @@ Object {
           Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.
         </p>
         <div
-          class="sc-3na8w6-2 kVyzjr"
+          class="sc-9upljg-1 ilLeiq"
         >
-          <a
-            href="/dashboard"
-          >
-            <button
-              class="sc-1olgoav-5 sc-3na8w6-5 iLlFHq"
+          <div>
+            To access the dashboard you need to agree to our 
+            <a
+              href="/terms"
             >
-              Go to Your Dashboard
-            </button>
-          </a>
-          <small
-            class="sc-3na8w6-3 lmRwbm"
+              Terms of Service
+            </a>
+              and 
+            <a
+              href="/privacy"
+            >
+              Privacy Policy
+            </a>
+          </div>
+          <button
+            class="sc-1olgoav-5 dyUXgA"
           >
-            Requires a browser with an Ethereum wallet
-          </small>
+            I Agree
+          </button>
         </div>
         <div
           class="sc-1mz6j63-13 gTdcXj"
@@ -6925,7 +6926,7 @@ Object {
               class="sc-3na8w6-0 eEACOQ"
             />
             <p
-              class="sc-3na8w6-4 cdXEXc"
+              class="sc-3na8w6-2 ghOOTr"
             >
               There are no middlemen, no fees and no gatekeeper who could shut you down or control your distribution.
             </p>
@@ -6942,7 +6943,7 @@ Object {
               class="sc-3na8w6-0 ivExRd"
             />
             <p
-              class="sc-3na8w6-4 cdXEXc"
+              class="sc-3na8w6-2 ghOOTr"
             >
               Unlock provides a simple snippet of code to integrate easily with your website, as well as with several other integration tools...
             </p>
@@ -6959,7 +6960,7 @@ Object {
               class="sc-3na8w6-0 ecozYg"
             />
             <p
-              class="sc-3na8w6-4 cdXEXc"
+              class="sc-3na8w6-2 ghOOTr"
             >
               For example, Unlock comes with a points system to reward your most loyal fans when they share your content with their friends!
             </p>
@@ -29327,6 +29328,271 @@ Object {
         class="sc-1glv5oz-4 gFLKTL"
       />
     </header>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots HomepageButton Accepted terms 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--darkgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+  max-width: 400px;
+  padding: 20px 50px;
+}
+
+.c0 {
+  display: grid;
+  justify-items: center;
+  grid-gap: 16px;
+  margin-bottom: 50px;
+}
+
+.c2 {
+  font-size: 12px;
+  font-weight: 200;
+  font-family: 'IBM Plex Mono','Courier New',Serif;
+  color: var(--darkgrey);
+  display: grid;
+  grid-row: 2;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <a
+          href="/dashboard"
+        >
+          <button
+            class="c1"
+          >
+            Go to Your Dashboard
+          </button>
+        </a>
+        <small
+          class="c2"
+        >
+          Requires a browser with an Ethereum wallet
+        </small>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-9upljg-2 mSTKx"
+    >
+      <a
+        href="/dashboard"
+      >
+        <button
+          class="sc-1olgoav-5 sc-9upljg-0 jERqoW"
+        >
+          Go to Your Dashboard
+        </button>
+      </a>
+      <small
+        class="sc-9upljg-3 eoUtNY"
+      >
+        Requires a browser with an Ethereum wallet
+      </small>
+    </div>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots HomepageButton Default state 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--darkgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.c0 {
+  width: 568px;
+  height: 72px;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  border-radius: 4px;
+  display: grid;
+  grid-template-columns: 400px 120px;
+  grid-gap: 16px;
+  padding: 16px;
+  font-family: IBM Plex Mono;
+  font-size: 14px;
+  margin: auto;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div>
+          To access the dashboard you need to agree to our 
+          <a
+            href="/terms"
+          >
+            Terms of Service
+          </a>
+            and 
+          <a
+            href="/privacy"
+          >
+            Privacy Policy
+          </a>
+        </div>
+        <button
+          class="c1"
+        >
+          I Agree
+        </button>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-9upljg-1 ilLeiq"
+    >
+      <div>
+        To access the dashboard you need to agree to our 
+        <a
+          href="/terms"
+        >
+          Terms of Service
+        </a>
+          and 
+        <a
+          href="/privacy"
+        >
+          Privacy Policy
+        </a>
+      </div>
+      <button
+        class="sc-1olgoav-5 dyUXgA"
+      >
+        I Agree
+      </button>
+    </div>
   </div>,
   "debug": [Function],
   "getAllByAltText": [Function],
