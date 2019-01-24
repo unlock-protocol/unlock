@@ -20,4 +20,9 @@ describe('Duration Component', () => {
       wrapper.queryByText('115 days, 17 hours, 46 minutes and 40 seconds')
     ).not.toBe(null)
   })
+
+  it('unless we want to round', () => {
+    const wrapper = rtl.render(<Duration seconds={seconds} round />)
+    expect(wrapper.queryByText('116 days')).not.toBe(null)
+  })
 })
