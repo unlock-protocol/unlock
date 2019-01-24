@@ -39361,6 +39361,12 @@ Object {
   grid-column: 1;
 }
 
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c13 {
+    display: none;
+  }
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -39620,7 +39626,7 @@ Object {
             </li>
           </ul>
           <footer
-            class="sc-1ws9jnj-8 lxQGu"
+            class="sc-1ws9jnj-8 qRrum"
           >
             <div
               class="cenpj1-0 dhCRxc"
@@ -39850,6 +39856,12 @@ Object {
   }
 }
 
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c7 {
+    display: none;
+  }
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -40053,7 +40065,7 @@ Object {
             </section>
           </ul>
           <footer
-            class="sc-1ws9jnj-8 lxQGu"
+            class="sc-1ws9jnj-8 qRrum"
           >
             <div
               class="cenpj1-0 dhCRxc"
@@ -40341,6 +40353,12 @@ Object {
   padding: 0px;
   grid-row: 2;
   grid-column: 1;
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c13 {
+    display: none;
+  }
 }
 
 <div>
@@ -40694,7 +40712,7 @@ Object {
             </li>
           </ul>
           <footer
-            class="sc-1ws9jnj-8 lxQGu"
+            class="sc-1ws9jnj-8 qRrum"
           >
             <div
               class="cenpj1-0 dhCRxc"
