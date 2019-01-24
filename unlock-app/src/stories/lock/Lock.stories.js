@@ -18,6 +18,11 @@ const lock = {
   expirationDuration: 2592000,
 }
 
+const soldOutLock = Object.assign(
+  { maxNumberOfKeys: 1, outstandingKeys: 1 },
+  lock
+)
+
 const store = createUnlockStore({
   currency: {
     USD: 195.99,
@@ -43,6 +48,18 @@ storiesOf('Lock', module)
       <Lock
         disabled
         lock={lock}
+        transaction={null}
+        lockKey={null}
+        purchaseKey={purchaseKey}
+        config={config}
+        hideModal={() => {}}
+      />
+    )
+  })
+  .add('disabled - no keys left to sell', () => {
+    return (
+      <Lock
+        lock={soldOutLock}
         transaction={null}
         lockKey={null}
         purchaseKey={purchaseKey}

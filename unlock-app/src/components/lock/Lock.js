@@ -34,11 +34,19 @@ export const Lock = ({
   } else if (transaction && transaction.status == 'mined') {
     return <ConfirmedKeyLock lock={lock} hideModal={hideModal} />
   } else {
+    const soldOut = lock.outstandingKeys >= lock.maxNumberOfKeys
+    // When the lock is not disabled for other reasons (pending key on
+    // other lock...), we need to ensure that the lock is disabled
+    // when the lock is sold out
+    if (!disabled) {
+      disabled = soldOut
+    }
     return (
       <NoKeyLock
         lock={lock}
         disabled={disabled}
         purchaseKey={purchaseKey}
+        soldOut={soldOut}
         lockKey={lockKey}
       />
     )
