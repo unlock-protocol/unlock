@@ -9,7 +9,7 @@ import {
   FORM_KEY_PRICE_INVALID,
 } from '../../../errors'
 
-import { INFINITY } from '../../../constants'
+import { INFINITY, UNLIMITED_KEYS_COUNT } from '../../../constants'
 
 describe('CreatorLockForm', () => {
   let createLock
@@ -24,7 +24,6 @@ describe('CreatorLockForm', () => {
     const ret = rtl.render(
       <CreatorLockForm
         account={{ address: 'hi' }}
-        convert={false} // * see comment below
         createLock={createLock}
         hideAction={hideAction}
         setError={setError}
@@ -32,11 +31,6 @@ describe('CreatorLockForm', () => {
         {...values}
       />
     )
-    // * (regarding the convert prop)
-    // tests that do not explicitly pass "{ convert: true }" will instruct
-    // CreatorLockForm to accept all values "as is" and not convert keyPrice or expirationDuration
-    // from wei and seconds to eth and days, respectively.
-    // this will be removed when a way is found to test form field validation edge cases
     return ret
   }
   const allFormErrors = [
@@ -58,7 +52,7 @@ describe('CreatorLockForm', () => {
 
   describe('things that should not fail', () => {
     it('properly handle unlimited keys when editing', () => {
-      const wrapper = makeLockForm({ maxNumberOfKeys: 0, convert: true })
+      const wrapper = makeLockForm({ maxNumberOfKeys: UNLIMITED_KEYS_COUNT })
 
       const submit = wrapper.getByText('Submit')
       expect(submit).not.toBeNull()
@@ -99,9 +93,9 @@ describe('CreatorLockForm', () => {
       }
     })
     it('key expiration is a negative number', () => {
-      const wrapper = makeLockForm({ expirationDuration: -1 })
+      const wrapper = makeLockForm({ expirationDuration: -2 * 86400 })
 
-      expect(wrapper.getByValue('-1').dataset.valid).toBe('false')
+      expect(wrapper.getByValue('-2').dataset.valid).toBe('false')
     })
     it('max number of keys is missing', () => {
       const save = console.error // eslint-disable-line
@@ -126,9 +120,9 @@ describe('CreatorLockForm', () => {
       }
     })
     it('max number of keys is a negative number', () => {
-      const wrapper = makeLockForm({ maxNumberOfKeys: -1 })
+      const wrapper = makeLockForm({ maxNumberOfKeys: -2 })
 
-      expect(wrapper.getByValue('-1').dataset.valid).toBe('false')
+      expect(wrapper.getByValue('-2').dataset.valid).toBe('false')
     })
     it('key price is not a number', () => {
       const save = console.error // eslint-disable-line
@@ -196,7 +190,7 @@ describe('CreatorLockForm', () => {
         }
       })
       it('max number of keys is a negative number', () => {
-        const wrapper = makeLockForm({ maxNumberOfKeys: -1 })
+        const wrapper = makeLockForm({ maxNumberOfKeys: -2 })
 
         const submit = wrapper.getByText('Submit')
         expect(submit).not.toBeNull()
@@ -250,7 +244,7 @@ describe('CreatorLockForm', () => {
       )
     })
     it('key expiration is a positive number', () => {
-      const wrapper = makeLockForm({ expirationDuration: 35 })
+      const wrapper = makeLockForm({ expirationDuration: 35 * 86400 })
 
       expect(wrapper.getByValue('35').dataset.valid).toBe('true')
     })
@@ -260,13 +254,13 @@ describe('CreatorLockForm', () => {
       expect(wrapper.getByValue('35').dataset.valid).toBe('true')
     })
     it('max number of keys is infinity', () => {
-      const wrapper = makeLockForm({ maxNumberOfKeys: INFINITY })
+      const wrapper = makeLockForm({ maxNumberOfKeys: UNLIMITED_KEYS_COUNT })
 
       expect(wrapper.getByDisplayValue(INFINITY)).not.toBeNull()
       expect(wrapper.getByValue(INFINITY).dataset.valid).toBe('true')
     })
     it('key price is a positive number', () => {
-      const wrapper = makeLockForm({ keyPrice: '0.01' })
+      const wrapper = makeLockForm({ keyPrice: '10000000000000000' })
 
       expect(wrapper.getByValue('0.01').dataset.valid).toBe('true')
     })
