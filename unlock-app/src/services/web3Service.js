@@ -219,6 +219,7 @@ export default class Web3Service extends EventEmitter {
     })
 
     transaction.type = this.getTransactionType(contractAbi, data)
+    transaction.blockNumber = Number.MAX_SAFE_INTEGER
 
     return this.handleTransaction(
       transaction,
@@ -384,7 +385,6 @@ export default class Web3Service extends EventEmitter {
       confirmations: 0,
       createdAt: new Date().getTime(),
       lock: lock.address, // This is likely a temporary address
-      blockNumber: Number.MAX_SAFE_INTEGER,
     }
 
     return this.sendTransaction(
