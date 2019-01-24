@@ -8,6 +8,7 @@ import Jobs from '../pages/jobs'
 import Terms from '../pages/terms'
 import Privacy from '../pages/privacy'
 import createUnlockStore from '../createUnlockStore'
+import { ConfigContext } from '../utils/withConfig'
 
 const store = createUnlockStore({
   currency: {
@@ -15,7 +16,16 @@ const store = createUnlockStore({
   },
 })
 
+const ConfigProvider = ConfigContext.Provider
+
+const config = {
+  env: 'production',
+}
+
 storiesOf('Content pages', module)
+  .addDecorator(getStory => (
+    <ConfigProvider value={config}>{getStory()}</ConfigProvider>
+  ))
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('the Home page', () => {
     return <Home />

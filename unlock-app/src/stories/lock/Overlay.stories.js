@@ -5,8 +5,12 @@ import { Overlay } from '../../components/lock/Overlay'
 import createUnlockStore from '../../createUnlockStore'
 import { GlobalErrorContext } from '../../utils/GlobalErrorProvider'
 import { FATAL_NO_USER_ACCOUNT } from '../../errors'
+import { ConfigContext } from '../../utils/withConfig'
 
 const ErrorProvider = GlobalErrorContext.Provider
+const ConfigProvider = ConfigContext.Provider
+
+const config = {}
 
 const store = createUnlockStore({
   currency: {
@@ -56,9 +60,11 @@ const render = (locks, errors = { error: false, errorMetadata: {} }) => (
       <li>Aliquam tincidunt mauris eu risus.</li>
     </ul>
 
-    <ErrorProvider value={errors}>
-      <Overlay locks={locks} hideModal={() => {}} showModal={() => {}} />
-    </ErrorProvider>
+    <ConfigProvider value={config}>
+      <ErrorProvider value={errors}>
+        <Overlay locks={locks} hideModal={() => {}} showModal={() => {}} />
+      </ErrorProvider>
+    </ConfigProvider>
   </section>
 )
 
