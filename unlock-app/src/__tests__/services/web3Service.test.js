@@ -472,7 +472,7 @@ describe('Web3Service', () => {
 
     describe('getTransaction', () => {
       it('should update the number of confirmation based on number of blocks since the transaction', done => {
-        expect.assertions(2)
+        expect.assertions(3)
         ethBlockNumber(`0x${(29).toString('16')}`)
         ethGetTransactionByHash(transaction.hash, {
           hash:
@@ -500,6 +500,7 @@ describe('Web3Service', () => {
         web3Service.once('transaction.updated', (transaction, update) => {
           expect(update.confirmations).toEqual(15) //29-14
           expect(update.type).toEqual('TYPE') //29-14
+          expect(update.blockNumber).toEqual(14)
           done()
         })
 
@@ -545,7 +546,7 @@ describe('Web3Service', () => {
         })
 
         it('should mark the transaction as failed if the transaction receipt status is false', done => {
-          expect.assertions(3)
+          expect.assertions(4)
           ethGetTransactionReceipt(transaction.hash, {
             transactionIndex: '0x3',
             blockHash:
@@ -561,6 +562,7 @@ describe('Web3Service', () => {
           web3Service.once('transaction.updated', (transaction, update) => {
             expect(update.confirmations).toEqual(15) //29-14
             expect(update.type).toEqual('TYPE')
+            expect(update.blockNumber).toEqual(14)
             web3Service.once('transaction.updated', (transaction, update) => {
               expect(update.status).toBe('failed')
               done()
