@@ -37,6 +37,11 @@ export class CreatorLockForm extends React.Component {
     let expirationDuration = props.expirationDuration
     let keyPrice = props.keyPrice
     let maxNumberOfKeys = props.maxNumberOfKeys
+    // these try/catch blocks are designed to allow us to accept
+    // a wide range of both valid and invalid input
+    // and use the form itself to display invalid values
+    // keeping with the principle of accepting as much as possible
+    // and being strict in what data we send out
     try {
       if (!keyPrice.match(/^[0-9]+$/)) {
         keyPrice = props.keyPrice

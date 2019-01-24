@@ -33,6 +33,7 @@ describe('CreatorLockForm', () => {
     )
     return ret
   }
+  const secondsInADay = 86400
   const allFormErrors = [
     FORM_EXPIRATION_DURATION_INVALID,
     FORM_KEY_PRICE_INVALID,
@@ -93,7 +94,7 @@ describe('CreatorLockForm', () => {
       }
     })
     it('key expiration is a negative number', () => {
-      const wrapper = makeLockForm({ expirationDuration: -2 * 86400 })
+      const wrapper = makeLockForm({ expirationDuration: -2 * secondsInADay })
 
       expect(wrapper.getByValue('-2').dataset.valid).toBe('false')
     })
@@ -244,7 +245,7 @@ describe('CreatorLockForm', () => {
       )
     })
     it('key expiration is a positive number', () => {
-      const wrapper = makeLockForm({ expirationDuration: 35 * 86400 })
+      const wrapper = makeLockForm({ expirationDuration: 35 * secondsInADay })
 
       expect(wrapper.getByValue('35').dataset.valid).toBe('true')
     })
