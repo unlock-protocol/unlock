@@ -24,7 +24,7 @@ export const NoKeyLock = ({ lock, disabled, purchaseKey, lockKey }) => (
               <FiatPrice>${fiatPrice}</FiatPrice>
               <Separator> | </Separator>
               <ExpirationDuration>
-                <Duration seconds={lock.expirationDuration} />
+                <Duration seconds={lock.expirationDuration} round />
               </ExpirationDuration>
             </div>
             <Footer>Purchase</Footer>
