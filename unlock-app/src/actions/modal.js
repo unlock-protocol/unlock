@@ -1,5 +1,5 @@
-export const SHOW_MODAL = 'SHOW_MODAL'
-export const HIDE_MODAL = 'HIDE_MODAL'
+export const SHOW_MODAL = 'modal/SHOW_MODAL'
+export const HIDE_MODAL = 'modal/HIDE_MODAL'
 
 export const showModal = modal => ({
   type: SHOW_MODAL,

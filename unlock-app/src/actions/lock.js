@@ -1,10 +1,10 @@
-export const ADD_LOCK = 'ADD_LOCK'
-export const CREATE_LOCK = 'CREATE_LOCK'
-export const DELETE_LOCK = 'DELETE_LOCK'
-export const LOCK_DEPLOYED = 'LOCK_DEPLOYED'
-export const UPDATE_LOCK = 'UPDATE_LOCK'
-export const UPDATE_LOCK_KEY_PRICE = 'UPDATE_LOCK_KEY_PRICE'
-export const WITHDRAW_FROM_LOCK = 'WITHDRAW_FROM_LOCK'
+export const ADD_LOCK = 'lock/ADD_LOCK'
+export const CREATE_LOCK = 'lock/CREATE_LOCK'
+export const DELETE_LOCK = 'lock/DELETE_LOCK'
+export const LOCK_DEPLOYED = 'lock/LOCK_DEPLOYED'
+export const UPDATE_LOCK = 'lock/UPDATE_LOCK'
+export const UPDATE_LOCK_KEY_PRICE = 'lock/UPDATE_LOCK_KEY_PRICE'
+export const WITHDRAW_FROM_LOCK = 'lock/WITHDRAW_FROM_LOCK'
 
 export const createLock = lock => ({
   type: CREATE_LOCK,

@@ -5,6 +5,8 @@ import {
   STORAGE_ERROR,
   storeLockCreation,
   storeLockUpdate,
+  STORE_LOCK_CREATION,
+  STORE_LOCK_UPDATE,
 } from '../../actions/storage'
 
 describe('Storage action', () => {
@@ -41,7 +43,7 @@ describe('Store Lock Creation', () => {
     const token = 'An authorization token'
 
     const expectation = {
-      type: 'STORE_LOCK_CREATION',
+      type: STORE_LOCK_CREATION,
       owner: owner,
       lock: lock,
       token: token,
@@ -59,7 +61,7 @@ describe('Store Lock Update', () => {
     const update = 'A new lock address'
 
     const expectation = {
-      type: 'STORE_LOCK_UPDATE',
+      type: STORE_LOCK_UPDATE,
       owner: owner,
       lockAddress: currentLock,
       token: token,
