@@ -963,7 +963,7 @@ describe('Web3Service', () => {
 
     describe('sendTransaction', () => {
       it('should handle cases where the transaction is sent via a provider', () => {
-        expect.assertions(4)
+        expect.assertions(5)
 
         web3Service.handleTransaction = jest.fn()
 
@@ -992,6 +992,7 @@ describe('Web3Service', () => {
           data
         )
         expect(transaction.type).toBe('TYPE')
+        expect(transaction.blockNumber).toEqual(Number.MAX_SAFE_INTEGER)
         expect(mockSendTransaction).toHaveBeenCalledWith({
           data,
           from,
