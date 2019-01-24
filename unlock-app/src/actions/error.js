@@ -1,5 +1,5 @@
-export const SET_ERROR = 'SET_ERROR'
-export const RESET_ERROR = 'RESET_ERROR'
+export const SET_ERROR = 'error/SET_ERROR'
+export const RESET_ERROR = 'error/RESET_ERROR'
 
 export const setError = error => ({
   type: SET_ERROR,

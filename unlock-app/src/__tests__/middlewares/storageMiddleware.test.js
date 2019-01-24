@@ -1,4 +1,6 @@
 import storageMiddleware from '../../middlewares/storageMiddleware'
+import { UPDATE_LOCK } from '../../actions/lock'
+import { STORE_LOCK_UPDATE, STORE_LOCK_CREATION } from '../../actions/storage'
 
 /**
  * This is a "fake" middleware caller
@@ -58,7 +60,7 @@ describe('Storage middleware', () => {
   describe('handling STORE_LOCK_CREATION', () => {
     it('dispatches to the appropriate storage middleware handler', () => {
       const { next, invoke } = create()
-      const action = { type: 'STORE_LOCK_CREATION' }
+      const action = { type: STORE_LOCK_CREATION }
       invoke(action)
       expect(mockStoreLockDetails).toHaveBeenCalled()
       expect(next).toHaveBeenCalledTimes(1)
@@ -69,7 +71,7 @@ describe('Storage middleware', () => {
     describe('when the update is a transaction', () => {
       it('calls the next middleware', () => {
         const { next, invoke } = create()
-        const action = { type: 'UPDATE_LOCK', update: { transaction: 'foo' } }
+        const action = { type: UPDATE_LOCK, update: { transaction: 'foo' } }
         invoke(action)
         expect(mockLockLookUp).not.toBeCalled()
         expect(next).toHaveBeenCalledTimes(1)
@@ -78,7 +80,7 @@ describe('Storage middleware', () => {
     describe('when the update is not a transaction', () => {
       it('dispatches to the appropriate storage middleware handler', () => {
         const { next, invoke } = create()
-        const action = { type: 'UPDATE_LOCK', update: { foo: 'foo' } }
+        const action = { type: UPDATE_LOCK, update: { foo: 'foo' } }
         invoke(action)
         expect(mockLockLookUp).toBeCalled()
         expect(next).toHaveBeenCalledTimes(1)
@@ -91,7 +93,7 @@ describe('Storage middleware', () => {
       it('dispatches to the appropriate storage middleware handler', () => {
         const { next, invoke } = create()
         const action = {
-          type: 'STORE_LOCK_UPDATE',
+          type: STORE_LOCK_UPDATE,
           address: '0xfff',
           lock: { address: '0x3f3f3' },
         }
