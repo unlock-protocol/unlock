@@ -1366,36 +1366,8 @@ describe('Web3Service', () => {
         })
       })
 
-      it('should not fail when keys do not exist for the requested page', done => {
-        const onPage = 3
-        const byPage = 5
-
-        expect.assertions(3)
-
-        web3Service._getKeyByLockForOwner = jest.fn(() => {
-          return new Promise(resolve => {
-            return resolve([100, 'hello'])
-          })
-        })
-
-        ethCallAndYield(
-          `0x10803b72${abiPaddedString([onPage, byPage])}`,
-          lockAddress,
-          '0x'
-        )
-
-        web3Service.on('keys.page', (lock, page, keys) => {
-          expect(lockAddress).toEqual(lock)
-          expect(page).toEqual(onPage)
-          expect(keys.length).toEqual(0)
-          done()
-        })
-
-        web3Service.getKeysForLockOnPage(lockAddress, onPage, byPage)
-      })
-
       describe('when the on contract method does not exist', () => {
-        it.skip('should use the iterative method of providing keyholder', done => {
+        it('should use the iterative method of providing keyholder', done => {
           const onPage = 0
           const byPage = 2
 
