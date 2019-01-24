@@ -37,15 +37,36 @@ export class CreatorLockForm extends React.Component {
     let expirationDuration = props.expirationDuration
     let keyPrice = props.keyPrice
     let maxNumberOfKeys = props.maxNumberOfKeys
-    if (props.convert) {
-      keyPrice = Web3Utils.fromWei(keyPrice, props.keyPriceCurrency)
-      expirationDuration = expirationDuration / props.expirationDurationUnit
-      // unlimited keys is represented differently in the frontend and the backend,
-      // so when a lock has `maxNumberOfKeys` set to UNLIMITED_KEYS_COUNT,
-      // convert it to infinity symbol for frontend display
-      if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
-        maxNumberOfKeys = INFINITY
+    // these try/catch blocks are designed to allow us to accept
+    // a wide range of both valid and invalid input
+    // and use the form itself to display invalid values
+    // keeping with the principle of accepting as much as possible
+    // and being strict in what data we send out
+    try {
+      if (!keyPrice.match(/^[0-9]+$/)) {
+        keyPrice = props.keyPrice
+      } else {
+        keyPrice = Web3Utils.fromWei(keyPrice, props.keyPriceCurrency)
       }
+    } catch (e) {
+      // silently ignore invalid value, leave as what the original was
+      keyPrice = props.keyPrice
+    }
+    try {
+      expirationDuration =
+        parseInt(expirationDuration) / props.expirationDurationUnit
+      if (isNaN(expirationDuration)) {
+        expirationDuration = props.expirationDuration
+      }
+    } catch (e) {
+      // silently ignore invalid value, leave as what the original was
+      expirationDuration = props.expirationDuration
+    }
+    // unlimited keys is represented differently in the frontend and the backend,
+    // so when a lock has `maxNumberOfKeys` set to UNLIMITED_KEYS_COUNT,
+    // convert it to infinity symbol for frontend display
+    if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
+      maxNumberOfKeys = INFINITY
     }
     this.state = {
       expirationDuration: expirationDuration,
@@ -304,7 +325,6 @@ CreatorLockForm.propTypes = {
   name: PropTypes.string,
   address: PropTypes.string,
   pending: PropTypes.bool,
-  convert: PropTypes.bool, // this prop is to allow form field validation tests to test edge cases
 }
 
 CreatorLockForm.defaultProps = {
@@ -315,7 +335,6 @@ CreatorLockForm.defaultProps = {
   maxNumberOfKeys: 10,
   name: 'New Lock',
   address: uniqid(), // for new locks, we don't have an address, so use a temporary one
-  convert: true,
   pending: false,
 }
 

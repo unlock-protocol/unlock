@@ -30,7 +30,7 @@ storiesOf('CreatorLockForm/invalid', module)
   .add('invalid duration', () => {
     return (
       <CreatorLockForm
-        expirationDuration={-1}
+        expirationDuration={-1 * 86400}
         valid={false}
         hideAction={action('hide')}
         setError={action('setError')}
@@ -41,7 +41,7 @@ storiesOf('CreatorLockForm/invalid', module)
   .add('invalid num keys', () => {
     return (
       <CreatorLockForm
-        maxNumberOfKeys={-1}
+        maxNumberOfKeys={-2}
         valid={false}
         hideAction={action('hide')}
         setError={action('setError')}
