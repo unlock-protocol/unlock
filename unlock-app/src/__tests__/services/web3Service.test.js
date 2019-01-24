@@ -1063,6 +1063,7 @@ describe('Web3Service', () => {
             confirmations: 0,
             createdAt: expect.any(Number),
             lock: lock.address,
+            blockNumber: Number.MAX_SAFE_INTEGER,
           }),
           {
             to: expect.any(String),
