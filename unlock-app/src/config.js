@@ -14,9 +14,9 @@ export function getCurrentProvider(environment) {
 
   if (environment.web3.currentProvider.isTrust) return 'Trust'
 
-  if (typeof environment.SOFA !== 'undefined') return 'Toshi'
+  if (environment.web3.currentProvider.isToshi) return 'Coinbase Wallet'
 
-  if (typeof environment.__CIPHER__ !== 'undefined') return 'Cipher'
+  if (environment.web3.currentProvider.isCipher) return 'Cipher'
 
   if (environment.web3.currentProvider.constructor.name === 'EthereumProvider')
     return 'Mist'
@@ -62,12 +62,14 @@ export default function configure(
   let requiredConfirmations = 12
   let unlockAddress = ''
   let services = {}
+  let supportedProviders = []
 
   if (env === 'test') {
     // In test, we fake the HTTP provider
     providers['HTTP'] = new Web3.providers.HttpProvider(
       `http://${runtimeConfig.httpProvider}:8545`
     )
+    supportedProviders = ['HTTP']
     services['storage'] = { host: 'http://127.0.0.1:8080' }
     isRequiredNetwork = networkId => networkId === 1337
   }
@@ -86,6 +88,8 @@ export default function configure(
         environment.web3.currentProvider
     }
 
+    supportedProviders = ['HTTP']
+
     // In dev, the network can be anything above 100
     isRequiredNetwork = networkId => networkId > 100
 
@@ -103,6 +107,7 @@ export default function configure(
     // In staging, the network can only be rinkeby
     isRequiredNetwork = networkId => networkId === 4
     requiredNetworkId = 4
+    supportedProviders = ['Metamask', 'Opera']
 
     // Address for the Unlock smart contract
     unlockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
@@ -118,6 +123,8 @@ export default function configure(
     // In prod, the network can only be mainnet
     isRequiredNetwork = networkId => networkId === 1
     requiredNetworkId = 1
+
+    supportedProviders = ['Metamask', 'Opera']
   }
 
   if (env === 'prod' || env === 'staging') {
@@ -134,5 +141,6 @@ export default function configure(
     requiredConfirmations,
     unlockAddress,
     services,
+    supportedProviders,
   }
 }
