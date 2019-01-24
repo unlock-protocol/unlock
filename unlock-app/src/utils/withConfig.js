@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import configure from '../config'
 
 /**
  * Function which creates higher order component with the config
