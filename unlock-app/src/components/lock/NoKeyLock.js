@@ -6,7 +6,13 @@ import { LockWrapper, LockHeader, LockBody, LockFooter } from './LockStyles'
 import BalanceProvider from '../helpers/BalanceProvider'
 import Duration from '../helpers/Duration'
 
-export const NoKeyLock = ({ lock, disabled, purchaseKey, lockKey }) => (
+export const NoKeyLock = ({
+  lock,
+  disabled,
+  purchaseKey,
+  lockKey,
+  soldOut,
+}) => (
   <Wrapper
     disabled={disabled}
     onClick={() => {
@@ -27,7 +33,7 @@ export const NoKeyLock = ({ lock, disabled, purchaseKey, lockKey }) => (
                 <Duration seconds={lock.expirationDuration} round />
               </ExpirationDuration>
             </div>
-            <Footer>Purchase</Footer>
+            <Footer>{soldOut ? 'Sold Out' : 'Purchase'}</Footer>
           </Body>
         </div>
       )}
@@ -39,12 +45,14 @@ NoKeyLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   purchaseKey: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
+  soldOut: PropTypes.bool,
   lockKey: UnlockPropTypes.key,
 }
 
 NoKeyLock.defaultProps = {
   disabled: false,
   lockKey: null,
+  soldOut: false,
 }
 
 export default NoKeyLock
