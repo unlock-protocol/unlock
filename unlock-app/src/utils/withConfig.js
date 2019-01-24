@@ -7,8 +7,7 @@ import configure from '../config'
  * Taken from https://reactjs.org/docs/context.html#consuming-context-with-a-hoc
  */
 
-const config = configure()
-export const ConfigContext = React.createContext(config)
+export const ConfigContext = React.createContext()
 
 /**
  * This creates an HOC from a component and injects the configuration.
