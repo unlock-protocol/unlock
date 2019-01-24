@@ -20854,7 +20854,7 @@ Object {
             name="expirationDuration"
             step="1"
             type="number"
-            value="-0.000011574074074074073"
+            value="-1"
           />
            
           days
@@ -21007,7 +21007,7 @@ Object {
           name="expirationDuration"
           step="1"
           type="number"
-          value="-0.000011574074074074073"
+          value="-1"
         />
          
         days
@@ -21404,7 +21404,7 @@ Object {
             required=""
             step="0.00001"
             type="number"
-            value="-0.000000000000000001"
+            value="-1"
           />
         </span>
         <div>
@@ -21557,7 +21557,7 @@ Object {
           required=""
           step="0.00001"
           type="number"
-          value="-0.000000000000000001"
+          value="-1"
         />
       </span>
       <div>
@@ -21905,11 +21905,11 @@ Object {
           class="c3"
         >
           <input
-            data-valid="true"
+            data-valid="false"
             disabled=""
             name="maxNumberOfKeys"
             type="text"
-            value="∞"
+            value="-2"
           />
         </div>
         <span
@@ -22058,11 +22058,11 @@ Object {
         class="mlglvd-7 sc-1u8ov25-5 hzTKUl"
       >
         <input
-          data-valid="true"
+          data-valid="false"
           disabled=""
           name="maxNumberOfKeys"
           type="text"
-          value="∞"
+          value="-2"
         />
       </div>
       <span
