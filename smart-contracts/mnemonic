@@ -1,0 +1,4 @@
+module.exports = {
+  seed: "",
+  accountIndex: 0
+}

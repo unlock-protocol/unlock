@@ -125,6 +125,9 @@ export default function configure(
     requiredNetworkId = 1
 
     supportedProviders = ['Metamask', 'Opera']
+
+    // Address for the Unlock smart contract
+    unlockAddress = '0x3d5409cce1d45233de1d4ebdee74b8e004abdd13'
   }
 
   if (env === 'prod' || env === 'staging') {
