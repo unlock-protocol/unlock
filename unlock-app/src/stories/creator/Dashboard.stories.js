@@ -16,18 +16,21 @@ const transactions = {
     confirmations: 12,
     status: 'mined',
     lock: '0x12345678a',
+    blockNumber: 1,
   },
   '0x5678': {
     hash: '0x56781234',
     confirmations: 4,
     status: 'mined',
     lock: '0x56781234a',
+    blockNumber: 2,
   },
   '0x89ab': {
     hash: '0x9abcdef0',
     confirmations: 2,
     status: 'mined',
     lock: '0x9abcdef0a',
+    blockNumber: 3,
   },
 }
 const locks = {
@@ -37,6 +40,7 @@ const locks = {
     expirationDuration: 86400,
     maxNumberOfKeys: 800,
     outstandingKeys: 32,
+    transaction: '0x5678',
   },
   '0x12345678a': {
     address: '0x12345678a',
@@ -45,6 +49,7 @@ const locks = {
     expirationDuration: 172800,
     maxNumberOfKeys: 240,
     outstandingKeys: 3,
+    transaction: '0x1234',
   },
   '0x9abcdef0a': {
     address: '0x9abcdef0',
@@ -53,6 +58,7 @@ const locks = {
     expirationDuration: 172800,
     maxNumberOfKeys: 0,
     outstandingKeys: 10,
+    transaction: '0x89ab',
   },
 }
 

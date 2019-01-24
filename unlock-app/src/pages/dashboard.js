@@ -11,7 +11,7 @@ import GlobalErrorConsumer from '../components/interface/GlobalErrorConsumer'
 import GlobalErrorProvider from '../utils/GlobalErrorProvider'
 import { pageTitle } from '../constants'
 
-export const Dashboard = ({ account, network, locks }) => {
+export const Dashboard = ({ account, network, locks, transactions }) => {
   return (
     <GlobalErrorProvider>
       <GlobalErrorConsumer>
@@ -21,7 +21,7 @@ export const Dashboard = ({ account, network, locks }) => {
           </Head>
           <BrowserOnly>
             <CreatorAccount network={network} account={account} />
-            <CreatorLocks locks={locks} />
+            <CreatorLocks locks={locks} transactions={transactions} />
             <DeveloperOverlay />
           </BrowserOnly>
         </Layout>
@@ -36,10 +36,12 @@ Dashboard.propTypes = {
   account: UnlockPropTypes.account.isRequired,
   network: UnlockPropTypes.network.isRequired,
   locks: UnlockPropTypes.locks,
+  transactions: UnlockPropTypes.transactions,
 }
 
 Dashboard.defaultProps = {
   locks: {},
+  transactions: {},
 }
 
 const mapStateToProps = state => {
@@ -47,6 +49,7 @@ const mapStateToProps = state => {
     account: state.account,
     network: state.network,
     locks: state.locks,
+    transactions: state.transactions,
   }
 }
 
