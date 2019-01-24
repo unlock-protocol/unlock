@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react'
 import { Provider } from 'react-redux'
 import { Lock } from '../../components/lock/Lock'
 import createUnlockStore from '../../createUnlockStore'
+import { ConfigContext } from '../../utils/withConfig'
 
 // lock, account, keys, purchaseKey
 const purchaseKey = () => {}
@@ -29,7 +30,16 @@ const store = createUnlockStore({
   },
 })
 
+const ConfigProvider = ConfigContext.Provider
+
+const storyConfig = {
+  requiredConfirmations: 12,
+}
+
 storiesOf('Lock', module)
+  .addDecorator(getStory => (
+    <ConfigProvider value={storyConfig}>{getStory()}</ConfigProvider>
+  ))
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('with no key (check hover state too)', () => {
     return (

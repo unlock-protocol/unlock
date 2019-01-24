@@ -1,14 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import configure from '../config'
 
 /**
  * Function which creates higher order component with the config
  * Taken from https://reactjs.org/docs/context.html#consuming-context-with-a-hoc
  */
 
-const config = configure()
-const ConfigContext = React.createContext(config)
+export const ConfigContext = React.createContext()
 
 /**
  * This creates an HOC from a component and injects the configuration.

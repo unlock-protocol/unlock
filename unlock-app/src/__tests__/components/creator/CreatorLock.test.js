@@ -6,6 +6,7 @@ import { CreatorLock } from '../../../components/creator/CreatorLock'
 import configure from '../../../config'
 import createUnlockStore from '../../../createUnlockStore'
 import { UNLIMITED_KEYS_COUNT } from '../../../constants'
+import { ConfigContext } from '../../../utils/withConfig'
 
 jest.mock('next/link', () => {
   return ({ children }) => children
@@ -44,6 +45,8 @@ const transaction = {
   lock: 'lockid',
 }
 
+const ConfigProvider = ConfigContext.Provider
+
 describe('CreatorLock', () => {
   it('should show embed code when the button is clicked', () => {
     const config = configure()
@@ -51,13 +54,15 @@ describe('CreatorLock', () => {
     const store = createUnlockStore()
 
     let wrapper = rtl.render(
-      <Provider store={store} config={config}>
-        <CreatorLock
-          lock={lock}
-          transaction={transaction}
-          updateKeyPrice={() => {}}
-        />
-      </Provider>
+      <ConfigProvider value={config}>
+        <Provider store={store}>
+          <CreatorLock
+            lock={lock}
+            transaction={transaction}
+            updateKeyPrice={() => {}}
+          />
+        </Provider>
+      </ConfigProvider>
     )
 
     expect(
@@ -85,13 +90,15 @@ describe('CreatorLock', () => {
     })
 
     let wrapper = rtl.render(
-      <Provider store={store} config={config}>
-        <CreatorLock
-          lock={lock}
-          transaction={transaction}
-          updateKeyPrice={() => {}}
-        />
-      </Provider>
+      <ConfigProvider value={config}>
+        <Provider store={store}>
+          <CreatorLock
+            lock={lock}
+            transaction={transaction}
+            updateKeyPrice={() => {}}
+          />
+        </Provider>
+      </ConfigProvider>
     )
 
     let editButton = wrapper.getByTitle('Edit')
@@ -112,13 +119,15 @@ describe('CreatorLock', () => {
     })
 
     let wrapper = rtl.render(
-      <Provider store={store} config={config}>
-        <CreatorLock
-          lock={keylock}
-          transaction={transaction}
-          updateKeyPrice={() => {}}
-        />
-      </Provider>
+      <ConfigProvider value={config}>
+        <Provider store={store}>
+          <CreatorLock
+            lock={keylock}
+            transaction={transaction}
+            updateKeyPrice={() => {}}
+          />
+        </Provider>
+      </ConfigProvider>
     )
 
     expect(wrapper.queryByText('1/10')).not.toBeNull()
@@ -136,13 +145,15 @@ describe('CreatorLock', () => {
     })
 
     let wrapper = rtl.render(
-      <Provider store={store} config={config}>
-        <CreatorLock
-          lock={unlimitedlock}
-          transaction={transaction}
-          updateKeyPrice={() => {}}
-        />
-      </Provider>
+      <ConfigProvider value={config}>
+        <Provider store={store}>
+          <CreatorLock
+            lock={unlimitedlock}
+            transaction={transaction}
+            updateKeyPrice={() => {}}
+          />
+        </Provider>
+      </ConfigProvider>
     )
 
     expect(wrapper.queryByText('1/∞')).not.toBeNull()

@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import CreatorLock from '../../components/creator/CreatorLock'
 import createUnlockStore from '../../createUnlockStore'
+import { ConfigContext } from '../../utils/withConfig'
 
 const withdrawalConfirmingAddress = '0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298'
 const withdrawalSubmittedAddress = '0xbbbbbbbbbbbbbbbbbbbbbbbbbb73289473298'
@@ -45,8 +46,17 @@ const store = createUnlockStore({
   },
 })
 
+const config = {
+  requiredConfirmations: 12,
+}
+
+const ConfigProvider = ConfigContext.Provider
+
 storiesOf('CreatorLock', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator(getStory => (
+    <ConfigProvider value={config}>{getStory()}</ConfigProvider>
+  ))
   .add('Deployed', () => {
     const lock = {
       keyPrice: '10000000000000000000',

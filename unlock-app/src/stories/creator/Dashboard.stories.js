@@ -3,6 +3,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { Dashboard } from '../../pages/dashboard'
 import createUnlockStore from '../../createUnlockStore'
+import { ConfigContext } from '../../utils/withConfig'
 
 const account = {
   address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
@@ -80,7 +81,18 @@ const noUserStore = createUnlockStore({
   router,
 })
 
+const ConfigProvider = ConfigContext.Provider
+
+const config = {
+  providers: [],
+  env: 'production',
+  requiredConfirmations: 12,
+}
+
 storiesOf('Dashboard', module)
+  .addDecorator(getStory => (
+    <ConfigProvider value={config}>{getStory()}</ConfigProvider>
+  ))
   .add('the dashboard', () => {
     return (
       <Provider store={store}>
