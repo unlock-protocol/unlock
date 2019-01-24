@@ -7,6 +7,7 @@ import configure from '../config'
 import { createUnlockStore } from '../createUnlockStore'
 
 import GlobalStyle from '../theme/globalStyle'
+import { ConfigContext } from '../utils/withConfig'
 
 const config = configure()
 
@@ -25,7 +26,7 @@ function getOrCreateStore(initialState, history) {
   return window[__NEXT_REDUX_STORE__]
 }
 
-const ConfigContext = React.createContext()
+const ConfigProvider = ConfigContext.Provider
 
 class UnlockApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -81,9 +82,9 @@ The Unlock team
         <GlobalStyle />
         <Provider store={store}>
           <ConnectedRouter history={history}>
-            <ConfigContext.Provider value={config}>
+            <ConfigProvider value={config}>
               <Component {...pageProps} router={router} />
-            </ConfigContext.Provider>
+            </ConfigProvider>
           </ConnectedRouter>
         </Provider>
       </Container>

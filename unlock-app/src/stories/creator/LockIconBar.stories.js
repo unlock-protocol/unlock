@@ -5,10 +5,18 @@ import { action } from '@storybook/addon-actions'
 import { Provider } from 'react-redux'
 import LockIconBar from '../../components/creator/lock/LockIconBar'
 import createUnlockStore from '../../createUnlockStore'
+import { ConfigContext } from '../../utils/withConfig'
 
 const store = createUnlockStore({})
 
+const ConfigProvider = ConfigContext.Provider
+
+const config = {}
+
 storiesOf('LockIconBar', module)
+  .addDecorator(getStory => (
+    <ConfigProvider value={config}>{getStory()}</ConfigProvider>
+  ))
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('LockIconBar', () => {
     const lock = {

@@ -12,8 +12,10 @@ import {
 import { GlobalErrorContext } from '../../../utils/GlobalErrorProvider'
 import { FATAL_NO_USER_ACCOUNT } from '../../../errors'
 import createUnlockStore from '../../../createUnlockStore'
+import { ConfigContext } from '../../../utils/withConfig'
 
 const ErrorProvider = GlobalErrorContext.Provider
+const ConfigProvider = ConfigContext.Provider
 
 describe('Overlay', () => {
   describe('mapDispatchToProps', () => {
@@ -63,9 +65,15 @@ describe('Overlay', () => {
       expect.assertions(3)
       const wrapper = rtl.render(
         <Provider store={store}>
-          <ErrorProvider value={{ error: false, errorMetadata: {} }}>
-            <Overlay hideModal={() => {}} showModal={() => {}} locks={[lock]} />
-          </ErrorProvider>
+          <ConfigProvider value={{}}>
+            <ErrorProvider value={{ error: false, errorMetadata: {} }}>
+              <Overlay
+                hideModal={() => {}}
+                showModal={() => {}}
+                locks={[lock]}
+              />
+            </ErrorProvider>
+          </ConfigProvider>
         </Provider>
       )
 
