@@ -135,7 +135,7 @@ describe('CreatorLocks', () => {
       account: {},
     })
 
-    const { container } = rtl.render(
+    const wrapper = rtl.render(
       <Provider store={store}>
         <CreatorLocks
           createLock={createLock}
@@ -145,10 +145,13 @@ describe('CreatorLocks', () => {
       </Provider>
     )
 
-    const outerHTML = container.outerHTML
-    const first = outerHTML.indexOf('Alpha')
-    const second = outerHTML.indexOf('Beta')
-    const third = outerHTML.indexOf('Gamma')
-    expect(third < second && second < first).toBeTruthy()
+    const renderedLocks = wrapper.getAllByText(/Blog/)
+    expect(renderedLocks).toHaveLength(3)
+    // Lock "The Gamma Blog" has the highest blockNumber, so it should always appear first
+    expect(renderedLocks[0].innerHTML).toMatch(/Gamma/)
+    // "The Beta Blog" has the second highest, blockNumber, so it should appear second
+    expect(renderedLocks[1].innerHTML).toMatch(/Beta/)
+    // "The Alpha Blog" with the lowest  blockNumber appears last
+    expect(renderedLocks[2].innerHTML).toMatch(/Alpha/)
   })
 })
