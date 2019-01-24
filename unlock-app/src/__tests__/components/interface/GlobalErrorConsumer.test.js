@@ -151,6 +151,70 @@ describe('GlobalErrorConsumer', () => {
       const errorWrapper = rtl.render(Error)
       expect(errorWrapper.queryByText('Fatal Error')).not.toBeNull()
     })
+    describe('overrideMapping', () => {
+      it('overriding FATAL_NO_USER_ACCOUNT', () => {
+        expect.assertions(2)
+
+        const mapping = {
+          FATAL_NO_USER_ACCOUNT: () => <div>overrode</div>, // eslint-disable-line react/display-name
+        }
+        const wrapper = rtl.render(
+          <Provider
+            value={{
+              error: FATAL_NO_USER_ACCOUNT,
+              errorMetadata: {},
+            }}
+          >
+            <GlobalErrorConsumer overrideMapping={mapping}>
+              hi
+            </GlobalErrorConsumer>
+          </Provider>
+        )
+
+        // verify that error was overridden
+        expect(wrapper.queryByText('overrode')).not.toBeNull()
+
+        const wrapper2 = rtl.render(
+          <Provider
+            value={{
+              error: FATAL_WRONG_NETWORK,
+              errorMetadata: {
+                requiredNetwork: 'CBS',
+                currentNetwork: 'Fox News',
+              },
+            }}
+          >
+            <GlobalErrorConsumer overrideMapping={mapping}>
+              hi
+            </GlobalErrorConsumer>
+          </Provider>
+        )
+
+        // verify other errors are untouched
+        expect(wrapper2.queryByText('Network mismatch')).not.toBeNull()
+      })
+      it('overriding an unknown error', () => {
+        expect.assertions(1)
+
+        const mapping = {
+          GOBBLEDEGOOK_ERROR: () => <div>overrode</div>, // eslint-disable-line react/display-name
+        }
+        const wrapper = rtl.render(
+          <Provider
+            value={{
+              error: 'GOBBLEDEGOOK_ERROR',
+              errorMetadata: {},
+            }}
+          >
+            <GlobalErrorConsumer overrideMapping={mapping}>
+              hi
+            </GlobalErrorConsumer>
+          </Provider>
+        )
+
+        expect(wrapper.queryByText('overrode')).not.toBeNull()
+      })
+    })
   })
   describe('displayError', () => {
     it('displays the error if initialized', () => {
