@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Media from '../../theme/media'
 
 export const LockWrapper = styled.li`
   display: grid;
@@ -129,4 +130,7 @@ export const Colophon = styled.footer`
     font-size: 12px;
     color: var(--darkgrey);
   }
+  ${Media.phone`
+    display: none;
+  `}
 `
