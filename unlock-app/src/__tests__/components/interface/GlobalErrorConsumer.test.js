@@ -155,8 +155,10 @@ describe('GlobalErrorConsumer', () => {
       it('overriding FATAL_NO_USER_ACCOUNT', () => {
         expect.assertions(2)
 
+        const component = () => <div>overrode</div>
+
         const mapping = {
-          FATAL_NO_USER_ACCOUNT: () => <div>overrode</div>, // eslint-disable-line react/display-name
+          FATAL_NO_USER_ACCOUNT: component,
         }
         const wrapper = rtl.render(
           <Provider
@@ -196,8 +198,10 @@ describe('GlobalErrorConsumer', () => {
       it('overriding an unknown error', () => {
         expect.assertions(1)
 
+        const component = () => <div>overrode</div>
+
         const mapping = {
-          GOBBLEDEGOOK_ERROR: () => <div>overrode</div>, // eslint-disable-line react/display-name
+          GOBBLEDEGOOK_ERROR: component,
         }
         const wrapper = rtl.render(
           <Provider
