@@ -8,7 +8,7 @@ import configure from '../config'
  */
 
 const config = configure()
-const ConfigContext = React.createContext(config)
+export const ConfigContext = React.createContext(config)
 
 /**
  * This creates an HOC from a component and injects the configuration.
