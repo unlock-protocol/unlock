@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
+import PropTypes from 'prop-types'
 import UnlockPropTypes from '../propTypes'
 import Layout from '../components/interface/Layout'
 import CreatorAccount from '../components/creator/CreatorAccount'
@@ -11,7 +12,7 @@ import GlobalErrorConsumer from '../components/interface/GlobalErrorConsumer'
 import GlobalErrorProvider from '../utils/GlobalErrorProvider'
 import { pageTitle } from '../constants'
 
-export const Dashboard = ({ account, network, locks, transactions }) => {
+export const Dashboard = ({ account, network, lockFeed }) => {
   return (
     <GlobalErrorProvider>
       <GlobalErrorConsumer>
@@ -21,7 +22,7 @@ export const Dashboard = ({ account, network, locks, transactions }) => {
           </Head>
           <BrowserOnly>
             <CreatorAccount network={network} account={account} />
-            <CreatorLocks locks={locks} transactions={transactions} />
+            <CreatorLocks lockFeed={lockFeed} />
             <DeveloperOverlay />
           </BrowserOnly>
         </Layout>
@@ -35,21 +36,34 @@ Dashboard.displayName = 'Dashboard'
 Dashboard.propTypes = {
   account: UnlockPropTypes.account.isRequired,
   network: UnlockPropTypes.network.isRequired,
-  locks: UnlockPropTypes.locks,
-  transactions: UnlockPropTypes.transactions,
+  lockFeed: PropTypes.arrayOf(UnlockPropTypes.lock),
 }
 
 Dashboard.defaultProps = {
-  locks: {},
-  transactions: {},
+  lockFeed: [],
 }
 
-const mapStateToProps = state => {
+export const mapStateToProps = state => {
+  // We want to display newer locks first, so sort the locks by blockNumber in descending order
+  const locksComparator = (a, b) => {
+    // Newly created locks may not have a transaction associated just yet
+    // -- those always go right to the top
+    if (!state.transactions[a.transaction]) {
+      return -1
+    }
+    if (!state.transactions[b.transaction]) {
+      return 1
+    }
+    return (
+      state.transactions[b.transaction].blockNumber -
+      state.transactions[a.transaction].blockNumber
+    )
+  }
+  const lockFeed = Object.values(state.locks).sort(locksComparator)
   return {
     account: state.account,
     network: state.network,
-    locks: state.locks,
-    transactions: state.transactions,
+    lockFeed,
   }
 }
 

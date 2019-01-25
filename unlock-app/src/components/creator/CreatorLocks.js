@@ -28,14 +28,8 @@ export class CreatorLocks extends React.Component {
   }
 
   render() {
-    const { locks, transactions, createLock } = this.props
+    const { createLock, lockFeed } = this.props
     const { showDashboardForm } = this.state
-
-    // We want to display newer locks first, so sort the locks by blockNumber in descending order
-    const comparator = (a, b) =>
-      transactions[b.transaction].blockNumber -
-      transactions[a.transaction].blockNumber
-    let lockFeed = Object.values(locks).sort(comparator)
 
     return (
       <Locks>
@@ -69,15 +63,13 @@ export class CreatorLocks extends React.Component {
 
 CreatorLocks.propTypes = {
   createLock: PropTypes.func.isRequired,
-  locks: UnlockPropTypes.locks,
   showForm: UnlockPropTypes.showDashboardForm,
-  transactions: UnlockPropTypes.transactions,
+  lockFeed: PropTypes.arrayOf(UnlockPropTypes.lock),
 }
 
 CreatorLocks.defaultProps = {
-  locks: {},
-  transactions: {},
   showForm: false,
+  lockFeed: [],
 }
 
 const mapDispatchToProps = dispatch => ({
