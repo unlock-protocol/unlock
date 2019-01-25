@@ -22,22 +22,15 @@ export class HomepageButton extends React.Component {
   }
 
   render() {
-    const { env } = this.props
     const { acceptedTerms } = this.state
 
     return (
       <>
         {acceptedTerms !== true && (
           <Action>
-            {env !== 'prod' && (
-              <DashboardButton onClick={this.acceptTerms}>
-                Go to Your Dashboard
-              </DashboardButton>
-            )}
-
-            {env === 'prod' && (
-              <DashboardButton disabled>Dashboard coming soon</DashboardButton>
-            )}
+            <DashboardButton onClick={this.acceptTerms}>
+              Go to Your Dashboard
+            </DashboardButton>
 
             <ButtonLabel>
               Requires a browser with an Ethereum wallet
@@ -111,12 +104,10 @@ const ButtonLabel = styled.small`
 `
 
 HomepageButton.propTypes = {
-  env: PropTypes.string,
   acceptedTerms: PropTypes.bool,
 }
 
 HomepageButton.defaultProps = {
-  env: 'dev',
   acceptedTerms: false,
 }
 
