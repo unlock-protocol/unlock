@@ -10,6 +10,10 @@ CURRENT_DIR=`pwd`;
 UNLOCK_APP_PATH="unlock-app";
 BUILD_PATH="$UNLOCK_APP_PATH/src/out/";
 
+echo "Starting to deploy"
+echo "Env variables:"
+env | grep "TRAVIS_"
+echo ""
 
 if [ -n "$TRAVIS_TAG" ] &&
    [ -n "$TRAVIS_COMMIT" ] &&
