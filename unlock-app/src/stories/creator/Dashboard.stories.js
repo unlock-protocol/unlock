@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { Dashboard } from '../../pages/dashboard'
+import { Dashboard, mapStateToProps } from '../../pages/dashboard'
 import createUnlockStore from '../../createUnlockStore'
 
 const account = {
@@ -70,6 +70,8 @@ const store = createUnlockStore({
   account,
   network,
   router,
+  locks,
+  transactions,
 })
 
 const wrongNetworkStore = createUnlockStore({
@@ -88,38 +90,25 @@ const noUserStore = createUnlockStore({
 
 storiesOf('Dashboard', module)
   .add('the dashboard', () => {
+    const lockFeed = mapStateToProps({ locks, transactions, account, network })
+      .lockFeed
     return (
       <Provider store={store}>
-        <Dashboard
-          network={network}
-          account={account}
-          transactions={transactions}
-          locks={locks}
-        />
+        <Dashboard network={network} account={account} lockFeed={lockFeed} />
       </Provider>
     )
   })
   .add('dashboard, wrong network', () => {
     return (
       <Provider store={wrongNetworkStore}>
-        <Dashboard
-          network={network}
-          account={account}
-          transactions={transactions}
-          locks={locks}
-        />
+        <Dashboard network={network} account={account} />
       </Provider>
     )
   })
   .add('dashboard, no user account', () => {
     return (
       <Provider store={noUserStore}>
-        <Dashboard
-          network={network}
-          account={account}
-          transactions={transactions}
-          locks={locks}
-        />
+        <Dashboard network={network} account={account} />
       </Provider>
     )
   })
