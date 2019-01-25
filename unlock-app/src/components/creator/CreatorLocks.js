@@ -58,11 +58,15 @@ export class CreatorLocks extends React.Component {
           lockFeed.map(lock => {
             return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
           })}
-        {lockFeed.length === 0 && (
+        {lockFeed.length === 0 && !showDashboardForm && (
           <Container>
             <Image src="/static/images/illustrations/lock.svg" />
             <DimMessage>
               <h1>Create a lock to get started</h1>
+              <p>
+                If you have already created some locks, they should appear here
+                momentarily.
+              </p>
             </DimMessage>
           </Container>
         )}

@@ -23592,6 +23592,9 @@ Object {
                 <h1>
                   Create a lock to get started
                 </h1>
+                <p>
+                  If you have already created some locks, they should appear here momentarily.
+                </p>
               </div>
             </section>
           </section>
@@ -23972,6 +23975,9 @@ Object {
               <h1>
                 Create a lock to get started
               </h1>
+              <p>
+                If you have already created some locks, they should appear here momentarily.
+              </p>
             </div>
           </section>
         </section>
