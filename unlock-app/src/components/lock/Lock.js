@@ -10,6 +10,7 @@ import PendingKeyLock from './PendingKeyLock'
 import ConfirmingKeyLock from './ConfirmingKeyLock'
 import ConfirmedKeyLock from './ConfirmedKeyLock'
 import NoKeyLock from './NoKeyLock'
+import { UNLIMITED_KEYS_COUNT } from '../../constants'
 
 export const Lock = ({
   lock,
@@ -34,7 +35,9 @@ export const Lock = ({
   } else if (transaction && transaction.status == 'mined') {
     return <ConfirmedKeyLock lock={lock} hideModal={hideModal} />
   } else {
-    const soldOut = lock.outstandingKeys >= lock.maxNumberOfKeys
+    const soldOut =
+      lock.outstandingKeys >= lock.maxNumberOfKeys &&
+      lock.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT
     // When the lock is not disabled for other reasons (pending key on
     // other lock...), we need to ensure that the lock is disabled
     // when the lock is sold out

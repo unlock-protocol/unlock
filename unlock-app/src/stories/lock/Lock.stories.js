@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { Lock } from '../../components/lock/Lock'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
+import { UNLIMITED_KEYS_COUNT } from '../../constants'
 
 // lock, account, keys, purchaseKey
 const purchaseKey = () => {}
@@ -145,6 +146,22 @@ storiesOf('Lock', module)
     return (
       <Lock
         lock={lockWithBalance}
+        transaction={null}
+        lockKey={null}
+        purchaseKey={purchaseKey}
+        config={config}
+        hideModal={() => {}}
+      />
+    )
+  })
+  .add('with an unlinited number of keys', () => {
+    const lockWithInfiniteNumberOfKeys = Object.assign(
+      { maxNumberOfKeys: UNLIMITED_KEYS_COUNT, outstandingKeys: 4 },
+      lock
+    )
+    return (
+      <Lock
+        lock={lockWithInfiniteNumberOfKeys}
         transaction={null}
         lockKey={null}
         purchaseKey={purchaseKey}
