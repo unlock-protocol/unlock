@@ -10,16 +10,22 @@ CURRENT_DIR=`pwd`;
 UNLOCK_APP_PATH="unlock-app";
 BUILD_PATH="$UNLOCK_APP_PATH/src/out/";
 
-GIT_HEAD=`git rev-parse HEAD`;
 
 if [ -n "$TRAVIS_TAG" ] &&
-   [ "$TRAVIS_BRANCH" = "master" ] &&
+   [ -n "$TRAVIS_COMMIT" ] &&
    [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
-  # This is a tag build on master. We deploy to the main site!
-  DEPLOY_ENV="prod";
-  NETLIFY_SITE_ID="$NETLIFY_PROD_SITE_ID"
-  PROD="--prod";
-  MESSAGE="Deploying version $TRAVIS_TAG to production";
+  # Check that the TRAVIS_COMMIT is actually on the master branch [to avoid deploying tags which are not on master]
+  git branch --contains $TRAVIS_COMMIT | grep 'master' >> /dev/null
+  if [ $? -eq 0 ]; then
+    # This is a tag build on master. We deploy to the main site!
+    DEPLOY_ENV="prod";
+    NETLIFY_SITE_ID="$NETLIFY_PROD_SITE_ID"
+    PROD="--prod";
+    MESSAGE="Deploying version $TRAVIS_TAG to production";
+  else
+    echo "Skipping deployment on Netlify because commit $TRAVIS_COMMIT for tag $TRAVIS_TAG is not on master"
+    exit 0
+  fi
 else
   # This is a branch build. We deploy to the staging site
   DEPLOY_ENV="staging"
@@ -28,11 +34,11 @@ else
   if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
     # This is a build on master, we deploy to staging as a published build
     PROD="--prod";
-    MESSAGE="Deploying $GIT_HEAD to production";
+    MESSAGE="Deploying $TRAVIS_COMMIT to production";
   else
     # we deploy as a draft on staging
     PROD="";
-    MESSAGE="Deploying $GIT_HEAD to draft";
+    MESSAGE="Deploying $TRAVIS_COMMIT to draft";
   fi
 fi
 
