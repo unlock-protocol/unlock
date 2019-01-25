@@ -18,8 +18,11 @@ echo ""
 if [ -n "$TRAVIS_TAG" ] &&
    [ -n "$TRAVIS_COMMIT" ] &&
    [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
-  # Check that the TRAVIS_COMMIT is actually on the master branch [to avoid deploying tags which are not on master]
-  git branch --contains $TRAVIS_COMMIT | grep 'master' >> /dev/null
+  # Check that the TRAVIS_COMMIT is actually on the master branch in
+  # origin to avoid deploying tags which are not on master.
+  git config --replace-all remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
+  git fetch
+  git branch -r --contains $TRAVIS_COMMIT | grep 'master' >> /dev/null
   if [ $? -eq 0 ]; then
     # This is a tag build on master. We deploy to the main site!
     DEPLOY_ENV="prod";
