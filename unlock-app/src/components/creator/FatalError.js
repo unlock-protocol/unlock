@@ -32,7 +32,7 @@ DefaultError.defaultProps = {
   children: defaultError,
 }
 
-const Container = styled.section`
+export const Container = styled.section`
   display: grid;
   row-gap: 16px;
   column-gap: 32px;
@@ -51,11 +51,11 @@ const Container = styled.section`
   }
 `
 
-const Image = styled.img`
+export const Image = styled.img`
   width: 72px;
 `
 
-const Message = styled.div`
+export const Message = styled.div`
   display: grid;
   grid-gap: 16px;
 
