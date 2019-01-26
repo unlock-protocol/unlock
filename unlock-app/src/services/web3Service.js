@@ -259,6 +259,9 @@ export default class Web3Service extends EventEmitter {
       })
       .once('receipt', receipt => {
         callback(null, { event: 'receipt', args: { receipt } })
+        this.emit('transaction.updated', transaction, {
+          blockNumber: receipt.blockNumber,
+        })
         // Should we invoke this only when we have received enough confirmations?
         // That would be safer... but also add a lot of latency.
         this.parseTransactionLogsFromReceipt(transaction, contractAbi, receipt)
