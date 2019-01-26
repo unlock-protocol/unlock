@@ -28,9 +28,8 @@ export class CreatorLocks extends React.Component {
   }
 
   render() {
-    const { locks, createLock } = this.props
+    const { createLock, lockFeed } = this.props
     const { showDashboardForm } = this.state
-    let lockFeed = Object.values(locks).reverse() // We want to display newer locks first
 
     return (
       <Locks>
@@ -64,13 +63,13 @@ export class CreatorLocks extends React.Component {
 
 CreatorLocks.propTypes = {
   createLock: PropTypes.func.isRequired,
-  locks: UnlockPropTypes.locks,
   showForm: UnlockPropTypes.showDashboardForm,
+  lockFeed: PropTypes.arrayOf(UnlockPropTypes.lock),
 }
 
 CreatorLocks.defaultProps = {
-  locks: {},
   showForm: false,
+  lockFeed: [],
 }
 
 const mapDispatchToProps = dispatch => ({
