@@ -2,6 +2,7 @@ import Web3 from 'web3'
 import getConfig from 'next/config'
 import { ETHEREUM_NETWORKS_NAMES } from './constants'
 
+// TODO: consider moving this to another place
 // There is no standard way to detect the provider name...
 export function getCurrentProvider(environment) {
   if (
@@ -39,6 +40,11 @@ export function getCurrentProvider(environment) {
   return 'UnknownProvider'
 }
 
+export const runtimeConfig = {
+  unlockEnv: process.env.UNLOCK_ENV || 'dev',
+  httpProvider: process.env.HTTP_PROVIDER || '127.0.0.1',
+}
+
 /**
  * This function, based on the environment will return the list of providers available, the one that
  * is used, as well as the list of networks and the one that is being used.
@@ -49,12 +55,22 @@ export function getCurrentProvider(environment) {
  */
 export default function configure(
   environment = global,
-  runtimeConfig = getConfig().publicRuntimeConfig
+  nextConfig = getConfig()
 ) {
+  // Determines if we are running on the server (nextjs) or the browser
   const isServer = typeof window === 'undefined'
 
-  const env = runtimeConfig.unlockEnv
+  // When not starting thru nextJS
+  if (typeof nextConfig === 'undefined') {
+    nextConfig = {
+      runtimeConfig,
+    }
+  }
 
+  // Environment, determined UNLOCK_ENV
+  const env = nextConfig.runtimeConfig.unlockEnv
+
+  // Default values
   let providers = {}
   let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
@@ -64,21 +80,23 @@ export default function configure(
   let services = {}
   let supportedProviders = []
 
+  // Test
   if (env === 'test') {
     // In test, we fake the HTTP provider
     providers['HTTP'] = new Web3.providers.HttpProvider(
-      `http://${runtimeConfig.httpProvider}:8545`
+      `http://${nextConfig.runtimeConfig.httpProvider}:8545`
     )
     supportedProviders = ['HTTP']
     services['storage'] = { host: 'http://127.0.0.1:8080' }
     isRequiredNetwork = networkId => networkId === 1337
   }
 
+  // Dev
   if (env === 'dev') {
     // In dev, we assume there is a running local ethereum node with unlocked accounts
     // listening to the HTTP endpoint. We can add more providers (Websockets...) if needed.
     providers['HTTP'] = new Web3.providers.HttpProvider(
-      `http://${runtimeConfig.httpProvider}:8545`
+      `http://${nextConfig.runtimeConfig.httpProvider}:8545`
     )
     services['storage'] = { host: 'http://127.0.0.1:8080' }
 
@@ -87,7 +105,6 @@ export default function configure(
       providers[getCurrentProvider(environment)] =
         environment.web3.currentProvider
     }
-
     supportedProviders = ['HTTP']
 
     // In dev, the network can be anything above 100
@@ -97,6 +114,7 @@ export default function configure(
     requiredConfirmations = 6
   }
 
+  // Staging
   if (env === 'staging') {
     // In staging, for now, we require a web3 injected provider.
     if (typeof environment.web3 !== 'undefined') {
@@ -113,6 +131,7 @@ export default function configure(
     unlockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
   }
 
+  // Production
   if (env === 'prod') {
     // In prod, for now, we require a web3 injected provider.
     if (typeof environment.web3 !== 'undefined') {
@@ -130,6 +149,7 @@ export default function configure(
     unlockAddress = '0x3d5409cce1d45233de1d4ebdee74b8e004abdd13'
   }
 
+  // Setting up the required Network based on its id
   if (env === 'prod' || env === 'staging') {
     requiredNetwork = ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
   }

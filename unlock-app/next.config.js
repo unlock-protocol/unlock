@@ -4,12 +4,10 @@ const { promisify } = require('util')
 const withSourceMaps = require('@zeit/next-source-maps')
 
 const copyFile = promisify(fs.copyFile)
+const { runtimeConfig } = require('./src/config')
 
 module.exports = withSourceMaps({
-  publicRuntimeConfig: {
-    unlockEnv: process.env.UNLOCK_ENV || 'dev',
-    httpProvider: process.env.HTTP_PROVIDER || '127.0.0.1',
-  },
+  publicRuntimeConfig: runtimeConfig,
   webpack(config) {
     return config
   },
