@@ -8,13 +8,11 @@ import BalanceProvider from './BalanceProvider'
  * Component which shows a balance in Eth using default styles.
  * use the BalanceProvider
  * @param {*} amount: the amount to convert to Eth
- * @param {string} unit: the unit of the amount to convert to Eth
  * @param {boolean} convertCurrency: show the converted value
  */
-export const Balance = ({ amount, unit, convertCurrency }) => (
+export const Balance = ({ amount, convertCurrency }) => (
   <BalanceProvider
     amount={amount}
-    unit={unit}
     render={(ethWithPresentation, convertedUSDValue) => (
       <BalanceWithConversion>
         <Currency>
@@ -38,13 +36,11 @@ export const Balance = ({ amount, unit, convertCurrency }) => (
 
 Balance.propTypes = {
   amount: PropTypes.string,
-  unit: PropTypes.string,
   convertCurrency: PropTypes.bool,
 }
 
 Balance.defaultProps = {
   amount: null,
-  unit: 'wei',
   convertCurrency: true,
 }
 

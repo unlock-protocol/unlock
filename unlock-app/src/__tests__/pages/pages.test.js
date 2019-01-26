@@ -50,7 +50,7 @@ describe('Pages', () => {
       const account = {
         address: '0xabc',
         privateKey: 'deadbeef',
-        balance: '200000000000000000',
+        balance: '200',
       }
       rtl.render(
         <Provider store={store}>

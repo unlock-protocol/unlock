@@ -25,7 +25,7 @@ storiesOf('CreatorAccount', module)
   .add('With balance', () => {
     const account = {
       address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
-      balance: '200000000000000000',
+      balance: '200',
     }
     const network = {
       name: 4,

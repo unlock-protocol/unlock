@@ -379,7 +379,11 @@ export default class Web3Service extends EventEmitter {
     )
 
     const data = unlock.methods
-      .createLock(lock.expirationDuration, lock.keyPrice, lock.maxNumberOfKeys)
+      .createLock(
+        lock.expirationDuration,
+        Web3Utils.toWei(lock.keyPrice, 'ether'),
+        lock.maxNumberOfKeys
+      )
       .encodeABI()
 
     // The transaction object!
@@ -413,9 +417,14 @@ export default class Web3Service extends EventEmitter {
    * Returns a promise with the balance
    */
   getAddressBalance(address) {
-    return this.web3.eth.getBalance(address).catch(error => {
-      this.emit('error', error)
-    })
+    return this.web3.eth
+      .getBalance(address)
+      .then(balance => {
+        return Web3Utils.fromWei(balance, 'ether')
+      })
+      .catch(error => {
+        this.emit('error', error)
+      })
   }
 
   /**
@@ -559,7 +568,7 @@ export default class Web3Service extends EventEmitter {
   getLock(address) {
     const contract = new this.web3.eth.Contract(LockContract.abi, address)
     const attributes = {
-      keyPrice: x => x, // this is a BigNumber (represented as string)
+      keyPrice: x => Web3Utils.fromWei(x, 'ether'),
       expirationDuration: parseInt,
       maxNumberOfKeys: value => {
         if (value === MAX_UINT) {
@@ -629,7 +638,7 @@ export default class Web3Service extends EventEmitter {
         from: account.address,
         data: abi,
         gas: 1000000,
-        value: keyPrice,
+        value: Web3Utils.toWei(keyPrice, 'ether'),
         contractAbi: LockContract.abi,
       },
       (error, { event, args } = {}) => {

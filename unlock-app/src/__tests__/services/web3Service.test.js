@@ -316,10 +316,12 @@ describe('Web3Service', () => {
             done()
           })
 
+          const inWei = Web3Utils.hexToNumberString('0xdeadbeef')
+
           web3Service.on('account.changed', account => {
             expect(account).toEqual({
               address: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-              balance: '3735928559',
+              balance: Web3Utils.fromWei(inWei, 'ether'),
             })
           })
 
@@ -365,7 +367,7 @@ describe('Web3Service', () => {
             balance: '123',
           }
           getBalanceForAccountAndYieldBalance(account.address, '0xdeadbeef')
-
+          const inWei = Web3Utils.hexToNumberString('0xdeadbeef')
           web3Service.once('ready', () => {
             expect(web3Service.ready).toBe(true)
             done()
@@ -374,7 +376,7 @@ describe('Web3Service', () => {
           web3Service.on('account.changed', account => {
             expect(account).toEqual({
               address: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-              balance: '3735928559',
+              balance: Web3Utils.fromWei(inWei, 'ether'),
             })
           })
 
@@ -649,10 +651,12 @@ describe('Web3Service', () => {
     describe('getAddressBalance', () => {
       it('should return the balance of the address', () => {
         expect.assertions(1)
+        const balance = '0xdeadbeef'
+        const inWei = Web3Utils.hexToNumberString(balance)
         const address = '0x1df62f291b2e969fb0849d99d9ce41e2f137006e'
         getBalanceForAccountAndYieldBalance(address, '0xdeadbeef')
         return web3Service.getAddressBalance(address).then(balance => {
-          expect(balance).toEqual(Web3Utils.hexToNumberString('0xdeadbeef'))
+          expect(balance).toEqual(Web3Utils.fromWei(inWei, 'ether'))
         })
       })
     })
@@ -691,8 +695,8 @@ describe('Web3Service', () => {
         web3Service.on('lock.updated', (address, update) => {
           expect(address).toBe(lockAddress)
           expect(update).toMatchObject({
-            balance: '3735944941',
-            keyPrice: '10000000000000000',
+            balance: Web3Utils.fromWei('3735944941', 'ether'),
+            keyPrice: Web3Utils.fromWei('10000000000000000', 'ether'),
             expirationDuration: 2592000,
             maxNumberOfKeys: 10,
             owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
@@ -1023,12 +1027,12 @@ describe('Web3Service', () => {
 
         getBalanceForAccountAndYieldBalance(
           '0x07748403082b29a45abD6C124A37E6B14e6B1803',
-          '0x1000'
+          '0x0'
         )
 
         return web3Service.createAccount().then(account => {
           expect(account).toMatchObject({
-            balance: '4096',
+            balance: '0',
             address: '0x07748403082b29a45abD6C124A37E6B14e6B1803',
           })
           web3Service.web3.eth.accounts.create = previousCreate
@@ -1044,7 +1048,7 @@ describe('Web3Service', () => {
         lock = {
           address: '0xadd',
           expirationDuration: 86400, // 1 day
-          keyPrice: '100000000000000000', // 0.1 Eth
+          keyPrice: '0.1', // 0.1 Eth
           maxNumberOfKeys: 100,
         }
         owner = {
@@ -1106,7 +1110,7 @@ describe('Web3Service', () => {
         lock = {
           address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
           expirationDuration: 86400, // 1 day
-          keyPrice: '100000000000000000', // 0.1 Eth
+          keyPrice: '0.1', // 0.1 Eth
           maxNumberOfKeys: 100,
         }
         owner = {
@@ -1151,7 +1155,7 @@ describe('Web3Service', () => {
             from: owner.address,
             data: expect.any(String), // encoded purchaseKey data
             gas: 1000000,
-            value: lock.keyPrice,
+            value: Web3Utils.toWei(lock.keyPrice, 'ether'),
             contractAbi: expect.any(Array), // abi...
           },
           expect.any(Function)
@@ -1193,7 +1197,7 @@ describe('Web3Service', () => {
         lock = {
           address: '0xbE9437f7D6A119c81609A93B724507156E62a84d',
           expirationDuration: 86400, // 1 day
-          keyPrice: '100000000000000000', // 0.1 Eth
+          keyPrice: '0.1', // 0.1 Eth
           maxNumberOfKeys: 100,
         }
         account = {
@@ -1246,7 +1250,7 @@ describe('Web3Service', () => {
         lock = {
           address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
           expirationDuration: 86400, // 1 day
-          keyPrice: '100000000000000000', // 0.1 Eth
+          keyPrice: '0.1', // 0.1 Eth
           maxNumberOfKeys: 100,
         }
         account = {

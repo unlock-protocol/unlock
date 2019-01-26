@@ -6,17 +6,18 @@ export const address = PropTypes.string
 export const account = PropTypes.shape({
   address: address,
   privateKey: PropTypes.string,
-  balance: PropTypes.string, // Too big to be a number
+  balance: PropTypes.string, // Must be expressed in Eth!
 })
 
 export const lock = PropTypes.shape({
   address,
   name: PropTypes.string,
   expirationDuration: PropTypes.number,
-  keyPrice: PropTypes.string,
+  keyPrice: PropTypes.string, // Must be expressed in Eth!
   maxNumberOfKeys: PropTypes.number,
   owner: PropTypes.string,
   outstandingKeys: PropTypes.number,
+  balance: PropTypes.string, // Must be expressed in Eth!
 })
 
 export const transaction = PropTypes.shape({
