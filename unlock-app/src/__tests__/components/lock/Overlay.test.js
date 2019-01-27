@@ -56,7 +56,7 @@ describe('Overlay', () => {
     const lock = {
       name: 'Monthly',
       address: '0xdeadbeef',
-      keyPrice: '100000000000000000000000',
+      keyPrice: '100000',
       expirationDuration: 123456789,
     }
     let store

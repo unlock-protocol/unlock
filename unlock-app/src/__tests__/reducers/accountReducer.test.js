@@ -6,7 +6,7 @@ import { SET_NETWORK } from '../../actions/network'
 describe('account reducer', () => {
   const account = {
     address: '0xdeadbeaf',
-    balance: 0,
+    balance: '0',
   }
 
   it('should return the initial state', () => {
@@ -39,7 +39,7 @@ describe('account reducer', () => {
 
   it('should update an account accordingly when receiving UPDATE_ACCOUNT', () => {
     const update = {
-      balance: 1337,
+      balance: '1337',
     }
     expect(
       reducer(account, {
@@ -48,7 +48,7 @@ describe('account reducer', () => {
       })
     ).toEqual({
       address: account.address,
-      balance: 1337,
+      balance: '1337',
     })
   })
 })

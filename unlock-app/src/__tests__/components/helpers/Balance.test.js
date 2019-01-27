@@ -6,16 +6,14 @@ import { Balance } from '../../../components/helpers/Balance'
 import createUnlockStore from '../../../createUnlockStore'
 
 describe('Balance Component', () => {
-  const unit = 'szabo'
-
   const store = createUnlockStore({
     currency: { USD: 195.99 },
   })
 
-  function renderIt(amount, u = unit, convertCurrency = true) {
+  function renderIt(amount, convertCurrency = true) {
     return rtl.render(
       <Provider store={store}>
-        <Balance amount={amount} unit={u} convertCurrency={convertCurrency} />
+        <Balance amount={amount} convertCurrency={convertCurrency} />
       </Provider>
     )
   }
@@ -31,7 +29,7 @@ describe('Balance Component', () => {
   })
 
   describe('when the balance is < 0.0001 Eth', () => {
-    const amount = '70'
+    const amount = '0.000070'
 
     it('shows the default minimum value of 三 < 0.0001', () => {
       const wrapper = renderIt(amount)
@@ -41,7 +39,7 @@ describe('Balance Component', () => {
   })
 
   describe('when the balance is > 0.0001 Eth and less than 1 Eth', () => {
-    const amount = '75800'
+    const amount = '0.075800'
 
     it('shows the balance in Eth to two decimal places', () => {
       const wrapper = renderIt(amount)
@@ -51,7 +49,7 @@ describe('Balance Component', () => {
   })
 
   describe('when the balance is > 1 Eth ', () => {
-    const amount = '2000000'
+    const amount = '2'
 
     it('shows the balance in Eth to two decimal places', () => {
       const wrapper = renderIt(amount)
@@ -61,7 +59,7 @@ describe('Balance Component', () => {
   })
 
   describe('when the balance converts to > $1000 ', () => {
-    const amount = '20000000'
+    const amount = '20'
 
     it('shows the balance in dollars in locale format without decimal', () => {
       const wrapper = renderIt(amount)
@@ -71,7 +69,7 @@ describe('Balance Component', () => {
   })
 
   describe('when the balance converts to > $100k ', () => {
-    const amount = '2000000000'
+    const amount = '2000'
 
     it('shows the balance in thousands of dollars postfixed with k', () => {
       const wrapper = renderIt(amount)
@@ -81,7 +79,7 @@ describe('Balance Component', () => {
   })
 
   describe('when the balance converts to > $1m ', () => {
-    const amount = '20000000000'
+    const amount = '20000'
 
     it('shows the balance in millions of dollars postfixed with m', () => {
       const wrapper = renderIt(amount)
@@ -91,22 +89,12 @@ describe('Balance Component', () => {
   })
 
   describe('when the balance converts to > $1b ', () => {
-    const amount = '20000000000000'
+    const amount = '20000000'
 
     it('shows the balance in billions of dollars postfixed with b', () => {
       const wrapper = renderIt(amount)
       expect(wrapper.queryByText('20000000.00')).not.toBeNull()
       expect(wrapper.queryByText('3.9b')).not.toBeNull()
-    })
-  })
-
-  describe('when the balance converts to > $1b, unit is eth (used in lock form)', () => {
-    const amount = '9999999'
-
-    it('shows the balance in billions of dollars postfixed with b', () => {
-      const wrapper = renderIt(amount, 'eth')
-      expect(wrapper.queryByText('9999999.00')).not.toBeNull()
-      expect(wrapper.queryByText('2b')).not.toBeNull()
     })
   })
 })

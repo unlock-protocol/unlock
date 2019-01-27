@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
-import Web3Utils from 'web3-utils'
 import { connect } from 'react-redux'
 import uniqid from 'uniqid'
 import UnlockPropTypes from '../../propTypes'
@@ -45,8 +44,6 @@ export class CreatorLockForm extends React.Component {
     try {
       if (!keyPrice.match(/^[0-9]+$/)) {
         keyPrice = props.keyPrice
-      } else {
-        keyPrice = Web3Utils.fromWei(keyPrice, props.keyPriceCurrency)
       }
     } catch (e) {
       // silently ignore invalid value, leave as what the original was
@@ -72,7 +69,6 @@ export class CreatorLockForm extends React.Component {
       expirationDuration: expirationDuration,
       expirationDurationUnit: props.expirationDurationUnit, // Days
       keyPrice: keyPrice,
-      keyPriceCurrency: props.keyPriceCurrency,
       maxNumberOfKeys,
       unlimitedKeys: maxNumberOfKeys === INFINITY,
       name: props.name,
@@ -104,7 +100,6 @@ export class CreatorLockForm extends React.Component {
       'expirationDuration',
       //'expirationDurationUnit',
       'keyPrice',
-      //'keyPriceCurrency',
       'maxNumberOfKeys',
       'name',
     ].reduce((fieldValidity, field) => {
@@ -155,7 +150,6 @@ export class CreatorLockForm extends React.Component {
     const {
       expirationDuration,
       expirationDurationUnit,
-      keyPriceCurrency,
       maxNumberOfKeys,
       unlimitedKeys,
       keyPrice,
@@ -167,7 +161,7 @@ export class CreatorLockForm extends React.Component {
       address: address,
       name: name,
       expirationDuration: expirationDuration * expirationDurationUnit,
-      keyPrice: Web3Utils.toWei(keyPrice.toString(10), keyPriceCurrency),
+      keyPrice: keyPrice.toString(10), // In Eth
       maxNumberOfKeys: unlimitedKeys ? UNLIMITED_KEYS_COUNT : maxNumberOfKeys,
       owner: account.address,
     }
@@ -320,7 +314,6 @@ CreatorLockForm.propTypes = {
   expirationDuration: PropTypes.number,
   expirationDurationUnit: PropTypes.number,
   keyPrice: PropTypes.string,
-  keyPriceCurrency: PropTypes.string,
   maxNumberOfKeys: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // string is for '∞'
   name: PropTypes.string,
   address: PropTypes.string,
@@ -330,8 +323,7 @@ CreatorLockForm.propTypes = {
 CreatorLockForm.defaultProps = {
   expirationDuration: 30 * 86400,
   expirationDurationUnit: 86400, // Days
-  keyPrice: '10000000000000000',
-  keyPriceCurrency: 'ether',
+  keyPrice: '0.01',
   maxNumberOfKeys: 10,
   name: 'New Lock',
   address: uniqid(), // for new locks, we don't have an address, so use a temporary one

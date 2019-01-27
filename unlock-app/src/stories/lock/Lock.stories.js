@@ -141,7 +141,7 @@ storiesOf('Lock', module)
       name: 'Monthly',
       keyPrice: '1203120301203013000',
       fiatPrice: 240.38,
-      balance: 5,
+      balance: '5',
     }
     return (
       <Lock
