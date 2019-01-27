@@ -50,7 +50,7 @@
   "devDependencies": {
     "@svgr/cli": "^4.1.0",
     "babel-jest": "^23.6.0",
-    "depcheck": "^0.6.11",
+    "depcheck": "^0.7.1",
     "nodemon": "^1.18.9",
     "npm-check": "^5.9.0",
     "react-router-test-context": "^0.1.0"
