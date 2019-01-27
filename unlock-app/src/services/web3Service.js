@@ -175,24 +175,30 @@ export default class Web3Service extends EventEmitter {
    * @param {*} transaction
    * @param {*} data
    */
-  getTransactionType(contractAbi, data) {
-    const method = contractAbi.find(binaryInterface => {
+  getTransactionType(contract, data) {
+    const method = contract.abi.find(binaryInterface => {
       return data.startsWith(binaryInterface.signature)
     })
 
-    if (method.name === 'createLock') {
+    if (contract.contractName === 'Unlock' && method.name === 'createLock') {
       return TRANSACTION_TYPES.LOCK_CREATION
     }
 
-    if (method.name === 'purchaseFor') {
+    if (
+      contract.contractName === 'PublicLock' &&
+      method.name === 'purchaseFor'
+    ) {
       return TRANSACTION_TYPES.KEY_PURCHASE
     }
 
-    if (method.name === 'withdraw') {
+    if (contract.contractName === 'PublicLock' && method.name === 'withdraw') {
       return TRANSACTION_TYPES.WITHDRAW
     }
 
-    if (method.name === 'updateKeyPrice') {
+    if (
+      contract.contractName === 'PublicLock' &&
+      method.name === 'updateKeyPrice'
+    ) {
       return TRANSACTION_TYPES.UPDATE_KEY_PRICE
     }
 
@@ -207,7 +213,7 @@ export default class Web3Service extends EventEmitter {
    */
   sendTransaction(
     transaction,
-    { to, from, data, value, gas, contractAbi = [] },
+    { to, from, data, value, gas, contract },
     callback
   ) {
     const web3TransactionPromise = this.web3.eth.sendTransaction({
@@ -218,13 +224,13 @@ export default class Web3Service extends EventEmitter {
       gas,
     })
 
-    transaction.type = this.getTransactionType(contractAbi, data)
+    transaction.type = this.getTransactionType(contract, data)
     transaction.blockNumber = Number.MAX_SAFE_INTEGER
 
     return this.handleTransaction(
       transaction,
       web3TransactionPromise,
-      contractAbi,
+      contract,
       callback
     )
   }
@@ -235,15 +241,10 @@ export default class Web3Service extends EventEmitter {
    * @private
    * @param {*} transaction
    * @param {*} web3TransactionPromise
-   * @param {*} contractAbi
+   * @param {*} contract
    * @param {*} callback
    */
-  handleTransaction(
-    transaction,
-    web3TransactionPromise,
-    contractAbi,
-    callback
-  ) {
+  handleTransaction(transaction, web3TransactionPromise, contract, callback) {
     return web3TransactionPromise
       .once('transactionHash', hash => {
         transaction.hash = hash
@@ -264,7 +265,7 @@ export default class Web3Service extends EventEmitter {
         })
         // Should we invoke this only when we have received enough confirmations?
         // That would be safer... but also add a lot of latency.
-        this.parseTransactionLogsFromReceipt(transaction, contractAbi, receipt)
+        this.parseTransactionLogsFromReceipt(transaction, contract, receipt)
       })
       .on('error', error => {
         this.emit('error', error, transaction)
@@ -358,7 +359,7 @@ export default class Web3Service extends EventEmitter {
         from: account.address,
         data,
         gas: 1000000,
-        contractAbi: LockContract.abi,
+        contract: LockContract,
       },
       (error, { event } = {}) => {
         if (event === 'receipt') {
@@ -401,7 +402,7 @@ export default class Web3Service extends EventEmitter {
         from: owner.address,
         data: data,
         gas: 2000000,
-        contractAbi: UnlockContract.abi,
+        contract: UnlockContract,
       },
       (error, { event, args } = {}) => {
         if (event === 'transactionHash') {
@@ -460,16 +461,12 @@ export default class Web3Service extends EventEmitter {
    * Given a transaction receipt and the abi for a contract, parses and trigger the
    * corresponding events
    * @param {*} transaction
-   * @param {*} contractAbi
+   * @param {*} contract
    * @param {*} transactionReceipt
    */
-  parseTransactionLogsFromReceipt(
-    transaction,
-    contractAbi,
-    transactionReceipt
-  ) {
+  parseTransactionLogsFromReceipt(transaction, contract, transactionReceipt) {
     // Home made event handling since this is not handled correctly by web3 :/
-    const abiEvents = contractAbi.filter(item => {
+    const abiEvents = contract.abi.filter(item => {
       return item.type === 'event'
     })
 
@@ -510,14 +507,14 @@ export default class Web3Service extends EventEmitter {
       if (!blockTransaction) {
         return this.emit('error', new Error(MISSING_TRANSACTION))
       }
-      const contractAbi =
+      const contract =
         this.unlockContractAddress ===
         Web3Utils.toChecksumAddress(blockTransaction.to)
-          ? UnlockContract.abi
-          : LockContract.abi
+          ? UnlockContract
+          : LockContract
 
       const transactionType = this.getTransactionType(
-        contractAbi,
+        contract,
         blockTransaction.input
       )
       if (blockTransaction.transactionIndex === null) {
@@ -554,7 +551,7 @@ export default class Web3Service extends EventEmitter {
 
           return this.parseTransactionLogsFromReceipt(
             transaction,
-            contractAbi,
+            contract,
             transactionReceipt
           )
         })
@@ -639,7 +636,7 @@ export default class Web3Service extends EventEmitter {
         data: abi,
         gas: 1000000,
         value: Web3Utils.toWei(keyPrice, 'ether'),
-        contractAbi: LockContract.abi,
+        contract: LockContract,
       },
       (error, { event, args } = {}) => {
         if (event === 'transactionHash') {
@@ -810,7 +807,7 @@ export default class Web3Service extends EventEmitter {
         from: account.address,
         data: data,
         gas: 1000000,
-        contractAbi: LockContract.abi,
+        contract: LockContract,
       },
       (error, { event } = {}) => {
         if (event === 'receipt') {

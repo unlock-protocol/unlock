@@ -593,16 +593,16 @@ describe('Web3Service', () => {
 
           web3Service.parseTransactionLogsFromReceipt = (
             transactionToUpdate,
-            abi,
+            contract,
             receipt
           ) => {
             expect(transactionToUpdate.hash).toEqual(transaction.hash)
-            expect(abi).toEqual(UnlockContract.abi)
+            expect(contract).toEqual(UnlockContract)
             expect(receipt.blockNumber).toEqual(344)
             expect(receipt.logs).toEqual([])
             web3Service.unlockContractAddress = previousAddress
             expect(web3Service.getTransactionType).toHaveBeenCalledWith(
-              UnlockContract.abi,
+              UnlockContract,
               blockTransaction.input
             )
             done()
@@ -629,15 +629,15 @@ describe('Web3Service', () => {
 
           web3Service.parseTransactionLogsFromReceipt = (
             transactionToUpdate,
-            abi,
+            contract,
             receipt
           ) => {
             expect(transactionToUpdate.hash).toEqual(transaction.hash)
-            expect(abi).toEqual(LockContract.abi)
+            expect(contract).toEqual(LockContract)
             expect(receipt.blockNumber).toEqual(344)
             expect(receipt.logs).toEqual([])
             expect(web3Service.getTransactionType).toHaveBeenCalledWith(
-              LockContract.abi,
+              LockContract,
               blockTransaction.input
             )
             done()
@@ -833,7 +833,7 @@ describe('Web3Service', () => {
         const data = unlock.methods
           .createLock('1000', '1000000000', '1')
           .encodeABI()
-        expect(web3Service.getTransactionType(UnlockContract.abi, data)).toBe(
+        expect(web3Service.getTransactionType(UnlockContract, data)).toBe(
           TRANSACTION_TYPES.LOCK_CREATION
         )
       })
@@ -844,7 +844,7 @@ describe('Web3Service', () => {
         const data = lock.methods
           .purchaseFor(nodeAccounts[0], Web3Utils.utf8ToHex(''))
           .encodeABI()
-        expect(web3Service.getTransactionType(LockContract.abi, data)).toBe(
+        expect(web3Service.getTransactionType(LockContract, data)).toBe(
           TRANSACTION_TYPES.KEY_PURCHASE
         )
       })
@@ -853,7 +853,7 @@ describe('Web3Service', () => {
         expect.assertions(1)
         const lock = new web3Service.web3.eth.Contract(LockContract.abi, '')
         const data = lock.methods.withdraw().encodeABI()
-        expect(web3Service.getTransactionType(LockContract.abi, data)).toBe(
+        expect(web3Service.getTransactionType(LockContract, data)).toBe(
           TRANSACTION_TYPES.WITHDRAW
         )
       })
@@ -984,15 +984,17 @@ describe('Web3Service', () => {
         const value = ''
         const gas = ''
         const privateKey = null
-        const contractAbi = []
+        const contract = {
+          abi: [],
+        }
         const callback = () => {}
         web3Service.sendTransaction(
           transaction,
-          { to, from, data, value, gas, privateKey, contractAbi },
+          { to, from, data, value, gas, privateKey, contract },
           callback
         )
         expect(web3Service.getTransactionType).toHaveBeenCalledWith(
-          contractAbi,
+          contract,
           data
         )
         expect(transaction.type).toBe('TYPE')
@@ -1007,7 +1009,7 @@ describe('Web3Service', () => {
         expect(web3Service.handleTransaction).toHaveBeenCalledWith(
           transaction,
           mockTransaction,
-          [],
+          contract,
           callback
         )
       })
@@ -1076,7 +1078,9 @@ describe('Web3Service', () => {
             from: owner.address,
             data: expect.any(String), // encoded createLock data
             gas: 2000000,
-            contractAbi: expect.any(Array), // abi...
+            contract: expect.objectContaining({
+              abi: expect.any(Array),
+            }),
           },
           expect.any(Function)
         )
@@ -1156,7 +1160,9 @@ describe('Web3Service', () => {
             data: expect.any(String), // encoded purchaseKey data
             gas: 1000000,
             value: Web3Utils.toWei(lock.keyPrice, 'ether'),
-            contractAbi: expect.any(Array), // abi...
+            contract: expect.objectContaining({
+              abi: expect.any(Array), // abi...
+            }),
           },
           expect.any(Function)
         )
@@ -1224,7 +1230,9 @@ describe('Web3Service', () => {
             from: account.address,
             data: expect.any(String), // encoded purchaseKey data
             gas: 1000000,
-            contractAbi: expect.any(Array), // abi...
+            contract: expect.objectContaining({
+              abi: expect.any(Array), // abi...
+            }),
           },
           expect.any(Function)
         )
@@ -1277,7 +1285,9 @@ describe('Web3Service', () => {
             from: account.address,
             data: expect.any(String), // encoded purchaseKey data
             gas: 1000000,
-            contractAbi: expect.any(Array), // abi...
+            contract: expect.objectContaining({
+              abi: expect.any(Array), // abi...
+            }),
           },
           expect.any(Function)
         )
