@@ -474,7 +474,7 @@ describe('Web3Service', () => {
 
     describe('getTransaction', () => {
       it('should update the number of confirmation based on number of blocks since the transaction', done => {
-        expect.assertions(3)
+        expect.assertions(4)
         ethBlockNumber(`0x${(29).toString('16')}`)
         ethGetTransactionByHash(transaction.hash, {
           hash:
@@ -499,14 +499,15 @@ describe('Web3Service', () => {
 
         web3Service.getTransactionType = jest.fn(() => 'TYPE')
 
-        web3Service.once('transaction.updated', (transaction, update) => {
+        web3Service.once('transaction.updated', (transactionHash, update) => {
+          expect(transactionHash).toEqual(transaction.hash)
           expect(update.confirmations).toEqual(15) //29-14
           expect(update.type).toEqual('TYPE') //29-14
           expect(update.blockNumber).toEqual(14)
           done()
         })
 
-        return web3Service.getTransaction(transaction)
+        return web3Service.getTransaction(transaction.hash)
       })
 
       it('should trigger and error if the transaction could not be found', done => {
@@ -520,7 +521,7 @@ describe('Web3Service', () => {
           done()
         })
 
-        return web3Service.getTransaction(transaction)
+        return web3Service.getTransaction(transaction.hash)
       })
 
       describe('when the transaction was mined', () => {
@@ -548,7 +549,7 @@ describe('Web3Service', () => {
         })
 
         it('should mark the transaction as failed if the transaction receipt status is false', done => {
-          expect.assertions(4)
+          expect.assertions(6)
           ethGetTransactionReceipt(transaction.hash, {
             transactionIndex: '0x3',
             blockHash:
@@ -561,17 +562,22 @@ describe('Web3Service', () => {
           })
           web3Service.getTransactionType = jest.fn(() => 'TYPE')
 
-          web3Service.once('transaction.updated', (transaction, update) => {
+          web3Service.once('transaction.updated', (transactionHash, update) => {
+            expect(transactionHash).toEqual(transaction.hash)
             expect(update.confirmations).toEqual(15) //29-14
             expect(update.type).toEqual('TYPE')
             expect(update.blockNumber).toEqual(14)
-            web3Service.once('transaction.updated', (transaction, update) => {
-              expect(update.status).toBe('failed')
-              done()
-            })
+            web3Service.once(
+              'transaction.updated',
+              (transactionHash, update) => {
+                expect(transactionHash).toEqual(transaction.hash)
+                expect(update.status).toBe('failed')
+                done()
+              }
+            )
           })
 
-          return web3Service.getTransaction(transaction)
+          return web3Service.getTransaction(transaction.hash)
         })
 
         it('should parseTransactionLogsFromReceipt with the Unlock abi if the address is one of the Unlock contract', done => {
@@ -592,11 +598,11 @@ describe('Web3Service', () => {
           web3Service.getTransactionType = jest.fn(() => 'TYPE')
 
           web3Service.parseTransactionLogsFromReceipt = (
-            transactionToUpdate,
+            transactionHash,
             contract,
             receipt
           ) => {
-            expect(transactionToUpdate.hash).toEqual(transaction.hash)
+            expect(transactionHash).toEqual(transaction.hash)
             expect(contract).toEqual(UnlockContract)
             expect(receipt.blockNumber).toEqual(344)
             expect(receipt.logs).toEqual([])
@@ -608,7 +614,7 @@ describe('Web3Service', () => {
             done()
           }
           web3Service.unlockContractAddress = blockTransaction.to
-          web3Service.getTransaction(transaction)
+          web3Service.getTransaction(transaction.hash)
         })
 
         it('should parseTransactionLogsFromReceipt with the Lock abi otherwise', done => {
@@ -628,11 +634,11 @@ describe('Web3Service', () => {
           web3Service.getTransactionType = jest.fn(() => 'TYPE')
 
           web3Service.parseTransactionLogsFromReceipt = (
-            transactionToUpdate,
+            transactionHash,
             contract,
             receipt
           ) => {
-            expect(transactionToUpdate.hash).toEqual(transaction.hash)
+            expect(transactionHash).toEqual(transaction.hash)
             expect(contract).toEqual(LockContract)
             expect(receipt.blockNumber).toEqual(344)
             expect(receipt.logs).toEqual([])
@@ -643,7 +649,7 @@ describe('Web3Service', () => {
             done()
           }
 
-          web3Service.getTransaction(transaction)
+          web3Service.getTransaction(transaction.hash)
         })
       })
     })
@@ -897,8 +903,8 @@ describe('Web3Service', () => {
           hash: '0x456',
         }
 
-        web3Service.on('transaction.updated', (updatedTransaction, update) => {
-          expect(updatedTransaction).toBe(transaction)
+        web3Service.on('transaction.updated', (transactionHash, update) => {
+          expect(transactionHash).toEqual(transaction.hash)
           expect(update.confirmations).toBe(1)
           expect(update.status).toBe('mined')
           done()
@@ -937,7 +943,7 @@ describe('Web3Service', () => {
         })
         expect(
           web3Service.parseTransactionLogsFromReceipt
-        ).toHaveBeenCalledWith(transaction, [], receipt)
+        ).toHaveBeenCalledWith(transaction.hash, [], receipt)
       })
 
       it('should handle errors', done => {
