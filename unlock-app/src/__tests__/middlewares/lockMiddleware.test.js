@@ -110,6 +110,7 @@ beforeEach(() => {
     locks: {
       [lock.address]: lock,
     },
+    transactions: {},
     keys: {},
   }
 })
@@ -289,7 +290,7 @@ describe('Lock middleware', () => {
   it('it should handle transaction.updated events triggered by the web3Service', () => {
     const { store } = create()
     const update = {}
-    mockWeb3Service.emit('transaction.updated', transaction, update)
+    mockWeb3Service.emit('transaction.updated', transaction.hash, update)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: UPDATE_TRANSACTION,
@@ -372,10 +373,18 @@ describe('Lock middleware', () => {
       expect.assertions(2)
       const { store } = create()
       const transaction = {
+        hash: '123',
         type: TRANSACTION_TYPES.LOCK_CREATION,
         lock: '0x123',
       }
-      mockWeb3Service.emit('error', { message: 'this was broken' }, transaction)
+      state.transactions = {
+        [transaction.hash]: transaction,
+      }
+      mockWeb3Service.emit(
+        'error',
+        { message: 'this was broken' },
+        transaction.hash
+      )
       expect(store.dispatch).toHaveBeenNthCalledWith(1, {
         type: DELETE_LOCK,
         address: transaction.lock,

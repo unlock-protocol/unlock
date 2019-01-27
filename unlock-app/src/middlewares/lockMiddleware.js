@@ -113,11 +113,12 @@ export default function lockMiddleware({ getState, dispatch }) {
     dispatch(addTransaction(transaction))
   })
 
-  web3Service.on('transaction.updated', (transaction, update) => {
-    dispatch(updateTransaction(transaction.hash, update))
+  web3Service.on('transaction.updated', (transactionHash, update) => {
+    dispatch(updateTransaction(transactionHash, update))
   })
 
-  web3Service.on('error', (error, transaction) => {
+  web3Service.on('error', (error, transactionHash) => {
+    const transaction = getState().transactions[transactionHash]
     if (transaction && transaction.type === TRANSACTION_TYPES.LOCK_CREATION) {
       // delete the lock
       dispatch(deleteLock(transaction.lock))

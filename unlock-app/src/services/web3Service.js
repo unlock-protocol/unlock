@@ -253,19 +253,23 @@ export default class Web3Service extends EventEmitter {
         this.emit('transaction.new', transaction)
       })
       .on('confirmation', confirmationNumber => {
-        this.emit('transaction.updated', transaction, {
+        this.emit('transaction.updated', transaction.hash, {
           status: 'mined',
           confirmations: confirmationNumber,
         })
       })
       .once('receipt', receipt => {
         callback(null, { event: 'receipt', args: { receipt } })
-        this.emit('transaction.updated', transaction, {
+        this.emit('transaction.updated', transaction.hash, {
           blockNumber: receipt.blockNumber,
         })
         // Should we invoke this only when we have received enough confirmations?
         // That would be safer... but also add a lot of latency.
-        this.parseTransactionLogsFromReceipt(transaction, contract, receipt)
+        this.parseTransactionLogsFromReceipt(
+          transaction.hash,
+          contract,
+          receipt
+        )
       })
       .on('error', error => {
         this.emit('error', error, transaction)
@@ -299,7 +303,7 @@ export default class Web3Service extends EventEmitter {
             hash: event.transactionHash,
           }
           this.emit('transaction.new', transaction)
-          this.getTransaction(transaction)
+          this.getTransaction(transaction.hash)
         })
       }
     )
@@ -328,7 +332,7 @@ export default class Web3Service extends EventEmitter {
             lock: lockAddress,
           }
           this.emit('transaction.new', transaction)
-          this.getTransaction(transaction)
+          this.getTransaction(transaction.hash)
         })
       }
     )
@@ -460,11 +464,15 @@ export default class Web3Service extends EventEmitter {
   /**
    * Given a transaction receipt and the abi for a contract, parses and trigger the
    * corresponding events
-   * @param {*} transaction
+   * @param {*} transactionHash
    * @param {*} contract
    * @param {*} transactionReceipt
    */
-  parseTransactionLogsFromReceipt(transaction, contract, transactionReceipt) {
+  parseTransactionLogsFromReceipt(
+    transactionHash,
+    contract,
+    transactionReceipt
+  ) {
     // Home made event handling since this is not handled correctly by web3 :/
     const abiEvents = contract.abi.filter(item => {
       return item.type === 'event'
@@ -488,7 +496,7 @@ export default class Web3Service extends EventEmitter {
           args[input.name] = decoded[input.name]
           return args
         }, {})
-        this.emitContractEvent(transaction, event.name, args)
+        this.emitContractEvent(transactionHash, event.name, args)
       })
     })
   }
@@ -496,13 +504,13 @@ export default class Web3Service extends EventEmitter {
   /**
    * This refreshes a transaction by its hash.
    * It will only process the transaction if the filter function returns true
-   * @param {Transaction} transaction
+   * @param {string} transactionHash
    * @param {Function} filter
    */
-  getTransaction(transaction) {
+  getTransaction(transactionHash) {
     Promise.all([
       this.web3.eth.getBlockNumber(),
-      this.web3.eth.getTransaction(transaction.hash),
+      this.web3.eth.getTransaction(transactionHash),
     ]).then(([blockNumber, blockTransaction]) => {
       if (!blockTransaction) {
         return this.emit('error', new Error(MISSING_TRANSACTION))
@@ -519,7 +527,7 @@ export default class Web3Service extends EventEmitter {
       )
       if (blockTransaction.transactionIndex === null) {
         // This means the transaction is not in a block yet (ie. not mined)
-        return this.emit('transaction.updated', transaction, {
+        return this.emit('transaction.updated', transactionHash, {
           status: 'pending',
           type: transactionType,
           confirmations: 0,
@@ -528,7 +536,7 @@ export default class Web3Service extends EventEmitter {
       }
 
       // The transaction was mined
-      this.emit('transaction.updated', transaction, {
+      this.emit('transaction.updated', transactionHash, {
         status: 'mined',
         type: transactionType,
         confirmations: blockNumber - blockTransaction.blockNumber,
@@ -537,20 +545,20 @@ export default class Web3Service extends EventEmitter {
 
       // Let's check its receipt to see if it triggered any event!
       return this.web3.eth
-        .getTransactionReceipt(transaction.hash)
+        .getTransactionReceipt(transactionHash)
         .then(transactionReceipt => {
           // NOTE: old version of web3.js (pre 1.0.0-beta.34) are not parsing 0x0 into a falsy value
           if (
             !transactionReceipt.status ||
             transactionReceipt.status == '0x0'
           ) {
-            return this.emit('transaction.updated', transaction, {
+            return this.emit('transaction.updated', transactionHash, {
               status: 'failed',
             })
           }
 
           return this.parseTransactionLogsFromReceipt(
-            transaction,
+            transactionHash,
             contract,
             transactionReceipt
           )
