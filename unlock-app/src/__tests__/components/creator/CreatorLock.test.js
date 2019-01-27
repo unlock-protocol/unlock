@@ -15,7 +15,7 @@ jest.mock('next/link', () => {
 const lock = {
   address: '0x1234567890',
   transaction: 'transactionid',
-  keyPrice: '100000000000000000',
+  keyPrice: '0.1',
   balance: '1',
   expirationDuration: 100,
 }

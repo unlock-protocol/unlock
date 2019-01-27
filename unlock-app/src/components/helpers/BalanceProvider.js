@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import Web3Utils from 'web3-utils'
 import { connect } from 'react-redux'
 
 import UnlockPropTypes from '../../propTypes'
@@ -8,18 +7,13 @@ import { formatEth, formatCurrency } from '../../selectors/currency'
 /**
  * Render props component which computes the data required to display balance.
  * This is useful to display balance in different ways.
+ * amount is always in eth
  */
-export const BalanceProvider = ({ amount, unit, conversion, render }) => {
+export const BalanceProvider = ({ amount, conversion, render }) => {
   if (typeof amount === 'undefined' || amount === null) {
     return render(' - ', ' - ') || null
   }
-  let currency
-  if (unit !== 'dollars' && unit !== 'eth') {
-    const inWei = Web3Utils.toWei(amount || '0', unit)
-    currency = Web3Utils.fromWei(inWei, 'ether')
-  } else {
-    currency = +amount
-  }
+  let currency = parseFloat(amount)
   const ethWithPresentation = formatEth(currency)
   let convertedUSDValue
   if (!conversion.USD) {
@@ -32,14 +26,12 @@ export const BalanceProvider = ({ amount, unit, conversion, render }) => {
 
 BalanceProvider.propTypes = {
   amount: PropTypes.string,
-  unit: PropTypes.string,
   conversion: UnlockPropTypes.conversion,
   convertCurrency: PropTypes.bool,
 }
 
 BalanceProvider.defaultProps = {
   amount: null,
-  unit: 'wei',
   conversion: { USD: undefined },
   convertCurrency: true,
 }
