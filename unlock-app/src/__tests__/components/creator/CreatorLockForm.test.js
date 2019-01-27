@@ -261,7 +261,7 @@ describe('CreatorLockForm', () => {
       expect(wrapper.getByValue(INFINITY).dataset.valid).toBe('true')
     })
     it('key price is a positive number', () => {
-      const wrapper = makeLockForm({ keyPrice: '10000000000000000' })
+      const wrapper = makeLockForm({ keyPrice: '0.01' })
 
       expect(wrapper.getByValue('0.01').dataset.valid).toBe('true')
     })
@@ -276,7 +276,7 @@ describe('CreatorLockForm', () => {
       expect(createLock).toHaveBeenCalledWith(
         expect.objectContaining({
           expirationDuration: 2592000,
-          keyPrice: '10000000000000000',
+          keyPrice: '0.01',
           maxNumberOfKeys: 10,
           name: 'New Lock',
           owner: 'hi',

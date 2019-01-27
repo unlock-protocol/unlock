@@ -18,7 +18,7 @@ storiesOf('Buttons/Lock Buttons', module)
   .add('Withdraw, positive balance', () => {
     const lock = {
       address: '0xabc',
-      balance: 1,
+      balance: '1',
     }
     return <Buttons.Withdraw lock={lock} />
   })
