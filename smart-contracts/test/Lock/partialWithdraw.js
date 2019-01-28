@@ -64,11 +64,10 @@ contract('Lock', (accounts) => {
         await locks['OWNED'].partialWithdraw(0, {
           from: owner
         })
-        return
+        assert.fail()
       } catch (error) {
-        assert.equal(error.message, 'VM Exception while processing transaction: revert Not enough funds')
+        assert.equal(error.message, 'VM Exception while processing transaction: revert Must request an amount greater than 0')
       }
-      assert.fail()
     })
 
     describe('when the owner withdraws some funds', () => {
