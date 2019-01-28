@@ -1,5 +1,6 @@
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
+const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
 const Unlock = artifacts.require('../Unlock.sol')
@@ -13,13 +14,13 @@ contract('Lock', (accounts) => {
 
   describe('partialWithdraw', () => {
     let owner, price, initialLockBalance, withdrawalAmount
-    price = Units.convert('0.01', 'eth', 'wei')
-    withdrawalAmount = Units.convert('0.005', 'eth', 'wei')
+    price = new BigNumber(Units.convert('0.01', 'eth', 'wei'))
+    withdrawalAmount = new BigNumber(Units.convert('0.005', 'eth', 'wei'))
 
     before(() => {
       const purchases = [accounts[1], accounts[2]].map((account) => {
         return locks['OWNED'].purchaseFor(account, Web3Utils.toHex(''), {
-          value: price,
+          value: price.toFixed(),
           from: account
         })
       })
@@ -47,8 +48,8 @@ contract('Lock', (accounts) => {
 
     it('should fail if too much is withdrawn', async () => {
       try {
-        initialLockBalance = web3.eth.getBalance(locks['OWNED'].address)
-        await locks['OWNED'].partialWithdraw(initialLockBalance.add(withdrawalAmount), {
+        initialLockBalance = new BigNumber(web3.eth.getBalance(locks['OWNED'].address))
+        await locks['OWNED'].partialWithdraw(initialLockBalance.plus(withdrawalAmount), {
           from: owner
         })
       } catch (error) {
@@ -60,7 +61,6 @@ contract('Lock', (accounts) => {
 
     it('should fail if requesting partial withdraw of 0', async () => {
       try {
-        initialLockBalance = web3.eth.getBalance(locks['OWNED'].address)
         await locks['OWNED'].partialWithdraw(0, {
           from: owner
         })
@@ -74,8 +74,8 @@ contract('Lock', (accounts) => {
       let initialOwnerBalance, expectedLockBalance, finalLockBalance, finalOwnerBalance, gasPrice, gasUsed, txObj, txHash, txFee
 
       before(async () => {
-        expectedLockBalance = initialLockBalance.sub(withdrawalAmount)
-        initialOwnerBalance = web3.eth.getBalance(owner)
+        expectedLockBalance = initialLockBalance.minus(withdrawalAmount)
+        initialOwnerBalance = new BigNumber(web3.eth.getBalance(owner))
         txObj = await locks['OWNED'].partialWithdraw(withdrawalAmount, {
           from: owner
         })
@@ -83,16 +83,16 @@ contract('Lock', (accounts) => {
 
       it('should increase the owner\'s balance with the amount of funds withdrawn from the lock', async () => {
         txHash = await web3.eth.getTransaction(txObj.tx)
-        gasUsed = txObj.receipt.gasUsed
-        gasPrice = txHash.gasPrice
+        gasUsed = new BigNumber(txObj.receipt.gasUsed)
+        gasPrice = new BigNumber(txHash.gasPrice)
         txFee = gasPrice.mul(gasUsed)
-        finalOwnerBalance = web3.eth.getBalance(owner)
-        assert(finalOwnerBalance.eq(initialOwnerBalance.add(withdrawalAmount).sub(txFee)))
+        finalOwnerBalance = new BigNumber(web3.eth.getBalance(owner))
+        assert.equal(finalOwnerBalance.toFixed(), initialOwnerBalance.plus(withdrawalAmount).minus(txFee).toFixed())
       })
 
-      it('should decrease the lock\'s balance by the amount of funds withdrawn from the lock', () => {
-        finalLockBalance = (web3.eth.getBalance(locks['OWNED'].address))
-        assert(finalLockBalance.eq(expectedLockBalance))
+      it('should decrease the lock\'s balance by the amount of funds withdrawn from the lock', async () => {
+        finalLockBalance = new BigNumber(web3.eth.getBalance(locks['OWNED'].address))
+        assert.equal(finalLockBalance.toFixed(), expectedLockBalance)
       })
     })
   })

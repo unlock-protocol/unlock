@@ -1,5 +1,6 @@
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
+const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
 const Unlock = artifacts.require('../Unlock.sol')
@@ -74,59 +75,41 @@ contract('Lock', (accounts) => {
       })
 
       describe('when the user already owns an expired key', () => {
-        it('should expand the validity by the default key duration', () => {
-          return locks['SECOND'].purchaseFor(accounts[4], Web3Utils.toHex('Satoshi'), {
+        it('should expand the validity by the default key duration', async () => {
+          await locks['SECOND'].purchaseFor(accounts[4], Web3Utils.toHex('Satoshi'), {
             value: Units.convert('0.01', 'eth', 'wei')
-          }).then(() => {
-            // let's now expire the key
-            return locks['SECOND'].expireKeyFor(accounts[4])
-          }).then(() => {
-            // Purchase a new one
-            return locks['SECOND'].purchaseFor(accounts[4], Web3Utils.toHex('Satoshi'), {
-              value: Units.convert('0.01', 'eth', 'wei')
-            })
-          }).then(() => {
-            // And check the expiration which shiuld be exactly now + keyDuration
-            return locks['SECOND'].keyExpirationTimestampFor(accounts[4])
-          }).then((expirationTimestamp) => {
-            const now = parseInt(new Date().getTime() / 1000)
-            // we check +/- 10 seconds to fix for now being different inside the EVM and here... :(
-            assert(expirationTimestamp.gt(locks['SECOND'].params.expirationDuration + now - 10))
-            assert(expirationTimestamp.lt(locks['SECOND'].params.expirationDuration + now + 10))
           })
+          // let's now expire the key
+          await locks['SECOND'].expireKeyFor(accounts[4])
+          // Purchase a new one
+          await locks['SECOND'].purchaseFor(accounts[4], Web3Utils.toHex('Satoshi'), {
+            value: Units.convert('0.01', 'eth', 'wei')
+          })
+          // And check the expiration which shiuld be exactly now + keyDuration
+          const expirationTimestamp = new BigNumber(await locks['SECOND'].keyExpirationTimestampFor(accounts[4]))
+          const now = parseInt(new Date().getTime() / 1000)
+          // we check +/- 10 seconds to fix for now being different inside the EVM and here... :(
+          assert(expirationTimestamp.gt(locks['SECOND'].params.expirationDuration + now - 10))
+          assert(expirationTimestamp.lt(locks['SECOND'].params.expirationDuration + now + 10))
         })
       })
 
       describe('when the user already owns a non expired key', () => {
-        it('should expand the validity by the default key duration', () => {
-          let firstExpiration
-          return locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
+        it('should expand the validity by the default key duration', async () => {
+          await locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
             value: Units.convert('0.01', 'eth', 'wei')
           })
-            .then(() => {
-              return Promise.all([
-                locks['FIRST'].keyDataFor(accounts[1]),
-                locks['FIRST'].keyExpirationTimestampFor(accounts[1])
-              ])
+          const firstKeyData = await locks['FIRST'].keyDataFor(accounts[1])
+          assert.equal(Web3Utils.toUtf8(firstKeyData), 'Satoshi')
+          const firstExpiration = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(accounts[1]))
+          assert(firstExpiration.gt(0))
+          await locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Szabo'), {
+              value: Units.convert('0.01', 'eth', 'wei')
             })
-            .then(([keyData, expirationTimestamp]) => {
-              assert.equal(Web3Utils.toUtf8(keyData), 'Satoshi')
-              firstExpiration = expirationTimestamp
-              assert(firstExpiration.gt(0))
-              return locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Szabo'), {
-                value: Units.convert('0.01', 'eth', 'wei')
-              })
-            })
-            .then(() => {
-              return Promise.all([
-                locks['FIRST'].keyDataFor(accounts[1]),
-                locks['FIRST'].keyExpirationTimestampFor(accounts[1])
-              ])
-            })
-            .then(([keyData, expirationTimestamp]) => {
-              assert.equal(Web3Utils.toUtf8(keyData), 'Szabo')
-              assert(expirationTimestamp.eq(firstExpiration.add(locks['FIRST'].params.expirationDuration)))
-            })
+          const keyData = await locks['FIRST'].keyDataFor(accounts[1])
+          assert.equal(Web3Utils.toUtf8(keyData), 'Szabo')
+          const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(accounts[1]))
+          assert.equal(expirationTimestamp.toFixed(), firstExpiration.plus(locks['FIRST'].params.expirationDuration).toFixed())
         })
       })
 
@@ -157,13 +140,10 @@ contract('Lock', (accounts) => {
             })
         })
 
-        it('should have the right expiration timestamp for the key', () => {
-          return Promise.all([
-            locks['FIRST'].keyExpirationTimestampFor(accounts[0]),
-            locks['FIRST'].expirationDuration()
-          ]).then(([expirationTimestamp, expirationDuration]) => {
-            assert(expirationTimestamp.gte(expirationDuration.add(now)))
-          })
+        it('should have the right expiration timestamp for the key', async () => {
+          const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(accounts[0]))
+          const expirationDuration = new BigNumber(await locks['FIRST'].expirationDuration())
+          assert(expirationTimestamp.gte(expirationDuration.plus(now)))
         })
 
         it('should have added the funds to the contract', () => {
