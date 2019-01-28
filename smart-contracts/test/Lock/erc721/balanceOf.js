@@ -19,7 +19,7 @@ contract('Lock ERC721', (accounts) => {
   describe('balanceOf', () => {
     it('should fail if the user address is 0', () => {
       return locks['FIRST']
-        .balanceOf(0)
+        .balanceOf('0x0000000000000000000000000000000000000000')
         .then(balance => {
           assert(false)
         })
