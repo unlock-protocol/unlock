@@ -281,6 +281,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     external
     onlyOwner
   {
+    require(_amount > 0, "Must request an amount greater than 0");
     uint256 balance = address(this).balance;
     require(balance > 0 && balance >= _amount, "Not enough funds");
     _withdraw(_amount);
