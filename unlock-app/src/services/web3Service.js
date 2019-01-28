@@ -43,25 +43,25 @@ export default class Web3Service extends EventEmitter {
     this.provider = null
     this.web3 = null
     this.eventsHandlers = {
-      NewLock: (transaction, args) => {
+      NewLock: (transactionHash, contractAddress, args) => {
         return this.emit(
           'lock.saved',
           {
-            transaction: transaction.hash,
-            address: transaction.lock,
+            transaction: transactionHash,
+            address: args.newLockAddress,
           },
           args.newLockAddress
         )
       },
-      Transfer: (transaction, args) => {
+      Transfer: (transactionHash, contractAddress, args) => {
         const owner = args._to
-        return this.emit('key.saved', keyId(transaction.lock, owner), {
-          lock: transaction.lock,
+        return this.emit('key.saved', keyId(contractAddress, owner), {
+          lock: contractAddress,
           owner,
         })
       },
-      PriceChanged: (transaction, { keyPrice }) => {
-        return this.emit('lock.updated', transaction.lock, {
+      PriceChanged: (transactionHash, contractAddress, { keyPrice }) => {
+        return this.emit('lock.updated', contractAddress, {
           keyPrice,
         })
       },
@@ -451,13 +451,15 @@ export default class Web3Service extends EventEmitter {
   /**
    * This function will trigger events based on smart contract events
    * @private
-   * @param {*} name
-   * @param {*} params
+   * @param {string} transactionHash
+   * @param {string} contractAddress
+   * @param {string} name
+   * @param {object} params
    */
-  emitContractEvent(transaction, name, params) {
+  emitContractEvent(transactionHash, contractAddress, name, params) {
     const handler = this.eventsHandlers[name]
     if (handler) {
-      return handler(transaction, params)
+      return handler(transactionHash, contractAddress, params)
     }
   }
 
@@ -496,7 +498,8 @@ export default class Web3Service extends EventEmitter {
           args[input.name] = decoded[input.name]
           return args
         }, {})
-        this.emitContractEvent(transactionHash, event.name, args)
+
+        this.emitContractEvent(transactionHash, log.address, event.name, args)
       })
     })
   }
