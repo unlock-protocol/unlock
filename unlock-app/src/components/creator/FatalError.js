@@ -10,10 +10,10 @@ const defaultError = (
   </p>
 )
 
-export const DefaultError = ({ title, children, illustration }) => (
+export const DefaultError = ({ title, children, illustration, critical }) => (
   <Container>
     <Image src={illustration} />
-    <Message>
+    <Message critical={critical}>
       <h1>{title}</h1>
       {children}
     </Message>
@@ -24,12 +24,14 @@ DefaultError.propTypes = {
   illustration: PropTypes.string,
   title: PropTypes.string,
   children: PropTypes.node,
+  critical: PropTypes.bool,
 }
 
 DefaultError.defaultProps = {
   illustration: '/static/images/illustrations/error.svg',
   title: 'Fatal Error',
   children: defaultError,
+  critical: true,
 }
 
 const Container = styled.section`
@@ -61,7 +63,7 @@ const Message = styled.div`
 
   & > h1 {
     font-weight: bold;
-    color: var(--red);
+    color: ${props => (props.critical ? 'var(--red)' : 'var(--grey)')};
     margin: 0px;
     padding: 0px;
   }
