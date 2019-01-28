@@ -1,4 +1,3 @@
-
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 
@@ -22,19 +21,19 @@ contract('Lock ERC721', (accounts) => {
     before(() => {
       // Purchase keys!
       return Promise.all([
-        lock.purchaseFor(accounts[1], 'Julien', {
+        lock.purchaseFor(accounts[1], Web3Utils.toHex('Julien'), {
           value: lock.params.keyPrice,
           from: accounts[0]
         }),
-        lock.purchaseFor(accounts[2], 'Ben', {
+        lock.purchaseFor(accounts[2], Web3Utils.toHex('Ben'), {
           value: lock.params.keyPrice,
           from: accounts[0]
         }),
-        lock.purchaseFor(accounts[3], 'Satoshi', {
+        lock.purchaseFor(accounts[3], Web3Utils.toHex('Satoshi'), {
           value: lock.params.keyPrice,
           from: accounts[0]
         }),
-        lock.purchaseFor(accounts[4], 'Vitalik', {
+        lock.purchaseFor(accounts[4], Web3Utils.toHex('Vitalik'), {
           value: lock.params.keyPrice,
           from: accounts[0]
         })

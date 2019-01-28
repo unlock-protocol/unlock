@@ -23,7 +23,7 @@ contract('Lock', (accounts) => {
       it('should fail', () => {
         const lock = locks['PRIVATE']
         return lock
-          .purchaseFor(accounts[0], 'Julien')
+          .purchaseFor(accounts[0], Web3Utils.toHex('Julien'))
           .catch((error) => {
             assert.equal(error.message, 'VM Exception while processing transaction: revert')
             // Making sure we do not have a key set!
@@ -47,7 +47,7 @@ contract('Lock', (accounts) => {
 
     it('should fail if the sending account was not pre-approved', () => {
       return locks['RESTRICTED']
-        .purchaseFor(accounts[1], 'Satoshi', {
+        .purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
           value: Units.convert('0.01', 'eth', 'wei')
         })
         .then(() => {
@@ -65,7 +65,7 @@ contract('Lock', (accounts) => {
           from: owner
         })
         .then(() => {
-          locks['RESTRICTED'].purchaseFor(accounts[3], 'Szabo', {
+          locks['RESTRICTED'].purchaseFor(accounts[3], Web3Utils.toHex('Szabo'), {
             value: Units.convert('0.01', 'eth', 'wei')
           })
         })

@@ -1,5 +1,5 @@
-
 const Units = require('ethereumjs-units')
+const Web3Utils = require('web3-utils')
 
 const deployLocks = require('../../helpers/deployLocks')
 const Unlock = artifacts.require('../../Unlock.sol')
@@ -31,7 +31,7 @@ contract('Lock ERC721', (accounts) => {
     })
 
     it('should return the owner of the key', () => {
-      return locks['FIRST'].purchaseFor(accounts[1], 'Satoshi', {
+      return locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
         value: Units.convert('0.01', 'eth', 'wei'),
         from: accounts[1]
       }).then(() => {
