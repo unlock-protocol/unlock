@@ -76,7 +76,7 @@ contract('Lock ERC721', (accounts) => {
 
       it('should abort if the recipient is 0x', () => {
         return locks['FIRST']
-          .transferFrom(from, 0, from, {
+          .transferFrom(from, Web3Utils.padLeft(0, 40), from, {
             from
           })
           .then(() => {
