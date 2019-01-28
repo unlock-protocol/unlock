@@ -45,7 +45,7 @@ contract('Lock', (accounts) => {
 
     it('should fail if the key has already expired', async () => {
       await locks['FIRST'].purchaseFor(accounts[2], Web3Utils.toHex('Julien'), {
-        value: locks['FIRST'].params.keyPrice,
+        value: locks['FIRST'].params.keyPrice.toFixed(),
         from: accounts[0]
       })
       const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(accounts[2]))
@@ -66,7 +66,7 @@ contract('Lock', (accounts) => {
 
     it('should expire a valid key', async () => {
       await locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Julien'), {
-        value: locks['FIRST'].params.keyPrice,
+        value: locks['FIRST'].params.keyPrice.toFixed(),
         from: accounts[0]
       })
       let expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(accounts[1]))
