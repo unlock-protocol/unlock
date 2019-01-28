@@ -51,6 +51,3 @@ deploy:
   skip_cleanup: true
   zip_file: "./builds/locksmith.zip"
   bucket_name: "unlock-locksmith"
-  on:
-    branch: locksmith_deployment  
-  
