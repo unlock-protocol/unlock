@@ -1,5 +1,5 @@
-
 const Units = require('ethereumjs-units')
+const Web3Utils = require('web3-utils')
 
 const deployLocks = require('../helpers/deployLocks')
 const Unlock = artifacts.require('../Unlock.sol')
@@ -18,7 +18,7 @@ contract('Lock', (accounts) => {
 
     before(() => {
       const purchases = [accounts[1], accounts[2]].map((account) => {
-        return locks['OWNED'].purchaseFor(account, '', {
+        return locks['OWNED'].purchaseFor(account, Web3Utils.toHex(''), {
           value: price,
           from: account
         })

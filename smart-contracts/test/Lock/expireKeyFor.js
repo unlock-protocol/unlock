@@ -1,3 +1,5 @@
+const Web3Utils = require('web3-utils')
+
 const deployLocks = require('../helpers/deployLocks')
 const Unlock = artifacts.require('../Unlock.sol')
 
@@ -41,7 +43,7 @@ contract('Lock', (accounts) => {
     })
 
     it('should fail if the key has already expired', () => {
-      return locks['FIRST'].purchaseFor(accounts[2], 'Julien', {
+      return locks['FIRST'].purchaseFor(accounts[2], Web3Utils.toHex('Julien'), {
         value: locks['FIRST'].params.keyPrice,
         from: accounts[0]
       }).then(() => {
@@ -65,7 +67,7 @@ contract('Lock', (accounts) => {
     })
 
     it('should expire a valid key', () => {
-      return locks['FIRST'].purchaseFor(accounts[1], 'Julien', {
+      return locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Julien'), {
         value: locks['FIRST'].params.keyPrice,
         from: accounts[0]
       }).then(() => {

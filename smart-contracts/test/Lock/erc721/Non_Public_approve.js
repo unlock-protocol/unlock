@@ -1,4 +1,3 @@
-
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 
@@ -62,7 +61,7 @@ contract('Lock ERC721', (accounts) => {
           })
           .then(() => {
             // accounts[2] purchases a key
-            return locks['RESTRICTED'].purchaseFor(accounts[2], 'Julien', {
+            return locks['RESTRICTED'].purchaseFor(accounts[2], Web3Utils.toHex('Julien'), {
               value: locks['RESTRICTED'].params.keyPrice,
               from: accounts[2]
             })
@@ -108,7 +107,7 @@ contract('Lock ERC721', (accounts) => {
           })
           .then(() => {
             // accounts[5] purchases a key
-            return locks['RESTRICTED'].purchaseFor(accounts[5], 'Julien', {
+            return locks['RESTRICTED'].purchaseFor(accounts[5], Web3Utils.toHex('Julien'), {
               value: locks['RESTRICTED'].params.keyPrice,
               from: accounts[5]
             })
@@ -135,7 +134,7 @@ contract('Lock ERC721', (accounts) => {
           })
           .then(() => {
             // accounts[5] purchases a key
-            return locks['RESTRICTED'].purchaseFor(accounts[5], 'Julien', {
+            return locks['RESTRICTED'].purchaseFor(accounts[5], Web3Utils.toHex('Julien'), {
               value: locks['RESTRICTED'].params.keyPrice,
               from: accounts[5]
             })
