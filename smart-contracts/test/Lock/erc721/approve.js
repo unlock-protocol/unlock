@@ -34,7 +34,7 @@ contract('Lock ERC721', (accounts) => {
 
     describe('when the key exists', () => {
       before(() => {
-        return locks['FIRST'].purchaseFor(accounts[1], 'Satoshi', {
+        return locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: accounts[1]
         })

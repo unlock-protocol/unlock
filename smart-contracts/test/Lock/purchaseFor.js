@@ -1,4 +1,3 @@
-
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 
@@ -23,7 +22,7 @@ contract('Lock', (accounts) => {
     describe('when the contract has a public key release', () => {
       it('should fail if the price is not enough', () => {
         return locks['FIRST']
-          .purchaseFor(accounts[0], 'Julien', {
+          .purchaseFor(accounts[0], Web3Utils.toHex('Julien'), {
             value: Units.convert('0.0001', 'eth', 'wei')
           })
           .catch(error => {
@@ -38,7 +37,7 @@ contract('Lock', (accounts) => {
 
       it('should fail if we reached the max number of keys', () => {
         return locks['SINGLE KEY']
-          .purchaseFor(accounts[0], 'Julien', {
+          .purchaseFor(accounts[0], Web3Utils.toHex('Julien'), {
             value: Units.convert('0.01', 'eth', 'wei')
           })
           .then(keyData => {
@@ -46,7 +45,7 @@ contract('Lock', (accounts) => {
           })
           .then(keyData => {
             assert.equal(Web3Utils.toUtf8(keyData), 'Julien')
-            return locks['SINGLE KEY'].purchaseFor(accounts[1], 'Satoshi', {
+            return locks['SINGLE KEY'].purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
               value: Units.convert('0.01', 'eth', 'wei'),
               from: accounts[1]
             })
@@ -69,21 +68,21 @@ contract('Lock', (accounts) => {
           filter.stopWatching()
         })
         return locks['FIRST']
-          .purchaseFor(accounts[2], 'Vitalik', {
+          .purchaseFor(accounts[2], Web3Utils.toHex('Vitalik'), {
             value: Units.convert('0.01', 'eth', 'wei')
           })
       })
 
       describe('when the user already owns an expired key', () => {
         it('should expand the validity by the default key duration', () => {
-          return locks['SECOND'].purchaseFor(accounts[4], 'Satoshi', {
+          return locks['SECOND'].purchaseFor(accounts[4], Web3Utils.toHex('Satoshi'), {
             value: Units.convert('0.01', 'eth', 'wei')
           }).then(() => {
             // let's now expire the key
             return locks['SECOND'].expireKeyFor(accounts[4])
           }).then(() => {
             // Purchase a new one
-            return locks['SECOND'].purchaseFor(accounts[4], 'Satoshi', {
+            return locks['SECOND'].purchaseFor(accounts[4], Web3Utils.toHex('Satoshi'), {
               value: Units.convert('0.01', 'eth', 'wei')
             })
           }).then(() => {
@@ -101,7 +100,7 @@ contract('Lock', (accounts) => {
       describe('when the user already owns a non expired key', () => {
         it('should expand the validity by the default key duration', () => {
           let firstExpiration
-          return locks['FIRST'].purchaseFor(accounts[1], 'Satoshi', {
+          return locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
             value: Units.convert('0.01', 'eth', 'wei')
           })
             .then(() => {
@@ -114,7 +113,7 @@ contract('Lock', (accounts) => {
               assert.equal(Web3Utils.toUtf8(keyData), 'Satoshi')
               firstExpiration = expirationTimestamp
               assert(firstExpiration.gt(0))
-              return locks['FIRST'].purchaseFor(accounts[1], 'Szabo', {
+              return locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Szabo'), {
                 value: Units.convert('0.01', 'eth', 'wei')
               })
             })
@@ -143,7 +142,7 @@ contract('Lock', (accounts) => {
               return locks['FIRST'].numberOfOwners()
                 .then(_numberOfOwners => {
                   numberOfOwners = parseInt(_numberOfOwners)
-                  return locks['FIRST'].purchaseFor(accounts[0], 'Julien', {
+                  return locks['FIRST'].purchaseFor(accounts[0], Web3Utils.toHex('Julien'), {
                     value: Units.convert('0.01', 'eth', 'wei')
                   })
                 })
