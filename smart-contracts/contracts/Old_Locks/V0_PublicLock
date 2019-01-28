@@ -62,9 +62,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   // A count of how many new key purchases there have been
   uint public numberOfKeysSold;
 
-  // The version number for this lock contract,
-  uint public publicLockVersion; // 1
-
   // Keys
   // Each owner can have at most exactly one key
   // TODO: could we use public here? (this could be confusing though because it getter will
@@ -159,8 +156,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     address _owner,
     uint _expirationDuration,
     uint _keyPrice,
-    uint _maxNumberOfKeys,
-    uint _version
+    uint _maxNumberOfKeys
   )
   public {
     require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, "Expiration duration exceeds 100 years");
@@ -170,7 +166,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
-    publicLockVersion = _version;
   }
 
   /**
