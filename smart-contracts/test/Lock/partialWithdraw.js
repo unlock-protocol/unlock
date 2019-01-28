@@ -36,7 +36,7 @@ contract('Lock', (accounts) => {
     it('should fail if called by address other than owner', async () => {
       try {
         assert.notEqual(owner, accounts[1]) // Making sure
-        await locks['OWNED'].partialWithdraw(withdrawalAmount, {
+        await locks['OWNED'].partialWithdraw(withdrawalAmount.toFixed(), {
           from: accounts[1]
         })
       } catch (error) {
@@ -48,8 +48,8 @@ contract('Lock', (accounts) => {
 
     it('should fail if too much is withdrawn', async () => {
       try {
-        initialLockBalance = new BigNumber(web3.eth.getBalance(locks['OWNED'].address))
-        await locks['OWNED'].partialWithdraw(initialLockBalance.plus(withdrawalAmount), {
+        initialLockBalance = new BigNumber(await web3.eth.getBalance(locks['OWNED'].address))
+        await locks['OWNED'].partialWithdraw(initialLockBalance.plus(withdrawalAmount).toFixed(), {
           from: owner
         })
       } catch (error) {
@@ -75,8 +75,8 @@ contract('Lock', (accounts) => {
 
       before(async () => {
         expectedLockBalance = initialLockBalance.minus(withdrawalAmount)
-        initialOwnerBalance = new BigNumber(web3.eth.getBalance(owner))
-        txObj = await locks['OWNED'].partialWithdraw(withdrawalAmount, {
+        initialOwnerBalance = new BigNumber(await web3.eth.getBalance(owner))
+        txObj = await locks['OWNED'].partialWithdraw(withdrawalAmount.toFixed(), {
           from: owner
         })
       })
@@ -85,14 +85,14 @@ contract('Lock', (accounts) => {
         txHash = await web3.eth.getTransaction(txObj.tx)
         gasUsed = new BigNumber(txObj.receipt.gasUsed)
         gasPrice = new BigNumber(txHash.gasPrice)
-        txFee = gasPrice.mul(gasUsed)
+        txFee = gasPrice.times(gasUsed)
         finalOwnerBalance = new BigNumber(web3.eth.getBalance(owner))
         assert.equal(finalOwnerBalance.toFixed(), initialOwnerBalance.plus(withdrawalAmount).minus(txFee).toFixed())
       })
 
       it('should decrease the lock\'s balance by the amount of funds withdrawn from the lock', async () => {
         finalLockBalance = new BigNumber(web3.eth.getBalance(locks['OWNED'].address))
-        assert.equal(finalLockBalance.toFixed(), expectedLockBalance)
+        assert.equal(finalLockBalance.toFixed(), expectedLockBalance.toFixed())
       })
     })
   })
