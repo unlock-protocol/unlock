@@ -10,3 +10,8 @@ zos.dev-*.json
 # Artifacts
 unlock-app/src/artifacts/
 smart-contracts/build/contracts/*.json
+builds/
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
