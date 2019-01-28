@@ -32,7 +32,7 @@ contract('Lock', (accounts) => {
     describe('when the sender is not the lock owner', () => {
       let keyPrice, error
       before(async () => {
-        keyPrice = await locks['FIRST'].keyPrice()
+        keyPrice = new BigNumber(await locks['FIRST'].keyPrice())
         try {
           await locks['FIRST'].updateKeyPrice(
             Units.convert('0.3', 'eth', 'wei'),

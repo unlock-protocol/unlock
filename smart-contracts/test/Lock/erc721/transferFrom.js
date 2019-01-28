@@ -96,7 +96,7 @@ contract('Lock ERC721', (accounts) => {
             from
           })
           // Let's check the expiration date for that key
-          fromExpirationTimestamp = await locks['FIRST'].keyExpirationTimestampFor(from)
+          fromExpirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(from))
             // Then let's expire the key for accountWithExpiredKey
           await locks['FIRST'].expireKeyFor(accountWithExpiredKey)
           await locks['FIRST'].transferFrom(from, accountWithExpiredKey, from, {
@@ -175,19 +175,15 @@ contract('Lock ERC721', (accounts) => {
       })
 
       describe('when the key owner is the sender', () => {
-        before(() => {
+        before(async () => {
           // first, let's purchase a brand new key that we can transfer
-          return locks['FIRST'].purchaseFor(from, Web3Utils.toHex('Julien'), {
+          await locks['FIRST'].purchaseFor(from, Web3Utils.toHex('Julien'), {
             value: Units.convert('0.01', 'eth', 'wei'),
             from
-          }).then(() => {
-            return locks['FIRST'].keyExpirationTimestampFor(from)
-              .then((expirationTimestamp) => {
-                keyExpiration = expirationTimestamp
-                return locks['FIRST'].transferFrom(from, to, from, {
-                  from
-                })
-              })
+          })
+          keyExpiration = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(from))
+          await locks['FIRST'].transferFrom(from, to, from, {
+            from
           })
         })
 

@@ -31,7 +31,7 @@ contract('Lock ERC721', (accounts) => {
       let address = new BigNumber(await locks['FIRST'].getTokenIdFor(accounts[1]))
       // Note that as we implement ERC721 support, the tokenId will no longer
       // be the same as the user's address
-      assert.equal(address.toFixed(), new BigNumber(accounts[1]).toFixed())
+      assert.equal(Web3Utils.toChecksumAddress(Web3Utils.toHex(address)), accounts[1])
     })
   })
 })

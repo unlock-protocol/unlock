@@ -86,12 +86,12 @@ contract('Lock', (accounts) => {
         gasUsed = new BigNumber(txObj.receipt.gasUsed)
         gasPrice = new BigNumber(txHash.gasPrice)
         txFee = gasPrice.times(gasUsed)
-        finalOwnerBalance = new BigNumber(web3.eth.getBalance(owner))
+        finalOwnerBalance = new BigNumber(await web3.eth.getBalance(owner))
         assert.equal(finalOwnerBalance.toFixed(), initialOwnerBalance.plus(withdrawalAmount).minus(txFee).toFixed())
       })
 
       it('should decrease the lock\'s balance by the amount of funds withdrawn from the lock', async () => {
-        finalLockBalance = new BigNumber(web3.eth.getBalance(locks['OWNED'].address))
+        finalLockBalance = new BigNumber(await web3.eth.getBalance(locks['OWNED'].address))
         assert.equal(finalLockBalance.toFixed(), expectedLockBalance.toFixed())
       })
     })
