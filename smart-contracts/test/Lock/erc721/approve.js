@@ -87,7 +87,7 @@ contract('Lock ERC721', (accounts) => {
           assert.equal(event.event, 'Approval')
           assert.equal(event.args._owner, accounts[1])
           assert.equal(event.args._approved, accounts[2])
-          assert.equal(Web3Utils.toChecksumAddress(Web3Utils.numberToHex(event.args._tokenId)), accounts[1])
+          assert.equal(Web3Utils.toChecksumAddress(Web3Utils.numberToHex(event.args._tokenId)), Web3Utils.toChecksumAddress(accounts[1]))
         })
       })
     })
