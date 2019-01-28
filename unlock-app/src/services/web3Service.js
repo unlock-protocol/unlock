@@ -8,12 +8,11 @@ import configure from '../config'
 import { TRANSACTION_TYPES, MAX_UINT } from '../constants'
 import {
   MISSING_PROVIDER,
-  MISSING_TRANSACTION,
   NON_DEPLOYED_CONTRACT,
   NOT_ENABLED_IN_PROVIDER,
 } from '../errors'
 
-const { providers, unlockAddress } = configure()
+const { providers, unlockAddress, blockTime } = configure()
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
@@ -252,25 +251,6 @@ export default class Web3Service extends EventEmitter {
         callback(null, { event: 'transactionHash', args: { hash } })
         this.emit('transaction.new', transaction)
       })
-      .on('confirmation', confirmationNumber => {
-        this.emit('transaction.updated', transaction.hash, {
-          status: 'mined',
-          confirmations: confirmationNumber,
-        })
-      })
-      .once('receipt', receipt => {
-        callback(null, { event: 'receipt', args: { receipt } })
-        this.emit('transaction.updated', transaction.hash, {
-          blockNumber: receipt.blockNumber,
-        })
-        // Should we invoke this only when we have received enough confirmations?
-        // That would be safer... but also add a lot of latency.
-        this.parseTransactionLogsFromReceipt(
-          transaction.hash,
-          contract,
-          receipt
-        )
-      })
       .on('error', error => {
         this.emit('error', error, transaction)
         callback(error)
@@ -452,6 +432,7 @@ export default class Web3Service extends EventEmitter {
    * This function will trigger events based on smart contract events
    * @private
    * @param {string} transactionHash
+
    * @param {string} contractAddress
    * @param {string} name
    * @param {object} params
@@ -505,6 +486,16 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
+   * This will set a timeout to get a transaction after half a block time happened
+   * @param {string} transactionHash
+   */
+  _watchTransaction(transactionHash) {
+    setTimeout(() => {
+      this.getTransaction(transactionHash)
+    }, blockTime / 2)
+  }
+
+  /**
    * This refreshes a transaction by its hash.
    * It will only process the transaction if the filter function returns true
    * @param {string} transactionHash
@@ -516,8 +507,16 @@ export default class Web3Service extends EventEmitter {
       this.web3.eth.getTransaction(transactionHash),
     ]).then(([blockNumber, blockTransaction]) => {
       if (!blockTransaction) {
-        return this.emit('error', new Error(MISSING_TRANSACTION))
+        // The transaction is still pending: it has been sent to the network but not
+        // necessarily received by the node we're asking it (and not mined...)
+        this._watchTransaction(transactionHash)
+        return this.emit('transaction.updated', transactionHash, {
+          status: 'submitted',
+          confirmations: 0,
+          blockNumber: Number.MAX_SAFE_INTEGER,
+        })
       }
+
       const contract =
         this.unlockContractAddress ===
         Web3Utils.toChecksumAddress(blockTransaction.to)
@@ -528,14 +527,21 @@ export default class Web3Service extends EventEmitter {
         contract,
         blockTransaction.input
       )
+
       if (blockTransaction.transactionIndex === null) {
         // This means the transaction is not in a block yet (ie. not mined)
+        this._watchTransaction(transactionHash)
         return this.emit('transaction.updated', transactionHash, {
           status: 'pending',
           type: transactionType,
           confirmations: 0,
           blockNumber: Number.MAX_SAFE_INTEGER,
         })
+      }
+
+      // Let's watch for more confirmations
+      if (blockNumber - blockTransaction.blockNumber < 12) {
+        this._watchTransaction(transactionHash)
       }
 
       // The transaction was mined
@@ -546,7 +552,6 @@ export default class Web3Service extends EventEmitter {
         blockNumber: blockTransaction.blockNumber,
       })
 
-      // Let's check its receipt to see if it triggered any event!
       return this.web3.eth
         .getTransactionReceipt(transactionHash)
         .then(transactionReceipt => {

@@ -277,13 +277,20 @@ describe('Lock middleware', () => {
   })
 
   it('it should handle transaction.new events triggered by the web3Service', () => {
+    expect.assertions(2)
+
     const { store } = create()
+    mockWeb3Service.getTransaction = jest.fn()
+
     mockWeb3Service.emit('transaction.new', transaction)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: ADD_TRANSACTION,
         transaction,
       })
+    )
+    expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
+      transaction.hash
     )
   })
 

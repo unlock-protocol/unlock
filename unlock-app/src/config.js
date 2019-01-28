@@ -63,12 +63,14 @@ export default function configure(
   let unlockAddress = ''
   let services = {}
   let supportedProviders = []
+  let blockTime = 8000 // in mseconds.
 
   if (env === 'test') {
     // In test, we fake the HTTP provider
     providers['HTTP'] = new Web3.providers.HttpProvider(
       `http://${runtimeConfig.httpProvider}:8545`
     )
+    blockTime = 10 // in mseconds.
     supportedProviders = ['HTTP']
     services['storage'] = { host: 'http://127.0.0.1:8080' }
     isRequiredNetwork = networkId => networkId === 1337
@@ -95,6 +97,9 @@ export default function configure(
 
     // In dev, we only require 6 confirmation because we only mine when there are pending transactions
     requiredConfirmations = 6
+
+    // we start ganache locally with a block time of 3
+    blockTime = 3000
   }
 
   if (env === 'staging') {
@@ -111,6 +116,9 @@ export default function configure(
 
     // Address for the Unlock smart contract
     unlockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
+
+    // rinkeby block time is roughly same as main net
+    blockTime = 8000
   }
 
   if (env === 'prod') {
@@ -128,6 +136,9 @@ export default function configure(
 
     // Address for the Unlock smart contract
     unlockAddress = '0x3d5409cce1d45233de1d4ebdee74b8e004abdd13'
+
+    // See https://www.reddit.com/r/ethereum/comments/3c8v2i/what_is_the_expected_block_time/
+    blockTime = 8000
   }
 
   if (env === 'prod' || env === 'staging') {
@@ -135,6 +146,7 @@ export default function configure(
   }
 
   return {
+    blockTime,
     isServer,
     env,
     providers,
