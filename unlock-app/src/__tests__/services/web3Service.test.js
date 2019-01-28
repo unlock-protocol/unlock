@@ -1314,39 +1314,70 @@ describe('Web3Service', () => {
     describe('emitContractEvent', () => {
       it('should handle NewLock and emit lock.saved', done => {
         expect.assertions(3)
-        const transaction = {
-          hash: '0x123',
-          lock: '0x456',
-        }
-        web3Service.once('lock.saved', (lock, address) => {
-          expect(lock.transaction).toBe(transaction.hash)
-          expect(lock.address).toBe(transaction.lock)
-          expect(address).toBe(address)
-          done()
-        })
+        const transactionHash = '0x123'
+        const contractAddress = '0x456'
         const params = {
           newLockAddress: ' 0x789',
         }
-        web3Service.emitContractEvent(transaction, 'NewLock', params)
+        web3Service.once('lock.saved', (lock, address) => {
+          expect(lock.transaction).toBe(transactionHash)
+          expect(lock.address).toBe(params.newLockAddress)
+          expect(address).toBe(params.newLockAddress)
+          done()
+        })
+        web3Service.emitContractEvent(
+          transactionHash,
+          contractAddress,
+          'NewLock',
+          params
+        )
       })
 
       it('should handle Transfer and emit key.save', done => {
-        expect.assertions(1)
-        const transaction = {
-          hash: '0x123',
-          lock: '0x456',
-        }
+        expect.assertions(3)
+        const transactionHash = '0x123'
+        const contractAddress = '0x456'
 
         const params = {
           _to: '0x789',
         }
 
-        web3Service.once('key.saved', keyId => {
+        web3Service.once('key.saved', (keyId, key) => {
           expect(keyId).toBe('0x456-0x789')
+          expect(key.owner).toBe(params._to)
+          expect(key.lock).toBe(contractAddress)
           done()
         })
 
-        web3Service.emitContractEvent(transaction, 'Transfer', params)
+        web3Service.emitContractEvent(
+          transactionHash,
+          contractAddress,
+          'Transfer',
+          params
+        )
+      })
+
+      it('should handle PriceChanged and emit key.save', done => {
+        expect.assertions(2)
+        const transactionHash = '0x123'
+        const contractAddress = '0x456'
+
+        const params = {
+          keyPrice: '10',
+        }
+
+        web3Service.once('lock.updated', (lockAddress, { keyPrice }) => {
+          expect(lockAddress).toBe(contractAddress)
+          expect(keyPrice).toBe(params.keyPrice)
+          done()
+        })
+
+        web3Service.emitContractEvent(
+          transactionHash,
+          contractAddress,
+          'PriceChanged',
+          params
+        )
       })
     })
 
