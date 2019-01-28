@@ -9,7 +9,6 @@ import LockContract from '../../artifacts/contracts/PublicLock.json'
 import configure from '../../config'
 import { TRANSACTION_TYPES } from '../../constants'
 import {
-  MISSING_TRANSACTION,
   NOT_ENABLED_IN_PROVIDER,
   MISSING_PROVIDER,
   NON_DEPLOYED_CONTRACT,
@@ -120,6 +119,8 @@ nock.emitter.on('no match', function(clientRequestObject, options, body) {
 
 let web3Service
 
+const { providers, blockTime } = configure()
+
 describe('Web3Service', () => {
   beforeEach(() => {
     nock.cleanAll()
@@ -205,7 +206,6 @@ describe('Web3Service', () => {
     let enable
 
     beforeEach(done => {
-      const { providers } = configure()
       nock.cleanAll()
 
       enable = providers.HTTP.enable = jest.fn(() => Promise.resolve())
@@ -473,55 +473,138 @@ describe('Web3Service', () => {
     })
 
     describe('getTransaction', () => {
-      it('should update the number of confirmation based on number of blocks since the transaction', done => {
-        expect.assertions(4)
-        ethBlockNumber(`0x${(29).toString('16')}`)
-        ethGetTransactionByHash(transaction.hash, {
-          hash:
-            '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
-          nonce: '0x04',
-          blockHash:
-            '0xdc7c95899e030f3104871a597866767ec296e948a24e99b12e0b251011d11c36',
-          blockNumber: `0x${(14).toString('16')}`,
-          transactionIndex: '0x00',
-          from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
-          to: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
-          value: '0x0',
-          gas: '0x16e360',
-          gasPrice: '0x04a817c800',
-          input:
-            '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
+      describe('when the transaction was submitted', () => {
+        beforeEach(() => {
+          ethBlockNumber(`0x${(29).toString('16')}`)
+          ethGetTransactionByHash(transaction.hash, null)
+          web3Service._watchTransaction = jest.fn()
         })
 
-        ethGetTransactionReceipt(transaction.hash, {
-          status: '0x0',
+        it('should watch the transaction', done => {
+          expect.assertions(1)
+          web3Service.on('transaction.updated', () => {
+            expect(web3Service._watchTransaction).toHaveBeenCalledWith(
+              transaction.hash
+            )
+            done()
+          })
+
+          web3Service.getTransaction(transaction.hash)
         })
 
-        web3Service.getTransactionType = jest.fn(() => 'TYPE')
-
-        web3Service.once('transaction.updated', (transactionHash, update) => {
-          expect(transactionHash).toEqual(transaction.hash)
-          expect(update.confirmations).toEqual(15) //29-14
-          expect(update.type).toEqual('TYPE') //29-14
-          expect(update.blockNumber).toEqual(14)
-          done()
+        it('should emit a transaction.updated event with the right values', done => {
+          expect.assertions(4)
+          web3Service.on('transaction.updated', (hash, update) => {
+            expect(hash).toBe(transaction.hash)
+            expect(update.status).toEqual('submitted')
+            expect(update.confirmations).toEqual(0)
+            expect(update.blockNumber).toEqual(Number.MAX_SAFE_INTEGER)
+            done()
+          })
+          web3Service.getTransaction(transaction.hash)
         })
-
-        return web3Service.getTransaction(transaction.hash)
       })
 
-      it('should trigger and error if the transaction could not be found', done => {
-        expect.assertions(1)
+      describe('when the transaction is pending/waiting to be mined', () => {
+        beforeEach(() => {
+          ethBlockNumber(`0x${(29).toString('16')}`)
+          ethGetTransactionByHash(transaction.hash, {
+            hash:
+              '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
+            nonce: '0x04',
+            blockHash: 'null',
+            transactionIndex: null, // Not mined
+            from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+            to: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
+            value: '0x0',
+            gas: '0x16e360',
+            gasPrice: '0x04a817c800',
+            input:
+              '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
+          })
 
-        ethBlockNumber(`0x${(29).toString('16')}`)
-        ethGetTransactionByHash(transaction.hash, null)
-
-        web3Service.once('error', error => {
-          expect(error.message).toEqual(MISSING_TRANSACTION)
-          done()
+          web3Service._watchTransaction = jest.fn()
+          web3Service.getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
         })
 
-        return web3Service.getTransaction(transaction.hash)
+        it('should watch the transaction', done => {
+          expect.assertions(1)
+          web3Service.on('transaction.updated', () => {
+            expect(web3Service._watchTransaction).toHaveBeenCalledWith(
+              transaction.hash
+            )
+            done()
+          })
+
+          web3Service.getTransaction(transaction.hash)
+        })
+
+        it('should emit a transaction.updated event with the right values', done => {
+          expect.assertions(5)
+          web3Service.on('transaction.updated', (hash, update) => {
+            expect(hash).toBe(transaction.hash)
+            expect(update.status).toEqual('pending')
+            expect(update.confirmations).toEqual(0)
+            expect(update.blockNumber).toEqual(Number.MAX_SAFE_INTEGER)
+            expect(update.type).toEqual('TRANSACTION_TYPE')
+            done()
+          })
+
+          web3Service.getTransaction(transaction.hash)
+        })
+      })
+
+      describe('when the transaction has been mined but not fully confirmed', () => {
+        beforeEach(() => {
+          ethBlockNumber(`0x${(17).toString('16')}`)
+          ethGetTransactionByHash(transaction.hash, {
+            hash:
+              '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
+            nonce: '0x04',
+            blockHash:
+              '0xdc7c95899e030f3104871a597866767ec296e948a24e99b12e0b251011d11c36',
+            blockNumber: `0x${(14).toString('16')}`,
+            transactionIndex: '0x0d',
+            from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+            to: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
+            value: '0x0',
+            gas: '0x16e360',
+            gasPrice: '0x04a817c800',
+            input:
+              '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
+          })
+          web3Service.web3.eth.getTransactionReceipt = jest.fn(
+            () => new Promise(() => {})
+          )
+          web3Service._watchTransaction = jest.fn()
+          web3Service.getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
+        })
+
+        it('should watch the transaction', done => {
+          expect.assertions(1)
+          web3Service.on('transaction.updated', () => {
+            expect(web3Service._watchTransaction).toHaveBeenCalledWith(
+              transaction.hash
+            )
+            done()
+          })
+
+          web3Service.getTransaction(transaction.hash)
+        })
+
+        it('should emit a transaction.updated event with the right values', done => {
+          expect.assertions(5)
+          web3Service.on('transaction.updated', (hash, update) => {
+            expect(hash).toBe(transaction.hash)
+            expect(update.status).toEqual('mined')
+            expect(update.confirmations).toEqual(3) //17-14
+            expect(update.blockNumber).toEqual(14)
+            expect(update.type).toEqual('TRANSACTION_TYPE')
+            done()
+          })
+
+          web3Service.getTransaction(transaction.hash)
+        })
       })
 
       describe('when the transaction was mined', () => {
@@ -890,60 +973,6 @@ describe('Web3Service', () => {
           event: 'transactionHash',
           args: { hash },
         })
-      })
-
-      it('should trigger confirmation events and trigger a transaction.updated event', done => {
-        expect.assertions(3)
-
-        const callback = jest.fn()
-        const confirmationNumber = 1
-        const receipt = {}
-        const sendTransaction = new EventEmitter()
-        const transaction = {
-          hash: '0x456',
-        }
-
-        web3Service.on('transaction.updated', (transactionHash, update) => {
-          expect(transactionHash).toEqual(transaction.hash)
-          expect(update.confirmations).toBe(1)
-          expect(update.status).toBe('mined')
-          done()
-        })
-
-        web3Service.handleTransaction(
-          transaction,
-          sendTransaction,
-          [],
-          callback
-        )
-        sendTransaction.emit('confirmation', confirmationNumber, receipt)
-      })
-
-      it('should trigger receipt events and invoke parseTransactionLogsFromReceipt', () => {
-        expect.assertions(2)
-
-        const callback = jest.fn()
-        web3Service.parseTransactionLogsFromReceipt = jest.fn()
-        const transaction = {}
-        const receipt = {
-          logs: [],
-        }
-
-        const sendTransaction = new EventEmitter()
-        web3Service.handleTransaction(
-          transaction,
-          sendTransaction,
-          [],
-          callback
-        )
-        sendTransaction.emit('receipt', receipt)
-        expect(callback).toHaveBeenCalledWith(null, {
-          event: 'receipt',
-          args: { receipt },
-        })
-        expect(
-          web3Service.parseTransactionLogsFromReceipt
-        ).toHaveBeenCalledWith(transaction.hash, [], receipt)
       })
 
       it('should handle errors', done => {
@@ -1452,6 +1481,26 @@ describe('Web3Service', () => {
             done()
           })
         })
+      })
+    })
+
+    describe('_watchTransaction', () => {
+      it('should set a timeout based on half the block time', () => {
+        expect.assertions(1)
+        jest.useFakeTimers()
+        web3Service._watchTransaction('0x')
+        expect(setTimeout).toHaveBeenCalledWith(
+          expect.any(Function),
+          blockTime / 2
+        )
+      })
+      it('should trigger getTransaction when the timeout expires', () => {
+        expect.assertions(1)
+        web3Service.getTransaction = jest.fn()
+        const transactionHash = '0x'
+        web3Service._watchTransaction(transactionHash)
+        jest.runAllTimers()
+        expect(web3Service.getTransaction).toHaveBeenCalledWith(transactionHash)
       })
     })
   })

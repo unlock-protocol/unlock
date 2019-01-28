@@ -110,6 +110,8 @@ export default function web3Middleware({ getState, dispatch }) {
 
   web3Service.on('transaction.new', transaction => {
     dispatch(addTransaction(transaction))
+    // Let's fetch the transaction. This will also "watch" it for updates
+    web3Service.getTransaction(transaction.hash)
   })
 
   web3Service.on('transaction.updated', (transactionHash, update) => {
