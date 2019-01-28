@@ -1,4 +1,3 @@
-
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 
@@ -33,19 +32,19 @@ contract('Lock ERC721', (accounts) => {
 
     before(() => {
       return Promise.all([
-        locks['FIRST'].purchaseFor(accountWithKey, 'Satoshi', {
+        locks['FIRST'].purchaseFor(accountWithKey, Web3Utils.toHex('Satoshi'), {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: accountWithKey
         }),
-        locks['FIRST'].purchaseFor(from, 'Julien', {
+        locks['FIRST'].purchaseFor(from, Web3Utils.toHex('Julien'), {
           value: Units.convert('0.01', 'eth', 'wei'),
           from
         }),
-        locks['FIRST'].purchaseFor(accountWithExpiredKey, 'Finley', {
+        locks['FIRST'].purchaseFor(accountWithExpiredKey, Web3Utils.toHex('Finley'), {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: accountWithExpiredKey
         }),
-        locks['FIRST'].purchaseFor(accountWithKeyApproved, 'Ben', {
+        locks['FIRST'].purchaseFor(accountWithKeyApproved, Web3Utils.toHex('Ben'), {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: accountWithKeyApproved
         })
@@ -96,7 +95,7 @@ contract('Lock ERC721', (accounts) => {
         it('should transfer the key validity without extending it', () => {
           // First let's make sure from has a key!
           let fromExpirationTimestamp
-          return locks['FIRST'].purchaseFor(from, 'Julien', {
+          return locks['FIRST'].purchaseFor(from, Web3Utils.toHex('Julien'), {
             value: Units.convert('0.01', 'eth', 'wei'),
             from
           }).then(() => {
@@ -120,7 +119,7 @@ contract('Lock ERC721', (accounts) => {
 
       describe('when the recipient already has a non expired key', () => {
         before(() => {
-          return locks['FIRST'].purchaseFor(from, 'Julien', {
+          return locks['FIRST'].purchaseFor(from, Web3Utils.toHex('Julien'), {
             value: Units.convert('0.01', 'eth', 'wei'),
             from
           }).then(() => {
@@ -204,7 +203,7 @@ contract('Lock ERC721', (accounts) => {
       describe('when the key owner is the sender', () => {
         before(() => {
           // first, let's purchase a brand new key that we can transfer
-          return locks['FIRST'].purchaseFor(from, 'Julien', {
+          return locks['FIRST'].purchaseFor(from, Web3Utils.toHex('Julien'), {
             value: Units.convert('0.01', 'eth', 'wei'),
             from
           }).then(() => {
