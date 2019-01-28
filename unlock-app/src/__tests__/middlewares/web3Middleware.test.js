@@ -1,6 +1,6 @@
 import EventEmitter from 'events'
 import { LOCATION_CHANGE } from 'react-router-redux'
-import lockMiddleware from '../../middlewares/lockMiddleware'
+import web3Middleware from '../../middlewares/web3Middleware'
 import {
   ADD_LOCK,
   CREATE_LOCK,
@@ -57,7 +57,7 @@ const create = () => {
   }
   const next = jest.fn()
 
-  const handler = lockMiddleware(store)
+  const handler = web3Middleware(store)
 
   const invoke = action => handler(next)(action)
 

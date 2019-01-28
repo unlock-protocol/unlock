@@ -37,10 +37,9 @@ import configure from '../config'
 
 const config = configure()
 
-// This middleware listen to redux events and invokes the services APIs.
+// This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
-// TODO: consider if on events we should only trigger more actions instead of calling web3Service directly
-export default function lockMiddleware({ getState, dispatch }) {
+export default function web3Middleware({ getState, dispatch }) {
   // Buffer of actions waiting for connection
   const actions = []
 
@@ -48,7 +47,7 @@ export default function lockMiddleware({ getState, dispatch }) {
 
   /**
    * When an account was changed, we dispatch the corresponding action
-   * TODO: consider cleaning up state when the account is a different one
+   * The setAccount action will reset other relevant redux state
    */
   web3Service.on('account.changed', account => {
     dispatch(setAccount(account))
