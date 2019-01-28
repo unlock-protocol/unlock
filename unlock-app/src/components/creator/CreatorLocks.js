@@ -10,6 +10,7 @@ import CreatorLockForm from './CreatorLockForm'
 import Errors from '../interface/Errors'
 import Media, { NoPhone, Phone } from '../../theme/media'
 import { createLock } from '../../actions/lock'
+import { DefaultError } from './FatalError'
 
 export class CreatorLocks extends React.Component {
   constructor(props, context) {
@@ -53,9 +54,20 @@ export class CreatorLocks extends React.Component {
             pending
           />
         )}
-        {lockFeed.map(lock => {
-          return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
-        })}
+        {lockFeed.length > 0 &&
+          lockFeed.map(lock => {
+            return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
+          })}
+        {lockFeed.length === 0 && !showDashboardForm && (
+          <DefaultError
+            title="Create a lock to get started"
+            illustration="/static/images/illustrations/lock.svg"
+            critical={false}
+          >
+            If you have already created some locks, they should appear here
+            momentarily.
+          </DefaultError>
+        )}
       </Locks>
     )
   }
