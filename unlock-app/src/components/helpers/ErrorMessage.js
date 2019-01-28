@@ -34,6 +34,12 @@ const defaultMessages = {
     <p>Maximum keys allowed must be a positive whole number, or infinite</p>
   ),
   FORM_KEY_PRICE_INVALID: <p>Key price must be a positive number</p>,
+  FAILED_TO_CREATE_LOCK: <p>Your lock could not be created</p>,
+  FAILED_TO_PURCHASE_KEY: <p>Your key could not be purchased</p>,
+  FAILED_TO_UPDATE_KEY_PRICE: <p>Your lock price could not be updated</p>,
+  FAILED_TO_WITHDRAW_FROM_LOCK: (
+    <p>Funds from your lock could not be withdrawn</p>
+  ),
 }
 
 /**
