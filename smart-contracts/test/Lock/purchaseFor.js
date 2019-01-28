@@ -89,8 +89,8 @@ contract('Lock', (accounts) => {
           const expirationTimestamp = new BigNumber(await locks['SECOND'].keyExpirationTimestampFor(accounts[4]))
           const now = parseInt(new Date().getTime() / 1000)
           // we check +/- 10 seconds to fix for now being different inside the EVM and here... :(
-          assert(expirationTimestamp.gt(locks['SECOND'].params.expirationDuration + now - 10))
-          assert(expirationTimestamp.lt(locks['SECOND'].params.expirationDuration + now + 10))
+          assert(expirationTimestamp.gt(locks['SECOND'].params.expirationDuration.plus(now - 10)))
+          assert(expirationTimestamp.lt(locks['SECOND'].params.expirationDuration.plus(now + 10)))
         })
       })
 
