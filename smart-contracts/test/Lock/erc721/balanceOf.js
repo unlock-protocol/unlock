@@ -1,4 +1,6 @@
 const Units = require('ethereumjs-units')
+const Web3Utils = require('web3-utils')
+
 const deployLocks = require('../../helpers/deployLocks')
 const Unlock = artifacts.require('../../Unlock.sol')
 
@@ -19,7 +21,7 @@ contract('Lock ERC721', (accounts) => {
   describe('balanceOf', () => {
     it('should fail if the user address is 0', () => {
       return locks['FIRST']
-        .balanceOf('0x0000000000000000000000000000000000000000')
+        .balanceOf(Web3Utils.padLeft(0, 40))
         .then(balance => {
           assert(false)
         })
