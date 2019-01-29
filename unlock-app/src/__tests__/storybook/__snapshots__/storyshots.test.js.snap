@@ -41141,7 +41141,6 @@ Object {
 .c1 {
   position: fixed;
   display: grid;
-  height: 30%;
   min-height: 375px;
   left: 0;
   right: 0;
@@ -41382,7 +41381,7 @@ Object {
         class="vaayz9-0 bexHxF"
       >
         <div
-          class="vaayz9-1 hjUKBy"
+          class="vaayz9-1 oVtjh"
         >
           <h1
             class="vaayz9-2 fLUsTY"
@@ -41628,7 +41627,6 @@ Object {
 .c1 {
   position: fixed;
   display: grid;
-  height: 30%;
   min-height: 375px;
   left: 0;
   right: 0;
@@ -41849,7 +41847,7 @@ Object {
         class="vaayz9-0 bexHxF"
       >
         <div
-          class="vaayz9-1 hjUKBy"
+          class="vaayz9-1 oVtjh"
         >
           <h1
             class="vaayz9-2 fLUsTY"
@@ -42135,7 +42133,6 @@ Object {
 .c1 {
   position: fixed;
   display: grid;
-  height: 30%;
   min-height: 375px;
   left: 0;
   right: 0;
@@ -42422,7 +42419,7 @@ Object {
         class="vaayz9-0 bexHxF"
       >
         <div
-          class="vaayz9-1 hjUKBy"
+          class="vaayz9-1 oVtjh"
         >
           <h1
             class="vaayz9-2 fLUsTY"
