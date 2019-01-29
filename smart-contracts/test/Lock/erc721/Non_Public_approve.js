@@ -2,6 +2,7 @@ const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 
 const deployLocks = require('../../helpers/deployLocks')
+const shouldFail = require('../../helpers/shouldFail')
 const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock, locks
@@ -20,14 +21,11 @@ contract('Lock ERC721', (accounts) => {
 
   // from approve.js, ln#23:
   describe.skip('when the lock is private', () => {
-    it('should fail', () => {
-      return locks['PRIVATE']
+    it('should fail', async () => {
+      await shouldFail(locks['PRIVATE']
         .approve(accounts[2], accounts[1], {
           from: accounts[1]
-        })
-        .catch(error => {
-          assert.equal(error.message, 'VM Exception while processing transaction: revert')
-        })
+        }), '')
     })
   })
 
@@ -100,72 +98,46 @@ contract('Lock ERC721', (accounts) => {
     })
 
     describe.skip('if the sender is the owner of the key', () => {
-      it('should fail if the owner of a key tries to approve transfer of her key', () => {
-        return locks['RESTRICTED']
+      it('should fail if the owner of a key tries to approve transfer of her key', async () => {
+        await locks['RESTRICTED']
           .approve(accounts[5], accounts[5], {
             from: owner
           })
-          .then(() => {
-            // accounts[5] purchases a key
-            return locks['RESTRICTED'].purchaseFor(accounts[5], Web3Utils.toHex('Julien'), {
-              value: locks['RESTRICTED'].params.keyPrice.toFixed(),
-              from: accounts[5]
-            })
-          })
-          .then(() => {
-            // Key owner tries to approve the transfer of her key
-            return locks['RESTRICTED']
-              .approve(accounts[3], accounts[5], {
-                from: accounts[5]
-              })
-          })
-          .then(() => {
-            assert(false, 'this should have failed')
-          })
-          .catch(error => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert')
-          })
+        // accounts[5] purchases a key
+        await locks['RESTRICTED'].purchaseFor(accounts[5], Web3Utils.toHex('Julien'), {
+          value: locks['RESTRICTED'].params.keyPrice.toFixed(),
+          from: accounts[5]
+        })
+        // Key owner tries to approve the transfer of her key
+        await shouldFail(locks['RESTRICTED']
+          .approve(accounts[3], accounts[5], {
+            from: accounts[5]
+          }), '')
       })
 
-      it('should fail if sender is trying to allow another key transfer', () => {
-        return locks['RESTRICTED']
+      it('should fail if sender is trying to allow another key transfer', async () => {
+        await locks['RESTRICTED']
           .approve(accounts[5], accounts[5], {
             from: owner
           })
-          .then(() => {
-            // accounts[5] purchases a key
-            return locks['RESTRICTED'].purchaseFor(accounts[5], Web3Utils.toHex('Julien'), {
-              value: locks['RESTRICTED'].params.keyPrice.toFixed(),
-              from: accounts[5]
-            })
-          })
-          .then(() => {
-            // Key owner tries to approve the transfer of her key
-            return locks['RESTRICTED']
-              .approve(accounts[3], accounts[4], {
-                from: accounts[5]
-              })
-          })
-          .then(() => {
-            assert(false, 'this should have failed')
-          })
-          .catch(error => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert')
-          })
+        // accounts[5] purchases a key
+        await locks['RESTRICTED'].purchaseFor(accounts[5], Web3Utils.toHex('Julien'), {
+          value: locks['RESTRICTED'].params.keyPrice.toFixed(),
+          from: accounts[5]
+        })
+        // Key owner tries to approve the transfer of her key
+        await shouldFail(locks['RESTRICTED']
+          .approve(accounts[3], accounts[4], {
+            from: accounts[5]
+          }), '')
       })
     })
 
-    it('should fail if the sender does not own a key', () => {
-      return locks['RESTRICTED']
+    it('should fail if the sender does not own a key', async () => {
+      await shouldFail(locks['RESTRICTED']
         .approve(accounts[5], accounts[5], {
           from: accounts[9]
-        })
-        .then(() => {
-          assert(false, 'this should have failed')
-        })
-        .catch(error => {
-          assert.equal(error.message, 'VM Exception while processing transaction: revert')
-        })
+        }), '')
     })
   })
 })

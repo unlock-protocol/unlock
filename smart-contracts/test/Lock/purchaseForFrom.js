@@ -2,6 +2,7 @@ const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 
 const deployLocks = require('../helpers/deployLocks')
+const shouldFail = require('../helpers/shouldFail')
 const Unlock = artifacts.require('../Unlock.sol')
 
 let unlock, locks
@@ -20,18 +21,12 @@ contract('Lock', (accounts) => {
 
   describe('purchaseForFrom', () => {
     describe('if the referrer does not have a key', () => {
-      it('should fail', () => {
+      it('should fail', async () => {
         const lock = locks['FIRST']
-        return lock
-          .purchaseForFrom(accounts[0], accounts[1], Web3Utils.toHex('Julien'))
-          .catch((error) => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert Key is not valid')
-            // Making sure we do not have a key set!
-            return lock.keyExpirationTimestampFor(accounts[0])
-              .catch(error => {
-                assert.equal(error.message, 'VM Exception while processing transaction: revert No such key')
-              })
-          })
+        await shouldFail(lock
+          .purchaseForFrom(accounts[0], accounts[1], Web3Utils.toHex('Julien')), 'Key is not valid')
+        // Making sure we do not have a key set!
+        await shouldFail(lock.keyExpirationTimestampFor(accounts[0]), 'No such key')
       })
     })
 

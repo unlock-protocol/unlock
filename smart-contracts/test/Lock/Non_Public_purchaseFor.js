@@ -2,6 +2,7 @@ const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 
 const deployLocks = require('../helpers/deployLocks')
+const shouldFail = require('../helpers/shouldFail')
 const Unlock = artifacts.require('../Unlock.sol')
 
 let unlock, locks
@@ -17,24 +18,20 @@ contract('Lock', (accounts) => {
         locks = _locks
       })
   })
+
   describe('purchaseFor', () => {
     // from purchaseFor.js, ln#23:
     describe.skip('if the contract has a private key release', () => {
-      it('should fail', () => {
+      it('should fail', async () => {
         const lock = locks['PRIVATE']
-        return lock
-          .purchaseFor(accounts[0], Web3Utils.toHex('Julien'))
-          .catch((error) => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert')
-            // Making sure we do not have a key set!
-            return lock.keyExpirationTimestampFor(accounts[0])
-              .catch(error => {
-                assert.equal(error.message, 'VM Exception while processing transaction: revert')
-              })
-          })
+        await shouldFail(lock
+          .purchaseFor(accounts[0], Web3Utils.toHex('Julien')), '')
+        // Making sure we do not have a key set!
+        await shouldFail(lock.keyExpirationTimestampFor(accounts[0]), '')
       })
     })
   })
+
   // from purchaseFor.js, ln#184:
   describe.skip('if the contract has a restricted key release', () => {
     let owner
@@ -45,17 +42,11 @@ contract('Lock', (accounts) => {
       })
     })
 
-    it('should fail if the sending account was not pre-approved', () => {
-      return locks['RESTRICTED']
+    it('should fail if the sending account was not pre-approved', async () => {
+      await shouldFail(locks['RESTRICTED']
         .purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
           value: Units.convert('0.01', 'eth', 'wei')
-        })
-        .then(() => {
-          assert(false, 'this should fail')
-        })
-        .catch(error => {
-          assert.equal(error.message, 'VM Exception while processing transaction: revert')
-        })
+        }), '')
     })
 
     // TODO this test is flaky

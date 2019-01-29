@@ -2,6 +2,7 @@ const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
+const shouldFail = require('../helpers/shouldFail')
 const Unlock = artifacts.require('../Unlock.sol')
 
 let unlock, locks
@@ -19,28 +20,16 @@ contract('Lock', (accounts) => {
   })
 
   describe('expireKeyFor', () => {
-    it('should fail if not invoked by lock owner', () => {
-      return locks['FIRST'].expireKeyFor(accounts[1], {
+    it('should fail if not invoked by lock owner', async () => {
+      await shouldFail(locks['FIRST'].expireKeyFor(accounts[1], {
         from: accounts[8]
-      })
-        .then(() => {
-          assert(false, 'this should have failed')
-        })
-        .catch(error => {
-          assert.equal(error.message, 'VM Exception while processing transaction: revert')
-        })
+      }), '')
     })
 
-    it('should fail if there is no such key', () => {
-      return locks['FIRST'].expireKeyFor(accounts[1], {
+    it('should fail if there is no such key', async () => {
+      await shouldFail(locks['FIRST'].expireKeyFor(accounts[1], {
         from: accounts[0]
-      })
-        .then(() => {
-          assert(false, 'this should have failed')
-        })
-        .catch(error => {
-          assert.equal(error.message, 'VM Exception while processing transaction: revert Key is not valid')
-        })
+      }), 'Key is not valid')
     })
 
     it('should fail if the key has already expired', async () => {
@@ -54,14 +43,9 @@ contract('Lock', (accounts) => {
       await locks['FIRST'].expireKeyFor(accounts[2], {
         from: accounts[0]
       })
-      try {
-        await locks['FIRST'].expireKeyFor(accounts[2], {
-          from: accounts[0]
-        })
-        assert(false, 'this should have failed')
-      } catch(error) {
-        assert.equal(error.message, 'VM Exception while processing transaction: revert Key is not valid')
-      }
+      await shouldFail(locks['FIRST'].expireKeyFor(accounts[2], {
+        from: accounts[0]
+      }), 'Key is not valid')
     })
 
     it('should expire a valid key', async () => {
