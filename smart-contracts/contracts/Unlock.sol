@@ -98,7 +98,7 @@ contract Unlock is IUnlock, Initializable, Ownable {
       _expirationDuration,
       _keyPrice,
       _maxNumberOfKeys,
-      0 // set Lock version explicitly
+      1 // set Lock version explicitly
     );
 
     // Assign the new Lock

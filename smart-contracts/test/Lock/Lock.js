@@ -6,7 +6,7 @@ const Unlock = artifacts.require('../Unlock.sol')
 
 let unlock, locks
 
-contract('Lock', (accounts) => {
+contract('Lock', accounts => {
   before(() => {
     return Unlock.deployed()
       .then(_unlock => {
@@ -26,7 +26,8 @@ contract('Lock', (accounts) => {
       lock.keyPrice.call(),
       lock.maxNumberOfKeys.call(),
       lock.outstandingKeys.call(),
-      lock.numberOfOwners.call()
+      lock.numberOfOwners.call(),
+      lock.publicLockVersion.call()
     ]).then(
       ([
         owner,
@@ -34,7 +35,8 @@ contract('Lock', (accounts) => {
         keyPrice,
         maxNumberOfKeys,
         outstandingKeys,
-        numberOfOwners
+        numberOfOwners,
+        publicLockVersion
       ]) => {
         expirationDuration = new BigNumber(expirationDuration)
         keyPrice = new BigNumber(keyPrice)
@@ -43,13 +45,11 @@ contract('Lock', (accounts) => {
         numberOfOwners = new BigNumber(numberOfOwners)
         assert.strictEqual(owner, accounts[0])
         assert.equal(expirationDuration.toFixed(), 60 * 60 * 24 * 30)
-        assert.strictEqual(
-          Units.convert(keyPrice, 'wei', 'eth'),
-          '0.01'
-        )
+        assert.strictEqual(Units.convert(keyPrice, 'wei', 'eth'), '0.01')
         assert.equal(maxNumberOfKeys.toFixed(), 10)
         assert.equal(outstandingKeys.toFixed(), 0)
         assert.equal(numberOfOwners.toFixed(), 0)
+        assert.equal(publicLockVersion.toFixed(), 1) // needs updating each lock-version change
       }
     )
   })
