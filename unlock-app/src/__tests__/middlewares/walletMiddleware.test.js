@@ -5,6 +5,7 @@ import {
   DELETE_LOCK,
   WITHDRAW_FROM_LOCK,
   UPDATE_LOCK_KEY_PRICE,
+  UPDATE_LOCK,
 } from '../../actions/lock'
 import { PURCHASE_KEY } from '../../actions/key'
 import { SET_ACCOUNT } from '../../actions/accounts'
@@ -131,11 +132,27 @@ describe('Wallet middleware', () => {
   it('it should handle transaction.new events triggered by the walletService', () => {
     expect.assertions(1)
     const { store } = create()
-    mockWalletService.emit('transaction.new', transaction)
+    mockWalletService.emit('transaction.new', transaction.hash)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: ADD_TRANSACTION,
         transaction,
+      })
+    )
+  })
+
+  it('it should handle lock.updated events triggered by the walletService', () => {
+    expect.assertions(1)
+    const { store } = create()
+    const update = {
+      transaction: '0x123',
+    }
+    mockWalletService.emit('lock.updated', lock.address, update)
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: UPDATE_LOCK,
+        address: lock.address,
+        update,
       })
     )
   })

@@ -4,6 +4,7 @@ import {
   deleteLock,
   UPDATE_LOCK_KEY_PRICE,
   LOCK_DEPLOYED,
+  updateLock,
 } from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
 import { setAccount, SET_ACCOUNT } from '../actions/accounts'
@@ -44,8 +45,16 @@ export default function walletMiddleware({ getState, dispatch }) {
     )
   })
 
-  walletService.on('transaction.new', transaction => {
-    dispatch(addTransaction(transaction))
+  walletService.on('transaction.new', transactionHash => {
+    dispatch(
+      addTransaction({
+        hash: transactionHash,
+      })
+    )
+  })
+
+  walletService.on('lock.updated', (address, update) => {
+    dispatch(updateLock(address, update))
   })
 
   walletService.on('error', (error, transactionHash) => {
