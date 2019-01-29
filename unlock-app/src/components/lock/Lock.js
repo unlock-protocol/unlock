@@ -12,9 +12,7 @@ import ConfirmedKeyLock from './ConfirmedKeyLock'
 import NoKeyLock from './NoKeyLock'
 import { UNLIMITED_KEYS_COUNT, TRANSACTION_TYPES } from '../../constants'
 
-import configure from '../../config'
 
-const config = configure()
 
 export const Lock = ({
   lock,
