@@ -10,7 +10,7 @@ import PendingKeyLock from './PendingKeyLock'
 import ConfirmingKeyLock from './ConfirmingKeyLock'
 import ConfirmedKeyLock from './ConfirmedKeyLock'
 import NoKeyLock from './NoKeyLock'
-import { UNLIMITED_KEYS_COUNT } from '../../constants'
+import { UNLIMITED_KEYS_COUNT, TRANSACTION_TYPES } from '../../constants'
 
 export const Lock = ({
   lock,
@@ -95,9 +95,15 @@ export const mapStateToProps = (state, { lock }) => {
       lock: lock.address,
       owner: account.address,
     }
-  } else {
-    transaction = state.transactions[lockKey.transaction]
   }
+
+  // Let's select the transaction corresponding to this key purchase, if it exists
+  // This transaction is of type KEY_PURCHASE
+  transaction = Object.values(state.transactions).find(
+    transaction =>
+      transaction.type === TRANSACTION_TYPES.KEY_PURCHASE &&
+      transaction.key === lockKey.id
+  )
 
   return {
     lockKey,
