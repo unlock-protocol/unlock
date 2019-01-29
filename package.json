@@ -26,6 +26,7 @@
     "prettier-eslint-cli": "^4.7.1"
   },
   "devDependencies": {
+    "lint-staged": "^8.0.5",
     "ganache-cli": "^6.2.3",
     "husky": "^1.2.0"
   },
@@ -39,7 +40,7 @@
     "start": "cd unlock-app && npm run start",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "nuke": "./scripts/nuke.sh",
-    "start-locksmith" : "cd locksmith && npm start"
+    "start-locksmith": "cd locksmith && npm start"
   },
   "repository": {
     "type": "git",

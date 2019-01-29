@@ -15,7 +15,7 @@ const svg2Components = {
 
 // Run lint on staged files
 const lintStaged = {
-  command: "npx lint-staged",
+  command: "lint-staged",
   path: "unlock-app"
 }
 
