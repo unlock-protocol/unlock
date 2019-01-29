@@ -2,6 +2,7 @@
 
 import EventEmitter from 'events'
 import nock from 'nock'
+import Web3Utils from 'web3-utils'
 import WalletService from '../../services/walletService'
 import UnlockContract from '../../artifacts/contracts/Unlock.json'
 import LockContract from '../../artifacts/contracts/PublicLock.json'
@@ -20,7 +21,7 @@ const nockScope = nock('http://127.0.0.1:8545', { encodedQueryParams: true })
 
 let rpcRequestId = 0
 
-let debug = true // set to true to see more logging statements
+let debug = false // set to true to see more logging statements
 
 function logNock(...args) {
   if (debug) {
@@ -537,7 +538,7 @@ describe('WalletService', () => {
             expect(address).toBe(lock)
             this.methods = {
               updateKeyPrice: newPrice => {
-                expect(newPrice).toEqual(price)
+                expect(newPrice).toEqual(Web3Utils.toWei(price, 'ether'))
                 return this
               },
             }

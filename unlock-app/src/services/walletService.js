@@ -157,7 +157,9 @@ export default class WalletService extends EventEmitter {
    */
   updateKeyPrice(lock, account, price) {
     const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
-    const data = lockContract.methods.updateKeyPrice(price).encodeABI()
+    const data = lockContract.methods
+      .updateKeyPrice(Web3Utils.toWei(price, 'ether'))
+      .encodeABI()
 
     return this._sendTransaction(
       {
@@ -198,7 +200,7 @@ export default class WalletService extends EventEmitter {
       {
         to: this.unlockContractAddress,
         from: owner,
-        data: data,
+        data,
         gas: 2000000,
         contract: UnlockContract,
       },
