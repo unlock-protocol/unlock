@@ -1,4 +1,5 @@
 const deployLocks = require('../../helpers/deployLocks')
+const shouldFail = require('../../helpers/shouldFail')
 const Unlock = artifacts.require('../../Unlock.sol')
 const Zos = require('zos')
 const TestHelper = Zos.TestHelper
@@ -25,14 +26,8 @@ contract('Lock ERC721', (accounts) => {
       })
     })
 
-    it('should fail if no one was approved for a key', () => {
-      return locks['FIRST'].getApproved(accounts[1])
-        .then(() => {
-          assert(false, 'this should have failed')
-        })
-        .catch(error => {
-          assert.equal(error.message, 'VM Exception while processing transaction: revert')
-        })
+    it('should fail if no one was approved for a key', async () => {
+      await shouldFail(locks['FIRST'].getApproved(accounts[1]), '')
     })
   })
 })

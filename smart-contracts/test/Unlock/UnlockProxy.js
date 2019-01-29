@@ -5,6 +5,7 @@ const UnlockTestV2 = artifacts.require('UnlockTestV2')
 const UnlockTestV3 = artifacts.require('UnlockTestV3')
 const Zos = require('zos')
 const TestHelper = Zos.TestHelper
+const shouldFail = require('../helpers/shouldFail')
 const shared = require('./behaviors/shared')
 const Units = require('ethereumjs-units')
 
@@ -28,13 +29,7 @@ contract('Unlock', function (accounts) {
       shared.shouldBehaveLikeV1(accounts, unlockOwner)
 
       it("should fail if called from the proxy owner's account", async function () {
-        try {
-          await this.unlock.grossNetworkProduct({ from: proxyAdmin })
-        } catch (e) {
-          return
-        }
-
-        assert.fail()
+        await shouldFail(this.unlock.grossNetworkProduct({ from: proxyAdmin }), 'Cannot call fallback function from the proxy admin')
       })
     })
 
@@ -102,19 +97,7 @@ contract('Unlock', function (accounts) {
       })
 
       it('should allow removing functions', async function () {
-        try {
-          await this.unlock.createLock(
-            60 * 60 * 24 * 30,
-            Units.convert(1, 'eth', 'wei'),
-            100,
-            {
-              from: accounts[0]
-            }
-          )
-        } catch (e) {
-          return
-        }
-        assert.fail()
+        assert.equal(this.unlock.createLock, undefined)
       })
 
       it('should allow changing functions', async function () {

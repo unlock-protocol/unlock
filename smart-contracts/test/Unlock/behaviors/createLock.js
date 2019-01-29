@@ -1,6 +1,7 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
+const shouldFail = require('../../helpers/shouldFail')
 const PublicLock = artifacts.require('../../PublicLock.sol')
 
 exports.shouldCreateLock = function (accounts) {
@@ -46,18 +47,13 @@ exports.shouldCreateLock = function (accounts) {
 
     describe('lock creation fails', function () {
       it('should fail if expirationDuration is too large', async function () {
-        try {
-          await this.unlock.createLock(
-            60 * 60 * 24 * 365 * 101, // expirationDuration: 101 years
-            Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
-            100 // maxNumberOfKeys
-            , {
-              from: accounts[0]
-            })
-          assert.fail('Expected revert')
-        } catch (error) {
-          assert.equal(error.message, 'VM Exception while processing transaction: revert Expiration duration exceeds 100 years')
-        }
+        await shouldFail(this.unlock.createLock(
+          60 * 60 * 24 * 365 * 101, // expirationDuration: 101 years
+          Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
+          100 // maxNumberOfKeys
+          , {
+            from: accounts[0]
+          }), 'Expiration duration exceeds 100 years')
       })
     })
   })

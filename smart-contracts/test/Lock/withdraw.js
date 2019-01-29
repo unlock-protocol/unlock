@@ -3,6 +3,7 @@ const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
+const shouldFail = require('../helpers/shouldFail')
 const Unlock = artifacts.require('../Unlock.sol')
 
 let unlock, locks
@@ -39,13 +40,11 @@ contract('Lock', (accounts) => {
         })
     })
 
-    it('should only allow the owner to withdraw', () => {
+    it('should only allow the owner to withdraw', async () => {
       assert.notEqual(owner, accounts[1]) // Making sure
-      return locks['OWNED'].withdraw({
+      await shouldFail(locks['OWNED'].withdraw({
         from: accounts[1]
-      }).catch(error => {
-        assert.equal(error.message, 'VM Exception while processing transaction: revert')
-      })
+      }), '')
     })
 
     describe('when the owner withdraws funds', () => {

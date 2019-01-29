@@ -3,6 +3,7 @@ const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
+const shouldFail = require('../helpers/shouldFail')
 const Unlock = artifacts.require('../Unlock.sol')
 let unlock, locks
 
@@ -34,40 +35,23 @@ contract('Lock', (accounts) => {
     })
 
     it('should fail if called by address other than owner', async () => {
-      try {
-        assert.notEqual(owner, accounts[1]) // Making sure
-        await locks['OWNED'].partialWithdraw(withdrawalAmount.toFixed(), {
-          from: accounts[1]
-        })
-      } catch (error) {
-        assert.equal(error.message, 'VM Exception while processing transaction: revert')
-        return
-      }
-      assert.fail()
+      assert.notEqual(owner, accounts[1]) // Making sure
+      await shouldFail(locks['OWNED'].partialWithdraw(withdrawalAmount.toFixed(), {
+        from: accounts[1]
+      }), '')
     })
 
     it('should fail if too much is withdrawn', async () => {
-      try {
-        initialLockBalance = new BigNumber(await web3.eth.getBalance(locks['OWNED'].address))
-        await locks['OWNED'].partialWithdraw(initialLockBalance.plus(withdrawalAmount).toFixed(), {
-          from: owner
-        })
-      } catch (error) {
-        assert.equal(error.message, 'VM Exception while processing transaction: revert Not enough funds')
-        return
-      }
-      assert.fail()
+      initialLockBalance = new BigNumber(await web3.eth.getBalance(locks['OWNED'].address))
+      await shouldFail(locks['OWNED'].partialWithdraw(initialLockBalance.plus(withdrawalAmount).toFixed(), {
+        from: owner
+      }), 'Not enough funds')
     })
 
     it('should fail if requesting partial withdraw of 0', async () => {
-      try {
-        await locks['OWNED'].partialWithdraw(0, {
-          from: owner
-        })
-        assert.fail()
-      } catch (error) {
-        assert.equal(error.message, 'VM Exception while processing transaction: revert Must request an amount greater than 0')
-      }
+      await shouldFail(locks['OWNED'].partialWithdraw(0, {
+        from: owner
+      }), 'Must request an amount greater than 0')
     })
 
     describe('when the owner withdraws some funds', () => {

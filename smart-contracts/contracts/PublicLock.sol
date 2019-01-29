@@ -301,6 +301,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     onlyKeyOwner(_tokenId)
   {
     require(_approved != address(0));
+    require(msg.sender != _approved, "You can't approve yourself");
 
     approved[_tokenId] = _approved;
     emit Approval(ownerByTokenId[_tokenId], _approved, _tokenId);

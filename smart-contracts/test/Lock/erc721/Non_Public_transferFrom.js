@@ -3,6 +3,7 @@ const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 
 const deployLocks = require('../../helpers/deployLocks')
+const shouldFail = require('../../helpers/shouldFail')
 const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock, locks
@@ -20,30 +21,17 @@ contract('Lock ERC721', (accounts) => {
   })
 
   // from  transferFrom.js, ln#59:
-  it.skip('should abort if the lock is private', () => {
-    return locks['PRIVATE']
+  it.skip('should abort if the lock is private', async () => {
+    await shouldFail(locks['PRIVATE']
       .transferFrom(from, to, tokenId, {
         from
-      })
-      .then(() => {
-        assert(false, 'This should not succeed')
-      })
-      .catch(error => {
-        assert.equal(error.message, 'VM Exception while processing transaction: revert')
-      })
+      }), '')
   })
 
-  it.skip('should abort if the lock is restricted', () => {
-    return locks['RESTRICTED']
+  it.skip('should abort if the lock is restricted', async () => {
+    await shouldFail(locks['RESTRICTED']
       .transferFrom(from, to, tokenId, {
         from
-      })
-      .then(() => {
-        assert(false, 'This should not succeed')
-      })
-      .catch(error => {
-        assert.equal(error.message, 'VM Exception while processing transaction: revert')
-      })
+      }), '')
   })
-
 })

@@ -1,8 +1,8 @@
-
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 
 const deployLocks = require('../../helpers/deployLocks')
+const shouldFail = require('../../helpers/shouldFail')
 const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock, locks
@@ -21,14 +21,11 @@ contract('Lock ERC721', (accounts) => {
 
   describe('approve', () => {
     describe('when the token does not exist', () => {
-      it('should fail', () => {
-        return locks['FIRST']
+      it('should fail', async () => {
+        await shouldFail(locks['FIRST']
           .approve(accounts[2], accounts[1], {
             from: accounts[1]
-          })
-          .catch(error => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert')
-          })
+          }), '')
       })
     })
 
@@ -41,26 +38,20 @@ contract('Lock ERC721', (accounts) => {
       })
 
       describe('when the sender is not the token owner', () => {
-        it('should fail', () => {
-          return locks['FIRST']
+        it('should fail', async () => {
+          await shouldFail(locks['FIRST']
             .approve(accounts[2], accounts[1], {
               from: accounts[2]
-            })
-            .catch(error => {
-              assert.equal(error.message, 'VM Exception while processing transaction: revert')
-            })
+            }), '')
         })
       })
 
       describe('when the sender is self approving', () => {
-        it('should fail', () => {
-          return locks['FIRST']
+        it('should fail', async () => {
+          await shouldFail(locks['FIRST']
             .approve(accounts[1], accounts[1], {
               from: accounts[1]
-            })
-            .catch(error => {
-              assert.equal(error.message, 'VM Exception while processing transaction: revert')
-            })
+            }), 'You can\'t approve yourself')
         })
       })
 

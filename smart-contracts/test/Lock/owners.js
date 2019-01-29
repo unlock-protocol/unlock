@@ -3,6 +3,7 @@ const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
+const shouldFail = require('../helpers/shouldFail')
 const Unlock = artifacts.require('../Unlock.sol')
 
 let lock
@@ -64,12 +65,8 @@ contract('Lock ERC721', (accounts) => {
       })
     })
 
-    it('should fail to access to an individual key owner when out of bounds', () => {
-      return lock.owners(6).then((missing) => {
-        assert(false, 'This should have failed')
-      }).catch(error => {
-        assert.equal(error.message, 'VM Exception while processing transaction: invalid opcode')
-      })
+    it('should fail to access to an individual key owner when out of bounds', async () => {
+      await shouldFail(lock.owners(6), 'invalid opcode')
     })
 
     describe('after a transfer to a new address', () => {
@@ -79,25 +76,21 @@ contract('Lock ERC721', (accounts) => {
         numberOfOwners = new BigNumber(await lock.numberOfOwners())
         await lock.transferFrom(accounts[1], accounts[5], accounts[1], { from: accounts[1] })
       })
-  
+
       it('should have the right number of keys', () => {
         return lock.outstandingKeys().then((outstandingKeys) => {
           assert.equal(outstandingKeys, 4)
         })
       })
-  
+
       it('should have the right number of owners', async () => {
         const _numberOfOwners = new BigNumber(await lock.numberOfOwners())
         assert.equal(_numberOfOwners.toFixed(), numberOfOwners.plus(1))
       })
 
       it('should fail if I transfer from the same account again', async () => {
-        try {
-          await lock.transferFrom(accounts[1], accounts[5], accounts[1], { from: accounts[1] })
-          assert.fail('Expected revert')
-        } catch (error) {
-          assert.equal(error.message, 'VM Exception while processing transaction: revert Key is not valid')
-        }
+        await shouldFail(lock.transferFrom(accounts[1], accounts[5], accounts[1], { from: accounts[1] }),
+          'Key is not valid')
       })
     })
 
@@ -108,13 +101,13 @@ contract('Lock ERC721', (accounts) => {
         numberOfOwners = await lock.numberOfOwners()
         await lock.transferFrom(accounts[2], accounts[3], accounts[2], { from: accounts[2] })
       })
-  
+
       it('should have the right number of keys', () => {
         return lock.outstandingKeys().then((outstandingKeys) => {
           assert.equal(outstandingKeys, 4)
         })
       })
-  
+
       it('should have the right number of owners', async () => {
         const _numberOfOwners = new BigNumber(await lock.numberOfOwners())
         assert.equal(_numberOfOwners.toFixed(), numberOfOwners)

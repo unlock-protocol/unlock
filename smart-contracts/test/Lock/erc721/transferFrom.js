@@ -3,6 +3,7 @@ const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../../helpers/deployLocks')
+const shouldFail = require('../../helpers/shouldFail')
 const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock, locks
@@ -60,31 +61,20 @@ contract('Lock ERC721', (accounts) => {
     ///  `_tokenId` is not a valid NFT.
 
     describe('when the lock is public', () => {
-      it('should abort when there is no key to transfer', () => {
-        return locks['FIRST']
+      it('should abort when there is no key to transfer', async () => {
+        await shouldFail(locks['FIRST']
           .transferFrom(accountWithNoKey, to, accountWithNoKey, {
             from: accountWithNoKey
-          })
-          .then(() => {
-            assert(false, 'This should not succeed')
-          })
-          .catch(error => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert Key is not valid')
-          })
+          }), 'Key is not valid')
       })
 
       it('should abort if the recipient is 0x', async () => {
-        try {
-          await locks['FIRST'].transferFrom(from, Web3Utils.padLeft(0, 40), from, {
-            from
-          })
-          assert(false, 'This should not succeed')
-        } catch(error) {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert')
-            // Ensuring that ownership of the key did not change
-          const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(from))
-          assert.equal(keyExpiration.toFixed(), expirationTimestamp.toFixed())
-        }
+        await shouldFail(locks['FIRST'].transferFrom(from, Web3Utils.padLeft(0, 40), from, {
+          from
+        }), '')
+        // Ensuring that ownership of the key did not change
+        const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(from))
+        assert.equal(keyExpiration.toFixed(), expirationTimestamp.toFixed())
       })
 
       describe('when the recipient already has an expired key', () => {
@@ -97,7 +87,7 @@ contract('Lock ERC721', (accounts) => {
           })
           // Let's check the expiration date for that key
           fromExpirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(from))
-            // Then let's expire the key for accountWithExpiredKey
+          // Then let's expire the key for accountWithExpiredKey
           await locks['FIRST'].expireKeyFor(accountWithExpiredKey)
           await locks['FIRST'].transferFrom(from, accountWithExpiredKey, from, {
             from
@@ -108,6 +98,9 @@ contract('Lock ERC721', (accounts) => {
       })
 
       describe('when the recipient already has a non expired key', () => {
+        let transferedKeyTimestamp
+        let previousExpirationTimestamp
+
         before(async () => {
           await locks['FIRST'].purchaseFor(from, Web3Utils.toHex('Julien'), {
             value: Units.convert('0.01', 'eth', 'wei'),
@@ -140,18 +133,13 @@ contract('Lock ERC721', (accounts) => {
       describe('when the key owner is not the sender', () => {
         it('should fail if the sender has not been approved for that key', async () => {
           const previousExpirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(from))
-          try {
-            await locks['FIRST']
+          await shouldFail(locks['FIRST']
             .transferFrom(from, accountNotApproved, from, {
               from: accountNotApproved
-            })
-            assert(false, 'This should not succeed')
-          } catch(error) {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert Key is not valid')
-            // Ensuring that ownership of the key did not change
-            const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(from))
-            assert.equal(previousExpirationTimestamp.toFixed(), expirationTimestamp.toFixed())
-          }
+            }), 'Key is not valid')
+          // Ensuring that ownership of the key did not change
+          const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(from))
+          assert.equal(previousExpirationTimestamp.toFixed(), expirationTimestamp.toFixed())
         })
 
         it('should succeed if the sender has been approved for that key', () => {

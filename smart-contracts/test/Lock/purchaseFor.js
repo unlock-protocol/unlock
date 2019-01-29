@@ -3,6 +3,7 @@ const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
+const shouldFail = require('../helpers/shouldFail')
 const Unlock = artifacts.require('../Unlock.sol')
 
 let unlock, locks
@@ -21,43 +22,27 @@ contract('Lock', (accounts) => {
 
   describe('purchaseFor', () => {
     describe('when the contract has a public key release', () => {
-      it('should fail if the price is not enough', () => {
-        return locks['FIRST']
+      it('should fail if the price is not enough', async () => {
+        await shouldFail(locks['FIRST']
           .purchaseFor(accounts[0], Web3Utils.toHex('Julien'), {
             value: Units.convert('0.0001', 'eth', 'wei')
-          })
-          .catch(error => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert Insufficient funds')
-            // Making sure we do not have a key set!
-            return locks['FIRST'].keyExpirationTimestampFor(accounts[0])
-              .catch(error => {
-                assert.equal(error.message, 'VM Exception while processing transaction: revert No such key')
-              })
-          })
+          }), 'Insufficient funds')
+        // Making sure we do not have a key set!
+        await shouldFail(locks['FIRST'].keyExpirationTimestampFor(accounts[0]), 'No such key')
       })
 
-      it('should fail if we reached the max number of keys', () => {
-        return locks['SINGLE KEY']
+      it('should fail if we reached the max number of keys', async () => {
+        await locks['SINGLE KEY']
           .purchaseFor(accounts[0], Web3Utils.toHex('Julien'), {
             value: Units.convert('0.01', 'eth', 'wei')
           })
-          .then(keyData => {
-            return locks['SINGLE KEY'].keyDataFor(accounts[0])
-          })
-          .then(keyData => {
-            assert.equal(Web3Utils.toUtf8(keyData), 'Julien')
-            return locks['SINGLE KEY'].purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
-              value: Units.convert('0.01', 'eth', 'wei'),
-              from: accounts[1]
-            })
-          })
-          .catch(error => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert Maximum number of keys already sold')
-            return locks['SINGLE KEY'].keyDataFor(accounts[1])
-              .catch(error => {
-                assert.equal(error.message, 'VM Exception while processing transaction: revert No such key')
-              })
-          })
+        const keyData = await locks['SINGLE KEY'].keyDataFor(accounts[0])
+        assert.equal(Web3Utils.toUtf8(keyData), 'Julien')
+        await shouldFail(locks['SINGLE KEY'].purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
+          value: Units.convert('0.01', 'eth', 'wei'),
+          from: accounts[1]
+        }), 'Maximum number of keys already sold')
+        await shouldFail(locks['SINGLE KEY'].keyDataFor(accounts[1]), 'No such key')
       })
 
       it('should trigger an event when successful', () => {
@@ -104,8 +89,8 @@ contract('Lock', (accounts) => {
           const firstExpiration = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(accounts[1]))
           assert(firstExpiration.gt(0))
           await locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Szabo'), {
-              value: Units.convert('0.01', 'eth', 'wei')
-            })
+            value: Units.convert('0.01', 'eth', 'wei')
+          })
           const keyData = await locks['FIRST'].keyDataFor(accounts[1])
           assert.equal(Web3Utils.toUtf8(keyData), 'Szabo')
           const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(accounts[1]))

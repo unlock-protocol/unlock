@@ -2,6 +2,7 @@ const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 
 const deployLocks = require('../helpers/deployLocks')
+const shouldFail = require('../helpers/shouldFail')
 const Unlock = artifacts.require('../Unlock.sol')
 
 let unlock, locks
@@ -20,11 +21,8 @@ contract('Lock', (accounts) => {
 
   describe('getOwnersByPage', () => {
     describe('when there are 0 key owners', () => {
-      it('should return an error', () => {
-        return locks['FIRST'].getOwnersByPage.call(0, 2, { from: accounts[5] })
-          .catch(error => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert No keys to retrieve')
-          })
+      it('should return an error', async () => {
+        await shouldFail(locks['FIRST'].getOwnersByPage.call(0, 2, { from: accounts[5] }), 'No keys to retrieve')
       })
     })
 
