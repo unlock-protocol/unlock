@@ -1,11 +1,14 @@
 import { getIframe, add, show, hide } from './iframe'
 import { findPaywallUrl } from './script'
 
+// Currently, the constraint on the banner is that it starts out at
+// 30% of height, but at least 375px
 const baseBannerHeight = () => {
   const viewportHeight = window.innerHeight
   const minHeight = 375
   const minHeightPct = 100 * (minHeight / viewportHeight)
-
+  // So here we determine which of the 2 options is the larger, so we
+  // can use it as the basis to scroll from
   return minHeightPct > 30 ? minHeightPct : 30
 }
 
@@ -29,13 +32,12 @@ export default function buildPaywall(window, document, lockAddress) {
     const viewportHeight = window.innerHeight
     const pageHeight = document.documentElement.scrollHeight
     const maximumScroll = pageHeight - viewportHeight
-
+    // Avoiding a divide-by-zero error when the page does not scroll!
     if (maximumScroll === 0) {
       return
     }
 
     const scrollPosition = baseBannerHeight() + 100 * (pageTop / maximumScroll)
-    debugger
     iframe.contentWindow.postMessage({ scrollPosition }, '*')
 
     window.requestAnimationFrame(scrollLoop)
