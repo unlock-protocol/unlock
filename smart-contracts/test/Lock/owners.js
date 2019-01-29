@@ -1,5 +1,6 @@
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
+const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
 const Unlock = artifacts.require('../Unlock.sol')
@@ -22,19 +23,19 @@ contract('Lock ERC721', (accounts) => {
       // Purchase keys!
       return Promise.all([
         lock.purchaseFor(accounts[1], Web3Utils.toHex('Julien'), {
-          value: lock.params.keyPrice,
+          value: lock.params.keyPrice.toFixed(),
           from: accounts[0]
         }),
         lock.purchaseFor(accounts[2], Web3Utils.toHex('Ben'), {
-          value: lock.params.keyPrice,
+          value: lock.params.keyPrice.toFixed(),
           from: accounts[0]
         }),
         lock.purchaseFor(accounts[3], Web3Utils.toHex('Satoshi'), {
-          value: lock.params.keyPrice,
+          value: lock.params.keyPrice.toFixed(),
           from: accounts[0]
         }),
         lock.purchaseFor(accounts[4], Web3Utils.toHex('Vitalik'), {
-          value: lock.params.keyPrice,
+          value: lock.params.keyPrice.toFixed(),
           from: accounts[0]
         })
       ])
@@ -75,7 +76,7 @@ contract('Lock ERC721', (accounts) => {
       let numberOfOwners
 
       before(async () => {
-        numberOfOwners = await lock.numberOfOwners()
+        numberOfOwners = new BigNumber(await lock.numberOfOwners())
         await lock.transferFrom(accounts[1], accounts[5], accounts[1], { from: accounts[1] })
       })
   
@@ -85,10 +86,9 @@ contract('Lock ERC721', (accounts) => {
         })
       })
   
-      it('should have the right number of owners', () => {
-        return lock.numberOfOwners().then((_numberOfOwners) => {
-          assert(_numberOfOwners.eq(numberOfOwners.plus(1)))
-        })
+      it('should have the right number of owners', async () => {
+        const _numberOfOwners = new BigNumber(await lock.numberOfOwners())
+        assert.equal(_numberOfOwners.toFixed(), numberOfOwners.plus(1))
       })
 
       it('should fail if I transfer from the same account again', async () => {
@@ -115,10 +115,9 @@ contract('Lock ERC721', (accounts) => {
         })
       })
   
-      it('should have the right number of owners', () => {
-        return lock.numberOfOwners().then((_numberOfOwners) => {
-          assert(_numberOfOwners.eq(numberOfOwners))
-        })
+      it('should have the right number of owners', async () => {
+        const _numberOfOwners = new BigNumber(await lock.numberOfOwners())
+        assert.equal(_numberOfOwners.toFixed(), numberOfOwners)
       })
     })
   })

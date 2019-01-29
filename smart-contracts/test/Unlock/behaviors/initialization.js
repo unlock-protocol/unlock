@@ -1,3 +1,5 @@
+const BigNumber = require('bignumber.js')
+
 exports.shouldHaveInitialized = function (unlockOwner) {
   describe('initialization', function () {
     it('should have an owner', async function () {
@@ -6,13 +8,13 @@ exports.shouldHaveInitialized = function (unlockOwner) {
     })
 
     it('should have initialized grossNetworkProduct', async function () {
-      const grossNetworkProduct = await this.unlock.grossNetworkProduct()
-      assert(grossNetworkProduct.eq(0))
+      const grossNetworkProduct = new BigNumber(await this.unlock.grossNetworkProduct())
+      assert.equal(grossNetworkProduct.toFixed(), 0)
     })
 
     it('should have initialized totalDiscountGranted', async function () {
-      const totalDiscountGranted = await this.unlock.totalDiscountGranted()
-      assert(totalDiscountGranted.eq(0))
+      const totalDiscountGranted = new BigNumber(await this.unlock.totalDiscountGranted())
+      assert.equal(totalDiscountGranted.toFixed(), 0)
     })
   })
 }

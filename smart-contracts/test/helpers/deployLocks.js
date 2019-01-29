@@ -7,9 +7,9 @@ module.exports = function deployLocks (unlock) {
   return Promise.all(
     Object.keys(Locks).map(name => {
       return unlock.createLock(
-        Locks[name].expirationDuration,
-        Locks[name].keyPrice,
-        Locks[name].maxNumberOfKeys
+        Locks[name].expirationDuration.toFixed(),
+        Locks[name].keyPrice.toFixed(),
+        Locks[name].maxNumberOfKeys.toFixed()
       ).then(async (tx) => {
         // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
         const evt = tx.logs[0]

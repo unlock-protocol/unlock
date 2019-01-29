@@ -1,5 +1,6 @@
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
+const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
 const Unlock = artifacts.require('../Unlock.sol')
@@ -49,19 +50,20 @@ contract('Lock', (accounts) => {
 
     describe('when the owner withdraws funds', () => {
       let ownerBalance, lockBalance
-      before(() => {
-        lockBalance = web3.eth.getBalance(locks['OWNED'].address)
-        ownerBalance = web3.eth.getBalance(owner)
+      before(async () => {
+        lockBalance = new BigNumber(await web3.eth.getBalance(locks['OWNED'].address))
+        ownerBalance = new BigNumber(await web3.eth.getBalance(owner))
         return locks['OWNED'].withdraw({
           from: owner
         })
       })
-      it('should increase the owner\'s balance with the funds from the lock', () => {
-        assert(web3.eth.getBalance(owner) > ownerBalance)
+      it('should increase the owner\'s balance with the funds from the lock', async () => {
+        const balance = new BigNumber(await web3.eth.getBalance(owner))
+        assert(balance.gt(ownerBalance))
       })
 
-      it('should set the lock\'s balance to 0', () => {
-        assert.equal(web3.eth.getBalance(locks['OWNED'].address), 0)
+      it('should set the lock\'s balance to 0', async () => {
+        assert.equal(await web3.eth.getBalance(locks['OWNED'].address), 0)
       })
     })
   })
