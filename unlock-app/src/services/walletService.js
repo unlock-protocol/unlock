@@ -142,6 +142,7 @@ export default class WalletService extends EventEmitter {
 
     return web3TransactionPromise
       .once('transactionHash', hash => {
+        callback(null, hash)
         this.emit('transaction.new', hash)
       })
       .on('error', error => {
@@ -204,10 +205,16 @@ export default class WalletService extends EventEmitter {
         gas: 2000000,
         contract: UnlockContract,
       },
-      error => {
+      (error, hash) => {
         if (error) {
           return this.emit('error', new Error(FAILED_TO_CREATE_LOCK))
         }
+        // Let's update the lock to reflect that it is linked to this
+        // This is an exception because, until we are able to determine the lock address
+        // before the transaction is mined, we need to link the lock and transaction.
+        return this.emit('lock.updated', lock.address, {
+          transaction: hash,
+        })
       }
     )
   }
@@ -261,7 +268,7 @@ export default class WalletService extends EventEmitter {
       {
         to: lock,
         from: account,
-        data: data,
+        data,
         gas: 1000000,
         contract: LockContract,
       },
