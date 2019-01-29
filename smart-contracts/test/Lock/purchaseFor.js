@@ -45,7 +45,7 @@ contract('Lock', (accounts) => {
         await shouldFail(locks['SINGLE KEY'].keyDataFor(accounts[1]), 'No such key')
       })
 
-      it('should trigger an event when successful', () => {
+      it('should trigger an event when successful', async () => {
         const tx = await locks['FIRST']
           .purchaseFor(accounts[2], Web3Utils.toHex('Vitalik'), {
             value: Units.convert('0.01', 'eth', 'wei')
