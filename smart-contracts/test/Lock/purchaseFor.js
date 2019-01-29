@@ -97,8 +97,8 @@ contract('Lock', (accounts) => {
       describe('when the key was successfuly purchased', () => {
         let outstandingKeys, numberOfOwners, balance, now
 
-        before(() => {
-          balance = web3.eth.getBalance(locks['FIRST'].address)
+        before(async () => {
+          balance = new BigNumber(await web3.eth.getBalance(locks['FIRST'].address))
           return locks['FIRST'].outstandingKeys()
             .then(_outstandingKeys => {
               outstandingKeys = parseInt(_outstandingKeys)
@@ -127,8 +127,8 @@ contract('Lock', (accounts) => {
           assert(expirationTimestamp.gte(expirationDuration.plus(now)))
         })
 
-        it('should have added the funds to the contract', () => {
-          let newBalance = web3.eth.getBalance(locks['FIRST'].address)
+        it('should have added the funds to the contract', async () => {
+          let newBalance = new BigNumber(await web3.eth.getBalance(locks['FIRST'].address))
           assert.equal(parseFloat(Units.convert(newBalance, 'wei', 'eth')), parseFloat(Units.convert(balance, 'wei', 'eth')) + 0.01)
         })
 
