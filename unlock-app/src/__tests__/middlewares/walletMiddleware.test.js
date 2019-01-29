@@ -119,7 +119,7 @@ describe('Wallet middleware', () => {
       address,
     }
 
-    mockWalletService.emit('account.changed', account)
+    mockWalletService.emit('account.changed', address)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: SET_ACCOUNT,
@@ -302,7 +302,7 @@ describe('Wallet middleware', () => {
     invoke(action)
     expect(mockWalletService.createLock).toHaveBeenCalledWith(
       lock,
-      store.getState().account
+      store.getState().account.address
     )
     expect(mockGenerateJWTToken).toHaveBeenCalled()
     expect(next).toHaveBeenCalledWith(action)
@@ -319,7 +319,7 @@ describe('Wallet middleware', () => {
       key.lock,
       key.owner,
       lock.keyPrice,
-      account,
+      account.address,
       key.data
     )
     expect(next).toHaveBeenCalledWith(action)
@@ -333,8 +333,8 @@ describe('Wallet middleware', () => {
     invoke(action)
 
     expect(mockWalletService.withdrawFromLock).toHaveBeenCalledWith(
-      lock,
-      store.getState().account
+      lock.address,
+      store.getState().account.address
     )
     expect(next).toHaveBeenCalledWith(action)
   })
@@ -353,7 +353,7 @@ describe('Wallet middleware', () => {
 
       expect(mockWalletService.updateKeyPrice).toHaveBeenCalledWith(
         lock.address,
-        store.getState().account,
+        store.getState().account.address,
         '0.03'
       )
       expect(next).toHaveBeenCalledWith(action)
