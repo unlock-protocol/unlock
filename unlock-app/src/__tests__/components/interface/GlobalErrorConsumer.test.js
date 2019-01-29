@@ -94,7 +94,7 @@ describe('GlobalErrorConsumer', () => {
           value={{
             error: FATAL_WRONG_NETWORK,
             errorMetadata: {
-              requiredNetwork: 'CBS',
+              requiredNetworkId: 2,
               currentNetwork: 'Fox News',
             },
           }}
@@ -181,7 +181,7 @@ describe('GlobalErrorConsumer', () => {
             value={{
               error: FATAL_WRONG_NETWORK,
               errorMetadata: {
-                requiredNetwork: 'CBS',
+                requiredNetworkId: 1984,
                 currentNetwork: 'Fox News',
               },
             }}
