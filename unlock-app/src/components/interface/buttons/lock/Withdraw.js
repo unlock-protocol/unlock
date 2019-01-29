@@ -15,12 +15,7 @@ export const Withdraw = ({
   account,
   ...props
 }) => {
-  if (
-    !(
-      lock.balance == 0 ||
-      (withdrawalTransaction && withdrawalTransaction.status === 'submitted')
-    )
-  ) {
+  if (lock.balance > 0 && !withdrawalTransaction) {
     return (
       <Button
         label="Withdraw balance"
@@ -56,26 +51,11 @@ Withdraw.defaultProps = {
   withdraw: () => {},
 }
 
-const mapStateToProps = ({ account, transactions }, { lock }) => {
-  let withdrawalTransaction = null
-  Object.keys(transactions).forEach(el => {
-    if (
-      transactions[el].withdrawal &&
-      transactions[el].withdrawal === lock.address
-    )
-      withdrawalTransaction = transactions[el]
-  })
-  return {
-    account,
-    withdrawalTransaction,
-  }
-}
-
 const mapDispatchToProps = dispatch => ({
   withdraw: (lock, account) => dispatch(withdrawFromLock(lock, account)),
 })
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(Withdraw)

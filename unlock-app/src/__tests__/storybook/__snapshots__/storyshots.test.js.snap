@@ -3377,7 +3377,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c1 {
-  background-color: var(--lightgrey);
+  background-color: white;
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -3389,32 +3389,17 @@ Object {
 }
 
 .c1 > svg {
-  fill: var(--grey);
+  fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
 .c1:hover {
-  background-color: var(--link);
+  background-color: white;
 }
 
 .c1:hover > svg {
-  fill: white;
-}
-
-.c2 {
-  display: none;
-  position: relative;
-  z-index: var(--alwaysontop);
-  white-space: nowrap;
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
-  color: var(--link);
+  fill: var(--lightgrey);
 }
 
 .c0:hover .c2 {
@@ -3469,7 +3454,6 @@ Object {
       />
       <a
         class="c0 c1"
-        title="Withdraw balance"
       >
         <svg
           name="Withdraw"
@@ -3482,11 +3466,7 @@ Object {
             fill-rule="evenodd"
           />
         </svg>
-        <small
-          class="c2"
-        >
-          Withdraw balance
-        </small>
+        
       </a>
     </div>
   </body>,
@@ -3496,8 +3476,7 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 kiVDOG"
-      title="Withdraw balance"
+      class="sc-850ddk-0 gDgfza"
     >
       <svg
         name="Withdraw"
@@ -3510,11 +3489,7 @@ Object {
           fill-rule="evenodd"
         />
       </svg>
-      <small
-        class="sc-850ddk-1 fnqGzL"
-      >
-        Withdraw balance
-      </small>
+      
     </a>
   </div>,
   "debug": [Function],
@@ -14773,7 +14748,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c15 {
-  background-color: var(--lightgrey);
+  background-color: white;
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -14785,20 +14760,46 @@ Object {
 }
 
 .c15 > svg {
-  fill: var(--grey);
+  fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
 .c15:hover {
-  background-color: var(--link);
+  background-color: white;
 }
 
 .c15:hover > svg {
-  fill: white;
+  fill: var(--lightgrey);
 }
 
 .c16 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c16 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c16:hover {
+  background-color: var(--link);
+}
+
+.c16:hover > svg {
+  fill: white;
+}
+
+.c17 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -14813,7 +14814,7 @@ Object {
   color: var(--link);
 }
 
-.c14:hover .c16 {
+.c14:hover .c17 {
   display: inline-block;
 }
 
@@ -14881,7 +14882,7 @@ Object {
   grid-template-columns: repeat(3,24px);
 }
 
-.c17 {
+.c18 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -15183,7 +15184,6 @@ Object {
             >
               <button
                 class="c14 c15"
-                title="Withdraw balance"
               >
                 <svg
                   name="Withdraw"
@@ -15196,14 +15196,10 @@ Object {
                     fill-rule="evenodd"
                   />
                 </svg>
-                <small
-                  class="c16"
-                >
-                  Withdraw balance
-                </small>
+                
               </button>
               <button
-                class="c14 c15"
+                class="c14 c16"
                 title="Edit"
               >
                 <svg
@@ -15221,13 +15217,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c16"
+                  class="c17"
                 >
                   Edit
                 </small>
               </button>
               <button
-                class="c14 c15"
+                class="c14 c16"
                 title="Show embed code"
               >
                 <svg
@@ -15242,7 +15238,7 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c16"
+                  class="c17"
                 >
                   Show embed code
                 </small>
@@ -15250,7 +15246,7 @@ Object {
             </div>
           </div>
           <div
-            class="c17"
+            class="c18"
           />
         </div>
       </div>
@@ -15465,8 +15461,7 @@ Object {
             class="sc-1dp5gbn-1 hxNcaM"
           >
             <button
-              class="sc-850ddk-0 kiVDOG"
-              title="Withdraw balance"
+              class="sc-850ddk-0 gDgfza"
             >
               <svg
                 name="Withdraw"
@@ -15479,11 +15474,7 @@ Object {
                   fill-rule="evenodd"
                 />
               </svg>
-              <small
-                class="sc-850ddk-1 fnqGzL"
-              >
-                Withdraw balance
-              </small>
+              
             </button>
             <button
               class="sc-850ddk-0 kiVDOG"
@@ -15589,7 +15580,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c15 {
-  background-color: var(--lightgrey);
+  background-color: white;
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -15601,20 +15592,46 @@ Object {
 }
 
 .c15 > svg {
-  fill: var(--grey);
+  fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
 .c15:hover {
-  background-color: var(--link);
+  background-color: white;
 }
 
 .c15:hover > svg {
-  fill: white;
+  fill: var(--lightgrey);
 }
 
 .c16 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c16 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c16:hover {
+  background-color: var(--link);
+}
+
+.c16:hover > svg {
+  fill: white;
+}
+
+.c17 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -15629,7 +15646,7 @@ Object {
   color: var(--link);
 }
 
-.c14:hover .c16 {
+.c14:hover .c17 {
   display: inline-block;
 }
 
@@ -15697,7 +15714,7 @@ Object {
   grid-template-columns: repeat(3,24px);
 }
 
-.c17 {
+.c18 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -15999,7 +16016,6 @@ Object {
             >
               <button
                 class="c14 c15"
-                title="Withdraw balance"
               >
                 <svg
                   name="Withdraw"
@@ -16012,14 +16028,10 @@ Object {
                     fill-rule="evenodd"
                   />
                 </svg>
-                <small
-                  class="c16"
-                >
-                  Withdraw balance
-                </small>
+                
               </button>
               <button
-                class="c14 c15"
+                class="c14 c16"
                 title="Edit"
               >
                 <svg
@@ -16037,13 +16049,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c16"
+                  class="c17"
                 >
                   Edit
                 </small>
               </button>
               <button
-                class="c14 c15"
+                class="c14 c16"
                 title="Show embed code"
               >
                 <svg
@@ -16058,7 +16070,7 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c16"
+                  class="c17"
                 >
                   Show embed code
                 </small>
@@ -16066,7 +16078,7 @@ Object {
             </div>
           </div>
           <div
-            class="c17"
+            class="c18"
           />
         </div>
       </div>
@@ -16281,8 +16293,7 @@ Object {
             class="sc-1dp5gbn-1 hxNcaM"
           >
             <button
-              class="sc-850ddk-0 kiVDOG"
-              title="Withdraw balance"
+              class="sc-850ddk-0 gDgfza"
             >
               <svg
                 name="Withdraw"
@@ -16295,11 +16306,7 @@ Object {
                   fill-rule="evenodd"
                 />
               </svg>
-              <small
-                class="sc-850ddk-1 fnqGzL"
-              >
-                Withdraw balance
-              </small>
+              
             </button>
             <button
               class="sc-850ddk-0 kiVDOG"
@@ -17051,7 +17058,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c15 {
-  background-color: var(--lightgrey);
+  background-color: white;
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -17063,20 +17070,46 @@ Object {
 }
 
 .c15 > svg {
-  fill: var(--grey);
+  fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
 .c15:hover {
-  background-color: var(--link);
+  background-color: white;
 }
 
 .c15:hover > svg {
-  fill: white;
+  fill: var(--lightgrey);
 }
 
 .c16 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c16 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c16:hover {
+  background-color: var(--link);
+}
+
+.c16:hover > svg {
+  fill: white;
+}
+
+.c17 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -17091,7 +17124,7 @@ Object {
   color: var(--link);
 }
 
-.c14:hover .c16 {
+.c14:hover .c17 {
   display: inline-block;
 }
 
@@ -17159,7 +17192,7 @@ Object {
   grid-template-columns: repeat(3,24px);
 }
 
-.c17 {
+.c18 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -17461,7 +17494,6 @@ Object {
             >
               <button
                 class="c14 c15"
-                title="Withdraw balance"
               >
                 <svg
                   name="Withdraw"
@@ -17474,14 +17506,10 @@ Object {
                     fill-rule="evenodd"
                   />
                 </svg>
-                <small
-                  class="c16"
-                >
-                  Withdraw balance
-                </small>
+                
               </button>
               <button
-                class="c14 c15"
+                class="c14 c16"
                 title="Edit"
               >
                 <svg
@@ -17499,13 +17527,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c16"
+                  class="c17"
                 >
                   Edit
                 </small>
               </button>
               <button
-                class="c14 c15"
+                class="c14 c16"
                 title="Show embed code"
               >
                 <svg
@@ -17520,7 +17548,7 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c16"
+                  class="c17"
                 >
                   Show embed code
                 </small>
@@ -17528,7 +17556,7 @@ Object {
             </div>
           </div>
           <div
-            class="c17"
+            class="c18"
           />
         </div>
       </div>
@@ -17743,8 +17771,7 @@ Object {
             class="sc-1dp5gbn-1 hxNcaM"
           >
             <button
-              class="sc-850ddk-0 kiVDOG"
-              title="Withdraw balance"
+              class="sc-850ddk-0 gDgfza"
             >
               <svg
                 name="Withdraw"
@@ -17757,11 +17784,7 @@ Object {
                   fill-rule="evenodd"
                 />
               </svg>
-              <small
-                class="sc-850ddk-1 fnqGzL"
-              >
-                Withdraw balance
-              </small>
+              
             </button>
             <button
               class="sc-850ddk-0 kiVDOG"
@@ -17866,33 +17889,7 @@ exports[`Storyshots CreatorLock Withdrawal submitted 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c16 {
-  background-color: var(--lightgrey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 24px;
-}
-
-.c16 > svg {
-  fill: var(--grey);
-  height: 24px;
-  width: 24px;
-}
-
-.c16:hover {
-  background-color: var(--link);
-}
-
-.c16:hover > svg {
-  fill: white;
-}
-
-.c15 {
+    .c15 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -17916,6 +17913,32 @@ Object {
 
 .c15:hover > svg {
   fill: var(--lightgrey);
+}
+
+.c16 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c16 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c16:hover {
+  background-color: var(--link);
+}
+
+.c16:hover > svg {
+  fill: white;
 }
 
 .c17 {
@@ -18366,9 +18389,7 @@ Object {
           </div>
           <div
             class="c18"
-          >
-            Submitted to Network...
-          </div>
+          />
         </div>
       </div>
     </div>
@@ -18646,9 +18667,7 @@ Object {
         </div>
         <div
           class="sc-1dp5gbn-3 dpQaVY"
-        >
-          Submitted to Network...
-        </div>
+        />
       </div>
     </div>
   </div>,
@@ -18703,7 +18722,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c15 {
-  background-color: var(--lightgrey);
+  background-color: white;
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -18715,20 +18734,46 @@ Object {
 }
 
 .c15 > svg {
-  fill: var(--grey);
+  fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
 .c15:hover {
-  background-color: var(--link);
+  background-color: white;
 }
 
 .c15:hover > svg {
-  fill: white;
+  fill: var(--lightgrey);
 }
 
 .c16 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c16 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c16:hover {
+  background-color: var(--link);
+}
+
+.c16:hover > svg {
+  fill: white;
+}
+
+.c17 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -18743,7 +18788,7 @@ Object {
   color: var(--link);
 }
 
-.c14:hover .c16 {
+.c14:hover .c17 {
   display: inline-block;
 }
 
@@ -18811,7 +18856,7 @@ Object {
   grid-template-columns: repeat(3,24px);
 }
 
-.c17 {
+.c18 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -19113,7 +19158,6 @@ Object {
             >
               <button
                 class="c14 c15"
-                title="Withdraw balance"
               >
                 <svg
                   name="Withdraw"
@@ -19126,14 +19170,10 @@ Object {
                     fill-rule="evenodd"
                   />
                 </svg>
-                <small
-                  class="c16"
-                >
-                  Withdraw balance
-                </small>
+                
               </button>
               <button
-                class="c14 c15"
+                class="c14 c16"
                 title="Edit"
               >
                 <svg
@@ -19151,13 +19191,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c16"
+                  class="c17"
                 >
                   Edit
                 </small>
               </button>
               <button
-                class="c14 c15"
+                class="c14 c16"
                 title="Show embed code"
               >
                 <svg
@@ -19172,7 +19212,7 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c16"
+                  class="c17"
                 >
                   Show embed code
                 </small>
@@ -19180,13 +19220,8 @@ Object {
             </div>
           </div>
           <div
-            class="c17"
-          >
-            Confirming Withdrawal 
-            2
-            /
-            12
-          </div>
+            class="c18"
+          />
         </div>
       </div>
     </div>
@@ -19400,8 +19435,7 @@ Object {
             class="sc-1dp5gbn-1 hxNcaM"
           >
             <button
-              class="sc-850ddk-0 kiVDOG"
-              title="Withdraw balance"
+              class="sc-850ddk-0 gDgfza"
             >
               <svg
                 name="Withdraw"
@@ -19414,11 +19448,7 @@ Object {
                   fill-rule="evenodd"
                 />
               </svg>
-              <small
-                class="sc-850ddk-1 fnqGzL"
-              >
-                Withdraw balance
-              </small>
+              
             </button>
             <button
               class="sc-850ddk-0 kiVDOG"
@@ -19469,12 +19499,7 @@ Object {
         </div>
         <div
           class="sc-1dp5gbn-3 dpQaVY"
-        >
-          Confirming Withdrawal 
-          2
-          /
-          12
-        </div>
+        />
       </div>
     </div>
   </div>,
@@ -25528,7 +25553,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c43 {
-  background-color: var(--lightgrey);
+  background-color: white;
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -25540,16 +25565,42 @@ Object {
 }
 
 .c43 > svg {
-  fill: var(--grey);
+  fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
 .c43:hover {
-  background-color: var(--link);
+  background-color: white;
 }
 
 .c43:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c44 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c44 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c44:hover {
+  background-color: var(--link);
+}
+
+.c44:hover > svg {
   fill: white;
 }
 
@@ -25793,7 +25844,7 @@ Object {
   grid-template-columns: repeat(3,24px);
 }
 
-.c44 {
+.c45 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -26166,7 +26217,7 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c45 {
+  .c46 {
     display: none;
   }
 }
@@ -27185,7 +27236,6 @@ Object {
                   >
                     <button
                       class="c7 c43"
-                      title="Withdraw balance"
                     >
                       <svg
                         name="Withdraw"
@@ -27198,14 +27248,10 @@ Object {
                           fill-rule="evenodd"
                         />
                       </svg>
-                      <small
-                        class="c9"
-                      >
-                        Withdraw balance
-                      </small>
+                      
                     </button>
                     <button
-                      class="c7 c43"
+                      class="c7 c44"
                       title="Edit"
                     >
                       <svg
@@ -27229,7 +27275,7 @@ Object {
                       </small>
                     </button>
                     <button
-                      class="c7 c43"
+                      class="c7 c44"
                       title="Show embed code"
                     >
                       <svg
@@ -27252,14 +27298,14 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c44"
+                  class="c45"
                 />
               </div>
             </div>
           </section>
         </div>
         <div
-          class="c45"
+          class="c46"
         />
       </div>
     </div>
@@ -28247,8 +28293,7 @@ Object {
                   class="sc-1dp5gbn-1 hxNcaM"
                 >
                   <button
-                    class="sc-850ddk-0 kiVDOG"
-                    title="Withdraw balance"
+                    class="sc-850ddk-0 gDgfza"
                   >
                     <svg
                       name="Withdraw"
@@ -28261,11 +28306,7 @@ Object {
                         fill-rule="evenodd"
                       />
                     </svg>
-                    <small
-                      class="sc-850ddk-1 fnqGzL"
-                    >
-                      Withdraw balance
-                    </small>
+                    
                   </button>
                   <button
                     class="sc-850ddk-0 kiVDOG"
@@ -40325,7 +40366,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c3 {
-  background-color: var(--lightgrey);
+  background-color: white;
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -40337,20 +40378,46 @@ Object {
 }
 
 .c3 > svg {
-  fill: var(--grey);
+  fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
 .c3:hover {
-  background-color: var(--link);
+  background-color: white;
 }
 
 .c3:hover > svg {
-  fill: white;
+  fill: var(--lightgrey);
 }
 
 .c4 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c4 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c4:hover {
+  background-color: var(--link);
+}
+
+.c4:hover > svg {
+  fill: white;
+}
+
+.c5 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -40365,7 +40432,7 @@ Object {
   color: var(--link);
 }
 
-.c2:hover .c4 {
+.c2:hover .c5 {
   display: inline-block;
 }
 
@@ -40381,7 +40448,7 @@ Object {
   grid-template-columns: repeat(3,24px);
 }
 
-.c5 {
+.c6 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -40391,7 +40458,7 @@ Object {
   padding-right: 24px;
 }
 
-.c6 .c2 {
+.c7 .c2 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -40402,28 +40469,28 @@ Object {
   align-self: center;
 }
 
-.c6 .c2:nth-child(1) {
+.c7 .c2:nth-child(1) {
   pointer-events: none;
 }
 
-.c6 .c2:nth-child(2) {
+.c7 .c2:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c6 .c2 > svg {
+.c7 .c2 > svg {
   fill: var(--grey);
 }
 
-.c6 .c2:hover > svg {
+.c7 .c2:hover > svg {
   fill: var(--grey);
 }
 
-.c7 .c2 {
+.c8 .c2 {
   margin: 24px;
 }
 
-.c7 .c2 small {
+.c8 .c2 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -40454,7 +40521,6 @@ Object {
           >
             <button
               class="c2 c3"
-              title="Withdraw balance"
             >
               <svg
                 name="Withdraw"
@@ -40467,14 +40533,10 @@ Object {
                   fill-rule="evenodd"
                 />
               </svg>
-              <small
-                class="c4"
-              >
-                Withdraw balance
-              </small>
+              
             </button>
             <button
-              class="c2 c3"
+              class="c2 c4"
               title="Edit"
             >
               <svg
@@ -40492,13 +40554,13 @@ Object {
                 />
               </svg>
               <small
-                class="c4"
+                class="c5"
               >
                 Edit
               </small>
             </button>
             <button
-              class="c2 c3"
+              class="c2 c4"
               title="Show embed code"
             >
               <svg
@@ -40513,7 +40575,7 @@ Object {
                 />
               </svg>
               <small
-                class="c4"
+                class="c5"
               >
                 Show embed code
               </small>
@@ -40521,7 +40583,7 @@ Object {
           </div>
         </div>
         <div
-          class="c5"
+          class="c6"
         />
       </div>
     </div>
@@ -40541,8 +40603,7 @@ Object {
           class="sc-1dp5gbn-1 hxNcaM"
         >
           <button
-            class="sc-850ddk-0 kiVDOG"
-            title="Withdraw balance"
+            class="sc-850ddk-0 gDgfza"
           >
             <svg
               name="Withdraw"
@@ -40555,11 +40616,7 @@ Object {
                 fill-rule="evenodd"
               />
             </svg>
-            <small
-              class="sc-850ddk-1 fnqGzL"
-            >
-              Withdraw balance
-            </small>
+            
           </button>
           <button
             class="sc-850ddk-0 kiVDOG"

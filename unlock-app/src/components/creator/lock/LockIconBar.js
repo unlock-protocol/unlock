@@ -52,7 +52,11 @@ export function LockIconBar({
     <StatusBlock>
       <IconBarContainer>
         <IconBar>
-          <Buttons.Withdraw as="button" lock={lock} />
+          <Buttons.Withdraw
+            as="button"
+            lock={lock}
+            withdrawalTransaction={withdrawalTransaction}
+          />
           <Buttons.Edit as="button" action={() => edit(lock.address)} />
           {/* Reinstate when we're ready <Buttons.ExportLock /> */}
           <Buttons.Code action={toggleCode} as="button" />
@@ -96,15 +100,16 @@ LockIconBar.defaultProps = {
 
 const mapStateToProps = ({ transactions }, { lock }) => {
   let withdrawalTransaction = null
-  // TODO: only keep withdrawal transaction which are pending
-  // TODO: Use transaction.type rather than withdrawal?
-  Object.keys(transactions).forEach(el => {
+
+  Object.values(transactions).forEach(transaction => {
     if (
-      transactions[el].withdrawal &&
-      transactions[el].withdrawal === lock.address
+      transaction.type === TRANSACTION_TYPES.WITHDRAWAL &&
+      transaction.lock === lock.address &&
+      transaction.confirmations < config.requiredConfirmations
     )
-      withdrawalTransaction = transactions[el]
+      withdrawalTransaction = transaction
   })
+
   let priceUpdateTransaction = null
   Object.values(transactions).forEach(transaction => {
     if (
