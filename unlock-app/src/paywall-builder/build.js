@@ -12,6 +12,22 @@ export default function buildPaywall(window, document, lockAddress) {
 
   add(document, iframe)
 
+  // iOS allows the page to scroll even when the paywall is up. Our
+  // solution to this is to make the paywall to grow to obscure the
+  // page content as the user scrolls down the page. We register the
+  // scroll-handling function here to preserve the context of the
+  // actual page, not the iframe.
+  const scrollLoop = () => {
+    const top = window.pageYOffset
+    const pageHeight = document.documentElement.scrollHeight
+    const proportion = Math.floor((top / pageHeight) * 10)
+
+    iframe.postMessage('scrollPosition', '*')
+
+    window.requestAnimationFrame(scrollLoop)
+  }
+  scrollLoop()
+
   let locked = false
   window.addEventListener(
     'message',
