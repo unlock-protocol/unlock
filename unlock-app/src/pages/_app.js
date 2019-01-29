@@ -9,14 +9,25 @@ import { createUnlockStore } from '../createUnlockStore'
 import GlobalStyle from '../theme/globalStyle'
 import { ConfigContext } from '../utils/withConfig'
 
+// Middlewares
+import web3Middleware from '../middlewares/web3Middleware'
+import currencyConversionMiddleware from '../middlewares/currencyConversionMiddleware'
+import storageMiddleware from '../middlewares/storageMiddleware'
+
 const config = configure()
 
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
 function getOrCreateStore(initialState, history) {
+  const middlewares = [web3Middleware, currencyConversionMiddleware]
+
+  if (config.services.storage) {
+    middlewares.push(storageMiddleware)
+  }
+
   // Always make a new store if server, otherwise state is shared between requests
   if (config.isServer) {
-    return createUnlockStore(initialState, history)
+    return createUnlockStore(initialState, history, middlewares)
   }
 
   // Create store if unavailable on the client and set it on the window object

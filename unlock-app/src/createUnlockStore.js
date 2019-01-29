@@ -36,16 +36,12 @@ import modalReducer, {
   initialState as defaultModals,
 } from './reducers/modalsReducer'
 
-// Middlewares
-import web3Middleware from './middlewares/web3Middleware'
-import currencyConversionMiddleware from './middlewares/currencyConversionMiddleware'
-import storageMiddleware from './middlewares/storageMiddleware'
-
 const config = configure()
 
 export const createUnlockStore = (
   defaultState = {},
-  history = createMemoryHistory()
+  history = createMemoryHistory(),
+  middlewares = []
 ) => {
   const reducers = {
     router: connectRouter(history),
@@ -88,15 +84,7 @@ export const createUnlockStore = (
     defaultState
   )
 
-  const middlewares = [
-    web3Middleware,
-    currencyConversionMiddleware,
-    routerMiddleware(history),
-  ]
-
-  if (config.services.storage) {
-    middlewares.push(storageMiddleware)
-  }
+  middlewares.push(routerMiddleware(history))
 
   const composeEnhancers =
     global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
