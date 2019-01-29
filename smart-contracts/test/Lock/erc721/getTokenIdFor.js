@@ -3,6 +3,7 @@ const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../../helpers/deployLocks')
+const shouldFail = require('../../helpers/shouldFail')
 const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock, locks
@@ -15,12 +16,7 @@ contract('Lock ERC721', (accounts) => {
 
   describe('getTokenIdFor', () => {
     it('should abort when the key has no owner', async () => {
-      try {
-        await locks['FIRST'].getTokenIdFor(accounts[3])
-        assert.fail('Expected revert')
-      } catch (error) {
-        assert.equal(error.message, 'VM Exception while processing transaction: revert No such key')
-      }
+      await shouldFail(locks['FIRST'].getTokenIdFor(accounts[3]), 'No such key')
     })
 
     it('should return the tokenId for the owner\'s key', async () => {
