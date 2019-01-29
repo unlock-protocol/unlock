@@ -9,23 +9,19 @@ import { FATAL_NO_USER_ACCOUNT, FATAL_WRONG_NETWORK } from '../../../errors'
 
 describe('GlobalErrorProvider', () => {
   function makeTestStore(newValues = {}) {
-    return createUnlockStore(
-      {
-        account: {
-          address: '0xdeadbeef',
-          balance: '1000',
-        },
-        network: {
-          name: 1337,
-        },
-        router: {
-          route: '/somewhere',
-        },
-        ...newValues,
+    return createUnlockStore({
+      account: {
+        address: '0xdeadbeef',
+        balance: '1000',
       },
-      undefined,
-      true
-    )
+      network: {
+        name: 1337,
+      },
+      router: {
+        route: '/somewhere',
+      },
+      ...newValues,
+    })
   }
   // eslint-disable-next-line
   function PeekAtContextConsumer() {
