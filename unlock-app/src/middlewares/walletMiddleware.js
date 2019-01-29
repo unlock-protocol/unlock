@@ -37,7 +37,11 @@ export default function walletMiddleware({ getState, dispatch }) {
    * The setAccount action will reset other relevant redux state
    */
   walletService.on('account.changed', account => {
-    dispatch(setAccount(account))
+    dispatch(
+      setAccount({
+        address: account,
+      })
+    )
   })
 
   walletService.on('transaction.new', transaction => {
@@ -91,8 +95,7 @@ export default function walletMiddleware({ getState, dispatch }) {
         walletService.connect(action.provider)
       } else if (action.type === CREATE_LOCK) {
         // Create the lock
-        walletService.createLock(action.lock, getState().account)
-
+        walletService.createLock(action.lock, getState().account.address)
         // And sign its name
         if (config.services.storage) {
           generateJWTToken(walletService, getState().account.address, {
@@ -121,15 +124,19 @@ export default function walletMiddleware({ getState, dispatch }) {
           action.key.lock,
           action.key.owner,
           lock.keyPrice,
-          account,
+          account.address,
           action.key.data
         )
       } else if (action.type === WITHDRAW_FROM_LOCK) {
         const account = getState().account
-        walletService.withdrawFromLock(action.lock, account)
+        walletService.withdrawFromLock(action.lock.address, account.address)
       } else if (action.type === UPDATE_LOCK_KEY_PRICE) {
         const account = getState().account
-        walletService.updateKeyPrice(action.address, account, action.price)
+        walletService.updateKeyPrice(
+          action.address,
+          account.address,
+          action.price
+        )
       } else if (action.type === LOCK_DEPLOYED) {
         // When a lock has been deployed, we need to sign its name again
         if (config.services.storage) {
