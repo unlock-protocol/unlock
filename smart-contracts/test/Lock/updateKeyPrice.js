@@ -2,6 +2,7 @@ const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
+const shouldFail = require('../helpers/shouldFail')
 const Unlock = artifacts.require('../Unlock.sol')
 
 let unlock, locks, keyPriceBefore, transaction
@@ -30,23 +31,17 @@ contract('Lock', (accounts) => {
     })
 
     describe('when the sender is not the lock owner', () => {
-      let keyPrice, error
+      let keyPrice
+
       before(async () => {
         keyPrice = new BigNumber(await locks['FIRST'].keyPrice())
-        try {
-          await locks['FIRST'].updateKeyPrice(
-            Units.convert('0.3', 'eth', 'wei'),
-            {
-              from: accounts[3]
-            })
-        } catch (_error) {
-          error = _error
-        }
+        await shouldFail(locks['FIRST'].updateKeyPrice(
+          Units.convert('0.3', 'eth', 'wei'),
+          {
+            from: accounts[3]
+          }), '')
       })
 
-      it('should fail', async () => {
-        assert(error)
-      })
 
       it('should leave the price unchanged', async () => {
         const keyPriceAfter = new BigNumber(await locks['FIRST'].keyPrice())

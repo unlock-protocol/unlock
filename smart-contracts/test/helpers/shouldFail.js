@@ -1,5 +1,14 @@
 module.exports = async function shouldFail (promise, expectedRevertReason) {
-  const expectedMessage = `VM Exception while processing transaction: revert ${expectedRevertReason}`
+  let expectedMessage = `VM Exception while processing transaction: `
+  if (expectedRevertReason === 'invalid opcode') {
+    expectedMessage += expectedRevertReason
+  } else {
+    expectedMessage += `revert`
+    if (expectedRevertReason) {
+      expectedMessage += ` ${expectedRevertReason}`
+    }
+  }
+
   try {
     await promise
   } catch (error) {
