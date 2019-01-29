@@ -217,7 +217,6 @@ describe('Web3Service', () => {
           )
           done()
         })
-
         web3Service.getTransaction(transaction.hash)
       })
 
