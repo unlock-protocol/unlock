@@ -90,7 +90,7 @@ export class GlobalErrorProvider extends Component {
         error: FATAL_WRONG_NETWORK,
         errorMetadata: {
           currentNetwork: currentNetwork,
-          requiredNetwork: config.requiredNetwork,
+          requiredNetworkId: config.requiredNetworkId,
         },
       }
     }

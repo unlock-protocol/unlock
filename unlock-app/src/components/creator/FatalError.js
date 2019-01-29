@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 
 import React from 'react'
 import styled from 'styled-components'
+import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
 
 const defaultError = (
   <p>
@@ -76,20 +77,24 @@ const Message = styled.div`
   }
 `
 
-export const WrongNetwork = ({ currentNetwork, requiredNetwork }) => (
+export const WrongNetwork = ({ currentNetwork, requiredNetworkId }) => (
   <DefaultError
     title="Network mismatch"
     illustration="/static/images/illustrations/network.svg"
   >
     <p>
-      {`You’re currently on the ${currentNetwork} network but you need to be on the ${requiredNetwork} network. Please switch to ${requiredNetwork}.`}
+      {`You’re currently on the ${currentNetwork} network but you need to be on the ${
+        ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
+      } network. Please switch to ${
+        ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
+      }.`}
     </p>
   </DefaultError>
 )
 
 WrongNetwork.propTypes = {
   currentNetwork: PropTypes.string.isRequired,
-  requiredNetwork: PropTypes.string.isRequired,
+  requiredNetworkId: PropTypes.number.isRequired,
 }
 
 export const MissingProvider = () => (
