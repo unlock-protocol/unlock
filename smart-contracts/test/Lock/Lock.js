@@ -1,5 +1,5 @@
-
 const Units = require('ethereumjs-units')
+const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
 const Unlock = artifacts.require('../Unlock.sol')
@@ -36,15 +36,20 @@ contract('Lock', (accounts) => {
         outstandingKeys,
         numberOfOwners
       ]) => {
+        expirationDuration = new BigNumber(expirationDuration)
+        keyPrice = new BigNumber(keyPrice)
+        maxNumberOfKeys = new BigNumber(maxNumberOfKeys)
+        outstandingKeys = new BigNumber(outstandingKeys)
+        numberOfOwners = new BigNumber(numberOfOwners)
         assert.strictEqual(owner, accounts[0])
-        assert(expirationDuration.eq(60 * 60 * 24 * 30))
+        assert.equal(expirationDuration.toFixed(), 60 * 60 * 24 * 30)
         assert.strictEqual(
           Units.convert(keyPrice, 'wei', 'eth'),
           '0.01'
         )
-        assert(maxNumberOfKeys.eq(10))
-        assert(outstandingKeys.eq(0))
-        assert(numberOfOwners.eq(0))
+        assert.equal(maxNumberOfKeys.toFixed(), 10)
+        assert.equal(outstandingKeys.toFixed(), 0)
+        assert.equal(numberOfOwners.toFixed(), 0)
       }
     )
   })

@@ -1,4 +1,6 @@
 const Units = require('ethereumjs-units')
+const BigNumber = require('bignumber.js')
+
 const PublicLock = artifacts.require('../../PublicLock.sol')
 
 exports.shouldCreateLock = function (accounts) {
@@ -19,9 +21,11 @@ exports.shouldCreateLock = function (accounts) {
         let publicLock = PublicLock.at(transaction.logs[0].args.newLockAddress)
         // This is a bit of a dumb test because when the lock is missing, the value are 0 anyway...
         let [deployed, totalSales, yieldedDiscountTokens] = await this.unlock.locks(publicLock.address)
+        totalSales = new BigNumber(totalSales)
+        yieldedDiscountTokens = new BigNumber(yieldedDiscountTokens)
         assert(deployed)
-        assert(totalSales.eq(0))
-        assert(yieldedDiscountTokens.eq(0))
+        assert.equal(totalSales.toFixed(), 0)
+        assert.equal(yieldedDiscountTokens.toFixed(), 0)
       })
 
       it('should trigger the NewLock event', function () {
