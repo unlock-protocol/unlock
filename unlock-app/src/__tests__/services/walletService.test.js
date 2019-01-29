@@ -266,9 +266,10 @@ describe('WalletService', () => {
         abi: [],
       }
       const mockSendTransaction = jest.fn()
-      const mockTransaction = new EventEmitter()
+      let mockTransaction
 
       beforeEach(() => {
+        mockTransaction = new EventEmitter()
         mockSendTransaction.mockReturnValue(mockTransaction)
         walletService.web3.eth.sendTransaction = mockSendTransaction
       })
@@ -301,6 +302,20 @@ describe('WalletService', () => {
         walletService._sendTransaction(
           { to, from, data, value, gas, privateKey, contract },
           () => {}
+        )
+
+        mockTransaction.emit('transactionHash', transactionHash)
+      })
+
+      it('should callback with the hash', done => {
+        expect.assertions(1)
+        const transactionHash = '0x123'
+        walletService._sendTransaction(
+          { to, from, data, value, gas, privateKey, contract },
+          (error, hash) => {
+            expect(hash).toEqual(transactionHash)
+            done()
+          }
         )
 
         mockTransaction.emit('transactionHash', transactionHash)
@@ -404,6 +419,25 @@ describe('WalletService', () => {
           },
           expect.any(Function)
         )
+      })
+
+      it('should emit lock.updated with the transaction', done => {
+        expect.assertions(2)
+        const hash = '0x1213'
+
+        walletService._sendTransaction = jest.fn((args, cb) => {
+          return cb(null, hash)
+        })
+
+        walletService.on('lock.updated', (lockAddress, update) => {
+          expect(lockAddress).toBe(lock.address)
+          expect(update).toEqual({
+            transaction: hash,
+          })
+          done()
+        })
+
+        walletService.createLock(lock, owner)
       })
 
       it('should emit an error if the transaction could not be sent', done => {
