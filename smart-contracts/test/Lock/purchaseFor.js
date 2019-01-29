@@ -45,18 +45,14 @@ contract('Lock', (accounts) => {
         await shouldFail(locks['SINGLE KEY'].keyDataFor(accounts[1]), 'No such key')
       })
 
-      it('should trigger an event when successful', () => {
-        let filter = locks['FIRST'].Transfer((error, { args }) => {
-          if (error) {
-            assert(false, error)
-          }
-          assert.equal(args._to, accounts[2])
-          filter.stopWatching()
-        })
-        return locks['FIRST']
+      it('should trigger an event when successful', async () => {
+        const tx = await locks['FIRST']
           .purchaseFor(accounts[2], Web3Utils.toHex('Vitalik'), {
             value: Units.convert('0.01', 'eth', 'wei')
           })
+        assert.equal(tx.logs[0].event, 'Transfer')
+        assert.equal(tx.logs[0].args._from, 0)
+        assert.equal(tx.logs[0].args._to, accounts[2])
       })
 
       describe('when the user already owns an expired key', () => {
