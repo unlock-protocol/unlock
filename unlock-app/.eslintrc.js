@@ -14,7 +14,7 @@ module.exports = {
     browser: true,
     jest: true,
   },
-  plugins: ['mocha'],
+  plugins: ['jest', 'mocha', 'promise'],
   parser: 'babel-eslint',
   settings: {
     react: {
@@ -47,5 +47,9 @@ module.exports = {
     'standard/computed-property-even-spacing': 0,
     'standard/object-curly-even-spacing': 0,
     'standard/array-bracket-even-spacing': 0,
+    'promise/prefer-await-to-then': 'warn',
+    'jest/no-disabled-tests': 'warn',
+    'jest/no-identical-title': 'error',
+    'jest/no-focused-tests': 'warn',
   },
 }
