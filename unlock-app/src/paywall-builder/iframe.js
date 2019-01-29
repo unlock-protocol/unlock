@@ -35,4 +35,5 @@ export function hide(iframe, document) {
   document.body.style.overflow = ''
   iframe.style.backgroundColor = 'transparent'
   iframe.style.backgroundImage = 'none'
+  iframe.style['z-index'] = '-2147483647'
 }
