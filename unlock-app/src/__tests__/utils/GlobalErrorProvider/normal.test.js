@@ -80,7 +80,7 @@ describe('GlobalErrorProvider', () => {
       expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent(
         JSON.stringify({
           currentNetwork: 'Mainnet',
-          requiredNetwork: 'Dev',
+          requiredNetworkId: 1984,
         })
       )
     })
@@ -106,7 +106,7 @@ describe('GlobalErrorProvider', () => {
       expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent(
         JSON.stringify({
           currentNetwork: 'Rinkeby',
-          requiredNetwork: 'Dev',
+          requiredNetworkId: 1984,
         })
       )
     })
@@ -132,7 +132,7 @@ describe('GlobalErrorProvider', () => {
       expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent(
         JSON.stringify({
           currentNetwork: 'Unknown Network',
-          requiredNetwork: 'Dev',
+          requiredNetworkId: 1984,
         })
       )
     })

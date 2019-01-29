@@ -8,10 +8,7 @@ storiesOf('FatalError', module)
   })
   .add('Network mismatch', () => {
     return (
-      <FatalError.WrongNetwork
-        currentNetwork="main"
-        requiredNetwork="rinkeby"
-      />
+      <FatalError.WrongNetwork currentNetwork="Mainnet" requiredNetworkId={4} />
     )
   })
   .add('Wallet missing', () => {

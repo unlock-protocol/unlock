@@ -25274,7 +25274,7 @@ Object {
                 Network mismatch
               </h1>
               <p>
-                You’re currently on the Rinkeby network but you need to be on the Dev network. Please switch to Dev.
+                You’re currently on the Rinkeby network but you need to be on the Winston network. Please switch to Winston.
               </p>
             </div>
           </section>
@@ -25467,7 +25467,7 @@ Object {
               Network mismatch
             </h1>
             <p>
-              You’re currently on the Rinkeby network but you need to be on the Dev network. Please switch to Dev.
+              You’re currently on the Rinkeby network but you need to be on the Winston network. Please switch to Winston.
             </p>
           </div>
         </section>
@@ -29620,7 +29620,7 @@ Object {
             Network mismatch
           </h1>
           <p>
-            You’re currently on the main network but you need to be on the rinkeby network. Please switch to rinkeby.
+            You’re currently on the Mainnet network but you need to be on the Rinkeby network. Please switch to Rinkeby.
           </p>
         </div>
       </section>
@@ -29645,7 +29645,7 @@ Object {
           Network mismatch
         </h1>
         <p>
-          You’re currently on the main network but you need to be on the rinkeby network. Please switch to rinkeby.
+          You’re currently on the Mainnet network but you need to be on the Rinkeby network. Please switch to Rinkeby.
         </p>
       </div>
     </section>
