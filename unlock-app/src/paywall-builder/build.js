@@ -20,9 +20,12 @@ export default function buildPaywall(window, document, lockAddress) {
   const scrollLoop = () => {
     const top = window.pageYOffset
     const pageHeight = document.documentElement.scrollHeight
-    const proportion = Math.floor((top / pageHeight) * 10)
+    const viewportHeight = window.innerHeight
+    const maximumScroll = pageHeight - viewportHeight
 
-    iframe.postMessage('scrollPosition', '*')
+    const scrollPosition = top / maximumScroll
+
+    iframe.contentWindow.postMessage({ scrollPosition }, '*')
 
     window.requestAnimationFrame(scrollLoop)
   }

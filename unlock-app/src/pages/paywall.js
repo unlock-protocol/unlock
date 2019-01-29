@@ -8,17 +8,42 @@ import { LOCK_PATH_NAME_REGEXP } from '../constants'
 import BrowserOnly from '../components/helpers/BrowserOnly'
 import GlobalErrorProvider from '../utils/GlobalErrorProvider'
 
-const Paywall = ({ lock }) => {
-  return (
-    <BrowserOnly>
-      <GlobalErrorProvider>
-        <ShowUnlessUserHasKeyToAnyLock locks={lock ? [lock] : []}>
-          <Overlay locks={lock ? [lock] : []} />
-          <DeveloperOverlay />
-        </ShowUnlessUserHasKeyToAnyLock>
-      </GlobalErrorProvider>
-    </BrowserOnly>
-  )
+class Paywall extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      scrollPosition: 0,
+    }
+    this.handleScrollPosition = this.handleScrollPosition.bind(this)
+  }
+  componentDidMount() {
+    window.addEventListener('message', event => {
+      if (event.data.scrollPosition) {
+        this.handleScrollPosition(event.data.scrollPosition)
+      }
+    })
+  }
+  handleScrollPosition(scrollPosition) {
+    this.setState({ scrollPosition })
+  }
+  render() {
+    const { lock } = this.props
+    const { scrollPosition } = this.state
+
+    return (
+      <BrowserOnly>
+        <GlobalErrorProvider>
+          <ShowUnlessUserHasKeyToAnyLock locks={lock ? [lock] : []}>
+            <Overlay
+              scrollPosition={scrollPosition}
+              locks={lock ? [lock] : []}
+            />
+            <DeveloperOverlay />
+          </ShowUnlessUserHasKeyToAnyLock>
+        </GlobalErrorProvider>
+      </BrowserOnly>
+    )
+  }
 }
 
 Paywall.propTypes = {
