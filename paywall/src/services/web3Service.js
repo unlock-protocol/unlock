@@ -488,7 +488,7 @@ export default class Web3Service extends EventEmitter {
             // NOTE: old version of web3.js (pre 1.0.0-beta.34) are not parsing 0x0 into a falsy value
             if (
               !transactionReceipt.status ||
-              transactionReceipt.status == '0x0'
+              transactionReceipt.status === '0x0'
             ) {
               return this.emit('transaction.updated', transactionHash, {
                 status: 'failed',
@@ -670,7 +670,7 @@ export default class Web3Service extends EventEmitter {
 
     this._genKeyOwnersFromLockContract(lock, lockContract, page, byPage).then(
       keyPromises => {
-        if (keyPromises.length == 0) {
+        if (keyPromises.length === 0) {
           this._genKeyOwnersFromLockContractIterative(
             lock,
             lockContract,
