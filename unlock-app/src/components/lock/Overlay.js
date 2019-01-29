@@ -76,11 +76,11 @@ const FullPage = styled.div`
   );
 `
 
-const Banner = styled.div.attrs({
-  style: ({ scrollPosition }) => ({
-    height: Math.max(100 * scrollPosition, 30) + '%',
-  }),
-})`
+const Banner = styled.div.attrs(({ scrollPosition }) => ({
+  style: {
+    height: Math.min(scrollPosition, 100) + '%',
+  },
+}))`
   position: fixed;
   display: grid;
   min-height: 375px;
