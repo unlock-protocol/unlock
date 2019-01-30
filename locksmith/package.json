@@ -16,6 +16,18 @@
     "ci": "npm run lint && npm test && npm run reformat && npm run fail-pending-changes",
     "build": "echo 'Nothing to build'"
   },
+  "lint-staged": {
+    "linters": {
+      "*.js": [
+        "npm run lint",
+        "npm run reformat",
+        "git add"
+      ]
+    },
+    "ignore": [
+      "*.js.snap"
+    ]
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
