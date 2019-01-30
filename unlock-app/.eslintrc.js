@@ -50,6 +50,6 @@ module.exports = {
     'promise/prefer-await-to-then': 'warn',
     'jest/no-disabled-tests': 'warn',
     'jest/no-identical-title': 'error',
-    'jest/no-focused-tests': 'warn',
+    'jest/no-focused-tests': 'error',
   },
 }
