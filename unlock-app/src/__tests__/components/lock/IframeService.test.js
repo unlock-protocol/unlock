@@ -20,7 +20,21 @@ describe('IframeService', () => {
 
       rtl.render(<IframeService keys={keys} modalShown={false} />)
 
-      expect(unlockPage).toHaveBeenCalledWith()
+      expect(unlockPage).toHaveBeenCalled()
+    })
+    it('should call the iframeService lockPage if modalShown', () => {
+      expect.assertions(1)
+      const keys = [
+        {
+          id: 'keyId',
+          lock: '0xLock',
+          owner: '0x123',
+        },
+      ]
+
+      rtl.render(<IframeService keys={keys} modalShown />)
+
+      expect(lockPage).toHaveBeenCalled()
     })
   })
 
