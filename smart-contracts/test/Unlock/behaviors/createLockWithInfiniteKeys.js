@@ -30,7 +30,7 @@ contract('PublicLock', accounts => {
       })
 
       it('should have created the lock with an infinite number of keys', async function () {
-        let publicLock = PublicLock.at(transaction.logs[0].args.newLockAddress)
+        let publicLock = await PublicLock.at(transaction.logs[0].args.newLockAddress)
         const maxNumberOfKeys = new BigNumber(await publicLock.maxNumberOfKeys())
         assert.equal(maxNumberOfKeys.toFixed(), new BigNumber(2).pow(256).minus(1).toFixed())
       })
@@ -49,7 +49,7 @@ contract('PublicLock', accounts => {
       })
 
       it('should have created the lock with 0 keys', async function () {
-        let publicLock = PublicLock.at(transaction.logs[0].args.newLockAddress)
+        let publicLock = await PublicLock.at(transaction.logs[0].args.newLockAddress)
         const maxNumberOfKeys = new BigNumber(await publicLock.maxNumberOfKeys())
         assert.equal(maxNumberOfKeys.toFixed(), 0)
       })
