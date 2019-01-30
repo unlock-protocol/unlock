@@ -14,14 +14,15 @@ const svg2Components = {
 }
 
 // Run lint on staged files
-const lintStaged = {
-  command: "lint-staged",
-  path: "unlock-app"
+const lintStaged = path => {
+  return {command: 'lint-staged', path: path} 
 }
 
 // tasks are given a path
 module.exports = {
   hooks: {
-    "pre-commit": tasks([svg2Components, lintStaged])
+    "pre-commit": tasks([svg2Components, 
+                  lintStaged('unlock-app'), 
+                  lintStaged('locksmith')])
   }
 }
