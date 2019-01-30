@@ -85,6 +85,7 @@
   "lint-staged": {
     "linters": {
       "*.js": [
+        "npm run lint",
         "npm run reformat",
         "git add"
       ]
