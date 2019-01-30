@@ -32,7 +32,7 @@
     "remix": "remixd -s contracts --remix-ide http://localhost:8080 --read-only",
     "test": "truffle test --network test",
     "lint": "solhint \"contracts/**/*.sol\"",
-    "ci": "npm run lint && npm run deploy && npm run test",
+    "ci": "npm run lint && npm run build && npm run test",
     "build": "truffle compile --all",
     "deploy": "truffle deploy",
     "zos": "zos"
