@@ -33,5 +33,6 @@ module.exports = {
     'jest/no-disabled-tests': 'warn',
     'jest/no-identical-title': 'error',
     'jest/no-focused-tests': 'warn',
+    'jest/prefer-expect-assertions': 'warn',
   },
 }
