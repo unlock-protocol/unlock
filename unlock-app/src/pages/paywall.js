@@ -1,28 +1,61 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import UnlockPropTypes from '../propTypes'
 import Overlay from '../components/lock/Overlay'
 import DeveloperOverlay from '../components/developer/DeveloperOverlay'
-import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
+import ShowWhenLocked from '../components/lock/ShowWhenLocked'
+import ShowWhenUnlocked from '../components/lock/ShowWhenUnlocked'
 import { LOCK_PATH_NAME_REGEXP } from '../constants'
 import BrowserOnly from '../components/helpers/BrowserOnly'
 import GlobalErrorProvider from '../utils/GlobalErrorProvider'
+import { lockPage, unlockPage } from '../services/iframeService'
 
-const Paywall = ({ lock }) => {
-  return (
-    <BrowserOnly>
-      <GlobalErrorProvider>
-        <ShowUnlessUserHasKeyToAnyLock locks={lock ? [lock] : []}>
-          <Overlay locks={lock ? [lock] : []} />
-          <DeveloperOverlay />
-        </ShowUnlessUserHasKeyToAnyLock>
-      </GlobalErrorProvider>
-    </BrowserOnly>
-  )
+class Paywall extends React.Component {
+  constructor(props) {
+    super(props)
+    this.isLocked = this.isLocked.bind(this)
+    this.handleIframe = this.handleIframe.bind(this)
+  }
+  isLocked() {
+    const { keys, modalShown } = this.props
+    return !(keys.length > 0 && !modalShown)
+  }
+  handleIframe() {
+    if (this.isLocked()) {
+      lockPage()
+    } else {
+      unlockPage()
+    }
+  }
+  render() {
+    const { locks } = this.props
+    const locked = this.isLocked()
+    return (
+      <BrowserOnly>
+        <GlobalErrorProvider>
+          <ShowWhenLocked locked={locked}>
+            <Overlay locks={locks} />
+            <DeveloperOverlay />
+          </ShowWhenLocked>
+          <ShowWhenUnlocked locked={locked}>
+            <DeveloperOverlay />
+          </ShowWhenUnlocked>
+        </GlobalErrorProvider>
+      </BrowserOnly>
+    )
+  }
 }
 
 Paywall.propTypes = {
-  lock: UnlockPropTypes.lock.isRequired,
+  locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
+  keys: PropTypes.arrayOf(UnlockPropTypes.key),
+  modalShown: PropTypes.bool,
+}
+
+Paywall.defaultProps = {
+  keys: [],
+  modalShown: false,
 }
 
 export const mapStateToProps = ({ locks, keys, modals, router }) => {
