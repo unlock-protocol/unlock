@@ -32,7 +32,11 @@ function getOrCreateStore(initialState, history) {
 
   // Create store if unavailable on the client and set it on the window object
   if (!window[__NEXT_REDUX_STORE__]) {
-    window[__NEXT_REDUX_STORE__] = createUnlockStore(initialState, history)
+    window[__NEXT_REDUX_STORE__] = createUnlockStore(
+      initialState,
+      history,
+      middlewares
+    )
   }
   return window[__NEXT_REDUX_STORE__]
 }
