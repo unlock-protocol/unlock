@@ -3,6 +3,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Paywall from '../../pages/paywall'
 import createUnlockStore from '../../createUnlockStore'
+import { ConfigContext } from '../../utils/withConfig'
 
 const lock = {
   address: '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e',
@@ -80,8 +81,10 @@ storiesOf('Paywall', module)
   })
   .add('the paywall overlay, unlocked', () => {
     return (
-      <Provider store={unlockedStore}>
-        <Paywall />
-      </Provider>
+      <ConfigContext.Provider value={{ providers: [] }}>
+        <Provider store={unlockedStore}>
+          <Paywall />
+        </Provider>
+      </ConfigContext.Provider>
     )
   })
