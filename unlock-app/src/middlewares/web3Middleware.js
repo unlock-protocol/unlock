@@ -3,56 +3,31 @@
 import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   ADD_LOCK,
-  CREATE_LOCK,
-  WITHDRAW_FROM_LOCK,
   UPDATE_LOCK,
   addLock,
-  deleteLock,
   lockDeployed,
   updateLock,
-  UPDATE_LOCK_KEY_PRICE,
-  LOCK_DEPLOYED,
 } from '../actions/lock'
-import { PURCHASE_KEY, updateKey, addKey } from '../actions/key'
-import { setAccount, updateAccount, SET_ACCOUNT } from '../actions/accounts'
-import { setNetwork, SET_NETWORK } from '../actions/network'
+import { updateKey, addKey } from '../actions/key'
+import { updateAccount, SET_ACCOUNT } from '../actions/accounts'
 import { setError } from '../actions/error'
-import { SET_PROVIDER } from '../actions/provider'
-import { addTransaction, updateTransaction } from '../actions/transaction'
 import {
-  LOCK_PATH_NAME_REGEXP,
-  PGN_ITEMS_PER_PAGE,
-  TRANSACTION_TYPES,
-} from '../constants'
+  addTransaction,
+  updateTransaction,
+  ADD_TRANSACTION,
+} from '../actions/transaction'
+import { LOCK_PATH_NAME_REGEXP, PGN_ITEMS_PER_PAGE } from '../constants'
 
-import generateJWTToken from '../utils/signature'
 import Web3Service from '../services/web3Service'
 import {
   SET_KEYS_ON_PAGE_FOR_LOCK,
   setKeysOnPageForLock,
 } from '../actions/keysPages'
-import { signatureError } from '../actions/signature'
-import { storeLockCreation, storeLockUpdate } from '../actions/storage'
-import configure from '../config'
-
-const config = configure()
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
 export default function web3Middleware({ getState, dispatch }) {
-  // Buffer of actions waiting for connection
-  const actions = []
-
   const web3Service = new Web3Service()
-
-  /**
-   * When an account was changed, we dispatch the corresponding action
-   * The setAccount action will reset other relevant redux state
-   */
-  web3Service.on('account.changed', account => {
-    dispatch(setAccount(account))
-    web3Service.getPastUnlockTransactionsForUser(account.address)
-  })
 
   web3Service.on('account.updated', (account, update) => {
     dispatch(updateAccount(update))
@@ -64,14 +39,9 @@ export default function web3Middleware({ getState, dispatch }) {
    */
   web3Service.on('lock.saved', (lock, address) => {
     dispatch(lockDeployed(lock, address))
-    dispatch(
-      updateTransaction(lock.transaction, {
-        lock: address,
-      })
-    )
     web3Service.refreshAccountBalance(getState().account)
     web3Service.getLock(address)
-    web3Service.getPastLockTransactions(address)
+    web3Service.getPastLockTransactions(address) // This is costly and not useful for the paywall app...
   })
 
   /**
@@ -108,25 +78,19 @@ export default function web3Middleware({ getState, dispatch }) {
     }
   })
 
-  web3Service.on('transaction.new', transaction => {
-    dispatch(addTransaction(transaction))
-    // Let's fetch the transaction. This will also "watch" it for updates
-    web3Service.getTransaction(transaction.hash)
-  })
-
   web3Service.on('transaction.updated', (transactionHash, update) => {
     dispatch(updateTransaction(transactionHash, update))
   })
 
-  web3Service.on('error', (error, transactionHash) => {
-    const transaction = getState().transactions[transactionHash]
-    if (transaction && transaction.type === TRANSACTION_TYPES.LOCK_CREATION) {
-      // delete the lock
-      dispatch(deleteLock(transaction.lock))
-      return dispatch(
-        setError('Failed to create lock. Did you decline the transaction?')
-      )
-    }
+  web3Service.on('transaction.new', transactionHash => {
+    dispatch(
+      addTransaction({
+        hash: transactionHash,
+      })
+    )
+  })
+
+  web3Service.on('error', error => {
     dispatch(setError(error.message))
   })
 
@@ -134,78 +98,10 @@ export default function web3Middleware({ getState, dispatch }) {
     dispatch(setKeysOnPageForLock(page, lock, keys))
   })
 
-  /**
-   * When the network has changed, we need to get a new account
-   * as well as reset all the reducers
-   */
-  web3Service.on('network.changed', networkId => {
-    // Set the new network, which should also clean up all reducers
-    // And we need a new account!
-    dispatch(setNetwork(networkId))
-    return web3Service.refreshOrGetAccount()
-  })
-
-  /**
-   * This is invoked when the web3Service is ready. We can then (re)trigger all past actions.
-   */
-  web3Service.on('ready', () => {
-    while (actions.length > 0) {
-      let action = actions.shift()
-      dispatch(action)
-    }
-  })
-
   return function(next) {
     return function(action) {
-      if (
-        !web3Service.ready &&
-        [SET_NETWORK, SET_ACCOUNT].indexOf(action.type) == -1
-      ) {
-        // As long as middleware is not ready
-        // we store the action
-        actions.push(action)
-        return web3Service.connect({ provider: getState().provider })
-      } else if (action.type === SET_PROVIDER) {
-        web3Service.connect({ provider: action.provider })
-      } else if (action.type === CREATE_LOCK) {
-        web3Service.createLock(action.lock, getState().account)
-
-        if (config.services.storage) {
-          generateJWTToken(web3Service, getState().account.address, {
-            lock: action.lock,
-          })
-            .then(token => {
-              dispatch(
-                storeLockCreation(
-                  getState().account.address,
-                  action.lock,
-                  token
-                )
-              )
-            })
-            .catch(error => {
-              dispatch(signatureError(error))
-            })
-        }
-      } else if (action.type === PURCHASE_KEY) {
-        const account = getState().account
-        const lock = Object.values(getState().locks).find(
-          lock => lock.address === action.key.lock
-        )
-        web3Service.purchaseKey(
-          action.key.lock,
-          action.key.owner,
-          lock.keyPrice,
-          account,
-          action.key.data
-        )
-      } else if (action.type === WITHDRAW_FROM_LOCK) {
-        const account = getState().account
-        web3Service.withdrawFromLock(action.lock, account)
-      } else if (action.type === UPDATE_LOCK_KEY_PRICE) {
-        const account = getState().account
-        web3Service.updateKeyPrice(action.address, account, action.price)
-      } else if (action.type === SET_KEYS_ON_PAGE_FOR_LOCK) {
+      // When the keys for a lock are loaded on the dashboard
+      if (action.type === SET_KEYS_ON_PAGE_FOR_LOCK) {
         if (!action.keys) {
           web3Service.getKeysForLockOnPage(
             action.lock,
@@ -213,25 +109,17 @@ export default function web3Middleware({ getState, dispatch }) {
             PGN_ITEMS_PER_PAGE
           )
         }
-      } else if (action.type === LOCK_DEPLOYED) {
-        if (config.services.storage) {
-          if (action.lock && action.lock.address && action.address) {
-            generateJWTToken(web3Service, getState().account.address, {
-              currentAddress: action.lock.address,
-              address: action.address,
-              owner: getState().account.address,
-            }).then(token => {
-              dispatch(
-                storeLockUpdate(
-                  getState().account.address,
-                  action.lock.address,
-                  token,
-                  action.address
-                )
-              )
-            })
-          }
-        }
+      }
+
+      if (action.type === SET_ACCOUNT) {
+        // TODO: when the account has been updated we should reset web3Service and remove all listeners
+        // So that pending API calls do not interract with our "new" state.
+        web3Service.refreshAccountBalance(action.account)
+        web3Service.getPastUnlockTransactionsForUser(action.account.address)
+      }
+
+      if (action.type === ADD_TRANSACTION) {
+        web3Service.getTransaction(action.transaction.hash)
       }
 
       next(action)
