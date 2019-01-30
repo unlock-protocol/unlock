@@ -1,7 +1,8 @@
-import reducer from '../../reducers/keysPagesReducer'
+import reducer, { initialState } from '../../reducers/keysPagesReducer'
 import { SET_KEYS_ON_PAGE_FOR_LOCK } from '../../actions/keysPages'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
+import { SET_ACCOUNT } from '../../actions/accounts'
 
 describe('keys page reducer', () => {
   const oneKey = {
@@ -31,7 +32,7 @@ describe('keys page reducer', () => {
       reducer(state, {
         type: SET_PROVIDER,
       })
-    ).toEqual({})
+    ).toBe(initialState)
   })
 
   it('should return the initial state when receveing SET_NETWORK', () => {
@@ -46,7 +47,25 @@ describe('keys page reducer', () => {
       reducer(state, {
         type: SET_NETWORK,
       })
-    ).toEqual({})
+    ).toBe(initialState)
+  })
+
+  // Upon changing account, we need to clear the existing keys on the page. The web3 middleware will
+  // re-populate them
+  it('should clear the keys on page when receiving SET_ACCOUNT', () => {
+    const account = {}
+    const state = {
+      '0x123': {
+        keys: [],
+        page: 100,
+      },
+    }
+    expect(
+      reducer(state, {
+        type: SET_ACCOUNT,
+        account,
+      })
+    ).toBe(initialState)
   })
 
   describe('SET_KEYS_ON_PAGE_FOR_LOCK', () => {

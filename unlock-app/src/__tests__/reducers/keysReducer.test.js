@@ -1,7 +1,8 @@
-import reducer from '../../reducers/keysReducer'
+import reducer, { initialState } from '../../reducers/keysReducer'
 import { ADD_KEY, PURCHASE_KEY, UPDATE_KEY } from '../../actions/key'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
+import { SET_ACCOUNT } from '../../actions/accounts'
 
 describe('keys reducer', () => {
   const key = {
@@ -24,7 +25,7 @@ describe('keys reducer', () => {
           type: SET_PROVIDER,
         }
       )
-    ).toEqual({})
+    ).toBe(initialState)
   })
 
   it('should return the initial state when receveing SET_NETWORK', () => {
@@ -37,7 +38,22 @@ describe('keys reducer', () => {
           type: SET_NETWORK,
         }
       )
-    ).toEqual({})
+    ).toBe(initialState)
+  })
+
+  // Upon changing account, we need to clear the existing keys. The web3 middleware will
+  // re-populate them
+  it('should clear the keys when receiving SET_ACCOUNT', () => {
+    const account = {}
+    const state = {
+      [key.id]: key,
+    }
+    expect(
+      reducer(state, {
+        type: SET_ACCOUNT,
+        account,
+      })
+    ).toBe(initialState)
   })
 
   describe('ADD_KEY', () => {
