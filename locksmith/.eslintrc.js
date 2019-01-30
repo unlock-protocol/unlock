@@ -1,7 +1,7 @@
 module.exports = {
   extends: [
     'standard',
-    'airbnb',
+    'airbnb-base',
     'eslint:recommended',
     'prettier',
     'prettier/standard',
