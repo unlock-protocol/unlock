@@ -12,8 +12,10 @@ describe('Paywall', () => {
           pathname: `/paywall/${lock.address}`,
         },
       }
-      const props = mapStateToProps({ locks, router })
-      expect(props.lock).toBe(lock)
+      const keys = {}
+      const modals = []
+      const props = mapStateToProps({ locks, keys, modals, router })
+      expect(props.locks[0]).toBe(lock)
     })
   })
 })

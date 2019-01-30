@@ -25,15 +25,30 @@ Paywall.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
 }
 
-export const mapStateToProps = ({ locks, router }) => {
+export const mapStateToProps = ({ locks, keys, modals, router }) => {
   const match = router.location.pathname.match(LOCK_PATH_NAME_REGEXP)
 
-  const lock = match
+  const lockFromUri = match
     ? Object.values(locks).find(lock => lock.address === match[1])
     : null
 
+  let validKeys = []
+  const locksFromUri = lockFromUri ? [lockFromUri] : []
+  locksFromUri.forEach(lock => {
+    for (let k of Object.values(keys)) {
+      if (
+        k.lock === lock.address &&
+        k.expiration > new Date().getTime() / 1000
+      ) {
+        validKeys.push(k)
+      }
+    }
+  })
+
   return {
-    lock,
+    modalShown: !!modals[locksFromUri.map(l => l.address).join('-')],
+    keys: validKeys,
+    locks: locksFromUri,
   }
 }
 
