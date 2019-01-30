@@ -6,7 +6,7 @@ import { Home } from '../../pages/index'
 import { Jobs } from '../../pages/jobs'
 import { About } from '../../pages/about'
 import { Dashboard } from '../../pages/dashboard'
-import { pageTitle } from '../../constants'
+import { pageTitle, ETHEREUM_NETWORKS_NAMES } from '../../constants'
 import createUnlockStore from '../../createUnlockStore'
 
 jest.mock('../../constants')
@@ -45,8 +45,8 @@ describe('Pages', () => {
       const currency = {
         USD: 195.99,
       }
-
-      const store = createUnlockStore({ currency })
+      ETHEREUM_NETWORKS_NAMES[network.name] = ['A Name']
+      const store = createUnlockStore({ currency, network })
       const account = {
         address: '0xabc',
         privateKey: 'deadbeef',
