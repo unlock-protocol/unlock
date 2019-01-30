@@ -17,6 +17,12 @@ class Paywall extends React.Component {
     this.isLocked = this.isLocked.bind(this)
     this.handleIframe = this.handleIframe.bind(this)
   }
+  componentDidMount() {
+    this.handleIframe()
+  }
+  componentDidUpdate() {
+    this.handleIframe()
+  }
   isLocked() {
     const { keys, modalShown } = this.props
     return !(keys.length > 0 && !modalShown)
