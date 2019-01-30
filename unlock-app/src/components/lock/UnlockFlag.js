@@ -4,6 +4,7 @@ import React from 'react'
 import { Colophon } from './LockStyles'
 import { RoundedLogo } from '../interface/Logo'
 import Media from '../../theme/media'
+import { SHOW_FLAG_FOR } from '../../constants'
 
 export function LockedFlag() {
   return (
@@ -23,7 +24,7 @@ export class UnlockedFlag extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(() => this.setState({ hidden: true }), 2000)
+    setTimeout(() => this.setState({ hidden: true }), SHOW_FLAG_FOR)
   }
 
   render() {
