@@ -28,7 +28,6 @@ describe('buildPaywall', () => {
     let mockIframeImpl
     let mockAdd
     let window
-    let postMessage
     beforeEach(() => {
       mockScript = jest.spyOn(script, 'findPaywallUrl')
       mockIframe = jest.spyOn(iframeManager, 'getIframe')
