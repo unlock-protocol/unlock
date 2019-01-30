@@ -24,7 +24,10 @@ class Paywall extends React.Component {
     })
   }
   handleScrollPosition(scrollPosition) {
-    this.setState({ scrollPosition })
+    this.setState(state => {
+      if (state.scrollPosition === scrollPosition) return null
+      return { scrollPosition }
+    })
   }
   render() {
     const { lock } = this.props
