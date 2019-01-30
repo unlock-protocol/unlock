@@ -1,10 +1,10 @@
 module.exports = {
   extends: [
     'standard',
-    'airbnb',
+    'airbnb-base',
     'eslint:recommended',
-    'plugin:react/recommended',
     'prettier',
+    'prettier/standard',
   ],
   env: {
     es6: true,
@@ -12,41 +12,27 @@ module.exports = {
     browser: true,
     jest: true,
   },
-  plugins: ['mocha'],
+  plugins: ['jest', 'mocha', 'promise'],
   parser: 'babel-eslint',
   rules: {
-    'react/jsx-wrap-multilines': false,
-    'react/prefer-stateless-function': [2],
-    indent: ['error', 2],
     'linebreak-style': ['error', 'unix'],
-    quotes: ['error', 'single'],
-    semi: ['error', 'never'],
-    'no-multiple-empty-lines': [
+    quotes: [
       'error',
-      {
-        max: 1,
-        maxEOF: 0,
-        maxBOF: 0,
-      },
+      'single',
+      { avoidEscape: true, allowTemplateLiterals: false },
     ],
     'brace-style': 0,
-    'react/forbid-prop-types': 2,
-    'comma-dangle': [2, 'always-multiline'],
-    'eol-last': ['error'],
-    'jsx-a11y/anchor-is-valid': [
-      'error',
-      {
-        components: ['Link'],
-        specialLink: ['hrefLeft', 'hrefRight'],
-        aspects: ['invalidHref', 'preferButton'],
-      },
-    ],
+    indent: 0, // this conflicts with prettier and is not needed
     'mocha/no-exclusive-tests': 'error',
-    'react/jsx-filename-extension': [0, { extensions: ['.js', '.jsx'] }],
     'import/no-named-as-default': 0,
     'import/no-named-as-default-member': 0,
     'standard/computed-property-even-spacing': 0,
     'standard/object-curly-even-spacing': 0,
     'standard/array-bracket-even-spacing': 0,
+    'promise/prefer-await-to-then': 'warn',
+    'jest/no-disabled-tests': 'warn',
+    'jest/no-identical-title': 'error',
+    'jest/no-focused-tests': 'warn',
+    'jest/prefer-expect-assertions': 'warn',
   },
 }
