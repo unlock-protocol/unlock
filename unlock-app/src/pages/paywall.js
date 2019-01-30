@@ -7,6 +7,7 @@ import Overlay from '../components/lock/Overlay'
 import DeveloperOverlay from '../components/developer/DeveloperOverlay'
 import ShowWhenLocked from '../components/lock/ShowWhenLocked'
 import ShowWhenUnlocked from '../components/lock/ShowWhenUnlocked'
+import IframeHandler from '../components/lock/IframeHandler'
 import { LOCK_PATH_NAME_REGEXP } from '../constants'
 import BrowserOnly from '../components/helpers/BrowserOnly'
 import GlobalErrorProvider from '../utils/GlobalErrorProvider'
@@ -15,6 +16,7 @@ export function Paywall({ keys, modalShown, locks }) {
   return (
     <BrowserOnly>
       <GlobalErrorProvider>
+        <IframeHandler />
         <ShowWhenLocked locked={keys.length && !modalShown}>
           <Overlay locks={locks} />
           <DeveloperOverlay />

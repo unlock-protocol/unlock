@@ -15,10 +15,8 @@ export default class IframeHandler extends Component {
   handleIframeService() {
     const { keys, modalShown } = this.props
     if (keys.length > 0 && !modalShown) {
-      console.log('unlocking')
       unlockPage()
     } else {
-      console.log('locking')
       lockPage()
     }
   }
