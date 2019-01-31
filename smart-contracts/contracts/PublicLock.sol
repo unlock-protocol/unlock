@@ -261,7 +261,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   /**
    * @dev Called by owner to withdraw all funds from the lock.
    * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
-   * TODO: check for re-entrency?
    */
   function withdraw()
     external
@@ -269,13 +268,13 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   {
     uint balance = address(this).balance;
     require(balance > 0, "Not enough funds");
+    // Security: re-entrancy not a risk as this is the last line of an external function
     _withdraw(balance);
   }
 
   /**
    * @dev Called by owner to partially withdraw funds from the lock.
    * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
-   * TODO: check for re-entrency?
    */
   function partialWithdraw(uint _amount)
     external
@@ -284,6 +283,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     require(_amount > 0, "Must request an amount greater than 0");
     uint256 balance = address(this).balance;
     require(balance > 0 && balance >= _amount, "Not enough funds");
+    // Security: re-entrancy not a risk as this is the last line of an external function
     _withdraw(_amount);
   }
 
@@ -547,7 +547,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     // discounts (TODO implement partial refunds)
     require(msg.value >= netPrice, "Insufficient funds");
     // TODO: If there is more than the required price, then let's return whatever is extra
-    // extra (CAREFUL: re-entrency!)
+    // extra (CAREFUL: re-entrancy!)
 
     // Assign the key
     uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
@@ -606,7 +606,8 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   /**
    * @dev private version of the withdraw function which handles all withdrawals from the lock.
-   * TODO: check for re-entrency?
+   * 
+   * Security: Be wary of re-entrancy when calling this.
    */
   function _withdraw(uint _amount)
     private
