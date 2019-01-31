@@ -4,7 +4,7 @@ module.exports = async function shouldFail (promise, expectedRevertReason) {
     expectedMessage += expectedRevertReason
   } else {
     expectedMessage += `revert`
-    if (expectedRevertReason) {
+    if (expectedRevertReason && !process.env.TEST_COVERAGE) {
       expectedMessage += ` ${expectedRevertReason}`
     }
   }

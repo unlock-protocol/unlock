@@ -9,8 +9,8 @@ module.exports = function deployProxy (deployer, network, accounts) {
   const proxyAdmin = accounts[9]
 
   deployer.then(() => {
-    if (network === 'test') {
-      console.log("Skipping proxy creation in 3_create_proxy.js while on network 'test'. Exiting...")
+    if (network === 'test' || network === 'development') {
+      console.log(`Skipping proxy creation in 3_create_proxy.js while on network '${network}'. Exiting...`)
     } else {
       if (
         shell.exec(
