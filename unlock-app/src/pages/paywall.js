@@ -25,7 +25,7 @@ class Paywall extends React.Component {
   }
   isLocked() {
     const { keys, modalShown } = this.props
-    return !(keys.length > 0 && !modalShown)
+    return keys.length === 0 || modalShown
   }
   handleIframe() {
     if (this.isLocked()) {
