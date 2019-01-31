@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import UnlockPropTypes from '../propTypes'
@@ -53,7 +54,11 @@ class Paywall extends React.Component {
       <BrowserOnly>
         <GlobalErrorProvider>
           <ShowWhenLocked locked={locked}>
-            <Overlay scrollPosition={scrollPosition} locks={locks} />
+            <Overlay
+              scrollPosition={scrollPosition}
+              locks={locks}
+              redirect={redirect}
+            />
             <DeveloperOverlay />
           </ShowWhenLocked>
           <ShowWhenUnlocked locked={locked}>
@@ -68,34 +73,44 @@ class Paywall extends React.Component {
 Paywall.propTypes = {
   locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
   locked: PropTypes.bool.isRequired,
+  redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+}
+
+Paywall.defaultProps = {
+  redirect: false,
 }
 
 export const mapStateToProps = ({ locks, keys, modals, router }) => {
   const { lockAddress } = lockRoute(router.location.pathname)
 
-  const lockFromUri = lockAddress
-    ? Object.values(locks).find(lock => lock.address === lockAddress)
-    : null
+  if (match) {
+    const lockFromUri = Object.values(locks).find(
+      lock => lock.address === lockAddress
+    )
 
-  let validKeys = []
-  const locksFromUri = lockFromUri ? [lockFromUri] : []
-  locksFromUri.forEach(lock => {
-    for (let k of Object.values(keys)) {
-      if (
-        k.lock === lock.address &&
-        k.expiration > new Date().getTime() / 1000
-      ) {
-        validKeys.push(k)
+    let validKeys = []
+    const locksFromUri = lockFromUri ? [lockFromUri] : []
+    locksFromUri.forEach(lock => {
+      for (let k of Object.values(keys)) {
+        if (
+          k.lock === lock.address &&
+          k.expiration > new Date().getTime() / 1000
+        ) {
+          validKeys.push(k)
+        }
       }
-    }
-  })
+    })
 
-  const modalShown = !!modals[locksFromUri.map(l => l.address).join('-')]
-  const locked = validKeys.length === 0 || modalShown
+    const modalShown = !!modals[locksFromUri.map(l => l.address).join('-')]
+    const locked = validKeys.length === 0 || modalShown
+    const redirect = decodeURIComponent(match[3])
+    return { locked, locks: locksFromUri, redirect }
+  }
 
   return {
-    locks: locksFromUri,
-    locked,
+    locks: [],
+    redirect: false,
+    locked: false,
   }
 }
 
