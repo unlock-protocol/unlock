@@ -99,18 +99,12 @@ contract('Lock', (accounts) => {
 
         before(async () => {
           balance = new BigNumber(await web3.eth.getBalance(locks['FIRST'].address))
-          return locks['FIRST'].outstandingKeys()
-            .then(_outstandingKeys => {
-              outstandingKeys = parseInt(_outstandingKeys)
-              now = parseInt(new Date().getTime() / 1000)
-              return locks['FIRST'].numberOfOwners()
-                .then(_numberOfOwners => {
-                  numberOfOwners = parseInt(_numberOfOwners)
-                  return locks['FIRST'].purchaseFor(accounts[0], Web3Utils.toHex('Julien'), {
-                    value: Units.convert('0.01', 'eth', 'wei')
-                  })
-                })
-            })
+          outstandingKeys = new BigNumber(await locks['FIRST'].outstandingKeys())
+          now = parseInt(new Date().getTime() / 1000)
+          numberOfOwners = new BigNumber(await locks['FIRST'].numberOfOwners())
+          return locks['FIRST'].purchaseFor(accounts[0], Web3Utils.toHex('Julien'), {
+            value: Units.convert('0.01', 'eth', 'wei')
+          })
         })
 
         it('should have the right data for the key', () => {
@@ -132,26 +126,20 @@ contract('Lock', (accounts) => {
           assert.equal(parseFloat(Units.convert(newBalance, 'wei', 'eth')), parseFloat(Units.convert(balance, 'wei', 'eth')) + 0.01)
         })
 
-        it('should have increased the number of outstanding keys', () => {
-          return locks['FIRST'].outstandingKeys
-            .call()
-            .then(_outstandingKeys => {
-              assert.equal(
-                parseInt(_outstandingKeys),
-                outstandingKeys + 1
-              )
-            })
+        it('should have increased the number of outstanding keys', async () => {
+          const _outstandingKeys = new BigNumber(await locks['FIRST'].outstandingKeys.call())
+          assert.equal(
+            _outstandingKeys.toFixed(),
+            outstandingKeys.plus(1).toFixed()
+          )
         })
 
-        it('should have increased the number of owners', () => {
-          return locks['FIRST'].numberOfOwners
-            .call()
-            .then(_numberOfOwners => {
-              assert.equal(
-                parseInt(_numberOfOwners),
-                numberOfOwners + 1
-              )
-            })
+        it('should have increased the number of owners', async () => {
+          const _numberOfOwners = new BigNumber(await locks['FIRST'].numberOfOwners.call())
+          assert.equal(
+            _numberOfOwners.toFixed(),
+            numberOfOwners.plus(1).toFixed()
+          )
         })
       })
     })
