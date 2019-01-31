@@ -64,6 +64,7 @@ export default function configure(
   let services = {}
   let supportedProviders = []
   let blockTime = 8000 // in mseconds.
+  const readOnlyProviderUrl = runtimeConfig.readOnlyProviderUrl
 
   if (env === 'test') {
     // In test, we fake the HTTP provider
@@ -145,12 +146,18 @@ export default function configure(
     requiredNetwork = ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
   }
 
+  let readOnlyProvider
+  if (readOnlyProviderUrl) {
+    readOnlyProvider = new Web3.providers.HttpProvider(readOnlyProviderUrl)
+  }
+
   return {
     blockTime,
     isServer,
     env,
     providers,
     isRequiredNetwork,
+    readOnlyProvider,
     requiredNetworkId,
     requiredNetwork,
     requiredConfirmations,
