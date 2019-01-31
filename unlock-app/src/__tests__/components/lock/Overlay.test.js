@@ -35,6 +35,19 @@ describe('Overlay', () => {
         type: SHOW_MODAL,
       })
     })
+    it('should yield a prop function which redirects if instructed', () => {
+      expect.assertions(1)
+      const locks = [{ address: '0x123' }, { address: '0x456' }]
+      const dispatch = jest.fn()
+      const props = mapDispatchToProps(dispatch, {
+        locks,
+        redirect: 'http://example.com',
+      })
+      props.hideModal()
+      // we can't actually test the redirect, in the test environment it doesn't work
+      // but we can verify that dispatch was not called for the normal behavior
+      expect(dispatch).not.toHaveBeenCalled()
+    })
   })
   describe('displayError', () => {
     it('should display children if there is no error', () => {
