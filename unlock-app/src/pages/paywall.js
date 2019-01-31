@@ -23,20 +23,16 @@ class Paywall extends React.Component {
   componentDidUpdate() {
     this.handleIframe()
   }
-  isLocked() {
-    const { keys, modalShown } = this.props
-    return keys.length === 0 || modalShown
-  }
   handleIframe() {
-    if (this.isLocked()) {
+    const { locked } = this.props
+    if (locked) {
       lockPage()
     } else {
       unlockPage()
     }
   }
   render() {
-    const { locks } = this.props
-    const locked = this.isLocked()
+    const { locks, locked } = this.props
     return (
       <BrowserOnly>
         <GlobalErrorProvider>
@@ -55,13 +51,7 @@ class Paywall extends React.Component {
 
 Paywall.propTypes = {
   locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
-  keys: PropTypes.arrayOf(UnlockPropTypes.key),
-  modalShown: PropTypes.bool,
-}
-
-Paywall.defaultProps = {
-  keys: [],
-  modalShown: false,
+  locked: PropTypes.bool.isRequired,
 }
 
 export const mapStateToProps = ({ locks, keys, modals, router }) => {
@@ -84,10 +74,12 @@ export const mapStateToProps = ({ locks, keys, modals, router }) => {
     }
   })
 
+  const modalShown = !!modals[locksFromUri.map(l => l.address).join('-')]
+  const locked = validKeys.length === 0 || modalShown
+
   return {
-    modalShown: !!modals[locksFromUri.map(l => l.address).join('-')],
-    keys: validKeys,
     locks: locksFromUri,
+    locked,
   }
 }
 
