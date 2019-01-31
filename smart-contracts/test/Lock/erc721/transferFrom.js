@@ -160,6 +160,10 @@ contract('Lock ERC721', (accounts) => {
                 })
             })
         })
+
+        it('approval should be cleared after a transfer', async () => {
+          await shouldFail(locks['FIRST'].getApproved(accountApproved), 'No approved recipient exists')
+        })
       })
 
       describe('when the key owner is the sender', () => {
