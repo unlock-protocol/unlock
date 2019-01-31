@@ -12,13 +12,13 @@ contract('Lock', (accounts) => {
     before(async () => {
       unlock = await Unlock.deployed()
       locks = await deployLocks(unlock)
-      keyPriceBefore = new BigNumber(await locks['FIRST'].keyPrice())
+      keyPriceBefore = new BigNumber(await locks['FIRST'].keyPrice.call())
       assert.equal(keyPriceBefore.toFixed(), 10000000000000000)
       transaction = await locks['FIRST'].updateKeyPrice(Units.convert('0.3', 'eth', 'wei'))
     })
 
     it('should change the actual keyPrice', async () => {
-      const keyPriceAfter = new BigNumber(await locks['FIRST'].keyPrice())
+      const keyPriceAfter = new BigNumber(await locks['FIRST'].keyPrice.call())
       assert.equal(keyPriceAfter.toFixed(), 300000000000000000)
     })
 
@@ -34,7 +34,7 @@ contract('Lock', (accounts) => {
       let keyPrice
 
       before(async () => {
-        keyPrice = new BigNumber(await locks['FIRST'].keyPrice())
+        keyPrice = new BigNumber(await locks['FIRST'].keyPrice.call())
         await shouldFail(locks['FIRST'].updateKeyPrice(
           Units.convert('0.3', 'eth', 'wei'),
           {
@@ -44,7 +44,7 @@ contract('Lock', (accounts) => {
 
 
       it('should leave the price unchanged', async () => {
-        const keyPriceAfter = new BigNumber(await locks['FIRST'].keyPrice())
+        const keyPriceAfter = new BigNumber(await locks['FIRST'].keyPrice.call())
         assert.equal(keyPrice.toFixed(), keyPriceAfter.toFixed())
       })
     })

@@ -33,7 +33,7 @@ contract('Lock ERC721', (accounts) => {
     let owner
 
     before(() => {
-      return locks['RESTRICTED'].owner().then((_owner) => {
+      return locks['RESTRICTED'].owner.call().then((_owner) => {
         owner = _owner
       })
     })
@@ -45,7 +45,7 @@ contract('Lock ERC721', (accounts) => {
             from: owner
           })
           .then(() => {
-            return locks['RESTRICTED'].getApproved(accounts[1])
+            return locks['RESTRICTED'].getApproved.call(accounts[1])
           })
           .then((approved) => {
             assert.equal(approved, accounts[1])
@@ -73,7 +73,7 @@ contract('Lock ERC721', (accounts) => {
           })
           .then(() => {
             // Let's retrieve the approved key
-            return locks['RESTRICTED'].getApproved(accounts[2])
+            return locks['RESTRICTED'].getApproved.call(accounts[2])
           })
           .then((approved) => {
             // and make sure it is right
@@ -88,7 +88,7 @@ contract('Lock ERC721', (accounts) => {
           })
           .then(() => {
             // Let's retrieve the approved key
-            return locks['RESTRICTED'].getApproved(accounts[5])
+            return locks['RESTRICTED'].getApproved.call(accounts[5])
           })
           .then((approved) => {
             // and make sure it is right
