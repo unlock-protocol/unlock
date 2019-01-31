@@ -12,6 +12,12 @@ const baseBannerHeight = () => {
   return minHeightPct > 30 ? minHeightPct : 30
 }
 
+export function redirect(window, paywallUrl) {
+  const redirectTo = encodeURIComponent(window.location.href)
+
+  window.location.href = paywallUrl + '/' + redirectTo
+}
+
 export default function buildPaywall(window, document, lockAddress, blocker) {
   // If there is no lock, do nothing!
   if (!lockAddress) {
@@ -57,6 +63,9 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
         locked = false
         hide(iframe, document)
         blocker.remove()
+      }
+      if (event.data === 'redirect') {
+        redirect(window, paywallUrl)
       }
     },
     false
