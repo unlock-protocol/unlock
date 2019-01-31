@@ -56,7 +56,7 @@ export default function configure(
   const env = runtimeConfig.unlockEnv
 
   let providers = {}
-  let isRequiredNetwork = () => false
+  let isRequiredNetwork = networkId => networkId === 1984
   let requiredNetwork = 'Dev'
   let requiredNetworkId = 1984
   let requiredConfirmations = 12
@@ -73,7 +73,6 @@ export default function configure(
     blockTime = 10 // in mseconds.
     supportedProviders = ['HTTP']
     services['storage'] = { host: 'http://127.0.0.1:8080' }
-    isRequiredNetwork = networkId => networkId === 1337
   }
 
   if (env === 'dev') {
@@ -91,9 +90,6 @@ export default function configure(
     }
 
     supportedProviders = ['HTTP']
-
-    // In dev, the network can be anything above 100
-    isRequiredNetwork = networkId => networkId > 100
 
     // In dev, we only require 6 confirmation because we only mine when there are pending transactions
     requiredConfirmations = 6
