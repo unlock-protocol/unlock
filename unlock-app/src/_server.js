@@ -1,3 +1,4 @@
+/* eslint no-console: 0 */
 const { createServer } = require('http')
 const { URL } = require('url')
 const next = require('next')
@@ -5,12 +6,14 @@ const pathMatch = require('path-match')
 
 function _server(port, dev) {
   return new Promise((resolve, reject) => {
-    const app = next({ dir: `${__dirname}/`, dev })
+    const app = next({ dir: `${__dirname}/`, dev, quiet: true })
     const handle = app.getRequestHandler()
     const route = pathMatch()
 
     app.prepare().then(() => {
       let server = createServer((req, res) => {
+        console.info(`\n< ${req.method} ${req.originalUrl}`)
+        console.info(`> ${res.statusCode} ${res.statusMessage}`)
         try {
           const parsedUrl = new URL(req.url, `http://${req.headers.host}/`)
           const { pathname, query } = parsedUrl
