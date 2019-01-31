@@ -56,7 +56,7 @@ export default function configure(
   const env = runtimeConfig.unlockEnv
 
   let providers = {}
-  let isRequiredNetwork = networkId => networkId === 1984
+  let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
   let requiredNetworkId = 1984
   let requiredConfirmations = 12
@@ -73,6 +73,7 @@ export default function configure(
     blockTime = 10 // in mseconds.
     supportedProviders = ['HTTP']
     services['storage'] = { host: 'http://127.0.0.1:8080' }
+    isRequiredNetwork = networkId => networkId === 1984
   }
 
   if (env === 'dev') {
@@ -96,6 +97,7 @@ export default function configure(
 
     // we start ganache locally with a block time of 3
     blockTime = 3000
+    isRequiredNetwork = networkId => networkId === 1984
   }
 
   if (env === 'staging') {
