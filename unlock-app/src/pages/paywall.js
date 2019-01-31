@@ -14,7 +14,6 @@ import { lockPage, unlockPage } from '../services/iframeService'
 class Paywall extends React.Component {
   constructor(props) {
     super(props)
-    this.isLocked = this.isLocked.bind(this)
     this.handleIframe = this.handleIframe.bind(this)
   }
   componentDidMount() {
