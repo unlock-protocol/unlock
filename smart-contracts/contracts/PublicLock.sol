@@ -62,6 +62,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   // A count of how many new key purchases there have been
   uint public numberOfKeysSold;
 
+  // The version number for this lock contract,
+  uint public publicLockVersion;
+
   // Keys
   // Each owner can have at most exactly one key
   // TODO: could we use public here? (this could be confusing though because it getter will
@@ -121,7 +124,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     );
     _;
   }
-  
+
   // Ensures that a key has an owner
   modifier isKey(
     uint _tokenId
@@ -156,7 +159,8 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     address _owner,
     uint _expirationDuration,
     uint _keyPrice,
-    uint _maxNumberOfKeys
+    uint _maxNumberOfKeys,
+    uint _version
   )
   public {
     require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, "Expiration duration exceeds 100 years");
@@ -166,6 +170,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
+    publicLockVersion = _version;
   }
 
   /**
@@ -393,7 +398,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   }
 
   /**
-   * Public function which returns the total number of unique keys sold (both 
+   * Public function which returns the total number of unique keys sold (both
    * expired and valid)
    */
   function outstandingKeys()
@@ -525,7 +530,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     bytes memory _data
   )
     internal
-    notSoldOut() 
+    notSoldOut()
   { // solhint-disable-line function-max-lines
     require(_recipient != address(0));
 
@@ -552,7 +557,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     // Assign the key
     uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
     if (previousExpiration < now) {
-      if (previousExpiration == 0) { 
+      if (previousExpiration == 0) {
         // This is a brand new owner, else an owner of an expired key buying an extension
         numberOfKeysSold++;
         owners.push(_recipient);
@@ -562,7 +567,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
         // support this will change to a sequenceId assigned at purchase.
         keyByOwner[_recipient].tokenId = uint(_recipient);
       }
-      // SafeAdd is not required here since expirationDuration is capped to a tiny value 
+      // SafeAdd is not required here since expirationDuration is capped to a tiny value
       // (relative to the size of a uint)
       keyByOwner[_recipient].expirationTimestamp = now + expirationDuration;
     } else {
