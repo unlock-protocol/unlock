@@ -1,9 +1,12 @@
 import * as mutations from '../../paywall-builder/mutationobserver'
 import * as buildManager from '../../paywall-builder/build'
+import * as blockerManager from '../../paywall-builder/blocker'
 
 describe('paywall builder integration', () => {
   let listenForNewLocks
   let buildPaywall
+  let getBlocker
+  let addBlocker
   beforeEach(() => {
     listenForNewLocks = jest
       .spyOn(mutations, 'listenForNewLocks')
@@ -11,6 +14,12 @@ describe('paywall builder integration', () => {
     buildPaywall = jest
       .spyOn(buildManager, 'default')
       .mockImplementation(() => 'paywall')
+    getBlocker = jest
+      .spyOn(blockerManager, 'getBlocker')
+      .mockImplementation(() => 'blocker')
+    addBlocker = jest
+      .spyOn(blockerManager, 'addBlocker')
+      .mockImplementation(() => 'addblocker')
   })
 
   afterEach(() => jest.restoreAllMocks())
@@ -27,6 +36,13 @@ describe('paywall builder integration', () => {
     expect(paywall).toBeInstanceOf(Function)
     paywall('lock')
 
-    expect(buildPaywall).toHaveBeenCalledWith(window, document, 'lock')
+    expect(buildPaywall).toHaveBeenCalledWith(
+      window,
+      document,
+      'lock',
+      'blocker'
+    )
+    expect(getBlocker).toHaveBeenCalled()
+    expect(addBlocker).toHaveBeenCalledWith(document, 'blocker')
   })
 })
