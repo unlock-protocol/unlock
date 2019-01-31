@@ -170,7 +170,7 @@ contract('Lock ERC721', (accounts) => {
             .transferFrom(accountWithKeyApproved, accountApproved, accountWithKeyApproved, {
               from: accountApproved
             })
-          await shouldFail(locks['FIRST'].getApproved(accountApproved), '')
+          await shouldFail(locks['FIRST'].getApproved(accountApproved), 'No approved recipient exists')
         })
       })
 
