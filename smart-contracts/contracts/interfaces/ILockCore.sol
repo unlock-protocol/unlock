@@ -71,6 +71,7 @@ interface ILockCore {
     address _owner
   )
     external
+    view
     returns (bool);
 
   /**
