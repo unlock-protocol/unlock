@@ -13,12 +13,13 @@ class Error extends React.Component {
     if (statusCode) {
       const configure = require('../config').default
       const config = configure()
+      console.error(`Server-side error! ${statusCode}`, err) // eslint-disable-line
       if (
-        config.env !== 'production' &&
-        req.connection.remoteAddress.match(/^127.0.0.1|^localhost/)
+        !(
+          config.env !== 'production' &&
+          req.connection.remoteAddress.match(/^127.0.0.1|^localhost/)
+        )
       ) {
-        console.log('Server-side error!', err) // eslint-disable-line
-      } else {
         res.writeHead(301, {
           Location: '/',
         })
