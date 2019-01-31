@@ -27,7 +27,7 @@ contract('Lock', (accounts) => {
         await shouldFail(lock
           .purchaseFor(accounts[0], Web3Utils.toHex('Julien')), '')
         // Making sure we do not have a key set!
-        await shouldFail(lock.keyExpirationTimestampFor(accounts[0]), '')
+        await shouldFail(lock.keyExpirationTimestampFor.call(accounts[0]), '')
       })
     })
   })
@@ -37,7 +37,7 @@ contract('Lock', (accounts) => {
     let owner
 
     before(() => {
-      return locks['RESTRICTED'].owner().then((_owner) => {
+      return locks['RESTRICTED'].owner.call().then((_owner) => {
         owner = _owner
       })
     })
@@ -61,7 +61,7 @@ contract('Lock', (accounts) => {
           })
         })
         .then(() => {
-          return locks['RESTRICTED'].keyDataFor(accounts[3])
+          return locks['RESTRICTED'].keyDataFor.call(accounts[3])
         })
         .then(keyData => {
           assert.equal(Web3Utils.toUtf8(keyData), 'Szabo')

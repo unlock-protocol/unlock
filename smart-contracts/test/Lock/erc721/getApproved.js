@@ -21,13 +21,13 @@ contract('Lock ERC721', (accounts) => {
     let lockOwner
 
     before(() => {
-      return locks['FIRST'].owner().then((_owner) => {
+      return locks['FIRST'].owner.call().then((_owner) => {
         lockOwner = _owner
       })
     })
 
     it('should fail if no one was approved for a key', async () => {
-      await shouldFail(locks['FIRST'].getApproved(accounts[1]), '')
+      await shouldFail(locks['FIRST'].getApproved.call(accounts[1]), '')
     })
   })
 })
