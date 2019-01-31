@@ -22,7 +22,7 @@ function _server(port, dev) {
           // get the query string passed to our application
           const path = pathname.split('/')[1]
           if (path === 'paywall') {
-            const params = route('/paywall/:lockAddress')(pathname)
+            const params = route('/paywall/:lockAddress/:redirect?')(pathname)
             app.render(req, res, '/paywall', Object.assign(params, query))
           } else if (path === 'demo') {
             const params = route('/demo/:lockaddress')(pathname)
