@@ -27,7 +27,7 @@ contract('Lock ERC721', (accounts) => {
     })
 
     it('should fail if no one was approved for a key', async () => {
-      await shouldFail(locks['FIRST'].getApproved.call(accounts[1]), '')
+      await shouldFail(locks['FIRST'].getApproved.call(accounts[1]), 'No approved recipient exists')
     })
   })
 })
