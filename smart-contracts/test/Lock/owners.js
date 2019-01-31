@@ -42,16 +42,14 @@ contract('Lock ERC721', (accounts) => {
       ])
     })
 
-    it('should have the right number of keys', () => {
-      return lock.outstandingKeys().then((outstandingKeys) => {
-        assert.equal(outstandingKeys, 4)
-      })
+    it('should have the right number of keys', async () => {
+      const outstandingKeys = new BigNumber(await lock.outstandingKeys())
+      assert.equal(outstandingKeys.toFixed(), 4)
     })
 
-    it('should have the right number of owners', () => {
-      return lock.numberOfOwners.call().then((numberOfOwners) => {
-        assert.equal(numberOfOwners, 4)
-      })
+    it('should have the right number of owners', async () => {
+      const numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
+      assert.equal(numberOfOwners.toFixed(), 4)
     })
 
     it('should allow for access to an individual key owner', () => {
@@ -77,10 +75,9 @@ contract('Lock ERC721', (accounts) => {
         await lock.transferFrom(accounts[1], accounts[5], accounts[1], { from: accounts[1] })
       })
 
-      it('should have the right number of keys', () => {
-        return lock.outstandingKeys().then((outstandingKeys) => {
-          assert.equal(outstandingKeys, 4)
-        })
+      it('should have the right number of keys', async () => {
+        const outstandingKeys = await lock.outstandingKeys()
+        assert.equal(outstandingKeys.toFixed(), 4)
       })
 
       it('should have the right number of owners', async () => {
@@ -98,19 +95,18 @@ contract('Lock ERC721', (accounts) => {
       let numberOfOwners
 
       before(async () => {
-        numberOfOwners = await lock.numberOfOwners.call()
+        numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
         await lock.transferFrom(accounts[2], accounts[3], accounts[2], { from: accounts[2] })
       })
 
-      it('should have the right number of keys', () => {
-        return lock.outstandingKeys().then((outstandingKeys) => {
-          assert.equal(outstandingKeys, 4)
-        })
+      it('should have the right number of keys', async () => {
+        const outstandingKeys = await lock.outstandingKeys()
+        assert.equal(outstandingKeys.toFixed(), 4)
       })
 
       it('should have the right number of owners', async () => {
         const _numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-        assert.equal(_numberOfOwners.toFixed(), numberOfOwners)
+        assert.equal(_numberOfOwners.toFixed(), numberOfOwners.toFixed())
       })
     })
   })
