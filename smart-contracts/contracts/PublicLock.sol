@@ -600,7 +600,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     returns (address)
   {
     address approvedRecipient = approved[_tokenId];
-    require(approvedRecipient != address(0));
+    require(approvedRecipient != address(0), "No approved recipient exists");
     return approvedRecipient;
   }
 
