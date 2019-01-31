@@ -10,7 +10,7 @@ NPM_SCRIPT="npm run deploy-$TARGET"
 SERVICE="unlock"
 REPO_ROOT=`dirname "$0"`/..
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
-ENV_VARS=`env | grep TRAVIS_ | awk '{print "-e ",$1}' ORS=' '`
+TRAVIS_ENV_VARS=`env | grep TRAVIS_ | awk '{print "-e ",$1}' ORS=' '`
 
 # Identify the environment for the target (production or staging)
 if [ -n "$TRAVIS_TAG" ] &&
@@ -32,13 +32,24 @@ else
   ENV_TARGET="staging"
 fi
 
+# For staging deploys we pass all environment variables which start with STAGING_ and for production
+# deploys we pass all environment variables which start with PROD_. We also remove the prefix so that
+# the deploy script is identical in both cases
+
+if [ "$TARGET" = "staging" ]; then
+  ENV_PREFIX = "STAGING_"
+elif [ "$TARGET" = "prod" ]; then
+  ENV_PREFIX = "PROD_"
+fi
+
+# Extracting environment variables
+DEPLOYMENT_ENV_VARS = `env | grep $ENV_PREFIX | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$ENV_PREFIX//g"`
+ENV_VARS = "$TRAVIS_ENV_VARS $DEPLOYMENT_ENV_VARS"
+
+
 ## Custom variables passed for netlify
 if [ "$TARGET" = "netlify" ]; then
-  NETLIFY_SITE_ID=$NETLIFY_STAGING_SITE_ID
-  if [ "$ENV_TARGET" = "prod" ]; then
-    NETLIFY_SITE_ID=$NETLIFY_PROD_SITE_ID
-  fi
-  ENV_VARS="$ENV_VARS -e NETLIFY_SITE_ID=$NETLIFY_SITE_ID -e NETLIFY_AUTH_TOKEN=$NETLIFY_AUTH_TOKEN"
+  ENV_VARS="$TRAVIS_ENV_VARS -e NETLIFY_AUTH_TOKEN=$NETLIFY_AUTH_TOKEN"
 fi
 
 docker-compose -f $DOCKER_COMPOSE_FILE run $ENV_VARS $SERVICE $NPM_SCRIPT -- $ENV_TARGET
