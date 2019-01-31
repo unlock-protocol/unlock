@@ -401,6 +401,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     address _owner
   )
     public
+    view
     returns (bool) 
   {
     return keyByOwner[_owner].expirationTimestamp > now;
