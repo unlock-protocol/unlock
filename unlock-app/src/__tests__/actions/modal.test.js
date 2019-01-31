@@ -3,6 +3,8 @@ import {
   SHOW_MODAL,
   hideModal,
   HIDE_MODAL,
+  openNewWindowModal,
+  OPEN_MODAL_IN_NEW_WINDOW,
 } from '../../actions/modal'
 
 describe('modal actions', () => {
@@ -22,5 +24,11 @@ describe('modal actions', () => {
       modal,
     }
     expect(hideModal(modal)).toEqual(expectedAction)
+  })
+
+  it('should create an action to open the modal in a new window', () => {
+    expect(openNewWindowModal()).toEqual({
+      type: OPEN_MODAL_IN_NEW_WINDOW,
+    })
   })
 })
