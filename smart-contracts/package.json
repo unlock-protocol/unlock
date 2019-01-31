@@ -18,6 +18,7 @@
     "openzeppelin-eth": "^2.0.2",
     "shelljs": "^0.8.3",
     "solhint": "^1.4.0",
+    "solidity-coverage": "^0.5.11",
     "truffle": "^4.1.15",
     "truffle-hdwallet-provider": "^1.0.3",
     "web3-utils": "^1.0.0-beta.36",
@@ -36,7 +37,8 @@
     "ci": "npm run lint && npm run test",
     "build": "truffle compile --all",
     "deploy": "truffle deploy",
-    "zos": "zos"
+    "zos": "zos",
+    "coverage": "cross-env TEST_COVERAGE=true solidity-coverage"
   },
   "author": "",
   "license": "ISC"
