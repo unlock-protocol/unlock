@@ -9,6 +9,7 @@ import { TRANSACTION_TYPES, MAX_UINT } from '../constants'
 import { NON_DEPLOYED_CONTRACT } from '../errors'
 
 const {
+  readOnlyProvider,
   providers,
   unlockAddress,
   blockTime,
@@ -26,7 +27,13 @@ export default class Web3Service extends EventEmitter {
   constructor(unlockContractAddress = unlockAddress) {
     super()
 
-    this.web3 = new Web3(Object.values(providers)[0]) // Defaulting to the first provider...
+    if (readOnlyProvider) {
+      this.web3 = new Web3(readOnlyProvider)
+    } else {
+      this.web3 = new Web3(Object.values(providers)[0]) // Defaulting to the first provider.
+    }
+
+    // TODO: detect discrepancy in providers
 
     // Transactions create events which we use here to build the state.
     this.eventsHandlers = {
