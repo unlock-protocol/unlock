@@ -31,8 +31,14 @@ const mainnetProvider = function () {
 
 module.exports = {
   networks: {
-    development: {
+    local: {
       // used for local dev
+      host: '127.0.0.1',
+      port: 8545,
+      network_id: '*' // Match any network id
+    },
+    development: {
+      // used for solidity-coverage
       host: '127.0.0.1',
       port: 8545,
       network_id: '*' // Match any network id
