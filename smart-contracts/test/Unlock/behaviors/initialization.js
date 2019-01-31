@@ -3,7 +3,7 @@ const BigNumber = require('bignumber.js')
 exports.shouldHaveInitialized = function (unlockOwner) {
   describe('initialization', function () {
     it('should have an owner', async function () {
-      const owner = await this.unlock.owner()
+      const owner = await this.unlock.owner.call()
       assert.equal(owner, unlockOwner)
     })
 

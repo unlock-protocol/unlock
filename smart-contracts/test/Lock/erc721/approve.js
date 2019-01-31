@@ -68,7 +68,7 @@ contract('Lock ERC721', (accounts) => {
         })
 
         it('should assign the approvedForTransfer value', () => {
-          return locks['FIRST'].getApproved(accounts[1])
+          return locks['FIRST'].getApproved.call(accounts[1])
             .then((approved) => {
               assert.equal(approved, accounts[2])
             })

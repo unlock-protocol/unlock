@@ -37,7 +37,7 @@ contract('Lock', (accounts) => {
         value: locks['FIRST'].params.keyPrice.toFixed(),
         from: accounts[0]
       })
-      const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(accounts[2]))
+      const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(accounts[2]))
       const now = Math.floor(new Date().getTime() / 1000)
       assert(expirationTimestamp.gt(now))
       await locks['FIRST'].expireKeyFor(accounts[2], {
@@ -53,13 +53,13 @@ contract('Lock', (accounts) => {
         value: locks['FIRST'].params.keyPrice.toFixed(),
         from: accounts[0]
       })
-      let expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(accounts[1]))
+      let expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(accounts[1]))
       let now = Math.floor(new Date().getTime() / 1000)
       assert(expirationTimestamp.gt(now))
       await locks['FIRST'].expireKeyFor(accounts[1], {
         from: accounts[0]
       })
-      expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor(accounts[1]))
+      expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(accounts[1]))
       now = Math.floor(new Date().getTime() / 1000)
       assert(expirationTimestamp.lte(now))
     })

@@ -26,7 +26,7 @@ contract('Lock', (accounts) => {
         await shouldFail(lock
           .purchaseForFrom(accounts[0], accounts[1], Web3Utils.toHex('Julien')), 'Key is not valid')
         // Making sure we do not have a key set!
-        await shouldFail(lock.keyExpirationTimestampFor(accounts[0]), 'No such key')
+        await shouldFail(lock.keyExpirationTimestampFor.call(accounts[0]), 'No such key')
       })
     })
 
@@ -36,14 +36,14 @@ contract('Lock', (accounts) => {
         return lock.purchaseFor(accounts[0], Web3Utils.toHex('Julien'), {
           value: Units.convert('0.01', 'eth', 'wei')
         }).then(() => {
-          return lock.keyDataFor(accounts[0])
+          return lock.keyDataFor.call(accounts[0])
         }).then((keyData) => {
           assert.equal(Web3Utils.toUtf8(keyData), 'Julien')
           return lock.purchaseForFrom(accounts[1], accounts[0], Web3Utils.toHex('Vitalik'), {
             value: Units.convert('0.01', 'eth', 'wei')
           })
         }).then(() => {
-          return lock.keyDataFor(accounts[1])
+          return lock.keyDataFor.call(accounts[1])
         }).then((keyData) => {
           assert.equal(Web3Utils.toUtf8(keyData), 'Vitalik')
         })
