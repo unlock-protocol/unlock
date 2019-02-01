@@ -100,6 +100,9 @@ describe('buildPaywall', () => {
             callbacks[type] = listener
           },
           requestAnimationFrame() {},
+          location: {
+            href: 'href',
+          },
         }
         blocker = {
           remove: jest.fn(),
@@ -143,7 +146,11 @@ describe('buildPaywall', () => {
         expect(mockHide).toHaveBeenCalledTimes(1)
         expect(mockShow).toHaveBeenCalledTimes(1)
       })
-      it('calls redirect on redirect event', () => {})
+      it('calls redirect on redirect event', () => {
+        callbacks.message({ data: 'redirect' })
+
+        expect(window.location.href).toBe('/url/paywall/lockaddress/href')
+      })
     })
   })
 })

@@ -15,7 +15,7 @@ const baseBannerHeight = () => {
 export function redirect(window, paywallUrl) {
   const redirectTo = encodeURIComponent(window.location.href)
 
-  window.location.href = paywallUrl + '/' + redirectTo
+  window.location.href = paywallUrl + redirectTo
 }
 
 export default function buildPaywall(window, document, lockAddress, blocker) {
