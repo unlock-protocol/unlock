@@ -4,11 +4,10 @@ import { Provider } from 'react-redux'
 
 import { SHOW_MODAL, HIDE_MODAL } from '../../../actions/modal'
 
-import {
+import Overlay, {
   mapDispatchToProps,
   mapStateToProps,
   displayError,
-  Overlay,
 } from '../../../components/lock/Overlay'
 import { GlobalErrorContext } from '../../../utils/GlobalErrorProvider'
 import { FATAL_NO_USER_ACCOUNT } from '../../../errors'
