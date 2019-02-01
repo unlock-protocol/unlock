@@ -1,4 +1,4 @@
-import buildPaywall from '../../paywall-builder/build'
+import buildPaywall, { redirect } from '../../paywall-builder/build'
 import * as script from '../../paywall-builder/script'
 import * as iframeManager from '../../paywall-builder/iframe'
 
@@ -22,6 +22,17 @@ describe('buildPaywall', () => {
 
   afterEach(() => jest.restoreAllMocks())
 
+  it('redirect', () => {
+    const window = {
+      location: {
+        href: 'href/',
+      },
+    }
+
+    redirect(window, 'hi')
+
+    expect((window.location.href = 'hi/href%2F'))
+  })
   describe('sets up the iframe on load', () => {
     let mockScript
     let mockIframe
@@ -89,6 +100,9 @@ describe('buildPaywall', () => {
             callbacks[type] = listener
           },
           requestAnimationFrame() {},
+          location: {
+            href: 'href',
+          },
         }
         blocker = {
           remove: jest.fn(),
@@ -131,6 +145,11 @@ describe('buildPaywall', () => {
         expect(mockHide).toHaveBeenCalledWith(mockIframeImpl, document)
         expect(mockHide).toHaveBeenCalledTimes(1)
         expect(mockShow).toHaveBeenCalledTimes(1)
+      })
+      it('calls redirect on redirect event', () => {
+        callbacks.message({ data: 'redirect' })
+
+        expect(window.location.href).toBe('/url/paywall/lockaddress/href')
       })
     })
   })
