@@ -4,7 +4,8 @@ const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
-const simulateTime = require('../helpers/simulateTime')
+simulateTime = require('../helpers/simulateTime')
+revertTime = require('../helpers/revertTime')
 const Unlock = artifacts.require('../Unlock.sol')
 
 let unlock, locks
@@ -37,9 +38,13 @@ contract('Lock', (accounts) => {
         assert.equal(isValid, true)
       })
 
-      contract('after time has expired', () => {
+      describe('after time has expired', () => {
         before(async () => {
-          simulateTime(new BigNumber(await lock.expirationDuration.call()).plus(1).toNumber())
+          await simulateTime(new BigNumber(await lock.expirationDuration.call()).plus(1).toNumber())
+        })
+
+        after(async () => {
+          await revertTime()
         })
 
         it('should be false', async () => {
@@ -48,7 +53,7 @@ contract('Lock', (accounts) => {
         })
       })
   
-      contract('after transfering a previously purchased key', () => {
+      describe('after transfering a previously purchased key', () => {
         before(async () => {
           await lock.transferFrom(account, accounts[5], await lock.getTokenIdFor(account), { from: account })
         })
