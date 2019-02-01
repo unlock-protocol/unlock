@@ -65,6 +65,16 @@ interface ILockCore {
     external;
 
   /**
+   * Checks if the user has a non-expired key.
+   */
+  function getHasValidKey(
+    address _owner
+  )
+    external
+    view
+    returns (bool);
+
+  /**
    * Public function which returns the total number of unique owners (both expired
    * and valid).  This may be larger than outstandingKeys.
    */

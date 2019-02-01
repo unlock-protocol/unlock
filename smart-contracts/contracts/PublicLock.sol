@@ -108,9 +108,8 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   modifier hasValidKey(
     address _owner
   ) {
-    Key storage key = keyByOwner[_owner];
     require(
-      key.expirationTimestamp > now, "Key is not valid"
+      getHasValidKey(_owner), "Key is not valid"
     );
     _;
   }
@@ -383,6 +382,19 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     returns (address)
   {
     return _getApproved(_tokenId);
+  }
+  
+  /**
+   * Checks if the user has a non-expired key.
+   */
+  function getHasValidKey(
+    address _owner
+  )
+    public
+    view
+    returns (bool) 
+  {
+    return keyByOwner[_owner].expirationTimestamp > now;
   }
 
   /**
