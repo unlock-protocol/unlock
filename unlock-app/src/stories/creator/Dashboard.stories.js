@@ -9,7 +9,7 @@ const account = {
   address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
 }
 const network = {
-  name: 1337,
+  name: 1984,
 }
 const transactions = {
   '0x1234': {
