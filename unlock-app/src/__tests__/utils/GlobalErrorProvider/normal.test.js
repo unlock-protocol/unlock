@@ -15,7 +15,7 @@ describe('GlobalErrorProvider', () => {
         balance: '1000',
       },
       network: {
-        name: 1337,
+        name: 1984,
       },
       router: {
         route: '/somewhere',

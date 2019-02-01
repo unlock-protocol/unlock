@@ -11,7 +11,7 @@ describe('config', () => {
       expect(config.isRequiredNetwork(0)).toEqual(false)
       expect(config.isRequiredNetwork(1)).toEqual(false)
       expect(config.isRequiredNetwork(4)).toEqual(false)
-      expect(config.isRequiredNetwork(1337)).toEqual(true)
+      expect(config.isRequiredNetwork(1984)).toEqual(true)
     })
 
     it('should have the right keys in dev', () => {
