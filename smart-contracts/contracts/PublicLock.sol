@@ -248,7 +248,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     external
     onlyKeyOwnerOrApproved(keyByOwner[_owner].tokenId)
   {
-    _cancelAndRefund(msg.sender);
+    _cancelAndRefund(_owner);
   }
 
   /**

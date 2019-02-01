@@ -15,9 +15,8 @@ contract('Lock', (accounts) => {
 
   describe('cancelAndRefundFor', () => {
     let lock
-    const keyOwners = [accounts[3], accounts[4]]
+    const keyOwners = [accounts[1], accounts[2]]
     const keyPrice = new BigNumber(Units.convert(0.01, 'eth', 'wei'))
-    let lockOwner
 
     before(async () => {
       lock = locks['SECOND']
@@ -28,19 +27,18 @@ contract('Lock', (accounts) => {
         })
       })
       await Promise.all(purchases)
-      lockOwner = await lock.owner.call()
     })
 
     describe('should allow an approved spender to issue a cancelAndRefund', () => {
       before(async () => {
-        await lock.approve(keyOwners[0], accounts[1], {
-          from: keyOwners[0]
+        await lock.approve(accounts[0], await lock.getTokenIdFor(keyOwners[1]), {
+          from: keyOwners[1]
         })
       })
 
       it('cancelAndRefundFor succeeds', async () => {
-        const txObj = await lock.cancelAndRefundFor(keyOwners[0], {
-          from: keyOwners[0]
+        const txObj = await lock.cancelAndRefundFor(keyOwners[1], {
+          from: accounts[0]
         })
         assert.equal(txObj.logs.length, 2)
       })
@@ -49,8 +47,8 @@ contract('Lock', (accounts) => {
     describe('should fail if a non-approved spender attempts to cancelAndRefund', () => {
       it('cancelAndRefundFor fails', async () => {
         await shouldFail(lock.cancelAndRefundFor(keyOwners[0], {
-          from: keyOwners[0]
-        }), '')
+          from: accounts[2]
+        }), 'No approved recipient exists')
       })
     })
   })
