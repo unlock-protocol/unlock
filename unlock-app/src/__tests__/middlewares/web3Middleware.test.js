@@ -289,15 +289,27 @@ describe('Lock middleware', () => {
     })
   })
 
-  it("should handle LOCATION_CHANGE by calling web3Service's getLock", () => {
+  it("should handle LOCATION_CHANGE if on a paywall page by calling web3Service's getLock", () => {
     const { next, invoke } = create()
     const action = {
       type: LOCATION_CHANGE,
-      payload: { location: { pathname: `/lock/${lock.address}` } },
+      payload: { location: { pathname: `/paywall/${lock.address}` } },
     }
     mockWeb3Service.getLock = jest.fn()
     invoke(action)
     expect(mockWeb3Service.getLock).toHaveBeenCalled()
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it("should handle LOCATION_CHANGE and not call web3Service's getLock if not on a paywall page", () => {
+    const { next, invoke } = create()
+    const action = {
+      type: LOCATION_CHANGE,
+      payload: { location: { pathname: `/demo/${lock.address}` } },
+    }
+    mockWeb3Service.getLock = jest.fn()
+    invoke(action)
+    expect(mockWeb3Service.getLock).not.toHaveBeenCalled()
     expect(next).toHaveBeenCalledWith(action)
   })
 
