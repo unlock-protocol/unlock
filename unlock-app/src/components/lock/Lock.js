@@ -5,6 +5,7 @@ import UnlockPropTypes from '../../propTypes'
 import withConfig from '../../utils/withConfig'
 
 import { purchaseKey } from '../../actions/key'
+import { openNewWindowModal } from '../../actions/modal'
 
 import PendingKeyLock from './PendingKeyLock'
 import ConfirmingKeyLock from './ConfirmingKeyLock'
@@ -63,6 +64,7 @@ Lock.propTypes = {
   purchaseKey: PropTypes.func.isRequired,
   config: UnlockPropTypes.configuration.isRequired,
   hideModal: PropTypes.func.isRequired,
+  openInNewWindow: PropTypes.bool.isRequired,
 }
 
 Lock.defaultProps = {
@@ -70,8 +72,14 @@ Lock.defaultProps = {
   transaction: null,
 }
 
-export const mapDispatchToProps = (dispatch, { showModal }) => ({
+export const mapDispatchToProps = (
+  dispatch,
+  { showModal, openInNewWindow }
+) => ({
   purchaseKey: key => {
+    if (openInNewWindow) {
+      return dispatch(openNewWindowModal())
+    }
     showModal()
     dispatch(purchaseKey(key))
   },

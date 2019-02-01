@@ -4,10 +4,10 @@ import { Provider } from 'react-redux'
 
 import { SHOW_MODAL, HIDE_MODAL } from '../../../actions/modal'
 
-import {
+import Overlay, {
   mapDispatchToProps,
+  mapStateToProps,
   displayError,
-  Overlay,
 } from '../../../components/lock/Overlay'
 import { GlobalErrorContext } from '../../../utils/GlobalErrorProvider'
 import { FATAL_NO_USER_ACCOUNT } from '../../../errors'
@@ -33,6 +33,28 @@ describe('Overlay', () => {
       expect(dispatch).toHaveBeenCalledWith({
         modal: '0x123-0x456',
         type: SHOW_MODAL,
+      })
+    })
+  })
+  describe('mapStateToProps', () => {
+    it('should set openInNewWindow based on the value of account', () => {
+      expect.assertions(2)
+
+      const state1 = {
+        account: null,
+      }
+      const state2 = {
+        account: {
+          address: 'account',
+        },
+      }
+
+      expect(mapStateToProps(state1)).toEqual({
+        openInNewWindow: true,
+      })
+
+      expect(mapStateToProps(state2)).toEqual({
+        openInNewWindow: false,
       })
     })
   })

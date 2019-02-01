@@ -4,6 +4,7 @@ import {
 } from '../../../components/lock/Lock'
 import { purchaseKey } from '../../../actions/key'
 import { TRANSACTION_TYPES } from '../../../constants'
+import { openNewWindowModal } from '../../../actions/modal'
 
 describe('Lock', () => {
   describe('mapDispatchToProps', () => {
@@ -20,6 +21,22 @@ describe('Lock', () => {
       newProps.purchaseKey(key)
       expect(props.showModal).toHaveBeenCalledWith()
       expect(dispatch).toHaveBeenCalledWith(purchaseKey(key))
+    })
+
+    it('should dispatch openNewWindowModal if the openNewWindow prop is truthy', () => {
+      expect.assertions(2)
+      const dispatch = jest.fn()
+      const props = {
+        showModal: jest.fn(),
+        openInNewWindow: true,
+      }
+      const key = {}
+
+      const newProps = mapDispatchToProps(dispatch, props)
+
+      newProps.purchaseKey(key)
+      expect(props.showModal).not.toHaveBeenCalled()
+      expect(dispatch).toHaveBeenCalledWith(openNewWindowModal())
     })
   })
 

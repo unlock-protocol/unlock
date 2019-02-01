@@ -16,7 +16,13 @@ export function displayError(error, children) {
   return <>{children}</>
 }
 
-export const Overlay = ({ locks, hideModal, showModal, scrollPosition }) => (
+export const Overlay = ({
+  locks,
+  hideModal,
+  showModal,
+  scrollPosition,
+  openInNewWindow,
+}) => (
   <FullPage>
     <Banner scrollPosition={scrollPosition}>
       <Headline>
@@ -30,6 +36,7 @@ export const Overlay = ({ locks, hideModal, showModal, scrollPosition }) => (
               lock={lock}
               hideModal={hideModal}
               showModal={showModal}
+              openInNewWindow={openInNewWindow}
             />
           ))}
         </GlobalErrorConsumer>
@@ -44,7 +51,12 @@ Overlay.propTypes = {
   hideModal: PropTypes.func.isRequired,
   showModal: PropTypes.func.isRequired,
   scrollPosition: PropTypes.number.isRequired,
+  openInNewWindow: PropTypes.bool.isRequired,
 }
+
+export const mapStateToProps = ({ account }) => ({
+  openInNewWindow: !account,
+})
 
 export const mapDispatchToProps = (dispatch, { locks }) => ({
   hideModal: () => {
@@ -57,7 +69,7 @@ export const mapDispatchToProps = (dispatch, { locks }) => ({
 })
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Overlay)
 

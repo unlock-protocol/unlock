@@ -51,6 +51,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        openInNewWindow={false}
       />
     )
   })
@@ -64,6 +65,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        openInNewWindow={false}
       />
     )
   })
@@ -76,6 +78,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        openInNewWindow={false}
       />
     )
   })
@@ -94,6 +97,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        openInNewWindow={false}
       />
     )
   })
@@ -113,6 +117,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        openInNewWindow={false}
       />
     )
   })
@@ -132,6 +137,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        openInNewWindow={false}
       />
     )
   })
@@ -151,6 +157,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        openInNewWindow={false}
       />
     )
   })
@@ -167,6 +174,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        openInNewWindow={false}
       />
     )
   })
