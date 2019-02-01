@@ -1,13 +1,5 @@
 import { OPEN_MODAL_IN_NEW_WINDOW } from '../actions/modal'
-
-// cribbed from https://stackoverflow.com/questions/326069/how-to-identify-if-a-webpage-is-being-loaded-inside-an-iframe-or-directly-into-t
-export function inIframe(window) {
-  try {
-    return window.self !== window.top
-  } catch (e) {
-    return true
-  }
-}
+import { inIframe } from '../config'
 
 // store is unused in this middleware, it is only for listening for actions
 // and converting them into postMessage

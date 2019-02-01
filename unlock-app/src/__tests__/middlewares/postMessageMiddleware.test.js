@@ -1,28 +1,7 @@
-import postMessageMiddleware, {
-  inIframe,
-} from '../../middlewares/postMessageMiddleware'
+import postMessageMiddleware from '../../middlewares/postMessageMiddleware'
 import { openNewWindowModal } from '../../actions/modal'
 
 describe('postMessageMiddleware', () => {
-  describe('inIframe', () => {
-    it('should return false when self == top', () => {
-      const window = {}
-      window.self = window
-      window.top = window
-      expect(inIframe(window)).toBe(false)
-    })
-    it('should return true when self != top', () => {
-      const window = {
-        self: 'nope',
-        top: 'yes',
-      }
-      expect(inIframe(window)).toBe(true)
-    })
-    it('should return true when an exception is thrown', () => {
-      expect(inIframe()).toBe(true)
-    })
-  })
-
   describe('middleware functionality', () => {
     it('does responds to OPEN_MODAL_IN_NEW_WINDOW if in an iframe', () => {
       expect.assertions(2)
