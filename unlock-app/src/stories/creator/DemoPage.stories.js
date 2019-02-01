@@ -3,12 +3,13 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Demo from '../../pages/staticdemo'
 import createUnlockStore from '../../createUnlockStore'
+import { ConfigContext } from '../../utils/withConfig'
 
 const myLock = {
   address: '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e',
   name: 'My Blog',
   keyPrice: '27000000000000000',
-  expirationDuration: '172800',
+  expirationDuration: 172800,
   maxNumberOfKeys: 240,
   outstandingKeys: 3,
 }
@@ -17,7 +18,7 @@ const store = createUnlockStore({
     '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e': {
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
       keyPrice: '10000000000000000000',
-      expirationDuration: '86400',
+      expirationDuration: 86400,
       maxNumberOfKeys: 800,
       outstandingKeys: 32,
     },
@@ -26,6 +27,8 @@ const store = createUnlockStore({
   router: {
     location: {
       pathname: '/demo/' + myLock.address,
+      search: '',
+      hash: '',
     },
   },
   currency: {
@@ -33,8 +36,17 @@ const store = createUnlockStore({
   },
 })
 
+const config = {
+  env: 'dev',
+  providers: { HTTP: {}, Metamask: {} },
+}
+
 storiesOf('Demo', module)
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator(getStory => (
+    <ConfigContext.Provider value={config}>
+      <Provider store={store}>{getStory()}</Provider>
+    </ConfigContext.Provider>
+  ))
   .add('the demo', () => {
     return <Demo />
   })

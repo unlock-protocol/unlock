@@ -28456,6 +28456,10 @@ Object {
 }
 
 .c1 {
+  font-family: 'Source Serif Pro',serif;
+}
+
+.c2 {
   font-family: 'UnifrakturCook',cursive;
   font-weight: bold;
   font-size: 36px;
@@ -28463,7 +28467,7 @@ Object {
   margin-bottom: 50px;
 }
 
-.c2:before {
+.c3:before {
   display: block;
   content: '';
   width: 87px;
@@ -28472,32 +28476,32 @@ Object {
   margin-bottom: 16px;
 }
 
-.c3 {
+.c4 {
   font-size: 36px;
   font-weight: bold;
   color: #6a6a6a;
   margin-bottom: 18px;
 }
 
-.c4 {
+.c5 {
   font-size: 32px;
   color: #4a4a4a;
   margin-bottom: 38px;
 }
 
-.c5 {
+.c6 {
   display: grid;
   grid-template-columns: 1fr 200px;
   grid-gap: 40px;
 }
 
-.c6 {
+.c7 {
   color: #4a4a4a;
   line-height: 1.75;
   font-size: 16px;
 }
 
-.c7 {
+.c8 {
   width: 250px;
   height: 250px;
   opacity: 0.52;
@@ -28511,7 +28515,7 @@ Object {
 }
 
 @media (max-width:650px) {
-  .c5 {
+  .c6 {
     grid-template-columns: 1fr;
   }
 }
@@ -28528,32 +28532,32 @@ Object {
           class=""
         />
         <div
-          class=""
+          class="c1"
         >
           <h1
-            class="c1"
+            class="c2"
           >
             Unlock Times
           </h1>
           <div
-            class="c2"
+            class="c3"
           >
             <h1
-              class="c3"
+              class="c4"
             >
               Demoing the Unlock Paywall
             </h1>
             <div
-              class="c4"
+              class="c5"
             >
               Unlock Times shows off its new subscription paywall that’s easy to use and streamlined for readers and publishers.
                
             </div>
             <div
-              class="c5"
+              class="c6"
             >
               <div
-                class="c6"
+                class="c7"
               >
                 <p>
                   It’s become dangerously clear in the last few years that the business model we thought would support a vibrant, open web just isn’t going to work any more. Driving more and more eyeballs to ads was always considered ethically and morally borderline, but today, monetizing clickbait isn’t just economically fragile: it’s feeding our democracies with more misinformation and fake news.
@@ -28569,7 +28573,7 @@ Object {
                 </p>
               </div>
               <div
-                class="0 c7"
+                class="0 c8"
               />
             </div>
           </div>
@@ -28592,7 +28596,7 @@ Object {
         class="sc-640fpx-1 hpEGGl"
       />
       <div
-        class="sc-640fpx-3 bbqRWP"
+        class="sc-640fpx-3 kNObOs"
       >
         <h1
           class="sc-640fpx-4 iVqmRW"
