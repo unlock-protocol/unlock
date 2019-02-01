@@ -826,7 +826,7 @@ describe('Web3Service', () => {
       expect.assertions(1)
       const unlock = new web3Service.web3.eth.Contract(UnlockContract.abi, '')
       const data = unlock.methods
-        .createLock('1000', '1000000000', '1')
+        .createLock('1000', '1000000000', '1', '10')
         .encodeABI()
       expect(web3Service.getTransactionType(UnlockContract, data)).toBe(
         TRANSACTION_TYPES.LOCK_CREATION
