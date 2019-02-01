@@ -310,21 +310,6 @@ describe('Wallet middleware', () => {
     })
   })
 
-  it("should handle CREATE_LOCK by calling walletService's createLock", () => {
-    expect.assertions(3)
-    const { next, invoke, store } = create()
-    const action = { type: CREATE_LOCK, lock }
-    mockWalletService.createLock = jest.fn()
-
-    invoke(action)
-    expect(mockWalletService.createLock).toHaveBeenCalledWith(
-      lock,
-      store.getState().account.address
-    )
-    expect(mockGenerateJWTToken).toHaveBeenCalled()
-    expect(next).toHaveBeenCalledWith(action)
-  })
-
   it("should handle PURCHASE_KEY by calling walletService's purchaseKey", () => {
     expect.assertions(2)
     const { next, invoke } = create()
@@ -354,6 +339,54 @@ describe('Wallet middleware', () => {
       store.getState().account.address
     )
     expect(next).toHaveBeenCalledWith(action)
+  })
+
+  describe('CREATE_LOCK', () => {
+    describe('when the lock has an address', () => {
+      it("should handle CREATE_LOCK by calling walletService's createLock", () => {
+        expect.assertions(3)
+        const { next, invoke, store } = create()
+        const action = { type: CREATE_LOCK, lock }
+        mockWalletService.createLock = jest.fn()
+
+        invoke(action)
+        expect(mockWalletService.createLock).toHaveBeenCalledWith(
+          lock,
+          store.getState().account.address
+        )
+        expect(mockGenerateJWTToken).toHaveBeenCalled()
+        expect(next).toHaveBeenCalledWith(action)
+      })
+    })
+
+    describe('when the lock does not have an address', () => {
+      it('will dispatch a new action with an update included the projected address', done => {
+        expect.assertions(2)
+        let lock = {
+          keyPrice: '100',
+          owner: account,
+        }
+        const { next, invoke, store } = create()
+        const action = { type: CREATE_LOCK, lock }
+
+        mockWalletService.generateLockAddress = jest.fn()
+        mockWalletService.generateLockAddress.mockReturnValue(
+          Promise.resolve('0xcafecafecafecafe')
+        )
+        invoke(action).then(() => {
+          expect(store.dispatch).toHaveBeenCalledWith({
+            type: 'lock/CREATE_LOCK',
+            lock: {
+              keyPrice: '100',
+              owner: { address: '0xabc' },
+              address: '0xcafecafecafecafe',
+            },
+          })
+          expect(next).not.toHaveBeenCalled()
+        })
+        done()
+      })
+    })
   })
 
   describe('UPDATE_LOCK_KEY_PRICE', () => {

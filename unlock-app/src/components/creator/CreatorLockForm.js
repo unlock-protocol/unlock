@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import uniqid from 'uniqid'
 import UnlockPropTypes from '../../propTypes'
 
 import Icon from '../lock/Icon'
@@ -326,8 +325,8 @@ CreatorLockForm.defaultProps = {
   keyPrice: '0.01',
   maxNumberOfKeys: 10,
   name: 'New Lock',
-  address: uniqid(), // for new locks, we don't have an address, so use a temporary one
   pending: false,
+  address: null,
 }
 
 const mapStateToProps = state => {
