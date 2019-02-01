@@ -1,7 +1,7 @@
 import EventEmitter from 'events'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import web3Middleware from '../../middlewares/web3Middleware'
-import { ADD_LOCK, LOCK_DEPLOYED, UPDATE_LOCK } from '../../actions/lock'
+import { ADD_LOCK, UPDATE_LOCK } from '../../actions/lock'
 import { UPDATE_KEY } from '../../actions/key'
 import { UPDATE_ACCOUNT } from '../../actions/accounts'
 import { ADD_TRANSACTION, UPDATE_TRANSACTION } from '../../actions/transaction'
@@ -103,32 +103,6 @@ describe('Lock middleware', () => {
       expect.objectContaining({
         type: UPDATE_ACCOUNT,
         update,
-      })
-    )
-  })
-
-  it('it should handle lock.saved events triggered by the web3Service', () => {
-    expect.assertions(4)
-    const { store } = create()
-    const lock = {}
-    const address = '0x123'
-    mockWeb3Service.refreshAccountBalance = jest.fn()
-    mockWeb3Service.getLock = jest.fn()
-    mockWeb3Service.getPastLockTransactions = jest.fn()
-
-    mockWeb3Service.emit('lock.saved', lock, address)
-    expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
-      state.account
-    )
-    expect(mockWeb3Service.getPastLockTransactions).toHaveBeenCalledWith(
-      address
-    )
-    expect(mockWeb3Service.getLock).toHaveBeenCalledWith(address)
-    expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: LOCK_DEPLOYED,
-        lock,
-        address,
       })
     )
   })
@@ -352,17 +326,6 @@ describe('Lock middleware', () => {
       )
       expect(next).toHaveBeenCalledWith(action)
     })
-
-    it('should handle ADD_LOCK bbut not load keys if the lock is pending', () => {
-      const { next, invoke, store } = create()
-      store.getState().locks[lock.address].pending = true
-      const action = { type: ADD_LOCK, address: lock.address }
-      mockWeb3Service.getKeyByLockForOwner = jest.fn()
-      invoke(action)
-
-      expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
-      expect(next).toHaveBeenCalledWith(action)
-    })
   })
 
   describe('UPDATE_LOCK', () => {
@@ -376,17 +339,6 @@ describe('Lock middleware', () => {
         lock.address,
         store.getState().account.address
       )
-      expect(next).toHaveBeenCalledWith(action)
-    })
-
-    it('should handle UPDATE_LOCK bbut not load keys if the lock is pending', () => {
-      const { next, invoke, store } = create()
-      store.getState().locks[lock.address].pending = true
-      const action = { type: UPDATE_LOCK, address: lock.address }
-      mockWeb3Service.getKeyByLockForOwner = jest.fn()
-      invoke(action)
-
-      expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
       expect(next).toHaveBeenCalledWith(action)
     })
   })

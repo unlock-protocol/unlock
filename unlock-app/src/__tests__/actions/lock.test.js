@@ -2,14 +2,12 @@ import {
   addLock,
   createLock,
   deleteLock,
-  lockDeployed,
   updateLock,
   withdrawFromLock,
   updateKeyPrice,
   CREATE_LOCK,
   ADD_LOCK,
   DELETE_LOCK,
-  LOCK_DEPLOYED,
   UPDATE_LOCK,
   WITHDRAW_FROM_LOCK,
   UPDATE_LOCK_KEY_PRICE,
@@ -63,17 +61,6 @@ describe('lock actions', () => {
       lock,
     }
     expect(withdrawFromLock(lock)).toEqual(expectedAction)
-  })
-
-  it('should create an action to indicate that a lock has been deployed', () => {
-    const lock = {}
-    const address = '0x1234'
-    const expectedAction = {
-      type: LOCK_DEPLOYED,
-      lock,
-      address,
-    }
-    expect(lockDeployed(lock, address)).toEqual(expectedAction)
   })
 
   it('should create an action to update the key price', () => {

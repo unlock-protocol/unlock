@@ -68,7 +68,7 @@ export function Icon({ lock }) {
   const scheme = new ColorScheme()
   let colors = ['#8c8c8c', '#e8e8e8', '#c3c3c3']
   let address = '0x000000'
-  if (lock && !lock.pending) {
+  if (lock && lock.address) {
     address = lock.address
     const mainColor = address.substring(2, 8).toUpperCase()
     scheme
