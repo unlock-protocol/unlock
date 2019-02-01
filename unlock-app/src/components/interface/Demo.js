@@ -1,15 +1,23 @@
 import React from 'react'
 import Head from 'next/head'
 import styled, { createGlobalStyle } from 'styled-components'
-import Media from '../theme/media'
-import Paywall from './paywall'
+import PropTypes from 'prop-types'
+import Media from '../../theme/media'
 
-export default function Demo() {
+/**
+ * This is the content of the demo page, alone
+ * The children will be injected in the <head> section of the page
+ * The `paywall` will be injected where the paywall is displayed
+ * @param {*} children
+ * @param {*} paywall
+ */
+const Demo = ({ children, paywall }) => {
   return (
     <Container>
       <GlobalStyle />
       <Head>
         <title>Unlock Demo Example - Unlock Times</title>
+        {children}
       </Head>
       <Left />
       <Content>
@@ -62,16 +70,29 @@ export default function Demo() {
         </Body>
       </Content>
       <Right />
-      <Paywall />
+      {paywall}
     </Container>
   )
 }
+
+Demo.propTypes = {
+  children: PropTypes.node,
+  paywall: PropTypes.node,
+}
+
+Demo.defaultProps = {
+  children: null,
+  paywall: null,
+}
+
+export default Demo
 
 const GlobalStyle = createGlobalStyle`
     @import url('https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|UnifrakturCook:700');
 
     body {
       background-color: #fdfaf7;
+      font-family: 'Source Serif Pro', serif;
     }
 `
 
@@ -87,9 +108,7 @@ const Container = styled.div`
 
 const Left = styled.div``
 const Right = styled.div``
-const Content = styled.div`
-  font-family: 'Source Serif Pro', serif;
-`
+const Content = styled.div``
 const Masthead = styled.h1`
   font-family: 'UnifrakturCook', cursive;
   font-weight: bold;

@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import Demo from '../../pages/staticdemo'
+import Demo from '../../components/interface/StaticDemo'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 
@@ -41,7 +41,7 @@ const config = {
   providers: { HTTP: {}, Metamask: {} },
 }
 
-storiesOf('Demo', module)
+storiesOf('StaticDemo', module)
   .addDecorator(getStory => (
     <ConfigContext.Provider value={config}>
       <Provider store={store}>{getStory()}</Provider>
