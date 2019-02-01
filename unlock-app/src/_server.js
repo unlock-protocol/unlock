@@ -12,8 +12,7 @@ function _server(port, dev) {
 
     app.prepare().then(() => {
       let server = createServer((req, res) => {
-        console.info(`\n< ${req.method} ${req.originalUrl}`)
-        console.info(`> ${res.statusCode} ${res.statusMessage}`)
+        console.info(`${req.method} ${req.url} > ${res.statusCode} `)
         try {
           const parsedUrl = new URL(req.url, `http://${req.headers.host}/`)
           const { pathname, query } = parsedUrl
