@@ -39,6 +39,15 @@ export function getCurrentProvider(environment) {
   return 'UnknownProvider'
 }
 
+// cribbed from https://stackoverflow.com/questions/326069/how-to-identify-if-a-webpage-is-being-loaded-inside-an-iframe-or-directly-into-t
+export function inIframe(window) {
+  try {
+    return window.self !== window.top
+  } catch (e) {
+    return true
+  }
+}
+
 /**
  * This function, based on the environment will return the list of providers available, the one that
  * is used, as well as the list of networks and the one that is being used.
@@ -49,9 +58,11 @@ export function getCurrentProvider(environment) {
  */
 export default function configure(
   environment = global,
-  runtimeConfig = getConfig().publicRuntimeConfig
+  runtimeConfig = getConfig().publicRuntimeConfig,
+  useWindow = global.window
 ) {
   const isServer = typeof window === 'undefined'
+  const isInIframe = inIframe(useWindow)
 
   const env = runtimeConfig.unlockEnv
 
@@ -152,6 +163,7 @@ export default function configure(
   return {
     blockTime,
     isServer,
+    isInIframe,
     env,
     providers,
     isRequiredNetwork,
