@@ -5,6 +5,7 @@ import UnlockPropTypes from '../../propTypes'
 import withConfig from '../../utils/withConfig'
 
 import { purchaseKey } from '../../actions/key'
+import { openNewWindowModal } from '../../actions/modal'
 
 import PendingKeyLock from './PendingKeyLock'
 import ConfirmingKeyLock from './ConfirmingKeyLock'
@@ -77,7 +78,7 @@ export const mapDispatchToProps = (
 ) => ({
   purchaseKey: key => {
     if (openInNewWindow) {
-      //      return dispatch(openPaywallInNewWindow())
+      return dispatch(openNewWindowModal())
     }
     showModal()
     dispatch(purchaseKey(key))
