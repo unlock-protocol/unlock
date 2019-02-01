@@ -27,7 +27,8 @@ interface IUnlock {
   function createLock(
     uint _expirationDuration,
     uint _keyPrice,
-    uint _maxNumberOfKeys
+    uint _maxNumberOfKeys,
+    uint _cancelRefundPenaltyDenominator
   )
     external
     returns (ILockCore lock);

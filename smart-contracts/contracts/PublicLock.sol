@@ -40,7 +40,12 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   event Withdrawal(
     address indexed _sender,
     uint _amount
-    );
+  );
+
+  event CancelKey(
+    address indexed owner,
+    uint refund
+  );
 
   // Fields
   // Unlock Protocol address
@@ -67,6 +72,10 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   // Used to disable payable functions when deprecating an old lock
   bool public isAlive;
+
+  // CancelAndRefund will return funds based on time remaining minus this penalty.
+  // This is a denominator, so 10 means 10% penalty and 20 means 5% penalty.
+  uint public cancelRefundPenaltyDenominator;
 
   // Keys
   // Each owner can have at most exactly one key
@@ -168,7 +177,8 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys,
-    uint _version
+    uint _version,
+    uint _cancelRefundPenaltyDenominator
   )
   public {
     require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, "Expiration duration exceeds 100 years");
@@ -180,6 +190,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     maxNumberOfKeys = _maxNumberOfKeys;
     publicLockVersion = _version;
     isAlive = true;
+    cancelRefundPenaltyDenominator = _cancelRefundPenaltyDenominator;
   }
 
   /**
@@ -215,6 +226,29 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     hasValidKey(_referrer)
   {
     return _purchaseFor(_recipient, _referrer, _data);
+  }
+
+  /**
+   * @dev Destroys the user's key and sends a refund based on the amount of time remaining.
+   */
+  function cancelAndRefund()
+    external
+  {
+    _cancelAndRefund(msg.sender);
+  }
+  
+  /**
+   * @dev Destroys the user's key and sends a refund based on the amount of time remaining.
+   * The caller must first be approved to modify the owner's key.
+   * @param _owner The owner of the key to be destroyed.
+   */
+  function cancelAndRefundFor(
+    address _owner
+  )
+    external
+    onlyKeyOwnerOrApproved(keyByOwner[_owner].tokenId)
+  {
+    _cancelAndRefund(msg.sender);
   }
 
   /**
@@ -348,6 +382,22 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   {
     require(_owner != address(0), "Invalid address");
     return keyByOwner[_owner].expirationTimestamp > 0 ? 1 : 0;
+  }
+  
+  /**
+   * @dev Determines how much of a refund a key owner would receive if they issued
+   * a cancelAndRefund now.  
+   * Note that due to the time required to mine a tx, the actual refund amount will be lower 
+   * than what the user reads from this call.
+   */
+  function getCancelAndRefundValueFor(
+    address _owner
+  )
+    external
+    view
+    returns (uint refund)
+  {
+    return _getCancelAndRefundValue(_owner);
   }
 
   /**
@@ -624,6 +674,68 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
       _recipient,
       numberOfKeysSold
     );
+  }
+
+  /**
+   * @dev Destroys the user's key and sends a refund based on the amount of time remaining.
+   * This assumes the caller is the owner or is approved to modify the owner's key.
+   * @param _owner The owner of the key to be destroyed.
+   */
+  function _cancelAndRefund(
+    address _owner
+  )
+    internal
+  {
+    Key storage key = keyByOwner[_owner];
+
+    // 1) Calc refund
+    uint refund = _getCancelAndRefundValue(_owner);
+
+    // 2) Destroy token
+    emit Transfer(
+      _owner,
+      address(0),
+      key.tokenId
+    );
+    emit CancelKey(_owner, refund);
+    // expirationTimestamp is a proxy for hasKey, setting this to `now` instead
+    // of 0 so that we can still differentiate hasKey from hasValidKey.
+    key.expirationTimestamp = now;
+
+    // 3) Issue Refund
+    if (refund > 0) {
+      // Security: doing this last to avoid re-entrancy concerns
+      _owner.transfer(refund);
+    }
+  }
+
+  /**
+   * @dev Determines how much of a refund a key owner would receive if they issued
+   * a cancelAndRefund now.  
+   * @param _owner The owner of the key check the refund value for.
+   */
+  function _getCancelAndRefundValue(
+    address _owner
+  )
+    internal
+    view
+    hasValidKey(_owner)
+    returns (uint refund)
+  {
+    Key storage key = keyByOwner[_owner];
+    // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
+    uint timeRemaining = key.expirationTimestamp - now;
+    // Math: using safeMul in case keyPrice or timeRemaining is very large
+    refund = keyPrice.mul(timeRemaining) / expirationDuration;
+    if (cancelRefundPenaltyDenominator > 0) {
+      uint penalty = keyPrice / cancelRefundPenaltyDenominator;
+      if (refund > penalty) {
+        // Math: safeSub is not required since the if confirms this won't underflow
+        refund -= penalty;
+      } else {
+        refund = 0;
+      }
+    }
   }
 
   /**
