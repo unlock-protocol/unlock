@@ -295,6 +295,10 @@ export default class WalletService extends EventEmitter {
    * Signs data for the given account
    */
   signData(account, data, callback) {
-    this.web3.eth.sign(data, account, callback)
+    if (this.web3.eth.personal) {
+      this.web3.eth.personal.sign(data, account, callback)
+    } else {
+      this.web3.eth.sign(data, account, callback)
+    }
   }
 }
