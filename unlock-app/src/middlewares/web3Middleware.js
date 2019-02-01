@@ -1,13 +1,7 @@
 /* eslint no-console: 0 */ // TODO: remove me when this is clean
 
 import { LOCATION_CHANGE } from 'react-router-redux'
-import {
-  ADD_LOCK,
-  UPDATE_LOCK,
-  addLock,
-  lockDeployed,
-  updateLock,
-} from '../actions/lock'
+import { ADD_LOCK, UPDATE_LOCK, addLock, updateLock } from '../actions/lock'
 import { updateKey, addKey } from '../actions/key'
 import { updateAccount, SET_ACCOUNT } from '../actions/accounts'
 import { setError } from '../actions/error'
@@ -38,7 +32,6 @@ export default function web3Middleware({ getState, dispatch }) {
    * refresh the balance of its owner and refresh its content
    */
   web3Service.on('lock.saved', (lock, address) => {
-    dispatch(lockDeployed(lock, address))
     web3Service.refreshAccountBalance(getState().account)
     web3Service.getLock(address)
     web3Service.getPastLockTransactions(address) // This is costly and not useful for the paywall app...
@@ -126,12 +119,10 @@ export default function web3Middleware({ getState, dispatch }) {
 
       if (action.type === ADD_LOCK || action.type == UPDATE_LOCK) {
         const lock = getState().locks[action.address]
-        if (!lock.pending) {
-          web3Service.getKeyByLockForOwner(
-            lock.address,
-            getState().account.address
-          )
-        }
+        web3Service.getKeyByLockForOwner(
+          lock.address,
+          getState().account.address
+        )
       } else if (
         action.type === LOCATION_CHANGE &&
         action.payload.location &&

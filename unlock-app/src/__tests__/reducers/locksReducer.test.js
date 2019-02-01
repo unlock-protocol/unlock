@@ -4,7 +4,6 @@ import {
   CREATE_LOCK,
   DELETE_LOCK,
   UPDATE_LOCK,
-  LOCK_DEPLOYED,
   UPDATE_LOCK_KEY_PRICE,
 } from '../../actions/lock'
 import { SET_ACCOUNT } from '../../actions/accounts'
@@ -249,80 +248,6 @@ describe('locks reducer', () => {
           address: '0x123',
           keyPrice: '1.001',
         },
-      })
-    })
-  })
-
-  describe('LOCK_DEPLOYED', () => {
-    describe('if the deployed lock has an older address', () => {
-      it('should update the lock and re-assign it to the new address without the pending flag', () => {
-        const state = {
-          '0x123': {
-            name: 'hello',
-            address: '0x123',
-            pending: true,
-          },
-        }
-        const action = {
-          type: LOCK_DEPLOYED,
-          address: '0x456',
-          lock: {
-            address: '0x123',
-          },
-        }
-
-        expect(reducer(state, action)).toEqual({
-          '0x456': {
-            address: '0x456',
-            name: 'hello',
-          },
-        })
-      })
-    })
-
-    describe('if the deployed lock does not have an older address', () => {
-      describe('if a lock exists with the new address and remove the pending flag', () => {
-        it('should update the lock', () => {
-          const state = {
-            '0x123': {
-              name: 'hello',
-              address: '0x123',
-              pending: true,
-            },
-          }
-          const action = {
-            type: LOCK_DEPLOYED,
-            address: '0x123',
-            lock: {
-              name: 'world',
-            },
-          }
-          expect(reducer(state, action)).toEqual({
-            '0x123': { address: '0x123', name: 'world' },
-          })
-        })
-      })
-
-      describe('if no lock exists with the new address', () => {
-        it('should just assign it', () => {
-          const state = {
-            '0x123': {
-              name: 'hello',
-              address: '0x123',
-            },
-          }
-          const action = {
-            type: LOCK_DEPLOYED,
-            address: '0x456',
-            lock: {
-              name: 'world',
-            },
-          }
-          expect(reducer(state, action)).toEqual({
-            '0x123': { address: '0x123', name: 'hello' },
-            '0x456': { address: '0x456', name: 'world' },
-          })
-        })
       })
     })
   })
