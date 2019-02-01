@@ -134,25 +134,50 @@ describe('Lock middleware', () => {
   })
 
   describe('lock.updated', () => {
-    it('it should dispatch UPDATE_LOCK if the lock already exists ', () => {
-      const { store } = create()
-      const lock = {
-        address: '0x123',
-      }
-      state.locks = {
-        [lock.address]: lock,
-      }
-      mockWeb3Service.getKeyByLockForOwner = jest.fn()
+    describe('if the lock already exists', () => {
+      it('should propagate more recent updates', () => {
+        expect.assertions(1)
+        const { store } = create()
+        const lock = {
+          address: '0x123',
+          asOf: 10,
+        }
+        state.locks = {
+          [lock.address]: lock,
+        }
+        mockWeb3Service.getKeyByLockForOwner = jest.fn()
 
-      const update = {}
-      mockWeb3Service.emit('lock.updated', lock.address, update)
-      expect(store.dispatch).toHaveBeenCalledWith(
-        expect.objectContaining({
-          type: UPDATE_LOCK,
-          address: lock.address,
-          update,
-        })
-      )
+        const update = {
+          asOf: 11,
+        }
+        mockWeb3Service.emit('lock.updated', lock.address, update)
+        expect(store.dispatch).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: UPDATE_LOCK,
+            address: lock.address,
+            update,
+          })
+        )
+      })
+
+      it('it should not dispatch older updates', () => {
+        expect.assertions(1)
+        const { store } = create()
+        const lock = {
+          address: '0x123',
+          asOf: 12,
+        }
+        state.locks = {
+          [lock.address]: lock,
+        }
+        mockWeb3Service.getKeyByLockForOwner = jest.fn()
+
+        const update = {
+          asOf: 11,
+        }
+        mockWeb3Service.emit('lock.updated', lock.address, update)
+        expect(store.dispatch).not.toHaveBeenCalled()
+      })
     })
 
     it('it should dispatch ADD_LOCK if the lock does not already exist', () => {

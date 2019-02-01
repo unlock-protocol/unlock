@@ -51,7 +51,10 @@ export default function web3Middleware({ getState, dispatch }) {
   web3Service.on('lock.updated', (address, update) => {
     const lock = getState().locks[address]
     if (lock) {
-      dispatch(updateLock(lock.address, update))
+      // Only dispatch the updates which are more recent than the current value
+      if (!lock.asOf || lock.asOf < update.asOf) {
+        dispatch(updateLock(lock.address, update))
+      }
     } else {
       dispatch(addLock(address, update))
     }
