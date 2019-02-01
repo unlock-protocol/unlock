@@ -67,6 +67,7 @@ const render = (locks, errors = { error: false, errorMetadata: {} }) => (
           locks={locks}
           hideModal={() => {}}
           showModal={() => {}}
+          openInNewWindow={false}
         />
       </ErrorProvider>
     </ConfigProvider>
