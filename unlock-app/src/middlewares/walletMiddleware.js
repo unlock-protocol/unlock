@@ -5,6 +5,7 @@ import {
   UPDATE_LOCK_KEY_PRICE,
   LOCK_DEPLOYED,
   updateLock,
+  createLock,
 } from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
 import { setAccount, SET_ACCOUNT } from '../actions/accounts'
@@ -104,24 +105,32 @@ export default function walletMiddleware({ getState, dispatch }) {
         walletService.connect(action.provider)
       } else if (action.type === CREATE_LOCK) {
         // Create the lock
-        walletService.createLock(action.lock, getState().account.address)
-        // And sign its name
-        if (config.services.storage) {
-          generateJWTToken(walletService, getState().account.address, {
-            lock: action.lock,
+
+        if (!action.lock.address) {
+          return walletService.generateLockAddress().then(address => {
+            action.lock.address = address
+            dispatch(createLock(action.lock))
           })
-            .then(token => {
-              dispatch(
-                storeLockCreation(
-                  getState().account.address,
-                  action.lock,
-                  token
+        } else {
+          walletService.createLock(action.lock, getState().account.address)
+
+          if (config.services.storage) {
+            generateJWTToken(walletService, getState().account.address, {
+              lock: action.lock,
+            })
+              .then(token => {
+                dispatch(
+                  storeLockCreation(
+                    getState().account.address,
+                    action.lock,
+                    token
+                  )
                 )
-              )
-            })
-            .catch(error => {
-              dispatch(signatureError(error))
-            })
+              })
+              .catch(error => {
+                dispatch(signatureError(error))
+              })
+          }
         }
       } else if (action.type === PURCHASE_KEY) {
         const account = getState().account
