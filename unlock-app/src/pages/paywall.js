@@ -14,13 +14,28 @@ import { lockPage, unlockPage } from '../services/iframeService'
 class Paywall extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      scrollPosition: 0,
+    }
+    this.handleScrollPosition = this.handleScrollPosition.bind(this)
     this.handleIframe = this.handleIframe.bind(this)
   }
   componentDidMount() {
+    window.addEventListener('message', event => {
+      if (event.data.scrollPosition) {
+        this.handleScrollPosition(event.data.scrollPosition)
+      }
+    })
     this.handleIframe()
   }
   componentDidUpdate() {
     this.handleIframe()
+  }
+  handleScrollPosition(scrollPosition) {
+    this.setState(state => {
+      if (state.scrollPosition === scrollPosition) return null
+      return { scrollPosition }
+    })
   }
   handleIframe() {
     const { locked } = this.props
@@ -31,12 +46,13 @@ class Paywall extends React.Component {
     }
   }
   render() {
+    const { scrollPosition } = this.state
     const { locks, locked } = this.props
     return (
       <BrowserOnly>
         <GlobalErrorProvider>
           <ShowWhenLocked locked={locked}>
-            <Overlay locks={locks} />
+            <Overlay scrollPosition={scrollPosition} locks={locks} />
             <DeveloperOverlay />
           </ShowWhenLocked>
           <ShowWhenUnlocked locked={locked}>
