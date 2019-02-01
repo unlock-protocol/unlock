@@ -31,9 +31,15 @@ const mainnetProvider = function () {
 
 module.exports = {
   networks: {
-    development: {
+    local: {
       // used for local dev
       host: '127.0.0.1',
+      port: 8545,
+      network_id: '*' // Match any network id
+    },
+    development: {
+      // used for solidity-coverage
+      host: testHost,
       port: 8545,
       network_id: '*' // Match any network id
     },
@@ -41,12 +47,6 @@ module.exports = {
       // used for local dev but with the ganache gui
       host: '127.0.0.1',
       port: 8546, // We use ganache-gui and this is its default port
-      network_id: '*' // Match any network id
-    },
-    test: {
-      // used to run tests in docker (ci)
-      host: testHost,
-      port: 8545,
       network_id: '*' // Match any network id
     },
     rinkeby: {

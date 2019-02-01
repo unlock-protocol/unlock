@@ -1,23 +1,13 @@
 import EventEmitter from 'events'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import web3Middleware from '../../middlewares/web3Middleware'
-import {
-  ADD_LOCK,
-  CREATE_LOCK,
-  DELETE_LOCK,
-  LOCK_DEPLOYED,
-  UPDATE_LOCK,
-  WITHDRAW_FROM_LOCK,
-  UPDATE_LOCK_KEY_PRICE,
-} from '../../actions/lock'
-import { PURCHASE_KEY, UPDATE_KEY } from '../../actions/key'
-import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
-import { SET_NETWORK } from '../../actions/network'
-import { SET_PROVIDER } from '../../actions/provider'
+import { ADD_LOCK, LOCK_DEPLOYED, UPDATE_LOCK } from '../../actions/lock'
+import { UPDATE_KEY } from '../../actions/key'
+import { UPDATE_ACCOUNT } from '../../actions/accounts'
 import { ADD_TRANSACTION, UPDATE_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
 import { SET_KEYS_ON_PAGE_FOR_LOCK } from '../../actions/keysPages'
-import { PGN_ITEMS_PER_PAGE, TRANSACTION_TYPES } from '../../constants'
+import { PGN_ITEMS_PER_PAGE } from '../../constants'
 
 /**
  * Fake state
@@ -32,19 +22,12 @@ let lock = {
 }
 let state = {}
 
-let key = {
-  id: '123',
-  lock: lock.address,
-  owner: account.address,
-}
-
 const transaction = {
   hash: '0xf21e9820af34282c8bebb3a191cf615076ca06026a144c9c28e9cb762585472e',
 }
 const network = {
   name: 'test',
 }
-const provider = 'Toshi'
 
 /**
  * This is a "fake" middleware caller
@@ -83,16 +66,9 @@ jest.mock('../../services/web3Service', () => {
   }
 })
 
-let mockGenerateJWTToken = jest.fn(() => Promise.resolve())
-
-jest.mock('../../utils/signature', () => () => {
-  return mockGenerateJWTToken()
-})
-
 beforeEach(() => {
   // Reset the mock
   mockWeb3Service = new MockWebService()
-  mockGenerateJWTToken = jest.fn(() => Promise.resolve())
 
   // Reset state!
   account = {
@@ -116,27 +92,6 @@ beforeEach(() => {
 })
 
 describe('Lock middleware', () => {
-  it('it should handle account.changed events triggered by the web3Service and retrieve the users past transactions', () => {
-    expect.assertions(2)
-    const { store } = create()
-    const address = '0x123'
-    const account = {
-      address,
-    }
-    mockWeb3Service.getPastUnlockTransactionsForUser = jest.fn()
-
-    mockWeb3Service.emit('account.changed', account)
-    expect(
-      mockWeb3Service.getPastUnlockTransactionsForUser
-    ).toHaveBeenCalledWith(address)
-    expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: SET_ACCOUNT,
-        account,
-      })
-    )
-  })
-
   it('should handle account.updated events triggered by the web3Service', () => {
     const { store } = create()
     const account = {}
@@ -277,8 +232,12 @@ describe('Lock middleware', () => {
   })
 
   it('it should handle transaction.new events triggered by the web3Service', () => {
+    expect.assertions(1)
+
     const { store } = create()
-    mockWeb3Service.emit('transaction.new', transaction)
+    mockWeb3Service.getTransaction = jest.fn()
+
+    mockWeb3Service.emit('transaction.new', transaction.hash)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: ADD_TRANSACTION,
@@ -300,27 +259,6 @@ describe('Lock middleware', () => {
     )
   })
 
-  describe('when receiving the ready event triggered by the web3Service', () => {
-    it('should dispatch queued up actions', () => {
-      const { store, invoke } = create()
-
-      // Add a pending action
-      const action = { type: 'FAKE_ACTION' }
-      mockWeb3Service.ready = false
-      mockWeb3Service.connect = jest.fn()
-      mockWeb3Service.refreshOrGetAccount = jest.fn()
-      invoke(action)
-
-      // Trigger the event
-      mockWeb3Service.emit('ready')
-      expect(store.dispatch).toHaveBeenCalledWith(
-        expect.objectContaining({
-          type: 'FAKE_ACTION',
-        })
-      )
-    })
-  })
-
   describe('when receiving a keys.page event triggered by the web3Service', () => {
     it('should dispatch setKeysOnPageForLock', () => {
       const { store } = create()
@@ -339,65 +277,7 @@ describe('Lock middleware', () => {
     })
   })
 
-  describe('when receiving a network.changed event triggered by the web3Service', () => {
-    describe('when the network.changed is different from the store value', () => {
-      it('should get a new account', () => {
-        create()
-        const networkId = 1984
-
-        state.network.name = 1773
-        mockWeb3Service.refreshOrGetAccount = jest.fn()
-        mockWeb3Service.emit('network.changed', networkId)
-        expect(mockWeb3Service.refreshOrGetAccount).toHaveBeenCalledWith()
-      })
-
-      it('should dispatch a SET_NETWORK action', () => {
-        const { store } = create()
-        const networkId = 1984
-
-        state.network.name = 1773
-        mockWeb3Service.refreshOrGetAccount = jest.fn()
-        mockWeb3Service.emit('network.changed', networkId)
-        expect(store.dispatch).toHaveBeenCalledWith(
-          expect.objectContaining({
-            type: SET_NETWORK,
-            network: networkId,
-          })
-        )
-      })
-    })
-  })
-
   describe('error events triggered by the web3Service', () => {
-    it('should handle error triggered when creating a lock', () => {
-      expect.assertions(2)
-      const { store } = create()
-      const transaction = {
-        hash: '123',
-        type: TRANSACTION_TYPES.LOCK_CREATION,
-        lock: '0x123',
-      }
-      state.transactions = {
-        [transaction.hash]: transaction,
-      }
-      mockWeb3Service.emit(
-        'error',
-        { message: 'this was broken' },
-        transaction.hash
-      )
-      expect(store.dispatch).toHaveBeenNthCalledWith(1, {
-        type: DELETE_LOCK,
-        address: transaction.lock,
-      })
-      expect(store.dispatch).toHaveBeenNthCalledWith(
-        2,
-        expect.objectContaining({
-          type: SET_ERROR,
-          error: 'Failed to create lock. Did you decline the transaction?',
-        })
-      )
-    })
-
     it('it should handle error events triggered by the web3Service', () => {
       const { store } = create()
       mockWeb3Service.emit('error', { message: 'this was broken' })
@@ -408,83 +288,6 @@ describe('Lock middleware', () => {
         })
       )
     })
-  })
-
-  describe('when web3Service is not ready', () => {
-    it('should connect on any action and stop further execution', () => {
-      mockWeb3Service.ready = false
-      const { next, invoke } = create()
-      const action = { type: 'FAKE_ACTION' }
-      mockWeb3Service.connect = jest.fn()
-      invoke(action)
-      expect(mockWeb3Service.connect).toHaveBeenCalledWith({
-        provider: 'HTTP',
-      })
-      expect(next).toHaveBeenCalledTimes(0) // ensures that execution was stopped
-    })
-
-    it('should propagate the SET_NETWORK action', () => {
-      mockWeb3Service.ready = false
-      const { next, invoke } = create()
-      const action = { type: SET_NETWORK, network: 0 }
-      mockWeb3Service.connect = jest.fn()
-      invoke(action)
-      expect(mockWeb3Service.connect).not.toHaveBeenCalled()
-      expect(next).toHaveBeenCalledTimes(1) // ensures that execution was not stopped
-    })
-
-    it('should propagate the SET_ACCOUNT action', () => {
-      mockWeb3Service.ready = false
-      const { next, invoke } = create()
-      const action = { type: SET_ACCOUNT, account: {} }
-      mockWeb3Service.connect = jest.fn()
-      invoke(action)
-      expect(mockWeb3Service.connect).not.toHaveBeenCalled()
-      expect(next).toHaveBeenCalledTimes(1) // ensures that execution was not stopped
-    })
-  })
-
-  describe('when web3Service is ready', () => {
-    it('should handle SET_PROVIDER and reset the whole state', () => {
-      const { next, invoke } = create()
-      const action = { type: SET_PROVIDER, provider }
-      mockWeb3Service.connect = jest.fn()
-      invoke(action)
-      expect(mockWeb3Service.connect).toHaveBeenCalledWith({
-        provider: provider,
-      })
-      expect(next).toHaveBeenCalledWith(action)
-    })
-  })
-
-  it("should handle CREATE_LOCK by calling web3Service's createLock", () => {
-    const { next, invoke, store } = create()
-    const action = { type: CREATE_LOCK, lock }
-    mockWeb3Service.createLock = jest.fn()
-
-    invoke(action)
-    expect(mockWeb3Service.createLock).toHaveBeenCalledWith(
-      lock,
-      store.getState().account
-    )
-    expect(mockGenerateJWTToken).toHaveBeenCalled()
-    expect(next).toHaveBeenCalledWith(action)
-  })
-
-  it("should handle PURCHASE_KEY by calling web3Service's purchaseKey", () => {
-    const { next, invoke } = create()
-    const action = { type: PURCHASE_KEY, key }
-    mockWeb3Service.purchaseKey = jest.fn()
-
-    invoke(action)
-    expect(mockWeb3Service.purchaseKey).toHaveBeenCalledWith(
-      key.lock,
-      key.owner,
-      lock.keyPrice,
-      account,
-      key.data
-    )
-    expect(next).toHaveBeenCalledWith(action)
   })
 
   it("should handle LOCATION_CHANGE by calling web3Service's getLock", () => {
@@ -536,19 +339,6 @@ describe('Lock middleware', () => {
     })
   })
 
-  it('should handle WITHDRAW_FROM_LOCK by calling withdrawFromLock from web3Service', () => {
-    const { next, invoke, store } = create()
-    const action = { type: WITHDRAW_FROM_LOCK, lock }
-    mockWeb3Service.withdrawFromLock = jest.fn()
-    invoke(action)
-
-    expect(mockWeb3Service.withdrawFromLock).toHaveBeenCalledWith(
-      lock,
-      store.getState().account
-    )
-    expect(next).toHaveBeenCalledWith(action)
-  })
-
   describe('ADD_LOCK', () => {
     it('should handle ADD_LOCK by loading keys for the current user', () => {
       const { next, invoke, store } = create()
@@ -598,48 +388,6 @@ describe('Lock middleware', () => {
 
       expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
       expect(next).toHaveBeenCalledWith(action)
-    })
-  })
-
-  describe('UPDATE_LOCK_KEY_PRICE', () => {
-    it('should invoke updateKeyPrice on receiving an update request', () => {
-      const { next, invoke, store } = create()
-      const action = {
-        type: UPDATE_LOCK_KEY_PRICE,
-        address: lock.address,
-        price: '0.03',
-      }
-      mockWeb3Service.updateKeyPrice = jest.fn()
-      invoke(action)
-
-      expect(mockWeb3Service.updateKeyPrice).toHaveBeenCalledWith(
-        lock.address,
-        store.getState().account,
-        '0.03'
-      )
-      expect(next).toHaveBeenCalledWith(action)
-    })
-  })
-
-  describe('LOCK_DEPLOYED', () => {
-    describe('when the action contains the lock address on chain', () => {
-      it('should store the update', () => {
-        const { next, invoke } = create()
-        let action = { type: LOCK_DEPLOYED, address: '0x4242424242', lock }
-
-        invoke(action)
-        expect(mockGenerateJWTToken).toHaveBeenCalled()
-        expect(next).toHaveBeenCalledWith(action)
-      })
-
-      it('should not store the update', () => {
-        const { next, invoke } = create()
-        let action = { type: LOCK_DEPLOYED }
-
-        invoke(action)
-        expect(mockGenerateJWTToken).not.toHaveBeenCalled()
-        expect(next).toHaveBeenCalledWith(action)
-      })
     })
   })
 })

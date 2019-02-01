@@ -1,5 +1,12 @@
 import { listenForNewLocks } from './mutationobserver'
+import { getBlocker, addBlocker } from './blocker'
 import buildPaywall from './build'
 
-window.onload = () =>
-  listenForNewLocks(lock => buildPaywall(window, document, lock), document.head)
+window.onload = () => {
+  const blocker = getBlocker(document)
+  addBlocker(document, blocker)
+  listenForNewLocks(
+    lock => buildPaywall(window, document, lock, blocker),
+    document.head
+  )
+}

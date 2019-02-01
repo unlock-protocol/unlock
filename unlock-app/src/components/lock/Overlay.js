@@ -6,7 +6,7 @@ import Lock from './Lock'
 import UnlockPropTypes from '../../propTypes'
 import { hideModal, showModal } from '../../actions/modal'
 import { unlockPage } from '../../services/iframeService'
-import LockedFlag from './UnlockFlag'
+import { LockedFlag } from './UnlockFlag'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 
 export function displayError(error, children) {

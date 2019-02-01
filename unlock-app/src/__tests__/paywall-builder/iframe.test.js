@@ -98,6 +98,7 @@ describe('iframe', () => {
     expect(iframe.style).toEqual({
       backgroundColor: 'transparent',
       backgroundImage: 'none',
+      'z-index': '-2147483647',
     })
 
     expect(document.body.style).toEqual({

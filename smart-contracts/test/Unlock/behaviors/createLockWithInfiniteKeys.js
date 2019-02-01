@@ -1,5 +1,6 @@
-
 const Units = require('ethereumjs-units')
+const BigNumber = require('bignumber.js')
+
 const Unlock = artifacts.require('./Unlock.sol')
 const PublicLock = artifacts.require('../../PublicLock.sol')
 const Zos = require('zos')
@@ -29,9 +30,9 @@ contract('PublicLock', accounts => {
       })
 
       it('should have created the lock with an infinite number of keys', async function () {
-        let publicLock = PublicLock.at(transaction.logs[0].args.newLockAddress)
-        const maxNumberOfKeys = await publicLock.maxNumberOfKeys()
-        assert.equal(maxNumberOfKeys.toNumber(10), 1.157920892373162e+77)
+        let publicLock = await PublicLock.at(transaction.logs[0].args.newLockAddress)
+        const maxNumberOfKeys = new BigNumber(await publicLock.maxNumberOfKeys())
+        assert.equal(maxNumberOfKeys.toFixed(), new BigNumber(2).pow(256).minus(1).toFixed())
       })
     })
 
@@ -48,9 +49,9 @@ contract('PublicLock', accounts => {
       })
 
       it('should have created the lock with 0 keys', async function () {
-        let publicLock = PublicLock.at(transaction.logs[0].args.newLockAddress)
-        const maxNumberOfKeys = await publicLock.maxNumberOfKeys()
-        assert.equal(maxNumberOfKeys.toNumber(10), 0)
+        let publicLock = await PublicLock.at(transaction.logs[0].args.newLockAddress)
+        const maxNumberOfKeys = new BigNumber(await publicLock.maxNumberOfKeys())
+        assert.equal(maxNumberOfKeys.toFixed(), 0)
       })
     })
   })

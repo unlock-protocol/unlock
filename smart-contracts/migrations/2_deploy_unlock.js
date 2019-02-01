@@ -6,12 +6,12 @@ module.exports = function deployProxy (deployer, network, accounts) {
   const proxyAdmin = accounts[9]
 
   deployer.then(() => {
-    if (network === 'test') {
+    if (network === 'test' || network === 'development') {
       return deployer.deploy(Unlock, unlockOwner)
     } else {
       if (
         shell.exec(
-          `zos push --reset --network development --from ${proxyAdmin}`
+          `zos push --reset --network ${network} --from ${proxyAdmin}`
         ).code !== 0
       ) {
         throw new Error('Migration failed')

@@ -1,8 +1,8 @@
-
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 
 const deployLocks = require('../../helpers/deployLocks')
+const shouldFail = require('../../helpers/shouldFail')
 const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock, locks
@@ -21,46 +21,37 @@ contract('Lock ERC721', (accounts) => {
 
   describe('approve', () => {
     describe('when the token does not exist', () => {
-      it('should fail', () => {
-        return locks['FIRST']
+      it('should fail', async () => {
+        await shouldFail(locks['FIRST']
           .approve(accounts[2], accounts[1], {
             from: accounts[1]
-          })
-          .catch(error => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert')
-          })
+          }), '')
       })
     })
 
     describe('when the key exists', () => {
       before(() => {
-        return locks['FIRST'].purchaseFor(accounts[1], 'Satoshi', {
+        return locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: accounts[1]
         })
       })
 
       describe('when the sender is not the token owner', () => {
-        it('should fail', () => {
-          return locks['FIRST']
+        it('should fail', async () => {
+          await shouldFail(locks['FIRST']
             .approve(accounts[2], accounts[1], {
               from: accounts[2]
-            })
-            .catch(error => {
-              assert.equal(error.message, 'VM Exception while processing transaction: revert')
-            })
+            }), '')
         })
       })
 
       describe('when the sender is self approving', () => {
-        it('should fail', () => {
-          return locks['FIRST']
+        it('should fail', async () => {
+          await shouldFail(locks['FIRST']
             .approve(accounts[1], accounts[1], {
               from: accounts[1]
-            })
-            .catch(error => {
-              assert.equal(error.message, 'VM Exception while processing transaction: revert')
-            })
+            }), 'You can\'t approve yourself')
         })
       })
 
@@ -77,7 +68,7 @@ contract('Lock ERC721', (accounts) => {
         })
 
         it('should assign the approvedForTransfer value', () => {
-          return locks['FIRST'].getApproved(accounts[1])
+          return locks['FIRST'].getApproved.call(accounts[1])
             .then((approved) => {
               assert.equal(approved, accounts[2])
             })
@@ -87,7 +78,7 @@ contract('Lock ERC721', (accounts) => {
           assert.equal(event.event, 'Approval')
           assert.equal(event.args._owner, accounts[1])
           assert.equal(event.args._approved, accounts[2])
-          assert.equal(Web3Utils.numberToHex(event.args._tokenId), accounts[1])
+          assert.equal(Web3Utils.toChecksumAddress(Web3Utils.numberToHex(event.args._tokenId)), Web3Utils.toChecksumAddress(accounts[1]))
         })
       })
     })

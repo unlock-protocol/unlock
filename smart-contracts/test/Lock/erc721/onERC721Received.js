@@ -1,4 +1,6 @@
 // const Units = require('ethereumjs-units')
+const Web3Utils = require('web3-utils')
+
 const deployLocks = require('../../helpers/deployLocks')
 const Unlock = artifacts.require('../../Unlock.sol')
 
@@ -8,7 +10,7 @@ contract('Lock Receiver', (accounts) => {
   operator = accounts[5]
   from = accounts[5]
   tokenId = 11
-  data = ''
+  data = Web3Utils.toHex('')
 
   before(() => {
     return Unlock.deployed()

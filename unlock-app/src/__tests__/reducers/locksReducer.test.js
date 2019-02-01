@@ -1,4 +1,4 @@
-import reducer from '../../reducers/locksReducer'
+import reducer, { initialState } from '../../reducers/locksReducer'
 import {
   ADD_LOCK,
   CREATE_LOCK,
@@ -19,7 +19,7 @@ describe('locks reducer', () => {
   }
 
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual({})
+    expect(reducer(undefined, {})).toBe(initialState)
   })
 
   it('should return the initial state when receveing SET_PROVIDER', () => {
@@ -32,7 +32,7 @@ describe('locks reducer', () => {
           type: SET_PROVIDER,
         }
       )
-    ).toEqual({})
+    ).toBe(initialState)
   })
 
   it('should return the initial state when receveing SET_NETWORK', () => {
@@ -45,7 +45,7 @@ describe('locks reducer', () => {
           type: SET_NETWORK,
         }
       )
-    ).toEqual({})
+    ).toBe(initialState)
   })
 
   it('should add the lock when receiving CREATE_LOCK and if it was not there yet', () => {
@@ -95,8 +95,9 @@ describe('locks reducer', () => {
     })
   })
 
-  // It is kind of weird to test this.. but ok, I guess?
-  it('should keep the locks when receiving SET_ACCOUNT with an account', () => {
+  // Upon changing account, we need to clear the existing locks. The web3 middleware will
+  // re-populate them
+  it('should clear the locks when receiving SET_ACCOUNT', () => {
     const account = {}
     expect(
       reducer(
@@ -108,9 +109,7 @@ describe('locks reducer', () => {
           account,
         }
       )
-    ).toEqual({
-      [lock.address]: lock,
-    })
+    ).toBe(initialState)
   })
 
   it('should add the name and address of a lock when receiving SET_LOCK_NAME', () => {

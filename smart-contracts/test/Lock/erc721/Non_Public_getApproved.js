@@ -19,7 +19,7 @@ contract('Lock ERC721', (accounts) => {
     let lockOwner
 
     before(() => {
-      return locks['FIRST'].owner().then((_owner) => {
+      return locks['FIRST'].owner.call().then((_owner) => {
         lockOwner = _owner
       })
     })
@@ -28,7 +28,7 @@ contract('Lock ERC721', (accounts) => {
       return locks['FIRST'].approve(accounts[3], accounts[3], {
         from: lockOwner
       }).then(() => {
-        return locks['FIRST'].getApproved(accounts[3])
+        return locks['FIRST'].getApproved.call(accounts[3])
       }).then((approved) => {
         assert.equal(accounts[3], approved)
       })

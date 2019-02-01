@@ -1,12 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import UnlockPropTypes from '../propTypes'
 import Overlay from '../components/lock/Overlay'
 import DeveloperOverlay from '../components/developer/DeveloperOverlay'
-import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
+import ShowWhenLocked from '../components/lock/ShowWhenLocked'
+import ShowWhenUnlocked from '../components/lock/ShowWhenUnlocked'
 import { LOCK_PATH_NAME_REGEXP } from '../constants'
 import BrowserOnly from '../components/helpers/BrowserOnly'
 import GlobalErrorProvider from '../utils/GlobalErrorProvider'
+import { lockPage, unlockPage } from '../services/iframeService'
 
 class Paywall extends React.Component {
   constructor(props) {
@@ -15,6 +18,7 @@ class Paywall extends React.Component {
       scrollPosition: 0,
     }
     this.handleScrollPosition = this.handleScrollPosition.bind(this)
+    this.handleIframe = this.handleIframe.bind(this)
   }
   componentDidMount() {
     window.addEventListener('message', event => {
@@ -22,6 +26,10 @@ class Paywall extends React.Component {
         this.handleScrollPosition(event.data.scrollPosition)
       }
     })
+    this.handleIframe()
+  }
+  componentDidUpdate() {
+    this.handleIframe()
   }
   handleScrollPosition(scrollPosition) {
     this.setState(state => {
@@ -29,20 +37,27 @@ class Paywall extends React.Component {
       return { scrollPosition }
     })
   }
+  handleIframe() {
+    const { locked } = this.props
+    if (locked) {
+      lockPage()
+    } else {
+      unlockPage()
+    }
+  }
   render() {
-    const { lock } = this.props
     const { scrollPosition } = this.state
-
+    const { locks, locked } = this.props
     return (
       <BrowserOnly>
         <GlobalErrorProvider>
-          <ShowUnlessUserHasKeyToAnyLock locks={lock ? [lock] : []}>
-            <Overlay
-              scrollPosition={scrollPosition}
-              locks={lock ? [lock] : []}
-            />
+          <ShowWhenLocked locked={locked}>
+            <Overlay scrollPosition={scrollPosition} locks={locks} />
             <DeveloperOverlay />
-          </ShowUnlessUserHasKeyToAnyLock>
+          </ShowWhenLocked>
+          <ShowWhenUnlocked locked={locked}>
+            <DeveloperOverlay />
+          </ShowWhenUnlocked>
         </GlobalErrorProvider>
       </BrowserOnly>
     )
@@ -50,18 +65,36 @@ class Paywall extends React.Component {
 }
 
 Paywall.propTypes = {
-  lock: UnlockPropTypes.lock.isRequired,
+  locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
+  locked: PropTypes.bool.isRequired,
 }
 
-export const mapStateToProps = ({ locks, router }) => {
+export const mapStateToProps = ({ locks, keys, modals, router }) => {
   const match = router.location.pathname.match(LOCK_PATH_NAME_REGEXP)
 
-  const lock = match
+  const lockFromUri = match
     ? Object.values(locks).find(lock => lock.address === match[1])
     : null
 
+  let validKeys = []
+  const locksFromUri = lockFromUri ? [lockFromUri] : []
+  locksFromUri.forEach(lock => {
+    for (let k of Object.values(keys)) {
+      if (
+        k.lock === lock.address &&
+        k.expiration > new Date().getTime() / 1000
+      ) {
+        validKeys.push(k)
+      }
+    }
+  })
+
+  const modalShown = !!modals[locksFromUri.map(l => l.address).join('-')]
+  const locked = validKeys.length === 0 || modalShown
+
   return {
-    lock,
+    locks: locksFromUri,
+    locked,
   }
 }
 

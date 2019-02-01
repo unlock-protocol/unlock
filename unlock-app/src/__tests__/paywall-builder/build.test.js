@@ -81,6 +81,7 @@ describe('buildPaywall', () => {
       let callbacks
       let mockShow
       let mockHide
+      let blocker
       beforeEach(() => {
         callbacks = {}
         window = {
@@ -89,17 +90,31 @@ describe('buildPaywall', () => {
           },
           requestAnimationFrame() {},
         }
+        blocker = {
+          remove: jest.fn(),
+        }
         mockShow = jest.spyOn(iframeManager, 'show')
         mockShow.mockImplementation(() => {})
         mockHide = jest.spyOn(iframeManager, 'hide')
         mockHide.mockImplementation(() => {})
-        buildPaywall(window, document, fakeLockAddress)
+        buildPaywall(window, document, fakeLockAddress, blocker)
       })
       it('triggers show on locked event', () => {
         callbacks.message({ data: 'locked' })
 
         expect(mockShow).toHaveBeenCalledWith(mockIframeImpl, document)
         expect(mockHide).not.toHaveBeenCalled()
+      })
+      it('closes the blocker on locked event', () => {
+        callbacks.message({ data: 'locked' })
+
+        expect(blocker.remove).toHaveBeenCalled()
+      })
+      it('closes the blocker on unlocked event', () => {
+        callbacks.message({ data: 'locked' })
+        callbacks.message({ data: 'unlocked' })
+
+        expect(blocker.remove).toHaveBeenCalledTimes(2)
       })
       it('does not trigger show on locked event if already unlocked', () => {
         callbacks.message({ data: 'locked' })

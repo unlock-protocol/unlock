@@ -3,6 +3,7 @@ import {
   mapDispatchToProps,
 } from '../../../components/lock/Lock'
 import { purchaseKey } from '../../../actions/key'
+import { TRANSACTION_TYPES } from '../../../constants'
 
 describe('Lock', () => {
   describe('mapDispatchToProps', () => {
@@ -42,7 +43,7 @@ describe('Lock', () => {
       expect(newProps.lockKey.owner).toEqual(state.account.address)
       expect(newProps.lockKey.data).toEqual(undefined)
       expect(newProps.lockKey.expiration).toEqual(undefined)
-      expect(newProps.transaction).toEqual(null)
+      expect(newProps.transaction).toEqual(undefined) // Array::find will return undefined if no item is matched
     })
 
     it('should return the lockKey and its transaction if applicable', () => {
@@ -57,19 +58,21 @@ describe('Lock', () => {
         account: {
           address: '0x123',
         },
-        keys: [
-          {
+        keys: {
+          '0x123-0x456': {
+            id: '0x123-0x456',
             lock: props.lock.address,
             owner: '0x123',
             expiration: 1000,
             data: 'hello',
-            transaction: '0x777',
           },
-        ],
+        },
         transactions: {
           '0x777': {
+            type: TRANSACTION_TYPES.KEY_PURCHASE,
             status: 'pending',
             hash: '0x777',
+            key: '0x123-0x456',
           },
         },
       }
@@ -78,10 +81,7 @@ describe('Lock', () => {
       expect(newProps.lockKey.owner).toEqual(state.account.address)
       expect(newProps.lockKey.data).toEqual('hello')
       expect(newProps.lockKey.expiration).toEqual(1000)
-      expect(newProps.transaction).toEqual({
-        status: 'pending',
-        hash: '0x777',
-      })
+      expect(newProps.transaction).toEqual(state.transactions['0x777'])
     })
   })
 })

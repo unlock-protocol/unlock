@@ -1,8 +1,9 @@
-
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
+const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../../helpers/deployLocks')
+const shouldFail = require('../../helpers/shouldFail')
 const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock, locks
@@ -33,26 +34,24 @@ contract('Lock ERC721', (accounts) => {
 
     before(() => {
       return Promise.all([
-        locks['FIRST'].purchaseFor(accountWithKey, 'Satoshi', {
+        locks['FIRST'].purchaseFor(accountWithKey, Web3Utils.toHex('Satoshi'), {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: accountWithKey
         }),
-        locks['FIRST'].purchaseFor(from, 'Julien', {
+        locks['FIRST'].purchaseFor(from, Web3Utils.toHex('Julien'), {
           value: Units.convert('0.01', 'eth', 'wei'),
           from
         }),
-        locks['FIRST'].purchaseFor(accountWithExpiredKey, 'Finley', {
+        locks['FIRST'].purchaseFor(accountWithExpiredKey, Web3Utils.toHex('Finley'), {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: accountWithExpiredKey
         }),
-        locks['FIRST'].purchaseFor(accountWithKeyApproved, 'Ben', {
+        locks['FIRST'].purchaseFor(accountWithKeyApproved, Web3Utils.toHex('Ben'), {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: accountWithKeyApproved
         })
-      ]).then(() => {
-        return locks['FIRST'].keyExpirationTimestampFor(from)
-      }).then((expirationTimestamp) => {
-        keyExpiration = expirationTimestamp
+      ]).then(async () => {
+        keyExpiration = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(from))
       })
     })
 
@@ -62,123 +61,85 @@ contract('Lock ERC721', (accounts) => {
     ///  `_tokenId` is not a valid NFT.
 
     describe('when the lock is public', () => {
-      it('should abort when there is no key to transfer', () => {
-        return locks['FIRST']
+      it('should abort when there is no key to transfer', async () => {
+        await shouldFail(locks['FIRST']
           .transferFrom(accountWithNoKey, to, accountWithNoKey, {
             from: accountWithNoKey
-          })
-          .then(() => {
-            assert(false, 'This should not succeed')
-          })
-          .catch(error => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert Key is not valid')
-          })
+          }), 'Key is not valid')
       })
 
-      it('should abort if the recipient is 0x', () => {
-        return locks['FIRST']
-          .transferFrom(from, 0, from, {
-            from
-          })
-          .then(() => {
-            assert(false, 'This should not succeed')
-          })
-          .catch(error => {
-            assert.equal(error.message, 'VM Exception while processing transaction: revert')
-            // Ensuring that ownership of the key did not change
-            return locks['FIRST'].keyExpirationTimestampFor(from)
-          }).then((expirationTimestamp) => {
-            assert(keyExpiration.eq(expirationTimestamp))
-          })
+      it('should abort if the recipient is 0x', async () => {
+        await shouldFail(locks['FIRST'].transferFrom(from, Web3Utils.padLeft(0, 40), from, {
+          from
+        }), '')
+        // Ensuring that ownership of the key did not change
+        const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(from))
+        assert.equal(keyExpiration.toFixed(), expirationTimestamp.toFixed())
       })
 
       describe('when the recipient already has an expired key', () => {
-        it('should transfer the key validity without extending it', () => {
+        it('should transfer the key validity without extending it', async () => {
           // First let's make sure from has a key!
           let fromExpirationTimestamp
-          return locks['FIRST'].purchaseFor(from, 'Julien', {
+          await locks['FIRST'].purchaseFor(from, Web3Utils.toHex('Julien'), {
             value: Units.convert('0.01', 'eth', 'wei'),
             from
-          }).then(() => {
-            // Let's check the expiration date for that key
-            return locks['FIRST'].keyExpirationTimestampFor(from)
-          }).then((_fromExpirationTimestamp) => {
-            fromExpirationTimestamp = _fromExpirationTimestamp
-            // Then let's expire the key for accountWithExpiredKey
-            return locks['FIRST'].expireKeyFor(accountWithExpiredKey)
-          }).then(() => {
-            return locks['FIRST'].transferFrom(from, accountWithExpiredKey, from, {
-              from
-            })
-          }).then(() => {
-            return locks['FIRST'].keyExpirationTimestampFor(accountWithExpiredKey)
-          }).then((expirationTimestamp) => {
-            assert(expirationTimestamp.eq(fromExpirationTimestamp))
           })
+          // Let's check the expiration date for that key
+          fromExpirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(from))
+          // Then let's expire the key for accountWithExpiredKey
+          await locks['FIRST'].expireKeyFor(accountWithExpiredKey)
+          await locks['FIRST'].transferFrom(from, accountWithExpiredKey, from, {
+            from
+          })
+          const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(accountWithExpiredKey))
+          assert.equal(expirationTimestamp.toFixed(), fromExpirationTimestamp.toFixed())
         })
       })
 
       describe('when the recipient already has a non expired key', () => {
-        before(() => {
-          return locks['FIRST'].purchaseFor(from, 'Julien', {
+        let transferedKeyTimestamp
+        let previousExpirationTimestamp
+
+        before(async () => {
+          await locks['FIRST'].purchaseFor(from, Web3Utils.toHex('Julien'), {
             value: Units.convert('0.01', 'eth', 'wei'),
             from
-          }).then(() => {
-            // First let's get the current expiration
-            let previousExpirationTimestamp, transferedKeyTimestamp
-            return Promise.all([
-              locks['FIRST'].keyExpirationTimestampFor(from),
-              locks['FIRST'].keyExpirationTimestampFor(accounts[1])
-            ])
-          }).then(([_transferedKeyTimestamp, _previousExpirationTimestamp]) => {
-            transferedKeyTimestamp = _transferedKeyTimestamp
-            previousExpirationTimestamp = _previousExpirationTimestamp
-            return locks['FIRST'].transferFrom(from, accountWithKey, from, {
-              from
-            })
+          })
+          // First let's get the current expiration
+          transferedKeyTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(from))
+          previousExpirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(accounts[1]))
+          await locks['FIRST'].transferFrom(from, accountWithKey, from, {
+            from
           })
         })
 
-        it('should expand the key\'s validity', () => {
-          return locks['FIRST'].keyExpirationTimestampFor(accountWithKey)
-            .then((expirationTimestamp) => {
-              const now = Math.floor(new Date().getTime() / 1000)
-              // Check +/- 10 seconds
-              assert(expirationTimestamp.gt(previousExpirationTimestamp.add(transferedKeyTimestamp).sub(now + 10)))
-              assert(expirationTimestamp.lt(previousExpirationTimestamp.add(transferedKeyTimestamp).sub(now - 10)))
-            })
+        it('should expand the key\'s validity', async () => {
+          const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(accountWithKey))
+          const now = Math.floor(new Date().getTime() / 1000)
+          // Check +/- 10 seconds
+          assert(expirationTimestamp.gt(previousExpirationTimestamp.plus(transferedKeyTimestamp).minus(now + 10)))
+          assert(expirationTimestamp.lt(previousExpirationTimestamp.plus(transferedKeyTimestamp).minus(now - 10)))
         })
 
-        it('should expire the previous owner\'s key', () => {
-          return locks['FIRST'].keyExpirationTimestampFor(from)
-            .then((expirationTimestamp) => {
-              const now = Math.floor(new Date().getTime() / 1000)
-              // Check only 10 seconds in the future to ensure deterministic test
-              assert(expirationTimestamp.lt(now + 10))
-            })
+        it('should expire the previous owner\'s key', async () => {
+          const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(from))
+          const now = Math.floor(new Date().getTime() / 1000)
+          // Check only 10 seconds in the future to ensure deterministic test
+          assert(expirationTimestamp.lt(now + 10))
         })
       })
 
       describe('when the key owner is not the sender', () => {
-        it('should fail if the sender has not been approved for that key', () => {
-          let previousExpirationTimestamp
-          return locks['FIRST'].keyExpirationTimestampFor(from)
-            .then((_expirationTimestamp) => {
-              previousExpirationTimestamp = _expirationTimestamp
-              return locks['FIRST']
-                .transferFrom(from, accountNotApproved, from, {
-                  from: accountNotApproved
-                })
-            }).then(() => {
-              assert(false, 'This should not succeed')
-            })
-            .catch(error => {
-              assert.equal(error.message, 'VM Exception while processing transaction: revert Key is not valid')
-              // Ensuring that ownership of the key did not change
-              return locks['FIRST'].keyExpirationTimestampFor(from)
-            }).then((expirationTimestamp) => {
-              assert(previousExpirationTimestamp.eq(expirationTimestamp))
-            })
+        it('should fail if the sender has not been approved for that key', async () => {
+          const previousExpirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(from))
+          await shouldFail(locks['FIRST']
+            .transferFrom(from, accountNotApproved, from, {
+              from: accountNotApproved
+            }), 'Key is not valid')
+          // Ensuring that ownership of the key did not change
+          const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(from))
+          assert.equal(previousExpirationTimestamp.toFixed(), expirationTimestamp.toFixed())
         })
 
         it('should succeed if the sender has been approved for that key', () => {
@@ -192,50 +153,46 @@ contract('Lock ERC721', (accounts) => {
                 })
                 .then(() => {
                   return locks['FIRST']
-                    .balanceOf(accountApproved)
+                    .balanceOf.call(accountApproved)
                     .then(balance => {
                       assert.equal(balance, 1)
                     })
                 })
             })
         })
+
+        it('approval should be cleared after a transfer', async () => {
+          await shouldFail(locks['FIRST'].getApproved(accountApproved), 'No approved recipient exists')
+        })
       })
 
       describe('when the key owner is the sender', () => {
-        before(() => {
+        before(async () => {
           // first, let's purchase a brand new key that we can transfer
-          return locks['FIRST'].purchaseFor(from, 'Julien', {
+          await locks['FIRST'].purchaseFor(from, Web3Utils.toHex('Julien'), {
             value: Units.convert('0.01', 'eth', 'wei'),
             from
-          }).then(() => {
-            return locks['FIRST'].keyExpirationTimestampFor(from)
-              .then((expirationTimestamp) => {
-                keyExpiration = expirationTimestamp
-                return locks['FIRST'].transferFrom(from, to, from, {
-                  from
-                })
-              })
+          })
+          keyExpiration = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(from))
+          await locks['FIRST'].transferFrom(from, to, from, {
+            from
           })
         })
 
-        it('should mark the previous owner`s key as expired', () => {
-          return locks['FIRST'].keyExpirationTimestampFor(from)
-            .then((expirationTimestamp) => {
-              assert(expirationTimestamp.gt(0))
-              assert(expirationTimestamp.lt(keyExpiration))
-            })
+        it('should mark the previous owner`s key as expired', async () => {
+          const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(from))
+          assert(expirationTimestamp.gt(0))
+          assert(expirationTimestamp.lt(keyExpiration))
         })
 
-        it('should have assigned the key`s previous expiration to the new owner', () => {
-          return locks['FIRST'].keyExpirationTimestampFor(to)
-            .then((expirationTimestamp) => {
-              assert(expirationTimestamp.eq(keyExpiration))
-            })
+        it('should have assigned the key`s previous expiration to the new owner', async () => {
+          const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(to))
+          assert.equal(expirationTimestamp.toFixed(), keyExpiration.toFixed())
         })
 
         it('should have assigned the key data field to the new owner', () => {
           return locks['FIRST']
-            .keyDataFor(to)
+            .keyDataFor.call(to)
             .then(keyData => {
               assert.equal(Web3Utils.toUtf8(keyData), 'Julien')
             })

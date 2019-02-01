@@ -12,7 +12,7 @@ const baseBannerHeight = () => {
   return minHeightPct > 30 ? minHeightPct : 30
 }
 
-export default function buildPaywall(window, document, lockAddress) {
+export default function buildPaywall(window, document, lockAddress, blocker) {
   // If there is no lock, do nothing!
   if (!lockAddress) {
     return
@@ -51,10 +51,12 @@ export default function buildPaywall(window, document, lockAddress) {
       if (event.data === 'locked' && !locked) {
         locked = true
         show(iframe, document)
+        blocker.remove()
       }
       if (event.data === 'unlocked' && locked) {
         locked = false
         hide(iframe, document)
+        blocker.remove()
       }
     },
     false

@@ -1,7 +1,8 @@
-
 const Units = require('ethereumjs-units')
+const Web3Utils = require('web3-utils')
 
 const deployLocks = require('../../helpers/deployLocks')
+const shouldFail = require('../../helpers/shouldFail')
 const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock, locks
@@ -19,23 +20,17 @@ contract('Lock ERC721', (accounts) => {
   })
 
   describe('ownerOf', () => {
-    it('should abort when the key has no owner', () => {
-      return locks['FIRST']
-        .ownerOf(accounts[3])
-        .then(balance => {
-          assert(false)
-        })
-        .catch(error => {
-          assert.equal(error.message, 'VM Exception while processing transaction: revert No such key')
-        })
+    it('should abort when the key has no owner', async () => {
+      await shouldFail(locks['FIRST']
+        .ownerOf.call(accounts[3]), 'No such key')
     })
 
     it('should return the owner of the key', () => {
-      return locks['FIRST'].purchaseFor(accounts[1], 'Satoshi', {
+      return locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
         value: Units.convert('0.01', 'eth', 'wei'),
         from: accounts[1]
       }).then(() => {
-        return locks['FIRST'].ownerOf(accounts[1])
+        return locks['FIRST'].ownerOf.call(accounts[1])
       }).then(address => {
         assert.equal(address, accounts[1])
       })

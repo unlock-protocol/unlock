@@ -3377,7 +3377,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c1 {
-  background-color: var(--lightgrey);
+  background-color: white;
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -3389,32 +3389,17 @@ Object {
 }
 
 .c1 > svg {
-  fill: var(--grey);
+  fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
 .c1:hover {
-  background-color: var(--link);
+  background-color: white;
 }
 
 .c1:hover > svg {
-  fill: white;
-}
-
-.c2 {
-  display: none;
-  position: relative;
-  z-index: var(--alwaysontop);
-  white-space: nowrap;
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
-  color: var(--link);
+  fill: var(--lightgrey);
 }
 
 .c0:hover .c2 {
@@ -3469,7 +3454,6 @@ Object {
       />
       <a
         class="c0 c1"
-        title="Withdraw balance"
       >
         <svg
           name="Withdraw"
@@ -3482,11 +3466,7 @@ Object {
             fill-rule="evenodd"
           />
         </svg>
-        <small
-          class="c2"
-        >
-          Withdraw balance
-        </small>
+        
       </a>
     </div>
   </body>,
@@ -3496,8 +3476,7 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 kiVDOG"
-      title="Withdraw balance"
+      class="sc-850ddk-0 gDgfza"
     >
       <svg
         name="Withdraw"
@@ -3510,11 +3489,7 @@ Object {
           fill-rule="evenodd"
         />
       </svg>
-      <small
-        class="sc-850ddk-1 fnqGzL"
-      >
-        Withdraw balance
-      </small>
+      
     </a>
   </div>,
   "debug": [Function],
@@ -5064,6 +5039,22 @@ Object {
               class="c20"
             >
               <p>
+                January
+                 
+                2019
+              </p>
+              <p>
+                We’re changing the business model for the web. It starts here, today. Introducing Unlock Version 0.
+                 
+                <a
+                  href="https://medium.com/unlock-protocol/announcing-unlock-version-zero-a8a1ac8ea4ec"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  More...
+                </a>
+              </p>
+              <p>
                 December
                  
                 2018
@@ -5703,6 +5694,22 @@ Object {
           <div
             class="sc-1y07p1o-1 dGkgLI"
           >
+            <p>
+              January
+               
+              2019
+            </p>
+            <p>
+              We’re changing the business model for the web. It starts here, today. Introducing Unlock Version 0.
+               
+              <a
+                href="https://medium.com/unlock-protocol/announcing-unlock-version-zero-a8a1ac8ea4ec"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                More...
+              </a>
+            </p>
             <p>
               December
                
@@ -14773,7 +14780,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c15 {
-  background-color: var(--lightgrey);
+  background-color: white;
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -14785,20 +14792,46 @@ Object {
 }
 
 .c15 > svg {
-  fill: var(--grey);
+  fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
 .c15:hover {
-  background-color: var(--link);
+  background-color: white;
 }
 
 .c15:hover > svg {
-  fill: white;
+  fill: var(--lightgrey);
 }
 
 .c16 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c16 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c16:hover {
+  background-color: var(--link);
+}
+
+.c16:hover > svg {
+  fill: white;
+}
+
+.c17 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -14813,7 +14846,7 @@ Object {
   color: var(--link);
 }
 
-.c14:hover .c16 {
+.c14:hover .c17 {
   display: inline-block;
 }
 
@@ -14881,7 +14914,7 @@ Object {
   grid-template-columns: repeat(3,24px);
 }
 
-.c17 {
+.c18 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -15183,7 +15216,6 @@ Object {
             >
               <button
                 class="c14 c15"
-                title="Withdraw balance"
               >
                 <svg
                   name="Withdraw"
@@ -15196,14 +15228,10 @@ Object {
                     fill-rule="evenodd"
                   />
                 </svg>
-                <small
-                  class="c16"
-                >
-                  Withdraw balance
-                </small>
+                
               </button>
               <button
-                class="c14 c15"
+                class="c14 c16"
                 title="Edit"
               >
                 <svg
@@ -15221,13 +15249,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c16"
+                  class="c17"
                 >
                   Edit
                 </small>
               </button>
               <button
-                class="c14 c15"
+                class="c14 c16"
                 title="Show embed code"
               >
                 <svg
@@ -15242,7 +15270,7 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c16"
+                  class="c17"
                 >
                   Show embed code
                 </small>
@@ -15250,7 +15278,7 @@ Object {
             </div>
           </div>
           <div
-            class="c17"
+            class="c18"
           />
         </div>
       </div>
@@ -15465,8 +15493,7 @@ Object {
             class="sc-1dp5gbn-1 hxNcaM"
           >
             <button
-              class="sc-850ddk-0 kiVDOG"
-              title="Withdraw balance"
+              class="sc-850ddk-0 gDgfza"
             >
               <svg
                 name="Withdraw"
@@ -15479,11 +15506,7 @@ Object {
                   fill-rule="evenodd"
                 />
               </svg>
-              <small
-                class="sc-850ddk-1 fnqGzL"
-              >
-                Withdraw balance
-              </small>
+              
             </button>
             <button
               class="sc-850ddk-0 kiVDOG"
@@ -15589,7 +15612,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c15 {
-  background-color: var(--lightgrey);
+  background-color: white;
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -15601,20 +15624,46 @@ Object {
 }
 
 .c15 > svg {
-  fill: var(--grey);
+  fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
 .c15:hover {
-  background-color: var(--link);
+  background-color: white;
 }
 
 .c15:hover > svg {
-  fill: white;
+  fill: var(--lightgrey);
 }
 
 .c16 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c16 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c16:hover {
+  background-color: var(--link);
+}
+
+.c16:hover > svg {
+  fill: white;
+}
+
+.c17 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -15629,7 +15678,7 @@ Object {
   color: var(--link);
 }
 
-.c14:hover .c16 {
+.c14:hover .c17 {
   display: inline-block;
 }
 
@@ -15697,7 +15746,7 @@ Object {
   grid-template-columns: repeat(3,24px);
 }
 
-.c17 {
+.c18 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -15999,7 +16048,6 @@ Object {
             >
               <button
                 class="c14 c15"
-                title="Withdraw balance"
               >
                 <svg
                   name="Withdraw"
@@ -16012,14 +16060,10 @@ Object {
                     fill-rule="evenodd"
                   />
                 </svg>
-                <small
-                  class="c16"
-                >
-                  Withdraw balance
-                </small>
+                
               </button>
               <button
-                class="c14 c15"
+                class="c14 c16"
                 title="Edit"
               >
                 <svg
@@ -16037,13 +16081,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c16"
+                  class="c17"
                 >
                   Edit
                 </small>
               </button>
               <button
-                class="c14 c15"
+                class="c14 c16"
                 title="Show embed code"
               >
                 <svg
@@ -16058,7 +16102,7 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c16"
+                  class="c17"
                 >
                   Show embed code
                 </small>
@@ -16066,7 +16110,7 @@ Object {
             </div>
           </div>
           <div
-            class="c17"
+            class="c18"
           />
         </div>
       </div>
@@ -16281,8 +16325,7 @@ Object {
             class="sc-1dp5gbn-1 hxNcaM"
           >
             <button
-              class="sc-850ddk-0 kiVDOG"
-              title="Withdraw balance"
+              class="sc-850ddk-0 gDgfza"
             >
               <svg
                 name="Withdraw"
@@ -16295,11 +16338,7 @@ Object {
                   fill-rule="evenodd"
                 />
               </svg>
-              <small
-                class="sc-850ddk-1 fnqGzL"
-              >
-                Withdraw balance
-              </small>
+              
             </button>
             <button
               class="sc-850ddk-0 kiVDOG"
@@ -17051,7 +17090,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c15 {
-  background-color: var(--lightgrey);
+  background-color: white;
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -17063,20 +17102,46 @@ Object {
 }
 
 .c15 > svg {
-  fill: var(--grey);
+  fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
 .c15:hover {
-  background-color: var(--link);
+  background-color: white;
 }
 
 .c15:hover > svg {
-  fill: white;
+  fill: var(--lightgrey);
 }
 
 .c16 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c16 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c16:hover {
+  background-color: var(--link);
+}
+
+.c16:hover > svg {
+  fill: white;
+}
+
+.c17 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -17091,7 +17156,7 @@ Object {
   color: var(--link);
 }
 
-.c14:hover .c16 {
+.c14:hover .c17 {
   display: inline-block;
 }
 
@@ -17159,7 +17224,7 @@ Object {
   grid-template-columns: repeat(3,24px);
 }
 
-.c17 {
+.c18 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -17461,7 +17526,6 @@ Object {
             >
               <button
                 class="c14 c15"
-                title="Withdraw balance"
               >
                 <svg
                   name="Withdraw"
@@ -17474,14 +17538,10 @@ Object {
                     fill-rule="evenodd"
                   />
                 </svg>
-                <small
-                  class="c16"
-                >
-                  Withdraw balance
-                </small>
+                
               </button>
               <button
-                class="c14 c15"
+                class="c14 c16"
                 title="Edit"
               >
                 <svg
@@ -17499,13 +17559,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c16"
+                  class="c17"
                 >
                   Edit
                 </small>
               </button>
               <button
-                class="c14 c15"
+                class="c14 c16"
                 title="Show embed code"
               >
                 <svg
@@ -17520,7 +17580,7 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c16"
+                  class="c17"
                 >
                   Show embed code
                 </small>
@@ -17528,7 +17588,7 @@ Object {
             </div>
           </div>
           <div
-            class="c17"
+            class="c18"
           />
         </div>
       </div>
@@ -17743,8 +17803,7 @@ Object {
             class="sc-1dp5gbn-1 hxNcaM"
           >
             <button
-              class="sc-850ddk-0 kiVDOG"
-              title="Withdraw balance"
+              class="sc-850ddk-0 gDgfza"
             >
               <svg
                 name="Withdraw"
@@ -17757,11 +17816,7 @@ Object {
                   fill-rule="evenodd"
                 />
               </svg>
-              <small
-                class="sc-850ddk-1 fnqGzL"
-              >
-                Withdraw balance
-              </small>
+              
             </button>
             <button
               class="sc-850ddk-0 kiVDOG"
@@ -17866,33 +17921,7 @@ exports[`Storyshots CreatorLock Withdrawal submitted 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c16 {
-  background-color: var(--lightgrey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 24px;
-}
-
-.c16 > svg {
-  fill: var(--grey);
-  height: 24px;
-  width: 24px;
-}
-
-.c16:hover {
-  background-color: var(--link);
-}
-
-.c16:hover > svg {
-  fill: white;
-}
-
-.c15 {
+    .c15 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -17916,6 +17945,32 @@ Object {
 
 .c15:hover > svg {
   fill: var(--lightgrey);
+}
+
+.c16 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c16 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c16:hover {
+  background-color: var(--link);
+}
+
+.c16:hover > svg {
+  fill: white;
 }
 
 .c17 {
@@ -18366,9 +18421,7 @@ Object {
           </div>
           <div
             class="c18"
-          >
-            Submitted to Network...
-          </div>
+          />
         </div>
       </div>
     </div>
@@ -18646,9 +18699,7 @@ Object {
         </div>
         <div
           class="sc-1dp5gbn-3 dpQaVY"
-        >
-          Submitted to Network...
-        </div>
+        />
       </div>
     </div>
   </div>,
@@ -18703,7 +18754,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c15 {
-  background-color: var(--lightgrey);
+  background-color: white;
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -18715,20 +18766,46 @@ Object {
 }
 
 .c15 > svg {
-  fill: var(--grey);
+  fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
 .c15:hover {
-  background-color: var(--link);
+  background-color: white;
 }
 
 .c15:hover > svg {
-  fill: white;
+  fill: var(--lightgrey);
 }
 
 .c16 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c16 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c16:hover {
+  background-color: var(--link);
+}
+
+.c16:hover > svg {
+  fill: white;
+}
+
+.c17 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -18743,7 +18820,7 @@ Object {
   color: var(--link);
 }
 
-.c14:hover .c16 {
+.c14:hover .c17 {
   display: inline-block;
 }
 
@@ -18811,7 +18888,7 @@ Object {
   grid-template-columns: repeat(3,24px);
 }
 
-.c17 {
+.c18 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -19113,7 +19190,6 @@ Object {
             >
               <button
                 class="c14 c15"
-                title="Withdraw balance"
               >
                 <svg
                   name="Withdraw"
@@ -19126,14 +19202,10 @@ Object {
                     fill-rule="evenodd"
                   />
                 </svg>
-                <small
-                  class="c16"
-                >
-                  Withdraw balance
-                </small>
+                
               </button>
               <button
-                class="c14 c15"
+                class="c14 c16"
                 title="Edit"
               >
                 <svg
@@ -19151,13 +19223,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c16"
+                  class="c17"
                 >
                   Edit
                 </small>
               </button>
               <button
-                class="c14 c15"
+                class="c14 c16"
                 title="Show embed code"
               >
                 <svg
@@ -19172,7 +19244,7 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c16"
+                  class="c17"
                 >
                   Show embed code
                 </small>
@@ -19180,13 +19252,8 @@ Object {
             </div>
           </div>
           <div
-            class="c17"
-          >
-            Confirming Withdrawal 
-            2
-            /
-            12
-          </div>
+            class="c18"
+          />
         </div>
       </div>
     </div>
@@ -19400,8 +19467,7 @@ Object {
             class="sc-1dp5gbn-1 hxNcaM"
           >
             <button
-              class="sc-850ddk-0 kiVDOG"
-              title="Withdraw balance"
+              class="sc-850ddk-0 gDgfza"
             >
               <svg
                 name="Withdraw"
@@ -19414,11 +19480,7 @@ Object {
                   fill-rule="evenodd"
                 />
               </svg>
-              <small
-                class="sc-850ddk-1 fnqGzL"
-              >
-                Withdraw balance
-              </small>
+              
             </button>
             <button
               class="sc-850ddk-0 kiVDOG"
@@ -19469,12 +19531,7 @@ Object {
         </div>
         <div
           class="sc-1dp5gbn-3 dpQaVY"
-        >
-          Confirming Withdrawal 
-          2
-          /
-          12
-        </div>
+        />
       </div>
     </div>
   </div>,
@@ -23400,7 +23457,7 @@ Object {
               <span
                 class="c14"
               >
-                Unknown Network
+                Winston
               </span>
             </header>
             <div
@@ -23781,7 +23838,7 @@ Object {
             <span
               class="sc-9u6rci-2 gZunnY"
             >
-              Unknown Network
+              Winston
             </span>
           </header>
           <div
@@ -25274,7 +25331,7 @@ Object {
                 Network mismatch
               </h1>
               <p>
-                You’re currently on the Rinkeby network but you need to be on the Dev network. Please switch to Dev.
+                You’re currently on the Rinkeby network but you need to be on the Winston network. Please switch to Winston.
               </p>
             </div>
           </section>
@@ -25467,7 +25524,7 @@ Object {
               Network mismatch
             </h1>
             <p>
-              You’re currently on the Rinkeby network but you need to be on the Dev network. Please switch to Dev.
+              You’re currently on the Rinkeby network but you need to be on the Winston network. Please switch to Winston.
             </p>
           </div>
         </section>
@@ -25528,7 +25585,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c43 {
-  background-color: var(--lightgrey);
+  background-color: white;
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -25540,16 +25597,42 @@ Object {
 }
 
 .c43 > svg {
-  fill: var(--grey);
+  fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
 .c43:hover {
-  background-color: var(--link);
+  background-color: white;
 }
 
 .c43:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c44 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c44 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c44:hover {
+  background-color: var(--link);
+}
+
+.c44:hover > svg {
   fill: white;
 }
 
@@ -25793,7 +25876,7 @@ Object {
   grid-template-columns: repeat(3,24px);
 }
 
-.c44 {
+.c45 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -26166,7 +26249,7 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c45 {
+  .c46 {
     display: none;
   }
 }
@@ -26383,7 +26466,7 @@ Object {
               <span
                 class="c14"
               >
-                Unknown Network
+                Winston
               </span>
             </header>
             <div
@@ -27185,7 +27268,6 @@ Object {
                   >
                     <button
                       class="c7 c43"
-                      title="Withdraw balance"
                     >
                       <svg
                         name="Withdraw"
@@ -27198,14 +27280,10 @@ Object {
                           fill-rule="evenodd"
                         />
                       </svg>
-                      <small
-                        class="c9"
-                      >
-                        Withdraw balance
-                      </small>
+                      
                     </button>
                     <button
-                      class="c7 c43"
+                      class="c7 c44"
                       title="Edit"
                     >
                       <svg
@@ -27229,7 +27307,7 @@ Object {
                       </small>
                     </button>
                     <button
-                      class="c7 c43"
+                      class="c7 c44"
                       title="Show embed code"
                     >
                       <svg
@@ -27252,14 +27330,14 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c44"
+                  class="c45"
                 />
               </div>
             </div>
           </section>
         </div>
         <div
-          class="c45"
+          class="c46"
         />
       </div>
     </div>
@@ -27446,7 +27524,7 @@ Object {
             <span
               class="sc-9u6rci-2 gZunnY"
             >
-              Unknown Network
+              Winston
             </span>
           </header>
           <div
@@ -28247,8 +28325,7 @@ Object {
                   class="sc-1dp5gbn-1 hxNcaM"
                 >
                   <button
-                    class="sc-850ddk-0 kiVDOG"
-                    title="Withdraw balance"
+                    class="sc-850ddk-0 gDgfza"
                   >
                     <svg
                       name="Withdraw"
@@ -28261,11 +28338,7 @@ Object {
                         fill-rule="evenodd"
                       />
                     </svg>
-                    <small
-                      class="sc-850ddk-1 fnqGzL"
-                    >
-                      Withdraw balance
-                    </small>
+                    
                   </button>
                   <button
                     class="sc-850ddk-0 kiVDOG"
@@ -29620,7 +29693,7 @@ Object {
             Network mismatch
           </h1>
           <p>
-            You’re currently on the main network but you need to be on the rinkeby network. Please switch to rinkeby.
+            You’re currently on the Mainnet network but you need to be on the Rinkeby network. Please switch to Rinkeby.
           </p>
         </div>
       </section>
@@ -29645,7 +29718,7 @@ Object {
           Network mismatch
         </h1>
         <p>
-          You’re currently on the main network but you need to be on the rinkeby network. Please switch to rinkeby.
+          You’re currently on the Mainnet network but you need to be on the Rinkeby network. Please switch to Rinkeby.
         </p>
       </div>
     </section>
@@ -40325,7 +40398,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c3 {
-  background-color: var(--lightgrey);
+  background-color: white;
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -40337,20 +40410,46 @@ Object {
 }
 
 .c3 > svg {
-  fill: var(--grey);
+  fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
 .c3:hover {
-  background-color: var(--link);
+  background-color: white;
 }
 
 .c3:hover > svg {
-  fill: white;
+  fill: var(--lightgrey);
 }
 
 .c4 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c4 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c4:hover {
+  background-color: var(--link);
+}
+
+.c4:hover > svg {
+  fill: white;
+}
+
+.c5 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -40365,7 +40464,7 @@ Object {
   color: var(--link);
 }
 
-.c2:hover .c4 {
+.c2:hover .c5 {
   display: inline-block;
 }
 
@@ -40381,7 +40480,7 @@ Object {
   grid-template-columns: repeat(3,24px);
 }
 
-.c5 {
+.c6 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -40391,7 +40490,7 @@ Object {
   padding-right: 24px;
 }
 
-.c6 .c2 {
+.c7 .c2 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -40402,28 +40501,28 @@ Object {
   align-self: center;
 }
 
-.c6 .c2:nth-child(1) {
+.c7 .c2:nth-child(1) {
   pointer-events: none;
 }
 
-.c6 .c2:nth-child(2) {
+.c7 .c2:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c6 .c2 > svg {
+.c7 .c2 > svg {
   fill: var(--grey);
 }
 
-.c6 .c2:hover > svg {
+.c7 .c2:hover > svg {
   fill: var(--grey);
 }
 
-.c7 .c2 {
+.c8 .c2 {
   margin: 24px;
 }
 
-.c7 .c2 small {
+.c8 .c2 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -40454,7 +40553,6 @@ Object {
           >
             <button
               class="c2 c3"
-              title="Withdraw balance"
             >
               <svg
                 name="Withdraw"
@@ -40467,14 +40565,10 @@ Object {
                   fill-rule="evenodd"
                 />
               </svg>
-              <small
-                class="c4"
-              >
-                Withdraw balance
-              </small>
+              
             </button>
             <button
-              class="c2 c3"
+              class="c2 c4"
               title="Edit"
             >
               <svg
@@ -40492,13 +40586,13 @@ Object {
                 />
               </svg>
               <small
-                class="c4"
+                class="c5"
               >
                 Edit
               </small>
             </button>
             <button
-              class="c2 c3"
+              class="c2 c4"
               title="Show embed code"
             >
               <svg
@@ -40513,7 +40607,7 @@ Object {
                 />
               </svg>
               <small
-                class="c4"
+                class="c5"
               >
                 Show embed code
               </small>
@@ -40521,7 +40615,7 @@ Object {
           </div>
         </div>
         <div
-          class="c5"
+          class="c6"
         />
       </div>
     </div>
@@ -40541,8 +40635,7 @@ Object {
           class="sc-1dp5gbn-1 hxNcaM"
         >
           <button
-            class="sc-850ddk-0 kiVDOG"
-            title="Withdraw balance"
+            class="sc-850ddk-0 gDgfza"
           >
             <svg
               name="Withdraw"
@@ -40555,11 +40648,7 @@ Object {
                 fill-rule="evenodd"
               />
             </svg>
-            <small
-              class="sc-850ddk-1 fnqGzL"
-            >
-              Withdraw balance
-            </small>
+            
           </button>
           <button
             class="sc-850ddk-0 kiVDOG"
@@ -46261,6 +46350,200 @@ Object {
         </div>
       </div>
     </div>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots UnlockedFlag the unlocked flag 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c1 > svg {
+  fill: white;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-family: 'Roboto',sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  color: var(--darkgrey);
+  background-color: var(--white);
+  justify-self: right;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  grid-row: 2;
+  grid-column: 1;
+  width: 120px;
+  height: 80px;
+  margin-right: -33px;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  background: var(--white);
+  position: fixed;
+  right: 0;
+  bottom: 105px;
+  margin-right: -106px;
+  opacity: 0.5;
+  -webkit-transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
+  transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
+  opacity: 1;
+  margin-right: 0;
+}
+
+.c0 > * {
+  justify-self: left;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  margin-left: -14px;
+}
+
+.c0 > p {
+  margin-left: auto;
+  margin-right: auto;
+  width: 63px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-self: center;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  font-size: 12px;
+  color: var(--darkgrey);
+}
+
+.c0:hover {
+  opacity: 1;
+  margin-right: 0;
+  height: 80px;
+  -webkit-transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
+  transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c0 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c0 {
+    display: none;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <footer
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <svg
+            viewBox="0 0 56 56"
+          >
+            <title />
+            <path
+              d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+            />
+          </svg>
+        </div>
+        <p>
+          Subscribed with Unlock
+        </p>
+      </footer>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <footer
+      class="sc-1ws9jnj-8 sc-18dedc6-0 dZYAXI"
+    >
+      <div
+        class="cenpj1-0 dhCRxc"
+      >
+        <svg
+          viewBox="0 0 56 56"
+        >
+          <title />
+          <path
+            d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+          />
+        </svg>
+      </div>
+      <p>
+        Subscribed with Unlock
+      </p>
+    </footer>
   </div>,
   "debug": [Function],
   "getAllByAltText": [Function],

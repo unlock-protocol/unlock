@@ -6,44 +6,41 @@ import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
 import { TRANSACTION_TYPES, MAX_UINT } from '../constants'
-import {
-  MISSING_PROVIDER,
-  MISSING_TRANSACTION,
-  NON_DEPLOYED_CONTRACT,
-  NOT_ENABLED_IN_PROVIDER,
-} from '../errors'
+import { NON_DEPLOYED_CONTRACT } from '../errors'
 
-const { providers, unlockAddress } = configure()
+const {
+  readOnlyProvider,
+  providers,
+  unlockAddress,
+  blockTime,
+  requiredNetworkId,
+  requiredConfirmations,
+} = configure()
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
 /**
- * This service interacts with the web3 RPC endpoint.
- * All the methods return promises.
- * Some methods (createLock, withdrawFromLock, purchaseKey) are performing transactions. They return
- * a promise but also accept a callback which lets the user 'listen' to changes on the pending
- * transaction Web3Service is an event emitter and will trigger events which can be handled by
- * upstream objects.
+ * This service reads data from the RPC endpoint.
+ * All transactions should be sent via the WalletService.
  */
 export default class Web3Service extends EventEmitter {
-  // Note: This dependency injection is necessary for these tests:
-  //
-  // describe('request enabling access to account',...
-  // describe('fail while enabling access to account',...
-  //
-  // In the tests, we add an "enable" mock in order to test the code in connect (below)
-  // where we "await provider.enable()" to support privacy measures in metamask and other
-  // wallets
-  //
-  // This will be removed when Web3Service is refactored
-  constructor(availableProviders = providers) {
+  constructor(unlockContractAddress = unlockAddress) {
     super()
-    this.providers = availableProviders
-    this.ready = false
-    this.provider = null
-    this.web3 = null
+
+    if (readOnlyProvider) {
+      this.web3 = new Web3(readOnlyProvider)
+    } else {
+      this.web3 = new Web3(Object.values(providers)[0]) // Defaulting to the first provider.
+    }
+
+    // TODO: detect discrepancy in providers
+
+    // Transactions create events which we use here to build the state.
     this.eventsHandlers = {
       NewLock: (transactionHash, contractAddress, args) => {
+        this.emit('transaction.updated', transactionHash, {
+          lock: contractAddress,
+        })
         return this.emit(
           'lock.saved',
           {
@@ -55,72 +52,39 @@ export default class Web3Service extends EventEmitter {
       },
       Transfer: (transactionHash, contractAddress, args) => {
         const owner = args._to
+        this.emit('transaction.updated', transactionHash, {
+          key: keyId(contractAddress, owner),
+        })
         return this.emit('key.saved', keyId(contractAddress, owner), {
           lock: contractAddress,
           owner,
         })
       },
       PriceChanged: (transactionHash, contractAddress, { keyPrice }) => {
+        this.emit('transaction.updated', transactionHash, {
+          lock: contractAddress,
+        })
         return this.emit('lock.updated', contractAddress, {
-          keyPrice,
+          keyPrice: Web3Utils.fromWei(keyPrice, 'ether'),
+        })
+      },
+      Withdrawal: (transactionHash, contractAddress) => {
+        this.emit('transaction.updated', transactionHash, {
+          lock: contractAddress,
         })
       },
     }
-
-    this.on('ready', () => {
-      this.ready = true
-    })
-  }
-
-  /**
-   * This connects to the web3 service and listens to new blocks
-   * @param {object} account
-   * @return
-   */
-  async connect({ provider: providerName }) {
-    if (providerName === this.provider) {
-      // If the provider did not really change, no need to reset it
-      return
-    }
-
-    // Keep track of the provider
-    this.provider = providerName
-    // And reset the connection
-    this.ready = false
-
-    // We fail: it appears that we are trying to connect but do not have a provider available...
-    const provider = this.providers[providerName]
-    if (!provider) {
-      return this.emit('error', new Error(MISSING_PROVIDER))
-    }
-
-    try {
-      if (provider.enable) {
-        // this exists for metamask and other modern dapp wallets and must be called,
-        // see: https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
-        await provider.enable()
-      }
-    } catch (error) {
-      this.emit('error', new Error(NOT_ENABLED_IN_PROVIDER))
-    }
-
-    this.web3 = new Web3(provider)
-
-    const networkId = await this.web3.eth.net.getId()
-    if (unlockAddress) {
-      this.unlockContractAddress = Web3Utils.toChecksumAddress(unlockAddress)
-    } else if (UnlockContract.networks[networkId]) {
+    if (unlockContractAddress) {
+      this.unlockContractAddress = Web3Utils.toChecksumAddress(
+        unlockContractAddress
+      )
+    } else if (UnlockContract.networks[requiredNetworkId]) {
       // If we do not have an address from config let's use the artifact files
       this.unlockContractAddress = Web3Utils.toChecksumAddress(
-        UnlockContract.networks[networkId].address
+        UnlockContract.networks[requiredNetworkId].address
       )
     } else {
       return this.emit('error', new Error(NON_DEPLOYED_CONTRACT))
-    }
-
-    if (this.networkId !== networkId) {
-      this.networkId = networkId
-      this.emit('network.changed', networkId)
     }
   }
 
@@ -137,42 +101,8 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
-   * Function which refreshes the account supplied or loads one from the local node or creates
-   * one.
-   * @param {*} account
-   */
-  refreshOrGetAccount(account) {
-    let getAccountPromise
-    if (!account || !account.address) {
-      getAccountPromise = this.web3.eth.getAccounts().then(accounts => {
-        if (accounts.length === 0) {
-          return this.createAccount()
-        } else {
-          return Promise.resolve({
-            address: accounts[0], // take the first one by default
-          })
-        }
-      })
-    } else {
-      getAccountPromise = Promise.resolve(account)
-    }
-
-    // Once we have the account, let's refresh it!
-    return getAccountPromise.then(account => {
-      return this.getAddressBalance(account.address).then(balance => {
-        account.balance = balance
-        this.emit('account.changed', account)
-        this.emit('ready')
-
-        return account
-      })
-    })
-  }
-
-  /**
    * The method sets the transaction's type, based on the data being sent.
-   * TODO: match also based on Contract type. There could be conflicts in names
-   * @param {*} transaction
+   * @param {*} contract
    * @param {*} data
    */
   getTransactionType(contract, data) {
@@ -192,7 +122,7 @@ export default class Web3Service extends EventEmitter {
     }
 
     if (contract.contractName === 'PublicLock' && method.name === 'withdraw') {
-      return TRANSACTION_TYPES.WITHDRAW
+      return TRANSACTION_TYPES.WITHDRAWAL
     }
 
     if (
@@ -207,79 +137,8 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
-   * This helper function signs a transaction
-   * and sends it.
-   * @private
-   */
-  sendTransaction(
-    transaction,
-    { to, from, data, value, gas, contract },
-    callback
-  ) {
-    const web3TransactionPromise = this.web3.eth.sendTransaction({
-      to,
-      from,
-      value,
-      data,
-      gas,
-    })
-
-    transaction.type = this.getTransactionType(contract, data)
-    transaction.blockNumber = Number.MAX_SAFE_INTEGER
-
-    return this.handleTransaction(
-      transaction,
-      web3TransactionPromise,
-      contract,
-      callback
-    )
-  }
-
-  /**
-   * This function submits a web3Transaction and will trigger events as it is being processed,
-   * as well as invoke the callback for functions which may need to know about specific events.
-   * @private
-   * @param {*} transaction
-   * @param {*} web3TransactionPromise
-   * @param {*} contract
-   * @param {*} callback
-   */
-  handleTransaction(transaction, web3TransactionPromise, contract, callback) {
-    return web3TransactionPromise
-      .once('transactionHash', hash => {
-        transaction.hash = hash
-        transaction.status = 'submitted'
-        callback(null, { event: 'transactionHash', args: { hash } })
-        this.emit('transaction.new', transaction)
-      })
-      .on('confirmation', confirmationNumber => {
-        this.emit('transaction.updated', transaction.hash, {
-          status: 'mined',
-          confirmations: confirmationNumber,
-        })
-      })
-      .once('receipt', receipt => {
-        callback(null, { event: 'receipt', args: { receipt } })
-        this.emit('transaction.updated', transaction.hash, {
-          blockNumber: receipt.blockNumber,
-        })
-        // Should we invoke this only when we have received enough confirmations?
-        // That would be safer... but also add a lot of latency.
-        this.parseTransactionLogsFromReceipt(
-          transaction.hash,
-          contract,
-          receipt
-        )
-      })
-      .on('error', error => {
-        this.emit('error', error, transaction)
-        callback(error)
-      })
-  }
-
-  /**
    * This function is able to retrieve past transaction sent by a user to the Unlock smart contract
-   * if they triggered events
+   * if they triggered events.
    * This is helpful because it means we can recover state for a given user from the chain
    * @param {*} address
    */
@@ -299,11 +158,7 @@ export default class Web3Service extends EventEmitter {
       },
       (error, events = []) => {
         events.forEach(event => {
-          const transaction = {
-            hash: event.transactionHash,
-          }
-          this.emit('transaction.new', transaction)
-          this.getTransaction(transaction.hash)
+          this.emit('transaction.new', event.transactionHash)
         })
       }
     )
@@ -327,98 +182,15 @@ export default class Web3Service extends EventEmitter {
       },
       (error, events = []) => {
         events.forEach(event => {
-          const transaction = {
-            hash: event.transactionHash,
-            lock: lockAddress,
-          }
-          this.emit('transaction.new', transaction)
-          this.getTransaction(transaction.hash)
+          this.emit('transaction.new', event.transactionHash)
         })
       }
     )
   }
 
   /**
-   *
-   * @param {*} lock : address of the lock for which we update the price
-   * @param {*} account: account who owns the lock
-   * @param {*} price : new price for the lock
-   */
-  updateKeyPrice(lock, account, price) {
-    const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
-    const data = lockContract.methods.updateKeyPrice(price).encodeABI()
-
-    const transaction = {
-      status: 'pending',
-      confirmations: 0,
-      createdAt: new Date().getTime(),
-      lock: lock,
-      priceUpdate: price,
-    }
-
-    this.sendTransaction(
-      transaction,
-      {
-        to: lock,
-        from: account.address,
-        data,
-        gas: 1000000,
-        contract: LockContract,
-      },
-      (error, { event } = {}) => {
-        if (event === 'receipt') {
-          return this.getLock(lock)
-        }
-      }
-    )
-  }
-
-  /**
-   * Creates a lock on behalf of the user `from`.
-   * @param {PropTypes.lock} lock
-   */
-  createLock(lock, owner) {
-    const unlock = new this.web3.eth.Contract(
-      UnlockContract.abi,
-      this.unlockContractAddress
-    )
-
-    const data = unlock.methods
-      .createLock(
-        lock.expirationDuration,
-        Web3Utils.toWei(lock.keyPrice, 'ether'),
-        lock.maxNumberOfKeys
-      )
-      .encodeABI()
-
-    // The transaction object!
-    const transaction = {
-      status: 'pending',
-      confirmations: 0,
-      createdAt: new Date().getTime(),
-      lock: lock.address, // This is likely a temporary address
-    }
-
-    return this.sendTransaction(
-      transaction,
-      {
-        to: this.unlockContractAddress,
-        from: owner.address,
-        data: data,
-        gas: 2000000,
-        contract: UnlockContract,
-      },
-      (error, { event, args } = {}) => {
-        if (event === 'transactionHash') {
-          // We update the transaction, still using the temporary address
-          this.emit('lock.updated', lock.address, { transaction: args.hash })
-        }
-      }
-    )
-  }
-
-  /**
-   * This loads the account's balance
+   * This retrieves the balance of an address (contract or account)
+   * and formats it to a string of ether.
    * Returns a promise with the balance
    */
   getAddressBalance(address) {
@@ -430,22 +202,6 @@ export default class Web3Service extends EventEmitter {
       .catch(error => {
         this.emit('error', error)
       })
-  }
-
-  /**
-   * This creates an account on the current network.
-   * @return Promise<Account>
-   */
-  createAccount() {
-    return new Promise(resolve => {
-      return resolve(this.web3.eth.accounts.create())
-    }).then(account => {
-      // We poll the balance even though it is certainly 0
-      return this.getAddressBalance(account.address).then(balance => {
-        account.balance = balance
-        return account
-      })
-    })
   }
 
   /**
@@ -505,6 +261,16 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
+   * This will set a timeout to get a transaction after half a block time happened
+   * @param {string} transactionHash
+   */
+  _watchTransaction(transactionHash) {
+    setTimeout(() => {
+      this.getTransaction(transactionHash)
+    }, blockTime / 2)
+  }
+
+  /**
    * This refreshes a transaction by its hash.
    * It will only process the transaction if the filter function returns true
    * @param {string} transactionHash
@@ -516,8 +282,20 @@ export default class Web3Service extends EventEmitter {
       this.web3.eth.getTransaction(transactionHash),
     ]).then(([blockNumber, blockTransaction]) => {
       if (!blockTransaction) {
-        return this.emit('error', new Error(MISSING_TRANSACTION))
+        // The transaction is still pending: it has been sent to the network but not
+        // necessarily received by the node we're asking it (and not mined...)
+        // TODO: This presents a UI challenge because we currently do not show anything to the
+        // user that a transaction exists and is pending... (since we have nothing to link it to)
+        // Hopefully though this should be fairly short lived because the transaction should be propagated
+        // to all nodes fairly quickly
+        this._watchTransaction(transactionHash)
+        return this.emit('transaction.updated', transactionHash, {
+          status: 'submitted',
+          confirmations: 0,
+          blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
+        })
       }
+
       const contract =
         this.unlockContractAddress ===
         Web3Utils.toChecksumAddress(blockTransaction.to)
@@ -528,17 +306,24 @@ export default class Web3Service extends EventEmitter {
         contract,
         blockTransaction.input
       )
+
       if (blockTransaction.transactionIndex === null) {
-        // This means the transaction is not in a block yet (ie. not mined)
+        // This means the transaction is not in a block yet (ie. not mined), but has been propagated
+        this._watchTransaction(transactionHash)
         return this.emit('transaction.updated', transactionHash, {
           status: 'pending',
           type: transactionType,
           confirmations: 0,
-          blockNumber: Number.MAX_SAFE_INTEGER,
+          blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
         })
       }
 
-      // The transaction was mined
+      // Let's watch for more confirmations if needed
+      if (blockNumber - blockTransaction.blockNumber < requiredConfirmations) {
+        this._watchTransaction(transactionHash)
+      }
+
+      // The transaction was mined, so we have a receipt for it
       this.emit('transaction.updated', transactionHash, {
         status: 'mined',
         type: transactionType,
@@ -546,7 +331,6 @@ export default class Web3Service extends EventEmitter {
         blockNumber: blockTransaction.blockNumber,
       })
 
-      // Let's check its receipt to see if it triggered any event!
       return this.web3.eth
         .getTransactionReceipt(transactionHash)
         .then(transactionReceipt => {
@@ -605,60 +389,11 @@ export default class Web3Service extends EventEmitter {
       })
     )
 
-    // Once lock has been refreshed
+    // Once all lock attributes have been fetched
     return Promise.all(constantPromises).then(() => {
       this.emit('lock.updated', address, update)
       return update
     })
-  }
-
-  /**
-   * Purchase a key to a lock by account.
-   * The key object is passed so we can kepe track of it from the application
-   * The lock object is required to get the price data
-   * We pass both the owner and the account because at some point, these may be different (someone
-   * purchases a key for someone else)
-   * @param {string} lock
-   * @param {string} owner
-   * @param {string} keyPrice
-   * @param {string} data
-   * @param {UnlockPropTypes.account} account
-   */
-  purchaseKey(lock, owner, keyPrice, account, data = '') {
-    const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
-    const abi = lockContract.methods
-      .purchaseFor(owner, Web3Utils.utf8ToHex(data || ''))
-      .encodeABI()
-
-    const transaction = {
-      status: 'pending',
-      confirmations: 0,
-      createdAt: new Date().getTime(),
-      key: keyId(lock, owner),
-      lock: lock,
-      owner,
-    }
-
-    return this.sendTransaction(
-      transaction,
-      {
-        to: lock,
-        from: account.address,
-        data: abi,
-        gas: 1000000,
-        value: Web3Utils.toWei(keyPrice, 'ether'),
-        contract: LockContract,
-      },
-      (error, { event, args } = {}) => {
-        if (event === 'transactionHash') {
-          this.emit('key.updated', keyId(lock, owner), {
-            lock,
-            owner,
-            transaction: args.hash,
-          })
-        }
-      }
-    )
   }
 
   /**
@@ -787,51 +522,5 @@ export default class Web3Service extends EventEmitter {
         }
       }
     )
-  }
-
-  /**
-   * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
-   * @param {PropTypes.lock}
-   * @param {PropTypes.account} account
-   * @param {Function} callback TODO: implement...
-   */
-  withdrawFromLock(lock, account) {
-    const lockContract = new this.web3.eth.Contract(
-      LockContract.abi,
-      lock.address
-    )
-    const data = lockContract.methods.withdraw().encodeABI()
-
-    const transaction = {
-      status: 'pending',
-      confirmations: 0,
-      createdAt: new Date().getTime(),
-      lock: lock.address,
-      account: account.address,
-      withdrawal: lock.address,
-    }
-
-    this.sendTransaction(
-      transaction,
-      {
-        to: lock.address,
-        from: account.address,
-        data: data,
-        gas: 1000000,
-        contract: LockContract,
-      },
-      (error, { event } = {}) => {
-        if (event === 'receipt') {
-          return this.getLock(lock.address)
-        }
-      }
-    )
-  }
-
-  /*
-   *  Signs data for the given account
-   */
-  signData(account, data, callback) {
-    this.web3.eth.sign(data, account, callback)
   }
 }

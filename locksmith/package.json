@@ -16,6 +16,15 @@
     "ci": "npm run lint && npm test && npm run reformat && npm run fail-pending-changes",
     "build": "echo 'Nothing to build'"
   },
+  "lint-staged": {
+    "linters": {
+      "*.js": [
+        "eslint",
+        "npm run reformat",
+        "git add"
+      ]
+    }
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -37,7 +46,6 @@
     "winston": "^3.1.0"
   },
   "devDependencies": {
-    "lint-staged": "^8.0.5",
     "nodemon": "^1.18.8",
     "sqlite3": "^4.0.6"
   },

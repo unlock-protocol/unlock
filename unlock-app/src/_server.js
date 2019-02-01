@@ -1,3 +1,4 @@
+/* eslint no-console: 0 */
 const { createServer } = require('http')
 const { URL } = require('url')
 const next = require('next')
@@ -5,12 +6,13 @@ const pathMatch = require('path-match')
 
 function _server(port, dev) {
   return new Promise((resolve, reject) => {
-    const app = next({ dir: `${__dirname}/`, dev })
+    const app = next({ dir: `${__dirname}/`, dev, quiet: true })
     const handle = app.getRequestHandler()
     const route = pathMatch()
 
     app.prepare().then(() => {
       let server = createServer((req, res) => {
+        console.info(`${req.method} ${req.url} > ${res.statusCode} `)
         try {
           const parsedUrl = new URL(req.url, `http://${req.headers.host}/`)
           const { pathname, query } = parsedUrl
@@ -19,7 +21,7 @@ function _server(port, dev) {
           // get the query string passed to our application
           const path = pathname.split('/')[1]
           if (path === 'paywall') {
-            const params = route('/paywall/:lockAddress')(pathname)
+            const params = route('/paywall/:lockAddress/:redirect?')(pathname)
             app.render(req, res, '/paywall', Object.assign(params, query))
           } else if (path === 'demo') {
             const params = route('/demo/:lockaddress')(pathname)

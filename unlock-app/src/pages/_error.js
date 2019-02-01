@@ -6,15 +6,25 @@ import UnlockPropTypes from '../propTypes'
 import withConfig from '../utils/withConfig'
 
 class Error extends React.Component {
-  static getInitialProps({ res, err }) {
+  static getInitialProps({ res, err, req }) {
     const statusCode = res ? res.statusCode : err ? err.statusCode : null
 
     // redirect to home now if not found
     if (statusCode) {
-      res.writeHead(301, {
-        Location: '/',
-      })
-      res.end()
+      const configure = require('../config').default
+      const config = configure()
+      console.error(`Server-side error! ${statusCode}`, err) // eslint-disable-line
+      if (
+        !(
+          config.env !== 'production' &&
+          req.connection.remoteAddress.match(/^127.0.0.1|^localhost/)
+        )
+      ) {
+        res.writeHead(301, {
+          Location: '/',
+        })
+        res.end()
+      }
     } else {
       Router.push('/')
     }

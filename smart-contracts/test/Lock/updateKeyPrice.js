@@ -1,6 +1,8 @@
 const Units = require('ethereumjs-units')
+const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
+const shouldFail = require('../helpers/shouldFail')
 const Unlock = artifacts.require('../Unlock.sol')
 
 let unlock, locks, keyPriceBefore, transaction
@@ -10,14 +12,14 @@ contract('Lock', (accounts) => {
     before(async () => {
       unlock = await Unlock.deployed()
       locks = await deployLocks(unlock)
-      keyPriceBefore = await locks['FIRST'].keyPrice()
-      assert(keyPriceBefore.eq(10000000000000000))
+      keyPriceBefore = new BigNumber(await locks['FIRST'].keyPrice.call())
+      assert.equal(keyPriceBefore.toFixed(), 10000000000000000)
       transaction = await locks['FIRST'].updateKeyPrice(Units.convert('0.3', 'eth', 'wei'))
     })
 
     it('should change the actual keyPrice', async () => {
-      const keyPriceAfter = await locks['FIRST'].keyPrice()
-      assert(keyPriceAfter.eq(300000000000000000))
+      const keyPriceAfter = new BigNumber(await locks['FIRST'].keyPrice.call())
+      assert.equal(keyPriceAfter.toFixed(), 300000000000000000)
     })
 
     it('should trigger an event', () => {
@@ -25,31 +27,25 @@ contract('Lock', (accounts) => {
         return log.event === 'PriceChanged'
       })
       assert(event)
-      assert(event.args.keyPrice.eq(300000000000000000))
+      assert.equal(new BigNumber(event.args.keyPrice).toFixed(), 300000000000000000)
     })
 
     describe('when the sender is not the lock owner', () => {
-      let keyPrice, error
+      let keyPrice
+
       before(async () => {
-        keyPrice = await locks['FIRST'].keyPrice()
-        try {
-          await locks['FIRST'].updateKeyPrice(
-            Units.convert('0.3', 'eth', 'wei'),
-            {
-              from: accounts[3]
-            })
-        } catch (_error) {
-          error = _error
-        }
+        keyPrice = new BigNumber(await locks['FIRST'].keyPrice.call())
+        await shouldFail(locks['FIRST'].updateKeyPrice(
+          Units.convert('0.3', 'eth', 'wei'),
+          {
+            from: accounts[3]
+          }), '')
       })
 
-      it('should fail', async () => {
-        assert(error)
-      })
 
       it('should leave the price unchanged', async () => {
-        const keyPriceAfter = await locks['FIRST'].keyPrice()
-        assert(keyPrice.eq(keyPriceAfter))
+        const keyPriceAfter = new BigNumber(await locks['FIRST'].keyPrice.call())
+        assert.equal(keyPrice.toFixed(), keyPriceAfter.toFixed())
       })
     })
   })
