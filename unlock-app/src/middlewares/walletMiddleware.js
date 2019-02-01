@@ -3,7 +3,6 @@ import {
   WITHDRAW_FROM_LOCK,
   deleteLock,
   UPDATE_LOCK_KEY_PRICE,
-  LOCK_DEPLOYED,
   updateLock,
   createLock,
 } from '../actions/lock'
@@ -18,7 +17,7 @@ import { TRANSACTION_TYPES } from '../constants'
 import generateJWTToken from '../utils/signature'
 import WalletService from '../services/walletService'
 import { signatureError } from '../actions/signature'
-import { storeLockCreation, storeLockUpdate } from '../actions/storage'
+import { storeLockCreation } from '../actions/storage'
 import configure from '../config'
 
 const config = configure()
@@ -155,26 +154,6 @@ export default function walletMiddleware({ getState, dispatch }) {
           account.address,
           action.price
         )
-      } else if (action.type === LOCK_DEPLOYED) {
-        // When a lock has been deployed, we need to sign its name again
-        if (config.services.storage) {
-          if (action.lock && action.lock.address && action.address) {
-            generateJWTToken(walletService, getState().account.address, {
-              currentAddress: action.lock.address,
-              address: action.address,
-              owner: getState().account.address,
-            }).then(token => {
-              dispatch(
-                storeLockUpdate(
-                  getState().account.address,
-                  action.lock.address,
-                  token,
-                  action.address
-                )
-              )
-            })
-          }
-        }
       }
 
       next(action)

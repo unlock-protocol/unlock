@@ -2,7 +2,6 @@ import {
   ADD_LOCK,
   CREATE_LOCK,
   DELETE_LOCK,
-  LOCK_DEPLOYED,
   UPDATE_LOCK,
   UPDATE_LOCK_KEY_PRICE,
 } from '../actions/lock'
@@ -40,33 +39,9 @@ const locksReducer = (state = initialState, action) => {
   }
 
   if (action.type === CREATE_LOCK) {
-    action.lock.pending = true
     return {
       ...state,
       [action.lock.address]: action.lock,
-    }
-  }
-
-  // Invoked when a lock has been deployed at an address
-  if (action.type === LOCK_DEPLOYED) {
-    const newState = { ...state }
-
-    const previousLock = action.lock.address
-      ? newState[action.lock.address]
-      : newState[action.address]
-
-    // First remove the previous locks mapping (the address was updated), if any!
-    delete newState[action.lock.address]
-
-    const newLock = Object.assign(previousLock || {}, action.lock, {
-      address: action.address,
-    })
-    // mark the lock has not pending anymore:
-    delete newLock.pending
-
-    return {
-      ...newState,
-      [action.address]: newLock,
     }
   }
 

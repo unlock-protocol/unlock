@@ -671,21 +671,21 @@ describe('Web3Service', () => {
   })
 
   describe('emitContractEvent', () => {
-    it('should handle NewLock and emit lock.saved', done => {
-      expect.assertions(4)
+    it('should handle NewLock and emit lock.updated as well as getLock', () => {
+      expect.assertions(5)
       const transactionHash = '0x123'
       const contractAddress = '0x456'
       const blockNumber = 1337
       const params = {
         newLockAddress: ' 0x789',
       }
+      web3Service.getLock = jest.fn()
 
-      web3Service.once('lock.saved', (lock, address) => {
+      web3Service.once('lock.updated', (address, lock) => {
         expect(lock.transaction).toBe(transactionHash)
         expect(lock.address).toBe(params.newLockAddress)
         expect(lock.asOf).toBe(blockNumber)
         expect(address).toBe(params.newLockAddress)
-        done()
       })
       web3Service.emitContractEvent(
         transactionHash,
@@ -694,6 +694,7 @@ describe('Web3Service', () => {
         'NewLock',
         params
       )
+      expect(web3Service.getLock).toHaveBeenCalledWith(params.newLockAddress)
     })
 
     it('should handle Transfer and emit key.save', done => {
