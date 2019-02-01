@@ -21,7 +21,7 @@ const nockScope = nock('http://127.0.0.1:8545', { encodedQueryParams: true })
 
 let rpcRequestId = 0
 
-let debug = false // set to true to see more logging statements
+let debug = true // set to true to see more logging statements
 
 function logNock(...args) {
   if (debug) {
@@ -61,7 +61,28 @@ describe('WalletService', () => {
   beforeEach(() => {
     nock.cleanAll()
     providers = configure().providers
-    walletService = new WalletService(providers)
+    walletService = new WalletService(providers, () => {})
+  })
+
+  describe('pollAccounts', () => {
+    it('calls pollAccounts when ready', done => {
+      expect.assertions(2)
+      const timeout = jest.fn()
+      const unlockAccountsOnNode = [
+        '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+      ]
+
+      accountsAndYield(unlockAccountsOnNode)
+
+      walletService = new WalletService(providers, timeout)
+
+      walletService.pollAccount = jest.fn()
+      walletService.once('ready', () => {
+        expect(walletService.ready).toBe(true)
+        expect(walletService.pollAccount).toHaveBeenCalled()
+        done()
+      })
+    })
   })
 
   describe('connect', () => {

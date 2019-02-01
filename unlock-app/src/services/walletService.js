@@ -14,7 +14,7 @@ import {
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../errors'
 
-const { providers, unlockAddress } = configure()
+const { providers, unlockAddress, isServer } = configure()
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
@@ -25,15 +25,17 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends EventEmitter {
-  constructor(availableProviders = providers) {
+  constructor(availableProviders = providers, timeout = setTimeout) {
     super()
     this.providers = availableProviders
     this.ready = false
     this.providerName = null
     this.web3 = null
+    this.pollAccount = this.pollAccount.bind(this)
 
     this.on('ready', () => {
       this.ready = true
+      this.pollAccount(timeout)
     })
   }
 
@@ -87,6 +89,23 @@ export default class WalletService extends EventEmitter {
     if (this.networkId !== networkId) {
       this.networkId = networkId
       this.emit('network.changed', networkId)
+    }
+  }
+
+  async pollAccount(timeout) {
+    if (isServer) return
+    const accounts = await this.web3.eth.getAccounts()
+    if (!accounts.length) {
+      this.account = null
+      this.emit('account.changed', null)
+      timeout(this.pollAccount, 500)
+    } else {
+      const address = accounts[0]
+      if (this.account.address !== address) {
+        this.emit('account.changed', address)
+      } else {
+        timeout(this.pollAccount, 500)
+      }
     }
   }
 

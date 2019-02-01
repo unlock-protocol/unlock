@@ -16,7 +16,6 @@ const {
   blockTime,
   requiredNetworkId,
   requiredConfirmations,
-  isServer,
 } = configure()
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
@@ -34,7 +33,6 @@ export default class Web3Service extends EventEmitter {
     } else {
       this.web3 = new Web3(Object.values(providers)[0]) // Defaulting to the first provider.
     }
-    this.pollAccount = this.pollAccount.bind(this)
 
     // TODO: detect discrepancy in providers
 
@@ -146,23 +144,6 @@ export default class Web3Service extends EventEmitter {
       this.emit('account.updated', account, {
         balance,
       })
-    })
-  }
-
-  pollAccount() {
-    if (isServer) return
-    this.web3.eth.getAccounts().then(accounts => {
-      if (!accounts.length) {
-        this.account = null
-        this.emit('account.changed', null)
-        setTimeout(this.pollAccount, 500)
-      } else {
-        if (this.account.address !== accounts[0]) {
-          this.refreshOrGetAccount(accounts[0])
-        } else {
-          setTimeout(this.pollAccount, 500)
-        }
-      }
     })
   }
 
