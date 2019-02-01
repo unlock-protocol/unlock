@@ -14,6 +14,7 @@ import web3Middleware from '../middlewares/web3Middleware'
 import currencyConversionMiddleware from '../middlewares/currencyConversionMiddleware'
 import storageMiddleware from '../middlewares/storageMiddleware'
 import walletMiddleware from '../middlewares/walletMiddleware'
+import postMessageMiddleware from '../middlewares/postMessageMiddleware'
 
 const config = configure()
 
@@ -21,6 +22,7 @@ const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
 function getOrCreateStore(initialState, history) {
   const middlewares = [
+    postMessageMiddleware(global),
     web3Middleware,
     currencyConversionMiddleware,
     walletMiddleware,
