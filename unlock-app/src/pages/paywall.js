@@ -10,6 +10,7 @@ import { LOCK_PATH_NAME_REGEXP } from '../constants'
 import BrowserOnly from '../components/helpers/BrowserOnly'
 import GlobalErrorProvider from '../utils/GlobalErrorProvider'
 import { lockPage, unlockPage } from '../services/iframeService'
+import { UnlockedFlag } from '../components/lock/UnlockFlag'
 
 class Paywall extends React.Component {
   constructor(props) {
@@ -56,6 +57,7 @@ class Paywall extends React.Component {
             <DeveloperOverlay />
           </ShowWhenLocked>
           <ShowWhenUnlocked locked={locked}>
+            <UnlockedFlag />
             <DeveloperOverlay />
           </ShowWhenUnlocked>
         </GlobalErrorProvider>

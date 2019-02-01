@@ -78,4 +78,28 @@ describe('Paywall', () => {
       expect(unlockPage).toHaveBeenCalled()
     })
   })
+  describe('the unlocked flag', () => {
+    it('should be present when the paywall is unlocked', () => {
+      const { queryByText } = rtl.render(
+        <ConfigContext.Provider value={{ providers: [] }}>
+          <Provider store={store}>
+            <Paywall />
+          </Provider>
+        </ConfigContext.Provider>
+      )
+      const flagText = queryByText('Subscribed with Unlock')
+      expect(flagText).not.toBeNull()
+    })
+    it('should not be present when the paywall is locked', () => {
+      const { queryByText } = rtl.render(
+        <ConfigContext.Provider value={{ providers: [] }}>
+          <Provider store={noKeyStore}>
+            <Paywall />
+          </Provider>
+        </ConfigContext.Provider>
+      )
+      const flagText = queryByText('Subscribed with Unlock')
+      expect(flagText).toBeNull()
+    })
+  })
 })
