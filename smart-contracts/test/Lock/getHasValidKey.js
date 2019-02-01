@@ -38,7 +38,7 @@ contract('Lock', (accounts) => {
   
       describe('after transfering a previously purchased key', () => {
         before(async () => {
-          await lock.transferFrom(account, accounts[5], await lock.getTokenIdFor(account), { from: account })
+          await lock.transferFrom(account, accounts[5], await lock.getTokenIdFor.call(account), { from: account })
         })
 
         it('should be false', async () => {
