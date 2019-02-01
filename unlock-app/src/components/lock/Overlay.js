@@ -16,9 +16,9 @@ export function displayError(error, children) {
   return <>{children}</>
 }
 
-export const Overlay = ({ locks, hideModal, showModal }) => (
+export const Overlay = ({ locks, hideModal, showModal, scrollPosition }) => (
   <FullPage>
-    <Banner>
+    <Banner scrollPosition={scrollPosition}>
       <Headline>
         You have reached your limit of free articles. Please purchase access
       </Headline>
@@ -43,6 +43,7 @@ Overlay.propTypes = {
   locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
   hideModal: PropTypes.func.isRequired,
   showModal: PropTypes.func.isRequired,
+  scrollPosition: PropTypes.number.isRequired,
 }
 
 export const mapDispatchToProps = (dispatch, { locks }) => ({
@@ -75,10 +76,13 @@ const FullPage = styled.div`
   );
 `
 
-const Banner = styled.div`
+const Banner = styled.div.attrs(({ scrollPosition }) => ({
+  style: {
+    height: Math.min(scrollPosition, 100) + '%',
+  },
+}))`
   position: fixed;
   display: grid;
-  height: 30%;
   min-height: 375px;
   left: 0;
   right: 0;

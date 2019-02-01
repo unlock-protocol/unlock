@@ -71,17 +71,26 @@ const unlockedState = {
 const lockedStore = createUnlockStore(lockedState)
 const unlockedStore = createUnlockStore(unlockedState)
 
+const config = {
+  env: 'dev',
+  providers: {
+    HTTP: [],
+  },
+}
+
 storiesOf('Paywall', module)
   .add('the paywall overlay', () => {
     return (
-      <Provider store={lockedStore}>
-        <Paywall />
-      </Provider>
+      <ConfigContext.Provider value={config}>
+        <Provider store={lockedStore}>
+          <Paywall />
+        </Provider>
+      </ConfigContext.Provider>
     )
   })
   .add('the paywall overlay, unlocked', () => {
     return (
-      <ConfigContext.Provider value={{ providers: [] }}>
+      <ConfigContext.Provider value={config}>
         <Provider store={unlockedStore}>
           <Paywall />
         </Provider>

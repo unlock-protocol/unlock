@@ -41230,7 +41230,6 @@ Object {
 .c1 {
   position: fixed;
   display: grid;
-  height: 30%;
   min-height: 375px;
   left: 0;
   right: 0;
@@ -41331,6 +41330,7 @@ Object {
         >
           <div
             class="c1"
+            style="height: 0%;"
           >
             <h1
               class="c2"
@@ -41471,7 +41471,8 @@ Object {
         class="vaayz9-0 bexHxF"
       >
         <div
-          class="vaayz9-1 hjUKBy"
+          class="vaayz9-1 oVtjh"
+          style="height: 0%;"
         >
           <h1
             class="vaayz9-2 fLUsTY"
@@ -41717,7 +41718,6 @@ Object {
 .c1 {
   position: fixed;
   display: grid;
-  height: 30%;
   min-height: 375px;
   left: 0;
   right: 0;
@@ -41826,6 +41826,7 @@ Object {
         >
           <div
             class="c1"
+            style="height: 0%;"
           >
             <h1
               class="c2"
@@ -41938,7 +41939,8 @@ Object {
         class="vaayz9-0 bexHxF"
       >
         <div
-          class="vaayz9-1 hjUKBy"
+          class="vaayz9-1 oVtjh"
+          style="height: 0%;"
         >
           <h1
             class="vaayz9-2 fLUsTY"
@@ -42224,7 +42226,6 @@ Object {
 .c1 {
   position: fixed;
   display: grid;
-  height: 30%;
   min-height: 375px;
   left: 0;
   right: 0;
@@ -42325,6 +42326,7 @@ Object {
         >
           <div
             class="c1"
+            style="height: 0%;"
           >
             <h1
               class="c2"
@@ -42511,7 +42513,8 @@ Object {
         class="vaayz9-0 bexHxF"
       >
         <div
-          class="vaayz9-1 hjUKBy"
+          class="vaayz9-1 oVtjh"
+          style="height: 0%;"
         >
           <h1
             class="vaayz9-2 fLUsTY"
@@ -44715,11 +44718,74 @@ exports[`Storyshots Paywall the paywall overlay, unlocked 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    <div>
+    .c0 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c1 {
+  padding: 0 20px 10px 20px;
+  border-color: lightgrey;
+  border-left: 1px solid;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  border-radius: 0 0 20px 20px;
+  -webkit-transform: translateY(-21px);
+  -ms-transform: translateY(-21px);
+  transform: translateY(-21px);
+  -webkit-transition: -webkit-transform 0.5s,color 0.5s,background-color 0.5s;
+  -webkit-transition: transform 0.5s,color 0.5s,background-color 0.5s;
+  transition: transform 0.5s,color 0.5s,background-color 0.5s;
+  color: lightgrey;
+}
+
+.c1:hover {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  opacity: 100%;
+  color: white;
+  background-color: var(--green);
+  border-color: var(--green);
+  font-weight: bold;
+}
+
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
       />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <select
+            id="changeProvider"
+            name="changeProvider"
+          >
+            <option
+              value="HTTP"
+            >
+              HTTP
+            </option>
+          </select>
+          <div>
+            Choose Provider
+          </div>
+        </div>
+      </div>
     </div>
   </body>,
   "container": <div>
@@ -44727,6 +44793,27 @@ Object {
       href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
       rel="stylesheet"
     />
+    <div
+      class="sc-1bbuge3-0 deeIGd"
+    >
+      <div
+        class="sc-1bbuge3-1 iBcmrA"
+      >
+        <select
+          id="changeProvider"
+          name="changeProvider"
+        >
+          <option
+            value="HTTP"
+          >
+            HTTP
+          </option>
+        </select>
+        <div>
+          Choose Provider
+        </div>
+      </div>
+    </div>
   </div>,
   "debug": [Function],
   "getAllByAltText": [Function],
