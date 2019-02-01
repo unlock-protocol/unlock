@@ -37,20 +37,21 @@ export default class Web3Service extends EventEmitter {
 
     // Transactions create events which we use here to build the state.
     this.eventsHandlers = {
-      NewLock: (transactionHash, contractAddress, args) => {
+      NewLock: (transactionHash, contractAddress, blockNumber, args) => {
         this.emit('transaction.updated', transactionHash, {
           lock: contractAddress,
         })
         return this.emit(
           'lock.saved',
           {
+            asOf: blockNumber,
             transaction: transactionHash,
             address: args.newLockAddress,
           },
           args.newLockAddress
         )
       },
-      Transfer: (transactionHash, contractAddress, args) => {
+      Transfer: (transactionHash, contractAddress, blockNumber, args) => {
         const owner = args._to
         this.emit('transaction.updated', transactionHash, {
           key: keyId(contractAddress, owner),
@@ -60,15 +61,22 @@ export default class Web3Service extends EventEmitter {
           owner,
         })
       },
-      PriceChanged: (transactionHash, contractAddress, { keyPrice }) => {
+      PriceChanged: (
+        transactionHash,
+        contractAddress,
+        blockNumber,
+        { keyPrice }
+      ) => {
         this.emit('transaction.updated', transactionHash, {
           lock: contractAddress,
         })
         return this.emit('lock.updated', contractAddress, {
+          asOf: blockNumber,
           keyPrice: Web3Utils.fromWei(keyPrice, 'ether'),
         })
       },
       Withdrawal: (transactionHash, contractAddress) => {
+        // TODO: update the lock balance too!
         this.emit('transaction.updated', transactionHash, {
           lock: contractAddress,
         })
@@ -209,13 +217,20 @@ export default class Web3Service extends EventEmitter {
    * @private
    * @param {string} transactionHash
    * @param {string} contractAddress
+   * @param {string} blockNumber
    * @param {string} name
    * @param {object} params
    */
-  emitContractEvent(transactionHash, contractAddress, name, params) {
+  emitContractEvent(
+    transactionHash,
+    contractAddress,
+    blockNumber,
+    name,
+    params
+  ) {
     const handler = this.eventsHandlers[name]
     if (handler) {
-      return handler(transactionHash, contractAddress, params)
+      return handler(transactionHash, contractAddress, blockNumber, params)
     }
   }
 
@@ -255,7 +270,13 @@ export default class Web3Service extends EventEmitter {
           return args
         }, {})
 
-        this.emitContractEvent(transactionHash, log.address, event.name, args)
+        this.emitContractEvent(
+          transactionHash,
+          log.address,
+          transactionReceipt.blockNumber,
+          event.name,
+          args
+        )
       })
     })
   }
@@ -354,7 +375,8 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
-   * Refresh the lock's data
+   * Refresh the lock's data.
+   * We use the block version
    * @return Promise<Lock>
    */
   getLock(address) {
@@ -386,6 +408,13 @@ export default class Web3Service extends EventEmitter {
     constantPromises.push(
       this.getAddressBalance(address).then(balance => {
         update.balance = balance
+      })
+    )
+
+    // Let's load the current block to use to compare versions
+    constantPromises.push(
+      this.web3.eth.getBlockNumber().then(blockNumber => {
+        update.asOf = blockNumber
       })
     )
 

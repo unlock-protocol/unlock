@@ -499,6 +499,7 @@ describe('Web3Service', () => {
         '0x0000000000000000000000000000000000000000000000000000000000000011'
       )
       getBalanceForAccountAndYieldBalance(lockAddress, '0xdeadfeed')
+      ethBlockNumber(`0x${(1337).toString('16')}`)
 
       web3Service.on('lock.updated', (address, update) => {
         expect(address).toBe(lockAddress)
@@ -509,6 +510,7 @@ describe('Web3Service', () => {
           maxNumberOfKeys: 10,
           owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
           outstandingKeys: 17,
+          asOf: 1337,
         })
         done()
       })
@@ -544,6 +546,7 @@ describe('Web3Service', () => {
         '0x0000000000000000000000000000000000000000000000000000000000000011'
       )
       getBalanceForAccountAndYieldBalance(lockAddress, '0xdeadfeed')
+      ethBlockNumber(`0x${(1337).toString('16')}`)
 
       web3Service.on('lock.updated', (address, update) => {
         expect(address).toBe(lockAddress)
@@ -669,21 +672,25 @@ describe('Web3Service', () => {
 
   describe('emitContractEvent', () => {
     it('should handle NewLock and emit lock.saved', done => {
-      expect.assertions(3)
+      expect.assertions(4)
       const transactionHash = '0x123'
       const contractAddress = '0x456'
+      const blockNumber = 1337
       const params = {
         newLockAddress: ' 0x789',
       }
+
       web3Service.once('lock.saved', (lock, address) => {
         expect(lock.transaction).toBe(transactionHash)
         expect(lock.address).toBe(params.newLockAddress)
+        expect(lock.asOf).toBe(blockNumber)
         expect(address).toBe(params.newLockAddress)
         done()
       })
       web3Service.emitContractEvent(
         transactionHash,
         contractAddress,
+        blockNumber,
         'NewLock',
         params
       )
@@ -693,6 +700,7 @@ describe('Web3Service', () => {
       expect.assertions(3)
       const transactionHash = '0x123'
       const contractAddress = '0x456'
+      const blockNumber = 1337
 
       const params = {
         _to: '0x789',
@@ -708,29 +716,33 @@ describe('Web3Service', () => {
       web3Service.emitContractEvent(
         transactionHash,
         contractAddress,
+        blockNumber,
         'Transfer',
         params
       )
     })
 
     it('should handle PriceChanged and emit key.save', done => {
-      expect.assertions(2)
+      expect.assertions(3)
       const transactionHash = '0x123'
       const contractAddress = '0x456'
+      const blockNumber = 1337
 
       const params = {
         keyPrice: '10',
       }
 
-      web3Service.once('lock.updated', (lockAddress, { keyPrice }) => {
+      web3Service.once('lock.updated', (lockAddress, { keyPrice, asOf }) => {
         expect(lockAddress).toBe(contractAddress)
         expect(keyPrice).toBe('0.00000000000000001') // in eth...
+        expect(asOf).toBe(blockNumber) // in eth...
         done()
       })
 
       web3Service.emitContractEvent(
         transactionHash,
         contractAddress,
+        blockNumber,
         'PriceChanged',
         params
       )
