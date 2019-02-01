@@ -68,6 +68,7 @@ describe('Overlay', () => {
           <ConfigProvider value={{}}>
             <ErrorProvider value={{ error: false, errorMetadata: {} }}>
               <Overlay
+                scrollPosition={0}
                 hideModal={() => {}}
                 showModal={() => {}}
                 locks={[lock]}
@@ -91,7 +92,12 @@ describe('Overlay', () => {
           <ErrorProvider
             value={{ error: FATAL_NO_USER_ACCOUNT, errorMetadata: {} }}
           >
-            <Overlay hideModal={() => {}} showModal={() => {}} locks={[lock]} />
+            <Overlay
+              scrollPosition={0}
+              hideModal={() => {}}
+              showModal={() => {}}
+              locks={[lock]}
+            />
           </ErrorProvider>
         </Provider>
       )

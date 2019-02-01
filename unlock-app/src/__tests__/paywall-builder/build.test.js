@@ -13,7 +13,11 @@ describe('buildPaywall', () => {
   let document
 
   beforeEach(() => {
-    document = {}
+    document = {
+      documentElement: {
+        scrollHeight: 0,
+      },
+    }
   })
 
   afterEach(() => jest.restoreAllMocks())
@@ -21,20 +25,27 @@ describe('buildPaywall', () => {
   describe('sets up the iframe on load', () => {
     let mockScript
     let mockIframe
+    let mockIframeImpl
     let mockAdd
     let window
     beforeEach(() => {
       mockScript = jest.spyOn(script, 'findPaywallUrl')
       mockIframe = jest.spyOn(iframeManager, 'getIframe')
+      mockIframeImpl = {
+        contentWindow: {
+          postMessage: () => {},
+        },
+      }
       mockAdd = jest.spyOn(iframeManager, 'add')
       mockScript.mockImplementation(() => '/url')
-      mockIframe.mockImplementation(() => 'iframe')
+      mockIframe.mockImplementation(() => mockIframeImpl)
       mockAdd.mockImplementation(() => {})
       window = {
         addEventListener(type, listener) {
           expect(type).toBe('message')
           expect(listener).not.toBe(null)
         },
+        requestAnimationFrame() {},
       }
     })
     it('no lockAddress, give up', () => {
@@ -56,7 +67,7 @@ describe('buildPaywall', () => {
     it('adds the iframe to the page', () => {
       buildPaywall(window, document, fakeLockAddress)
 
-      expect(mockAdd).toHaveBeenCalledWith(document, 'iframe')
+      expect(mockAdd).toHaveBeenCalledWith(document, mockIframeImpl)
     })
 
     it('sets up the message event listeners', () => {
@@ -77,6 +88,7 @@ describe('buildPaywall', () => {
           addEventListener(type, listener) {
             callbacks[type] = listener
           },
+          requestAnimationFrame() {},
         }
         blocker = {
           remove: jest.fn(),
@@ -90,7 +102,7 @@ describe('buildPaywall', () => {
       it('triggers show on locked event', () => {
         callbacks.message({ data: 'locked' })
 
-        expect(mockShow).toHaveBeenCalledWith('iframe', document)
+        expect(mockShow).toHaveBeenCalledWith(mockIframeImpl, document)
         expect(mockHide).not.toHaveBeenCalled()
       })
       it('closes the blocker on locked event', () => {
@@ -116,7 +128,7 @@ describe('buildPaywall', () => {
         callbacks.message({ data: 'unlocked' })
         callbacks.message({ data: 'unlocked' })
 
-        expect(mockHide).toHaveBeenCalledWith('iframe', document)
+        expect(mockHide).toHaveBeenCalledWith(mockIframeImpl, document)
         expect(mockHide).toHaveBeenCalledTimes(1)
         expect(mockShow).toHaveBeenCalledTimes(1)
       })

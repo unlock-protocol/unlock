@@ -62,7 +62,12 @@ const render = (locks, errors = { error: false, errorMetadata: {} }) => (
 
     <ConfigProvider value={config}>
       <ErrorProvider value={errors}>
-        <Overlay locks={locks} hideModal={() => {}} showModal={() => {}} />
+        <Overlay
+          scrollPosition={0}
+          locks={locks}
+          hideModal={() => {}}
+          showModal={() => {}}
+        />
       </ErrorProvider>
     </ConfigProvider>
   </section>
