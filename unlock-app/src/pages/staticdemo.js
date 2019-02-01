@@ -1,17 +1,10 @@
 import React from 'react'
 import Head from 'next/head'
-import { connect } from 'react-redux'
 import styled, { createGlobalStyle } from 'styled-components'
-import PropTypes from 'prop-types'
-import UnlockPropTypes from '../propTypes'
-import Overlay from '../components/lock/Overlay'
-import DeveloperOverlay from '../components/developer/DeveloperOverlay'
-import ShowUnlessUserHasKeyToAnyLock from '../components/lock/ShowUnlessUserHasKeyToAnyLock'
-import { LOCK_PATH_NAME_REGEXP } from '../constants'
 import Media from '../theme/media'
-import BrowserOnly from '../components/helpers/BrowserOnly'
+import Paywall from './paywall'
 
-const Demo = ({ lock, locks }) => {
+export default function Demo() {
   return (
     <Container>
       <GlobalStyle />
@@ -69,42 +62,16 @@ const Demo = ({ lock, locks }) => {
         </Body>
       </Content>
       <Right />
-      <BrowserOnly>
-        <ShowUnlessUserHasKeyToAnyLock locks={[locks[lock]]}>
-          <Overlay locks={[locks[lock]]} />
-          <DeveloperOverlay />
-        </ShowUnlessUserHasKeyToAnyLock>
-      </BrowserOnly>
+      <Paywall />
     </Container>
   )
 }
-
-Demo.propTypes = {
-  lock: PropTypes.string,
-  locks: UnlockPropTypes.locks.isRequired,
-}
-
-Demo.defaultProps = {
-  lock: '',
-}
-
-export const mapStateToProps = ({ locks, router }) => {
-  const match = router.location.pathname.match(LOCK_PATH_NAME_REGEXP)
-  const lock = match ? match[1] : null
-  return {
-    lock,
-    locks,
-  }
-}
-
-export default connect(mapStateToProps)(Demo)
 
 const GlobalStyle = createGlobalStyle`
     @import url('https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|UnifrakturCook:700');
 
     body {
       background-color: #fdfaf7;
-      font-family: 'Source Serif Pro', serif;
     }
 `
 
@@ -120,7 +87,9 @@ const Container = styled.div`
 
 const Left = styled.div``
 const Right = styled.div``
-const Content = styled.div``
+const Content = styled.div`
+  font-family: 'Source Serif Pro', serif;
+`
 const Masthead = styled.h1`
   font-family: 'UnifrakturCook', cursive;
   font-weight: bold;
