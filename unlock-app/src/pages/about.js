@@ -19,6 +19,13 @@ import OpenGraphTags from '../components/page/OpenGraphTags'
 
 const Stories = [
   {
+    date: new Date('2019-01-25'),
+    summary:
+      'We’re changing the business model for the web. It starts here, today. Introducing Unlock Version 0.',
+    link:
+      'https://medium.com/unlock-protocol/announcing-unlock-version-zero-a8a1ac8ea4ec',
+  },
+  {
     date: new Date('2018-12-14'),
     summary: `Using ads to support content creation is broken, whether from a purely technical or an
     economic standpoint. Aside from an ever-shrinking group of the largest platforms, most can only
