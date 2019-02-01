@@ -8,7 +8,7 @@ const Unlock = artifacts.require('../Unlock.sol')
 
 let lock
 
-contract('Lock ERC721', (accounts) => {
+contract('Lock ERC721', accounts => {
   before(() => {
     return Unlock.deployed()
       .then(unlock => {
@@ -58,7 +58,7 @@ contract('Lock ERC721', (accounts) => {
         lock.owners(1),
         lock.owners(2),
         lock.owners(3)
-      ]).then((owners) => {
+      ]).then(owners => {
         assert.deepEqual(owners.sort(), accounts.slice(1, 5).sort())
       })
     })
@@ -72,12 +72,21 @@ contract('Lock ERC721', (accounts) => {
 
       before(async () => {
         numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-        await lock.transferFrom(accounts[1], accounts[5], accounts[1], { from: accounts[1] })
+        let ID = await lock.getTokenIdFor(accounts[1])
+        await lock.transferFrom(accounts[1], accounts[5], ID, {
+          from: accounts[1]
+        })
       })
 
       it('should have the right number of keys', async () => {
         const outstandingKeys = new BigNumber(await lock.outstandingKeys.call())
         assert.equal(outstandingKeys.toFixed(), 4)
+      })
+
+      it('should have the right number of keys', () => {
+        return lock.outstandingKeys().then(outstandingKeys => {
+          assert.equal(outstandingKeys, 4)
+        })
       })
 
       it('should have the right number of owners', async () => {
@@ -86,8 +95,12 @@ contract('Lock ERC721', (accounts) => {
       })
 
       it('should fail if I transfer from the same account again', async () => {
-        await shouldFail(lock.transferFrom(accounts[1], accounts[5], accounts[1], { from: accounts[1] }),
-          'Key is not valid')
+        await shouldFail(
+          lock.transferFrom(accounts[1], accounts[5], accounts[1], {
+            from: accounts[1]
+          }),
+          'Key is not valid'
+        )
       })
     })
 
@@ -96,12 +109,21 @@ contract('Lock ERC721', (accounts) => {
 
       before(async () => {
         numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-        await lock.transferFrom(accounts[2], accounts[3], accounts[2], { from: accounts[2] })
+        let ID = await lock.getTokenIdFor(accounts[2])
+        await lock.transferFrom(accounts[2], accounts[3], ID, {
+          from: accounts[2]
+        })
       })
 
       it('should have the right number of keys', async () => {
         const outstandingKeys = new BigNumber(await lock.outstandingKeys.call())
         assert.equal(outstandingKeys.toFixed(), 4)
+      })
+
+      it('should have the right number of keys', () => {
+        return lock.outstandingKeys().then(outstandingKeys => {
+          assert.equal(outstandingKeys, 4)
+        })
       })
 
       it('should have the right number of owners', async () => {

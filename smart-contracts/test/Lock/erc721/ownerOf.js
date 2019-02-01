@@ -7,33 +7,29 @@ const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock, locks
 
-contract('Lock ERC721', (accounts) => {
-  before(() => {
-    return Unlock.deployed()
-      .then(_unlock => {
-        unlock = _unlock
-        return deployLocks(unlock)
-      })
-      .then(_locks => {
-        locks = _locks
-      })
+contract('Lock ERC721', accounts => {
+  before(async () => {
+    unlock = await Unlock.deployed()
+    locks = await deployLocks(unlock)
   })
 
   describe('ownerOf', () => {
     it('should abort when the key has no owner', async () => {
-      await shouldFail(locks['FIRST']
-        .ownerOf.call(accounts[3]), 'No such key')
+      await shouldFail(locks['FIRST'].ownerOf.call(accounts[3]), 'No such key')
     })
 
-    it('should return the owner of the key', () => {
-      return locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
-        value: Units.convert('0.01', 'eth', 'wei'),
-        from: accounts[1]
-      }).then(() => {
-        return locks['FIRST'].ownerOf.call(accounts[1])
-      }).then(address => {
-        assert.equal(address, accounts[1])
-      })
+    it('should return the owner of the key', async () => {
+      await locks['FIRST'].purchaseFor(
+        accounts[1],
+        Web3Utils.toHex('Satoshi'),
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+          from: accounts[1]
+        }
+      )
+      let ID = await locks['FIRST'].getTokenIdFor(accounts[1])
+      let address = await locks['FIRST'].ownerOf.call(ID)
+      assert.equal(address, accounts[1])
     })
   })
 })
