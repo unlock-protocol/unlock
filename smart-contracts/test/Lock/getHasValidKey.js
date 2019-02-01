@@ -4,6 +4,7 @@ const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
+revertTime = require('../helpers/revertTime')
 const Unlock = artifacts.require('../Unlock.sol')
 
 let unlock, locks
@@ -39,6 +40,10 @@ contract('Lock', (accounts) => {
       describe('after transfering a previously purchased key', () => {
         before(async () => {
           await lock.transferFrom(account, accounts[5], await lock.getTokenIdFor.call(account), { from: account })
+        })
+
+        after(async () => {
+          await revertTime()
         })
 
         it('should be false', async () => {
