@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
-import { WordMarkLogo } from './Logo'
+import { RoundedLogo, WordMarkLogo } from './Logo'
 import Buttons from './buttons/layout'
 import { ButtonLink } from './buttons/Button'
 import Media from '../../theme/media'
@@ -43,7 +43,16 @@ export default class Header extends React.PureComponent {
             </a>
           </Link>
         ) : (
-          <Title>{title}</Title>
+          <Title>
+            <LogoContainer>
+              <Link href="/">
+                <a>
+                  <RoundedLogo size="30px" />
+                </a>
+              </Link>
+            </LogoContainer>
+            {title}
+          </Title>
         )}
         <DesktopButtons>
           {navigationButtons.map(NavButton => (
@@ -192,4 +201,13 @@ const MobilePopover = styled.div`
   ${Media.nophone`
     display: none;
   `};
+`
+
+const LogoContainer = styled.div`
+  ${Media.nophone`
+    display: none;
+  `};
+  float: left;
+  margin-right: 20px;
+  padding-top: 2px;
 `
