@@ -6,11 +6,11 @@ import Overlay from '../components/lock/Overlay'
 import DeveloperOverlay from '../components/developer/DeveloperOverlay'
 import ShowWhenLocked from '../components/lock/ShowWhenLocked'
 import ShowWhenUnlocked from '../components/lock/ShowWhenUnlocked'
-import { LOCK_PATH_NAME_REGEXP } from '../constants'
 import BrowserOnly from '../components/helpers/BrowserOnly'
 import GlobalErrorProvider from '../utils/GlobalErrorProvider'
 import { lockPage, unlockPage } from '../services/iframeService'
 import { UnlockedFlag } from '../components/lock/UnlockFlag'
+import { lockRoute } from '../utils/routes'
 
 class Paywall extends React.Component {
   constructor(props) {
@@ -72,10 +72,10 @@ Paywall.propTypes = {
 }
 
 export const mapStateToProps = ({ locks, keys, modals, router }) => {
-  const match = router.location.pathname.match(LOCK_PATH_NAME_REGEXP)
+  const { lockAddress } = lockRoute(router.location.pathname)
 
-  const lockFromUri = match
-    ? Object.values(locks).find(lock => lock.address === match[1])
+  const lockFromUri = lockAddress
+    ? Object.values(locks).find(lock => lock.address === lockAddress)
     : null
 
   let validKeys = []
