@@ -15,7 +15,7 @@ const Provider = GlobalErrorContext.Provider
 
 describe('GlobalErrorConsumer', () => {
   it('passes error initialized with metadata to displayError prop', () => {
-    expect.assertions(4)
+    expect.assertions(5)
 
     const listen = jest.fn(() => <div>internal</div>)
     const wrapper = rtl.render(
@@ -31,6 +31,7 @@ describe('GlobalErrorConsumer', () => {
 
     expect(wrapper.queryByText('internal')).not.toBeNull()
     expect(listen).toHaveBeenCalledTimes(1)
+    expect(listen.mock.calls[0][2]).toBe(FATAL_NO_USER_ACCOUNT)
 
     // this next part tests to see if we got the error element and the children
     const Error = listen.mock.calls[0][0]

@@ -30,7 +30,11 @@ export default function GlobalErrorConsumer({
           : false
 
         // call displayError with either false or the error element, and our child elements
-        return displayError(Error && <Error {...errorMetadata} />, children)
+        return displayError(
+          Error && <Error {...errorMetadata} />,
+          children,
+          error
+        )
       }}
     </Consumer>
   )
