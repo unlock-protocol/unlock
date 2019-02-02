@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { LOCK_PATH_NAME_REGEXP } from '../constants'
 import DemoComponent from '../components/interface/Demo'
+import { lockRoute } from '../utils/routes'
 
 /**
  * This is the actual demo page with JS which injects a paywall'ed iframe.
@@ -28,14 +28,13 @@ Demo.defaultProps = {
 }
 
 export const mapStateToProps = ({ router }) => {
-  const match = router.location.pathname.match(LOCK_PATH_NAME_REGEXP)
-  const lock = match ? match[1] : null
+  const { lockAddress } = lockRoute(router.location.pathname)
   const domain =
     global.document && document.location
       ? document.location.protocol + '//' + document.location.host
       : ''
   return {
-    lock,
+    lock: lockAddress,
     domain,
   }
 }

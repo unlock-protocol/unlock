@@ -10,13 +10,14 @@ import {
   updateTransaction,
   ADD_TRANSACTION,
 } from '../actions/transaction'
-import { LOCK_PATH_NAME_REGEXP, PGN_ITEMS_PER_PAGE } from '../constants'
+import { PGN_ITEMS_PER_PAGE } from '../constants'
 
 import Web3Service from '../services/web3Service'
 import {
   SET_KEYS_ON_PAGE_FOR_LOCK,
   setKeysOnPageForLock,
 } from '../actions/keysPages'
+import { lockRoute } from '../utils/routes'
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
@@ -131,12 +132,12 @@ export default function web3Middleware({ getState, dispatch }) {
         action.payload.location &&
         action.payload.location.pathname
       ) {
-        // Location was changed, get the matching lock
-        const match = action.payload.location.pathname.match(
-          LOCK_PATH_NAME_REGEXP
+        // Location was changed, get the matching lock, if we are on a paywall page
+        const { lockAddress, prefix } = lockRoute(
+          action.payload.location.pathname
         )
-        if (match) {
-          web3Service.getLock(match[1])
+        if (lockAddress && prefix === 'paywall') {
+          web3Service.getLock(lockAddress)
         }
       }
     }
