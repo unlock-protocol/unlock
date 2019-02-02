@@ -21,7 +21,7 @@ const nockScope = nock('http://127.0.0.1:8545', { encodedQueryParams: true })
 
 let rpcRequestId = 0
 
-let debug = true // set to true to see more logging statements
+let debug = false // set to true to see more logging statements
 
 function logNock(...args) {
   if (debug) {
@@ -63,28 +63,54 @@ describe('WalletService', () => {
     providers = configure().providers
     walletService = new WalletService(providers, () => {})
   })
-
-  describe('pollAccounts', () => {
-    it('calls pollAccounts when ready', done => {
+  describe('pollAccount', () => {
+    it('constructor calls timeout with pollAccount when ready', done => {
       expect.assertions(2)
       const timeout = jest.fn()
-      const unlockAccountsOnNode = [
-        '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-      ]
+      walletService = new WalletService(providers, timeout)
+      walletService.getAccount = jest.fn(() => Promise.resolve('account'))
 
-      accountsAndYield(unlockAccountsOnNode)
+      walletService.emit('ready')
+      expect(walletService.ready).toBe(true)
+      expect(timeout).toHaveBeenCalledWith(
+        walletService.pollForAccountChange,
+        500
+      )
+      done()
+    })
+
+    it('pollAccount calls getAccount and timeout', async () => {
+      expect.assertions(3)
+
+      const timeout = jest.fn()
 
       walletService = new WalletService(providers, timeout)
+      walletService.getAccount = jest.fn(() => Promise.resolve('thank u, next'))
+      walletService.account = 'old news'
 
-      walletService.pollAccount = jest.fn()
-      walletService.once('ready', () => {
-        expect(walletService.ready).toBe(true)
-        expect(walletService.pollAccount).toHaveBeenCalled()
-        done()
-      })
+      await walletService.pollForAccountChange()
+
+      expect(walletService.getAccount).toHaveBeenCalledTimes(1)
+      expect(walletService.getAccount).toHaveBeenCalledWith(true, 'old news')
+      expect(timeout).toHaveBeenCalledWith(
+        walletService.pollForAccountChange,
+        500
+      )
+    })
+    it('pollAccount does not run on the server', () => {
+      expect.assertions(2)
+
+      const timeout = jest.fn()
+      walletService = new WalletService(providers, timeout, true)
+      walletService.getAccount = jest.fn(() => Promise.resolve('thank u, next'))
+      walletService.account = 'old news'
+
+      walletService.pollForAccountChange(timeout, true)
+
+      expect(walletService.getAccount).not.toHaveBeenCalled()
+      expect(timeout).not.toHaveBeenCalled()
     })
   })
-
   describe('connect', () => {
     it('should get the network id', done => {
       expect.assertions(1)

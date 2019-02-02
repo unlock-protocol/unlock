@@ -25,17 +25,25 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends EventEmitter {
-  constructor(availableProviders = providers, timeout = setTimeout) {
+  constructor(
+    availableProviders = providers,
+    timeout = setTimeout,
+    runningOnServer = isServer
+  ) {
     super()
     this.providers = availableProviders
     this.ready = false
     this.providerName = null
     this.web3 = null
-    this.pollAccount = this.pollAccount.bind(this)
+    this.pollForAccountChange = this.pollForAccountChange.bind(
+      this,
+      timeout,
+      runningOnServer
+    )
 
     this.on('ready', () => {
       this.ready = true
-      this.pollAccount(timeout)
+      timeout(this.pollForAccountChange, 500)
     })
   }
 
@@ -92,29 +100,22 @@ export default class WalletService extends EventEmitter {
     }
   }
 
-  async pollAccount(timeout) {
+  /**
+   * Poll to see if account has changed
+   */
+  async pollForAccountChange(timeout, isServer) {
     if (isServer) return
-    const accounts = await this.web3.eth.getAccounts()
-    if (!accounts.length) {
-      this.account = null
-      this.emit('account.changed', null)
-      timeout(this.pollAccount, 500)
-    } else {
-      const address = accounts[0]
-      if (this.account.address !== address) {
-        this.emit('account.changed', address)
-      } else {
-        timeout(this.pollAccount, 500)
-      }
-    }
+    this.account = await this.getAccount(true, this.account)
+    timeout(this.pollForAccountChange, 500)
   }
 
   /**
    * Function which yields the address of the account on the provider or creates a key pair.
    */
-  getAccount() {
+  getAccount(polling = false, priorAccount) {
     const getOrCreateAccount = this.web3.eth.getAccounts().then(accounts => {
       if (accounts.length === 0) {
+        if (polling) return null
         return this._createAccount()
       } else {
         return Promise.resolve(accounts[0]) // defaults to the first account for now
@@ -123,8 +124,9 @@ export default class WalletService extends EventEmitter {
 
     // Once we have the account, let's refresh it!
     return getOrCreateAccount.then(address => {
+      if (polling && priorAccount === address) return address
       this.emit('account.changed', address)
-      this.emit('ready')
+      if (!polling) this.emit('ready')
       return address
     })
   }
