@@ -325,7 +325,7 @@ export default class Web3Service extends EventEmitter {
         blockTransaction.input
       )
 
-      if (blockTransaction.transactionIndex === null) {
+      if (blockTransaction.blockNumber === null) {
         // This means the transaction is not in a block yet (ie. not mined), but has been propagated
         this._watchTransaction(transactionHash)
         return this.emit('transaction.updated', transactionHash, {
@@ -352,21 +352,23 @@ export default class Web3Service extends EventEmitter {
       return this.web3.eth
         .getTransactionReceipt(transactionHash)
         .then(transactionReceipt => {
-          // NOTE: old version of web3.js (pre 1.0.0-beta.34) are not parsing 0x0 into a falsy value
-          if (
-            !transactionReceipt.status ||
-            transactionReceipt.status == '0x0'
-          ) {
-            return this.emit('transaction.updated', transactionHash, {
-              status: 'failed',
-            })
-          }
+          if (transactionReceipt) {
+            // NOTE: old version of web3.js (pre 1.0.0-beta.34) are not parsing 0x0 into a falsy value
+            if (
+              !transactionReceipt.status ||
+              transactionReceipt.status == '0x0'
+            ) {
+              return this.emit('transaction.updated', transactionHash, {
+                status: 'failed',
+              })
+            }
 
-          return this.parseTransactionLogsFromReceipt(
-            transactionHash,
-            contract,
-            transactionReceipt
-          )
+            return this.parseTransactionLogsFromReceipt(
+              transactionHash,
+              contract,
+              transactionReceipt
+            )
+          }
         })
     })
   }
