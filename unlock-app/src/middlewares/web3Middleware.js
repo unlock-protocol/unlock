@@ -18,6 +18,7 @@ import {
   setKeysOnPageForLock,
 } from '../actions/keysPages'
 import { lockRoute } from '../utils/routes'
+import { setNetwork } from '../actions/network'
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
@@ -52,6 +53,16 @@ export default function web3Middleware({ getState, dispatch }) {
     } else {
       dispatch(addLock(address, update))
     }
+  })
+
+  /**
+   * When the network has changed, we need to get a new account
+   * as well as reset all the reducers
+   */
+  web3Service.on('network.changed', networkId => {
+    // Set the new network, which should also clean up all reducers
+    // And we need a new account!
+    dispatch(setNetwork(networkId))
   })
 
   /**

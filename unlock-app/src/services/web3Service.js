@@ -91,6 +91,9 @@ export default class Web3Service extends EventEmitter {
     } else {
       return this.emit('error', new Error(NON_DEPLOYED_CONTRACT))
     }
+    this.web3.eth.net
+      .getId()
+      .then(networkId => this.emit('network.changed', networkId))
   }
 
   /**
