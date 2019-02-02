@@ -13,6 +13,7 @@ import {
   FAILED_TO_UPDATE_KEY_PRICE,
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../errors'
+import { POLLING_INTERVAL } from '../constants'
 
 const { providers, unlockAddress, isServer } = configure()
 
@@ -43,7 +44,7 @@ export default class WalletService extends EventEmitter {
 
     this.on('ready', () => {
       this.ready = true
-      timeout(this.pollForAccountChange, 500)
+      timeout(this.pollForAccountChange, POLLING_INTERVAL)
     })
   }
 
@@ -106,7 +107,7 @@ export default class WalletService extends EventEmitter {
   async pollForAccountChange(timeout, isServer) {
     if (isServer) return
     this.account = await this.getAccount(true, this.account)
-    timeout(this.pollForAccountChange, 500)
+    timeout(this.pollForAccountChange, POLLING_INTERVAL)
   }
 
   /**
