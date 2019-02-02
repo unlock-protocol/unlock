@@ -112,7 +112,7 @@ describe('Overlay', () => {
       const wrapper = rtl.render(
         <Provider store={store}>
           <ErrorProvider
-            value={{ error: FATAL_NO_USER_ACCOUNT, errorMetadata: {} }}
+            value={{ error: FATAL_MISSING_PROVIDER, errorMetadata: {} }}
           >
             <Overlay
               scrollPosition={0}
@@ -125,6 +125,30 @@ describe('Overlay', () => {
       )
 
       expect(wrapper.queryByText('100000.00 Eth')).toBeNull()
+      expect(wrapper.queryByText('Powered by Unlock')).not.toBeNull()
+      expect(
+        wrapper.queryByText(
+          'You have reached your limit of free articles. Please purchase access'
+        )
+      ).not.toBeNull()
+    })
+    it('displays lock when the error is missing account', () => {
+      const wrapper = rtl.render(
+        <Provider store={store}>
+          <ErrorProvider
+            value={{ error: FATAL_NO_USER_ACCOUNT, errorMetadata: {} }}
+          >
+            <Overlay
+              scrollPosition={0}
+              hideModal={() => {}}
+              showModal={() => {}}
+              locks={[lock]}
+            />
+          </ErrorProvider>
+        </Provider>
+      )
+
+      expect(wrapper.queryByText('100000.00 Eth')).not.toBeNull()
       expect(wrapper.queryByText('Powered by Unlock')).not.toBeNull()
       expect(
         wrapper.queryByText(

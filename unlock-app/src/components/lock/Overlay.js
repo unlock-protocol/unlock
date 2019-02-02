@@ -9,9 +9,10 @@ import { unlockPage } from '../../services/iframeService'
 import { LockedFlag } from './UnlockFlag'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { mapErrorToComponent } from '../creator/FatalError'
+import { FATAL_NO_USER_ACCOUNT } from '../../errors'
 
 export function displayError(error, errorMetadata, children) {
-  if (error) {
+  if (error && code !== FATAL_NO_USER_ACCOUNT) {
     const Error = mapErrorToComponent(error, errorMetadata)
     return Error
   }
