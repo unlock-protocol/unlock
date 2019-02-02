@@ -35,10 +35,8 @@ fi
 # For staging deploys we pass all environment variables which start with STAGING_ and for production
 # deploys we pass all environment variables which start with PROD_. We also remove the prefix so that
 # the deploy script is identical in both cases
-
-if [ "$TARGET" = "staging" ]; then
-  ENV_PREFIX="STAGING_"
-elif [ "$TARGET" = "prod" ]; then
+ENV_PREFIX="STAGING_"
+if [ "$TARGET" = "prod" ]; then
   ENV_PREFIX="PROD_"
 fi
 
@@ -46,10 +44,9 @@ fi
 DEPLOYMENT_ENV_VARS=`env | grep $ENV_PREFIX | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$ENV_PREFIX//g"`
 ENV_VARS="$TRAVIS_ENV_VARS $DEPLOYMENT_ENV_VARS"
 
-
 ## Custom variables passed for netlify
 if [ "$TARGET" = "netlify" ]; then
-  ENV_VARS="$TRAVIS_ENV_VARS -e NETLIFY_AUTH_TOKEN=$NETLIFY_AUTH_TOKEN"
+  ENV_VARS="$ENV_VARS -e NETLIFY_AUTH_TOKEN=$NETLIFY_AUTH_TOKEN"
 fi
 
 docker-compose -f $DOCKER_COMPOSE_FILE run $ENV_VARS $SERVICE $NPM_SCRIPT -- $ENV_TARGET

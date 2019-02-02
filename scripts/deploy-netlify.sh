@@ -34,6 +34,6 @@ if [ -n "$NETLIFY_SITE_ID" ] && [ -n "$NETLIFY_AUTH_TOKEN" ]; then
   echo $MESSAGE
   netlify deploy -s $NETLIFY_SITE_ID --dir=$BUILD_PATH $PROD --message='$MESSAGE'
 else
-  echo "Skipping deployment to Netlify"
+  echo "Skipping deployment to Netlify ($NETLIFY_SITE_ID)"
 fi
 
