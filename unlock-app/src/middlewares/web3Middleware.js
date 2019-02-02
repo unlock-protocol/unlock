@@ -123,10 +123,12 @@ export default function web3Middleware({ getState, dispatch }) {
 
       if (action.type === ADD_LOCK || action.type == UPDATE_LOCK) {
         const lock = getState().locks[action.address]
-        web3Service.getKeyByLockForOwner(
-          lock.address,
-          getState().account.address
-        )
+        if (getState().account) {
+          web3Service.getKeyByLockForOwner(
+            lock.address,
+            getState().account.address
+          )
+        }
       } else if (
         action.type === LOCATION_CHANGE &&
         action.payload.location &&

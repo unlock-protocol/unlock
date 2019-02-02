@@ -363,6 +363,19 @@ describe('Lock middleware', () => {
       )
       expect(next).toHaveBeenCalledWith(action)
     })
+
+    it('should not retrieve the key if there is no current user', () => {
+      const { next, invoke } = create()
+      const action = { type: ADD_LOCK, address: lock.address }
+
+      delete state.account
+
+      mockWeb3Service.getKeyByLockForOwner = jest.fn()
+      invoke(action)
+
+      expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(action)
+    })
   })
 
   describe('UPDATE_LOCK', () => {
