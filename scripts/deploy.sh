@@ -37,14 +37,14 @@ fi
 # the deploy script is identical in both cases
 
 if [ "$TARGET" = "staging" ]; then
-  ENV_PREFIX = "STAGING_"
+  ENV_PREFIX="STAGING_"
 elif [ "$TARGET" = "prod" ]; then
-  ENV_PREFIX = "PROD_"
+  ENV_PREFIX="PROD_"
 fi
 
 # Extracting environment variables
-DEPLOYMENT_ENV_VARS = `env | grep $ENV_PREFIX | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$ENV_PREFIX//g"`
-ENV_VARS = "$TRAVIS_ENV_VARS $DEPLOYMENT_ENV_VARS"
+DEPLOYMENT_ENV_VARS=`env | grep $ENV_PREFIX | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$ENV_PREFIX//g"`
+ENV_VARS="$TRAVIS_ENV_VARS $DEPLOYMENT_ENV_VARS"
 
 
 ## Custom variables passed for netlify
