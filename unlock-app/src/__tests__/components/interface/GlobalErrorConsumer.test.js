@@ -27,6 +27,7 @@ describe('GlobalErrorConsumer', () => {
 
     expect(wrapper.getByText('internal')).not.toBeNull()
     expect(listen).toHaveBeenCalledTimes(1)
+    expect(listen.mock.calls[0][2]).toBe(FATAL_NO_USER_ACCOUNT)
 
     expect(listen.mock.calls[0][0]).toBe(FATAL_NO_USER_ACCOUNT)
     expect(listen.mock.calls[0][1]).toEqual({ thing: 'thingy' })
