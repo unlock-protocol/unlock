@@ -235,7 +235,7 @@ describe('Web3Service', () => {
             '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
           nonce: '0x04',
           blockHash: 'null',
-          transactionIndex: null, // Not mined
+          blockNumber: null, // Not mined
           from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
           to: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
           value: '0x0',
