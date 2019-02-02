@@ -15,7 +15,7 @@ import {
 } from '../errors'
 import { POLLING_INTERVAL } from '../constants'
 
-const { providers, unlockAddress, isServer } = configure()
+const { unlockAddress } = configure()
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
@@ -26,11 +26,7 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends EventEmitter {
-  constructor(
-    availableProviders = providers,
-    timeout = setTimeout,
-    runningOnServer = isServer
-  ) {
+  constructor(availableProviders, timeout, runningOnServer) {
     super()
     this.providers = availableProviders
     this.ready = false
@@ -106,17 +102,26 @@ export default class WalletService extends EventEmitter {
    */
   async pollForAccountChange(timeout, isServer) {
     if (isServer) return
-    this.account = await this.getAccount(true, this.account)
+    this.account = await this.checkForAccountChange(true, this.account)
     timeout(this.pollForAccountChange, POLLING_INTERVAL)
+  }
+
+  async checkForAccountChange(priorAddress) {
+    const accounts = await this.web3.eth.getAccounts()
+    const nextAddress = accounts.length ? accounts[0] : null
+
+    if (priorAddress !== nextAddress) {
+      this.emit('account.changed', nextAddress)
+    }
+    return nextAddress
   }
 
   /**
    * Function which yields the address of the account on the provider or creates a key pair.
    */
-  getAccount(polling = false, priorAccount) {
+  getAccount() {
     const getOrCreateAccount = this.web3.eth.getAccounts().then(accounts => {
       if (accounts.length === 0) {
-        if (polling) return null
         return this._createAccount()
       } else {
         return Promise.resolve(accounts[0]) // defaults to the first account for now
@@ -125,9 +130,8 @@ export default class WalletService extends EventEmitter {
 
     // Once we have the account, let's refresh it!
     return getOrCreateAccount.then(address => {
-      if (polling && priorAccount === address) return address
       this.emit('account.changed', address)
-      if (!polling) this.emit('ready')
+      this.emit('ready')
       return address
     })
   }

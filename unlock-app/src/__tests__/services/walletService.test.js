@@ -61,13 +61,13 @@ describe('WalletService', () => {
   beforeEach(() => {
     nock.cleanAll()
     providers = configure().providers
-    walletService = new WalletService(providers, () => {})
+    walletService = new WalletService(providers, () => {}, false)
   })
   describe('pollAccount', () => {
     it('constructor calls timeout with pollAccount when ready', done => {
       expect.assertions(2)
       const timeout = jest.fn()
-      walletService = new WalletService(providers, timeout)
+      walletService = new WalletService(providers, timeout, false)
       walletService.getAccount = jest.fn(() => Promise.resolve('account'))
 
       walletService.emit('ready')
@@ -84,14 +84,19 @@ describe('WalletService', () => {
 
       const timeout = jest.fn()
 
-      walletService = new WalletService(providers, timeout)
-      walletService.getAccount = jest.fn(() => Promise.resolve('thank u, next'))
+      walletService = new WalletService(providers, timeout, false)
+      walletService.checkForAccountChange = jest.fn(() =>
+        Promise.resolve('thank u, next')
+      )
       walletService.account = 'old news'
 
       await walletService.pollForAccountChange()
 
-      expect(walletService.getAccount).toHaveBeenCalledTimes(1)
-      expect(walletService.getAccount).toHaveBeenCalledWith(true, 'old news')
+      expect(walletService.checkForAccountChange).toHaveBeenCalledTimes(1)
+      expect(walletService.checkForAccountChange).toHaveBeenCalledWith(
+        true,
+        'old news'
+      )
       expect(timeout).toHaveBeenCalledWith(
         walletService.pollForAccountChange,
         500
