@@ -112,7 +112,9 @@ export default function web3Middleware({ getState, dispatch }) {
         // TODO: when the account has been updated we should reset web3Service and remove all listeners
         // So that pending API calls do not interract with our "new" state.
         web3Service.refreshAccountBalance(action.account)
-        web3Service.getPastUnlockTransactionsForUser(action.account.address)
+        web3Service.getPastLockCreationsTransactionsForUser(
+          action.account.address
+        )
       }
 
       if (action.type === ADD_TRANSACTION) {
