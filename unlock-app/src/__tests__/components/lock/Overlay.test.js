@@ -61,7 +61,9 @@ describe('Overlay', () => {
   describe('displayError', () => {
     it('should display children if there is no error', () => {
       expect.assertions(1)
-      const wrapper = rtl.render(displayError(true)(false, {}, <div>children</div>))
+      const wrapper = rtl.render(
+        displayError(true)(false, {}, <div>children</div>)
+      )
 
       expect(wrapper.getByText('children')).not.toBeNull()
     })
@@ -71,15 +73,12 @@ describe('Overlay', () => {
         displayError(true)(FATAL_MISSING_PROVIDER, {}, <div>children</div>)
       )
 
-      expect(wrapper.getByText('error')).not.toBeNull()
+      expect(wrapper.getByText('Wallet missing')).not.toBeNull()
     })
     it('should display children if account is missing and in the iframe', () => {
       expect.assertions(1)
       const wrapper = rtl.render(
-        displayError(false)(
-          FATAL_NO_USER_ACCOUNT, {}
-          <div>children</div>,
-        )
+        displayError(false)(FATAL_NO_USER_ACCOUNT, {}, <div>children</div>)
       )
 
       expect(wrapper.queryByText('error')).toBeNull()
@@ -87,13 +86,10 @@ describe('Overlay', () => {
     it('should display error if account is missing and in the main window', () => {
       expect.assertions(1)
       const wrapper = rtl.render(
-        displayError(true)(
-          FATAL_NO_USER_ACCOUNT, {},
-          <div>children</div>,
-        )
+        displayError(true)(FATAL_NO_USER_ACCOUNT, {}, <div>children</div>)
       )
 
-      expect(wrapper.getByText('Wallet missing')).not.toBeNull()
+      expect(wrapper.getByText('Need account')).not.toBeNull()
     })
   })
   describe('error replacement', () => {

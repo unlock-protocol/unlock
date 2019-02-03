@@ -16,11 +16,14 @@ export const displayError = isMainWindow =>
   function overlayDisplayError(error, errorMetadata, children) {
     const Error = mapErrorToComponent(error, errorMetadata)
 
-    if (isMainWindow && error) {
-      return Error
-    }
-    if (!isMainWindow && error && error !== FATAL_NO_USER_ACCOUNT) {
-      return Error
+    if (isMainWindow) {
+      if (error) {
+        return Error
+      }
+    } else {
+      if (error && error !== FATAL_NO_USER_ACCOUNT) {
+        return Error
+      }
     }
     return <>{children}</>
   }
