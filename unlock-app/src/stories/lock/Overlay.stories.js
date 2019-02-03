@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react'
 import { Overlay } from '../../components/lock/Overlay'
 import createUnlockStore from '../../createUnlockStore'
 import { GlobalErrorContext } from '../../utils/GlobalErrorProvider'
-import { FATAL_NO_USER_ACCOUNT } from '../../errors'
+import { FATAL_WRONG_NETWORK } from '../../errors'
 import { ConfigContext } from '../../utils/withConfig'
 
 const ErrorProvider = GlobalErrorContext.Provider
@@ -113,7 +113,10 @@ storiesOf('Overlay', module)
       },
     ]
     return render(locks, {
-      error: FATAL_NO_USER_ACCOUNT,
-      errorMetadata: {},
+      error: FATAL_WRONG_NETWORK,
+      errorMetadata: {
+        currentNetwork: 'Foobar',
+        requiredNetworkId: 4,
+      },
     })
   })

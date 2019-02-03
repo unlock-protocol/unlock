@@ -42347,16 +42347,16 @@ Object {
               >
                 <img
                   class="c5"
-                  src="/static/images/illustrations/error.svg"
+                  src="/static/images/illustrations/network.svg"
                 />
                 <div
                   class="c6"
                 >
                   <h1>
-                    Need account
+                    Network mismatch
                   </h1>
                   <p>
-                    In order to display this content, you need to connect a crypto-wallet to your browser.
+                    You’re currently on the Foobar network but you need to be on the Rinkeby network. Please switch to Rinkeby.
                   </p>
                 </div>
               </section>
@@ -42461,16 +42461,16 @@ Object {
             >
               <img
                 class="sc-1g6piw8-1 fcKGMu"
-                src="/static/images/illustrations/error.svg"
+                src="/static/images/illustrations/network.svg"
               />
               <div
                 class="sc-1g6piw8-2 gCvXha"
               >
                 <h1>
-                  Need account
+                  Network mismatch
                 </h1>
                 <p>
-                  In order to display this content, you need to connect a crypto-wallet to your browser.
+                  You’re currently on the Foobar network but you need to be on the Rinkeby network. Please switch to Rinkeby.
                 </p>
               </div>
             </section>

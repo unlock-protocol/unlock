@@ -138,12 +138,15 @@ describe('Overlay', () => {
           <ErrorProvider
             value={{ error: FATAL_NO_USER_ACCOUNT, errorMetadata: {} }}
           >
-            <Overlay
-              scrollPosition={0}
-              hideModal={() => {}}
-              showModal={() => {}}
-              locks={[lock]}
-            />
+            <ConfigContext.Provider value={{ requiredConfirmations: 12 }}>
+              <Overlay
+                scrollPosition={0}
+                hideModal={() => {}}
+                showModal={() => {}}
+                locks={[lock]}
+                openInNewWindow={false}
+              />
+            </ConfigContext.Provider>
           </ErrorProvider>
         </Provider>
       )
