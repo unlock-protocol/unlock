@@ -142,24 +142,19 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
-   * This function is able to retrieve past transaction sent by a user to the Unlock smart contract
-   * if they triggered events.
-   * This is helpful because it means we can recover state for a given user from the chain
-   * @param {*} address
+   * This function retrieves past transactions from events on a given contract
+   * @param {*} contract
+   * @param {*} events
+   * @param {*} filter
+   * @private
    */
-  getPastUnlockTransactionsForUser(address) {
-    const unlock = new this.web3.eth.Contract(
-      UnlockContract.abi,
-      this.unlockContractAddress
-    )
-    unlock.getPastEvents(
-      'NewLock',
+  _getPastTransactionsForContract(contract, eventNames, filter) {
+    return contract.getPastEvents(
+      eventNames,
       {
         fromBlock: 0, // TODO start only when the smart contract was deployed?
         toBlock: 'latest',
-        filter: {
-          lockOwner: address,
-        },
+        filter,
       },
       (error, events = []) => {
         events.forEach(event => {
@@ -167,6 +162,21 @@ export default class Web3Service extends EventEmitter {
         })
       }
     )
+  }
+
+  /**
+   * This function is able to retrieve past transaction sent by a user to the Unlock smart contract
+   * to create a new Lock.
+   * @param {*} address
+   */
+  getPastLockCreationsTransactionsForUser(address) {
+    const unlock = new this.web3.eth.Contract(
+      UnlockContract.abi,
+      this.unlockContractAddress
+    )
+    return this._getPastTransactionsForContract(unlock, 'NewLock', {
+      lockOwner: address,
+    })
   }
 
   /**
@@ -179,18 +189,7 @@ export default class Web3Service extends EventEmitter {
       LockContract.abi,
       lockAddress
     )
-    lockContract.getPastEvents(
-      'allevents',
-      {
-        fromBlock: 0, // TODO start only when the smart contract was deployed?
-        toBlock: 'latest',
-      },
-      (error, events = []) => {
-        events.forEach(event => {
-          this.emit('transaction.new', event.transactionHash)
-        })
-      }
-    )
+    return this._getPastTransactionsForContract(lockContract, 'allevents')
   }
 
   /**

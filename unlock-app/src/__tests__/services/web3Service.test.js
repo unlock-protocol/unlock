@@ -73,14 +73,6 @@ const ethCallAndFail = (data, to, error) => {
   return jsonRpcRequest('eth_call', [{ data, to }, 'latest'], undefined, error)
 }
 
-const ethGetLogs = (fromBlock, toBlock, topics, address, result) => {
-  return jsonRpcRequest(
-    'eth_getLogs',
-    [{ fromBlock, toBlock, topics, address }],
-    result
-  )
-}
-
 const pad64 = data => {
   return `${data.toString().padStart(64, '0')}`
 }
@@ -109,88 +101,103 @@ describe('Web3Service', () => {
   const lockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
 
   describe('getPastLockTransactions', () => {
-    it('should getPastEvents for the Lock contract', done => {
-      expect.assertions(1)
+    it('should getPastEvents for the Lock contract', () => {
+      expect.assertions(3)
+      const lockAddress = '0x123'
+      class MockContract {
+        constructor(abi, address) {
+          expect(abi).toBe(LockContract.abi)
+          expect(address).toEqual(lockAddress)
+        }
+      }
 
-      const events = [
-        {
-          logIndex: '0x0',
-          transactionIndex: '0x0',
-          transactionHash:
-            '0x5d79a143513b5857172d841e2cc6012f350d24c882dbdad9d7e8f19bd5f59a7d',
-          blockHash:
-            '0xebd57d666902dc07698c3048531976b7ad8cffd90fa53bfaf6b18631463da382',
-          blockNumber: '0x143',
-          address: '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f',
-          data:
-            '0x000000000000000000000000000000000000000000000000002386f26fc100000000000000000000000000000000000000000000000000056bc75e2d63100000',
-          topics: [
-            '0x8aa4fa52648a6d15edce8a179c792c86f3719d0cc3c572cf90f91948f0f2cb68',
-          ],
-          type: 'mined',
-        },
-      ]
+      web3Service.web3.eth.Contract = MockContract
 
-      ethGetLogs('0x0', 'latest', [], lockAddress, events)
+      web3Service._getPastTransactionsForContract = jest.fn()
 
-      web3Service.once('transaction.new', transactionHash => {
-        expect(transactionHash).toEqual(
-          '0x5d79a143513b5857172d841e2cc6012f350d24c882dbdad9d7e8f19bd5f59a7d'
-        )
-        done()
-      })
-
-      web3Service.getTransaction = jest.fn()
       web3Service.getPastLockTransactions(lockAddress)
+      expect(web3Service._getPastTransactionsForContract).toHaveBeenCalledWith(
+        expect.any(MockContract),
+        'allevents'
+      )
     })
   })
 
-  describe('getPastUnlockTransactionsForUser', () => {
-    it('should getPastEvents for the Unlock contract', done => {
-      expect.assertions(1)
-      const events = [
-        {
-          logIndex: '0x2',
-          transactionIndex: '0x0',
-          transactionHash:
-            '0x8a7c22fe9bcb5ee44c06410c584139f96a2f5cff529866bbed615986100eb6bd',
-          blockHash:
-            '0xf42e7b871541fe9f4b705633a8d5fd5e36899054ea4db817ff533d5ab1015e99',
-          blockNumber: '0xcc9',
-          address: '0x3f313221a2af33fd8a430891291370632cb471bf',
-          data: '0x00',
-          topics: [
-            '0x01017ed19df0c7f8acc436147b234b09664a9fb4797b4fa3fb9e599c2eb67be7',
-            '0x000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-            '0x000000000000000000000000dc069c4d26510749bea2057c4db43ba8efe4d23a',
-          ],
-          type: 'mined',
-        },
-      ]
+  describe('_getPastTransactionsForContract', () => {
+    it("should getPastEvents on the contract and emit 'transaction.new' for each event", done => {
+      expect.assertions(2)
 
-      const userAddress = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
+      const contract = jest.mock()
+      contract.getPastEvents = jest.fn((events, params, callback) => {
+        callback(null, [
+          {
+            logIndex: '0x2',
+            transactionIndex: '0x0',
+            transactionHash:
+              '0x8a7c22fe9bcb5ee44c06410c584139f96a2f5cff529866bbed615986100eb6bd',
+            blockHash:
+              '0xf42e7b871541fe9f4b705633a8d5fd5e36899054ea4db817ff533d5ab1015e99',
+            blockNumber: '0xcc9',
+            address: '0x3f313221a2af33fd8a430891291370632cb471bf',
+            data: '0x00',
+            topics: [
+              '0x01017ed19df0c7f8acc436147b234b09664a9fb4797b4fa3fb9e599c2eb67be7',
+              '0x000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+              '0x000000000000000000000000dc069c4d26510749bea2057c4db43ba8efe4d23a',
+            ],
+            type: 'mined',
+          },
+        ])
+      })
 
-      ethGetLogs(
-        '0x0',
-        'latest',
-        [
-          '0x01017ed19df0c7f8acc436147b234b09664a9fb4797b4fa3fb9e599c2eb67be7', // NewLock
-          '0x000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-          null,
-        ],
-        unlockSmartContractAddress,
-        events
-      )
+      const events = 'allEvents'
+
+      const filter = {}
 
       web3Service.once('transaction.new', transactionHash => {
         expect(transactionHash).toEqual(
           '0x8a7c22fe9bcb5ee44c06410c584139f96a2f5cff529866bbed615986100eb6bd'
         )
+        expect(contract.getPastEvents).toHaveBeenCalledWith(
+          events,
+          expect.objectContaining({
+            filter: {},
+            fromBlock: 0,
+            toBlock: 'latest',
+          }),
+          expect.any(Function)
+        )
         done()
       })
 
-      web3Service.getTransaction = jest.fn()
-      web3Service.getPastUnlockTransactionsForUser(userAddress)
+      web3Service._getPastTransactionsForContract(contract, events, filter)
+    })
+  })
+
+  describe('getPastLockCreationsTransactionsForUser', () => {
+    it('should getPastEvents for the Unlock contract', () => {
+      expect.assertions(3)
+
+      class MockContract {
+        constructor(abi, address) {
+          expect(abi).toBe(UnlockContract.abi)
+          expect(address).toEqual(web3Service.unlockContractAddress)
+        }
+      }
+
+      web3Service.web3.eth.Contract = MockContract
+
+      const userAddress = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
+      web3Service._getPastTransactionsForContract = jest.fn()
+
+      web3Service.getPastLockCreationsTransactionsForUser(userAddress)
+      expect(web3Service._getPastTransactionsForContract).toHaveBeenCalledWith(
+        expect.any(MockContract),
+        'NewLock',
+        {
+          lockOwner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+        }
+      )
     })
   })
 
