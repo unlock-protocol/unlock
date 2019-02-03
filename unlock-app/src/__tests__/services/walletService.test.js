@@ -16,6 +16,7 @@ import {
   FAILED_TO_UPDATE_KEY_PRICE,
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../../errors'
+import { POLLING_INTERVAL } from '../../constants'
 
 const nockScope = nock('http://127.0.0.1:8545', { encodedQueryParams: true })
 
@@ -61,59 +62,69 @@ describe('WalletService', () => {
   beforeEach(() => {
     nock.cleanAll()
     providers = configure().providers
-    walletService = new WalletService(providers, () => {}, false)
+    // the third argument is designed to stop the polling loop in the majority of tests
+    walletService = new WalletService(
+      providers,
+      false,
+      () => new Promise((resolve, reject) => reject('timeout reject'))
+    )
   })
   describe('pollAccount', () => {
-    it('constructor calls timeout with pollAccount when ready', done => {
+    it('constructor calls timeout with pollAccount when ready', () => {
       expect.assertions(2)
-      const timeout = jest.fn()
-      walletService = new WalletService(providers, timeout, false)
-      walletService.getAccount = jest.fn(() => Promise.resolve('account'))
+      let calls = 0
+      const timeout = jest.fn(() =>
+        calls++ ? Promise.reject() : Promise.resolve()
+      )
+      walletService = new WalletService(providers, false, timeout)
+      walletService.checkForAccountChange = jest.fn(() =>
+        Promise.resolve('account')
+      )
 
       walletService.emit('ready')
       expect(walletService.ready).toBe(true)
-      expect(timeout).toHaveBeenCalledWith(
-        walletService.pollForAccountChange,
-        500
-      )
-      done()
+      expect(timeout).toHaveBeenCalledWith(POLLING_INTERVAL)
     })
 
-    it('pollAccount calls getAccount and timeout', async () => {
-      expect.assertions(3)
+    it('pollAccount calls checkForAccountChange and timeout', async () => {
+      const isServer = false
+      let count = 0
+      const timeout = jest.fn(() =>
+        count++ ? Promise.reject() : Promise.resolve()
+      )
+      walletService.account = 'old account'
 
-      const timeout = jest.fn()
-
-      walletService = new WalletService(providers, timeout, false)
       walletService.checkForAccountChange = jest.fn(() =>
         Promise.resolve('thank u, next')
       )
-      walletService.account = 'old news'
 
-      await walletService.pollForAccountChange()
+      await walletService.pollForAccountChange(timeout, isServer)
 
-      expect(walletService.checkForAccountChange).toHaveBeenCalledTimes(1)
+      expect(timeout).toHaveBeenCalledWith(POLLING_INTERVAL)
       expect(walletService.checkForAccountChange).toHaveBeenCalledWith(
-        true,
-        'old news'
+        'old account'
       )
-      expect(timeout).toHaveBeenCalledWith(
-        walletService.pollForAccountChange,
-        500
-      )
+
+      expect(walletService.account).toBe('thank u, next')
     })
-    it('pollAccount does not run on the server', () => {
-      expect.assertions(2)
+    it('pollAccount does not run on the server', async () => {
+      const isServer = true
+      let count = 0
+      const timeout = jest.fn(() =>
+        count++ ? Promise.reject() : Promise.resolve()
+      )
+      walletService.account = 'old account'
 
-      const timeout = jest.fn()
-      walletService = new WalletService(providers, timeout, true)
-      walletService.getAccount = jest.fn(() => Promise.resolve('thank u, next'))
-      walletService.account = 'old news'
+      walletService.checkForAccountChange = jest.fn(() =>
+        Promise.resolve('thank u, next')
+      )
 
-      walletService.pollForAccountChange(timeout, true)
+      await walletService.pollForAccountChange(timeout, isServer)
 
-      expect(walletService.getAccount).not.toHaveBeenCalled()
       expect(timeout).not.toHaveBeenCalled()
+      expect(walletService.checkForAccountChange).not.toHaveBeenCalled()
+
+      expect(walletService.account).toBe('old account')
     })
   })
   describe('connect', () => {
@@ -257,6 +268,42 @@ describe('WalletService', () => {
       return walletService.connect('HTTP')
     })
 
+    describe('checkForAccountChange', () => {
+      it('should emit account.changed if the account does not match the local account', async () => {
+        expect.assertions(1)
+        const unlockAccountsOnNode = [
+          '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+        ]
+
+        accountsAndYield(unlockAccountsOnNode)
+
+        walletService.emit = jest.fn()
+
+        await walletService.checkForAccountChange('prior')
+
+        expect(walletService.emit).toHaveBeenCalledWith(
+          'account.changed',
+          '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+        )
+      })
+
+      it('should not emit account.changed if the account does match the local account', async () => {
+        expect.assertions(1)
+        const unlockAccountsOnNode = [
+          '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+        ]
+
+        accountsAndYield(unlockAccountsOnNode)
+
+        walletService.emit = jest.fn()
+
+        await walletService.checkForAccountChange(
+          '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+        )
+
+        expect(walletService.emit).not.toHaveBeenCalled()
+      })
+    })
     describe('getAccount', () => {
       describe('when no account was passed but the node has an unlocked account', () => {
         it('should load a local account and emit the ready event', done => {

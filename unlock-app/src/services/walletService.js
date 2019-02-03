@@ -14,6 +14,7 @@ import {
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../errors'
 import { POLLING_INTERVAL } from '../constants'
+import { delay } from '../utils/durations'
 
 const { unlockAddress } = configure()
 
@@ -26,21 +27,16 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends EventEmitter {
-  constructor(availableProviders, timeout, runningOnServer) {
+  constructor(availableProviders, runningOnServer, wait = delay) {
     super()
     this.providers = availableProviders
     this.ready = false
     this.providerName = null
     this.web3 = null
-    this.pollForAccountChange = this.pollForAccountChange.bind(
-      this,
-      timeout,
-      runningOnServer
-    )
 
     this.on('ready', () => {
       this.ready = true
-      timeout(this.pollForAccountChange, POLLING_INTERVAL)
+      this.pollForAccountChange(wait, runningOnServer)
     })
   }
 
@@ -102,8 +98,18 @@ export default class WalletService extends EventEmitter {
    */
   async pollForAccountChange(timeout, isServer) {
     if (isServer) return
-    this.account = await this.checkForAccountChange(true, this.account)
-    timeout(this.pollForAccountChange, POLLING_INTERVAL)
+    while (true) {
+      try {
+        await timeout(POLLING_INTERVAL)
+      } catch (e) {
+        return // if the timeout throws, we don't start the loop, this is primarily for testing
+      }
+      try {
+        this.account = await this.checkForAccountChange(this.account)
+      } catch (e) {
+        continue // if the account poll fails, silently ignore it
+      }
+    }
   }
 
   async checkForAccountChange(priorAddress) {
