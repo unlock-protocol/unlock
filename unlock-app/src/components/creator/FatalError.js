@@ -126,6 +126,21 @@ export const mapping = {
   '*': DefaultError,
 }
 
+export function mapErrorToComponent(
+  error,
+  errorMetadata,
+  overrideMapping = {}
+) {
+  // if the error condition exists, set it to the mapped fatal error component
+  // or to the fallback
+  // if no error exists, set it to false
+  const Error = error
+    ? overrideMapping[error] || mapping[error] || mapping['*']
+    : false
+
+  return Error && <Error {...errorMetadata} />
+}
+
 export default {
   DefaultError,
   WrongNetwork,
