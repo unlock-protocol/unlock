@@ -11,10 +11,8 @@ describe('postMessageMiddleware', () => {
 
       const window = {
         parent: {
-          contentWindow: {
-            postMessage: jest.fn(),
-            origin: 'origin',
-          },
+          postMessage: jest.fn(),
+          origin: 'origin',
         },
       }
       window.self = window
@@ -25,7 +23,7 @@ describe('postMessageMiddleware', () => {
       middleware()(next)(action)
 
       expect(next).toHaveBeenCalledWith(action)
-      expect(window.parent.contentWindow.postMessage).toHaveBeenCalledWith(
+      expect(window.parent.postMessage).toHaveBeenCalledWith(
         'redirect',
         'origin'
       )
