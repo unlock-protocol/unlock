@@ -11,82 +11,80 @@ const router = express.Router()
 
 const Op = Sequelize.Op
 
-router.put('/lock/:lockAddress', function(req, res) {
+router.put('/lock/:lockAddress', async (req, res) => {
   let newAddress = req.body.address
   let tempAddress = req.params.lockAddress
 
   if (tempAddress && newAddress) {
-    Lock.findOne({
-      where: {
-        address: { [Op.eq]: tempAddress },
-        owner: { [Op.eq]: req.owner },
-      },
-      raw: true,
-    })
-      .then(result => {
-        result.address = newAddress
-        Lock.create(result).then(() => {
-          logger.logLockClone(tempAddress, result.address)
-          res.sendStatus(202)
-        })
+    try {
+      let lock = await Lock.findOne({
+        where: {
+          address: { [Op.eq]: tempAddress },
+          owner: { [Op.eq]: req.owner },
+        },
+        raw: true,
       })
-      .catch(() => {
-        logger.logCloneUnable(tempAddress, req.owner)
-        res.sendStatus(412)
-      })
+
+      lock.address = newAddress
+      let updatedLock = await Lock.create(lock)
+      logger.logLockClone(tempAddress, updatedLock.address)
+      res.sendStatus(202)
+    } catch (e) {
+      logger.logCloneUnable(tempAddress, req.owner)
+      res.sendStatus(412)
+    }
   } else {
     logger.logCloneMissingInfo(tempAddress)
     res.sendStatus(428)
   }
 })
 
-router.post('/lock', function(req, res) {
+router.post('/lock', async (req, res) => {
   let lock = req.body
   if (lock.address && lock.name) {
-    Lock.create({
-      name: lock.name,
-      address: lock.address,
-      owner: req.owner,
-    })
-      .then(() => {
-        logger.logLockDetailsStored(lock.address)
-        res.sendStatus(200)
+    try {
+      await Lock.create({
+        name: lock.name,
+        address: lock.address,
+        owner: req.owner,
       })
-      .catch(() => {
-        logger.logAttemptedOverwrite(lock.address)
-        res.sendStatus(412)
-      })
+      logger.logLockDetailsStored(lock.address)
+      res.sendStatus(200)
+    } catch (e) {
+      logger.logAttemptedOverwrite(lock.address)
+      res.sendStatus(412)
+    }
   } else {
     res.sendStatus(400)
   }
 })
 
-router.get('/lock/:lockAddress', function(req, res) {
+router.get('/lock/:lockAddress', async (req, res) => {
   logger.logLockDetailsRequest(req.params.lockAddress)
-  Lock.findOne({
+  let lock = await Lock.findOne({
     where: { address: { [Op.eq]: req.params.lockAddress } },
-  }).then(lock => {
-    if (lock == null) {
-      res.sendStatus(404)
-    } else {
-      res.json({
-        name: lock.name,
-      })
-    }
   })
+
+  if (lock == null) {
+    res.sendStatus(404)
+  } else {
+    res.json({
+      name: lock.name,
+    })
+  }
 })
 
-router.get('/:owner/locks', function(req, res) {
+router.get('/:owner/locks', async (req, res) => {
   const owner = req.params.owner
 
-  Lock.findAll({
+  let locks = await Lock.findAll({
     attributes: ['name', 'address'],
     where: {
       owner: { [Op.eq]: owner },
     },
-  }).then(locks => {
-    res.json({ locks: locks })
   })
+
+  res.json({ locks: locks })
 })
 
 app.use(cors())

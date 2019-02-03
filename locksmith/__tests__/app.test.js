@@ -14,9 +14,9 @@ const lockUpdateDetails = {
   currentAddress: 'jqfqod74',
   address: '0x4983D5ECDc5cc0E499c2D23BF4Ac32B982bAe53a',
   owner: validLockOwner,
-} 
+}
 
-const validLockDetails  =  {
+const validLockDetails = {
   address: 'jqa6dnp1',
   name: 'oioioi',
   expirationDuration: 2592000,
@@ -25,214 +25,210 @@ const validLockDetails  =  {
   owner: validLockOwner,
 }
 
-const ownedLocks = [{
-  name: 'a mighty fine lock',
-  address: 'jqfqod74',
-  owner: '0x423893453',
-},{
-  name: 'A random other lock',
-  address: 'jqfqod75',
-  owner: '0x423893453',
-}]
+const ownedLocks = [
+  {
+    name: 'a mighty fine lock',
+    address: 'jqfqod74',
+    owner: '0x423893453',
+  },
+  {
+    name: 'A random other lock',
+    address: 'jqfqod75',
+    owner: '0x423893453',
+  },
+]
 
-const savingLockHeader = 'Bearer eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJsb2NrIjp7ImFkZHJlc3MiOiJqcWE2ZG5wMSIsIm5hbWUiOiJva' + 
-                         'W9pb2kiLCJleHBpcmF0aW9uRHVyYXRpb24iOjI1OTIwMDAsImtleVByaWNlIjoiMTAwMDAwMDAwMDAwMDAwMDAiLCJtYXhOd' +
-                         'W1iZXJPZktleXMiOjEwLCJvd25lciI6IjB4QWFBZEVFRDRjMEI4NjFjQjM2ZjRjRTAwNmE5QzkwQkEyRTQzZmRjMiJ9LCJpY' +
-                         'XQiOjE1NDYxMzA4MzUsImV4cCI6MTU0NjEzMDgzOCwiaXNzIjoiMHhBYUFkRUVENGMwQjg2MWNCMzZmNGNFMDA2YTlDOTBCQ' + 
-                         'TJFNDNmZGMyIn0.0xd36a7842eda1b2267c08b204407f9e71024a2152ae772882a1fa41a02696aee578688f02ef6c301' +
-                         '451de95793bde669198359f0820fb35f6ba1303e89727a52601'
-const updatingLockHeader ='Bearer eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJjdXJyZW50QWRkcmVzcyI6ImpxZnFvZDc0IiwiYWRkcmVzcyI6' + 
-                          'IjB4NDk4M0Q1RUNEYzVjYzBFNDk5YzJEMjNCRjRBYzMyQjk4MmJBZTUzYSIsIm93bmVyIjoiMHhBYUFkRUVENGMwQjg2MWN' + 
-                          'CMzZmNGNFMDA2YTlDOTBCQTJFNDNmZGMyIiwiaWF0IjoxNTQ2NDY3MjYxLCJleHAiOjE1NDY0NjcyNjQsImlzcyI6IjB4QW' + 
-                          'FBZEVFRDRjMEI4NjFjQjM2ZjRjRTAwNmE5QzkwQkEyRTQzZmRjMiJ9.0x0c3affb75a12cbf7e3c732aed4bf82dbe5c4ba' +
-                          'ddf10ecb354585a5b7e328d25552a9092d7fd518c4ff21b0f5860fda6041a2340d2ad86b7150a0dfbf15c82c1500'
+const savingLockHeader =
+  'Bearer eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJsb2NrIjp7ImFkZHJlc3MiOiJqcWE2ZG5wMSIsIm5hbWUiOiJva' +
+  'W9pb2kiLCJleHBpcmF0aW9uRHVyYXRpb24iOjI1OTIwMDAsImtleVByaWNlIjoiMTAwMDAwMDAwMDAwMDAwMDAiLCJtYXhOd' +
+  'W1iZXJPZktleXMiOjEwLCJvd25lciI6IjB4QWFBZEVFRDRjMEI4NjFjQjM2ZjRjRTAwNmE5QzkwQkEyRTQzZmRjMiJ9LCJpY' +
+  'XQiOjE1NDYxMzA4MzUsImV4cCI6MTU0NjEzMDgzOCwiaXNzIjoiMHhBYUFkRUVENGMwQjg2MWNCMzZmNGNFMDA2YTlDOTBCQ' +
+  'TJFNDNmZGMyIn0.0xd36a7842eda1b2267c08b204407f9e71024a2152ae772882a1fa41a02696aee578688f02ef6c301' +
+  '451de95793bde669198359f0820fb35f6ba1303e89727a52601'
+const updatingLockHeader =
+  'Bearer eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJjdXJyZW50QWRkcmVzcyI6ImpxZnFvZDc0IiwiYWRkcmVzcyI6' +
+  'IjB4NDk4M0Q1RUNEYzVjYzBFNDk5YzJEMjNCRjRBYzMyQjk4MmJBZTUzYSIsIm93bmVyIjoiMHhBYUFkRUVENGMwQjg2MWN' +
+  'CMzZmNGNFMDA2YTlDOTBCQTJFNDNmZGMyIiwiaWF0IjoxNTQ2NDY3MjYxLCJleHAiOjE1NDY0NjcyNjQsImlzcyI6IjB4QW' +
+  'FBZEVFRDRjMEI4NjFjQjM2ZjRjRTAwNmE5QzkwQkEyRTQzZmRjMiJ9.0x0c3affb75a12cbf7e3c732aed4bf82dbe5c4ba' +
+  'ddf10ecb354585a5b7e328d25552a9092d7fd518c4ff21b0f5860fda6041a2340d2ad86b7150a0dfbf15c82c1500'
 
-beforeEach (done => {
-  Lock.create(testLockDetails).then(() => done())
+beforeEach(async () => {
+  await Lock.create(testLockDetails)
 })
 
-afterEach(done => {
-  Lock.truncate().then(() => done() )
+afterEach(async () => {
+  await Lock.truncate()
 })
 
 describe('Requesting lock details', () => {
   describe('when the lock details are available', () => {
-    test('it should return the name of the lock', () => {
-      return request(app)
-        .get(`/lock/${testLockDetails.address}`)
-        .then(response => {
-          expect(response.body).toMatchObject({ name: 'Test Lock' })
-        })
+    test('it should return the name of the lock', async () => {
+      expect.assertions(1)
+      let response = await request(app).get(`/lock/${testLockDetails.address}`)
+      expect(response.body).toMatchObject({ name: 'Test Lock' })
     })
 
-    test('should return an OK status code', () => {
-      return request(app)
-        .get(`/lock/${testLockDetails.address}`)
-        .then(response => {
-          expect(response.statusCode).toBe(200)
-        })
+    test('should return an OK status code', async () => {
+      expect.assertions(1)
+      let response = await request(app).get(`/lock/${testLockDetails.address}`)
+      expect(response.statusCode).toBe(200)
     })
   })
 
   describe('when the lock details are unavailable', () => {
-    test('it should returns an appropriate error code', () => {
-      return request(app)
-        .get('/lock/0xdeadbeef')
-        .then(response => {
-          expect(response.statusCode).toBe(404)
-        })
+    test('it should returns an appropriate error code', async () => {
+      expect.assertions(1)
+      let response = await request(app).get('/lock/0xdeadbeef')
+
+      expect(response.statusCode).toBe(404)
     })
   })
 
   describe('Setting lock details', () => {
-    test('it saves the passed the information', done => {
+    test('it saves the passed the information', async () => {
+      expect.assertions(1)
       Date.now = jest.fn(() => 1546130837000)
-      return request(app)
+
+      await request(app)
         .post('/lock')
         .set('Accept', /json/)
         .set('Authorization', savingLockHeader)
         .send(validLockDetails)
-        .then(() => {
-          Lock.findOne({ where: { address: 'jqa6dnp1' } }).then(record => {
-            expect(record.name).toBe(validLockDetails.name)
-            done()
-          })
-        })
+
+      let record = await Lock.findOne({ where: { address: 'jqa6dnp1' } })
+      expect(record.name).toBe(validLockDetails.name)
     })
 
-    test('it returns an OK status code', done => {
+    test('it returns an OK status code', async () => {
+      expect.assertions(1)
       Date.now = jest.fn(() => 1546130837000)
-      return request(app)
+      let response = await request(app)
         .post('/lock')
         .set('Accept', /json/)
         .set('Authorization', savingLockHeader)
         .send(validLockDetails)
-        .then(response => {
-          expect(response.statusCode).toBe(200)
-          done()
-        })
+
+      expect(response.statusCode).toBe(200)
     })
 
-    describe('when attempting to set details for an existing lock', () =>{
-      test('it return a 412 status code', done => {
+    describe('when attempting to set details for an existing lock', () => {
+      test('it return a 412 status code', async () => {
+        expect.assertions(1)
         Date.now = jest.fn(() => 1546130837000)
-        Lock.create({
+
+        await Lock.create({
           address: validLockDetails.address,
           owner: validLockDetails.owner,
-        }).then(() => {
-          request(app)
-            .post('/lock')
-            .set('Accept', /json/)
-            .set('Authorization', savingLockHeader)
-            .send(validLockDetails)
-            .then(response => {
-              expect(response.statusCode).toBe(412)
-              done()
-            })        
         })
+
+        let response = await request(app)
+          .post('/lock')
+          .set('Accept', /json/)
+          .set('Authorization', savingLockHeader)
+          .send(validLockDetails)
+
+        expect(response.statusCode).toBe(412)
       })
     })
   })
 
   describe('Updating lock details', () => {
     describe('when the lock exists', () => {
-      test('it updates the lock details', done => {
+      test('it updates the lock details', async () => {
+        expect.assertions(2)
         Date.now = jest.fn(() => 1546467262000)
 
-        Lock.create({
+        await Lock.create({
           name: 'a mighty fine lock',
           address: 'jqfqod74',
           owner: validLockOwner,
-        }).then(() => {
-          request(app)
-            .put('/lock/jqfqod74')
-            .set('Accept', /json/)
-            .set('Authorization', updatingLockHeader)
-            .send(lockUpdateDetails)
-            .then(response => {
-              Lock.findOne({ where: { address: lockUpdateDetails.address} }).then((lock) => {
-                expect(lock.address).toBe(lockUpdateDetails.address)
-                expect(response.statusCode).toBe(202)
-                done()
-              })
-            })
         })
-      })
-    })
 
-    describe('when the lock does not currently exist', () => {
-      test('it returns a 412 status code', done => {
-        Date.now = jest.fn(() => 1546467262000)
-        request(app)
+        let response = await request(app)
           .put('/lock/jqfqod74')
           .set('Accept', /json/)
           .set('Authorization', updatingLockHeader)
           .send(lockUpdateDetails)
-          .then(response => {
-            expect(response.statusCode).toBe(412)
-            done()
-          })
+
+        let lock = await Lock.findOne({
+          where: { address: lockUpdateDetails.address },
+        })
+        expect(lock.address).toBe(lockUpdateDetails.address)
+        expect(response.statusCode).toBe(202)
+      })
+    })
+
+    describe('when the lock does not currently exist', () => {
+      test('it returns a 412 status code', async () => {
+        expect.assertions(1)
+        Date.now = jest.fn(() => 1546467262000)
+        let response = await request(app)
+          .put('/lock/jqfqod74')
+          .set('Accept', /json/)
+          .set('Authorization', updatingLockHeader)
+          .send(lockUpdateDetails)
+
+        expect(response.statusCode).toBe(412)
       })
     })
 
     describe('when the update requester is not the lock owner', () => {
-      test('it returns a 412 status code', done => {
+      test('it returns a 412 status code', async () => {
+        expect.assertions(1)
         Date.now = jest.fn(() => 1546467262000)
-        Lock.create({
+        await Lock.create({
           name: 'a mighty fine lock',
           address: 'jqfqod74',
           owner: '0x423893453',
-        }).then(() => {
-          request(app)
-            .put('/lock/jqfqod74')
-            .set('Accept', /json/)
-            .set('Authorization', updatingLockHeader)
-            .send(lockUpdateDetails)
-            .then(response => {
-              expect(response.statusCode).toBe(412)
-              done()
-            })
-        })        
+        })
+
+        let response = await request(app)
+          .put('/lock/jqfqod74')
+          .set('Accept', /json/)
+          .set('Authorization', updatingLockHeader)
+          .send(lockUpdateDetails)
+
+        expect(response.statusCode).toBe(412)
       })
     })
   })
 })
 
 describe('Requesting Lock details of a given address', () => {
-  beforeAll((done) => {
-    Lock.bulkCreate(ownedLocks).then(() => done())
+  beforeAll(async () => {
+    await Lock.bulkCreate(ownedLocks)
   })
 
   describe('when the address owns locks', () => {
-    const owner = '0x423893453' 
-    it('return the details of the owned locks', done => {
-      request(app)
+    const owner = '0x423893453'
+    it('return the details of the owned locks', async () => {
+      expect.assertions(1)
+      let response = await request(app)
         .get(`/${owner}/locks`)
         .set('Accept', /json/)
-        .then(response => {
-          expect(response.body.locks.sort()).toEqual([
-            {
-              name: 'a mighty fine lock',
-              address: 'jqfqod74',
-            },
-            {
-              name: 'A random other lock',
-              address: 'jqfqod75',
-            }].sort())
-          done()
-        })      
+
+      expect(response.body.locks.sort()).toEqual(
+        [
+          {
+            name: 'a mighty fine lock',
+            address: 'jqfqod74',
+          },
+          {
+            name: 'A random other lock',
+            address: 'jqfqod75',
+          },
+        ].sort()
+      )
     })
   })
 
   describe('when the address does not own locks', () => {
-    it('returns an empty collection', done => {
-      request(app)
+    it('returns an empty collection', async () => {
+      expect.assertions(1)
+      let response = await request(app)
         .get('/0xd489fF3/locks')
         .set('Accept', /json/)
-        .then(response => {
-          expect(response.body).toEqual({locks : [] })
-          done()
-        })
+      expect(response.body).toEqual({ locks: [] })
     })
   })
 })
