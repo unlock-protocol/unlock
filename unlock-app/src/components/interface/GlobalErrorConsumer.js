@@ -2,35 +2,24 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { GlobalErrorContext } from '../../utils/GlobalErrorProvider'
-import { mapping } from '../creator/FatalError'
 import Layout from './Layout'
+import { mapErrorToComponent } from '../creator/FatalError'
 
 const Consumer = GlobalErrorContext.Consumer
 
-export const displayError = (error, children) => {
+export const displayError = (error, errorMetadata, children) => {
   if (error) {
-    return <Layout title="">{error}</Layout>
+    const Error = mapErrorToComponent(error, errorMetadata)
+    return <Layout title="">{Error}</Layout>
   }
   return <>{children}</>
 }
 
-export default function GlobalErrorConsumer({
-  displayError,
-  overrideMapping,
-  children,
-}) {
+export default function GlobalErrorConsumer({ displayError, children }) {
   return (
     <Consumer>
       {({ error, errorMetadata }) => {
-        // if the error condition exists, set it to the mapped fatal error component
-        // or to the fallback
-        // if no error exists, set it to false
-        const Error = error
-          ? overrideMapping[error] || mapping[error] || mapping['*']
-          : false
-
-        // call displayError with either false or the error element, and our child elements
-        return displayError(Error && <Error {...errorMetadata} />, children)
+        return displayError(error, errorMetadata, children)
       }}
     </Consumer>
   )
@@ -39,10 +28,8 @@ export default function GlobalErrorConsumer({
 GlobalErrorConsumer.propTypes = {
   children: PropTypes.node.isRequired,
   displayError: PropTypes.func,
-  overrideMapping: PropTypes.objectOf(PropTypes.func),
 }
 
 GlobalErrorConsumer.defaultProps = {
   displayError,
-  overrideMapping: {},
 }

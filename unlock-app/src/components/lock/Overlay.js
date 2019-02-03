@@ -8,10 +8,12 @@ import { hideModal, showModal } from '../../actions/modal'
 import { unlockPage } from '../../services/iframeService'
 import { LockedFlag } from './UnlockFlag'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
+import { mapErrorToComponent } from '../creator/FatalError'
 
-export function displayError(error, children) {
+export function displayError(error, errorMetadata, children) {
   if (error) {
-    return <>{error}</>
+    const Error = mapErrorToComponent(error, errorMetadata)
+    return Error
   }
   return <>{children}</>
 }

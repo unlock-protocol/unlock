@@ -10,7 +10,7 @@ import Overlay, {
   displayError,
 } from '../../../components/lock/Overlay'
 import { GlobalErrorContext } from '../../../utils/GlobalErrorProvider'
-import { FATAL_NO_USER_ACCOUNT } from '../../../errors'
+import { FATAL_NO_USER_ACCOUNT, FATAL_MISSING_PROVIDER } from '../../../errors'
 import createUnlockStore from '../../../createUnlockStore'
 import { ConfigContext } from '../../../utils/withConfig'
 
@@ -61,17 +61,17 @@ describe('Overlay', () => {
   describe('displayError', () => {
     it('should display children if there is no error', () => {
       expect.assertions(1)
-      const wrapper = rtl.render(displayError(false, <div>children</div>))
+      const wrapper = rtl.render(displayError(false, {}, <div>children</div>))
 
       expect(wrapper.getByText('children')).not.toBeNull()
     })
     it('should display error if present', () => {
       expect.assertions(1)
       const wrapper = rtl.render(
-        displayError(<div>error</div>, <div>children</div>)
+        displayError(FATAL_MISSING_PROVIDER, {}, <div>children</div>)
       )
 
-      expect(wrapper.getByText('error')).not.toBeNull()
+      expect(wrapper.getByText('Wallet missing')).not.toBeNull()
     })
   })
   describe('error replacement', () => {
