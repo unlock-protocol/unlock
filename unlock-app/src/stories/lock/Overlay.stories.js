@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { Overlay } from '../../components/lock/Overlay'
+import Overlay from '../../components/lock/Overlay'
 import createUnlockStore from '../../createUnlockStore'
 import { GlobalErrorContext } from '../../utils/GlobalErrorProvider'
 import { FATAL_WRONG_NETWORK } from '../../errors'
@@ -10,7 +10,10 @@ import { ConfigContext } from '../../utils/withConfig'
 const ErrorProvider = GlobalErrorContext.Provider
 const ConfigProvider = ConfigContext.Provider
 
-const config = {}
+const config = {
+  isInIframe: true,
+  requiredConfirmations: 12,
+}
 
 const store = createUnlockStore({
   currency: {

@@ -10,14 +10,20 @@ import { LockedFlag } from './UnlockFlag'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { mapErrorToComponent } from '../creator/FatalError'
 import { FATAL_NO_USER_ACCOUNT } from '../../errors'
+import withConfig from '../../utils/withConfig'
 
-export function displayError(error, errorMetadata, children) {
-  if (error && code !== FATAL_NO_USER_ACCOUNT) {
+export const displayError = isMainWindow =>
+  function overlayDisplayError(error, errorMetadata, children) {
     const Error = mapErrorToComponent(error, errorMetadata)
-    return Error
+
+    if (isMainWindow && error) {
+      return Error
+    }
+    if (!isMainWindow && error && error !== FATAL_NO_USER_ACCOUNT) {
+      return Error
+    }
+    return <>{children}</>
   }
-  return <>{children}</>
-}
 
 export const Overlay = ({
   locks,
@@ -25,6 +31,7 @@ export const Overlay = ({
   showModal,
   scrollPosition,
   openInNewWindow,
+  config: { isInIframe },
 }) => (
   <FullPage>
     <Banner scrollPosition={scrollPosition}>
@@ -32,7 +39,7 @@ export const Overlay = ({
         You have reached your limit of free articles. Please purchase access
       </Headline>
       <Locks>
-        <GlobalErrorConsumer displayError={displayError}>
+        <GlobalErrorConsumer displayError={displayError(!isInIframe)}>
           {locks.map(lock => (
             <Lock
               key={JSON.stringify(lock)}
@@ -55,6 +62,7 @@ Overlay.propTypes = {
   showModal: PropTypes.func.isRequired,
   scrollPosition: PropTypes.number.isRequired,
   openInNewWindow: PropTypes.bool.isRequired,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 export const mapStateToProps = ({ account }) => ({
@@ -71,10 +79,12 @@ export const mapDispatchToProps = (dispatch, { locks }) => ({
   },
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Overlay)
+export default withConfig(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Overlay)
+)
 
 const FullPage = styled.div`
   position: fixed; /* Sit on top of the page content */

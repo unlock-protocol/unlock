@@ -61,14 +61,36 @@ describe('Overlay', () => {
   describe('displayError', () => {
     it('should display children if there is no error', () => {
       expect.assertions(1)
-      const wrapper = rtl.render(displayError(false, {}, <div>children</div>))
+      const wrapper = rtl.render(displayError(true)(false, {}, <div>children</div>))
 
       expect(wrapper.getByText('children')).not.toBeNull()
     })
     it('should display error if present', () => {
       expect.assertions(1)
       const wrapper = rtl.render(
-        displayError(FATAL_MISSING_PROVIDER, {}, <div>children</div>)
+        displayError(true)(FATAL_MISSING_PROVIDER, {}, <div>children</div>)
+      )
+
+      expect(wrapper.getByText('error')).not.toBeNull()
+    })
+    it('should display children if account is missing and in the iframe', () => {
+      expect.assertions(1)
+      const wrapper = rtl.render(
+        displayError(false)(
+          FATAL_NO_USER_ACCOUNT, {}
+          <div>children</div>,
+        )
+      )
+
+      expect(wrapper.queryByText('error')).toBeNull()
+    })
+    it('should display error if account is missing and in the main window', () => {
+      expect.assertions(1)
+      const wrapper = rtl.render(
+        displayError(true)(
+          FATAL_NO_USER_ACCOUNT, {},
+          <div>children</div>,
+        )
       )
 
       expect(wrapper.getByText('Wallet missing')).not.toBeNull()
@@ -87,7 +109,9 @@ describe('Overlay', () => {
       expect.assertions(3)
       const wrapper = rtl.render(
         <Provider store={store}>
-          <ConfigProvider value={{}}>
+          <ConfigProvider
+            value={{ requiredConfirmations: 12, isInIframe: true }}
+          >
             <ErrorProvider value={{ error: false, errorMetadata: {} }}>
               <Overlay
                 scrollPosition={0}
@@ -111,16 +135,20 @@ describe('Overlay', () => {
     it('displays error, headline, and flag when there is an error', () => {
       const wrapper = rtl.render(
         <Provider store={store}>
-          <ErrorProvider
-            value={{ error: FATAL_MISSING_PROVIDER, errorMetadata: {} }}
+          <ConfigProvider
+            value={{ requiredConfirmations: 12, isInIframe: true }}
           >
-            <Overlay
-              scrollPosition={0}
-              hideModal={() => {}}
-              showModal={() => {}}
-              locks={[lock]}
-            />
-          </ErrorProvider>
+            <ErrorProvider
+              value={{ error: FATAL_MISSING_PROVIDER, errorMetadata: {} }}
+            >
+              <Overlay
+                scrollPosition={0}
+                hideModal={() => {}}
+                showModal={() => {}}
+                locks={[lock]}
+              />
+            </ErrorProvider>
+          </ConfigProvider>
         </Provider>
       )
 
@@ -138,7 +166,9 @@ describe('Overlay', () => {
           <ErrorProvider
             value={{ error: FATAL_NO_USER_ACCOUNT, errorMetadata: {} }}
           >
-            <ConfigContext.Provider value={{ requiredConfirmations: 12 }}>
+            <ConfigProvider
+              value={{ requiredConfirmations: 12, isInIframe: true }}
+            >
               <Overlay
                 scrollPosition={0}
                 hideModal={() => {}}
@@ -146,7 +176,7 @@ describe('Overlay', () => {
                 locks={[lock]}
                 openInNewWindow={false}
               />
-            </ConfigContext.Provider>
+            </ConfigProvider>
           </ErrorProvider>
         </Provider>
       )
