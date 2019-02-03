@@ -12,10 +12,13 @@ beforeAll(() => {
 describe('Locksmith JWT Validation Middleware', () => {
   describe('when a valid token is received', () => {
     it('moves the request to the application', done => {
+      expect.assertions(1)
       Date.now = jest.fn(() => 1546130835000)
       var request = httpMocks.createRequest({
-        headers:  {
-          Authorization: `Bearer ${authorizationHeader.validAuthorizationHeader}`,
+        headers: {
+          Authorization: `Bearer ${
+            authorizationHeader.validAuthorizationHeader
+          }`,
         },
         body: {
           address: 'jqa6dnp1',
@@ -37,14 +40,16 @@ describe('Locksmith JWT Validation Middleware', () => {
   describe('unauthorized conditions', () => {
     describe('when a token is not provided', () => {
       test('returns a status 401 to the caller ', () => {
+        expect.assertions(1)
         const spy = jest.spyOn(response, 'sendStatus')
         tokenMiddleware(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
     })
 
-    describe('when a token\'s header is not provided as valid JSON', () => {
+    describe("when a token's header is not provided as valid JSON", () => {
       test('returns a status 401 to the caller', () => {
+        expect.assertions(1)
         var request = httpMocks.createRequest({
           headers: {
             Authorization: 'Bearer abcdde.eyJuYW1lIjogInBlcnNvbiJ9.zcedfefed',
@@ -57,8 +62,9 @@ describe('Locksmith JWT Validation Middleware', () => {
       })
     })
 
-    describe('when a token\'s payload is not provided as valid JSON', () => {
+    describe("when a token's payload is not provided as valid JSON", () => {
       test('returns a  status 401 to the caller', () => {
+        expect.assertions(1)
         var request = httpMocks.createRequest({
           headers: {
             Authorization:
@@ -74,6 +80,7 @@ describe('Locksmith JWT Validation Middleware', () => {
 
     describe('when an token not matching the signature is provided', () => {
       test('returns a status 401 to the caller ', () => {
+        expect.assertions(1)
         var request = httpMocks.createRequest({
           headers: {
             Authorization: 'Bearer abcdde.wdsgrg.zcedfefed',
@@ -88,6 +95,7 @@ describe('Locksmith JWT Validation Middleware', () => {
 
     describe('when the payload does not contain the iss claim', () => {
       test('returns a status 401 to the caller ', () => {
+        expect.assertions(1)
         var request = httpMocks.createRequest({
           headers: {
             Authorization: `Bearer ${authorizationHeader.missingISS}`,
@@ -102,6 +110,7 @@ describe('Locksmith JWT Validation Middleware', () => {
 
     describe('when the payload does not contain the iat claim', () => {
       test('returns a status 401 to the caller ', () => {
+        expect.assertions(1)
         var request = httpMocks.createRequest({
           headers: {
             Authorization: `Bearer ${authorizationHeader.missingIAT}`,
@@ -116,6 +125,7 @@ describe('Locksmith JWT Validation Middleware', () => {
 
     describe('when the payload does not contain the exp claim', () => {
       test('returns a status 401 to the caller ', () => {
+        expect.assertions(1)
         var request = httpMocks.createRequest({
           headers: {
             Authorization: `Bearer ${authorizationHeader.missingExpiry}`,
@@ -130,6 +140,7 @@ describe('Locksmith JWT Validation Middleware', () => {
 
     describe('when the payload contains an iss claim but it isnt the signee', () => {
       test('returns a status 401 to the caller ', () => {
+        expect.assertions(1)
         var request = httpMocks.createRequest({
           headers: {
             Authorization: `Bearer ${authorizationHeader.nonsigneeIssuer}`,
@@ -144,9 +155,10 @@ describe('Locksmith JWT Validation Middleware', () => {
 
     describe('when the expiry window is larger than expected', () => {
       test('returns a status 401 to the caller ', () => {
+        expect.assertions(1)
         var request = httpMocks.createRequest({
           headers: {
-            Authorization: `Bearer ${ authorizationHeader.largeExpiryWindow }`,
+            Authorization: `Bearer ${authorizationHeader.largeExpiryWindow}`,
           },
         })
 
