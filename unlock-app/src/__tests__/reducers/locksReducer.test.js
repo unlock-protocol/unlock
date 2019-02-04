@@ -58,6 +58,17 @@ describe('locks reducer', () => {
     })
   })
 
+  it('should not add the lock when receiving CREATE_LOCK if the lock has no address', () => {
+    expect(
+      reducer(initialState, {
+        type: CREATE_LOCK,
+        lock: {
+          name: 'no address lock',
+        },
+      })
+    ).toEqual(initialState)
+  })
+
   it('should delete a lock when DELETE_TRANSACTION is called for a transaction which created that lock', () => {
     const transaction = {
       lock: lock.address,
