@@ -6,8 +6,8 @@ import {
   updateLock,
 } from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
-import { setAccount, SET_ACCOUNT } from '../actions/accounts'
-import { setNetwork, SET_NETWORK } from '../actions/network'
+import { setAccount } from '../actions/accounts'
+import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
 import { SET_PROVIDER } from '../actions/provider'
 import { addTransaction } from '../actions/transaction'
@@ -18,19 +18,27 @@ import WalletService from '../services/walletService'
 import { signatureError } from '../actions/signature'
 import { storeLockCreation } from '../actions/storage'
 import configure from '../config'
+import { NO_USER_ACCOUNT } from '../errors'
 
 const config = configure()
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
 
-// TODO: refactor the initialization part because it may not be as critical as it
-// was before.
 export default function walletMiddleware({ getState, dispatch }) {
-  // Buffer of actions waiting for connection
-  const actions = []
-
   const walletService = new WalletService()
+
+  /**
+   * Helper function which ensures that the walletService is ready
+   * before calling it or dispatches an error
+   * @param {*} callback
+   */
+  const ensureReadyBefore = callback => {
+    if (!walletService.ready) {
+      return dispatch(setError(NO_USER_ACCOUNT))
+    }
+    return callback()
+  }
 
   /**
    * When an account was changed, we dispatch the corresponding action
@@ -79,70 +87,63 @@ export default function walletMiddleware({ getState, dispatch }) {
     return walletService.getAccount()
   })
 
-  /**
-   * This is invoked when the walletService is ready. We can then (re)trigger all past actions.
-   */
-  walletService.on('ready', () => {
-    while (actions.length > 0) {
-      let action = actions.shift()
-      dispatch(action)
-    }
-  })
-
   return function(next) {
+    // Connect to the current provider
+    walletService.connect(getState().provider)
+
     return function(action) {
-      if (
-        !walletService.ready &&
-        [SET_NETWORK, SET_ACCOUNT, SET_PROVIDER].indexOf(action.type) == -1
-      ) {
-        // As long as middleware is not ready
-        // we store the action
-        actions.push(action)
-        return walletService.connect(getState().provider)
-      } else if (action.type === SET_PROVIDER) {
+      if (action.type === SET_PROVIDER) {
         walletService.connect(action.provider)
       } else if (action.type === CREATE_LOCK && action.lock.address) {
-        walletService.createLock(action.lock, getState().account.address)
-        if (config.services.storage) {
-          generateJWTToken(walletService, getState().account.address, {
-            lock: action.lock,
-          })
-            .then(token => {
-              dispatch(
-                storeLockCreation(
-                  getState().account.address,
-                  action.lock,
-                  token
+        ensureReadyBefore(() => {
+          walletService.createLock(action.lock, getState().account.address)
+          if (config.services.storage) {
+            generateJWTToken(walletService, getState().account.address, {
+              lock: action.lock,
+            })
+              .then(token => {
+                dispatch(
+                  storeLockCreation(
+                    getState().account.address,
+                    action.lock,
+                    token
+                  )
                 )
-              )
-            })
-            .catch(error => {
-              dispatch(signatureError(error))
-            })
-        }
+              })
+              .catch(error => {
+                dispatch(signatureError(error))
+              })
+          }
+        })
       } else if (action.type === PURCHASE_KEY) {
-        const account = getState().account
-        // find the lock to get its keyPrice
-        const lock = Object.values(getState().locks).find(
-          lock => lock.address === action.key.lock
-        )
-        walletService.purchaseKey(
-          action.key.lock,
-          action.key.owner,
-          lock.keyPrice,
-          account.address,
-          action.key.data
-        )
+        ensureReadyBefore(() => {
+          const account = getState().account
+          // find the lock to get its keyPrice
+          const lock = Object.values(getState().locks).find(
+            lock => lock.address === action.key.lock
+          )
+          walletService.purchaseKey(
+            action.key.lock,
+            action.key.owner,
+            lock.keyPrice,
+            account.address,
+            action.key.data
+          )
+        })
       } else if (action.type === WITHDRAW_FROM_LOCK) {
-        const account = getState().account
-        walletService.withdrawFromLock(action.lock.address, account.address)
+        ensureReadyBefore(() => {
+          const account = getState().account
+          walletService.withdrawFromLock(action.lock.address, account.address)
+        })
       } else if (action.type === UPDATE_LOCK_KEY_PRICE) {
-        const account = getState().account
-        walletService.updateKeyPrice(
-          action.address,
-          account.address,
-          action.price
-        )
+        ensureReadyBefore(() => {
+          const account = getState().account
+          walletService.updateKeyPrice(
+            action.address,
+            account.address,
+            action.price
+          )
+        })
       }
 
       next(action)
