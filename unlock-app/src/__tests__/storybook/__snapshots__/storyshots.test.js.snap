@@ -37524,7 +37524,7 @@ Object {
   background-clip: padding-box;
   grid-template-rows: 40px 140px;
   opacity: 0.5;
-  cursor: pointer;
+  cursor: not-allowed;
 }
 
 .c8 {
@@ -37545,6 +37545,10 @@ Object {
   width: 200px;
   background-color: var(--green);
   color: var(--white);
+}
+
+.c9:hover .c7 {
+  background-color: var(--activegreen);
 }
 
 .c2 {
@@ -37569,14 +37573,6 @@ Object {
   border-radius: 4px;
   background-color: var(--white);
   padding-top: 13px;
-}
-
-.c2:hover {
-  border: 1px solid var(--activegreen);
-}
-
-.c2:hover .c7 {
-  background-color: var(--activegreen);
 }
 
 .c3 {
@@ -37619,6 +37615,7 @@ Object {
         <div>
           <div
             class="c2"
+            disabled=""
           >
             <div
               class="c3"
@@ -37662,7 +37659,7 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1ws9jnj-0 yqqxp4-0 gTmtWU"
+      class="sc-1ws9jnj-0 yqqxp4-0 iFVOrM"
       disabled=""
     >
       <header
@@ -37672,7 +37669,8 @@ Object {
       </header>
       <div>
         <div
-          class="sc-1ws9jnj-3 yqqxp4-2 dzEKTb"
+          class="sc-1ws9jnj-3 yqqxp4-2 jLDnPL"
+          disabled=""
         >
           <div
             class="yqqxp4-3 kxjMda"
@@ -37789,7 +37787,7 @@ Object {
   background-clip: padding-box;
   grid-template-rows: 40px 140px;
   opacity: 0.5;
-  cursor: pointer;
+  cursor: not-allowed;
 }
 
 .c8 {
@@ -37810,6 +37808,10 @@ Object {
   width: 200px;
   background-color: var(--green);
   color: var(--white);
+}
+
+.c9:hover .c7 {
+  background-color: var(--activegreen);
 }
 
 .c2 {
@@ -37834,14 +37836,6 @@ Object {
   border-radius: 4px;
   background-color: var(--white);
   padding-top: 13px;
-}
-
-.c2:hover {
-  border: 1px solid var(--activegreen);
-}
-
-.c2:hover .c7 {
-  background-color: var(--activegreen);
 }
 
 .c3 {
@@ -37884,6 +37878,7 @@ Object {
         <div>
           <div
             class="c2"
+            disabled=""
           >
             <div
               class="c3"
@@ -37927,7 +37922,7 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1ws9jnj-0 yqqxp4-0 gTmtWU"
+      class="sc-1ws9jnj-0 yqqxp4-0 iFVOrM"
       disabled=""
     >
       <header
@@ -37937,7 +37932,8 @@ Object {
       </header>
       <div>
         <div
-          class="sc-1ws9jnj-3 yqqxp4-2 dzEKTb"
+          class="sc-1ws9jnj-3 yqqxp4-2 jLDnPL"
+          disabled=""
         >
           <div
             class="yqqxp4-3 kxjMda"
