@@ -63,7 +63,7 @@ export default function configure(
 ) {
   const isServer = typeof window === 'undefined'
   const isInIframe = inIframe(useWindow)
-  console.log('eslint should error on me')
+
   const env = runtimeConfig.unlockEnv
 
   let providers = {}

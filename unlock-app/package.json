@@ -85,7 +85,7 @@
   "lint-staged": {
     "linters": {
       "*.js": [
-        "npm run reformat",
+        "prettier-eslint --write",
         "git add"
       ]
     },
