@@ -34,25 +34,41 @@ export function show(iframe, document) {
 }
 
 export function hide(iframe, document) {
+  const expandedWidth = '256px'
+  const collapsedWidth = '30px'
+  const height = '80px'
+
+  // general settings
   document.body.style.overflow = ''
   iframe.style.backgroundColor = 'transparent'
   iframe.style.backgroundImage = 'none'
-  iframe.style.width = '134px'
-  iframe.style.height = '80px'
+  iframe.contentDocument.body.style.margin = '0'
+  iframe.contentDocument.body.style.height = height
+
+  // so that there's no scroll when it goes off the edge
+  iframe.style.overflow = 'hidden'
+  iframe.contentDocument.body.style.overflow = 'hidden'
+
+  // new dimensions
+  iframe.style.width = expandedWidth
+  iframe.style.height = height
+
+  // positioning
   iframe.style.left = null
   iframe.style.top = null
   iframe.style.right = '0'
   iframe.style.bottom = '105px'
-  iframe.style.overflow = 'hidden'
+
+  // Animation
   iframe.style.transition = 'width 0.4s ease-in'
-  iframe.contentDocument.body.style.margin = '0'
-  iframe.contentDocument.body.style.height = '80px'
-  iframe.contentDocument.body.style.overflow = 'hidden'
-  setTimeout(() => {iframe.style.width = '30px'}, SHOW_FLAG_FOR)
+
+  setTimeout(() => {
+    iframe.style.width = collapsedWidth
+  }, SHOW_FLAG_FOR)
   iframe.addEventListener('mouseenter', () => {
-    iframe.style.width = '134px'
+    iframe.style.width = expandedWidth
   })
   iframe.addEventListener('mouseleave', () => {
-    iframe.style.width = '30px'
+    iframe.style.width = collapsedWidth
   })
 }
