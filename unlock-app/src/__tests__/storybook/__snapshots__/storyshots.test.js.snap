@@ -23024,8 +23024,6 @@ Object {
 }
 
 .c6 {
-  float: left;
-  margin-right: 20px;
   padding-top: 2px;
 }
 
@@ -23198,6 +23196,14 @@ Object {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
     height: auto;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c5 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
   }
 }
 
@@ -23734,10 +23740,10 @@ Object {
           class="sc-1glv5oz-0 cOQbpj"
         >
           <h1
-            class="sc-1glv5oz-1 jZepcb"
+            class="sc-1glv5oz-1 eozQRg"
           >
             <div
-              class="sc-1glv5oz-5 dCcmGu"
+              class="sc-1glv5oz-5 bgXdkG"
             >
               <a
                 href="/"
@@ -24345,8 +24351,6 @@ Object {
 }
 
 .c6 {
-  float: left;
-  margin-right: 20px;
   padding-top: 2px;
 }
 
@@ -24416,6 +24420,14 @@ Object {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
     height: auto;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c5 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
   }
 }
 
@@ -24736,10 +24748,10 @@ Object {
           class="sc-1glv5oz-0 cOQbpj"
         >
           <h1
-            class="sc-1glv5oz-1 jZepcb"
+            class="sc-1glv5oz-1 eozQRg"
           >
             <div
-              class="sc-1glv5oz-5 dCcmGu"
+              class="sc-1glv5oz-5 bgXdkG"
             >
               <a
                 href="/"
@@ -25161,8 +25173,6 @@ Object {
 }
 
 .c6 {
-  float: left;
-  margin-right: 20px;
   padding-top: 2px;
 }
 
@@ -25232,6 +25242,14 @@ Object {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
     height: auto;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c5 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
   }
 }
 
@@ -25552,10 +25570,10 @@ Object {
           class="sc-1glv5oz-0 cOQbpj"
         >
           <h1
-            class="sc-1glv5oz-1 jZepcb"
+            class="sc-1glv5oz-1 eozQRg"
           >
             <div
-              class="sc-1glv5oz-5 dCcmGu"
+              class="sc-1glv5oz-5 bgXdkG"
             >
               <a
                 href="/"
@@ -26250,8 +26268,6 @@ Object {
 }
 
 .c6 {
-  float: left;
-  margin-right: 20px;
   padding-top: 2px;
 }
 
@@ -26412,6 +26428,14 @@ Object {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
     height: auto;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c5 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
   }
 }
 
@@ -27617,10 +27641,10 @@ Object {
           class="sc-1glv5oz-0 cOQbpj"
         >
           <h1
-            class="sc-1glv5oz-1 jZepcb"
+            class="sc-1glv5oz-1 eozQRg"
           >
             <div
-              class="sc-1glv5oz-5 dCcmGu"
+              class="sc-1glv5oz-5 bgXdkG"
             >
               <a
                 href="/"
@@ -31363,8 +31387,6 @@ Object {
 }
 
 .c2 {
-  float: left;
-  margin-right: 20px;
   padding-top: 2px;
 }
 
@@ -31373,6 +31395,14 @@ Object {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
     height: auto;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c1 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
   }
 }
 
@@ -31587,10 +31617,10 @@ Object {
       class="sc-1glv5oz-0 cOQbpj"
     >
       <h1
-        class="sc-1glv5oz-1 jZepcb"
+        class="sc-1glv5oz-1 eozQRg"
       >
         <div
-          class="sc-1glv5oz-5 dCcmGu"
+          class="sc-1glv5oz-5 bgXdkG"
         >
           <a
             href="/"
@@ -31978,8 +32008,6 @@ Object {
 }
 
 .c2 {
-  float: left;
-  margin-right: 20px;
   padding-top: 2px;
 }
 
@@ -31988,6 +32016,14 @@ Object {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
     height: auto;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c1 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
   }
 }
 
@@ -32202,10 +32238,10 @@ Object {
       class="sc-1glv5oz-0 cOQbpj"
     >
       <h1
-        class="sc-1glv5oz-1 jZepcb"
+        class="sc-1glv5oz-1 eozQRg"
       >
         <div
-          class="sc-1glv5oz-5 dCcmGu"
+          class="sc-1glv5oz-5 bgXdkG"
         >
           <a
             href="/"
@@ -37407,8 +37443,6 @@ Object {
 }
 
 .c6 {
-  float: left;
-  margin-right: 20px;
   padding-top: 2px;
 }
 
@@ -37438,6 +37472,14 @@ Object {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
     height: auto;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c5 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
   }
 }
 
@@ -37732,10 +37774,10 @@ Object {
           class="sc-1glv5oz-0 cOQbpj"
         >
           <h1
-            class="sc-1glv5oz-1 jZepcb"
+            class="sc-1glv5oz-1 eozQRg"
           >
             <div
-              class="sc-1glv5oz-5 dCcmGu"
+              class="sc-1glv5oz-5 bgXdkG"
             >
               <a
                 href="/"

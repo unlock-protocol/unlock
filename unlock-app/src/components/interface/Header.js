@@ -107,6 +107,11 @@ const TopHeader = styled.header`
 
 const Title = styled.h1`
   color: var(--grey);
+  ${Media.phone`
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
+  `};
 `
 
 const DesktopButtons = styled.div`
@@ -207,7 +212,5 @@ const LogoContainer = styled.div`
   ${Media.nophone`
     display: none;
   `};
-  float: left;
-  margin-right: 20px;
   padding-top: 2px;
 `
