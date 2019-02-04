@@ -360,31 +360,19 @@ describe('Wallet middleware', () => {
     })
 
     describe('when the lock does not have an address', () => {
-      it('will dispatch a new action with an update included the projected address', done => {
+      it('should not try to create a lock', () => {
         expect.assertions(2)
         let lock = {
           keyPrice: '100',
           owner: account,
         }
-        const { next, invoke, store } = create()
+        const { next, invoke } = create()
         const action = { type: CREATE_LOCK, lock }
+        mockWalletService.createLock = jest.fn()
 
-        mockWalletService.generateLockAddress = jest.fn()
-        mockWalletService.generateLockAddress.mockReturnValue(
-          Promise.resolve('0xcafecafecafecafe')
-        )
-        invoke(action).then(() => {
-          expect(store.dispatch).toHaveBeenCalledWith({
-            type: 'lock/CREATE_LOCK',
-            lock: {
-              keyPrice: '100',
-              owner: { address: '0xabc' },
-              address: '0xcafecafecafecafe',
-            },
-          })
-          expect(next).not.toHaveBeenCalled()
-        })
-        done()
+        invoke(action)
+        expect(next).toHaveBeenCalled()
+        expect(mockWalletService.createLock).not.toHaveBeenCalled()
       })
     })
   })

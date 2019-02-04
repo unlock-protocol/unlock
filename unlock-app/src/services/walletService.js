@@ -1,7 +1,6 @@
 import EventEmitter from 'events'
 import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
-import ethJsUtil from 'ethereumjs-util'
 import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
@@ -216,17 +215,6 @@ export default class WalletService extends EventEmitter {
           transaction: hash,
         })
       }
-    )
-  }
-
-  async generateLockAddress() {
-    let transactionCount = await this.web3.eth.getTransactionCount(
-      this.unlockContractAddress
-    )
-    return Web3Utils.toChecksumAddress(
-      ethJsUtil.bufferToHex(
-        ethJsUtil.generateAddress(this.unlockContractAddress, transactionCount)
-      )
     )
   }
 
