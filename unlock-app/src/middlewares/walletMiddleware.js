@@ -4,7 +4,6 @@ import {
   deleteLock,
   UPDATE_LOCK_KEY_PRICE,
   updateLock,
-  createLock,
 } from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
 import { setAccount, SET_ACCOUNT } from '../actions/accounts'
@@ -102,34 +101,24 @@ export default function walletMiddleware({ getState, dispatch }) {
         return walletService.connect(getState().provider)
       } else if (action.type === SET_PROVIDER) {
         walletService.connect(action.provider)
-      } else if (action.type === CREATE_LOCK) {
-        // Create the lock
-
-        if (!action.lock.address) {
-          return walletService.generateLockAddress().then(address => {
-            action.lock.address = address
-            dispatch(createLock(action.lock))
+      } else if (action.type === CREATE_LOCK && action.lock.address) {
+        walletService.createLock(action.lock, getState().account.address)
+        if (config.services.storage) {
+          generateJWTToken(walletService, getState().account.address, {
+            lock: action.lock,
           })
-        } else {
-          walletService.createLock(action.lock, getState().account.address)
-
-          if (config.services.storage) {
-            generateJWTToken(walletService, getState().account.address, {
-              lock: action.lock,
-            })
-              .then(token => {
-                dispatch(
-                  storeLockCreation(
-                    getState().account.address,
-                    action.lock,
-                    token
-                  )
+            .then(token => {
+              dispatch(
+                storeLockCreation(
+                  getState().account.address,
+                  action.lock,
+                  token
                 )
-              })
-              .catch(error => {
-                dispatch(signatureError(error))
-              })
-          }
+              )
+            })
+            .catch(error => {
+              dispatch(signatureError(error))
+            })
         }
       } else if (action.type === PURCHASE_KEY) {
         const account = getState().account
