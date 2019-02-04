@@ -21,6 +21,7 @@ const lintStaged = path => {
 // tasks are given a path
 module.exports = {
   hooks: {
+    "pre-push": tasks(['eslint --fix .']),
     "pre-commit": tasks([svg2Components, 
                   lintStaged('unlock-app'), 
                   lintStaged('locksmith')])
