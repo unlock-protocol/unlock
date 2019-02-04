@@ -22728,7 +22728,7 @@ exports[`Storyshots Dashboard dashboard, no locks 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c8 {
+    .c10 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -22740,21 +22740,21 @@ Object {
   line-height: 24px;
 }
 
-.c8 > svg {
+.c10 > svg {
   fill: white;
   height: 24px;
   width: 24px;
 }
 
-.c8:hover {
+.c10:hover {
   background-color: var(--link);
 }
 
-.c8:hover > svg {
+.c10:hover > svg {
   fill: white;
 }
 
-.c11 {
+.c13 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -22766,21 +22766,21 @@ Object {
   line-height: 48px;
 }
 
-.c11 > svg {
+.c13 > svg {
   fill: white;
   height: 48px;
   width: 48px;
 }
 
-.c11:hover {
+.c13:hover {
   background-color: var(--link);
 }
 
-.c11:hover > svg {
+.c13:hover > svg {
   fill: white;
 }
 
-.c9 {
+.c11 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -22795,11 +22795,11 @@ Object {
   color: var(--link);
 }
 
-.c7:hover .c9 {
+.c9:hover .c11 {
   display: inline-block;
 }
 
-.c20 {
+.c22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -22809,7 +22809,7 @@ Object {
   flex-direction: column;
 }
 
-.c21 {
+.c23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -22820,22 +22820,22 @@ Object {
   padding-bottom: 0.5em;
 }
 
-.c22 {
+.c24 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c22:before {
+.c24:before {
   content: '三';
 }
 
-.c23 {
+.c25 {
   white-space: nowrap;
   text-transform: uppercase;
 }
 
-.c13 {
+.c15 {
   display: grid;
   grid-template-columns: auto 1fr 1fr;
   -webkit-align-items: center;
@@ -22845,14 +22845,14 @@ Object {
   grid-gap: 8px;
 }
 
-.c14 {
+.c16 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   font-weight: 500;
   color: var(--red);
 }
 
-.c15 {
+.c17 {
   font-family: 'IBM Plex Mono',monospace;
   display: grid;
   row-gap: 8px;
@@ -22861,7 +22861,7 @@ Object {
   grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
 }
 
-.c16 {
+.c18 {
   display: grid;
   height: 40px;
   grid-row: span 2;
@@ -22874,7 +22874,7 @@ Object {
   align-content: start;
 }
 
-.c17 {
+.c19 {
   font-weight: 100;
   text-transform: uppercase;
   -webkit-letter-spacing: 1px;
@@ -22884,7 +22884,7 @@ Object {
   font-size: 8px;
 }
 
-.c18 {
+.c20 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   width: 128px;
@@ -22893,7 +22893,7 @@ Object {
   word-break: break-all;
 }
 
-.c19 {
+.c21 {
   font-size: 16px;
   font-weight: 500;
   color: var(--darkgrey);
@@ -22907,6 +22907,17 @@ Object {
 }
 
 .c2 > svg {
+  fill: white;
+}
+
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c7 > svg {
   fill: white;
 }
 
@@ -22926,7 +22937,7 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
+.c8 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(4,24px);
@@ -22938,13 +22949,13 @@ Object {
   height: 100%;
 }
 
-.c10 {
+.c12 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c10 .c7 {
+.c12 .c9 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -22955,24 +22966,24 @@ Object {
   align-self: center;
 }
 
-.c10 .c7:nth-child(1) {
+.c12 .c9:nth-child(1) {
   pointer-events: none;
 }
 
-.c10 .c7:nth-child(2) {
+.c12 .c9:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c10 .c7 > svg {
+.c12 .c9 > svg {
   fill: var(--grey);
 }
 
-.c10 .c7:hover > svg {
+.c12 .c9:hover > svg {
   fill: var(--grey);
 }
 
-.c12 {
+.c14 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -22999,17 +23010,21 @@ Object {
   top: 50px;
 }
 
-.c12 .c7 {
+.c14 .c9 {
   margin: 24px;
 }
 
-.c12 .c7 small {
+.c14 .c9 small {
   display: block;
   color: var(--grey);
   text-align: center;
   top: 5px;
   width: 100%;
   text-align: center;
+}
+
+.c6 {
+  padding-top: 2px;
 }
 
 .c0 {
@@ -23033,7 +23048,7 @@ Object {
   width: 100%;
 }
 
-.c32 {
+.c34 {
   display: grid;
   row-gap: 16px;
   -webkit-column-gap: 32px;
@@ -23050,35 +23065,35 @@ Object {
   padding-bottom: 40px;
 }
 
-.c33 {
+.c35 {
   width: 72px;
 }
 
-.c34 {
+.c36 {
   display: grid;
   grid-gap: 16px;
 }
 
-.c34 > h1 {
+.c36 > h1 {
   font-weight: bold;
   color: var(--grey);
   margin: 0px;
   padding: 0px;
 }
 
-.c34 > p {
+.c36 > p {
   margin: 0px;
   padding: 0px;
   font-size: 16px;
   color: var(--dimgrey);
 }
 
-.c24 {
+.c26 {
   display: grid;
   grid-gap: 32px;
 }
 
-.c25 {
+.c27 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   padding-left: 8px;
@@ -23092,7 +23107,7 @@ Object {
   align-items: center;
 }
 
-.c26 {
+.c28 {
   font-family: 'IBM Plex Sans';
   font-size: 13px;
   font-weight: bold;
@@ -23106,7 +23121,7 @@ Object {
   color: var(--grey);
 }
 
-.c27 {
+.c29 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -23121,7 +23136,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c28 {
+.c30 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -23136,7 +23151,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c31 {
+.c33 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -23151,19 +23166,19 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c29 {
+  .c31 {
     display: none;
   }
 }
 
 @media only screen and (min-device-width:736px) {
-  .c30 {
+  .c32 {
     display: none;
   }
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c15 {
+  .c17 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
     grid-template-columns: 45px 145px repeat(2,80px);
@@ -23171,7 +23186,7 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c16 {
+  .c18 {
     height: 0px;
   }
 }
@@ -23185,31 +23200,45 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c5 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c12 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
+  .c12 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c14 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
+  .c14 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
   .c6 {
-    display: none;
-  }
-}
-
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c10 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-device-width:736px) {
-  .c10 {
-    display: none;
-  }
-}
-
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c12 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-device-width:736px) {
-  .c12 {
     display: none;
   }
 }
@@ -23232,13 +23261,13 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c35 {
+  .c37 {
     display: none;
   }
 }
 
 @media (max-width:500px) {
-  .c32 {
+  .c34 {
     grid-template-columns: 1fr;
     grid-auto-flow: row;
     padding: 16px;
@@ -23246,7 +23275,7 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c25 {
+  .c27 {
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
     -webkit-align-items: start;
@@ -23258,19 +23287,19 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c26 {
-    grid-row: span 2;
-  }
-}
-
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c28 {
     grid-row: span 2;
   }
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c31 {
+  .c30 {
+    grid-row: span 2;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c33 {
     display: none;
   }
 }
@@ -23312,13 +23341,33 @@ Object {
             <h1
               class="c5"
             >
+              <div
+                class="c6"
+              >
+                <a
+                  href="/"
+                >
+                  <div
+                    class="c7"
+                  >
+                    <svg
+                      viewBox="0 0 56 56"
+                    >
+                      <title />
+                      <path
+                        d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                      />
+                    </svg>
+                  </div>
+                </a>
+              </div>
               Creator Dashboard
             </h1>
             <div
-              class="c6"
+              class="c8"
             >
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="/about"
                 title="About"
               >
@@ -23335,13 +23384,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   About
                 </small>
               </a>
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="/jobs"
                 title="Join us"
               >
@@ -23357,13 +23406,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   Join us
                 </small>
               </a>
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="https://github.com/unlock-protocol/unlock"
                 title="Source Code"
               >
@@ -23377,13 +23426,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   Source Code
                 </small>
               </a>
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="https://t.me/unlockprotocol"
                 title="Telegram"
               >
@@ -23399,17 +23448,17 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   Telegram
                 </small>
               </a>
             </div>
             <div
-              class="c10"
+              class="c12"
             >
               <a
-                class="c7 c11"
+                class="c9 c13"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -23424,7 +23473,7 @@ Object {
                 
               </a>
               <a
-                class="c7 c11"
+                class="c9 c13"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -23442,29 +23491,29 @@ Object {
               </a>
             </div>
             <div
-              class="c12"
+              class="c14"
             />
           </header>
           <section
             class=""
           >
             <header
-              class="c13"
+              class="c15"
             >
               <h2>
                 Account
               </h2>
               <span
-                class="c14"
+                class="c16"
               >
                 Winston
               </span>
             </header>
             <div
-              class="c15"
+              class="c17"
             >
               <div
-                class="c16"
+                class="c18"
               >
                 <div
                   class="paper"
@@ -23521,52 +23570,52 @@ Object {
                 </div>
               </div>
               <div
-                class="c17"
+                class="c19"
               >
                 Address
               </div>
               <div
-                class="c17"
+                class="c19"
               >
                 Balance
               </div>
               <div
-                class="c17"
+                class="c19"
               >
                 Earning
               </div>
               <div
-                class="c16"
+                class="c18"
               />
               <div
-                class="c16"
+                class="c18"
               />
               <div
-                class="c16"
+                class="c18"
               />
               <div
-                class="c16"
+                class="c18"
               />
                
               <div
-                class="c18"
+                class="c20"
               >
                 0x3ca206264762caf81a8f0a843bbb850987b41e16
               </div>
               <div
-                class="c19"
+                class="c21"
               >
                 <div
-                  class="c20"
+                  class="c22"
                 >
                   <span
-                    class="c21"
+                    class="c23"
                   >
                     <span
-                      class="c22"
+                      class="c24"
                     />
                     <span
-                      class="c23"
+                      class="c25"
                     >
                        - 
                     </span>
@@ -23575,72 +23624,72 @@ Object {
                 </div>
               </div>
               <div
-                class="c19"
+                class="c21"
               >
                 0.00
               </div>
             </div>
           </section>
           <section
-            class="c24"
+            class="c26"
           >
             <div
-              class="c25"
+              class="c27"
             >
               <div
-                class="c26"
+                class="c28"
               >
                 Locks
               </div>
               <div
-                class="c27"
+                class="c29"
               >
                 Name / Address
               </div>
               <div
-                class="c27"
+                class="c29"
               >
                 Duration
               </div>
               <div
-                class="c28"
+                class="c30"
               >
                 Quantity
               </div>
               <div
-                class="c27"
+                class="c29"
               >
                 Price
               </div>
               <div
-                class="c27"
+                class="c29"
               >
                 <div
-                  class="c29"
+                  class="c31"
                 >
                   Balance
                 </div>
                 <div
-                  class="c30"
+                  class="c32"
                 >
                   Balance
                 </div>
               </div>
               <button
-                class="c31"
+                class="c33"
               >
                 Create Lock
               </button>
             </div>
             <section
-              class="c32"
+              class="c34"
             >
               <img
-                class="c33"
+                class="c35"
                 src="/static/images/illustrations/lock.svg"
               />
               <div
-                class="c34"
+                class="c36"
               >
                 <h1>
                   Create a lock to get started
@@ -23651,7 +23700,7 @@ Object {
           </section>
         </div>
         <div
-          class="c35"
+          class="c37"
         />
       </div>
     </div>
@@ -23691,8 +23740,28 @@ Object {
           class="sc-1glv5oz-0 cOQbpj"
         >
           <h1
-            class="sc-1glv5oz-1 jZepcb"
+            class="sc-1glv5oz-1 eozQRg"
           >
+            <div
+              class="sc-1glv5oz-5 bgXdkG"
+            >
+              <a
+                href="/"
+              >
+                <div
+                  class="cenpj1-0 eCEwze"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+              </a>
+            </div>
             Creator Dashboard
           </h1>
           <div
@@ -24086,7 +24155,7 @@ exports[`Storyshots Dashboard dashboard, no user account 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c8 {
+    .c10 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -24098,21 +24167,21 @@ Object {
   line-height: 24px;
 }
 
-.c8 > svg {
+.c10 > svg {
   fill: white;
   height: 24px;
   width: 24px;
 }
 
-.c8:hover {
+.c10:hover {
   background-color: var(--link);
 }
 
-.c8:hover > svg {
+.c10:hover > svg {
   fill: white;
 }
 
-.c11 {
+.c13 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -24124,21 +24193,21 @@ Object {
   line-height: 48px;
 }
 
-.c11 > svg {
+.c13 > svg {
   fill: white;
   height: 48px;
   width: 48px;
 }
 
-.c11:hover {
+.c13:hover {
   background-color: var(--link);
 }
 
-.c11:hover > svg {
+.c13:hover > svg {
   fill: white;
 }
 
-.c9 {
+.c11 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -24153,7 +24222,7 @@ Object {
   color: var(--link);
 }
 
-.c7:hover .c9 {
+.c9:hover .c11 {
   display: inline-block;
 }
 
@@ -24165,6 +24234,17 @@ Object {
 }
 
 .c2 > svg {
+  fill: white;
+}
+
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c7 > svg {
   fill: white;
 }
 
@@ -24184,7 +24264,7 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
+.c8 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(4,24px);
@@ -24196,13 +24276,13 @@ Object {
   height: 100%;
 }
 
-.c10 {
+.c12 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c10 .c7 {
+.c12 .c9 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -24213,24 +24293,24 @@ Object {
   align-self: center;
 }
 
-.c10 .c7:nth-child(1) {
+.c12 .c9:nth-child(1) {
   pointer-events: none;
 }
 
-.c10 .c7:nth-child(2) {
+.c12 .c9:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c10 .c7 > svg {
+.c12 .c9 > svg {
   fill: var(--grey);
 }
 
-.c10 .c7:hover > svg {
+.c12 .c9:hover > svg {
   fill: var(--grey);
 }
 
-.c12 {
+.c14 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -24257,17 +24337,21 @@ Object {
   top: 50px;
 }
 
-.c12 .c7 {
+.c14 .c9 {
   margin: 24px;
 }
 
-.c12 .c7 small {
+.c14 .c9 small {
   display: block;
   color: var(--grey);
   text-align: center;
   top: 5px;
   width: 100%;
   text-align: center;
+}
+
+.c6 {
+  padding-top: 2px;
 }
 
 .c0 {
@@ -24291,7 +24375,7 @@ Object {
   width: 100%;
 }
 
-.c13 {
+.c15 {
   display: grid;
   row-gap: 16px;
   -webkit-column-gap: 32px;
@@ -24308,23 +24392,23 @@ Object {
   padding-bottom: 40px;
 }
 
-.c14 {
+.c16 {
   width: 72px;
 }
 
-.c15 {
+.c17 {
   display: grid;
   grid-gap: 16px;
 }
 
-.c15 > h1 {
+.c17 > h1 {
   font-weight: bold;
   color: var(--red);
   margin: 0px;
   padding: 0px;
 }
 
-.c15 > p {
+.c17 > p {
   margin: 0px;
   padding: 0px;
   font-size: 16px;
@@ -24340,31 +24424,45 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c5 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c12 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
+  .c12 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c14 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
+  .c14 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
   .c6 {
-    display: none;
-  }
-}
-
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c10 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-device-width:736px) {
-  .c10 {
-    display: none;
-  }
-}
-
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c12 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-device-width:736px) {
-  .c12 {
     display: none;
   }
 }
@@ -24387,13 +24485,13 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c16 {
+  .c18 {
     display: none;
   }
 }
 
 @media (max-width:500px) {
-  .c13 {
+  .c15 {
     grid-template-columns: 1fr;
     grid-auto-flow: row;
     padding: 16px;
@@ -24436,12 +24534,34 @@ Object {
           >
             <h1
               class="c5"
-            />
+            >
+              <div
+                class="c6"
+              >
+                <a
+                  href="/"
+                >
+                  <div
+                    class="c7"
+                  >
+                    <svg
+                      viewBox="0 0 56 56"
+                    >
+                      <title />
+                      <path
+                        d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                      />
+                    </svg>
+                  </div>
+                </a>
+              </div>
+              
+            </h1>
             <div
-              class="c6"
+              class="c8"
             >
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="/about"
                 title="About"
               >
@@ -24458,13 +24578,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   About
                 </small>
               </a>
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="/jobs"
                 title="Join us"
               >
@@ -24480,13 +24600,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   Join us
                 </small>
               </a>
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="https://github.com/unlock-protocol/unlock"
                 title="Source Code"
               >
@@ -24500,13 +24620,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   Source Code
                 </small>
               </a>
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="https://t.me/unlockprotocol"
                 title="Telegram"
               >
@@ -24522,17 +24642,17 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   Telegram
                 </small>
               </a>
             </div>
             <div
-              class="c10"
+              class="c12"
             >
               <a
-                class="c7 c11"
+                class="c9 c13"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -24547,7 +24667,7 @@ Object {
                 
               </a>
               <a
-                class="c7 c11"
+                class="c9 c13"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -24565,18 +24685,18 @@ Object {
               </a>
             </div>
             <div
-              class="c12"
+              class="c14"
             />
           </header>
           <section
-            class="c13"
+            class="c15"
           >
             <img
-              class="c14"
+              class="c16"
               src="/static/images/illustrations/error.svg"
             />
             <div
-              class="c15"
+              class="c17"
             >
               <h1>
                 Need account
@@ -24588,7 +24708,7 @@ Object {
           </section>
         </div>
         <div
-          class="c16"
+          class="c18"
         />
       </div>
     </div>
@@ -24628,8 +24748,30 @@ Object {
           class="sc-1glv5oz-0 cOQbpj"
         >
           <h1
-            class="sc-1glv5oz-1 jZepcb"
-          />
+            class="sc-1glv5oz-1 eozQRg"
+          >
+            <div
+              class="sc-1glv5oz-5 bgXdkG"
+            >
+              <a
+                href="/"
+              >
+                <div
+                  class="cenpj1-0 eCEwze"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+              </a>
+            </div>
+            
+          </h1>
           <div
             class="sc-1glv5oz-2 bijesQ"
           >
@@ -24835,7 +24977,7 @@ exports[`Storyshots Dashboard dashboard, wrong network 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c8 {
+    .c10 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -24847,21 +24989,21 @@ Object {
   line-height: 24px;
 }
 
-.c8 > svg {
+.c10 > svg {
   fill: white;
   height: 24px;
   width: 24px;
 }
 
-.c8:hover {
+.c10:hover {
   background-color: var(--link);
 }
 
-.c8:hover > svg {
+.c10:hover > svg {
   fill: white;
 }
 
-.c11 {
+.c13 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -24873,21 +25015,21 @@ Object {
   line-height: 48px;
 }
 
-.c11 > svg {
+.c13 > svg {
   fill: white;
   height: 48px;
   width: 48px;
 }
 
-.c11:hover {
+.c13:hover {
   background-color: var(--link);
 }
 
-.c11:hover > svg {
+.c13:hover > svg {
   fill: white;
 }
 
-.c9 {
+.c11 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -24902,7 +25044,7 @@ Object {
   color: var(--link);
 }
 
-.c7:hover .c9 {
+.c9:hover .c11 {
   display: inline-block;
 }
 
@@ -24914,6 +25056,17 @@ Object {
 }
 
 .c2 > svg {
+  fill: white;
+}
+
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c7 > svg {
   fill: white;
 }
 
@@ -24933,7 +25086,7 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
+.c8 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(4,24px);
@@ -24945,13 +25098,13 @@ Object {
   height: 100%;
 }
 
-.c10 {
+.c12 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c10 .c7 {
+.c12 .c9 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -24962,24 +25115,24 @@ Object {
   align-self: center;
 }
 
-.c10 .c7:nth-child(1) {
+.c12 .c9:nth-child(1) {
   pointer-events: none;
 }
 
-.c10 .c7:nth-child(2) {
+.c12 .c9:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c10 .c7 > svg {
+.c12 .c9 > svg {
   fill: var(--grey);
 }
 
-.c10 .c7:hover > svg {
+.c12 .c9:hover > svg {
   fill: var(--grey);
 }
 
-.c12 {
+.c14 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -25006,17 +25159,21 @@ Object {
   top: 50px;
 }
 
-.c12 .c7 {
+.c14 .c9 {
   margin: 24px;
 }
 
-.c12 .c7 small {
+.c14 .c9 small {
   display: block;
   color: var(--grey);
   text-align: center;
   top: 5px;
   width: 100%;
   text-align: center;
+}
+
+.c6 {
+  padding-top: 2px;
 }
 
 .c0 {
@@ -25040,7 +25197,7 @@ Object {
   width: 100%;
 }
 
-.c13 {
+.c15 {
   display: grid;
   row-gap: 16px;
   -webkit-column-gap: 32px;
@@ -25057,23 +25214,23 @@ Object {
   padding-bottom: 40px;
 }
 
-.c14 {
+.c16 {
   width: 72px;
 }
 
-.c15 {
+.c17 {
   display: grid;
   grid-gap: 16px;
 }
 
-.c15 > h1 {
+.c17 > h1 {
   font-weight: bold;
   color: var(--red);
   margin: 0px;
   padding: 0px;
 }
 
-.c15 > p {
+.c17 > p {
   margin: 0px;
   padding: 0px;
   font-size: 16px;
@@ -25089,31 +25246,45 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c5 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c12 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
+  .c12 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c14 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
+  .c14 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
   .c6 {
-    display: none;
-  }
-}
-
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c10 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-device-width:736px) {
-  .c10 {
-    display: none;
-  }
-}
-
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c12 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-device-width:736px) {
-  .c12 {
     display: none;
   }
 }
@@ -25136,13 +25307,13 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c16 {
+  .c18 {
     display: none;
   }
 }
 
 @media (max-width:500px) {
-  .c13 {
+  .c15 {
     grid-template-columns: 1fr;
     grid-auto-flow: row;
     padding: 16px;
@@ -25185,12 +25356,34 @@ Object {
           >
             <h1
               class="c5"
-            />
+            >
+              <div
+                class="c6"
+              >
+                <a
+                  href="/"
+                >
+                  <div
+                    class="c7"
+                  >
+                    <svg
+                      viewBox="0 0 56 56"
+                    >
+                      <title />
+                      <path
+                        d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                      />
+                    </svg>
+                  </div>
+                </a>
+              </div>
+              
+            </h1>
             <div
-              class="c6"
+              class="c8"
             >
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="/about"
                 title="About"
               >
@@ -25207,13 +25400,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   About
                 </small>
               </a>
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="/jobs"
                 title="Join us"
               >
@@ -25229,13 +25422,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   Join us
                 </small>
               </a>
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="https://github.com/unlock-protocol/unlock"
                 title="Source Code"
               >
@@ -25249,13 +25442,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   Source Code
                 </small>
               </a>
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="https://t.me/unlockprotocol"
                 title="Telegram"
               >
@@ -25271,17 +25464,17 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   Telegram
                 </small>
               </a>
             </div>
             <div
-              class="c10"
+              class="c12"
             >
               <a
-                class="c7 c11"
+                class="c9 c13"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -25296,7 +25489,7 @@ Object {
                 
               </a>
               <a
-                class="c7 c11"
+                class="c9 c13"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -25314,18 +25507,18 @@ Object {
               </a>
             </div>
             <div
-              class="c12"
+              class="c14"
             />
           </header>
           <section
-            class="c13"
+            class="c15"
           >
             <img
-              class="c14"
+              class="c16"
               src="/static/images/illustrations/network.svg"
             />
             <div
-              class="c15"
+              class="c17"
             >
               <h1>
                 Network mismatch
@@ -25337,7 +25530,7 @@ Object {
           </section>
         </div>
         <div
-          class="c16"
+          class="c18"
         />
       </div>
     </div>
@@ -25377,8 +25570,30 @@ Object {
           class="sc-1glv5oz-0 cOQbpj"
         >
           <h1
-            class="sc-1glv5oz-1 jZepcb"
-          />
+            class="sc-1glv5oz-1 eozQRg"
+          >
+            <div
+              class="sc-1glv5oz-5 bgXdkG"
+            >
+              <a
+                href="/"
+              >
+                <div
+                  class="cenpj1-0 eCEwze"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+              </a>
+            </div>
+            
+          </h1>
           <div
             class="sc-1glv5oz-2 bijesQ"
           >
@@ -25584,7 +25799,7 @@ exports[`Storyshots Dashboard the dashboard 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c43 {
+    .c45 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -25596,21 +25811,21 @@ Object {
   line-height: 24px;
 }
 
-.c43 > svg {
+.c45 > svg {
   fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c43:hover {
+.c45:hover {
   background-color: white;
 }
 
-.c43:hover > svg {
+.c45:hover > svg {
   fill: var(--lightgrey);
 }
 
-.c44 {
+.c46 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -25622,21 +25837,21 @@ Object {
   line-height: 24px;
 }
 
-.c44 > svg {
+.c46 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c44:hover {
+.c46:hover {
   background-color: var(--link);
 }
 
-.c44:hover > svg {
+.c46:hover > svg {
   fill: white;
 }
 
-.c8 {
+.c10 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -25648,21 +25863,21 @@ Object {
   line-height: 24px;
 }
 
-.c8 > svg {
+.c10 > svg {
   fill: white;
   height: 24px;
   width: 24px;
 }
 
-.c8:hover {
+.c10:hover {
   background-color: var(--link);
 }
 
-.c8:hover > svg {
+.c10:hover > svg {
   fill: white;
 }
 
-.c11 {
+.c13 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -25674,21 +25889,21 @@ Object {
   line-height: 48px;
 }
 
-.c11 > svg {
+.c13 > svg {
   fill: white;
   height: 48px;
   width: 48px;
 }
 
-.c11:hover {
+.c13:hover {
   background-color: var(--link);
 }
 
-.c11:hover > svg {
+.c13:hover > svg {
   fill: white;
 }
 
-.c9 {
+.c11 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -25703,11 +25918,11 @@ Object {
   color: var(--link);
 }
 
-.c7:hover .c9 {
+.c9:hover .c11 {
   display: inline-block;
 }
 
-.c20 {
+.c22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -25717,7 +25932,7 @@ Object {
   flex-direction: column;
 }
 
-.c21 {
+.c23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -25728,38 +25943,38 @@ Object {
   padding-bottom: 0.5em;
 }
 
-.c22 {
+.c24 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c22:before {
+.c24:before {
   content: '三';
 }
 
-.c37 {
+.c39 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c37:before {
+.c39:before {
   content: '$';
 }
 
-.c23 {
+.c25 {
   white-space: nowrap;
   text-transform: uppercase;
 }
 
-.c36 {
+.c38 {
   font-size: 10px;
   color: var(--darkgrey);
   margin-top: 5px;
 }
 
-.c13 {
+.c15 {
   display: grid;
   grid-template-columns: auto 1fr 1fr;
   -webkit-align-items: center;
@@ -25769,14 +25984,14 @@ Object {
   grid-gap: 8px;
 }
 
-.c14 {
+.c16 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   font-weight: 500;
   color: var(--red);
 }
 
-.c15 {
+.c17 {
   font-family: 'IBM Plex Mono',monospace;
   display: grid;
   row-gap: 8px;
@@ -25785,7 +26000,7 @@ Object {
   grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
 }
 
-.c16 {
+.c18 {
   display: grid;
   height: 40px;
   grid-row: span 2;
@@ -25798,7 +26013,7 @@ Object {
   align-content: start;
 }
 
-.c17 {
+.c19 {
   font-weight: 100;
   text-transform: uppercase;
   -webkit-letter-spacing: 1px;
@@ -25808,7 +26023,7 @@ Object {
   font-size: 8px;
 }
 
-.c18 {
+.c20 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   width: 128px;
@@ -25817,13 +26032,13 @@ Object {
   word-break: break-all;
 }
 
-.c19 {
+.c21 {
   font-size: 16px;
   font-weight: 500;
   color: var(--darkgrey);
 }
 
-.c38 {
+.c40 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -25839,7 +26054,7 @@ Object {
   color: var(--grey);
 }
 
-.c39 {
+.c41 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -25851,7 +26066,7 @@ Object {
   align-self: end;
 }
 
-.c40 {
+.c42 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -25864,19 +26079,19 @@ Object {
   margin-bottom: 15px;
 }
 
-.c41 {
+.c43 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c42 {
+.c44 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(3,24px);
 }
 
-.c45 {
+.c47 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -25886,7 +26101,7 @@ Object {
   padding-right: 24px;
 }
 
-.c32 {
+.c34 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   min-height: 48px;
@@ -25904,22 +26119,22 @@ Object {
   cursor: pointer;
 }
 
-.c32 > * {
+.c34 > * {
   padding-top: 16px;
 }
 
-.c33 {
+.c35 {
   grid-row: span 2;
 }
 
-.c34 {
+.c36 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c35 {
+.c37 {
   color: var(--grey);
   font-weight: 200;
   white-space: nowrap;
@@ -25939,6 +26154,17 @@ Object {
   fill: white;
 }
 
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c7 > svg {
+  fill: white;
+}
+
 .c4 {
   display: grid;
   grid-gap: 0;
@@ -25955,7 +26181,7 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
+.c8 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(4,24px);
@@ -25967,13 +26193,13 @@ Object {
   height: 100%;
 }
 
-.c10 {
+.c12 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c10 .c7 {
+.c12 .c9 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -25984,24 +26210,24 @@ Object {
   align-self: center;
 }
 
-.c10 .c7:nth-child(1) {
+.c12 .c9:nth-child(1) {
   pointer-events: none;
 }
 
-.c10 .c7:nth-child(2) {
+.c12 .c9:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c10 .c7 > svg {
+.c12 .c9 > svg {
   fill: var(--grey);
 }
 
-.c10 .c7:hover > svg {
+.c12 .c9:hover > svg {
   fill: var(--grey);
 }
 
-.c12 {
+.c14 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -26028,17 +26254,21 @@ Object {
   top: 50px;
 }
 
-.c12 .c7 {
+.c14 .c9 {
   margin: 24px;
 }
 
-.c12 .c7 small {
+.c14 .c9 small {
   display: block;
   color: var(--grey);
   text-align: center;
   top: 5px;
   width: 100%;
   text-align: center;
+}
+
+.c6 {
+  padding-top: 2px;
 }
 
 .c0 {
@@ -26062,12 +26292,12 @@ Object {
   width: 100%;
 }
 
-.c24 {
+.c26 {
   display: grid;
   grid-gap: 32px;
 }
 
-.c25 {
+.c27 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   padding-left: 8px;
@@ -26081,7 +26311,7 @@ Object {
   align-items: center;
 }
 
-.c26 {
+.c28 {
   font-family: 'IBM Plex Sans';
   font-size: 13px;
   font-weight: bold;
@@ -26095,7 +26325,7 @@ Object {
   color: var(--grey);
 }
 
-.c27 {
+.c29 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -26110,7 +26340,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c28 {
+.c30 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -26125,7 +26355,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c31 {
+.c33 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -26140,19 +26370,19 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c29 {
+  .c31 {
     display: none;
   }
 }
 
 @media only screen and (min-device-width:736px) {
-  .c30 {
+  .c32 {
     display: none;
   }
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c15 {
+  .c17 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
     grid-template-columns: 45px 145px repeat(2,80px);
@@ -26160,19 +26390,19 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c16 {
+  .c18 {
     height: 0px;
   }
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c41 {
+  .c43 {
     display: none;
   }
 }
 
 @media only screen and (min-device-width:736px) {
-  .c32 {
+  .c34 {
     grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
     grid-template-rows: 84px;
     grid-column-gap: 16px;
@@ -26180,7 +26410,7 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c32 {
+  .c34 {
     grid-column-gap: 4px;
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
@@ -26188,7 +26418,7 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c34 {
+  .c36 {
     grid-column: span 2;
   }
 }
@@ -26202,31 +26432,45 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c5 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c12 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
+  .c12 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c14 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
+  .c14 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
   .c6 {
-    display: none;
-  }
-}
-
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c10 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-device-width:736px) {
-  .c10 {
-    display: none;
-  }
-}
-
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c12 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-device-width:736px) {
-  .c12 {
     display: none;
   }
 }
@@ -26249,13 +26493,13 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c46 {
+  .c48 {
     display: none;
   }
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c25 {
+  .c27 {
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
     -webkit-align-items: start;
@@ -26267,19 +26511,19 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c26 {
-    grid-row: span 2;
-  }
-}
-
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
   .c28 {
     grid-row: span 2;
   }
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c31 {
+  .c30 {
+    grid-row: span 2;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c33 {
     display: none;
   }
 }
@@ -26321,13 +26565,33 @@ Object {
             <h1
               class="c5"
             >
+              <div
+                class="c6"
+              >
+                <a
+                  href="/"
+                >
+                  <div
+                    class="c7"
+                  >
+                    <svg
+                      viewBox="0 0 56 56"
+                    >
+                      <title />
+                      <path
+                        d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                      />
+                    </svg>
+                  </div>
+                </a>
+              </div>
               Creator Dashboard
             </h1>
             <div
-              class="c6"
+              class="c8"
             >
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="/about"
                 title="About"
               >
@@ -26344,13 +26608,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   About
                 </small>
               </a>
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="/jobs"
                 title="Join us"
               >
@@ -26366,13 +26630,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   Join us
                 </small>
               </a>
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="https://github.com/unlock-protocol/unlock"
                 title="Source Code"
               >
@@ -26386,13 +26650,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   Source Code
                 </small>
               </a>
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="https://t.me/unlockprotocol"
                 title="Telegram"
               >
@@ -26408,17 +26672,17 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   Telegram
                 </small>
               </a>
             </div>
             <div
-              class="c10"
+              class="c12"
             >
               <a
-                class="c7 c11"
+                class="c9 c13"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -26433,7 +26697,7 @@ Object {
                 
               </a>
               <a
-                class="c7 c11"
+                class="c9 c13"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -26451,29 +26715,29 @@ Object {
               </a>
             </div>
             <div
-              class="c12"
+              class="c14"
             />
           </header>
           <section
             class=""
           >
             <header
-              class="c13"
+              class="c15"
             >
               <h2>
                 Account
               </h2>
               <span
-                class="c14"
+                class="c16"
               >
                 Winston
               </span>
             </header>
             <div
-              class="c15"
+              class="c17"
             >
               <div
-                class="c16"
+                class="c18"
               >
                 <div
                   class="paper"
@@ -26530,52 +26794,52 @@ Object {
                 </div>
               </div>
               <div
-                class="c17"
+                class="c19"
               >
                 Address
               </div>
               <div
-                class="c17"
+                class="c19"
               >
                 Balance
               </div>
               <div
-                class="c17"
+                class="c19"
               >
                 Earning
               </div>
               <div
-                class="c16"
+                class="c18"
               />
               <div
-                class="c16"
+                class="c18"
               />
               <div
-                class="c16"
+                class="c18"
               />
               <div
-                class="c16"
+                class="c18"
               />
                
               <div
-                class="c18"
+                class="c20"
               >
                 0x3ca206264762caf81a8f0a843bbb850987b41e16
               </div>
               <div
-                class="c19"
+                class="c21"
               >
                 <div
-                  class="c20"
+                  class="c22"
                 >
                   <span
-                    class="c21"
+                    class="c23"
                   >
                     <span
-                      class="c22"
+                      class="c24"
                     />
                     <span
-                      class="c23"
+                      class="c25"
                     >
                        - 
                     </span>
@@ -26584,68 +26848,68 @@ Object {
                 </div>
               </div>
               <div
-                class="c19"
+                class="c21"
               >
                 0.00
               </div>
             </div>
           </section>
           <section
-            class="c24"
+            class="c26"
           >
             <div
-              class="c25"
+              class="c27"
             >
               <div
-                class="c26"
+                class="c28"
               >
                 Locks
               </div>
               <div
-                class="c27"
+                class="c29"
               >
                 Name / Address
               </div>
               <div
-                class="c27"
+                class="c29"
               >
                 Duration
               </div>
               <div
-                class="c28"
+                class="c30"
               >
                 Quantity
               </div>
               <div
-                class="c27"
+                class="c29"
               >
                 Price
               </div>
               <div
-                class="c27"
+                class="c29"
               >
                 <div
-                  class="c29"
+                  class="c31"
                 >
                   Balance
                 </div>
                 <div
-                  class="c30"
+                  class="c32"
                 >
                   Balance
                 </div>
               </div>
               <button
-                class="c31"
+                class="c33"
               >
                 Create Lock
               </button>
             </div>
             <div
-              class="c32"
+              class="c34"
             >
               <div
-                class="c33"
+                class="c35"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -26721,11 +26985,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="c34"
+                class="c36"
               >
                 Infinite Lock
                 <div
-                  class="c35"
+                  class="c37"
                 >
                   0x9abcdef0
                 </div>
@@ -26743,31 +27007,31 @@ Object {
                 10/0
               </div>
               <div
-                class="c20"
+                class="c22"
               >
                 <span
-                  class="c21"
+                  class="c23"
                 >
                   <span
-                    class="c22"
+                    class="c24"
                   />
                   <span
-                    class="c23"
+                    class="c25"
                   >
                     27000000000000000.00
                   </span>
                 </span>
                 <div
-                  class="c36"
+                  class="c38"
                 >
                   <span
-                    class="c21"
+                    class="c23"
                   >
                     <span
-                      class="c37"
+                      class="c39"
                     />
                     <span
-                      class="c23"
+                      class="c25"
                     >
                       ---
                     </span>
@@ -26778,34 +27042,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c29"
+                  class="c31"
                 >
                   <div
-                    class="c20"
+                    class="c22"
                   >
                     <span
-                      class="c21"
+                      class="c23"
                     >
                       <span
-                        class="c22"
+                        class="c24"
                       />
                       <span
-                        class="c23"
+                        class="c25"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c36"
+                      class="c38"
                     >
                       <span
-                        class="c21"
+                        class="c23"
                       >
                         <span
-                          class="c37"
+                          class="c39"
                         />
                         <span
-                          class="c23"
+                          class="c25"
                         >
                            - 
                         </span>
@@ -26814,19 +27078,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c30"
+                  class="c32"
                 >
                   <div
-                    class="c20"
+                    class="c22"
                   >
                     <span
-                      class="c21"
+                      class="c23"
                     >
                       <span
-                        class="c22"
+                        class="c24"
                       />
                       <span
-                        class="c23"
+                        class="c25"
                       >
                          - 
                       </span>
@@ -26836,15 +27100,15 @@ Object {
                 </div>
               </div>
               <div
-                class="c38"
+                class="c40"
               >
                 <div
-                  class="c39"
+                  class="c41"
                 >
                   Confirming
                 </div>
                 <div
-                  class="c40"
+                  class="c42"
                 >
                   2
                    / 
@@ -26853,10 +27117,10 @@ Object {
               </div>
             </div>
             <div
-              class="c32"
+              class="c34"
             >
               <div
-                class="c33"
+                class="c35"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -26932,11 +27196,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="c34"
+                class="c36"
               >
                 New Lock
                 <div
-                  class="c35"
+                  class="c37"
                 >
                   0x56781234a
                 </div>
@@ -26954,31 +27218,31 @@ Object {
                 32/800
               </div>
               <div
-                class="c20"
+                class="c22"
               >
                 <span
-                  class="c21"
+                  class="c23"
                 >
                   <span
-                    class="c22"
+                    class="c24"
                   />
                   <span
-                    class="c23"
+                    class="c25"
                   >
                     10000000000000000000.00
                   </span>
                 </span>
                 <div
-                  class="c36"
+                  class="c38"
                 >
                   <span
-                    class="c21"
+                    class="c23"
                   >
                     <span
-                      class="c37"
+                      class="c39"
                     />
                     <span
-                      class="c23"
+                      class="c25"
                     >
                       ---
                     </span>
@@ -26989,34 +27253,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c29"
+                  class="c31"
                 >
                   <div
-                    class="c20"
+                    class="c22"
                   >
                     <span
-                      class="c21"
+                      class="c23"
                     >
                       <span
-                        class="c22"
+                        class="c24"
                       />
                       <span
-                        class="c23"
+                        class="c25"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c36"
+                      class="c38"
                     >
                       <span
-                        class="c21"
+                        class="c23"
                       >
                         <span
-                          class="c37"
+                          class="c39"
                         />
                         <span
-                          class="c23"
+                          class="c25"
                         >
                            - 
                         </span>
@@ -27025,19 +27289,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c30"
+                  class="c32"
                 >
                   <div
-                    class="c20"
+                    class="c22"
                   >
                     <span
-                      class="c21"
+                      class="c23"
                     >
                       <span
-                        class="c22"
+                        class="c24"
                       />
                       <span
-                        class="c23"
+                        class="c25"
                       >
                          - 
                       </span>
@@ -27047,15 +27311,15 @@ Object {
                 </div>
               </div>
               <div
-                class="c38"
+                class="c40"
               >
                 <div
-                  class="c39"
+                  class="c41"
                 >
                   Confirming
                 </div>
                 <div
-                  class="c40"
+                  class="c42"
                 >
                   4
                    / 
@@ -27064,10 +27328,10 @@ Object {
               </div>
             </div>
             <div
-              class="c32"
+              class="c34"
             >
               <div
-                class="c33"
+                class="c35"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -27143,11 +27407,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="c34"
+                class="c36"
               >
                 My Blog
                 <div
-                  class="c35"
+                  class="c37"
                 >
                   0x12345678a
                 </div>
@@ -27165,31 +27429,31 @@ Object {
                 3/240
               </div>
               <div
-                class="c20"
+                class="c22"
               >
                 <span
-                  class="c21"
+                  class="c23"
                 >
                   <span
-                    class="c22"
+                    class="c24"
                   />
                   <span
-                    class="c23"
+                    class="c25"
                   >
                     27000000000000000.00
                   </span>
                 </span>
                 <div
-                  class="c36"
+                  class="c38"
                 >
                   <span
-                    class="c21"
+                    class="c23"
                   >
                     <span
-                      class="c37"
+                      class="c39"
                     />
                     <span
-                      class="c23"
+                      class="c25"
                     >
                       ---
                     </span>
@@ -27200,34 +27464,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c29"
+                  class="c31"
                 >
                   <div
-                    class="c20"
+                    class="c22"
                   >
                     <span
-                      class="c21"
+                      class="c23"
                     >
                       <span
-                        class="c22"
+                        class="c24"
                       />
                       <span
-                        class="c23"
+                        class="c25"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c36"
+                      class="c38"
                     >
                       <span
-                        class="c21"
+                        class="c23"
                       >
                         <span
-                          class="c37"
+                          class="c39"
                         />
                         <span
-                          class="c23"
+                          class="c25"
                         >
                            - 
                         </span>
@@ -27236,19 +27500,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c30"
+                  class="c32"
                 >
                   <div
-                    class="c20"
+                    class="c22"
                   >
                     <span
-                      class="c21"
+                      class="c23"
                     >
                       <span
-                        class="c22"
+                        class="c24"
                       />
                       <span
-                        class="c23"
+                        class="c25"
                       >
                          - 
                       </span>
@@ -27261,13 +27525,13 @@ Object {
                 class=""
               >
                 <div
-                  class="c41"
+                  class="c43"
                 >
                   <div
-                    class="c42"
+                    class="c44"
                   >
                     <button
-                      class="c7 c43"
+                      class="c9 c45"
                     >
                       <svg
                         name="Withdraw"
@@ -27283,7 +27547,7 @@ Object {
                       
                     </button>
                     <button
-                      class="c7 c44"
+                      class="c9 c46"
                       title="Edit"
                     >
                       <svg
@@ -27301,13 +27565,13 @@ Object {
                         />
                       </svg>
                       <small
-                        class="c9"
+                        class="c11"
                       >
                         Edit
                       </small>
                     </button>
                     <button
-                      class="c7 c44"
+                      class="c9 c46"
                       title="Show embed code"
                     >
                       <svg
@@ -27322,7 +27586,7 @@ Object {
                         />
                       </svg>
                       <small
-                        class="c9"
+                        class="c11"
                       >
                         Show embed code
                       </small>
@@ -27330,14 +27594,14 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c45"
+                  class="c47"
                 />
               </div>
             </div>
           </section>
         </div>
         <div
-          class="c46"
+          class="c48"
         />
       </div>
     </div>
@@ -27377,8 +27641,28 @@ Object {
           class="sc-1glv5oz-0 cOQbpj"
         >
           <h1
-            class="sc-1glv5oz-1 jZepcb"
+            class="sc-1glv5oz-1 eozQRg"
           >
+            <div
+              class="sc-1glv5oz-5 bgXdkG"
+            >
+              <a
+                href="/"
+              >
+                <div
+                  class="cenpj1-0 eCEwze"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+              </a>
+            </div>
             Creator Dashboard
           </h1>
           <div
@@ -30918,7 +31202,7 @@ exports[`Storyshots Header the header with a title 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c4 {
+    .c6 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -30930,21 +31214,21 @@ Object {
   line-height: 24px;
 }
 
-.c4 > svg {
+.c6 > svg {
   fill: white;
   height: 24px;
   width: 24px;
 }
 
-.c4:hover {
+.c6:hover {
   background-color: var(--link);
 }
 
-.c4:hover > svg {
+.c6:hover > svg {
   fill: white;
 }
 
-.c7 {
+.c9 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -30956,21 +31240,21 @@ Object {
   line-height: 48px;
 }
 
-.c7 > svg {
+.c9 > svg {
   fill: white;
   height: 48px;
   width: 48px;
 }
 
-.c7:hover {
+.c9:hover {
   background-color: var(--link);
 }
 
-.c7:hover > svg {
+.c9:hover > svg {
   fill: white;
 }
 
-.c5 {
+.c7 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -30985,8 +31269,19 @@ Object {
   color: var(--link);
 }
 
-.c3:hover .c5 {
+.c5:hover .c7 {
   display: inline-block;
+}
+
+.c3 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c3 > svg {
+  fill: white;
 }
 
 .c0 {
@@ -31005,7 +31300,7 @@ Object {
   color: var(--grey);
 }
 
-.c2 {
+.c4 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(4,24px);
@@ -31017,13 +31312,13 @@ Object {
   height: 100%;
 }
 
-.c6 {
+.c8 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c6 .c3 {
+.c8 .c5 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -31034,24 +31329,24 @@ Object {
   align-self: center;
 }
 
-.c6 .c3:nth-child(1) {
+.c8 .c5:nth-child(1) {
   pointer-events: none;
 }
 
-.c6 .c3:nth-child(2) {
+.c8 .c5:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c6 .c3 > svg {
+.c8 .c5 > svg {
   fill: var(--grey);
 }
 
-.c6 .c3:hover > svg {
+.c8 .c5:hover > svg {
   fill: var(--grey);
 }
 
-.c8 {
+.c10 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -31078,17 +31373,21 @@ Object {
   top: 50px;
 }
 
-.c8 .c3 {
+.c10 .c5 {
   margin: 24px;
 }
 
-.c8 .c3 small {
+.c10 .c5 small {
   display: block;
   color: var(--grey);
   text-align: center;
   top: 5px;
   width: 100%;
   text-align: center;
+}
+
+.c2 {
+  padding-top: 2px;
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
@@ -31100,31 +31399,45 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c1 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c4 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c8 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c10 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
+  .c10 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
   .c2 {
-    display: none;
-  }
-}
-
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c6 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-device-width:736px) {
-  .c6 {
-    display: none;
-  }
-}
-
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c8 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-device-width:736px) {
-  .c8 {
     display: none;
   }
 }
@@ -31140,13 +31453,33 @@ Object {
         <h1
           class="c1"
         >
+          <div
+            class="c2"
+          >
+            <a
+              href="/"
+            >
+              <div
+                class="c3"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+            </a>
+          </div>
           Roses are red
         </h1>
         <div
-          class="c2"
+          class="c4"
         >
           <a
-            class="c3 c4"
+            class="c5 c6"
             href="/about"
             title="About"
           >
@@ -31163,13 +31496,13 @@ Object {
               />
             </svg>
             <small
-              class="c5"
+              class="c7"
             >
               About
             </small>
           </a>
           <a
-            class="c3 c4"
+            class="c5 c6"
             href="/jobs"
             title="Join us"
           >
@@ -31185,13 +31518,13 @@ Object {
               />
             </svg>
             <small
-              class="c5"
+              class="c7"
             >
               Join us
             </small>
           </a>
           <a
-            class="c3 c4"
+            class="c5 c6"
             href="https://github.com/unlock-protocol/unlock"
             title="Source Code"
           >
@@ -31205,13 +31538,13 @@ Object {
               />
             </svg>
             <small
-              class="c5"
+              class="c7"
             >
               Source Code
             </small>
           </a>
           <a
-            class="c3 c4"
+            class="c5 c6"
             href="https://t.me/unlockprotocol"
             title="Telegram"
           >
@@ -31227,17 +31560,17 @@ Object {
               />
             </svg>
             <small
-              class="c5"
+              class="c7"
             >
               Telegram
             </small>
           </a>
         </div>
         <div
-          class="c6"
+          class="c8"
         >
           <a
-            class="c3 c7"
+            class="c5 c9"
           >
             <svg
               viewBox="0 0 56 42"
@@ -31252,7 +31585,7 @@ Object {
             
           </a>
           <a
-            class="c3 c7"
+            class="c5 c9"
           >
             <svg
               viewBox="0 0 58 32"
@@ -31270,7 +31603,7 @@ Object {
           </a>
         </div>
         <div
-          class="c8"
+          class="c10"
         />
       </header>
     </div>
@@ -31284,8 +31617,28 @@ Object {
       class="sc-1glv5oz-0 cOQbpj"
     >
       <h1
-        class="sc-1glv5oz-1 jZepcb"
+        class="sc-1glv5oz-1 eozQRg"
       >
+        <div
+          class="sc-1glv5oz-5 bgXdkG"
+        >
+          <a
+            href="/"
+          >
+            <div
+              class="cenpj1-0 eCEwze"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </a>
+        </div>
         Roses are red
       </h1>
       <div
@@ -31470,7 +31823,7 @@ exports[`Storyshots Header the header without a title 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c4 {
+    .c6 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -31482,21 +31835,21 @@ Object {
   line-height: 24px;
 }
 
-.c4 > svg {
+.c6 > svg {
   fill: white;
   height: 24px;
   width: 24px;
 }
 
-.c4:hover {
+.c6:hover {
   background-color: var(--link);
 }
 
-.c4:hover > svg {
+.c6:hover > svg {
   fill: white;
 }
 
-.c7 {
+.c9 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -31508,21 +31861,21 @@ Object {
   line-height: 48px;
 }
 
-.c7 > svg {
+.c9 > svg {
   fill: white;
   height: 48px;
   width: 48px;
 }
 
-.c7:hover {
+.c9:hover {
   background-color: var(--link);
 }
 
-.c7:hover > svg {
+.c9:hover > svg {
   fill: white;
 }
 
-.c5 {
+.c7 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -31537,8 +31890,19 @@ Object {
   color: var(--link);
 }
 
-.c3:hover .c5 {
+.c5:hover .c7 {
   display: inline-block;
+}
+
+.c3 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c3 > svg {
+  fill: white;
 }
 
 .c0 {
@@ -31557,7 +31921,7 @@ Object {
   color: var(--grey);
 }
 
-.c2 {
+.c4 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(4,24px);
@@ -31569,13 +31933,13 @@ Object {
   height: 100%;
 }
 
-.c6 {
+.c8 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c6 .c3 {
+.c8 .c5 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -31586,24 +31950,24 @@ Object {
   align-self: center;
 }
 
-.c6 .c3:nth-child(1) {
+.c8 .c5:nth-child(1) {
   pointer-events: none;
 }
 
-.c6 .c3:nth-child(2) {
+.c8 .c5:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c6 .c3 > svg {
+.c8 .c5 > svg {
   fill: var(--grey);
 }
 
-.c6 .c3:hover > svg {
+.c8 .c5:hover > svg {
   fill: var(--grey);
 }
 
-.c8 {
+.c10 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -31630,17 +31994,21 @@ Object {
   top: 50px;
 }
 
-.c8 .c3 {
+.c10 .c5 {
   margin: 24px;
 }
 
-.c8 .c3 small {
+.c10 .c5 small {
   display: block;
   color: var(--grey);
   text-align: center;
   top: 5px;
   width: 100%;
   text-align: center;
+}
+
+.c2 {
+  padding-top: 2px;
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
@@ -31652,31 +32020,45 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c1 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c4 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c8 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c10 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
+  .c10 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
   .c2 {
-    display: none;
-  }
-}
-
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c6 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-device-width:736px) {
-  .c6 {
-    display: none;
-  }
-}
-
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c8 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-device-width:736px) {
-  .c8 {
     display: none;
   }
 }
@@ -31692,13 +32074,33 @@ Object {
         <h1
           class="c1"
         >
+          <div
+            class="c2"
+          >
+            <a
+              href="/"
+            >
+              <div
+                class="c3"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+            </a>
+          </div>
           Unlock
         </h1>
         <div
-          class="c2"
+          class="c4"
         >
           <a
-            class="c3 c4"
+            class="c5 c6"
             href="/about"
             title="About"
           >
@@ -31715,13 +32117,13 @@ Object {
               />
             </svg>
             <small
-              class="c5"
+              class="c7"
             >
               About
             </small>
           </a>
           <a
-            class="c3 c4"
+            class="c5 c6"
             href="/jobs"
             title="Join us"
           >
@@ -31737,13 +32139,13 @@ Object {
               />
             </svg>
             <small
-              class="c5"
+              class="c7"
             >
               Join us
             </small>
           </a>
           <a
-            class="c3 c4"
+            class="c5 c6"
             href="https://github.com/unlock-protocol/unlock"
             title="Source Code"
           >
@@ -31757,13 +32159,13 @@ Object {
               />
             </svg>
             <small
-              class="c5"
+              class="c7"
             >
               Source Code
             </small>
           </a>
           <a
-            class="c3 c4"
+            class="c5 c6"
             href="https://t.me/unlockprotocol"
             title="Telegram"
           >
@@ -31779,17 +32181,17 @@ Object {
               />
             </svg>
             <small
-              class="c5"
+              class="c7"
             >
               Telegram
             </small>
           </a>
         </div>
         <div
-          class="c6"
+          class="c8"
         >
           <a
-            class="c3 c7"
+            class="c5 c9"
           >
             <svg
               viewBox="0 0 56 42"
@@ -31804,7 +32206,7 @@ Object {
             
           </a>
           <a
-            class="c3 c7"
+            class="c5 c9"
           >
             <svg
               viewBox="0 0 58 32"
@@ -31822,7 +32224,7 @@ Object {
           </a>
         </div>
         <div
-          class="c8"
+          class="c10"
         />
       </header>
     </div>
@@ -31836,8 +32238,28 @@ Object {
       class="sc-1glv5oz-0 cOQbpj"
     >
       <h1
-        class="sc-1glv5oz-1 jZepcb"
+        class="sc-1glv5oz-1 eozQRg"
       >
+        <div
+          class="sc-1glv5oz-5 bgXdkG"
+        >
+          <a
+            href="/"
+          >
+            <div
+              class="cenpj1-0 eCEwze"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </a>
+        </div>
         Unlock
       </h1>
       <div
@@ -36825,7 +37247,7 @@ exports[`Storyshots Layout the layout for the dashboard 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c8 {
+    .c10 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -36837,21 +37259,21 @@ Object {
   line-height: 24px;
 }
 
-.c8 > svg {
+.c10 > svg {
   fill: white;
   height: 24px;
   width: 24px;
 }
 
-.c8:hover {
+.c10:hover {
   background-color: var(--link);
 }
 
-.c8:hover > svg {
+.c10:hover > svg {
   fill: white;
 }
 
-.c11 {
+.c13 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -36863,21 +37285,21 @@ Object {
   line-height: 48px;
 }
 
-.c11 > svg {
+.c13 > svg {
   fill: white;
   height: 48px;
   width: 48px;
 }
 
-.c11:hover {
+.c13:hover {
   background-color: var(--link);
 }
 
-.c11:hover > svg {
+.c13:hover > svg {
   fill: white;
 }
 
-.c9 {
+.c11 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -36892,7 +37314,7 @@ Object {
   color: var(--link);
 }
 
-.c7:hover .c9 {
+.c9:hover .c11 {
   display: inline-block;
 }
 
@@ -36904,6 +37326,17 @@ Object {
 }
 
 .c2 > svg {
+  fill: white;
+}
+
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c7 > svg {
   fill: white;
 }
 
@@ -36923,7 +37356,7 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
+.c8 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(4,24px);
@@ -36935,13 +37368,13 @@ Object {
   height: 100%;
 }
 
-.c10 {
+.c12 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c10 .c7 {
+.c12 .c9 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -36952,24 +37385,24 @@ Object {
   align-self: center;
 }
 
-.c10 .c7:nth-child(1) {
+.c12 .c9:nth-child(1) {
   pointer-events: none;
 }
 
-.c10 .c7:nth-child(2) {
+.c12 .c9:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c10 .c7 > svg {
+.c12 .c9 > svg {
   fill: var(--grey);
 }
 
-.c10 .c7:hover > svg {
+.c12 .c9:hover > svg {
   fill: var(--grey);
 }
 
-.c12 {
+.c14 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -36996,17 +37429,21 @@ Object {
   top: 50px;
 }
 
-.c12 .c7 {
+.c14 .c9 {
   margin: 24px;
 }
 
-.c12 .c7 small {
+.c14 .c9 small {
   display: block;
   color: var(--grey);
   text-align: center;
   top: 5px;
   width: 100%;
   text-align: center;
+}
+
+.c6 {
+  padding-top: 2px;
 }
 
 .c0 {
@@ -37039,31 +37476,45 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c5 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c12 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
+  .c12 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+  .c14 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
+  .c14 {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width:736px) {
   .c6 {
-    display: none;
-  }
-}
-
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c10 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-device-width:736px) {
-  .c10 {
-    display: none;
-  }
-}
-
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c12 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-device-width:736px) {
-  .c12 {
     display: none;
   }
 }
@@ -37086,7 +37537,7 @@ Object {
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
-  .c13 {
+  .c15 {
     display: none;
   }
 }
@@ -37128,13 +37579,33 @@ Object {
             <h1
               class="c5"
             >
+              <div
+                class="c6"
+              >
+                <a
+                  href="/"
+                >
+                  <div
+                    class="c7"
+                  >
+                    <svg
+                      viewBox="0 0 56 56"
+                    >
+                      <title />
+                      <path
+                        d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                      />
+                    </svg>
+                  </div>
+                </a>
+              </div>
               Unlock Dashboard
             </h1>
             <div
-              class="c6"
+              class="c8"
             >
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="/about"
                 title="About"
               >
@@ -37151,13 +37622,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   About
                 </small>
               </a>
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="/jobs"
                 title="Join us"
               >
@@ -37173,13 +37644,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   Join us
                 </small>
               </a>
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="https://github.com/unlock-protocol/unlock"
                 title="Source Code"
               >
@@ -37193,13 +37664,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   Source Code
                 </small>
               </a>
               <a
-                class="c7 c8"
+                class="c9 c10"
                 href="https://t.me/unlockprotocol"
                 title="Telegram"
               >
@@ -37215,17 +37686,17 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c9"
+                  class="c11"
                 >
                   Telegram
                 </small>
               </a>
             </div>
             <div
-              class="c10"
+              class="c12"
             >
               <a
-                class="c7 c11"
+                class="c9 c13"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -37240,7 +37711,7 @@ Object {
                 
               </a>
               <a
-                class="c7 c11"
+                class="c9 c13"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -37258,12 +37729,12 @@ Object {
               </a>
             </div>
             <div
-              class="c12"
+              class="c14"
             />
           </header>
         </div>
         <div
-          class="c13"
+          class="c15"
         />
       </div>
     </div>
@@ -37303,8 +37774,28 @@ Object {
           class="sc-1glv5oz-0 cOQbpj"
         >
           <h1
-            class="sc-1glv5oz-1 jZepcb"
+            class="sc-1glv5oz-1 eozQRg"
           >
+            <div
+              class="sc-1glv5oz-5 bgXdkG"
+            >
+              <a
+                href="/"
+              >
+                <div
+                  class="cenpj1-0 eCEwze"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+              </a>
+            </div>
             Unlock Dashboard
           </h1>
           <div
