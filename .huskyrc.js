@@ -13,15 +13,21 @@ const svg2Components = {
   path: "unlock-app"
 }
 
-// Run lint on staged files
+// lintStaged actually just runs formatting rules on staged files
 const lintStaged = path => {
   return {command: 'lint-staged', path: path} 
+}
+
+// Run eslint on everything (used pre-push)
+const eslint = path => {
+  return { command: 'eslint --fix .', path: path }
 }
 
 // tasks are given a path
 module.exports = {
   hooks: {
-    "pre-push": 'eslint --fix .',
+    "pre-push": tasks([eslint('unlock-app'),
+                       eslint('locksmith')]),
     "pre-commit": tasks([svg2Components, 
                   lintStaged('unlock-app'), 
                   lintStaged('locksmith')])
