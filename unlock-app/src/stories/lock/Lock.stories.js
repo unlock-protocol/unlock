@@ -82,6 +82,23 @@ storiesOf('Lock', module)
       />
     )
   })
+  .add('disabled - too expensive for current user', () => {
+    const account = {
+      balance: lock.keyPrice,
+    }
+    return (
+      <Lock
+        account={account}
+        lock={soldOutLock}
+        transaction={null}
+        lockKey={null}
+        purchaseKey={purchaseKey}
+        config={config}
+        hideModal={() => {}}
+        openInNewWindow={false}
+      />
+    )
+  })
   .add('with a pending key (not yet mined)', () => {
     const k = {
       lock: lock.address,
