@@ -15,7 +15,7 @@ const config = {
 const lock = {
   address: '0x123',
   name: 'Monthly',
-  keyPrice: '1203120301203013000',
+  keyPrice: '0.23',
   fiatPrice: 240.38,
   expirationDuration: 2592000,
 }
