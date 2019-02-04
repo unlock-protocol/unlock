@@ -39,9 +39,11 @@ const locksReducer = (state = initialState, action) => {
   }
 
   if (action.type === CREATE_LOCK) {
-    return {
-      ...state,
-      [action.lock.address]: action.lock,
+    if (action.lock.address) {
+      return {
+        ...state,
+        [action.lock.address]: action.lock,
+      }
     }
   }
 
