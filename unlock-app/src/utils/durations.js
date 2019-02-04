@@ -100,10 +100,3 @@ export function expirationAsDate(timestamp) {
 
   return MONTH_NAMES[month] + ' ' + day + ', ' + year
 }
-
-/**
- * delay for ms milliseconds, then return the number of ms to resolve
- */
-export function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve.bind(null, ms), ms))
-}

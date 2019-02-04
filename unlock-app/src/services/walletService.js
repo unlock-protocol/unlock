@@ -14,7 +14,7 @@ import {
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../errors'
 import { POLLING_INTERVAL } from '../constants'
-import { delay } from '../utils/durations'
+import { delayPromise } from '../utils/promises'
 
 const { unlockAddress } = configure()
 
@@ -27,7 +27,7 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends EventEmitter {
-  constructor(availableProviders, runningOnServer, wait = delay) {
+  constructor(availableProviders, runningOnServer, wait = delayPromise) {
     super()
     this.providers = availableProviders
     this.ready = false
