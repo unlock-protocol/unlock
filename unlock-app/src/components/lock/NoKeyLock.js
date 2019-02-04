@@ -24,7 +24,7 @@ export const NoKeyLock = ({
       amount={lock.keyPrice}
       render={(ethPrice, fiatPrice) => (
         <div>
-          <Body>
+          <Body disabled={disabled}>
             <EthPrice>{ethPrice} Eth</EthPrice>
             <div>
               <FiatPrice>${fiatPrice}</FiatPrice>
@@ -58,7 +58,7 @@ NoKeyLock.defaultProps = {
 export default NoKeyLock
 
 const Wrapper = styled(LockWrapper)`
-  cursor: pointer;
+  cursor: ${props => (props.disabled ? 'not-allowed ' : 'pointer')};
 `
 
 const Footer = styled(LockFooter)`
@@ -68,6 +68,7 @@ const Footer = styled(LockFooter)`
 
 const Body = styled(LockBody)`
   padding-top: 13px;
+
   &:hover {
     border: ${props =>
       !props.disabled ? '1px solid var(--activegreen)' : null};
