@@ -75,7 +75,7 @@ export default function configure(
   let services = {}
   let supportedProviders = []
   let blockTime = 8000 // in mseconds.
-  const readOnlyProviderUrl = runtimeConfig.readOnlyProviderUrl
+  const readOnlyProviderUrl = runtimeConfig.readOnlyProvider
 
   if (env === 'test') {
     // In test, we fake the HTTP provider
