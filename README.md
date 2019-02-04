@@ -2,7 +2,7 @@
 
 ---
 
-This repository includes all the code deployed by Unlock, including smart contracts and the web app running at https://unlock-protocol.com.
+This repository includes all the code deployed by Unlock, including smart contracts and the web app running at [unlock-protocol.com](https://unlock-protocol.com).
 
 > Unlock is an access control protocol built on a blockchain. It enables creators to monetize their content or software without relying on a middleman. It lets consumers manage all of their subscriptions in a consistent way, as well as earn discounts when they share the best content and applications they use.
 
@@ -12,12 +12,14 @@ Read more about [why we're building Unlock](https://medium.com/unlock-protocol/i
 
 ## Demo
 
-We recorded a screencast to show how Unlock works for a paywall. (Note: this video is a few months old and outdated but still shows the "user flow" pretty accurately.)
+We recorded a screencast to show how Unlock works for a paywall.
 
-[![Demo Unlock](https://img.youtube.com/vi/wktotzmea0E/0.jpg)](https://www.youtube.com/watch?v=wktotzmea0E)
+[![Demo Unlock](https://img.youtube.com/vi/B1OVnU2Rw8A/0.jpg)](https://www.youtube.com/watch?v=B1OVnU2Rw8A)
 
-We are building this in the open, which mean you can run the code locally (see instructions below).
-You could also try out the staging version - which runs the latest, in-progress code - at https://staging.unlock-protocol.com. 
+[You can try Unlock using the Ethereum blockchain on our homepage.](https://unlock-protocol.com/)
+
+We are building this in the open, which means you can also run the code locally (see instructions below).
+You can try out the staging version - which runs the latest, in-progress code - at https://staging.unlock-protocol.com. 
 Finally, you can learn more [on our documentation wiki](https://github.com/unlock-protocol/unlock/wiki).
 
 ## Contributing
