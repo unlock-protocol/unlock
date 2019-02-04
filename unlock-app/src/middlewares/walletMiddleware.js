@@ -19,12 +19,12 @@ import {
 } from '../actions/walletStatus'
 import { TRANSACTION_TYPES } from '../constants'
 
-import generateJWTToken from '../utils/signature'
 import WalletService from '../services/walletService'
 import { signatureError } from '../actions/signature'
 import { storeLockCreation } from '../actions/storage'
 import configure from '../config'
 import { NO_USER_ACCOUNT } from '../errors'
+import generateSignature from '../utils/signature'
 
 const config = configure()
 
@@ -125,15 +125,29 @@ export default function walletMiddleware({ getState, dispatch }) {
         ensureReadyBefore(() => {
           walletService.createLock(action.lock, getState().account.address)
           if (config.services.storage) {
-            generateJWTToken(walletService, getState().account.address, {
-              lock: action.lock,
-            })
+            generateSignature(
+              walletService.web3,
+              getState().account.address,
+              action.lock
+            )
               .then(token => {
                 dispatch(
                   storeLockCreation(
                     getState().account.address,
-                    action.lock,
-                    token
+                    token.data,
+                    token.result
+                  )
+                )
+              })
+              .catch(error => {
+                dispatch(signatureError(error))
+              })
+              .then(token => {
+                dispatch(
+                  storeLockCreation(
+                    getState().account.address,
+                    token.data,
+                    token.result
                   )
                 )
               })
