@@ -14,6 +14,7 @@ import NoKeyLock from './NoKeyLock'
 import { UNLIMITED_KEYS_COUNT, TRANSACTION_TYPES } from '../../constants'
 
 export const Lock = ({
+  account,
   lock,
   lockKey,
   transaction,
@@ -39,18 +40,21 @@ export const Lock = ({
     const soldOut =
       lock.outstandingKeys >= lock.maxNumberOfKeys &&
       lock.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT
+    const tooExpensive =
+      account && parseFloat(account.balance) <= parseFloat(lock.keyPrice)
+
     // When the lock is not disabled for other reasons (pending key on
     // other lock...), we need to ensure that the lock is disabled
-    // when the lock is sold out
-    if (!disabled) {
-      disabled = soldOut
-    }
+    // when the lock is sold out or too expensive for the current account
+    disabled = disabled || soldOut || tooExpensive
+
     return (
       <NoKeyLock
         lock={lock}
         disabled={disabled}
         purchaseKey={purchaseKey}
         soldOut={soldOut}
+        tooExpensive={tooExpensive}
         lockKey={lockKey}
       />
     )
@@ -114,6 +118,7 @@ export const mapStateToProps = (state, { lock }) => {
   )
 
   return {
+    account,
     lockKey,
     transaction,
   }

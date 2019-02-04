@@ -12,6 +12,7 @@ export const NoKeyLock = ({
   purchaseKey,
   lockKey,
   soldOut,
+  tooExpensive,
 }) => (
   <Wrapper
     disabled={disabled}
@@ -33,7 +34,13 @@ export const NoKeyLock = ({
                 <Duration seconds={lock.expirationDuration} round />
               </ExpirationDuration>
             </div>
-            <Footer>{soldOut ? 'Sold Out' : 'Purchase'}</Footer>
+            <Footer>
+              {soldOut
+                ? 'Sold Out'
+                : tooExpensive
+                ? 'Insufficient funds'
+                : 'Purchase'}
+            </Footer>
           </Body>
         </div>
       )}
@@ -47,12 +54,14 @@ NoKeyLock.propTypes = {
   disabled: PropTypes.bool,
   soldOut: PropTypes.bool,
   lockKey: UnlockPropTypes.key,
+  tooExpensive: PropTypes.bool,
 }
 
 NoKeyLock.defaultProps = {
   disabled: false,
   lockKey: null,
   soldOut: false,
+  tooExpensive: false,
 }
 
 export default NoKeyLock
