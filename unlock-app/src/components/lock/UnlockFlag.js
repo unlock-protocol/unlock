@@ -39,13 +39,11 @@ export class UnlockedFlag extends React.Component {
 }
 
 const Flag = styled(Colophon)`
+  float: right;
   box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.08);
   background: var(--white);
-  position: fixed;
-  right: 0;
-  bottom: 105px;
-  margin-right: -106px;
   opacity: 0.5;
+  margin-right: -106px;
   transition: opacity 0.4s ease-in, margin-right 0.4s ease-in;
 
   ${props =>
@@ -59,7 +57,6 @@ const Flag = styled(Colophon)`
   &:hover {
     opacity: 1;
     margin-right: 0;
-    height: 80px;
     transition: opacity 0.4s ease-in, margin-right 0.4s ease-in;
   }
 

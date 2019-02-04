@@ -1,3 +1,5 @@
+import { SHOW_FLAG_FOR } from '../constants'
+
 export const iframeStyles = [
   'display:none',
   'position:fixed',
@@ -35,5 +37,22 @@ export function hide(iframe, document) {
   document.body.style.overflow = ''
   iframe.style.backgroundColor = 'transparent'
   iframe.style.backgroundImage = 'none'
-  iframe.style['z-index'] = '-2147483647'
+  iframe.style.width = '134px'
+  iframe.style.height = '80px'
+  iframe.style.left = null
+  iframe.style.top = null
+  iframe.style.right = '0'
+  iframe.style.bottom = '105px'
+  iframe.style.overflow = 'hidden'
+  iframe.style.transition = 'width 0.4s ease-in'
+  iframe.contentDocument.body.style.margin = '0'
+  iframe.contentDocument.body.style.height = '80px'
+  iframe.contentDocument.body.style.overflow = 'hidden'
+  setTimeout(() => {iframe.style.width = '30px'}, SHOW_FLAG_FOR)
+  iframe.addEventListener('mouseenter', () => {
+    iframe.style.width = '134px'
+  })
+  iframe.addEventListener('mouseleave', () => {
+    iframe.style.width = '30px'
+  })
 }

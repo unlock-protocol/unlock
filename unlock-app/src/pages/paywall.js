@@ -43,7 +43,7 @@ class Paywall extends React.Component {
     if (locked) {
       lockPage()
     } else {
-      unlockPage()
+      unlockPage() 
     }
   }
   render() {
@@ -58,7 +58,6 @@ class Paywall extends React.Component {
           </ShowWhenLocked>
           <ShowWhenUnlocked locked={locked}>
             <UnlockedFlag />
-            <DeveloperOverlay />
           </ShowWhenUnlocked>
         </GlobalErrorProvider>
       </BrowserOnly>
