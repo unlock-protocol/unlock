@@ -14,6 +14,7 @@ import { SET_PROVIDER } from '../../actions/provider'
 import { ADD_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
 import { TRANSACTION_TYPES } from '../../constants'
+import { NO_USER_ACCOUNT } from '../../errors'
 
 /**
  * Fake state
@@ -69,6 +70,7 @@ class MockWalletService extends EventEmitter {
     super()
     this.ready = true
   }
+  connect() {}
 }
 
 let mockWalletService = new MockWalletService()
@@ -157,27 +159,6 @@ describe('Wallet middleware', () => {
     )
   })
 
-  describe('when receiving the ready event triggered by the walletService', () => {
-    it('should dispatch queued up actions', () => {
-      expect.assertions(1)
-      const { store, invoke } = create()
-
-      // Add a pending action
-      const action = { type: 'FAKE_ACTION' }
-      mockWalletService.ready = false
-      mockWalletService.connect = jest.fn()
-      invoke(action)
-
-      // Trigger the event
-      mockWalletService.emit('ready')
-      expect(store.dispatch).toHaveBeenCalledWith(
-        expect.objectContaining({
-          type: 'FAKE_ACTION',
-        })
-      )
-    })
-  })
-
   describe('when receiving a network.changed event triggered by the walletService', () => {
     describe('when the network.changed is different from the store value', () => {
       it('should get a new account', () => {
@@ -252,102 +233,107 @@ describe('Wallet middleware', () => {
     })
   })
 
-  describe('when walletService is not ready', () => {
-    it('should connect on any action and stop further execution', () => {
-      expect.assertions(2)
-      mockWalletService.ready = false
-      const { next, invoke } = create()
-      const action = { type: 'FAKE_ACTION' }
-      mockWalletService.connect = jest.fn()
-      invoke(action)
-      expect(mockWalletService.connect).toHaveBeenCalledWith('HTTP')
-      expect(next).toHaveBeenCalledTimes(0) // ensures that execution was stopped
-    })
-
-    it('should propagate the SET_NETWORK action', () => {
-      expect.assertions(2)
-      mockWalletService.ready = false
-      const { next, invoke } = create()
-      const action = { type: SET_NETWORK, network: 0 }
-      mockWalletService.connect = jest.fn()
-      invoke(action)
-      expect(mockWalletService.connect).not.toHaveBeenCalled()
-      expect(next).toHaveBeenCalledTimes(1) // ensures that execution was not stopped
-    })
-
-    it('should propagate the SET_ACCOUNT action', () => {
-      expect.assertions(2)
-      mockWalletService.ready = false
-      const { next, invoke } = create()
-      const action = { type: SET_ACCOUNT, account: {} }
-      mockWalletService.connect = jest.fn()
-      invoke(action)
-      expect(mockWalletService.connect).not.toHaveBeenCalled()
-      expect(next).toHaveBeenCalledTimes(1) // ensures that execution was not stopped
-    })
-
-    it('should propagate the SET_PROVIDER action', () => {
-      expect.assertions(2)
-      mockWalletService.ready = false
-      const { next, invoke } = create()
-      const action = { type: SET_PROVIDER, provider: {} }
-      mockWalletService.connect = jest.fn()
-      invoke(action)
-      expect(mockWalletService.connect).toHaveBeenCalled()
-      expect(next).toHaveBeenCalledTimes(1) // ensures that execution was not stopped
-    })
+  it('should handle SET_PROVIDER and re connect', () => {
+    expect.assertions(2)
+    const { next, invoke } = create()
+    const action = { type: SET_PROVIDER, provider }
+    mockWalletService.connect = jest.fn()
+    invoke(action)
+    expect(mockWalletService.connect).toHaveBeenCalledWith(provider)
+    expect(next).toHaveBeenCalledWith(action)
   })
 
-  describe('when walletService is ready', () => {
-    it('should handle SET_PROVIDER and reset the whole state', () => {
+  describe('PURCHASE_KEY', () => {
+    it('when the service is not ready it should set an error and not try to purchase the key', () => {
+      expect.assertions(3)
+      const { next, invoke, store } = create()
+      const action = { type: PURCHASE_KEY, key }
+      mockWalletService.purchaseKey = jest.fn()
+      mockWalletService.ready = false
+      invoke(action)
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: 'error/SET_ERROR',
+        error: NO_USER_ACCOUNT,
+      })
+
+      expect(mockWalletService.purchaseKey).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(action)
+    })
+
+    it("should handle PURCHASE_KEY by calling walletService's purchaseKey when the walletService is ready", () => {
       expect.assertions(2)
       const { next, invoke } = create()
-      const action = { type: SET_PROVIDER, provider }
-      mockWalletService.connect = jest.fn()
+      const action = { type: PURCHASE_KEY, key }
+      mockWalletService.purchaseKey = jest.fn()
+      mockWalletService.ready = true
       invoke(action)
-      expect(mockWalletService.connect).toHaveBeenCalledWith(provider)
+      expect(mockWalletService.purchaseKey).toHaveBeenCalledWith(
+        key.lock,
+        key.owner,
+        lock.keyPrice,
+        account.address,
+        key.data
+      )
       expect(next).toHaveBeenCalledWith(action)
     })
   })
 
-  it("should handle PURCHASE_KEY by calling walletService's purchaseKey", () => {
-    expect.assertions(2)
-    const { next, invoke } = create()
-    const action = { type: PURCHASE_KEY, key }
-    mockWalletService.purchaseKey = jest.fn()
+  describe('WITHDRAW_FROM_LOCK', () => {
+    it('when the service is not ready it should set an error and not try to withdraw from the lock', () => {
+      expect.assertions(3)
+      const { next, invoke, store } = create()
+      const action = { type: WITHDRAW_FROM_LOCK, lock }
+      mockWalletService.withdrawFromLock = jest.fn()
+      mockWalletService.ready = false
+      invoke(action)
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: 'error/SET_ERROR',
+        error: NO_USER_ACCOUNT,
+      })
 
-    invoke(action)
-    expect(mockWalletService.purchaseKey).toHaveBeenCalledWith(
-      key.lock,
-      key.owner,
-      lock.keyPrice,
-      account.address,
-      key.data
-    )
-    expect(next).toHaveBeenCalledWith(action)
-  })
+      expect(mockWalletService.withdrawFromLock).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(action)
+    })
 
-  it('should handle WITHDRAW_FROM_LOCK by calling withdrawFromLock from walletService', () => {
-    expect.assertions(2)
-    const { next, invoke, store } = create()
-    const action = { type: WITHDRAW_FROM_LOCK, lock }
-    mockWalletService.withdrawFromLock = jest.fn()
-    invoke(action)
-
-    expect(mockWalletService.withdrawFromLock).toHaveBeenCalledWith(
-      lock.address,
-      store.getState().account.address
-    )
-    expect(next).toHaveBeenCalledWith(action)
+    it('should handle WITHDRAW_FROM_LOCK by calling withdrawFromLock from walletService', () => {
+      expect.assertions(2)
+      const { next, invoke, store } = create()
+      const action = { type: WITHDRAW_FROM_LOCK, lock }
+      mockWalletService.withdrawFromLock = jest.fn()
+      mockWalletService.ready = true
+      invoke(action)
+      expect(mockWalletService.withdrawFromLock).toHaveBeenCalledWith(
+        lock.address,
+        store.getState().account.address
+      )
+      expect(next).toHaveBeenCalledWith(action)
+    })
   })
 
   describe('CREATE_LOCK', () => {
     describe('when the lock has an address', () => {
+      it('when the service is not ready it should set an error and not try to create the lock', () => {
+        expect.assertions(3)
+        const { next, invoke, store } = create()
+        const action = { type: CREATE_LOCK, lock }
+        mockWalletService.createLock = jest.fn()
+        mockWalletService.ready = false
+        invoke(action)
+        expect(store.dispatch).toHaveBeenCalledWith({
+          type: 'error/SET_ERROR',
+          error: NO_USER_ACCOUNT,
+        })
+
+        expect(mockWalletService.createLock).not.toHaveBeenCalled()
+        expect(next).toHaveBeenCalledWith(action)
+      })
+
       it("should handle CREATE_LOCK by calling walletService's createLock", () => {
         expect.assertions(3)
         const { next, invoke, store } = create()
         const action = { type: CREATE_LOCK, lock }
         mockWalletService.createLock = jest.fn()
+        mockWalletService.ready = true
 
         invoke(action)
         expect(mockWalletService.createLock).toHaveBeenCalledWith(
@@ -360,15 +346,16 @@ describe('Wallet middleware', () => {
     })
 
     describe('when the lock does not have an address', () => {
-      it('should not try to create a lock', () => {
+      it('should not try to createLock', () => {
         expect.assertions(2)
         let lock = {
           keyPrice: '100',
           owner: account,
         }
+        mockWalletService.createLock = jest.fn()
         const { next, invoke } = create()
         const action = { type: CREATE_LOCK, lock }
-        mockWalletService.createLock = jest.fn()
+        mockWalletService.ready = true
 
         invoke(action)
         expect(next).toHaveBeenCalled()
@@ -378,6 +365,22 @@ describe('Wallet middleware', () => {
   })
 
   describe('UPDATE_LOCK_KEY_PRICE', () => {
+    it('when the service is not ready it should set an error and not try to update the ley price', () => {
+      expect.assertions(3)
+      const { next, invoke, store } = create()
+      const action = { type: UPDATE_LOCK_KEY_PRICE, lock }
+      mockWalletService.updateKeyPrice = jest.fn()
+      mockWalletService.ready = false
+      invoke(action)
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: 'error/SET_ERROR',
+        error: NO_USER_ACCOUNT,
+      })
+
+      expect(mockWalletService.updateKeyPrice).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(action)
+    })
+
     it('should invoke updateKeyPrice on receiving an update request', () => {
       expect.assertions(2)
       const { next, invoke, store } = create()
@@ -387,8 +390,8 @@ describe('Wallet middleware', () => {
         price: '0.03',
       }
       mockWalletService.updateKeyPrice = jest.fn()
+      mockWalletService.ready = true
       invoke(action)
-
       expect(mockWalletService.updateKeyPrice).toHaveBeenCalledWith(
         lock.address,
         store.getState().account.address,
