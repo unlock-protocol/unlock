@@ -17,6 +17,7 @@ export const displayError = isMainWindow =>
     const Error = mapErrorToComponent(error, errorMetadata)
 
     if (isMainWindow) {
+      // TODO: don't show fatal error until user clicks the lock
       if (error) {
         return Error
       }
