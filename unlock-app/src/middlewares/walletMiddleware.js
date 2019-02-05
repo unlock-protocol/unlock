@@ -69,10 +69,6 @@ export default function walletMiddleware({ getState, dispatch }) {
     dispatch(waitForWallet())
   })
 
-  walletService.on('wallet.gotWallet', () => {
-    dispatch(gotWallet())
-  })
-
   walletService.on('lock.updated', (address, update) => {
     dispatch(updateLock(address, update))
   })
