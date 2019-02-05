@@ -54,6 +54,10 @@ export default function walletMiddleware({ getState, dispatch }) {
   })
 
   walletService.on('transaction.new', transactionHash => {
+    const { waiting } = getState().walletStatus
+    if (waiting) {
+      dispatch(gotWallet())
+    }
     dispatch(
       addTransaction({
         hash: transactionHash,
@@ -61,7 +65,7 @@ export default function walletMiddleware({ getState, dispatch }) {
     )
   })
 
-  walletService.on('wallet.waitForWallet', () => {
+  walletService.on('transaction.pending', () => {
     dispatch(waitForWallet())
   })
 
