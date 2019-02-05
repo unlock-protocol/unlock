@@ -7,6 +7,7 @@ import {
   UPDATE_LOCK_KEY_PRICE,
   UPDATE_LOCK,
 } from '../../actions/lock'
+import { WAIT_FOR_WALLET, GOT_WALLET } from '../../actions/walletStatus'
 import { PURCHASE_KEY } from '../../actions/key'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
@@ -110,6 +111,9 @@ beforeEach(() => {
     },
     transactions: {},
     keys: {},
+    walletStatus: {
+      waiting: true,
+    },
   }
 })
 
@@ -132,9 +136,12 @@ describe('Wallet middleware', () => {
   })
 
   it('it should handle transaction.new events triggered by the walletService', () => {
-    expect.assertions(1)
+    expect.assertions(2)
     const { store } = create()
     mockWalletService.emit('transaction.new', transaction.hash)
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ type: GOT_WALLET })
+    )
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: ADD_TRANSACTION,
