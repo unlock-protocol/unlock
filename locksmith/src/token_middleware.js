@@ -46,7 +46,7 @@ const validatePayloadBodyMatch = (payload, body) => {
   ;['iat', 'exp', 'iss'].forEach(reservedField => {
     delete evaluatingPayload[reservedField]
   })
-  ;['pending'].forEach(prune => {
+  ;['pending', 'transaction'].forEach(prune => {
     delete evaluatingBody[prune]
   })
 
