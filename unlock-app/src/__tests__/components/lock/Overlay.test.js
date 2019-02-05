@@ -62,7 +62,7 @@ describe('Overlay', () => {
     it('should display children if there is no error', () => {
       expect.assertions(1)
       const wrapper = rtl.render(
-        displayError(true)(false, {}, <div>children</div>)
+displayError(true /* isMainWindow */)(false, {}, <div>children</div>)
       )
 
       expect(wrapper.getByText('children')).not.toBeNull()
