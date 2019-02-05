@@ -87,6 +87,12 @@ describe('iframe', () => {
   it('hide', () => {
     const iframe = {
       style: {},
+      contentDocument: {
+        body: {
+          style: {},
+        },
+      },
+      addEventListener: () => {},
     }
     const document = {
       body: {
@@ -98,7 +104,15 @@ describe('iframe', () => {
     expect(iframe.style).toEqual({
       backgroundColor: 'transparent',
       backgroundImage: 'none',
-      'z-index': '-2147483647',
+      overflow: 'hidden',
+      width: '134px',
+      height: '160px',
+      'margin-right': '-104px',
+      left: null,
+      top: null,
+      right: '0',
+      bottom: '105px',
+      transition: 'margin-right 0.4s ease-in',
     })
 
     expect(document.body.style).toEqual({

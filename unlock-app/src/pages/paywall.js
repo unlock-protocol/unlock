@@ -58,7 +58,6 @@ class Paywall extends React.Component {
           </ShowWhenLocked>
           <ShowWhenUnlocked locked={locked}>
             <UnlockedFlag />
-            <DeveloperOverlay />
           </ShowWhenUnlocked>
         </GlobalErrorProvider>
       </BrowserOnly>
