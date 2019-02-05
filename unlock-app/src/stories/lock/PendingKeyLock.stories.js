@@ -7,7 +7,7 @@ import { PendingKeyLock } from '../../components/lock/PendingKeyLock'
 const lock = {
   address: '0x123',
   name: 'Monthly',
-  keyPrice: '1203120301203013000',
+  keyPrice: '0.12',
   fiatPrice: 240.38,
 }
 

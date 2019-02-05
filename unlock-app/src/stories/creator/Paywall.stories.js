@@ -8,16 +8,20 @@ import { ConfigContext } from '../../utils/withConfig'
 const lock = {
   address: '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e',
   name: 'My Blog',
-  keyPrice: '27000000000000000',
+  keyPrice: '0.027',
   expirationDuration: 172800,
   maxNumberOfKeys: 240,
   outstandingKeys: 3,
 }
 const lockedState = {
+  account: {
+    address: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+    balance: '989898989898',
+  },
   locks: {
     '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e': {
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
-      keyPrice: '10000000000000000000',
+      keyPrice: '0.01',
       expirationDuration: 86400,
       maxNumberOfKeys: 800,
       outstandingKeys: 32,
@@ -37,10 +41,6 @@ const lockedState = {
 }
 const unlockedState = {
   ...lockedState,
-  account: {
-    address: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-    balance: '989898989898',
-  },
   keys: {
     '0xab7c74abc0c4d48d1bdad5dcb26153fc87eeeeee': {
       lock: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',

@@ -8,12 +8,16 @@ import { ConfigContext } from '../../utils/withConfig'
 const myLock = {
   address: '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e',
   name: 'My Blog',
-  keyPrice: '27000000000000000',
+  keyPrice: '0.027',
   expirationDuration: 172800,
   maxNumberOfKeys: 240,
   outstandingKeys: 3,
 }
 const store = createUnlockStore({
+  account: {
+    address: '0x123',
+    balance: '5.4',
+  },
   locks: {
     '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e': {
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
