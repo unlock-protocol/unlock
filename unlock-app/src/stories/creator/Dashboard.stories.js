@@ -68,7 +68,7 @@ const router = {
 }
 
 const currency = {
-  USD: '195.99',
+  USD: 195.99,
 }
 
 const store = createUnlockStore({
