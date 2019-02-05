@@ -1,0 +1,11 @@
+{
+  "name": "public-lock-abi-0",
+  "version": "1.0.0",
+  "description": "The ABI (application binary interface) for version 0 of Unlock-protocol's PublicLock contract.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "unlock-protocol",
+  "license": "ISC"
+}
