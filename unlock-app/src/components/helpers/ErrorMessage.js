@@ -41,7 +41,7 @@ const defaultMessages = {
     <p>Funds from your lock could not be withdrawn</p>
   ),
 
-  NO_USER_ACCOUNT: <p>You need an Ethereum wallet to perform this</p>,
+  NO_USER_ACCOUNT: <p>You need an Ethereum wallet to perform this action</p>,
 }
 
 /**
