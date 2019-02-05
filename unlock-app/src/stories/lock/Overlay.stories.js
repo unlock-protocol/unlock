@@ -80,7 +80,7 @@ storiesOf('Overlay', module)
     const locks = [
       {
         name: 'One Month',
-        keyPrice: '123400000000000000',
+        keyPrice: '0.123',
         expirationDuration: 12345678,
         fiatPrice: '20',
       },
@@ -91,13 +91,13 @@ storiesOf('Overlay', module)
     const locks = [
       {
         name: 'One Month',
-        keyPrice: '10000000000000000',
+        keyPrice: '0.01',
         expirationDuration: 12345678,
         fiatPrice: '20.54',
       },
       {
         name: 'One Year',
-        keyPrice: '100000000000000000',
+        keyPrice: '0.01',
         expirationDuration: 12345678,
         fiatPrice: '200.27',
       },
@@ -108,7 +108,7 @@ storiesOf('Overlay', module)
     const locks = [
       {
         name: 'One Month',
-        keyPrice: '123400000000000000',
+        keyPrice: '0.1234',
         fiatPrice: '20',
       },
     ]

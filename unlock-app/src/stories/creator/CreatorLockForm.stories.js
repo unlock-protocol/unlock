@@ -29,7 +29,7 @@ storiesOf('CreatorLockForm', module)
   .add('With existing lock', () => {
     // TODO: implement this
     const lock = {
-      keyPrice: '10000000000000000000',
+      keyPrice: '0.01',
       expirationDuration: 172800,
       maxNumberOfKeys: 240,
       outstandingKeys: 3,

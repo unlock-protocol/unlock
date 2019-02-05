@@ -7,7 +7,7 @@ import { ConfirmingKeyLock } from '../../components/lock/ConfirmingKeyLock'
 const lock = {
   address: '0x123',
   name: 'Monthly',
-  keyPrice: '1203120301203013000',
+  keyPrice: '0.012',
   fiatPrice: 240.38,
 }
 
