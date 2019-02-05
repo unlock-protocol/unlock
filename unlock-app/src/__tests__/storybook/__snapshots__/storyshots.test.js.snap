@@ -44485,48 +44485,6 @@ Object {
   fill: white;
 }
 
-.c2 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.c3 {
-  padding: 0 20px 10px 20px;
-  border-color: lightgrey;
-  border-left: 1px solid;
-  border-right: 1px solid;
-  border-bottom: 1px solid;
-  border-radius: 0 0 20px 20px;
-  -webkit-transform: translateY(-21px);
-  -ms-transform: translateY(-21px);
-  transform: translateY(-21px);
-  -webkit-transition: -webkit-transform 0.5s,color 0.5s,background-color 0.5s;
-  -webkit-transition: transform 0.5s,color 0.5s,background-color 0.5s;
-  transition: transform 0.5s,color 0.5s,background-color 0.5s;
-  color: lightgrey;
-}
-
-.c3:hover {
-  -webkit-transform: translateY(0);
-  -ms-transform: translateY(0);
-  transform: translateY(0);
-  opacity: 100%;
-  color: white;
-  background-color: var(--green);
-  border-color: var(--green);
-  font-weight: bold;
-}
-
 .c0 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -44552,16 +44510,12 @@ Object {
   width: 120px;
   height: 80px;
   margin-right: -33px;
-  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  float: right;
+  box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
   background: var(--white);
-  position: fixed;
-  right: 0;
-  bottom: 105px;
-  margin-right: -106px;
   opacity: 0.5;
-  -webkit-transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
-  transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
-  opacity: 1;
+  -webkit-transition: opacity 0.4s ease-in;
+  transition: opacity 0.4s ease-in;
   margin-right: 0;
 }
 
@@ -44591,10 +44545,8 @@ Object {
 
 .c0:hover {
   opacity: 1;
-  margin-right: 0;
-  height: 80px;
-  -webkit-transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
-  transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
+  -webkit-transition: opacity 0.4s ease-in;
+  transition: opacity 0.4s ease-in;
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
@@ -44633,27 +44585,6 @@ Object {
           Subscribed with Unlock
         </p>
       </footer>
-      <div
-        class="c2"
-      >
-        <div
-          class="c3"
-        >
-          <select
-            id="changeProvider"
-            name="changeProvider"
-          >
-            <option
-              value="HTTP"
-            >
-              HTTP
-            </option>
-          </select>
-          <div>
-            Choose Provider
-          </div>
-        </div>
-      </div>
     </div>
   </body>,
   "container": <div>
@@ -44662,7 +44593,7 @@ Object {
       rel="stylesheet"
     />
     <footer
-      class="sc-1ws9jnj-8 sc-18dedc6-0 dZYAXI"
+      class="sc-1ws9jnj-8 sc-18dedc6-0 jeFBMt"
     >
       <div
         class="cenpj1-0 dhCRxc"
@@ -44680,27 +44611,6 @@ Object {
         Subscribed with Unlock
       </p>
     </footer>
-    <div
-      class="sc-1bbuge3-0 deeIGd"
-    >
-      <div
-        class="sc-1bbuge3-1 iBcmrA"
-      >
-        <select
-          id="changeProvider"
-          name="changeProvider"
-        >
-          <option
-            value="HTTP"
-          >
-            HTTP
-          </option>
-        </select>
-        <div>
-          Choose Provider
-        </div>
-      </div>
-    </div>
   </div>,
   "debug": [Function],
   "getAllByAltText": [Function],
@@ -46652,16 +46562,12 @@ Object {
   width: 120px;
   height: 80px;
   margin-right: -33px;
-  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  float: right;
+  box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
   background: var(--white);
-  position: fixed;
-  right: 0;
-  bottom: 105px;
-  margin-right: -106px;
   opacity: 0.5;
-  -webkit-transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
-  transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
-  opacity: 1;
+  -webkit-transition: opacity 0.4s ease-in;
+  transition: opacity 0.4s ease-in;
   margin-right: 0;
 }
 
@@ -46691,10 +46597,8 @@ Object {
 
 .c0:hover {
   opacity: 1;
-  margin-right: 0;
-  height: 80px;
-  -webkit-transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
-  transition: opacity 0.4s ease-in,margin-right 0.4s ease-in;
+  -webkit-transition: opacity 0.4s ease-in;
+  transition: opacity 0.4s ease-in;
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
@@ -46741,7 +46645,7 @@ Object {
       rel="stylesheet"
     />
     <footer
-      class="sc-1ws9jnj-8 sc-18dedc6-0 dZYAXI"
+      class="sc-1ws9jnj-8 sc-18dedc6-0 jeFBMt"
     >
       <div
         class="cenpj1-0 dhCRxc"

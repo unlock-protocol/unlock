@@ -43,7 +43,7 @@ class Paywall extends React.Component {
     if (locked) {
       lockPage()
     } else {
-      unlockPage() 
+      unlockPage()
     }
   }
   render() {

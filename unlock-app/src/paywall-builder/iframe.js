@@ -1,5 +1,3 @@
-import { SHOW_FLAG_FOR } from '../constants'
-
 export const iframeStyles = [
   'display:none',
   'position:fixed',
@@ -34,23 +32,27 @@ export function show(iframe, document) {
 }
 
 export function hide(iframe, document) {
-  const expandedWidth = '256px'
-  const collapsedWidth = '30px'
-  const height = '80px'
+  const width = '134px'
+  const height = '160px'
+  const collapsedMargin = '-104px'
 
   // general settings
   document.body.style.overflow = ''
   iframe.style.backgroundColor = 'transparent'
   iframe.style.backgroundImage = 'none'
+  iframe.style['margin-right'] = collapsedMargin
   iframe.contentDocument.body.style.margin = '0'
   iframe.contentDocument.body.style.height = height
+  iframe.contentDocument.body.style.display = 'flex'
+  iframe.contentDocument.body.style['flex-direction'] = 'column'
+  iframe.contentDocument.body.style['justify-content'] = 'center'
 
   // so that there's no scroll when it goes off the edge
   iframe.style.overflow = 'hidden'
   iframe.contentDocument.body.style.overflow = 'hidden'
 
   // new dimensions
-  iframe.style.width = expandedWidth
+  iframe.style.width = width
   iframe.style.height = height
 
   // positioning
@@ -60,15 +62,12 @@ export function hide(iframe, document) {
   iframe.style.bottom = '105px'
 
   // Animation
-  iframe.style.transition = 'width 0.4s ease-in'
+  iframe.style.transition = 'margin-right 0.4s ease-in'
 
-  setTimeout(() => {
-    iframe.style.width = collapsedWidth
-  }, SHOW_FLAG_FOR)
   iframe.addEventListener('mouseenter', () => {
-    iframe.style.width = expandedWidth
+    iframe.style['margin-right'] = '0'
   })
   iframe.addEventListener('mouseleave', () => {
-    iframe.style.width = collapsedWidth
+    iframe.style['margin-right'] = collapsedMargin
   })
 }
