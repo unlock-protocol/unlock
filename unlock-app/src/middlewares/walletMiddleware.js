@@ -54,6 +54,8 @@ export default function walletMiddleware({ getState, dispatch }) {
   })
 
   walletService.on('transaction.new', transactionHash => {
+    // If we're waiting (full-screen wallet notification overlay is active), we
+    // can safely dismiss it now
     const { waiting } = getState().walletStatus
     if (waiting) {
       dispatch(gotWallet())
@@ -65,6 +67,8 @@ export default function walletMiddleware({ getState, dispatch }) {
     )
   })
 
+  // A transaction has started, now we need to signal that we're waiting for
+  // interaction with the wallet
   walletService.on('transaction.pending', () => {
     dispatch(waitForWallet())
   })
