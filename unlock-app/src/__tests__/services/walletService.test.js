@@ -3,7 +3,6 @@
 import EventEmitter from 'events'
 import nock from 'nock'
 import Web3Utils from 'web3-utils'
-import WalletService from '../../services/walletService'
 import UnlockContract from '../../artifacts/contracts/Unlock.json'
 import LockContract from '../../artifacts/contracts/PublicLock.json'
 import configure from '../../config'
@@ -17,6 +16,8 @@ import {
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../../errors'
 import { POLLING_INTERVAL } from '../../constants'
+
+jest.mock('../../utils/promises')
 
 const nockScope = nock('http://127.0.0.1:8545', { encodedQueryParams: true })
 
@@ -60,8 +61,13 @@ let config
 let providers
 
 describe('WalletService', () => {
+  const WalletService = require('../../services/walletService').default
+  let delay
   beforeEach(() => {
     nock.cleanAll()
+    const { delayPromise } = require('../../utils/promises')
+    delay = delayPromise
+    delayPromise.reset()
     config = configure()
     providers = config.providers
     // the second argument is designed to stop the polling loop in the majority of tests
@@ -73,35 +79,27 @@ describe('WalletService', () => {
   describe('pollAccount', () => {
     it('constructor calls timeout with pollAccount when ready', () => {
       expect.assertions(2)
-      let calls = 0
-      const timeout = jest.fn(() =>
-        calls++ ? Promise.reject() : Promise.resolve()
-      )
-      walletService = new WalletService(config, timeout)
       walletService.checkForAccountChange = jest.fn(() =>
         Promise.resolve('account')
       )
 
       walletService.emit('ready')
       expect(walletService.ready).toBe(true)
-      expect(timeout).toHaveBeenCalledWith(POLLING_INTERVAL)
+      expect(delay).toHaveBeenCalledWith(POLLING_INTERVAL)
     })
 
     it('pollAccount calls checkForAccountChange and timeout', async () => {
       const isServer = false
-      let count = 0
-      const timeout = jest.fn(() =>
-        count++ ? Promise.reject() : Promise.resolve()
-      )
       walletService.account = 'old account'
+      delay.reset(1)
 
       walletService.checkForAccountChange = jest.fn(() =>
         Promise.resolve('thank u, next')
       )
 
-      await walletService.pollForAccountChange(timeout, isServer)
+      await walletService.pollForAccountChange(isServer)
 
-      expect(timeout).toHaveBeenCalledWith(POLLING_INTERVAL)
+      expect(delay).toHaveBeenCalledWith(POLLING_INTERVAL)
       expect(walletService.checkForAccountChange).toHaveBeenCalledWith(
         'old account'
       )
