@@ -56,16 +56,17 @@ nock.emitter.on('no match', function(clientRequestObject, options, body) {
 })
 
 let walletService
+let config
 let providers
 
 describe('WalletService', () => {
   beforeEach(() => {
     nock.cleanAll()
-    providers = configure().providers
-    // the third argument is designed to stop the polling loop in the majority of tests
+    config = configure()
+    providers = config.providers
+    // the second argument is designed to stop the polling loop in the majority of tests
     walletService = new WalletService(
-      providers,
-      false,
+      config,
       () => new Promise((resolve, reject) => reject('timeout reject'))
     )
   })
@@ -76,7 +77,7 @@ describe('WalletService', () => {
       const timeout = jest.fn(() =>
         calls++ ? Promise.reject() : Promise.resolve()
       )
-      walletService = new WalletService(providers, false, timeout)
+      walletService = new WalletService(config, timeout)
       walletService.checkForAccountChange = jest.fn(() =>
         Promise.resolve('account')
       )

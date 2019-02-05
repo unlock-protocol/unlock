@@ -16,8 +16,6 @@ import {
 import { POLLING_INTERVAL } from '../constants'
 import { delayPromise } from '../utils/promises'
 
-const { unlockAddress } = configure()
-
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
 /**
@@ -27,9 +25,13 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends EventEmitter {
-  constructor(availableProviders, runningOnServer, wait = delayPromise) {
+  constructor(
+    { providers, runningOnServer, unlockAddress } = configure(),
+    wait = delayPromise
+  ) {
     super()
-    this.providers = availableProviders
+    this.unlockAddress = unlockAddress
+    this.providers = providers
     this.ready = false
     this.providerName = null
     this.web3 = null
@@ -76,8 +78,10 @@ export default class WalletService extends EventEmitter {
     this.web3 = new Web3(provider)
 
     const networkId = await this.web3.eth.net.getId()
-    if (unlockAddress) {
-      this.unlockContractAddress = Web3Utils.toChecksumAddress(unlockAddress)
+    if (this.unlockAddress) {
+      this.unlockContractAddress = Web3Utils.toChecksumAddress(
+        this.unlockAddress
+      )
     } else if (UnlockContract.networks[networkId]) {
       // If we do not have an address from config let's use the artifact files
       this.unlockContractAddress = Web3Utils.toChecksumAddress(
