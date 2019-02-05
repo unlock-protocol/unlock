@@ -37,7 +37,7 @@ const transactions = {
 const locks = {
   '0x56781234a': {
     address: '0x56781234a',
-    keyPrice: '10000000000000000000',
+    keyPrice: '0.01',
     expirationDuration: 86400,
     maxNumberOfKeys: 800,
     outstandingKeys: 32,
@@ -46,7 +46,7 @@ const locks = {
   '0x12345678a': {
     address: '0x12345678a',
     name: 'My Blog',
-    keyPrice: '27000000000000000',
+    keyPrice: '0.027',
     expirationDuration: 172800,
     maxNumberOfKeys: 240,
     outstandingKeys: 3,
@@ -55,7 +55,7 @@ const locks = {
   '0x9abcdef0a': {
     address: '0x9abcdef0',
     name: 'Infinite Lock',
-    keyPrice: '27000000000000000',
+    keyPrice: '0.027',
     expirationDuration: 172800,
     maxNumberOfKeys: 0,
     outstandingKeys: 10,
@@ -67,12 +67,17 @@ const router = {
   route: '/dashboard',
 }
 
+const currency = {
+  USD: '195.99',
+}
+
 const store = createUnlockStore({
   account,
   network,
   router,
   locks,
   transactions,
+  currency,
 })
 
 const wrongNetworkStore = createUnlockStore({
