@@ -1,4 +1,4 @@
-import { WAIT_FOR_WALLET, GOT_WALLET } from '../actions/walletStatus.js'
+import { WAIT_FOR_WALLET, GOT_WALLET } from '../actions/walletStatus'
 
 import { SET_PROVIDER } from '../actions/provider'
 import { SET_NETWORK } from '../actions/network'
