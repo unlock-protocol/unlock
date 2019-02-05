@@ -5,18 +5,8 @@ import ethJsUtil from 'ethereumjs-util'
 
 import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
-import configure from '../config'
 import { TRANSACTION_TYPES, MAX_UINT } from '../constants'
 import { NON_DEPLOYED_CONTRACT } from '../errors'
-
-const {
-  readOnlyProvider,
-  providers,
-  unlockAddress,
-  blockTime,
-  requiredNetworkId,
-  requiredConfirmations,
-} = configure()
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
@@ -25,9 +15,18 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * All transactions should be sent via the WalletService.
  */
 export default class Web3Service extends EventEmitter {
-  constructor(unlockContractAddress = unlockAddress) {
+  constructor({
+    readOnlyProvider,
+    providers,
+    unlockAddress,
+    blockTime,
+    requiredNetworkId,
+    requiredConfirmations,
+  }) {
     super()
 
+    this.blockTime = blockTime
+    this.requiredConfirmations = requiredConfirmations
     if (readOnlyProvider) {
       this.web3 = new Web3(readOnlyProvider)
     } else {
@@ -80,10 +79,8 @@ export default class Web3Service extends EventEmitter {
         })
       },
     }
-    if (unlockContractAddress) {
-      this.unlockContractAddress = Web3Utils.toChecksumAddress(
-        unlockContractAddress
-      )
+    if (unlockAddress) {
+      this.unlockContractAddress = Web3Utils.toChecksumAddress(unlockAddress)
     } else if (UnlockContract.networks[requiredNetworkId]) {
       // If we do not have an address from config let's use the artifact files
       this.unlockContractAddress = Web3Utils.toChecksumAddress(
@@ -299,7 +296,7 @@ export default class Web3Service extends EventEmitter {
   _watchTransaction(transactionHash) {
     setTimeout(() => {
       this.getTransaction(transactionHash)
-    }, blockTime / 2)
+    }, this.blockTime / 2)
   }
 
   /**
@@ -351,7 +348,10 @@ export default class Web3Service extends EventEmitter {
       }
 
       // Let's watch for more confirmations if needed
-      if (blockNumber - blockTransaction.blockNumber < requiredConfirmations) {
+      if (
+        blockNumber - blockTransaction.blockNumber <
+        this.requiredConfirmations
+      ) {
         this._watchTransaction(transactionHash)
       }
 

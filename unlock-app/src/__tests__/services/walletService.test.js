@@ -60,8 +60,9 @@ let providers
 describe('WalletService', () => {
   beforeEach(() => {
     nock.cleanAll()
-    providers = configure().providers
-    walletService = new WalletService(providers)
+    const config = configure()
+    walletService = new WalletService(config)
+    providers = config.providers
   })
 
   describe('connect', () => {

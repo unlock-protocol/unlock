@@ -3,7 +3,6 @@ import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
 import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
-import configure from '../config'
 import {
   MISSING_PROVIDER,
   NON_DEPLOYED_CONTRACT,
@@ -14,8 +13,6 @@ import {
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../errors'
 
-const { providers, unlockAddress } = configure()
-
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
 /**
@@ -25,9 +22,10 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends EventEmitter {
-  constructor(availableProviders = providers) {
+  constructor({ providers, unlockAddress }) {
     super()
-    this.providers = availableProviders
+    this.providers = providers
+    this.unlockAddress = unlockAddress
     this.ready = false
     this.providerName = null
     this.web3 = null
@@ -73,8 +71,10 @@ export default class WalletService extends EventEmitter {
     this.web3 = new Web3(provider)
 
     const networkId = await this.web3.eth.net.getId()
-    if (unlockAddress) {
-      this.unlockContractAddress = Web3Utils.toChecksumAddress(unlockAddress)
+    if (this.unlockAddress) {
+      this.unlockContractAddress = Web3Utils.toChecksumAddress(
+        this.unlockAddress
+      )
     } else if (UnlockContract.networks[networkId]) {
       // If we do not have an address from config let's use the artifact files
       this.unlockContractAddress = Web3Utils.toChecksumAddress(

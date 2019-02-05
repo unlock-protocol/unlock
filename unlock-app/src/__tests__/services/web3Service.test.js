@@ -90,12 +90,17 @@ const unlockSmartContractAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
 
 let web3Service
 
-const { blockTime } = configure()
+let blockTime
 
 describe('Web3Service', () => {
   beforeEach(() => {
     nock.cleanAll()
-    web3Service = new Web3Service(unlockSmartContractAddress)
+    const config = configure()
+    web3Service = new Web3Service({
+      ...config,
+      lockAddress: unlockSmartContractAddress,
+    })
+    blockTime = config.blockTime
   })
 
   const lockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'

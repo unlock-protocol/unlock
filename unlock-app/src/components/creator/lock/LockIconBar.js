@@ -10,10 +10,6 @@ import Media from '../../../theme/media'
 import withConfig from '../../../utils/withConfig'
 import { TRANSACTION_TYPES } from '../../../constants'
 
-import configure from '../../../config'
-
-const config = configure()
-
 export function LockIconBar({
   lock,
   priceUpdateTransaction,
@@ -98,7 +94,7 @@ LockIconBar.defaultProps = {
   edit: () => {},
 }
 
-const mapStateToProps = ({ transactions }, { lock }) => {
+const mapStateToProps = ({ transactions }, { lock, config }) => {
   let withdrawalTransaction = null
 
   Object.values(transactions).forEach(transaction => {
