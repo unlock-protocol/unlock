@@ -59,7 +59,7 @@ storiesOf('CreatorLock', module)
   ))
   .add('Deployed', () => {
     const lock = {
-      keyPrice: '10000000000000000000',
+      keyPrice: '0.01',
       expirationDuration: 172800,
       maxNumberOfKeys: 240,
       outstandingKeys: 3,
@@ -70,7 +70,7 @@ storiesOf('CreatorLock', module)
   })
   .add('Submitted', () => {
     const lock = {
-      keyPrice: '10000000000000000000',
+      keyPrice: '0.01',
       expirationDuration: 172800,
       maxNumberOfKeys: 240,
       outstandingKeys: 3,
@@ -81,7 +81,7 @@ storiesOf('CreatorLock', module)
   })
   .add('Confirming', () => {
     const lock = {
-      keyPrice: '10000000000000000000',
+      keyPrice: '0.01',
       expirationDuration: 172800,
       maxNumberOfKeys: 240,
       outstandingKeys: 3,
@@ -102,7 +102,7 @@ storiesOf('CreatorLock', module)
   })
   .add('Not found', () => {
     const lock = {
-      keyPrice: '10000000000000000000',
+      keyPrice: '0.01',
       expirationDuration: 172800,
       maxNumberOfKeys: 240,
       outstandingKeys: 3,
@@ -113,7 +113,7 @@ storiesOf('CreatorLock', module)
   })
   .add('With key', () => {
     const lock = {
-      keyPrice: '10000000000000000000',
+      keyPrice: '0.01',
       expirationDuration: 172800,
       maxNumberOfKeys: 240,
       outstandingKeys: 3,
@@ -135,7 +135,7 @@ storiesOf('CreatorLock', module)
   .add('Withdrawal submitted', () => {
     const lock = {
       id: 'lockwithdrawalsubmittedid',
-      keyPrice: '10000000000000000000',
+      keyPrice: '0.01',
       expirationDuration: 172800,
       maxNumberOfKeys: 240,
       outstandingKeys: 3,
@@ -147,7 +147,7 @@ storiesOf('CreatorLock', module)
   .add('Withdrawing', () => {
     const lock = {
       id: 'lockwithdrawalconfirmingid',
-      keyPrice: '10000000000000000000',
+      keyPrice: '0.01',
       expirationDuration: 172800,
       maxNumberOfKeys: 240,
       outstandingKeys: 3,
