@@ -11,6 +11,7 @@ import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
 import { SET_PROVIDER } from '../actions/provider'
 import { addTransaction } from '../actions/transaction'
+import { waitForWallet, gotWallet } from '../actions/walletStatus'
 import { TRANSACTION_TYPES } from '../constants'
 
 import generateJWTToken from '../utils/signature'
@@ -58,6 +59,14 @@ export default function walletMiddleware({ getState, dispatch }) {
         hash: transactionHash,
       })
     )
+  })
+
+  walletService.on('wallet.waitForWallet', () => {
+    dispatch(waitForWallet())
+  })
+
+  walletService.on('wallet.gotWallet', () => {
+    dispatch(gotWallet())
   })
 
   walletService.on('lock.updated', (address, update) => {
