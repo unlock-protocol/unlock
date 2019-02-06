@@ -123,6 +123,7 @@ export default function configure(
     isRequiredNetwork = networkId => networkId === 4
     requiredNetworkId = 4
     supportedProviders = ['Metamask', 'Opera']
+    services['storage'] = { host: runtimeConfig.locksmithHost }
 
     // Address for the Unlock smart contract
     unlockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
