@@ -1,14 +1,16 @@
 import {
   addTransaction,
   ADD_TRANSACTION,
-  updateTransaction,
-  UPDATE_TRANSACTION,
   deleteTransaction,
   DELETE_TRANSACTION,
+  newTransaction,
+  NEW_TRANSACTION,
+  updateTransaction,
+  UPDATE_TRANSACTION,
 } from '../../actions/transaction'
 
 describe('transaction actions', () => {
-  it('should create an action to set the transaction', () => {
+  it('should create an action to add a transaction', () => {
     const transaction = {}
     const expectedAction = {
       type: ADD_TRANSACTION,
@@ -35,5 +37,14 @@ describe('transaction actions', () => {
       transaction,
     }
     expect(deleteTransaction(transaction)).toEqual(expectedAction)
+  })
+
+  it('should create an action to add a new transaction', () => {
+    const transaction = {}
+    const expectedAction = {
+      type: NEW_TRANSACTION,
+      transaction,
+    }
+    expect(newTransaction(transaction)).toEqual(expectedAction)
   })
 })
