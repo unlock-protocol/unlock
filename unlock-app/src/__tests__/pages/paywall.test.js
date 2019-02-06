@@ -133,7 +133,7 @@ describe('Paywall', () => {
           pathname: `/paywall/${lock.address}/http%3A%2F%2Fexample.com`,
         },
       }
-      const props = mapStateToProps({ locks, router })
+      const props = mapStateToProps({ locks, router, keys, modals })
       expect(props.redirect).toBe('http://example.com')
     })
   })
