@@ -14,6 +14,14 @@ const locks = {
 }
 const router = {
   location: {
+    pathname: `/paywall/${lock.address}/http%3a%2f%2fexample.com`,
+    search: '',
+    hash: '',
+  },
+}
+
+const noRedirectRouter = {
+  location: {
     pathname: `/paywall/${lock.address}`,
     search: '',
     hash: '',
@@ -52,6 +60,19 @@ describe('Paywall', () => {
     it('should not be locked when there is a matching key', () => {
       const props = mapStateToProps({ locks, keys, modals, router })
       expect(props.locked).toBe(false)
+    })
+    it('should pass redirect if present in the URI', () => {
+      const props = mapStateToProps({ locks, keys, modals, router })
+      expect(props.redirect).toBe('http://example.com')
+    })
+    it('should not pass redirect if not present in the URI', () => {
+      const props = mapStateToProps({
+        locks,
+        keys,
+        modals,
+        router: noRedirectRouter,
+      })
+      expect(props.redirect).toBeFalsy()
     })
   })
   describe('handleIframe', () => {
@@ -100,6 +121,20 @@ describe('Paywall', () => {
       )
       const flagText = queryByText('Subscribed with Unlock')
       expect(flagText).toBeNull()
+    })
+
+    it('should pull the redirect parameter from the page', () => {
+      const lock = { address: '0x4983D5ECDc5cc0E499c2D23BF4Ac32B982bAe53a' }
+      const locks = {
+        [lock.address]: lock,
+      }
+      const router = {
+        location: {
+          pathname: `/paywall/${lock.address}/http%3A%2F%2Fexample.com`,
+        },
+      }
+      const props = mapStateToProps({ locks, router, keys, modals })
+      expect(props.redirect).toBe('http://example.com')
     })
   })
 })
