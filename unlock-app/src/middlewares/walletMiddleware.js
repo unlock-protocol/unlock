@@ -10,7 +10,7 @@ import { setAccount } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
 import { SET_PROVIDER } from '../actions/provider'
-import { addTransaction } from '../actions/transaction'
+import { newTransaction } from '../actions/transaction'
 import { TRANSACTION_TYPES } from '../constants'
 
 import generateJWTToken from '../utils/signature'
@@ -52,10 +52,12 @@ export default function walletMiddleware({ getState, dispatch }) {
     )
   })
 
-  walletService.on('transaction.new', transactionHash => {
+  walletService.on('transaction.new', (transactionHash, from, to) => {
     dispatch(
-      addTransaction({
+      newTransaction({
         hash: transactionHash,
+        to,
+        from,
       })
     )
   })
