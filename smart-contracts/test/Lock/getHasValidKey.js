@@ -1,21 +1,19 @@
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
-const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 const Unlock = artifacts.require('../Unlock.sol')
 
 let unlock, locks
 
 contract('Lock', (accounts) => {
   const account = accounts[1]
-  let lock;
-  
+  let lock
+
   before(async () => {
     unlock = await Unlock.deployed()
     locks = await deployLocks(unlock)
-    lock = locks['FIRST'];
+    lock = locks['FIRST']
   })
 
   describe('getHasValidKey', () => {
@@ -35,8 +33,9 @@ contract('Lock', (accounts) => {
         const isValid = await lock.getHasValidKey.call(account)
         assert.equal(isValid, true)
       })
-  
+
       describe('after transfering a previously purchased key', () => {
+        before(async () => {
           await lock.transferFrom(account, accounts[5], await lock.getTokenIdFor.call(account), { from: account })
         })
 
