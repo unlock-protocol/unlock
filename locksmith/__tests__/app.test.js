@@ -1,6 +1,7 @@
 const request = require('supertest')
 const app = require('../src/app')
 const Lock = require('../src/lock')
+const Transaction = require('../src/transaction')
 
 const validLockOwner = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
@@ -229,6 +230,78 @@ describe('Requesting Lock details of a given address', () => {
         .get('/0xd489fF3/locks')
         .set('Accept', /json/)
       expect(response.body).toEqual({ locks: [] })
+    })
+  })
+
+  describe('Requesting transaction details', () => {
+    beforeEach(async () => {
+      await Transaction.bulkCreate([
+        {
+          transactionHash: '0x345546565',
+          sender: '0xcafe',
+          recipient: '0xbeefe',
+        },
+        {
+          transactionHash: '0x445546565',
+          sender: '0xcafe',
+          recipient: '0xbeefe',
+        },
+        {
+          transactionHash: '0x545546565',
+          sender: '0xcafe2',
+          recipient: '0xbeefe',
+        },
+      ])
+    })
+
+    afterEach(async () => {
+      await Transaction.truncate()
+    })
+
+    describe('when the address has 0 transactions', async () => {
+      it('returns an empty collection', async () => {
+        expect.assertions(1)
+        let response = await request(app)
+          .get('/transactions')
+          .query({ sender: '0xd489fF3' })
+          .set('Accept', /json/)
+        expect(response.body).toEqual({ transactions: [] })
+      })
+    })
+
+    describe('when the address has transactions', () => {
+      it("returns the addresses' transactions", async () => {
+        expect.assertions(1)
+        let sender = '0xcafe'
+
+        let response = await request(app)
+          .get('/transactions')
+          .query({ sender: sender })
+          .set('Accept', /json/)
+
+        expect(response.body.transactions.length).toEqual(2)
+      })
+    })
+
+    describe('storing a transaction', () => {
+      it('stores the provided transaction', async () => {
+        expect.assertions(2)
+
+        let response = await request(app)
+          .post('/transaction')
+          .set('Accept', /json/)
+          .send({
+            transactionHash: '0xsdbegjkbg,egf',
+            sender: 'sdgergr',
+            recipient: 'sdag433r',
+          })
+
+        let record = await Transaction.findOne({
+          where: { sender: 'sdgergr', recipient: 'sdag433r' },
+        })
+        expect(record.sender).toBe('sdgergr')
+        expect(response.statusCode).toBe(200)
+      })
     })
   })
 })
