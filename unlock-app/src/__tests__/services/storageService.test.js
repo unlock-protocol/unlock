@@ -90,4 +90,24 @@ describe('StorageService', () => {
       expect(failureFn).toHaveBeenCalled()
     })
   })
+
+  describe('storeTransaction', () => {
+    describe('when storing a transaction', () => {
+      it('returns a successful promise', () => {
+        const transactionHash = ' 0xhash'
+        const senderAddress = ' 0xsender'
+        const recipientAddress = ' 0xrecipient'
+        storageService
+          .storeTransaction(transactionHash, senderAddress, recipientAddress)
+          .then(successFn)
+        http.mockResponse()
+        expect(http.post).toHaveBeenCalledWith(`${serviceHost}/transaction`, {
+          transactionHash,
+          sender: senderAddress,
+          recipient: recipientAddress,
+        })
+        expect(successFn).toHaveBeenCalled()
+      })
+    })
+  })
 })
