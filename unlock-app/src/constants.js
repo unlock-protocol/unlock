@@ -35,7 +35,16 @@ export const TRANSACTION_TYPES = {
 }
 
 /**
- * Matches /lock /demo or /paywall
+ * This regexp matches several important parameters passed in the url for the demo and paywall pages.
+ *
+ * '/demo/0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9/'
+ *   will extract 'demo' and the lock address as match 1 and 2
+ * '/demo/0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9/http%3A%2F%2Fexample.com'
+ *   will extract the same variables, and also the url-encoded redirect URL 'http://example.com' as match 4
+ * '/paywall/0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9/#0xabcddc4CdBda8dc99c82D66d97B264386E41c0E9'
+ *   will extract the 'paywall' and lock address as match 1 and 2 and the account address as match 6
+ *
+ * You should not use this directly, instead use the utils/routes.js lockRoute function
  */
 export const LOCK_PATH_NAME_REGEXP = /\/([a-z0-9]+)\/(0x[a-fA-F0-9]{40})(\/([^#]+))?(#(0x[a-fA-F0-9]{40}))?/
 /**
