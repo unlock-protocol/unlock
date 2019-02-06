@@ -54,13 +54,9 @@ export default function walletMiddleware({ getState, dispatch }) {
   })
 
   walletService.on('transaction.new', (transactionHash, from, to) => {
-    // If we're waiting (full-screen wallet notification overlay is active), we
-    // can safely dismiss it now
-    const { waiting } = getState().walletStatus
-    if (waiting) {
-      dispatch(gotWallet())
-    }
-
+    // At this point we know that a wallet was found, because a new transaction
+    // cannot be created without it
+    dispatch(gotWallet())
     dispatch(
       newTransaction({
         hash: transactionHash,
