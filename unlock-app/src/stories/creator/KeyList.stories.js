@@ -26,7 +26,7 @@ const sampleKeysForLock = (count, numberStr) => {
         lock: `0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e${numberStr}`,
         owner: `${j}`,
         expiration:
-          Math.floor(new Date('Jan 8, 2019 00:00:00').getTime() / 1000) +
+          Math.floor(new Date('Jan 8, 3000 00:00:00').getTime() / 1000) +
           86400 * 30, // 30 days from right now
         data: 'ben@unlock-protocol.com',
       }
