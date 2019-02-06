@@ -1,6 +1,8 @@
 import storageMiddleware from '../../middlewares/storageMiddleware'
 import { UPDATE_LOCK, updateLock } from '../../actions/lock'
 import { STORE_LOCK_CREATION } from '../../actions/storage'
+import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
+import { SET_ACCOUNT } from '../../actions/accounts'
 
 /**
  * This is a "fake" middleware caller
@@ -55,6 +57,68 @@ describe('Storage middleware', () => {
     }
     // reset the mock
     mockStorageService = {}
+  })
+
+  describe('handling NEW_TRANSACTION', () => {
+    it('should store the transaction', async () => {
+      expect.assertions(2)
+      const { next, invoke } = create()
+      const transaction = {
+        hash: '0x123',
+        to: 'unlock',
+        from: 'julien',
+      }
+      const action = { type: NEW_TRANSACTION, transaction }
+
+      mockStorageService.storeTransaction = jest.fn(() => {
+        return Promise.resolve()
+      })
+      await invoke(action)
+      expect(mockStorageService.storeTransaction).toHaveBeenCalledWith(
+        transaction.hash,
+        transaction.from,
+        transaction.to
+      )
+      expect(next).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('handling SET_ACCOUNT', () => {
+    it('should store the transaction', async () => {
+      expect.assertions(5)
+      const { next, invoke, store } = create()
+      const account = {
+        address: '0x123',
+      }
+      const action = { type: SET_ACCOUNT, account }
+
+      mockStorageService.getTransactionsHashesSentBy = jest.fn(() => {
+        return Promise.resolve(['0xabc', '0xdef'])
+      })
+      await invoke(action)
+      expect(
+        mockStorageService.getTransactionsHashesSentBy
+      ).toHaveBeenCalledWith(account.address)
+      expect(
+        mockStorageService.getTransactionsHashesSentBy
+      ).toHaveBeenCalledWith(account.address)
+
+      expect(store.dispatch).toHaveBeenNthCalledWith(
+        1,
+        addTransaction({
+          hash: '0xabc',
+        })
+      )
+
+      expect(store.dispatch).toHaveBeenNthCalledWith(
+        2,
+        addTransaction({
+          hash: '0xdef',
+        })
+      )
+
+      expect(next).toHaveBeenCalledTimes(1)
+    })
   })
 
   describe('handling STORE_LOCK_CREATION', () => {
