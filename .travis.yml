@@ -14,6 +14,9 @@
 # Both of these steps could be run in parallel
 language: generic
 env:
+  - TEST_SUITE=smart-contracts
+  - TEST_SUITE=unlock-app
+  - TEST_SUITE=locksmith
   global:
     - DB_USERNAME='locksmith_test'
     - DB_PASSWORD='password'
@@ -27,9 +30,7 @@ before_script:
   - scripts/build-image.sh unlock-integration
   - scripts/docker-compose-build.sh
 script:
-  - scripts/tests.sh smart-contracts
-  - scripts/tests.sh unlock-app
-  - scripts/tests.sh locksmith
+  - scripts/tests.sh $TEST_SUITE
 #  - scripts/integration-tests.sh
 after_success:
   - scripts/deploy.sh netlify
