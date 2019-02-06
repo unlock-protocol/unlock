@@ -1,7 +1,7 @@
-import postMessageMiddleware from '../../middlewares/postMessageMiddleware'
+import interWindowCommunicationMiddleware from '../../middlewares/interWindowCommunicationMiddleware'
 import { openNewWindowModal } from '../../actions/modal'
 
-describe('postMessageMiddleware', () => {
+describe('interWindowCommunicationMiddleware', () => {
   describe('middleware functionality', () => {
     it('does responds to OPEN_MODAL_IN_NEW_WINDOW if in an iframe', () => {
       expect.assertions(2)
@@ -18,7 +18,7 @@ describe('postMessageMiddleware', () => {
       window.self = window
       window.top = 'not window'
 
-      const middleware = postMessageMiddleware(window)
+      const middleware = interWindowCommunicationMiddleware(window)
 
       middleware()(next)(action)
 
@@ -45,7 +45,7 @@ describe('postMessageMiddleware', () => {
       window.self = window
       window.top = window
 
-      const middleware = postMessageMiddleware(window)
+      const middleware = interWindowCommunicationMiddleware(window)
 
       middleware()(next)(action)
 
@@ -62,7 +62,7 @@ describe('postMessageMiddleware', () => {
 
       const window = {}
 
-      const middleware = postMessageMiddleware(window)
+      const middleware = interWindowCommunicationMiddleware(window)
 
       middleware()(next)(action)
       expect(next).toHaveBeenCalledWith(action)

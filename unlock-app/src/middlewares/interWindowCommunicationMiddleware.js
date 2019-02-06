@@ -3,7 +3,7 @@ import { inIframe } from '../config'
 
 // store is unused in this middleware, it is only for listening for actions
 // and converting them into postMessage
-const postMessageMiddleware = window => () => {
+const interWindowCommunicationMiddleware = window => () => {
   const parent = window.parent
   const enabled = inIframe(window)
   return next => action => {
@@ -15,4 +15,4 @@ const postMessageMiddleware = window => () => {
   }
 }
 
-export default postMessageMiddleware
+export default interWindowCommunicationMiddleware
