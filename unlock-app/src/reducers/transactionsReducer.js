@@ -1,7 +1,8 @@
 import {
   ADD_TRANSACTION,
-  UPDATE_TRANSACTION,
   DELETE_TRANSACTION,
+  NEW_TRANSACTION,
+  UPDATE_TRANSACTION,
 } from '../actions/transaction'
 
 import { SET_PROVIDER } from '../actions/provider'
@@ -15,7 +16,15 @@ const transactionsReducer = (transactions = initialState, action) => {
     return initialState
   }
 
-  // Add the transaction
+  // Add a new transaction
+  if (action.type === NEW_TRANSACTION) {
+    return {
+      ...transactions,
+      [action.transaction.hash]: action.transaction,
+    }
+  }
+
+  // Add an existing transaction
   if (action.type === ADD_TRANSACTION) {
     return {
       ...transactions,

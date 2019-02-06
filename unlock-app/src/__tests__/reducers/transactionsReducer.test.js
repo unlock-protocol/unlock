@@ -1,8 +1,9 @@
 import reducer, { initialState } from '../../reducers/transactionsReducer'
 import {
   ADD_TRANSACTION,
-  UPDATE_TRANSACTION,
   DELETE_TRANSACTION,
+  NEW_TRANSACTION,
+  UPDATE_TRANSACTION,
 } from '../../actions/transaction'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
@@ -69,6 +70,28 @@ describe('transaction reducer', () => {
         account,
       })
     ).toBe(initialState)
+  })
+
+  describe('when receiving NEW_TRANSACTION', () => {
+    it('should add the new transaction to the store', () => {
+      const transaction = {
+        hash: '0x123',
+        sender: '0xabc',
+        receipient: '0xdef',
+      }
+
+      expect(
+        reducer(
+          {},
+          {
+            type: NEW_TRANSACTION,
+            transaction,
+          }
+        )
+      ).toEqual({
+        '0x123': transaction,
+      })
+    })
   })
 
   describe('when receiving ADD_TRANSACTION', () => {
