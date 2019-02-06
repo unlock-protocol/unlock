@@ -20,6 +20,19 @@ export default class StorageService {
     return axios.post(`${this.host}/transaction`, paylaod)
   }
 
+  /**
+   * Gets all the transactions sent by a given address
+   * TODO: conider a more robust url building
+   * @param {*} senderAddress
+   */
+  getTransactionsHashesSentBy(senderAddress) {
+    return axios
+      .get(`${this.host}/transaction?sender=${senderAddress}`)
+      .then(response => {
+        return response.data.map(t => t.transactionHash)
+      })
+  }
+
   genAuthorizationHeader = token => {
     return { Authorization: ` Bearer ${token}` }
   }
