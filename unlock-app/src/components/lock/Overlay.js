@@ -60,8 +60,12 @@ export const mapStateToProps = ({ account }) => ({
   openInNewWindow: !account,
 })
 
-export const mapDispatchToProps = (dispatch, { locks }) => ({
+export const mapDispatchToProps = (dispatch, { locks, redirect }) => ({
   hideModal: () => {
+    if (redirect) {
+      window.location.href = redirect
+      return
+    }
     unlockPage()
     return dispatch(hideModal(locks.map(l => l.address).join('-')))
   },

@@ -1,6 +1,6 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import UnlockPropTypes from '../propTypes'
 import Overlay from '../components/lock/Overlay'
 import DeveloperOverlay from '../components/developer/DeveloperOverlay'
@@ -48,12 +48,16 @@ class Paywall extends React.Component {
   }
   render() {
     const { scrollPosition } = this.state
-    const { locks, locked } = this.props
+    const { locks, locked, redirect } = this.props
     return (
       <BrowserOnly>
         <GlobalErrorProvider>
           <ShowWhenLocked locked={locked}>
-            <Overlay scrollPosition={scrollPosition} locks={locks} />
+            <Overlay
+              scrollPosition={scrollPosition}
+              locks={locks}
+              redirect={redirect}
+            />
             <DeveloperOverlay />
           </ShowWhenLocked>
           <ShowWhenUnlocked locked={locked}>
@@ -68,14 +72,19 @@ class Paywall extends React.Component {
 Paywall.propTypes = {
   locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
   locked: PropTypes.bool.isRequired,
+  redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+}
+
+Paywall.defaultProps = {
+  redirect: false,
 }
 
 export const mapStateToProps = ({ locks, keys, modals, router }) => {
-  const { lockAddress } = lockRoute(router.location.pathname)
+  const { lockAddress, redirect } = lockRoute(router.location.pathname)
 
-  const lockFromUri = lockAddress
-    ? Object.values(locks).find(lock => lock.address === lockAddress)
-    : null
+  const lockFromUri = Object.values(locks).find(
+    lock => lock.address === lockAddress
+  )
 
   let validKeys = []
   const locksFromUri = lockFromUri ? [lockFromUri] : []
@@ -92,11 +101,7 @@ export const mapStateToProps = ({ locks, keys, modals, router }) => {
 
   const modalShown = !!modals[locksFromUri.map(l => l.address).join('-')]
   const locked = validKeys.length === 0 || modalShown
-
-  return {
-    locks: locksFromUri,
-    locked,
-  }
+  return { locked, locks: locksFromUri, redirect }
 }
 
 export default connect(mapStateToProps)(Paywall)
