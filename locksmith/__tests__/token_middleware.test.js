@@ -1,6 +1,6 @@
 var httpMocks = require('node-mocks-http')
 var authorizationHeader = require('./authorizationHeaders')
-var tokenMiddleware = require('../src/token_middleware')
+var tokenMiddleware = require('../src/tokenMiddleware')
 
 let request, response
 
