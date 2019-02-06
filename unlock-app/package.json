@@ -35,7 +35,7 @@
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.9",
-    "react-test-renderer": "16.7.0",
+    "react-test-renderer": "16.8.0",
     "react-testing-library": "^5.4.2",
     "redux": "^4.0.1",
     "rollup": "^1.0.0",
