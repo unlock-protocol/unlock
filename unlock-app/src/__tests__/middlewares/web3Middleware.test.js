@@ -3,7 +3,7 @@ import { LOCATION_CHANGE } from 'react-router-redux'
 import web3Middleware from '../../middlewares/web3Middleware'
 import { ADD_LOCK, UPDATE_LOCK, CREATE_LOCK } from '../../actions/lock'
 import { UPDATE_KEY } from '../../actions/key'
-import { UPDATE_ACCOUNT } from '../../actions/accounts'
+import { UPDATE_ACCOUNT, setAccount } from '../../actions/accounts'
 import {
   ADD_TRANSACTION,
   UPDATE_TRANSACTION,
@@ -84,6 +84,11 @@ beforeEach(() => {
     owner: account.address,
   }
   state = {
+    router: {
+      location: {
+        pathname: '/dashboard',
+      },
+    },
     account,
     network,
     provider: 'HTTP',
@@ -289,6 +294,57 @@ describe('Lock middleware', () => {
           type: SET_ERROR,
           error: 'this was broken',
         })
+      )
+    })
+  })
+
+  describe('not on the paywall', () => {
+    it('should handle SET_ACCOUNT by refreshing balance and retrieving historical lock transactions', () => {
+      expect.assertions(3)
+      mockWeb3Service.refreshAccountBalance = jest.fn()
+      mockWeb3Service.getPastLockCreationsTransactionsForUser = jest.fn()
+      mockWeb3Service.getKeyByLockForOwner = jest.fn()
+
+      const { invoke } = create()
+
+      const newAccount = {
+        address: '0x345',
+      }
+      invoke(setAccount(newAccount))
+
+      expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
+        newAccount
+      )
+      expect(
+        mockWeb3Service.getPastLockCreationsTransactionsForUser
+      ).toHaveBeenCalledWith(newAccount.address)
+      expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('on the paywall', () => {
+    it('should handle SET_ACCOUNT by getting all keys for the owner of that account', () => {
+      mockWeb3Service.refreshAccountBalance = jest.fn()
+      mockWeb3Service.getPastLockCreationsTransactionsForUser = jest.fn()
+      mockWeb3Service.getKeyByLockForOwner = jest.fn()
+
+      const lock = '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9'
+      state.router.location.pathname = `/paywall/${lock}/`
+
+      const { invoke } = create()
+
+      const newAccount = {
+        address: '0x345',
+      }
+      invoke(setAccount(newAccount))
+
+      expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalled()
+      expect(
+        mockWeb3Service.getPastLockCreationsTransactionsForUser
+      ).toHaveBeenCalled()
+      expect(mockWeb3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
+        lock,
+        '0x345'
       )
     })
   })
