@@ -24,7 +24,8 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
     return
   }
 
-  const paywallUrl = findPaywallUrl(document) + `/paywall/${lockAddress}/`
+  const paywallUrl =
+    findPaywallUrl(document) + `/paywall/${lockAddress}/` + window.location.hash
   const iframe = getIframe(document, paywallUrl)
   add(document, iframe)
 

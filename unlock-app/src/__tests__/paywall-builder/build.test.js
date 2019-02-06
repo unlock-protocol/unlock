@@ -57,6 +57,9 @@ describe('buildPaywall', () => {
           expect(listener).not.toBe(null)
         },
         requestAnimationFrame() {},
+        location: {
+          hash: '',
+        },
       }
     })
     it('no lockAddress, give up', () => {
@@ -72,6 +75,21 @@ describe('buildPaywall', () => {
       expect(mockIframe).toHaveBeenCalledWith(
         document,
         '/url/paywall/lockaddress/'
+      )
+    })
+
+    it('passes the hash to the iframe, if present', () => {
+      // when the content is loaded from the paywall in a new window,
+      // it appends the user account as a hash. This is then passed on
+      // as-is. Note that it passes any hash on, without validation,
+      // because the lockRoute function properly validates the incoming hash
+      window.location.hash = '#hithere'
+      buildPaywall(window, document, fakeLockAddress)
+
+      expect(mockScript).toHaveBeenCalledWith(document)
+      expect(mockIframe).toHaveBeenCalledWith(
+        document,
+        '/url/paywall/lockaddress/#hithere'
       )
     })
 
@@ -102,6 +120,7 @@ describe('buildPaywall', () => {
           requestAnimationFrame() {},
           location: {
             href: 'href',
+            hash: '',
           },
         }
         blocker = {
