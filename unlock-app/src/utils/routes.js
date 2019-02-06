@@ -11,12 +11,14 @@ export const lockRoute = path => {
     return {
       lockAddress: null,
       prefix: null,
+      redirect: null,
     }
   }
 
   return {
     lockAddress: match[2],
     prefix: match[1],
+    redirect: match[4] && decodeURIComponent(match[4]),
   }
 }
 
