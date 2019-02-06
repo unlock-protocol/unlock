@@ -443,19 +443,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   {
     return _getApproved(_tokenId);
   }
-  
-  /**
-   * Checks if the user has a non-expired key.
-   */
-  function getHasValidKey(
-    address _owner
-  )
-    public
-    view
-    returns (bool) 
-  {
-    return keyByOwner[_owner].expirationTimestamp > now;
-  }
 
   /**
    * Checks if the user has a non-expired key.
