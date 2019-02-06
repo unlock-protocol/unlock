@@ -135,6 +135,15 @@ describe('Wallet middleware', () => {
     )
   })
 
+  it('should handle transaction.pending events triggered by the walletService', () => {
+    expect.assertions(1)
+    const { store } = create()
+    mockWalletService.emit('transaction.pending')
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ type: WAIT_FOR_WALLET })
+    )
+  })
+
   it('it should handle transaction.new events triggered by the walletService', () => {
     expect.assertions(2)
     const { store } = create()
