@@ -5,6 +5,21 @@ export default class StorageService {
     this.host = host
   }
 
+  /**
+   * Stores transaction hashes and the sender
+   * @param {*} transactionHash
+   * @param {*} senderAddress
+   * @param {*} recipientAddress
+   */
+  storeTransaction(transactionHash, senderAddress, recipientAddress) {
+    const paylaod = {
+      transactionHash,
+      sender: senderAddress,
+      recipient: recipientAddress,
+    }
+    return axios.post(`${this.host}/transaction`, paylaod)
+  }
+
   genAuthorizationHeader = token => {
     return { Authorization: ` Bearer ${token}` }
   }
