@@ -82,7 +82,7 @@ describe('lockRoute', () => {
       account: undefined,
     })
   })
-  it('should ignore account parameter if redirect is not present', () => {
+  it('should return account parameter if redirect is not present', () => {
     expect(
       lockRoute(
         '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
@@ -91,7 +91,7 @@ describe('lockRoute', () => {
       lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
       prefix: 'demo',
       redirect: undefined,
-      account: undefined,
+      account: '0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54',
     })
   })
 })
