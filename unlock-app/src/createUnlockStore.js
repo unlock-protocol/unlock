@@ -35,6 +35,9 @@ import accountReducer, {
 import modalReducer, {
   initialState as defaultModals,
 } from './reducers/modalsReducer'
+import walletStatusReducer, {
+  initialState as defaultWalletStatus,
+} from './reducers/walletStatusReducer'
 
 const config = configure()
 
@@ -55,6 +58,7 @@ export const createUnlockStore = (
     transactions: transactionsReducer,
     currency: currencyReducer,
     errors: errorsReducer,
+    walletStatus: walletStatusReducer,
   }
 
   // Cleanup the defaultState to remove all null values so that we do not overwrite existing
@@ -77,6 +81,7 @@ export const createUnlockStore = (
       transactions: defaultTransactions,
       currency: defaultCurrency,
       errors: defaultError,
+      walletStatus: defaultWalletStatus,
     },
     {
       provider: Object.keys(config.providers)[0],
