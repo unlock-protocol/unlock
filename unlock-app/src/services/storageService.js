@@ -27,9 +27,9 @@ export default class StorageService {
    */
   getTransactionsHashesSentBy(senderAddress) {
     return axios
-      .get(`${this.host}/transaction?sender=${senderAddress}`)
+      .get(`${this.host}/transactions?sender=${senderAddress}`)
       .then(response => {
-        return response.data.map(t => t.transactionHash)
+        return response.data.transactions.map(t => t.transactionHash)
       })
   }
 
