@@ -280,13 +280,28 @@ export default class WalletService extends EventEmitter {
   }
 
   /**
-   * Signs data for the given account
+   * Signs data for the given account.
+   * We favor web3.eth.personal.sign which provides a better UI but is not implemented
+   * everywhere. If it's failing we use web3.eth.sign
+   *
+   * @param {*} account
+   * @param {*} data
+   * @param {*} callback
    */
   signData(account, data, callback) {
-    if (this.web3.eth.personal) {
-      this.web3.eth.personal.sign(data, account, callback)
-    } else {
+    const fallback = () => {
       this.web3.eth.sign(data, account, callback)
+    }
+
+    try {
+      this.web3.eth.personal.sign(data, account, (error, signature) => {
+        if (error) {
+          return fallback()
+        }
+        return callback(error, signature)
+      })
+    } catch (error) {
+      fallback()
     }
   }
 }
