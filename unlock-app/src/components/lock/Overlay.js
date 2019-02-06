@@ -16,6 +16,13 @@ export const displayError = isMainWindow =>
   function overlayDisplayError(error, errorMetadata, children) {
     const Error = mapErrorToComponent(error, errorMetadata)
 
+    /*
+     This next section provides an escape hatch for the paywall if a global error condition exists.
+     Only the MISSING_PROVIDER and WRONG_NETWORK error conditions (and not NO_USER_ACCOUNT)
+     cause an error to be displayed instead of the lock when the paywall is in an iframe. This
+     allows us to show a lock that will open a new window if we are in a wallet browser such
+     as coinbase that does not inject the provider account into iframes.
+    */
     if (isMainWindow) {
       // TODO: don't show fatal error until user clicks the lock
       if (error) {
