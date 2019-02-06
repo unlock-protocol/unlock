@@ -93,19 +93,22 @@ describe('StorageService', () => {
 
   describe('getTransactionsHashesSentBy', () => {
     it('should expect a list of transactions hashes', done => {
+      expect.assertions(2)
       const sender = '0x123'
       storageService.getTransactionsHashesSentBy(sender).then(hashes => {
         expect(hashes).toEqual(['0x123', '0x456'])
         done()
       })
       expect(http.get).toHaveBeenCalledWith(
-        `${serviceHost}/transaction?sender=${sender}`
+        `${serviceHost}/transactions?sender=${sender}`
       )
       http.mockResponse({
-        data: [
-          { transactionHash: '0x123', sender: '0xabc', recipient: '0xcde' },
-          { transactionHash: '0x456', sender: '0xabc', recipient: '0xfgh' },
-        ],
+        data: {
+          transactions: [
+            { transactionHash: '0x123', sender: '0xabc', recipient: '0xcde' },
+            { transactionHash: '0x456', sender: '0xabc', recipient: '0xfgh' },
+          ],
+        },
       })
     })
   })
