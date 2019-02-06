@@ -4,6 +4,7 @@ const express = require('express')
 const Sequelize = require('sequelize')
 const tokenMiddleware = require('./token_middleware')
 const Lock = require('./lock')
+const Transaction = require('./transaction')
 const logger = require('./locksmithLogger')
 
 const app = express()
@@ -85,6 +86,35 @@ router.get('/:owner/locks', async (req, res) => {
   })
 
   res.json({ locks: locks })
+})
+
+router.post('/transaction', async (req, res) => {
+  let transaction = req.body
+
+  if (transaction.transactionHash) {
+    try {
+      await Transaction.create({
+        transactionHash: transaction.transactionHash,
+        sender: transaction.sender,
+        recipient: transaction.recipient,
+      })
+      res.sendStatus(200)
+    } catch (e) {
+      res.sendStatus(400)
+    }
+  }
+})
+
+router.get('/transactions', async (req, res) => {
+  const sender = req.query.sender
+
+  let transactions = await Transaction.findAll({
+    where: {
+      sender: { [Op.eq]: sender },
+    },
+  })
+
+  res.json({ transactions: transactions })
 })
 
 app.use(cors())
