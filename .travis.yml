@@ -14,14 +14,16 @@
 # Both of these steps could be run in parallel
 language: generic
 env:
-  - TEST_SUITE=smart-contracts
-  - TEST_SUITE=unlock-app
-  - TEST_SUITE=locksmith
   global:
     - DB_USERNAME='locksmith_test'
     - DB_PASSWORD='password'
     - DB_NAME='locksmith_test'
     - DB_HOSTNAME='db'
+matrix:
+  include:
+    - env: TEST_SUITE=smart-contracts
+    - env: TEST_SUITE=unlock-app
+    - env: TEST_SUITE=locksmith
 services:
   - docker
 before_script:
