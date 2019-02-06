@@ -30,7 +30,7 @@
     "prop-types": "^15.6.1",
     "react": "^16.8.1",
     "react-copy-to-clipboard": "^5.0.1",
-    "react-dom": "^16.8.0",
+    "react-dom": "^16.8.1",
     "react-jazzicon": "^0.1.2",
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.2.2",
