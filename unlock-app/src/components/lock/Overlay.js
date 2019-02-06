@@ -9,14 +9,32 @@ import { unlockPage } from '../../services/iframeService'
 import { LockedFlag } from './UnlockFlag'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { mapErrorToComponent } from '../creator/FatalError'
+import { FATAL_NO_USER_ACCOUNT } from '../../errors'
+import withConfig from '../../utils/withConfig'
 
-export function displayError(error, errorMetadata, children) {
-  if (error) {
+export const displayError = isMainWindow =>
+  function overlayDisplayError(error, errorMetadata, children) {
     const Error = mapErrorToComponent(error, errorMetadata)
-    return Error
+
+    /*
+     This next section provides an escape hatch for the paywall if a global error condition exists.
+     Only the MISSING_PROVIDER and WRONG_NETWORK error conditions (and not NO_USER_ACCOUNT)
+     cause an error to be displayed instead of the lock when the paywall is in an iframe. This
+     allows us to show a lock that will open a new window if we are in a wallet browser such
+     as coinbase that does not inject the provider account into iframes.
+    */
+    if (isMainWindow) {
+      // TODO: don't show fatal error until user clicks the lock
+      if (error) {
+        return Error
+      }
+    } else {
+      if (error && error !== FATAL_NO_USER_ACCOUNT) {
+        return Error
+      }
+    }
+    return <>{children}</>
   }
-  return <>{children}</>
-}
 
 export const Overlay = ({
   locks,
@@ -24,6 +42,7 @@ export const Overlay = ({
   showModal,
   scrollPosition,
   openInNewWindow,
+  config: { isInIframe },
 }) => (
   <FullPage>
     <Banner scrollPosition={scrollPosition}>
@@ -31,7 +50,7 @@ export const Overlay = ({
         You have reached your limit of free articles. Please purchase access
       </Headline>
       <Locks>
-        <GlobalErrorConsumer displayError={displayError}>
+        <GlobalErrorConsumer displayError={displayError(!isInIframe)}>
           {locks.map(lock => (
             <Lock
               key={JSON.stringify(lock)}
@@ -54,6 +73,7 @@ Overlay.propTypes = {
   showModal: PropTypes.func.isRequired,
   scrollPosition: PropTypes.number.isRequired,
   openInNewWindow: PropTypes.bool.isRequired,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 export const mapStateToProps = ({ account }) => ({
@@ -70,10 +90,12 @@ export const mapDispatchToProps = (dispatch, { locks }) => ({
   },
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Overlay)
+export default withConfig(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Overlay)
+)
 
 const FullPage = styled.div`
   position: fixed; /* Sit on top of the page content */

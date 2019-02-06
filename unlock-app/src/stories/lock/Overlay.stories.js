@@ -1,16 +1,19 @@
 import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { Overlay } from '../../components/lock/Overlay'
+import Overlay from '../../components/lock/Overlay'
 import createUnlockStore from '../../createUnlockStore'
 import { GlobalErrorContext } from '../../utils/GlobalErrorProvider'
-import { FATAL_NO_USER_ACCOUNT } from '../../errors'
+import { FATAL_WRONG_NETWORK, FATAL_NO_USER_ACCOUNT } from '../../errors'
 import { ConfigContext } from '../../utils/withConfig'
 
 const ErrorProvider = GlobalErrorContext.Provider
 const ConfigProvider = ConfigContext.Provider
 
-const config = {}
+const config = {
+  isInIframe: true,
+  requiredConfirmations: 12,
+}
 
 const store = createUnlockStore({
   currency: {
@@ -18,7 +21,11 @@ const store = createUnlockStore({
   },
 })
 
-const render = (locks, errors = { error: false, errorMetadata: {} }) => (
+const render = (
+  locks,
+  errors = { error: false, errorMetadata: {} },
+  thisConfig = config
+) => (
   <section>
     <h1>HTML Ipsum Presents</h1>
 
@@ -60,7 +67,7 @@ const render = (locks, errors = { error: false, errorMetadata: {} }) => (
       <li>Aliquam tincidunt mauris eu risus.</li>
     </ul>
 
-    <ConfigProvider value={config}>
+    <ConfigProvider value={thisConfig}>
       <ErrorProvider value={errors}>
         <Overlay
           scrollPosition={0}
@@ -113,7 +120,43 @@ storiesOf('Overlay', module)
       },
     ]
     return render(locks, {
+      error: FATAL_WRONG_NETWORK,
+      errorMetadata: {
+        currentNetwork: 'Foobar',
+        requiredNetworkId: 4,
+      },
+    })
+  })
+  .add('iframe, account error is ignored', () => {
+    const locks = [
+      {
+        name: 'One Month',
+        keyPrice: '123400000000000000',
+        fiatPrice: '20',
+      },
+    ]
+    return render(locks, {
       error: FATAL_NO_USER_ACCOUNT,
       errorMetadata: {},
     })
+  })
+  .add('main window, account error is displayed', () => {
+    const locks = [
+      {
+        name: 'One Month',
+        keyPrice: '123400000000000000',
+        fiatPrice: '20',
+      },
+    ]
+    return render(
+      locks,
+      {
+        error: FATAL_NO_USER_ACCOUNT,
+        errorMetadata: {},
+      },
+      {
+        ...config,
+        isInIframe: false,
+      }
+    )
   })
