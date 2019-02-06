@@ -142,7 +142,7 @@ export default class WalletService extends EventEmitter {
     return web3TransactionPromise
       .once('transactionHash', hash => {
         callback(null, hash)
-        this.emit('transaction.new', hash)
+        this.emit('transaction.new', hash, from, to)
       })
       .on('error', error => {
         callback(error)

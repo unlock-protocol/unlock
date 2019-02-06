@@ -11,7 +11,7 @@ import { PURCHASE_KEY } from '../../actions/key'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { SET_PROVIDER } from '../../actions/provider'
-import { ADD_TRANSACTION } from '../../actions/transaction'
+import { NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
 import { TRANSACTION_TYPES } from '../../constants'
 import { NO_USER_ACCOUNT } from '../../errors'
@@ -131,14 +131,20 @@ describe('Wallet middleware', () => {
     )
   })
 
-  it('it should handle transaction.new events triggered by the walletService', () => {
+  it('should handle transaction.new events triggered by the walletService', () => {
     expect.assertions(1)
     const { store } = create()
-    mockWalletService.emit('transaction.new', transaction.hash)
+    const from = '0xjulien'
+    const to = '0xunlock'
+    mockWalletService.emit('transaction.new', transaction.hash, from, to)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
-        type: ADD_TRANSACTION,
-        transaction,
+        type: NEW_TRANSACTION,
+        transaction: expect.objectContaining({
+          hash: transaction.hash,
+          to,
+          from,
+        }),
       })
     )
   })
