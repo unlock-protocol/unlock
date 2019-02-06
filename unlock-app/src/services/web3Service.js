@@ -37,6 +37,7 @@ export default class Web3Service extends EventEmitter {
     // TODO: detect discrepancy in providers
 
     // Transactions create events which we use here to build the state.
+    // TODO we should ensure that the contracts triggering the events are the right ones
     this.eventsHandlers = {
       NewLock: (transactionHash, contractAddress, blockNumber, args) => {
         this.emit('transaction.updated', transactionHash, {
@@ -80,6 +81,32 @@ export default class Web3Service extends EventEmitter {
         })
       },
     }
+
+    // Pending transactions may still update the state
+    // TODO we should ensure that the contracts invoking the methods are the right ones
+    this.inputsHandlers = {
+      createLock: async (transactionHash, contractAddress, params) => {
+        // The annoying part here is that we do not have the lock address...
+        // Since it is not an argument to the function.
+        // We will 'guess' it again using generateLockAddress
+        // knowing that this may create a race condition another lock creation pending transaction
+        // exists.
+        const newLockAddress = await this.generateLockAddress()
+        this.emit('transaction.updated', transactionHash, {
+          lock: newLockAddress,
+        })
+        this.emit('lock.updated', newLockAddress, {
+          transaction: transactionHash,
+          address: newLockAddress,
+          expirationDuration: params._expirationDuration,
+          keyPrice: Web3Utils.fromWei(params._keyPrice, 'ether'), // Must be expressed in Eth!
+          maxNumberOfKeys: params._maxNumberOfKeys,
+          outstandingKeys: 0,
+          balance: '0', // Must be expressed in Eth!
+        })
+      },
+    }
+
     if (unlockContractAddress) {
       this.unlockContractAddress = Web3Utils.toChecksumAddress(
         unlockContractAddress
@@ -293,6 +320,44 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
+   * This is used to identify data which should be changed by a pending transaction
+   * @param {*} transactionHash
+   * @param {*} contract
+   * @param {*} input
+   * @param {*} contractAddress
+   */
+  parseTransactionFromInput(transactionHash, contract, input, contractAddress) {
+    const transactionType = this.getTransactionType(contract, input)
+
+    this.emit('transaction.updated', transactionHash, {
+      status: 'pending',
+      type: transactionType,
+      confirmations: 0,
+      blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
+    })
+
+    // Let's parse the transaction's input
+    const method = contract.abi.find(binaryInterface => {
+      return input.startsWith(binaryInterface.signature)
+    })
+
+    if (!method) {
+      // The invoked function is not part of the ABI... this is an unknown transaction
+      return
+    }
+
+    // The input actually includes the method signature, which should be removed
+    // for parsing of the actual input values.
+    input = input.replace(method.signature, '')
+    const params = this.web3.eth.abi.decodeParameters(method.inputs, input)
+    const handler = this.inputsHandlers[method.name]
+
+    if (handler) {
+      return handler(transactionHash, contractAddress, params)
+    }
+  }
+
+  /**
    * This will set a timeout to get a transaction after half a block time happened
    * @param {string} transactionHash
    */
@@ -334,21 +399,23 @@ export default class Web3Service extends EventEmitter {
           ? UnlockContract
           : LockContract
 
+      if (blockTransaction.blockNumber === null) {
+        // This means the transaction is not in a block yet (ie. not mined), but has been propagated
+        // We do not know what the transacion is about though so we need to extract its info from
+        // the input.
+        this._watchTransaction(transactionHash)
+        return this.parseTransactionFromInput(
+          transactionHash,
+          contract,
+          blockTransaction.input,
+          blockTransaction.to
+        )
+      }
+
       const transactionType = this.getTransactionType(
         contract,
         blockTransaction.input
       )
-
-      if (blockTransaction.blockNumber === null) {
-        // This means the transaction is not in a block yet (ie. not mined), but has been propagated
-        this._watchTransaction(transactionHash)
-        return this.emit('transaction.updated', transactionHash, {
-          status: 'pending',
-          type: transactionType,
-          confirmations: 0,
-          blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
-        })
-      }
 
       // Let's watch for more confirmations if needed
       if (blockNumber - blockTransaction.blockNumber < requiredConfirmations) {
