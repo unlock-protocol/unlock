@@ -1,6 +1,6 @@
 import storageMiddleware from '../../middlewares/storageMiddleware'
-import { UPDATE_LOCK } from '../../actions/lock'
-import { STORE_LOCK_UPDATE, STORE_LOCK_CREATION } from '../../actions/storage'
+import { UPDATE_LOCK, updateLock } from '../../actions/lock'
+import { STORE_LOCK_CREATION } from '../../actions/storage'
 
 /**
  * This is a "fake" middleware caller
@@ -23,15 +23,13 @@ const create = () => {
   return { next, invoke, store }
 }
 
-let mockStoreLockDetails = jest.fn(() => Promise.resolve())
-let mockUpdateLockDetails = jest.fn(() => Promise.resolve())
-let mockLockLookUp = jest.fn(() => Promise.resolve())
+let mockStorageService = {}
 
-jest.mock('../../services/storageService', () => () => ({
-  storeLockDetails: mockStoreLockDetails,
-  updateLockDetails: mockUpdateLockDetails,
-  lockLookUp: mockLockLookUp,
-}))
+jest.mock('../../services/storageService', () => {
+  return function() {
+    return mockStorageService
+  }
+})
 
 describe('Storage middleware', () => {
   beforeEach(() => {
@@ -55,51 +53,58 @@ describe('Storage middleware', () => {
       },
       keys: {},
     }
+    // reset the mock
+    mockStorageService = {}
   })
 
   describe('handling STORE_LOCK_CREATION', () => {
-    it('dispatches to the appropriate storage middleware handler', () => {
+    it("dispatches to the appropriate storage middleware handler to store the lock's name", async () => {
+      expect.assertions(2)
       const { next, invoke } = create()
       const action = { type: STORE_LOCK_CREATION }
-      invoke(action)
-      expect(mockStoreLockDetails).toHaveBeenCalled()
+      mockStorageService.storeLockDetails = jest.fn(() => {
+        return Promise.resolve()
+      })
+      await invoke(action)
+      expect(mockStorageService.storeLockDetails).toHaveBeenCalled()
       expect(next).toHaveBeenCalledTimes(1)
     })
   })
 
   describe('handling UPDATE_LOCK', () => {
-    describe('when the update is a transaction', () => {
-      it('calls the next middleware', () => {
+    describe('when the update is for a lock which already has a name', () => {
+      it('calls the next middleware', async () => {
+        expect.assertions(2)
         const { next, invoke } = create()
-        const action = { type: UPDATE_LOCK, update: { transaction: 'foo' } }
-        invoke(action)
-        expect(mockLockLookUp).not.toBeCalled()
-        expect(next).toHaveBeenCalledTimes(1)
-      })
-    })
-    describe('when the update is not a transaction', () => {
-      it('dispatches to the appropriate storage middleware handler', () => {
-        const { next, invoke } = create()
-        const action = { type: UPDATE_LOCK, update: { foo: 'foo' } }
-        invoke(action)
-        expect(mockLockLookUp).toBeCalled()
-        expect(next).toHaveBeenCalledTimes(1)
-      })
-    })
-  })
+        const action = { type: UPDATE_LOCK, address: lock.address, update: {} }
+        state.locks[lock.address].name = 'My lock'
+        mockStorageService.lockLookUp = jest.fn(() => {})
 
-  describe('handling STORE_LOCK_UPDATE', () => {
-    describe('when the lock and new details are provide', () => {
-      it('dispatches to the appropriate storage middleware handler', () => {
-        const { next, invoke } = create()
-        const action = {
-          type: STORE_LOCK_UPDATE,
-          address: '0xfff',
-          lock: { address: '0x3f3f3' },
-        }
-        invoke(action)
-        expect(mockLockLookUp).toBeCalled()
+        await invoke(action)
+        expect(mockStorageService.lockLookUp).not.toHaveBeenCalled()
         expect(next).toHaveBeenCalledTimes(1)
+      })
+    })
+
+    describe('when the update is not a transaction', () => {
+      it('dispatches to the appropriate storage middleware handler', async () => {
+        expect.assertions(3)
+        const { next, invoke, store } = create()
+        const action = { type: UPDATE_LOCK, address: lock.address, update: {} }
+        delete state.locks[lock.address].name
+        mockStorageService.lockLookUp = jest.fn(() => {
+          return Promise.resolve({
+            data: {
+              name: 'A lock has no name',
+            },
+          })
+        })
+        await invoke(action)
+        expect(mockStorageService.lockLookUp).toHaveBeenCalledWith(lock.address)
+        expect(next).toHaveBeenCalledTimes(1)
+        expect(store.dispatch).toHaveBeenCalledWith(
+          updateLock(lock.address, { name: 'A lock has no name' })
+        )
       })
     })
   })

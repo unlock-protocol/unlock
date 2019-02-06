@@ -1,67 +1,30 @@
-import { UPDATE_LOCK } from '../actions/lock'
+import { UPDATE_LOCK, updateLock } from '../actions/lock'
 import StorageService from '../services/storageService'
-import {
-  setLockName,
-  storageError,
-  STORE_LOCK_CREATION,
-  STORE_LOCK_UPDATE,
-} from '../actions/storage'
+import { STORE_LOCK_CREATION } from '../actions/storage'
 
 import configure from '../config'
 
 const { services } = configure(global)
 
-export default function storageMiddleware({ dispatch }) {
+export default function storageMiddleware({ getState, dispatch }) {
   const storageService = new StorageService(services.storage.host)
-  return function(next) {
-    return function(action) {
-      switch (action.type) {
-        case STORE_LOCK_CREATION:
-          storageService
-            .storeLockDetails(action.lock, action.token)
-            .catch(error => {
-              dispatch(storageError(error))
-            })
-          break
-        case UPDATE_LOCK:
-          if (!action.update.transaction) {
-            storageService
-              .lockLookUp(action.address)
-              .then(results => {
-                dispatch(setLockName(action.address, results.data.name))
-              })
-              .catch(error => {
-                dispatch(storageError(error))
-              })
-          }
-          break
-        case STORE_LOCK_UPDATE:
-          storageService
-            .updateLockDetails(
-              action.lockAddress,
-              {
-                currentAddress: action.lockAddress,
-                address: action.update,
-                owner: action.owner,
-              },
-              action.token
-            )
-            .then(() => {
-              storageService
-                .lockLookUp(action.update)
-                .then(results => {
-                  dispatch(setLockName(action.update, results.data.name))
-                })
-                .catch(error => {
-                  dispatch(storageError(error))
-                })
-            })
-            .catch(error => {
-              dispatch(storageError(error))
-            })
-
-          break
+  return next => {
+    return async action => {
+      if (action.type === STORE_LOCK_CREATION) {
+        // A new lock has been created
+        await storageService.storeLockDetails(action.lock, action.token)
       }
+
+      if (action.type === UPDATE_LOCK) {
+        // Only look up the name for a lock for which the name is empty/not-set
+        const lock = getState().locks[action.address]
+        if (!lock.name) {
+          // TODO: lockLookUp should probably return the data, not the HTTP response
+          const results = await storageService.lockLookUp(action.address)
+          dispatch(updateLock(action.address, { name: results.data.name }))
+        }
+      }
+
       next(action)
     }
   }
