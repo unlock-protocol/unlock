@@ -8207,6 +8207,14 @@
         "mime-types": "~2.1.18"
       }
     },
+    "typedarray-to-buffer": {
+      "version": "3.1.5",
+      "resolved": "https://registry.npmjs.org/typedarray-to-buffer/-/typedarray-to-buffer-3.1.5.tgz",
+      "integrity": "sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==",
+      "requires": {
+        "is-typedarray": "^1.0.0"
+      }
+    },
     "uglify-js": {
       "version": "3.4.9",
       "resolved": "https://registry.npmjs.org/uglify-js/-/uglify-js-3.4.9.tgz",
@@ -8772,19 +8780,8 @@
       "integrity": "sha512-8p6ZLv+1JYa5Vs8oBn33Nn3VGFBbF+wVfO+b78RJS1Qf1uIOzjFVDk3XwYDD7rlz9G5BKpxhaQw+6EGQ7L02aw==",
       "requires": {
         "underscore": "1.8.3",
-        "web3-core-helpers": "1.0.0-beta.37"
-      },
-      "dependencies": {
-        "websocket": {
-          "version": "git://github.com/frozeman/WebSocket-Node.git#6c72925e3f8aaaea8dc8450f97627e85263999f2",
-          "from": "git://github.com/frozeman/WebSocket-Node.git#6c72925e3f8aaaea8dc8450f97627e85263999f2",
-          "requires": {
-            "debug": "^2.2.0",
-            "nan": "^2.3.3",
-            "typedarray-to-buffer": "^3.1.2",
-            "yaeti": "^0.0.6"
-          }
-        }
+        "web3-core-helpers": "1.0.0-beta.37",
+        "websocket": "git://github.com/frozeman/WebSocket-Node.git#6c72925e3f8aaaea8dc8450f97627e85263999f2"
       }
     },
     "web3-shh": {
@@ -8823,6 +8820,16 @@
       "version": "4.0.2",
       "resolved": "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-4.0.2.tgz",
       "integrity": "sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg=="
+    },
+    "websocket": {
+      "version": "git://github.com/frozeman/WebSocket-Node.git#6c72925e3f8aaaea8dc8450f97627e85263999f2",
+      "from": "git://github.com/frozeman/WebSocket-Node.git#browserifyCompatible",
+      "requires": {
+        "debug": "^2.2.0",
+        "nan": "^2.3.3",
+        "typedarray-to-buffer": "^3.1.2",
+        "yaeti": "^0.0.6"
+      }
     },
     "whatwg-encoding": {
       "version": "1.0.5",
@@ -9062,6 +9069,11 @@
       "version": "3.2.1",
       "resolved": "https://registry.npmjs.org/y18n/-/y18n-3.2.1.tgz",
       "integrity": "sha1-bRX7qITAhnnA136I53WegR4H+kE="
+    },
+    "yaeti": {
+      "version": "0.0.6",
+      "resolved": "https://registry.npmjs.org/yaeti/-/yaeti-0.0.6.tgz",
+      "integrity": "sha1-8m9ITXJoTPQr7ft2lwqhYI+/lXc="
     },
     "yallist": {
       "version": "2.1.2",
