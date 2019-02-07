@@ -1,3 +1,5 @@
+/* eslint promise/prefer-await-to-then: 0 */
+
 import { UPDATE_LOCK, updateLock } from '../actions/lock'
 import StorageService from '../services/storageService'
 import { STORE_LOCK_CREATION } from '../actions/storage'
@@ -11,25 +13,27 @@ const { services } = configure(global)
 export default function storageMiddleware({ getState, dispatch }) {
   const storageService = new StorageService(services.storage.host)
   return next => {
-    return async action => {
+    return action => {
+      // TODO: never async/await middlewares
       if (action.type === SET_ACCOUNT) {
         // When we set the account, we want to retrieve the list of transactions
-        const transactionHashes = await storageService.getTransactionsHashesSentBy(
-          action.account.address
-        )
-        // Dispatch each lock. Greg probably wants to a batch action?
-        transactionHashes.forEach(hash => {
-          dispatch(
-            addTransaction({
-              hash,
+        storageService
+          .getTransactionsHashesSentBy(action.account.address)
+          .then(transactionHashes => {
+            // Dispatch each lock. Greg probably wants to a batch action?
+            transactionHashes.forEach(hash => {
+              dispatch(
+                addTransaction({
+                  hash,
+                })
+              )
             })
-          )
-        })
+          })
       }
 
       if (action.type === NEW_TRANSACTION) {
         // Storing a new transaction so that we can easoly point to it later on
-        await storageService.storeTransaction(
+        storageService.storeTransaction(
           action.transaction.hash,
           action.transaction.from,
           action.transaction.to
@@ -38,7 +42,7 @@ export default function storageMiddleware({ getState, dispatch }) {
 
       if (action.type === STORE_LOCK_CREATION) {
         // A new lock has been created
-        await storageService.storeLockDetails(action.lock, action.token)
+        storageService.storeLockDetails(action.lock, action.token)
       }
 
       if (action.type === UPDATE_LOCK) {
@@ -46,8 +50,9 @@ export default function storageMiddleware({ getState, dispatch }) {
         const lock = getState().locks[action.address]
         if (!lock.name) {
           // TODO: lockLookUp should probably return the data, not the HTTP response
-          const results = await storageService.lockLookUp(action.address)
-          dispatch(updateLock(action.address, { name: results.data.name }))
+          storageService.lockLookUp(action.address).then(results => {
+            dispatch(updateLock(action.address, { name: results.data.name }))
+          })
         }
       }
 

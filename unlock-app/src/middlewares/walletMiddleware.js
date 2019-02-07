@@ -1,3 +1,4 @@
+/* eslint promise/prefer-await-to-then: 0 */
 import {
   CREATE_LOCK,
   WITHDRAW_FROM_LOCK,

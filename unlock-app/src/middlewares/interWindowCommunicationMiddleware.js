@@ -1,3 +1,5 @@
+/* eslint promise/prefer-await-to-then: 0 */
+
 import { OPEN_MODAL_IN_NEW_WINDOW, HIDE_MODAL } from '../actions/modal'
 import { inIframe } from '../config'
 import { lockRoute } from '../utils/routes'

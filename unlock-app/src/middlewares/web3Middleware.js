@@ -1,4 +1,4 @@
-/* eslint no-console: 0 */ // TODO: remove me when this is clean
+/* eslint promise/prefer-await-to-then: 0 */
 
 import { LOCATION_CHANGE } from 'react-router-redux'
 import {
