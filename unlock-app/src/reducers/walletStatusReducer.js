@@ -11,20 +11,16 @@ import { SET_ACCOUNT } from '../actions/accounts'
 export const initialState = { waiting: false }
 
 const walletStatusReducer = (walletStatus = initialState, action) => {
-  if ([SET_PROVIDER, SET_NETWORK, SET_ACCOUNT].indexOf(action.type) > -1) {
+  if (
+    [SET_PROVIDER, SET_NETWORK, SET_ACCOUNT, GOT_WALLET, DISMISS_CHECK].indexOf(
+      action.type
+    ) > -1
+  ) {
     return initialState
   }
 
   if (action.type === WAIT_FOR_WALLET) {
     return { waiting: true }
-  }
-
-  if (action.type === GOT_WALLET) {
-    return initialState
-  }
-
-  if (action.type === DISMISS_CHECK) {
-    return initialState
   }
 
   return walletStatus
