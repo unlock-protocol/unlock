@@ -628,6 +628,80 @@ describe('WalletService', () => {
       })
     })
 
+    describe('signData', () => {
+      const account = '0x123'
+      const data = 'please sign me'
+
+      it('should call first eth.personal.sign', done => {
+        expect.assertions(4)
+        walletService.web3.eth.personal.sign = jest.fn(
+          (dataToSign, signer, callback) => {
+            expect(dataToSign).toEqual(data)
+            expect(signer).toEqual(account)
+            return callback(null /* error */, 'signature')
+          }
+        )
+        walletService.signData(account, data, (error, signature) => {
+          expect(walletService.web3.eth.personal.sign).toHaveBeenCalled()
+          expect(signature).toEqual('signature')
+          done()
+        })
+      })
+
+      it('should call web3.eth.sign if eth.personal.sign fails', done => {
+        expect.assertions(7)
+
+        walletService.web3.eth.personal.sign = jest.fn(
+          (dataToSign, signer, callback) => {
+            expect(dataToSign).toEqual(data)
+            expect(signer).toEqual(account)
+            const error = {}
+            return callback(error, null /* signature */)
+          }
+        )
+
+        walletService.web3.eth.sign = jest.fn(
+          (dataToSign, signer, callback) => {
+            expect(dataToSign).toEqual(data)
+            expect(signer).toEqual(account)
+            return callback(null /* error */, 'signature')
+          }
+        )
+
+        walletService.signData(account, data, (error, signature) => {
+          expect(walletService.web3.eth.personal.sign).toHaveBeenCalled()
+          expect(walletService.web3.eth.sign).toHaveBeenCalled()
+          expect(signature).toEqual('signature')
+          done()
+        })
+      })
+
+      it('should call web3.eth.sign if eth.personal.sign throws', done => {
+        expect.assertions(7)
+
+        walletService.web3.eth.personal.sign = jest.fn((dataToSign, signer) => {
+          expect(dataToSign).toEqual(data)
+          expect(signer).toEqual(account)
+          throw new Error()
+        })
+
+        walletService.web3.eth.sign = jest.fn(
+          (dataToSign, signer, callback) => {
+            expect(dataToSign).toEqual(data)
+            expect(signer).toEqual(account)
+            return callback(null /* error */, 'signature')
+          }
+        )
+
+        walletService.signData(account, data, (error, signature) => {
+          expect(walletService.web3.eth.personal.sign).toHaveBeenCalled()
+          expect(walletService.web3.eth.sign).toHaveBeenCalled()
+          expect(signature).toEqual('signature')
+          done()
+        })
+      })
+    })
+
     describe('withdrawFromLock', () => {
       let lock
       let account
