@@ -1,4 +1,6 @@
 // TODO convert to fetch instead of using axios when it is supported well enough
+/* eslint promise/prefer-await-to-then: 0 */
+
 import axios from 'axios'
 
 import { setConversionRate } from '../actions/currencyconvert'
