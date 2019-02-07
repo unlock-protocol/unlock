@@ -1,5 +1,9 @@
 import reducer, { initialState } from '../../reducers/walletStatusReducer'
-import { WAIT_FOR_WALLET, GOT_WALLET } from '../../actions/walletStatus'
+import {
+  WAIT_FOR_WALLET,
+  GOT_WALLET,
+  DISMISS_CHECK,
+} from '../../actions/walletStatus'
 
 describe('walletStatusReducer', () => {
   const waiting = { waiting: true }
@@ -13,5 +17,9 @@ describe('walletStatusReducer', () => {
 
   it('should set waiting to false when receiving GOT_WALLET', () => {
     expect(reducer(waiting, { type: GOT_WALLET })).toEqual(initialState)
+  })
+
+  it('should set waiting to false when receiving DISMISS_CHECK', () => {
+    expect(reducer(waiting, { type: DISMISS_CHECK })).toEqual(initialState)
   })
 })
