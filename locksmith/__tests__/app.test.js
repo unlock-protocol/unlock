@@ -203,23 +203,23 @@ describe('Requesting Lock details of a given address', () => {
   describe('when the address owns locks', () => {
     const owner = '0x423893453'
     it('return the details of the owned locks', async () => {
-      expect.assertions(1)
+      expect.assertions(3)
+
       let response = await request(app)
         .get(`/${owner}/locks`)
         .set('Accept', /json/)
 
-      expect(response.body.locks.sort()).toEqual(
-        [
-          {
-            name: 'a mighty fine lock',
-            address: 'jqfqod74',
-          },
-          {
-            name: 'A random other lock',
-            address: 'jqfqod75',
-          },
-        ].sort()
-      )
+      expect(response.body.locks).toHaveLength(2)
+
+      expect(response.body.locks).toContainEqual({
+        name: 'a mighty fine lock',
+        address: 'jqfqod74',
+      })
+
+      expect(response.body.locks).toContainEqual({
+        name: 'A random other lock',
+        address: 'jqfqod75',
+      })
     })
   })
 
