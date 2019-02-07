@@ -7,7 +7,11 @@ import {
   UPDATE_LOCK_KEY_PRICE,
   UPDATE_LOCK,
 } from '../../actions/lock'
-import { WAIT_FOR_WALLET, GOT_WALLET } from '../../actions/walletStatus'
+import {
+  WAIT_FOR_WALLET,
+  GOT_WALLET,
+  DISMISS_CHECK,
+} from '../../actions/walletStatus'
 import { PURCHASE_KEY } from '../../actions/key'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
@@ -165,6 +169,15 @@ describe('Wallet middleware', () => {
     )
   })
 
+  it('should handle overlay.dismissed events triggered by walletService', () => {
+    expect.assertions(1)
+    const { store } = create()
+    mockWalletService.emit('overlay.dismissed')
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ type: DISMISS_CHECK })
+    )
+  })
+
   it('it should handle lock.updated events triggered by the walletService', () => {
     expect.assertions(1)
     const { store } = create()
@@ -214,7 +227,7 @@ describe('Wallet middleware', () => {
 
   describe('error events triggered by the walletService', () => {
     it('should handle error triggered when creating a lock', () => {
-      expect.assertions(2)
+      expect.assertions(3)
       const { store } = create()
       const transaction = {
         hash: '123',
@@ -229,12 +242,16 @@ describe('Wallet middleware', () => {
         { message: 'this was broken' },
         transaction.hash
       )
-      expect(store.dispatch).toHaveBeenNthCalledWith(1, {
+      expect(store.dispatch).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({ type: DISMISS_CHECK })
+      )
+      expect(store.dispatch).toHaveBeenNthCalledWith(2, {
         type: DELETE_LOCK,
         address: transaction.lock,
       })
       expect(store.dispatch).toHaveBeenNthCalledWith(
-        2,
+        3,
         expect.objectContaining({
           type: SET_ERROR,
           error: 'Failed to create lock. Did you decline the transaction?',

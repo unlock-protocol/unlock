@@ -11,7 +11,11 @@ import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
 import { SET_PROVIDER } from '../actions/provider'
 import { newTransaction } from '../actions/transaction'
-import { waitForWallet, gotWallet } from '../actions/walletStatus'
+import {
+  waitForWallet,
+  gotWallet,
+  dismissWalletCheck,
+} from '../actions/walletStatus'
 import { TRANSACTION_TYPES } from '../constants'
 
 import generateJWTToken from '../utils/signature'
@@ -72,11 +76,20 @@ export default function walletMiddleware({ getState, dispatch }) {
     dispatch(waitForWallet())
   })
 
+  // The wallet check overlay may be manually dismissed. When that event is
+  // signaled, clear the overlay.
+  walletService.on('overlay.dismissed', () => {
+    dispatch(dismissWalletCheck())
+  })
+
   walletService.on('lock.updated', (address, update) => {
     dispatch(updateLock(address, update))
   })
 
   walletService.on('error', (error, transactionHash) => {
+    // If we didn't successfully interact with the wallet, we need to clear the
+    // overlay
+    dispatch(dismissWalletCheck())
     const transaction = getState().transactions[transactionHash]
     if (transaction && transaction.type === TRANSACTION_TYPES.LOCK_CREATION) {
       // delete the lock
