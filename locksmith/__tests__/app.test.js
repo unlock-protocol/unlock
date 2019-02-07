@@ -11,6 +11,12 @@ const testLockDetails = {
   owner: '0xdeadbed123',
 }
 
+const checksummedTestLockDetails = {
+  name: 'Test Lock',
+  address: '0xab7c74abC0C4d48d1bdad5DCB26153FC8780f83E',
+  owner: '0xDEadbED123',
+}
+
 const lockUpdateDetails = {
   currentAddress: 'jqfqod74',
   address: '0x4983D5ECDc5cc0E499c2D23BF4Ac32B982bAe53a',
@@ -54,7 +60,7 @@ const updatingLockHeader =
   'ddf10ecb354585a5b7e328d25552a9092d7fd518c4ff21b0f5860fda6041a2340d2ad86b7150a0dfbf15c82c1500'
 
 beforeEach(async () => {
-  await Lock.create(testLockDetails)
+  await Lock.create(checksummedTestLockDetails)
 })
 
 afterEach(async () => {
@@ -96,7 +102,7 @@ describe('Requesting lock details', () => {
         .set('Authorization', savingLockHeader)
         .send(validLockDetails)
 
-      let record = await Lock.findOne({ where: { address: 'jqa6dnp1' } })
+      let record = await Lock.findOne({ where: { address: '0xJqA6dnP1' } })
       expect(record.name).toBe(validLockDetails.name)
     })
 
@@ -118,8 +124,8 @@ describe('Requesting lock details', () => {
         Date.now = jest.fn(() => 1546130837000)
 
         await Lock.create({
-          address: validLockDetails.address,
-          owner: validLockDetails.owner,
+          address: '0xJqA6dnP1',
+          owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
         })
 
         let response = await request(app)
@@ -141,7 +147,7 @@ describe('Requesting lock details', () => {
 
         await Lock.create({
           name: 'a mighty fine lock',
-          address: 'jqfqod74',
+          address: '0xjqfqOd74',
           owner: validLockOwner,
         })
 
@@ -238,12 +244,12 @@ describe('Requesting Lock details of a given address', () => {
       await Transaction.bulkCreate([
         {
           transactionHash: '0x345546565',
-          sender: '0xcafe',
+          sender: '0xcAFe',
           recipient: '0xbeefe',
         },
         {
           transactionHash: '0x445546565',
-          sender: '0xcafe',
+          sender: '0xcAFe',
           recipient: '0xbeefe',
         },
         {
@@ -272,7 +278,7 @@ describe('Requesting Lock details of a given address', () => {
     describe('when the address has transactions', () => {
       it("returns the addresses' transactions", async () => {
         expect.assertions(1)
-        let sender = '0xcafe'
+        let sender = '0xcAFe'
 
         let response = await request(app)
           .get('/transactions')
@@ -292,14 +298,14 @@ describe('Requesting Lock details of a given address', () => {
           .set('Accept', /json/)
           .send({
             transactionHash: '0xsdbegjkbg,egf',
-            sender: 'sdgergr',
-            recipient: 'sdag433r',
+            sender: '0xSDgErGR',
+            recipient: '0xSdaG433r',
           })
 
         let record = await Transaction.findOne({
-          where: { sender: 'sdgergr', recipient: 'sdag433r' },
+          where: { sender: '0xSDgErGR', recipient: '0xSdaG433r' },
         })
-        expect(record.sender).toBe('sdgergr')
+        expect(record.sender).toBe('0xSDgErGR')
         expect(response.statusCode).toBe(200)
       })
     })
