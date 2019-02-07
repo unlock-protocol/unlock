@@ -121,7 +121,7 @@ export default function web3Middleware({ getState, dispatch }) {
       }
 
       if (action.type === NEW_TRANSACTION) {
-        web3Service.getTransaction(action.transaction.hash)
+        web3Service.getTransaction(action.transaction.hash, action.transaction)
       }
 
       if (action.type === CREATE_LOCK && !action.lock.address) {
