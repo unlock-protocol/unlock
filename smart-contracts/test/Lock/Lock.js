@@ -27,7 +27,8 @@ contract('Lock', accounts => {
       lock.maxNumberOfKeys.call(),
       lock.outstandingKeys.call(),
       lock.numberOfOwners.call(),
-      lock.publicLockVersion.call()
+      lock.publicLockVersion.call(),
+      lock.isAlive.call()
     ]).then(
       ([
         owner,
@@ -36,7 +37,8 @@ contract('Lock', accounts => {
         maxNumberOfKeys,
         outstandingKeys,
         numberOfOwners,
-        publicLockVersion
+        publicLockVersion,
+        isAlive
       ]) => {
         expirationDuration = new BigNumber(expirationDuration)
         keyPrice = new BigNumber(keyPrice)
@@ -50,6 +52,7 @@ contract('Lock', accounts => {
         assert.equal(outstandingKeys.toFixed(), 0)
         assert.equal(numberOfOwners.toFixed(), 0)
         assert.equal(publicLockVersion.toFixed(), 1) // needs updating each lock-version change
+        assert.equal(isAlive, true)
       }
     )
   })

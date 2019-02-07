@@ -65,6 +65,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   // The version number for this lock contract,
   uint public publicLockVersion;
 
+  // Used to disable payable functions when deprecating an old lock
+  bool public isAlive;
+
   // Keys
   // Each owner can have at most exactly one key
   // TODO: could we use public here? (this could be confusing though because it getter will
@@ -153,6 +156,12 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     _;
   }
 
+  // Only allow usage when contract is Alive
+  modifier onlyIfAlive() {
+    require(isAlive, "No access after contract has been deprecated");
+    _;
+  }
+
   // Constructor
   constructor(
     address _owner,
@@ -170,6 +179,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
     publicLockVersion = _version;
+    isAlive = true;
   }
 
   /**
@@ -183,6 +193,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   )
     external
     payable
+    onlyIfAlive
   {
     return _purchaseFor(_recipient, address(0), _data);
   }
@@ -200,6 +211,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   )
     external
     payable
+    onlyIfAlive
     hasValidKey(_referrer)
   {
     return _purchaseFor(_recipient, _referrer, _data);
@@ -216,6 +228,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   )
     external
     payable
+    onlyIfAlive
     notSoldOut()
     hasValidKey(_from)
     onlyKeyOwnerOrApproved(_tokenId)
@@ -298,6 +311,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   )
     external
     payable
+    onlyIfAlive
     onlyKeyOwner(_tokenId)
   {
     require(_approved != address(0));
