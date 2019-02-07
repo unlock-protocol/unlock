@@ -1,5 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 const ModalOverlay = ({ children }) => (
   <Greyout>
@@ -10,11 +12,31 @@ const ModalOverlay = ({ children }) => (
   </Greyout>
 )
 
-export const WalletCheckOverlay = () => (
-  <ModalOverlay>
-    <p>Please check your browser wallet to complete the transaction.</p>
-  </ModalOverlay>
-)
+const WalletCheckOverlay = ({ waiting }) => {
+  if (waiting) {
+    return (
+      <ModalOverlay>
+        <p>Please check your browser wallet to complete the transaction.</p>
+      </ModalOverlay>
+    )
+  }
+  return null
+}
+
+WalletCheckOverlay.propTypes = {
+  waiting: PropTypes.bool,
+}
+
+WalletCheckOverlay.defaultProps = {
+  waiting: false,
+}
+
+const mapStateToProps = state => {
+  const {
+    walletStatus: { waiting },
+  } = state
+  return { waiting }
+}
 
 const Dismiss = styled.button`
   height: 24px;
@@ -56,4 +78,4 @@ const Greyout = styled.div`
   align-items: center;
 `
 
-export default ModalOverlay
+export default connect(mapStateToProps)(WalletCheckOverlay)

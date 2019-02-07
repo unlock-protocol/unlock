@@ -9,7 +9,7 @@ import { createUnlockStore } from '../createUnlockStore'
 import GlobalStyle from '../theme/globalStyle'
 import { ConfigContext } from '../utils/withConfig'
 
-import { WalletCheckOverlay } from '../components/interface/ModalOverlay'
+import WalletCheckOverlay from '../components/interface/ModalOverlay'
 
 // Middlewares
 import web3Middleware from '../middlewares/web3Middleware'
