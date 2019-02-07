@@ -157,11 +157,7 @@ describe('Storage middleware', () => {
         const action = { type: UPDATE_LOCK, address: lock.address, update: {} }
         delete state.locks[lock.address].name
         mockStorageService.lockLookUp = jest.fn(() => {
-          return Promise.resolve({
-            data: {
-              name: 'A lock has no name',
-            },
-          })
+          return Promise.resolve('A lock has no name')
         })
         await invoke(action)
         expect(mockStorageService.lockLookUp).toHaveBeenCalledWith(lock.address)
