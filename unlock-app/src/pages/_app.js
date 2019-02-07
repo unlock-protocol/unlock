@@ -104,8 +104,8 @@ The Unlock team
     return (
       <Container>
         <GlobalStyle />
-        <WalletCheckOverlay />
         <Provider store={store}>
+          <WalletCheckOverlay />
           <ConnectedRouter history={history}>
             <ConfigProvider value={config}>
               <Component {...pageProps} router={router} />
