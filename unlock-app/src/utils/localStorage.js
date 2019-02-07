@@ -1,5 +1,6 @@
 // copied from the MDN docs as the best way to detect localStorage presence
-export function localStorageAvailable(window) {
+// https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#Testing_for_availability
+export default function localStorageAvailable(window) {
   try {
     var storage = window.localStorage,
       x = '__storage_test__'
@@ -22,37 +23,4 @@ export function localStorageAvailable(window) {
       storage.length !== 0
     )
   }
-}
-
-export function getUserStorageName(account, network) {
-  return `unlock-${account}-${network}`
-}
-
-export function saveKeyToStorage(window, key, network) {
-  const storageKeys = getKeysFromStorage(window, key.owner, network)
-  const keys = storageKeys ? storageKeys : {}
-  keys[key.lock] = keys[key.lock] || {}
-  keys[key.lock][key.id] = key
-  window.localStorage.setItem(
-    getUserStorageName(key.owner, network),
-    JSON.stringify(keys)
-  )
-}
-
-export function getKeysFromStorage(window, account, network) {
-  const info = window.localStorage.getItem(getUserStorageName(account, network))
-  try {
-    return JSON.parse(info)
-  } catch (e) {
-    return {}
-  }
-}
-
-export function getKeysForLockFromStorage(window, lock, account, network) {
-  const allKeys = getKeysFromStorage(window, account, network)
-  return allKeys[lock] || {}
-}
-
-export function resetAccountStorage(window, account, network) {
-  window.localStorage.removeItem(getUserStorageName(account, network))
 }
