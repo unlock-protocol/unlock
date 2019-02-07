@@ -16,7 +16,19 @@ export const WalletCheckOverlay = () => (
   </ModalOverlay>
 )
 
-const Dismiss = styled.button``
+const Dismiss = styled.button`
+  height: 24px;
+  font-size: 20px;
+  font-family: Roboto;
+  text-align: center;
+  border: none;
+  background: none;
+  color: var(--grey);
+
+  &:hover {
+    color: var(--link);
+  }
+`
 
 const MessageBox = styled.div`
   background: var(--white);
@@ -28,10 +40,11 @@ const MessageBox = styled.div`
   justify-content: center;
   align-items: center;
   color: var(--darkgrey);
+  font-size: 20px;
 `
 
 const Greyout = styled.div`
-  background: rgba(166, 166, 166, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   position: fixed;
   height: 100%;
   width: 100%;
