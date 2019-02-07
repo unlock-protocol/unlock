@@ -25,7 +25,10 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends EventEmitter {
-  constructor({ providers, runningOnServer, unlockAddress } = configure()) {
+  constructor(
+    { providers, runningOnServer, unlockAddress } = configure(),
+    pollForAccountChanges = true
+  ) {
     super()
     if (unlockAddress) {
       this.unlockContractAddress = Web3Utils.toChecksumAddress(unlockAddress)
@@ -37,7 +40,9 @@ export default class WalletService extends EventEmitter {
 
     this.on('ready', () => {
       this.ready = true
-      this.pollForAccountChange(runningOnServer)
+      if (pollForAccountChanges) {
+        this.pollForAccountChange(runningOnServer)
+      }
     })
   }
 
@@ -95,13 +100,9 @@ export default class WalletService extends EventEmitter {
   /**
    * Poll to see if account has changed
    */
-  async pollForAccountChange(isServer) {
+  async pollForAccountChange(isServer, pollForNextChange = true) {
     if (isServer) return
-    try {
-      await delayPromise(POLLING_INTERVAL)
-    } catch (e) {
-      return // if the timeout throws, we don't start the loop, this is primarily for testing
-    }
+    await delayPromise(POLLING_INTERVAL)
     try {
       this.account = await this.checkForAccountChange(this.account)
     } catch (e) {
@@ -109,20 +110,28 @@ export default class WalletService extends EventEmitter {
     }
     // because this is async, the call stack is not affected, and does not grow
     // for a non-async function this would quickly fill all available memory
-    this.pollForAccountChange()
+    if (pollForNextChange) {
+      this.pollForAccountChange()
+    }
   }
 
   /**
    * given the prior account address, determine if the account has changed and return the
    * current address regardless of any change
    */
-  async checkForAccountChange(priorAddress) {
-    const nextAddress = await this._getAccountAddress(Promise.resolve(null))
+  async checkForAccountChange(currentAccount) {
+    const nextAccount = await this._getAccountAddressOrFallbackAddress(
+      // When retrieving the current account address, there is an
+      // option to fallback to another method when the account is null.
+      // In our case, we do not want to do anything, so our fallback
+      // is simply a promise that resolves to a missing account
+      Promise.resolve(null)
+    )
 
-    if (priorAddress !== nextAddress) {
-      this.emit('account.changed', nextAddress)
+    if (currentAccount !== nextAccount) {
+      this.emit('account.changed', nextAccount)
     }
-    return nextAddress
+    return nextAccount
   }
 
   /**
@@ -130,7 +139,9 @@ export default class WalletService extends EventEmitter {
    */
   async getAccount() {
     // Once we have the account, let's refresh it!
-    const address = await this._getAccountAddress(this._createAccount)
+    const address = await this._getAccountAddressOrFallbackAddress(
+      this._createAccount
+    )
     this.emit('account.changed', address)
     this.emit('ready')
     return Promise.resolve(address)
@@ -138,10 +149,10 @@ export default class WalletService extends EventEmitter {
 
   /**
    * Get the current user account address, calling a fallback if there is none
-   * @param fallback async function
+   * @param fallback async function that returns an account address
    * @return string
    */
-  async _getAccountAddress(fallback) {
+  async _getAccountAddressOrFallbackAddress(fallback) {
     const accounts = await this.web3.eth.getAccounts()
     const address = accounts.length ? accounts[0] : await fallback()
     return address
