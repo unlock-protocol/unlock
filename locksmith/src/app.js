@@ -2,6 +2,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const express = require('express')
 const Sequelize = require('sequelize')
+const ethJsUtil = require('ethereumjs-util')
 const tokenMiddleware = require('./tokenMiddleware')
 const Lock = require('./lock')
 const Transaction = require('./transaction')
@@ -13,8 +14,8 @@ const router = express.Router()
 const Op = Sequelize.Op
 
 router.put('/lock/:lockAddress', async (req, res) => {
-  let newAddress = req.body.address
-  let tempAddress = req.params.lockAddress
+  let newAddress = ethJsUtil.toChecksumAddress(req.body.address)
+  let tempAddress = ethJsUtil.toChecksumAddress(req.params.lockAddress)
 
   if (tempAddress && newAddress) {
     try {
@@ -43,16 +44,19 @@ router.put('/lock/:lockAddress', async (req, res) => {
 router.post('/lock', async (req, res) => {
   let lock = req.body
   if (lock.address && lock.name) {
+    let lockAddress = ethJsUtil.toChecksumAddress(lock.address)
+    let lockOwner = ethJsUtil.toChecksumAddress(req.owner)
+
     try {
       await Lock.create({
         name: lock.name,
-        address: lock.address,
-        owner: req.owner,
+        address: lockAddress,
+        owner: lockOwner,
       })
-      logger.logLockDetailsStored(lock.address)
+      logger.logLockDetailsStored(lockAddress)
       res.sendStatus(200)
     } catch (e) {
-      logger.logAttemptedOverwrite(lock.address)
+      logger.logAttemptedOverwrite(lockAddress)
       res.sendStatus(412)
     }
   } else {
@@ -61,9 +65,11 @@ router.post('/lock', async (req, res) => {
 })
 
 router.get('/lock/:lockAddress', async (req, res) => {
-  logger.logLockDetailsRequest(req.params.lockAddress)
+  let lockAddress = ethJsUtil.toChecksumAddress(req.params.lockAddress)
+  logger.logLockDetailsRequest(lockAddress)
+
   let lock = await Lock.findOne({
-    where: { address: { [Op.eq]: req.params.lockAddress } },
+    where: { address: { [Op.eq]: lockAddress } },
   })
 
   if (lock == null) {
@@ -76,7 +82,7 @@ router.get('/lock/:lockAddress', async (req, res) => {
 })
 
 router.get('/:owner/locks', async (req, res) => {
-  const owner = req.params.owner
+  const owner = ethJsUtil.toChecksumAddress(req.params.owner)
 
   let locks = await Lock.findAll({
     attributes: ['name', 'address'],
@@ -91,12 +97,16 @@ router.get('/:owner/locks', async (req, res) => {
 router.post('/transaction', async (req, res) => {
   let transaction = req.body
 
-  if (transaction.transactionHash) {
+  if (
+    transaction.transactionHash &&
+    transaction.sender &&
+    transaction.recipient
+  ) {
     try {
       await Transaction.create({
         transactionHash: transaction.transactionHash,
-        sender: transaction.sender,
-        recipient: transaction.recipient,
+        sender: ethJsUtil.toChecksumAddress(transaction.sender),
+        recipient: ethJsUtil.toChecksumAddress(transaction.recipient),
       })
       res.sendStatus(200)
     } catch (e) {
@@ -106,7 +116,7 @@ router.post('/transaction', async (req, res) => {
 })
 
 router.get('/transactions', async (req, res) => {
-  const sender = req.query.sender
+  const sender = ethJsUtil.toChecksumAddress(req.query.sender)
 
   let transactions = await Transaction.findAll({
     where: {
