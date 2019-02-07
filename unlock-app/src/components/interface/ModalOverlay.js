@@ -1,11 +1,37 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const ModalOverlay = () => <Greyout />
+const ModalOverlay = ({ children }) => (
+  <Greyout>
+    <MessageBox>
+      {children}
+      <Dismiss>Dismiss</Dismiss>
+    </MessageBox>
+  </Greyout>
+)
+
+export const WalletCheckOverlay = () => (
+  <ModalOverlay>
+    <p>Please check your browser wallet to complete the transaction.</p>
+  </ModalOverlay>
+)
+
+const Dismiss = styled.button``
+
+const MessageBox = styled.div`
+  background: var(--white);
+  min-width: 50%;
+  border-radius: 4px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--darkgrey);
+`
 
 const Greyout = styled.div`
-  background: var(--grey)
-  opacity: 0.5;
+  background: rgba(166, 166, 166, 0.5);
   position: fixed;
   height: 100%;
   width: 100%;
@@ -14,10 +40,7 @@ const Greyout = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  & > p {
-    background: var(--white);
-  }
+  align-items: center;
 `
 
 export default ModalOverlay
