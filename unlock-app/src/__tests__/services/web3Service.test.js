@@ -201,6 +201,200 @@ describe('Web3Service', () => {
     })
   })
 
+  describe('_getSubmittedTransaction', () => {
+    const blockNumber = 29
+    const defaults = null
+
+    beforeEach(() => {
+      web3Service._watchTransaction = jest.fn()
+    })
+
+    it('should watch the transaction', done => {
+      expect.assertions(1)
+      web3Service.on('transaction.updated', () => {
+        expect(web3Service._watchTransaction).toHaveBeenCalledWith(
+          transaction.hash
+        )
+        done()
+      })
+
+      web3Service._getSubmittedTransaction(
+        transaction.hash,
+        blockNumber,
+        defaults
+      )
+    })
+
+    it('should emit a transaction.updated event with the right values', done => {
+      expect.assertions(4)
+      web3Service.on('transaction.updated', (hash, update) => {
+        expect(hash).toBe(transaction.hash)
+        expect(update.status).toEqual('submitted')
+        expect(update.confirmations).toEqual(0)
+        expect(update.blockNumber).toEqual(Number.MAX_SAFE_INTEGER)
+        done()
+      })
+      web3Service._getSubmittedTransaction(
+        transaction.hash,
+        blockNumber,
+        defaults
+      )
+    })
+
+    it('should invoke parseTransactionFromInput if the defaults include an input value', done => {
+      expect.assertions(3)
+
+      const defaults = {
+        input:
+          '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
+        to: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
+      }
+
+      web3Service.parseTransactionFromInput = jest.fn(
+        (transactionHash, contract, transactionInput, address) => {
+          expect(transactionHash).toEqual(transaction.hash)
+          expect(transactionInput).toEqual(defaults.input)
+          expect(address).toEqual('0xcfeb869f69431e42cdb54a4f4f105c19c080a601')
+          done()
+        }
+      )
+
+      web3Service._getSubmittedTransaction(
+        transaction.hash,
+        blockNumber,
+        defaults
+      )
+    })
+  })
+
+  describe('_getPendingTransaction', () => {
+    const input =
+      '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a'
+
+    const blockTransaction = {
+      hash: transaction.hash,
+      nonce: '0x04',
+      blockHash: 'null',
+      blockNumber: null, // Not mined
+      from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+      to: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
+      value: '0x0',
+      gas: '0x16e360',
+      gasPrice: '0x04a817c800',
+      input,
+    }
+
+    beforeEach(() => {
+      web3Service._watchTransaction = jest.fn()
+      web3Service.getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
+    })
+
+    it('should watch the transaction', done => {
+      expect.assertions(1)
+
+      web3Service.parseTransactionFromInput = jest.fn(() => {
+        expect(web3Service._watchTransaction).toHaveBeenCalledWith(
+          transaction.hash
+        )
+        done()
+      })
+
+      web3Service._getPendingTransaction(blockTransaction)
+    })
+
+    it('should invoke parseTransactionFromInput', done => {
+      expect.assertions(3)
+      web3Service.parseTransactionFromInput = jest.fn(
+        (transactionHash, contract, transactionInput, address) => {
+          expect(transactionHash).toEqual(transaction.hash)
+          expect(transactionInput).toEqual(input)
+          expect(address).toEqual('0xcfeb869f69431e42cdb54a4f4f105c19c080a601')
+          done()
+        }
+      )
+
+      web3Service._getPendingTransaction(blockTransaction)
+    })
+  })
+
+  describe('parseTransactionFromInput', () => {
+    beforeEach(() => {
+      web3Service.getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
+    })
+
+    it('should emit transaction.updated with the transaction marked as pending', done => {
+      expect.assertions(2)
+      const input =
+        '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a'
+      web3Service.on('transaction.updated', (hash, update) => {
+        expect(hash).toEqual(transaction.hash)
+        expect(update).toEqual({
+          status: 'pending',
+          type: 'TRANSACTION_TYPE',
+          confirmations: 0,
+          blockNumber: Number.MAX_SAFE_INTEGER,
+        })
+        done()
+      })
+      web3Service.parseTransactionFromInput(
+        transaction.hash,
+        UnlockContract,
+        input,
+        web3Service.unlockContractAddress
+      )
+    })
+
+    it('should call the handler if the transaction input can be parsed', done => {
+      expect.assertions(4)
+      const input =
+        '00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a'
+
+      // Fake method
+      const method = {
+        signature: '0x2bc888bf',
+        name: 'myMethod',
+      }
+
+      // Fake abi
+      const FakeContract = {
+        abi: [method],
+      }
+
+      // fake params
+      const params = {}
+      // keeping track of it so we can clean it up (web3 has a singleton class down below)
+      const decodeParams = web3Service.web3.eth.abi.decodeParameters
+      web3Service.web3.eth.abi.decodeParameters = jest.fn(() => {
+        return params
+      })
+
+      // Creating a fake handler
+      web3Service.inputsHandlers[method.name] = (
+        transactionHash,
+        contractAddress,
+        args
+      ) => {
+        expect(web3Service.web3.eth.abi.decodeParameters).toHaveBeenCalledWith(
+          method.inputs,
+          input
+        )
+        expect(transactionHash).toEqual(transaction.hash)
+        expect(contractAddress).toEqual(web3Service.unlockContractAddress)
+        expect(args).toEqual(params)
+        // Clean up!
+        web3Service.web3.eth.abi.decodeParameters = decodeParams
+        done()
+      }
+
+      web3Service.parseTransactionFromInput(
+        transaction.hash,
+        FakeContract,
+        `${method.signature}${input}`,
+        web3Service.unlockContractAddress
+      )
+    })
+  })
+
   describe('getTransaction', () => {
     describe('when the transaction was submitted', () => {
       beforeEach(() => {
@@ -209,105 +403,22 @@ describe('Web3Service', () => {
         web3Service._watchTransaction = jest.fn()
       })
 
-      it('should watch the transaction', done => {
-        expect.assertions(1)
-        web3Service.on('transaction.updated', () => {
-          expect(web3Service._watchTransaction).toHaveBeenCalledWith(
-            transaction.hash
-          )
-          done()
-        })
+      it('should call _getSubmittedTransaction', done => {
+        expect.assertions(3)
 
-        web3Service.getTransaction(transaction.hash)
-      })
-
-      it('should emit a transaction.updated event with the right values', done => {
-        expect.assertions(4)
-        web3Service.on('transaction.updated', (hash, update) => {
-          expect(hash).toBe(transaction.hash)
-          expect(update.status).toEqual('submitted')
-          expect(update.confirmations).toEqual(0)
-          expect(update.blockNumber).toEqual(Number.MAX_SAFE_INTEGER)
-          done()
-        })
-        web3Service.getTransaction(transaction.hash)
-      })
-    })
-
-    describe('parseTransactionFromInput', () => {
-      beforeEach(() => {
-        web3Service.getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
-      })
-
-      it('should emit transaction.updated with the transaction marked as pending', done => {
-        expect.assertions(2)
-        const input =
-          '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a'
-        web3Service.on('transaction.updated', (hash, update) => {
-          expect(hash).toEqual(transaction.hash)
-          expect(update).toEqual({
-            status: 'pending',
-            type: 'TRANSACTION_TYPE',
-            confirmations: 0,
-            blockNumber: Number.MAX_SAFE_INTEGER,
-          })
-          done()
-        })
-        web3Service.parseTransactionFromInput(
-          transaction.hash,
-          UnlockContract,
-          input,
-          web3Service.unlockContractAddress
+        const defaultTransactionValues = {
+          to: 'julien',
+        }
+        web3Service._getSubmittedTransaction = jest.fn(
+          (hash, number, defaults) => {
+            expect(hash).toBe(transaction.hash)
+            expect(number).toBe(29)
+            expect(defaults).toMatchObject(defaultTransactionValues)
+            done()
+          }
         )
-      })
 
-      it('should call the handler if the transaction input can be parsed', done => {
-        expect.assertions(4)
-        const input =
-          '00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a'
-
-        // Fake method
-        const method = {
-          signature: '0x2bc888bf',
-          name: 'myMethod',
-        }
-
-        // Fake abi
-        const FakeContract = {
-          abi: [method],
-        }
-
-        // fake params
-        const params = {}
-        // keeping track of it so we can clean it up (web3 has a singleton class down below)
-        const decodeParams = web3Service.web3.eth.abi.decodeParameters
-        web3Service.web3.eth.abi.decodeParameters = jest.fn(() => {
-          return params
-        })
-
-        // Creating a fake handler
-        web3Service.inputsHandlers[method.name] = (
-          transactionHash,
-          contractAddress,
-          args
-        ) => {
-          expect(
-            web3Service.web3.eth.abi.decodeParameters
-          ).toHaveBeenCalledWith(method.inputs, input)
-          expect(transactionHash).toEqual(transaction.hash)
-          expect(contractAddress).toEqual(web3Service.unlockContractAddress)
-          expect(args).toEqual(params)
-          // Clean up!
-          web3Service.web3.eth.abi.decodeParameters = decodeParams
-          done()
-        }
-
-        web3Service.parseTransactionFromInput(
-          transaction.hash,
-          FakeContract,
-          `${method.signature}${input}`,
-          web3Service.unlockContractAddress
-        )
+        web3Service.getTransaction(transaction.hash, defaultTransactionValues)
       })
     })
 
@@ -328,36 +439,16 @@ describe('Web3Service', () => {
           gasPrice: '0x04a817c800',
           input,
         })
-
-        web3Service._watchTransaction = jest.fn()
-        web3Service.getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
       })
 
-      it('should watch the transaction', done => {
-        expect.assertions(1)
+      it('should call _getPendingTransaction', done => {
+        expect.assertions(2)
 
-        web3Service.parseTransactionFromInput = jest.fn(() => {
-          expect(web3Service._watchTransaction).toHaveBeenCalledWith(
-            transaction.hash
-          )
+        web3Service._getPendingTransaction = jest.fn(blockTransaction => {
+          expect(blockTransaction.hash).toBe(transaction.hash)
+          expect(blockTransaction.input).toBe(input)
           done()
         })
-
-        web3Service.getTransaction(transaction.hash)
-      })
-
-      it('should invoke parseTransactionFromInput', done => {
-        expect.assertions(3)
-        web3Service.parseTransactionFromInput = jest.fn(
-          (transactionHash, contract, transactionInput, address) => {
-            expect(transactionHash).toEqual(transaction.hash)
-            expect(transactionInput).toEqual(input)
-            expect(address).toEqual(
-              '0xCfEB869F69431e42cdB54A4F4f105C19C080A601'
-            )
-            done()
-          }
-        )
 
         web3Service.getTransaction(transaction.hash)
       })
