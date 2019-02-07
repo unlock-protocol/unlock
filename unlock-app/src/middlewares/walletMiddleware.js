@@ -53,7 +53,7 @@ export default function walletMiddleware({ getState, dispatch }) {
     )
   })
 
-  walletService.on('transaction.new', (transactionHash, from, to) => {
+  walletService.on('transaction.new', (transactionHash, from, to, input) => {
     // At this point we know that a wallet was found, because a new transaction
     // cannot be created without it
     dispatch(gotWallet())
@@ -62,6 +62,7 @@ export default function walletMiddleware({ getState, dispatch }) {
         hash: transactionHash,
         to,
         from,
+        input,
       })
     )
   })
