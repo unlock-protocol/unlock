@@ -1,5 +1,9 @@
-import interWindowCommunicationMiddleware from '../../middlewares/interWindowCommunicationMiddleware'
 import { openNewWindowModal, hideModal } from '../../actions/modal'
+import { setAccount } from '../../actions/accounts'
+
+jest.mock('../../utils/localStorage')
+const interWindowCommunicationMiddleware = require('../../middlewares/interWindowCommunicationMiddleware')
+  .default
 
 describe('interWindowCommunicationMiddleware', () => {
   describe('middleware functionality', () => {
@@ -12,6 +16,9 @@ describe('interWindowCommunicationMiddleware', () => {
       const store = {
         getState() {
           return {
+            account: {
+              address: '0xabc',
+            },
             router: {
               location: {
                 pathname: '/paywall/',
@@ -112,6 +119,9 @@ describe('interWindowCommunicationMiddleware', () => {
       const store = {
         getState() {
           return {
+            account: {
+              address: '0xabc',
+            },
             router: {
               location: {
                 pathname:
@@ -197,6 +207,106 @@ describe('interWindowCommunicationMiddleware', () => {
 
       middleware(store)(next)(action)
       expect(next).toHaveBeenCalledWith(action)
+    })
+  })
+  describe('if in the iframe with no account', () => {
+    const lock = '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54'
+    const account = '0xaaaaa25a3e7Fb15263D0DD455B8aAfc08503bb54'
+    describe('if account passed in URL hash', () => {
+      let store
+      let window
+      beforeEach(() => {
+        store = {
+          getState() {
+            return {
+              account: null,
+              router: {
+                location: {
+                  pathname: `/paywall/${lock}#${account}`,
+                },
+              },
+            }
+          },
+          dispatch: jest.fn(),
+        }
+        window = {
+          localStorage: {
+            setItem: jest.fn(),
+            getItem: jest.fn(() => null),
+          },
+        }
+        window.self = window
+        window.top = {}
+      })
+      it('should dispatch SET_ACCOUNT', () => {
+        expect.assertions(1)
+        const middleware = interWindowCommunicationMiddleware(window)
+        middleware(store)(() => {})({})
+
+        expect(store.dispatch).toHaveBeenCalledWith(
+          setAccount({ address: account })
+        )
+      })
+      it('should save the account in localStorage', () => {
+        expect.assertions(1)
+        const middleware = interWindowCommunicationMiddleware(window)
+        middleware(store)(() => {})({})
+
+        expect(window.localStorage.setItem).toHaveBeenCalledWith(
+          '__unlock__account__',
+          account
+        )
+      })
+    })
+    describe('normal usage post-key purchase', () => {
+      let store
+      let window
+      beforeEach(() => {
+        store = {
+          getState() {
+            return {
+              account: null,
+              router: {
+                location: {
+                  pathname: `/paywall/${lock}`,
+                },
+              },
+            }
+          },
+          dispatch: jest.fn(),
+        }
+        window = {
+          localStorage: {
+            setItem: jest.fn(),
+            getItem: jest.fn(() => null),
+          },
+        }
+        window.self = window
+        window.top = {}
+      })
+      it('should dispatch SET_ACCOUNT if account is stored in localStorage', () => {
+        window.localStorage.getItem = jest.fn(() => account)
+        expect.assertions(2)
+        const middleware = interWindowCommunicationMiddleware(window)
+        middleware(store)(() => {})({})
+
+        expect(window.localStorage.getItem).toHaveBeenCalledWith(
+          '__unlock__account__'
+        )
+        expect(store.dispatch).toHaveBeenCalledWith(
+          setAccount({ address: account })
+        )
+      })
+      it('should not dispatch SET_ACCOUNT if localStorage does not have an account', () => {
+        expect.assertions(2)
+        const middleware = interWindowCommunicationMiddleware(window)
+        middleware(store)(() => {})({})
+
+        expect(window.localStorage.getItem).toHaveBeenCalledWith(
+          '__unlock__account__'
+        )
+        expect(store.dispatch).not.toHaveBeenCalled()
+      })
     })
   })
 })

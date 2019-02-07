@@ -2,6 +2,7 @@ import { OPEN_MODAL_IN_NEW_WINDOW, HIDE_MODAL } from '../actions/modal'
 import { inIframe } from '../config'
 import { lockRoute } from '../utils/routes'
 import { setAccount } from '../actions/accounts'
+import localStorageAvailable from '../utils/localStorage'
 
 // store is unused in this middleware, it is only for listening for actions
 // and converting them into postMessage
@@ -19,9 +20,24 @@ const interWindowCommunicationMiddleware = window => ({
       // sets our account to this account. This triggers retrieval
       // of keys for that account, allowing the paywall to function
       const { router, account } = getState()
-      const { address } = lockRoute(router.location.pathname)
-      if (!account && address) {
-        dispatch(setAccount(address))
+      if (!account) {
+        const { account: address } = lockRoute(router.location.pathname)
+        if (address) {
+          dispatch(setAccount({ address }))
+          // for subsequent accesses to paywalls, we save the user account in localStorage
+          // this is ONLY a stopgap until we can implement our own paywall-specific provider
+          if (localStorageAvailable(window)) {
+            window.localStorage.setItem('__unlock__account__', address)
+          }
+        } else if (localStorageAvailable(window)) {
+          // retrieve the stored account saved when the user purchased a key in the past
+          const storedAddress = window.localStorage.getItem(
+            '__unlock__account__'
+          )
+          if (storedAddress) {
+            dispatch(setAccount({ address: storedAddress }))
+          }
+        }
       }
     }
     return action => {
