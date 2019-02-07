@@ -116,15 +116,6 @@ export default function web3Middleware({ getState, dispatch }) {
         }
       }
 
-      if (action.type === SET_ACCOUNT) {
-        // TODO: when the account has been updated we should reset web3Service and remove all listeners
-        // So that pending API calls do not interract with our "new" state.
-        web3Service.refreshAccountBalance(action.account)
-        web3Service.getPastLockCreationsTransactionsForUser(
-          action.account.address
-        )
-      }
-
       if (action.type === ADD_TRANSACTION) {
         web3Service.getTransaction(action.transaction.hash)
       }
@@ -141,6 +132,29 @@ export default function web3Middleware({ getState, dispatch }) {
       }
 
       next(action)
+
+      // note: this needs to be after the reducer has seen it, because refreshAccountBalance
+      // triggers 'account.update' which dispatches UPDATE_ACCOUNT. The reducer assumes that
+      // ADD_ACCOUNT has reached it first, and throws an exception. Putting it after the
+      // reducer has a chance to populate state removes this race condition.
+      if (action.type === SET_ACCOUNT) {
+        // TODO: when the account has been updated we should reset web3Service and remove all listeners
+        // So that pending API calls do not interract with our "new" state.
+        web3Service.refreshAccountBalance(action.account)
+        web3Service.getPastLockCreationsTransactionsForUser(
+          action.account.address
+        )
+        const {
+          router: {
+            location: { pathname },
+          },
+        } = getState()
+
+        const { lockAddress, prefix } = lockRoute(pathname)
+        if (lockAddress && prefix === 'paywall') {
+          web3Service.getKeyByLockForOwner(lockAddress, action.account.address)
+        }
+      }
 
       if (action.type === ADD_LOCK || action.type == UPDATE_LOCK) {
         const lock = getState().locks[action.address]
