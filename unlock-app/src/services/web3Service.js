@@ -368,49 +368,100 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
+   * The transaction is still pending: it has been sent to the network but not
+   * necessarily received by the node we're asking it (and not mined...)
+   * TODO: This presents a UI challenge because we currently do not show anything to the
+   * user that a transaction exists and is pending... (since we have nothing to link it to)
+   * Hopefully though this should be fairly short lived because the transaction should be propagated
+   * to all nodes fairly quickly
+   * @param {*} transactionHash
+   * @param {*} blockNumber
+   * @param {object} defaults
+   * @private
+   */
+  _getSubmittedTransaction(transactionHash, blockNumber, defaults) {
+    this._watchTransaction(transactionHash)
+
+    // If we have default values for the transaction (passed by the walletService)
+    if (defaults) {
+      const contract =
+        this.unlockContractAddress === Web3Utils.toChecksumAddress(defaults.to)
+          ? UnlockContract
+          : LockContract
+
+      return this.parseTransactionFromInput(
+        transactionHash,
+        contract,
+        defaults.input,
+        defaults.to
+      )
+    }
+
+    return this.emit('transaction.updated', transactionHash, {
+      status: 'submitted',
+      confirmations: 0,
+      blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
+    })
+  }
+
+  /**
+   * This means the transaction is not in a block yet (ie. not mined), but has been propagated
+   * We do not know what the transacion is about though so we need to extract its info from
+   * the input.
+   * @param {*} blockTransaction
+   * @private
+   */
+  _getPendingTransaction(blockTransaction) {
+    this._watchTransaction(blockTransaction.hash)
+
+    const contract =
+      this.unlockContractAddress ===
+      Web3Utils.toChecksumAddress(blockTransaction.to)
+        ? UnlockContract
+        : LockContract
+
+    return this.parseTransactionFromInput(
+      blockTransaction.hash,
+      contract,
+      blockTransaction.input,
+      blockTransaction.to
+    )
+  }
+
+  /**
    * This refreshes a transaction by its hash.
    * It will only process the transaction if the filter function returns true
    * @param {string} transactionHash
-   * @param {Function} filter
+   * @param {object} filter
    */
-  getTransaction(transactionHash) {
+  getTransaction(transactionHash, defaults) {
     Promise.all([
       this.web3.eth.getBlockNumber(),
       this.web3.eth.getTransaction(transactionHash),
     ]).then(([blockNumber, blockTransaction]) => {
+      // If the block transaction is missing the transacion has been submitted but not
+      // received by all nodes
       if (!blockTransaction) {
-        // The transaction is still pending: it has been sent to the network but not
-        // necessarily received by the node we're asking it (and not mined...)
-        // TODO: This presents a UI challenge because we currently do not show anything to the
-        // user that a transaction exists and is pending... (since we have nothing to link it to)
-        // Hopefully though this should be fairly short lived because the transaction should be propagated
-        // to all nodes fairly quickly
-        this._watchTransaction(transactionHash)
-        return this.emit('transaction.updated', transactionHash, {
-          status: 'submitted',
-          confirmations: 0,
-          blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
-        })
+        return this._getSubmittedTransaction(
+          transactionHash,
+          blockNumber,
+          defaults
+        )
       }
+
+      // If the block number is missing the transaction has been received by the node
+      // but not mined yet
+      if (blockTransaction.blockNumber === null) {
+        return this._getPendingTransaction(blockTransaction)
+      }
+
+      // The transaction has been mined :
 
       const contract =
         this.unlockContractAddress ===
         Web3Utils.toChecksumAddress(blockTransaction.to)
           ? UnlockContract
           : LockContract
-
-      if (blockTransaction.blockNumber === null) {
-        // This means the transaction is not in a block yet (ie. not mined), but has been propagated
-        // We do not know what the transacion is about though so we need to extract its info from
-        // the input.
-        this._watchTransaction(transactionHash)
-        return this.parseTransactionFromInput(
-          transactionHash,
-          contract,
-          blockTransaction.input,
-          blockTransaction.to
-        )
-      }
 
       const transactionType = this.getTransactionType(
         contract,
@@ -422,7 +473,7 @@ export default class Web3Service extends EventEmitter {
         this._watchTransaction(transactionHash)
       }
 
-      // The transaction was mined, so we have a receipt for it
+      // The transaction was mined, so we should have a receipt for it
       this.emit('transaction.updated', transactionHash, {
         status: 'mined',
         type: transactionType,
