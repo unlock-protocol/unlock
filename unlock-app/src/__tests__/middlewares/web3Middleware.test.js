@@ -4,7 +4,11 @@ import web3Middleware from '../../middlewares/web3Middleware'
 import { ADD_LOCK, UPDATE_LOCK, CREATE_LOCK } from '../../actions/lock'
 import { UPDATE_KEY } from '../../actions/key'
 import { UPDATE_ACCOUNT } from '../../actions/accounts'
-import { ADD_TRANSACTION, UPDATE_TRANSACTION } from '../../actions/transaction'
+import {
+  ADD_TRANSACTION,
+  UPDATE_TRANSACTION,
+  NEW_TRANSACTION,
+} from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
 import { SET_KEYS_ON_PAGE_FOR_LOCK } from '../../actions/keysPages'
 import { PGN_ITEMS_PER_PAGE } from '../../constants'
@@ -376,6 +380,30 @@ describe('Lock middleware', () => {
       expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
       expect(next).toHaveBeenCalledWith(action)
     })
+  })
+
+  it('should handle ADD_TRANSACTION', () => {
+    const { next, invoke } = create()
+    const action = { type: ADD_TRANSACTION, transaction }
+    mockWeb3Service.getTransaction = jest.fn()
+
+    invoke(action)
+    expect(next).toHaveBeenCalled()
+    expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
+      transaction.hash
+    )
+  })
+
+  it('should handle NEW_TRANSACTION', () => {
+    const { next, invoke } = create()
+    const action = { type: NEW_TRANSACTION, transaction }
+    mockWeb3Service.getTransaction = jest.fn()
+
+    invoke(action)
+    expect(next).toHaveBeenCalled()
+    expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
+      transaction.hash
+    )
   })
 
   describe('CREATE_LOCK', () => {
