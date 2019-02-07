@@ -449,7 +449,7 @@ export default class Web3Service extends EventEmitter {
         )
       }
 
-      // If the block number is missing the transacion has been received by the node
+      // If the block number is missing the transaction has been received by the node
       // but not mined yet
       if (blockTransaction.blockNumber === null) {
         return this._getPendingTransaction(blockTransaction)
