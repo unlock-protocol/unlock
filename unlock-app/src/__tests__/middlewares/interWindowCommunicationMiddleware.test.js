@@ -34,7 +34,6 @@ describe('interWindowCommunicationMiddleware', () => {
 
       const middleware = interWindowCommunicationMiddleware(window)
 
-      const { getState } = store
       middleware(store)(next)(action)
 
       expect(next).toHaveBeenCalledWith(action)
