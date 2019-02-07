@@ -169,6 +169,15 @@ describe('Wallet middleware', () => {
     )
   })
 
+  it('should handle overlay.dismissed events triggered by walletService', () => {
+    expect.assertions(1)
+    const { store } = create()
+    mockWalletService.emit('overlay.dismissed')
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ type: DISMISS_CHECK })
+    )
+  })
+
   it('it should handle lock.updated events triggered by the walletService', () => {
     expect.assertions(1)
     const { store } = create()
