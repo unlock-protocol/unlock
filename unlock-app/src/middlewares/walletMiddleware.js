@@ -81,6 +81,8 @@ export default function walletMiddleware({ getState, dispatch }) {
   })
 
   walletService.on('error', (error, transactionHash) => {
+    // If we didn't successfully interact with the wallet, we need to clear the
+    // overlay
     dispatch(dismissWalletCheck())
     const transaction = getState().transactions[transactionHash]
     if (transaction && transaction.type === TRANSACTION_TYPES.LOCK_CREATION) {
