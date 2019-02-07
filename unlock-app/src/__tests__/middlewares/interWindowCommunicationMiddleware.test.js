@@ -3,14 +3,23 @@ import { openNewWindowModal, hideModal } from '../../actions/modal'
 
 describe('interWindowCommunicationMiddleware', () => {
   describe('middleware functionality', () => {
-    it('does responds to OPEN_MODAL_IN_NEW_WINDOW if in an iframe', () => {
+    it('does respond to OPEN_MODAL_IN_NEW_WINDOW if in an iframe', () => {
       expect.assertions(2)
       const next = jest.fn()
 
       const action = openNewWindowModal()
 
       const store = {
-        getState() {},
+        getState() {
+          return {
+            router: {
+              location: {
+                pathname: '/paywall/',
+              },
+            },
+          }
+        },
+        dispatch: jest.fn(),
       }
 
       const window = {
@@ -18,12 +27,14 @@ describe('interWindowCommunicationMiddleware', () => {
           postMessage: jest.fn(),
           origin: 'origin',
         },
+        addEventListener() {},
       }
       window.self = window
       window.top = 'not window'
 
       const middleware = interWindowCommunicationMiddleware(window)
 
+      const { getState } = store
       middleware(store)(next)(action)
 
       expect(next).toHaveBeenCalledWith(action)
@@ -65,6 +76,9 @@ describe('interWindowCommunicationMiddleware', () => {
       const store = {
         getState() {
           return {
+            account: {
+              address: 'address',
+            },
             router: {
               location: {
                 pathname:
@@ -92,7 +106,7 @@ describe('interWindowCommunicationMiddleware', () => {
       middleware(store)(next)(action)
 
       expect(next).toHaveBeenCalledWith(action)
-      expect(window.location.href).toBe('http://hithere')
+      expect(window.location.href).toBe('http://hithere#address')
     })
     it('ignores HIDE_MODAL in the iframe', () => {
       expect.assertions(2)
@@ -117,6 +131,7 @@ describe('interWindowCommunicationMiddleware', () => {
         location: {
           href: 'href',
         },
+        addEventListener() {},
       }
       window.self = window
       window.top = {}
@@ -133,6 +148,9 @@ describe('interWindowCommunicationMiddleware', () => {
       const store = {
         getState() {
           return {
+            account: {
+              address: '',
+            },
             router: {
               location: {
                 pathname: '/paywall/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
@@ -150,6 +168,7 @@ describe('interWindowCommunicationMiddleware', () => {
         location: {
           href: 'href',
         },
+        addEventListener() {},
       }
       window.self = window
       window.top = window
