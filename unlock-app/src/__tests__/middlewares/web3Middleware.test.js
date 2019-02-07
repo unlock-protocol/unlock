@@ -299,7 +299,7 @@ describe('Lock middleware', () => {
   })
 
   describe('not on the paywall', () => {
-    it('should handle SET_ACCOUNT by refreshing balance and retrieving historical lock transactions', () => {
+    it('should handle SET_ACCOUNT by refreshing balance and retrieving historical unlock transactions', () => {
       expect.assertions(3)
       mockWeb3Service.refreshAccountBalance = jest.fn()
       mockWeb3Service.getPastLockCreationsTransactionsForUser = jest.fn()
