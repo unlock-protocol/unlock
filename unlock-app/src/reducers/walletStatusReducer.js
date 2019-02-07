@@ -1,4 +1,8 @@
-import { WAIT_FOR_WALLET, GOT_WALLET } from '../actions/walletStatus'
+import {
+  WAIT_FOR_WALLET,
+  GOT_WALLET,
+  DISMISS_CHECK,
+} from '../actions/walletStatus'
 
 import { SET_PROVIDER } from '../actions/provider'
 import { SET_NETWORK } from '../actions/network'
@@ -16,6 +20,10 @@ const walletStatusReducer = (walletStatus = initialState, action) => {
   }
 
   if (action.type === GOT_WALLET) {
+    return initialState
+  }
+
+  if (action.type === DISMISS_CHECK) {
     return initialState
   }
 
