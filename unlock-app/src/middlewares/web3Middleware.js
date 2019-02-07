@@ -16,6 +16,7 @@ import {
   addTransaction,
   updateTransaction,
   ADD_TRANSACTION,
+  NEW_TRANSACTION,
 } from '../actions/transaction'
 import { PGN_ITEMS_PER_PAGE } from '../constants'
 
@@ -125,6 +126,10 @@ export default function web3Middleware({ getState, dispatch }) {
       }
 
       if (action.type === ADD_TRANSACTION) {
+        web3Service.getTransaction(action.transaction.hash)
+      }
+
+      if (action.type === NEW_TRANSACTION) {
         web3Service.getTransaction(action.transaction.hash)
       }
 
