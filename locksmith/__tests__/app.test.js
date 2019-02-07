@@ -204,11 +204,14 @@ describe('Requesting Lock details of a given address', () => {
     const owner = '0x423893453'
     it('return the details of the owned locks', async () => {
       expect.assertions(1)
+
+      const comparator = (a, b) => a.address - b.address
+
       let response = await request(app)
         .get(`/${owner}/locks`)
         .set('Accept', /json/)
 
-      expect(response.body.locks.sort()).toEqual(
+      expect(response.body.locks.sort(comparator)).toEqual(
         [
           {
             name: 'a mighty fine lock',
@@ -218,7 +221,7 @@ describe('Requesting Lock details of a given address', () => {
             name: 'A random other lock',
             address: 'jqfqod75',
           },
-        ].sort()
+        ].sort(comparator)
       )
     })
   })
