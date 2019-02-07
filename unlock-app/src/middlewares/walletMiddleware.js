@@ -76,6 +76,12 @@ export default function walletMiddleware({ getState, dispatch }) {
     dispatch(waitForWallet())
   })
 
+  // The wallet check overlay may be manually dismissed. When that event is
+  // signaled, clear the overlay.
+  walletService.on('overlay.dismissed', () => {
+    dispatch(dismissWalletCheck())
+  })
+
   walletService.on('lock.updated', (address, update) => {
     dispatch(updateLock(address, update))
   })
