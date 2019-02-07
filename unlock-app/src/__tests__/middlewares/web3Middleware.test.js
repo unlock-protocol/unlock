@@ -458,7 +458,8 @@ describe('Lock middleware', () => {
     invoke(action)
     expect(next).toHaveBeenCalled()
     expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
-      transaction.hash
+      transaction.hash,
+      transaction
     )
   })
 

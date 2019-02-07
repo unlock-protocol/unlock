@@ -153,7 +153,8 @@ describe('Wallet middleware', () => {
     const { store } = create()
     const from = '0xjulien'
     const to = '0xunlock'
-    mockWalletService.emit('transaction.new', transaction.hash, from, to)
+    const input = 'input'
+    mockWalletService.emit('transaction.new', transaction.hash, from, to, input)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({ type: GOT_WALLET })
     )
@@ -164,6 +165,7 @@ describe('Wallet middleware', () => {
           hash: transaction.hash,
           to,
           from,
+          input,
         }),
       })
     )
