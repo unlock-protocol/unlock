@@ -11,7 +11,11 @@ import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
 import { SET_PROVIDER } from '../actions/provider'
 import { newTransaction } from '../actions/transaction'
-import { waitForWallet, gotWallet } from '../actions/walletStatus'
+import {
+  waitForWallet,
+  gotWallet,
+  dismissWalletCheck,
+} from '../actions/walletStatus'
 import { TRANSACTION_TYPES } from '../constants'
 
 import generateJWTToken from '../utils/signature'
@@ -77,6 +81,7 @@ export default function walletMiddleware({ getState, dispatch }) {
   })
 
   walletService.on('error', (error, transactionHash) => {
+    dispatch(dismissWalletCheck())
     const transaction = getState().transactions[transactionHash]
     if (transaction && transaction.type === TRANSACTION_TYPES.LOCK_CREATION) {
       // delete the lock
