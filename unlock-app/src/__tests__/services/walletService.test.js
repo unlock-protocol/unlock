@@ -291,9 +291,22 @@ describe('WalletService', () => {
         })
       })
 
+      it('should trigger the transaction.pending event', done => {
+        expect.assertions(1)
+        walletService.on('transaction.pending', () => {
+          expect(true).toBe(true)
+          done()
+        })
+        walletService._sendTransaction(
+          { to, from, data, value, gas, privateKey, contract },
+          () => {}
+        )
+      })
+
       it('should trigger the transaction.new event', done => {
         expect.assertions(3)
         const transactionHash = '0x123'
+
         walletService.on('transaction.new', (hash, sender, recipient) => {
           expect(hash).toEqual(transactionHash)
           expect(sender).toEqual(from)

@@ -11,6 +11,7 @@ import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
 import { SET_PROVIDER } from '../actions/provider'
 import { newTransaction } from '../actions/transaction'
+import { waitForWallet, gotWallet } from '../actions/walletStatus'
 import { TRANSACTION_TYPES } from '../constants'
 
 import generateJWTToken from '../utils/signature'
@@ -53,6 +54,9 @@ export default function walletMiddleware({ getState, dispatch }) {
   })
 
   walletService.on('transaction.new', (transactionHash, from, to) => {
+    // At this point we know that a wallet was found, because a new transaction
+    // cannot be created without it
+    dispatch(gotWallet())
     dispatch(
       newTransaction({
         hash: transactionHash,
@@ -60,6 +64,12 @@ export default function walletMiddleware({ getState, dispatch }) {
         from,
       })
     )
+  })
+
+  // A transaction has started, now we need to signal that we're waiting for
+  // interaction with the wallet
+  walletService.on('transaction.pending', () => {
+    dispatch(waitForWallet())
   })
 
   walletService.on('lock.updated', (address, update) => {

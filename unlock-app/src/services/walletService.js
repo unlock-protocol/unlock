@@ -139,6 +139,8 @@ export default class WalletService extends EventEmitter {
       gas,
     })
 
+    this.emit('transaction.pending')
+
     return web3TransactionPromise
       .once('transactionHash', hash => {
         callback(null, hash)
