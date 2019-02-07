@@ -21,7 +21,8 @@ export default class StorageService {
   }
 
   /**
-   * Gets all the transactions sent by a given address
+   * Gets all the transactions sent by a given address.
+   * Returns an empty array by default
    * TODO: conider a more robust url building
    * @param {*} senderAddress
    */
@@ -29,7 +30,10 @@ export default class StorageService {
     return axios
       .get(`${this.host}/transactions?sender=${senderAddress}`)
       .then(response => {
-        return response.data.transactions.map(t => t.transactionHash)
+        if (response.data && response.data.transactions) {
+          return response.data.transactions.map(t => t.transactionHash)
+        }
+        return []
       })
   }
 
@@ -37,8 +41,17 @@ export default class StorageService {
     return { Authorization: ` Bearer ${token}` }
   }
 
+  /**
+   * Returns the name of undefined
+   * @param {*} address
+   */
   lockLookUp(address) {
-    return axios.get(`${this.host}/lock/${address}`)
+    return axios.get(`${this.host}/lock/${address}`).then(result => {
+      if (result.data && result.data.name) {
+        return result.data.name
+      }
+      return null
+    })
   }
 
   storeLockDetails(lock, token) {

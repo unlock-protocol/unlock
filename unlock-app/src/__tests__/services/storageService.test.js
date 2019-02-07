@@ -13,8 +13,12 @@ describe('StorageService', () => {
     describe('when the requested lock exists', () => {
       it('returns the details', () => {
         storageService.lockLookUp('0x42').then(successFn)
-        http.mockResponse()
-        expect(successFn).toHaveBeenCalled()
+        http.mockResponse({
+          data: {
+            name: 'hello',
+          },
+        })
+        expect(successFn).toHaveBeenCalledWith('hello')
         expect(http.get).toHaveBeenCalledWith(`${serviceHost}/lock/0x42`)
       })
     })
