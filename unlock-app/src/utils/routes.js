@@ -12,6 +12,7 @@ export const lockRoute = path => {
       lockAddress: null,
       prefix: null,
       redirect: null,
+      account: null,
     }
   }
 
@@ -19,6 +20,7 @@ export const lockRoute = path => {
     lockAddress: match[2],
     prefix: match[1],
     redirect: match[4] && decodeURIComponent(match[4]),
+    account: match[6],
   }
 }
 
