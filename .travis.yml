@@ -19,10 +19,10 @@ env:
     - DB_PASSWORD='password'
     - DB_NAME='locksmith_test'
     - DB_HOSTNAME='db'
+    - DOCKER_REPOSITORY=unlockprotocol
 services:
   - docker
 before_script:
-  - scripts/setup-aws.sh
   - scripts/build-image.sh unlock
   - scripts/build-image.sh unlock-integration
   - scripts/docker-compose-build.sh
