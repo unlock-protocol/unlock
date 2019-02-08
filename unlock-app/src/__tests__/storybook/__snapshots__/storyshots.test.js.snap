@@ -29306,7 +29306,7 @@ Object {
 .c2 {
   height: 24px;
   font-size: 20px;
-  font-family: Roboto;
+  font-family: Roboto,sans-serif;
   text-align: center;
   border: none;
   background: none;
@@ -29363,6 +29363,7 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  z-index: var(--alwaysontop);
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
@@ -30624,7 +30625,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-15x8glr-2 kseSVi"
+      class="sc-15x8glr-2 dWAgaa"
     >
       <div
         class="sc-15x8glr-1 kFpzdo"
@@ -30633,7 +30634,7 @@ Object {
           Please check your browser wallet to complete the transaction.
         </p>
         <button
-          class="sc-15x8glr-0 KDwCl"
+          class="sc-15x8glr-0 duQQca"
         >
           Dismiss
         </button>
@@ -51554,7 +51555,7 @@ Object {
     .c2 {
   height: 24px;
   font-size: 20px;
-  font-family: Roboto;
+  font-family: Roboto,sans-serif;
   text-align: center;
   border: none;
   background: none;
@@ -51611,6 +51612,7 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  z-index: var(--alwaysontop);
 }
 
 <div>
@@ -51642,7 +51644,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-15x8glr-2 kseSVi"
+      class="sc-15x8glr-2 dWAgaa"
     >
       <div
         class="sc-15x8glr-1 kFpzdo"
@@ -51651,7 +51653,7 @@ Object {
           Please check your browser wallet to complete the transaction.
         </p>
         <button
-          class="sc-15x8glr-0 KDwCl"
+          class="sc-15x8glr-0 duQQca"
         >
           Dismiss
         </button>

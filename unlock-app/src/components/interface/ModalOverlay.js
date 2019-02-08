@@ -51,7 +51,7 @@ const mapStateToProps = state => {
 const Dismiss = styled.button`
   height: 24px;
   font-size: 20px;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   text-align: center;
   border: none;
   background: none;
@@ -86,6 +86,7 @@ const Greyout = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: var(--alwaysontop);
 `
 
 export default connect(mapStateToProps)(WalletCheckOverlay)
