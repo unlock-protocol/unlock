@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react'
 import { Dashboard, mapStateToProps } from '../../pages/dashboard'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
+import WalletCheckOverlay from '../../components/interface/FullScreenModals'
 
 const account = {
   address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
@@ -78,6 +79,21 @@ const store = createUnlockStore({
   locks,
   transactions,
   currency,
+  walletStatus: {
+    waiting: false,
+  },
+})
+
+const waitingStore = createUnlockStore({
+  account,
+  network,
+  router,
+  locks,
+  transactions,
+  currency,
+  walletStatus: {
+    waiting: true,
+  },
 })
 
 const wrongNetworkStore = createUnlockStore({
@@ -107,10 +123,23 @@ storiesOf('Dashboard', module)
     <ConfigProvider value={config}>{getStory()}</ConfigProvider>
   ))
   .add('the dashboard', () => {
+    // The overlay should not render here, because walletStatus:waiting is set
+    // to false in the state
     const lockFeed = mapStateToProps({ locks, transactions, account, network })
       .lockFeed
     return (
       <Provider store={store}>
+        <WalletCheckOverlay />
+        <Dashboard network={network} account={account} lockFeed={lockFeed} />
+      </Provider>
+    )
+  })
+  .add('the dashboard, waiting for wallet', () => {
+    const lockFeed = mapStateToProps({ locks, transactions, account, network })
+      .lockFeed
+    return (
+      <Provider store={waitingStore}>
+        <WalletCheckOverlay />
         <Dashboard network={network} account={account} lockFeed={lockFeed} />
       </Provider>
     )
