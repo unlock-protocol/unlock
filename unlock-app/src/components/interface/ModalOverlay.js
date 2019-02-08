@@ -10,6 +10,14 @@ const ModalOverlay = ({ children }) => (
   </Greyout>
 )
 
+ModalOverlay.propTypes = {
+  children: PropTypes.node,
+}
+
+ModalOverlay.defaultProps = {
+  children: null,
+}
+
 const WalletCheckOverlay = ({ waiting, dispatch }) => {
   if (waiting) {
     return (
@@ -26,6 +34,7 @@ const WalletCheckOverlay = ({ waiting, dispatch }) => {
 
 WalletCheckOverlay.propTypes = {
   waiting: PropTypes.bool,
+  dispatch: PropTypes.func.isRequired,
 }
 
 WalletCheckOverlay.defaultProps = {
