@@ -19,6 +19,7 @@ import { POLLING_INTERVAL } from '../../constants'
 
 jest.mock('../../utils/promises')
 const WalletService = require('../../services/walletService').default
+const delay = require('../../utils/promises').delayPromise
 
 const nockScope = nock('http://127.0.0.1:8545', { encodedQueryParams: true })
 
@@ -62,9 +63,7 @@ let config
 let providers
 
 describe('WalletService', () => {
-  let delay
   beforeEach(() => {
-    delay = require('../../utils/promises').delayPromise
     nock.cleanAll()
     config = configure()
     providers = config.providers
