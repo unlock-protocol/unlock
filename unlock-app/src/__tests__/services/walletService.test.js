@@ -6,6 +6,7 @@ import Web3Utils from 'web3-utils'
 import UnlockContract from '../../artifacts/contracts/Unlock.json'
 import LockContract from '../../artifacts/contracts/PublicLock.json'
 import configure from '../../config'
+import { delayPromise } from '../../utils/promises'
 import WalletService from '../../services/walletService'
 import {
   NOT_ENABLED_IN_PROVIDER,
@@ -19,8 +20,6 @@ import {
 import { POLLING_INTERVAL } from '../../constants'
 
 jest.mock('../../utils/promises')
-// this must be required. Importing will pull in the non-mocked version of delayPromise
-const delayPromise = require('../../utils/promises').delayPromise
 
 const nockScope = nock('http://127.0.0.1:8545', { encodedQueryParams: true })
 
