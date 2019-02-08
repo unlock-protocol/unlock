@@ -46,7 +46,7 @@ export const TRANSACTION_TYPES = {
  *
  * You should not use this directly, instead use the utils/routes.js lockRoute function
  */
-export const LOCK_PATH_NAME_REGEXP = /\/([a-z0-9]+)\/(0x[a-fA-F0-9]{40})(\/([^#]+))?(#(0x[a-fA-F0-9]{40}))?/
+export const LOCK_PATH_NAME_REGEXP = /\/([a-z0-9]+)\/(0x[a-fA-F0-9]{40})(\/([^#]+))?(\/?#(0x[a-fA-F0-9]{40}))?/
 /**
  * Matches any valid ethereum account address
  */

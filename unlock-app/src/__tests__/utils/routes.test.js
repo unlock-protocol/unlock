@@ -68,6 +68,16 @@ describe('lockRoute', () => {
       redirect: 'http://hithere',
       account: '0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54',
     })
+    expect(
+      lockRoute(
+        '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
+      )
+    ).toEqual({
+      lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
+      prefix: 'demo',
+      redirect: undefined,
+      account: '0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54',
+    })
   })
   it('should ignore malformed account parameter', () => {
     expect(
