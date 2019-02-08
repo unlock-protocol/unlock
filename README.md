@@ -69,3 +69,10 @@ We deploy with docker/docker-compose:
 docker-compose -f docker/docker-compose.ci.yml build
 docker-compose -f docker/docker-compose.ci.yml up --abort-on-container-exit
 ```
+
+## Thank you
+
+
+[<img src="https://user-images.githubusercontent.com/624104/52508260-d0daa180-2ba8-11e9-970c-3ef9596f6b4e.png" height="35">](https://browserstack.com)
+
+Thank you to BrowserStack for their open source browser testing infrastructure.
