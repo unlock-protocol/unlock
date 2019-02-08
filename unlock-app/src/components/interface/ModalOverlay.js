@@ -2,21 +2,22 @@ import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import { dismissWalletCheck } from '../../actions/walletStatus'
 
 const ModalOverlay = ({ children }) => (
   <Greyout>
-    <MessageBox>
-      {children}
-      <Dismiss>Dismiss</Dismiss>
-    </MessageBox>
+    <MessageBox>{children}</MessageBox>
   </Greyout>
 )
 
-const WalletCheckOverlay = ({ waiting }) => {
+const WalletCheckOverlay = ({ waiting, dispatch }) => {
   if (waiting) {
     return (
       <ModalOverlay>
         <p>Please check your browser wallet to complete the transaction.</p>
+        <Dismiss onClick={() => dispatch(dismissWalletCheck())}>
+          Dismiss
+        </Dismiss>
       </ModalOverlay>
     )
   }
