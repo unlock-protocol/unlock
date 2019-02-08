@@ -6,6 +6,8 @@ import Web3Utils from 'web3-utils'
 import UnlockContract from '../../artifacts/contracts/Unlock.json'
 import LockContract from '../../artifacts/contracts/PublicLock.json'
 import configure from '../../config'
+import { delayPromise } from '../../utils/promises'
+import WalletService from '../../services/walletService'
 import {
   NOT_ENABLED_IN_PROVIDER,
   MISSING_PROVIDER,
@@ -18,8 +20,6 @@ import {
 import { POLLING_INTERVAL } from '../../constants'
 
 jest.mock('../../utils/promises')
-const WalletService = require('../../services/walletService').default
-const delay = require('../../utils/promises').delayPromise
 
 const nockScope = nock('http://127.0.0.1:8545', { encodedQueryParams: true })
 
@@ -80,7 +80,9 @@ describe('WalletService', () => {
 
       walletService.emit('ready')
       expect(walletService.ready).toBe(true)
-      expect(delay).toHaveBeenCalledWith(POLLING_INTERVAL)
+
+      // delayPromise is a jest.fn() in the mock file
+      expect(delayPromise).toHaveBeenCalledWith(POLLING_INTERVAL)
     })
 
     it('pollAccount calls checkForAccountChange and timeout', async () => {
@@ -93,7 +95,8 @@ describe('WalletService', () => {
 
       await walletService.pollForAccountChange(isServer, false)
 
-      expect(delay).toHaveBeenCalledWith(POLLING_INTERVAL)
+      // delayPromise is a jest.fn() in the mock file
+      expect(delayPromise).toHaveBeenCalledWith(POLLING_INTERVAL)
       expect(walletService.checkForAccountChange).toHaveBeenCalledWith(
         'old account'
       )
