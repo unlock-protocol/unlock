@@ -139,7 +139,6 @@ export default class WalletService extends EventEmitter {
    * Function which yields the address of the account on the provider or creates a key pair.
    */
   async getAccount() {
-    // Once we have the account, let's refresh it!
     const address = await this._getAccountAddressOrFallbackAddress(
       this._createAccount
     )
