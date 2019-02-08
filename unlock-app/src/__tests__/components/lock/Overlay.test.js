@@ -38,7 +38,7 @@ describe('Overlay', () => {
   })
   describe('mapStateToProps', () => {
     it('should set openInNewWindow based on the value of account', () => {
-      expect.assertions(2)
+      expect.assertions(3)
 
       const state1 = {
         account: null,
@@ -48,13 +48,23 @@ describe('Overlay', () => {
           address: 'account',
         },
       }
+      const state3 = {
+        account: {
+          address: 'account',
+          fromLocalStorage: true,
+        },
+      }
 
       expect(mapStateToProps(state1)).toEqual({
         openInNewWindow: true,
       })
 
       expect(mapStateToProps(state2)).toEqual({
-        openInNewWindow: false,
+        openInNewWindow: undefined,
+      })
+
+      expect(mapStateToProps(state3)).toEqual({
+        openInNewWindow: true,
       })
     })
   })
