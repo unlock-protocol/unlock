@@ -30,8 +30,11 @@ export default class WalletService extends EventEmitter {
     pollForAccountChanges = true
   ) {
     super()
-    if (unlockAddress) {
+    if (unlockAddress.length) {
       this.unlockContractAddress = Web3Utils.toChecksumAddress(unlockAddress)
+    } else {
+      // this will be set to the correct address in connect
+      this.unlockContractAddress = ''
     }
     this.providers = providers
     this.ready = false
@@ -82,7 +85,12 @@ export default class WalletService extends EventEmitter {
     this.web3 = new Web3(provider)
 
     const networkId = await this.web3.eth.net.getId()
-    if (!this.unlockContractAddress && UnlockContract.networks[networkId]) {
+    // unlockContractAddress is set in the constructor if config provides one in unlockAddress
+    // this is set for staging and production
+    if (
+      !this.unlockContractAddress.length &&
+      UnlockContract.networks[networkId]
+    ) {
       // If we do not have an address from config let's use the artifact files
       this.unlockContractAddress = Web3Utils.toChecksumAddress(
         UnlockContract.networks[networkId].address
