@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import WalletCheckOverlay from '../../components/interface/ModalOverlay'
+import WalletCheckOverlay from '../../components/interface/FullScreenModals'
 import createUnlockStore from '../../createUnlockStore'
 
 const waitingStore = createUnlockStore({

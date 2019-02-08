@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react'
 import { Dashboard, mapStateToProps } from '../../pages/dashboard'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
-import WalletCheckOverlay from '../../components/interface/ModalOverlay'
+import WalletCheckOverlay from '../../components/interface/FullScreenModals'
 
 const account = {
   address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
