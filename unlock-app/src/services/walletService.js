@@ -107,6 +107,7 @@ export default class WalletService extends EventEmitter {
       this.account = await this.checkForAccountChange(this.account)
     } catch (e) {
       // if the account poll fails, silently ignore it
+      // TODO: log the error when full-app logging is implemented (#1301)
     }
     // because this is async, the call stack is not affected, and does not grow
     // for a non-async function this would quickly fill all available memory
