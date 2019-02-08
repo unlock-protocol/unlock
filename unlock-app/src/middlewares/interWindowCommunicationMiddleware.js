@@ -1,10 +1,24 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
 import { OPEN_MODAL_IN_NEW_WINDOW, HIDE_MODAL } from '../actions/modal'
+import { ADD_KEY, UPDATE_KEY } from '../actions/key'
 import { inIframe } from '../config'
 import { lockRoute } from '../utils/routes'
 import { setAccount } from '../actions/accounts'
 import localStorageAvailable from '../utils/localStorage'
+
+function redirectToContentFromPaywall(window, getState) {
+  const {
+    router,
+    account: { address },
+  } = getState()
+
+  const { prefix, redirect } = lockRoute(router.location.pathname)
+  if (prefix !== 'paywall') return
+  if (redirect) {
+    window.location.href = redirect + '#' + address
+  }
+}
 
 // store is unused in this middleware, it is only for listening for actions
 // and converting them into postMessage
@@ -43,6 +57,8 @@ const interWindowCommunicationMiddleware = window => ({
       }
     }
     return action => {
+      const { router, account } = getState()
+      const { lockAddress } = lockRoute(router.location.pathname)
       if (isInIframe && action.type === OPEN_MODAL_IN_NEW_WINDOW) {
         parent.postMessage('redirect', parent.origin)
       } else if (!isInIframe && action.type === HIDE_MODAL) {
@@ -52,16 +68,28 @@ const interWindowCommunicationMiddleware = window => ({
         // then, the paywall.min.js script detects the hash
         // and forwards it to the paywall in the iframe.
         // the code at the top of this file handles that case
-        const {
-          router,
-          account: { address },
-        } = getState()
-        const { redirect } = lockRoute(router.location.pathname)
-        if (redirect) {
-          window.location.href = redirect + '#' + address
+        redirectToContentFromPaywall(window, getState)
+      } else if (
+        (!isInIframe && action.type === ADD_KEY) ||
+        action.type === UPDATE_KEY
+      ) {
+        next(action)
+        const state = getState()
+        const key = state.keys[action.id]
+        const modalsShowing = Object.keys(state.modals).length
+        if (
+          account &&
+          key.lock === lockAddress &&
+          key.owner === account.address &&
+          key.expiration &&
+          !modalsShowing
+        ) {
+          console.log(JSON.stringify(key), JSON.stringify(account), lockAddress)
+          redirectToContentFromPaywall(window, getState)
         }
+        return
       }
-      return next(action)
+      next(action)
     }
   }
 }
