@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { dismissWalletCheck } from '../../actions/walletStatus'
 
+// TODO: add mobile support to FullScreenModal components
 const ModalOverlay = ({ children }) => (
   <Greyout>
     <MessageBox>{children}</MessageBox>
