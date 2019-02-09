@@ -13,8 +13,8 @@ import {
   FAILED_TO_UPDATE_KEY_PRICE,
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../errors'
-
-const { providers, unlockAddress } = configure()
+import { POLLING_INTERVAL } from '../constants'
+import { delayPromise } from '../utils/promises'
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
@@ -25,15 +25,24 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends EventEmitter {
-  constructor(availableProviders = providers) {
+  constructor(
+    { providers, runningOnServer, unlockAddress } = configure(),
+    pollForAccountChanges = true
+  ) {
     super()
-    this.providers = availableProviders
+    if (unlockAddress) {
+      this.unlockContractAddress = Web3Utils.toChecksumAddress(unlockAddress)
+    }
+    this.providers = providers
     this.ready = false
     this.providerName = null
     this.web3 = null
 
     this.on('ready', () => {
       this.ready = true
+      if (pollForAccountChanges) {
+        this.pollForAccountChange(runningOnServer)
+      }
     })
   }
 
@@ -73,15 +82,17 @@ export default class WalletService extends EventEmitter {
     this.web3 = new Web3(provider)
 
     const networkId = await this.web3.eth.net.getId()
-    if (unlockAddress) {
-      this.unlockContractAddress = Web3Utils.toChecksumAddress(unlockAddress)
-    } else if (UnlockContract.networks[networkId]) {
-      // If we do not have an address from config let's use the artifact files
-      this.unlockContractAddress = Web3Utils.toChecksumAddress(
-        UnlockContract.networks[networkId].address
-      )
-    } else {
-      return this.emit('error', new Error(NON_DEPLOYED_CONTRACT))
+    // unlockContractAddress is set in the constructor if config provides one in unlockAddress
+    // this is set for staging and production
+    if (!this.unlockContractAddress) {
+      if (UnlockContract.networks[networkId]) {
+        // If we do not have an address from config let's use the artifact files
+        this.unlockContractAddress = Web3Utils.toChecksumAddress(
+          UnlockContract.networks[networkId].address
+        )
+      } else {
+        return this.emit('error', new Error(NON_DEPLOYED_CONTRACT))
+      }
     }
 
     if (this.networkId !== networkId) {
@@ -91,23 +102,64 @@ export default class WalletService extends EventEmitter {
   }
 
   /**
+   * Poll to see if account has changed
+   */
+  async pollForAccountChange(isServer, pollForNextChange = true) {
+    if (isServer) return
+    await delayPromise(POLLING_INTERVAL)
+    try {
+      this.account = await this.checkForAccountChange(this.account)
+    } catch (e) {
+      // if the account poll fails, silently ignore it
+      // TODO: log the error when full-app logging is implemented (#1301)
+    }
+    // because this is async, the call stack is not affected, and does not grow
+    // for a non-async function this would quickly fill all available memory
+    if (pollForNextChange) {
+      this.pollForAccountChange()
+    }
+  }
+
+  /**
+   * given the prior account address, determine if the account has changed and return the
+   * current address regardless of any change
+   */
+  async checkForAccountChange(currentAccount) {
+    const nextAccount = await this._getAccountAddressOrFallbackAddress(
+      // When retrieving the current account address, there is an
+      // option to fallback to another method when the account is null.
+      // In our case, we do not want to do anything, so our fallback
+      // is simply a promise that resolves to a missing account
+      Promise.resolve(null)
+    )
+
+    if (currentAccount !== nextAccount) {
+      this.emit('account.changed', nextAccount)
+    }
+    return nextAccount
+  }
+
+  /**
    * Function which yields the address of the account on the provider or creates a key pair.
    */
-  getAccount() {
-    const getOrCreateAccount = this.web3.eth.getAccounts().then(accounts => {
-      if (accounts.length === 0) {
-        return this._createAccount()
-      } else {
-        return Promise.resolve(accounts[0]) // defaults to the first account for now
-      }
-    })
+  async getAccount() {
+    const address = await this._getAccountAddressOrFallbackAddress(
+      this._createAccount
+    )
+    this.emit('account.changed', address)
+    this.emit('ready')
+    return Promise.resolve(address)
+  }
 
-    // Once we have the account, let's refresh it!
-    return getOrCreateAccount.then(address => {
-      this.emit('account.changed', address)
-      this.emit('ready')
-      return address
-    })
+  /**
+   * Get the current user account address, calling a fallback if there is none
+   * @param fallback async function that returns an account address
+   * @return string
+   */
+  async _getAccountAddressOrFallbackAddress(fallback) {
+    const accounts = await this.web3.eth.getAccounts()
+    const address = accounts.length ? accounts[0] : await fallback()
+    return address
   }
 
   /**
@@ -116,12 +168,9 @@ export default class WalletService extends EventEmitter {
    * @return Promise<string>
    * @private
    */
-  _createAccount() {
-    return new Promise(resolve => {
-      return resolve(this.web3.eth.accounts.create())
-    }).then(account => {
-      return account.address
-    })
+  async _createAccount() {
+    const account = await this.web3.eth.accounts.create()
+    return account.address
   }
 
   /**

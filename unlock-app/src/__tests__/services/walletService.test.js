@@ -3,10 +3,11 @@
 import EventEmitter from 'events'
 import nock from 'nock'
 import Web3Utils from 'web3-utils'
-import WalletService from '../../services/walletService'
 import UnlockContract from '../../artifacts/contracts/Unlock.json'
 import LockContract from '../../artifacts/contracts/PublicLock.json'
 import configure from '../../config'
+import { delayPromise } from '../../utils/promises'
+import WalletService from '../../services/walletService'
 import {
   NOT_ENABLED_IN_PROVIDER,
   MISSING_PROVIDER,
@@ -16,6 +17,9 @@ import {
   FAILED_TO_UPDATE_KEY_PRICE,
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../../errors'
+import { POLLING_INTERVAL } from '../../constants'
+
+jest.mock('../../utils/promises')
 
 const nockScope = nock('http://127.0.0.1:8545', { encodedQueryParams: true })
 
@@ -55,15 +59,65 @@ nock.emitter.on('no match', function(clientRequestObject, options, body) {
 })
 
 let walletService
+let config
 let providers
 
 describe('WalletService', () => {
   beforeEach(() => {
     nock.cleanAll()
-    providers = configure().providers
-    walletService = new WalletService(providers)
+    config = configure()
+    providers = config.providers
+    // the second argument is designed to stop the polling loop in the majority of tests
+    walletService = new WalletService(config, false)
   })
+  describe('pollAccount', () => {
+    it('constructor calls timeout with pollAccount when ready', () => {
+      walletService = new WalletService(config)
+      expect.assertions(2)
+      walletService.checkForAccountChange = jest.fn(() =>
+        Promise.resolve('account')
+      )
 
+      walletService.emit('ready')
+      expect(walletService.ready).toBe(true)
+
+      // delayPromise is a jest.fn() in the mock file
+      expect(delayPromise).toHaveBeenCalledWith(POLLING_INTERVAL)
+    })
+
+    it('pollAccount calls checkForAccountChange and timeout', async () => {
+      const isServer = false
+      walletService.account = 'old account'
+
+      walletService.checkForAccountChange = jest.fn(() =>
+        Promise.resolve('thank u, next')
+      )
+
+      await walletService.pollForAccountChange(isServer, false)
+
+      // delayPromise is a jest.fn() in the mock file
+      expect(delayPromise).toHaveBeenCalledWith(POLLING_INTERVAL)
+      expect(walletService.checkForAccountChange).toHaveBeenCalledWith(
+        'old account'
+      )
+
+      expect(walletService.account).toBe('thank u, next')
+    })
+    it('pollAccount does not run on the server', async () => {
+      const isServer = true
+      walletService.account = 'old account'
+
+      walletService.checkForAccountChange = jest.fn(() =>
+        Promise.resolve('thank u, next')
+      )
+
+      await walletService.pollForAccountChange(isServer, false)
+
+      expect(walletService.checkForAccountChange).not.toHaveBeenCalled()
+
+      expect(walletService.account).toBe('old account')
+    })
+  })
   describe('connect', () => {
     it('should get the network id', done => {
       expect.assertions(1)
@@ -99,22 +153,51 @@ describe('WalletService', () => {
       walletService.connect('AnotherProvider')
     })
 
-    it('should emit an error event when the smart contract has not been deployed on this network', done => {
-      expect.assertions(3)
+    describe('smart contract has not been deployed on this network', () => {
+      it('should not emit an error event when we have a contract address from config', done => {
+        expect.assertions(3)
+        config.unlockAddress = '0x1234567890123456789012345678901234567890'
+        const walletService2 = new WalletService(config, false)
 
-      expect(walletService.ready).toBe(false)
-      UnlockContract.networks = {}
+        expect(walletService2.ready).toBe(false)
 
-      const netVersion = Math.floor(Math.random() * 100000)
-      netVersionAndYield(netVersion)
+        const netVersion = Math.floor(Math.random() * 100000)
+        netVersionAndYield(netVersion)
 
-      expect(walletService.ready).toBe(false)
-      walletService.on('error', error => {
-        expect(error.message).toBe(NON_DEPLOYED_CONTRACT)
-        done()
+        expect(walletService2.ready).toBe(false)
+
+        expect(walletService2.unlockContractAddress).toBe(
+          '0x1234567890123456789012345678901234567890'
+        )
+
+        walletService2.on('error', error => {
+          expect(error).toBe('should not error')
+          done()
+        })
+        walletService2.on('network.changed', () => {
+          done()
+        })
+
+        walletService2.connect('HTTP')
       })
 
-      walletService.connect('HTTP')
+      it('should emit an error event when there is no config-provided contract address', done => {
+        expect.assertions(3)
+
+        expect(walletService.ready).toBe(false)
+        UnlockContract.networks = {}
+
+        const netVersion = Math.floor(Math.random() * 100000)
+        netVersionAndYield(netVersion)
+
+        expect(walletService.ready).toBe(false)
+        walletService.on('error', error => {
+          expect(error.message).toBe(NON_DEPLOYED_CONTRACT)
+          done()
+        })
+
+        walletService.connect('HTTP')
+      })
     })
 
     it('should silently ignore requests to connect again to the same provider', done => {
@@ -205,6 +288,42 @@ describe('WalletService', () => {
       return walletService.connect('HTTP')
     })
 
+    describe('checkForAccountChange', () => {
+      it('should emit account.changed if the account does not match the local account', async () => {
+        expect.assertions(1)
+        const unlockAccountsOnNode = [
+          '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+        ]
+
+        accountsAndYield(unlockAccountsOnNode)
+
+        walletService.emit = jest.fn()
+
+        await walletService.checkForAccountChange('prior')
+
+        expect(walletService.emit).toHaveBeenCalledWith(
+          'account.changed',
+          '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+        )
+      })
+
+      it('should not emit account.changed if the account does match the local account', async () => {
+        expect.assertions(1)
+        const unlockAccountsOnNode = [
+          '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+        ]
+
+        accountsAndYield(unlockAccountsOnNode)
+
+        walletService.emit = jest.fn()
+
+        await walletService.checkForAccountChange(
+          '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+        )
+
+        expect(walletService.emit).not.toHaveBeenCalled()
+      })
+    })
     describe('getAccount', () => {
       describe('when no account was passed but the node has an unlocked account', () => {
         it('should load a local account and emit the ready event', done => {
