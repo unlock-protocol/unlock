@@ -19,8 +19,8 @@ export const lockRoute = path => {
   return {
     lockAddress: match[2],
     prefix: match[1],
-    redirect: match[4] && decodeURIComponent(match[4]),
-    account: match[6],
+    redirect: match[3] && decodeURIComponent(match[3]),
+    account: match[4],
   }
 }
 
