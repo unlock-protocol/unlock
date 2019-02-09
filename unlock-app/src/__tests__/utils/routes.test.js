@@ -29,6 +29,7 @@ describe('lockRoute', () => {
       lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
       prefix: 'lock',
       redirect: undefined,
+      account: undefined,
     })
 
     expect(
@@ -37,6 +38,7 @@ describe('lockRoute', () => {
       lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
       prefix: 'paywall',
       redirect: undefined,
+      account: undefined,
     })
     expect(
       lockRoute('/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54')
@@ -44,6 +46,7 @@ describe('lockRoute', () => {
       lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
       prefix: 'demo',
       redirect: undefined,
+      account: undefined,
     })
   })
   it('should return the correct redirect parameter when it matches', () => {

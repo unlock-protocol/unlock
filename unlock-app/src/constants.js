@@ -34,6 +34,20 @@ export const TRANSACTION_TYPES = {
   UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE',
 }
 
+// used in defining the helpers for LOCK_PATH_NAME_REGEXP and ACCOUNT_REGEXP
+const accountRegex = '0x[a-fA-F0-9]{40}'
+
+/**
+ * Matches any valid ethereum account address
+ */
+export const ACCOUNT_REGEXP = new RegExp(accountRegex)
+
+// helpers for the LOCK_PATH_NAME_REGEXP
+const prefix = '[a-z0-9]+'
+const urlEncodedRedirectUrl = '[^#?]+'
+const userAccount = accountRegex
+const lockAddress = accountRegex
+
 /**
  * This regexp matches several important parameters passed in the url for the demo and paywall pages.
  *
@@ -46,11 +60,12 @@ export const TRANSACTION_TYPES = {
  *
  * You should not use this directly, instead use the utils/routes.js lockRoute function
  */
-export const LOCK_PATH_NAME_REGEXP = /\/([a-z0-9]+)\/(0x[a-fA-F0-9]{40})(\/([^#]+))?(\/?#(0x[a-fA-F0-9]{40}))?/
-/**
- * Matches any valid ethereum account address
- */
-export const ACCOUNT_REGEXP = /0x[a-fA-F0-9]{40}/
+export const LOCK_PATH_NAME_REGEXP = new RegExp(
+  `/(${prefix})/(${lockAddress})` +
+    // either "/urlEncodedRedirectUrl/#account" or just "#account" and these are all optional
+    // note that "/#account" as in "/paywall/<lockaddress>/#<useraccount>" is also matched
+    `(?:/(${urlEncodedRedirectUrl}))?(?:/?#(${userAccount}))?`
+)
 
 export const PAGE_DESCRIPTION =
   'Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.'
