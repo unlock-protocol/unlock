@@ -10,11 +10,13 @@ DOCKERFILE=$REPO_ROOT/docker/$IMAGE_NAME.dockerfile
 ARGS=""
 
 if [ "$DOCKER_REPOSITORY" != "" ]; then
-
   IMAGE_CACHE="$DOCKER_REPOSITORY/$IMAGE_NAME:latest"
   echo "Pulling $IMAGE_CACHE to use as cache for $IMAGE_NAME"
   docker pull $IMAGE_CACHE;
-  ARGS="$ARGS --cache-from $IMAGE_CACHE"
+else
+  IMAGE_CACHE="$IMAGE_NAME:latest"
 fi
+
+ARGS="$ARGS --cache-from $IMAGE_CACHE"
 
 docker build -t $IMAGE_NAME -f $DOCKERFILE $ARGS $REPO_ROOT
