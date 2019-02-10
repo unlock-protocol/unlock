@@ -1,0 +1,5 @@
+**/node_modules/
+**/build
+
+unlock-app/src/.next
+unlock-app/src/out
