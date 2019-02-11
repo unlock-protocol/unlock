@@ -38,7 +38,7 @@ contract('Lock ERC721', accounts => {
 
       describe('when the sender is not the token owner', () => {
         it('should fail', async () => {
-          ID = await locks['FIRST'].getTokenIdFor(accounts[1])
+          ID = await locks['FIRST'].getTokenIdFor.call(accounts[1])
           await shouldFail(
             locks['FIRST'].approve(accounts[2], ID, {
               from: accounts[2]
