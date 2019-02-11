@@ -397,6 +397,7 @@ const FormLockDuration = styled(LockDuration)`
   input[type='number'] {
     min-width: 30px;
     width: 50%;
+    text-align: right;
   }
 `
 
@@ -405,6 +406,7 @@ const FormLockKeys = styled(LockKeys)`
   input[type='number'] {
     min-width: 30px;
     width: 80%;
+    text-align: right;
   }
 `
 
