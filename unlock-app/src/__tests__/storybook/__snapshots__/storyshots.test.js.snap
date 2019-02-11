@@ -6187,8 +6187,15 @@ Object {
   font-family: 'IBM Plex Sans',sans-serif;
   border-radius: 4px;
   cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
   max-width: 400px;
   padding: 20px 50px;
+}
+
+.c15:hover {
+  background-color: var(--activegreen);
 }
 
 .c14 {
@@ -6944,7 +6951,7 @@ Object {
           class="sc-9upljg-3 kjuFdI"
         >
           <button
-            class="sc-1olgoav-5 sc-9upljg-0 jERqoW"
+            class="sc-1olgoav-5 sc-9upljg-0 kSuzMP"
           >
             Go to Your Dashboard
           </button>
@@ -19700,14 +19707,20 @@ Object {
 
 .c0 input {
   background: var(--lightgrey);
-  border: none;
+  border: 1px solid var(--lightgrey);
   border-radius: 4px;
-  height: 21.5px;
+  height: 26px;
+  padding: 8px;
   font-family: 'IBM Plex Mono',sans serif;
+  font-size: 14px;
+  font-weight: 200;
 }
 
 .c0 input:focus {
+  outline: none;
   border: 1px solid var(--grey);
+  -webkit-transition: border 100ms ease;
+  transition: border 100ms ease;
 }
 
 .c0 input[data-valid='false'] {
@@ -19988,7 +20001,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 hhHEFu"
+      class="mlglvd-0 sc-1u8ov25-1 ieBDMo"
     >
       <svg
         viewBox="0 0 216 216"
@@ -20241,14 +20254,20 @@ Object {
 
 .c0 input {
   background: var(--lightgrey);
-  border: none;
+  border: 1px solid var(--lightgrey);
   border-radius: 4px;
-  height: 21.5px;
+  height: 26px;
+  padding: 8px;
   font-family: 'IBM Plex Mono',sans serif;
+  font-size: 14px;
+  font-weight: 200;
 }
 
 .c0 input:focus {
+  outline: none;
   border: 1px solid var(--grey);
+  -webkit-transition: border 100ms ease;
+  transition: border 100ms ease;
 }
 
 .c0 input[data-valid='false'] {
@@ -20524,7 +20543,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 hhHEFu"
+      class="mlglvd-0 sc-1u8ov25-1 ieBDMo"
     >
       <svg
         viewBox="0 0 216 216"
@@ -20772,14 +20791,20 @@ Object {
 
 .c0 input {
   background: var(--lightgrey);
-  border: none;
+  border: 1px solid var(--lightgrey);
   border-radius: 4px;
-  height: 21.5px;
+  height: 26px;
+  padding: 8px;
   font-family: 'IBM Plex Mono',sans serif;
+  font-size: 14px;
+  font-weight: 200;
 }
 
 .c0 input:focus {
+  outline: none;
   border: 1px solid var(--grey);
+  -webkit-transition: border 100ms ease;
+  transition: border 100ms ease;
 }
 
 .c0 input[data-valid='false'] {
@@ -21055,7 +21080,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 hhHEFu"
+      class="mlglvd-0 sc-1u8ov25-1 ieBDMo"
     >
       <svg
         viewBox="0 0 216 216"
@@ -21303,14 +21328,20 @@ Object {
 
 .c0 input {
   background: var(--lightgrey);
-  border: none;
+  border: 1px solid var(--lightgrey);
   border-radius: 4px;
-  height: 21.5px;
+  height: 26px;
+  padding: 8px;
   font-family: 'IBM Plex Mono',sans serif;
+  font-size: 14px;
+  font-weight: 200;
 }
 
 .c0 input:focus {
+  outline: none;
   border: 1px solid var(--grey);
+  -webkit-transition: border 100ms ease;
+  transition: border 100ms ease;
 }
 
 .c0 input[data-valid='false'] {
@@ -21586,7 +21617,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 hhHEFu"
+      class="mlglvd-0 sc-1u8ov25-1 ieBDMo"
     >
       <svg
         viewBox="0 0 216 216"
@@ -21834,14 +21865,20 @@ Object {
 
 .c0 input {
   background: var(--lightgrey);
-  border: none;
+  border: 1px solid var(--lightgrey);
   border-radius: 4px;
-  height: 21.5px;
+  height: 26px;
+  padding: 8px;
   font-family: 'IBM Plex Mono',sans serif;
+  font-size: 14px;
+  font-weight: 200;
 }
 
 .c0 input:focus {
+  outline: none;
   border: 1px solid var(--grey);
+  -webkit-transition: border 100ms ease;
+  transition: border 100ms ease;
 }
 
 .c0 input[data-valid='false'] {
@@ -22117,7 +22154,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 hhHEFu"
+      class="mlglvd-0 sc-1u8ov25-1 ieBDMo"
     >
       <svg
         viewBox="0 0 216 216"
@@ -22365,14 +22402,20 @@ Object {
 
 .c0 input {
   background: var(--lightgrey);
-  border: none;
+  border: 1px solid var(--lightgrey);
   border-radius: 4px;
-  height: 21.5px;
+  height: 26px;
+  padding: 8px;
   font-family: 'IBM Plex Mono',sans serif;
+  font-size: 14px;
+  font-weight: 200;
 }
 
 .c0 input:focus {
+  outline: none;
   border: 1px solid var(--grey);
+  -webkit-transition: border 100ms ease;
+  transition: border 100ms ease;
 }
 
 .c0 input[data-valid='false'] {
@@ -22648,7 +22691,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 hhHEFu"
+      class="mlglvd-0 sc-1u8ov25-1 ieBDMo"
     >
       <svg
         viewBox="0 0 216 216"
@@ -23275,10 +23318,17 @@ Object {
   font-family: 'IBM Plex Sans',sans-serif;
   border-radius: 4px;
   cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
   padding: 10px;
   -webkit-align-self: end;
   -ms-flex-item-align: end;
   align-self: end;
+}
+
+.c33:hover {
+  background-color: var(--activegreen);
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
@@ -24193,7 +24243,7 @@ Object {
               </div>
             </div>
             <button
-              class="sc-1olgoav-5 sc-1olgoav-6 dlONRn"
+              class="sc-1olgoav-5 sc-1olgoav-6 gxvXkd"
             >
               Create Lock
             </button>
@@ -26487,10 +26537,17 @@ Object {
   font-family: 'IBM Plex Sans',sans-serif;
   border-radius: 4px;
   cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
   padding: 10px;
   -webkit-align-self: end;
   -ms-flex-item-align: end;
   align-self: end;
+}
+
+.c33:hover {
+  background-color: var(--activegreen);
 }
 
 @media only screen and (min-device-width:0px) and (max-device-width:736px) {
@@ -28102,7 +28159,7 @@ Object {
               </div>
             </div>
             <button
-              class="sc-1olgoav-5 sc-1olgoav-6 dlONRn"
+              class="sc-1olgoav-5 sc-1olgoav-6 gxvXkd"
             >
               Create Lock
             </button>
@@ -29429,10 +29486,17 @@ Object {
   font-family: 'IBM Plex Sans',sans-serif;
   border-radius: 4px;
   cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
   padding: 10px;
   -webkit-align-self: end;
   -ms-flex-item-align: end;
   align-self: end;
+}
+
+.c36:hover {
+  background-color: var(--activegreen);
 }
 
 .c2 {
@@ -31139,7 +31203,7 @@ Object {
               </div>
             </div>
             <button
-              class="sc-1olgoav-5 sc-1olgoav-6 dlONRn"
+              class="sc-1olgoav-5 sc-1olgoav-6 gxvXkd"
             >
               Create Lock
             </button>
@@ -35613,8 +35677,15 @@ Object {
   font-family: 'IBM Plex Sans',sans-serif;
   border-radius: 4px;
   cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
   width: 100%;
   height: 100%;
+}
+
+.c1:hover {
+  background-color: var(--activegreen);
 }
 
 .c0 {
@@ -35691,7 +35762,7 @@ Object {
         href="/dashboard"
       >
         <button
-          class="sc-1olgoav-5 sc-9upljg-1 bYkGGu"
+          class="sc-1olgoav-5 sc-9upljg-1 fUPliI"
         >
           I Agree
         </button>
@@ -35756,8 +35827,15 @@ Object {
   font-family: 'IBM Plex Sans',sans-serif;
   border-radius: 4px;
   cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
   max-width: 400px;
   padding: 20px 50px;
+}
+
+.c1:hover {
+  background-color: var(--activegreen);
 }
 
 .c0 {
@@ -35811,7 +35889,7 @@ Object {
       class="sc-9upljg-3 kjuFdI"
     >
       <button
-        class="sc-1olgoav-5 sc-9upljg-0 jERqoW"
+        class="sc-1olgoav-5 sc-9upljg-0 kSuzMP"
       >
         Go to Your Dashboard
       </button>
