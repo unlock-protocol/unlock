@@ -30,7 +30,7 @@ script:
   - scripts/tests.sh smart-contracts
   - scripts/tests.sh unlock-app
   - scripts/tests.sh locksmith
-#  - scripts/integration-tests.sh
+  - scripts/integration-tests.sh
 after_success:
   - scripts/deploy.sh netlify
   - scripts/push-image.sh unlock
