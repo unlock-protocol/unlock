@@ -383,9 +383,8 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     external
     onlyOwner
   {
-    uint oldPenaltyDenominator = refundPenaltyDenominator;
+    emit RefundPenaltyDenominatorChanged(refundPenaltyDenominator, _refundPenaltyDenominator);
     refundPenaltyDenominator = _refundPenaltyDenominator;
-    emit RefundPenaltyDenominatorChanged(oldPenaltyDenominator, refundPenaltyDenominator);
   }
 
   /**
