@@ -24,7 +24,7 @@ contract('PublicLock', accounts => {
           60 * 60 * 24 * 30, // expirationDuration: 30 days
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
           -1 // maxNumberOfKeys
-          {
+          , {
             from: accounts[0]
           })
       })
@@ -43,7 +43,7 @@ contract('PublicLock', accounts => {
           60 * 60 * 24 * 30, // expirationDuration: 30 days
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
           0 // maxNumberOfKeys
-          {
+          , {
             from: accounts[0]
           })
       })
