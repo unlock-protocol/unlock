@@ -32,6 +32,8 @@
     "cors": "^2.8.5",
     "cross-env": "^5.2.0",
     "dotenv": "^6.2.0",
+    "eth-sig-util": "^2.1.1",
+    "ethereumjs-util": "^6.0.0",
     "express": "^4.16.4",
     "express-jwt": "^5.3.1",
     "jest": "^23.6.0",
@@ -43,9 +45,7 @@
     "sequelize-cli": "^5.4.0",
     "supertest": "^3.3.0",
     "web3": "^1.0.0-beta.37",
-    "winston": "^3.1.0",
-    "ethereumjs-util": "^6.0.0",
-    "eth-sig-util": "^2.1.1"
+    "winston": "^3.1.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.8",

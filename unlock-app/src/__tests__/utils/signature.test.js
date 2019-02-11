@@ -1,7 +1,7 @@
 import EventEmitter from 'events'
-import generateJWTToken from '../../utils/signature'
 import Web3Service from '../../services/web3Service'
 import configure from '../../config'
+import generateSignature from '../../utils/signature'
 
 const signatureData = require('./fixtures/signatureData')
 
@@ -9,6 +9,7 @@ class MockWebService extends EventEmitter {
   constructor() {
     super()
     this.ready = true
+    this.currentProvider = { isMetaMask: false }
   }
 }
 
@@ -20,48 +21,92 @@ jest.mock('../../services/web3Service', () => {
   }
 })
 
+class MockTypedDataSignature {
+  constructor() {
+    this.generateSignature = jest.fn(() => {
+      return 'data'
+    })
+  }
+}
+
+let mockTypedDataSignature = new MockTypedDataSignature()
+
+jest.mock('../../utils/typedDataSignature', () => {
+  return function() {
+    return mockTypedDataSignature
+  }
+})
+
+const validOwner = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+const validAddress = '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83'
+
 const { providers } = configure(global)
 
-describe('generateJWTToken', () => {
+describe('generateSignature', () => {
   describe('when authorized to sign the payload', () => {
     beforeEach(() => {
       const validSignature =
-        '0xd64fd442c30596b2861f60d8e55207aa239df32303689463ea4f5' +
-        'ab48ee9c4992eb6db40d8f8c5b568413f3963edfdb708ed788369c87' +
-        'fc93b1aca95222e54e401'
+        'MHhkYTk4ZDY0MjVkZTc1NjAyNjFlYTM0MzVmNzFkYjhhYmFlY2JjYzM1ZjczNWZhZDM0OGQ2ODZkZGM2OTM0ZWE1M2FjOTY2ZmNhYjNkZTA0NmNmMjdjOGY1YmI5NGQ3ZjA0NzY0NWU2ZTczN2I0ZTQwZjAzZjJkMDg4Y2E2NWMxMDFi'
 
       mockWeb3Service.signData = jest.fn((account, data, callback) => {
         callback(null, validSignature)
       })
     })
 
-    it('generates a JWT signed by the address holder', done => {
+    it('generates a signature for the provided type data', () => {
       Date.now = jest.fn(() => 1546219627000)
       let web3Service = new Web3Service(providers)
 
-      generateJWTToken(
-        web3Service,
-        signatureData.valid.address,
-        signatureData.valid.data
-      ).then(result => {
-        expect(result).toBe(signatureData.valid.signature)
-        done()
+      let lockData = {
+        types: {
+          EIP712Domain: [
+            { name: 'name', type: 'string' },
+            { name: 'version', type: 'string' },
+            { name: 'chainId', type: 'uint256' },
+            { name: 'verifyingContract', type: 'address' },
+            { name: 'salt', type: 'bytes32' },
+          ],
+          Lock: [
+            { name: 'name', type: 'string' },
+            { name: 'owner', type: 'address' },
+            { name: 'address', type: 'address' },
+          ],
+        },
+        domain: { name: 'Unlock Dashboard', version: '1', chainId: 1984 },
+        primaryType: 'Lock',
+        message: {
+          lock: {
+            name: 'New Lock',
+            owner: validOwner,
+            address: validAddress,
+          },
+        },
+      }
+
+      generateSignature(web3Service, validOwner, {
+        name: 'New Lock',
+        owner: validOwner,
+        address: validAddress,
       })
+
+      expect(mockTypedDataSignature.generateSignature).toHaveBeenCalledWith(
+        validOwner,
+        lockData
+      )
     })
   })
 
-  describe('when unauthorized to sign the payload', () => {
+  describe('when an exception is raised when attempting to sign', () => {
     beforeEach(() => {
-      mockWeb3Service.signData = jest.fn((account, data, callback) => {
-        callback(new Error())
+      mockTypedDataSignature.generateSignature = jest.fn(() => {
+        throw new Error('A new error')
       })
     })
 
     it('returns a Promise.reject', done => {
-      Date.now = jest.fn(() => 1546219627000)
       let web3Service = new Web3Service(providers)
 
-      generateJWTToken(
+      generateSignature(
         web3Service,
         signatureData.invalid.address,
         signatureData.invalid.data
