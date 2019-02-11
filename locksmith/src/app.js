@@ -3,7 +3,7 @@ const cors = require('cors')
 const express = require('express')
 const Sequelize = require('sequelize')
 const ethJsUtil = require('ethereumjs-util')
-const tokenMiddleware = require('./tokenMiddleware')
+const signatureValidationMiddleware = require('./signatureValidationMiddleware')
 const Lock = require('./lock')
 const Transaction = require('./transaction')
 const logger = require('./locksmithLogger')
@@ -14,35 +14,39 @@ const router = express.Router()
 const Op = Sequelize.Op
 
 router.put('/lock/:lockAddress', async (req, res) => {
-  let newAddress = ethJsUtil.toChecksumAddress(req.body.address)
-  let tempAddress = ethJsUtil.toChecksumAddress(req.params.lockAddress)
+  let lock = req.body.message.lock
 
-  if (tempAddress && newAddress) {
+  if (lock && lock.address == req.params.lockAddress) {
     try {
-      let lock = await Lock.findOne({
-        where: {
-          address: { [Op.eq]: tempAddress },
-          owner: { [Op.eq]: req.owner },
-        },
-        raw: true,
-      })
+      let result = await Lock.update(
+        { name: lock.name },
+        {
+          where: {
+            address: {
+              [Op.eq]: ethJsUtil.toChecksumAddress(req.params.lockAddress),
+            },
+            owner: { [Op.eq]: ethJsUtil.toChecksumAddress(lock.owner) },
+          },
+          raw: true,
+        }
+      )
 
-      lock.address = newAddress
-      let updatedLock = await Lock.create(lock)
-      logger.logLockClone(tempAddress, updatedLock.address)
-      res.sendStatus(202)
+      if (result[0] > 0) {
+        res.sendStatus(202)
+      } else {
+        res.sendStatus(412)
+      }
     } catch (e) {
-      logger.logCloneUnable(tempAddress, req.owner)
       res.sendStatus(412)
     }
   } else {
-    logger.logCloneMissingInfo(tempAddress)
-    res.sendStatus(428)
+    res.sendStatus(412)
   }
 })
 
 router.post('/lock', async (req, res) => {
-  let lock = req.body
+  let lock = req.body.message.lock
+
   if (lock.address && lock.name) {
     let lockAddress = ethJsUtil.toChecksumAddress(lock.address)
     let lockOwner = ethJsUtil.toChecksumAddress(req.owner)
@@ -129,8 +133,8 @@ router.get('/transactions', async (req, res) => {
 
 app.use(cors())
 app.use(bodyParser.json())
-app.put(/^\/lock\/\S+/i, tokenMiddleware)
-app.post(/^\/lock$/i, tokenMiddleware)
+app.put(/^\/lock\/\S+/i, signatureValidationMiddleware)
+app.post(/^\/lock$/i, signatureValidationMiddleware)
 app.use('/', router)
 
 module.exports = app
