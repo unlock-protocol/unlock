@@ -15,7 +15,7 @@ contract('Lock', (accounts) => {
 
   describe('cancelAndRefund', () => {
     let lock
-    const keyOwners = [accounts[1], accounts[2]]
+    const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
     const keyPrice = new BigNumber(Units.convert(0.01, 'eth', 'wei'))
     let lockOwner
 
@@ -32,7 +32,7 @@ contract('Lock', (accounts) => {
     })
 
     it('should return the correct penalty', async () => {
-      const penalty = await lock.cancelRefundPenaltyDenominator.call()
+      const penalty = await lock.refundPenaltyDenominator.call()
       assert.equal(penalty, 10) // default of 10%
     })
 
@@ -54,28 +54,22 @@ contract('Lock', (accounts) => {
         withdrawalAmount = await web3.eth.getBalance(lock.address).minus(initialLockBalance)
       })
 
-      it('should emit a Transfer to 0 event', async () => {
-        assert.equal(txObj.logs[0].event, 'Transfer')
-        assert.equal(txObj.logs[0].args._from, keyOwners[0])
-        assert.equal(txObj.logs[0].args._to, Web3Utils.padLeft(0, 40))
-      })
-
-      it('should emit a CancelKey 0 event', async () => {
-        assert.equal(txObj.logs[1].event, 'CancelKey')
+      it('should emit a CancelKey event', async () => {
+        assert.equal(txObj.logs[0].event, 'CancelKey')
       })
 
       it('the amount of refund should be greater than 0', async () => {
-        const refund = new BigNumber(txObj.logs[1].args.refund)
+        const refund = new BigNumber(txObj.logs[0].args.refund)
         assert(refund.gt(0))
       })
 
       it('the amount of refund should be less than or equal to the original key price', async () => {
-        const refund = new BigNumber(txObj.logs[1].args.refund)
+        const refund = new BigNumber(txObj.logs[0].args.refund)
         assert(refund.lt(keyPrice))
       })
 
       it('the amount of refund should be less than or equal to the estimated refund', async () => {
-        const refund = new BigNumber(txObj.logs[1].args.refund)
+        const refund = new BigNumber(txObj.logs[0].args.refund)
         assert(refund.lte(estimatedRefund))
       })
 
@@ -94,22 +88,51 @@ contract('Lock', (accounts) => {
       })
     })
 
+    describe('allows the Lock owner to specify a different cancelation penalty', () => {
+      let tx
+
+      before(async () => {
+        tx = await lock.updateRefundPenaltyDenominator(5) // 20%
+      })
+
+      it('should trigger an event', async () => {
+        const event = tx.logs.find((log) => {
+          return log.event === 'RefundPenaltyDenominatorChanged'
+        })
+        assert.equal(new BigNumber(event.args.oldPenaltyDenominator).toFixed(), 10)
+        assert.equal(new BigNumber(event.args.refundPenaltyDenominator).toFixed(), 5)
+      })
+
+      it('should return the correct penalty', async () => {
+        const penalty = await lock.refundPenaltyDenominator.call()
+        assert.equal(penalty, 5) // updated to 20%
+      })
+
+      it('should still allow refund', async () => {
+        const txObj = await lock.cancelAndRefund({
+          from: keyOwners[2]
+        })
+        const refund = new BigNumber(txObj.logs[0].args.refund)
+        assert(refund.gt(0))
+      })
+    })
+
     describe('should fail when', () => {
       it('should fail if the Lock owner withdraws too much funds', async () => {
         await lock.withdraw({
           from: lockOwner
         })
         await shouldFail(lock.cancelAndRefund({
-          from: keyOwners[1]
+          from: keyOwners[3]
         }), '')
       })
 
       it('the key is expired', async () => {
-        await lock.expireKeyFor(keyOwners[1], {
+        await lock.expireKeyFor(keyOwners[3], {
           from: lockOwner
         })
         await shouldFail(lock.cancelAndRefund({
-          from: keyOwners[1]
+          from: keyOwners[3]
         }), 'Key is not valid')
       })
 
@@ -117,35 +140,6 @@ contract('Lock', (accounts) => {
         await shouldFail(lock.cancelAndRefund({
           from: accounts[7]
         }), 'Key is not valid')
-      })
-    })
-
-    describe('allows the Lock owner to specify a different cancelation penalty', () => {
-      let tx
-
-      before(async () => {
-        tx = await lock.updateCancelRefundPenaltyDenominator(5) // 20%
-      })
-
-      it('should trigger an event', async () => {
-        const event = tx.logs.find((log) => {
-          return log.event === 'CancelRefundPenaltyDenominatorChanged'
-        })
-        assert.equal(new BigNumber(event.args.oldPenaltyDenominator).toFixed(), 10)
-        assert.equal(new BigNumber(event.args.refundPenaltyDenominator).toFixed(), 5)
-      })
-
-      it('should return the correct penalty', async () => {
-        const penalty = await lock.cancelRefundPenaltyDenominator.call()
-        assert.equal(penalty, 5) // updated to 20%
-      })
-
-      it('should still allow refund', async () => {
-        const txObj = await lock.cancelAndRefund({
-          from: keyOwners[0]
-        })
-        const refund = new BigNumber(txObj.logs[1].args.refund)
-        assert(refund.gt(0))
       })
     })
   })

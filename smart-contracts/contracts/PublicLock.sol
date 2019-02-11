@@ -43,13 +43,14 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   );
 
   event CancelKey(
+    uint indexed tokenId,
     address indexed owner,
     uint refund
   );
 
-  event CancelRefundPenaltyDenominatorChanged(
+  event RefundPenaltyDenominatorChanged(
     uint oldPenaltyDenominator,
-    uint cancelRefundPenaltyDenominator
+    uint refundPenaltyDenominator
   );
 
   // Fields
@@ -80,7 +81,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   // CancelAndRefund will return funds based on time remaining minus this penalty.
   // This is a denominator, so 10 means 10% penalty and 20 means 5% penalty.
-  uint public cancelRefundPenaltyDenominator;
+  uint public refundPenaltyDenominator;
 
   // Keys
   // Each owner can have at most exactly one key
@@ -194,7 +195,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     maxNumberOfKeys = _maxNumberOfKeys;
     publicLockVersion = _version;
     isAlive = true;
-    cancelRefundPenaltyDenominator = 10;
+    refundPenaltyDenominator = 10;
   }
 
   /**
@@ -242,7 +243,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
     uint refund = _getCancelAndRefundValue(msg.sender);
 
-    emit CancelKey(msg.sender, refund);
+    emit CancelKey(key.tokenId, msg.sender, refund);
     // expirationTimestamp is a proxy for hasKey, setting this to `now` instead
     // of 0 so that we can still differentiate hasKey from hasValidKey.
     key.expirationTimestamp = now;
@@ -376,15 +377,15 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   /**
    * Allow the owner to change the refund penalty.
    */
-  function updateCancelRefundPenaltyDenominator(
-    uint _cancelRefundPenaltyDenominator
+  function updateRefundPenaltyDenominator(
+    uint _refundPenaltyDenominator
   )
     external
     onlyOwner
   {
-    uint oldPenaltyDenominator = cancelRefundPenaltyDenominator;
-    cancelRefundPenaltyDenominator = _cancelRefundPenaltyDenominator;
-    emit CancelRefundPenaltyDenominatorChanged(oldPenaltyDenominator, cancelRefundPenaltyDenominator);
+    uint oldPenaltyDenominator = refundPenaltyDenominator;
+    refundPenaltyDenominator = _refundPenaltyDenominator;
+    emit RefundPenaltyDenominatorChanged(oldPenaltyDenominator, refundPenaltyDenominator);
   }
 
   /**
@@ -699,8 +700,8 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint timeRemaining = key.expirationTimestamp - now;
     // Math: using safeMul in case keyPrice or timeRemaining is very large
     refund = keyPrice.mul(timeRemaining) / expirationDuration;
-    if (cancelRefundPenaltyDenominator > 0) {
-      uint penalty = keyPrice / cancelRefundPenaltyDenominator;
+    if (refundPenaltyDenominator > 0) {
+      uint penalty = keyPrice / refundPenaltyDenominator;
       if (refund > penalty) {
         // Math: safeSub is not required since the if confirms this won't underflow
         refund -= penalty;
