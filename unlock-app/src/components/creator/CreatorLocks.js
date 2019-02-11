@@ -37,8 +37,8 @@ export class CreatorLocks extends React.Component {
         <LockHeaderRow>
           <LockHeader>Locks</LockHeader>
           <LockMinorHeader>Name / Address</LockMinorHeader>
-          <LockMinorHeader>Duration</LockMinorHeader>
-          <Quantity>Quantity</Quantity>
+          <LockMinorHeader>Key Duration</LockMinorHeader>
+          <Quantity>Key Quantity</Quantity>
           <LockMinorHeader>Price</LockMinorHeader>
           <LockMinorHeader>
             <NoPhone>Balance</NoPhone>
@@ -153,6 +153,11 @@ export const ActionButton = styled.button`
   font-family: 'IBM Plex Sans', sans-serif;
   border-radius: 4px;
   cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
+  outline: none;
+  transition: background-color 200ms ease;
+  & :hover {
+    background-color: var(--activegreen);
+  }
 `
 
 const CreateButton = styled(ActionButton)`

@@ -15,6 +15,7 @@ export const LockRow = styled.div`
   color: var(--slate);
   font-size: 14px;
   box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.08);
+  transition: box-shadow 100ms ease;
   border-radius: 4px;
   display: grid;
   grid-row-gap: 0;
@@ -25,11 +26,15 @@ export const LockRow = styled.div`
   grid-column-gap: 4px;
   ${PhoneLockRowGrid}
 `}
-align-items: start;
+  align-items: start;
   cursor: pointer;
 
   & > * {
     padding-top: 16px;
+  }
+  & :hover {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 100ms ease;
   }
 `
 

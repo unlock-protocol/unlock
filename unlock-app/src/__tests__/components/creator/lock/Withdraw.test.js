@@ -21,7 +21,7 @@ describe('Withdraw', () => {
       <Withdraw lock={keylock} withdraw={withdrawFromLock} />
     )
 
-    let withdrawButton = wrapper.getByTitle('Withdraw balance')
+    let withdrawButton = wrapper.getByTitle('Withdraw')
     rtl.fireEvent.click(withdrawButton)
 
     expect(withdrawFromLock).toHaveBeenCalled()
@@ -43,7 +43,7 @@ describe('Withdraw', () => {
       <Withdraw lock={keylock} withdraw={withdrawFromLock} />
     )
 
-    let withdrawButton = wrapper.queryByTitle('Withdraw balance')
+    let withdrawButton = wrapper.queryByTitle('Withdraw')
     expect(withdrawButton).toBeNull()
   })
   it('should disable the button when a withdrawal is in process', () => {
@@ -70,7 +70,7 @@ describe('Withdraw', () => {
       />
     )
 
-    let withdrawButton = wrapper.queryByTitle('Withdraw balance')
+    let withdrawButton = wrapper.queryByTitle('Withdraw')
     expect(withdrawButton).toBeNull()
   })
 })

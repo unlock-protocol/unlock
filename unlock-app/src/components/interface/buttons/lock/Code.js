@@ -3,7 +3,7 @@ import Svg from '../../svg'
 import Button from '../Button'
 
 const Code = props => (
-  <Button label="Show embed code" {...props}>
+  <Button label="Embed" {...props}>
     <Svg.Code name="Code" />
   </Button>
 )
