@@ -15,6 +15,8 @@ contract('Unlock', function (accounts) {
 
   describe('Proxy Unlock contract', function () {
     beforeEach(async function () {
+      process.on('unhandledRejection', console.error)
+
       // TestHelper retrieves project structure from the zos.json file and deploys everything to the current test network.
       this.project = await TestHelper({ from: proxyAdmin })
       this.proxy = await this.project.createProxy(Unlock, {
