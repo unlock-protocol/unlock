@@ -13,7 +13,7 @@
 /dist
 .next/
 paywall.min.js
-/artifacts
+artifacts
 
 # misc
 .DS_Store
