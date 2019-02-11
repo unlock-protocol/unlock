@@ -24,13 +24,13 @@ module.exports = withSourceMaps({
     // Export robots.txt and humans.txt in non-dev environments
     if (!dev && outDir) {
       await copyFile(
-        join(dir, '..', 'unlock-app', 'src', 'static', 'robots.txt'),
+        join(dir, 'static', 'robots.txt'),
         join(outDir, 'robots.txt')
       )
 
       // Export _redirects which is used by netlify for URL rewrites
       await copyFile(
-        join(dir, '..', 'unlock-app', 'src', 'static', '_redirects'),
+        join(dir, 'static', '_redirects'),
         join(outDir, '_redirects')
       )
     }
