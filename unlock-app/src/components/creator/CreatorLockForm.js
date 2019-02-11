@@ -361,14 +361,19 @@ const FormLockRow = styled(LockRow)`
 
   input {
     background: var(--lightgrey);
-    border: none;
+    border: 1px solid var(--lightgrey);
     border-radius: 4px;
-    height: 21.5px;
+    height: 26px;
+    padding: 8px;
     font-family: 'IBM Plex Mono', sans serif;
+    font-size: 14px;
+    font-weight: 200;
   }
 
   input:focus {
+    outline: none;
     border: 1px solid var(--grey);
+    transition: border 100ms ease;
   }
 
   input[data-valid='false'] {
