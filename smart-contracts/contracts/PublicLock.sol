@@ -40,7 +40,18 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   event Withdrawal(
     address indexed _sender,
     uint _amount
-    );
+  );
+
+  event CancelKey(
+    uint indexed tokenId,
+    address indexed owner,
+    uint refund
+  );
+
+  event RefundPenaltyDenominatorChanged(
+    uint oldPenaltyDenominator,
+    uint refundPenaltyDenominator
+  );
 
   // Fields
   // Unlock Protocol address
@@ -67,6 +78,10 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   // Used to disable payable functions when deprecating an old lock
   bool public isAlive;
+
+  // CancelAndRefund will return funds based on time remaining minus this penalty.
+  // This is a denominator, so 10 means 10% penalty and 20 means 5% penalty.
+  uint public refundPenaltyDenominator;
 
   // Keys
   // Each owner can have at most exactly one key
@@ -180,6 +195,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     maxNumberOfKeys = _maxNumberOfKeys;
     publicLockVersion = _version;
     isAlive = true;
+    refundPenaltyDenominator = 10;
   }
 
   /**
@@ -215,6 +231,29 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     hasValidKey(_referrer)
   {
     return _purchaseFor(_recipient, _referrer, _data);
+  }
+
+  /**
+   * @dev Destroys the user's key and sends a refund based on the amount of time remaining.
+   */
+  function cancelAndRefund()
+    external
+  {
+    Key storage key = keyByOwner[msg.sender];
+
+    uint refund = _getCancelAndRefundValue(msg.sender);
+
+    emit CancelKey(key.tokenId, msg.sender, refund);
+    // expirationTimestamp is a proxy for hasKey, setting this to `now` instead
+    // of 0 so that we can still differentiate hasKey from hasValidKey.
+    key.expirationTimestamp = now;
+    // Remove data as we don't need this any longer
+    delete key.data;
+
+    if (refund > 0) {
+      // Security: doing this last to avoid re-entrancy concerns
+      msg.sender.transfer(refund);
+    }
   }
 
   /**
@@ -336,6 +375,19 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   }
 
   /**
+   * Allow the owner to change the refund penalty.
+   */
+  function updateRefundPenaltyDenominator(
+    uint _refundPenaltyDenominator
+  )
+    external
+    onlyOwner
+  {
+    emit RefundPenaltyDenominatorChanged(refundPenaltyDenominator, _refundPenaltyDenominator);
+    refundPenaltyDenominator = _refundPenaltyDenominator;
+  }
+
+  /**
    * In the specific case of a Lock, each owner can own only at most 1 key.
    * @return The number of NFTs owned by `_owner`, either 0 or 1.
   */
@@ -348,6 +400,22 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   {
     require(_owner != address(0), "Invalid address");
     return keyByOwner[_owner].expirationTimestamp > 0 ? 1 : 0;
+  }
+
+  /**
+   * @dev Determines how much of a refund a key owner would receive if they issued
+   * a cancelAndRefund now.  
+   * Note that due to the time required to mine a tx, the actual refund amount will be lower 
+   * than what the user reads from this call.
+   */
+  function getCancelAndRefundValueFor(
+    address _owner
+  )
+    external
+    view
+    returns (uint refund)
+  {
+    return _getCancelAndRefundValue(_owner);
   }
 
   /**
@@ -611,6 +679,35 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
       _recipient,
       numberOfKeysSold
     );
+  }
+
+  /**
+   * @dev Determines how much of a refund a key owner would receive if they issued
+   * a cancelAndRefund now.  
+   * @param _owner The owner of the key check the refund value for.
+   */
+  function _getCancelAndRefundValue(
+    address _owner
+  )
+    internal
+    view
+    hasValidKey(_owner)
+    returns (uint refund)
+  {
+    Key storage key = keyByOwner[_owner];
+    // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
+    uint timeRemaining = key.expirationTimestamp - now;
+    // Math: using safeMul in case keyPrice or timeRemaining is very large
+    refund = keyPrice.mul(timeRemaining) / expirationDuration;
+    if (refundPenaltyDenominator > 0) {
+      uint penalty = keyPrice / refundPenaltyDenominator;
+      if (refund > penalty) {
+        // Math: safeSub is not required since the if confirms this won't underflow
+        refund -= penalty;
+      } else {
+        refund = 0;
+      }
+    }
   }
 
   /**
