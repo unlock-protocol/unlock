@@ -1,0 +1,82 @@
+{
+  "name": "unlock-paywall",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "predev": "npm run before && npm run set-link && npm run set-link",
+    "set-link": "run-script-os",
+    "set-link:darwin:freebsd:linux:sunos": "cd src && ((test -e artifacts && rm -f artifacts) || echo 'no artifacts') && ln -s ../../smart-contracts/build artifacts",
+    "set-link:win32": "cd src && (if exist artifacts (rmdir artifacts /q /s || del artifacts)) && cmd /c mklink /d artifacts ..\\..\\smart-contracts\\build",
+    "dev": "nodemon src/server.js",
+    "before": "npm run build-paywall",
+    "build": "npm run before && next build",
+    "start": "npm run before && next start",
+    "lint": "eslint .",
+    "reformat": "prettier-eslint \"src/**/*.js\" --write",
+    "fail-pending-changes": "../scripts/pending-changes.sh",
+    "build-paywall": "cross-env NODE_ENV=production rollup -c rollup.paywall.config.js -o ./static/paywall.min.js"
+  },
+  "dependencies": {
+    "@babel/core": "^7.2.2",
+    "@types/jest": "^24.0.0",
+    "@types/node": "^10.12.24",
+    "@types/react": "^16.8.2",
+    "@types/react-dom": "^16.8.0",
+    "@zeit/next-source-maps": "0.0.3",
+    "axios": "^0.18.0",
+    "connected-react-router": "^6.3.0",
+    "copyfiles": "^2.1.0",
+    "cross-env": "^5.2.0",
+    "ethereumjs-util": "^6.0.0",
+    "history": "^4.7.2",
+    "jest-dom": "^3.1.0",
+    "jest-styled-components": "^6.3.1",
+    "jsonwebtoken": "^8.4.0",
+    "next": "^8.0.0",
+    "path-match": "^1.2.4",
+    "prop-types": "^15.6.2",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "react-redux": "^6.0.0",
+    "react-router": "^4.3.1",
+    "react-testing-library": "^5.5.4",
+    "redux": "^4.0.1",
+    "rollup": "^1.1.2",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-uglify": "^6.0.2",
+    "run-script-os": "^1.0.5",
+    "styled-components": "^4.1.3",
+    "typescript": "^3.3.3",
+    "web3": "^1.0.0-beta.33",
+    "web3-utils": "^1.0.0-beta.33"
+  },
+  "lint-staged": {
+    "linters": {
+      "*.js": [
+        "prettier-eslint --write",
+        "git add"
+      ]
+    },
+    "ignore": [
+      "*.js.snap"
+    ]
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src/server.js"
+    ]
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  },
+  "engines": {
+    "node": "=8.11.4"
+  },
+  "engineStrict": true
+}
