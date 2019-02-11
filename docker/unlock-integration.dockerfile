@@ -21,5 +21,3 @@ RUN npm ci --production
 
 # Copy the rest of files
 COPY tests/ /home/unlock/tests/.
-
-# Before running the test suite we will need to run deploy inside the unlock image
