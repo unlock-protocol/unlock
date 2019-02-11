@@ -27,10 +27,6 @@ module.exports = withSourceMaps({
         join(dir, '..', 'unlock-app', 'src', 'static', 'robots.txt'),
         join(outDir, 'robots.txt')
       )
-      await copyFile(
-        join(dir, '..', 'unlock-app', 'src', 'static', 'humans.txt'),
-        join(outDir, 'humans.txt')
-      )
 
       // Export _redirects which is used by netlify for URL rewrites
       await copyFile(
