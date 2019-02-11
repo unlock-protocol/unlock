@@ -13,7 +13,7 @@ exports.shouldCreateLock = function (accounts) {
           60 * 60 * 24 * 30, // expirationDuration: 30 days
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
           100 // maxNumberOfKeys
-          {
+          , {
             from: accounts[0]
           })
       })
