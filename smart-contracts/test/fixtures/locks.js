@@ -7,7 +7,6 @@ let publicLock = {
   keyPriceCalculator: null, //
   keyPrice: new BigNumber(Units.convert(0.01, 'eth', 'wei')), // in wei
   maxNumberOfKeys: new BigNumber(10)
-
 }
 
 module.exports = {
