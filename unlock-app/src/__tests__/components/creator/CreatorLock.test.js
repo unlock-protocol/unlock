@@ -72,7 +72,7 @@ describe('CreatorLock', () => {
       )
     ).toBeNull()
 
-    let codeButton = wrapper.getByTitle('Show embed code')
+    let codeButton = wrapper.getByTitle('Embed')
     rtl.fireEvent.click(codeButton)
 
     expect(
