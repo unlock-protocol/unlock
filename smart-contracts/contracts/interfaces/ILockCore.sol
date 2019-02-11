@@ -32,6 +32,12 @@ interface ILockCore {
   )
     external
     payable;
+    
+  /**
+   * @dev Destroys the user's key and sends a refund based on the amount of time remaining.
+   */
+  function cancelAndRefund()
+    external;
 
   /**
    * @dev Called by owner to withdraw all funds from the lock.
@@ -63,6 +69,20 @@ interface ILockCore {
     uint _keyPrice
   )
     external;
+
+  /**
+   * @dev Determines how much of a refund a key owner would receive if they issued
+   * a cancelAndRefund now.  
+   * @param _owner The owner of the key check the refund value for.
+   * Note that due to the time required to mine a tx, the actual refund amount will be lower 
+   * than what the user reads from this call.
+   */
+  function getCancelAndRefundValueFor(
+    address _owner
+  )
+    external
+    view
+    returns (uint refund);
 
   /**
    * Checks if the user has a non-expired key.
