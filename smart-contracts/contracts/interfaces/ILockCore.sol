@@ -38,16 +38,6 @@ interface ILockCore {
    */
   function cancelAndRefund()
     external;
-  
-  /**
-   * @dev Destroys the user's key and sends a refund based on the amount of time remaining.
-   * The caller must first be approved to modify the owner's key.
-   * @param _owner The owner of the key to be destroyed.
-   */
-  function cancelAndRefundFor(
-    address _owner
-  )
-    external;
 
   /**
    * @dev Called by owner to withdraw all funds from the lock.

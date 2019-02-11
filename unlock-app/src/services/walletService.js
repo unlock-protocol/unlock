@@ -243,8 +243,7 @@ export default class WalletService extends EventEmitter {
       .createLock(
         lock.expirationDuration,
         Web3Utils.toWei(lock.keyPrice, 'ether'),
-        lock.maxNumberOfKeys,
-        lock.cancelRefundPenaltyDenominator || 10 // default 10% penalty
+        lock.maxNumberOfKeys
       )
       .encodeABI()
 

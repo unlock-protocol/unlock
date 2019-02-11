@@ -12,8 +12,7 @@ exports.shouldCreateLock = function (accounts) {
         transaction = await this.unlock.createLock(
           60 * 60 * 24 * 30, // expirationDuration: 30 days
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
-          100, // maxNumberOfKeys
-          10, // cancelRefundPenaltyDenominator
+          100 // maxNumberOfKeys
           {
             from: accounts[0]
           })
@@ -51,8 +50,7 @@ exports.shouldCreateLock = function (accounts) {
         await shouldFail(this.unlock.createLock(
           60 * 60 * 24 * 365 * 101, // expirationDuration: 101 years
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
-          100, // maxNumberOfKeys
-          10, // cancelRefundPenaltyDenominator
+          100 // maxNumberOfKeys
           {
             from: accounts[0]
           }), 'Expiration duration exceeds 100 years')

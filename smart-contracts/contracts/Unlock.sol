@@ -86,8 +86,7 @@ contract Unlock is IUnlock, Initializable, Ownable {
   function createLock(
     uint _expirationDuration,
     uint _keyPrice,
-    uint _maxNumberOfKeys,
-    uint _cancelRefundPenaltyDenominator
+    uint _maxNumberOfKeys
   )
     public
     returns (ILockCore lock)
@@ -99,8 +98,7 @@ contract Unlock is IUnlock, Initializable, Ownable {
       _expirationDuration,
       _keyPrice,
       _maxNumberOfKeys,
-      1, // set Lock version explicitly
-      _cancelRefundPenaltyDenominator
+      1 // set Lock version explicitly
     );
 
     // Assign the new Lock

@@ -121,9 +121,31 @@ contract('Lock', (accounts) => {
     })
 
     describe('allows the Lock owner to specify a different cancelation penalty', () => {
+      let tx
+
+      before(async () => {
+        tx = await lock.updateCancelRefundPenaltyDenominator(5) // 20%
+      })
+
+      it('should trigger an event', async () => {
+        const event = tx.logs.find((log) => {
+          return log.event === 'CancelRefundPenaltyDenominatorChanged'
+        })
+        assert.equal(new BigNumber(event.args.oldPenaltyDenominator).toFixed(), 10)
+        assert.equal(new BigNumber(event.args.refundPenaltyDenominator).toFixed(), 5)
+      })
+
       it('should return the correct penalty', async () => {
-        const penalty = new BigNumber(await locks['DOUBLE_CANCEL_PENALTY'].cancelRefundPenaltyDenominator.call())
-        assert.equal(penalty.toFixed(), 5) // updated discount of 20%
+        const penalty = await lock.cancelRefundPenaltyDenominator.call()
+        assert.equal(penalty, 5) // updated to 20%
+      })
+
+      it('should still allow refund', async () => {
+        const txObj = await lock.cancelAndRefund({
+          from: keyOwners[0]
+        })
+        const refund = new BigNumber(txObj.logs[1].args.refund)
+        assert(refund.gt(0))
       })
     })
   })
