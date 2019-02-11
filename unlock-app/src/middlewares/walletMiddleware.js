@@ -142,18 +142,6 @@ export default function walletMiddleware({ getState, dispatch }) {
               .catch(error => {
                 dispatch(signatureError(error))
               })
-              .then(token => {
-                dispatch(
-                  storeLockCreation(
-                    getState().account.address,
-                    token.data,
-                    token.result
-                  )
-                )
-              })
-              .catch(error => {
-                dispatch(signatureError(error))
-              })
           }
         })
       } else if (action.type === PURCHASE_KEY) {
