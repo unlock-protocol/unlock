@@ -47,6 +47,20 @@ export default class WalletService extends EventEmitter {
   }
 
   /**
+   * Expooses gas amount constants to be utilzed when sending relevant transactions
+   * for the platform.
+   */
+
+  static gasAmountConstants() {
+    return {
+      createLock: 2500000,
+      updateKeyPrice: 1000000,
+      purchaseKey: 1000000,
+      withdrawFromLock: 1000000,
+    }
+  }
+
+  /**
    * This connects to the web3 service and listens to new blocks
    * @param {string} providerName
    * @return
@@ -217,7 +231,7 @@ export default class WalletService extends EventEmitter {
         to: lock,
         from: account,
         data,
-        gas: 1000000,
+        gas: WalletService.gasAmountConstants().updateKeyPrice,
         contract: LockContract,
       },
       error => {
@@ -252,7 +266,7 @@ export default class WalletService extends EventEmitter {
         to: this.unlockContractAddress,
         from: owner,
         data,
-        gas: 2000000,
+        gas: WalletService.gasAmountConstants().createLock,
         contract: UnlockContract,
       },
       (error, hash) => {
@@ -292,7 +306,7 @@ export default class WalletService extends EventEmitter {
         to: lock,
         from: account,
         data: abi,
-        gas: 1000000,
+        gas: WalletService.gasAmountConstants().purchaseKey,
         value: Web3Utils.toWei(keyPrice, 'ether'),
         contract: LockContract,
       },
@@ -319,7 +333,7 @@ export default class WalletService extends EventEmitter {
         to: lock,
         from: account,
         data,
-        gas: 1000000,
+        gas: WalletService.gasAmountConstants().withdrawFromLock,
         contract: LockContract,
       },
       error => {
