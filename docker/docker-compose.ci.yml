@@ -41,6 +41,7 @@ services:
     user: node
     environment:
       - UNLOCK_HOST=unlock
+      - CI=true
     depends_on:
       - ganache
       - unlock

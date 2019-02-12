@@ -2,6 +2,7 @@ const net = require('net')
 const PuppeteerEnvironment = require('jest-environment-puppeteer')
 
 const port = process.env.UNLOCK_PORT || 3000
+const ci = process.env.CI
 
 /**
  * This is a helper function to ensure that we start the test suite only when the server is up
@@ -36,7 +37,9 @@ const serverIsUp = (delay, maxAttempts) => new Promise((resolve, reject) => {
 class UnlockEnvironment extends PuppeteerEnvironment {
   async setup() {
     await super.setup()
-    await serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
+    if (ci) {
+      await serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
+    }
   }
 
   async teardown() {
