@@ -1,11 +1,5 @@
 /* eslint promise/prefer-await-to-then: 0 */
-import {
-  CREATE_LOCK,
-  WITHDRAW_FROM_LOCK,
-  deleteLock,
-  UPDATE_LOCK_KEY_PRICE,
-  updateLock,
-} from '../actions/lock'
+import { updateLock } from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
 import { setAccount } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
@@ -17,16 +11,9 @@ import {
   gotWallet,
   dismissWalletCheck,
 } from '../actions/walletStatus'
-import { TRANSACTION_TYPES } from '../constants'
 
-import generateJWTToken from '../utils/signature'
 import WalletService from '../services/walletService'
-import { signatureError } from '../actions/signature'
-import { storeLockCreation } from '../actions/storage'
-import configure from '../config'
 import { NO_USER_ACCOUNT } from '../errors'
-
-const config = configure()
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
@@ -88,18 +75,10 @@ export default function walletMiddleware({ getState, dispatch }) {
     dispatch(updateLock(address, update))
   })
 
-  walletService.on('error', (error, transactionHash) => {
+  walletService.on('error', error => {
     // If we didn't successfully interact with the wallet, we need to clear the
     // overlay
     dispatch(dismissWalletCheck())
-    const transaction = getState().transactions[transactionHash]
-    if (transaction && transaction.type === TRANSACTION_TYPES.LOCK_CREATION) {
-      // delete the lock
-      dispatch(deleteLock(transaction.lock))
-      return dispatch(
-        setError('Failed to create lock. Did you decline the transaction?')
-      )
-    }
     dispatch(setError(error.message))
   })
 
@@ -121,27 +100,6 @@ export default function walletMiddleware({ getState, dispatch }) {
     return function(action) {
       if (action.type === SET_PROVIDER) {
         walletService.connect(action.provider)
-      } else if (action.type === CREATE_LOCK && action.lock.address) {
-        ensureReadyBefore(() => {
-          walletService.createLock(action.lock, getState().account.address)
-          if (config.services.storage) {
-            generateJWTToken(walletService, getState().account.address, {
-              lock: action.lock,
-            })
-              .then(token => {
-                dispatch(
-                  storeLockCreation(
-                    getState().account.address,
-                    action.lock,
-                    token
-                  )
-                )
-              })
-              .catch(error => {
-                dispatch(signatureError(error))
-              })
-          }
-        })
       } else if (action.type === PURCHASE_KEY) {
         ensureReadyBefore(() => {
           const account = getState().account
@@ -155,20 +113,6 @@ export default function walletMiddleware({ getState, dispatch }) {
             lock.keyPrice,
             account.address,
             action.key.data
-          )
-        })
-      } else if (action.type === WITHDRAW_FROM_LOCK) {
-        ensureReadyBefore(() => {
-          const account = getState().account
-          walletService.withdrawFromLock(action.lock.address, account.address)
-        })
-      } else if (action.type === UPDATE_LOCK_KEY_PRICE) {
-        ensureReadyBefore(() => {
-          const account = getState().account
-          walletService.updateKeyPrice(
-            action.address,
-            account.address,
-            action.price
           )
         })
       }

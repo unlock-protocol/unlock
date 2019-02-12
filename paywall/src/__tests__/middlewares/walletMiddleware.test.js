@@ -1,12 +1,6 @@
 import EventEmitter from 'events'
 import walletMiddleware from '../../middlewares/walletMiddleware'
-import {
-  CREATE_LOCK,
-  DELETE_LOCK,
-  WITHDRAW_FROM_LOCK,
-  UPDATE_LOCK_KEY_PRICE,
-  UPDATE_LOCK,
-} from '../../actions/lock'
+import { UPDATE_LOCK_KEY_PRICE, UPDATE_LOCK } from '../../actions/lock'
 import {
   WAIT_FOR_WALLET,
   GOT_WALLET,
@@ -18,7 +12,6 @@ import { SET_NETWORK } from '../../actions/network'
 import { SET_PROVIDER } from '../../actions/provider'
 import { NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
-import { TRANSACTION_TYPES } from '../../constants'
 import { NO_USER_ACCOUNT } from '../../errors'
 
 /**
@@ -228,39 +221,6 @@ describe('Wallet middleware', () => {
   })
 
   describe('error events triggered by the walletService', () => {
-    it('should handle error triggered when creating a lock', () => {
-      expect.assertions(3)
-      const { store } = create()
-      const transaction = {
-        hash: '123',
-        type: TRANSACTION_TYPES.LOCK_CREATION,
-        lock: '0x123',
-      }
-      state.transactions = {
-        [transaction.hash]: transaction,
-      }
-      mockWalletService.emit(
-        'error',
-        { message: 'this was broken' },
-        transaction.hash
-      )
-      expect(store.dispatch).toHaveBeenNthCalledWith(
-        1,
-        expect.objectContaining({ type: DISMISS_CHECK })
-      )
-      expect(store.dispatch).toHaveBeenNthCalledWith(2, {
-        type: DELETE_LOCK,
-        address: transaction.lock,
-      })
-      expect(store.dispatch).toHaveBeenNthCalledWith(
-        3,
-        expect.objectContaining({
-          type: SET_ERROR,
-          error: 'Failed to create lock. Did you decline the transaction?',
-        })
-      )
-    })
-
     it('it should handle error events triggered by the walletService', () => {
       expect.assertions(1)
       const { store } = create()
@@ -314,129 +274,6 @@ describe('Wallet middleware', () => {
         lock.keyPrice,
         account.address,
         key.data
-      )
-      expect(next).toHaveBeenCalledWith(action)
-    })
-  })
-
-  describe('WITHDRAW_FROM_LOCK', () => {
-    it('when the service is not ready it should set an error and not try to withdraw from the lock', () => {
-      expect.assertions(3)
-      const { next, invoke, store } = create()
-      const action = { type: WITHDRAW_FROM_LOCK, lock }
-      mockWalletService.withdrawFromLock = jest.fn()
-      mockWalletService.ready = false
-      invoke(action)
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: 'error/SET_ERROR',
-        error: NO_USER_ACCOUNT,
-      })
-
-      expect(mockWalletService.withdrawFromLock).not.toHaveBeenCalled()
-      expect(next).toHaveBeenCalledWith(action)
-    })
-
-    it('should handle WITHDRAW_FROM_LOCK by calling withdrawFromLock from walletService', () => {
-      expect.assertions(2)
-      const { next, invoke, store } = create()
-      const action = { type: WITHDRAW_FROM_LOCK, lock }
-      mockWalletService.withdrawFromLock = jest.fn()
-      mockWalletService.ready = true
-      invoke(action)
-      expect(mockWalletService.withdrawFromLock).toHaveBeenCalledWith(
-        lock.address,
-        store.getState().account.address
-      )
-      expect(next).toHaveBeenCalledWith(action)
-    })
-  })
-
-  describe('CREATE_LOCK', () => {
-    describe('when the lock has an address', () => {
-      it('when the service is not ready it should set an error and not try to create the lock', () => {
-        expect.assertions(3)
-        const { next, invoke, store } = create()
-        const action = { type: CREATE_LOCK, lock }
-        mockWalletService.createLock = jest.fn()
-        mockWalletService.ready = false
-        invoke(action)
-        expect(store.dispatch).toHaveBeenCalledWith({
-          type: 'error/SET_ERROR',
-          error: NO_USER_ACCOUNT,
-        })
-
-        expect(mockWalletService.createLock).not.toHaveBeenCalled()
-        expect(next).toHaveBeenCalledWith(action)
-      })
-
-      it("should handle CREATE_LOCK by calling walletService's createLock", () => {
-        expect.assertions(3)
-        const { next, invoke, store } = create()
-        const action = { type: CREATE_LOCK, lock }
-        mockWalletService.createLock = jest.fn()
-        mockWalletService.ready = true
-
-        invoke(action)
-        expect(mockWalletService.createLock).toHaveBeenCalledWith(
-          lock,
-          store.getState().account.address
-        )
-        expect(mockGenerateJWTToken).toHaveBeenCalled()
-        expect(next).toHaveBeenCalledWith(action)
-      })
-    })
-
-    describe('when the lock does not have an address', () => {
-      it('should not try to createLock', () => {
-        expect.assertions(2)
-        let lock = {
-          keyPrice: '100',
-          owner: account,
-        }
-        mockWalletService.createLock = jest.fn()
-        const { next, invoke } = create()
-        const action = { type: CREATE_LOCK, lock }
-        mockWalletService.ready = true
-
-        invoke(action)
-        expect(next).toHaveBeenCalled()
-        expect(mockWalletService.createLock).not.toHaveBeenCalled()
-      })
-    })
-  })
-
-  describe('UPDATE_LOCK_KEY_PRICE', () => {
-    it('when the service is not ready it should set an error and not try to update the ley price', () => {
-      expect.assertions(3)
-      const { next, invoke, store } = create()
-      const action = { type: UPDATE_LOCK_KEY_PRICE, lock }
-      mockWalletService.updateKeyPrice = jest.fn()
-      mockWalletService.ready = false
-      invoke(action)
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: 'error/SET_ERROR',
-        error: NO_USER_ACCOUNT,
-      })
-
-      expect(mockWalletService.updateKeyPrice).not.toHaveBeenCalled()
-      expect(next).toHaveBeenCalledWith(action)
-    })
-
-    it('should invoke updateKeyPrice on receiving an update request', () => {
-      expect.assertions(2)
-      const { next, invoke, store } = create()
-      const action = {
-        type: UPDATE_LOCK_KEY_PRICE,
-        address: lock.address,
-        price: '0.03',
-      }
-      mockWalletService.updateKeyPrice = jest.fn()
-      mockWalletService.ready = true
-      invoke(action)
-      expect(mockWalletService.updateKeyPrice).toHaveBeenCalledWith(
-        lock.address,
-        store.getState().account.address,
-        '0.03'
       )
       expect(next).toHaveBeenCalledWith(action)
     })
