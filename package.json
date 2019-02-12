@@ -46,6 +46,12 @@
     "type": "git",
     "url": "git+https://github.com/unlock-protocol/unlock.git"
   },
+  "greenkeeper" : {
+    "prTitles" : {
+      "basicPR": "Update ${dependency} to the latest version",
+      "groupPR": "Update ${dependency} in group ${group} to the latest version"
+    }
+  },
   "author": "",
   "license": "MIT",
   "bugs": {
