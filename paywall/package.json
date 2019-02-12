@@ -15,7 +15,10 @@
     "lint": "eslint .",
     "reformat": "prettier-eslint \"src/**/*.js\" --write",
     "fail-pending-changes": "../scripts/pending-changes.sh",
-    "build-paywall": "cross-env NODE_ENV=production rollup -c rollup.paywall.config.js -o ./static/paywall.min.js"
+    "build-paywall": "cross-env NODE_ENV=production rollup -c rollup.paywall.config.js -o ./static/paywall.min.js",
+    "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
+    "fail-pending-changes": "../scripts/pending-changes.sh",
+    "ci": "npm run lint && npm test && npm run reformat && npm run fail-pending-changes"
   },
   "dependencies": {
     "@babel/core": "^7.2.2",
@@ -86,10 +89,6 @@
   },
   "engineStrict": true,
   "scripts" : {
-    "lint": "eslint .",
-    "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
-    "reformat" : "prettier-eslint \"src/**/*.js\" --write",
-    "fail-pending-changes": "../scripts/pending-changes.sh",
-    "ci": "npm run lint && npm test && npm run reformat && npm run fail-pending-changes"
+    
   }
 }
