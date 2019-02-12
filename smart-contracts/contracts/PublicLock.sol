@@ -53,6 +53,14 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint refundPenaltyDenominator
   );
 
+  event Destroy(
+    address lock,
+    uint balance,
+    address owner
+  );
+
+  event Disable(address lock);
+
   // Fields
   // Unlock Protocol address
   // TODO: should we make that private/internal?
@@ -404,8 +412,8 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   /**
    * @dev Determines how much of a refund a key owner would receive if they issued
-   * a cancelAndRefund now.  
-   * Note that due to the time required to mine a tx, the actual refund amount will be lower 
+   * a cancelAndRefund now.
+   * Note that due to the time required to mine a tx, the actual refund amount will be lower
    * than what the user reads from this call.
    */
   function getCancelAndRefundValueFor(
@@ -460,6 +468,30 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     returns (address)
   {
     return _getApproved(_tokenId);
+  }
+
+  function disableLock()
+    external
+    onlyOwner
+    onlyIfAlive
+  {
+    emit Disable(address(this));
+    isAlive = false;
+  }
+
+  /**
+  * @dev Used to clean up old lock contracts from the blockchain
+  * TODO: add a check to ensure all keys are INVALID!
+   */
+  function destroyLock()
+    external
+    onlyOwner
+  {
+    require(isAlive == false, "Not allowed to delete an active lock");
+    emit Destroy(address(this), this.balance, msg.sender);
+    selfdestruct(msg.sender);
+    // Note we don't clean up the `locks` data in Unlock.sol as it should not be necessary
+    // and leaves some data behind which may be helpful.
   }
 
   /**
@@ -683,7 +715,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   /**
    * @dev Determines how much of a refund a key owner would receive if they issued
-   * a cancelAndRefund now.  
+   * a cancelAndRefund now.
    * @param _owner The owner of the key check the refund value for.
    */
   function _getCancelAndRefundValue(
