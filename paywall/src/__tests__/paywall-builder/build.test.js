@@ -1,6 +1,6 @@
-import buildPaywall, { redirect } from '../../paywall-builder/build'
-import * as script from '../../paywall-builder/script'
-import * as iframeManager from '../../paywall-builder/iframe'
+import buildPaywall, { redirect } from '../../../paywall-builder/build'
+import * as script from '../../../paywall-builder/script'
+import * as iframeManager from '../../../paywall-builder/iframe'
 
 global.window = {} // this is fun...
 global.MutationObserver = function() {

@@ -1,6 +1,6 @@
-import * as mutations from '../../paywall-builder/mutationobserver'
-import * as buildManager from '../../paywall-builder/build'
-import * as blockerManager from '../../paywall-builder/blocker'
+import * as mutations from '../../../paywall-builder/mutationobserver'
+import * as buildManager from '../../../paywall-builder/build'
+import * as blockerManager from '../../../paywall-builder/blocker'
 
 describe('paywall builder integration', () => {
   let listenForNewLocks
