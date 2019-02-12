@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "lint-staged": "^8.0.5",
-    "ganache-cli": "^6.2.3",
+    "ganache-cli": "^6.3.0",
     "husky": "^1.2.0"
   },
   "scripts": {

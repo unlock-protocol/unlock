@@ -1,6 +1,6 @@
 import EventEmitter from 'events'
 import Web3 from 'web3'
-import Web3Utils from 'web3-utils'
+import * as Web3Utils from 'web3-utils'
 import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
@@ -265,14 +265,15 @@ export default class WalletService extends EventEmitter {
       {
         to: this.unlockContractAddress,
         from: owner,
-        data,
-        gas: WalletService.gasAmountConstants().createLock,
+        data: data,
+        gas:  WalletService.gasAmountConstants().createLock,
         contract: UnlockContract,
       },
       (error, hash) => {
         if (error) {
           return this.emit('error', new Error(FAILED_TO_CREATE_LOCK))
         }
+
         // Let's update the lock to reflect that it is linked to this
         // This is an exception because, until we are able to determine the lock address
         // before the transaction is mined, we need to link the lock and transaction.
