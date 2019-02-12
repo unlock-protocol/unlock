@@ -48,7 +48,7 @@ export default function storageMiddleware({ getState, dispatch }) {
       if (action.type === UPDATE_LOCK) {
         // Only look up the name for a lock for which the name is empty/not-set
         const lock = getState().locks[action.address]
-        if (!lock.name) {
+        if (lock && !lock.name) {
           storageService.lockLookUp(action.address).then(name => {
             dispatch(updateLock(action.address, { name }))
           })
