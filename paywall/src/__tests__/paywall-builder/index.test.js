@@ -27,7 +27,7 @@ describe('paywall builder integration', () => {
   it('calls listenForLocks', () => {
     global.window = {}
 
-    require('../../paywall-builder')
+    require('../../../paywall-builder')
     window.onload()
 
     expect(listenForNewLocks.mock.calls[0][1]).toBe(document.head)
