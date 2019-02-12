@@ -19710,7 +19710,7 @@ Object {
   border: 1px solid var(--lightgrey);
   border-radius: 4px;
   height: 26px;
-  padding: 8px;
+  padding: 0 8px;
   font-family: 'IBM Plex Mono',sans serif;
   font-size: 14px;
   font-weight: 200;
@@ -20001,7 +20001,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 ieBDMo"
+      class="mlglvd-0 sc-1u8ov25-1 dRCgnb"
     >
       <svg
         viewBox="0 0 216 216"
@@ -20257,7 +20257,7 @@ Object {
   border: 1px solid var(--lightgrey);
   border-radius: 4px;
   height: 26px;
-  padding: 8px;
+  padding: 0 8px;
   font-family: 'IBM Plex Mono',sans serif;
   font-size: 14px;
   font-weight: 200;
@@ -20543,7 +20543,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 ieBDMo"
+      class="mlglvd-0 sc-1u8ov25-1 dRCgnb"
     >
       <svg
         viewBox="0 0 216 216"
@@ -20794,7 +20794,7 @@ Object {
   border: 1px solid var(--lightgrey);
   border-radius: 4px;
   height: 26px;
-  padding: 8px;
+  padding: 0 8px;
   font-family: 'IBM Plex Mono',sans serif;
   font-size: 14px;
   font-weight: 200;
@@ -21080,7 +21080,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 ieBDMo"
+      class="mlglvd-0 sc-1u8ov25-1 dRCgnb"
     >
       <svg
         viewBox="0 0 216 216"
@@ -21331,7 +21331,7 @@ Object {
   border: 1px solid var(--lightgrey);
   border-radius: 4px;
   height: 26px;
-  padding: 8px;
+  padding: 0 8px;
   font-family: 'IBM Plex Mono',sans serif;
   font-size: 14px;
   font-weight: 200;
@@ -21617,7 +21617,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 ieBDMo"
+      class="mlglvd-0 sc-1u8ov25-1 dRCgnb"
     >
       <svg
         viewBox="0 0 216 216"
@@ -21868,7 +21868,7 @@ Object {
   border: 1px solid var(--lightgrey);
   border-radius: 4px;
   height: 26px;
-  padding: 8px;
+  padding: 0 8px;
   font-family: 'IBM Plex Mono',sans serif;
   font-size: 14px;
   font-weight: 200;
@@ -22154,7 +22154,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 ieBDMo"
+      class="mlglvd-0 sc-1u8ov25-1 dRCgnb"
     >
       <svg
         viewBox="0 0 216 216"
@@ -22405,7 +22405,7 @@ Object {
   border: 1px solid var(--lightgrey);
   border-radius: 4px;
   height: 26px;
-  padding: 8px;
+  padding: 0 8px;
   font-family: 'IBM Plex Mono',sans serif;
   font-size: 14px;
   font-weight: 200;
@@ -22691,7 +22691,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 ieBDMo"
+      class="mlglvd-0 sc-1u8ov25-1 dRCgnb"
     >
       <svg
         viewBox="0 0 216 216"

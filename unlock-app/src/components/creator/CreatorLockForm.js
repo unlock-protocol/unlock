@@ -364,7 +364,7 @@ const FormLockRow = styled(LockRow)`
     border: 1px solid var(--lightgrey);
     border-radius: 4px;
     height: 26px;
-    padding: 8px;
+    padding: 0 8px;
     font-family: 'IBM Plex Mono', sans serif;
     font-size: 14px;
     font-weight: 200;
