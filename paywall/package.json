@@ -87,8 +87,5 @@
   "engines": {
     "node": "=8.11.4"
   },
-  "engineStrict": true,
-  "scripts" : {
-    
-  }
+  "engineStrict": true
 }
