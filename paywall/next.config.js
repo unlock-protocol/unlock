@@ -28,6 +28,11 @@ module.exports = withSourceMaps({
         join(outDir, 'robots.txt')
       )
 
+      await copyFile(
+        join(dir, 'static', 'humans.txt'),
+        join(outDir, 'humans.txt')
+      )
+
       // Export _redirects which is used by netlify for URL rewrites
       await copyFile(
         join(dir, 'static', '_redirects'),
