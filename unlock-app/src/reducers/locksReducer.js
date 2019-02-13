@@ -9,6 +9,7 @@ import { DELETE_TRANSACTION } from '../actions/transaction'
 import { SET_PROVIDER } from '../actions/provider'
 import { SET_NETWORK } from '../actions/network'
 import { SET_ACCOUNT } from '../actions/accounts'
+import { MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
 
 export const initialState = {}
 
@@ -38,10 +39,19 @@ const locksReducer = (state = initialState, action) => {
   }
 
   if (action.type === CREATE_LOCK) {
-    if (action.lock.address) {
+    // Smart contracts and the frontend app use a different representation for
+    // unlimited keys. Here we look to see if the value of maxNumberOfKeys is
+    // set to the smart contract representation. If it is, we replace it with
+    // the frontend representation.
+    let lock = {}
+    Object.assign(lock, action.lock)
+    if (lock.maxNumberOfKeys === MAX_UINT) {
+      lock.maxNumberOfKeys = UNLIMITED_KEYS_COUNT
+    }
+    if (lock.address) {
       return {
         ...state,
-        [action.lock.address]: action.lock,
+        [lock.address]: lock,
       }
     }
   }
@@ -59,9 +69,18 @@ const locksReducer = (state = initialState, action) => {
       return state
     }
 
+    // Smart contracts and the frontend app use a different representation for
+    // unlimited keys. Here we look to see if the value of maxNumberOfKeys is
+    // set to the smart contract representation. If it is, we replace it with
+    // the frontend representation.
+    let update = {}
+    Object.assign(update, action.update)
+    if (update.maxNumberOfKeys === MAX_UINT) {
+      update.maxNumberOfKeys = UNLIMITED_KEYS_COUNT
+    }
     return {
       ...state,
-      [action.address]: Object.assign(state[action.address], action.update),
+      [action.address]: Object.assign(state[action.address], update),
     }
   }
 
