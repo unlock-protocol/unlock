@@ -10,6 +10,7 @@ import { SET_ACCOUNT } from '../../actions/accounts'
 import { DELETE_TRANSACTION } from '../../actions/transaction'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
+import { MAX_UINT, UNLIMITED_KEYS_COUNT } from '../../constants'
 
 describe('locks reducer', () => {
   const lock = {
@@ -54,6 +55,24 @@ describe('locks reducer', () => {
       })
     ).toEqual({
       [lock.address]: lock,
+    })
+  })
+
+  it('should normalize MAX_UINT when receiving CREATE_LOCK', () => {
+    const maxUintLock = {
+      address: '123',
+      maxNumberOfKeys: MAX_UINT,
+    }
+    expect(
+      reducer(undefined, {
+        type: CREATE_LOCK,
+        lock: maxUintLock,
+      })
+    ).toEqual({
+      [maxUintLock.address]: {
+        ...maxUintLock,
+        maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+      },
     })
   })
 
@@ -263,6 +282,33 @@ describe('locks reducer', () => {
         name: 'hello',
         address: '0x123',
         keyPrice: '0.02',
+      },
+    })
+  })
+
+  it('should normalize MAX_UINT when updating a lock', () => {
+    const state = {
+      '0x123': {
+        name: 'hello',
+        address: '0x123',
+        maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+      },
+    }
+    const action = {
+      type: UPDATE_LOCK,
+      address: '0x123',
+      update: {
+        name: 'hello',
+        keyPrice: '1.001',
+        maxNumberOfKeys: MAX_UINT,
+      },
+    }
+    expect(reducer(state, action)).toEqual({
+      '0x123': {
+        name: 'hello',
+        address: '0x123',
+        keyPrice: '1.001',
+        maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
       },
     })
   })
