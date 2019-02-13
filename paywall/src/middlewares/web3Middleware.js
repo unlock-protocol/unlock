@@ -1,7 +1,7 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
 import { LOCATION_CHANGE } from 'connected-react-router'
-import { UPDATE_LOCK, addLock, updateLock } from '../actions/lock'
+import { UPDATE_LOCK, addLock, updateLock, ADD_LOCK } from '../actions/lock'
 import { updateKey, addKey } from '../actions/key'
 import { updateAccount, SET_ACCOUNT } from '../actions/accounts'
 import { setError } from '../actions/error'
@@ -112,7 +112,7 @@ export default function web3Middleware({ getState, dispatch }) {
         }
       }
 
-      if (action.type === UPDATE_LOCK) {
+      if (action.type === ADD_LOCK || action.type === UPDATE_LOCK) {
         const lock = getState().locks[action.address]
         if (getState().account) {
           web3Service.getKeyByLockForOwner(

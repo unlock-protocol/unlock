@@ -1,7 +1,6 @@
 import EventEmitter from 'events'
 import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
-import ethJsUtil from 'ethereumjs-util'
 
 import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
