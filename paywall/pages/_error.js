@@ -5,7 +5,7 @@ import UnlockPropTypes from '../src/propTypes'
 import withConfig from '../src/utils/withConfig'
 
 class Error extends React.Component {
-  static getInitialProps({ res, err, req }) {
+  static getInitialProps({ res, err }) {
     const statusCode = res ? res.statusCode : err ? err.statusCode : null
     return { statusCode }
   }

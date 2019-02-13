@@ -44,6 +44,14 @@ RUN npm ci --production
 COPY --chown=node unlock-app/ /home/unlock/unlock-app/.
 RUN npm run build
 
+RUN mkdir /home/unlock/paywall
+COPY --chown=node paywall/package-lock.json /home/unlock/paywall/.
+COPY --chown=node paywall/package.json /home/unlock/paywall/.
+WORKDIR /home/unlock/paywall
+RUN npm ci --production
+COPY --chown=node paywall/ /home/unlock/paywall/.
+RUN npm run build
+
 WORKDIR /home/unlock/
 
 # Copy the parent binaries into the children

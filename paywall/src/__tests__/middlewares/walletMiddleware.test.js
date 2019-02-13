@@ -1,6 +1,6 @@
 import EventEmitter from 'events'
 import walletMiddleware from '../../middlewares/walletMiddleware'
-import { UPDATE_LOCK_KEY_PRICE, UPDATE_LOCK } from '../../actions/lock'
+import { UPDATE_LOCK } from '../../actions/lock'
 import {
   WAIT_FOR_WALLET,
   GOT_WALLET,

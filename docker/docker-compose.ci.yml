@@ -36,6 +36,10 @@ services:
     image: unlock
     user: node
     working_dir: /home/unlock/unlock-app
+  paywall:
+    image: unlock
+    user: node
+    working_dir: /home/unlock/paywall
   integration-tests:
     image: unlock-integration
     user: node
