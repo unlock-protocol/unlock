@@ -18,7 +18,7 @@ if [ "$SKIP_SERVICES" != "true" ]; then
   # Will be either 'install' or 'ci'
   CMD="$(get_npm_command)"
 
-  SERVICES=( smart-contracts unlock-app locksmith tests )
+  SERVICES=( paywall smart-contracts unlock-app locksmith tests )
 
   for i in "${SERVICES[@]}"
   do
