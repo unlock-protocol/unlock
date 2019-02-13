@@ -119,7 +119,7 @@ contract('Lock ERC721', accounts => {
         assert.equal(outstandingKeys.toFixed(), 4)
       })
 
-      it('should have the right number of keys', () => {
+      it('should have the right number of keys', async () => {
         const outstandingKeys = new BigNumber(await lock.outstandingKeys())
         assert.equal(outstandingKeys.toFixed(), 4)
       })
