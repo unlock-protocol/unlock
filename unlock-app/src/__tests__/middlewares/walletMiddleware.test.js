@@ -86,16 +86,16 @@ jest.mock('../../services/walletService', () => {
   }
 })
 
-let mockGenerateJWTToken = jest.fn(() => Promise.resolve())
+let mockGenerateSignature = jest.fn(() => Promise.resolve())
 
 jest.mock('../../utils/signature', () => () => {
-  return mockGenerateJWTToken()
+  return mockGenerateSignature()
 })
 
 beforeEach(() => {
   // Reset the mock
   mockWalletService = new MockWalletService()
-  mockGenerateJWTToken = jest.fn(() => Promise.resolve())
+  mockGenerateSignature = jest.fn(() => Promise.resolve())
 
   // Reset state!
   account = {
@@ -370,10 +370,13 @@ describe('Wallet middleware', () => {
       })
 
       it("should handle CREATE_LOCK by calling walletService's createLock", () => {
-        expect.assertions(3)
+        expect.assertions(2)
         const { next, invoke, store } = create()
         const action = { type: CREATE_LOCK, lock }
-        mockWalletService.createLock = jest.fn()
+
+        mockWalletService.createLock = jest
+          .fn()
+          .mockImplementation(() => Promise.resolve())
         mockWalletService.ready = true
 
         invoke(action)
@@ -381,7 +384,7 @@ describe('Wallet middleware', () => {
           lock,
           store.getState().account.address
         )
-        expect(mockGenerateJWTToken).toHaveBeenCalled()
+
         expect(next).toHaveBeenCalledWith(action)
       })
     })

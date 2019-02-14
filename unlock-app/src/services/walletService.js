@@ -276,9 +276,7 @@ export default class WalletService extends EventEmitter {
         // Let's update the lock to reflect that it is linked to this
         // This is an exception because, until we are able to determine the lock address
         // before the transaction is mined, we need to link the lock and transaction.
-        return this.emit('lock.updated', lock.address, {
-          transaction: hash,
-        })
+        return this.emit('lock.updated', lock.address, { transaction: hash })
       }
     )
   }
