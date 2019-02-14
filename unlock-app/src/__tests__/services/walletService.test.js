@@ -476,7 +476,7 @@ describe('WalletService', () => {
     })
 
     describe('_createAccount', () => {
-      it('should yield a new account', () => {
+      it('should yield a new account', async () => {
         expect.assertions(1)
         const address = '0x07748403082b29a45abD6C124A37E6B14e6B1803'
         // mock web3's create
@@ -487,10 +487,9 @@ describe('WalletService', () => {
         const previousCreate = walletService.web3.eth.accounts.create
         walletService.web3.eth.accounts.create = mock
 
-        return walletService._createAccount().then(account => {
-          expect(account).toEqual(address)
-          walletService.web3.eth.accounts.create = previousCreate
-        })
+        let account = await walletService._createAccount()
+        expect(account).toEqual(address)
+        walletService.web3.eth.accounts.create = previousCreate
       })
     })
 
