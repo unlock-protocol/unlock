@@ -27,9 +27,11 @@ const eslint = path => {
 module.exports = {
   hooks: {
     "pre-push": tasks([eslint('unlock-app'),
-                       eslint('locksmith')]),
+                       eslint('locksmith'),
+                       eslint('paywall')]),
     "pre-commit": tasks([svg2Components, 
-                  lintStaged('unlock-app'), 
-                  lintStaged('locksmith')])
+                         lintStaged('unlock-app'),
+                         lintStaged('locksmith'),
+                         lintStaged('paywall')])
   }
 }
