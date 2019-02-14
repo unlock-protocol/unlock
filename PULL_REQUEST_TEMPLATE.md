@@ -1,6 +1,8 @@
 # Description
 
-*(Delete this, but please include a summary of the change and which issue is fixed -include its number-. Please also include relevant motivation and context.)*
+<!--
+Please include a summary of the change and which issue is fixed -include its number-. Please also include relevant motivation and context.
+-->
 
 # Checklist:
 
@@ -14,4 +16,6 @@
 - [ ] I have performed a self-review of my own code
 - [ ] If my code involves visual changes, I am adding applicable screenshots to this thread
 
+<!--
 PS: [Read how to write the perfect pull request](https://blog.github.com/2015-01-21-how-to-write-the-perfect-pull-request/)
+-->
