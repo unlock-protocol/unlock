@@ -123,26 +123,29 @@ export default function walletMiddleware({ getState, dispatch }) {
         walletService.connect(action.provider)
       } else if (action.type === CREATE_LOCK && action.lock.address) {
         ensureReadyBefore(() => {
-          walletService.createLock(action.lock, getState().account.address)
-          if (config.services.storage) {
-            generateSignature(
-              walletService.web3,
-              getState().account.address,
-              action.lock
-            )
-              .then(token => {
-                dispatch(
-                  storeLockCreation(
-                    getState().account.address,
-                    token.data,
-                    token.result
-                  )
+          walletService
+            .createLock(action.lock, getState().account.address)
+            .then(() => {
+              if (config.services.storage) {
+                generateSignature(
+                  walletService.web3,
+                  getState().account.address,
+                  action.lock
                 )
-              })
-              .catch(error => {
-                dispatch(signatureError(error))
-              })
-          }
+                  .then(token => {
+                    dispatch(
+                      storeLockCreation(
+                        getState().account.address,
+                        token.data,
+                        token.result
+                      )
+                    )
+                  })
+                  .catch(error => {
+                    dispatch(signatureError(error))
+                  })
+              }
+            })
         })
       } else if (action.type === PURCHASE_KEY) {
         ensureReadyBefore(() => {
