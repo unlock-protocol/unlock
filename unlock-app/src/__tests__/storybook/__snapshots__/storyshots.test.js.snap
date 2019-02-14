@@ -1,5 +1,2161 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Storyshots BlogPost Blog post from markdown with author and subtitle 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": .c0 {
+  max-width: 730px;
+  margin: auto;
+  font-family: 'IBM Plex Serif',serif;
+}
+
+.c1 {
+  color: var(--darkgrey);
+  font-size: 36px;
+  font-weight: 700;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  margin-bottom: 0;
+}
+
+.c3 {
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  color: var(--darkgrey);
+  font-size: 12px;
+  line-height: 12px;
+  margin-top: 0;
+  margin-bottom: 35px;
+}
+
+.c2 {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  color: var(--dimgrey);
+}
+
+.c5 {
+  color: var(--darkgrey);
+  font-weight: 300;
+  line-height: 28px;
+  font-size: 16px;
+}
+
+.c5 strong {
+  font-weight: 800;
+}
+
+.c5 p {
+  margin-top: 0;
+}
+
+.c5 h2 {
+  font-weight: 800;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  font-size: 18px;
+}
+
+.c5 img {
+  max-width: 730px;
+}
+
+.c4 {
+  color: var(--brand);
+}
+
+<body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <h1
+          class="c1"
+        >
+          Introduction to Unlock
+        </h1>
+        <h2
+          class="c2"
+        >
+          Unlock enables creators to monetize their work directly - without relying on a middleman.
+        </h2>
+        <div
+          class="c3"
+        >
+          <h3
+            class="c4"
+          >
+            Reginald Pianoforte
+          </h3>
+          <div
+            class=""
+          >
+            August 20, 2018
+          </div>
+        </div>
+        <div
+          class="c5"
+        >
+          <div>
+            <p>
+              <a
+                href="https://unlock-protocol.com"
+              >
+                Unlock
+              </a>
+               is an 
+              <strong>
+                access control protocol
+              </strong>
+               that enables creators 
+to monetize their work directly - without relying on a middleman.
+            </p>
+            
+
+            <p>
+              Consumers manage all of their subscriptions in a consistent way, as well as earn discounts when 
+they share the best content and applications they use.
+            </p>
+            
+
+            <h2
+              id="accesspermissionsontheblockchain"
+            >
+              Access permissions on the blockchain
+            </h2>
+            
+
+            <p>
+              Unlock is an open 
+              <em>
+                protocol
+              </em>
+               for payments on the web.
+            </p>
+            
+
+            <p>
+              Creators place a 
+              <em>
+                lock
+              </em>
+               on their content. (This could be an article, or a software app, a whole site, a mailing list,
+or anything where taking a payment could be appropriate.) Consumers can then purchase a 
+              <em>
+                key
+              </em>
+               to access that content. 
+Creators can decide how expensive keys to their locks are, how many keys can exist, and how long they last for. 
+Creators can create an unlimited number of locks.
+            </p>
+            
+
+            <p>
+              The blockchain allows us to store the ledger of who owns a lock and who owns keys in a decentralized place that nobody
+owns. It also allows creators to prove that they own a particular lock, and consumers to prove that they own a key for
+that lock. These facts are stored in the open, and don't require proprietary software to determine. Therefore, it's easy
+for any software application to integrate the Unlock protocol, free from licensing or restrictions. 
+            </p>
+            
+
+            <h2
+              id="adecentralizedprotocolvsacentralizedproduct"
+            >
+              A decentralized protocol vs a centralized product
+            </h2>
+            
+
+            <p>
+              While the open source code in this project is designed to set the standard for what the protocol can do, nobody is forced to
+use our code in order to use the protocol. It would be perfectly reasonable for someone else to 
+build a completely different codebase that uses the protocol. Think of this project as both a reference implementation 
+and the first service to use the open Unlock protocol for payments.
+            </p>
+            
+
+            <p>
+              Here's a random list:
+            </p>
+            
+
+            <ul>
+              
+
+              <li>
+                We need to include a list here so we can make sure the style displays properly, both for long list items
+              </li>
+              
+
+              <li>
+                … and for short ones.
+              </li>
+              
+
+              <li>
+                <a
+                  href="https://unlock-protocol.com"
+                >
+                  Here's our homepage
+                </a>
+              </li>
+              
+
+            </ul>
+            
+
+            <p>
+              And a numbered list:
+            </p>
+            
+
+            <ol>
+              
+
+              <li>
+                We need to include a list here so we can make sure the style displays properly, both for long list items
+              </li>
+              
+
+              <li>
+                … and for short ones.
+              </li>
+              
+
+              <li>
+                <a
+                  href="https://unlock-protocol.com"
+                >
+                  Here's our homepage
+                </a>
+              </li>
+              
+
+            </ol>
+            
+
+            <p>
+              And an image:
+            </p>
+            
+
+            <p>
+              <img
+                alt="Unlock"
+                src="https://raw.githubusercontent.com/unlock-protocol/unlock/master/unlock-app/src/static/images/unlock-word-mark.png?sanitize=true"
+              />
+            </p>
+            
+
+            <h2
+              id="whydoweneedtoremovemiddlemen"
+            >
+              Why do we need to remove middlemen?
+            </h2>
+            
+
+            <p>
+              Traditional, closed software products aim to "own the market" for a particular task. A proprietary
+version of Unlock might want to provide the sole service offering a payment gateway where people make
+money for their work. That single service gains enormous value, but also becomes a single point of failure:
+its corporate policies decide who can make money for their work. For example, it might not support
+payments from a particular country. In contrast, the Unlock Protocol project aims to create a completely
+open ecosystem for payments.
+            </p>
+            
+
+            <p>
+              On the modern web, only a handful of companies act as the gatekeeper for almost all content published
+online. Their policies dictate who can and can't be heard. Sometimes those policies are positive - like
+removing hate speech. But sometimes they silence minorities and prioritize harmful speech.
+            </p>
+            
+
+            <p>
+              We want to return to an era of openness, where a wide gene pool of ideas is supported by a
+genuinely collaborative ecosystem, where many companies and services can operate - just like the web itself.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="b1qsww-0 QgVND"
+    >
+      <h1
+        class="b1qsww-1 iIMngf"
+      >
+        Introduction to Unlock
+      </h1>
+      <h2
+        class="b1qsww-3 jKKooL"
+      >
+        Unlock enables creators to monetize their work directly - without relying on a middleman.
+      </h2>
+      <div
+        class="b1qsww-2 kKmmMr"
+      >
+        <h3
+          class="b1qsww-5 dadLRQ"
+        >
+          Reginald Pianoforte
+        </h3>
+        <div
+          class="b1qsww-6 hPjVGB"
+        >
+          August 20, 2018
+        </div>
+      </div>
+      <div
+        class="b1qsww-4 bKHcAy"
+      >
+        <div>
+          <p>
+            <a
+              href="https://unlock-protocol.com"
+            >
+              Unlock
+            </a>
+             is an 
+            <strong>
+              access control protocol
+            </strong>
+             that enables creators 
+to monetize their work directly - without relying on a middleman.
+          </p>
+          
+
+          <p>
+            Consumers manage all of their subscriptions in a consistent way, as well as earn discounts when 
+they share the best content and applications they use.
+          </p>
+          
+
+          <h2
+            id="accesspermissionsontheblockchain"
+          >
+            Access permissions on the blockchain
+          </h2>
+          
+
+          <p>
+            Unlock is an open 
+            <em>
+              protocol
+            </em>
+             for payments on the web.
+          </p>
+          
+
+          <p>
+            Creators place a 
+            <em>
+              lock
+            </em>
+             on their content. (This could be an article, or a software app, a whole site, a mailing list,
+or anything where taking a payment could be appropriate.) Consumers can then purchase a 
+            <em>
+              key
+            </em>
+             to access that content. 
+Creators can decide how expensive keys to their locks are, how many keys can exist, and how long they last for. 
+Creators can create an unlimited number of locks.
+          </p>
+          
+
+          <p>
+            The blockchain allows us to store the ledger of who owns a lock and who owns keys in a decentralized place that nobody
+owns. It also allows creators to prove that they own a particular lock, and consumers to prove that they own a key for
+that lock. These facts are stored in the open, and don't require proprietary software to determine. Therefore, it's easy
+for any software application to integrate the Unlock protocol, free from licensing or restrictions. 
+          </p>
+          
+
+          <h2
+            id="adecentralizedprotocolvsacentralizedproduct"
+          >
+            A decentralized protocol vs a centralized product
+          </h2>
+          
+
+          <p>
+            While the open source code in this project is designed to set the standard for what the protocol can do, nobody is forced to
+use our code in order to use the protocol. It would be perfectly reasonable for someone else to 
+build a completely different codebase that uses the protocol. Think of this project as both a reference implementation 
+and the first service to use the open Unlock protocol for payments.
+          </p>
+          
+
+          <p>
+            Here's a random list:
+          </p>
+          
+
+          <ul>
+            
+
+            <li>
+              We need to include a list here so we can make sure the style displays properly, both for long list items
+            </li>
+            
+
+            <li>
+              … and for short ones.
+            </li>
+            
+
+            <li>
+              <a
+                href="https://unlock-protocol.com"
+              >
+                Here's our homepage
+              </a>
+            </li>
+            
+
+          </ul>
+          
+
+          <p>
+            And a numbered list:
+          </p>
+          
+
+          <ol>
+            
+
+            <li>
+              We need to include a list here so we can make sure the style displays properly, both for long list items
+            </li>
+            
+
+            <li>
+              … and for short ones.
+            </li>
+            
+
+            <li>
+              <a
+                href="https://unlock-protocol.com"
+              >
+                Here's our homepage
+              </a>
+            </li>
+            
+
+          </ol>
+          
+
+          <p>
+            And an image:
+          </p>
+          
+
+          <p>
+            <img
+              alt="Unlock"
+              src="https://raw.githubusercontent.com/unlock-protocol/unlock/master/unlock-app/src/static/images/unlock-word-mark.png?sanitize=true"
+            />
+          </p>
+          
+
+          <h2
+            id="whydoweneedtoremovemiddlemen"
+          >
+            Why do we need to remove middlemen?
+          </h2>
+          
+
+          <p>
+            Traditional, closed software products aim to "own the market" for a particular task. A proprietary
+version of Unlock might want to provide the sole service offering a payment gateway where people make
+money for their work. That single service gains enormous value, but also becomes a single point of failure:
+its corporate policies decide who can make money for their work. For example, it might not support
+payments from a particular country. In contrast, the Unlock Protocol project aims to create a completely
+open ecosystem for payments.
+          </p>
+          
+
+          <p>
+            On the modern web, only a handful of companies act as the gatekeeper for almost all content published
+online. Their policies dictate who can and can't be heard. Sometimes those policies are positive - like
+removing hate speech. But sometimes they silence minorities and prioritize harmful speech.
+          </p>
+          
+
+          <p>
+            We want to return to an era of openness, where a wide gene pool of ideas is supported by a
+genuinely collaborative ecosystem, where many companies and services can operate - just like the web itself.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots BlogPost Blog post from markdown with author but no subtitle 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  max-width: 730px;
+  margin: auto;
+  font-family: 'IBM Plex Serif',serif;
+}
+
+.c1 {
+  color: var(--darkgrey);
+  font-size: 36px;
+  font-weight: 700;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  margin-bottom: 0;
+}
+
+.c2 {
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  color: var(--darkgrey);
+  font-size: 12px;
+  line-height: 12px;
+  margin-top: 0;
+  margin-bottom: 35px;
+}
+
+.c4 {
+  color: var(--darkgrey);
+  font-weight: 300;
+  line-height: 28px;
+  font-size: 16px;
+}
+
+.c4 strong {
+  font-weight: 800;
+}
+
+.c4 p {
+  margin-top: 0;
+}
+
+.c4 h2 {
+  font-weight: 800;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  font-size: 18px;
+}
+
+.c4 img {
+  max-width: 730px;
+}
+
+.c3 {
+  color: var(--brand);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <h1
+          class="c1"
+        >
+          Introduction to Unlock
+        </h1>
+        
+        <div
+          class="c2"
+        >
+          <h3
+            class="c3"
+          >
+            Reginald Pianoforte
+          </h3>
+          <div
+            class=""
+          >
+            August 20, 2018
+          </div>
+        </div>
+        <div
+          class="c4"
+        >
+          <div>
+            <p>
+              <a
+                href="https://unlock-protocol.com"
+              >
+                Unlock
+              </a>
+               is an 
+              <strong>
+                access control protocol
+              </strong>
+               that enables creators 
+to monetize their work directly - without relying on a middleman.
+            </p>
+            
+
+            <p>
+              Consumers manage all of their subscriptions in a consistent way, as well as earn discounts when 
+they share the best content and applications they use.
+            </p>
+            
+
+            <h2
+              id="accesspermissionsontheblockchain"
+            >
+              Access permissions on the blockchain
+            </h2>
+            
+
+            <p>
+              Unlock is an open 
+              <em>
+                protocol
+              </em>
+               for payments on the web.
+            </p>
+            
+
+            <p>
+              Creators place a 
+              <em>
+                lock
+              </em>
+               on their content. (This could be an article, or a software app, a whole site, a mailing list,
+or anything where taking a payment could be appropriate.) Consumers can then purchase a 
+              <em>
+                key
+              </em>
+               to access that content. 
+Creators can decide how expensive keys to their locks are, how many keys can exist, and how long they last for. 
+Creators can create an unlimited number of locks.
+            </p>
+            
+
+            <p>
+              The blockchain allows us to store the ledger of who owns a lock and who owns keys in a decentralized place that nobody
+owns. It also allows creators to prove that they own a particular lock, and consumers to prove that they own a key for
+that lock. These facts are stored in the open, and don't require proprietary software to determine. Therefore, it's easy
+for any software application to integrate the Unlock protocol, free from licensing or restrictions. 
+            </p>
+            
+
+            <h2
+              id="adecentralizedprotocolvsacentralizedproduct"
+            >
+              A decentralized protocol vs a centralized product
+            </h2>
+            
+
+            <p>
+              While the open source code in this project is designed to set the standard for what the protocol can do, nobody is forced to
+use our code in order to use the protocol. It would be perfectly reasonable for someone else to 
+build a completely different codebase that uses the protocol. Think of this project as both a reference implementation 
+and the first service to use the open Unlock protocol for payments.
+            </p>
+            
+
+            <p>
+              Here's a random list:
+            </p>
+            
+
+            <ul>
+              
+
+              <li>
+                We need to include a list here so we can make sure the style displays properly, both for long list items
+              </li>
+              
+
+              <li>
+                … and for short ones.
+              </li>
+              
+
+              <li>
+                <a
+                  href="https://unlock-protocol.com"
+                >
+                  Here's our homepage
+                </a>
+              </li>
+              
+
+            </ul>
+            
+
+            <p>
+              And a numbered list:
+            </p>
+            
+
+            <ol>
+              
+
+              <li>
+                We need to include a list here so we can make sure the style displays properly, both for long list items
+              </li>
+              
+
+              <li>
+                … and for short ones.
+              </li>
+              
+
+              <li>
+                <a
+                  href="https://unlock-protocol.com"
+                >
+                  Here's our homepage
+                </a>
+              </li>
+              
+
+            </ol>
+            
+
+            <p>
+              And an image:
+            </p>
+            
+
+            <p>
+              <img
+                alt="Unlock"
+                src="https://raw.githubusercontent.com/unlock-protocol/unlock/master/unlock-app/src/static/images/unlock-word-mark.png?sanitize=true"
+              />
+            </p>
+            
+
+            <h2
+              id="whydoweneedtoremovemiddlemen"
+            >
+              Why do we need to remove middlemen?
+            </h2>
+            
+
+            <p>
+              Traditional, closed software products aim to "own the market" for a particular task. A proprietary
+version of Unlock might want to provide the sole service offering a payment gateway where people make
+money for their work. That single service gains enormous value, but also becomes a single point of failure:
+its corporate policies decide who can make money for their work. For example, it might not support
+payments from a particular country. In contrast, the Unlock Protocol project aims to create a completely
+open ecosystem for payments.
+            </p>
+            
+
+            <p>
+              On the modern web, only a handful of companies act as the gatekeeper for almost all content published
+online. Their policies dictate who can and can't be heard. Sometimes those policies are positive - like
+removing hate speech. But sometimes they silence minorities and prioritize harmful speech.
+            </p>
+            
+
+            <p>
+              We want to return to an era of openness, where a wide gene pool of ideas is supported by a
+genuinely collaborative ecosystem, where many companies and services can operate - just like the web itself.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="b1qsww-0 QgVND"
+    >
+      <h1
+        class="b1qsww-1 iIMngf"
+      >
+        Introduction to Unlock
+      </h1>
+      
+      <div
+        class="b1qsww-2 kKmmMr"
+      >
+        <h3
+          class="b1qsww-5 dadLRQ"
+        >
+          Reginald Pianoforte
+        </h3>
+        <div
+          class="b1qsww-6 hPjVGB"
+        >
+          August 20, 2018
+        </div>
+      </div>
+      <div
+        class="b1qsww-4 bKHcAy"
+      >
+        <div>
+          <p>
+            <a
+              href="https://unlock-protocol.com"
+            >
+              Unlock
+            </a>
+             is an 
+            <strong>
+              access control protocol
+            </strong>
+             that enables creators 
+to monetize their work directly - without relying on a middleman.
+          </p>
+          
+
+          <p>
+            Consumers manage all of their subscriptions in a consistent way, as well as earn discounts when 
+they share the best content and applications they use.
+          </p>
+          
+
+          <h2
+            id="accesspermissionsontheblockchain"
+          >
+            Access permissions on the blockchain
+          </h2>
+          
+
+          <p>
+            Unlock is an open 
+            <em>
+              protocol
+            </em>
+             for payments on the web.
+          </p>
+          
+
+          <p>
+            Creators place a 
+            <em>
+              lock
+            </em>
+             on their content. (This could be an article, or a software app, a whole site, a mailing list,
+or anything where taking a payment could be appropriate.) Consumers can then purchase a 
+            <em>
+              key
+            </em>
+             to access that content. 
+Creators can decide how expensive keys to their locks are, how many keys can exist, and how long they last for. 
+Creators can create an unlimited number of locks.
+          </p>
+          
+
+          <p>
+            The blockchain allows us to store the ledger of who owns a lock and who owns keys in a decentralized place that nobody
+owns. It also allows creators to prove that they own a particular lock, and consumers to prove that they own a key for
+that lock. These facts are stored in the open, and don't require proprietary software to determine. Therefore, it's easy
+for any software application to integrate the Unlock protocol, free from licensing or restrictions. 
+          </p>
+          
+
+          <h2
+            id="adecentralizedprotocolvsacentralizedproduct"
+          >
+            A decentralized protocol vs a centralized product
+          </h2>
+          
+
+          <p>
+            While the open source code in this project is designed to set the standard for what the protocol can do, nobody is forced to
+use our code in order to use the protocol. It would be perfectly reasonable for someone else to 
+build a completely different codebase that uses the protocol. Think of this project as both a reference implementation 
+and the first service to use the open Unlock protocol for payments.
+          </p>
+          
+
+          <p>
+            Here's a random list:
+          </p>
+          
+
+          <ul>
+            
+
+            <li>
+              We need to include a list here so we can make sure the style displays properly, both for long list items
+            </li>
+            
+
+            <li>
+              … and for short ones.
+            </li>
+            
+
+            <li>
+              <a
+                href="https://unlock-protocol.com"
+              >
+                Here's our homepage
+              </a>
+            </li>
+            
+
+          </ul>
+          
+
+          <p>
+            And a numbered list:
+          </p>
+          
+
+          <ol>
+            
+
+            <li>
+              We need to include a list here so we can make sure the style displays properly, both for long list items
+            </li>
+            
+
+            <li>
+              … and for short ones.
+            </li>
+            
+
+            <li>
+              <a
+                href="https://unlock-protocol.com"
+              >
+                Here's our homepage
+              </a>
+            </li>
+            
+
+          </ol>
+          
+
+          <p>
+            And an image:
+          </p>
+          
+
+          <p>
+            <img
+              alt="Unlock"
+              src="https://raw.githubusercontent.com/unlock-protocol/unlock/master/unlock-app/src/static/images/unlock-word-mark.png?sanitize=true"
+            />
+          </p>
+          
+
+          <h2
+            id="whydoweneedtoremovemiddlemen"
+          >
+            Why do we need to remove middlemen?
+          </h2>
+          
+
+          <p>
+            Traditional, closed software products aim to "own the market" for a particular task. A proprietary
+version of Unlock might want to provide the sole service offering a payment gateway where people make
+money for their work. That single service gains enormous value, but also becomes a single point of failure:
+its corporate policies decide who can make money for their work. For example, it might not support
+payments from a particular country. In contrast, the Unlock Protocol project aims to create a completely
+open ecosystem for payments.
+          </p>
+          
+
+          <p>
+            On the modern web, only a handful of companies act as the gatekeeper for almost all content published
+online. Their policies dictate who can and can't be heard. Sometimes those policies are positive - like
+removing hate speech. But sometimes they silence minorities and prioritize harmful speech.
+          </p>
+          
+
+          <p>
+            We want to return to an era of openness, where a wide gene pool of ideas is supported by a
+genuinely collaborative ecosystem, where many companies and services can operate - just like the web itself.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots BlogPost Blog post from markdown with no subtitle or author 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  max-width: 730px;
+  margin: auto;
+  font-family: 'IBM Plex Serif',serif;
+}
+
+.c1 {
+  color: var(--darkgrey);
+  font-size: 36px;
+  font-weight: 700;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  margin-bottom: 0;
+}
+
+.c2 {
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  color: var(--darkgrey);
+  font-size: 12px;
+  line-height: 12px;
+  margin-top: 0;
+  margin-bottom: 35px;
+}
+
+.c4 {
+  color: var(--darkgrey);
+  font-weight: 300;
+  line-height: 28px;
+  font-size: 16px;
+}
+
+.c4 strong {
+  font-weight: 800;
+}
+
+.c4 p {
+  margin-top: 0;
+}
+
+.c4 h2 {
+  font-weight: 800;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  font-size: 18px;
+}
+
+.c4 img {
+  max-width: 730px;
+}
+
+.c3 {
+  color: var(--brand);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <h1
+          class="c1"
+        >
+          Introduction to Unlock
+        </h1>
+        
+        <div
+          class="c2"
+        >
+          <h3
+            class="c3"
+          >
+            Unlock team
+          </h3>
+          <div
+            class=""
+          >
+            August 20, 2018
+          </div>
+        </div>
+        <div
+          class="c4"
+        >
+          <div>
+            <p>
+              <a
+                href="https://unlock-protocol.com"
+              >
+                Unlock
+              </a>
+               is an 
+              <strong>
+                access control protocol
+              </strong>
+               that enables creators 
+to monetize their work directly - without relying on a middleman.
+            </p>
+            
+
+            <p>
+              Consumers manage all of their subscriptions in a consistent way, as well as earn discounts when 
+they share the best content and applications they use.
+            </p>
+            
+
+            <h2
+              id="accesspermissionsontheblockchain"
+            >
+              Access permissions on the blockchain
+            </h2>
+            
+
+            <p>
+              Unlock is an open 
+              <em>
+                protocol
+              </em>
+               for payments on the web.
+            </p>
+            
+
+            <p>
+              Creators place a 
+              <em>
+                lock
+              </em>
+               on their content. (This could be an article, or a software app, a whole site, a mailing list,
+or anything where taking a payment could be appropriate.) Consumers can then purchase a 
+              <em>
+                key
+              </em>
+               to access that content. 
+Creators can decide how expensive keys to their locks are, how many keys can exist, and how long they last for. 
+Creators can create an unlimited number of locks.
+            </p>
+            
+
+            <p>
+              The blockchain allows us to store the ledger of who owns a lock and who owns keys in a decentralized place that nobody
+owns. It also allows creators to prove that they own a particular lock, and consumers to prove that they own a key for
+that lock. These facts are stored in the open, and don't require proprietary software to determine. Therefore, it's easy
+for any software application to integrate the Unlock protocol, free from licensing or restrictions. 
+            </p>
+            
+
+            <h2
+              id="adecentralizedprotocolvsacentralizedproduct"
+            >
+              A decentralized protocol vs a centralized product
+            </h2>
+            
+
+            <p>
+              While the open source code in this project is designed to set the standard for what the protocol can do, nobody is forced to
+use our code in order to use the protocol. It would be perfectly reasonable for someone else to 
+build a completely different codebase that uses the protocol. Think of this project as both a reference implementation 
+and the first service to use the open Unlock protocol for payments.
+            </p>
+            
+
+            <p>
+              Here's a random list:
+            </p>
+            
+
+            <ul>
+              
+
+              <li>
+                We need to include a list here so we can make sure the style displays properly, both for long list items
+              </li>
+              
+
+              <li>
+                … and for short ones.
+              </li>
+              
+
+              <li>
+                <a
+                  href="https://unlock-protocol.com"
+                >
+                  Here's our homepage
+                </a>
+              </li>
+              
+
+            </ul>
+            
+
+            <p>
+              And a numbered list:
+            </p>
+            
+
+            <ol>
+              
+
+              <li>
+                We need to include a list here so we can make sure the style displays properly, both for long list items
+              </li>
+              
+
+              <li>
+                … and for short ones.
+              </li>
+              
+
+              <li>
+                <a
+                  href="https://unlock-protocol.com"
+                >
+                  Here's our homepage
+                </a>
+              </li>
+              
+
+            </ol>
+            
+
+            <p>
+              And an image:
+            </p>
+            
+
+            <p>
+              <img
+                alt="Unlock"
+                src="https://raw.githubusercontent.com/unlock-protocol/unlock/master/unlock-app/src/static/images/unlock-word-mark.png?sanitize=true"
+              />
+            </p>
+            
+
+            <h2
+              id="whydoweneedtoremovemiddlemen"
+            >
+              Why do we need to remove middlemen?
+            </h2>
+            
+
+            <p>
+              Traditional, closed software products aim to "own the market" for a particular task. A proprietary
+version of Unlock might want to provide the sole service offering a payment gateway where people make
+money for their work. That single service gains enormous value, but also becomes a single point of failure:
+its corporate policies decide who can make money for their work. For example, it might not support
+payments from a particular country. In contrast, the Unlock Protocol project aims to create a completely
+open ecosystem for payments.
+            </p>
+            
+
+            <p>
+              On the modern web, only a handful of companies act as the gatekeeper for almost all content published
+online. Their policies dictate who can and can't be heard. Sometimes those policies are positive - like
+removing hate speech. But sometimes they silence minorities and prioritize harmful speech.
+            </p>
+            
+
+            <p>
+              We want to return to an era of openness, where a wide gene pool of ideas is supported by a
+genuinely collaborative ecosystem, where many companies and services can operate - just like the web itself.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="b1qsww-0 QgVND"
+    >
+      <h1
+        class="b1qsww-1 iIMngf"
+      >
+        Introduction to Unlock
+      </h1>
+      
+      <div
+        class="b1qsww-2 kKmmMr"
+      >
+        <h3
+          class="b1qsww-5 dadLRQ"
+        >
+          Unlock team
+        </h3>
+        <div
+          class="b1qsww-6 hPjVGB"
+        >
+          August 20, 2018
+        </div>
+      </div>
+      <div
+        class="b1qsww-4 bKHcAy"
+      >
+        <div>
+          <p>
+            <a
+              href="https://unlock-protocol.com"
+            >
+              Unlock
+            </a>
+             is an 
+            <strong>
+              access control protocol
+            </strong>
+             that enables creators 
+to monetize their work directly - without relying on a middleman.
+          </p>
+          
+
+          <p>
+            Consumers manage all of their subscriptions in a consistent way, as well as earn discounts when 
+they share the best content and applications they use.
+          </p>
+          
+
+          <h2
+            id="accesspermissionsontheblockchain"
+          >
+            Access permissions on the blockchain
+          </h2>
+          
+
+          <p>
+            Unlock is an open 
+            <em>
+              protocol
+            </em>
+             for payments on the web.
+          </p>
+          
+
+          <p>
+            Creators place a 
+            <em>
+              lock
+            </em>
+             on their content. (This could be an article, or a software app, a whole site, a mailing list,
+or anything where taking a payment could be appropriate.) Consumers can then purchase a 
+            <em>
+              key
+            </em>
+             to access that content. 
+Creators can decide how expensive keys to their locks are, how many keys can exist, and how long they last for. 
+Creators can create an unlimited number of locks.
+          </p>
+          
+
+          <p>
+            The blockchain allows us to store the ledger of who owns a lock and who owns keys in a decentralized place that nobody
+owns. It also allows creators to prove that they own a particular lock, and consumers to prove that they own a key for
+that lock. These facts are stored in the open, and don't require proprietary software to determine. Therefore, it's easy
+for any software application to integrate the Unlock protocol, free from licensing or restrictions. 
+          </p>
+          
+
+          <h2
+            id="adecentralizedprotocolvsacentralizedproduct"
+          >
+            A decentralized protocol vs a centralized product
+          </h2>
+          
+
+          <p>
+            While the open source code in this project is designed to set the standard for what the protocol can do, nobody is forced to
+use our code in order to use the protocol. It would be perfectly reasonable for someone else to 
+build a completely different codebase that uses the protocol. Think of this project as both a reference implementation 
+and the first service to use the open Unlock protocol for payments.
+          </p>
+          
+
+          <p>
+            Here's a random list:
+          </p>
+          
+
+          <ul>
+            
+
+            <li>
+              We need to include a list here so we can make sure the style displays properly, both for long list items
+            </li>
+            
+
+            <li>
+              … and for short ones.
+            </li>
+            
+
+            <li>
+              <a
+                href="https://unlock-protocol.com"
+              >
+                Here's our homepage
+              </a>
+            </li>
+            
+
+          </ul>
+          
+
+          <p>
+            And a numbered list:
+          </p>
+          
+
+          <ol>
+            
+
+            <li>
+              We need to include a list here so we can make sure the style displays properly, both for long list items
+            </li>
+            
+
+            <li>
+              … and for short ones.
+            </li>
+            
+
+            <li>
+              <a
+                href="https://unlock-protocol.com"
+              >
+                Here's our homepage
+              </a>
+            </li>
+            
+
+          </ol>
+          
+
+          <p>
+            And an image:
+          </p>
+          
+
+          <p>
+            <img
+              alt="Unlock"
+              src="https://raw.githubusercontent.com/unlock-protocol/unlock/master/unlock-app/src/static/images/unlock-word-mark.png?sanitize=true"
+            />
+          </p>
+          
+
+          <h2
+            id="whydoweneedtoremovemiddlemen"
+          >
+            Why do we need to remove middlemen?
+          </h2>
+          
+
+          <p>
+            Traditional, closed software products aim to "own the market" for a particular task. A proprietary
+version of Unlock might want to provide the sole service offering a payment gateway where people make
+money for their work. That single service gains enormous value, but also becomes a single point of failure:
+its corporate policies decide who can make money for their work. For example, it might not support
+payments from a particular country. In contrast, the Unlock Protocol project aims to create a completely
+open ecosystem for payments.
+          </p>
+          
+
+          <p>
+            On the modern web, only a handful of companies act as the gatekeeper for almost all content published
+online. Their policies dictate who can and can't be heard. Sometimes those policies are positive - like
+removing hate speech. But sometimes they silence minorities and prioritize harmful speech.
+          </p>
+          
+
+          <p>
+            We want to return to an era of openness, where a wide gene pool of ideas is supported by a
+genuinely collaborative ecosystem, where many companies and services can operate - just like the web itself.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots BlogPost Blog post from markdown with subtitle but no author 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  max-width: 730px;
+  margin: auto;
+  font-family: 'IBM Plex Serif',serif;
+}
+
+.c1 {
+  color: var(--darkgrey);
+  font-size: 36px;
+  font-weight: 700;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  margin-bottom: 0;
+}
+
+.c3 {
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  color: var(--darkgrey);
+  font-size: 12px;
+  line-height: 12px;
+  margin-top: 0;
+  margin-bottom: 35px;
+}
+
+.c2 {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  color: var(--dimgrey);
+}
+
+.c5 {
+  color: var(--darkgrey);
+  font-weight: 300;
+  line-height: 28px;
+  font-size: 16px;
+}
+
+.c5 strong {
+  font-weight: 800;
+}
+
+.c5 p {
+  margin-top: 0;
+}
+
+.c5 h2 {
+  font-weight: 800;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  font-size: 18px;
+}
+
+.c5 img {
+  max-width: 730px;
+}
+
+.c4 {
+  color: var(--brand);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <h1
+          class="c1"
+        >
+          Introduction to Unlock
+        </h1>
+        <h2
+          class="c2"
+        >
+          Unlock enables creators to monetize their work directly - without relying on a middleman.
+        </h2>
+        <div
+          class="c3"
+        >
+          <h3
+            class="c4"
+          >
+            Unlock team
+          </h3>
+          <div
+            class=""
+          >
+            August 20, 2018
+          </div>
+        </div>
+        <div
+          class="c5"
+        >
+          <div>
+            <p>
+              <a
+                href="https://unlock-protocol.com"
+              >
+                Unlock
+              </a>
+               is an 
+              <strong>
+                access control protocol
+              </strong>
+               that enables creators 
+to monetize their work directly - without relying on a middleman.
+            </p>
+            
+
+            <p>
+              Consumers manage all of their subscriptions in a consistent way, as well as earn discounts when 
+they share the best content and applications they use.
+            </p>
+            
+
+            <h2
+              id="accesspermissionsontheblockchain"
+            >
+              Access permissions on the blockchain
+            </h2>
+            
+
+            <p>
+              Unlock is an open 
+              <em>
+                protocol
+              </em>
+               for payments on the web.
+            </p>
+            
+
+            <p>
+              Creators place a 
+              <em>
+                lock
+              </em>
+               on their content. (This could be an article, or a software app, a whole site, a mailing list,
+or anything where taking a payment could be appropriate.) Consumers can then purchase a 
+              <em>
+                key
+              </em>
+               to access that content. 
+Creators can decide how expensive keys to their locks are, how many keys can exist, and how long they last for. 
+Creators can create an unlimited number of locks.
+            </p>
+            
+
+            <p>
+              The blockchain allows us to store the ledger of who owns a lock and who owns keys in a decentralized place that nobody
+owns. It also allows creators to prove that they own a particular lock, and consumers to prove that they own a key for
+that lock. These facts are stored in the open, and don't require proprietary software to determine. Therefore, it's easy
+for any software application to integrate the Unlock protocol, free from licensing or restrictions. 
+            </p>
+            
+
+            <h2
+              id="adecentralizedprotocolvsacentralizedproduct"
+            >
+              A decentralized protocol vs a centralized product
+            </h2>
+            
+
+            <p>
+              While the open source code in this project is designed to set the standard for what the protocol can do, nobody is forced to
+use our code in order to use the protocol. It would be perfectly reasonable for someone else to 
+build a completely different codebase that uses the protocol. Think of this project as both a reference implementation 
+and the first service to use the open Unlock protocol for payments.
+            </p>
+            
+
+            <p>
+              Here's a random list:
+            </p>
+            
+
+            <ul>
+              
+
+              <li>
+                We need to include a list here so we can make sure the style displays properly, both for long list items
+              </li>
+              
+
+              <li>
+                … and for short ones.
+              </li>
+              
+
+              <li>
+                <a
+                  href="https://unlock-protocol.com"
+                >
+                  Here's our homepage
+                </a>
+              </li>
+              
+
+            </ul>
+            
+
+            <p>
+              And a numbered list:
+            </p>
+            
+
+            <ol>
+              
+
+              <li>
+                We need to include a list here so we can make sure the style displays properly, both for long list items
+              </li>
+              
+
+              <li>
+                … and for short ones.
+              </li>
+              
+
+              <li>
+                <a
+                  href="https://unlock-protocol.com"
+                >
+                  Here's our homepage
+                </a>
+              </li>
+              
+
+            </ol>
+            
+
+            <p>
+              And an image:
+            </p>
+            
+
+            <p>
+              <img
+                alt="Unlock"
+                src="https://raw.githubusercontent.com/unlock-protocol/unlock/master/unlock-app/src/static/images/unlock-word-mark.png?sanitize=true"
+              />
+            </p>
+            
+
+            <h2
+              id="whydoweneedtoremovemiddlemen"
+            >
+              Why do we need to remove middlemen?
+            </h2>
+            
+
+            <p>
+              Traditional, closed software products aim to "own the market" for a particular task. A proprietary
+version of Unlock might want to provide the sole service offering a payment gateway where people make
+money for their work. That single service gains enormous value, but also becomes a single point of failure:
+its corporate policies decide who can make money for their work. For example, it might not support
+payments from a particular country. In contrast, the Unlock Protocol project aims to create a completely
+open ecosystem for payments.
+            </p>
+            
+
+            <p>
+              On the modern web, only a handful of companies act as the gatekeeper for almost all content published
+online. Their policies dictate who can and can't be heard. Sometimes those policies are positive - like
+removing hate speech. But sometimes they silence minorities and prioritize harmful speech.
+            </p>
+            
+
+            <p>
+              We want to return to an era of openness, where a wide gene pool of ideas is supported by a
+genuinely collaborative ecosystem, where many companies and services can operate - just like the web itself.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="b1qsww-0 QgVND"
+    >
+      <h1
+        class="b1qsww-1 iIMngf"
+      >
+        Introduction to Unlock
+      </h1>
+      <h2
+        class="b1qsww-3 jKKooL"
+      >
+        Unlock enables creators to monetize their work directly - without relying on a middleman.
+      </h2>
+      <div
+        class="b1qsww-2 kKmmMr"
+      >
+        <h3
+          class="b1qsww-5 dadLRQ"
+        >
+          Unlock team
+        </h3>
+        <div
+          class="b1qsww-6 hPjVGB"
+        >
+          August 20, 2018
+        </div>
+      </div>
+      <div
+        class="b1qsww-4 bKHcAy"
+      >
+        <div>
+          <p>
+            <a
+              href="https://unlock-protocol.com"
+            >
+              Unlock
+            </a>
+             is an 
+            <strong>
+              access control protocol
+            </strong>
+             that enables creators 
+to monetize their work directly - without relying on a middleman.
+          </p>
+          
+
+          <p>
+            Consumers manage all of their subscriptions in a consistent way, as well as earn discounts when 
+they share the best content and applications they use.
+          </p>
+          
+
+          <h2
+            id="accesspermissionsontheblockchain"
+          >
+            Access permissions on the blockchain
+          </h2>
+          
+
+          <p>
+            Unlock is an open 
+            <em>
+              protocol
+            </em>
+             for payments on the web.
+          </p>
+          
+
+          <p>
+            Creators place a 
+            <em>
+              lock
+            </em>
+             on their content. (This could be an article, or a software app, a whole site, a mailing list,
+or anything where taking a payment could be appropriate.) Consumers can then purchase a 
+            <em>
+              key
+            </em>
+             to access that content. 
+Creators can decide how expensive keys to their locks are, how many keys can exist, and how long they last for. 
+Creators can create an unlimited number of locks.
+          </p>
+          
+
+          <p>
+            The blockchain allows us to store the ledger of who owns a lock and who owns keys in a decentralized place that nobody
+owns. It also allows creators to prove that they own a particular lock, and consumers to prove that they own a key for
+that lock. These facts are stored in the open, and don't require proprietary software to determine. Therefore, it's easy
+for any software application to integrate the Unlock protocol, free from licensing or restrictions. 
+          </p>
+          
+
+          <h2
+            id="adecentralizedprotocolvsacentralizedproduct"
+          >
+            A decentralized protocol vs a centralized product
+          </h2>
+          
+
+          <p>
+            While the open source code in this project is designed to set the standard for what the protocol can do, nobody is forced to
+use our code in order to use the protocol. It would be perfectly reasonable for someone else to 
+build a completely different codebase that uses the protocol. Think of this project as both a reference implementation 
+and the first service to use the open Unlock protocol for payments.
+          </p>
+          
+
+          <p>
+            Here's a random list:
+          </p>
+          
+
+          <ul>
+            
+
+            <li>
+              We need to include a list here so we can make sure the style displays properly, both for long list items
+            </li>
+            
+
+            <li>
+              … and for short ones.
+            </li>
+            
+
+            <li>
+              <a
+                href="https://unlock-protocol.com"
+              >
+                Here's our homepage
+              </a>
+            </li>
+            
+
+          </ul>
+          
+
+          <p>
+            And a numbered list:
+          </p>
+          
+
+          <ol>
+            
+
+            <li>
+              We need to include a list here so we can make sure the style displays properly, both for long list items
+            </li>
+            
+
+            <li>
+              … and for short ones.
+            </li>
+            
+
+            <li>
+              <a
+                href="https://unlock-protocol.com"
+              >
+                Here's our homepage
+              </a>
+            </li>
+            
+
+          </ol>
+          
+
+          <p>
+            And an image:
+          </p>
+          
+
+          <p>
+            <img
+              alt="Unlock"
+              src="https://raw.githubusercontent.com/unlock-protocol/unlock/master/unlock-app/src/static/images/unlock-word-mark.png?sanitize=true"
+            />
+          </p>
+          
+
+          <h2
+            id="whydoweneedtoremovemiddlemen"
+          >
+            Why do we need to remove middlemen?
+          </h2>
+          
+
+          <p>
+            Traditional, closed software products aim to "own the market" for a particular task. A proprietary
+version of Unlock might want to provide the sole service offering a payment gateway where people make
+money for their work. That single service gains enormous value, but also becomes a single point of failure:
+its corporate policies decide who can make money for their work. For example, it might not support
+payments from a particular country. In contrast, the Unlock Protocol project aims to create a completely
+open ecosystem for payments.
+          </p>
+          
+
+          <p>
+            On the modern web, only a handful of companies act as the gatekeeper for almost all content published
+online. Their policies dictate who can and can't be heard. Sometimes those policies are positive - like
+removing hate speech. But sometimes they silence minorities and prioritize harmful speech.
+          </p>
+          
+
+          <p>
+            We want to return to an era of openness, where a wide gene pool of ideas is supported by a
+genuinely collaborative ecosystem, where many companies and services can operate - just like the web itself.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Buttons/Layout Buttons About 1`] = `
 Object {
   "asFragment": [Function],
@@ -13682,7 +15838,8 @@ Object {
 exports[`Storyshots CreatorAccount With no key purchased 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c7 {
+  "baseElement": <body>
+    .c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -13796,8 +15953,7 @@ Object {
   }
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
