@@ -1,6 +1,6 @@
 const url = require('../helpers/url')
 
-describe('Unlock', () => {
+describe('The Unlock Homepage', () => {
   it('should display "unlock" text on page', async () => {
     const page = await browser.newPage()
     await page.goto(url('/'))
