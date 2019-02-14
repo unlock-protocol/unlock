@@ -13,12 +13,6 @@ describe('The Unlock Dashboard', () => {
     await expect(page).toMatch('0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2')
   })
 
-  it('should list the balance of the currently active address', async () => {
-    const balance = await page.waitFor('.dKpFcq')
-    await page.waitFor(1500)
-    await expect(balance).toMatch('99')
-  })
-
   it('should have a button allowing the creation of a Lock', async () => {
     const button = await page.waitFor('button')
     await expect(button).toMatch('Create Lock')
