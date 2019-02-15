@@ -38,6 +38,39 @@ describe('useListenForPostMessage hook', () => {
     )
   })
 
+  it('only subscribes on mount, and not on update', () => {
+    expect.assertions(1)
+
+    const { rerender } = rtl.testHook(
+      () => useListenForPostMessage(fakeWindow),
+      {
+        wrapper,
+      }
+    )
+
+    rerender()
+
+    expect(fakeWindow.addEventListener).toHaveBeenCalledTimes(1)
+  })
+
+  it('unsubscribes on unmount', () => {
+    expect.assertions(1)
+
+    const { unmount } = rtl.testHook(
+      () => useListenForPostMessage(fakeWindow),
+      {
+        wrapper,
+      }
+    )
+
+    unmount()
+
+    expect(fakeWindow.removeEventListener).toHaveBeenCalledWith(
+      'message',
+      expect.any(Function)
+    )
+  })
+
   it('ignores calls on the server', () => {
     expect.assertions(1)
 
