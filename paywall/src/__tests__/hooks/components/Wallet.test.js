@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import * as rtl from 'react-testing-library'
 import MockWeb3 from 'web3'
 
@@ -7,63 +6,19 @@ import Wallet, {
   useCreateWallet,
   WalletContext,
 } from '../../../hooks/components/Wallet'
-import { ConfigContext } from '../../../hooks/utils/useConfig'
 import { MISSING_PROVIDER, NOT_ENABLED_IN_PROVIDER } from '../../../errors'
+import { wrapperMaker, expectError } from '../helpers'
 
 jest.mock('web3')
 
 describe('Wallet component', () => {
-  const { Provider } = ConfigContext
-
   let config
-
-  class Catcher extends React.Component {
-    static propTypes = {
-      children: PropTypes.node.isRequired,
-    }
-    state = {
-      error: '',
-    }
-    componentDidCatch(error) {
-      this.setState({ error: error.message })
-    }
-
-    render() {
-      const { children } = this.props
-      const { error } = this.state
-      if (error) return <div>{error}</div>
-      return <>{children}</>
-    }
-  }
-
-  function wrapper(props) {
-    return (
-      <Catcher>
-        <Provider value={config} {...props} />
-      </Catcher>
-    )
-  }
+  let wrapper
 
   describe('useCreateWallet', () => {
-    function expectError(cb, err) {
-      // Record all errors.
-      let topLevelErrors = []
-      function handleTopLevelError(event) {
-        topLevelErrors.push(event.error)
-        // Prevent logging
-        event.preventDefault()
-      }
-      window.addEventListener('error', handleTopLevelError)
-      try {
-        cb()
-        expect(topLevelErrors).toHaveLength(1)
-        expect(topLevelErrors[0].message).toBe(err)
-      } finally {
-        window.removeEventListener('error', handleTopLevelError)
-      }
-    }
     beforeEach(() => {
       config = { providers: ['first'] }
+      wrapper = wrapperMaker(config)
     })
 
     it('throws if there are no providers', () => {
