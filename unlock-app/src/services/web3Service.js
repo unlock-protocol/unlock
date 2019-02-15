@@ -551,6 +551,7 @@ export default class Web3Service extends EventEmitter {
 
     // Once all lock attributes have been fetched
     return Promise.all(constantPromises).then(() => {
+      update.unlimitedKeys = update.maxNumberOfKeys === -1
       this.emit('lock.updated', address, update)
       return update
     })
