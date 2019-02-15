@@ -34,9 +34,7 @@ const LockKeysNumbers = ({ lock }) => (
     typeof lock.outstandingKeys !== 'undefined' &&
     typeof lock.maxNumberOfKeys !== 'undefined'
       ? `${lock.outstandingKeys}/${
-          lock.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
-            ? INFINITY
-            : lock.maxNumberOfKeys
+          lock.unlimitedKeys ? INFINITY : lock.maxNumberOfKeys
         }`
       : ' - '}
   </LockKeys>
