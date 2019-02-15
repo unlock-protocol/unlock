@@ -14,7 +14,7 @@ module.exports = {
     browser: true,
     jest: true,
   },
-  plugins: ['jest', 'mocha', 'promise'],
+  plugins: ['jest', 'mocha', 'promise', 'react-hooks'],
   parser: 'babel-eslint',
   settings: {
     react: {
