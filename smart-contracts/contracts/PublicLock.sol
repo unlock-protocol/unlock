@@ -53,6 +53,13 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint refundPenaltyDenominator
   );
 
+  event Destroy(
+    uint balance,
+    address indexed owner
+  );
+
+  event Disable();
+
   // Fields
   // Unlock Protocol address
   // TODO: should we make that private/internal?
@@ -173,7 +180,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   // Only allow usage when contract is Alive
   modifier onlyIfAlive() {
-    require(isAlive, "No access after contract has been deprecated");
+    require(isAlive, "No access after contract has been disabled");
     _;
   }
 
@@ -388,6 +395,33 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   }
 
   /**
+  * @dev Used to disable lock before migrating keys and/or destroying contract
+   */
+  function disableLock()
+    external
+    onlyOwner
+    onlyIfAlive
+  {
+    emit Disable();
+    isAlive = false;
+  }
+
+  /**
+  * @dev Used to clean up old lock contracts from the blockchain
+  * TODO: add a check to ensure all keys are INVALID!
+   */
+  function destroyLock()
+    external
+    onlyOwner
+  {
+    require(isAlive == false, "Not allowed to delete an active lock");
+    emit Destroy(this.balance, msg.sender);
+    selfdestruct(msg.sender);
+    // Note we don't clean up the `locks` data in Unlock.sol as it should not be necessary
+    // and leaves some data behind ("Unlock.LockBalances") which may be helpful.
+  }
+
+  /**
    * In the specific case of a Lock, each owner can own only at most 1 key.
    * @return The number of NFTs owned by `_owner`, either 0 or 1.
   */
@@ -404,8 +438,8 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   /**
    * @dev Determines how much of a refund a key owner would receive if they issued
-   * a cancelAndRefund now.  
-   * Note that due to the time required to mine a tx, the actual refund amount will be lower 
+   * a cancelAndRefund now.
+   * Note that due to the time required to mine a tx, the actual refund amount will be lower
    * than what the user reads from this call.
    */
   function getCancelAndRefundValueFor(
@@ -683,7 +717,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   /**
    * @dev Determines how much of a refund a key owner would receive if they issued
-   * a cancelAndRefund now.  
+   * a cancelAndRefund now.
    * @param _owner The owner of the key check the refund value for.
    */
   function _getCancelAndRefundValue(
