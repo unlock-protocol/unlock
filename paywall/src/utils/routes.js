@@ -24,6 +24,9 @@ export const lockRoute = path => {
   }
 }
 
-export default {
-  lockRoute,
+export function getRouteFromWindow(window) {
+  if (!window) {
+    return lockRoute('')
+  }
+  return lockRoute(window.location.pathname + window.location.hash)
 }
