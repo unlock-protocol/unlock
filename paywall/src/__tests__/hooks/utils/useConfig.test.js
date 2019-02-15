@@ -28,13 +28,4 @@ describe('useConfig hook', () => {
 
     expect(current).toBe(config)
   })
-  it('uses the configuration as its default value', () => {
-    expect.assertions(1)
-
-    const {
-      result: { current },
-    } = rtl.testHook(() => useConfig(), { wrapper })
-
-    expect(current).toBe(config)
-  })
 })
