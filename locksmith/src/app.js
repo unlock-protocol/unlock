@@ -107,12 +107,17 @@ router.post('/transaction', async (req, res) => {
     transaction.recipient
   ) {
     try {
-      await Transaction.create({
-        transactionHash: transaction.transactionHash,
-        sender: ethJsUtil.toChecksumAddress(transaction.sender),
-        recipient: ethJsUtil.toChecksumAddress(transaction.recipient),
+      await Transaction.findOrCreate({
+        where: {
+          transactionHash: transaction.transactionHash,
+        },
+        defaults: {
+          transactionHash: transaction.transactionHash,
+          sender: ethJsUtil.toChecksumAddress(transaction.sender),
+          recipient: ethJsUtil.toChecksumAddress(transaction.recipient),
+        },
       })
-      res.sendStatus(200)
+      res.sendStatus(202)
     } catch (e) {
       res.sendStatus(400)
     }

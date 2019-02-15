@@ -290,23 +290,41 @@ describe('Requesting Lock details of a given address', () => {
     })
 
     describe('storing a transaction', () => {
-      it('stores the provided transaction', async () => {
-        expect.assertions(2)
+      describe("when the transaction hasn't already been stored", () => {
+        it('stores the provided transaction', async () => {
+          expect.assertions(2)
 
-        let response = await request(app)
-          .post('/transaction')
-          .set('Accept', /json/)
-          .send({
-            transactionHash: '0xsdbegjkbg,egf',
-            sender: '0xSDgErGR',
-            recipient: '0xSdaG433r',
+          let response = await request(app)
+            .post('/transaction')
+            .set('Accept', /json/)
+            .send({
+              transactionHash: '0xsdbegjkbg,egf',
+              sender: '0xSDgErGR',
+              recipient: '0xSdaG433r',
+            })
+
+          let record = await Transaction.findOne({
+            where: { sender: '0xSDgErGR', recipient: '0xSdaG433r' },
           })
-
-        let record = await Transaction.findOne({
-          where: { sender: '0xSDgErGR', recipient: '0xSdaG433r' },
+          expect(record.sender).toBe('0xSDgErGR')
+          expect(response.statusCode).toBe(202)
         })
-        expect(record.sender).toBe('0xSDgErGR')
-        expect(response.statusCode).toBe(200)
+      })
+
+      describe('when the transaction already exists in storage', () => {
+        it('returns an accepted status code', async () => {
+          expect.assertions(1)
+          let response = await request(app)
+            .post('/transaction')
+            .set('Accept', /json/)
+            .send({
+              transactionHash: '0x345546565',
+              sender: '0xcAFe',
+              recipient: '0xbeefe',
+            })
+
+          expect(response.statusCode).toBe(202)
+        })
       })
     })
   })
