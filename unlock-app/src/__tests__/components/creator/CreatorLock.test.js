@@ -35,6 +35,7 @@ const unlimitedlock = {
   balance: '1',
   outstandingKeys: 1,
   maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+  unlimitedKeys: true,
   expirationDuration: 100,
 }
 

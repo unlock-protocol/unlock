@@ -163,6 +163,7 @@ export class CreatorLockForm extends React.Component {
       keyPrice: keyPrice.toString(10), // In Eth
       maxNumberOfKeys: unlimitedKeys ? UNLIMITED_KEYS_COUNT : maxNumberOfKeys,
       owner: account.address,
+      unlimitedKeys,
     }
 
     createLock(lock)

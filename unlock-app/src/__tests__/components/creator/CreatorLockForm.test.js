@@ -278,6 +278,7 @@ describe('CreatorLockForm', () => {
           expirationDuration: 2592000,
           keyPrice: '0.01',
           maxNumberOfKeys: 10,
+          unlimitedKeys: false,
           name: 'New Lock',
           owner: 'hi',
         })

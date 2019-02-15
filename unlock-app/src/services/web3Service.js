@@ -6,7 +6,7 @@ import ethJsUtil from 'ethereumjs-util'
 import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
-import { TRANSACTION_TYPES, MAX_UINT } from '../constants'
+import { TRANSACTION_TYPES, MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
 import { NON_DEPLOYED_CONTRACT } from '../errors'
 
 const {
@@ -517,7 +517,7 @@ export default class Web3Service extends EventEmitter {
       expirationDuration: parseInt,
       maxNumberOfKeys: value => {
         if (value === MAX_UINT) {
-          return -1
+          return UNLIMITED_KEYS_COUNT
         }
         return parseInt(value)
       },
@@ -551,6 +551,7 @@ export default class Web3Service extends EventEmitter {
 
     // Once all lock attributes have been fetched
     return Promise.all(constantPromises).then(() => {
+      update.unlimitedKeys = update.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
       this.emit('lock.updated', address, update)
       return update
     })
