@@ -14,7 +14,7 @@ interface ILockCore {
   */
   function purchaseFor(
     address _recipient,
-    bytes _data
+    bytes  _data
   )
     external
     payable;
@@ -28,11 +28,11 @@ interface ILockCore {
   function purchaseForFrom(
     address _recipient,
     address _referrer,
-    bytes _data
+    bytes  _data
   )
     external
     payable;
-    
+
   /**
    * @dev Destroys the user's key and sends a refund based on the amount of time remaining.
    */
@@ -71,10 +71,30 @@ interface ILockCore {
     external;
 
   /**
+  * @dev Used to disable lock before migrating keys and/or destroying contract.
+  * @dev Reverts if called by anyone but the owner.
+  * @dev Reverts if isAlive == false
+  * @dev Should emit Disable event.
+  */
+  function disableLock(
+  )
+    external;
+
+  /**
+  * @dev Used to clean up old lock contracts from the blockchain by using selfdestruct.
+  * @dev Reverts if called by anyone but the owner.
+  * @dev Reverts if isAlive == true
+  * @dev Should emit Destroy event.
+   */
+  function destroyLock(
+  )
+    external;
+
+  /**
    * @dev Determines how much of a refund a key owner would receive if they issued
-   * a cancelAndRefund now.  
+   * a cancelAndRefund now.
    * @param _owner The owner of the key check the refund value for.
-   * Note that due to the time required to mine a tx, the actual refund amount will be lower 
+   * Note that due to the time required to mine a tx, the actual refund amount will be lower
    * than what the user reads from this call.
    */
   function getCancelAndRefundValueFor(
@@ -120,7 +140,7 @@ interface ILockCore {
   )
     external
     view
-    returns (bytes data);
+    returns (bytes memory data);
 
   /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
@@ -143,5 +163,5 @@ interface ILockCore {
   )
     external
     view
-    returns (address[]);
+    returns (address[] memory);
 }
