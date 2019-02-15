@@ -8,6 +8,8 @@ import LockContract from '../../artifacts/contracts/PublicLock.json'
 import configure from '../../config'
 import { TRANSACTION_TYPES } from '../../constants'
 
+jest.unmock('web3')
+
 const nodeAccounts = [
   '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
   '0xaca94ef8bd5ffee41947b4585a84bda5a3d3da6e',

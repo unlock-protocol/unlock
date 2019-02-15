@@ -16,6 +16,7 @@ import {
 import { POLLING_INTERVAL } from '../../constants'
 
 jest.mock('../../utils/promises')
+jest.unmock('web3')
 
 const nockScope = nock('http://127.0.0.1:8545', { encodedQueryParams: true })
 
