@@ -44,6 +44,9 @@ export function useCreateWallet() {
         prepare()
       }
     },
+    // this effect will only re-run if the provider given to us by configuration changes
+    // currently, that's never, but leaves open the possibility of future changes.
+    // It will not, however, re-run on any other component update, which is a good thing
     [provider]
   )
 
