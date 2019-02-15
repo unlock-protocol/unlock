@@ -99,12 +99,13 @@ describe('Wallet component', () => {
           <Wallet>
             <WalletContext.Consumer>
               {wallet => {
-                switch (render++) {
-                  case 0:
-                    expect(wallet).toBe(undefined)
-                    break
-                  case 1:
-                    expect(wallet).toBe(fakeWeb3)
+                if (render++) {
+                  // note, on initial render, the wallet is not ready, and is undefined
+                  // During the reconciliation process, the useEffect call in useCreateWallet
+                  // sets the wallet state to the new web3 object. This triggers a 2nd
+                  // render pass, which is why this test only checks the result on renders
+                  // past the first render
+                  expect(wallet).toBe(fakeWeb3)
                 }
               }}
             </WalletContext.Consumer>
