@@ -25,7 +25,7 @@ import {
 } from './LockStyles'
 import { updateKeyPrice } from '../../actions/lock'
 
-import { INFINITY, UNLIMITED_KEYS_COUNT } from '../../constants'
+import { INFINITY } from '../../constants'
 
 const LockKeysNumbers = ({ lock }) => (
   <LockKeys>
