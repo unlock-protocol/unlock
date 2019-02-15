@@ -686,6 +686,7 @@ describe('Web3Service', () => {
           keyPrice: Web3Utils.fromWei('10000000000000000', 'ether'),
           expirationDuration: 2592000,
           maxNumberOfKeys: 10,
+          unlimitedKeys: false,
           owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
           outstandingKeys: 17,
           asOf: 1337,
@@ -730,6 +731,7 @@ describe('Web3Service', () => {
         expect(address).toBe(lockAddress)
         expect(update).toMatchObject({
           maxNumberOfKeys: -1,
+          unlimitedKeys: true,
         })
         done()
       })
