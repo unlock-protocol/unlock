@@ -19,7 +19,7 @@ describe('useUnlockContract hook', () => {
     wrapper = wrapperMaker(config)
   })
 
-  it('retrives the unlock address from config if present', () => {
+  it('retrieves the unlock address from config if present', () => {
     const {
       result: { current: address },
     } = rtl.testHook(() => useUnlockContract(), { wrapper })
