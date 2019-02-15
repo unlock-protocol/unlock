@@ -63,7 +63,7 @@ contract('Lock', accounts => {
       })
 
       it('previously valid key is no longer valid', async () => {
-        assert.equal(await lock.getHasValidKey(accounts[1]), false)
+        assert.equal(await lock.getHasValidKey.call(accounts[1]), false)
       })
 
       // After selfdestruct, a user can't buy a key, but if they try they loose their money.
@@ -84,7 +84,7 @@ contract('Lock', accounts => {
         assert.equal(finalLockBalance, 10000000000000000)
 
         // The user did not purchase a key, but still sent their eth to the contract.
-        assert.equal(await lock.getHasValidKey(accounts[1]), false)
+        assert.equal(await lock.getHasValidKey.call(accounts[1]), false)
       })
     })
   })

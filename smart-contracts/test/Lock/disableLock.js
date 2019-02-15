@@ -95,7 +95,7 @@ contract('Lock', accounts => {
       })
 
       it('should still allow access to non-payable contract functions', async () => {
-        let HasValidKey = await lock.getHasValidKey(accounts[1])
+        let HasValidKey = await lock.getHasValidKey.call(accounts[1])
         assert.equal(HasValidKey, true)
       })
     })
