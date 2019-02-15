@@ -11,7 +11,7 @@
     "before": "npm run build-paywall",
     "build": "npm run before && next build",
     "start": "npm run before && next start",
-    "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
+    "test": "cross-env UNLOCK_ENV=test jest test.js --env=jsdom",
     "lint": "eslint .",
     "reformat": "prettier-eslint \"src/**/*.js\" --write",
     "fail-pending-changes": "../scripts/pending-changes.sh",
