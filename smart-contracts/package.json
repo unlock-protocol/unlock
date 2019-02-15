@@ -18,7 +18,7 @@
     "ethereumjs-units": "^0.2.0",
     "openzeppelin-eth": "^2.0.2",
     "shelljs": "^0.8.3",
-    "solhint": "^1.4.0",
+    "solhint": "^2.0.0",
     "solidity-coverage": "^0.5.11",
     "truffle": "^4.1.15",
     "truffle-hdwallet-provider": "^1.0.3",
