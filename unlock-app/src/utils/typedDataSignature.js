@@ -3,15 +3,28 @@ export default class TypedDataSignature {
     this.web3 = web3
   }
 
+  web3HTTPProviderSignTypedDataHandler(method, signee, data) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let result = await this.web3.currentProvider.send(method, [
+          signee,
+          data,
+        ])
+        resolve(result)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
   generalSignTypedDataHandler(method, signee, data) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       this.web3.currentProvider.send(
         {
           method: method,
           params: [signee, data],
           from: signee,
         },
-
         (err, result) => {
           if (err) {
             reject(err)
@@ -22,16 +35,19 @@ export default class TypedDataSignature {
     })
   }
 
-  generateSignature(signer, data) {
-    let method
-
+  generateSignature(signee, data) {
     if (this.web3.currentProvider.isMetaMask) {
-      method = 'eth_signTypedData_v3'
-      data = JSON.stringify(data)
+      return this.generalSignTypedDataHandler(
+        'eth_signTypedData_v3',
+        signee,
+        JSON.stringify(data)
+      )
     } else {
-      method = 'eth_signTypedData'
+      return this.web3HTTPProviderSignTypedDataHandler(
+        'eth_signTypedData',
+        signee,
+        data
+      )
     }
-
-    return this.generalSignTypedDataHandler(method, signer, data)
   }
 }
