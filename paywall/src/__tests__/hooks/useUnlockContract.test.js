@@ -11,6 +11,7 @@ describe('useUnlockContract hook', () => {
   let wrapper
 
   const unlockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
+  const fakeIt = '0xaaa88be5e8eb88e38e6ff5ce186d764676012b0b'
   const requiredNetworkId = 1984
 
   beforeEach(() => {
@@ -29,15 +30,21 @@ describe('useUnlockContract hook', () => {
     config.unlockAddress = false
     wrapper = wrapperMaker(config)
 
-    const {
-      result: { current: address },
-    } = rtl.testHook(() => useUnlockContract(), { wrapper })
+    const save = UnlockContract.networks[requiredNetworkId]
+    try {
+      UnlockContract.networks[requiredNetworkId] = { address: fakeIt }
+      const {
+        result: { current: address },
+      } = rtl.testHook(() => useUnlockContract(), { wrapper })
 
-    expect(address).toBe(
-      Web3Utils.toChecksumAddress(
-        UnlockContract.networks[requiredNetworkId].address
+      expect(address).toBe(
+        Web3Utils.toChecksumAddress(
+          UnlockContract.networks[requiredNetworkId].address
+        )
       )
-    )
+    } finally {
+      UnlockContract.networks[requiredNetworkId] = save
+    }
   })
   it('throws NON_DEPLOYED_CONTRACT if the first two conditions fail', () => {
     config.unlockAddress = false
