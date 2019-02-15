@@ -24,9 +24,9 @@ contract('Lock', (accounts) => {
       it('should fail', async () => {
         const lock = locks['FIRST']
         await shouldFail(lock
-          .purchaseForFrom(accounts[0], accounts[1], Web3Utils.toHex('Julien')), 'Key is not valid')
+          .purchaseForFrom(accounts[0], accounts[1], Web3Utils.toHex('Julien')), 'KEY_NOT_VALID')
         // Making sure we do not have a key set!
-        await shouldFail(lock.keyExpirationTimestampFor.call(accounts[0]), 'No such key')
+        await shouldFail(lock.keyExpirationTimestampFor.call(accounts[0]), 'NO_SUCH_KEY')
       })
     })
 

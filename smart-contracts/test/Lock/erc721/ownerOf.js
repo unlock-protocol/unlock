@@ -15,7 +15,7 @@ contract('Lock ERC721', accounts => {
 
   describe('ownerOf', () => {
     it('should abort when the key has no owner', async () => {
-      await shouldFail(locks['FIRST'].ownerOf.call(accounts[3]), 'No such key')
+      await shouldFail(locks['FIRST'].ownerOf.call(accounts[3]), 'NO_SUCH_KEY')
     })
 
     it('should return the owner of the key', async () => {

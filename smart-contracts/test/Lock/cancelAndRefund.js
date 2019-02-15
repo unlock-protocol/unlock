@@ -133,13 +133,13 @@ contract('Lock', (accounts) => {
         })
         await shouldFail(lock.cancelAndRefund({
           from: keyOwners[3]
-        }), 'Key is not valid')
+        }), 'KEY_NOT_VALID')
       })
 
       it('the owner does not have a key', async () => {
         await shouldFail(lock.cancelAndRefund({
           from: accounts[7]
-        }), 'Key is not valid')
+        }), 'KEY_NOT_VALID')
       })
     })
   })
