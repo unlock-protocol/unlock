@@ -78,4 +78,16 @@ describe('useLock hook', () => {
 
     expect(lock).toEqual({ address: lockAddress })
   })
+  it('does not update unless web3 changes', () => {
+    const { rerender } = rtl.testHook(
+      () => {
+        useLock(lockAddress)
+      },
+      { wrapper }
+    )
+
+    rerender()
+
+    expect(web3.eth.Contract).toHaveBeenCalledTimes(1)
+  })
 })
