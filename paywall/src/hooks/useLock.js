@@ -15,10 +15,11 @@ export default function useLock(lockAddress) {
   })
   useEffect(
     () => {
+      if (!web3) return
       const contract = new web3.eth.Contract(LockContract.abi, lockAddress)
       getLockAttributes(contract)
     },
-    [lockAddress]
+    [web3, lockAddress]
   )
   return lock
 }
