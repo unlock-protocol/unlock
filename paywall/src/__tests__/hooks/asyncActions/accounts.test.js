@@ -19,6 +19,8 @@ describe('useAccount async account actions', () => {
       },
     }
 
+    // this helper function allows us to easily create a mock getAccount
+    // to test the code works as expected
     function testMockGetAccount() {
       return makeGetAccount({
         window: fakeWindow,
@@ -62,7 +64,7 @@ describe('useAccount async account actions', () => {
         }
       })
       describe('paywall in iframe', () => {
-        describe('account does not exist', () => {
+        describe('account does not exist (like in coinbase wallet)', () => {
           beforeEach(() => {
             accounts = []
           })
@@ -124,6 +126,7 @@ describe('useAccount async account actions', () => {
     let setAccount
     let setBalance
 
+    // easy mock pollForAccountChange creator for testing
     function testMockPollForAccount() {
       return makePollForAccountChange({
         web3,
