@@ -12,6 +12,10 @@ import {
   makePollForAccountChange,
 } from '../../hooks/asyncActions/accounts'
 
+// we are going to mock out everything possible
+// in order to deal with asynchrony and hooks
+// React testing has not yet caught up with async functions in hooks
+// and this is the cleanest way to easily test them
 jest.mock('../../hooks/utils/usePoll')
 jest.mock('../../hooks/browser/useLocalStorage')
 jest.mock('../../hooks/asyncActions/accounts.js')
@@ -24,6 +28,11 @@ describe('useAccount hook', () => {
   let getAccount
   let pollForAccounts
 
+  // wrapper to use with rtl's testHook
+  // allows us to pass in the mock wallet
+  // the InnerWrapper is pulled from the test helpers file
+  // and includes passing in mock config and testing for errors
+  // thrown in hooks
   function wrapper(props) {
     return (
       <WalletContext.Provider value={wallet}>
