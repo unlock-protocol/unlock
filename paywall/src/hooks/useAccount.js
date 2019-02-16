@@ -24,6 +24,7 @@ export default function useAccount(window) {
     '__unlock__account__'
   )
 
+  // all account/balance retrieval and setting happens here
   const getAccount = makeGetAccount({
     window,
     web3,
@@ -37,9 +38,10 @@ export default function useAccount(window) {
     () => {
       getAccount()
     },
-    [web3]
+    [web3] // this effect only runs on mount and when (if) the wallet is ready
   )
 
+  // all polling for changes to account happens here
   const pollForAccountChange = makePollForAccountChange({
     web3,
     isInIframe,
