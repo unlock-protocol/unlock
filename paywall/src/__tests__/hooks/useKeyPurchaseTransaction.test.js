@@ -40,10 +40,18 @@ describe('useKeyPurchaseTransaction hook', () => {
         blockNumber: 5,
       },
     }
+    const confirmingAction = {
+      type: 'mined',
+      info: {
+        blockNumber: 7,
+        requiredConfirmations: 3,
+      },
+    }
     const minedAction = {
       type: 'mined',
       info: {
         blockNumber: 7,
+        requiredConfirmations: 2,
       },
     }
     const failedAction = {
@@ -81,6 +89,16 @@ describe('useKeyPurchaseTransaction hook', () => {
           blockNumber: 5,
           confirmations: 0,
         })
+      })
+      it('confirming', () => {
+        transaction.blockNumber = 5
+        expect(handleTransactionUpdates(transaction, confirmingAction)).toEqual(
+          {
+            status: 'confirming',
+            blockNumber: 5,
+            confirmations: 2,
+          }
+        )
       })
       it('mined', () => {
         transaction.blockNumber = 5
@@ -239,7 +257,7 @@ describe('useKeyPurchaseTransaction hook', () => {
         })
 
         expect(makeTransactionPoll).toHaveBeenCalledWith({
-          transaction: { status: 'inactive' },
+          transaction: { status: 'inactive', confirmations: 0 },
           requiredConfirmations: 5,
           getTransactionInfo,
         })

@@ -41,11 +41,12 @@ export function handleTransactionUpdates(transaction, update) {
   }
   // transaction has been mined, is on the chain, and a new block has been mined
   if (type === 'mined') {
-    const { blockNumber } = info
+    const { blockNumber, requiredConfirmations } = info
+    const confirmations = blockNumber - transaction.blockNumber
     return {
       ...transaction,
-      status: 'mined',
-      confirmations: blockNumber - transaction.blockNumber,
+      status: confirmations < requiredConfirmations ? 'confirming' : 'mined',
+      confirmations,
     }
   }
   // transaction receipt showed the transaction was not propagated for some error
@@ -65,7 +66,7 @@ export default function useKeyPurchaseTransaction(window, lock) {
   const { blockSize, requiredConfirmations } = useConfig()
   const [transaction, updateTransaction] = useReducer(
     handleTransactionUpdates,
-    { status: 'inactive' }
+    { status: 'inactive', confirmations: 0 }
   )
   const transactionHash = transaction.hash
   const { account } = useAccount(window)
@@ -76,7 +77,11 @@ export default function useKeyPurchaseTransaction(window, lock) {
     updateTransaction({ type: 'new', info: { lock: lock.address, account } })
   const startTransaction = (to, abi, blockNumber) =>
     updateTransaction({ type: 'update', info: { to, abi, blockNumber } })
-  const mineTransaction = () => updateTransaction({ type: 'mined', info: {} })
+  const mineTransaction = blockNumber =>
+    updateTransaction({
+      type: 'mined',
+      info: { blockNumber, requiredConfirmations },
+    })
   const failTransaction = () => updateTransaction({ type: 'fail' })
 
   const purchaseKey = () => {
