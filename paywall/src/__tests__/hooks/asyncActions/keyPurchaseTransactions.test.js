@@ -55,19 +55,20 @@ describe('useKeyPurchaseTransactions hook async helper generators', () => {
       expect(web3.eth.getBlockNumber).not.toHaveBeenCalled()
       expect(web3.eth.getTransaction).not.toHaveBeenCalled()
     })
-    it('triggers newTransaction if there is no transaction on the chain yet', async () => {
+    it('does nothing if there is no transaction on the chain yet', async () => {
       transaction = undefined
       const getTransactionInfo = mockMakeGetTransactionInfo()
 
       await getTransactionInfo()
 
-      expect(newTransaction).toHaveBeenCalled()
+      expect(newTransaction).not.toHaveBeenCalled()
       expect(web3.eth.getTransaction).toHaveBeenCalledWith(transactionHash)
     })
-    it('triggers startTransaction if there is a pending transaction, but no block number yet', async () => {
+    it.only('triggers startTransaction if there is a pending transaction, and transaction has a dummy block number set', async () => {
       const to = 'to'
       const input = 'input'
-      const blockNumber = null
+      const asOf = 1367482364
+      const blockNumber = 342
       transaction = {
         to,
         input,
@@ -75,7 +76,7 @@ describe('useKeyPurchaseTransactions hook async helper generators', () => {
       }
       const getTransactionInfo = mockMakeGetTransactionInfo()
 
-      await getTransactionInfo()
+      await getTransactionInfo({ asOf })
 
       expect(startTransaction).toHaveBeenCalledWith(to, input, blockNumber)
     })
@@ -86,7 +87,7 @@ describe('useKeyPurchaseTransactions hook async helper generators', () => {
       blockNumber = 2
       const getTransactionInfo = mockMakeGetTransactionInfo()
 
-      await getTransactionInfo()
+      await getTransactionInfo({ asOf: 1 })
 
       expect(mineTransaction).toHaveBeenCalledWith(2)
     })
@@ -100,7 +101,7 @@ describe('useKeyPurchaseTransactions hook async helper generators', () => {
       }
       const getTransactionInfo = mockMakeGetTransactionInfo()
 
-      await getTransactionInfo()
+      await getTransactionInfo({ asOf: 1 })
 
       expect(failTransaction).toHaveBeenCalled()
     })

@@ -37,7 +37,7 @@ describe('useKeyPurchaseTransaction hook', () => {
       info: {
         to: 'to',
         abi: 'abi',
-        blockNumber: 5,
+        asOf: 5,
       },
     }
     const confirmingAction = {
@@ -72,7 +72,7 @@ describe('useKeyPurchaseTransaction hook', () => {
           status: 'pending',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           confirmations: 0,
-          blockNumber: Number.MAX_SAFE_INTEGER,
+          asOf: Number.MAX_SAFE_INTEGER,
         })
       })
       it('hash', () => {
@@ -86,25 +86,25 @@ describe('useKeyPurchaseTransaction hook', () => {
           status: 'inactive',
           to: 'to',
           abi: 'abi',
-          blockNumber: 5,
+          asOf: 5,
           confirmations: 0,
         })
       })
       it('confirming', () => {
-        transaction.blockNumber = 5
+        transaction.asOf = 5
         expect(handleTransactionUpdates(transaction, confirmingAction)).toEqual(
           {
             status: 'confirming',
-            blockNumber: 5,
+            asOf: 5,
             confirmations: 2,
           }
         )
       })
       it('mined', () => {
-        transaction.blockNumber = 5
+        transaction.asOf = 5
         expect(handleTransactionUpdates(transaction, minedAction)).toEqual({
           status: 'mined',
-          blockNumber: 5,
+          asOf: 5,
           confirmations: 2,
         })
       })
@@ -122,7 +122,7 @@ describe('useKeyPurchaseTransaction hook', () => {
         status: 'pending',
         type: TRANSACTION_TYPES.KEY_PURCHASE,
         confirmations: 0,
-        blockNumber: Number.MAX_SAFE_INTEGER,
+        asOf: Number.MAX_SAFE_INTEGER,
       })
 
       transaction = handleTransactionUpdates(transaction, hashAction)
@@ -133,7 +133,7 @@ describe('useKeyPurchaseTransaction hook', () => {
         status: 'pending',
         type: TRANSACTION_TYPES.KEY_PURCHASE,
         confirmations: 0,
-        blockNumber: Number.MAX_SAFE_INTEGER,
+        asOf: Number.MAX_SAFE_INTEGER,
       })
 
       transaction = handleTransactionUpdates(transaction, startAction)
@@ -141,7 +141,7 @@ describe('useKeyPurchaseTransaction hook', () => {
         lock: 'lock',
         to: 'to',
         abi: 'abi',
-        blockNumber: 5,
+        asOf: 5,
         hash: 'hash',
         account: 'account',
         status: 'pending',
@@ -154,7 +154,7 @@ describe('useKeyPurchaseTransaction hook', () => {
         lock: 'lock',
         to: 'to',
         abi: 'abi',
-        blockNumber: 5,
+        asOf: 5,
         hash: 'hash',
         account: 'account',
         status: 'mined',
@@ -167,7 +167,7 @@ describe('useKeyPurchaseTransaction hook', () => {
         lock: 'lock',
         to: 'to',
         abi: 'abi',
-        blockNumber: 5,
+        asOf: 5,
         hash: 'hash',
         account: 'account',
         status: 'failed',
@@ -211,7 +211,7 @@ describe('useKeyPurchaseTransaction hook', () => {
       transactionPoll = jest.fn()
       makeGetTransactionInfo.mockImplementation(() => getTransactionInfo)
       makeTransactionPoll.mockImplementation(() => transactionPoll)
-      config = { blockSize: 5, requiredConfirmations: 5 }
+      config = { blockTime: 5, requiredConfirmations: 5 }
       InnerWrapper = wrapperMaker(config)
 
       useAccount.mockImplementation(() => ({ account: 'account' }))
@@ -361,6 +361,7 @@ describe('useKeyPurchaseTransaction hook', () => {
 
         expect(sendNewKeyPurchaseTransaction).toHaveBeenCalledWith({
           contract: LockContract,
+          wallet,
           to: 'lockaddress',
           from: 'account',
           data: 'abi',

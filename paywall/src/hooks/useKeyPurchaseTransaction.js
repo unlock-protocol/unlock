@@ -26,7 +26,7 @@ export function handleTransactionUpdates(transaction, update) {
       status: 'pending',
       type: TRANSACTION_TYPES.KEY_PURCHASE,
       confirmations: 0,
-      blockNumber: Number.MAX_SAFE_INTEGER, // Assign the largest block number for sorting purposes
+      asOf: Number.MAX_SAFE_INTEGER, // Assign the largest block number for sorting purposes
     }
   }
   // triggered when we get the transaction hash before the transaction is sent to the miners
@@ -36,13 +36,14 @@ export function handleTransactionUpdates(transaction, update) {
   }
   // triggered when the transaction has been sent and we are waiting for miners to put it into blocks
   if (type === 'start') {
-    const { to, abi, blockNumber } = info
-    return { ...transaction, to, abi, blockNumber, confirmations: 0 }
+    const { to, abi, asOf } = info
+    if (transaction.asof === asOf) return transaction
+    return { ...transaction, to, abi, asOf, confirmations: 0 }
   }
   // transaction has been mined, is on the chain, and a new block has been mined
   if (type === 'mined') {
     const { blockNumber, requiredConfirmations } = info
-    const confirmations = blockNumber - transaction.blockNumber
+    const confirmations = blockNumber - transaction.asOf
     return {
       ...transaction,
       status: confirmations < requiredConfirmations ? 'confirming' : 'mined',
@@ -63,7 +64,7 @@ export default function useKeyPurchaseTransaction(window, lock) {
   const web3 = useWeb3()
   const wallet = useWallet()
   const [error, setError] = useState()
-  const { blockSize, requiredConfirmations } = useConfig()
+  const { blockTime, requiredConfirmations } = useConfig()
   const [transaction, updateTransaction] = useReducer(
     handleTransactionUpdates,
     { status: 'inactive', confirmations: 0 }
@@ -75,8 +76,8 @@ export default function useKeyPurchaseTransaction(window, lock) {
   const setHash = hash => updateTransaction({ type: 'hash', info: { hash } })
   const newTransaction = () =>
     updateTransaction({ type: 'new', info: { lock: lock.address, account } })
-  const startTransaction = (to, abi, blockNumber) =>
-    updateTransaction({ type: 'update', info: { to, abi, blockNumber } })
+  const startTransaction = (to, abi, asOf) =>
+    updateTransaction({ type: 'start', info: { to, abi, asOf } })
   const mineTransaction = blockNumber =>
     updateTransaction({
       type: 'mined',
@@ -85,7 +86,7 @@ export default function useKeyPurchaseTransaction(window, lock) {
   const failTransaction = () => updateTransaction({ type: 'fail' })
 
   const purchaseKey = () => {
-    if (!lock || !account) return
+    if (!lock || !account || transaction.status !== 'inactive') return
     // when we enable transfer of existing keys, data will be the existing key's data
     const data = ''
     const lockContract = new wallet.eth.Contract(LockContract.abi, lock.address)
@@ -94,6 +95,7 @@ export default function useKeyPurchaseTransaction(window, lock) {
       .purchaseFor(account, Web3Utils.utf8ToHex(data || ''))
       .encodeABI()
     sendNewKeyPurchaseTransaction({
+      wallet,
       to: lock.address,
       from: account,
       data: abi,
@@ -121,7 +123,7 @@ export default function useKeyPurchaseTransaction(window, lock) {
     getTransactionInfo,
   })
 
-  usePoll(transactionPoll, blockSize / 2)
+  usePoll(transactionPoll, blockTime / 2)
 
   useEffect(
     () => {

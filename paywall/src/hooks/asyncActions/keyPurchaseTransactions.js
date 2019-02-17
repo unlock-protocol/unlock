@@ -1,12 +1,11 @@
 export function makeGetTransactionInfo({
   web3,
   transactionHash,
-  newTransaction,
   startTransaction,
   mineTransaction,
   failTransaction,
 }) {
-  const getTransactionInfo = async () => {
+  const getTransactionInfo = async transaction => {
     if (!transactionHash) return
     const [blockNumber, blockTransaction] = await Promise.all([
       web3.eth.getBlockNumber(),
@@ -16,7 +15,6 @@ export function makeGetTransactionInfo({
     // If the block transaction is missing the transaction has been submitted but not
     // received by all nodes
     if (!blockTransaction) {
-      newTransaction()
       return
     }
 
@@ -25,7 +23,8 @@ export function makeGetTransactionInfo({
     // This means the transaction is not in a block yet (ie. not mined), but has been propagated
     // We do not know what the transaction is about though so we need to extract its info from
     // the input.
-    if (blockTransaction.blockNumber === null) {
+    if (blockTransaction.blockNumber === null) return
+    if (transaction.asOf !== blockTransaction.blockNumber) {
       startTransaction(
         blockTransaction.to,
         blockTransaction.input,
@@ -56,9 +55,9 @@ export function makeTransactionPoll({
   getTransactionInfo,
 }) {
   const transactionPoll = async () => {
-    if (!['pending', 'mined'].includes(transaction.status)) return
+    if (!['pending', 'confirming', 'mined'].includes(transaction.status)) return
     if (transaction.confirmations >= requiredConfirmations) return
-    getTransactionInfo()
+    getTransactionInfo(transaction)
   }
   return transactionPoll
 }
