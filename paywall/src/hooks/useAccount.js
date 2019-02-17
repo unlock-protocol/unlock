@@ -38,7 +38,7 @@ export default function useAccount(window) {
     () => {
       getAccount()
     },
-    [web3] // this effect only runs on mount and when (if) the wallet is ready
+    [web3, localStorageAccount, isInIframe] // this effect only runs on mount and when (if) the wallet is ready
   )
 
   // all polling for changes to account happens here
