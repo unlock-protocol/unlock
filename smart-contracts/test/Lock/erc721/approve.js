@@ -19,7 +19,7 @@ contract('Lock ERC721', accounts => {
           locks['FIRST'].approve(accounts[2], 42, {
             from: accounts[1]
           }),
-          'Not the key owner'
+          'No such key'
         )
       })
     })
@@ -43,7 +43,7 @@ contract('Lock ERC721', accounts => {
             locks['FIRST'].approve(accounts[2], ID, {
               from: accounts[2]
             }),
-            'Not the key owner'
+            'Only key owner or approved'
           )
         })
       })

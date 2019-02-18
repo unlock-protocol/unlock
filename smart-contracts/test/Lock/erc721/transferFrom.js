@@ -76,10 +76,11 @@ contract('Lock ERC721', accounts => {
 
       it('should abort if the recipient is 0x', async () => {
         await shouldFail(
-          locks['FIRST'].transferFrom(from, Web3Utils.padLeft(0, 40), from, {
+          locks['FIRST'].transferFrom(from, Web3Utils.padLeft(0, 40),
+            await locks['FIRST'].getTokenIdFor.call(from), {
             from
           }),
-          'No approved recipient exists'
+          'Can\'t Transfer to 0x Address'
         )
         // Ensuring that ownership of the key did not change
         const expirationTimestamp = new BigNumber(
@@ -213,7 +214,7 @@ contract('Lock ERC721', accounts => {
 
         it('approval should be cleared after a transfer', async () => {
           await shouldFail(
-            locks['FIRST'].getApproved(accountApproved),
+            locks['FIRST'].getApproved.call(ID),
             'No approved recipient exists'
           )
         })

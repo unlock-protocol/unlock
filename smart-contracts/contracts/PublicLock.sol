@@ -7,6 +7,9 @@ import "openzeppelin-eth/contracts/ownership/Ownable.sol";
 import "./interfaces/IERC721Receiver.sol";
 import "openzeppelin-eth/contracts/introspection/ERC165.sol";
 import "openzeppelin-eth/contracts/math/SafeMath.sol";
+import "./mixins/MixinERC721Approval.sol";
+import "./mixins/MixinKeyOwner.sol";
+import "./mixins/MixinDeprecateAndDestroy.sol";
 
 /**
  * TODO: consider error codes rather than strings
@@ -20,7 +23,15 @@ import "openzeppelin-eth/contracts/math/SafeMath.sol";
  * Every ERC-721 compliant contract must implement the ERC165 interface.
  * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
  */
-contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
+contract PublicLock is 
+  IERC721,
+  IERC721Receiver,
+  ILockCore,
+  MixinKeyOwner,
+  Ownable, 
+  ERC165,
+  MixinDeprecateAndDestroy,
+  MixinERC721Approval {
 
   using SafeMath for uint;
 
@@ -53,13 +64,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint refundPenaltyDenominator
   );
 
-  event Destroy(
-    uint balance,
-    address indexed owner
-  );
-
-  event Disable();
-
   // Fields
   // Unlock Protocol address
   // TODO: should we make that private/internal?
@@ -83,9 +87,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   // The version number for this lock contract,
   uint public publicLockVersion;
 
-  // Used to disable payable functions when deprecating an old lock
-  bool public isAlive;
-
   // CancelAndRefund will return funds based on time remaining minus this penalty.
   // This is a denominator, so 10 means 10% penalty and 20 means 5% penalty.
   uint public refundPenaltyDenominator;
@@ -95,25 +96,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   // TODO: could we use public here? (this could be confusing though because it getter will
   // return 0 values when missing a key)
   mapping (address => Key) internal keyByOwner;
-
-  // Each tokenId can have at most exactly one owner at a time.
-  // Returns 0 if the token does not exist
-  // TODO: once we decouple tokenId from owner address (incl in js), then we can consider
-  // merging this with numberOfKeysSold into an array instead.
-  mapping (uint => address) internal ownerByTokenId;
-
-  // Addresses of owners are also stored in an array.
-  // Addresses are never removed by design to avoid abuses around referals
-  address[] public owners;
-
-  // Keeping track of approved transfers
-  // This is a mapping of addresses which have approved
-  // the transfer of a key to another address where their key can be transfered
-  // Note: the approver may actually NOT have a key... and there can only
-  // be a single approved beneficiary
-  // Note 2: for transfer, both addresses will be different
-  // Note 3: for sales (new keys on restricted locks), both addresses will be the same
-  mapping (uint => address) internal approved;
 
   /**
    * MODIFIERS
@@ -139,48 +121,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     _;
   }
 
-  // Ensure that the caller owns the key
-  modifier onlyKeyOwner(
-    uint _tokenId
-  ) {
-    require(
-      ownerByTokenId[_tokenId] == msg.sender, "Not the key owner"
-    );
-    _;
-  }
-
-  // Ensures that a key has an owner
-  modifier isKey(
-    uint _tokenId
-  ) {
-    require(
-      ownerByTokenId[_tokenId] != address(0), "No such key"
-    );
-    _;
-  }
-
-  // Ensure that the caller has a key
-  // or that the caller has been approved
-  // for ownership of that key
-  modifier onlyKeyOwnerOrApproved(
-    uint _tokenId
-  ) {
-    require(
-      ownerByTokenId[_tokenId] == msg.sender
-      || _getApproved(_tokenId) == msg.sender
-    , "Only key owner or approved owner");
-    _;
-  }
-
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
     require(maxNumberOfKeys > numberOfKeysSold, "Maximum number of keys already sold");
-    _;
-  }
-
-  // Only allow usage when contract is Alive
-  modifier onlyIfAlive() {
-    require(isAlive, "No access after contract has been disabled");
     _;
   }
 
@@ -201,7 +144,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
     publicLockVersion = _version;
-    isAlive = true;
     refundPenaltyDenominator = 10;
   }
 
@@ -306,8 +248,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     // Effectively expiring the key for the previous owner
     keyByOwner[_from].expirationTimestamp = now;
 
-    // Clear any previous approvals
-    approved[_tokenId] = address(0);
+    _clearApproval(_tokenId);
 
     // trigger event
     emit Transfer(
@@ -347,27 +288,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   }
 
   /**
-   * This approves _approved to get ownership of _tokenId.
-   * Note: that since this is used for both purchase and transfer approvals
-   * the approved token may not exist.
-   */
-  function approve(
-    address _approved,
-    uint _tokenId
-  )
-    external
-    payable
-    onlyIfAlive
-    onlyKeyOwner(_tokenId)
-  {
-    require(_approved != address(0));
-    require(msg.sender != _approved, "You can't approve yourself");
-
-    approved[_tokenId] = _approved;
-    emit Approval(ownerByTokenId[_tokenId], _approved, _tokenId);
-  }
-
-  /**
    * A function which lets the owner of the lock to change the price for future purchases.
    */
   function updateKeyPrice(
@@ -392,33 +312,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   {
     emit RefundPenaltyDenominatorChanged(refundPenaltyDenominator, _refundPenaltyDenominator);
     refundPenaltyDenominator = _refundPenaltyDenominator;
-  }
-
-  /**
-  * @dev Used to disable lock before migrating keys and/or destroying contract
-   */
-  function disableLock()
-    external
-    onlyOwner
-    onlyIfAlive
-  {
-    emit Disable();
-    isAlive = false;
-  }
-
-  /**
-  * @dev Used to clean up old lock contracts from the blockchain
-  * TODO: add a check to ensure all keys are INVALID!
-   */
-  function destroyLock()
-    external
-    onlyOwner
-  {
-    require(isAlive == false, "Not allowed to delete an active lock");
-    emit Destroy(this.balance, msg.sender);
-    selfdestruct(msg.sender);
-    // Note we don't clean up the `locks` data in Unlock.sol as it should not be necessary
-    // and leaves some data behind ("Unlock.LockBalances") which may be helpful.
   }
 
   /**
@@ -453,21 +346,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   }
 
   /**
-   * @notice ERC721: Find the owner of an NFT
-   * @return The address of the owner of the NFT, if applicable
-  */
-  function ownerOf(
-    uint _tokenId
-  )
-    external
-    view
-    isKey(_tokenId)
-    returns (address)
-  {
-    return ownerByTokenId[_tokenId];
-  }
-
-  /**
    * @notice Find the tokenId for a given user
    * @return The tokenId of the NFT, else revert
   */
@@ -480,20 +358,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     returns (uint)
   {
     return keyByOwner[_account].tokenId;
-  }
-
-  /**
-   * external version
-   * Will return the approved recipient for a key, if any.
-   */
-  function getApproved(
-    uint _tokenId
-  )
-    external
-    view
-    returns (address)
-  {
-    return _getApproved(_tokenId);
   }
 
   /**
@@ -510,18 +374,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   }
 
   /**
-   * Public function which returns the total number of unique owners (both expired
-   * and valid).  This may be larger than outstandingKeys.
-   */
-  function numberOfOwners()
-    public
-    view
-    returns (uint)
-  {
-    return owners.length;
-  }
-
-  /**
    * Public function which returns the total number of unique keys sold (both
    * expired and valid)
    */
@@ -531,41 +383,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     returns (uint)
   {
     return numberOfKeysSold;
-  }
-
- /**
-  * A function which returns a subset of the keys for this Lock as an array
-  * @param _page the page of key owners requested when faceted by page size
-  * @param _pageSize the number of Key Owners requested per page
-  */
-  function getOwnersByPage(uint _page, uint _pageSize)
-    public
-    view
-    returns (address[])
-  {
-    require(outstandingKeys() > 0, "No keys to retrieve");
-    uint _startIndex = _page * _pageSize;
-    require(_startIndex >= 0 && _startIndex < outstandingKeys(), "Index must be in-bounds");
-    uint endOfPageIndex;
-
-    if (_startIndex + _pageSize > owners.length) {
-      endOfPageIndex = owners.length;
-      _pageSize = owners.length - _startIndex;
-    } else {
-      endOfPageIndex = (_startIndex + _pageSize);
-    }
-
-    // new temp in-memory array to hold pageSize number of requested owners:
-    address[] memory ownersByPage = new address[](_pageSize);
-    uint pageIndex = 0;
-
-    // Build the requested set of owners into a new temporary array:
-    for (uint i = _startIndex; i < endOfPageIndex; i++) {
-      ownersByPage[pageIndex] = owners[i];
-      pageIndex++;
-    }
-
-    return ownersByPage;
   }
 
   /**
@@ -609,6 +426,41 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     returns (uint timestamp)
   {
     return keyByOwner[_owner].expirationTimestamp;
+  }
+
+ /**
+  * A function which returns a subset of the keys for this Lock as an array
+  * @param _page the page of key owners requested when faceted by page size
+  * @param _pageSize the number of Key Owners requested per page
+  */
+  function getOwnersByPage(uint _page, uint _pageSize)
+    public
+    view
+    returns (address[])
+  {
+    require(outstandingKeys() > 0, "No keys to retrieve");
+    uint _startIndex = _page * _pageSize;
+    require(_startIndex >= 0 && _startIndex < outstandingKeys(), "Index must be in-bounds");
+    uint endOfPageIndex;
+
+    if (_startIndex + _pageSize > owners.length) {
+      endOfPageIndex = owners.length;
+      _pageSize = owners.length - _startIndex;
+    } else {
+      endOfPageIndex = (_startIndex + _pageSize);
+    }
+
+    // new temp in-memory array to hold pageSize number of requested owners:
+    address[] memory ownersByPage = new address[](_pageSize);
+    uint pageIndex = 0;
+
+    // Build the requested set of owners into a new temporary array:
+    for (uint i = _startIndex; i < endOfPageIndex; i++) {
+      ownersByPage[pageIndex] = owners[i];
+      pageIndex++;
+    }
+
+    return ownersByPage;
   }
 
   /**
@@ -742,23 +594,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
         refund = 0;
       }
     }
-  }
-
-  /**
-   * Will return the approved recipient for a key transfer or ownership.
-   * Note: this does not check that a corresponding key
-   * actually exists.
-   */
-  function _getApproved(
-    uint _tokenId
-  )
-    internal
-    view
-    returns (address)
-  {
-    address approvedRecipient = approved[_tokenId];
-    require(approvedRecipient != address(0), "No approved recipient exists");
-    return approvedRecipient;
   }
 
   /**
