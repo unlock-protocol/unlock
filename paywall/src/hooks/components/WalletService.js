@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 import walletService from '../../services/walletService'
 import useConfig from '../utils/useConfig'
 
-const WalletServiceContext = createContext()
-const WalletStateContext = createContext()
+export const WalletServiceContext = createContext()
+export const WalletStateContext = createContext()
 
 export default function WalletService({ children, noPoll = false }) {
-  const { WalletServiceProvider } = WalletServiceContext
-  const { WalletStateProvider } = WalletStateContext
+  const { Provider: WalletServiceProvider } = WalletServiceContext
+  const { Provider: WalletStateProvider } = WalletStateContext
   const config = useConfig()
   const [walletState, updateWalletState] = useReducer(
     (state, action) => {
