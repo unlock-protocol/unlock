@@ -8,7 +8,7 @@
     "@storybook/addon-knobs": "^4.1.12",
     "@storybook/addon-storyshots": "^4.1.12",
     "@storybook/addons": "^4.1.12",
-    "@storybook/react": "4.1.11",
+    "@storybook/react": "4.1.12",
     "@zeit/next-source-maps": "0.0.3",
     "axios": "^0.18.0",
     "babel-loader": "^8.0.4",
