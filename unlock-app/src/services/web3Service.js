@@ -3,8 +3,11 @@ import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
 import ethJsUtil from 'ethereumjs-util'
 
+/* eslint-disable import/no-unresolved */
 import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
+/* eslint-enable import/no-unresolved */
+
 import configure from '../config'
 import { TRANSACTION_TYPES, MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
 import { NON_DEPLOYED_CONTRACT } from '../errors'

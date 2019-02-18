@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 
+/* eslint-disable import/no-unresolved */
 import LockContract from '../artifacts/contracts/PublicLock.json'
+/* eslint-enable import/no-unresolved */
+
 import useWeb3 from './web3/useWeb3'
 import { makeGetLockAttributes } from './asyncActions/locks'
 
