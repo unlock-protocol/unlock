@@ -7,7 +7,7 @@ module.exports = {
     '<rootDir>/src/__tests__/utils/fixtures/',
   ],
   transform: {
-    '^.+\\.(js|jsx)$': '<rootDir>/node_modules/babel-jest',
+    '^.+\\.(js|jsx)$': 'babel-jest',
   },
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
 }

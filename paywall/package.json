@@ -32,7 +32,6 @@
     "cross-env": "^5.2.0",
     "ethereumjs-util": "^6.0.0",
     "history": "^4.7.2",
-    "jest": "^24.1.0",
     "jest-dom": "^3.1.0",
     "jest-mock-axios": "^2.1.11",
     "jest-styled-components": "^6.3.1",
