@@ -12,7 +12,10 @@ import {
   MISSING_PROVIDER,
   NON_DEPLOYED_CONTRACT,
   NOT_ENABLED_IN_PROVIDER,
+  FAILED_TO_CREATE_LOCK,
   FAILED_TO_PURCHASE_KEY,
+  FAILED_TO_UPDATE_KEY_PRICE,
+  FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../errors'
 import { POLLING_INTERVAL } from '../constants'
 import { delayPromise } from '../utils/promises'
@@ -45,6 +48,20 @@ export default class WalletService extends EventEmitter {
         this.pollForAccountChange(runningOnServer)
       }
     })
+  }
+
+  /**
+   * Expooses gas amount constants to be utilzed when sending relevant transactions
+   * for the platform.
+   */
+
+  static gasAmountConstants() {
+    return {
+      createLock: 2500000,
+      updateKeyPrice: 1000000,
+      purchaseKey: 1000000,
+      withdrawFromLock: 1000000,
+    }
   }
 
   /**
@@ -202,6 +219,73 @@ export default class WalletService extends EventEmitter {
   }
 
   /**
+   *
+   * @param {PropTypes.address} lock : address of the lock for which we update the price
+   * @param {PropTypes.address} account: account who owns the lock
+   * @param {string} price : new price for the lock
+   */
+  updateKeyPrice(lock, account, price) {
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
+    const data = lockContract.methods
+      .updateKeyPrice(Web3Utils.toWei(price, 'ether'))
+      .encodeABI()
+
+    return this._sendTransaction(
+      {
+        to: lock,
+        from: account,
+        data,
+        gas: WalletService.gasAmountConstants().updateKeyPrice,
+        contract: LockContract,
+      },
+      error => {
+        if (error) {
+          return this.emit('error', new Error(FAILED_TO_UPDATE_KEY_PRICE))
+        }
+      }
+    )
+  }
+
+  /**
+   * Creates a lock on behalf of the user.
+   * @param {PropTypes.lock} lock
+   * @param {PropTypes.address} owner
+   */
+  createLock(lock, owner) {
+    const unlock = new this.web3.eth.Contract(
+      UnlockContract.abi,
+      this.unlockContractAddress
+    )
+
+    const data = unlock.methods
+      .createLock(
+        lock.expirationDuration,
+        Web3Utils.toWei(lock.keyPrice, 'ether'),
+        lock.maxNumberOfKeys
+      )
+      .encodeABI()
+
+    return this._sendTransaction(
+      {
+        to: this.unlockContractAddress,
+        from: owner,
+        data,
+        gas: WalletService.gasAmountConstants().createLock,
+        contract: UnlockContract,
+      },
+      (error, hash) => {
+        if (error) {
+          return this.emit('error', new Error(FAILED_TO_CREATE_LOCK))
+        }
+        // Let's update the lock to reflect that it is linked to this
+        // This is an exception because, until we are able to determine the lock address
+        // before the transaction is mined, we need to link the lock and transaction.
+        return this.emit('lock.updated', lock.address, { transaction: hash })
+      }
+    )
+  }
+
+  /**
    * Purchase a key to a lock by account.
    * The key object is passed so we can kepe track of it from the application
    * The lock object is required to get the price data
@@ -224,7 +308,7 @@ export default class WalletService extends EventEmitter {
         to: lock,
         from: account,
         data: abi,
-        gas: 1000000,
+        gas: WalletService.gasAmountConstants().purchaseKey,
         value: Web3Utils.toWei(keyPrice, 'ether'),
         contract: LockContract,
       },
@@ -234,5 +318,57 @@ export default class WalletService extends EventEmitter {
         }
       }
     )
+  }
+
+  /**
+   * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
+   * @param {PropTypes.address} lock
+   * @param {PropTypes.address} account
+   * @param {Function} callback TODO: implement...
+   */
+  withdrawFromLock(lock, account) {
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
+    const data = lockContract.methods.withdraw().encodeABI()
+
+    return this._sendTransaction(
+      {
+        to: lock,
+        from: account,
+        data,
+        gas: WalletService.gasAmountConstants().withdrawFromLock,
+        contract: LockContract,
+      },
+      error => {
+        if (error) {
+          return this.emit('error', new Error(FAILED_TO_WITHDRAW_FROM_LOCK))
+        }
+      }
+    )
+  }
+
+  /**
+   * Signs data for the given account.
+   * We favor web3.eth.personal.sign which provides a better UI but is not implemented
+   * everywhere. If it's failing we use web3.eth.sign
+   *
+   * @param {*} account
+   * @param {*} data
+   * @param {*} callback
+   */
+  signData(account, data, callback) {
+    const fallback = () => {
+      this.web3.eth.sign(data, account, callback)
+    }
+
+    try {
+      this.web3.eth.personal.sign(data, account, (error, signature) => {
+        if (error) {
+          return fallback()
+        }
+        return callback(error, signature)
+      })
+    } catch (error) {
+      fallback()
+    }
   }
 }

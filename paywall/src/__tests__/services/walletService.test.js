@@ -3,6 +3,7 @@
 import EventEmitter from 'events'
 import nock from 'nock'
 
+import Web3Utils from 'web3-utils'
 /* eslint-disable import/no-unresolved */
 import UnlockContract from '../../artifacts/contracts/Unlock.json'
 import LockContract from '../../artifacts/contracts/PublicLock.json'
@@ -15,7 +16,10 @@ import {
   NOT_ENABLED_IN_PROVIDER,
   MISSING_PROVIDER,
   NON_DEPLOYED_CONTRACT,
+  FAILED_TO_CREATE_LOCK,
   FAILED_TO_PURCHASE_KEY,
+  FAILED_TO_UPDATE_KEY_PRICE,
+  FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../../errors'
 import { POLLING_INTERVAL } from '../../constants'
 
@@ -477,7 +481,7 @@ describe('WalletService', () => {
     })
 
     describe('_createAccount', () => {
-      it('should yield a new account', () => {
+      it('should yield a new account', async () => {
         expect.assertions(1)
         const address = '0x07748403082b29a45abD6C124A37E6B14e6B1803'
         // mock web3's create
@@ -488,10 +492,110 @@ describe('WalletService', () => {
         const previousCreate = walletService.web3.eth.accounts.create
         walletService.web3.eth.accounts.create = mock
 
-        return walletService._createAccount().then(account => {
-          expect(account).toEqual(address)
-          walletService.web3.eth.accounts.create = previousCreate
+        let account = await walletService._createAccount()
+        expect(account).toEqual(address)
+        walletService.web3.eth.accounts.create = previousCreate
+      })
+    })
+
+    describe('createLock', () => {
+      let lock
+      let owner
+
+      beforeEach(() => {
+        lock = {
+          address: '0xadd',
+          expirationDuration: 86400, // 1 day
+          keyPrice: '0.1', // 0.1 Eth
+          maxNumberOfKeys: 100,
+        }
+        owner = '0xdeadfeed'
+        walletService.unlockContractAddress =
+          '0x3ca206264762caf81a8f0a843bbb850987b41e16'
+      })
+
+      it('should invoke sendTransaction with the right params', () => {
+        expect.assertions(6)
+        const data = '' // mock abi data for createLock
+
+        walletService._sendTransaction = jest.fn()
+
+        const unlockMockContract = {
+          methods: {
+            createLock: jest.fn(() => {
+              return unlockMockContract.methods
+            }),
+            encodeABI: jest.fn(() => {
+              return data
+            }),
+          },
+        }
+
+        const ContractClass = class {
+          constructor(abi, address) {
+            expect(abi).toBe(UnlockContract.abi)
+            expect(address).toBe(walletService.unlockContractAddress)
+            this.methods = {
+              createLock: (duration, price, numberOfKeys) => {
+                expect(duration).toEqual(lock.expirationDuration)
+                expect(price).toEqual('100000000000000000') // Web3Utils.toWei(lock.keyPrice, 'ether')
+                expect(numberOfKeys).toEqual(100)
+                return this
+              },
+            }
+            this.encodeABI = jest.fn(() => data)
+          }
+        }
+
+        walletService.web3.eth.Contract = ContractClass
+
+        walletService.createLock(lock, owner)
+
+        expect(walletService._sendTransaction).toHaveBeenCalledWith(
+          {
+            to: walletService.unlockContractAddress,
+            from: owner,
+            data,
+            gas: 2500000,
+            contract: UnlockContract,
+          },
+          expect.any(Function)
+        )
+      })
+
+      it('should emit lock.updated with the transaction', done => {
+        expect.assertions(2)
+        const hash = '0x1213'
+
+        walletService._sendTransaction = jest.fn((args, cb) => {
+          return cb(null, hash)
         })
+
+        walletService.on('lock.updated', (lockAddress, update) => {
+          expect(lockAddress).toBe(lock.address)
+          expect(update).toEqual({
+            transaction: hash,
+          })
+          done()
+        })
+
+        walletService.createLock(lock, owner)
+      })
+
+      it('should emit an error if the transaction could not be sent', done => {
+        expect.assertions(1)
+        const error = {}
+
+        walletService._sendTransaction = jest.fn((args, cb) => {
+          return cb(error)
+        })
+
+        walletService.on('error', error => {
+          expect(error.message).toBe(FAILED_TO_CREATE_LOCK)
+          done()
+        })
+
+        walletService.createLock(lock, owner)
       })
     })
 
@@ -573,6 +677,227 @@ describe('WalletService', () => {
         })
 
         walletService.purchaseKey(lock, owner, keyPrice, account, data)
+      })
+    })
+
+    describe('updateKeyPrice', () => {
+      let lock
+      let account
+      let price
+
+      beforeEach(() => {
+        lock = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
+        account = '0xdeadbeef'
+        price = '100000000'
+      })
+
+      it('should invoke sendTransaction with the right params', () => {
+        expect.assertions(4)
+        const data = '' // mock abi data for purchaseKey
+
+        walletService._sendTransaction = jest.fn()
+
+        const unlockMockContract = {
+          methods: {
+            updateKeyPrice: jest.fn(() => {
+              return unlockMockContract.methods
+            }),
+            encodeABI: jest.fn(() => {
+              return data
+            }),
+          },
+        }
+
+        const ContractClass = class {
+          constructor(abi, address) {
+            expect(abi).toBe(LockContract.abi)
+            expect(address).toBe(lock)
+            this.methods = {
+              updateKeyPrice: newPrice => {
+                expect(newPrice).toEqual(Web3Utils.toWei(price, 'ether'))
+                return this
+              },
+            }
+            this.encodeABI = jest.fn(() => data)
+          }
+        }
+
+        walletService.web3.eth.Contract = ContractClass
+
+        walletService.updateKeyPrice(lock, account, price)
+
+        expect(walletService._sendTransaction).toHaveBeenCalledWith(
+          {
+            to: lock,
+            from: account,
+            data,
+            gas: 1000000,
+            contract: LockContract,
+          },
+          expect.any(Function)
+        )
+      })
+
+      it('should emit an error if the transaction could not be sent', done => {
+        expect.assertions(1)
+        const error = {}
+
+        walletService._sendTransaction = jest.fn((args, cb) => {
+          return cb(error)
+        })
+
+        walletService.on('error', error => {
+          expect(error.message).toBe(FAILED_TO_UPDATE_KEY_PRICE)
+          done()
+        })
+
+        walletService.updateKeyPrice(lock, account, price)
+      })
+    })
+
+    describe('signData', () => {
+      const account = '0x123'
+      const data = 'please sign me'
+
+      it('should call first eth.personal.sign', done => {
+        expect.assertions(4)
+        walletService.web3.eth.personal.sign = jest.fn(
+          (dataToSign, signer, callback) => {
+            expect(dataToSign).toEqual(data)
+            expect(signer).toEqual(account)
+            return callback(null /* error */, 'signature')
+          }
+        )
+        walletService.signData(account, data, (error, signature) => {
+          expect(walletService.web3.eth.personal.sign).toHaveBeenCalled()
+          expect(signature).toEqual('signature')
+          done()
+        })
+      })
+
+      it('should call web3.eth.sign if eth.personal.sign fails', done => {
+        expect.assertions(7)
+
+        walletService.web3.eth.personal.sign = jest.fn(
+          (dataToSign, signer, callback) => {
+            expect(dataToSign).toEqual(data)
+            expect(signer).toEqual(account)
+            const error = {}
+            return callback(error, null /* signature */)
+          }
+        )
+
+        walletService.web3.eth.sign = jest.fn(
+          (dataToSign, signer, callback) => {
+            expect(dataToSign).toEqual(data)
+            expect(signer).toEqual(account)
+            return callback(null /* error */, 'signature')
+          }
+        )
+
+        walletService.signData(account, data, (error, signature) => {
+          expect(walletService.web3.eth.personal.sign).toHaveBeenCalled()
+          expect(walletService.web3.eth.sign).toHaveBeenCalled()
+          expect(signature).toEqual('signature')
+          done()
+        })
+      })
+
+      it('should call web3.eth.sign if eth.personal.sign throws', done => {
+        expect.assertions(7)
+
+        walletService.web3.eth.personal.sign = jest.fn((dataToSign, signer) => {
+          expect(dataToSign).toEqual(data)
+          expect(signer).toEqual(account)
+          throw new Error()
+        })
+
+        walletService.web3.eth.sign = jest.fn(
+          (dataToSign, signer, callback) => {
+            expect(dataToSign).toEqual(data)
+            expect(signer).toEqual(account)
+            return callback(null /* error */, 'signature')
+          }
+        )
+
+        walletService.signData(account, data, (error, signature) => {
+          expect(walletService.web3.eth.personal.sign).toHaveBeenCalled()
+          expect(walletService.web3.eth.sign).toHaveBeenCalled()
+          expect(signature).toEqual('signature')
+          done()
+        })
+      })
+    })
+
+    describe('withdrawFromLock', () => {
+      let lock
+      let account
+
+      beforeEach(() => {
+        lock = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
+        account = '0xdeadbeef'
+      })
+
+      it('should invoke sendTransaction with the right params', () => {
+        expect.assertions(3)
+        const data = '' // mock abi data for purchaseKey
+
+        walletService._sendTransaction = jest.fn()
+
+        const unlockMockContract = {
+          methods: {
+            withdrawFromLock: jest.fn(() => {
+              return unlockMockContract.methods
+            }),
+            encodeABI: jest.fn(() => {
+              return data
+            }),
+          },
+        }
+
+        const ContractClass = class {
+          constructor(abi, address) {
+            expect(abi).toBe(LockContract.abi)
+            expect(address).toBe(lock)
+            this.methods = {
+              withdraw: () => {
+                return this
+              },
+            }
+            this.encodeABI = jest.fn(() => data)
+          }
+        }
+
+        walletService.web3.eth.Contract = ContractClass
+
+        walletService.withdrawFromLock(lock, account)
+
+        expect(walletService._sendTransaction).toHaveBeenCalledWith(
+          {
+            to: lock,
+            from: account,
+            data,
+            gas: 1000000,
+            contract: LockContract,
+          },
+          expect.any(Function)
+        )
+      })
+
+      it('should emit an error if the transaction could not be sent', done => {
+        expect.assertions(1)
+        const error = {}
+
+        walletService._sendTransaction = jest.fn((args, cb) => {
+          return cb(error)
+        })
+
+        walletService.on('error', error => {
+          expect(error.message).toBe(FAILED_TO_WITHDRAW_FROM_LOCK)
+          done()
+        })
+
+        walletService.withdrawFromLock(lock, account)
       })
     })
   })
