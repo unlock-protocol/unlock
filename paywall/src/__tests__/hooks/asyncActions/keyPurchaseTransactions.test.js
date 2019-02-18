@@ -64,7 +64,7 @@ describe('useKeyPurchaseTransactions hook async helper generators', () => {
       expect(newTransaction).not.toHaveBeenCalled()
       expect(web3.eth.getTransaction).toHaveBeenCalledWith(transactionHash)
     })
-    it.only('triggers startTransaction if there is a pending transaction, and transaction has a dummy block number set', async () => {
+    it('triggers startTransaction if there is a pending transaction, and transaction has a dummy block number set', async () => {
       const to = 'to'
       const input = 'input'
       const asOf = 1367482364
