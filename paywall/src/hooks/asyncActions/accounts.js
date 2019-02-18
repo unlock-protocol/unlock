@@ -22,3 +22,16 @@ export const getBalance = async (handle, wallet, account) => {
   }
   handle(balance)
 }
+
+export const getWeb3ServiceBalance = async (handle, web3Service, account) => {
+  if (!account) {
+    handle('0')
+    return
+  }
+  try {
+    const balance = await web3Service.getAddressBalance(account)
+    handle(balance)
+  } catch (e) {
+    handle('0')
+  }
+}
