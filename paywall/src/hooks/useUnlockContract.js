@@ -1,6 +1,9 @@
 import Web3Utils from 'web3-utils'
 
+/* eslint-disable import/no-unresolved */
 import UnlockContract from '../artifacts/contracts/Unlock.json'
+/* eslint-enable import/no-unresolved */
+
 import useConfig from './utils/useConfig'
 import { NON_DEPLOYED_CONTRACT } from '../errors'
 
