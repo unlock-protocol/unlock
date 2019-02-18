@@ -2,7 +2,7 @@ import { useState, useEffect, useReducer } from 'react'
 import Web3Utils from 'web3-utils'
 
 import LockContract from '../artifacts/contracts/PublicLock.json'
-import useAccount from './useAccount'
+import useAccount from './web3/useAccount'
 import useWeb3 from './web3/useWeb3'
 import { TRANSACTION_TYPES } from '../constants'
 import useWallet from './web3/useWallet'

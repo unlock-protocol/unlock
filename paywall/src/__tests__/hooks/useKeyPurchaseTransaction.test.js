@@ -14,11 +14,11 @@ import LockContract from '../../artifacts/contracts/PublicLock.json'
 import { wrapperMaker, expectError } from './helpers'
 import { WalletContext } from '../../hooks/components/Wallet'
 import { ReadOnlyContext } from '../../hooks/components/Web3'
-import useAccount from '../../hooks/useAccount'
+import useAccount from '../../hooks/web3/useAccount'
 import usePoll from '../../hooks/utils/usePoll'
 
 jest.mock('../../hooks/asyncActions/keyPurchaseTransactions')
-jest.mock('../../hooks/useAccount')
+jest.mock('../../hooks/web3/useAccount')
 jest.mock('../../hooks/utils/usePoll')
 
 describe('useKeyPurchaseTransaction hook', () => {
