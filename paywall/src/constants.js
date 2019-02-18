@@ -61,7 +61,7 @@ const lockAddress = accountRegex
  * You should not use this directly, instead use the utils/routes.js lockRoute function
  */
 export const LOCK_PATH_NAME_REGEXP = new RegExp(
-  `/(${prefix})/(${lockAddress})` +
+  `(?:/(${prefix}))?/(${lockAddress})` +
     // either "/urlEncodedRedirectUrl/#account" or just "#account" and these are all optional
     // note that "/#account" as in "/paywall/<lockaddress>/#<useraccount>" is also matched
     `(?:/(${urlEncodedRedirectUrl}))?(?:/?#(${userAccount}))?`
