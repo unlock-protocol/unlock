@@ -1,6 +1,7 @@
 import EventEmitter from 'events'
 import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
+import ethJsUtil from 'ethereumjs-util'
 
 /* eslint-disable import/no-unresolved */
 import LockContract from '../artifacts/contracts/PublicLock.json'
@@ -8,7 +9,7 @@ import UnlockContract from '../artifacts/contracts/Unlock.json'
 /* eslint-enable import/no-unresolved */
 
 import configure from '../config'
-import { TRANSACTION_TYPES, MAX_UINT } from '../constants'
+import { TRANSACTION_TYPES, MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
 import { NON_DEPLOYED_CONTRACT } from '../errors'
 
 const {
@@ -76,9 +77,38 @@ export default class Web3Service extends EventEmitter {
           keyPrice: Web3Utils.fromWei(keyPrice, 'ether'),
         })
       },
+      Withdrawal: (transactionHash, contractAddress) => {
+        // TODO: update the lock balance too!
+        this.emit('transaction.updated', transactionHash, {
+          lock: contractAddress,
+        })
+      },
     }
 
-    this.inputsHandlers = {}
+    // Pending transactions may still update the state
+    // TODO we should ensure that the contracts invoking the methods are the right ones
+    this.inputsHandlers = {
+      createLock: async (transactionHash, contractAddress, params) => {
+        // The annoying part here is that we do not have the lock address...
+        // Since it is not an argument to the function.
+        // We will 'guess' it again using generateLockAddress
+        // knowing that this may create a race condition another lock creation pending transaction
+        // exists.
+        const newLockAddress = await this.generateLockAddress()
+        this.emit('transaction.updated', transactionHash, {
+          lock: newLockAddress,
+        })
+        this.emit('lock.updated', newLockAddress, {
+          transaction: transactionHash,
+          address: newLockAddress,
+          expirationDuration: params._expirationDuration,
+          keyPrice: Web3Utils.fromWei(params._keyPrice, 'ether'), // Must be expressed in Eth!
+          maxNumberOfKeys: params._maxNumberOfKeys,
+          outstandingKeys: 0,
+          balance: '0', // Must be expressed in Eth!
+        })
+      },
+    }
 
     if (unlockContractAddress) {
       this.unlockContractAddress = Web3Utils.toChecksumAddress(
@@ -92,6 +122,20 @@ export default class Web3Service extends EventEmitter {
     } else {
       return this.emit('error', new Error(NON_DEPLOYED_CONTRACT))
     }
+  }
+
+  /**
+   * "Guesses" what the next Lock's address is going to be
+   */
+  async generateLockAddress() {
+    let transactionCount = await this.web3.eth.getTransactionCount(
+      this.unlockContractAddress
+    )
+    return Web3Utils.toChecksumAddress(
+      ethJsUtil.bufferToHex(
+        ethJsUtil.generateAddress(this.unlockContractAddress, transactionCount)
+      )
+    )
   }
 
   /**
@@ -163,6 +207,21 @@ export default class Web3Service extends EventEmitter {
         })
       }
     )
+  }
+
+  /**
+   * This function is able to retrieve past transaction sent by a user to the Unlock smart contract
+   * to create a new Lock.
+   * @param {*} address
+   */
+  getPastLockCreationsTransactionsForUser(address) {
+    const unlock = new this.web3.eth.Contract(
+      UnlockContract.abi,
+      this.unlockContractAddress
+    )
+    return this._getPastTransactionsForContract(unlock, 'NewLock', {
+      lockOwner: address,
+    })
   }
 
   /**
@@ -432,7 +491,7 @@ export default class Web3Service extends EventEmitter {
             // NOTE: old version of web3.js (pre 1.0.0-beta.34) are not parsing 0x0 into a falsy value
             if (
               !transactionReceipt.status ||
-              transactionReceipt.status === '0x0'
+              transactionReceipt.status == '0x0'
             ) {
               return this.emit('transaction.updated', transactionHash, {
                 status: 'failed',
@@ -461,7 +520,7 @@ export default class Web3Service extends EventEmitter {
       expirationDuration: parseInt,
       maxNumberOfKeys: value => {
         if (value === MAX_UINT) {
-          return -1
+          return UNLIMITED_KEYS_COUNT
         }
         return parseInt(value)
       },
@@ -495,6 +554,7 @@ export default class Web3Service extends EventEmitter {
 
     // Once all lock attributes have been fetched
     return Promise.all(constantPromises).then(() => {
+      update.unlimitedKeys = update.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
       this.emit('lock.updated', address, update)
       return update
     })
@@ -596,5 +656,35 @@ export default class Web3Service extends EventEmitter {
         })
         .catch(error => reject(error))
     })
+  }
+
+  /**
+   * This loads and returns the keys for a lock per page
+   * we fetch byPage number of keyOwners and dispatch for futher details.
+   *
+   * This method will attempt to retrieve keyholders directly from the smart contract, if this
+   * raises and exception the code will attempt to iteratively retrieve the keyholders.
+   * (Relevant to issue #1116)
+   * @param {PropTypes.string}
+   * @param {PropTypes.integer}
+   * @param {PropTypes.integer}
+   */
+  getKeysForLockOnPage(lock, page, byPage) {
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
+
+    this._genKeyOwnersFromLockContract(lock, lockContract, page, byPage).then(
+      keyPromises => {
+        if (keyPromises.length == 0) {
+          this._genKeyOwnersFromLockContractIterative(
+            lock,
+            lockContract,
+            page,
+            byPage
+          ).then(keyPromises => this._emitKeyOwners(lock, page, keyPromises))
+        } else {
+          this._emitKeyOwners(lock, page, keyPromises)
+        }
+      }
+    )
   }
 }
