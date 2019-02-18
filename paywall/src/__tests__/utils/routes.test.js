@@ -15,12 +15,6 @@ describe('route utilities', () => {
         redirect: null,
         account: null,
       })
-      expect(lockRoute('/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54')).toEqual({
-        lockAddress: null,
-        prefix: null,
-        redirect: null,
-        account: null,
-      })
     })
 
     it('should return the right prefix and lockAddress value when it matches', () => {
@@ -46,6 +40,12 @@ describe('route utilities', () => {
       ).toEqual({
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         prefix: 'demo',
+        redirect: undefined,
+        account: undefined,
+      })
+      expect(lockRoute('/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54')).toEqual({
+        lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
+        prefix: undefined,
         redirect: undefined,
         account: undefined,
       })
