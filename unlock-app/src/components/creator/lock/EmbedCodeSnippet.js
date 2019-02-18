@@ -22,6 +22,7 @@ export function EmbedCodeSnippet({ lock }) {
   // TODO: add visual confirmation of code having been copied
   return (
     <CodeControls>
+      <Metadata />
       <Label>Code snippet</Label>
       <CodeSnippet value={embedCode(lock)} onClick={selectAll} readOnly />
       <Actions>
@@ -38,7 +39,104 @@ EmbedCodeSnippet.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
 }
 
+const Metadata = () => {
+  return (
+    <div>
+      <MetadataHeader>
+        <span>Metering</span>
+        <span>Public Name</span>
+        <span>Trusted Unlocking</span>
+      </MetadataHeader>
+      <MetadataBody>
+        <div>
+          <input type="number" />
+          <span>Free Articles</span>
+        </div>
+        <div>
+          <input placeholder="Public Name" />
+        </div>
+        <div>
+          <input type="checkbox" />
+          <span>Allow unlocking before transaction is confirmed</span>
+        </div>
+      </MetadataBody>
+    </div>
+  )
+}
+
 export default EmbedCodeSnippet
+
+const MetadataHeader = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  text-transform: uppercase;
+  font-size: 9px;
+  color: var(--4a4a4a);
+  margin-bottom: 7px;
+`
+
+const MetadataBody = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input {
+    background: var(--lightgrey);
+    border: 1px solid var(--lightgrey);
+    border-radius: 4px;
+    height: 26px;
+    padding: 0 8px;
+    font-family: 'IBM Plex Mono', sans serif;
+    font-size: 14px;
+    font-weight: 200;
+  }
+
+  input:focus {
+    outline: none;
+    border: 1px solid var(--grey);
+    transition: border 100ms ease;
+  }
+
+  input[data-valid='false'] {
+    border: 1px solid var(--red);
+  }
+
+  input:disabled {
+    color: var(--silver);
+  }
+
+  div:nth-child(1) {
+    input {
+      width: 3em;
+      margin-right: 0.5em;
+    }
+  }
+
+  div:nth-child(3) {
+    display: grid;
+    grid-template-columns: 33px 1fr;
+    align-items: center;
+    input {
+      height: 26px;
+      width: 26px;
+      margin: 0;
+      margin-right: 0.5em;
+      border: none;
+    }
+    span {
+      font-size: 10px;
+    }
+  }
+`
 
 const Actions = styled.div`
   display: grid;
