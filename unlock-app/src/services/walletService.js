@@ -1,8 +1,10 @@
 import EventEmitter from 'events'
 import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
+/* eslint-disable import/no-unresolved */
 import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
+/* eslint-enable import/no-unresolved */
 import configure from '../config'
 import {
   MISSING_PROVIDER,

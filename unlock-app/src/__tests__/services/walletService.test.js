@@ -3,8 +3,10 @@
 import EventEmitter from 'events'
 import nock from 'nock'
 import Web3Utils from 'web3-utils'
+/* eslint-disable import/no-unresolved */
 import UnlockContract from '../../artifacts/contracts/Unlock.json'
 import LockContract from '../../artifacts/contracts/PublicLock.json'
+/* eslint-enable import/no-unresolved */
 import configure from '../../config'
 import { delayPromise } from '../../utils/promises'
 import WalletService from '../../services/walletService'
