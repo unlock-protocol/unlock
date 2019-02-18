@@ -2,8 +2,9 @@ import * as rtl from 'react-testing-library'
 import React from 'react'
 
 import useLock from '../../hooks/useLock'
+/* eslint-disable import/no-unresolved */
 import LockContract from '../../artifacts/contracts/PublicLock.json'
-
+/* eslint-enable import/no-unresolved */
 import { makeGetLockAttributes } from '../../hooks/asyncActions/locks'
 import { ReadOnlyContext } from '../../hooks/components/Web3'
 

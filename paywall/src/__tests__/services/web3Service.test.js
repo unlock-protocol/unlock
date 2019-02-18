@@ -3,8 +3,10 @@
 import Web3Utils from 'web3-utils'
 import nock from 'nock'
 import Web3Service from '../../services/web3Service'
+/* eslint-disable import/no-unresolved */
 import UnlockContract from '../../artifacts/contracts/Unlock.json'
 import LockContract from '../../artifacts/contracts/PublicLock.json'
+/* eslint-enable import/no-unresolved */
 import configure from '../../config'
 import { TRANSACTION_TYPES } from '../../constants'
 

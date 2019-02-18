@@ -1,7 +1,10 @@
 import * as rtl from 'react-testing-library'
 import Web3Utils from 'web3-utils'
 
+/* eslint-disable import/no-unresolved */
 import UnlockContract from '../../artifacts/contracts/Unlock.json'
+/* eslint-enable import/no-unresolved */
+
 import { NON_DEPLOYED_CONTRACT } from '../../errors'
 import { expectError, wrapperMaker } from './helpers'
 import useUnlockContract from '../../hooks/useUnlockContract'
