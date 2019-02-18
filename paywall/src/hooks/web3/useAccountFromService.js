@@ -58,7 +58,7 @@ export default function useAccountFromService(window) {
         thisAccount
       )
     },
-    [wallet, web3Service, walletAccount, isInIframe, localStorageAccount]
+    [wallet, web3, walletAccount, isInIframe, localStorageAccount]
   )
 
   return { account, localStorageAccount, balance }
