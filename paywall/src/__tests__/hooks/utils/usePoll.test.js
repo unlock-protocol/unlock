@@ -13,7 +13,7 @@ describe('usePoll hook', () => {
 
     expect(setTimeout).toHaveBeenCalledTimes(2)
     expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 100)
-    expect(pollingFunction).not.toHaveBeenCalled()
+    expect(pollingFunction).toHaveBeenCalled()
   })
 
   it('calls effect only on mount, and not on update', () => {
@@ -35,16 +35,16 @@ describe('usePoll hook', () => {
 
     rtl.testHook(() => usePoll(pollingFunction, 100))
 
-    expect(pollingFunction).not.toHaveBeenCalled()
+    expect(pollingFunction).toHaveBeenCalled()
 
     jest.advanceTimersByTime(100)
-    expect(pollingFunction).toHaveBeenCalledTimes(1)
+    expect(pollingFunction).toHaveBeenCalledTimes(2)
 
     jest.advanceTimersByTime(99)
-    expect(pollingFunction).toHaveBeenCalledTimes(1)
+    expect(pollingFunction).toHaveBeenCalledTimes(2)
 
     jest.advanceTimersByTime(1)
-    expect(pollingFunction).toHaveBeenCalledTimes(2)
+    expect(pollingFunction).toHaveBeenCalledTimes(3)
   })
 
   it('clears the timeout when unmounted', () => {
@@ -57,7 +57,7 @@ describe('usePoll hook', () => {
     unmount()
 
     jest.advanceTimersByTime(2)
-    expect(pollingFunction).not.toHaveBeenCalled()
+    expect(pollingFunction).toHaveBeenCalled()
     expect(clearTimeout).toHaveBeenCalled()
   })
 })
