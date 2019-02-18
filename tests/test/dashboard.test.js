@@ -25,5 +25,20 @@ describe('The Unlock Dashboard', () => {
       await expect(page).toMatch('Cancel')
       await expect(page).toMatch('days')
     })
+
+    it('should persist the lock', async () => {
+      await expect(page).toClick('button', { text: 'Submit' })
+      await expect(page).toMatch('30 days')
+    })
+  })
+})
+
+describe('Lock interaction', () => {
+  describe('Embed Code', () => {
+    it('provides a code snippet to be utilized on a publisher\'s page', async () => {
+      await page.waitFor('[title="Embed"]')
+      await expect(page).toClick('[title="Embed"]')
+      await expect(page).toMatch('Code snippet')
+    })
   })
 })
