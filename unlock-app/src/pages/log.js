@@ -5,8 +5,6 @@ import PropTypes from 'prop-types'
 import UnlockPropTypes from '../propTypes'
 import Layout from '../components/interface/Layout'
 import CreatorAccount from '../components/creator/CreatorAccount'
-import CreatorLocks from '../components/creator/CreatorLocks'
-import DeveloperOverlay from '../components/developer/DeveloperOverlay'
 import BrowserOnly from '../components/helpers/BrowserOnly'
 import GlobalErrorConsumer from '../components/interface/GlobalErrorConsumer'
 import GlobalErrorProvider from '../utils/GlobalErrorProvider'
@@ -14,7 +12,7 @@ import { pageTitle } from '../constants'
 import Web3Service from '../services/web3Service'
 
 export const Log = ({ account, network, lockAddresses }) => {
-  const [transactions, setTransactions] = useState({})
+  const [transactions, setTransactions] = useState([])
   const w3s = new Web3Service()
 
   const fetchTransactions = async () => {
@@ -27,7 +25,6 @@ export const Log = ({ account, network, lockAddresses }) => {
       const txs = await w3s.getPastLockTransactions(address)
       lockTxs = [...lockTxs, ...txs]
     })
-
     setTransactions([...creations, ...lockTxs])
   }
 
@@ -37,8 +34,7 @@ export const Log = ({ account, network, lockAddresses }) => {
     },
     [account, lockAddresses]
   )
-
-  console.log({ transactions, lockAddresses })
+  console.log(transactions)
   return (
     <GlobalErrorProvider>
       <GlobalErrorConsumer>
@@ -48,6 +44,11 @@ export const Log = ({ account, network, lockAddresses }) => {
           </Head>
           <BrowserOnly>
             <CreatorAccount network={network} account={account} />
+            <ol>
+              {transactions.map(tx => (
+                <li key={tx.id}>{tx.blockNumber}</li>
+              ))}
+            </ol>
           </BrowserOnly>
         </Layout>
       </GlobalErrorConsumer>
