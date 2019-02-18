@@ -422,7 +422,7 @@ const FormBalanceWithUnit = styled(BalanceWithUnit)`
   input[type='number'] {
     min-width: 30px;
     width: 77%;
-    padding-right: 8px;
+    padding-right: 0;
   }
 `
 
