@@ -78,6 +78,16 @@ contract Unlock is IUnlock, Initializable, Ownable {
     grossNetworkProduct = 0;
     totalDiscountGranted = 0;
   }
+  
+  /**
+   * @dev the fallback function should not be used.  This explicitly reverts
+   * to ensure it's never used.
+   */
+  function()
+    external
+  {
+    revert("NO_FALLBACK");
+  }
 
   /**
   * @dev Create lock

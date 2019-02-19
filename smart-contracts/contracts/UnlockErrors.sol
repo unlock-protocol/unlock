@@ -31,6 +31,9 @@ contract UnlockErrors {
   // Locks must expire in 100 years or less.
   string public constant MAX_EXPIRATION_100_YEARS = 'MAX_EXPIRATION_100_YEARS';
 
+  // The fallback function is not supported.
+  string public constant NO_FALLBACK = "NO_FALLBACK";
+
   // There are no outstanding keys
   string public constant NO_OUTSTANDING_KEYS = 'NO_OUTSTANDING_KEYS';
 

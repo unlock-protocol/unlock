@@ -203,6 +203,16 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   }
 
   /**
+   * @dev the fallback function should not be used.  This explicitly reverts
+   * to ensure it's never used.
+   */
+  function()
+    external
+  {
+    revert("NO_FALLBACK");
+  }
+
+  /**
   * @dev Purchase function, public version, with no referrer.
   * @param _recipient address of the recipient of the purchased key
   * @param _data optional marker for the key
