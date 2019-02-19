@@ -1,0 +1,21 @@
+{
+  "extends": "solium:recommended",
+  "plugins": [
+    "security"
+  ],
+  "rules": {
+    "quotes": [
+      "error",
+      "double"
+    ],
+    "indentation": [
+      "warning",
+      2
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "security/no-assign-params": "warning"
+  }
+}
