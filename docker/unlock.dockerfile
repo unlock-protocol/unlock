@@ -36,43 +36,63 @@ RUN SKIP_SERVICES=true npm ci --production
 
 # Note: we do not build the test directory because it is built in its own image
 
+# Dependencies for smart contracts
 RUN mkdir /home/unlock/smart-contracts
 COPY --chown=node smart-contracts/package-lock.json /home/unlock/smart-contracts/.
 COPY --chown=node smart-contracts/package.json /home/unlock/smart-contracts/.
 WORKDIR /home/unlock/smart-contracts
 RUN npm ci --production
-COPY --chown=node smart-contracts/ /home/unlock/smart-contracts/.
-RUN npm run build
 
+# Dependencies for locksmith
 RUN mkdir /home/unlock/locksmith
 COPY --chown=node locksmith/package-lock.json /home/unlock/locksmith/.
 COPY --chown=node locksmith/package.json /home/unlock/locksmith/.
 WORKDIR /home/unlock/locksmith
 RUN npm ci --production
-COPY --chown=node locksmith/ /home/unlock/locksmith/.
-RUN npm run build
 
+# Dependencies for Unlock app
 RUN mkdir /home/unlock/unlock-app
 COPY --chown=node unlock-app/package-lock.json /home/unlock/unlock-app/.
 COPY --chown=node unlock-app/package.json /home/unlock/unlock-app/.
 WORKDIR /home/unlock/unlock-app
 RUN npm ci --production
-COPY --chown=node unlock-app/ /home/unlock/unlock-app/.
-RUN npm run build
 
+# Dependencies for Paywall
 RUN mkdir /home/unlock/paywall
 COPY --chown=node paywall/package-lock.json /home/unlock/paywall/.
 COPY --chown=node paywall/package.json /home/unlock/paywall/.
 WORKDIR /home/unlock/paywall
 RUN npm ci --production
+
+WORKDIR /home/unlock/
+# Copy the scripts which are used for builds
+COPY --chown=node ./scripts /home/unlock/scripts
+
+# Copy the parent binaries into the children
+WORKDIR /home/unlock/
+RUN npm run link-parent-bin
+
+# Build smart contract
+WORKDIR /home/unlock/smart-contracts
+COPY --chown=node smart-contracts/ /home/unlock/smart-contracts/.
+RUN npm run build
+
+# Build locksmith
+WORKDIR /home/unlock/locksmith
+COPY --chown=node locksmith/ /home/unlock/locksmith/.
+RUN npm run build
+
+# Build Unlock app
+WORKDIR /home/unlock/unlock-app
+COPY --chown=node unlock-app/ /home/unlock/unlock-app/.
+RUN npm run build
+
+# Build paywall
+WORKDIR /home/unlock/paywall
 COPY --chown=node paywall/ /home/unlock/paywall/.
 RUN npm run build
 
 WORKDIR /home/unlock/
-
-# Copy the parent binaries into the children
-RUN npm run link-parent-bin
-
-# Copy the rest
-COPY --chown=node . /home/unlock
+# # Copy the rest # Can we be smarter here since a lot has been copied already?
+# COPY --chown=node . /home/unlock
 
