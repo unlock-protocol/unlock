@@ -7,6 +7,9 @@ contract UnlockErrors {
   // You can't approve yourself.
   string public constant APPROVE_SELF = "APPROVE_SELF";
 
+  // The Lock is still active, call disable before this action is allowed
+  string public constant DISABLE_FIRST = "DISABLE_FIRST";
+
   // The specified value must be greater than 0.
   string public constant GREATER_THAN_ZERO = "GREATER_THAN_ZERO";
 

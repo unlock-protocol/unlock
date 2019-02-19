@@ -29,7 +29,7 @@ contract('Lock', accounts => {
     it('should fail if called before the lock is disabled', async () => {
       await shouldFail(
         lock.destroyLock(),
-        'Not allowed to delete an active lock'
+        'DISABLE_FIRST'
       )
     })
 
@@ -48,7 +48,7 @@ contract('Lock', accounts => {
       it('should fail if called while lock is disabled', async () => {
         await shouldFail(
           lock.disableLock(),
-          'No access after contract has been disabled'
+          'LOCK_DEPRECATED'
         )
       })
 
@@ -57,7 +57,7 @@ contract('Lock', accounts => {
           lock.purchaseFor(accounts[1], Web3Utils.toHex('Julien'), {
             value: Units.convert('0.01', 'eth', 'wei')
           }),
-          'No access after contract has been disabled'
+          'LOCK_DEPRECATED'
         )
       })
 
@@ -71,7 +71,7 @@ contract('Lock', accounts => {
               value: Units.convert('0.01', 'eth', 'wei')
             }
           ),
-          'No access after contract has been disabled'
+          'LOCK_DEPRECATED'
         )
       })
 
@@ -81,7 +81,7 @@ contract('Lock', accounts => {
             from: accounts[1],
             value: Units.convert('0.01', 'eth', 'wei')
           }),
-          'No access after contract has been disabled'
+          'LOCK_DEPRECATED'
         )
       })
 
@@ -90,7 +90,7 @@ contract('Lock', accounts => {
           lock.approve(accounts[3], ID, {
             from: accounts[1]
           }),
-          'No access after contract has been disabled'
+          'LOCK_DEPRECATED'
         )
       })
 

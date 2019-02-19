@@ -414,7 +414,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     external
     onlyOwner
   {
-    require(isAlive == false, "Not allowed to delete an active lock");
+    require(isAlive == false, "DISABLE_FIRST");
     emit Destroy(this.balance, msg.sender);
     selfdestruct(msg.sender);
     // Note we don't clean up the `locks` data in Unlock.sol as it should not be necessary
