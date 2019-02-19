@@ -1,5 +1,21 @@
-FROM node:8.11.4
+FROM node:8.11.4-alpine
 LABEL Unlock <ops@unlock-protocol.com>
+
+# Adding bash which is missing from the based alpine image
+RUN apk add --no-cache bash
+
+# Adding git which is needed by some dependencies
+RUN apk add --no-cache git openssh
+
+# Adding python which is needed by some dependencies
+RUN apk add --no-cache \
+    python \
+    python-dev \
+    py-pip \
+    build-base \
+  && pip install virtualenv
+
+# Update npm version to use cpm ci
 RUN npm install -g npm@6.4.1
 
 RUN mkdir /home/unlock
