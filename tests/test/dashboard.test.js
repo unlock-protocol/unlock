@@ -36,7 +36,7 @@ describe('The Unlock Dashboard', () => {
 describe('Lock interaction', () => {
   describe('Embed Code', () => {
     it('provides a code snippet to be utilized on a publisher\'s page', async () => {
-      await page.waitFor('[title="Embed"]')
+      await page.waitFor('[title="Embed"]', { visible: true })
       await expect(page).toClick('[title="Embed"]')
       await expect(page).toMatch('Code snippet')
     })
