@@ -49,15 +49,18 @@ const Metadata = () => {
       </MetadataHeader>
       <MetadataBody>
         <div>
-          <input id="metering" type="number" />
-          <label htmlFor="metering">Free Articles</label>
+          <label htmlFor="metering">
+            <input id="metering" type="number" /> Free Articles
+          </label>
         </div>
         <div>
-          <input placeholder="Public Name" />
+          <input />
         </div>
         <div>
-          <input type="checkbox" />
-          <span>Allow unlocking before transaction is confirmed</span>
+          <label htmlFor="trustedUnlocking">
+            <input id="trustedUnlocking" type="checkbox" /> Allow unlocking
+            before transaction is confirmed
+          </label>
         </div>
       </MetadataBody>
     </div>
@@ -122,15 +125,13 @@ const MetadataBody = styled.div`
   }
 
   div:nth-child(3) {
-    display: grid;
-    grid-template-columns: min-content 1fr;
-    align-items: center;
     input {
       height: 26px;
       width: 26px;
-      border: none;
     }
-    span {
+    label {
+      display: flex;
+      align-items: center;
       font-size: 10px;
     }
   }
