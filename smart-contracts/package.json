@@ -35,7 +35,7 @@
     "test": "truffle test --network development",
     "lint": "solhint \"contracts/**/*.sol\"",
     "dev": "npm run lint && npm run build && npm run test",
-    "ci": "npm run lint && npm run test",
+    "ci": "npm run lint && npm run test && npm run coverage",
     "build": "truffle compile --all",
     "deploy": "truffle deploy",
     "zos": "zos",
