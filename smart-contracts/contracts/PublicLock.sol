@@ -4,9 +4,9 @@ import "./interfaces/IUnlock.sol";
 import "./interfaces/IERC721.sol";
 import "./interfaces/ILockCore.sol";
 import "openzeppelin-eth/contracts/ownership/Ownable.sol";
-import "./interfaces/IERC721Receiver.sol";
 import "openzeppelin-eth/contracts/introspection/ERC165.sol";
 import "openzeppelin-eth/contracts/math/SafeMath.sol";
+import "openzeppelin-eth/contracts/token/ERC721/IERC721Receiver.sol";
 
 /**
  * TODO: consider error codes rather than strings
