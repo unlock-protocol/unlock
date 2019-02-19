@@ -1,10 +1,15 @@
 import * as rtl from 'react-testing-library'
 import PropTypes from 'prop-types'
 import React from 'react'
+import Web3Utils from 'web3-utils'
 
-import useAccount from '../../../hooks/web3/useAccount'
-import { WalletContext } from '../../../hooks/components/Wallet'
-import { getAccounts, getBalance } from '../../../hooks/asyncActions/accounts'
+import useAccount from '../../../hooks/web3/useAccountFromService'
+import {
+  WalletServiceContext as WalletContext,
+  WalletStateContext,
+} from '../../../hooks/components/WalletService'
+import { Web3ServiceContext } from '../../../hooks/components/Web3Service'
+import { getWeb3ServiceBalance } from '../../../hooks/asyncActions/accounts'
 import { ConfigContext } from '../../../hooks/utils/useConfig'
 
 jest.mock('../../../utils/localStorage')
@@ -17,14 +22,21 @@ describe('useAccountFromService hook', () => {
   let nextAccount
   let nextBalance
   let wallet
+  let web3
 
   function Wrapper({ children }) {
     return (
-      <WalletContext.Provider value={wallet}>
-        <ConfigContext.Provider value={config}>
-          {children}
-        </ConfigContext.Provider>
-      </WalletContext.Provider>
+      <Web3ServiceContext.Provider value={web3}>
+        <WalletContext.Provider value={wallet}>
+          <WalletStateContext.Provider
+            value={{ account: nextAccount, network: 1, ready: true }}
+          >
+            <ConfigContext.Provider value={config}>
+              {children}
+            </ConfigContext.Provider>
+          </WalletStateContext.Provider>
+        </WalletContext.Provider>
+      </Web3ServiceContext.Provider>
     )
   }
 
@@ -56,18 +68,18 @@ describe('useAccountFromService hook', () => {
     wallet = {
       eth: {
         getAccounts: () => [nextAccount],
-        getBalance: () => nextBalance,
+      },
+    }
+    web3 = {
+      eth: {
+        getBalance: () => Web3Utils.fromWei(nextBalance, 'ether'),
       },
     }
     nextAccount = 'account'
     nextBalance = '0'
 
-    getAccounts.mockClear()
     // mock out synchronous versions of these so the hooks run without pain
-    getAccounts.mockImplementation((handle, web3) => {
-      handle(web3.eth.getAccounts()[0])
-    })
-    getBalance.mockImplementation((handle, web3, account) => {
+    getWeb3ServiceBalance.mockImplementation((handle, web3, account) => {
       // simulate the behavior from the async handler
       if (!account) {
         handle('0')
@@ -98,6 +110,7 @@ describe('useAccountFromService hook', () => {
     it('gets no account if there is no wallet', () => {
       fakeWindow.fakeStorage = {}
       wallet = null
+      nextAccount = null
       const wrapper = rtl.render(
         <Wrapper>
           <MockAccount />
@@ -200,48 +213,6 @@ describe('useAccountFromService hook', () => {
 
         expect(wrapper.getByText('NO ACCOUNT')).not.toBeNull()
       })
-      it('polls for account changes if localStorage account is not set', () => {
-        fakeWindow.fakeStorage = {}
-        rtl.render(
-          <Wrapper>
-            <MockAccount noPoll={false} />
-          </Wrapper>
-        )
-        expect(getAccounts).toHaveBeenCalledTimes(2)
-
-        rtl.act(() => {
-          jest.runOnlyPendingTimers()
-        })
-
-        expect(getAccounts).toHaveBeenCalledTimes(3)
-
-        rtl.act(() => {
-          jest.runOnlyPendingTimers()
-        })
-
-        expect(getAccounts).toHaveBeenCalledTimes(4)
-      })
-
-      it('polls for account changes if localStorage account is set', () => {
-        rtl.render(
-          <Wrapper>
-            <MockAccount noPoll={false} />
-          </Wrapper>
-        )
-        expect(getAccounts).toHaveBeenCalledTimes(2)
-
-        rtl.act(() => {
-          jest.runOnlyPendingTimers()
-        })
-
-        expect(getAccounts).toHaveBeenCalledTimes(3)
-
-        rtl.act(() => {
-          jest.runOnlyPendingTimers()
-        })
-
-        expect(getAccounts).toHaveBeenCalledTimes(4)
-      })
     })
     describe('in iframe', () => {
       beforeEach(() => {
@@ -302,48 +273,6 @@ describe('useAccountFromService hook', () => {
 
         expect(wrapper.getByText('NO ACCOUNT')).not.toBeNull()
         expect(wrapper.getByText('local: NO ACCOUNT')).not.toBeNull()
-      })
-
-      it('polls for account changes if localStorage account is not set', () => {
-        fakeWindow.fakeStorage = {}
-        rtl.render(
-          <Wrapper>
-            <MockAccount noPoll={false} />
-          </Wrapper>
-        )
-        expect(getAccounts).toHaveBeenCalledTimes(2)
-
-        rtl.act(() => {
-          jest.runOnlyPendingTimers()
-        })
-
-        expect(getAccounts).toHaveBeenCalledTimes(3)
-
-        rtl.act(() => {
-          jest.runOnlyPendingTimers()
-        })
-
-        expect(getAccounts).toHaveBeenCalledTimes(4)
-      })
-      it('does not poll for account changes if localStorage account is set', () => {
-        rtl.render(
-          <Wrapper>
-            <MockAccount noPoll={false} />
-          </Wrapper>
-        )
-        expect(getAccounts).toHaveBeenCalledTimes(1)
-
-        rtl.act(() => {
-          jest.runOnlyPendingTimers()
-        })
-
-        expect(getAccounts).toHaveBeenCalledTimes(1)
-
-        rtl.act(() => {
-          jest.runOnlyPendingTimers()
-        })
-
-        expect(getAccounts).toHaveBeenCalledTimes(1)
       })
     })
   })
