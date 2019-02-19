@@ -29,7 +29,7 @@ contract('Lock', accounts => {
         await lock.purchaseFor(accounts[1], Web3Utils.toHex('Julien'), {
           value: Units.convert('0.01', 'eth', 'wei')
         })
-        assert.equal(await lock.getHasValidKey(accounts[1]), true) // pre-req
+        assert.equal(await lock.getHasValidKey.call(accounts[1]), true) // pre-req
 
         initialLockBalance = new BigNumber(
           await web3.eth.getBalance(lock.address)
