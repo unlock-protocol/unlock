@@ -29,7 +29,7 @@ contract('Lock', (accounts) => {
     it('should fail if there is no such key', async () => {
       await shouldFail(locks['FIRST'].expireKeyFor(accounts[1], {
         from: accounts[0]
-      }), 'Key is not valid')
+      }), 'KEY_NOT_VALID')
     })
 
     it('should fail if the key has already expired', async () => {
@@ -45,7 +45,7 @@ contract('Lock', (accounts) => {
       })
       await shouldFail(locks['FIRST'].expireKeyFor(accounts[2], {
         from: accounts[0]
-      }), 'Key is not valid')
+      }), 'KEY_NOT_VALID')
     })
 
     it('should expire a valid key', async () => {

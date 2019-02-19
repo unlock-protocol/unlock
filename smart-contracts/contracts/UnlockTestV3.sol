@@ -24,7 +24,7 @@ contract UnlockTestV3 is Initializable, Ownable {
   }
 
   modifier onlyFromDeployedLock() {
-    require(locks[msg.sender].deployed, "Only from previously deployed locks");
+    require(locks[msg.sender].deployed, "ONLY_LOCKS");
     _;
   }
 
@@ -53,7 +53,7 @@ contract UnlockTestV3 is Initializable, Ownable {
   {
     // We must manually initialize Ownable.sol
     Ownable.initialize(_owner);
-    require(!initialized);
+    require(!initialized, "ONLY_CALL_ONCE");
     exampleData = 42;
     initialized = true;
   }
@@ -62,7 +62,7 @@ contract UnlockTestV3 is Initializable, Ownable {
   function initializeV3()
     public
   {
-    require(!initializedV3);
+    require(!initializedV3, "ONLY_CALL_ONCE");
     exampleData = 42;
     initializedV3 = true;
   }

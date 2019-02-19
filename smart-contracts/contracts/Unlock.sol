@@ -49,7 +49,7 @@ contract Unlock is IUnlock, Initializable, Ownable {
   }
 
   modifier onlyFromDeployedLock() {
-    require(locks[msg.sender].deployed, "Only from previously deployed locks");
+    require(locks[msg.sender].deployed, "ONLY_LOCKS");
     _;
   }
 

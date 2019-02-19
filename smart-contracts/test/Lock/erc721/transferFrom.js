@@ -70,7 +70,7 @@ contract('Lock ERC721', accounts => {
           locks['FIRST'].transferFrom(accountWithNoKey, to, accountWithNoKey, {
             from: accountWithNoKey
           }),
-          'Key is not valid'
+          'KEY_NOT_VALID'
         )
       })
 
@@ -79,7 +79,7 @@ contract('Lock ERC721', accounts => {
           locks['FIRST'].transferFrom(from, Web3Utils.padLeft(0, 40), from, {
             from
           }),
-          'No approved recipient exists'
+          'NONE_APPROVED'
         )
         // Ensuring that ownership of the key did not change
         const expirationTimestamp = new BigNumber(
@@ -182,7 +182,7 @@ contract('Lock ERC721', accounts => {
             locks['FIRST'].transferFrom(from, accountNotApproved, ID, {
               from: accountNotApproved
             }),
-            'Key is not valid'
+            'KEY_NOT_VALID'
           )
           // Ensuring that ownership of the key did not change
           const expirationTimestamp = new BigNumber(
@@ -214,7 +214,7 @@ contract('Lock ERC721', accounts => {
         it('approval should be cleared after a transfer', async () => {
           await shouldFail(
             locks['FIRST'].getApproved(accountApproved),
-            'No approved recipient exists'
+            'NONE_APPROVED'
           )
         })
       })
