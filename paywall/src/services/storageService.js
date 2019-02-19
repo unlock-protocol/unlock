@@ -23,18 +23,17 @@ export default class StorageService {
   /**
    * Gets all the transactions sent by a given address.
    * Returns an empty array by default
-   * TODO: conider a more robust url building
+   * TODO: consider a more robust url building
    * @param {*} senderAddress
    */
-  getTransactionsHashesSentBy(senderAddress) {
-    return axios
-      .get(`${this.host}/transactions?sender=${senderAddress}`)
-      .then(response => {
-        if (response.data && response.data.transactions) {
-          return response.data.transactions.map(t => t.transactionHash)
-        }
-        return []
-      })
+  async getTransactionsHashesSentBy(senderAddress) {
+    const response = await axios.get(
+      `${this.host}/transactions?sender=${senderAddress}`
+    )
+    if (response.data && response.data.transactions) {
+      return response.data.transactions.map(t => t.transactionHash)
+    }
+    return []
   }
 
   genAuthorizationHeader = token => {
@@ -43,34 +42,54 @@ export default class StorageService {
 
   /**
    * Returns the name of undefined
+   * Note that we swallow errors here for now...
    * @param {*} address
    */
-  lockLookUp(address) {
-    return axios.get(`${this.host}/lock/${address}`).then(result => {
+  async lockLookUp(address) {
+    try {
+      const result = await axios.get(`${this.host}/lock/${address}`)
       if (result.data && result.data.name) {
         return result.data.name
       }
       return null
-    })
-  }
-
-  storeLockDetails(lock, token) {
-    if (token) {
-      return axios.post(`${this.host}/lock`, lock, {
-        headers: this.genAuthorizationHeader(token),
-      })
-    } else {
-      return axios.post(`${this.host}/lock`, lock)
+    } catch (err) {
+      return null
     }
   }
 
-  updateLockDetails(address, update, token) {
+  /**
+   * Note that we swallow errors here for now...
+   * @param {*} lock
+   * @param {*} token
+   */
+  async storeLockDetails(lock, token) {
+    const opts = {}
     if (token) {
-      return axios.put(`${this.host}/lock/${address}`, update, {
-        headers: this.genAuthorizationHeader(token),
-      })
-    } else {
-      return axios.put(`${this.host}/lock/${address}`, update)
+      opts.headers = this.genAuthorizationHeader(token)
+    }
+
+    try {
+      return await axios.post(`${this.host}/lock`, lock, opts)
+    } catch (err) {
+      return null
+    }
+  }
+
+  /**
+   * Note that we swallow errors here for now...
+   * @param {*} address
+   * @param {*} update
+   * @param {*} token
+   */
+  async updateLockDetails(address, update, token) {
+    const opts = {}
+    if (token) {
+      opts.headers = this.genAuthorizationHeader(token)
+    }
+    try {
+      return await axios.put(`${this.host}/lock/${address}`, update, opts)
+    } catch (err) {
+      return null
     }
   }
 }
