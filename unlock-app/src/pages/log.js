@@ -36,7 +36,6 @@ export const Log = ({ account, network, lockAddresses }) => {
       allTransactions = allTransactions.sort(
         (a, b) => b.blockNumber - a.blockNumber
       )
-      console.log(allTransactions)
       setTransactions(allTransactions)
     })
   }
