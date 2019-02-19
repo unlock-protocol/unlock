@@ -117,7 +117,7 @@ const typeColors = {
 }
 
 const Type = styled(LogElement)`
-  color: var(-- ${props => typeColors[props.type] || 'darkgrey'});
+  color: ${props => 'var(--' + typeColors[props.type] || 'darkgrey'});
 `
 
 export const mapStateToProps = ({ account, network, locks }) => {
