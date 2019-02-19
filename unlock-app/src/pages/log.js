@@ -15,17 +15,25 @@ export const Log = ({ account, network, lockAddresses }) => {
   const [transactions, setTransactions] = useState([])
   const w3s = new Web3Service()
 
-  const fetchTransactions = async () => {
-    const creations = await w3s.getPastLockCreationsTransactionsForUser(
-      account.address
+  const fetchTransactions = () => {
+    let lockPromises = lockAddresses.map(address =>
+      w3s.getPastLockTransactions(address)
     )
-
-    let lockTxs = []
-    lockAddresses.forEach(async address => {
-      const txs = await w3s.getPastLockTransactions(address)
-      lockTxs = [...lockTxs, ...txs]
+    lockPromises = [
+      ...lockPromises,
+      w3s.getPastLockCreationsTransactionsForUser(account.address),
+    ]
+    Promise.all(lockPromises).then(values => {
+      // `values` is an array of arrays (one array, possibly empty, for each
+      // lock address) so we'll flatten that out and sort the whole thing for
+      // display
+      const reducer = (acc, current) => [...acc, ...current]
+      let allTransactions = values.reduce(reducer, [])
+      allTransactions = allTransactions.sort(
+        (a, b) => b.blockNumber - a.blockNumber
+      )
+      setTransactions(allTransactions)
     })
-    setTransactions([...creations, ...lockTxs])
   }
 
   useEffect(
@@ -34,7 +42,7 @@ export const Log = ({ account, network, lockAddresses }) => {
     },
     [account, lockAddresses]
   )
-  console.log(transactions)
+
   return (
     <GlobalErrorProvider>
       <GlobalErrorConsumer>
@@ -46,7 +54,7 @@ export const Log = ({ account, network, lockAddresses }) => {
             <CreatorAccount network={network} account={account} />
             <ol>
               {transactions.map(tx => (
-                <li key={tx.id}>{tx.blockNumber}</li>
+                <li key={tx.id}>{tx.blockNumber + ' ' + tx.event}</li>
               ))}
             </ol>
           </BrowserOnly>
