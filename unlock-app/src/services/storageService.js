@@ -12,12 +12,12 @@ export default class StorageService {
    * @param {*} recipientAddress
    */
   storeTransaction(transactionHash, senderAddress, recipientAddress) {
-    const paylaod = {
+    const payload = {
       transactionHash,
       sender: senderAddress,
       recipient: recipientAddress,
     }
-    return axios.post(`${this.host}/transaction`, paylaod)
+    return axios.post(`${this.host}/transaction`, payload)
   }
 
   /**
