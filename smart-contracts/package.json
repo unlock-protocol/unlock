@@ -20,6 +20,7 @@
     "shelljs": "^0.8.3",
     "solhint": "^2.0.0",
     "solidity-coverage": "^0.5.11",
+    "solium": "^1.2.3",
     "truffle": "^4.1.15",
     "truffle-hdwallet-provider": "^1.0.3",
     "web3-utils": "^1.0.0-beta.36",
@@ -28,8 +29,7 @@
   },
   "devDependencies": {
     "remix-ide": "^0.7.5",
-    "remixd": "^0.1.8-alpha.6",
-    "solium": "^1.2.3"
+    "remixd": "^0.1.8-alpha.6"
   },
   "scripts": {
     "remix": "remixd -s contracts --remix-ide http://localhost:8080 --read-only",
