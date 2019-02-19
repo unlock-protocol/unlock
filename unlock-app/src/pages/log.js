@@ -19,10 +19,9 @@ export const Log = ({ account, network, lockAddresses }) => {
     let lockPromises = lockAddresses.map(address =>
       w3s.getPastLockTransactions(address)
     )
-    lockPromises = [
-      ...lockPromises,
-      w3s.getPastLockCreationsTransactionsForUser(account.address),
-    ]
+    lockPromises.push(
+      w3s.getPastLockCreationsTransactionsForUser(account.address)
+    )
     Promise.all(lockPromises).then(values => {
       // `values` is an array of arrays (one array, possibly empty, for each
       // lock address) so we'll flatten that out and sort the whole thing for
