@@ -27,13 +27,6 @@
     "zos-lib": "^2.1.2"
   },
   "devDependencies": {
-    "eslint": "^5.13.0",
-    "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-mocha": "^5.3.0",
-    "eslint-plugin-node": "^8.0.1",
-    "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-standard": "^4.0.0",
     "remix-ide": "^0.7.5",
     "remixd": "^0.1.8-alpha.6"
   },
