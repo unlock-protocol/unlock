@@ -63,28 +63,50 @@ contract('Lock', accounts => {
       })
 
       it('previously valid key is no longer valid', async () => {
-        assert.equal(await lock.getHasValidKey.call(accounts[1]), false)
+        if (!process.env.TEST_COVERAGE) {
+          assert.equal(await lock.getHasValidKey.call(accounts[1]), false)
+        } else {
+          try {
+            await lock.getHasValidKey.call(accounts[1])
+          } catch (e) {
+            assert(e.message.endsWith('is not a contract address'))
+            return
+          }
+          throw new Error('Expected error')
+        }
       })
 
       // After selfdestruct, a user can't buy a key, but if they try they loose their money.
       it('does not allow people to purchase new keys', async () => {
-        let initialLockBalance = new BigNumber(
-          await web3.eth.getBalance(lock.address)
-        ).toFixed()
-        assert.equal(initialLockBalance, 0)
+        if (!process.env.TEST_COVERAGE) {
+          let initialLockBalance = new BigNumber(
+            await web3.eth.getBalance(lock.address)
+          ).toFixed()
+          assert.equal(initialLockBalance, 0)
 
-        // This line does not fail, but instead calls the fallback function and sends msg.value to the destroyed contract.
-        await lock.purchaseFor(accounts[1], Web3Utils.toHex('Julien'), {
-          value: Units.convert('0.01', 'eth', 'wei')
-        })
+          // This line does not fail, but instead calls the fallback function and sends msg.value to the destroyed contract.
+          await lock.purchaseFor(accounts[1], Web3Utils.toHex('Julien'), {
+            value: Units.convert('0.01', 'eth', 'wei')
+          })
 
-        let finalLockBalance = new BigNumber(
-          await web3.eth.getBalance(lock.address)
-        ).toFixed()
-        assert.equal(finalLockBalance, 10000000000000000)
+          let finalLockBalance = new BigNumber(
+            await web3.eth.getBalance(lock.address)
+          ).toFixed()
+          assert.equal(finalLockBalance, 10000000000000000)
 
-        // The user did not purchase a key, but still sent their eth to the contract.
-        assert.equal(await lock.getHasValidKey.call(accounts[1]), false)
+          // The user did not purchase a key, but still sent their eth to the contract.
+          assert.equal(await lock.getHasValidKey.call(accounts[1]), false)
+        } else {
+          try {
+            await lock.purchaseFor(accounts[1], Web3Utils.toHex('Julien'), {
+              value: Units.convert('0.01', 'eth', 'wei')
+            })
+          } catch (e) {
+            assert(e.message.endsWith('is not a contract address'))
+            return
+          }
+          throw new Error('Expected error')
+        }
       })
     })
   })
