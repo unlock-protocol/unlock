@@ -8,9 +8,6 @@ import "./interfaces/IERC721Receiver.sol";
 import "openzeppelin-eth/contracts/introspection/ERC165.sol";
 import "openzeppelin-eth/contracts/math/SafeMath.sol";
 
-/**
- * TODO: consider error codes rather than strings
- */
 
 /**
  * @title The Lock contract
@@ -166,9 +163,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint _tokenId
   ) {
     require(
-      ownerByTokenId[_tokenId] == msg.sender
-      || _getApproved(_tokenId) == msg.sender
-    , "ONLY_KEY_OWNER_OR_APPROVED");
+      ownerByTokenId[_tokenId] == msg.sender ||
+      _getApproved(_tokenId) == msg.sender,
+      "ONLY_KEY_OWNER_OR_APPROVED");
     _;
   }
 
@@ -251,9 +248,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint refund = _getCancelAndRefundValue(msg.sender);
 
     emit CancelKey(key.tokenId, msg.sender, refund);
-    // expirationTimestamp is a proxy for hasKey, setting this to `now` instead
+    // expirationTimestamp is a proxy for hasKey, setting this to `block.timestamp` instead
     // of 0 so that we can still differentiate hasKey from hasValidKey.
-    key.expirationTimestamp = now;
+    key.expirationTimestamp = block.timestamp;
     // Remove data as we don't need this any longer
     delete key.data;
 
@@ -290,21 +287,21 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
       keyByOwner[_recipient].tokenId = _tokenId;
     }
 
-    if (previousExpiration <= now) {
+    if (previousExpiration <= block.timestamp) {
       // The recipient did not have a key, or had a key but it expired. The new expiration is the
       // sender's key expiration
       keyByOwner[_recipient].expirationTimestamp = keyByOwner[_from].expirationTimestamp;
     } else {
       // The recipient has a non expired key. We just add them the corresponding remaining time
-      // SafeSub is not required since the if confirms `previousExpiration - now` cannot underflow
-      keyByOwner[_recipient].expirationTimestamp =
-        keyByOwner[_from].expirationTimestamp.add(previousExpiration - now);
+      // SafeSub is not required since the if confirms `previousExpiration - block.timestamp` cannot underflow
+      keyByOwner[_recipient].expirationTimestamp = keyByOwner[_from]
+        .expirationTimestamp.add(previousExpiration - block.timestamp);
     }
     // Overwite data in all cases
     keyByOwner[_recipient].data = keyByOwner[_from].data;
 
     // Effectively expiring the key for the previous owner
-    keyByOwner[_from].expirationTimestamp = now;
+    keyByOwner[_from].expirationTimestamp = block.timestamp;
 
     // Clear any previous approvals
     approved[_tokenId] = address(0);
@@ -438,7 +435,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   /**
    * @dev Determines how much of a refund a key owner would receive if they issued
-   * a cancelAndRefund now.
+   * a cancelAndRefund block.timestamp.
    * Note that due to the time required to mine a tx, the actual refund amount will be lower
    * than what the user reads from this call.
    */
@@ -506,7 +503,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     view
     returns (bool)
   {
-    return keyByOwner[_owner].expirationTimestamp > now;
+    return keyByOwner[_owner].expirationTimestamp > block.timestamp;
   }
 
   /**
@@ -544,19 +541,20 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     returns (address[])
   {
     require(outstandingKeys() > 0, "NO_OUTSTANDING_KEYS");
-    uint _startIndex = _page * _pageSize;
+    uint pageSize = _pageSize;
+    uint _startIndex = _page * pageSize;
     require(_startIndex >= 0 && _startIndex < outstandingKeys(), "INDEX_OUT_OF_BOUNDS");
     uint endOfPageIndex;
 
-    if (_startIndex + _pageSize > owners.length) {
+    if (_startIndex + pageSize > owners.length) {
       endOfPageIndex = owners.length;
-      _pageSize = owners.length - _startIndex;
+      pageSize = owners.length - _startIndex;
     } else {
-      endOfPageIndex = (_startIndex + _pageSize);
+      endOfPageIndex = (_startIndex + pageSize);
     }
 
     // new temp in-memory array to hold pageSize number of requested owners:
-    address[] memory ownersByPage = new address[](_pageSize);
+    address[] memory ownersByPage = new address[](pageSize);
     uint pageIndex = 0;
 
     // Build the requested set of owners into a new temporary array:
@@ -578,7 +576,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     onlyOwner
     hasValidKey(_owner)
   {
-    keyByOwner[_owner].expirationTimestamp = now; // Effectively expiring the key
+    keyByOwner[_owner].expirationTimestamp = block.timestamp; // Effectively expiring the key
   }
 
   /**
@@ -680,7 +678,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
     // Assign the key
     uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
-    if (previousExpiration < now) {
+    if (previousExpiration < block.timestamp) {
       if (previousExpiration == 0) {
         // This is a brand new owner, else an owner of an expired key buying an extension.
         // We increment the tokenId counter
@@ -693,7 +691,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
       }
       // SafeAdd is not required here since expirationDuration is capped to a tiny value
       // (relative to the size of a uint)
-      keyByOwner[_recipient].expirationTimestamp = now + expirationDuration;
+      keyByOwner[_recipient].expirationTimestamp = block.timestamp + expirationDuration;
     } else {
       // This is an existing owner trying to extend their key
       keyByOwner[_recipient].expirationTimestamp = previousExpiration.add(expirationDuration);
@@ -730,7 +728,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   {
     Key storage key = keyByOwner[_owner];
     // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
-    uint timeRemaining = key.expirationTimestamp - now;
+    uint timeRemaining = key.expirationTimestamp - block.timestamp;
     // Math: using safeMul in case keyPrice or timeRemaining is very large
     refund = keyPrice.mul(timeRemaining) / expirationDuration;
     if (refundPenaltyDenominator > 0) {
