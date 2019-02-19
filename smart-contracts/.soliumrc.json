@@ -9,13 +9,12 @@
       "single"
     ],
     "indentation": [
-      "warning",
+      "error",
       2
     ],
     "linebreak-style": [
       "error",
       "unix"
-    ],
-    "security/no-assign-params": "warning"
+    ]
   }
 }
