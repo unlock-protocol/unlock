@@ -97,7 +97,7 @@ contract('Lock ERC721', accounts => {
             from
           })
           // Get the tokenID
-          ID = await locks['FIRST'].getTokenIdFor(from)
+          ID = await locks['FIRST'].getTokenIdFor.call(from)
           // Let's check the expiration date for that key
           fromExpirationTimestamp = new BigNumber(
             await locks['FIRST'].keyExpirationTimestampFor.call(from)
@@ -128,7 +128,7 @@ contract('Lock ERC721', accounts => {
             value: Units.convert('0.01', 'eth', 'wei'),
             from
           })
-          ID = await locks['FIRST'].getTokenIdFor(from)
+          ID = await locks['FIRST'].getTokenIdFor.call(from)
           // First let's get the current expiration
           transferedKeyTimestamp = new BigNumber(
             await locks['FIRST'].keyExpirationTimestampFor.call(from)
@@ -195,7 +195,7 @@ contract('Lock ERC721', accounts => {
         })
 
         it('should succeed if the sender has been approved for that key', async () => {
-          ID = await locks['FIRST'].getTokenIdFor(accountWithKeyApproved)
+          ID = await locks['FIRST'].getTokenIdFor.call(accountWithKeyApproved)
           await locks['FIRST'].approve(accountApproved, ID, {
             from: accountWithKeyApproved
           })
@@ -226,7 +226,7 @@ contract('Lock ERC721', accounts => {
             value: Units.convert('0.01', 'eth', 'wei'),
             from
           })
-          ID = await locks['FIRST'].getTokenIdFor(from)
+          ID = await locks['FIRST'].getTokenIdFor.call(from)
           keyExpiration = new BigNumber(
             await locks['FIRST'].keyExpirationTimestampFor.call(from)
           )

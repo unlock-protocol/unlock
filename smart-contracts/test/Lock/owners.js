@@ -54,17 +54,17 @@ contract('Lock ERC721', accounts => {
 
     it('should allow for access to an individual key owner', () => {
       return Promise.all([
-        lock.owners(0),
-        lock.owners(1),
-        lock.owners(2),
-        lock.owners(3)
+        lock.owners.call(0),
+        lock.owners.call(1),
+        lock.owners.call(2),
+        lock.owners.call(3)
       ]).then(owners => {
         assert.deepEqual(owners.sort(), accounts.slice(1, 5).sort())
       })
     })
 
     it('should fail to access to an individual key owner when out of bounds', async () => {
-      await shouldFail(lock.owners(6), 'invalid opcode')
+      await shouldFail(lock.owners.call(6), 'invalid opcode')
     })
 
     describe('after a transfer to a new address', () => {
@@ -72,7 +72,7 @@ contract('Lock ERC721', accounts => {
 
       before(async () => {
         numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-        let ID = await lock.getTokenIdFor(accounts[1])
+        let ID = await lock.getTokenIdFor.call(accounts[1])
         await lock.transferFrom(accounts[1], accounts[5], ID, {
           from: accounts[1]
         })
@@ -83,10 +83,9 @@ contract('Lock ERC721', accounts => {
         assert.equal(outstandingKeys.toFixed(), 4)
       })
 
-      it('should have the right number of keys', () => {
-        return lock.outstandingKeys().then(outstandingKeys => {
-          assert.equal(outstandingKeys, 4)
-        })
+      it('should have the right number of keys', async () => {
+        const outstandingKeys = new BigNumber(await lock.outstandingKeys.call())
+        assert.equal(outstandingKeys.toFixed(), 4)
       })
 
       it('should have the right number of owners', async () => {
@@ -109,7 +108,7 @@ contract('Lock ERC721', accounts => {
 
       before(async () => {
         numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-        let ID = await lock.getTokenIdFor(accounts[2])
+        let ID = await lock.getTokenIdFor.call(accounts[2])
         await lock.transferFrom(accounts[2], accounts[3], ID, {
           from: accounts[2]
         })
@@ -120,10 +119,9 @@ contract('Lock ERC721', accounts => {
         assert.equal(outstandingKeys.toFixed(), 4)
       })
 
-      it('should have the right number of keys', () => {
-        return lock.outstandingKeys().then(outstandingKeys => {
-          assert.equal(outstandingKeys, 4)
-        })
+      it('should have the right number of keys', async () => {
+        const outstandingKeys = new BigNumber(await lock.outstandingKeys.call())
+        assert.equal(outstandingKeys.toFixed(), 4)
       })
 
       it('should have the right number of owners', async () => {

@@ -27,7 +27,7 @@ contract('Lock ERC721', accounts => {
           from: accounts[1]
         }
       )
-      let ID = await locks['FIRST'].getTokenIdFor(accounts[1])
+      let ID = await locks['FIRST'].getTokenIdFor.call(accounts[1])
       let address = await locks['FIRST'].ownerOf.call(ID)
       assert.equal(address, accounts[1])
     })

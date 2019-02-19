@@ -41,7 +41,7 @@ contract('Lock ERC721', accounts => {
           from: keyPurchaser
         }
       )
-      ID = await locks['FIRST'].getTokenIdFor(keyPurchaser)
+      ID = await locks['FIRST'].getTokenIdFor.call(keyPurchaser)
     })
 
     describe('getApproved', () => {
