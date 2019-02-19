@@ -25,5 +25,10 @@ describe('The Unlock Dashboard', () => {
       await expect(page).toMatch('Cancel')
       await expect(page).toMatch('days')
     })
+
+    it('should persist the lock', async () => {
+      await expect(page).toClick('button', { text: 'Submit' })
+      await expect(page).toMatch('30 days')
+    })
   })
 })

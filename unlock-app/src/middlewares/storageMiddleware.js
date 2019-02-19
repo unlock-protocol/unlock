@@ -49,7 +49,11 @@ export default function storageMiddleware({ getState, dispatch }) {
 
       if (action.type === STORE_LOCK_CREATION) {
         // A new lock has been created
-        storageService.storeLockDetails(action.lock, action.token)
+        storageService
+          .storeLockDetails(action.lock, action.token)
+          .catch(error => {
+            dispatch(storageError(error))
+          })
       }
 
       if (action.type === UPDATE_LOCK) {
