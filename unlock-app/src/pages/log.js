@@ -95,7 +95,7 @@ Log.propTypes = {
 const Body = styled.div`
   display: grid;
   grid-template-columns: min-content min-content min-content;
-  grid-template-rows: 20px;
+  grid-auto-rows: 20px;
   grid-column-gap: 20px;
 `
 
