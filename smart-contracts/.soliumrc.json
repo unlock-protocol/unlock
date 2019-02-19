@@ -5,7 +5,7 @@
   ],
   "rules": {
     "quotes": [
-      "warning",
+      "error",
       "single"
     ],
     "indentation": [
