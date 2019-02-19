@@ -49,8 +49,8 @@ const Metadata = () => {
       </MetadataHeader>
       <MetadataBody>
         <div>
-          <input type="number" />
-          <span>Free Articles</span>
+          <input id="metering" type="number" />
+          <label htmlFor="metering">Free Articles</label>
         </div>
         <div>
           <input placeholder="Public Name" />
@@ -98,6 +98,7 @@ const MetadataBody = styled.div`
     font-family: 'IBM Plex Mono', sans serif;
     font-size: 14px;
     font-weight: 200;
+    margin: 0 0.5em 0 0;
   }
 
   input:focus {
@@ -117,19 +118,16 @@ const MetadataBody = styled.div`
   div:nth-child(1) {
     input {
       width: 3em;
-      margin-right: 0.5em;
     }
   }
 
   div:nth-child(3) {
     display: grid;
-    grid-template-columns: 33px 1fr;
+    grid-template-columns: min-content 1fr;
     align-items: center;
     input {
       height: 26px;
       width: 26px;
-      margin: 0;
-      margin-right: 0.5em;
       border: none;
     }
     span {
