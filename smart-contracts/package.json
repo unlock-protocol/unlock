@@ -28,12 +28,13 @@
   },
   "devDependencies": {
     "remix-ide": "^0.7.5",
-    "remixd": "^0.1.8-alpha.6"
+    "remixd": "^0.1.8-alpha.6",
+    "solium": "^1.2.3"
   },
   "scripts": {
     "remix": "remixd -s contracts --remix-ide http://localhost:8080 --read-only",
     "test": "truffle test --network development",
-    "lint": "solhint \"contracts/**/*.sol\"",
+    "lint": "solhint \"contracts/**/*.sol\" && solium -d ./contracts/",
     "dev": "npm run lint && npm run build && npm run test",
     "ci": "npm run lint && npm run test && npm run coverage",
     "build": "truffle compile --all",
