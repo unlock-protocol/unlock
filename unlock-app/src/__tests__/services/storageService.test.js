@@ -1,112 +1,117 @@
-import http from 'jest-mock-axios'
+import axios from 'axios'
 import StorageService from '../../services/storageService'
 
-afterEach(() => http.reset())
+jest.mock('axios')
 
 describe('StorageService', () => {
   const serviceHost = 'http://127.0.0.1:8080'
   const storageService = new StorageService(serviceHost)
-  const successFn = jest.fn(),
-    failureFn = jest.fn()
 
   describe('lockLookUp', () => {
     describe('when the requested lock exists', () => {
-      it('returns the details', () => {
-        storageService.lockLookUp('0x42').then(successFn)
-        http.mockResponse({
+      it('returns the details', async () => {
+        expect.assertions(2)
+        axios.get.mockReturnValue({
           data: {
             name: 'hello',
           },
         })
-        expect(successFn).toHaveBeenCalledWith('hello')
-        expect(http.get).toHaveBeenCalledWith(`${serviceHost}/lock/0x42`)
+        const result = await storageService.lockLookUp('0x42')
+        expect(result).toEqual('hello')
+        expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/lock/0x42`)
       })
     })
 
     describe('when the requested lock doesnt exist', () => {
-      it('raises an appropriate error', () => {
-        storageService.lockLookUp('0x1234243').catch(failureFn)
-        http.mockError()
-        expect(http.get).toHaveBeenCalledWith(`${serviceHost}/lock/0x1234243`)
-        expect(failureFn).toHaveBeenCalled()
+      it('raises an appropriate error', async () => {
+        expect.assertions(2)
+        axios.get.mockRejectedValue()
+        const result = await storageService.lockLookUp('0x1234243')
+        expect(result).toEqual(null)
+        expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/lock/0x1234243`)
       })
     })
   })
 
   describe('storeLockDetails', () => {
     describe('when storing a new lock', () => {
-      it('returns a successful promise', () => {
-        storageService
-          .storeLockDetails({ name: 'lock_name', address: 'lock_address' })
-          .then(successFn)
-        http.mockResponse()
-        expect(http.post).toHaveBeenCalledWith(`${serviceHost}/lock`, {
+      it('returns a successful promise', async () => {
+        expect.assertions(1)
+        axios.post.mockReturnValue()
+        await storageService.storeLockDetails({
           name: 'lock_name',
           address: 'lock_address',
         })
-        expect(successFn).toHaveBeenCalled()
+        expect(axios.post).toHaveBeenCalledWith(
+          `${serviceHost}/lock`,
+          {
+            name: 'lock_name',
+            address: 'lock_address',
+          },
+          {}
+        )
       })
     })
 
     describe('when attempting to store an existing lock', () => {
-      it('returns a failure promise', () => {
-        storageService
-          .storeLockDetails({ name: 'lock_name', address: 'existing_address' })
-          .then(failureFn)
-        http.mockError()
-        expect(http.post).toHaveBeenCalledWith(`${serviceHost}/lock`, {
+      it('returns a failure promise', async () => {
+        expect.assertions(1)
+        axios.post.mockRejectedValue()
+        await storageService.storeLockDetails({
           name: 'lock_name',
           address: 'existing_address',
         })
-        expect(failureFn).toHaveBeenCalled()
+        expect(axios.post).toHaveBeenCalledWith(
+          `${serviceHost}/lock`,
+          {
+            name: 'lock_name',
+            address: 'existing_address',
+          },
+          {}
+        )
       })
     })
   })
 
   describe('updateLockDetails', () => {
     describe('when a lock can be updated', () => {
-      it('returns a successful promise', () => {
-        storageService
-          .updateLockDetails('lock_address', {
-            name: 'new_lock_name',
-            address: 'lock_address',
-          })
-          .then(successFn)
-        http.mockResponse()
-        expect(http.put).toHaveBeenCalledWith(
+      it('returns a successful promise', async () => {
+        expect.assertions(1)
+        axios.put.mockReturnValue()
+        await storageService.updateLockDetails('lock_address', {
+          name: 'new_lock_name',
+          address: 'lock_address',
+        })
+        expect(axios.put).toHaveBeenCalledWith(
           `${serviceHost}/lock/lock_address`,
           {
             name: 'new_lock_name',
             address: 'lock_address',
-          }
+          },
+          {}
         )
-        expect(successFn).toHaveBeenCalled()
       })
     })
 
     describe('when a lock can not be updated', () => {
-      storageService.updateLockDetails('lock_address').catch(failureFn)
-      http.mockError()
-      expect(http.put).toHaveBeenCalledWith(
-        `${serviceHost}/lock/lock_address`,
-        undefined
-      )
-      expect(failureFn).toHaveBeenCalled()
+      it('should not fail', async () => {
+        expect.assertions(1)
+        axios.put.mockRejectedValue()
+        await storageService.updateLockDetails('lock_address')
+        expect(axios.put).toHaveBeenCalledWith(
+          `${serviceHost}/lock/lock_address`,
+          undefined,
+          {}
+        )
+      })
     })
   })
 
   describe('getTransactionsHashesSentBy', () => {
-    it('should expect a list of transactions hashes', done => {
+    it('should expect a list of transactions hashes', async () => {
       expect.assertions(2)
       const sender = '0x123'
-      storageService.getTransactionsHashesSentBy(sender).then(hashes => {
-        expect(hashes).toEqual(['0x123', '0x456'])
-        done()
-      })
-      expect(http.get).toHaveBeenCalledWith(
-        `${serviceHost}/transactions?sender=${sender}`
-      )
-      http.mockResponse({
+      axios.get.mockReturnValue({
         data: {
           transactions: [
             { transactionHash: '0x123', sender: '0xabc', recipient: '0xcde' },
@@ -114,25 +119,31 @@ describe('StorageService', () => {
           ],
         },
       })
+      const hashes = await storageService.getTransactionsHashesSentBy(sender)
+      expect(hashes).toEqual(['0x123', '0x456'])
+      expect(axios.get).toHaveBeenCalledWith(
+        `${serviceHost}/transactions?sender=${sender}`
+      )
     })
   })
 
   describe('storeTransaction', () => {
-    describe('when storing a transaction', () => {
-      it('returns a successful promise', () => {
-        const transactionHash = ' 0xhash'
-        const senderAddress = ' 0xsender'
-        const recipientAddress = ' 0xrecipient'
-        storageService
-          .storeTransaction(transactionHash, senderAddress, recipientAddress)
-          .then(successFn)
-        http.mockResponse()
-        expect(http.post).toHaveBeenCalledWith(`${serviceHost}/transaction`, {
-          transactionHash,
-          sender: senderAddress,
-          recipient: recipientAddress,
-        })
-        expect(successFn).toHaveBeenCalled()
+    it('returns a successful promise', async () => {
+      expect.assertions(1)
+      const transactionHash = ' 0xhash'
+      const senderAddress = ' 0xsender'
+      const recipientAddress = ' 0xrecipient'
+      axios.post.mockReturnValue({})
+
+      await storageService.storeTransaction(
+        transactionHash,
+        senderAddress,
+        recipientAddress
+      )
+      expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/transaction`, {
+        transactionHash,
+        sender: senderAddress,
+        recipient: recipientAddress,
       })
     })
   })
