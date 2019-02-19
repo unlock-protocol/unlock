@@ -6,7 +6,7 @@ import "./interfaces/ILockCore.sol";
 import "openzeppelin-eth/contracts/ownership/Ownable.sol";
 import "openzeppelin-eth/contracts/introspection/ERC165.sol";
 import "openzeppelin-eth/contracts/math/SafeMath.sol";
-import "openzeppelin-eth/contracts/token/ERC721/ERC721Holder.sol";
+import "openzeppelin-solidity/contracts/token/ERC721/ERC721Holder.sol";
 
 /**
  * TODO: consider error codes rather than strings
