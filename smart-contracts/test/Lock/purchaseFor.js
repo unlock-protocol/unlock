@@ -26,9 +26,9 @@ contract('Lock', (accounts) => {
         await shouldFail(locks['FIRST']
           .purchaseFor(accounts[0], Web3Utils.toHex('Julien'), {
             value: Units.convert('0.0001', 'eth', 'wei')
-          }), 'Insufficient funds')
+          }), 'NOT_ENOUGH_FUNDS')
         // Making sure we do not have a key set!
-        await shouldFail(locks['FIRST'].keyExpirationTimestampFor.call(accounts[0]), 'No such key')
+        await shouldFail(locks['FIRST'].keyExpirationTimestampFor.call(accounts[0]), 'NO_SUCH_KEY')
       })
 
       it('should fail if we reached the max number of keys', async () => {
@@ -41,8 +41,8 @@ contract('Lock', (accounts) => {
         await shouldFail(locks['SINGLE KEY'].purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: accounts[1]
-        }), 'Maximum number of keys already sold')
-        await shouldFail(locks['SINGLE KEY'].keyDataFor.call(accounts[1]), 'No such key')
+        }), 'LOCK_SOLD_OUT')
+        await shouldFail(locks['SINGLE KEY'].keyDataFor.call(accounts[1]), 'NO_SUCH_KEY')
       })
 
       it('should trigger an event when successful', async () => {

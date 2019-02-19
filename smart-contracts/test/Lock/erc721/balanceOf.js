@@ -22,7 +22,7 @@ contract('Lock ERC721', (accounts) => {
 
   describe('balanceOf', () => {
     it('should fail if the user address is 0', async () => {
-      await shouldFail(locks['FIRST'].balanceOf.call(Web3Utils.padLeft(0, 40)), 'Invalid address')
+      await shouldFail(locks['FIRST'].balanceOf.call(Web3Utils.padLeft(0, 40)), 'INVALID_ADDRESS')
     })
 
     it('should return 0 if the user has no key', async () => {

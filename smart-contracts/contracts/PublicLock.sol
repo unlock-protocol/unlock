@@ -124,7 +124,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   ) {
     Key storage key = keyByOwner[_owner];
     require(
-      key.expirationTimestamp > 0, "No such key"
+      key.expirationTimestamp > 0, "NO_SUCH_KEY"
     );
     _;
   }
@@ -134,7 +134,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     address _owner
   ) {
     require(
-      getHasValidKey(_owner), "Key is not valid"
+      getHasValidKey(_owner), "KEY_NOT_VALID"
     );
     _;
   }
@@ -144,7 +144,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint _tokenId
   ) {
     require(
-      ownerByTokenId[_tokenId] == msg.sender, "Not the key owner"
+      ownerByTokenId[_tokenId] == msg.sender, "ONLY_KEY_OWNER"
     );
     _;
   }
@@ -154,7 +154,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint _tokenId
   ) {
     require(
-      ownerByTokenId[_tokenId] != address(0), "No such key"
+      ownerByTokenId[_tokenId] != address(0), "NO_SUCH_KEY"
     );
     _;
   }
@@ -168,19 +168,19 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     require(
       ownerByTokenId[_tokenId] == msg.sender
       || _getApproved(_tokenId) == msg.sender
-    , "Only key owner or approved owner");
+    , "ONLY_KEY_OWNER_OR_APPROVED");
     _;
   }
 
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
-    require(maxNumberOfKeys > numberOfKeysSold, "Maximum number of keys already sold");
+    require(maxNumberOfKeys > numberOfKeysSold, "LOCK_SOLD_OUT");
     _;
   }
 
   // Only allow usage when contract is Alive
   modifier onlyIfAlive() {
-    require(isAlive, "No access after contract has been disabled");
+    require(isAlive, "LOCK_DEPRECATED");
     _;
   }
 
@@ -193,7 +193,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint _version
   )
   public {
-    require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, "Expiration duration exceeds 100 years");
+    require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, "MAX_EXPIRATION_100_YEARS");
     unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract.
     Ownable.initialize(_owner);
     ERC165.initialize();
@@ -279,7 +279,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     hasValidKey(_from)
     onlyKeyOwnerOrApproved(_tokenId)
   {
-    require(_recipient != address(0), "Can't Transfer to 0x Address");
+    require(_recipient != address(0), "INVALID_ADDRESS");
 
     uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
 
@@ -326,7 +326,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     onlyOwner
   {
     uint balance = address(this).balance;
-    require(balance > 0, "Not enough funds");
+    require(balance > 0, "NOT_ENOUGH_FUNDS");
     // Security: re-entrancy not a risk as this is the last line of an external function
     _withdraw(balance);
   }
@@ -339,9 +339,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     external
     onlyOwner
   {
-    require(_amount > 0, "Must request an amount greater than 0");
+    require(_amount > 0, "GREATER_THAN_ZERO");
     uint256 balance = address(this).balance;
-    require(balance > 0 && balance >= _amount, "Not enough funds");
+    require(balance > 0 && balance >= _amount, "NOT_ENOUGH_FUNDS");
     // Security: re-entrancy not a risk as this is the last line of an external function
     _withdraw(_amount);
   }
@@ -360,8 +360,8 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     onlyIfAlive
     onlyKeyOwner(_tokenId)
   {
-    require(_approved != address(0));
-    require(msg.sender != _approved, "You can't approve yourself");
+    require(_approved != address(0), "INVALID_ADDRESS");
+    require(msg.sender != _approved, "APPROVE_SELF");
 
     approved[_tokenId] = _approved;
     emit Approval(ownerByTokenId[_tokenId], _approved, _tokenId);
@@ -414,7 +414,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     external
     onlyOwner
   {
-    require(isAlive == false, "Not allowed to delete an active lock");
+    require(isAlive == false, "DISABLE_FIRST");
     emit Destroy(this.balance, msg.sender);
     selfdestruct(msg.sender);
     // Note we don't clean up the `locks` data in Unlock.sol as it should not be necessary
@@ -432,7 +432,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     view
     returns (uint)
   {
-    require(_owner != address(0), "Invalid address");
+    require(_owner != address(0), "INVALID_ADDRESS");
     return keyByOwner[_owner].expirationTimestamp > 0 ? 1 : 0;
   }
 
@@ -543,9 +543,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     view
     returns (address[])
   {
-    require(outstandingKeys() > 0, "No keys to retrieve");
+    require(outstandingKeys() > 0, "NO_OUTSTANDING_KEYS");
     uint _startIndex = _page * _pageSize;
-    require(_startIndex >= 0 && _startIndex < outstandingKeys(), "Index must be in-bounds");
+    require(_startIndex >= 0 && _startIndex < outstandingKeys(), "INDEX_OUT_OF_BOUNDS");
     uint endOfPageIndex;
 
     if (_startIndex + _pageSize > owners.length) {
@@ -656,7 +656,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     internal
     notSoldOut()
   { // solhint-disable-line function-max-lines
-    require(_recipient != address(0), "Can't Purchase For 0x Address");
+    require(_recipient != address(0), "INVALID_ADDRESS");
 
     // Let's get the actual price for the key from the Unlock smart contract
     IUnlock unlock = IUnlock(unlockProtocol);
@@ -674,7 +674,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
     // We explicitly allow for greater amounts to allow "donations" or partial refunds after
     // discounts (TODO implement partial refunds)
-    require(msg.value >= netPrice, "Insufficient funds");
+    require(msg.value >= netPrice, "NOT_ENOUGH_FUNDS");
     // TODO: If there is more than the required price, then let's return whatever is extra
     // extra (CAREFUL: re-entrancy!)
 
@@ -757,7 +757,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     returns (address)
   {
     address approvedRecipient = approved[_tokenId];
-    require(approvedRecipient != address(0), "No approved recipient exists");
+    require(approvedRecipient != address(0), "NONE_APPROVED");
     return approvedRecipient;
   }
 
