@@ -22,7 +22,7 @@ contract('Lock', (accounts) => {
   describe('getOwnersByPage', () => {
     describe('when there are 0 key owners', () => {
       it('should return an error', async () => {
-        await shouldFail(locks['FIRST'].getOwnersByPage.call(0, 2, { from: accounts[5] }), 'No keys to retrieve')
+        await shouldFail(locks['FIRST'].getOwnersByPage.call(0, 2, { from: accounts[5] }), 'NO_OUTSTANDING_KEYS')
       })
     })
 

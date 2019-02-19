@@ -53,7 +53,7 @@ exports.shouldCreateLock = function (accounts) {
           100 // maxNumberOfKeys
           , {
             from: accounts[0]
-          }), 'Expiration duration exceeds 100 years')
+          }), 'MAX_EXPIRATION_100_YEARS')
       })
     })
   })

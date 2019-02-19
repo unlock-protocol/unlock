@@ -98,7 +98,7 @@ contract('Lock ERC721', accounts => {
           lock.transferFrom(accounts[1], accounts[5], accounts[1], {
             from: accounts[1]
           }),
-          'Key is not valid'
+          'KEY_NOT_VALID'
         )
       })
     })

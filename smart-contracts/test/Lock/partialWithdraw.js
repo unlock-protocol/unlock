@@ -45,13 +45,13 @@ contract('Lock', (accounts) => {
       initialLockBalance = new BigNumber(await web3.eth.getBalance(locks['OWNED'].address))
       await shouldFail(locks['OWNED'].partialWithdraw(initialLockBalance.plus(withdrawalAmount).toFixed(), {
         from: owner
-      }), 'Not enough funds')
+      }), 'NOT_ENOUGH_FUNDS')
     })
 
     it('should fail if requesting partial withdraw of 0', async () => {
       await shouldFail(locks['OWNED'].partialWithdraw(0, {
         from: owner
-      }), 'Must request an amount greater than 0')
+      }), 'GREATER_THAN_ZERO')
     })
 
     describe('when the owner withdraws some funds', () => {

@@ -21,7 +21,7 @@ contract UnlockTestV2 is Unlock {
   function initializeV2()
     public
   {
-    require(!initializedV2);
+    require(!initializedV2, "ONLY_CALL_ONCE");
     exampleData = 42;
     initializedV2 = true;
   }

@@ -18,7 +18,7 @@ contract('Lock ERC721', accounts => {
     it('should abort when the key has no owner', async () => {
       await shouldFail(
         locks['FIRST'].getTokenIdFor.call(accounts[3]),
-        'No such key'
+        'NO_SUCH_KEY'
       )
     })
 
