@@ -306,9 +306,11 @@ describe('Lock middleware', () => {
           newLockAddress: '0x0',
         },
       }
-      const p = Promise.resolve([mockTx])
+      const lockCreationTransaction = Promise.resolve([mockTx])
       mockWeb3Service.refreshAccountBalance = jest.fn()
-      mockWeb3Service.getPastLockCreationsTransactionsForUser = jest.fn(() => p)
+      mockWeb3Service.getPastLockCreationsTransactionsForUser = jest.fn(
+        () => lockCreationTransaction
+      )
       mockWeb3Service.getKeyByLockForOwner = jest.fn()
       mockWeb3Service.getPastLockTransactions = jest.fn()
 
@@ -325,7 +327,8 @@ describe('Lock middleware', () => {
       expect(
         mockWeb3Service.getPastLockCreationsTransactionsForUser
       ).toHaveBeenCalledWith(newAccount.address)
-      await p
+      await lockCreationTransaction
+      // We need to await this for the next assertion to work
       expect(mockWeb3Service.getPastLockTransactions).toHaveBeenCalled()
       expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
     })
@@ -338,9 +341,11 @@ describe('Lock middleware', () => {
           newLockAddress: '0x0',
         },
       }
-      const p = Promise.resolve([mockTx])
+      const lockCreationTransaction = Promise.resolve([mockTx])
       mockWeb3Service.refreshAccountBalance = jest.fn()
-      mockWeb3Service.getPastLockCreationsTransactionsForUser = jest.fn(() => p)
+      mockWeb3Service.getPastLockCreationsTransactionsForUser = jest.fn(
+        () => lockCreationTransaction
+      )
       mockWeb3Service.getKeyByLockForOwner = jest.fn()
       mockWeb3Service.getPastLockTransactions = jest.fn()
 
@@ -358,7 +363,8 @@ describe('Lock middleware', () => {
       expect(
         mockWeb3Service.getPastLockCreationsTransactionsForUser
       ).toHaveBeenCalled()
-      await p
+      // We need to await this for the next assertion to work
+      await lockCreationTransaction
       expect(mockWeb3Service.getPastLockTransactions).toHaveBeenCalled()
       expect(mockWeb3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
         lock,
