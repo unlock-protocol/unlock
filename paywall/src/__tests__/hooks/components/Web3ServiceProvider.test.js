@@ -4,7 +4,7 @@ import MockWeb3 from 'web3'
 
 import Web3Service, {
   Web3ServiceContext,
-} from '../../../hooks/components/Web3Service'
+} from '../../../hooks/components/Web3ServiceProvider'
 
 describe('Web3Service component', () => {
   const { Consumer } = Web3ServiceContext
