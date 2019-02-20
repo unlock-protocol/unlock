@@ -11,7 +11,7 @@ pragma solidity 0.4.25;
  *  a. Deployed locks addresses and balances of discount tokens granted by each lock.
  *  b. The total network product (sum of all key sales, net of discounts)
  *  c. Total of discounts granted
- *  d. Balances of discount tokens, including "frozen" tokens (which have been used to claim
+ *  d. Balances of discount tokens, including 'frozen' tokens (which have been used to claim
  * discounts and cannot be used/transfered for a given period)
  *  e. Growth rate of Network Product
  *  f. Growth rate of Discount tokens supply
@@ -26,10 +26,10 @@ pragma solidity 0.4.25;
  *  b. Keeping track of GNP
  */
 
-import "openzeppelin-eth/contracts/ownership/Ownable.sol";
-import "zos-lib/contracts/Initializable.sol";
-import "./PublicLock.sol";
-import "./interfaces/IUnlock.sol";
+import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
+import 'zos-lib/contracts/Initializable.sol';
+import './PublicLock.sol';
+import './interfaces/IUnlock.sol';
 
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
@@ -49,7 +49,7 @@ contract Unlock is IUnlock, Initializable, Ownable {
   }
 
   modifier onlyFromDeployedLock() {
-    require(locks[msg.sender].deployed, "ONLY_LOCKS");
+    require(locks[msg.sender].deployed, 'ONLY_LOCKS');
     _;
   }
 

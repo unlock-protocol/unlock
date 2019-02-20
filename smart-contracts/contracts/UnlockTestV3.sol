@@ -9,10 +9,10 @@ pragma solidity 0.4.25;
  * Then a few small changes have been made, higlighted with comments.
  */
 
-import "openzeppelin-eth/contracts/ownership/Ownable.sol";
-import "zos-lib/contracts/Initializable.sol";
-import "./PublicLock.sol";
-import "./interfaces/IUnlock.sol";
+import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
+import 'zos-lib/contracts/Initializable.sol';
+import './PublicLock.sol';
+import './interfaces/IUnlock.sol';
 
 
 contract UnlockTestV3 is Initializable, Ownable {
@@ -24,7 +24,7 @@ contract UnlockTestV3 is Initializable, Ownable {
   }
 
   modifier onlyFromDeployedLock() {
-    require(locks[msg.sender].deployed, "ONLY_LOCKS");
+    require(locks[msg.sender].deployed, 'ONLY_LOCKS');
     _;
   }
 
@@ -53,7 +53,7 @@ contract UnlockTestV3 is Initializable, Ownable {
   {
     // We must manually initialize Ownable.sol
     Ownable.initialize(_owner);
-    require(!initialized, "ONLY_CALL_ONCE");
+    require(!initialized, 'ONLY_CALL_ONCE');
     exampleData = 42;
     initialized = true;
   }
@@ -62,7 +62,7 @@ contract UnlockTestV3 is Initializable, Ownable {
   function initializeV3()
     public
   {
-    require(!initializedV3, "ONLY_CALL_ONCE");
+    require(!initializedV3, 'ONLY_CALL_ONCE');
     exampleData = 42;
     initializedV3 = true;
   }
