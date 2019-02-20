@@ -25,13 +25,6 @@ contract('Lock ERC721', accounts => {
   })
 
   describe('getApproved', () => {
-    let lockOwner
-
-    before(() => {
-      return locks['FIRST'].owner.call().then(_owner => {
-        lockOwner = _owner
-      })
-    })
     before(async function () {
       await locks['FIRST'].purchaseFor(
         keyPurchaser,
