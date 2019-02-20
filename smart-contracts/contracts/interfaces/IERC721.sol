@@ -65,7 +65,7 @@ interface IERC721 {
   ///  `_tokenId` is not a valid NFT. When transfer is complete, this function
   ///  checks if `_to` is a smart contract (code size > 0). If so, it calls
   ///  `onERC721Received` on `_to` and throws if the return value is not
-  ///  `bytes4(keccak256("onERC721Received(address,address,uint,bytes)"))`.
+  ///  `bytes4(keccak256('onERC721Received(address,address,uint,bytes)'))`.
   /// @param _from The current owner of the NFT
   /// @param _to The new owner
   /// @param _tokenId The NFT to transfer
@@ -74,13 +74,13 @@ interface IERC721 {
 
   /// @notice Transfers the ownership of an NFT from one address to another address
   /// @dev This works identically to the other function with an extra data parameter,
-  ///  except this function just sets data to ""
+  ///  except this function just sets data to ''
   /// @param _from The current owner of the NFT
   /// @param _to The new owner
   /// @param _tokenId The NFT to transfer
   // function safeTransferFrom(address _from, address _to, uint _tokenId) external payable;
 
-  /// @notice Enable or disable approval for a third party ("operator") to manage
+  /// @notice Enable or disable approval for a third party ('operator') to manage
   ///  all of `msg.sender`'s assets.
   /// @dev Emits the ApprovalForAll event. The contract MUST allow
   ///  multiple operators per owner.

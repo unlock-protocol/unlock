@@ -8,7 +8,7 @@ pragma solidity 0.4.25;
  * This inherits from the previous version, adds data and modifies logic.
  */
 
-import "./Unlock.sol";
+import './Unlock.sol';
 
 
 contract UnlockTestV2 is Unlock {
@@ -21,7 +21,7 @@ contract UnlockTestV2 is Unlock {
   function initializeV2()
     public
   {
-    require(!initializedV2, "ONLY_CALL_ONCE");
+    require(!initializedV2, 'ONLY_CALL_ONCE');
     exampleData = 42;
     initializedV2 = true;
   }
