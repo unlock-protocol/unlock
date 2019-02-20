@@ -299,11 +299,20 @@ describe('Lock middleware', () => {
   })
 
   describe('not on the paywall', () => {
-    it('should handle SET_ACCOUNT by refreshing balance and retrieving historical unlock transactions', () => {
-      expect.assertions(3)
+    it('should handle SET_ACCOUNT by refreshing balance and retrieving historical unlock transactions', async () => {
+      expect.assertions(4)
+      const mockTx = {
+        returnValues: {
+          newLockAddress: '0x0',
+        },
+      }
+      const lockCreationTransaction = Promise.resolve([mockTx])
       mockWeb3Service.refreshAccountBalance = jest.fn()
-      mockWeb3Service.getPastLockCreationsTransactionsForUser = jest.fn()
+      mockWeb3Service.getPastLockCreationsTransactionsForUser = jest.fn(
+        () => lockCreationTransaction
+      )
       mockWeb3Service.getKeyByLockForOwner = jest.fn()
+      mockWeb3Service.getPastLockTransactions = jest.fn()
 
       const { invoke } = create()
 
@@ -318,15 +327,27 @@ describe('Lock middleware', () => {
       expect(
         mockWeb3Service.getPastLockCreationsTransactionsForUser
       ).toHaveBeenCalledWith(newAccount.address)
+      await lockCreationTransaction
+      // We need to await this for the next assertion to work
+      expect(mockWeb3Service.getPastLockTransactions).toHaveBeenCalled()
       expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
     })
   })
 
   describe('on the paywall', () => {
-    it('should handle SET_ACCOUNT by getting all keys for the owner of that account', () => {
+    it('should handle SET_ACCOUNT by getting all keys for the owner of that account', async () => {
+      const mockTx = {
+        returnValues: {
+          newLockAddress: '0x0',
+        },
+      }
+      const lockCreationTransaction = Promise.resolve([mockTx])
       mockWeb3Service.refreshAccountBalance = jest.fn()
-      mockWeb3Service.getPastLockCreationsTransactionsForUser = jest.fn()
+      mockWeb3Service.getPastLockCreationsTransactionsForUser = jest.fn(
+        () => lockCreationTransaction
+      )
       mockWeb3Service.getKeyByLockForOwner = jest.fn()
+      mockWeb3Service.getPastLockTransactions = jest.fn()
 
       const lock = '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9'
       state.router.location.pathname = `/paywall/${lock}/`
@@ -342,6 +363,9 @@ describe('Lock middleware', () => {
       expect(
         mockWeb3Service.getPastLockCreationsTransactionsForUser
       ).toHaveBeenCalled()
+      // We need to await this for the next assertion to work
+      await lockCreationTransaction
+      expect(mockWeb3Service.getPastLockTransactions).toHaveBeenCalled()
       expect(mockWeb3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
         lock,
         '0x345'
