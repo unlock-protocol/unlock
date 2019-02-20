@@ -144,7 +144,11 @@ export default function web3Middleware({ getState, dispatch }) {
         web3Service
           .getPastLockCreationsTransactionsForUser(action.account.address)
           .then(lockCreations => {
-            // For each lock this user created, go get the history of interactions with that lock.
+            // For each lock this user created, go get the history of
+            // interactions with that lock. TODO: Only get the lock interactions
+            // (such as key price update, withdrawals) done by the user. Very
+            // popular locks in the future may have thousands of key purchases,
+            // and we almost certainly don't want to pull them all down here.
             lockCreations.forEach(lockCreation => {
               web3Service.getPastLockTransactions(
                 lockCreation.returnValues.newLockAddress
