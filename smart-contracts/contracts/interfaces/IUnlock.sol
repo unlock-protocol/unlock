@@ -1,6 +1,6 @@
 pragma solidity 0.4.25;
 
-import "./ILockCore.sol";
+import './ILockCore.sol';
 
 /**
  * @title The Unlock Interface
