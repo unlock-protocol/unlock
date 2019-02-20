@@ -3,10 +3,10 @@ import * as rtl from 'react-testing-library'
 import PropTypes from 'prop-types'
 
 import walletService from '../../../services/walletService'
-import WalletService, {
+import WalletServiceProvider, {
   WalletServiceContext,
   WalletStateContext,
-} from '../../../hooks/components/WalletService'
+} from '../../../hooks/components/WalletServiceProvider'
 import { ConfigContext } from '../../../hooks/utils/useConfig'
 import { expectError, wrapperMaker } from '../helpers'
 
@@ -50,9 +50,9 @@ describe('WalletService component', () => {
   function MockWalletConsumer({ noPoll = false }) {
     return (
       <ConfigContext.Provider value={config}>
-        <WalletService noPoll={noPoll}>
+        <WalletServiceProvider noPoll={noPoll}>
           <WalletConsumerInternal />
-        </WalletService>
+        </WalletServiceProvider>
       </ConfigContext.Provider>
     )
   }

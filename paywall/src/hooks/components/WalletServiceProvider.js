@@ -7,7 +7,7 @@ import useConfig from '../utils/useConfig'
 export const WalletServiceContext = createContext()
 export const WalletStateContext = createContext()
 
-export default function WalletService({ children, noPoll = false }) {
+export default function WalletServiceProvider({ children, noPoll = false }) {
   const { Provider: WalletServiceProvider } = WalletServiceContext
   const { Provider: WalletStateProvider } = WalletStateContext
   const config = useConfig()
@@ -63,11 +63,11 @@ export default function WalletService({ children, noPoll = false }) {
   )
 }
 
-WalletService.propTypes = {
+WalletServiceProvider.propTypes = {
   children: PropTypes.node.isRequired,
   noPoll: PropTypes.bool,
 }
 
-WalletService.defaultProps = {
+WalletServiceProvider.defaultProps = {
   noPoll: false,
 }
