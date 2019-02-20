@@ -36,7 +36,7 @@
   "scripts": {
     "remix": "remixd -s contracts --remix-ide http://localhost:8080 --read-only",
     "test": "truffle test --network development",
-    "lint": "solhint \"contracts/**/*.sol\" && solium -d ./contracts/",
+    "lint": "solhint \"contracts/**/*.sol\" && solium -d ./contracts/ && eslint .",
     "dev": "npm run lint && npm run build && npm run test",
     "ci": "npm run lint && npm run test && npm run coverage",
     "build": "truffle compile --all",
