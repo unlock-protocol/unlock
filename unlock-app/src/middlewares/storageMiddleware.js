@@ -63,6 +63,7 @@ export default function storageMiddleware({ getState, dispatch }) {
           storageService
             .lockLookUp(action.address)
             .then(name => {
+              if (!name) return
               dispatch(updateLock(action.address, { name }))
             })
             .catch(error => {
