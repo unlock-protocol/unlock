@@ -4,7 +4,7 @@ import React from 'react'
 import {
   WalletServiceContext,
   WalletStateContext,
-} from '../../../hooks/components/WalletService'
+} from '../../../hooks/components/WalletServiceProvider'
 import useWalletService from '../../../hooks/web3/useWalletService'
 
 describe('useWalletService hook', () => {

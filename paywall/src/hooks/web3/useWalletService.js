@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import {
   WalletServiceContext,
   WalletStateContext,
-} from '../components/WalletService'
+} from '../components/WalletServiceProvider'
 
 export default function useWalletService() {
   const wallet = useContext(WalletServiceContext)
