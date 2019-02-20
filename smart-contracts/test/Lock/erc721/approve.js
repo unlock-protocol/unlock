@@ -54,7 +54,7 @@ contract('Lock ERC721', accounts => {
             locks['FIRST'].approve(accounts[1], ID, {
               from: accounts[1]
             }),
-            "APPROVE_SELF"
+            'APPROVE_SELF'
           )
         })
       })

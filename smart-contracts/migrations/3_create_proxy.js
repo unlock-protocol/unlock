@@ -1,4 +1,3 @@
-const Unlock = artifacts.require('./Unlock.sol')
 const shell = require('shelljs')
 
 module.exports = function deployProxy (deployer, network, accounts) {

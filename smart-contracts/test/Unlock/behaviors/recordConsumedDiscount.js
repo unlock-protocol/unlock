@@ -2,10 +2,8 @@ const deployLocks = require('../../helpers/deployLocks')
 
 exports.shouldRecordConsumedDiscount = function () {
   describe('recordConsumedDiscount', function () {
-    let locks
-
     beforeEach(async function () {
-      locks = await deployLocks(this.unlock)
+      await deployLocks(this.unlock)
     })
 
     it('should fail if not invoked by a previously deployed lock')

@@ -1,3 +1,3 @@
-const ABI = require("abi_V0.json");
+const ABI = require('abi_V0.json')
 
-export default ABI;
+export default ABI
