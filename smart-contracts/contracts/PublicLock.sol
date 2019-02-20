@@ -3,9 +3,10 @@ pragma solidity 0.4.25;
 import './interfaces/IUnlock.sol';
 import './interfaces/IERC721.sol';
 import './interfaces/ILockCore.sol';
-import 'openzeppelin-solidity/contracts/ownership/Ownable.sol';
-import 'openzeppelin-eth/contracts/introspection/ERC165.sol';
+import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
+import 'openzeppelin-solidity/contracts/introspection/ERC165.sol';
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
+import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
 
 
 /**
@@ -188,10 +189,10 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint _maxNumberOfKeys,
     uint _version
   ) public
-    Ownable(_owner)
   {
     require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, 'MAX_EXPIRATION_100_YEARS');
     unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract.
+    Ownable.initialize(_owner);
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
