@@ -209,7 +209,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   function()
     external
   {
-    revert("NO_FALLBACK");
+    revert('NO_FALLBACK');
   }
 
   /**

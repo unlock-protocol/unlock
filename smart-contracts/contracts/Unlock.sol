@@ -86,7 +86,7 @@ contract Unlock is IUnlock, Initializable, Ownable {
   function()
     external
   {
-    revert("NO_FALLBACK");
+    revert('NO_FALLBACK');
   }
 
   /**
