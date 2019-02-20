@@ -2,7 +2,7 @@
   "extends": "solhint:default",
   "rules": {
     "indent": [
-      "warn",
+      "error",
       2
     ],
     "not-rely-on-time": false
