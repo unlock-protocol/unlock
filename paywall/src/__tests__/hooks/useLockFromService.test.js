@@ -1,7 +1,7 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
 
-import { Web3ServiceContext } from '../../hooks/components/Web3Service'
+import { Web3ServiceContext } from '../../hooks/components/Web3ServiceProvider'
 import useLockFromService from '../../hooks/useLockFromService'
 
 describe('useLockFromService hook', () => {
