@@ -3,10 +3,8 @@ const deployLocks = require('../../helpers/deployLocks')
 
 exports.shouldRecordKeyPurchase = function () {
   describe('recordKeyPurchase', function () {
-    let locks
-
     beforeEach(async function () {
-      locks = await deployLocks(this.unlock)
+      await deployLocks(this.unlock)
     })
 
     it('should fail if not invoked by a previously deployed lock')

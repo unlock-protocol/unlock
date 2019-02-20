@@ -48,9 +48,8 @@ contract('Lock', (accounts) => {
     })
 
     describe('when the owner withdraws funds', () => {
-      let ownerBalance, lockBalance
+      let ownerBalance
       before(async () => {
-        lockBalance = new BigNumber(await web3.eth.getBalance(locks['OWNED'].address))
         ownerBalance = new BigNumber(await web3.eth.getBalance(owner))
         return locks['OWNED'].withdraw({
           from: owner

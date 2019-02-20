@@ -42,7 +42,6 @@ contract('Lock', (accounts) => {
           }), '')
       })
 
-
       it('should leave the price unchanged', async () => {
         const keyPriceAfter = new BigNumber(await locks['FIRST'].keyPrice.call())
         assert.equal(keyPrice.toFixed(), keyPriceAfter.toFixed())
