@@ -1,17 +1,18 @@
 import * as rtl from 'react-testing-library'
 import React from 'react'
-import MockWeb3 from 'web3'
 
-import Web3Service, {
+import Web3ServiceProvider, {
   Web3ServiceContext,
 } from '../../../hooks/components/Web3ServiceProvider'
+import { ConfigContext } from '../../../hooks/utils/useConfig'
+import configure from '../../../config'
+
+// This unlock address smart contract is fake
+const unlockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
 
 describe('Web3Service component', () => {
   const { Consumer } = Web3ServiceContext
-
-  beforeEach(() => {
-    MockWeb3.mockClear()
-  })
+  const config = { ...configure(), unlockAddress }
 
   it('passes the web3Service down to consumers', () => {
     expect.assertions(1)
@@ -23,9 +24,11 @@ describe('Web3Service component', () => {
     }
 
     rtl.render(
-      <Web3Service>
-        <Consumer>{get}</Consumer>
-      </Web3Service>
+      <ConfigContext.Provider value={config}>
+        <Web3ServiceProvider>
+          <Consumer>{get}</Consumer>
+        </Web3ServiceProvider>
+      </ConfigContext.Provider>
     )
   })
 })
