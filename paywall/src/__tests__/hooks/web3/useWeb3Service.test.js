@@ -1,7 +1,7 @@
 import * as rtl from 'react-testing-library'
 import React from 'react'
 
-import { Web3ServiceContext } from '../../../hooks/components/Web3Service'
+import { Web3ServiceContext } from '../../../hooks/components/Web3ServiceProvider'
 import useWeb3Service from '../../../hooks/web3/useWeb3Service'
 
 describe('useWeb3Service hook', () => {
