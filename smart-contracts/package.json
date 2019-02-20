@@ -17,6 +17,7 @@
     "cross-env": "^5.2.0",
     "ethereumjs-units": "^0.2.0",
     "openzeppelin-eth": "^2.0.2",
+    "openzeppelin-solidity": "^2.0.0",
     "shelljs": "^0.8.3",
     "solhint": "^2.0.0",
     "solidity-coverage": "^0.5.11",
