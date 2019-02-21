@@ -10,10 +10,11 @@ import BrowserOnly from '../components/helpers/BrowserOnly'
 import GlobalErrorConsumer from '../components/interface/GlobalErrorConsumer'
 import GlobalErrorProvider from '../utils/GlobalErrorProvider'
 import { pageTitle } from '../constants'
+import configure from '../config'
 
-const etherScanUrlFor = address => `https://etherscan.io/address/${address}`
+const { chainExplorerUrlBuilders } = configure()
 
-const humanize = type => {
+export const humanize = type => {
   if (!type) return ''
   let parts = type.split('_')
   return parts.map(part => part[0] + part.slice(1).toLowerCase()).join(' ')
@@ -35,21 +36,18 @@ export const Log = ({ account, network, transactionFeed }) => {
               <LogHeader>Type</LogHeader>
               {transactionFeed.length > 0 &&
                 transactionFeed.map(tx => (
-                  <>
-                    <LogElement key={tx.id + '__blockNumber'}>
-                      {tx.blockNumber}
-                    </LogElement>
+                  <React.Fragment key={tx.hash}>
+                    <LogElement>{tx.blockNumber}</LogElement>
                     <Address
-                      href={etherScanUrlFor(tx.lock)}
+                      href={
+                        chainExplorerUrlBuilders.etherScan(tx.lock) || undefined
+                      }
                       target="_blank"
-                      key={tx.id + '__address'}
                     >
                       {tx.lock}
                     </Address>
-                    <Type key={tx.id + '__type'} type={tx.type}>
-                      {humanize(tx.type)}
-                    </Type>
-                  </>
+                    <Type type={tx.type}>{humanize(tx.type)}</Type>
+                  </React.Fragment>
                 ))}
             </Body>
           </BrowserOnly>
