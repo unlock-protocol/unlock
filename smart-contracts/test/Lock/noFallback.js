@@ -1,7 +1,8 @@
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
 const Unlock = artifacts.require('../Unlock.sol')
-const abi = new require('web3-eth-abi').AbiCoder()
+const Web3Abi = require('web3-eth-abi')
+const abi = new Web3Abi.AbiCoder()
 
 let lock
 
@@ -22,11 +23,11 @@ contract('Unlock', accounts => {
     })
 
     it('can call a function by name', async () => {
-      await lock.sendTransaction({data: abi.encodeFunctionSignature('numberOfOwners()')})
+      await lock.sendTransaction({ data: abi.encodeFunctionSignature('numberOfOwners()') })
     })
 
     it('cannot call a function which does not exist', async () => {
-      await shouldFail(lock.sendTransaction({data: abi.encodeFunctionSignature('dne()')}), 'NO_FALLBACK')
+      await shouldFail(lock.sendTransaction({ data: abi.encodeFunctionSignature('dne()') }), 'NO_FALLBACK')
     })
   })
 })
