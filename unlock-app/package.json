@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.2.2",
-    "@storybook/addon-actions": "^4.1.12",
+    "@storybook/addon-actions": "^4.1.13",
     "@storybook/addon-knobs": "^4.1.12",
     "@storybook/addon-storyshots": "^4.1.12",
     "@storybook/addons": "^4.1.13",
