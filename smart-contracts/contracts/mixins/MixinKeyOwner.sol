@@ -19,7 +19,7 @@ contract MixinKeyOwner is IERC721 {
 
   // Addresses of owners are also stored in an array.
   // Addresses are never removed by design to avoid abuses around referals
-  address[] private owners; // TODO - switch back to public
+  address[] public owners;
 
   // Ensure that the caller owns the key
   modifier onlyKeyOwner(
