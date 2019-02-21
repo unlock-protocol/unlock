@@ -11,6 +11,14 @@ import GlobalErrorConsumer from '../components/interface/GlobalErrorConsumer'
 import GlobalErrorProvider from '../utils/GlobalErrorProvider'
 import { pageTitle } from '../constants'
 
+const etherScanUrlFor = address => `https://etherscan.io/address/${address}`
+
+const humanize = type => {
+  if (!type) return ''
+  let parts = type.split('_')
+  return parts.map(part => part[0] + part.slice(1).toLowerCase()).join(' ')
+}
+
 export const Log = ({ account, network, transactionFeed }) => {
   return (
     <GlobalErrorProvider>
@@ -31,9 +39,14 @@ export const Log = ({ account, network, transactionFeed }) => {
                     <LogElement key={tx.id + '__blockNumber'}>
                       {tx.blockNumber}
                     </LogElement>
-                    <Address key={tx.id + '__address'}>{tx.lock}</Address>
-                    <Type key={tx.id + '__type'} type={tx.event}>
-                      {tx.type}
+                    <Address
+                      href={etherScanUrlFor(tx.lock)}
+                      key={tx.id + '__address'}
+                    >
+                      {tx.lock}
+                    </Address>
+                    <Type key={tx.id + '__type'} type={tx.type}>
+                      {humanize(tx.type)}
                     </Type>
                   </>
                 ))}
@@ -80,9 +93,13 @@ const typeColors = {
 
 const Type = styled(LogElement)`
   color: ${props => 'var(--' + typeColors[props.type] || 'darkgrey'});
+  white-space: nowrap;
 `
 
-const Address = styled(LogElement)``
+const Address = styled.a`
+  font-size: 11px;
+  font-weight: 300;
+`
 
 export const mapStateToProps = ({ account, network, transactions }) => {
   const transactionFeed = Object.values(transactions)
