@@ -13,9 +13,6 @@ contract UnlockErrors {
   // The specified value must be greater than 0.
   string public constant GREATER_THAN_ZERO = 'GREATER_THAN_ZERO';
 
-  // Index must be in-bounds
-  string public constant INDEX_OUT_OF_BOUNDS = 'INDEX_OUT_OF_BOUNDS';
-
   // The specified address is not valid (i.e. must not be 0).
   string public constant INVALID_ADDRESS = 'INVALID_ADDRESS';
 

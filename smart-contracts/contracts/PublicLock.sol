@@ -8,7 +8,7 @@ import 'openzeppelin-solidity/contracts/introspection/ERC165.sol';
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
 import './mixins/MixinDisableAndDestroy.sol';
-
+import './mixins/MixinKeyOwner.sol';
 
 /**
  * @title The Lock contract
@@ -24,7 +24,8 @@ contract PublicLock is
   IERC721Receiver,
   ERC165,
   Ownable,
-  MixinDisableAndDestroy
+  MixinDisableAndDestroy,
+  MixinKeyOwner
 {
 
   using SafeMath for uint;
@@ -91,16 +92,6 @@ contract PublicLock is
   // return 0 values when missing a key)
   mapping (address => Key) internal keyByOwner;
 
-  // Each tokenId can have at most exactly one owner at a time.
-  // Returns 0 if the token does not exist
-  // TODO: once we decouple tokenId from owner address (incl in js), then we can consider
-  // merging this with numberOfKeysSold into an array instead.
-  mapping (uint => address) internal ownerByTokenId;
-
-  // Addresses of owners are also stored in an array.
-  // Addresses are never removed by design to avoid abuses around referals
-  address[] public owners;
-
   // Keeping track of approved transfers
   // This is a mapping of addresses which have approved
   // the transfer of a key to another address where their key can be transfered
@@ -134,26 +125,6 @@ contract PublicLock is
     _;
   }
 
-  // Ensure that the caller owns the key
-  modifier onlyKeyOwner(
-    uint _tokenId
-  ) {
-    require(
-      ownerByTokenId[_tokenId] == msg.sender, 'ONLY_KEY_OWNER'
-    );
-    _;
-  }
-
-  // Ensures that a key has an owner
-  modifier isKey(
-    uint _tokenId
-  ) {
-    require(
-      ownerByTokenId[_tokenId] != address(0), 'NO_SUCH_KEY'
-    );
-    _;
-  }
-
   // Ensure that the caller has a key
   // or that the caller has been approved
   // for ownership of that key
@@ -161,7 +132,7 @@ contract PublicLock is
     uint _tokenId
   ) {
     require(
-      ownerByTokenId[_tokenId] == msg.sender ||
+      isKeyOwner(_tokenId, msg.sender) ||
       _getApproved(_tokenId) == msg.sender,
       'ONLY_KEY_OWNER_OR_APPROVED');
     _;
@@ -272,8 +243,8 @@ contract PublicLock is
 
     if (previousExpiration == 0) {
       // The recipient did not have a key previously
-      owners.push(_recipient);
-      ownerByTokenId[_tokenId] = _recipient;
+      _addNewOwner(_recipient);
+      _setKeyOwner(_tokenId, _recipient);
       keyByOwner[_recipient].tokenId = _tokenId;
     }
 
@@ -351,7 +322,7 @@ contract PublicLock is
     require(msg.sender != _approved, 'APPROVE_SELF');
 
     approved[_tokenId] = _approved;
-    emit Approval(ownerByTokenId[_tokenId], _approved, _tokenId);
+    emit Approval(ownerOf(_tokenId), _approved, _tokenId);
   }
 
   /**
@@ -413,21 +384,6 @@ contract PublicLock is
   }
 
   /**
-   * @notice ERC721: Find the owner of an NFT
-   * @return The address of the owner of the NFT, if applicable
-  */
-  function ownerOf(
-    uint _tokenId
-  )
-    external
-    view
-    isKey(_tokenId)
-    returns (address)
-  {
-    return ownerByTokenId[_tokenId];
-  }
-
-  /**
    * @notice Find the tokenId for a given user
    * @return The tokenId of the NFT, else revert
   */
@@ -470,18 +426,6 @@ contract PublicLock is
   }
 
   /**
-   * Public function which returns the total number of unique owners (both expired
-   * and valid).  This may be larger than outstandingKeys.
-   */
-  function numberOfOwners()
-    public
-    view
-    returns (uint)
-  {
-    return owners.length;
-  }
-
-  /**
    * Public function which returns the total number of unique keys sold (both
    * expired and valid)
    */
@@ -491,42 +435,6 @@ contract PublicLock is
     returns (uint)
   {
     return numberOfKeysSold;
-  }
-
- /**
-  * A function which returns a subset of the keys for this Lock as an array
-  * @param _page the page of key owners requested when faceted by page size
-  * @param _pageSize the number of Key Owners requested per page
-  */
-  function getOwnersByPage(uint _page, uint _pageSize)
-    public
-    view
-    returns (address[])
-  {
-    require(outstandingKeys() > 0, 'NO_OUTSTANDING_KEYS');
-    uint pageSize = _pageSize;
-    uint _startIndex = _page * pageSize;
-    require(_startIndex >= 0 && _startIndex < outstandingKeys(), 'INDEX_OUT_OF_BOUNDS');
-    uint endOfPageIndex;
-
-    if (_startIndex + pageSize > owners.length) {
-      endOfPageIndex = owners.length;
-      pageSize = owners.length - _startIndex;
-    } else {
-      endOfPageIndex = (_startIndex + pageSize);
-    }
-
-    // new temp in-memory array to hold pageSize number of requested owners:
-    address[] memory ownersByPage = new address[](pageSize);
-    uint pageIndex = 0;
-
-    // Build the requested set of owners into a new temporary array:
-    for (uint i = _startIndex; i < endOfPageIndex; i++) {
-      ownersByPage[pageIndex] = owners[i];
-      pageIndex++;
-    }
-
-    return ownersByPage;
   }
 
   /**
@@ -646,9 +554,9 @@ contract PublicLock is
         // This is a brand new owner, else an owner of an expired key buying an extension.
         // We increment the tokenId counter
         numberOfKeysSold++;
-        owners.push(_recipient);
+        _addNewOwner(_recipient);
         // We register the owner of the new tokenID
-        ownerByTokenId[numberOfKeysSold] = _recipient;
+        _setKeyOwner(numberOfKeysSold, _recipient);
         // we assign the incremented `numberOfKeysSold` as the tokenId for the new key
         keyByOwner[_recipient].tokenId = numberOfKeysSold;
       }
