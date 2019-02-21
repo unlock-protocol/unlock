@@ -31,7 +31,7 @@ export const Log = ({ account, network, transactionFeed }) => {
                     <LogElement key={tx.id + '__blockNumber'}>
                       {tx.blockNumber}
                     </LogElement>
-                    <LogElement key={tx.id + '__address'}>{tx.lock}</LogElement>
+                    <Address key={tx.id + '__address'}>{tx.lock}</Address>
                     <Type key={tx.id + '__type'} type={tx.event}>
                       {tx.type}
                     </Type>
@@ -50,7 +50,7 @@ Log.displayName = 'Log'
 Log.propTypes = {
   account: UnlockPropTypes.account.isRequired,
   network: UnlockPropTypes.network.isRequired,
-  transactionFeed: PropTypes.array,
+  transactionFeed: PropTypes.arrayOf(UnlockPropTypes.transaction).isRequired,
 }
 
 const Body = styled.div`
