@@ -8,6 +8,7 @@ const transactions = {
     status: 'mined',
     lock: '0x12345678a',
     blockNumber: 1,
+    type: TRANSACTION_TYPES.LOCK_CREATION,
   },
   '0x5678': {
     hash: '0x56781234',
@@ -15,6 +16,7 @@ const transactions = {
     status: 'mined',
     lock: '0x56781234a',
     blockNumber: 2,
+    type: TRANSACTION_TYPES.LOCK_CREATION,
   },
   '0x89ab': {
     hash: '0x9abcdef0',
@@ -22,6 +24,7 @@ const transactions = {
     status: 'mined',
     lock: '0x9abcdef0a',
     blockNumber: 3,
+    type: TRANSACTION_TYPES.LOCK_CREATION,
   },
 }
 
@@ -50,6 +53,13 @@ describe('Transaction Log', () => {
       expect(transactionFeed[0].blockNumber).toEqual(3)
       expect(transactionFeed[1].blockNumber).toEqual(2)
       expect(transactionFeed[2].blockNumber).toEqual(1)
+    })
+    it('should include href to explorer and readable name in the feed', () => {
+      expect.assertions(2)
+      const { transactionFeed } = mapStateToProps(state)
+      const tx = transactionFeed[0]
+      expect(tx).toHaveProperty('href')
+      expect(tx).toHaveProperty('readableName')
     })
   })
 })

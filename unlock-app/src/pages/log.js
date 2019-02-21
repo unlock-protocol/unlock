@@ -30,26 +30,20 @@ export const Log = ({ account, network, transactionFeed }) => {
           </Head>
           <BrowserOnly>
             <CreatorAccount network={network} account={account} />
-            <Body>
+            <Content>
               <LogHeader>Block Number</LogHeader>
               <LogHeader>Lock Name/Address</LogHeader>
               <LogHeader>Type</LogHeader>
-              {transactionFeed.length > 0 &&
-                transactionFeed.map(tx => (
-                  <React.Fragment key={tx.hash}>
-                    <LogElement>{tx.blockNumber}</LogElement>
-                    <Address
-                      href={
-                        chainExplorerUrlBuilders.etherScan(tx.lock) || undefined
-                      }
-                      target="_blank"
-                    >
-                      {tx.lock}
-                    </Address>
-                    <Type type={tx.type}>{humanize(tx.type)}</Type>
-                  </React.Fragment>
-                ))}
-            </Body>
+              {transactionFeed.map(tx => (
+                <React.Fragment key={tx.hash}>
+                  <LogElement>{tx.blockNumber}</LogElement>
+                  <Address href={tx.href} target="_blank">
+                    {tx.lock}
+                  </Address>
+                  <Type type={tx.type}>{tx.readableName}</Type>
+                </React.Fragment>
+              ))}
+            </Content>
           </BrowserOnly>
         </Layout>
       </GlobalErrorConsumer>
@@ -65,7 +59,7 @@ Log.propTypes = {
   transactionFeed: PropTypes.arrayOf(UnlockPropTypes.transaction).isRequired,
 }
 
-const Body = styled.div`
+const Content = styled.div`
   display: grid;
   grid-template-columns: min-content min-content min-content;
   grid-auto-rows: 20px;
@@ -106,6 +100,13 @@ export const mapStateToProps = ({ account, network, transactions }) => {
   const transactionFeed = Object.values(transactions).sort(
     (a, b) => b.blockNumber - a.blockNumber
   )
+
+  transactionFeed.forEach((tx, i) => {
+    transactionFeed[i].href =
+      chainExplorerUrlBuilders.etherScan(tx.lock) || undefined
+    transactionFeed[i].readableName = humanize(tx.type)
+  })
+
   return {
     account,
     network,
