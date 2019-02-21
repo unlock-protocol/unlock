@@ -7,6 +7,7 @@ import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import 'openzeppelin-solidity/contracts/introspection/ERC165.sol';
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
+import './mixins/MixinDisableAndDestroy.sol';
 
 
 /**
@@ -17,7 +18,14 @@ import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
  * Every ERC-721 compliant contract must implement the ERC165 interface.
  * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
  */
-contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
+contract PublicLock is 
+  IERC721,
+  ILockCore,
+  IERC721Receiver,
+  ERC165,
+  Ownable,
+  MixinDisableAndDestroy
+{
 
   using SafeMath for uint;
 
@@ -50,13 +58,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint refundPenaltyDenominator
   );
 
-  event Destroy(
-    uint balance,
-    address indexed owner
-  );
-
-  event Disable();
-
   // Fields
   // Unlock Protocol address
   // TODO: should we make that private/internal?
@@ -79,9 +80,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   // The version number for this lock contract,
   uint public publicLockVersion;
-
-  // Used to disable payable functions when deprecating an old lock
-  bool public isAlive;
 
   // CancelAndRefund will return funds based on time remaining minus this penalty.
   // This is a denominator, so 10 means 10% penalty and 20 means 5% penalty.
@@ -175,12 +173,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     _;
   }
 
-  // Only allow usage when contract is Alive
-  modifier onlyIfAlive() {
-    require(isAlive, 'LOCK_DEPRECATED');
-    _;
-  }
-
   // Constructor
   constructor(
     address _owner,
@@ -197,7 +189,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
     publicLockVersion = _version;
-    isAlive = true;
     refundPenaltyDenominator = 10;
   }
 
@@ -388,33 +379,6 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   {
     emit RefundPenaltyDenominatorChanged(refundPenaltyDenominator, _refundPenaltyDenominator);
     refundPenaltyDenominator = _refundPenaltyDenominator;
-  }
-
-  /**
-  * @dev Used to disable lock before migrating keys and/or destroying contract
-   */
-  function disableLock()
-    external
-    onlyOwner
-    onlyIfAlive
-  {
-    emit Disable();
-    isAlive = false;
-  }
-
-  /**
-  * @dev Used to clean up old lock contracts from the blockchain
-  * TODO: add a check to ensure all keys are INVALID!
-   */
-  function destroyLock()
-    external
-    onlyOwner
-  {
-    require(isAlive == false, 'DISABLE_FIRST');
-    emit Destroy(this.balance, msg.sender);
-    selfdestruct(msg.sender);
-    // Note we don't clean up the `locks` data in Unlock.sol as it should not be necessary
-    // and leaves some data behind ('Unlock.LockBalances') which may be helpful.
   }
 
   /**
