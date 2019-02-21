@@ -10,6 +10,7 @@ import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
 import './mixins/MixinApproval.sol';
 import './mixins/MixinDisableAndDestroy.sol';
 import './mixins/MixinKeyOwner.sol';
+import './mixins/MixinKeys.sol';
 
 /**
  * @title The Lock contract
@@ -27,17 +28,11 @@ contract PublicLock is
   Ownable,
   MixinDisableAndDestroy,
   MixinKeyOwner,
-  MixinApproval
+  MixinApproval,
+  MixinKeys
 {
 
   using SafeMath for uint;
-
-  // The struct for a key
-  struct Key {
-    uint tokenId;
-    uint expirationTimestamp;
-    bytes data; // Note: This can be expensive?
-  }
 
   // Events
   event PriceChanged(
@@ -88,36 +83,9 @@ contract PublicLock is
   // This is a denominator, so 10 means 10% penalty and 20 means 5% penalty.
   uint public refundPenaltyDenominator;
 
-  // Keys
-  // Each owner can have at most exactly one key
-  // TODO: could we use public here? (this could be confusing though because it getter will
-  // return 0 values when missing a key)
-  mapping (address => Key) internal keyByOwner;
-
   /**
    * MODIFIERS
    */
-  // Ensures that an owner has a key
-  modifier hasKey(
-    address _owner
-  ) {
-    Key storage key = keyByOwner[_owner];
-    require(
-      key.expirationTimestamp > 0, 'NO_SUCH_KEY'
-    );
-    _;
-  }
-
-  // Ensures that an owner has a valid key
-  modifier hasValidKey(
-    address _owner
-  ) {
-    require(
-      getHasValidKey(_owner), 'KEY_NOT_VALID'
-    );
-    _;
-  }
-
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
     require(maxNumberOfKeys > numberOfKeysSold, 'LOCK_SOLD_OUT');
@@ -194,7 +162,7 @@ contract PublicLock is
   function cancelAndRefund()
     external
   {
-    Key storage key = keyByOwner[msg.sender];
+    Key storage key = _getKeyFor(msg.sender);
 
     uint refund = _getCancelAndRefundValue(msg.sender);
 
@@ -229,30 +197,33 @@ contract PublicLock is
   {
     require(_recipient != address(0), 'INVALID_ADDRESS');
 
-    uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
+    Key storage fromKey = _getKeyFor(_from);
+    Key storage toKey = _getKeyFor(_recipient);
+
+    uint previousExpiration = toKey.expirationTimestamp;
 
     if (previousExpiration == 0) {
       // The recipient did not have a key previously
       _addNewOwner(_recipient);
       _setKeyOwner(_tokenId, _recipient);
-      keyByOwner[_recipient].tokenId = _tokenId;
+      toKey.tokenId = _tokenId;
     }
 
     if (previousExpiration <= block.timestamp) {
       // The recipient did not have a key, or had a key but it expired. The new expiration is the
       // sender's key expiration
-      keyByOwner[_recipient].expirationTimestamp = keyByOwner[_from].expirationTimestamp;
+      toKey.expirationTimestamp = fromKey.expirationTimestamp;
     } else {
       // The recipient has a non expired key. We just add them the corresponding remaining time
       // SafeSub is not required since the if confirms `previousExpiration - block.timestamp` cannot underflow
-      keyByOwner[_recipient].expirationTimestamp = keyByOwner[_from]
+      toKey.expirationTimestamp = fromKey
         .expirationTimestamp.add(previousExpiration - block.timestamp);
     }
     // Overwite data in all cases
-    keyByOwner[_recipient].data = keyByOwner[_from].data;
+    toKey.data = fromKey.data;
 
     // Effectively expiring the key for the previous owner
-    keyByOwner[_from].expirationTimestamp = block.timestamp;
+    fromKey.expirationTimestamp = block.timestamp;
 
     // Clear any previous approvals
     _clearApproval(_tokenId);
@@ -322,21 +293,6 @@ contract PublicLock is
   }
 
   /**
-   * In the specific case of a Lock, each owner can own only at most 1 key.
-   * @return The number of NFTs owned by `_owner`, either 0 or 1.
-  */
-  function balanceOf(
-    address _owner
-  )
-    external
-    view
-    returns (uint)
-  {
-    require(_owner != address(0), 'INVALID_ADDRESS');
-    return keyByOwner[_owner].expirationTimestamp > 0 ? 1 : 0;
-  }
-
-  /**
    * @dev Determines how much of a refund a key owner would receive if they issued
    * a cancelAndRefund block.timestamp.
    * Note that due to the time required to mine a tx, the actual refund amount will be lower
@@ -353,34 +309,6 @@ contract PublicLock is
   }
 
   /**
-   * @notice Find the tokenId for a given user
-   * @return The tokenId of the NFT, else revert
-  */
-  function getTokenIdFor(
-    address _account
-  )
-    external
-    view
-    hasKey(_account)
-    returns (uint)
-  {
-    return keyByOwner[_account].tokenId;
-  }
-
-  /**
-   * Checks if the user has a non-expired key.
-   */
-  function getHasValidKey(
-    address _owner
-  )
-    public
-    view
-    returns (bool)
-  {
-    return keyByOwner[_owner].expirationTimestamp > block.timestamp;
-  }
-
-  /**
    * Public function which returns the total number of unique keys sold (both
    * expired and valid)
    */
@@ -390,49 +318,6 @@ contract PublicLock is
     returns (uint)
   {
     return numberOfKeysSold;
-  }
-
-  /**
-   * A function which lets the owner of the lock expire a users' key.
-   */
-  function expireKeyFor(
-    address _owner
-  )
-    public
-    onlyOwner
-    hasValidKey(_owner)
-  {
-    keyByOwner[_owner].expirationTimestamp = block.timestamp; // Effectively expiring the key
-  }
-
-  /**
-  * @dev Returns the key's data field for a given owner.
-  * @param _owner address of the user for whom we search the key
-  */
-  function keyDataFor(
-    address _owner
-  )
-    public
-    view
-    hasKey(_owner)
-    returns (bytes memory data)
-  {
-    return keyByOwner[_owner].data;
-  }
-
-  /**
-  * @dev Returns the key's ExpirationTimestamp field for a given owner.
-  * @param _owner address of the user for whom we search the key
-  */
-  function keyExpirationTimestampFor(
-    address _owner
-  )
-    public
-    view
-    hasKey(_owner)
-    returns (uint timestamp)
-  {
-    return keyByOwner[_owner].expirationTimestamp;
   }
 
   /**
@@ -503,7 +388,8 @@ contract PublicLock is
     // extra (CAREFUL: re-entrancy!)
 
     // Assign the key
-    uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
+    Key storage toKey = _getKeyFor(_recipient);
+    uint previousExpiration = toKey.expirationTimestamp;
     if (previousExpiration < block.timestamp) {
       if (previousExpiration == 0) {
         // This is a brand new owner, else an owner of an expired key buying an extension.
@@ -513,17 +399,17 @@ contract PublicLock is
         // We register the owner of the new tokenID
         _setKeyOwner(numberOfKeysSold, _recipient);
         // we assign the incremented `numberOfKeysSold` as the tokenId for the new key
-        keyByOwner[_recipient].tokenId = numberOfKeysSold;
+        toKey.tokenId = numberOfKeysSold;
       }
       // SafeAdd is not required here since expirationDuration is capped to a tiny value
       // (relative to the size of a uint)
-      keyByOwner[_recipient].expirationTimestamp = block.timestamp + expirationDuration;
+      toKey.expirationTimestamp = block.timestamp + expirationDuration;
     } else {
       // This is an existing owner trying to extend their key
-      keyByOwner[_recipient].expirationTimestamp = previousExpiration.add(expirationDuration);
+      toKey.expirationTimestamp = previousExpiration.add(expirationDuration);
     }
     // Overwite data in all cases
-    keyByOwner[_recipient].data = _data;
+    toKey.data = _data;
 
     if (discount > 0) {
       unlock.recordConsumedDiscount(discount, tokens);
@@ -552,7 +438,7 @@ contract PublicLock is
     hasValidKey(_owner)
     returns (uint refund)
   {
-    Key storage key = keyByOwner[_owner];
+    Key storage key = _getKeyFor(_owner);
     // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
     uint timeRemaining = key.expirationTimestamp - block.timestamp;
     // Math: using safeMul in case keyPrice or timeRemaining is very large
