@@ -1,9 +1,8 @@
 import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import Log, { mapStateToProps } from '../../pages/log'
+import Log from '../../pages/log'
 import createUnlockStore from '../../createUnlockStore'
-import { ConfigContext } from '../../utils/withConfig'
 import { TRANSACTION_TYPES } from '../../constants'
 
 const account = {
