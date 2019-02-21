@@ -118,6 +118,13 @@ describe('config', () => {
         },
       })
     })
+
+    it('should contain the right URLs for chain explorers', () => {
+      expect.assertions(2)
+
+      expect(Object.keys(config.chainExplorerUrlBuilders)).toHaveLength(1)
+      expect(config.chainExplorerUrlBuilders.etherScan('0x0')).toEqual(false)
+    })
   })
 
   describe('staging', () => {
@@ -150,6 +157,15 @@ describe('config', () => {
         },
       })
     })
+
+    it('should contain the right URLs for chain explorers', () => {
+      expect.assertions(2)
+
+      expect(Object.keys(config.chainExplorerUrlBuilders)).toHaveLength(1)
+      expect(config.chainExplorerUrlBuilders.etherScan('0x0')).toEqual(
+        'https://rinkeby.etherscan.io/address/0x0'
+      )
+    })
   })
 
   describe('production', () => {
@@ -168,6 +184,15 @@ describe('config', () => {
     it('should have the right keys in production', () => {
       expect(config.requiredNetwork).toEqual('Mainnet')
       expect(config.providers).toEqual({}) // We miss a web3 provider!
+    })
+
+    it('should contain the right URLs for chain explorers', () => {
+      expect.assertions(2)
+
+      expect(Object.keys(config.chainExplorerUrlBuilders)).toHaveLength(1)
+      expect(config.chainExplorerUrlBuilders.etherScan('0x0')).toEqual(
+        'https://etherscan.io/address/0x0'
+      )
     })
   })
 })
