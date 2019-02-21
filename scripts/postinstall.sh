@@ -29,4 +29,6 @@ if [ "$SKIP_SERVICES" != "true" ]; then
 
   # Copy the parent binaries into the sub projects
   npm run link-parent-bin
+  # remove node_modules from wiki, we don't wants it
+  rm -rf wiki/node_modules
 fi
