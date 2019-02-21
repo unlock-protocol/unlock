@@ -62,7 +62,6 @@
   },
   "engineStrict": true,
   "scripts": {
-    "oops": "echo hi",
     "dev": "npm run build-paywall && npm run setup-dev && npm run set-link && nodemon src/server.js",
     "set-link": "run-script-os",
     "set-link:darwin:freebsd:linux:sunos": "cd src && (test -e artifacts && rm -f artifacts) && ln -s ../../smart-contracts/build artifacts",
