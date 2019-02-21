@@ -75,6 +75,9 @@ export default function configure(
   let services = {}
   let supportedProviders = []
   let blockTime = 8000 // in mseconds.
+  let chainExplorerUrlBuilders = {
+    etherScan: () => false,
+  }
   const readOnlyProviderUrl = runtimeConfig.readOnlyProvider
 
   if (env === 'test') {
@@ -121,6 +124,8 @@ export default function configure(
 
     // In staging, the network can only be rinkeby
     isRequiredNetwork = networkId => networkId === 4
+    chainExplorerUrlBuilders.etherScan = address =>
+      `https://rinkeby.etherscan.io/address/${address}`
     requiredNetworkId = 4
     supportedProviders = ['Metamask', 'Opera']
     services['storage'] = { host: runtimeConfig.locksmithHost }
@@ -141,6 +146,8 @@ export default function configure(
 
     // In prod, the network can only be mainnet
     isRequiredNetwork = networkId => networkId === 1
+    chainExplorerUrlBuilders.etherScan = address =>
+      `https://etherscan.io/address/${address}`
     requiredNetworkId = 1
 
     supportedProviders = ['Metamask', 'Opera']
@@ -176,5 +183,6 @@ export default function configure(
     unlockAddress,
     services,
     supportedProviders,
+    chainExplorerUrlBuilders,
   }
 }
