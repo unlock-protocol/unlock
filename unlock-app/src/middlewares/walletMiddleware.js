@@ -17,7 +17,7 @@ import {
   gotWallet,
   dismissWalletCheck,
 } from '../actions/walletStatus'
-import { TRANSACTION_TYPES } from '../constants'
+import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
 
 import WalletService from '../services/walletService'
 import { signatureError } from '../actions/signature'
@@ -51,11 +51,17 @@ export default function walletMiddleware({ getState, dispatch }) {
    * The setAccount action will reset other relevant redux state
    */
   walletService.on('account.changed', account => {
-    dispatch(
-      setAccount({
-        address: account,
-      })
-    )
+    // Let's poll to detect account changes
+    setTimeout(walletService.getAccount.bind(walletService), POLLING_INTERVAL)
+
+    // If the account is actually different
+    if (!getState().account || getState().account.address !== account) {
+      dispatch(
+        setAccount({
+          address: account,
+        })
+      )
+    }
   })
 
   walletService.on('transaction.new', (transactionHash, from, to, input) => {
@@ -111,7 +117,7 @@ export default function walletMiddleware({ getState, dispatch }) {
     // Set the new network, which should also clean up all reducers
     // And we need a new account!
     dispatch(setNetwork(networkId))
-    return walletService.getAccount()
+    return walletService.getAccount(true /* createIfNone */)
   })
 
   return function(next) {

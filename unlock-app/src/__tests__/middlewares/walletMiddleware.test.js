@@ -18,7 +18,7 @@ import { SET_NETWORK } from '../../actions/network'
 import { SET_PROVIDER } from '../../actions/provider'
 import { NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
-import { TRANSACTION_TYPES } from '../../constants'
+import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../../constants'
 import { NO_USER_ACCOUNT } from '../../errors'
 
 /**
@@ -92,6 +92,8 @@ jest.mock('../../utils/signature', () => () => {
   return mockGenerateSignature()
 })
 
+jest.useFakeTimers()
+
 beforeEach(() => {
   // Reset the mock
   mockWalletService = new MockWalletService()
@@ -122,20 +124,28 @@ beforeEach(() => {
 })
 
 describe('Wallet middleware', () => {
-  it('it should handle account.changed events triggered by the walletService', () => {
-    expect.assertions(1)
+  it('should handle account.changed events triggered by the walletService', () => {
+    expect.assertions(3)
     const { store } = create()
     const address = '0x123'
     const account = {
       address,
     }
+    mockWalletService.getAccount = jest.fn()
 
     mockWalletService.emit('account.changed', address)
+
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: SET_ACCOUNT,
         account,
       })
+    )
+
+    expect(setTimeout).toHaveBeenCalledTimes(1)
+    expect(setTimeout).toHaveBeenCalledWith(
+      expect.any(Function),
+      POLLING_INTERVAL
     )
   })
 
@@ -206,7 +216,7 @@ describe('Wallet middleware', () => {
         state.network.name = 1773
         mockWalletService.getAccount = jest.fn()
         mockWalletService.emit('network.changed', networkId)
-        expect(mockWalletService.getAccount).toHaveBeenCalledWith()
+        expect(mockWalletService.getAccount).toHaveBeenCalledWith(true) // create an account if none is set
       })
 
       it('should dispatch a SET_NETWORK action', () => {
