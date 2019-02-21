@@ -40,6 +40,7 @@ export const LockStatus = styled.div`
   font-family: 'IBM Plex Sans', sans-serif;
   font-weight: 200;
   color: var(--grey);
+  border-radius: 0 4px 4px 0;
 `
 
 const Status = styled.div`

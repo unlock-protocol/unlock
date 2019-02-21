@@ -384,6 +384,20 @@ const FormLockRow = styled(LockRow)`
   input:disabled {
     color: var(--silver);
   }
+
+  @keyframes slideIn {
+    0% {
+      transform: translateY(-50%);
+      opacity: 0;
+      }
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+      }
+    }
+    animation: 400ms ease slideIn;
+  }
 `
 
 const Status = styled(LockStatus)`
@@ -436,4 +450,8 @@ const Button = styled.button`
   border: none;
   outline: inherit;
   padding 0;
+  & :hover {
+    color: #333;
+    transition: color 100ms ease;
+  }
 `
