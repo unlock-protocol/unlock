@@ -92,7 +92,12 @@ export const createUnlockStore = (
   middlewares.push(routerMiddleware(history))
 
   const composeEnhancers =
-    global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+    (global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+        trace: true,
+        traceLimit: 25,
+      })) ||
+    compose
 
   return createStore(
     combineReducers(reducers),
