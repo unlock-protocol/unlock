@@ -41,6 +41,7 @@ export const Log = ({ account, network, transactionFeed }) => {
                     </LogElement>
                     <Address
                       href={etherScanUrlFor(tx.lock)}
+                      target="_blank"
                       key={tx.id + '__address'}
                     >
                       {tx.lock}
@@ -102,7 +103,9 @@ const Address = styled.a`
 `
 
 export const mapStateToProps = ({ account, network, transactions }) => {
-  const transactionFeed = Object.values(transactions)
+  const transactionFeed = Object.values(transactions).sort(
+    (a, b) => b.blockNumber - a.blockNumber
+  )
   return {
     account,
     network,
