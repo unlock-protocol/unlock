@@ -7,6 +7,7 @@ import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import 'openzeppelin-solidity/contracts/introspection/ERC165.sol';
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
+import './mixins/MixinApproval.sol';
 import './mixins/MixinDisableAndDestroy.sol';
 import './mixins/MixinKeyOwner.sol';
 
@@ -25,7 +26,8 @@ contract PublicLock is
   ERC165,
   Ownable,
   MixinDisableAndDestroy,
-  MixinKeyOwner
+  MixinKeyOwner,
+  MixinApproval
 {
 
   using SafeMath for uint;
@@ -92,15 +94,6 @@ contract PublicLock is
   // return 0 values when missing a key)
   mapping (address => Key) internal keyByOwner;
 
-  // Keeping track of approved transfers
-  // This is a mapping of addresses which have approved
-  // the transfer of a key to another address where their key can be transfered
-  // Note: the approver may actually NOT have a key... and there can only
-  // be a single approved beneficiary
-  // Note 2: for transfer, both addresses will be different
-  // Note 3: for sales (new keys on restricted locks), both addresses will be the same
-  mapping (uint => address) internal approved;
-
   /**
    * MODIFIERS
    */
@@ -122,19 +115,6 @@ contract PublicLock is
     require(
       getHasValidKey(_owner), 'KEY_NOT_VALID'
     );
-    _;
-  }
-
-  // Ensure that the caller has a key
-  // or that the caller has been approved
-  // for ownership of that key
-  modifier onlyKeyOwnerOrApproved(
-    uint _tokenId
-  ) {
-    require(
-      isKeyOwner(_tokenId, msg.sender) ||
-      _getApproved(_tokenId) == msg.sender,
-      'ONLY_KEY_OWNER_OR_APPROVED');
     _;
   }
 
@@ -265,7 +245,7 @@ contract PublicLock is
     keyByOwner[_from].expirationTimestamp = block.timestamp;
 
     // Clear any previous approvals
-    approved[_tokenId] = address(0);
+    _clearApproval(_tokenId);
 
     // trigger event
     emit Transfer(
@@ -302,27 +282,6 @@ contract PublicLock is
     require(balance > 0 && balance >= _amount, 'NOT_ENOUGH_FUNDS');
     // Security: re-entrancy not a risk as this is the last line of an external function
     _withdraw(_amount);
-  }
-
-  /**
-   * This approves _approved to get ownership of _tokenId.
-   * Note: that since this is used for both purchase and transfer approvals
-   * the approved token may not exist.
-   */
-  function approve(
-    address _approved,
-    uint _tokenId
-  )
-    external
-    payable
-    onlyIfAlive
-    onlyKeyOwner(_tokenId)
-  {
-    require(_approved != address(0), 'INVALID_ADDRESS');
-    require(msg.sender != _approved, 'APPROVE_SELF');
-
-    approved[_tokenId] = _approved;
-    emit Approval(ownerOf(_tokenId), _approved, _tokenId);
   }
 
   /**
@@ -396,20 +355,6 @@ contract PublicLock is
     returns (uint)
   {
     return keyByOwner[_account].tokenId;
-  }
-
-  /**
-   * external version
-   * Will return the approved recipient for a key, if any.
-   */
-  function getApproved(
-    uint _tokenId
-  )
-    external
-    view
-    returns (address)
-  {
-    return _getApproved(_tokenId);
   }
 
   /**
@@ -611,23 +556,6 @@ contract PublicLock is
         refund = 0;
       }
     }
-  }
-
-  /**
-   * Will return the approved recipient for a key transfer or ownership.
-   * Note: this does not check that a corresponding key
-   * actually exists.
-   */
-  function _getApproved(
-    uint _tokenId
-  )
-    internal
-    view
-    returns (address)
-  {
-    address approvedRecipient = approved[_tokenId];
-    require(approvedRecipient != address(0), 'NONE_APPROVED');
-    return approvedRecipient;
   }
 
   /**
