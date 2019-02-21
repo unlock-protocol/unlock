@@ -80,7 +80,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "web3-eth-abi": "^1.0.0-beta.37"
   },
   "engines": {
     "node": "=8.11.4"
