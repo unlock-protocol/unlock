@@ -88,14 +88,13 @@ describe('WalletService', () => {
     })
 
     it('pollAccount calls checkForAccountChange and timeout', async () => {
-      const isServer = false
       walletService.account = 'old account'
 
       walletService.checkForAccountChange = jest.fn(() =>
         Promise.resolve('thank u, next')
       )
 
-      await walletService.pollForAccountChange(isServer, false)
+      await walletService.pollForAccountChange(false)
 
       // delayPromise is a jest.fn() in the mock file
       expect(delayPromise).toHaveBeenCalledWith(POLLING_INTERVAL)
@@ -104,20 +103,6 @@ describe('WalletService', () => {
       )
 
       expect(walletService.account).toBe('thank u, next')
-    })
-    it('pollAccount does not run on the server', async () => {
-      const isServer = true
-      walletService.account = 'old account'
-
-      walletService.checkForAccountChange = jest.fn(() =>
-        Promise.resolve('thank u, next')
-      )
-
-      await walletService.pollForAccountChange(isServer, false)
-
-      expect(walletService.checkForAccountChange).not.toHaveBeenCalled()
-
-      expect(walletService.account).toBe('old account')
     })
   })
   describe('connect', () => {
