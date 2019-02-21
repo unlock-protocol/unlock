@@ -42,8 +42,8 @@ export default class WalletService extends EventEmitter {
 
     this.on('ready', () => {
       this.ready = true
-      if (pollForAccountChanges) {
-        this.pollForAccountChange(runningOnServer)
+      if (pollForAccountChanges && !runningOnServer) {
+        this.pollForAccountChange(pollForAccountChanges)
       }
     })
   }
@@ -120,8 +120,7 @@ export default class WalletService extends EventEmitter {
   /**
    * Poll to see if account has changed
    */
-  async pollForAccountChange(isServer, pollForNextChange = true) {
-    if (isServer) return
+  async pollForAccountChange(pollForNextChange = true) {
     await delayPromise(POLLING_INTERVAL)
     try {
       this.account = await this.checkForAccountChange(this.account)
@@ -132,7 +131,7 @@ export default class WalletService extends EventEmitter {
     // because this is async, the call stack is not affected, and does not grow
     // for a non-async function this would quickly fill all available memory
     if (pollForNextChange) {
-      this.pollForAccountChange()
+      this.pollForAccountChange(pollForNextChange /* always true */)
     }
   }
 
