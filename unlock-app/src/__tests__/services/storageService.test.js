@@ -25,9 +25,12 @@ describe('StorageService', () => {
     describe('when the requested lock doesnt exist', () => {
       it('raises an appropriate error', async () => {
         expect.assertions(2)
-        axios.get.mockRejectedValue()
-        const result = await storageService.lockLookUp('0x1234243')
-        expect(result).toEqual(null)
+        axios.get.mockRejectedValue('An Error')
+        try {
+          await storageService.lockLookUp('0x1234243')
+        } catch (error) {
+          expect(error).toEqual('An Error')
+        }
         expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/lock/0x1234243`)
       })
     })
@@ -55,12 +58,17 @@ describe('StorageService', () => {
 
     describe('when attempting to store an existing lock', () => {
       it('returns a failure promise', async () => {
-        expect.assertions(1)
-        axios.post.mockRejectedValue()
-        await storageService.storeLockDetails({
-          name: 'lock_name',
-          address: 'existing_address',
-        })
+        expect.assertions(2)
+        axios.post.mockRejectedValue('An Error')
+        try {
+          await storageService.storeLockDetails({
+            name: 'lock_name',
+            address: 'existing_address',
+          })
+        } catch (error) {
+          expect(error).toEqual('An Error')
+        }
+
         expect(axios.post).toHaveBeenCalledWith(
           `${serviceHost}/lock`,
           {
@@ -94,10 +102,16 @@ describe('StorageService', () => {
     })
 
     describe('when a lock can not be updated', () => {
-      it('should not fail', async () => {
-        expect.assertions(1)
-        axios.put.mockRejectedValue()
-        await storageService.updateLockDetails('lock_address')
+      it('returns an rejected Promise', async () => {
+        expect.assertions(2)
+        axios.put.mockRejectedValue('An Error')
+
+        try {
+          await storageService.updateLockDetails('lock_address')
+        } catch (error) {
+          expect(error).toEqual('An Error')
+        }
+
         expect(axios.put).toHaveBeenCalledWith(
           `${serviceHost}/lock/lock_address`,
           undefined,
