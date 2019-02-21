@@ -4,9 +4,9 @@ import './interfaces/IUnlock.sol';
 import './interfaces/IERC721.sol';
 import './interfaces/ILockCore.sol';
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
-import 'openzeppelin-eth/contracts/introspection/ERC165.sol';
-import 'openzeppelin-eth/contracts/math/SafeMath.sol';
-import 'openzeppelin-eth/contracts/token/ERC721/IERC721Receiver.sol';
+import 'openzeppelin-solidity/contracts/introspection/ERC165.sol';
+import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
+import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
 import './mixins/MixinDisableAndDestroy.sol';
 
 
@@ -180,12 +180,11 @@ contract PublicLock is
     uint _keyPrice,
     uint _maxNumberOfKeys,
     uint _version
-  )
-  public {
+  ) public
+  {
     require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, 'MAX_EXPIRATION_100_YEARS');
     unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract.
     Ownable.initialize(_owner);
-    ERC165.initialize();
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
