@@ -83,6 +83,7 @@ const LogHeader = styled.div`
 const LogElement = styled.div`
   font-size: 11px;
   font-weight: 300;
+  font-family: 'IBM Plex Mono', Courier, monospace;
 `
 
 // TODO: determine which transaction types get which color
@@ -98,6 +99,7 @@ const Type = styled(LogElement)`
 const Address = styled.a`
   font-size: 11px;
   font-weight: 300;
+  font-family: 'IBM Plex Mono', Courier, monospace;
 `
 
 export const mapStateToProps = ({ account, network, transactions }) => {
