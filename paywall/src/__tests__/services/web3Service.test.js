@@ -1,6 +1,8 @@
 /* eslint no-console: 0 */
 
 import Web3Utils from 'web3-utils'
+import Web3EthAbi from 'web3-eth-abi'
+
 import nock from 'nock'
 import Web3Service from '../../services/web3Service'
 /* eslint-disable import/no-unresolved */
@@ -954,7 +956,7 @@ describe('Web3Service', () => {
       ethCallAndYield(
         `0x10803b72${abiPaddedString([onPage, byPage])}`,
         lockAddress,
-        `0x${abiPaddedString(['20', '2', keyHolder[0], keyHolder[1]])}`
+        Web3EthAbi.encodeParameter('uint256[]', keyHolder)
       )
 
       web3Service.getKeysForLockOnPage(lockAddress, onPage, byPage)
