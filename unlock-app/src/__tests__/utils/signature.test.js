@@ -72,7 +72,7 @@ describe('generateSignature', () => {
             { name: 'address', type: 'address' },
           ],
         },
-        domain: { name: 'Unlock Dashboard', version: '1', chainId: 1984 },
+        domain: { name: 'Unlock Dashboard', version: '1' },
         primaryType: 'Lock',
         message: {
           lock: {

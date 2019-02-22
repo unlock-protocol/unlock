@@ -17,7 +17,6 @@ export default class UnlockLock {
     let domainData = {
       name: 'Unlock Dashboard',
       version: '1',
-      chainId: 1984,
     }
 
     let message = {
