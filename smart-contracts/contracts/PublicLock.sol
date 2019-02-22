@@ -1,4 +1,4 @@
-pragma solidity 0.4.25;
+pragma solidity 0.5.4;
 
 import './interfaces/IUnlock.sol';
 import './interfaces/IERC721.sol';
@@ -60,7 +60,7 @@ contract PublicLock is
   */
   function purchaseFor(
     address _recipient,
-    bytes _data
+    bytes calldata _data
   )
     external
     payable
@@ -78,7 +78,7 @@ contract PublicLock is
   function purchaseForFrom(
     address _recipient,
     address _referrer,
-    bytes _data
+    bytes calldata _data
   )
     external
     payable
@@ -163,7 +163,7 @@ contract PublicLock is
     address operator, // solhint-disable-line no-unused-vars
     address from, // solhint-disable-line no-unused-vars
     uint tokenId, // solhint-disable-line no-unused-vars
-    bytes data // solhint-disable-line no-unused-vars
+    bytes memory data // solhint-disable-line no-unused-vars
   )
     public
     returns(bytes4)

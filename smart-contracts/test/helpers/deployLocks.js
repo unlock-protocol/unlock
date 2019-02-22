@@ -12,7 +12,7 @@ module.exports = function deployLocks (unlock) {
         Locks[name].maxNumberOfKeys.toFixed()
       ).then(async (tx) => {
         // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
-        const evt = tx.logs[0]
+        const evt = tx.logs[1]
         locks[name] = await PublicLock.at(evt.args.newLockAddress)
         locks[name].params = Locks[name]
       })

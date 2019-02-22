@@ -1,4 +1,4 @@
-pragma solidity 0.4.25;
+pragma solidity 0.5.4;
 
 import '../interfaces/IERC721.sol';
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
@@ -58,7 +58,7 @@ contract MixinDisableAndDestroy is
     onlyOwner
   {
     require(isAlive == false, 'DISABLE_FIRST');
-    emit Destroy(this.balance, msg.sender);
+    emit Destroy(address(this).balance, msg.sender);
     selfdestruct(msg.sender);
     // Note we don't clean up the `locks` data in Unlock.sol as it should not be necessary
     // and leaves some data behind ('Unlock.LockBalances') which may be helpful.

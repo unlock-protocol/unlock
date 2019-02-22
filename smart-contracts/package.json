@@ -16,18 +16,18 @@
     "bignumber.js": "^8.0.2",
     "cross-env": "^5.2.0",
     "ethereumjs-units": "^0.2.0",
-    "openzeppelin-eth": "^2.0.2",
-    "openzeppelin-solidity": "^2.0.0",
+    "openzeppelin-eth": "^2.1.3",
+    "openzeppelin-solidity": "^2.1.2",
     "shelljs": "^0.8.3",
     "solhint": "^2.0.0",
     "solidity-coverage": "^0.5.11",
     "solium": "^1.2.3",
-    "truffle": "^5.0.2",
+    "truffle": "^5.0.5",
     "truffle-hdwallet-provider": "^1.0.3",
     "web3-eth-abi": "^1.0.0-beta.46",
     "web3-utils": "^1.0.0-beta.36",
-    "zos": "^2.1.2",
-    "zos-lib": "^2.1.2"
+    "zos": "^2.2.0",
+    "zos-lib": "^2.2.0"
   },
   "devDependencies": {
     "remix-ide": "^0.7.5",

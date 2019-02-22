@@ -1,4 +1,4 @@
-pragma solidity 0.4.25;
+pragma solidity 0.5.4;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 
@@ -137,7 +137,7 @@ contract MixinKeys is
    */
   function _getKeyFor(
     address _owner
-  ) internal
+  ) internal view
     returns (Key storage)
   {
     return keyByOwner[_owner];

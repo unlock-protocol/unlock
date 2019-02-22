@@ -1,4 +1,4 @@
-pragma solidity 0.4.25;
+pragma solidity 0.5.4;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 
@@ -130,7 +130,7 @@ contract MixinLockCore is
   function _withdraw(uint _amount)
     private
   {
-    Ownable.owner().transfer(_amount);
+    address(uint160(Ownable.owner())).transfer(_amount);
     emit Withdrawal(msg.sender, _amount);
   }
 }

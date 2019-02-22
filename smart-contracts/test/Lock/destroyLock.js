@@ -58,7 +58,7 @@ contract('Lock', accounts => {
 
       it('should trigger the Destroy event', () => {
         assert.equal(event.event, 'Destroy')
-        assert(event.args.balance.eq(initialLockBalance))
+        assert(new BigNumber(event.args.balance).eq(initialLockBalance))
         assert.equal(event.args.owner, accounts[0])
       })
 

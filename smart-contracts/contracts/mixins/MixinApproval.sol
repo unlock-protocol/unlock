@@ -1,4 +1,4 @@
-pragma solidity 0.4.25;
+pragma solidity 0.5.4;
 
 import '../interfaces/IERC721.sol';
 import './MixinDisableAndDestroy.sol';
@@ -117,7 +117,7 @@ contract MixinApproval is
   function _isApproved(
     uint _tokenId,
     address _user
-  ) internal
+  ) internal view
     returns (bool)
   {
     return approved[_tokenId] == _user;
