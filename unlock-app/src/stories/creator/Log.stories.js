@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react'
 import Log from '../../pages/log'
 import createUnlockStore from '../../createUnlockStore'
 import { TRANSACTION_TYPES } from '../../constants'
+import { ConfigContext } from '../../utils/withConfig'
 
 const account = {
   address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
@@ -54,8 +55,20 @@ const store = createUnlockStore({
   currency,
 })
 
-storiesOf('Transaction Log', module).add('the log', () => (
-  <Provider store={store}>
-    <Log />
-  </Provider>
-))
+const ConfigProvider = ConfigContext.Provider
+
+const config = {
+  chainExplorerUrlBuilders: {
+    etherScan: () => '',
+  },
+}
+
+storiesOf('Transaction Log', module)
+  .addDecorator(getStory => (
+    <ConfigProvider value={config}>{getStory()}</ConfigProvider>
+  ))
+  .add('the log', () => (
+    <Provider store={store}>
+      <Log />
+    </Provider>
+  ))
