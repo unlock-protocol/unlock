@@ -26,6 +26,11 @@ contract MixinApproval is
   // Note 3: for sales (new keys on restricted locks), both addresses will be the same
   mapping (uint => address) private approved;
 
+  // Keeping track of approved operators for a Key owner.
+  // Since an owner can have up to 1 Key, this is similiar to above 
+  // but the approval does not reset when a transfer occurs.
+  mapping (address => mapping (address => bool)) private ownerToOperatorApproved;
+
   // Ensure that the caller has a key
   // or that the caller has been approved
   // for ownership of that key
@@ -34,7 +39,8 @@ contract MixinApproval is
   ) {
     require(
       isKeyOwner(_tokenId, msg.sender) ||
-      _getApproved(_tokenId) == msg.sender,
+        _isApproved(_tokenId, msg.sender) ||
+        isApprovedForAll(ownerOf(_tokenId), msg.sender),
       'ONLY_KEY_OWNER_OR_APPROVED');
     _;
   }
@@ -61,6 +67,22 @@ contract MixinApproval is
   }
 
   /**
+   * @dev Sets or unsets the approval of a given operator
+   * An operator is allowed to transfer all tokens of the sender on their behalf
+   * @param _to operator address to set the approval
+   * @param _approved representing the status of the approval to be set
+   */
+  function setApprovalForAll(
+    address _to,
+    bool _approved
+  ) external
+  {
+    require(_to != msg.sender, 'APPROVE_SELF');
+    ownerToOperatorApproved[msg.sender][_to] = _approved;
+    emit ApprovalForAll(msg.sender, _to, _approved);
+  }
+
+  /**
    * external version
    * Will return the approved recipient for a key, if any.
    */
@@ -72,6 +94,33 @@ contract MixinApproval is
     returns (address)
   {
     return _getApproved(_tokenId);
+  }
+
+  /**
+   * @dev Tells whether an operator is approved by a given owner
+   * @param _owner owner address which you want to query the approval of
+   * @param _operator operator address which you want to query the approval of
+   * @return bool whether the given operator is approved by the given owner
+   */
+  function isApprovedForAll(
+    address _owner, 
+    address _operator
+  ) public view 
+    returns (bool) 
+  {
+    return ownerToOperatorApproved[_owner][_operator];
+  }
+
+  /**
+   * @dev Checks if the given user is approved to transfer the tokenId.
+   */
+  function _isApproved(
+    uint _tokenId,
+    address _user
+  ) internal
+    returns (bool)
+  {
+    return approved[_tokenId] == _user;
   }
 
   /**
