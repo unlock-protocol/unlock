@@ -10,7 +10,6 @@
     "@storybook/addons": "^4.1.13",
     "@storybook/react": "4.1.13",
     "@zeit/next-source-maps": "0.0.3",
-    "acorn": "^6.1.0",
     "axios": "^0.18.0",
     "babel-loader": "^8.0.4",
     "babel-plugin-require-context-hook": "^1.0.0",
