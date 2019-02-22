@@ -1,7 +1,14 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
 import { LOCATION_CHANGE } from 'connected-react-router'
-import { UPDATE_LOCK, addLock, updateLock, ADD_LOCK } from '../actions/lock'
+import {
+  ADD_LOCK,
+  CREATE_LOCK,
+  UPDATE_LOCK,
+  addLock,
+  updateLock,
+  createLock,
+} from '../actions/lock'
 import { updateKey, addKey } from '../actions/key'
 import { updateAccount, SET_ACCOUNT } from '../actions/accounts'
 import { setError } from '../actions/error'
@@ -11,8 +18,13 @@ import {
   ADD_TRANSACTION,
   NEW_TRANSACTION,
 } from '../actions/transaction'
+import { PGN_ITEMS_PER_PAGE } from '../constants'
 
 import Web3Service from '../services/web3Service'
+import {
+  SET_KEYS_ON_PAGE_FOR_LOCK,
+  setKeysOnPageForLock,
+} from '../actions/keysPages'
 import { lockRoute } from '../utils/routes'
 
 // This middleware listen to redux events and invokes the web3Service API.
@@ -22,6 +34,16 @@ export default function web3Middleware({ getState, dispatch }) {
 
   web3Service.on('account.updated', (account, update) => {
     dispatch(updateAccount(update))
+  })
+
+  /**
+   * When a lock was saved, we update it, as well as its transaction and
+   * refresh the balance of its owner and refresh its content
+   */
+  web3Service.on('lock.saved', (lock, address) => {
+    web3Service.refreshAccountBalance(getState().account)
+    web3Service.getLock(address)
+    web3Service.getPastLockTransactions(address) // This is costly and not useful for the paywall app...
   })
 
   /**
@@ -77,14 +99,36 @@ export default function web3Middleware({ getState, dispatch }) {
     dispatch(setError(error.message))
   })
 
+  web3Service.on('keys.page', (lock, page, keys) => {
+    dispatch(setKeysOnPageForLock(page, lock, keys))
+  })
+
   return function(next) {
     return function(action) {
+      // When the keys for a lock are loaded on the dashboard
+      if (action.type === SET_KEYS_ON_PAGE_FOR_LOCK) {
+        if (!action.keys) {
+          web3Service.getKeysForLockOnPage(
+            action.lock,
+            action.page,
+            PGN_ITEMS_PER_PAGE
+          )
+        }
+      }
+
       if (action.type === ADD_TRANSACTION) {
         web3Service.getTransaction(action.transaction.hash)
       }
 
       if (action.type === NEW_TRANSACTION) {
         web3Service.getTransaction(action.transaction.hash, action.transaction)
+      }
+
+      if (action.type === CREATE_LOCK && !action.lock.address) {
+        web3Service.generateLockAddress().then(address => {
+          action.lock.address = address
+          dispatch(createLock(action.lock))
+        })
       }
 
       next(action)
@@ -97,9 +141,20 @@ export default function web3Middleware({ getState, dispatch }) {
         // TODO: when the account has been updated we should reset web3Service and remove all listeners
         // So that pending API calls do not interract with our "new" state.
         web3Service.refreshAccountBalance(action.account)
-        web3Service.getPastLockCreationsTransactionsForUser(
-          action.account.address
-        )
+        web3Service
+          .getPastLockCreationsTransactionsForUser(action.account.address)
+          .then(lockCreations => {
+            // For each lock this user created, go get the history of
+            // interactions with that lock. TODO: Only get the lock interactions
+            // (such as key price update, withdrawals) done by the user. Very
+            // popular locks in the future may have thousands of key purchases,
+            // and we almost certainly don't want to pull them all down here.
+            lockCreations.forEach(lockCreation => {
+              web3Service.getPastLockTransactions(
+                lockCreation.returnValues.newLockAddress
+              )
+            })
+          })
         const {
           router: {
             location: { pathname },
@@ -112,7 +167,7 @@ export default function web3Middleware({ getState, dispatch }) {
         }
       }
 
-      if (action.type === ADD_LOCK || action.type === UPDATE_LOCK) {
+      if (action.type === ADD_LOCK || action.type == UPDATE_LOCK) {
         const lock = getState().locks[action.address]
         if (getState().account) {
           web3Service.getKeyByLockForOwner(
@@ -126,8 +181,12 @@ export default function web3Middleware({ getState, dispatch }) {
         action.payload.location.pathname
       ) {
         // Location was changed, get the matching lock, if we are on a paywall page
-        const { lockAddress } = lockRoute(action.payload.location.pathname)
-        web3Service.getLock(lockAddress)
+        const { lockAddress, prefix } = lockRoute(
+          action.payload.location.pathname
+        )
+        if (lockAddress && prefix === 'paywall') {
+          web3Service.getLock(lockAddress)
+        }
       }
     }
   }

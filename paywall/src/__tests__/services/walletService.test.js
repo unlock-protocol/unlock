@@ -2,15 +2,12 @@
 
 import EventEmitter from 'events'
 import nock from 'nock'
-
 import Web3Utils from 'web3-utils'
 /* eslint-disable import/no-unresolved */
 import UnlockContract from '../../artifacts/contracts/Unlock.json'
 import LockContract from '../../artifacts/contracts/PublicLock.json'
 /* eslint-enable import/no-unresolved */
-
 import configure from '../../config'
-import { delayPromise } from '../../utils/promises'
 import WalletService from '../../services/walletService'
 import {
   NOT_ENABLED_IN_PROVIDER,
@@ -21,7 +18,6 @@ import {
   FAILED_TO_UPDATE_KEY_PRICE,
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../../errors'
-import { POLLING_INTERVAL } from '../../constants'
 
 jest.mock('../../utils/promises')
 jest.unmock('web3')
@@ -72,57 +68,9 @@ describe('WalletService', () => {
     nock.cleanAll()
     config = configure()
     providers = config.providers
-    // the second argument is designed to stop the polling loop in the majority of tests
-    walletService = new WalletService(config, false)
+    walletService = new WalletService(config)
   })
-  describe('pollAccount', () => {
-    it('constructor calls timeout with pollAccount when ready', () => {
-      walletService = new WalletService(config)
-      expect.assertions(2)
-      walletService.checkForAccountChange = jest.fn(() =>
-        Promise.resolve('account')
-      )
 
-      walletService.emit('ready')
-      expect(walletService.ready).toBe(true)
-
-      // delayPromise is a jest.fn() in the mock file
-      expect(delayPromise).toHaveBeenCalledWith(POLLING_INTERVAL)
-    })
-
-    it('pollAccount calls checkForAccountChange and timeout', async () => {
-      const isServer = false
-      walletService.account = 'old account'
-
-      walletService.checkForAccountChange = jest.fn(() =>
-        Promise.resolve('thank u, next')
-      )
-
-      await walletService.pollForAccountChange(isServer, false)
-
-      // delayPromise is a jest.fn() in the mock file
-      expect(delayPromise).toHaveBeenCalledWith(POLLING_INTERVAL)
-      expect(walletService.checkForAccountChange).toHaveBeenCalledWith(
-        'old account'
-      )
-
-      expect(walletService.account).toBe('thank u, next')
-    })
-    it('pollAccount does not run on the server', async () => {
-      const isServer = true
-      walletService.account = 'old account'
-
-      walletService.checkForAccountChange = jest.fn(() =>
-        Promise.resolve('thank u, next')
-      )
-
-      await walletService.pollForAccountChange(isServer, false)
-
-      expect(walletService.checkForAccountChange).not.toHaveBeenCalled()
-
-      expect(walletService.account).toBe('old account')
-    })
-  })
   describe('connect', () => {
     it('should get the network id', done => {
       expect.assertions(1)
@@ -162,7 +110,7 @@ describe('WalletService', () => {
       it('should not emit an error event when we have a contract address from config', done => {
         expect.assertions(3)
         config.unlockAddress = '0x1234567890123456789012345678901234567890'
-        const walletService2 = new WalletService(config, false)
+        const walletService2 = new WalletService(config)
 
         expect(walletService2.ready).toBe(false)
 
@@ -293,44 +241,8 @@ describe('WalletService', () => {
       return walletService.connect('HTTP')
     })
 
-    describe('checkForAccountChange', () => {
-      it('should emit account.changed if the account does not match the local account', async () => {
-        expect.assertions(1)
-        const unlockAccountsOnNode = [
-          '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-        ]
-
-        accountsAndYield(unlockAccountsOnNode)
-
-        walletService.emit = jest.fn()
-
-        await walletService.checkForAccountChange('prior')
-
-        expect(walletService.emit).toHaveBeenCalledWith(
-          'account.changed',
-          '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
-        )
-      })
-
-      it('should not emit account.changed if the account does match the local account', async () => {
-        expect.assertions(1)
-        const unlockAccountsOnNode = [
-          '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-        ]
-
-        accountsAndYield(unlockAccountsOnNode)
-
-        walletService.emit = jest.fn()
-
-        await walletService.checkForAccountChange(
-          '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
-        )
-
-        expect(walletService.emit).not.toHaveBeenCalled()
-      })
-    })
     describe('getAccount', () => {
-      describe('when no account was passed but the node has an unlocked account', () => {
+      describe('when the node has an unlocked account', () => {
         it('should load a local account and emit the ready event', done => {
           expect.assertions(2)
           const unlockAccountsOnNode = [
@@ -354,13 +266,15 @@ describe('WalletService', () => {
         })
       })
 
-      describe('when no account was passed and the node has no unlocked account', () => {
+      describe('when the node has no unlocked account', () => {
         it('should create an account and emit the ready event', done => {
           expect.assertions(2)
           const newAccount = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 
-          walletService._createAccount = jest.fn(() => {
-            return Promise.resolve(newAccount)
+          walletService.web3.eth.accounts.create = jest.fn(() => {
+            return Promise.resolve({
+              address: newAccount,
+            })
           })
 
           accountsAndYield([])
@@ -374,7 +288,17 @@ describe('WalletService', () => {
             expect(account).toBe('0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1')
           })
 
-          return walletService.getAccount()
+          return walletService.getAccount(true)
+        })
+      })
+
+      describe('when the node has no unlocked account and when preventing from creating one', () => {
+        it('should fail and mark the walletService is not ready', async () => {
+          expect.assertions(1)
+          walletService.ready = true
+          accountsAndYield([])
+          await walletService.getAccount(false)
+          expect(walletService.ready).toBe(false)
         })
       })
     })
@@ -477,24 +401,6 @@ describe('WalletService', () => {
         )
 
         mockTransaction.emit('error', error)
-      })
-    })
-
-    describe('_createAccount', () => {
-      it('should yield a new account', async () => {
-        expect.assertions(1)
-        const address = '0x07748403082b29a45abD6C124A37E6B14e6B1803'
-        // mock web3's create
-        const mock = jest.fn()
-        mock.mockReturnValue({
-          address,
-        })
-        const previousCreate = walletService.web3.eth.accounts.create
-        walletService.web3.eth.accounts.create = mock
-
-        let account = await walletService._createAccount()
-        expect(account).toEqual(address)
-        walletService.web3.eth.accounts.create = previousCreate
       })
     })
 

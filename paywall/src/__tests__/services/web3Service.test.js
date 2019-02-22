@@ -1,6 +1,8 @@
 /* eslint no-console: 0 */
 
 import Web3Utils from 'web3-utils'
+import Web3EthAbi from 'web3-eth-abi'
+
 import nock from 'nock'
 import Web3Service from '../../services/web3Service'
 /* eslint-disable import/no-unresolved */
@@ -639,15 +641,15 @@ describe('Web3Service', () => {
   })
 
   describe('getAddressBalance', () => {
-    it('should return the balance of the address', () => {
+    it('should return the balance of the address', async () => {
       expect.assertions(1)
       const balance = '0xdeadbeef'
       const inWei = Web3Utils.hexToNumberString(balance)
       const address = '0x1df62f291b2e969fb0849d99d9ce41e2f137006e'
       getBalanceForAccountAndYieldBalance(address, '0xdeadbeef')
-      return web3Service.getAddressBalance(address).then(balance => {
-        expect(balance).toEqual(Web3Utils.fromWei(inWei, 'ether'))
-      })
+
+      let addressBalance = await web3Service.getAddressBalance(address)
+      expect(addressBalance).toEqual(Web3Utils.fromWei(inWei, 'ether'))
     })
   })
 
@@ -745,7 +747,7 @@ describe('Web3Service', () => {
   })
 
   describe('_getKeyByLockForOwner', () => {
-    it('should update the data and expiration date', () => {
+    it('should update the data and expiration date', async () => {
       expect.assertions(2)
       ethCallAndYield(
         '0xabdf82ce00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
@@ -763,15 +765,15 @@ describe('Web3Service', () => {
         lockAddress
       )
 
-      return web3Service
-        ._getKeyByLockForOwner(lockContract, nodeAccounts[0])
-        .then(([expiration, data]) => {
-          expect(expiration).toBe(1532557829)
-          expect(data).toBe(null)
-        })
+      let [expiration, data] = await web3Service._getKeyByLockForOwner(
+        lockContract,
+        nodeAccounts[0]
+      )
+      expect(expiration).toBe(1532557829)
+      expect(data).toBe(null)
     })
 
-    it('should handle missing key when the lock exists', () => {
+    it('should handle missing key when the lock exists', async () => {
       expect.assertions(2)
 
       ethCallAndFail(
@@ -790,12 +792,12 @@ describe('Web3Service', () => {
         lockAddress
       )
 
-      return web3Service
-        ._getKeyByLockForOwner(lockContract, nodeAccounts[0])
-        .then(([expiration, data]) => {
-          expect(expiration).toBe(0)
-          expect(data).toBe(null)
-        })
+      let [expiration, data] = await web3Service._getKeyByLockForOwner(
+        lockContract,
+        nodeAccounts[0]
+      )
+      expect(expiration).toBe(0)
+      expect(data).toBe(null)
     })
   })
 
@@ -954,7 +956,7 @@ describe('Web3Service', () => {
       ethCallAndYield(
         `0x10803b72${abiPaddedString([onPage, byPage])}`,
         lockAddress,
-        `0x${abiPaddedString(['20', '2', keyHolder[0], keyHolder[1]])}`
+        Web3EthAbi.encodeParameter('uint256[]', keyHolder)
       )
 
       web3Service.getKeysForLockOnPage(lockAddress, onPage, byPage)
