@@ -6,7 +6,12 @@
 #
 # The heavy lifting is provided via the awscli
 
-readonly BUILD="locksmith-${TRAVIS_BUILD_ID}"
+BUILD_ID=$1
+BRANCH=$2
+IS_PULL_REQUEST=$3
+COMMIT_MESSAGE=$4
+
+readonly BUILD="locksmith-${BUILD_ID}"
 readonly ARTIFACT_LOCATION="./builds/${BUILD}.zip"
 readonly S3_BUCKET="unlock-locksmith"
 readonly AWS_REGION="us-east-1"
@@ -17,7 +22,7 @@ function package_application()
 {
     local application=${1}
     local artifact_location=${2}
-    
+
     mkdir builds
     pushd ./${application}
     zip ../${artifact_location} -r * .[^.]* --exclude=*node_modules*
@@ -29,7 +34,7 @@ function upload_to_s3()
 {
     local artifact_location=${1}
     local s3_bucket=${2}
-    
+
     aws s3 cp ${artifact_location} s3://${s3_bucket}/
 }
 
@@ -37,8 +42,8 @@ function elasticbeanstalk_create_application_version()
 {
     local s3_bucket=${1}
     local artifact=${2}
-    local description="$TRAVIS_COMMIT_MESSAGE"
-    
+    local description="$COMMIT_MESSAGE"
+
     aws elasticbeanstalk create-application-version \
     --application-name ${APPLICATION} \
     --version-label ${BUILD} \
@@ -52,7 +57,7 @@ function update_environment()
 {
     local environment=${1}
     local version_label=${2}
-    
+
     aws elasticbeanstalk update-environment \
     --environment-name ${environment} \
     --version-label ${version_label} \
@@ -63,11 +68,11 @@ function check_preconditions()
 {
     if [ -n "$AWS_ACCESS_KEY_ID" ] && \
        [ -n "$AWS_SECRET_ACCESS_KEY" ] && \
-       [ "$TRAVIS_BRANCH" = "master" ] &&  \
-       [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
+       [ "$BRANCH" = "master" ] &&  \
+       [ "$IS_PULL_REQUEST" = "false" ]; then
         pip install --user awscli;
         export PATH=$PATH:$HOME/.local/bin;
-        
+
         return 0
     else
         echo "Unable to deploy due to missing configuration."
