@@ -1,12 +1,10 @@
 import EventEmitter from 'events'
 import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
-
 /* eslint-disable import/no-unresolved */
 import LockContract from '../artifacts/contracts/PublicLock.json'
 import UnlockContract from '../artifacts/contracts/Unlock.json'
 /* eslint-enable import/no-unresolved */
-
 import configure from '../config'
 import {
   MISSING_PROVIDER,
@@ -17,8 +15,6 @@ import {
   FAILED_TO_UPDATE_KEY_PRICE,
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../errors'
-import { POLLING_INTERVAL } from '../constants'
-import { delayPromise } from '../utils/promises'
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
@@ -29,10 +25,7 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends EventEmitter {
-  constructor(
-    { providers, runningOnServer, unlockAddress } = configure(),
-    pollForAccountChanges = true
-  ) {
+  constructor({ providers, unlockAddress } = configure()) {
     super()
     if (unlockAddress) {
       this.unlockContractAddress = Web3Utils.toChecksumAddress(unlockAddress)
@@ -44,9 +37,6 @@ export default class WalletService extends EventEmitter {
 
     this.on('ready', () => {
       this.ready = true
-      if (pollForAccountChanges) {
-        this.pollForAccountChange(runningOnServer)
-      }
     })
   }
 
@@ -120,75 +110,28 @@ export default class WalletService extends EventEmitter {
   }
 
   /**
-   * Poll to see if account has changed
-   */
-  async pollForAccountChange(isServer, pollForNextChange = true) {
-    if (isServer) return
-    await delayPromise(POLLING_INTERVAL)
-    try {
-      this.account = await this.checkForAccountChange(this.account)
-    } catch (e) {
-      // if the account poll fails, silently ignore it
-      // TODO: log the error when full-app logging is implemented (#1301)
-    }
-    // because this is async, the call stack is not affected, and does not grow
-    // for a non-async function this would quickly fill all available memory
-    if (pollForNextChange) {
-      this.pollForAccountChange()
-    }
-  }
-
-  /**
-   * given the prior account address, determine if the account has changed and return the
-   * current address regardless of any change
-   */
-  async checkForAccountChange(currentAccount) {
-    const nextAccount = await this._getAccountAddressOrFallbackAddress(
-      // When retrieving the current account address, there is an
-      // option to fallback to another method when the account is null.
-      // In our case, we do not want to do anything, so our fallback
-      // is simply a promise that resolves to a missing account
-      Promise.resolve(null)
-    )
-
-    if (currentAccount !== nextAccount) {
-      this.emit('account.changed', nextAccount)
-    }
-    return nextAccount
-  }
-
-  /**
    * Function which yields the address of the account on the provider or creates a key pair.
    */
-  async getAccount() {
-    const address = await this._getAccountAddressOrFallbackAddress(
-      this._createAccount
-    )
+  async getAccount(createIfNone = false) {
+    const accounts = await this.web3.eth.getAccounts()
+    let address
+
+    if (!accounts.length && !createIfNone) {
+      // We do not have an account and were not asked to create one!
+      // Not sure how that could happen?
+      return (this.ready = false)
+    }
+
+    if (accounts.length) {
+      address = accounts[0] // We have an account.
+    } else if (createIfNone) {
+      let newAccount = await this.web3.eth.accounts.create()
+      address = newAccount.address
+    }
+
     this.emit('account.changed', address)
     this.emit('ready')
     return Promise.resolve(address)
-  }
-
-  /**
-   * Get the current user account address, calling a fallback if there is none
-   * @param fallback async function that returns an account address
-   * @return string
-   */
-  async _getAccountAddressOrFallbackAddress(fallback) {
-    const accounts = await this.web3.eth.getAccounts()
-    const address = accounts.length ? accounts[0] : await fallback()
-    return address
-  }
-
-  /**
-   * This creates an account on the current network and yields its address.
-   * TODO: is this actually used?
-   * @return Promise<string>
-   * @private
-   */
-  async _createAccount() {
-    const account = await this.web3.eth.accounts.create()
-    return account.address
   }
 
   /**
