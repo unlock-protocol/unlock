@@ -68,6 +68,7 @@ contract('Lock ERC721', accounts => {
       it('should abort when there is no key to transfer', async () => {
         await shouldFail(
           locks['FIRST'].transferFrom(accountWithNoKey, to, 999),
+            await locks['FIRST'].getTokenIdFor(accountWithNoKey), {
           'KEY_NOT_VALID'
         )
       })
