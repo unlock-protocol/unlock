@@ -67,19 +67,21 @@ contract('Lock ERC721', accounts => {
     describe('when the lock is public', () => {
       it('should abort when there is no key to transfer', async () => {
         await shouldFail(
-          locks['FIRST'].transferFrom(accountWithNoKey, to, accountWithNoKey, {
-            from: accountWithNoKey
-          }),
+          locks['FIRST'].transferFrom(accountWithNoKey, to,
+            await locks['FIRST'].getTokenIdFor(accountWithNoKey), {
+              from: accountWithNoKey
+            }),
           'KEY_NOT_VALID'
         )
       })
 
       it('should abort if the recipient is 0x', async () => {
         await shouldFail(
-          locks['FIRST'].transferFrom(from, Web3Utils.padLeft(0, 40), from, {
-            from
-          }),
-          'NONE_APPROVED'
+          locks['FIRST'].transferFrom(from, Web3Utils.padLeft(0, 40),
+            await locks['FIRST'].getTokenIdFor(from), {
+              from
+            }),
+          'INVALID_ADDRESS'
         )
         // Ensuring that ownership of the key did not change
         const expirationTimestamp = new BigNumber(
