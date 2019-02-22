@@ -30,11 +30,12 @@ import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import 'zos-lib/contracts/Initializable.sol';
 import './PublicLock.sol';
 import './interfaces/IUnlock.sol';
+import './mixins/MixinNoFallback.sol';
 
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
-contract Unlock is IUnlock, Initializable, Ownable {
+contract Unlock is MixinNoFallback, IUnlock, Initializable, Ownable {
 
   /**
    * The struct for a lock
@@ -77,16 +78,6 @@ contract Unlock is IUnlock, Initializable, Ownable {
     Ownable.initialize(_owner);
     grossNetworkProduct = 0;
     totalDiscountGranted = 0;
-  }
-  
-  /**
-   * @dev the fallback function should not be used.  This explicitly reverts
-   * to ensure it's never used.
-   */
-  function()
-    external
-  {
-    revert('NO_FALLBACK');
   }
 
   /**

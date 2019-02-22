@@ -12,6 +12,7 @@ import './mixins/MixinDisableAndDestroy.sol';
 import './mixins/MixinKeyOwner.sol';
 import './mixins/MixinKeys.sol';
 import './mixins/MixinLockCore.sol';
+import './mixins/MixinNoFallback.sol';
 
 /**
  * @title The Lock contract
@@ -21,7 +22,8 @@ import './mixins/MixinLockCore.sol';
  * Every ERC-721 compliant contract must implement the ERC165 interface.
  * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
  */
-contract PublicLock is 
+contract PublicLock is
+  MixinNoFallback,
   IERC721,
   ILockCore,
   IERC721Receiver,
@@ -64,16 +66,6 @@ contract PublicLock is
     MixinLockCore(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys, _version)
   {
     refundPenaltyDenominator = 10;
-  }
-
-  /**
-   * @dev the fallback function should not be used.  This explicitly reverts
-   * to ensure it's never used.
-   */
-  function()
-    external
-  {
-    revert('NO_FALLBACK');
   }
 
   /**
