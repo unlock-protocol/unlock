@@ -93,6 +93,6 @@ COPY --chown=node paywall/ /home/unlock/paywall/.
 RUN npm run build
 
 WORKDIR /home/unlock/
-# # Copy the rest # Can we be smarter here since a lot has been copied already?
-# COPY --chown=node . /home/unlock
 
+# Copy the rest of the application code
+COPY --chown=node . /home/unlock
