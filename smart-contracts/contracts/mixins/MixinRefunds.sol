@@ -2,12 +2,17 @@ pragma solidity 0.4.25;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import './MixinKeys.sol';
+import './MixinLockCore.sol';
+import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 
 
 contract MixinRefunds is
   Ownable,
-  MixinKeys
+  MixinKeys,
+  MixinLockCore
 {
+  using SafeMath for uint;
+
   // CancelAndRefund will return funds based on time remaining minus this penalty.
   // This is a denominator, so 10 means 10% penalty and 20 means 5% penalty.
   uint public refundPenaltyDenominator;

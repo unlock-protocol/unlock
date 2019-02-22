@@ -35,7 +35,6 @@ contract PublicLock is
   MixinLockCore,
   MixinRefunds
 {
-
   using SafeMath for uint;
 
   // Events
@@ -257,8 +256,5 @@ contract PublicLock is
       _recipient,
       numberOfKeysSold
     );
-  }
-
-  /**
   }
 }
