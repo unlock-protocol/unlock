@@ -22,7 +22,7 @@ const lintStaged = path => {
 // It will try to amend the latest commit if possible to fix.
 const eslint = path => {
   return {
-    command: `git diff-tree --no-commit-id --name-status -r HEAD . | grep ^[^D].*${path}.*js$ | sed 's/^[AM][^a-z]*${path}\///' | xargs eslint --fix`,
+    command: `git diff-tree --no-commit-id --name-status -r HEAD . | grep ^[^D].*${path}.*js$ | sed 's/^[AM][^a-z]*${path}\\///' | xargs eslint --fix`,
     path: path
   }
 }

@@ -1,3 +1,3 @@
-function hi() {}
+function hif() {}
 
-hi()
+hif()

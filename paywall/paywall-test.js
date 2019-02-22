@@ -1,2 +1,2 @@
-function te() {}
-te()
+function tef() {}
+tef()
