@@ -26,7 +26,7 @@ contract MixinApproval is
   // Note 3: for sales (new keys on restricted locks), both addresses will be the same
   mapping (uint => address) private approved;
 
-  // Keeping track of approved operators for a Lock owner.
+  // Keeping track of approved operators for a Key owner.
   // Since an owner can have up to 1 Key, this is similiar to above 
   // but the approval does not reset when a transfer occurs.
   mapping (address => mapping (address => bool)) private ownerToOperatorApproved;
