@@ -11,6 +11,7 @@ import './mixins/MixinApproval.sol';
 import './mixins/MixinDisableAndDestroy.sol';
 import './mixins/MixinKeyOwner.sol';
 import './mixins/MixinKeys.sol';
+import './mixins/MixinLockCore.sol';
 
 /**
  * @title The Lock contract
@@ -29,22 +30,13 @@ contract PublicLock is
   MixinDisableAndDestroy,
   MixinKeyOwner,
   MixinApproval,
-  MixinKeys
+  MixinKeys,
+  MixinLockCore
 {
 
   using SafeMath for uint;
 
   // Events
-  event PriceChanged(
-    uint oldKeyPrice,
-    uint keyPrice
-  );
-
-  event Withdrawal(
-    address indexed _sender,
-    uint _amount
-  );
-
   event CancelKey(
     uint indexed tokenId,
     address indexed owner,
@@ -57,40 +49,9 @@ contract PublicLock is
   );
 
   // Fields
-  // Unlock Protocol address
-  // TODO: should we make that private/internal?
-  address public unlockProtocol;
-
-  // Duration in seconds for which the keys are valid, after creation
-  // should we take a smaller type use less gas?
-  // TODO: add support for a timestamp instead of duration
-  uint public expirationDuration;
-
-  // price in wei of the next key
-  // TODO: allow support for a keyPriceCalculator which could set prices dynamically
-  uint public keyPrice;
-
-  // Max number of keys sold if the keyReleaseMechanism is public
-  uint public maxNumberOfKeys;
-
-  // A count of how many new key purchases there have been
-  uint public numberOfKeysSold;
-
-  // The version number for this lock contract,
-  uint public publicLockVersion;
-
   // CancelAndRefund will return funds based on time remaining minus this penalty.
   // This is a denominator, so 10 means 10% penalty and 20 means 5% penalty.
   uint public refundPenaltyDenominator;
-
-  /**
-   * MODIFIERS
-   */
-  // Ensure that the Lock has not sold all of its keys.
-  modifier notSoldOut() {
-    require(maxNumberOfKeys > numberOfKeysSold, 'LOCK_SOLD_OUT');
-    _;
-  }
 
   // Constructor
   constructor(
@@ -100,14 +61,8 @@ contract PublicLock is
     uint _maxNumberOfKeys,
     uint _version
   ) public
+    MixinLockCore(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys, _version)
   {
-    require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, 'MAX_EXPIRATION_100_YEARS');
-    unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract.
-    Ownable.initialize(_owner);
-    expirationDuration = _expirationDuration;
-    keyPrice = _keyPrice;
-    maxNumberOfKeys = _maxNumberOfKeys;
-    publicLockVersion = _version;
     refundPenaltyDenominator = 10;
   }
 
@@ -237,49 +192,6 @@ contract PublicLock is
   }
 
   /**
-   * @dev Called by owner to withdraw all funds from the lock.
-   * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
-   */
-  function withdraw()
-    external
-    onlyOwner
-  {
-    uint balance = address(this).balance;
-    require(balance > 0, 'NOT_ENOUGH_FUNDS');
-    // Security: re-entrancy not a risk as this is the last line of an external function
-    _withdraw(balance);
-  }
-
-  /**
-   * @dev Called by owner to partially withdraw funds from the lock.
-   * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
-   */
-  function partialWithdraw(uint _amount)
-    external
-    onlyOwner
-  {
-    require(_amount > 0, 'GREATER_THAN_ZERO');
-    uint256 balance = address(this).balance;
-    require(balance > 0 && balance >= _amount, 'NOT_ENOUGH_FUNDS');
-    // Security: re-entrancy not a risk as this is the last line of an external function
-    _withdraw(_amount);
-  }
-
-  /**
-   * A function which lets the owner of the lock to change the price for future purchases.
-   */
-  function updateKeyPrice(
-    uint _keyPrice
-  )
-    external
-    onlyOwner
-  {
-    uint oldKeyPrice = keyPrice;
-    keyPrice = _keyPrice;
-    emit PriceChanged(oldKeyPrice, keyPrice);
-  }
-
-  /**
    * Allow the owner to change the refund penalty.
    */
   function updateRefundPenaltyDenominator(
@@ -306,18 +218,6 @@ contract PublicLock is
     returns (uint refund)
   {
     return _getCancelAndRefundValue(_owner);
-  }
-
-  /**
-   * Public function which returns the total number of unique keys sold (both
-   * expired and valid)
-   */
-  function outstandingKeys()
-    public
-    view
-    returns (uint)
-  {
-    return numberOfKeysSold;
   }
 
   /**
@@ -452,17 +352,5 @@ contract PublicLock is
         refund = 0;
       }
     }
-  }
-
-  /**
-   * @dev private version of the withdraw function which handles all withdrawals from the lock.
-   *
-   * Security: Be wary of re-entrancy when calling this.
-   */
-  function _withdraw(uint _amount)
-    private
-  {
-    Ownable.owner().transfer(_amount);
-    emit Withdrawal(msg.sender, _amount);
   }
 }
