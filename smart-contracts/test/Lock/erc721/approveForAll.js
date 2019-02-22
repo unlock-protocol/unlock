@@ -27,12 +27,12 @@ contract('Lock ERC721', accounts => {
             from: owner
           }
         )
-        ID = await lock.getTokenIdFor(owner)
+        ID = await lock.getTokenIdFor.call(owner)
       })
 
       it('isApprovedForAll defaults to false', async () => {
         assert.equal(
-          await lock.isApprovedForAll(owner, approvedUser),
+          await lock.isApprovedForAll.call(owner, approvedUser),
           false
         )
       })
@@ -59,7 +59,7 @@ contract('Lock ERC721', accounts => {
 
         it('isApprovedForAll is true', async () => {
           assert.equal(
-            await lock.isApprovedForAll(owner, approvedUser),
+            await lock.isApprovedForAll.call(owner, approvedUser),
             true
           )
         })
@@ -90,7 +90,7 @@ contract('Lock ERC721', accounts => {
 
         it('isApprovedForAll is false again', async () => {
           assert.equal(
-            await lock.isApprovedForAll(owner, approvedUser),
+            await lock.isApprovedForAll.call(owner, approvedUser),
             false
           )
         })

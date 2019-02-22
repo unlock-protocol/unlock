@@ -75,7 +75,7 @@ contract('Lock ERC721', accounts => {
       it('should abort if the recipient is 0x', async () => {
         await shouldFail(
           locks['FIRST'].transferFrom(from, Web3Utils.padLeft(0, 40),
-            await locks['FIRST'].getTokenIdFor(from), {
+            await locks['FIRST'].getTokenIdFor.call(from), {
               from
             }),
           'INVALID_ADDRESS'
