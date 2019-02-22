@@ -74,6 +74,7 @@ export default function configure(
   let unlockAddress = ''
   let services = {}
   let supportedProviders = []
+  let paywallUrl = runtimeConfig.paywallUrl || 'http://localhost:3001'
   let blockTime = 8000 // in mseconds.
   let chainExplorerUrlBuilders = {
     etherScan: () => false,
@@ -127,8 +128,11 @@ export default function configure(
     chainExplorerUrlBuilders.etherScan = address =>
       `https://rinkeby.etherscan.io/address/${address}`
     requiredNetworkId = 4
+    paywallUrl = 'https://'
     supportedProviders = ['Metamask', 'Opera']
     services['storage'] = { host: runtimeConfig.locksmithHost }
+    paywallUrl =
+      runtimeConfig.paywallUrl || 'https://staging.paywall.unlock-protocol.com'
 
     // Address for the Unlock smart contract
     unlockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
@@ -152,6 +156,8 @@ export default function configure(
 
     supportedProviders = ['Metamask', 'Opera']
     services['storage'] = { host: runtimeConfig.locksmithHost }
+    paywallUrl =
+      runtimeConfig.paywallUrl || 'https://paywall.unlock-protocol.com'
 
     // Address for the Unlock smart contract
     unlockAddress = '0x3d5409cce1d45233de1d4ebdee74b8e004abdd13'
@@ -182,6 +188,7 @@ export default function configure(
     requiredConfirmations,
     unlockAddress,
     services,
+    paywallUrl,
     supportedProviders,
     chainExplorerUrlBuilders,
   }
