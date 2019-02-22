@@ -10,9 +10,7 @@ import BrowserOnly from '../components/helpers/BrowserOnly'
 import GlobalErrorConsumer from '../components/interface/GlobalErrorConsumer'
 import GlobalErrorProvider from '../utils/GlobalErrorProvider'
 import { pageTitle } from '../constants'
-import configure from '../config'
-
-const { chainExplorerUrlBuilders } = configure()
+import withConfig from '../utils/withConfig'
 
 export const humanize = type => {
   if (!type) return ''
@@ -96,7 +94,10 @@ const Address = styled.a`
   font-family: 'IBM Plex Mono', Courier, monospace;
 `
 
-export const mapStateToProps = ({ account, network, transactions }) => {
+export const mapStateToProps = (
+  { account, network, transactions },
+  { config: { chainExplorerUrlBuilders } }
+) => {
   const transactionFeed = Object.values(transactions).sort(
     (a, b) => b.blockNumber - a.blockNumber
   )
@@ -114,4 +115,4 @@ export const mapStateToProps = ({ account, network, transactions }) => {
   }
 }
 
-export default connect(mapStateToProps)(Log)
+export default withConfig(connect(mapStateToProps)(Log))

@@ -1,5 +1,6 @@
 import { mapStateToProps, humanize } from '../../pages/log'
 import { TRANSACTION_TYPES } from '../../constants'
+import configure from '../../config'
 
 const transactions = {
   '0x1234': {
@@ -46,9 +47,10 @@ describe('Transaction Log', () => {
       network: {},
       transactions,
     }
+    const config = configure()
+    const { transactionFeed } = mapStateToProps(state, { config })
     it('Should provide a feed of transactions sorted by blockNumber, descending', () => {
       expect.assertions(4)
-      const { transactionFeed } = mapStateToProps(state)
       expect(transactionFeed).toHaveLength(3)
       expect(transactionFeed[0].blockNumber).toEqual(3)
       expect(transactionFeed[1].blockNumber).toEqual(2)
@@ -56,7 +58,6 @@ describe('Transaction Log', () => {
     })
     it('should include href to explorer and readable name in the feed', () => {
       expect.assertions(2)
-      const { transactionFeed } = mapStateToProps(state)
       const tx = transactionFeed[0]
       expect(tx).toHaveProperty('href')
       expect(tx).toHaveProperty('readableName')
