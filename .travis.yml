@@ -35,8 +35,8 @@ script:
 after_success:
   - scripts/deploy.sh netlify
   - scripts/deploy-elasticbeanstalk.sh
-  - scripts/push-image.sh unlock
-  - scripts/push-image.sh unlock-integration
+  - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && scripts/push-image.sh unlock $TRAVIS_BRANCH
+  - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && scripts/push-image.sh unlock-integration $TRAVIS_BRANCH
 after_failure:
   - scripts/docker-compose-log.sh
 notifications:
