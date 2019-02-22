@@ -44,6 +44,7 @@ module.exports = withSourceMaps({
       '/demo': { page: '/demo' },
       '/terms': { page: '/terms' },
       '/privacy': { page: '/privacy' },
+      '/log': { page: '/log' },
     }
   },
 })
