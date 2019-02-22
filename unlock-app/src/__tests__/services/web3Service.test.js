@@ -790,7 +790,7 @@ describe('Web3Service', () => {
         lockAddress
       )
 
-      let [expiration, data] = web3Service._getKeyByLockForOwner(
+      let [expiration, data] = await web3Service._getKeyByLockForOwner(
         lockContract,
         nodeAccounts[0]
       )
