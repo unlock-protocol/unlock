@@ -12,6 +12,7 @@ import './mixins/MixinDisableAndDestroy.sol';
 import './mixins/MixinKeys.sol';
 import './mixins/MixinLockCore.sol';
 import './mixins/MixinRefunds.sol';
+import './mixins/MixinLockMetadata.sol';
 import './mixins/MixinNoFallback.sol';
 import './mixins/MixinTransfer.sol';
 
@@ -34,6 +35,7 @@ contract PublicLock is
   MixinKeys,
   MixinApproval,
   MixinLockCore,
+  MixinLockMetadata
   MixinRefunds,
   MixinTransfer
 {
