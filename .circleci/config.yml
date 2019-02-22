@@ -1,0 +1,210 @@
+version: 2
+jobs:
+  build-unlock:
+    machine: true
+    docker_layer_caching: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          name: Build Unlock Image
+          command: scripts/build-image.sh unlock
+      - run:
+          name: Publish Unlock Image
+          command: scripts/push-image.sh unlock $CIRCLE_SHA1
+
+  build-unlock-integration:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          name: Build Unlock Integration Image
+          command: scripts/build-image.sh unlock-integration
+      - run:
+          name: Publish Unlock Integration Image
+          command: scripts/push-image.sh unlock-integration $CIRCLE_SHA1
+
+  unlock-app-tests:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          name: Pull Unlock Image
+          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+      - run:
+          name: Creator Dashboard tests
+          command: scripts/tests.sh unlock-app
+
+  smart-contracts-tests:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          name: Pull Unlock Image
+          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+      - run:
+          name: Smart Contract Tests
+          command: scripts/tests.sh smart-contracts
+
+  locksmith-tests:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+      DB_USERNAME: locksmith_test
+      DB_PASSWORD: password
+      DB_NAME: locksmith_test
+      DB_HOSTNAME: db
+    steps:
+      - checkout
+      - run:
+          name: Pull Unlock Image
+          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+      - run:
+          name: Smart Contract Tests
+          command: scripts/tests.sh locksmith
+
+  paywall-tests:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          name: Pull Unlock Image
+          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+      - run:
+          name: Smart Contract Tests
+          command: scripts/tests.sh paywall
+
+  integration-tests:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          name: Pull Unlock Image
+          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+      - run:
+          name: Pull Unlock Integration Image
+          command: scripts/pull-image.sh unlock-integration "$CIRCLE_SHA1"
+      - run:
+          name: Integration Tests
+          command: scripts/integration-tests.sh
+
+  deploy-unlock-app-netlify:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          name: Pull Unlock Image
+          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+      - run:
+          name: Deploy to Netlify
+          command: scripts/deploy.sh netlify $CIRCLE_SHA1 $CIRCLE_TAG $CIRCLE_BRANCH ($CIRCLE_PULL_REQUEST || "false")
+
+  deploy-locksmith-beanstalk:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+      GIT_COMMIT_DESC: git log --format=%B -n 1 $CIRCLE_SHA1
+    steps:
+      - checkout
+      - run:
+          name: Deploy to to Beanstalk
+          command: scripts/deploy-elasticbeanstalk.sh $CIRCLE_SHA1 $CIRCLE_BRANCH ($CIRCLE_PULL_REQUEST || "false") "$GIT_COMMIT_DESC"
+
+  promote-unlock-image:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          name: Pull Unlock Image
+          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+      - run:
+          name: Push Unlock Image as master
+          command: scripts/push-image.sh unlock master
+
+  promote-unlock-integration-image:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          name: Pull Unlock Integration Image
+          command: scripts/pull-image.sh unlock-integration "$CIRCLE_SHA1"
+      - run:
+          name: Push Unlock Integration Image as master
+          command: scripts/push-image.sh unlock-integration master
+
+workflows:
+  version: 2
+  build-test-and-deploy:
+    jobs:
+      - build-unlock
+      - build-unlock-integration
+      - unlock-app-tests:
+          requires:
+            - build-unlock
+      - smart-contracts-tests:
+          requires:
+            - build-unlock
+      - locksmith-tests:
+          requires:
+            - build-unlock
+      - paywall-tests:
+          requires:
+            - build-unlock
+      - integration-tests:
+          requires:
+            - build-unlock
+            - build-unlock-integration
+      - deploy-unlock-app-netlify:
+          requires:
+            - unlock-app-tests
+            - smart-contracts-tests
+            - locksmith-tests
+            - paywall-tests
+            - integration-tests
+      - promote-unlock-image:
+          filters:
+            branches:
+              only: master
+          requires:
+            - unlock-app-tests
+            - smart-contracts-tests
+            - locksmith-tests
+            - paywall-tests
+            - integration-tests
+      - promote-unlock-integration-image:
+          filters:
+            branches:
+              only: master
+          requires:
+            - unlock-app-tests
+            - smart-contracts-tests
+            - locksmith-tests
+            - paywall-tests
+            - integration-tests
+      - deploy-locksmith-beanstalk:
+          filters:
+            branches:
+              only: master
+          requires:
+            - unlock-app-tests
+            - smart-contracts-tests
+            - locksmith-tests
+            - paywall-tests
+            - integration-tests
