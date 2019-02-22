@@ -49,4 +49,13 @@ if [ "$TARGET" = "netlify" ]; then
   ENV_VARS="$ENV_VARS -e NETLIFY_AUTH_TOKEN=$NETLIFY_AUTH_TOKEN"
 fi
 
-docker-compose -f $DOCKER_COMPOSE_FILE run $ENV_VARS $SERVICE $NPM_SCRIPT -- $ENV_TARGET
+# PUBLISH: whether to publish/promote the deployed version
+PUBLISH="false"
+if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
+  PUBLISH="true"
+fi
+
+# Deploy options
+OPTS="$ENV_TARGET $TRAVIS_COMMIT $PUBLISH"
+
+docker-compose -f $DOCKER_COMPOSE_FILE run $ENV_VARS $SERVICE $NPM_SCRIPT -- $OPTS
