@@ -1,14 +1,22 @@
 pragma solidity 0.4.25;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
+import './MixinKeys.sol';
 
 
 contract MixinRefunds is
-  Ownable
+  Ownable,
+  MixinKeys
 {
   // CancelAndRefund will return funds based on time remaining minus this penalty.
   // This is a denominator, so 10 means 10% penalty and 20 means 5% penalty.
   uint public refundPenaltyDenominator;
+
+  event CancelKey(
+    uint indexed tokenId,
+    address indexed owner,
+    uint refund
+  );
 
   event RefundPenaltyDenominatorChanged(
     uint oldPenaltyDenominator,
@@ -27,7 +35,7 @@ contract MixinRefunds is
   function cancelAndRefund()
     external
   {
-    Key storage key = keyByOwner[msg.sender];
+    Key storage key = _getKeyFor(msg.sender);
 
     uint refund = _getCancelAndRefundValue(msg.sender);
 
@@ -81,12 +89,12 @@ contract MixinRefunds is
   function _getCancelAndRefundValue(
     address _owner
   )
-    internal
+    private
     view
     hasValidKey(_owner)
     returns (uint refund)
   {
-    Key storage key = keyByOwner[_owner];
+    Key storage key = _getKeyFor(_owner);
     // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
     uint timeRemaining = key.expirationTimestamp - block.timestamp;
     // Math: using safeMul in case keyPrice or timeRemaining is very large

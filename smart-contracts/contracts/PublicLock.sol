@@ -39,12 +39,6 @@ contract PublicLock is
   using SafeMath for uint;
 
   // Events
-  event CancelKey(
-    uint indexed tokenId,
-    address indexed owner,
-    uint refund
-  );
-
   // Fields
   // Constructor
   constructor(
