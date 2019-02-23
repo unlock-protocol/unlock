@@ -16,9 +16,7 @@ const {
   readOnlyProvider,
   providers,
   unlockAddress,
-  blockTime,
   requiredNetworkId,
-  requiredConfirmations,
 } = configure()
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
@@ -361,16 +359,6 @@ export default class Web3Service extends EventEmitter {
   }
 
   /**
-   * This will set a timeout to get a transaction after half a block time happened
-   * @param {string} transactionHash
-   */
-  _watchTransaction(transactionHash) {
-    setTimeout(() => {
-      this.getTransaction(transactionHash)
-    }, blockTime / 2)
-  }
-
-  /**
    * The transaction is still pending: it has been sent to the network but not
    * necessarily received by the node we're asking it (and not mined...)
    * TODO: This presents a UI challenge because we currently do not show anything to the
@@ -383,8 +371,6 @@ export default class Web3Service extends EventEmitter {
    * @private
    */
   _getSubmittedTransaction(transactionHash, blockNumber, defaults) {
-    this._watchTransaction(transactionHash)
-
     // If we have default values for the transaction (passed by the walletService)
     if (defaults) {
       const contract =
@@ -415,8 +401,6 @@ export default class Web3Service extends EventEmitter {
    * @private
    */
   _getPendingTransaction(blockTransaction) {
-    this._watchTransaction(blockTransaction.hash)
-
     const contract =
       this.unlockContractAddress ===
       Web3Utils.toChecksumAddress(blockTransaction.to)
@@ -470,11 +454,6 @@ export default class Web3Service extends EventEmitter {
         contract,
         blockTransaction.input
       )
-
-      // Let's watch for more confirmations if needed
-      if (blockNumber - blockTransaction.blockNumber < requiredConfirmations) {
-        this._watchTransaction(transactionHash)
-      }
 
       // The transaction was mined, so we should have a receipt for it
       this.emit('transaction.updated', transactionHash, {

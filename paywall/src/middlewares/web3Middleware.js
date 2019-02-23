@@ -26,6 +26,10 @@ import {
   setKeysOnPageForLock,
 } from '../actions/keysPages'
 import { lockRoute } from '../utils/routes'
+import pollWithConditions from '../utils/polling'
+import configure from '../config'
+
+const config = configure()
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
@@ -116,12 +120,31 @@ export default function web3Middleware({ getState, dispatch }) {
         }
       }
 
-      if (action.type === ADD_TRANSACTION) {
-        web3Service.getTransaction(action.transaction.hash)
-      }
-
-      if (action.type === NEW_TRANSACTION) {
-        web3Service.getTransaction(action.transaction.hash, action.transaction)
+      if (action.type === ADD_TRANSACTION || action.type === NEW_TRANSACTION) {
+        const defaults =
+          action.type === NEW_TRANSACTION ? action.transaction : undefined
+        web3Service.getTransaction(action.transaction.hash, defaults)
+        const { hash } = action
+        pollWithConditions(
+          // the polling function simply returns the transaction with the closed over transaction hash
+          // note that a unique poll starts for each NEW_TRANSACTION call
+          () => {
+            web3Service.getTransaction(hash)
+          },
+          // we poll every half block
+          config.blockTime / 2,
+          // When a transaction has failed, or reached full confirmations, we stop polling
+          () => {
+            const currentTransaction = getState().transactions[hash]
+            if (!currentTransaction) return
+            if (
+              currentTransaction.status === 'failed' ||
+              currentTransaction.confirmations > config.requiredConfirmations
+            ) {
+              throw new Error('finish transaction polling')
+            }
+          }
+        )
       }
 
       if (action.type === CREATE_LOCK && !action.lock.address) {
