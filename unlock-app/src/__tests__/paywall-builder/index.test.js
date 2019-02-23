@@ -25,6 +25,7 @@ describe('paywall builder integration', () => {
   afterEach(() => jest.restoreAllMocks())
 
   it('calls listenForLocks', () => {
+    expect.assertions(5)
     global.window = {}
 
     require('../../paywall-builder')

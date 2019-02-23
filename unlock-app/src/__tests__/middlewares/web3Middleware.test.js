@@ -102,6 +102,7 @@ beforeEach(() => {
 
 describe('Lock middleware', () => {
   it('should handle account.updated events triggered by the web3Service', () => {
+    expect.assertions(1)
     const { store } = create()
     const account = {}
     const update = {
@@ -255,6 +256,7 @@ describe('Lock middleware', () => {
   })
 
   it('it should handle transaction.updated events triggered by the web3Service', () => {
+    expect.assertions(1)
     const { store } = create()
     const update = {}
     mockWeb3Service.emit('transaction.updated', transaction.hash, update)
@@ -269,6 +271,7 @@ describe('Lock middleware', () => {
 
   describe('when receiving a keys.page event triggered by the web3Service', () => {
     it('should dispatch setKeysOnPageForLock', () => {
+      expect.assertions(1)
       const { store } = create()
       const lock = '0x123'
       const page = 1336
@@ -287,6 +290,7 @@ describe('Lock middleware', () => {
 
   describe('error events triggered by the web3Service', () => {
     it('it should handle error events triggered by the web3Service', () => {
+      expect.assertions(1)
       const { store } = create()
       mockWeb3Service.emit('error', { message: 'this was broken' })
       expect(store.dispatch).toHaveBeenCalledWith(
@@ -336,6 +340,7 @@ describe('Lock middleware', () => {
 
   describe('on the paywall', () => {
     it('should handle SET_ACCOUNT by getting all keys for the owner of that account', async () => {
+      expect.assertions(4)
       const mockTx = {
         returnValues: {
           newLockAddress: '0x0',
@@ -374,6 +379,7 @@ describe('Lock middleware', () => {
   })
 
   it("should handle LOCATION_CHANGE if on a paywall page by calling web3Service's getLock", () => {
+    expect.assertions(2)
     const { next, invoke } = create()
     const action = {
       type: LOCATION_CHANGE,
@@ -386,6 +392,7 @@ describe('Lock middleware', () => {
   })
 
   it("should handle LOCATION_CHANGE and not call web3Service's getLock if not on a paywall page", () => {
+    expect.assertions(2)
     const { next, invoke } = create()
     const action = {
       type: LOCATION_CHANGE,
@@ -399,6 +406,7 @@ describe('Lock middleware', () => {
 
   describe('SET_KEYS_ON_PAGE_FOR_LOCK', () => {
     it('should call getKeysForLockOnPage on web3Service only if the keys variable is falsy', () => {
+      expect.assertions(2)
       const { next, invoke } = create()
       const page = 1
       const action = {
@@ -417,7 +425,8 @@ describe('Lock middleware', () => {
       expect(next).toHaveBeenCalledWith(action)
     })
 
-    it('should not call getKeysForLockOnPage if the keys are sert', () => {
+    it('should not call getKeysForLockOnPage if the keys are set', () => {
+      expect.assertions(2)
       const { next, invoke } = create()
       const page = 1
       const action = {
@@ -436,6 +445,7 @@ describe('Lock middleware', () => {
 
   describe('ADD_LOCK', () => {
     it('should handle ADD_LOCK by loading keys for the current user', () => {
+      expect.assertions(2)
       const { next, invoke, store } = create()
       const action = { type: ADD_LOCK, address: lock.address }
       mockWeb3Service.getKeyByLockForOwner = jest.fn()
@@ -449,6 +459,7 @@ describe('Lock middleware', () => {
     })
 
     it('should not retrieve the key if there is no current user', () => {
+      expect.assertions(2)
       const { next, invoke } = create()
       const action = { type: ADD_LOCK, address: lock.address }
 
@@ -463,6 +474,7 @@ describe('Lock middleware', () => {
   })
 
   it('should handle ADD_TRANSACTION', () => {
+    expect.assertions(2)
     const { next, invoke } = create()
     const action = { type: ADD_TRANSACTION, transaction }
     mockWeb3Service.getTransaction = jest.fn()
@@ -475,6 +487,7 @@ describe('Lock middleware', () => {
   })
 
   it('should handle NEW_TRANSACTION', () => {
+    expect.assertions(2)
     const { next, invoke } = create()
     const action = { type: NEW_TRANSACTION, transaction }
     mockWeb3Service.getTransaction = jest.fn()
@@ -524,6 +537,7 @@ describe('Lock middleware', () => {
 
   describe('UPDATE_LOCK', () => {
     it('should handle UPDATE_LOCK by loading keys for the current user', () => {
+      expect.assertions(2)
       const { next, invoke, store } = create()
       const action = { type: UPDATE_LOCK, address: lock.address }
       mockWeb3Service.getKeyByLockForOwner = jest.fn()

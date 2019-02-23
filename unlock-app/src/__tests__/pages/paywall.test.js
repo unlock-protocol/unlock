@@ -50,22 +50,31 @@ afterEach(() => {
 describe('Paywall', () => {
   describe('mapStateToProps', () => {
     it('should yield the lock which matches the address of the demo page', () => {
+      expect.assertions(1)
       const props = mapStateToProps({ locks, keys, modals, router })
       expect(props.locks[0]).toBe(lock)
     })
+
     it('should be locked when no keys are available', () => {
+      expect.assertions(1)
       const props = mapStateToProps({ locks, keys: {}, modals, router })
       expect(props.locked).toBe(true)
     })
+
     it('should not be locked when there is a matching key', () => {
+      expect.assertions(1)
       const props = mapStateToProps({ locks, keys, modals, router })
       expect(props.locked).toBe(false)
     })
+
     it('should pass redirect if present in the URI', () => {
+      expect.assertions(1)
       const props = mapStateToProps({ locks, keys, modals, router })
       expect(props.redirect).toBe('http://example.com')
     })
+
     it('should not pass redirect if not present in the URI', () => {
+      expect.assertions(1)
       const props = mapStateToProps({
         locks,
         keys,
@@ -75,6 +84,7 @@ describe('Paywall', () => {
       expect(props.redirect).toBeFalsy()
     })
   })
+
   describe('handleIframe', () => {
     it('should call lockPage when it is locked', () => {
       expect.assertions(2)
@@ -86,6 +96,7 @@ describe('Paywall', () => {
       expect(lockPage).toHaveBeenCalled()
       expect(unlockPage).not.toHaveBeenCalled()
     })
+
     it('should call unlockPage when it is not locked', () => {
       expect.assertions(2)
       rtl.render(
@@ -99,8 +110,10 @@ describe('Paywall', () => {
       expect(unlockPage).toHaveBeenCalled()
     })
   })
+
   describe('the unlocked flag', () => {
     it('should be present when the paywall is unlocked', () => {
+      expect.assertions(1)
       const { queryByText } = rtl.render(
         <ConfigContext.Provider value={{ providers: [] }}>
           <Provider store={store}>
@@ -111,7 +124,9 @@ describe('Paywall', () => {
       const flagText = queryByText('Subscribed with Unlock')
       expect(flagText).not.toBeNull()
     })
+
     it('should not be present when the paywall is locked', () => {
+      expect.assertions(1)
       const { queryByText } = rtl.render(
         <ConfigContext.Provider value={{ providers: [] }}>
           <Provider store={noKeyStore}>
@@ -124,6 +139,7 @@ describe('Paywall', () => {
     })
 
     it('should pull the redirect parameter from the page', () => {
+      expect.assertions(1)
       const lock = { address: '0x4983D5ECDc5cc0E499c2D23BF4Ac32B982bAe53a' }
       const locks = {
         [lock.address]: lock,

@@ -7,6 +7,7 @@ import {
 
 describe('Storage error', () => {
   it('should create an action emitting a storage error', () => {
+    expect.assertions(1)
     const error = 'a fancy error'
 
     const expectation = {
@@ -20,6 +21,7 @@ describe('Storage error', () => {
 
 describe('Store Lock Creation', () => {
   it('should create an action indicating storage of a newly created lock', () => {
+    expect.assertions(1)
     const owner = "An owner's address"
     const lock = {}
     const token = 'An authorization token'

@@ -77,6 +77,7 @@ describe('Overlay', () => {
 
       expect(wrapper.getByText('children')).not.toBeNull()
     })
+
     it('should display error if present', () => {
       expect.assertions(1)
       const wrapper = rtl.render(
@@ -89,6 +90,7 @@ describe('Overlay', () => {
 
       expect(wrapper.getByText('Wallet missing')).not.toBeNull()
     })
+
     it('should display children if account is missing and in the iframe', () => {
       expect.assertions(1)
       const wrapper = rtl.render(
@@ -101,6 +103,7 @@ describe('Overlay', () => {
 
       expect(wrapper.queryByText('error')).toBeNull()
     })
+
     it('should display error if account is missing and in the main window', () => {
       expect.assertions(1)
       const wrapper = rtl.render(
@@ -114,6 +117,7 @@ describe('Overlay', () => {
       expect(wrapper.getByText('Need account')).not.toBeNull()
     })
   })
+
   describe('error replacement', () => {
     const lock = {
       name: 'Monthly',
@@ -150,7 +154,9 @@ describe('Overlay', () => {
         )
       ).not.toBeNull()
     })
+
     it('displays error, headline, and flag when there is an error', () => {
+      expect.assertions(3)
       const wrapper = rtl.render(
         <Provider store={store}>
           <ConfigProvider
@@ -178,7 +184,9 @@ describe('Overlay', () => {
         )
       ).not.toBeNull()
     })
+
     it('displays lock when the error is missing account', () => {
+      expect.assertions(3)
       const wrapper = rtl.render(
         <Provider store={store}>
           <ErrorProvider

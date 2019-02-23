@@ -36,6 +36,7 @@ describe('GlobalErrorConsumer', () => {
     const childrenWrapper = rtl.render(children)
     expect(childrenWrapper.queryByText('hi')).not.toBeNull()
   })
+
   it('passes false to displayError prop if no error condition is present', () => {
     expect.assertions(3)
 
@@ -56,18 +57,20 @@ describe('GlobalErrorConsumer', () => {
 
     expect(listen.mock.calls[0][0]).toBe(false)
   })
+
   describe('displayError', () => {
     it('displays the error if initialized', () => {
+      expect.assertions(2)
       const wrapper = rtl.render(
         displayError(FATAL_MISSING_PROVIDER, {}, <div>children</div>)
       )
-
       expect(wrapper.queryByText('Wallet missing')).not.toBeNull()
       expect(wrapper.queryByText('children')).toBeNull()
     })
-    it('displays the children if no error is initialized', () => {
-      const wrapper = rtl.render(displayError(false, {}, <div>children</div>))
 
+    it('displays the children if no error is initialized', () => {
+      expect.assertions(1)
+      const wrapper = rtl.render(displayError(false, {}, <div>children</div>))
       expect(wrapper.queryByText('children')).not.toBeNull()
     })
   })

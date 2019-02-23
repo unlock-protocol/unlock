@@ -5,6 +5,7 @@ import { Withdraw } from '../../../../components/interface/buttons/lock/Withdraw
 
 describe('Withdraw', () => {
   it('should initiate balance withdrawal when withdraw button is clicked', () => {
+    expect.assertions(1)
     const keylock = {
       id: 'lockid',
       address: '0x1234567890',
@@ -26,7 +27,9 @@ describe('Withdraw', () => {
 
     expect(withdrawFromLock).toHaveBeenCalled()
   })
+
   it('should disable the button when the lock has no balance', () => {
+    expect.assertions(1)
     const keylock = {
       id: 'lockid',
       address: '0x1234567890',
@@ -46,7 +49,9 @@ describe('Withdraw', () => {
     let withdrawButton = wrapper.queryByTitle('Withdraw')
     expect(withdrawButton).toBeNull()
   })
+
   it('should disable the button when a withdrawal is in process', () => {
+    expect.assertions(1)
     const keylock = {
       id: 'lockid',
       address: '0x1234567890',

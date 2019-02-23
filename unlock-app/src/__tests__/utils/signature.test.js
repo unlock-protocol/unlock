@@ -54,6 +54,7 @@ describe('generateSignature', () => {
     })
 
     it('generates a signature for the provided type data', () => {
+      expect.assertions(1)
       Date.now = jest.fn(() => 1546219627000)
       let web3Service = new Web3Service(providers)
 
@@ -104,6 +105,7 @@ describe('generateSignature', () => {
     })
 
     it('returns a Promise.reject', done => {
+      expect.assertions(1)
       let web3Service = new Web3Service(providers)
 
       generateSignature(

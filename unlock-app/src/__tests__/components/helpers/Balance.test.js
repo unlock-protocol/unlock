@@ -22,6 +22,7 @@ describe('Balance Component', () => {
     const amount = '0'
 
     it('USD conversion data available', () => {
+      expect.assertions(2)
       const wrapper = renderIt(amount)
       expect(wrapper.queryByText('0')).not.toBeNull()
       expect(wrapper.queryByText('0')).not.toBeNull()
@@ -32,6 +33,7 @@ describe('Balance Component', () => {
     const amount = '0.000070'
 
     it('shows the default minimum value of 三 < 0.0001', () => {
+      expect.assertions(2)
       const wrapper = renderIt(amount)
       expect(wrapper.queryByText('< 0.0001')).not.toBeNull()
       expect(wrapper.queryByText('0.014')).not.toBeNull()
@@ -42,6 +44,7 @@ describe('Balance Component', () => {
     const amount = '0.075800'
 
     it('shows the balance in Eth to two decimal places', () => {
+      expect.assertions(2)
       const wrapper = renderIt(amount)
       expect(wrapper.queryByText('0.076')).not.toBeNull()
       expect(wrapper.queryByText('14.86')).not.toBeNull()
@@ -52,6 +55,7 @@ describe('Balance Component', () => {
     const amount = '2'
 
     it('shows the balance in Eth to two decimal places', () => {
+      expect.assertions(2)
       const wrapper = renderIt(amount)
       expect(wrapper.queryByText('2.00')).not.toBeNull()
       expect(wrapper.queryByText('391.98')).not.toBeNull()
@@ -62,6 +66,7 @@ describe('Balance Component', () => {
     const amount = '20'
 
     it('shows the balance in dollars in locale format without decimal', () => {
+      expect.assertions(2)
       const wrapper = renderIt(amount)
       expect(wrapper.queryByText('20.00')).not.toBeNull()
       expect(wrapper.queryByText('3,920')).not.toBeNull()
@@ -72,6 +77,7 @@ describe('Balance Component', () => {
     const amount = '2000'
 
     it('shows the balance in thousands of dollars postfixed with k', () => {
+      expect.assertions(2)
       const wrapper = renderIt(amount)
       expect(wrapper.queryByText('2000.00')).not.toBeNull()
       expect(wrapper.queryByText('392k')).not.toBeNull()
@@ -82,6 +88,7 @@ describe('Balance Component', () => {
     const amount = '20000'
 
     it('shows the balance in millions of dollars postfixed with m', () => {
+      expect.assertions(2)
       const wrapper = renderIt(amount)
       expect(wrapper.queryByText('20000.00')).not.toBeNull()
       expect(wrapper.queryByText('3.9m')).not.toBeNull()
@@ -92,6 +99,7 @@ describe('Balance Component', () => {
     const amount = '20000000'
 
     it('shows the balance in billions of dollars postfixed with b', () => {
+      expect.assertions(2)
       const wrapper = renderIt(amount)
       expect(wrapper.queryByText('20000000.00')).not.toBeNull()
       expect(wrapper.queryByText('3.9b')).not.toBeNull()
