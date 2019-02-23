@@ -4,9 +4,8 @@ const BigNumber = require('bignumber.js')
 const PublicLock = artifacts.require('../../PublicLock.sol')
 const Zos = require('zos')
 const TestHelper = Zos.TestHelper
-const { ZWeb3 } = require('zos-lib')
+const { ZWeb3, Contracts } = require('zos-lib')
 ZWeb3.initialize(web3.currentProvider)
-const { Contracts } = require('zos-lib')
 const Unlock = Contracts.getFromLocal('Unlock')
 
 contract('PublicLock', accounts => {
@@ -33,7 +32,7 @@ contract('PublicLock', accounts => {
       })
 
       it('should have created the lock with an infinite number of keys', async function () {
-        let publicLock = await PublicLock.at(transaction.logs[0].args.newLockAddress)
+        let publicLock = await PublicLock.at(transaction.logs[1].args.newLockAddress)
         const maxNumberOfKeys = new BigNumber(await publicLock.maxNumberOfKeys())
         assert.equal(maxNumberOfKeys.toFixed(), new BigNumber(2).pow(256).minus(1).toFixed())
       })
@@ -52,7 +51,7 @@ contract('PublicLock', accounts => {
       })
 
       it('should have created the lock with 0 keys', async function () {
-        let publicLock = await PublicLock.at(transaction.logs[0].args.newLockAddress)
+        let publicLock = (await PublicLock.at(transaction.logs[1].args.newLockAddress)).methods
         const maxNumberOfKeys = new BigNumber(await publicLock.maxNumberOfKeys())
         assert.equal(maxNumberOfKeys.toFixed(), 0)
       })

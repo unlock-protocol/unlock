@@ -13,13 +13,13 @@ exports.shouldCreateLock = function (accounts) {
           60 * 60 * 24 * 30, // expirationDuration: 30 days
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
           100 // maxNumberOfKeys
-          , {
-            from: accounts[0]
-          })
+        ).send({
+          from: accounts[0]
+        })
       })
 
       it('should have kept track of the Lock inside Unlock with the right balances', async function () {
-        let publicLock = await PublicLock.at(transaction.logs[0].args.newLockAddress)
+        let publicLock = await PublicLock.at(transaction.logs[1].args.newLockAddress)
         // This is a bit of a dumb test because when the lock is missing, the value are 0 anyway...
         let [deployed, totalSales, yieldedDiscountTokens] = await this.unlock.locks(publicLock.address)
         totalSales = new BigNumber(totalSales)
@@ -39,7 +39,7 @@ exports.shouldCreateLock = function (accounts) {
       })
 
       it('should have created the lock with the right address for unlock', async function () {
-        let publicLock = await PublicLock.at(transaction.logs[0].args.newLockAddress)
+        let publicLock = await PublicLock.at(transaction.logs[1].args.newLockAddress)
         let unlockProtocol = await publicLock.unlockProtocol()
         assert.equal(unlockProtocol, this.unlock.address)
       })
@@ -51,9 +51,9 @@ exports.shouldCreateLock = function (accounts) {
           60 * 60 * 24 * 365 * 101, // expirationDuration: 101 years
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
           100 // maxNumberOfKeys
-          , {
-            from: accounts[0]
-          }), 'MAX_EXPIRATION_100_YEARS')
+        ).send({
+          from: accounts[0]
+        })) // MAX_EXPIRATION_100_YEARS
       })
     })
   })
