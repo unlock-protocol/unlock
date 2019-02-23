@@ -34,5 +34,6 @@ module.exports = {
     'jest/no-identical-title': 'error',
     'jest/no-focused-tests': 'warn',
     'jest/prefer-expect-assertions': 'warn',
+    'jest/prefer-expect-assertions': 'warn', // TODO: fix errors and change into error
   },
 }

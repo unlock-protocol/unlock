@@ -127,6 +127,7 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
 
   describe('mapStateToProps', () => {
     it('should include valid keys', () => {
+      expect.assertions(3)
       const locks = [
         {
           address: '0x123',
@@ -178,6 +179,7 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
     })
 
     it('should include modalShown as true if a modal is shown', () => {
+      expect.assertions(1)
       const locks = [
         {
           address: '0x123',
@@ -202,6 +204,7 @@ describe('ShowUnlessUserHasKeyToAnyLock', () => {
     })
 
     it('should include modalShown as false if a modal is not shown', () => {
+      expect.assertions(1)
       const locks = [
         {
           address: '0x123',

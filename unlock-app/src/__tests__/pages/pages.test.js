@@ -18,6 +18,7 @@ describe('Pages', () => {
 
   describe('Home', () => {
     it('should render title correctly', () => {
+      expect.assertions(1)
       const config = {
         env: 'prod',
       }
@@ -25,20 +26,26 @@ describe('Pages', () => {
       expect(pageTitle).toBeCalled()
     })
   })
+
   describe('Jobs', () => {
     it('should render title correctly', () => {
+      expect.assertions(1)
       rtl.render(<Jobs />)
       expect(pageTitle).toBeCalledWith('Work at Unlock')
     })
   })
+
   describe('About', () => {
     it('should render title correctly', () => {
+      expect.assertions(1)
       rtl.render(<About />)
       expect(pageTitle).toBeCalledWith('About')
     })
   })
+
   describe('Dashboard', () => {
     it('should render title correctly', () => {
+      expect.assertions(1)
       const network = {
         name: 4,
       }

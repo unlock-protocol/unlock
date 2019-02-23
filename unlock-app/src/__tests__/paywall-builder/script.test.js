@@ -30,9 +30,12 @@ describe('script', () => {
     )
 
     it('finds the correct attribute', () => {
+      expect.assertions(1)
       expect(findPaywallUrl(fakeDoc)).toBe('hooby/booby')
     })
+
     it('returns the default url if nothing is found', () => {
+      expect.assertions(1)
       fakeDoc = {
         getElementsByTagName() {
           return [makeFakeScript('foobar'), makeFakeScript('nope')]
@@ -40,7 +43,9 @@ describe('script', () => {
       }
       expect(findPaywallUrl(fakeDoc)).toBe(DEFAULT_URL)
     })
+
     it('returns data-unlock-src if present', () => {
+      expect.assertions(1)
       fakeDoc = {
         getElementsByTagName() {
           return [
@@ -54,6 +59,7 @@ describe('script', () => {
   })
 
   it('findLocks', () => {
+    expect.assertions(2)
     const el = {
       getAttribute() {
         return 'hi'

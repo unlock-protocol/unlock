@@ -10,17 +10,21 @@ describe('account reducer', () => {
   }
 
   it('should return the initial state', () => {
+    expect.assertions(1)
     expect(reducer(undefined, {})).toEqual(null)
   })
 
   it('should return the initial state when receveing SET_PROVIDER', () => {
+    expect.assertions(1)
     expect(
       reducer(account, {
         type: SET_PROVIDER,
       })
     ).toEqual(null)
   })
+
   it('should return the initial state when receveing SET_NETWORK', () => {
+    expect.assertions(1)
     expect(
       reducer(account, {
         type: SET_NETWORK,
@@ -29,6 +33,7 @@ describe('account reducer', () => {
   })
 
   it('should set the account accordingly when receiving SET_ACCOUNT', () => {
+    expect.assertions(1)
     expect(
       reducer(undefined, {
         type: SET_ACCOUNT,
@@ -38,6 +43,7 @@ describe('account reducer', () => {
   })
 
   it('should update an account accordingly when receiving UPDATE_ACCOUNT', () => {
+    expect.assertions(1)
     const update = {
       balance: '1337',
     }

@@ -11,6 +11,7 @@ jest.mock('next/link', () => {
 
 describe('CreatorLocks', () => {
   it('should display form when create lock button is clicked', () => {
+    expect.assertions(4)
     const store = createUnlockStore({
       account: {},
     })
@@ -32,6 +33,7 @@ describe('CreatorLocks', () => {
   })
 
   it('should disappear when cancel button is clicked', () => {
+    expect.assertions(4)
     const store = createUnlockStore({
       account: {},
     })
@@ -54,7 +56,9 @@ describe('CreatorLocks', () => {
     expect(wrapper.queryByValue('New Lock')).toBeNull()
     expect(wrapper.queryByText('Submit')).toBeNull()
   })
+
   it('should call createLock when submit button is pressed', () => {
+    expect.assertions(1)
     const createLock = jest.fn()
 
     const store = createUnlockStore({
