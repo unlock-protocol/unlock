@@ -29,7 +29,8 @@
   "devDependencies": {
     "lint-staged": "^8.0.5",
     "ganache-cli": "^6.2.3",
-    "husky": "^1.2.0"
+    "husky": "^1.2.0",
+    "foreman": "3.0.1"
   },
   "scripts": {
     "link-parent-bin": "link-parent-bin -c . -s true",
@@ -41,7 +42,8 @@
     "start": "./scripts/start.sh",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "nuke": "./scripts/nuke.sh",
-    "start-locksmith": "cd locksmith && npm start"
+    "start-locksmith": "cd locksmith && npm start",
+    "dev" : "nf start -x 8080 locksmith,unlock-app"
   },
   "repository": {
     "type": "git",
