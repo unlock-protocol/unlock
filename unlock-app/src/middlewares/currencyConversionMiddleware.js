@@ -3,7 +3,7 @@
 
 import axios from 'axios'
 
-import { setConversionRate } from '../actions/currencyconvert'
+import { setConversionRate } from '../actions/currencyConvert'
 
 export default store => {
   axios
