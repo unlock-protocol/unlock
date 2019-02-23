@@ -9,6 +9,7 @@ import {
 
 describe('key actions', () => {
   it('should create an action to purchase a key', () => {
+    expect.assertions(1)
     const key = {}
     const expectedAction = {
       type: PURCHASE_KEY,
@@ -18,6 +19,7 @@ describe('key actions', () => {
   })
 
   it('should create an action to add a key to the store', () => {
+    expect.assertions(1)
     const id = '123'
     const key = {
       expiration: 100,
@@ -33,6 +35,7 @@ describe('key actions', () => {
   })
 
   it('should create an action to update a key in the store', () => {
+    expect.assertions(1)
     const key = {
       expiration: 100,
       data: 'hello',

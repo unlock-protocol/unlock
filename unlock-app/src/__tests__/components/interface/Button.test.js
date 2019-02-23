@@ -12,6 +12,7 @@ jest.mock('next/link', () => {
 afterEach(rtl.cleanup)
 describe('Button', () => {
   it('should activate the action function when clicked', () => {
+    expect.assertions(1)
     let buttonClicked = false
     const action = () => {
       buttonClicked = true
@@ -26,6 +27,7 @@ describe('Button', () => {
   })
 
   it('should not propagate click events', () => {
+    expect.assertions(2)
     let buttonClicked = false
     let wrapperClicked = false
 
@@ -53,7 +55,9 @@ describe('Button', () => {
     expect(buttonClicked).toEqual(true)
     expect(wrapperClicked).toEqual(false)
   })
+
   it('should not run an action from a disabled button', () => {
+    expect.assertions(1)
     let buttonClicked = false
 
     const buttonAction = () => {

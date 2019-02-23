@@ -17,10 +17,12 @@ describe('locks reducer', () => {
   }
 
   it('should return the initial state', () => {
+    expect.assertions(1)
     expect(reducer(undefined, {})).toBe(initialState)
   })
 
   it('should return the initial state when receveing SET_PROVIDER', () => {
+    expect.assertions(1)
     expect(
       reducer(
         {
@@ -34,6 +36,7 @@ describe('locks reducer', () => {
   })
 
   it('should return the initial state when receveing SET_NETWORK', () => {
+    expect.assertions(1)
     expect(
       reducer(
         {
@@ -47,6 +50,7 @@ describe('locks reducer', () => {
   })
 
   it('should add the lock when receiving CREATE_LOCK and if it was not there yet', () => {
+    expect.assertions(1)
     expect(
       reducer(undefined, {
         type: CREATE_LOCK,
@@ -58,6 +62,7 @@ describe('locks reducer', () => {
   })
 
   it('should not add the lock when receiving CREATE_LOCK if the lock has no address', () => {
+    expect.assertions(1)
     expect(
       reducer(initialState, {
         type: CREATE_LOCK,
@@ -69,6 +74,7 @@ describe('locks reducer', () => {
   })
 
   it('should delete a lock when DELETE_TRANSACTION is called for a transaction which created that lock', () => {
+    expect.assertions(1)
     const transaction = {
       lock: lock.address,
     }
@@ -86,6 +92,7 @@ describe('locks reducer', () => {
   })
 
   it('should not delete a lock when DELETE_TRANSACTION is called for a transaction which created another lock', () => {
+    expect.assertions(1)
     const transaction = {
       lock: `${lock.address}x`,
     }
@@ -107,6 +114,7 @@ describe('locks reducer', () => {
   // Upon changing account, we need to clear the existing locks. The web3 middleware will
   // re-populate them
   it('should clear the locks when receiving SET_ACCOUNT', () => {
+    expect.assertions(1)
     const account = {}
     expect(
       reducer(
@@ -123,6 +131,7 @@ describe('locks reducer', () => {
 
   describe('DELETE_LOCK', () => {
     it('should delete a lock', () => {
+      expect.assertions(1)
       const state = {
         '0x123': {
           address: '0x123',
@@ -138,6 +147,7 @@ describe('locks reducer', () => {
 
   describe('ADD_LOCK', () => {
     it('should keep state unchanged if the address is a mismatch', () => {
+      expect.assertions(1)
       const state = {}
       const action = {
         type: ADD_LOCK,
@@ -150,6 +160,7 @@ describe('locks reducer', () => {
     })
 
     it('should keep state unchanged if the lock was previously added', () => {
+      expect.assertions(1)
       const state = {
         '0x123': {},
       }
@@ -164,6 +175,7 @@ describe('locks reducer', () => {
     })
 
     it('should add the lock and add its address', () => {
+      expect.assertions(1)
       const state = {
         '0x456': {},
       }
@@ -187,6 +199,7 @@ describe('locks reducer', () => {
 
   describe('UPDATE_LOCK', () => {
     it('should keep state unchanged if trying to update the lock address', () => {
+      expect.assertions(1)
       const state = {
         '0x123': {
           name: 'hello',
@@ -204,6 +217,7 @@ describe('locks reducer', () => {
     })
 
     it('should keep state unchanged when the lock being updated does not exist', () => {
+      expect.assertions(1)
       const state = {
         '0x123': {
           name: 'hello',
@@ -221,6 +235,7 @@ describe('locks reducer', () => {
     })
 
     it('should update the locks values', () => {
+      expect.assertions(1)
       const state = {
         '0x123': {
           name: 'hello',
@@ -246,6 +261,7 @@ describe('locks reducer', () => {
   })
 
   it("should update a lock's key price when UPDATE_LOCK_KEY_PRICE is called", () => {
+    expect.assertions(1)
     const state = {
       '0x123': {
         name: 'hello',

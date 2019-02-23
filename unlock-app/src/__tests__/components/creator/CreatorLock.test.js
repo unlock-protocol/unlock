@@ -50,6 +50,7 @@ const ConfigProvider = ConfigContext.Provider
 
 describe('CreatorLock', () => {
   it('should show embed code when the button is clicked', () => {
+    expect.assertions(2)
     const config = configure()
 
     const store = createUnlockStore()
@@ -83,7 +84,9 @@ describe('CreatorLock', () => {
       )
     ).not.toBeNull()
   })
+
   it('should open the edit form when the button is clicked', () => {
+    expect.assertions(1)
     const config = configure()
 
     const store = createUnlockStore({
@@ -107,7 +110,9 @@ describe('CreatorLock', () => {
 
     expect(wrapper.getByValue('0.1')).not.toBeNull()
   })
+
   it('should display the correct number of keys', () => {
+    expect.assertions(1)
     const config = configure()
 
     const store = createUnlockStore({
@@ -133,7 +138,9 @@ describe('CreatorLock', () => {
 
     expect(wrapper.queryByText('1/10')).not.toBeNull()
   })
+
   it('should display infinite keys correctly', () => {
+    expect.assertions(1)
     const config = configure()
 
     const store = createUnlockStore({

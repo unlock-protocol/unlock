@@ -40,6 +40,7 @@ describe('DeveloperOverlay', () => {
   })
 
   it('has a dropdown that can be used to choose between providers', () => {
+    expect.assertions(2)
     const component = rtl.render(
       <DeveloperOverlay config={config} setProvider={callback} />
     )
@@ -49,6 +50,7 @@ describe('DeveloperOverlay', () => {
   })
 
   it('sets selected provider from prop', () => {
+    expect.assertions(1)
     const component = rtl.render(
       <DeveloperOverlay
         config={config}
@@ -61,6 +63,7 @@ describe('DeveloperOverlay', () => {
   })
 
   it('selects provider', () => {
+    expect.assertions(2)
     const component = rtl.render(
       <DeveloperOverlay
         config={config}
@@ -77,6 +80,7 @@ describe('DeveloperOverlay', () => {
   })
 
   it('mapStateToProps', () => {
+    expect.assertions(1)
     expect(
       mapStateToProps({
         provider: 'hi',
