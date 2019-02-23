@@ -25,6 +25,7 @@ import { storeLockCreation } from '../actions/storage'
 import configure from '../config'
 import { NO_USER_ACCOUNT } from '../errors'
 import generateSignature from '../utils/signature'
+import pollWithConditions from '../utils/polling'
 
 const config = configure()
 
@@ -46,23 +47,43 @@ export default function walletMiddleware({ getState, dispatch }) {
     return callback()
   }
 
-  /**
-   * When an account was changed, we dispatch the corresponding action
-   * The setAccount action will reset other relevant redux state
-   */
-  walletService.on('account.changed', account => {
-    // Let's poll to detect account changes
-    setTimeout(walletService.getAccount.bind(walletService), POLLING_INTERVAL)
+  // account errors are thrown away, except in dev environment
+  pollWithConditions(
+    pollForAccountChange,
+    POLLING_INTERVAL,
+    checkDisableAccountPolling,
+    config.env === 'dev' ? handlePollError : () => {} // log errors in dev only
+  )
 
-    // If the account is actually different
-    if (!getState().account || getState().account.address !== account) {
-      dispatch(
-        setAccount({
-          address: account,
-        })
-      )
+  async function pollForAccountChange() {
+    const state = getState()
+    const currentAccount = state.account && state.account.address
+    const newAccounts = await walletService.getAccount() // errors fall through to the polling handler
+    const newAccount = newAccounts && newAccounts[0]
+    if (newAccount === currentAccount) return
+
+    /**
+     * When an account was changed, we dispatch the corresponding action
+     * The setAccount action will reset other relevant redux state
+     */
+    dispatch(
+      setAccount({
+        address: newAccount,
+      })
+    )
+  }
+
+  function checkDisableAccountPolling() {
+    if (config.isServer) return true // true disables polling temporarily
+    const account = getState().account
+    if (account && account.fromLocalStorage) {
+      throw new Error('disable account polling') // exception
     }
-  })
+  }
+
+  function handlePollError(error) {
+    console.error(error) // eslint-disable-line
+  }
 
   walletService.on('transaction.new', (transactionHash, from, to, input) => {
     // At this point we know that a wallet was found, because a new transaction
