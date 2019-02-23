@@ -1,5 +1,5 @@
 import reducer, { initialState } from '../../reducers/currencyReducer'
-import { setConversionRate } from '../../actions/currencyconvert'
+import { setConversionRate } from '../../actions/currencyConvert'
 
 describe('currency conversion reducer', () => {
   const USD123 = {

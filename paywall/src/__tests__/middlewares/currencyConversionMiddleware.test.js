@@ -1,5 +1,5 @@
 import mockAxios from 'jest-mock-axios'
-import { setConversionRate } from '../../actions/currencyconvert'
+import { setConversionRate } from '../../actions/currencyConvert'
 
 afterEach(() => mockAxios.reset())
 
