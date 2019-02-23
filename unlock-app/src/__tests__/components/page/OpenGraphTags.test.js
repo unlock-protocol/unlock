@@ -10,6 +10,7 @@ import OpenGraphTags from '../../../components/page/OpenGraphTags'
 
 describe('OpenGraphTags', () => {
   it('should render open graph tags based on default values', () => {
+    expect.assertions(5)
     const tags = rtl.render(<OpenGraphTags />)
     expect(
       tags.container.querySelector("meta[property='og:title']").content
@@ -29,6 +30,7 @@ describe('OpenGraphTags', () => {
   })
 
   it('should render open graph tags based on custom values', () => {
+    expect.assertions(5)
     let title = 'custom title'
     let description = 'I am the very model of a model view controller'
     let image = '/some/image.png'

@@ -33,6 +33,7 @@ describe('Provider Component', () => {
   })
 
   it('shows the provider picker', () => {
+    expect.assertions(4)
     const options = select.querySelectorAll('option')
 
     expect(options).toHaveLength(3)
@@ -43,6 +44,7 @@ describe('Provider Component', () => {
   })
 
   it('triggers a change in the store when a different provider is picked', () => {
+    expect.assertions(3)
     select.value = 'beta'
     rtl.fireEvent.change(select)
 

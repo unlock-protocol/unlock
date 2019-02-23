@@ -15,6 +15,7 @@ import {
 
 describe('lock actions', () => {
   it('should create an action to create a lock', () => {
+    expect.assertions(1)
     const lock = {}
     const expectedAction = {
       type: CREATE_LOCK,
@@ -24,6 +25,7 @@ describe('lock actions', () => {
   })
 
   it('should create an action to update the lock', () => {
+    expect.assertions(1)
     const address = '0x1234'
     const update = {}
     const expectedAction = {
@@ -35,6 +37,7 @@ describe('lock actions', () => {
   })
 
   it('should create an action to add the lock', () => {
+    expect.assertions(1)
     const lock = {}
     const address = '0x123'
     const expectedAction = {
@@ -46,6 +49,7 @@ describe('lock actions', () => {
   })
 
   it('should create an action to delete a lock', () => {
+    expect.assertions(1)
     const address = '0x123'
     const expectedAction = {
       type: DELETE_LOCK,
@@ -55,6 +59,7 @@ describe('lock actions', () => {
   })
 
   it('should create an action to withdraw from the lock', () => {
+    expect.assertions(1)
     const lock = {}
     const expectedAction = {
       type: WITHDRAW_FROM_LOCK,
@@ -64,6 +69,7 @@ describe('lock actions', () => {
   })
 
   it('should create an action to update the key price', () => {
+    expect.assertions(1)
     const address = '0x123'
     const price = '0.02'
     const expectedAction = {

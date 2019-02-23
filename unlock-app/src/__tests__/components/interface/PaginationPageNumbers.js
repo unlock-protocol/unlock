@@ -9,6 +9,7 @@ jest.mock('next/link', () => {
 
 describe('Pagination page numbers', () => {
   it('clicking page number should trigger that page number', () => {
+    expect.assertions(1)
     let pageClicked = 0
     let pageNumbers = rtl.render(
       <div>

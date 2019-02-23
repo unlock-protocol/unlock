@@ -2,6 +2,7 @@ import * as validators from '../../utils/validators'
 
 describe('Form field validators', () => {
   it('isMissing', () => {
+    expect.assertions(6)
     expect(validators.isNotEmpty('hi')).toBeTruthy()
     expect(validators.isNotEmpty('0')).toBeTruthy()
     expect(validators.isNotEmpty(0)).toBeTruthy()
@@ -11,6 +12,7 @@ describe('Form field validators', () => {
     expect(validators.isNotEmpty(false)).toBeFalsy()
   })
   it('isPositiveInteger', () => {
+    expect.assertions(8)
     expect(validators.isPositiveInteger('1')).toBeTruthy()
     expect(
       validators.isPositiveInteger(
@@ -26,6 +28,7 @@ describe('Form field validators', () => {
     expect(validators.isPositiveInteger(false)).toBeFalsy()
   })
   it('isPositiveNumber', () => {
+    expect.assertions(7)
     expect(validators.isPositiveNumber('1.3')).toBeTruthy()
     expect(validators.isPositiveNumber('0.002')).toBeTruthy()
 

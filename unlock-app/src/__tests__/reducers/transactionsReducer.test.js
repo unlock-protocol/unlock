@@ -11,10 +11,12 @@ import { SET_ACCOUNT } from '../../actions/accounts'
 
 describe('transaction reducer', () => {
   it('should return the initial state', () => {
+    expect.assertions(1)
     expect(initialState).toEqual({})
   })
 
   it('should return the initial state when receveing SET_PROVIDER', () => {
+    expect.assertions(1)
     const transaction = {
       status: 'pending',
       confirmations: 0,
@@ -34,6 +36,7 @@ describe('transaction reducer', () => {
   })
 
   it('should return the initial state when receveing SET_NETWORK', () => {
+    expect.assertions(1)
     const transaction = {
       status: 'pending',
       confirmations: 0,
@@ -55,6 +58,7 @@ describe('transaction reducer', () => {
   // Upon changing account, we need to clear the existing transaction. The web3 middleware will
   // re-populate them
   it('should clear the transactions when receiving SET_ACCOUNT', () => {
+    expect.assertions(1)
     const account = {}
     const transaction = {
       status: 'pending',
@@ -74,6 +78,7 @@ describe('transaction reducer', () => {
 
   describe('when receiving NEW_TRANSACTION', () => {
     it('should add the new transaction to the store', () => {
+      expect.assertions(1)
       const transaction = {
         hash: '0x123',
         sender: '0xabc',
@@ -96,6 +101,7 @@ describe('transaction reducer', () => {
 
   describe('when receiving ADD_TRANSACTION', () => {
     it('should set the transaction accordingly if it has not been previously added', () => {
+      expect.assertions(1)
       const transaction = {
         status: 'pending',
         confirmations: 0,
@@ -116,6 +122,7 @@ describe('transaction reducer', () => {
     })
 
     it('should update an existing transaction', () => {
+      expect.assertions(1)
       const transaction = {
         status: 'pending',
         confirmations: 0,
@@ -148,6 +155,7 @@ describe('transaction reducer', () => {
 
   describe('when receiving UPDATE_TRANSACTION', () => {
     it('should not change state when trying to update the hash', () => {
+      expect.assertions(1)
       const transaction = {
         status: 'pending',
         confirmations: 0,
@@ -168,6 +176,7 @@ describe('transaction reducer', () => {
     })
 
     it('should not change state when trying to update a transaction which does not exist', () => {
+      expect.assertions(1)
       const transaction = {
         status: 'pending',
         confirmations: 0,
@@ -186,6 +195,7 @@ describe('transaction reducer', () => {
     })
 
     it('should update an existing transaction', () => {
+      expect.assertions(1)
       const transaction = {
         status: 'pending',
         confirmations: 0,
@@ -216,6 +226,7 @@ describe('transaction reducer', () => {
 
   describe('when receiving DELETE_TRANSACTION', () => {
     it('should remove the transaction which has been deleted from the list of all transactions', () => {
+      expect.assertions(1)
       const transaction = {
         hash: '0x123',
         status: 'pending',
@@ -235,6 +246,7 @@ describe('transaction reducer', () => {
     })
 
     it('should keep the transactions when another one has been deleted', () => {
+      expect.assertions(1)
       const transaction = {
         hash: '0x123',
         status: 'pending',

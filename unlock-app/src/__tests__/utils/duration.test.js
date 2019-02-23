@@ -7,6 +7,7 @@ import {
 
 describe('durations', () => {
   it('should compute the right durations', () => {
+    expect.assertions(10)
     expect(durations(0, {})).toEqual({})
     expect(durations(1, {})).toEqual({
       seconds: 1,
@@ -45,6 +46,7 @@ describe('durations', () => {
   })
 
   it('should return the right durations in English', () => {
+    expect.assertions(6)
     expect(durationsAsTextFromSeconds(0)).toEqual('')
     expect(durationsAsTextFromSeconds(1)).toEqual('1 second')
     expect(durationsAsTextFromSeconds(0.5)).toEqual('0.5 seconds')
@@ -58,6 +60,7 @@ describe('durations', () => {
   })
 
   it('should return the correct number of days from a given number of seconds', () => {
+    expect.assertions(5)
     expect(secondsAsDays(86400)).toEqual('1')
     expect(secondsAsDays(86399)).toEqual('1')
     expect(secondsAsDays(0)).toEqual('0')
@@ -67,17 +70,20 @@ describe('durations', () => {
 
   describe('expirationAsDate', () => {
     it('should return expired for keys previously expired', () => {
+      expect.assertions(1)
       const timestamp = Math.round(new Date().getTime() / 1000) - 60 * 60 // 1 hour ago
       expect(expirationAsDate(timestamp)).toEqual('Expired')
     })
 
     it('should return the correct timestamp if the date is far enough in the future', () => {
+      expect.assertions(1)
       const dateToTest = 'Jul 7, 2022'
       const timestamp = Math.round(new Date(dateToTest).getTime() / 1000)
       expect(expirationAsDate(timestamp)).toEqual(dateToTest)
     })
 
     it('should return the elapsed time until the expiration if it is less than 1 day', () => {
+      expect.assertions(1)
       const dateToTest = '12 hours, 35 minutes and 12 seconds'
       const timestamp =
         parseInt(new Date().getTime() / 1000) +

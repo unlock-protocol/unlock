@@ -11,6 +11,7 @@ import {
 
 describe('transaction actions', () => {
   it('should create an action to add a transaction', () => {
+    expect.assertions(1)
     const transaction = {}
     const expectedAction = {
       type: ADD_TRANSACTION,
@@ -20,6 +21,7 @@ describe('transaction actions', () => {
   })
 
   it('should create an action to update the transaction', () => {
+    expect.assertions(1)
     const hash = '0x123'
     const update = {}
     const expectedAction = {
@@ -31,6 +33,7 @@ describe('transaction actions', () => {
   })
 
   it('should create an action to delete a transaction', () => {
+    expect.assertions(1)
     const transaction = {}
     const expectedAction = {
       type: DELETE_TRANSACTION,
@@ -40,6 +43,7 @@ describe('transaction actions', () => {
   })
 
   it('should create an action to add a new transaction', () => {
+    expect.assertions(1)
     const transaction = {}
     const expectedAction = {
       type: NEW_TRANSACTION,

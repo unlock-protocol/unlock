@@ -42,6 +42,7 @@ describe('Lock', () => {
 
   describe('mapStateToProps', () => {
     it('should return a new lockKey and no transaction when there is no matching key', () => {
+      expect.assertions(5)
       const state = {
         network: {},
         account: {
@@ -64,6 +65,7 @@ describe('Lock', () => {
     })
 
     it('should return the lockKey and its transaction if applicable', () => {
+      expect.assertions(5)
       const props = {
         lock: {
           address: '0xdeadbeef',

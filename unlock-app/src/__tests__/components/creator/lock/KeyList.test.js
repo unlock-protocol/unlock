@@ -6,6 +6,7 @@ import {
 describe('KeyList', () => {
   describe('mapStateToProps', () => {
     it('should yield the keys, page and lock', () => {
+      expect.assertions(1)
       const keys = [{}, {}]
       const page = 3
       const lock = {
@@ -28,6 +29,7 @@ describe('KeyList', () => {
 
   describe('mapDispatchToProps', () => {
     it('should yield a loadPage function which dispatches the right action', () => {
+      expect.assertions(1)
       const dispatch = jest.fn()
       const lock = {
         address: '0x123',

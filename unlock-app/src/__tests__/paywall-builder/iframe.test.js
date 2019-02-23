@@ -8,6 +8,7 @@ import {
 
 describe('iframe', () => {
   it('add appends the iframe to document.body', () => {
+    expect.assertions(5)
     const el = {
       setAttribute: jest.fn(),
     }
@@ -32,6 +33,7 @@ describe('iframe', () => {
 
   describe('add', () => {
     it('adds iframe if not present', () => {
+      expect.assertions(1)
       const document = {
         body: {
           insertAdjacentElement: jest.fn(),
@@ -49,6 +51,7 @@ describe('iframe', () => {
       )
     })
     it('ignores add if present', () => {
+      expect.assertions(1)
       const document = {
         body: {
           appendChild: jest.fn(),
@@ -64,6 +67,7 @@ describe('iframe', () => {
   })
 
   it('show', () => {
+    expect.assertions(2)
     const iframe = {
       style: {},
     }
@@ -85,6 +89,7 @@ describe('iframe', () => {
   })
 
   it('hide', () => {
+    expect.assertions(2)
     const iframe = {
       style: {},
       contentDocument: {

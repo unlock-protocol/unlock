@@ -40,6 +40,7 @@ describe('LockIconBar', () => {
   })
 
   it('should display a submitted label when withdrawal has been submitted', () => {
+    expect.assertions(1)
     let wrapper = rtl.render(
       <Provider store={store}>
         <LockIconBar
@@ -58,6 +59,7 @@ describe('LockIconBar', () => {
   })
 
   it('should trigger edit when clicked', () => {
+    expect.assertions(2)
     const edit = jest.fn()
 
     let wrapper = rtl.render(
@@ -80,6 +82,7 @@ describe('LockIconBar', () => {
   })
 
   it('should display a confirming label when withdrawal is confirming', () => {
+    expect.assertions(2)
     config.requiredConfirmations = 12
     withdrawalTransaction = {
       status: 'mined',

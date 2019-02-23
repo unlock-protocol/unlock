@@ -9,6 +9,7 @@ import TwitterTags from '../../../components/page/TwitterTags'
 
 describe('TwitterTags', () => {
   it('should render twitter tags based on default values', () => {
+    expect.assertions(3)
     const tags = rtl.render(<TwitterTags />)
     expect(
       tags.container.querySelector("meta[name='twitter:title']").content
@@ -22,6 +23,7 @@ describe('TwitterTags', () => {
   })
 
   it('should render twitter tags based on custom values', () => {
+    expect.assertions(3)
     let title = 'custom title'
     let description = 'I am the very model of a model view controller'
     let image = '/some/image.png'

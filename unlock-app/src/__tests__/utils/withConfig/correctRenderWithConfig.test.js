@@ -20,6 +20,7 @@ const ComponentWithConfig = withConfig(Component)
 
 describe('withConfig High Order Component', () => {
   it('should render correctly', () => {
+    expect.assertions(1)
     const tree = renderer
       .create(
         <Provider store={store}>

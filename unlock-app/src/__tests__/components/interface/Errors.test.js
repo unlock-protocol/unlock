@@ -9,10 +9,13 @@ afterEach(rtl.cleanup)
 describe('Errors Component', () => {
   describe('when the component has no children or no message', () => {
     it('should not render anything', () => {
+      expect.assertions(1)
       const wrapper = rtl.render(<Errors close={close} />)
       expect(wrapper.container.firstChild).toBeNull()
     })
+
     it('should not render when errors length is 0', () => {
+      expect.assertions(1)
       const wrapper = rtl.render(<Errors close={close} errors={[]} />)
       expect(wrapper.container.firstChild).toBeNull()
     })
@@ -20,6 +23,7 @@ describe('Errors Component', () => {
 
   describe('when the component has a children', () => {
     it('should dispatch a resetError action when clicking on the close icon', () => {
+      expect.assertions(2)
       const close = jest.fn()
       const wrapper = rtl.render(
         <Errors close={close} errors={['There was an error.']} />
@@ -32,6 +36,7 @@ describe('Errors Component', () => {
 
   describe('the the component has an error message', () => {
     it('should display the content of the children', () => {
+      expect.assertions(1)
       const message = 'Broken'
       const wrapper = rtl.render(<Errors close={close} errors={[message]} />)
       expect(
@@ -44,6 +49,7 @@ describe('Errors Component', () => {
 
   describe('connecting to redux', () => {
     it('mapStateToProps', () => {
+      expect.assertions(1)
       const expectedState = ['error 1', 'error 2', 'error 3']
       expect(mapStateToProps({ errors: expectedState })).toEqual({
         errors: expectedState,
