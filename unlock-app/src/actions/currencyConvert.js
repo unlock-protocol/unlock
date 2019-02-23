@@ -1,5 +1,5 @@
 export const SET_ETHER_CONVERSION_RATE =
-  'currencyconvert/SET_ETHER_CONVERSION_RATE'
+  'currencyConvert/SET_ETHER_CONVERSION_RATE'
 
 export function setConversionRate(currency, rateFor1Eth) {
   return {
