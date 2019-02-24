@@ -1,8 +1,8 @@
 import {
   storageError,
   STORAGE_ERROR,
-  storeLockCreation,
-  STORE_LOCK_CREATION,
+  storeLockName,
+  STORE_LOCK_NAME,
 } from '../../actions/storage'
 
 describe('Storage error', () => {
@@ -27,12 +27,12 @@ describe('Store Lock Creation', () => {
     const token = 'An authorization token'
 
     const expectation = {
-      type: STORE_LOCK_CREATION,
+      type: STORE_LOCK_NAME,
       owner: owner,
       lock: lock,
       token: token,
     }
 
-    expect(storeLockCreation(owner, lock, token)).toEqual(expectation)
+    expect(storeLockName(owner, lock, token)).toEqual(expectation)
   })
 })
