@@ -106,22 +106,30 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Set IS_PULL_REQUEST
+          command: scripts/circleci/set-is-pull-request.sh >> $BASH_ENV
+      - run:
           name: Pull Unlock Image
           command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
       - run:
           name: Deploy to Netlify
-          command: scripts/deploy.sh netlify $CIRCLE_SHA1 $CIRCLE_TAG $CIRCLE_BRANCH ($CIRCLE_PULL_REQUEST || "false")
+          command: scripts/deploy.sh netlify $CIRCLE_SHA1 $CIRCLE_TAG $CIRCLE_BRANCH $IS_PULL_REQUEST
 
   deploy-locksmith-beanstalk:
     machine: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
-      GIT_COMMIT_DESC: git log --format=%B -n 1 $CIRCLE_SHA1
     steps:
       - checkout
       - run:
+          name: Set GIT_COMMIT_DESC
+          command: echo 'export GIT_COMMIT_DESC=$(git log --format=%B -n 1 $CIRCLE_SHA1)' >> $BASH_ENV
+      - run:
+          name: Set IS_PULL_REQUEST
+          command: ./scripts/circleci/set-is-pull-request.sh >> $BASH_ENV
+      - run:
           name: Deploy to to Beanstalk
-          command: scripts/deploy-elasticbeanstalk.sh $CIRCLE_SHA1 $CIRCLE_BRANCH ($CIRCLE_PULL_REQUEST || "false") "$GIT_COMMIT_DESC"
+          command: scripts/deploy-elasticbeanstalk.sh $CIRCLE_SHA1 $CIRCLE_BRANCH $IS_PULL_REQUEST "$GIT_COMMIT_DESC"
 
   promote-unlock-image:
     machine: true
