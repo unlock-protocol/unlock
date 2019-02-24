@@ -1,4 +1,4 @@
-import { listenForNewLocks } from './mutationobserver'
+import { listenForNewLocks } from './mutationObserver'
 import { getBlocker, addBlocker } from './blocker'
 import buildPaywall from './build'
 
