@@ -1,8 +1,11 @@
 pragma solidity 0.4.25;
 
-import '../interfaces/IERC721.sol';
-import './mixins/MixinDisableAndDestroy.sol';
-import "../../AddressUtils.sol";
+import './MixinDisableAndDestroy.sol';
+import './MixinApproval.sol';
+import './MixinKeys.sol';
+import './MixinLockCore.sol';
+import 'openzeppelin-solidity/contracts/utils/Address.sol';
+import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
 
 /**
  * @title Mixin for the safe transfer related functions needed to meet the ERC721
@@ -12,8 +15,13 @@ import "../../AddressUtils.sol";
  * separates logically groupings of code to ease readability.
  */
 
-contract MixinTransfer is IERC721 {
-  using AddressUtils for address;
+contract MixinTransfer is
+  MixinLockCore,
+  MixinApproval,
+  MixinKeys {
+  using Address for address;
+
+  bytes4 private constant _ERC721_RECEIVED = 0x150b7a02;
 
   /**
    * This is payable because at some point we want to allow the LOCK to capture a fee on 2ndary
@@ -27,7 +35,7 @@ contract MixinTransfer is IERC721 {
     external
     payable
     onlyIfAlive
-    notSoldOut()
+    notSoldOut() // Do we need this?
     hasValidKey(_from)
     onlyKeyOwnerOrApproved(_tokenId)
   {
@@ -87,24 +95,27 @@ contract MixinTransfer is IERC721 {
   )
     external
     payable
-    onlyIfAlive
-    onlyKeyOwnerOrApproved(_tokenId)
   {
-
+    // solium-disable-next-line arg-overflow
+    safeTransferFrom(_from, _to, _tokenId, "");
   }
 
   /**
-  * @notice Transfers the ownership of an NFT from one address to another address
+  * @notice Transfers the ownership of an NFT from one address to another address.
+  * When transfer is complete, this functions
+  *  checks if `_to` is a smart contract (code size > 0). If so, it calls
+  *  `onERC721Received` on `_to` and throws if the return value is not
+  *  `bytes4(keccak256('onERC721Received(address,address,uint,bytes)'))`.
   * @param _from The current owner of the NFT
   * @param _to The new owner
   * @param _tokenId The NFT to transfer
-  * @param data Additional data with no specified format, sent in call to `_to`
+  * @param _data Additional data with no specified format, sent in call to `_to`
   */
   function safeTransferFrom(
     address _from,
     address _to,
     uint _tokenId,
-    bytes data
+    bytes _data
   )
     external
     payable
@@ -112,8 +123,10 @@ contract MixinTransfer is IERC721 {
     onlyKeyOwnerOrApproved(_tokenId)
     hasValidKey(ownerOf(_tokenId))
   {
-    require(isKeyOwner(_tokenId, _from), 'ONLY_KEY_OWNER');
-    require(_recipient != address(0), 'INVALID_ADDRESS');
+    transferFrom(_from, _to, _tokenId);
+    // solium-disable-next-line arg-overflow
+    require(_checkOnERC721Received(_from, _to, _tokenId, _data));
+
   }
 
   /**
@@ -144,28 +157,28 @@ contract MixinTransfer is IERC721 {
 
   /**
    * @dev Internal function to invoke `onERC721Received` on a target address
-   * @dev The call is not executed if the target address is not a contract
-   * @param _from address representing the previous owner of the given token ID
-   * @param _to target address that will receive the tokens
-   * @param _tokenId uint256 ID of the token to be transferred
+   * The call is not executed if the target address is not a contract
+   * @param from address representing the previous owner of the given token ID
+   * @param to target address that will receive the tokens
+   * @param tokenId uint256 ID of the token to be transferred
    * @param _data bytes optional data to send along with the call
    * @return whether the call correctly returned the expected magic value
    */
-  function checkAndCallSafeTransfer(
-    address _from,
-    address _to,
-    uint256 _tokenId,
+  function _checkOnERC721Received(
+    address from,
+    address to,
+    uint256 tokenId,
     bytes _data
   )
     internal
     returns (bool)
   {
-    if (!_to.isContract()) {
+    if (!to.isContract()) {
       return true;
     }
-    bytes4 retval = ERC721Receiver(_to).onERC721Received(
-      _from, _tokenId, _data);
-    return (retval == ERC721_RECEIVED);
+    bytes4 retval = IERC721Receiver(to).onERC721Received(
+      msg.sender, from, tokenId, _data);
+    return (retval == _ERC721_RECEIVED);
   }
 
 }

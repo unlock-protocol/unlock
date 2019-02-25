@@ -34,8 +34,8 @@ contract PublicLock is
   MixinKeys,
   MixinApproval,
   MixinLockCore,
-  MixinRefunds
-  MixinLockCore
+  MixinRefunds,
+  MixinLockCore,
   MixinTransfer
 {
   using SafeMath for uint;
@@ -49,9 +49,10 @@ contract PublicLock is
     uint _keyPrice,
     uint _maxNumberOfKeys,
     uint _version
-  ) public
-    MixinLockCore(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys, _version)
+  )
+    public
   {
+    MixinLockCore(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys, _version);
   }
 
   /**
@@ -87,78 +88,6 @@ contract PublicLock is
     hasValidKey(_referrer)
   {
     return _purchaseFor(_recipient, _referrer, _data);
-  }
-
-  /**
-   * This is payable because at some point we want to allow the LOCK to capture a fee on 2ndary
-   * market transactions...
-   */
-  function transferFrom(
-    address _from,
-    address _recipient,
-    uint _tokenId
-  )
-    external
-    payable
-    onlyIfAlive
-    notSoldOut()
-    hasValidKey(_from)
-    onlyKeyOwnerOrApproved(_tokenId)
-  {
-    require(_recipient != address(0), 'INVALID_ADDRESS');
-
-    Key storage fromKey = _getKeyFor(_from);
-    Key storage toKey = _getKeyFor(_recipient);
-
-    uint previousExpiration = toKey.expirationTimestamp;
-   * @dev Destroys the user's key and sends a refund based on the amount of time remaining.
-   */
-  function cancelAndRefund()
-    external
-  {
-    Key storage key = _getKeyFor(msg.sender);
-
-    uint refund = _getCancelAndRefundValue(msg.sender);
-
-    emit CancelKey(key.tokenId, msg.sender, refund);
-    // expirationTimestamp is a proxy for hasKey, setting this to `block.timestamp` instead
-    // of 0 so that we can still differentiate hasKey from hasValidKey.
-    key.expirationTimestamp = block.timestamp;
-    // Remove data as we don't need this any longer
-    delete key.data;
-
-    if (refund > 0) {
-      // Security: doing this last to avoid re-entrancy concerns
-      msg.sender.transfer(refund);
-    }
-  }
-
-
-
-  /**
-   * @notice Handle the receipt of an NFT
-   * @dev The ERC721 smart contract calls this function on the recipient
-   * after a `safeTransfer`. This function MUST return the function selector,
-   * otherwise the caller will revert the transaction. The selector to be
-   * returned can be obtained as `this.onERC721Received.selector`. This
-   * function MAY throw to revert and reject the transfer.
-   * Note: the ERC721 contract address is always the message sender.
-   * @param operator The address which called `safeTransferFrom` function
-   * @param from The address which previously owned the token
-   * @param tokenId The NFT identifier which is being transferred
-   * @param data Additional data with no specified format
-   * @return `bytes4(keccak256('onERC721Received(address,address,uint,bytes)'))`
-   */
-  function onERC721Received(
-    address operator, // solhint-disable-line no-unused-vars
-    address from, // solhint-disable-line no-unused-vars
-    uint tokenId, // solhint-disable-line no-unused-vars
-    bytes memory data // solhint-disable-line no-unused-vars
-  )
-    public
-    returns(bytes4)
-  {
-    return this.onERC721Received.selector;
   }
 
   /**
