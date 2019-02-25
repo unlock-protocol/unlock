@@ -44,20 +44,6 @@ interface IERC721 {
   /// @param _tokenId The NFT to approve
   function approve(address _approved, uint _tokenId) external payable;
 
-  /// @notice Count all NFTs assigned to an owner
-  /// @dev NFTs assigned to the zero address are considered invalid, and this
-  ///  function throws for queries about the zero address.
-  /// @param _owner An address for whom to query the balance
-  /// @return The number of NFTs owned by `_owner`, possibly zero
-  function balanceOf(address _owner) external view returns (uint);
-
-  /// @notice Find the owner of an NFT
-  /// @dev NFTs assigned to zero address are considered invalid, and queries
-  ///  about them do throw.
-  /// @param _tokenId The identifier for an NFT
-  /// @return The address of the owner of the NFT
-  function ownerOf(uint _tokenId) external view returns (address);
-
   /// @notice Transfers the ownership of an NFT from one address to another address
   /// @dev Throws unless `msg.sender` is the current owner, an authorized
   ///  operator, or the approved address for this NFT. Throws if `_from` is
@@ -86,7 +72,21 @@ interface IERC721 {
   ///  multiple operators per owner.
   /// @param _operator Address to add to the set of authorized operators.
   /// @param _approved True if the operator is approved, false to revoke approval
-  // function setApprovalForAll(address _operator, bool _approved) external;
+  function setApprovalForAll(address _operator, bool _approved) external;
+
+  /// @notice Count all NFTs assigned to an owner
+  /// @dev NFTs assigned to the zero address are considered invalid, and this
+  ///  function throws for queries about the zero address.
+  /// @param _owner An address for whom to query the balance
+  /// @return The number of NFTs owned by `_owner`, possibly zero
+  function balanceOf(address _owner) external view returns (uint);
+
+  /// @notice Find the owner of an NFT
+  /// @dev NFTs assigned to zero address are considered invalid, and queries
+  ///  about them do throw.
+  /// @param _tokenId The identifier for an NFT
+  /// @return The address of the owner of the NFT
+  function ownerOf(uint _tokenId) external view returns (address);
 
   /// @notice Get the approved address for a single NFT
   /// @dev Throws if `_tokenId` is not a valid NFT
@@ -98,5 +98,5 @@ interface IERC721 {
   /// @param _owner The address that owns the NFTs
   /// @param _operator The address that acts on behalf of the owner
   /// @return True if `_operator` is an approved operator for `_owner`, false otherwise
-  // function isApprovedForAll(address _owner, address _operator) external view returns (bool);
+  function isApprovedForAll(address _owner, address _operator) external view returns (bool);
 }
