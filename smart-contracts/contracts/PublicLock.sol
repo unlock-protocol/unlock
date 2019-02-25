@@ -35,7 +35,6 @@ contract PublicLock is
   MixinApproval,
   MixinLockCore,
   MixinRefunds,
-  MixinLockCore,
   MixinTransfer
 {
   using SafeMath for uint;
@@ -51,8 +50,8 @@ contract PublicLock is
     uint _version
   )
     public
+    MixinLockCore(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys, _version)
   {
-    MixinLockCore(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys, _version);
   }
 
   /**

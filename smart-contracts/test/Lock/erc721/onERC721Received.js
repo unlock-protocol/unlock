@@ -6,7 +6,7 @@ const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock, locks, operator, from, tokenId, data
 
-contract('Lock Receiver', (accounts) => {
+contract('Lock Receiver', accounts => {
   operator = accounts[5]
   from = accounts[5]
   tokenId = 11
@@ -26,8 +26,14 @@ contract('Lock Receiver', (accounts) => {
   describe('Implements IERC721Receiver interface', () => {
     it('should implement the onERC721Received() function', async function () {
       // PublicLock.onERC721Received.selector == 0x150b7a02`
-      const ERC721_RECEIVED = 0x150b7a02
-      const result = await locks['FIRST'].onERC721Received.call(operator, from, tokenId, data, {})
+      const ERC721_RECEIVED = Web3Utils.toHex(0x150b7a02)
+      const result = await locks['FIRST'].onERC721Received.call(
+        operator,
+        from,
+        tokenId,
+        data,
+        {}
+      )
       assert.equal(result, ERC721_RECEIVED)
     })
   })

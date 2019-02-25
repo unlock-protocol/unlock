@@ -6,6 +6,7 @@ import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import 'openzeppelin-solidity/contracts/utils/Address.sol';
 import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
+import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 
 /**
  * @title Mixin for the safe transfer related functions needed to meet the ERC721
@@ -16,9 +17,10 @@ import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
  */
 
 contract MixinTransfer is
-  MixinLockCore,
   MixinApproval,
-  MixinKeys {
+  MixinKeys,
+  MixinLockCore {
+  using SafeMath for uint;
   using Address for address;
 
   bytes4 private constant _ERC721_RECEIVED = 0x150b7a02;
@@ -32,10 +34,9 @@ contract MixinTransfer is
     address _recipient,
     uint _tokenId
   )
-    external
+    public
     payable
     onlyIfAlive
-    notSoldOut() // Do we need this?
     hasValidKey(_from)
     onlyKeyOwnerOrApproved(_tokenId)
   {
@@ -96,8 +97,7 @@ contract MixinTransfer is
     external
     payable
   {
-    // solium-disable-next-line arg-overflow
-    safeTransferFrom(_from, _to, _tokenId, "");
+    safeTransferFrom(_from, _to, _tokenId, '');
   }
 
   /**
@@ -117,15 +117,14 @@ contract MixinTransfer is
     uint _tokenId,
     bytes _data
   )
-    external
+    public
     payable
     onlyIfAlive
     onlyKeyOwnerOrApproved(_tokenId)
     hasValidKey(ownerOf(_tokenId))
   {
     transferFrom(_from, _to, _tokenId);
-    // solium-disable-next-line arg-overflow
-    require(_checkOnERC721Received(_from, _to, _tokenId, _data));
+    require(_checkOnERC721Received(_from, _to, _tokenId, _data), 'NO_FALLBACK');
 
   }
 
@@ -152,7 +151,7 @@ contract MixinTransfer is
     public
     returns(bytes4)
   {
-    return this.onERC721Received.selector;
+    return bytes4(keccak256('onERC721Received(address,address,uint256,bytes)'));
   }
 
   /**
