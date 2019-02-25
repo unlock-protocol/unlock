@@ -1,7 +1,7 @@
 import {
   listenForNewLocks,
   changeListener,
-} from '../../paywall-builder/mutationobserver'
+} from '../../../paywall-builder/mutationObserver'
 
 function tag(tagName, name, content) {
   return { nodeName: tagName.toUpperCase(), name, content }
@@ -36,7 +36,7 @@ function mockHead(content = false) {
   }
 }
 
-describe('mutationobserver', () => {
+describe('mutationObserver', () => {
   describe('changeListener', () => {
     let callback
     beforeEach(() => {

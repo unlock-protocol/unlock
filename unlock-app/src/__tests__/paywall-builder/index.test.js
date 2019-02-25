@@ -1,4 +1,4 @@
-import * as mutations from '../../paywall-builder/mutationobserver'
+import * as mutations from '../../paywall-builder/mutationObserver'
 import * as buildManager from '../../paywall-builder/build'
 import * as blockerManager from '../../paywall-builder/blocker'
 
@@ -25,6 +25,7 @@ describe('paywall builder integration', () => {
   afterEach(() => jest.restoreAllMocks())
 
   it('calls listenForLocks', () => {
+    expect.assertions(5)
     global.window = {}
 
     require('../../paywall-builder')

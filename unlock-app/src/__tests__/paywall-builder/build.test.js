@@ -23,22 +23,23 @@ describe('buildPaywall', () => {
   afterEach(() => jest.restoreAllMocks())
 
   it('redirect', () => {
+    expect.assertions(1)
     const window = {
       location: {
         href: 'href/',
       },
     }
-
-    redirect(window, 'hi')
-
-    expect((window.location.href = 'hi/href%2F'))
+    redirect(window, 'hi/')
+    expect(window.location.href).toBe('hi/href%2F')
   })
+
   describe('sets up the iframe on load', () => {
     let mockScript
     let mockIframe
     let mockIframeImpl
     let mockAdd
     let window
+
     beforeEach(() => {
       mockScript = jest.spyOn(script, 'findPaywallUrl')
       mockIframe = jest.spyOn(iframeManager, 'getIframe')
@@ -62,13 +63,15 @@ describe('buildPaywall', () => {
         },
       }
     })
-    it('no lockAddress, give up', () => {
-      buildPaywall(window, document)
 
+    it('no lockAddress, give up', () => {
+      expect.assertions(1)
+      buildPaywall(window, document)
       expect(mockScript).not.toHaveBeenCalled()
     })
 
     it('sets up the iframe with correct url', () => {
+      expect.assertions(4)
       buildPaywall(window, document, fakeLockAddress)
 
       expect(mockScript).toHaveBeenCalledWith(document)
@@ -79,6 +82,7 @@ describe('buildPaywall', () => {
     })
 
     it('passes the hash to the iframe, if present', () => {
+      expect.assertions(4)
       // when the content is loaded from the paywall in a new window,
       // it appends the user account as a hash. This is then passed on
       // as-is. Note that it passes any hash on, without validation,
@@ -94,17 +98,18 @@ describe('buildPaywall', () => {
     })
 
     it('adds the iframe to the page', () => {
+      expect.assertions(3)
       buildPaywall(window, document, fakeLockAddress)
-
       expect(mockAdd).toHaveBeenCalledWith(document, mockIframeImpl)
     })
 
     it('sets up the message event listeners', () => {
+      expect.assertions(3)
       jest.spyOn(window, 'addEventListener')
       buildPaywall(window, document, fakeLockAddress)
-
       expect(window.addEventListener).toHaveBeenCalled()
     })
+
     describe('event listeners', () => {
       let window
       let callbacks
@@ -132,42 +137,48 @@ describe('buildPaywall', () => {
         mockHide.mockImplementation(() => {})
         buildPaywall(window, document, fakeLockAddress, blocker)
       })
-      it('triggers show on locked event', () => {
-        callbacks.message({ data: 'locked' })
 
+      it('triggers show on locked event', () => {
+        expect.assertions(2)
+        callbacks.message({ data: 'locked' })
         expect(mockShow).toHaveBeenCalledWith(mockIframeImpl, document)
         expect(mockHide).not.toHaveBeenCalled()
       })
-      it('closes the blocker on locked event', () => {
-        callbacks.message({ data: 'locked' })
 
+      it('closes the blocker on locked event', () => {
+        expect.assertions(1)
+        callbacks.message({ data: 'locked' })
         expect(blocker.remove).toHaveBeenCalled()
       })
+
       it('closes the blocker on unlocked event', () => {
+        expect.assertions(1)
         callbacks.message({ data: 'locked' })
         callbacks.message({ data: 'unlocked' })
-
         expect(blocker.remove).toHaveBeenCalledTimes(2)
       })
-      it('does not trigger show on locked event if already unlocked', () => {
-        callbacks.message({ data: 'locked' })
-        callbacks.message({ data: 'locked' })
 
+      it('does not trigger show on locked event if already unlocked', () => {
+        expect.assertions(2)
+        callbacks.message({ data: 'locked' })
+        callbacks.message({ data: 'locked' })
         expect(mockShow).toHaveBeenCalledTimes(1)
         expect(mockHide).not.toHaveBeenCalled()
       })
+
       it('triggers hide on unlock event', () => {
+        expect.assertions(3)
         callbacks.message({ data: 'locked' })
         callbacks.message({ data: 'unlocked' })
         callbacks.message({ data: 'unlocked' })
-
         expect(mockHide).toHaveBeenCalledWith(mockIframeImpl, document)
         expect(mockHide).toHaveBeenCalledTimes(1)
         expect(mockShow).toHaveBeenCalledTimes(1)
       })
-      it('calls redirect on redirect event', () => {
-        callbacks.message({ data: 'redirect' })
 
+      it('calls redirect on redirect event', () => {
+        expect.assertions(1)
+        callbacks.message({ data: 'redirect' })
         expect(window.location.href).toBe('/url/paywall/lockaddress/href')
       })
     })

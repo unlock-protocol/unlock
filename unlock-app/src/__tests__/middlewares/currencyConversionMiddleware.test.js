@@ -1,5 +1,5 @@
 import mockAxios from 'jest-mock-axios'
-import { setConversionRate } from '../../actions/currencyconvert'
+import { setConversionRate } from '../../actions/currencyConvert'
 
 afterEach(() => mockAxios.reset())
 
@@ -13,6 +13,7 @@ describe('Currency conversion service retrieval middleware', () => {
   const APIaddress = 'https://api.coinbase.com/v2/prices/ETH-USD/buy'
 
   it('service called, action dispatched to set currency conversion rate', () => {
+    expect.assertions(4)
     jest.useFakeTimers()
     const middleware = require('../../middlewares/currencyConversionMiddleware')
       .default
@@ -43,7 +44,9 @@ describe('Currency conversion service retrieval middleware', () => {
       setConversionRate('USD', '198.20')
     )
   })
+
   it("service called, values are the same, so don't dispatch", () => {
+    expect.assertions(2)
     jest.useFakeTimers()
     const middleware = require('../../middlewares/currencyConversionMiddleware')
       .default

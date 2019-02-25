@@ -4,6 +4,7 @@ import ErrorMessage from '../../../components/helpers/ErrorMessage'
 
 describe('Errors', () => {
   it('all known errors should have a default message', () => {
+    expect.assertions(16)
     Object.keys(Errors).forEach(error => {
       try {
         expect(ErrorMessage(error)).not.toBe(null)
@@ -15,6 +16,7 @@ describe('Errors', () => {
   })
 
   it('errors which are not prededifined should have a generic message', () => {
+    expect.assertions(1)
     const wrapper = rtl.render(ErrorMessage('Broken!'))
     expect(
       wrapper.queryByText(

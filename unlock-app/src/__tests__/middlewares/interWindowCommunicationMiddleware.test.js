@@ -50,6 +50,7 @@ describe('interWindowCommunicationMiddleware', () => {
         expect(next).toHaveBeenCalledWith(action)
         expect(window.parent.contentWindow.postMessage).not.toHaveBeenCalled()
       })
+
       it('responds to HIDE_MODAL and redirects if present in the route url', () => {
         expect.assertions(2)
         const store = {
@@ -87,6 +88,7 @@ describe('interWindowCommunicationMiddleware', () => {
         expect(next).toHaveBeenCalledWith(action)
         expect(window.location.href).toBe('http://hithere#address')
       })
+
       it('ignores HIDE_MODAL if redirect is not present in the route url', () => {
         expect.assertions(2)
         const store = {
@@ -125,6 +127,7 @@ describe('interWindowCommunicationMiddleware', () => {
         expect(next).toHaveBeenCalledWith(action)
         expect(window.location.href).toBe('href')
       })
+
       it('responds to UPDATE_KEY when not showing the modal, and redirects if present in the route url', () => {
         expect.assertions(2)
 
@@ -174,6 +177,7 @@ describe('interWindowCommunicationMiddleware', () => {
         expect(next).toHaveBeenCalledWith(action)
         expect(window.location.href).toBe(`http://hithere#${account}`)
       })
+
       it('ignores UPDATE_KEY if redirect is not present in the route url', () => {
         expect.assertions(2)
         const store = {
@@ -213,6 +217,7 @@ describe('interWindowCommunicationMiddleware', () => {
         expect(window.location.href).toBe('href')
       })
     })
+
     describe("running in the iframe inside the publisher's content window", () => {
       it('does respond to OPEN_MODAL_IN_NEW_WINDOW if in an iframe', () => {
         expect.assertions(2)
@@ -257,6 +262,7 @@ describe('interWindowCommunicationMiddleware', () => {
           'origin'
         )
       })
+
       it('ignores HIDE_MODAL', () => {
         expect.assertions(2)
         const store = {
@@ -295,6 +301,7 @@ describe('interWindowCommunicationMiddleware', () => {
         expect(next).toHaveBeenCalledWith(action)
         expect(window.location.href).toBe('href')
       })
+
       describe('no account present', () => {
         describe('if account passed in URL hash', () => {
           let store
@@ -343,6 +350,7 @@ describe('interWindowCommunicationMiddleware', () => {
           })
         })
       })
+
       describe('normal usage post-key purchase', () => {
         let store
         let window
@@ -369,9 +377,10 @@ describe('interWindowCommunicationMiddleware', () => {
           window.self = window
           window.top = {}
         })
+
         it('should dispatch SET_ACCOUNT if account is stored in localStorage', () => {
-          window.localStorage.getItem = jest.fn(() => account)
           expect.assertions(2)
+          window.localStorage.getItem = jest.fn(() => account)
           const middleware = interWindowCommunicationMiddleware(window)
           middleware(store)(() => {})({})
 
@@ -382,6 +391,7 @@ describe('interWindowCommunicationMiddleware', () => {
             setAccount({ address: account, fromLocalStorage: true })
           )
         })
+
         it('should not dispatch SET_ACCOUNT if localStorage does not have an account', () => {
           expect.assertions(2)
           const middleware = interWindowCommunicationMiddleware(window)
@@ -395,6 +405,7 @@ describe('interWindowCommunicationMiddleware', () => {
       })
     })
   })
+
   it('passes actions to the next middleware', () => {
     expect.assertions(1)
     const store = {

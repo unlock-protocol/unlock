@@ -1,4 +1,4 @@
-import { SET_ETHER_CONVERSION_RATE } from '../actions/currencyconvert'
+import { SET_ETHER_CONVERSION_RATE } from '../actions/currencyConvert'
 
 export const initialState = {
   USD: undefined,

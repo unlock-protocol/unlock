@@ -1,7 +1,7 @@
 import {
   setConversionRate,
   SET_ETHER_CONVERSION_RATE,
-} from '../../actions/currencyconvert'
+} from '../../actions/currencyConvert'
 
 describe('currency conversion actions', () => {
   it('should create an action to set a currency conversion rate for USD', () => {

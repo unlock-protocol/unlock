@@ -83,6 +83,7 @@ const locksMinusATransaction = {
 
 describe('Dashboard', () => {
   it('should sort locks in descending order by blockNumber', () => {
+    expect.assertions(4)
     const state = {
       account: {},
       network: {},
@@ -101,7 +102,9 @@ describe('Dashboard', () => {
     // "The Alpha Blog" with the lowest  blockNumber appears last
     expect(lockFeed[2].name).toEqual('The Alpha Blog')
   })
+
   it('should also sort correctly when a lock has no transaction yet', () => {
+    expect.assertions(4)
     const state = {
       account: {},
       network: {},
