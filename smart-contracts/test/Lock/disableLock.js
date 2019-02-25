@@ -41,7 +41,6 @@ contract('Lock', accounts => {
       })
 
       it('should trigger the Disable event', () => {
-        console.log(event)
         assert.equal(event.event, 'Disable')
       })
 
