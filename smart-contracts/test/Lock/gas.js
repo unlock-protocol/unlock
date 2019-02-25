@@ -22,8 +22,10 @@ contract('Unlock', (accounts) => {
         })
       const gasUsed = new BigNumber(tx.receipt.gasUsed)
       console.log(gasUsed.toFormat())
-      // If this breaks, update unlock-app/src/services/walletService.js gasAmountConstants
-      assert(gasUsed.lte(1000000))
+      if (!process.env.TEST_COVERAGE) {
+        // If this breaks, update unlock-app/src/services/walletService.js gasAmountConstants
+        assert(gasUsed.lte(1000000))
+      }
     })
 
     it('^ gas used to purchaseFor w/ key data', async () => {
@@ -33,8 +35,10 @@ contract('Unlock', (accounts) => {
         })
       const gasUsed = new BigNumber(tx.receipt.gasUsed)
       console.log(gasUsed.toFormat())
-      // If this breaks, update unlock-app/src/services/walletService.js gasAmountConstants
-      assert(gasUsed.lte(1000000))
+      if (!process.env.TEST_COVERAGE) {
+        // If this breaks, update unlock-app/src/services/walletService.js gasAmountConstants
+        assert(gasUsed.lte(1000000))
+      }
     })
 
     it('^ gas used to transferFrom w/o key data', async () => {
@@ -48,7 +52,9 @@ contract('Unlock', (accounts) => {
         })
       const gasUsed = new BigNumber(tx.receipt.gasUsed)
       console.log(gasUsed.toFormat())
-      assert(gasUsed.lte(1000000))
+      if (!process.env.TEST_COVERAGE) {
+        assert(gasUsed.lte(1000000))
+      }
     })
 
     it('^ gas used to transferFrom w key data', async () => {
@@ -62,7 +68,9 @@ contract('Unlock', (accounts) => {
         })
       const gasUsed = new BigNumber(tx.receipt.gasUsed)
       console.log(gasUsed.toFormat())
-      assert(gasUsed.lte(1000000))
+      if (!process.env.TEST_COVERAGE) {
+        assert(gasUsed.lte(1000000))
+      }
     })
   })
 })

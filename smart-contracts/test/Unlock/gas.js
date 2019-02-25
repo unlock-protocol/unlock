@@ -20,8 +20,10 @@ contract('Unlock', (accounts) => {
         })
       const gasUsed = new BigNumber(tx.receipt.gasUsed)
       console.log(gasUsed.toFormat())
-      // If this breaks, update unlock-app/src/services/walletService.js gasAmountConstants
-      assert(gasUsed.lte(2500000))
+      if (!process.env.TEST_COVERAGE) {
+        // If this breaks, update unlock-app/src/services/walletService.js gasAmountConstants
+        assert(gasUsed.lte(2500000))
+      }
     })
   })
 })
