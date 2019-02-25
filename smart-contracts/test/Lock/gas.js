@@ -8,7 +8,7 @@ const Unlock = artifacts.require('../Unlock.sol')
 let unlock, lock
 
 contract('Lock', (accounts) => {
-  before(async () => {
+  beforeEach(async () => {
     unlock = await Unlock.deployed()
     const locks = await deployLocks(unlock)
     lock = locks['FIRST']
