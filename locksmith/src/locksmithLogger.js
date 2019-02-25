@@ -19,4 +19,7 @@ module.exports = {
   logLockDetailsRequest: address => {
     logger.debug(`requesting lock details for ${address}`)
   },
+  logFailureRequestingBlockTimestamp: error => {
+    logger.error(error)
+  },
 }
