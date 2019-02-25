@@ -6,7 +6,7 @@ Please include a summary of the change and which issue is fixed -include its num
 
 # Issues
 
-<!-- This PR should fix or ref at least one existing issue ID. Add or delete as appropriate. -->
+<!-- This PR should fix or reference at least one existing issue ID. Add or delete as appropriate. -->
 Fixes #
 Refs #
 
