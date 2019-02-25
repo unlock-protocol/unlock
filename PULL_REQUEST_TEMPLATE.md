@@ -4,6 +4,12 @@
 Please include a summary of the change and which issue is fixed -include its number-. It's important that PRs connect to an existing issue, and we'll review this PR in part based on the content of that issue. Please also include relevant motivation and context.
 -->
 
+# Issues
+
+<!-- This PR should fix or ref at least one existing issue ID. Add or delete as appropriate. -->
+Fixes #
+Refs #
+
 # Checklist:
 
 - [ ] 1 PR, 1 purpose: my Pull Request applies to a single purpose
