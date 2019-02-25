@@ -13,6 +13,7 @@ import './mixins/MixinKeys.sol';
 import './mixins/MixinLockCore.sol';
 import './mixins/MixinRefunds.sol';
 import './mixins/MixinNoFallback.sol';
+import './mixins/MixinTransfer.sol';
 
 /**
  * @title The Lock contract
@@ -34,6 +35,8 @@ contract PublicLock is
   MixinApproval,
   MixinLockCore,
   MixinRefunds
+  MixinLockCore
+  MixinTransfer
 {
   using SafeMath for uint;
 
@@ -108,40 +111,29 @@ contract PublicLock is
     Key storage toKey = _getKeyFor(_recipient);
 
     uint previousExpiration = toKey.expirationTimestamp;
+   * @dev Destroys the user's key and sends a refund based on the amount of time remaining.
+   */
+  function cancelAndRefund()
+    external
+  {
+    Key storage key = _getKeyFor(msg.sender);
 
-    if (previousExpiration == 0) {
-      // The recipient did not have a key previously
-      _addNewOwner(_recipient);
-      _setKeyOwner(_tokenId, _recipient);
-      toKey.tokenId = _tokenId;
+    uint refund = _getCancelAndRefundValue(msg.sender);
+
+    emit CancelKey(key.tokenId, msg.sender, refund);
+    // expirationTimestamp is a proxy for hasKey, setting this to `block.timestamp` instead
+    // of 0 so that we can still differentiate hasKey from hasValidKey.
+    key.expirationTimestamp = block.timestamp;
+    // Remove data as we don't need this any longer
+    delete key.data;
+
+    if (refund > 0) {
+      // Security: doing this last to avoid re-entrancy concerns
+      msg.sender.transfer(refund);
     }
-
-    if (previousExpiration <= block.timestamp) {
-      // The recipient did not have a key, or had a key but it expired. The new expiration is the
-      // sender's key expiration
-      toKey.expirationTimestamp = fromKey.expirationTimestamp;
-    } else {
-      // The recipient has a non expired key. We just add them the corresponding remaining time
-      // SafeSub is not required since the if confirms `previousExpiration - block.timestamp` cannot underflow
-      toKey.expirationTimestamp = fromKey
-        .expirationTimestamp.add(previousExpiration - block.timestamp);
-    }
-    // Overwite data in all cases
-    toKey.data = fromKey.data;
-
-    // Effectively expiring the key for the previous owner
-    fromKey.expirationTimestamp = block.timestamp;
-
-    // Clear any previous approvals
-    _clearApproval(_tokenId);
-
-    // trigger event
-    emit Transfer(
-      _from,
-      _recipient,
-      _tokenId
-    );
   }
+
+
 
   /**
    * @notice Handle the receipt of an NFT
