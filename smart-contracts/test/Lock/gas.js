@@ -57,7 +57,7 @@ contract('Lock', (accounts) => {
       }
     })
 
-    it('^ gas used to transferFrom w key data', async () => {
+    it('^ gas used to transferFrom w/ key data', async () => {
       await lock
         .purchaseFor(accounts[2], Web3Utils.toHex('Julien'), {
           value: Units.convert('0.01', 'eth', 'wei')
