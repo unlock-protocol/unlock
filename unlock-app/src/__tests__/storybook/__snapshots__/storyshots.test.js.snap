@@ -22943,14 +22943,21 @@ exports[`Storyshots CreatorLockForm/invalid invalid duration 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c5 {
+    .c6 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c5:before {
+.c6:before {
   content: '三';
+}
+
+.c4 {
+  color: var(--link);
+  font-size: 11px;
+  width: 100%;
+  padding: 5px;
 }
 
 .c0 {
@@ -23028,7 +23035,7 @@ Object {
   opacity: 1;
 }
 
-.c6 {
+.c7 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -23073,20 +23080,20 @@ Object {
   text-align: right;
 }
 
-.c4 {
+.c5 {
   white-space: nowrap;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-.c4 input[type='text'],
-.c4 input[type='number'] {
+.c5 input[type='text'],
+.c5 input[type='number'] {
   min-width: 30px;
   width: 77%;
   padding-right: 0;
 }
 
-.c7 {
+.c8 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -23100,13 +23107,13 @@ Object {
   padding: 0;
 }
 
-.c7:hover {
+.c8:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
-.c8 {
+.c9 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -23120,7 +23127,7 @@ Object {
   padding: 0;
 }
 
-.c8:hover {
+.c9:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
@@ -23233,8 +23240,8 @@ Object {
         >
           <input
             data-valid="true"
-            disabled=""
             name="name"
+            required=""
             type="text"
             value="New Lock"
           />
@@ -23244,9 +23251,9 @@ Object {
         >
           <input
             data-valid="false"
-            disabled=""
             inputmode="numeric"
             name="expirationDuration"
+            required=""
             step="1"
             type="number"
             value="-1"
@@ -23259,17 +23266,22 @@ Object {
         >
           <input
             data-valid="true"
-            disabled=""
             name="maxNumberOfKeys"
+            required=""
             type="text"
             value="10"
           />
+          <div
+            class="c4"
+          >
+            Unlimited
+          </div>
         </div>
         <span
-          class="c4"
+          class="c5"
         >
           <span
-            class="c5"
+            class="c6"
           />
           <input
             data-valid="true"
@@ -23285,15 +23297,15 @@ Object {
           -
         </div>
         <div
-          class="c6"
+          class="c7"
         >
           <button
-            class="c7"
+            class="c8"
           >
             Submit
           </button>
           <button
-            class="c8"
+            class="c9"
           >
             Cancel
           </button>
@@ -23386,8 +23398,8 @@ Object {
       >
         <input
           data-valid="true"
-          disabled=""
           name="name"
+          required=""
           type="text"
           value="New Lock"
         />
@@ -23397,9 +23409,9 @@ Object {
       >
         <input
           data-valid="false"
-          disabled=""
           inputmode="numeric"
           name="expirationDuration"
+          required=""
           step="1"
           type="number"
           value="-1"
@@ -23412,11 +23424,16 @@ Object {
       >
         <input
           data-valid="true"
-          disabled=""
           name="maxNumberOfKeys"
+          required=""
           type="text"
           value="10"
         />
+        <div
+          class="mlglvd-1 sc-1u8ov25-0 eiQcmf"
+        >
+          Unlimited
+        </div>
       </div>
       <span
         class="buwkmd-5 sc-1u8ov25-6 louuyM"
@@ -23503,14 +23520,21 @@ exports[`Storyshots CreatorLockForm/invalid invalid key price 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c5 {
+    .c6 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c5:before {
+.c6:before {
   content: '三';
+}
+
+.c4 {
+  color: var(--link);
+  font-size: 11px;
+  width: 100%;
+  padding: 5px;
 }
 
 .c0 {
@@ -23588,7 +23612,7 @@ Object {
   opacity: 1;
 }
 
-.c6 {
+.c7 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -23633,20 +23657,20 @@ Object {
   text-align: right;
 }
 
-.c4 {
+.c5 {
   white-space: nowrap;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-.c4 input[type='text'],
-.c4 input[type='number'] {
+.c5 input[type='text'],
+.c5 input[type='number'] {
   min-width: 30px;
   width: 77%;
   padding-right: 0;
 }
 
-.c7 {
+.c8 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -23660,13 +23684,13 @@ Object {
   padding: 0;
 }
 
-.c7:hover {
+.c8:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
-.c8 {
+.c9 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -23680,7 +23704,7 @@ Object {
   padding: 0;
 }
 
-.c8:hover {
+.c9:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
@@ -23793,8 +23817,8 @@ Object {
         >
           <input
             data-valid="true"
-            disabled=""
             name="name"
+            required=""
             type="text"
             value="New Lock"
           />
@@ -23804,9 +23828,9 @@ Object {
         >
           <input
             data-valid="true"
-            disabled=""
             inputmode="numeric"
             name="expirationDuration"
+            required=""
             step="1"
             type="number"
             value="30"
@@ -23819,17 +23843,22 @@ Object {
         >
           <input
             data-valid="true"
-            disabled=""
             name="maxNumberOfKeys"
+            required=""
             type="text"
             value="10"
           />
+          <div
+            class="c4"
+          >
+            Unlimited
+          </div>
         </div>
         <span
-          class="c4"
+          class="c5"
         >
           <span
-            class="c5"
+            class="c6"
           />
           <input
             data-valid="false"
@@ -23845,15 +23874,15 @@ Object {
           -
         </div>
         <div
-          class="c6"
+          class="c7"
         >
           <button
-            class="c7"
+            class="c8"
           >
             Submit
           </button>
           <button
-            class="c8"
+            class="c9"
           >
             Cancel
           </button>
@@ -23946,8 +23975,8 @@ Object {
       >
         <input
           data-valid="true"
-          disabled=""
           name="name"
+          required=""
           type="text"
           value="New Lock"
         />
@@ -23957,9 +23986,9 @@ Object {
       >
         <input
           data-valid="true"
-          disabled=""
           inputmode="numeric"
           name="expirationDuration"
+          required=""
           step="1"
           type="number"
           value="30"
@@ -23972,11 +24001,16 @@ Object {
       >
         <input
           data-valid="true"
-          disabled=""
           name="maxNumberOfKeys"
+          required=""
           type="text"
           value="10"
         />
+        <div
+          class="mlglvd-1 sc-1u8ov25-0 eiQcmf"
+        >
+          Unlimited
+        </div>
       </div>
       <span
         class="buwkmd-5 sc-1u8ov25-6 louuyM"
@@ -24063,14 +24097,21 @@ exports[`Storyshots CreatorLockForm/invalid invalid num keys 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c5 {
+    .c6 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c5:before {
+.c6:before {
   content: '三';
+}
+
+.c4 {
+  color: var(--link);
+  font-size: 11px;
+  width: 100%;
+  padding: 5px;
 }
 
 .c0 {
@@ -24148,7 +24189,7 @@ Object {
   opacity: 1;
 }
 
-.c6 {
+.c7 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -24193,20 +24234,20 @@ Object {
   text-align: right;
 }
 
-.c4 {
+.c5 {
   white-space: nowrap;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-.c4 input[type='text'],
-.c4 input[type='number'] {
+.c5 input[type='text'],
+.c5 input[type='number'] {
   min-width: 30px;
   width: 77%;
   padding-right: 0;
 }
 
-.c7 {
+.c8 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -24220,13 +24261,13 @@ Object {
   padding: 0;
 }
 
-.c7:hover {
+.c8:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
-.c8 {
+.c9 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -24240,7 +24281,7 @@ Object {
   padding: 0;
 }
 
-.c8:hover {
+.c9:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
@@ -24353,8 +24394,8 @@ Object {
         >
           <input
             data-valid="true"
-            disabled=""
             name="name"
+            required=""
             type="text"
             value="New Lock"
           />
@@ -24364,9 +24405,9 @@ Object {
         >
           <input
             data-valid="true"
-            disabled=""
             inputmode="numeric"
             name="expirationDuration"
+            required=""
             step="1"
             type="number"
             value="30"
@@ -24379,17 +24420,22 @@ Object {
         >
           <input
             data-valid="false"
-            disabled=""
             name="maxNumberOfKeys"
+            required=""
             type="text"
             value="-2"
           />
+          <div
+            class="c4"
+          >
+            Unlimited
+          </div>
         </div>
         <span
-          class="c4"
+          class="c5"
         >
           <span
-            class="c5"
+            class="c6"
           />
           <input
             data-valid="true"
@@ -24405,15 +24451,15 @@ Object {
           -
         </div>
         <div
-          class="c6"
+          class="c7"
         >
           <button
-            class="c7"
+            class="c8"
           >
             Submit
           </button>
           <button
-            class="c8"
+            class="c9"
           >
             Cancel
           </button>
@@ -24506,8 +24552,8 @@ Object {
       >
         <input
           data-valid="true"
-          disabled=""
           name="name"
+          required=""
           type="text"
           value="New Lock"
         />
@@ -24517,9 +24563,9 @@ Object {
       >
         <input
           data-valid="true"
-          disabled=""
           inputmode="numeric"
           name="expirationDuration"
+          required=""
           step="1"
           type="number"
           value="30"
@@ -24532,11 +24578,16 @@ Object {
       >
         <input
           data-valid="false"
-          disabled=""
           name="maxNumberOfKeys"
+          required=""
           type="text"
           value="-2"
         />
+        <div
+          class="mlglvd-1 sc-1u8ov25-0 eiQcmf"
+        >
+          Unlimited
+        </div>
       </div>
       <span
         class="buwkmd-5 sc-1u8ov25-6 louuyM"
@@ -24623,14 +24674,21 @@ exports[`Storyshots CreatorLockForm/invalid missing name 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c5 {
+    .c6 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c5:before {
+.c6:before {
   content: '三';
+}
+
+.c4 {
+  color: var(--link);
+  font-size: 11px;
+  width: 100%;
+  padding: 5px;
 }
 
 .c0 {
@@ -24708,7 +24766,7 @@ Object {
   opacity: 1;
 }
 
-.c6 {
+.c7 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -24753,20 +24811,20 @@ Object {
   text-align: right;
 }
 
-.c4 {
+.c5 {
   white-space: nowrap;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-.c4 input[type='text'],
-.c4 input[type='number'] {
+.c5 input[type='text'],
+.c5 input[type='number'] {
   min-width: 30px;
   width: 77%;
   padding-right: 0;
 }
 
-.c7 {
+.c8 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -24780,13 +24838,13 @@ Object {
   padding: 0;
 }
 
-.c7:hover {
+.c8:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
-.c8 {
+.c9 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -24800,7 +24858,7 @@ Object {
   padding: 0;
 }
 
-.c8:hover {
+.c9:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
@@ -24913,8 +24971,8 @@ Object {
         >
           <input
             data-valid="false"
-            disabled=""
             name="name"
+            required=""
             type="text"
             value=""
           />
@@ -24924,9 +24982,9 @@ Object {
         >
           <input
             data-valid="true"
-            disabled=""
             inputmode="numeric"
             name="expirationDuration"
+            required=""
             step="1"
             type="number"
             value="30"
@@ -24939,17 +24997,22 @@ Object {
         >
           <input
             data-valid="true"
-            disabled=""
             name="maxNumberOfKeys"
+            required=""
             type="text"
             value="10"
           />
+          <div
+            class="c4"
+          >
+            Unlimited
+          </div>
         </div>
         <span
-          class="c4"
+          class="c5"
         >
           <span
-            class="c5"
+            class="c6"
           />
           <input
             data-valid="true"
@@ -24965,15 +25028,15 @@ Object {
           -
         </div>
         <div
-          class="c6"
+          class="c7"
         >
           <button
-            class="c7"
+            class="c8"
           >
             Submit
           </button>
           <button
-            class="c8"
+            class="c9"
           >
             Cancel
           </button>
@@ -25066,8 +25129,8 @@ Object {
       >
         <input
           data-valid="false"
-          disabled=""
           name="name"
+          required=""
           type="text"
           value=""
         />
@@ -25077,9 +25140,9 @@ Object {
       >
         <input
           data-valid="true"
-          disabled=""
           inputmode="numeric"
           name="expirationDuration"
+          required=""
           step="1"
           type="number"
           value="30"
@@ -25092,11 +25155,16 @@ Object {
       >
         <input
           data-valid="true"
-          disabled=""
           name="maxNumberOfKeys"
+          required=""
           type="text"
           value="10"
         />
+        <div
+          class="mlglvd-1 sc-1u8ov25-0 eiQcmf"
+        >
+          Unlimited
+        </div>
       </div>
       <span
         class="buwkmd-5 sc-1u8ov25-6 louuyM"
