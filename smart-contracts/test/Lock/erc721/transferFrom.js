@@ -74,10 +74,14 @@ contract('Lock ERC721', accounts => {
 
       it('should abort if the recipient is 0x', async () => {
         await shouldFail(
-          locks['FIRST'].transferFrom(from, Web3Utils.padLeft(0, 40),
-            await locks['FIRST'].getTokenIdFor.call(from), {
+          locks['FIRST'].transferFrom(
+            from,
+            Web3Utils.padLeft(0, 40),
+            await locks['FIRST'].getTokenIdFor.call(from),
+            {
               from
-            }),
+            }
+          ),
           'INVALID_ADDRESS'
         )
         // Ensuring that ownership of the key did not change
@@ -253,6 +257,41 @@ contract('Lock ERC721', accounts => {
           return locks['FIRST'].keyDataFor.call(to).then(keyData => {
             assert.equal(Web3Utils.toUtf8(keyData), 'Julien')
           })
+        })
+      })
+
+      describe('when the lock is sold out', () => {
+        before(async () => {
+          // first we create a lock with only 1 key
+          await locks['SINGLE KEY'].purchaseFor(
+            from,
+            Web3Utils.toHex('Julien'),
+            {
+              value: Units.convert('0.01', 'eth', 'wei'),
+              from
+            }
+          )
+          // confirm that the lock is sold out
+          await shouldFail(
+            locks['SINGLE KEY'].purchaseFor(
+              accounts[8],
+              Web3Utils.toHex('Julien'),
+              {
+                value: Units.convert('0.01', 'eth', 'wei'),
+                from: accounts[8]
+              }
+            ),
+            'LOCK_SOLD_OUT'
+          )
+        })
+
+        it('should still allow the transfer of keys', async () => {
+          ID = await locks['SINGLE KEY'].getTokenIdFor.call(from)
+          await locks['SINGLE KEY'].transferFrom(accounts[8], accounts[9], ID, {
+            from: accounts[8]
+          })
+          let ownerOf = await locks['SINGLE KEY'].ownerOf.call(ID)
+          assert.equal(ownerOf, accounts[9])
         })
       })
     })
