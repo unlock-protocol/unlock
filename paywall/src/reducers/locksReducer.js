@@ -61,7 +61,7 @@ const locksReducer = (state = initialState, action) => {
 
     return {
       ...state,
-      [action.address]: Object.assign(state[action.address], action.update),
+      [action.address]: { ...state[action.address], ...action.update },
     }
   }
 
