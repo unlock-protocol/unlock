@@ -27,6 +27,14 @@ const transactions = {
     blockNumber: 3,
     type: TRANSACTION_TYPES.LOCK_CREATION,
   },
+  '0x31337': {
+    hash: '0x73313',
+    confirmations: 5,
+    status: 'mined',
+    type: TRANSACTION_TYPES.KEY_PURCHASE,
+    key: '0x12345678a-0xfeeded',
+    blockNumber: 5,
+  },
 }
 
 describe('Transaction Log', () => {
@@ -50,11 +58,12 @@ describe('Transaction Log', () => {
     const config = configure()
     const { transactionFeed, metadata } = mapStateToProps(state, { config })
     it('Should provide a feed of transactions sorted by blockNumber, descending', () => {
-      expect.assertions(4)
-      expect(transactionFeed).toHaveLength(3)
-      expect(transactionFeed[0].blockNumber).toEqual(3)
-      expect(transactionFeed[1].blockNumber).toEqual(2)
-      expect(transactionFeed[2].blockNumber).toEqual(1)
+      expect.assertions(5)
+      expect(transactionFeed).toHaveLength(4)
+      expect(transactionFeed[0].blockNumber).toEqual(5)
+      expect(transactionFeed[1].blockNumber).toEqual(3)
+      expect(transactionFeed[2].blockNumber).toEqual(2)
+      expect(transactionFeed[3].blockNumber).toEqual(1)
     })
     it('should include href to explorer, lock address, and readable name in the metadata', () => {
       expect.assertions(3)
@@ -62,6 +71,11 @@ describe('Transaction Log', () => {
       expect(md).toHaveProperty('href')
       expect(md).toHaveProperty('readableName')
       expect(md).toHaveProperty('lock')
+    })
+    it('should grab the lock address for the key creation transaction', () => {
+      expect.assertions(1)
+      const md = metadata['0x73313']
+      expect(md.lock).toEqual('0x12345678a')
     })
   })
 })
