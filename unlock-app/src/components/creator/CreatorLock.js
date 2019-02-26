@@ -92,7 +92,7 @@ export class CreatorLock extends React.Component {
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
     return (
-      <LockRow onClick={this.toggleKeys}>
+      <LockRow onClick={this.toggleKeys} id={`LockRow_${lock.address}`}>
         <DoubleHeightCell>
           <Icon lock={lock} />
         </DoubleHeightCell>
@@ -100,7 +100,7 @@ export class CreatorLock extends React.Component {
           {name}
           <LockAddress>{!lock.pending && lock.address}</LockAddress>
         </LockName>
-        <LockDuration>
+        <LockDuration id={`LockDuration_${lock.address}`}>
           <Duration seconds={lock.expirationDuration} />
         </LockDuration>
         <LockKeysNumbers lock={lock} />

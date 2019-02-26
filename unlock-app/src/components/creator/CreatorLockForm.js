@@ -299,6 +299,7 @@ export class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             defaultValue={keyPrice}
             data-valid={valid.keyPrice}
+            id={`KeyPriceEditField_${lock.address}`}
             required
           />
         </FormBalanceWithUnit>

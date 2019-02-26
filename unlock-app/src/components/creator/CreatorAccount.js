@@ -24,7 +24,7 @@ export function CreatorAccount({ account, network }) {
     <Account>
       <AccountHead>
         <h2>Account</h2>
-        <NetworkInfo>{networkName}</NetworkInfo>
+        <NetworkInfo id="NetworkName">{networkName}</NetworkInfo>
       </AccountHead>
 
       <AccountDetails>
@@ -68,11 +68,11 @@ export function CreatorAccount({ account, network }) {
         )}{' '}
         {/* eslint-disable-line */
         /* prettier formats this as 12 spaces, eslint wants 10 :/ */}
-        <Address>{account.address}</Address>
-        <Value>
+        <Address id="UserAddress">{account.address}</Address>
+        <Value id="AccountBalance">
           <Balance amount={account.balance} convertCurrency={false} />
         </Value>
-        <Value>0.00</Value>
+        <Value id="AccountEarning">0.00</Value>
       </AccountDetails>
     </Account>
   )
