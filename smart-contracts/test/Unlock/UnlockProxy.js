@@ -1,5 +1,3 @@
-process.env.NODE_ENV = 'test'
-
 const Unlock = artifacts.require('Unlock')
 const UnlockTestV2 = artifacts.require('UnlockTestV2')
 const UnlockTestV3 = artifacts.require('UnlockTestV3')
