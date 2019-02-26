@@ -21,7 +21,7 @@ import './mixins/MixinNoFallback.sol';
  * Eventually: implement ERC721.
  * @dev ERC165 allows our contract to be queried to determine whether it implements a given interface.
  * Every ERC-721 compliant contract must implement the ERC165 interface.
- * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
+ * https://eips.ethereum.org/EIPS/eip-721
  */
 contract PublicLock is
   MixinNoFallback,
