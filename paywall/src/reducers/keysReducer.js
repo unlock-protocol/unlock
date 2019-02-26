@@ -56,7 +56,7 @@ const keysReducer = (state = initialState, action) => {
 
     return {
       ...state,
-      [action.id]: Object.assign(state[action.id], action.update),
+      [action.id]: { ...state[action.id], ...action.update },
     }
   }
 
