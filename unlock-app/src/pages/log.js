@@ -58,7 +58,15 @@ Log.propTypes = {
   account: UnlockPropTypes.account.isRequired,
   network: UnlockPropTypes.network.isRequired,
   transactionFeed: PropTypes.arrayOf(UnlockPropTypes.transaction).isRequired,
-  metadata: PropTypes.objectOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  metadata: PropTypes.objectOf(
+    PropTypes.objectOf(
+      PropTypes.shape({
+        href: PropTypes.string,
+        readableName: PropTypes.string,
+        lock: PropTypes.string,
+      })
+    )
+  ).isRequired,
 }
 
 const Content = styled.div`
