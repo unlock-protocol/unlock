@@ -27,12 +27,13 @@ contract('PublicLock', accounts => {
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
           -1 // maxNumberOfKeys
         ).send({
-          from: accounts[0]
+          from: accounts[0],
+          gasLimit: 4000000
         })
       })
 
       it('should have created the lock with an infinite number of keys', async function () {
-        let publicLock = await PublicLock.at(transaction.logs[1].args.newLockAddress)
+        let publicLock = await PublicLock.at(transaction.events.NewLock.returnValues.newLockAddress)
         const maxNumberOfKeys = new BigNumber(await publicLock.maxNumberOfKeys())
         assert.equal(maxNumberOfKeys.toFixed(), new BigNumber(2).pow(256).minus(1).toFixed())
       })
@@ -46,12 +47,13 @@ contract('PublicLock', accounts => {
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
           0 // maxNumberOfKeys
         ).send({
-          from: accounts[0]
+          from: accounts[0],
+          gasLimit: 4000000
         })
       })
 
       it('should have created the lock with 0 keys', async function () {
-        let publicLock = (await PublicLock.at(transaction.logs[1].args.newLockAddress)).methods
+        let publicLock = await PublicLock.at(transaction.events.NewLock.returnValues.newLockAddress)
         const maxNumberOfKeys = new BigNumber(await publicLock.maxNumberOfKeys())
         assert.equal(maxNumberOfKeys.toFixed(), 0)
       })

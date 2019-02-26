@@ -23,6 +23,7 @@ contract('Lock ERC721', accounts => {
       initFrom: unlockOwner
     })
     this.unlock = (await Unlock.at(this.proxy.address)).methods
+    this.unlock.address = this.proxy.address
     locks = await deployLocks(this.unlock)
   })
 

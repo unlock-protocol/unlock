@@ -11,10 +11,10 @@ module.exports = function deployLocks (unlock) {
         Locks[name].maxNumberOfKeys.toFixed()
       )
       if (createCall.send) {
-        const tx = await createCall.send({ from: (await web3.eth.getAccounts())[0] })
+        const tx = await createCall.send({ from: (await web3.eth.getAccounts())[0], gasLimit: 4000000 })
         // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
-        const evt = tx.logs[1]
-        locks[name] = (await PublicLock.at(evt.args.newLockAddress)).methods
+        const evt = tx.events.NewLock
+        locks[name] = await PublicLock.at(evt.returnValues.newLockAddress)
         locks[name].params = Locks[name]
       } else {
         const tx = await createCall

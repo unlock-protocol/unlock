@@ -24,6 +24,7 @@ contract('Unlock', function (accounts) {
         initArgs: [unlockOwner]
       })
       this.unlock = (await Unlock.at(this.proxy.address)).methods
+      this.unlock.address = this.proxy.address
     })
 
     describe('should function as a proxy', function () {
@@ -46,6 +47,7 @@ contract('Unlock', function (accounts) {
           initArgs: []
         })
         this.unlock = (await UnlockTestV2.at(this.proxy.address)).methods
+        this.unlock.address = this.proxy.address
       })
       shared.shouldBehaveLikeV1(accounts, unlockOwner)
 
@@ -67,10 +69,11 @@ contract('Unlock', function (accounts) {
         Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
         100 // maxNumberOfKeys
       ).send({
-        from: accounts[0]
+        from: accounts[0],
+        gas: 4000000
       })
-      const newLockAddress = transaction.logs[1].args.newLockAddress
-      const resultsBefore = await this.unlock.locks(newLockAddress)
+      const newLockAddress = transaction.events.NewLock.returnValues.newLockAddress
+      const resultsBefore = await this.unlock.locks(newLockAddress).call()
       this.project.setImplementation(UnlockTestV2, 'Unlock')
       await this.project.upgradeProxy(this.proxy.address, UnlockTestV2, {
         Unlock,
@@ -78,8 +81,9 @@ contract('Unlock', function (accounts) {
         initArgs: []
       })
       this.unlock = (await UnlockTestV2.at(this.proxy.address)).methods
+      this.unlock.address = this.proxy.address
       this.project.setImplementation(Unlock, 'Unlock')
-      const resultsAfter = await this.unlock.locks(newLockAddress)
+      const resultsAfter = await this.unlock.locks(newLockAddress).call()
       assert.equal(JSON.stringify(resultsAfter), JSON.stringify(resultsBefore))
     })
 
@@ -92,6 +96,7 @@ contract('Unlock', function (accounts) {
           initArgs: []
         })
         this.unlock = (await UnlockTestV3.at(this.proxy.address)).methods
+        this.unlock.address = this.proxy.address
       })
 
       it('should allow new functions', async function () {
