@@ -18,7 +18,7 @@ export const humanize = type => {
   return parts.map(part => part[0] + part.slice(1).toLowerCase()).join(' ')
 }
 
-export const Log = ({ account, network, transactionFeed }) => {
+export const Log = ({ account, network, transactionFeed, metadata }) => {
   return (
     <GlobalErrorProvider>
       <GlobalErrorConsumer>
@@ -32,15 +32,18 @@ export const Log = ({ account, network, transactionFeed }) => {
               <LogHeader>Block Number</LogHeader>
               <LogHeader>Lock Name/Address</LogHeader>
               <LogHeader>Type</LogHeader>
-              {transactionFeed.map(tx => (
-                <React.Fragment key={tx.hash}>
-                  <LogElement>{tx.blockNumber}</LogElement>
-                  <Address href={tx.href} target="_blank">
-                    {tx.lock}
-                  </Address>
-                  <Type type={tx.type}>{tx.readableName}</Type>
-                </React.Fragment>
-              ))}
+              {transactionFeed.map(tx => {
+                const { href, readableName, lock } = metadata[tx.hash]
+                return (
+                  <React.Fragment key={tx.hash}>
+                    <LogElement>{tx.blockNumber}</LogElement>
+                    <Address href={href} target="_blank">
+                      {lock}
+                    </Address>
+                    <Type type={tx.type}>{readableName}</Type>
+                  </React.Fragment>
+                )
+              })}
             </Content>
           </BrowserOnly>
         </Layout>
@@ -55,6 +58,7 @@ Log.propTypes = {
   account: UnlockPropTypes.account.isRequired,
   network: UnlockPropTypes.network.isRequired,
   transactionFeed: PropTypes.arrayOf(UnlockPropTypes.transaction).isRequired,
+  metadata: PropTypes.object.isRequired,
 }
 
 const Content = styled.div`
@@ -102,16 +106,34 @@ export const mapStateToProps = (
     (a, b) => b.blockNumber - a.blockNumber
   )
 
-  transactionFeed.forEach((tx, i) => {
-    transactionFeed[i].href =
-      chainExplorerUrlBuilders.etherScan(tx.lock) || undefined
-    transactionFeed[i].readableName = humanize(tx.type)
+  // Calculated metadata stored separately from the transactionFeed to avoid
+  // mutating the state by assigning to the objects
+  let metadata = {}
+
+  transactionFeed.forEach(tx => {
+    const href = chainExplorerUrlBuilders.etherScan(tx.lock) || undefined
+    const readableName = humanize(tx.type)
+    let lock = tx.lock
+
+    // Key purchases don't have a lock field, but they do encode the lock the
+    // key is for as part of the key field. So here we create the necessary lock
+    // field.
+    if (tx.type === 'KEY_PURCHASE') {
+      lock = tx.key.split('-')[0]
+    }
+
+    metadata[tx.hash] = {
+      href,
+      readableName,
+      lock,
+    }
   })
 
   return {
     account,
     network,
     transactionFeed,
+    metadata,
   }
 }
 

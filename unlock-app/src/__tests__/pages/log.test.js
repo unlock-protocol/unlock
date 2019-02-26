@@ -48,7 +48,7 @@ describe('Transaction Log', () => {
       transactions,
     }
     const config = configure()
-    const { transactionFeed } = mapStateToProps(state, { config })
+    const { transactionFeed, metadata } = mapStateToProps(state, { config })
     it('Should provide a feed of transactions sorted by blockNumber, descending', () => {
       expect.assertions(4)
       expect(transactionFeed).toHaveLength(3)
@@ -56,11 +56,12 @@ describe('Transaction Log', () => {
       expect(transactionFeed[1].blockNumber).toEqual(2)
       expect(transactionFeed[2].blockNumber).toEqual(1)
     })
-    it('should include href to explorer and readable name in the feed', () => {
-      expect.assertions(2)
-      const tx = transactionFeed[0]
-      expect(tx).toHaveProperty('href')
-      expect(tx).toHaveProperty('readableName')
+    it('should include href to explorer, lock address, and readable name in the metadata', () => {
+      expect.assertions(3)
+      const md = metadata['0x9abcdef0']
+      expect(md).toHaveProperty('href')
+      expect(md).toHaveProperty('readableName')
+      expect(md).toHaveProperty('lock')
     })
   })
 })
