@@ -9,7 +9,7 @@ import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 
 /**
- * @title Mixin for the safe transfer related functions needed to meet the ERC721
+ * @title Mixin for the transfer-related functions needed to meet the ERC721
  * standard.
  * @author Nick Furfaro
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
@@ -23,6 +23,7 @@ contract MixinTransfer is
   using SafeMath for uint;
   using Address for address;
 
+  // 0x150b7a02 == bytes4(keccak256('onERC721Received(address,address,uint256,bytes)'))
   bytes4 private constant _ERC721_RECEIVED = 0x150b7a02;
 
   /**

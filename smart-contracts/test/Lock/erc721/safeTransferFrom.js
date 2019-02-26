@@ -36,29 +36,8 @@ contract('Lock ERC721', accounts => {
       let ownerOf = await locks['FIRST'].ownerOf.call(ID)
       let data = await locks['FIRST'].keyDataFor.call(to)
       assert.equal(ownerOf, to)
-      assert.equal(Web3Utils.toUtf8(data), 'Julien') // 'Julien' needs to be changed to '' after the data on a transferred key is 'reset' rather than preserved as is currently done.
+      assert.equal(Web3Utils.toUtf8(data), 'Julien')
     })
-
-    // it('should work if some data is passed in ', async () => {
-    //   await locks['FIRST'].purchaseFor(accounts[7], Web3Utils.toHex('Julien'), {
-    //     value: Units.convert('0.01', 'eth', 'wei'),
-    //     from: accounts[7]
-    //   })
-    //   ID = await locks['FIRST'].getTokenIdFor.call(accounts[7])
-    //   await locks['FIRST'].safeTransferFromWithData(
-    //     accounts[7],
-    //     accounts[6],
-    //     ID,
-    //     'Julien',
-    //     {
-    //       from: accounts[7]
-    //     }
-    //   )
-    //   let ownerOf = await locks['FIRST'].ownerOf.call(ID)
-    //   assert.equal(ownerOf, accounts[6])
-    //   let data = await locks['FIRST'].keyDataFor.call(accounts[6])
-    //   assert.equal(Web3Utils.toUtf8(data), 'Julien') // 'Julien' needs to be changed to '' after the data on a transferred key is 'reset' rather than preserved as is currently done.
-    // })
 
     it('should work if some data is passed in ', async () => {
       await locks['FIRST'].purchaseFor(accounts[7], Web3Utils.toHex('Julien'), {
@@ -68,7 +47,7 @@ contract('Lock ERC721', accounts => {
       ID = await locks['FIRST'].getTokenIdFor.call(accounts[7])
       let sender = Web3Utils.toChecksumAddress(accounts[7])
       let receiver = Web3Utils.toChecksumAddress(accounts[6])
-
+      // Using encodeFunctionCall as a workaround until the upgrade to Truffle v5.x. Can't call overloaded functions from js currently...
       let encodedCall = abi.encodeFunctionCall(
         {
           name: 'safeTransferFrom',
@@ -92,7 +71,7 @@ contract('Lock ERC721', accounts => {
             }
           ]
         },
-        [sender, receiver, Web3Utils.toHex(ID), Web3Utils.toHex('Julien')] // TODO: replace hardcoded ID
+        [sender, receiver, Web3Utils.toHex(ID), Web3Utils.toHex('Julien')]
       )
 
       await locks['FIRST'].sendTransaction({
@@ -102,7 +81,7 @@ contract('Lock ERC721', accounts => {
       let ownerOf = await locks['FIRST'].ownerOf.call(ID)
       assert.equal(ownerOf, accounts[6])
       let data = await locks['FIRST'].keyDataFor.call(accounts[6])
-      assert.equal(Web3Utils.toUtf8(data), 'Julien') // 'Julien' needs to be changed to '' after the data on a transferred key is 'reset' rather than preserved as is currently done.
+      assert.equal(Web3Utils.toUtf8(data), 'Julien')
     })
 
     it('should fail if trying to transfer a key to a contract which does not implement onERC721Received', async () => {
