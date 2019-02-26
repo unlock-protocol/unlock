@@ -17,12 +17,13 @@ const store = createUnlockStore({
 storiesOf('CreatorLockForm', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Default', () => {
+    const lock = {}
     return (
       <CreatorLockForm
         createLock={action('createLock')}
         hideAction={action('hide')}
         setError={action('setError')}
-        pending
+        lock={lock}
       />
     )
   })
@@ -38,7 +39,7 @@ storiesOf('CreatorLockForm', module)
     }
     return (
       <CreatorLockForm
-        {...lock}
+        lock={lock}
         createLock={action('createLock')}
         hideAction={action('hide')}
         setError={action('setError')}
