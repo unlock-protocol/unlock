@@ -38,11 +38,12 @@
     "test": "truffle test --network development",
     "lint": "solhint \"contracts/**/*.sol\" && solium -d ./contracts/ && eslint .",
     "dev": "npm run lint && npm run build && npm run test",
-    "ci": "npm run lint && npm run test && npm run coverage",
+    "ci": "npm run lint && npm run test && npm run coverage && npm run reports",
     "build": "truffle compile --all",
     "deploy": "truffle deploy",
     "zos": "zos",
-    "coverage": "cross-env TEST_COVERAGE=true solidity-coverage"
+    "coverage": "cross-env TEST_COVERAGE=true solidity-coverage",
+    "reports": "truffle test ./reports/gas.js"
   },
   "author": "",
   "license": "ISC"
