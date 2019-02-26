@@ -1,6 +1,7 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 const Unlock = artifacts.require('../Unlock.sol')
+const WalletService = require('../helpers/walletServiceMock.js')
 
 let unlock
 
@@ -10,7 +11,9 @@ contract('Unlock', (accounts) => {
   })
 
   describe('gas usage', () => {
-    it('^ gas used to createLock', async () => {
+    let createLockGas = new BigNumber(42)
+
+    beforeEach(async () => {
       let tx = await unlock.createLock(
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
@@ -18,11 +21,12 @@ contract('Unlock', (accounts) => {
         , {
           from: accounts[0]
         })
-      const gasUsed = new BigNumber(tx.receipt.gasUsed)
-      console.log(gasUsed.toFormat())
+      createLockGas = new BigNumber(tx.receipt.gasUsed)
+    })
+
+    it(`gas used to createLock is less than wallet service limit`, async () => {
       if (!process.env.TEST_COVERAGE) {
-        // If this breaks, update unlock-app/src/services/walletService.js gasAmountConstants
-        assert(gasUsed.lte(2500000))
+        assert(createLockGas.lte(WalletService.gasAmountConstants().createLock))
       }
     })
   })
