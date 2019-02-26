@@ -5,17 +5,22 @@ describe('The Unlock Dashboard', () => {
     await page.goto(url('/dashboard'))
   })
 
+  const testLockAddress = '0xA5bE7D2b387d98021e3E007D8bd6d2a3B0D3E62E';
+
   it('should load the creator dashboard', async () => {
     await expect(page).toMatch('Creator Dashboard')
   })
 
   it('should list the address of the current user', async () => {
-    await expect(page).toMatch('0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2')
+    const userAddress = await page.$eval('#UserAddress', e => e.innerText)
+    await expect(userAddress).toMatch(
+      '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+    )
   })
 
   it('should have a button allowing the creation of a Lock', async () => {
-    const button = await page.waitFor('button')
-    await expect(button).toMatch('Create Lock')
+    const createLockButton = await page.waitFor('#CreateLockButton')
+    await expect(createLockButton).toMatch('Create Lock')
   })
 
   describe('Lock creation', () => {
@@ -28,7 +33,43 @@ describe('The Unlock Dashboard', () => {
 
     it('should persist the lock', async () => {
       await expect(page).toClick('button', { text: 'Submit' })
+      await page.waitFor(500)
       await expect(page).toMatch('30 days')
+    }, 8000)
+  })
+
+  describe('Lock Embedd Code', () => {
+    it('should toggle the embed code', async () => {
+      await page.waitForSelector(`#LockEmbeddCode_${testLockAddress}`)
+      await expect(page).toClick(`#LockEmbeddCode_${testLockAddress}`)
+      await expect(page).toMatch('Code snippet')
+    }, 25000)
+
+    it('has a Preview dashboard button', async () => {
+      await page.waitForSelector(`#PreviewButton_${testLockAddress}`)
+      await expect(page).toMatchElement(`#PreviewButton_${testLockAddress}`)
+    }, 25000)
+  })
+
+  describe('Lock Editing', () => {
+    it('a button exists to edit the Lock details', async () => {
+      await expect(page).toMatchElement(`#EditLockButton_${testLockAddress}`)
+    })
+
+    describe('editting the Lock price', () => {
+      it('allows the lock owner to update the price of the lock', async () => {
+        await expect(page).toMatchElement(`#EditLockButton_${testLockAddress}`)
+        await expect(page).toClick(`#EditLockButton_${testLockAddress}`)
+        await expect(page).toMatchElement(
+          `#KeyPriceEditField_${testLockAddress}`
+        )
+        await expect(page).toFill(
+          `input[id="KeyPriceEditField_${testLockAddress}"]`,
+          '0.33'
+        )
+        await expect(page).toClick('button', { text: 'Submit' })
+        await expect(page).toMatch('0.33')
+      })
     })
   })
 })
