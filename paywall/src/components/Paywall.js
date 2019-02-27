@@ -12,7 +12,7 @@ import { lockRoute } from '../utils/routes'
 import useListenForPostMessage from '../hooks/browser/useListenForPostMessage'
 import usePostMessage from '../hooks/browser/usePostMessage'
 
-function Paywall({ locks, locked, redirect }) {
+export function Paywall({ locks, locked, redirect, window }) {
   const data = useListenForPostMessage(window) || { scrollPosition: 0 }
   const scrollPosition = data.scrollPosition || 0
   const { postMessage } = usePostMessage(window)
@@ -48,6 +48,7 @@ Paywall.propTypes = {
   locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
   locked: PropTypes.bool.isRequired,
   redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  window: PropTypes.shape({ postMessage: PropTypes.func }).isRequired, // for ease of unit testing
 }
 
 Paywall.defaultProps = {
@@ -76,7 +77,7 @@ export const mapStateToProps = ({ locks, keys, modals, router }) => {
 
   const modalShown = !!modals[locksFromUri.map(l => l.address).join('-')]
   const locked = validKeys.length === 0 || modalShown
-  return { locked, locks: locksFromUri, redirect }
+  return { locked, locks: locksFromUri, redirect, window }
 }
 
 export default connect(mapStateToProps)(Paywall)
