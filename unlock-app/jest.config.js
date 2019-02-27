@@ -4,7 +4,7 @@ module.exports = {
   testPathIgnorePatterns: [
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
-    '<rootDir>/src/__tests__/utils/fixtures/',
+    '<rootDir>/src/__tests__/test-helpers/',
   ],
   transform: {
     '^.+\\.(js|jsx)$': 'babel-jest',
