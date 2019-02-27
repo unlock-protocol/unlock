@@ -2,7 +2,7 @@
 
 import { UPDATE_LOCK, updateLock } from '../actions/lock'
 import StorageService from '../services/storageService'
-import { STORE_LOCK_CREATION, storageError } from '../actions/storage'
+import { STORE_LOCK_NAME, storageError } from '../actions/storage'
 
 import configure from '../config'
 import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
@@ -47,7 +47,7 @@ export default function storageMiddleware({ getState, dispatch }) {
           })
       }
 
-      if (action.type === STORE_LOCK_CREATION) {
+      if (action.type === STORE_LOCK_NAME) {
         // A new lock has been created
         storageService
           .storeLockDetails(action.lock, action.token)

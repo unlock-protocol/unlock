@@ -1,5 +1,5 @@
 export const STORAGE_ERROR = 'storage/STORAGE_ERROR'
-export const STORE_LOCK_CREATION = 'storage/STORE_LOCK_CREATION'
+export const STORE_LOCK_NAME = 'storage/STORE_LOCK_NAME'
 
 export function storageError(error) {
   return {
@@ -8,9 +8,9 @@ export function storageError(error) {
   }
 }
 
-export function storeLockCreation(owner, lock, token) {
+export function storeLockName(owner, lock, token) {
   return {
-    type: STORE_LOCK_CREATION,
+    type: STORE_LOCK_NAME,
     owner: owner,
     lock: lock,
     token: token,

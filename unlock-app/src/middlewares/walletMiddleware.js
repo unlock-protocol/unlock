@@ -21,7 +21,7 @@ import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../constants' // TODO chang
 
 import WalletService from '../services/walletService'
 import { signatureError } from '../actions/signature'
-import { storeLockCreation } from '../actions/storage'
+import { storeLockName } from '../actions/storage'
 import configure from '../config'
 import { NO_USER_ACCOUNT } from '../errors'
 import generateSignature from '../utils/signature'
@@ -140,7 +140,7 @@ export default function walletMiddleware({ getState, dispatch }) {
                 )
                   .then(token => {
                     dispatch(
-                      storeLockCreation(
+                      storeLockName(
                         getState().account.address,
                         token.data,
                         token.result

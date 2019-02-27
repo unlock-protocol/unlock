@@ -1,6 +1,6 @@
 import storageMiddleware from '../../middlewares/storageMiddleware'
 import { UPDATE_LOCK, updateLock } from '../../actions/lock'
-import { STORE_LOCK_CREATION } from '../../actions/storage'
+import { STORE_LOCK_NAME } from '../../actions/storage'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT } from '../../actions/accounts'
 
@@ -121,11 +121,11 @@ describe('Storage middleware', () => {
     })
   })
 
-  describe('handling STORE_LOCK_CREATION', () => {
+  describe('handling STORE_LOCK_NAME', () => {
     it("dispatches to the appropriate storage middleware handler to store the lock's name", async () => {
       expect.assertions(2)
       const { next, invoke } = create()
-      const action = { type: STORE_LOCK_CREATION }
+      const action = { type: STORE_LOCK_NAME }
       mockStorageService.storeLockDetails = jest.fn(() => {
         return Promise.resolve()
       })
