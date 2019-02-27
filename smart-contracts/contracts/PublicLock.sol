@@ -163,7 +163,7 @@ contract PublicLock is
     address operator, // solhint-disable-line no-unused-vars
     address from, // solhint-disable-line no-unused-vars
     uint tokenId, // solhint-disable-line no-unused-vars
-    bytes data // solhint-disable-line no-unused-vars
+    bytes memory data // solhint-disable-line no-unused-vars
   )
     public
     returns(bytes4)
