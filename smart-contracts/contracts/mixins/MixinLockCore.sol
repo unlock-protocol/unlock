@@ -130,7 +130,7 @@ contract MixinLockCore is
   function _withdraw(uint _amount)
     private
   {
-    Ownable.owner().transfer(_amount);
+    address(uint160(Ownable.owner())).transfer(_amount);
     emit Withdrawal(msg.sender, _amount);
   }
 }
