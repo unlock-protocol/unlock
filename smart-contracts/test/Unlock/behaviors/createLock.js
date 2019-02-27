@@ -14,7 +14,8 @@ exports.shouldCreateLock = function (accounts) {
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
           100 // maxNumberOfKeys
           , {
-            from: accounts[0]
+            from: accounts[0],
+            gas: 4000000
           })
       })
 
@@ -52,7 +53,8 @@ exports.shouldCreateLock = function (accounts) {
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
           100 // maxNumberOfKeys
           , {
-            from: accounts[0]
+            from: accounts[0],
+            gas: 4000000
           }), 'MAX_EXPIRATION_100_YEARS')
       })
     })
