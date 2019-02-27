@@ -60,7 +60,7 @@ describe('Overlay', () => {
       })
 
       expect(mapStateToProps(state2)).toEqual({
-        openInNewWindow: undefined,
+        openInNewWindow: false,
       })
 
       expect(mapStateToProps(state3)).toEqual({
