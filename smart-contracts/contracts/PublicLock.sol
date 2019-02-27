@@ -9,7 +9,6 @@ import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
 import './mixins/MixinApproval.sol';
 import './mixins/MixinDisableAndDestroy.sol';
-import './mixins/MixinKeyOwner.sol';
 import './mixins/MixinKeys.sol';
 import './mixins/MixinLockCore.sol';
 import './mixins/MixinRefunds.sol';
@@ -31,9 +30,8 @@ contract PublicLock is
   ERC165,
   Ownable,
   MixinDisableAndDestroy,
-  MixinKeyOwner,
-  MixinApproval,
   MixinKeys,
+  MixinApproval,
   MixinLockCore,
   MixinRefunds
 {

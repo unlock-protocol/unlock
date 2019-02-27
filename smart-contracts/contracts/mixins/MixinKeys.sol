@@ -24,6 +24,16 @@ contract MixinKeys is
   // TODO: could we use public here? (this could be confusing though because it getter will
   // return 0 values when missing a key)
   mapping (address => Key) private keyByOwner;
+   
+  // Each tokenId can have at most exactly one owner at a time.
+  // Returns 0 if the token does not exist
+  // TODO: once we decouple tokenId from owner address (incl in js), then we can consider
+  // merging this with numberOfKeysSold into an array instead.
+  mapping (uint => address) private ownerByTokenId;
+
+  // Addresses of owners are also stored in an array.
+  // Addresses are never removed by design to avoid abuses around referals
+  address[] public owners;
 
   // Ensures that an owner has a key
   modifier hasKey(
@@ -46,6 +56,26 @@ contract MixinKeys is
     _;
   }
 
+  // Ensures that a key has an owner
+  modifier isKey(
+    uint _tokenId
+  ) {
+    require(
+      ownerByTokenId[_tokenId] != address(0), 'NO_SUCH_KEY'
+    );
+    _;
+  }
+
+  // Ensure that the caller owns the key
+  modifier onlyKeyOwner(
+    uint _tokenId
+  ) {
+    require(
+      isKeyOwner(_tokenId, msg.sender), 'ONLY_KEY_OWNER'
+    );
+    _;
+  }
+
   /**
    * A function which lets the owner of the lock expire a users' key.
    */
@@ -57,21 +87,6 @@ contract MixinKeys is
     hasValidKey(_owner)
   {
     keyByOwner[_owner].expirationTimestamp = block.timestamp; // Effectively expiring the key
-  }
-
-  /**
-  * @dev Returns the key's data field for a given owner.
-  * @param _owner address of the user for whom we search the key
-  */
-  function keyDataFor(
-    address _owner
-  )
-    public
-    view
-    hasKey(_owner)
-    returns (bytes memory data)
-  {
-    return keyByOwner[_owner].data;
   }
 
   /**
@@ -117,6 +132,68 @@ contract MixinKeys is
     return keyByOwner[_account].tokenId;
   }
 
+ /**
+  * A function which returns a subset of the keys for this Lock as an array
+  * @param _page the page of key owners requested when faceted by page size
+  * @param _pageSize the number of Key Owners requested per page
+  */
+  function getOwnersByPage(uint _page, uint _pageSize)
+    public
+    view
+    returns (address[] memory)
+  {
+    require(owners.length > 0, 'NO_OUTSTANDING_KEYS');
+    uint pageSize = _pageSize;
+    uint _startIndex = _page * pageSize;
+    uint endOfPageIndex;
+
+    if (_startIndex + pageSize > owners.length) {
+      endOfPageIndex = owners.length;
+      pageSize = owners.length - _startIndex;
+    } else {
+      endOfPageIndex = (_startIndex + pageSize);
+    }
+
+    // new temp in-memory array to hold pageSize number of requested owners:
+    address[] memory ownersByPage = new address[](pageSize);
+    uint pageIndex = 0;
+
+    // Build the requested set of owners into a new temporary array:
+    for (uint i = _startIndex; i < endOfPageIndex; i++) {
+      ownersByPage[pageIndex] = owners[i];
+      pageIndex++;
+    }
+
+    return ownersByPage;
+  }
+
+  /**
+   * Checks if the given address owns the given tokenId.
+   */
+  function isKeyOwner(
+    uint _tokenId,
+    address _owner
+  ) public view 
+    returns (bool)
+  {
+    return ownerByTokenId[_tokenId] == _owner;
+  }
+  
+  /**
+  * @dev Returns the key's data field for a given owner.
+  * @param _owner address of the user for whom we search the key
+  */
+  function keyDataFor(
+    address _owner
+  )
+    public
+    view
+    hasKey(_owner)
+    returns (bytes memory data)
+  {
+    return keyByOwner[_owner].data;
+  }
+
   /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
   * @param _owner address of the user for whom we search the key
@@ -124,13 +201,59 @@ contract MixinKeys is
   function keyExpirationTimestampFor(
     address _owner
   )
-    public
-    view
+    public view
     hasKey(_owner)
     returns (uint timestamp)
   {
     return keyByOwner[_owner].expirationTimestamp;
   }
+
+  /**
+   * Public function which returns the total number of unique owners (both expired
+   * and valid).  This may be larger than outstandingKeys.
+   */
+  function numberOfOwners()
+    public
+    view
+    returns (uint)
+  {
+    return owners.length;
+  }
+
+  /**
+   * @notice ERC721: Find the owner of an NFT
+   * @return The address of the owner of the NFT, if applicable
+  */
+  function ownerOf(
+    uint _tokenId
+  )
+    public view
+    isKey(_tokenId)
+    returns (address)
+  {
+    return ownerByTokenId[_tokenId];
+  }
+  
+  /**
+   * Adds a new (unique) Key owner.
+   */
+  function _addNewOwner(
+    address _owner
+  ) internal
+  {
+    owners.push(_owner);
+  }
+
+  /**
+   * Sets the Key owner for a given tokenId.
+   */
+  function _setKeyOwner(
+    uint _tokenId,
+    address _owner
+  ) internal
+  {
+    ownerByTokenId[_tokenId] = _owner;
+  } 
 
   /**
    * Returns the Key struct for the given owner.
