@@ -125,7 +125,7 @@ contract MixinTransfer is
     hasValidKey(ownerOf(_tokenId))
   {
     transferFrom(_from, _to, _tokenId);
-    require(_checkOnERC721Received(_from, _to, _tokenId, _data), 'NO_FALLBACK');
+    require(_checkOnERC721Received(_from, _to, _tokenId, _data), 'NON_COMPLIANT_ERC721_RECEIVER');
 
   }
 
