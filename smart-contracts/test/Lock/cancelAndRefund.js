@@ -51,7 +51,7 @@ contract('Lock', (accounts) => {
         txObj = await lock.cancelAndRefund({
           from: keyOwners[0]
         })
-        withdrawalAmount = await web3.eth.getBalance(lock.address).minus(initialLockBalance)
+        withdrawalAmount = new BigNumber(await web3.eth.getBalance(lock.address)).minus(initialLockBalance)
       })
 
       it('should emit a CancelKey event', async () => {
