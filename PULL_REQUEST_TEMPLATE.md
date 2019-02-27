@@ -1,8 +1,14 @@
 # Description
 
 <!--
-Please include a summary of the change and which issue is fixed -include its number-. Please also include relevant motivation and context.
+Please include a summary of the change and which issue is fixed -include its number-. It's important that PRs connect to an existing issue, and we'll review this PR in part based on the content of that issue. Please also include relevant motivation and context.
 -->
+
+# Issues
+
+<!-- This PR should fix or reference at least one existing issue ID. Add or delete as appropriate. -->
+Fixes #
+Refs #
 
 # Checklist:
 
