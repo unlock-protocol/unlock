@@ -7,7 +7,7 @@
     "predev": "NODE_ENV=development sequelize db:migrate",
     "dev": "nodemon server.js",
     "pretest": "NODE_ENV=test sequelize db:migrate",
-    "test": "jest --forceExit",
+    "test": "jest test.js --forceExit",
     "lint": "eslint .",
     "reformat": "prettier-eslint \"src/**/*.js\" --write",
     "eslint-check": "eslint --print-config . | eslint-config-prettier-check",
