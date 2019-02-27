@@ -5,6 +5,11 @@ import { LOCK_PATH_NAME_REGEXP, ACCOUNT_REGEXP } from '../constants'
  * @param {*} path
  */
 export const lockRoute = path => {
+  // note: undocumented "feature" of the URL class is that it throws
+  // if the URL is invalid. In our case, we are passing in a relative path,
+  // and so it throws unless we pass in a base url. Since the base URL
+  // is not used, this passes in a dummy URL
+  // https://developer.mozilla.org/en-US/docs/Web/API/URL/URL
   const url = new URL(path, 'http://dummy.com')
   const match = url.pathname.match(LOCK_PATH_NAME_REGEXP)
 
