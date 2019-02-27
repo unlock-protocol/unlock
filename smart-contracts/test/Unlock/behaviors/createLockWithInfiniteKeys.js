@@ -25,7 +25,8 @@ contract('PublicLock', accounts => {
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
           -1 // maxNumberOfKeys
           , {
-            from: accounts[0]
+            from: accounts[0],
+            gas: 4000000
           })
       })
 
@@ -44,7 +45,8 @@ contract('PublicLock', accounts => {
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
           0 // maxNumberOfKeys
           , {
-            from: accounts[0]
+            from: accounts[0],
+            gas: 4000000
           })
       })
 
