@@ -47,7 +47,7 @@ function elasticbeanstalk_create_application_version()
     aws elasticbeanstalk create-application-version \
     --application-name ${APPLICATION} \
     --version-label ${BUILD} \
-    --description "${description}" \
+    --description "${description:0:199}" \
     --source-bundle S3Bucket="${s3_bucket}",S3Key="${artifact}" \
     --auto-create-application \
     --region ${AWS_REGION}
