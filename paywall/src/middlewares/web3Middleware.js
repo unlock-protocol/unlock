@@ -181,10 +181,8 @@ export default function web3Middleware({ getState, dispatch }) {
         action.payload.location.pathname
       ) {
         // Location was changed, get the matching lock, if we are on a paywall page
-        const { lockAddress, prefix } = lockRoute(
-          action.payload.location.pathname
-        )
-        if (lockAddress && prefix === 'paywall') {
+        const { lockAddress } = lockRoute(action.payload.location.pathname)
+        if (lockAddress) {
           web3Service.getLock(lockAddress)
         }
       }

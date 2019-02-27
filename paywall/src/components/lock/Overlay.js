@@ -77,7 +77,7 @@ Overlay.propTypes = {
 }
 
 export const mapStateToProps = ({ account }) => ({
-  openInNewWindow: !account || account.fromLocalStorage,
+  openInNewWindow: !account || !!account.fromLocalStorage,
 })
 
 export const mapDispatchToProps = (dispatch, { locks }) => ({
