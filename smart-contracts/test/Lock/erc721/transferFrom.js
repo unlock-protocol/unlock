@@ -287,11 +287,17 @@ contract('Lock ERC721', accounts => {
 
         it('should still allow the transfer of keys', async () => {
           ID = await locks['SINGLE KEY'].getTokenIdFor.call(from)
-          await locks['SINGLE KEY'].transferFrom(accounts[8], accounts[9], ID, {
-            from: accounts[8]
-          })
-          let ownerOf = await locks['SINGLE KEY'].ownerOf.call(ID)
-          assert.equal(ownerOf, accounts[9])
+          let ownerOfBefore = await locks['SINGLE KEY'].ownerOf.call(ID)
+          await locks['SINGLE KEY'].transferFrom(
+            ownerOfBefore,
+            accounts[9],
+            ID,
+            {
+              from: ownerOfBefore
+            }
+          )
+          let ownerOfAfter = await locks['SINGLE KEY'].ownerOf.call(ID)
+          assert.equal(ownerOfAfter, accounts[9])
         })
       })
     })
