@@ -2,27 +2,17 @@ import { lockRoute, getRouteFromWindow } from '../../utils/routes'
 
 describe('route utilities', () => {
   const baseRoute = {
-    lockAddress: undefined,
-    prefix: undefined,
-    redirect: undefined,
-    account: undefined,
-    origin: undefined,
+    lockAddress: null,
+    prefix: null,
+    redirect: null,
+    account: null,
+    origin: null,
   }
   describe('lockRoute', () => {
     it('should return null value when it does not match', () => {
       expect.assertions(2)
-      expect(lockRoute('/dashboard')).toEqual({
-        lockAddress: null,
-        prefix: null,
-        redirect: null,
-        account: null,
-      })
-      expect(lockRoute('/lock')).toEqual({
-        lockAddress: null,
-        prefix: null,
-        redirect: null,
-        account: null,
-      })
+      expect(lockRoute('/dashboard')).toEqual(baseRoute)
+      expect(lockRoute('/lock')).toEqual(baseRoute)
     })
 
     it('should return the right prefix and lockAddress value when it matches', () => {
@@ -104,7 +94,6 @@ describe('route utilities', () => {
         ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         prefix: 'demo',
-        redirect: undefined,
         account: '0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         origin: 'origin/',
       })
