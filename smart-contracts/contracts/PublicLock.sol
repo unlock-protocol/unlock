@@ -35,7 +35,7 @@ contract PublicLock is
   MixinKeys,
   MixinApproval,
   MixinLockCore,
-  MixinLockMetadata
+  MixinLockMetadata,
   MixinRefunds,
   MixinTransfer
 {
