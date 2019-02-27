@@ -56,7 +56,7 @@ interface IERC721 {
   /// @param _to The new owner
   /// @param _tokenId The NFT to transfer
   /// @param data Additional data with no specified format, sent in call to `_to`
-  // function safeTransferFrom(address _from, address _to, uint _tokenId, bytes data) external payable;
+  function safeTransferFrom(address _from, address _to, uint _tokenId, bytes data) public payable;
 
   /// @notice Transfers the ownership of an NFT from one address to another address
   /// @dev This works identically to the other function with an extra data parameter,
@@ -64,7 +64,7 @@ interface IERC721 {
   /// @param _from The current owner of the NFT
   /// @param _to The new owner
   /// @param _tokenId The NFT to transfer
-  // function safeTransferFrom(address _from, address _to, uint _tokenId) external payable;
+  function safeTransferFrom(address _from, address _to, uint _tokenId) external payable;
 
   /// @notice Enable or disable approval for a third party ('operator') to manage
   ///  all of `msg.sender`'s assets.
