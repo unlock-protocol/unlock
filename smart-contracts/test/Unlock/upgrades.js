@@ -106,7 +106,7 @@ contract('Unlock', accounts => {
           // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
           const evt = lockTx.logs[0]
           lockV1 = await PublicLockV1.at(evt.args.newLockAddress)
-    
+
           // Buy Key
           await lockV1.purchaseFor(keyOwner, Web3Utils.toHex('Julien'), {
             value: keyPrice,
