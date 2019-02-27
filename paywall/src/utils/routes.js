@@ -1,11 +1,12 @@
-import { LOCK_PATH_NAME_REGEXP } from '../constants'
+import { LOCK_PATH_NAME_REGEXP, ACCOUNT_REGEXP } from '../constants'
 
 /**
  * Returns a hash of lockAddress and prefix based on a path.
  * @param {*} path
  */
 export const lockRoute = path => {
-  const match = path.match(LOCK_PATH_NAME_REGEXP)
+  const url = new URL(path, 'http://dummy.com')
+  const match = url.pathname.match(LOCK_PATH_NAME_REGEXP)
 
   if (!match) {
     return {
@@ -16,11 +17,18 @@ export const lockRoute = path => {
     }
   }
 
+  let account = url.hash && url.hash.substring(1)
+  const matchAccount = account.match(ACCOUNT_REGEXP)
+  account = matchAccount ? matchAccount[0] : undefined
+
   return {
     lockAddress: match[2],
     prefix: match[1],
     redirect: match[3] && decodeURIComponent(match[3]),
-    account: match[4],
+    account,
+    origin: url.searchParams.has('origin')
+      ? url.searchParams.get('origin')
+      : undefined,
   }
 }
 
@@ -28,5 +36,7 @@ export function getRouteFromWindow(window) {
   if (!window) {
     return lockRoute('')
   }
-  return lockRoute(window.location.pathname + window.location.hash)
+  return lockRoute(
+    window.location.pathname + window.location.search + window.location.hash
+  )
 }

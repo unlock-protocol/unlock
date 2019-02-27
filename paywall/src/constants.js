@@ -44,8 +44,8 @@ export const ACCOUNT_REGEXP = new RegExp(accountRegex)
 
 // helpers for the LOCK_PATH_NAME_REGEXP
 const prefix = '[a-z0-9]+'
-const urlEncodedRedirectUrl = '[^#?]+'
-const userAccount = accountRegex
+const urlEncodedUrl = '[^#?]+'
+const urlEncodedRedirectUrl = urlEncodedUrl
 const lockAddress = accountRegex
 
 /**
@@ -61,10 +61,7 @@ const lockAddress = accountRegex
  * You should not use this directly, instead use the utils/routes.js lockRoute function
  */
 export const LOCK_PATH_NAME_REGEXP = new RegExp(
-  `(?:/(${prefix}))?/(${lockAddress})` +
-    // either "/urlEncodedRedirectUrl/#account" or just "#account" and these are all optional
-    // note that "/#account" as in "/paywall/<lockaddress>/#<useraccount>" is also matched
-    `(?:/(${urlEncodedRedirectUrl}))?(?:/?#(${userAccount}))?`
+  `(?:/(${prefix}))?/(${lockAddress})(?:/(${urlEncodedRedirectUrl})/?)?`
 )
 
 export const PAGE_DESCRIPTION =

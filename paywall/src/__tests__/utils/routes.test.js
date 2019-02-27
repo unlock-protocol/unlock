@@ -1,6 +1,13 @@
 import { lockRoute, getRouteFromWindow } from '../../utils/routes'
 
 describe('route utilities', () => {
+  const baseRoute = {
+    lockAddress: undefined,
+    prefix: undefined,
+    redirect: undefined,
+    account: undefined,
+    origin: undefined,
+  }
   describe('lockRoute', () => {
     it('should return null value when it does not match', () => {
       expect.assertions(2)
@@ -21,70 +28,85 @@ describe('route utilities', () => {
     it('should return the right prefix and lockAddress value when it matches', () => {
       expect.assertions(4)
       expect(
-        lockRoute('/lock/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/')
+        lockRoute(
+          '/lock/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/?origin=origin%2F'
+        )
       ).toEqual({
+        ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         prefix: 'lock',
-        redirect: undefined,
-        account: undefined,
+        origin: 'origin/',
       })
 
       expect(
-        lockRoute('/paywall/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54')
+        lockRoute(
+          '/paywall/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54?origin=origin%2F'
+        )
       ).toEqual({
+        ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         prefix: 'paywall',
-        redirect: undefined,
-        account: undefined,
+        origin: 'origin/',
       })
       expect(
-        lockRoute('/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54')
+        lockRoute(
+          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54?origin=origin%2F'
+        )
       ).toEqual({
+        ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         prefix: 'demo',
-        redirect: undefined,
-        account: undefined,
+        origin: 'origin/',
       })
-      expect(lockRoute('/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54')).toEqual({
+      expect(
+        lockRoute(
+          '/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54?origin=origin%2F'
+        )
+      ).toEqual({
+        ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
-        prefix: undefined,
-        redirect: undefined,
-        account: undefined,
+        origin: 'origin/',
       })
     })
     it('should return the correct redirect parameter when it matches', () => {
       expect.assertions(1)
       expect(
         lockRoute(
-          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere'
+          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere?origin=origin%2F'
         )
       ).toEqual({
+        ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         prefix: 'demo',
         redirect: 'http://hithere',
+        origin: 'origin/',
       })
     })
     it('should return the correct account parameter when it matches', () => {
       expect.assertions(2)
       expect(
         lockRoute(
-          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
+          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
         )
       ).toEqual({
+        ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         prefix: 'demo',
         redirect: 'http://hithere',
         account: '0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54',
+        origin: 'origin/',
       })
       expect(
         lockRoute(
-          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
+          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
         )
       ).toEqual({
+        ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         prefix: 'demo',
         redirect: undefined,
         account: '0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54',
+        origin: 'origin/',
       })
     })
     it('should ignore malformed account parameter', () => {
@@ -92,13 +114,14 @@ describe('route utilities', () => {
       expect(
         lockRoute(
           // address is too short
-          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb'
+          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb'
         )
       ).toEqual({
+        ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         prefix: 'demo',
         redirect: 'http://hithere',
-        account: undefined,
+        origin: 'origin/',
       })
     })
     it('should return account parameter if redirect is not present', () => {
@@ -106,13 +129,14 @@ describe('route utilities', () => {
 
       expect(
         lockRoute(
-          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
+          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
         )
       ).toEqual({
+        ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         prefix: 'demo',
-        redirect: undefined,
         account: '0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54',
+        origin: 'origin/',
       })
     })
   })
@@ -123,14 +147,17 @@ describe('route utilities', () => {
         location: {
           pathname:
             '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere',
+          search: '?origin=origin%2F',
           hash: '#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         },
       }
       expect(getRouteFromWindow(fakeWindow)).toEqual({
+        ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         prefix: 'demo',
         redirect: 'http://hithere',
         account: '0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54',
+        origin: 'origin/',
       })
     })
   })
