@@ -24,9 +24,14 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
     return
   }
 
+  const originUrl = `?origin=${encodeURIComponent(window.origin)}`
   const paywallUrl =
     findPaywallUrl(document) + `/${lockAddress}/` + window.location.hash
-  const iframe = getIframe(document, paywallUrl)
+  const paywallUrlWithOrigin =
+    findPaywallUrl(document) +
+    `/${lockAddress}/${originUrl}` +
+    window.location.hash
+  const iframe = getIframe(document, paywallUrlWithOrigin)
   add(document, iframe)
 
   // iOS allows the page to scroll even when the paywall is up. Our
