@@ -10,4 +10,13 @@ module.exports = {
     '^.+\\.(js|jsx)$': 'babel-jest',
   },
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
+  collectCoverage: true,
+  coverageThreshold: {
+    global: {
+      branches: 76.39,
+      functions: 79.09,
+      lines: 87.37,
+      statements: 86.36,
+    },
+  },
 }
