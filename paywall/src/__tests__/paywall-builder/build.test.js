@@ -72,10 +72,7 @@ describe('buildPaywall', () => {
       buildPaywall(window, document, fakeLockAddress)
 
       expect(mockScript).toHaveBeenCalledWith(document)
-      expect(mockIframe).toHaveBeenCalledWith(
-        document,
-        '/url/paywall/lockaddress/'
-      )
+      expect(mockIframe).toHaveBeenCalledWith(document, '/url/lockaddress/')
     })
 
     it('passes the hash to the iframe, if present', () => {
@@ -89,7 +86,7 @@ describe('buildPaywall', () => {
       expect(mockScript).toHaveBeenCalledWith(document)
       expect(mockIframe).toHaveBeenCalledWith(
         document,
-        '/url/paywall/lockaddress/#hithere'
+        '/url/lockaddress/#hithere'
       )
     })
 
@@ -168,7 +165,7 @@ describe('buildPaywall', () => {
       it('calls redirect on redirect event', () => {
         callbacks.message({ data: 'redirect' })
 
-        expect(window.location.href).toBe('/url/paywall/lockaddress/href')
+        expect(window.location.href).toBe('/url/lockaddress/href')
       })
     })
   })
