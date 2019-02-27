@@ -167,13 +167,14 @@ export class CreatorLockForm extends React.Component {
   }
 
   saveLock() {
-    const { account, createLock } = this.props
-    const lock = formValuesToLock(this.state)
-
-    createLock({
-      ...lock,
-      owner: account.address,
-    })
+    const { account, createLock, lock } = this.props
+    const newLock = formValuesToLock(this.state)
+    if (!lock.address || lock.keyPrice !== newLock.keyPrice) {
+      createLock({
+        ...newLock,
+        owner: account.address,
+      })
+    }
   }
 
   /**
