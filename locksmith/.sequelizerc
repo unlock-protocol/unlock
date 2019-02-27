@@ -1,5 +1,17 @@
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
+
+let configurationFile = () => {
+  let userFile  = path.resolve('config', 'config.user.js')
+  let generalFile = path.resolve('config', 'config.js')
+
+  if (fs.existsSync(userFile)) {
+    return userFile
+  } else {
+    return generalFile
+  }
+}
 
 module.exports = {
-  'config': path.resolve('config', 'config.js')
+  'config': path.resolve('config', configurationFile())
 }
