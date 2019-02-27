@@ -33,46 +33,17 @@ export function CreatorAccount({ account, network }) {
         </DoubleHeightCell>
         <Label>Address</Label>
         <Label>Balance</Label>
-        <Label />
-        {/* reinstate upload / etherscan / download / export functionality when we're ready  */
-        enableTheseButtons ? (
-          <>
-            <DoubleHeightCell>
-              <NoPhone>
-                <Buttons.Upload />
-              </NoPhone>
-            </DoubleHeightCell>
-            <DoubleHeightCell>
-              <NoPhone>
-                <Buttons.Etherscan />
-              </NoPhone>
-            </DoubleHeightCell>
-            <DoubleHeightCell>
-              <NoPhone>
-                <Buttons.Download />
-              </NoPhone>
-            </DoubleHeightCell>
-            <DoubleHeightCell>
-              <NoPhone>
-                <Buttons.ExportLock />
-              </NoPhone>
-            </DoubleHeightCell>
-          </>
-        ) : (
-          <>
-            <DoubleHeightCell />
-            <DoubleHeightCell />
-            <DoubleHeightCell />
-            <DoubleHeightCell />
-          </>
-        )}{' '}
+        <DoubleHeightCell />
+        <DoubleHeightCell />
+        <DoubleHeightCell />
+        <DoubleHeightCell />
+        <DoubleHeightCell />
         {/* eslint-disable-line */
         /* prettier formats this as 12 spaces, eslint wants 10 :/ */}
         <Address>{account.address}</Address>
         <Value>
           <Balance amount={account.balance} convertCurrency={false} />
         </Value>
-        <Value />
       </AccountDetails>
     </Account>
   )
