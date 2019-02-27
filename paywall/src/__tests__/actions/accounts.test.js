@@ -7,6 +7,7 @@ import {
 
 describe('accounts actions', () => {
   it('should create an action to set the account', () => {
+    expect.assertions(1)
     const account = {
       address: '0xabc',
       privateKey: 'deadbeef',
@@ -19,6 +20,7 @@ describe('accounts actions', () => {
   })
 
   it('should create an action to update an account', () => {
+    expect.assertions(1)
     const update = {
       balance: '1337',
     }
