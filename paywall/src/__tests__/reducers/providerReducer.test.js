@@ -5,6 +5,7 @@ describe('provider reducer', () => {
   const provider = 'WebSocket'
 
   it('should return the initial state as null if there are no reducers', () => {
+    expect.assertions(1)
     /**
      * It is important that the default state is null and not undefined per this Redux error:
      * Error: Reducer "provider" returned undefined during initialization.If the state passed
@@ -16,6 +17,7 @@ describe('provider reducer', () => {
   })
 
   it('should set the provider accordingly when receiving SET_PROVIDER', () => {
+    expect.assertions(1)
     expect(
       reducer(undefined, {
         type: SET_PROVIDER,

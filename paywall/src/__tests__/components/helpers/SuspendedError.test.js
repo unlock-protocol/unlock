@@ -8,6 +8,7 @@ jest.useFakeTimers()
 describe('SuspendedRender', () => {
   const Fallback = () => <div>hi</div>
   it('should not display anything during timeout', () => {
+    expect.assertions(1)
     const rendered = rtl.render(
       <SuspendedRender>
         <Fallback />
@@ -16,6 +17,7 @@ describe('SuspendedRender', () => {
     expect(rendered.queryByText('hi')).toBeNull()
   })
   it('should display fallback after timeout', () => {
+    expect.assertions(2)
     const rendered = rtl.render(
       <SuspendedRender>
         <Fallback />

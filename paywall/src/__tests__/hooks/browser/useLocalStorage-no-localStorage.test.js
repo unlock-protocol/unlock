@@ -18,6 +18,7 @@ describe('no localStorage', () => {
     }
   })
   it('does nothing', () => {
+    expect.assertions(2)
     fakeWindow.localStorage.removeItem = () => {
       throw new Error('nope')
     }

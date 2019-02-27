@@ -18,10 +18,12 @@ describe('keys page reducer', () => {
   }
 
   it('should return the initial state', () => {
+    expect.assertions(1)
     expect(reducer(undefined, {})).toEqual({})
   })
 
   it('should return the initial state when receveing SET_PROVIDER', () => {
+    expect.assertions(1)
     const state = {
       '0x123': {
         keys: [],
@@ -36,6 +38,7 @@ describe('keys page reducer', () => {
   })
 
   it('should return the initial state when receveing SET_NETWORK', () => {
+    expect.assertions(1)
     const state = {
       '0x123': {
         keys: [],
@@ -53,6 +56,7 @@ describe('keys page reducer', () => {
   // Upon changing account, we need to clear the existing keys on the page. The web3 middleware will
   // re-populate them
   it('should clear the keys on page when receiving SET_ACCOUNT', () => {
+    expect.assertions(1)
     const account = {}
     const state = {
       '0x123': {
@@ -70,6 +74,7 @@ describe('keys page reducer', () => {
 
   describe('SET_KEYS_ON_PAGE_FOR_LOCK', () => {
     it('should set the keys on that page accordingly', () => {
+      expect.assertions(1)
       const state = {}
       const action = {
         type: SET_KEYS_ON_PAGE_FOR_LOCK,
@@ -87,6 +92,7 @@ describe('keys page reducer', () => {
     })
 
     it('should set the keys on that page accordingly even when a value was previously set', () => {
+      expect.assertions(1)
       const state = {
         '0x123': {
           page: 1,

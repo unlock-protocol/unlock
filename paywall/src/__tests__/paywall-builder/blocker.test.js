@@ -3,6 +3,7 @@ import * as blockerManager from '../../../paywall-builder/blocker'
 describe('paywall builder', () => {
   describe('blocker', () => {
     it('getBlocker', () => {
+      expect.assertions(2)
       const document = {
         createElement() {
           return { style: {}, appendChild: jest.fn() }
@@ -38,6 +39,7 @@ describe('paywall builder', () => {
     })
 
     it('addBlocker', () => {
+      expect.assertions(1)
       const document = {
         body: {
           appendChild: jest.fn(),
@@ -50,6 +52,7 @@ describe('paywall builder', () => {
     })
 
     it('removeBlocker', () => {
+      expect.assertions(1)
       const blocker = {
         remove: jest.fn(),
       }

@@ -58,6 +58,7 @@ describe('GlobalErrorConsumer', () => {
   })
   describe('displayError', () => {
     it('displays the error if initialized', () => {
+      expect.assertions(2)
       const wrapper = rtl.render(
         displayError(FATAL_MISSING_PROVIDER, {}, <div>children</div>)
       )
@@ -66,6 +67,7 @@ describe('GlobalErrorConsumer', () => {
       expect(wrapper.queryByText('children')).toBeNull()
     })
     it('displays the children if no error is initialized', () => {
+      expect.assertions(1)
       const wrapper = rtl.render(displayError(false, {}, <div>children</div>))
 
       expect(wrapper.queryByText('children')).not.toBeNull()

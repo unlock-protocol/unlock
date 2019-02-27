@@ -14,6 +14,7 @@ describe('BalanceProvider Component', () => {
     )
   }
   it('renders with - when amount is null (probably unset)', () => {
+    expect.assertions(2)
     renderIt({
       amount: null,
       conversion: {},
@@ -25,6 +26,7 @@ describe('BalanceProvider Component', () => {
   })
 
   it('renders with - when amount is undefined (probably loading)', () => {
+    expect.assertions(2)
     renderIt({
       amount: undefined,
       conversion: {},
@@ -36,6 +38,7 @@ describe('BalanceProvider Component', () => {
   })
 
   it('USD conversion data is not available', () => {
+    expect.assertions(2)
     renderIt({
       amount: '100',
       conversion: {},
@@ -47,6 +50,7 @@ describe('BalanceProvider Component', () => {
   })
 
   it('USD conversion data is available', () => {
+    expect.assertions(2)
     renderIt({
       amount: '100',
       render: (ethValue, fiatValue) => {
@@ -58,6 +62,7 @@ describe('BalanceProvider Component', () => {
 
   describe('when the balance is 0 Eth', () => {
     it('should render 0 for both values', () => {
+      expect.assertions(2)
       renderIt({
         amount: '0',
         render: (ethValue, fiatValue) => {
@@ -72,6 +77,7 @@ describe('BalanceProvider Component', () => {
     const amount = '0.000070'
 
     it('shows the default minimum value of 三 < 0.0001', () => {
+      expect.assertions(2)
       renderIt({
         amount,
         render: (ethValue, fiatValue) => {
@@ -86,6 +92,7 @@ describe('BalanceProvider Component', () => {
     const amount = '0.0002'
 
     it('shows the balance in Eth to two decimal places', () => {
+      expect.assertions(2)
       renderIt({
         amount,
         render: (ethValue, fiatValue) => {
@@ -100,6 +107,7 @@ describe('BalanceProvider Component', () => {
     const amount = '2.0'
 
     it('shows the balance in Eth to two decimal places', () => {
+      expect.assertions(2)
       renderIt({
         amount,
         render: (ethValue, fiatValue) => {
@@ -114,6 +122,7 @@ describe('BalanceProvider Component', () => {
     const amount = '1.9989816877'
 
     it('shows the balance in Eth without rounding up', () => {
+      expect.assertions(1)
       renderIt({
         amount,
         render: ethValue => {
@@ -127,6 +136,7 @@ describe('BalanceProvider Component', () => {
     const amount = '20'
 
     it('shows the balance in dollars in locale format without decimal', () => {
+      expect.assertions(2)
       renderIt({
         amount,
         render: (ethValue, fiatValue) => {
@@ -141,6 +151,7 @@ describe('BalanceProvider Component', () => {
     const amount = '2000'
 
     it('shows the balance in thousands of dollars postfixed with k', () => {
+      expect.assertions(2)
       renderIt({
         amount,
         render: (ethValue, fiatValue) => {
@@ -155,6 +166,7 @@ describe('BalanceProvider Component', () => {
     const amount = '20000'
 
     it('shows the balance in millions of dollars postfixed with m', () => {
+      expect.assertions(2)
       renderIt({
         amount,
         render: (ethValue, fiatValue) => {
@@ -169,6 +181,7 @@ describe('BalanceProvider Component', () => {
     const amount = '20000000'
 
     it('shows the balance in billions of dollars postfixed with b', () => {
+      expect.assertions(2)
       renderIt({
         amount,
         render: (ethValue, fiatValue) => {

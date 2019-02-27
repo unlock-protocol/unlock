@@ -23,15 +23,16 @@ describe('buildPaywall', () => {
   afterEach(() => jest.restoreAllMocks())
 
   it('redirect', () => {
-    const window = {
+    expect.assertions(1)
+    const fakeWindow = {
       location: {
         href: 'href/',
       },
     }
 
-    redirect(window, 'hi')
+    redirect(fakeWindow, 'hi/')
 
-    expect((window.location.href = 'hi/href%2F'))
+    expect(fakeWindow.location.href).toBe('hi/href%2F')
   })
   describe('sets up the iframe on load', () => {
     let mockScript
@@ -47,6 +48,7 @@ describe('buildPaywall', () => {
           postMessage: () => {},
         },
       }
+
       mockAdd = jest.spyOn(iframeManager, 'add')
       mockScript.mockImplementation(() => '/url')
       mockIframe.mockImplementation(() => mockIframeImpl)
@@ -62,13 +64,16 @@ describe('buildPaywall', () => {
         },
       }
     })
+
     it('no lockAddress, give up', () => {
+      expect.assertions(1)
       buildPaywall(window, document)
 
       expect(mockScript).not.toHaveBeenCalled()
     })
 
     it('sets up the iframe with correct url', () => {
+      expect.assertions(4) // 2 are in the addEventListener in the mock window (see beforeEach)
       buildPaywall(window, document, fakeLockAddress)
 
       expect(mockScript).toHaveBeenCalledWith(document)
@@ -76,6 +81,7 @@ describe('buildPaywall', () => {
     })
 
     it('passes the hash to the iframe, if present', () => {
+      expect.assertions(4) // 2 are in the addEventListener in the mock window (see beforeEach)
       // when the content is loaded from the paywall in a new window,
       // it appends the user account as a hash. This is then passed on
       // as-is. Note that it passes any hash on, without validation,
@@ -91,12 +97,14 @@ describe('buildPaywall', () => {
     })
 
     it('adds the iframe to the page', () => {
+      expect.assertions(3) // 2 are in the addEventListener in the mock window (see beforeEach)
       buildPaywall(window, document, fakeLockAddress)
 
       expect(mockAdd).toHaveBeenCalledWith(document, mockIframeImpl)
     })
 
     it('sets up the message event listeners', () => {
+      expect.assertions(3) // 2 are in the addEventListener in the mock window (see beforeEach)
       jest.spyOn(window, 'addEventListener')
       buildPaywall(window, document, fakeLockAddress)
 
@@ -130,23 +138,27 @@ describe('buildPaywall', () => {
         buildPaywall(window, document, fakeLockAddress, blocker)
       })
       it('triggers show on locked event', () => {
+        expect.assertions(2)
         callbacks.message({ data: 'locked' })
 
         expect(mockShow).toHaveBeenCalledWith(mockIframeImpl, document)
         expect(mockHide).not.toHaveBeenCalled()
       })
       it('closes the blocker on locked event', () => {
+        expect.assertions(1)
         callbacks.message({ data: 'locked' })
 
         expect(blocker.remove).toHaveBeenCalled()
       })
       it('closes the blocker on unlocked event', () => {
+        expect.assertions(1)
         callbacks.message({ data: 'locked' })
         callbacks.message({ data: 'unlocked' })
 
         expect(blocker.remove).toHaveBeenCalledTimes(2)
       })
       it('does not trigger show on locked event if already unlocked', () => {
+        expect.assertions(2)
         callbacks.message({ data: 'locked' })
         callbacks.message({ data: 'locked' })
 
@@ -154,6 +166,7 @@ describe('buildPaywall', () => {
         expect(mockHide).not.toHaveBeenCalled()
       })
       it('triggers hide on unlock event', () => {
+        expect.assertions(3)
         callbacks.message({ data: 'locked' })
         callbacks.message({ data: 'unlocked' })
         callbacks.message({ data: 'unlocked' })
@@ -163,6 +176,7 @@ describe('buildPaywall', () => {
         expect(mockShow).toHaveBeenCalledTimes(1)
       })
       it('calls redirect on redirect event', () => {
+        expect.assertions(1)
         callbacks.message({ data: 'redirect' })
 
         expect(window.location.href).toBe('/url/lockaddress/href')

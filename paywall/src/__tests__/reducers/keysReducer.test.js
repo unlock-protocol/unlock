@@ -12,10 +12,12 @@ describe('keys reducer', () => {
   }
 
   it('should return the initial state', () => {
+    expect.assertions(1)
     expect(reducer(undefined, {})).toEqual({})
   })
 
   it('should return the initial state when receveing SET_PROVIDER', () => {
+    expect.assertions(1)
     expect(
       reducer(
         {
@@ -29,6 +31,7 @@ describe('keys reducer', () => {
   })
 
   it('should return the initial state when receveing SET_NETWORK', () => {
+    expect.assertions(1)
     expect(
       reducer(
         {
@@ -44,6 +47,7 @@ describe('keys reducer', () => {
   // Upon changing account, we need to clear the existing keys. The web3 middleware will
   // re-populate them
   it('should clear the keys when receiving SET_ACCOUNT', () => {
+    expect.assertions(1)
     const account = {}
     const state = {
       [key.id]: key,
@@ -58,6 +62,7 @@ describe('keys reducer', () => {
 
   describe('ADD_KEY', () => {
     it('should refuse to add a key with the wrong id and keep state intact', () => {
+      expect.assertions(1)
       const id = '0x123'
 
       const state = {}
@@ -74,6 +79,8 @@ describe('keys reducer', () => {
     })
 
     it('should refuse to overwrite keys and keep state unchanged', () => {
+      expect.assertions(1)
+
       const id = '0x123'
 
       const state = {
@@ -94,6 +101,8 @@ describe('keys reducer', () => {
     })
 
     it('should add the key by its id accordingly when receiving ADD_KEY', () => {
+      expect.assertions(1)
+
       const id = '0x123'
       const key = {
         data: 'data',
@@ -120,6 +129,8 @@ describe('keys reducer', () => {
 
   describe('PURCHASE_KEY', () => {
     it('should add a key when receiving PURCHASE_KEY if the key has an id', () => {
+      expect.assertions(1)
+
       expect(
         reducer(
           {},
@@ -134,6 +145,8 @@ describe('keys reducer', () => {
     })
 
     it('should add a key when receiving PURCHASE_KEY and construct a key id if needed', () => {
+      expect.assertions(1)
+
       const newKey = {
         lock: '0x123',
         owner: '0x456',
@@ -158,6 +171,8 @@ describe('keys reducer', () => {
 
   describe('UPDATE_KEY', () => {
     it('should keep state unchanged if trying to update the key id', () => {
+      expect.assertions(1)
+
       const key = {
         id: 'keyId',
         expiration: 0,
@@ -178,6 +193,8 @@ describe('keys reducer', () => {
     })
 
     it('should keep state unchanged when the key being updated does not exist', () => {
+      expect.assertions(1)
+
       const key = {
         id: 'keyId',
         expiration: 0,
@@ -198,6 +215,7 @@ describe('keys reducer', () => {
     })
 
     it('should update the keys values', () => {
+      expect.assertions(1)
       const key = {
         id: 'keyId',
         expiration: 0,
