@@ -1,3 +1,4 @@
+const Web3Utils = require('web3-utils')
 const Unlock = artifacts.require('Unlock')
 const UnlockTestV2 = artifacts.require('UnlockTestV2')
 const UnlockTestV3 = artifacts.require('UnlockTestV3')
@@ -49,7 +50,7 @@ contract('Unlock', function (accounts) {
       })
 
       it('should allow changing functions', async function () {
-        const results = await this.unlock.computeAvailableDiscountFor(0, 0)
+        const results = await this.unlock.computeAvailableDiscountFor(Web3Utils.padLeft(0, 40), 0)
         assert.equal(results[0].toString(), '42')
         assert.equal(results[1].toString(), '42')
       })
