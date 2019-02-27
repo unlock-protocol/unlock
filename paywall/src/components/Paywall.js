@@ -11,17 +11,25 @@ import { UnlockedFlag } from './lock/UnlockFlag'
 import { lockRoute } from '../utils/routes'
 import useListenForPostMessage from '../hooks/browser/useListenForPostMessage'
 import usePostMessage from '../hooks/browser/usePostMessage'
+import {
+  POST_MESSAGE_LOCKED,
+  POST_MESSAGE_UNLOCKED,
+} from '../../paywall-builder/constants'
+import { isPositiveInteger } from '../utils/validators'
 
-function Paywall({ locks, locked, redirect }) {
-  const data = useListenForPostMessage(window) || { scrollPosition: 0 }
-  const scrollPosition = data.scrollPosition || 0
+export function Paywall({ locks, locked, redirect, window }) {
+  const scrollPosition = useListenForPostMessage(window, {
+    type: 'scrollPosition',
+    defaultValue: 0,
+    validator: isPositiveInteger,
+  })
   const { postMessage } = usePostMessage(window)
   useEffect(
     () => {
       if (locked) {
-        postMessage('locked')
+        postMessage(POST_MESSAGE_LOCKED)
       } else {
-        postMessage('unlocked')
+        postMessage(POST_MESSAGE_UNLOCKED)
       }
     },
     [locked]
@@ -48,6 +56,7 @@ Paywall.propTypes = {
   locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
   locked: PropTypes.bool.isRequired,
   redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  window: PropTypes.shape({ postMessage: PropTypes.func }).isRequired, // for ease of unit testing
 }
 
 Paywall.defaultProps = {
@@ -76,7 +85,7 @@ export const mapStateToProps = ({ locks, keys, modals, router }) => {
 
   const modalShown = !!modals[locksFromUri.map(l => l.address).join('-')]
   const locked = validKeys.length === 0 || modalShown
-  return { locked, locks: locksFromUri, redirect }
+  return { locked, locks: locksFromUri, redirect, window }
 }
 
 export default connect(mapStateToProps)(Paywall)

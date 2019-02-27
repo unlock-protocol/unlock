@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import Lock from './Lock'
 import UnlockPropTypes from '../../propTypes'
 import { hideModal, showModal } from '../../actions/modal'
-import { unlockPage } from '../../services/iframeService'
 import { LockedFlag } from './UnlockFlag'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { mapErrorToComponent } from '../creator/FatalError'
@@ -82,8 +81,7 @@ export const mapStateToProps = ({ account }) => ({
 
 export const mapDispatchToProps = (dispatch, { locks }) => ({
   hideModal: () => {
-    unlockPage()
-    return dispatch(hideModal(locks.map(l => l.address).join('-')))
+    dispatch(hideModal(locks.map(l => l.address).join('-')))
   },
   showModal: () => {
     dispatch(showModal(locks.map(l => l.address).join('-')))

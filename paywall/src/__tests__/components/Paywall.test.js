@@ -2,11 +2,8 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
 import createUnlockStore from '../../createUnlockStore'
-import Paywall, { mapStateToProps } from '../../components/Paywall'
-import { lockPage, unlockPage } from '../../services/iframeService'
+import { Paywall, mapStateToProps } from '../../components/Paywall'
 import { ConfigContext } from '../../utils/withConfig'
-
-jest.mock('../../services/iframeService.js')
 
 const lock = { address: '0x4983D5ECDc5cc0E499c2D23BF4Ac32B982bAe53a' }
 const locks = {
@@ -15,7 +12,7 @@ const locks = {
 const router = {
   location: {
     pathname: `/paywall/${lock.address}/http%3a%2f%2fexample.com`,
-    search: '',
+    search: '?origin=http%3A%2F%2Fexample.com',
     hash: '',
   },
 }
@@ -23,7 +20,7 @@ const router = {
 const noRedirectRouter = {
   location: {
     pathname: `/paywall/${lock.address}`,
-    search: '',
+    search: '?origin=http%3A%2F%2Fexample.com',
     hash: '',
   },
 }
@@ -41,13 +38,24 @@ const keys = {
 const modals = []
 
 const store = createUnlockStore({ locks, keys, modals, router })
-const noKeyStore = createUnlockStore({ locks, keys: {}, modals, router })
 
 afterEach(() => {
   rtl.cleanup()
-  jest.clearAllMocks()
 })
 describe('Paywall', () => {
+  let fakeWindow
+  beforeEach(() => {
+    fakeWindow = {
+      location: {
+        pathname: `/${lock.address}`,
+        search: '?origin=http%3A%2F%2Fexample.com',
+        hash: '',
+      },
+      parent: { postMessage: jest.fn() },
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+    }
+  })
   describe('mapStateToProps', () => {
     it('should yield the lock which matches the address of the demo page', () => {
       expect.assertions(1)
@@ -86,28 +94,58 @@ describe('Paywall', () => {
   })
 
   describe('handleIframe', () => {
-    it('should call lockPage when it is locked', () => {
-      expect.assertions(2)
-      rtl.render(
-        <Provider store={noKeyStore}>
-          <Paywall />
-        </Provider>
-      )
-      expect(lockPage).toHaveBeenCalled()
-      expect(unlockPage).not.toHaveBeenCalled()
-    })
+    it('should post "locked" when it is locked in iframe', () => {
+      expect.assertions(1)
+      rtl.act(() => {
+        rtl.render(
+          <ConfigContext.Provider value={{ providers: [], isInIframe: true }}>
+            <Provider store={store}>
+              <Paywall window={fakeWindow} locks={[]} locked redirect={false} />
+            </Provider>
+          </ConfigContext.Provider>
+        )
+      })
 
-    it('should call unlockPage when it is not locked', () => {
-      expect.assertions(2)
-      rtl.render(
-        <ConfigContext.Provider value={{ providers: [] }}>
-          <Provider store={store}>
-            <Paywall />
-          </Provider>
-        </ConfigContext.Provider>
+      expect(fakeWindow.parent.postMessage).toHaveBeenCalledWith(
+        'locked',
+        'http://example.com'
       )
-      expect(lockPage).not.toHaveBeenCalled()
-      expect(unlockPage).toHaveBeenCalled()
+    })
+    it('should not post any message when it is in the main window', () => {
+      expect.assertions(1)
+      rtl.act(() => {
+        rtl.render(
+          <ConfigContext.Provider value={{ providers: [], isInIframe: false }}>
+            <Provider store={store}>
+              <Paywall window={fakeWindow} locks={[]} locked redirect={false} />
+            </Provider>
+          </ConfigContext.Provider>
+        )
+      })
+
+      expect(fakeWindow.parent.postMessage).not.toHaveBeenCalled()
+    })
+    it('should post "unlocked" when it is unlocked in iframe', () => {
+      expect.assertions(1)
+      rtl.act(() => {
+        rtl.render(
+          <ConfigContext.Provider value={{ providers: [], isInIframe: true }}>
+            <Provider store={store}>
+              <Paywall
+                window={fakeWindow}
+                locks={[]}
+                locked={false}
+                redirect={false}
+              />
+            </Provider>
+          </ConfigContext.Provider>
+        )
+      })
+
+      expect(fakeWindow.parent.postMessage).toHaveBeenCalledWith(
+        'unlocked',
+        'http://example.com'
+      )
     })
   })
 
@@ -115,9 +153,14 @@ describe('Paywall', () => {
     it('should be present when the paywall is unlocked', () => {
       expect.assertions(1)
       const { queryByText } = rtl.render(
-        <ConfigContext.Provider value={{ providers: [] }}>
+        <ConfigContext.Provider value={{ providers: [], isInIframe: true }}>
           <Provider store={store}>
-            <Paywall />
+            <Paywall
+              window={fakeWindow}
+              locks={[]}
+              locked={false}
+              redirect={false}
+            />
           </Provider>
         </ConfigContext.Provider>
       )
@@ -128,9 +171,9 @@ describe('Paywall', () => {
     it('should not be present when the paywall is locked', () => {
       expect.assertions(1)
       const { queryByText } = rtl.render(
-        <ConfigContext.Provider value={{ providers: [] }}>
-          <Provider store={noKeyStore}>
-            <Paywall />
+        <ConfigContext.Provider value={{ providers: [], isInIframe: true }}>
+          <Provider store={store}>
+            <Paywall window={fakeWindow} locks={[]} locked redirect={false} />
           </Provider>
         </ConfigContext.Provider>
       )
