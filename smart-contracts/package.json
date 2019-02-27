@@ -20,7 +20,6 @@
     "openzeppelin-solidity": "^2.0.0",
     "shelljs": "^0.8.3",
     "solhint": "^2.0.0",
-    "solidity-coverage": "^0.5.11",
     "solium": "^1.2.3",
     "truffle": "^4.1.15",
     "truffle-hdwallet-provider": "^1.0.3",
@@ -38,11 +37,10 @@
     "test": "cross-env NODE_ENV=test truffle test --network development",
     "lint": "solhint \"contracts/**/*.sol\" && solium -d ./contracts/ && eslint .",
     "dev": "npm run lint && npm run build && npm run test",
-    "ci": "npm run lint && npm run test && npm run coverage",
+    "ci": "npm run lint && npm run test",
     "build": "truffle compile --all",
     "deploy": "truffle deploy",
-    "zos": "zos",
-    "coverage": "cross-env NODE_ENV=test cross-env TEST_COVERAGE=true solidity-coverage"
+    "zos": "zos"
   },
   "author": "",
   "license": "ISC"
