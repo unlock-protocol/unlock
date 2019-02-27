@@ -52,6 +52,7 @@ contract PublicLock is
     public
     MixinLockCore(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys, _version)
   {
+    _registerInterface(0x80ac58cd);
   }
 
   /**
