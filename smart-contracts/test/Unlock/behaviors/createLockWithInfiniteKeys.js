@@ -1,10 +1,11 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
-
-const Unlock = artifacts.require('./Unlock.sol')
 const PublicLock = artifacts.require('../../PublicLock.sol')
 const Zos = require('zos')
 const TestHelper = Zos.TestHelper
+const { ZWeb3, Contracts } = require('zos-lib')
+ZWeb3.initialize(web3.currentProvider)
+const Unlock = Contracts.getFromLocal('Unlock')
 
 contract('PublicLock', accounts => {
   const proxyAdmin = accounts[1]
@@ -20,7 +21,7 @@ contract('PublicLock', accounts => {
     describe('Create a Lock with infinite keys', function () {
       let transaction
       before(async function () {
-        transaction = await this.unlock.createLock(
+        transaction = await this.unlock.methods.createLock(
           60 * 60 * 24 * 30, // expirationDuration: 30 days
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
           -1 // maxNumberOfKeys
@@ -40,7 +41,7 @@ contract('PublicLock', accounts => {
     describe('Create a Lock with 0 keys', function () {
       let transaction
       before(async function () {
-        transaction = await this.unlock.createLock(
+        transaction = await this.unlock.methods.createLock(
           60 * 60 * 24 * 30, // expirationDuration: 30 days
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
           0 // maxNumberOfKeys

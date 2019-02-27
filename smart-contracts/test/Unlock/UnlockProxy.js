@@ -1,10 +1,14 @@
-const Unlock = artifacts.require('Unlock')
 const Zos = require('zos')
 const TestHelper = Zos.TestHelper
 const shouldFail = require('../helpers/shouldFail')
 const shared = require('./behaviors/shared')
+const { ZWeb3, Contracts } = require('zos-lib')
+ZWeb3.initialize(web3.currentProvider)
+const Unlock = Contracts.getFromLocal('Unlock')
+const UnlockTestV2 = Contracts.getFromLocal('UnlockTestV2')
+const UnlockTestV3 = Contracts.getFromLocal('UnlockTestV3')
 
-contract('Unlock', function (accounts) {
+contract.only('Unlock', function (accounts) {
   const proxyAdmin = accounts[1]
   const unlockOwner = accounts[2]
 
@@ -24,7 +28,7 @@ contract('Unlock', function (accounts) {
       shared.shouldBehaveLikeV1(accounts, unlockOwner)
 
       it("should fail if called from the proxy owner's account", async function () {
-        await shouldFail(this.unlock.grossNetworkProduct({ from: proxyAdmin }), 'Cannot call fallback function from the proxy admin')
+        await shouldFail(this.unlock.methods.grossNetworkProduct({ from: proxyAdmin }), 'Cannot call fallback function from the proxy admin')
       })
     })
   })

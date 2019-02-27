@@ -1,10 +1,12 @@
 const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
-const Unlock = artifacts.require('../../Unlock.sol')
 const Zos = require('zos')
 const TestHelper = Zos.TestHelper
 const Web3Utils = require('web3-utils')
 const Units = require('ethereumjs-units')
+const { ZWeb3, Contracts } = require('zos-lib')
+ZWeb3.initialize(web3.currentProvider)
+const Unlock = Contracts.getFromLocal('Unlock')
 
 let locks, ID
 
