@@ -260,7 +260,7 @@ contract MixinKeys is
    */
   function _getKeyFor(
     address _owner
-  ) internal
+  ) internal view
     returns (Key storage)
   {
     return keyByOwner[_owner];
