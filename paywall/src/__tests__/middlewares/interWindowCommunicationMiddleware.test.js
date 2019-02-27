@@ -370,8 +370,8 @@ describe('interWindowCommunicationMiddleware', () => {
           window.top = {}
         })
         it('should dispatch SET_ACCOUNT if account is stored in localStorage', () => {
-          window.localStorage.getItem = jest.fn(() => account)
           expect.assertions(2)
+          window.localStorage.getItem = jest.fn(() => account)
           const middleware = interWindowCommunicationMiddleware(window)
           middleware(store)(() => {})({})
 
