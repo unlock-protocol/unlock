@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import UnlockPropTypes from '../propTypes'
@@ -7,63 +7,41 @@ import DeveloperOverlay from './developer/DeveloperOverlay'
 import ShowWhenLocked from './lock/ShowWhenLocked'
 import ShowWhenUnlocked from './lock/ShowWhenUnlocked'
 import GlobalErrorProvider from '../utils/GlobalErrorProvider'
-import { lockPage, unlockPage } from '../services/iframeService'
 import { UnlockedFlag } from './lock/UnlockFlag'
 import { lockRoute } from '../utils/routes'
+import useListenForPostMessage from '../hooks/browser/useListenForPostMessage'
+import usePostMessage from '../hooks/browser/usePostMessage'
 
-class Paywall extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      scrollPosition: 0,
-    }
-    this.handleScrollPosition = this.handleScrollPosition.bind(this)
-    this.handleIframe = this.handleIframe.bind(this)
-  }
-  componentDidMount() {
-    window.addEventListener('message', event => {
-      if (event.data.scrollPosition) {
-        this.handleScrollPosition(event.data.scrollPosition)
+function Paywall({ locks, locked, redirect }) {
+  const data = useListenForPostMessage(window) || { scrollPosition: 0 }
+  const scrollPosition = data.scrollPosition || 0
+  const { postMessage } = usePostMessage(window)
+  useEffect(
+    () => {
+      if (locked) {
+        postMessage('locked')
+      } else {
+        postMessage('unlocked')
       }
-    })
-    this.handleIframe()
-  }
-  componentDidUpdate() {
-    this.handleIframe()
-  }
-  handleScrollPosition(scrollPosition) {
-    this.setState(state => {
-      if (state.scrollPosition === scrollPosition) return null
-      return { scrollPosition }
-    })
-  }
-  handleIframe() {
-    const { locked } = this.props
-    if (locked) {
-      lockPage()
-    } else {
-      unlockPage()
-    }
-  }
-  render() {
-    const { scrollPosition } = this.state
-    const { locks, locked, redirect } = this.props
-    return (
-      <GlobalErrorProvider>
-        <ShowWhenLocked locked={locked}>
-          <Overlay
-            scrollPosition={scrollPosition}
-            locks={locks}
-            redirect={redirect}
-          />
-          <DeveloperOverlay />
-        </ShowWhenLocked>
-        <ShowWhenUnlocked locked={locked}>
-          <UnlockedFlag />
-        </ShowWhenUnlocked>
-      </GlobalErrorProvider>
-    )
-  }
+    },
+    [locked]
+  )
+
+  return (
+    <GlobalErrorProvider>
+      <ShowWhenLocked locked={locked}>
+        <Overlay
+          scrollPosition={scrollPosition}
+          locks={locks}
+          redirect={redirect}
+        />
+        <DeveloperOverlay />
+      </ShowWhenLocked>
+      <ShowWhenUnlocked locked={locked}>
+        <UnlockedFlag />
+      </ShowWhenUnlocked>
+    </GlobalErrorProvider>
+  )
 }
 
 Paywall.propTypes = {
