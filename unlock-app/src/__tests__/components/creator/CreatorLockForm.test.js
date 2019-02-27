@@ -90,15 +90,23 @@ describe('formValuesToLock', () => {
 })
 
 describe('CreatorLockForm', () => {
-  let createLock
-  let hideAction
-  let setError
-  let resetError
-  function makeLockForm(values = {}) {
-    createLock = jest.fn()
-    hideAction = jest.fn()
-    setError = jest.fn()
-    resetError = jest.fn()
+  let actions = {}
+
+  function makeLockForm(
+    lock = {},
+    {
+      createLock = jest.fn(),
+      hideAction = jest.fn(),
+      setError = jest.fn(),
+      resetError = jest.fn(),
+    } = {}
+  ) {
+    actions = {
+      createLock,
+      hideAction,
+      setError,
+      resetError,
+    }
     const ret = rtl.render(
       <CreatorLockForm
         account={{ address: 'hi' }}
@@ -106,7 +114,7 @@ describe('CreatorLockForm', () => {
         hideAction={hideAction}
         setError={setError}
         resetError={resetError}
-        lock={values}
+        lock={lock}
       />
     )
     return ret
@@ -118,15 +126,18 @@ describe('CreatorLockForm', () => {
     FORM_MAX_KEYS_INVALID,
     FORM_LOCK_NAME_MISSING,
   ]
+
   function expectErrors(errorList = []) {
-    expect(resetError).toHaveBeenCalledTimes(
+    expect(actions.resetError).toHaveBeenCalledTimes(
       allFormErrors.length - errorList.length
     )
-    expect(setError).toHaveBeenCalledTimes(errorList.length)
-    errorList.forEach(error => expect(setError).toHaveBeenCalledWith(error))
+    expect(actions.setError).toHaveBeenCalledTimes(errorList.length)
+    errorList.forEach(error =>
+      expect(actions.setError).toHaveBeenCalledWith(error)
+    )
     allFormErrors
       .filter(error => !errorList.includes(error))
-      .forEach(error => expect(resetError).toHaveBeenCalledWith(error))
+      .forEach(error => expect(actions.resetError).toHaveBeenCalledWith(error))
   }
 
   describe('things that should not fail', () => {
@@ -297,6 +308,7 @@ describe('CreatorLockForm', () => {
       })
     })
   })
+
   describe('valid values', () => {
     it('calls resetErrors', () => {
       expect.assertions(0) // WEIRD: we do not assert anything!
@@ -343,7 +355,7 @@ describe('CreatorLockForm', () => {
       const submit = wrapper.getByText('Submit')
       expect(submit).not.toBeNull()
       rtl.fireEvent.click(submit)
-      expect(createLock).toHaveBeenCalledWith(
+      expect(actions.createLock).toHaveBeenCalledWith(
         expect.objectContaining({
           expirationDuration: 2592000,
           keyPrice: '0.01',
@@ -364,11 +376,74 @@ describe('CreatorLockForm', () => {
     })
   })
 
+  describe('saving', () => {
+    it('should skip saving locks when the price is not changed', () => {
+      expect.assertions(2)
+      const createLock = jest.fn()
+      const lock = {
+        keyPrice: '999',
+        address: '0x123',
+      }
+      const wrapper = makeLockForm({ createLock, lock })
+      const submit = wrapper.getByText('Submit')
+      expect(submit).not.toBeNull()
+      rtl.fireEvent.click(submit)
+      expect(createLock).not.toHaveBeenCalled()
+    })
+
+    it('should save the lock when the price has been updated', () => {
+      expect.assertions(2)
+      const createLock = jest.fn()
+      const lock = {
+        keyPrice: '999',
+        address: '0x123',
+      }
+      const wrapper = makeLockForm(lock, { createLock })
+
+      // Change the keyPrice
+      const input = wrapper.getByValue('999')
+      rtl.fireEvent.change(input, {
+        target: {
+          value: '1000',
+        },
+      })
+
+      const submit = wrapper.getByText('Submit')
+      expect(submit).not.toBeNull()
+      rtl.fireEvent.click(submit)
+      expect(createLock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          address: '0x123',
+          keyPrice: '1000',
+        })
+      )
+    })
+
+    it('should save a new lock', () => {
+      expect.assertions(2)
+      const createLock = jest.fn()
+      const wrapper = makeLockForm({} /* lock */, { createLock })
+
+      const submit = wrapper.getByText('Submit')
+      expect(submit).not.toBeNull()
+      rtl.fireEvent.click(submit)
+      expect(createLock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          keyPrice: '0.01',
+          maxNumberOfKeys: 10,
+          name: 'New Lock',
+          address: null,
+          expirationDuration: 2592000,
+        })
+      )
+    })
+  })
+
   it('cancel dismisses the form', () => {
     expect.assertions(1)
     const wrapper = makeLockForm()
     const cancel = wrapper.getByText('Cancel')
     rtl.fireEvent.click(cancel)
-    expect(hideAction).toHaveBeenCalled()
+    expect(actions.hideAction).toHaveBeenCalled()
   })
 })
