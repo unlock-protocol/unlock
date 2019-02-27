@@ -30,6 +30,14 @@ export function Paywall({ locks, locked, redirect }) {
         postMessage(POST_MESSAGE_LOCKED)
       } else {
         postMessage(POST_MESSAGE_UNLOCKED)
+        const height = '160px'
+        const body = window.document.body
+        body.style.margin = '0'
+        body.style.height = height
+        body.style.display = 'flex'
+        body.style.flexDirection = 'column'
+        body.style.justifyContent = 'center'
+        body.style.overflow = 'hidden'
       }
     },
     [locked]
@@ -56,6 +64,7 @@ Paywall.propTypes = {
   locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
   locked: PropTypes.bool.isRequired,
   redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  window: PropTypes.shape({ postMessage: PropTypes.func }).isRequired, // for ease of unit testing
 }
 
 Paywall.defaultProps = {
@@ -84,7 +93,7 @@ export const mapStateToProps = ({ locks, keys, modals, router }) => {
 
   const modalShown = !!modals[locksFromUri.map(l => l.address).join('-')]
   const locked = validKeys.length === 0 || modalShown
-  return { locked, locks: locksFromUri, redirect }
+  return { locked, locks: locksFromUri, redirect, window }
 }
 
 export default connect(mapStateToProps)(Paywall)
