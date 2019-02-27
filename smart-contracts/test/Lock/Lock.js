@@ -45,6 +45,7 @@ contract('Lock', accounts => {
         maxNumberOfKeys = new BigNumber(maxNumberOfKeys)
         outstandingKeys = new BigNumber(outstandingKeys)
         numberOfOwners = new BigNumber(numberOfOwners)
+        publicLockVersion = new BigNumber(publicLockVersion)
         assert.strictEqual(owner, accounts[0])
         assert.equal(expirationDuration.toFixed(), 60 * 60 * 24 * 30)
         assert.strictEqual(Units.convert(keyPrice, 'wei', 'eth'), '0.01')
