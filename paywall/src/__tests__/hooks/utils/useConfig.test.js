@@ -2,7 +2,8 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 
 import configuration from '../../../config'
-import useConfig, { ConfigContext } from '../../../hooks/utils/useConfig'
+import useConfig from '../../../hooks/utils/useConfig'
+import { ConfigContext } from '../../../utils/withConfig'
 
 describe('useConfig hook', () => {
   const { Provider } = ConfigContext

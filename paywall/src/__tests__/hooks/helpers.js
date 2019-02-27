@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ConfigContext } from '../../hooks/utils/useConfig'
+import { ConfigContext } from '../../utils/withConfig'
 
 const { Provider } = ConfigContext
 
