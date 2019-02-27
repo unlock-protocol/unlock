@@ -117,7 +117,7 @@ contract MixinApproval is
   function _isApproved(
     uint _tokenId,
     address _user
-  ) internal
+  ) internal view
     returns (bool)
   {
     return approved[_tokenId] == _user;
