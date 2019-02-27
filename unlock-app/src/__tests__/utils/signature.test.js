@@ -3,7 +3,7 @@ import Web3Service from '../../services/web3Service'
 import configure from '../../config'
 import generateSignature from '../../utils/signature'
 
-const signatureData = require('./fixtures/signatureData')
+const signatureData = require('../test-helpers/fixtures/signatureData')
 
 class MockWebService extends EventEmitter {
   constructor() {
