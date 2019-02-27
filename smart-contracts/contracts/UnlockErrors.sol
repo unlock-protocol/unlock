@@ -54,4 +54,7 @@ contract UnlockErrors {
 
   // This function may only be called once, and it already has been.
   string public constant ONLY_CALL_ONCE = 'ONLY_CALL_ONCE';
+
+  // This contract does NOT implement the IERC721Receiver interface.
+  string public constant NON_COMPLIANT_ERC721_RECEIVER = 'NON_COMPLIANT_ERC721_RECEIVER';
 }
