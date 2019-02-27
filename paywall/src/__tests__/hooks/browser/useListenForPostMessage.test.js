@@ -96,6 +96,7 @@ describe('useListenForPostMessage hook', () => {
   })
 
   it('does not throw when window is not set', () => {
+    expect.assertions(0)
     rtl.testHook(() => useListenForPostMessage(false), {
       wrapper,
     })

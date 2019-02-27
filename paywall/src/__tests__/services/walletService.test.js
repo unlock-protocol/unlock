@@ -20,7 +20,6 @@ import {
 } from '../../errors'
 
 jest.mock('../../utils/promises')
-jest.unmock('web3')
 
 const nockScope = nock('http://127.0.0.1:8545', { encodedQueryParams: true })
 

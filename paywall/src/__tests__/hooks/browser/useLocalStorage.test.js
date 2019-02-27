@@ -18,6 +18,7 @@ describe('useLocalStorage hook', () => {
     }
   })
   it('returns existing value of localStorage key and a setter', () => {
+    expect.assertions(2)
     fakeWindow.storage.hi = 'there'
 
     expect.assertions(2)
@@ -31,6 +32,7 @@ describe('useLocalStorage hook', () => {
     expect(typeof setter).toBe('function')
   })
   it('sets the value of the localStorage key when the setter is called', () => {
+    expect.assertions(1)
     fakeWindow.storage['hi'] = 'there'
 
     expect.assertions(1)
@@ -46,9 +48,9 @@ describe('useLocalStorage hook', () => {
     expect(fakeWindow.localStorage.setItem).toHaveBeenCalledWith('hi', 'wow')
   })
   it('only sets the value when changed', () => {
-    fakeWindow.storage['hi'] = 'there'
-
     expect.assertions(5)
+
+    fakeWindow.storage['hi'] = 'there'
 
     const {
       result: {

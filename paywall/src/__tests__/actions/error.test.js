@@ -9,6 +9,7 @@ const MY_ERROR = 'MY ERROR'
 
 describe('error actions', () => {
   it('should create an action to set the error', () => {
+    expect.assertions(1)
     const error = MY_ERROR
     const expectedAction = {
       type: SET_ERROR,
@@ -19,6 +20,7 @@ describe('error actions', () => {
   })
 
   it('should create an action to reset all errors', () => {
+    expect.assertions(1)
     const error = null
     const expectedAction = {
       type: SET_ERROR,
@@ -29,6 +31,7 @@ describe('error actions', () => {
   })
 
   it('should create an action to reset a single error', () => {
+    expect.assertions(1)
     const error = MY_ERROR
     const expectedAction = {
       type: RESET_ERROR,

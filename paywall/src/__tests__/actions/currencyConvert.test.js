@@ -5,6 +5,7 @@ import {
 
 describe('currency conversion actions', () => {
   it('should create an action to set a currency conversion rate for USD', () => {
+    expect.assertions(1)
     const rateFor1Eth = '195.99'
     const convertedRate = 195.99
     const currency = 'USD'
@@ -17,6 +18,7 @@ describe('currency conversion actions', () => {
   })
 
   it('should create an action to set a currency conversion rate for EUR', () => {
+    expect.assertions(1)
     const rateFor1Eth = '200.30'
     const convertedRate = 200.3
     const currency = 'EUR'

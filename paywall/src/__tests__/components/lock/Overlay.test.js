@@ -151,6 +151,7 @@ describe('Overlay', () => {
       ).not.toBeNull()
     })
     it('displays error, headline, and flag when there is an error', () => {
+      expect.assertions(3)
       const wrapper = rtl.render(
         <Provider store={store}>
           <ConfigProvider
@@ -179,6 +180,7 @@ describe('Overlay', () => {
       ).not.toBeNull()
     })
     it('displays lock when the error is missing account', () => {
+      expect.assertions(3)
       const wrapper = rtl.render(
         <Provider store={store}>
           <ErrorProvider
