@@ -1,7 +1,7 @@
 import * as rtl from 'react-testing-library'
 import React from 'react'
 
-import { ConfigContext } from '../../../hooks/utils/useConfig'
+import { ConfigContext } from '../../../utils/withConfig'
 import usePostMessage from '../../../hooks/browser/usePostMessage'
 
 describe('usePostMessage hook', () => {
