@@ -9,7 +9,7 @@ let lock
 contract('Unlock', accounts => {
   before(async () => {
     const unlock = await Unlock.deployed()
-    const locks = await deployLocks(unlock)
+    const locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
   })
 

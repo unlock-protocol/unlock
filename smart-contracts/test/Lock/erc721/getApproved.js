@@ -23,7 +23,7 @@ contract('Lock ERC721', accounts => {
       initFrom: unlockOwner
     })
     this.unlock = await Unlock.at(this.proxy.address)
-    locks = await deployLocks(this.unlock)
+    locks = await deployLocks(this.unlock, accounts[0])
   })
 
   describe('getApproved', () => {

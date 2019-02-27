@@ -16,7 +16,7 @@ contract('Lock', accounts => {
 
   before(async () => {
     unlock = await Unlock.deployed()
-    locks = await deployLocks(unlock)
+    locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
     await lock.purchaseFor(keyOwner, Web3Utils.toHex('Julien'), {
       value: Units.convert('0.01', 'eth', 'wei')

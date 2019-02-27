@@ -6,7 +6,7 @@ let unlock
 contract('Lock ERC721', (accounts) => {
   before(async () => {
     unlock = await Unlock.deployed()
-    await deployLocks(unlock)
+    await deployLocks(unlock, accounts[0])
   })
 
   // from  transferFrom.js, ln#59:

@@ -11,7 +11,7 @@ contract('Lock ERC721', accounts => {
   before(() => {
     return Unlock.deployed()
       .then(unlock => {
-        return deployLocks(unlock)
+        return deployLocks(unlock, accounts[0])
       })
       .then(locks => {
         lock = locks['FIRST']
