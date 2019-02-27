@@ -38,7 +38,6 @@ const keys = {
 const modals = []
 
 const store = createUnlockStore({ locks, keys, modals, router })
-const noKeyStore = createUnlockStore({ locks, keys: {}, modals, router })
 
 afterEach(() => {
   rtl.cleanup()
