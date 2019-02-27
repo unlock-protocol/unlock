@@ -12,12 +12,12 @@ export default class StorageService {
    * @param {*} recipientAddress
    */
   storeTransaction(transactionHash, senderAddress, recipientAddress) {
-    const paylaod = {
+    const payload = {
       transactionHash,
       sender: senderAddress,
       recipient: recipientAddress,
     }
-    return axios.post(`${this.host}/transaction`, paylaod)
+    return axios.post(`${this.host}/transaction`, payload)
   }
 
   /**
@@ -41,8 +41,10 @@ export default class StorageService {
   }
 
   /**
-   * Returns the name of undefined
-   * Note that we swallow errors here for now...
+   * Returns the name of the request Lock,
+   * in a failure scenario a rejected promise is returned
+   * to the caller.
+   *
    * @param {*} address
    */
   async lockLookUp(address) {
@@ -51,14 +53,16 @@ export default class StorageService {
       if (result.data && result.data.name) {
         return result.data.name
       }
-      return null
-    } catch (err) {
-      return null
+      return Promise.reject(null)
+    } catch (error) {
+      return Promise.reject(error)
     }
   }
 
   /**
-   * Note that we swallow errors here for now...
+   * Store the details of the provide Lock. In the case of failure a rejected promise is
+   * returned to the caller.
+   *
    * @param {*} lock
    * @param {*} token
    */
@@ -70,13 +74,15 @@ export default class StorageService {
 
     try {
       return await axios.post(`${this.host}/lock`, lock, opts)
-    } catch (err) {
-      return null
+    } catch (error) {
+      return Promise.reject(error)
     }
   }
 
   /**
-   * Note that we swallow errors here for now...
+   *  Updates a lock with with details provided. In the case of failure a rejected promise is
+   * returned to the caller.
+   *
    * @param {*} address
    * @param {*} update
    * @param {*} token
@@ -88,8 +94,8 @@ export default class StorageService {
     }
     try {
       return await axios.put(`${this.host}/lock/${address}`, update, opts)
-    } catch (err) {
-      return null
+    } catch (error) {
+      return Promise.reject(error)
     }
   }
 }

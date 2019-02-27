@@ -2,7 +2,7 @@
 
 import { UPDATE_LOCK, updateLock } from '../actions/lock'
 import StorageService from '../services/storageService'
-import { STORE_LOCK_CREATION } from '../actions/storage'
+import { STORE_LOCK_CREATION, storageError } from '../actions/storage'
 
 import configure from '../config'
 import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
@@ -29,29 +29,45 @@ export default function storageMiddleware({ getState, dispatch }) {
               )
             })
           })
+          .catch(error => {
+            dispatch(storageError(error))
+          })
       }
 
       if (action.type === NEW_TRANSACTION) {
         // Storing a new transaction so that we can easoly point to it later on
-        storageService.storeTransaction(
-          action.transaction.hash,
-          action.transaction.from,
-          action.transaction.to
-        )
+        storageService
+          .storeTransaction(
+            action.transaction.hash,
+            action.transaction.from,
+            action.transaction.to
+          )
+          .catch(error => {
+            dispatch(storageError(error))
+          })
       }
 
       if (action.type === STORE_LOCK_CREATION) {
         // A new lock has been created
-        storageService.storeLockDetails(action.lock, action.token)
+        storageService
+          .storeLockDetails(action.lock, action.token)
+          .catch(error => {
+            dispatch(storageError(error))
+          })
       }
 
       if (action.type === UPDATE_LOCK) {
         // Only look up the name for a lock for which the name is empty/not-set
         const lock = getState().locks[action.address]
-        if (!lock.name) {
-          storageService.lockLookUp(action.address).then(name => {
-            dispatch(updateLock(action.address, { name }))
-          })
+        if (lock && !lock.name) {
+          storageService
+            .lockLookUp(action.address)
+            .then(name => {
+              dispatch(updateLock(action.address, { name }))
+            })
+            .catch(error => {
+              dispatch(storageError(error))
+            })
         }
       }
 
