@@ -18,8 +18,11 @@ describe('useListenForPostMessage hook', () => {
     fakeWindow = {
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
-      parent: {
-        origin: 'origin',
+      parent: {},
+      location: {
+        pathname: '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
+        search: '?origin=origin',
+        hash: '',
       },
     }
     config = { isServer: false, isInIframe: true }
@@ -115,7 +118,7 @@ describe('useListenForPostMessage hook', () => {
     rtl.act(() =>
       eventCallback({
         source: fakeWindow.parent,
-        origin: fakeWindow.parent.origin,
+        origin: 'origin',
         data: 'data',
       })
     )
@@ -140,14 +143,14 @@ describe('useListenForPostMessage hook', () => {
       rtl.act(() =>
         eventCallback({
           source: fakeWindow.parent,
-          origin: fakeWindow.parent.origin,
+          origin: 'origin',
           data: 'data',
         })
       )
       rtl.act(() =>
         eventCallback({
           source: 'nope',
-          origin: fakeWindow.parent.origin,
+          origin: 'origin',
           data: 'next',
         })
       )
@@ -170,7 +173,7 @@ describe('useListenForPostMessage hook', () => {
       rtl.act(() =>
         eventCallback({
           source: fakeWindow.parent,
-          origin: fakeWindow.parent.origin,
+          origin: 'origin',
           data: 'data',
         })
       )

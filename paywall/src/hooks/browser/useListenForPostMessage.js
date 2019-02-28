@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import useConfig from '../utils/useConfig'
+import { getRouteFromWindow } from '../../utils/routes'
 
 export default function useListenForPostmessage(window) {
   const { isInIframe, isServer } = useConfig()
   const parent = window && window.parent
   const [data, setData] = useState()
   const saveData = event => {
+    const { origin } = getRouteFromWindow(window)
     // ignore messages that do not come from our parent window
-    if (event.source !== parent || event.origin !== parent.origin) return
+    if (event.source !== parent || event.origin !== origin) return
     setData(event.data)
   }
 

@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import useConfig from '../utils/useConfig'
+import { getRouteFromWindow } from '../../utils/routes'
 
-export default function usePostmessage(window) {
+export default function usePostMessage(window) {
   const { isInIframe, isServer } = useConfig()
   const [message, postMessage] = useState()
   useEffect(
     () => {
-      if (isServer || !isInIframe || !message) return
-      window.parent.postMessage(message, window.parent.origin)
+      const { origin } = getRouteFromWindow(window)
+      if (isServer || !isInIframe || !message || !origin) return
+      window.parent.postMessage(message, origin)
     },
     // this next line tells React to only post the message if it has changed.
     // This is important because the hook will be called on every render,
