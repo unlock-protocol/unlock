@@ -1,5 +1,14 @@
 import { LOCK_PATH_NAME_REGEXP, ACCOUNT_REGEXP } from '../constants'
 
+if (!global.URL) {
+  // polyfill for server
+  global.URL = function() {
+    return {
+      pathname: '',
+      hash: false,
+    }
+  }
+}
 /**
  * Returns a hash of lockAddress and prefix based on a path.
  * @param {*} path
