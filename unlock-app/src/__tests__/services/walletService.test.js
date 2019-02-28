@@ -743,11 +743,21 @@ describe('WalletService', () => {
         account = '0xdeadbeef'
       })
 
-      it('should invoke sendTransaction with the right params', () => {
-        expect.assertions(3)
+      it('should invoke sendTransaction with the right params', done => {
+        expect.assertions(4)
         const data = '' // mock abi data for partialWithdraw
-
-        walletService._sendTransaction = jest.fn()
+        const cb = (args, cb) => {
+          expect(args).toEqual({
+            to: lock,
+            from: account,
+            data,
+            gas: 1000000,
+            contract: LockContract,
+          })
+          expect(cb).toBeInstanceOf(Function)
+          done()
+        }
+        walletService._sendTransaction = cb
 
         const ContractClass = class {
           constructor(abi, address) {
@@ -765,17 +775,6 @@ describe('WalletService', () => {
         walletService.web3.eth.Contract = ContractClass
 
         walletService.partialWithdrawFromLock(lock, account, '3')
-
-        expect(walletService._sendTransaction).toHaveBeenCalledWith(
-          {
-            to: lock,
-            from: account,
-            data,
-            gas: 1000000,
-            contract: LockContract,
-          },
-          expect.any(Function)
-        )
       })
 
       it('should emit an error if the transaction cannot be sent', done => {
