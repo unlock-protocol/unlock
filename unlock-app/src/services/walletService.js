@@ -51,6 +51,7 @@ export default class WalletService extends EventEmitter {
       updateKeyPrice: 1000000,
       purchaseKey: 1000000,
       withdrawFromLock: 1000000,
+      partialWithdrawFromLock: 1000000,
     }
   }
 
