@@ -3,14 +3,15 @@ import styled from 'styled-components'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import UnlockPropTypes from '../../../propTypes'
 import Buttons from '../../interface/buttons/lock'
+import withConfig from '../../../utils/withConfig'
 
-export function EmbedCodeSnippet({ lock }) {
+export function EmbedCodeSnippet({
+  lock,
+  config: { paywallUrl, paywallScriptUrl },
+}) {
   function embedCode(lock) {
-    // Autodetect current domain
-    let domain = window.location.origin
-
     return `<!-- Include this script in the <head> section of your page -->
-<script src="${domain}/static/paywall.min.js" data-unlock-url="${domain}"></script>
+<script src="${paywallScriptUrl}" data-unlock-url="${paywallUrl}"></script>
 <meta name="lock" content="${lock.address}" />
 `
   }
@@ -36,9 +37,10 @@ export function EmbedCodeSnippet({ lock }) {
 
 EmbedCodeSnippet.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
-export default EmbedCodeSnippet
+export default withConfig(EmbedCodeSnippet)
 
 const Actions = styled.div`
   display: grid;
