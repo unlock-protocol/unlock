@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import useConfig from '../utils/useConfig'
 import { getRouteFromWindow } from '../../utils/routes'
 
-export default function usePostmessage(window) {
+export default function usePostMessage(window) {
   const { isInIframe, isServer } = useConfig()
   const [message, postMessage] = useState()
   useEffect(
