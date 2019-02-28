@@ -16,10 +16,15 @@
     "reformat": "prettier-eslint \"src/**/*.js\" --write",
     "fail-pending-changes": "../scripts/pending-changes.sh",
     "build-paywall": "cross-env NODE_ENV=production rollup -c rollup.paywall.config.js -o ./static/paywall.min.js",
+    "storybook": "start-storybook -p 9002 -c .storybook -s src",
     "ci": "npm run lint && npm test && npm run reformat && npm run fail-pending-changes"
   },
   "dependencies": {
     "@babel/core": "^7.2.2",
+    "@storybook/addon-actions": "^4.1.13",
+    "@storybook/addon-knobs": "^4.1.13",
+    "@storybook/addon-storyshots": "^4.1.13",
+    "@storybook/react": "^4.1.13",
     "@types/jest": "^24.0.0",
     "@types/node": "^10.12.24",
     "@types/react": "^16.8.2",
@@ -51,6 +56,7 @@
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-uglify": "^6.0.2",
     "run-script-os": "^1.0.5",
+    "storybook-react-router": "^1.0.2",
     "styled-components": "^4.1.3",
     "typescript": "^3.3.3",
     "web3": "1.0.0-beta.37",
