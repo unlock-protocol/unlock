@@ -3,13 +3,10 @@ import styled from 'styled-components'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import UnlockPropTypes from '../../../propTypes'
 import Buttons from '../../interface/buttons/lock'
-import withConfig from '../../../utils/withConfig'
+import { ConfigContext } from '../../../utils/withConfig'
 
-export function EmbedCodeSnippet({
-  lock,
-  config: { paywallUrl, paywallScriptUrl },
-}) {
-  function embedCode(lock) {
+export function EmbedCodeSnippet({ lock }) {
+  function embedCode(lock, paywallScriptUrl, paywallUrl) {
     return `<!-- Include this script in the <head> section of your page -->
 <script src="${paywallScriptUrl}" data-unlock-url="${paywallUrl}"></script>
 <meta name="lock" content="${lock.address}" />
@@ -22,25 +19,31 @@ export function EmbedCodeSnippet({
 
   // TODO: add visual confirmation of code having been copied
   return (
-    <CodeControls>
-      <Label>Code snippet</Label>
-      <CodeSnippet value={embedCode(lock)} onClick={selectAll} readOnly />
-      <Actions>
-        <CopyToClipboard text={embedCode(lock)}>
-          <Buttons.Copy as="button" />
-        </CopyToClipboard>
-        <Buttons.Preview lock={lock} target="_blank" />
-      </Actions>
-    </CodeControls>
+    <ConfigContext.Consumer>
+      {({ paywallUrl, paywallScriptUrl }) => {
+        const embed = embedCode(lock, paywallScriptUrl, paywallUrl)
+        return (
+          <CodeControls>
+            <Label>Code snippet</Label>
+            <CodeSnippet value={embed} onClick={selectAll} readOnly />
+            <Actions>
+              <CopyToClipboard text={embed}>
+                <Buttons.Copy as="button" />
+              </CopyToClipboard>
+              <Buttons.Preview lock={lock} target="_blank" />
+            </Actions>
+          </CodeControls>
+        )
+      }}
+    </ConfigContext.Consumer>
   )
 }
 
 EmbedCodeSnippet.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
-  config: UnlockPropTypes.configuration.isRequired,
 }
 
-export default withConfig(EmbedCodeSnippet)
+export default EmbedCodeSnippet
 
 const Actions = styled.div`
   display: grid;
