@@ -7,6 +7,7 @@ export default function usePostMessage(window) {
   const [message, postMessage] = useState()
   useEffect(
     () => {
+      console.log('fuck')
       const { origin } = getRouteFromWindow(window)
       if (isServer || !isInIframe || !message || !origin) return
       window.parent.postMessage(message, origin)
