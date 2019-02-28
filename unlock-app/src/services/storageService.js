@@ -63,17 +63,16 @@ export default class StorageService {
    * Store the details of the provide Lock. In the case of failure a rejected promise is
    * returned to the caller.
    *
-   * @param {*} lock
+   * @param {*} lockDetails
    * @param {*} token
    */
-  async storeLockDetails(lock, token) {
+  async storeLockDetails(lockDetails, token) {
     const opts = {}
     if (token) {
       opts.headers = this.genAuthorizationHeader(token)
     }
-
     try {
-      return await axios.post(`${this.host}/lock`, lock, opts)
+      return await axios.post(`${this.host}/lock`, lockDetails, opts)
     } catch (error) {
       return Promise.reject(error)
     }
