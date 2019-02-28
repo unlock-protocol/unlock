@@ -42,29 +42,24 @@ const accountRegex = '0x[a-fA-F0-9]{40}'
  */
 export const ACCOUNT_REGEXP = new RegExp(accountRegex)
 
-// helpers for the LOCK_PATH_NAME_REGEXP
+// private helpers for the LOCK_PATH_NAME_REGEXP
 const prefix = '[a-z0-9]+'
-const urlEncodedRedirectUrl = '[^#?]+'
-const userAccount = accountRegex
+const urlEncodedUrl = '[^#?]+'
 const lockAddress = accountRegex
 
 /**
  * This regexp matches several important parameters passed in the url for the demo and paywall pages.
+ * It does not handle the query parameters or hash, as these are handled separately in lockRoute
  *
  * '/demo/0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9/'
  *   will extract 'demo' and the lock address as match 1 and 2
  * '/demo/0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9/http%3A%2F%2Fexample.com'
- *   will extract the same variables, and also the url-encoded redirect URL 'http://example.com' as match 4
- * '/paywall/0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9/#0xabcddc4CdBda8dc99c82D66d97B264386E41c0E9'
- *   will extract the 'paywall' and lock address as match 1 and 2 and the account address as match 6
+ *   will extract the same variables, and also the url-encoded redirect URL 'http://example.com' as match 3
  *
  * You should not use this directly, instead use the utils/routes.js lockRoute function
  */
 export const LOCK_PATH_NAME_REGEXP = new RegExp(
-  `(?:/(${prefix}))?/(${lockAddress})` +
-    // either "/urlEncodedRedirectUrl/#account" or just "#account" and these are all optional
-    // note that "/#account" as in "/paywall/<lockaddress>/#<useraccount>" is also matched
-    `(?:/(${urlEncodedRedirectUrl}))?(?:/?#(${userAccount}))?`
+  `(?:/(${prefix}))?/(${lockAddress})(?:/(${urlEncodedUrl})/?)?`
 )
 
 export const PAGE_DESCRIPTION =
