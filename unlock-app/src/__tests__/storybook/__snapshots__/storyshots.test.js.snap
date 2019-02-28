@@ -21941,6 +21941,7 @@ Object {
 .c5 input[type='number'] {
   min-width: 30px;
   width: 77%;
+  padding-right: 0;
 }
 
 .c8 {
@@ -22274,7 +22275,7 @@ Object {
         </div>
       </div>
       <span
-        class="buwkmd-5 sc-1u8ov25-6 fWwheI"
+        class="buwkmd-5 sc-1u8ov25-6 louuyM"
       >
         <span
           class="buwkmd-2 buwkmd-3 cwENmW"
@@ -22488,6 +22489,7 @@ Object {
 .c4 input[type='number'] {
   min-width: 30px;
   width: 77%;
+  padding-right: 0;
 }
 
 .c7 {
@@ -22811,7 +22813,7 @@ Object {
         />
       </div>
       <span
-        class="buwkmd-5 sc-1u8ov25-6 fWwheI"
+        class="buwkmd-5 sc-1u8ov25-6 louuyM"
       >
         <span
           class="buwkmd-2 buwkmd-3 cwENmW"
@@ -23025,6 +23027,7 @@ Object {
 .c4 input[type='number'] {
   min-width: 30px;
   width: 77%;
+  padding-right: 0;
 }
 
 .c7 {
@@ -23348,7 +23351,7 @@ Object {
         />
       </div>
       <span
-        class="buwkmd-5 sc-1u8ov25-6 fWwheI"
+        class="buwkmd-5 sc-1u8ov25-6 louuyM"
       >
         <span
           class="buwkmd-2 buwkmd-3 cwENmW"
@@ -23562,6 +23565,7 @@ Object {
 .c4 input[type='number'] {
   min-width: 30px;
   width: 77%;
+  padding-right: 0;
 }
 
 .c7 {
@@ -23885,7 +23889,7 @@ Object {
         />
       </div>
       <span
-        class="buwkmd-5 sc-1u8ov25-6 fWwheI"
+        class="buwkmd-5 sc-1u8ov25-6 louuyM"
       >
         <span
           class="buwkmd-2 buwkmd-3 cwENmW"
@@ -24099,6 +24103,7 @@ Object {
 .c4 input[type='number'] {
   min-width: 30px;
   width: 77%;
+  padding-right: 0;
 }
 
 .c7 {
@@ -24422,7 +24427,7 @@ Object {
         />
       </div>
       <span
-        class="buwkmd-5 sc-1u8ov25-6 fWwheI"
+        class="buwkmd-5 sc-1u8ov25-6 louuyM"
       >
         <span
           class="buwkmd-2 buwkmd-3 cwENmW"
@@ -24636,6 +24641,7 @@ Object {
 .c4 input[type='number'] {
   min-width: 30px;
   width: 77%;
+  padding-right: 0;
 }
 
 .c7 {
@@ -24959,7 +24965,7 @@ Object {
         />
       </div>
       <span
-        class="buwkmd-5 sc-1u8ov25-6 fWwheI"
+        class="buwkmd-5 sc-1u8ov25-6 louuyM"
       >
         <span
           class="buwkmd-2 buwkmd-3 cwENmW"
