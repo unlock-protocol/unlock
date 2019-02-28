@@ -16,7 +16,7 @@
     "reformat": "prettier-eslint \"src/**/*.js\" --write",
     "fail-pending-changes": "../scripts/pending-changes.sh",
     "build-paywall": "cross-env NODE_ENV=production rollup -c rollup.paywall.config.js -o ./static/paywall.min.js",
-    "storybook": "start-storybook -p 9002 -c .storybook -s src",
+    "storybook": "start-storybook -p 9002 -c .storybook -s .",
     "ci": "npm run lint && npm test && npm run reformat && npm run fail-pending-changes"
   },
   "dependencies": {
