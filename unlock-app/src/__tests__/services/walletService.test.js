@@ -734,6 +734,67 @@ describe('WalletService', () => {
       })
     })
 
+    describe('partialWithdrawFromLock', () => {
+      let lock
+      let account
+
+      beforeEach(() => {
+        lock = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
+        account = '0xdeadbeef'
+      })
+
+      it('should invoke sendTransaction with the right params', () => {
+        expect.assertions(3)
+        const data = '' // mock abi data for partialWithdraw
+
+        walletService._sendTransaction = jest.fn()
+
+        const ContractClass = class {
+          constructor(abi, address) {
+            expect(abi).toBe(LockContract.abi)
+            expect(address).toBe(lock)
+            this.methods = {
+              partialWithdraw: () => {
+                return this
+              },
+            }
+            this.encodeABI = jest.fn(() => data)
+          }
+        }
+
+        walletService.web3.eth.Contract = ContractClass
+
+        walletService.partialWithdrawFromLock(lock, account, '3')
+
+        expect(walletService._sendTransaction).toHaveBeenCalledWith(
+          {
+            to: lock,
+            from: account,
+            data,
+            gas: 1000000,
+            contract: LockContract,
+          },
+          expect.any(Function)
+        )
+      })
+
+      it('should emit an error if the transaction cannot be sent', done => {
+        expect.assertions(1)
+        const error = {}
+
+        walletService._sendTransaction = jest.fn((args, cb) => {
+          return cb(error)
+        })
+
+        walletService.on('error', error => {
+          expect(error.message).toBe(FAILED_TO_WITHDRAW_FROM_LOCK)
+          done()
+        })
+
+        walletService.partialWithdrawFromLock(lock, account, '3')
+      })
+    })
+
     describe('withdrawFromLock', () => {
       let lock
       let account

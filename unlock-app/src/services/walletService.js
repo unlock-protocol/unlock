@@ -264,6 +264,34 @@ export default class WalletService extends EventEmitter {
   }
 
   /**
+   * Triggers a transaction to withdraw some funds from the lock and assign them
+   * to the owner.
+   * @param {PropTypes.address} lock
+   * @param {PropTypes.address} account
+   * @param {string} ethAmount
+   */
+  partialWithdrawFromLock(lock, account, ethAmount) {
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
+    const weiAmount = Web3Utils.toWei(ethAmount)
+    const data = lockContract.methods.partialWithdraw(weiAmount).encodeABI()
+
+    return this._sendTransaction(
+      {
+        to: lock,
+        from: account,
+        data,
+        gas: WalletService.gasAmountConstants().withdrawFromLock,
+        contract: LockContract,
+      },
+      error => {
+        if (error) {
+          return this.emit('error', new Error(FAILED_TO_WITHDRAW_FROM_LOCK))
+        }
+      }
+    )
+  }
+
+  /**
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
    * @param {PropTypes.address} lock
    * @param {PropTypes.address} account
