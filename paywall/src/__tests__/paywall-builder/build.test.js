@@ -62,6 +62,7 @@ describe('buildPaywall', () => {
         location: {
           hash: '',
         },
+        origin: 'origin/',
       }
     })
 
@@ -77,7 +78,10 @@ describe('buildPaywall', () => {
       buildPaywall(window, document, fakeLockAddress)
 
       expect(mockScript).toHaveBeenCalledWith(document)
-      expect(mockIframe).toHaveBeenCalledWith(document, '/url/lockaddress/')
+      expect(mockIframe).toHaveBeenCalledWith(
+        document,
+        '/url/lockaddress/?origin=origin%2F'
+      )
     })
 
     it('passes the hash to the iframe, if present', () => {
@@ -92,7 +96,7 @@ describe('buildPaywall', () => {
       expect(mockScript).toHaveBeenCalledWith(document)
       expect(mockIframe).toHaveBeenCalledWith(
         document,
-        '/url/lockaddress/#hithere'
+        '/url/lockaddress/?origin=origin%2F#hithere'
       )
     })
 
