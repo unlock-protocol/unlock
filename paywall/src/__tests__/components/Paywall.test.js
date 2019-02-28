@@ -12,7 +12,7 @@ const locks = {
 const router = {
   location: {
     pathname: `/paywall/${lock.address}/http%3a%2f%2fexample.com`,
-    search: '',
+    search: '?origin=http%3A%2F%2Fexample.com',
     hash: '',
   },
 }
@@ -20,7 +20,7 @@ const router = {
 const noRedirectRouter = {
   location: {
     pathname: `/paywall/${lock.address}`,
-    search: '',
+    search: '?origin=http%3A%2F%2Fexample.com',
     hash: '',
   },
 }
@@ -43,6 +43,19 @@ afterEach(() => {
   rtl.cleanup()
 })
 describe('Paywall', () => {
+  let fakeWindow
+  beforeEach(() => {
+    fakeWindow = {
+      location: {
+        pathname: `/${lock.address}`,
+        search: '?origin=http%3A%2F%2Fexample.com',
+        hash: '',
+      },
+      parent: { postMessage: jest.fn() },
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+    }
+  })
   describe('mapStateToProps', () => {
     it('should yield the lock which matches the address of the demo page', () => {
       expect.assertions(1)
@@ -81,14 +94,6 @@ describe('Paywall', () => {
   })
 
   describe('handleIframe', () => {
-    let fakeWindow
-    beforeEach(() => {
-      fakeWindow = {
-        parent: { postMessage: jest.fn(), origin: 'http://example.com' },
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-      }
-    })
     it('should post "locked" when it is locked in iframe', () => {
       expect.assertions(1)
       rtl.act(() => {
@@ -103,7 +108,7 @@ describe('Paywall', () => {
 
       expect(fakeWindow.parent.postMessage).toHaveBeenCalledWith(
         'locked',
-        fakeWindow.parent.origin
+        'http://example.com'
       )
     })
     it('should not post any message when it is in the main window', () => {
@@ -139,20 +144,12 @@ describe('Paywall', () => {
 
       expect(fakeWindow.parent.postMessage).toHaveBeenCalledWith(
         'unlocked',
-        fakeWindow.parent.origin
+        'http://example.com'
       )
     })
   })
 
   describe('the unlocked flag', () => {
-    let fakeWindow
-    beforeEach(() => {
-      fakeWindow = {
-        parent: { postMessage: jest.fn(), origin: 'http://example.com' },
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-      }
-    })
     it('should be present when the paywall is unlocked', () => {
       expect.assertions(1)
       const { queryByText } = rtl.render(
