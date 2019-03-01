@@ -21,7 +21,7 @@
     "shelljs": "^0.8.3",
     "solhint": "^2.0.0",
     "solium": "^1.2.3",
-    "truffle": "^4.1.15",
+    "truffle": "^5.0.6",
     "truffle-hdwallet-provider": "^1.0.3",
     "web3-eth-abi": "^1.0.0-beta.46",
     "web3-utils": "^1.0.0-beta.36",
