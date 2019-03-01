@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
-import { withRouter } from 'next/router'
 import UnlockPropTypes from '../../propTypes'
 import { RoundedLogo, WordMarkLogo } from './Logo'
 import Buttons from './buttons/layout'
@@ -22,7 +21,7 @@ const appButtons = [
   { Button: Buttons.Log, page: '/log' },
 ]
 
-class Header extends React.PureComponent {
+export default class Header extends React.PureComponent {
   constructor(props) {
     super(props)
     this.toggleMenu = this.toggleMenu.bind(this)
@@ -35,13 +34,7 @@ class Header extends React.PureComponent {
 
   render() {
     const { menu } = this.state
-    const {
-      forContent,
-      title,
-      router: { pathname },
-    } = this.props
-
-    const onAppPage = appButtons.some(b => b.page === pathname)
+    const { forContent, title } = this.props
 
     return (
       <TopHeader>
@@ -68,19 +61,9 @@ class Header extends React.PureComponent {
           </Title>
         )}
         <AppButtons>
-          {onAppPage &&
-            appButtons.map(({ Button, page }) => {
-              const isActive = page === pathname
-              return (
-                <Button
-                  key={Button}
-                  backgroundColor={
-                    isActive ? 'var(--link)' : 'var(--lightgrey)'
-                  }
-                  fillColor={isActive ? 'var(--white)' : 'var(--grey)'}
-                />
-              )
-            })}
+          {appButtons.map(({ Button, page }) => {
+            return <Button key={Button} />
+          })}
         </AppButtons>
         <DesktopButtons>
           {navigationButtons.map(NavButton => (
@@ -107,18 +90,14 @@ class Header extends React.PureComponent {
   }
 }
 
-export default withRouter(Header)
-
 Header.propTypes = {
   title: PropTypes.string,
   forContent: PropTypes.bool,
-  router: UnlockPropTypes.router,
 }
 
 Header.defaultProps = {
   title: 'Unlock',
   forContent: false,
-  router: { pathname: '/' },
 }
 
 const TopHeader = styled.header`
