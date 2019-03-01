@@ -1,7 +1,11 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
 
-import { CreatorLockForm } from '../../../components/creator/CreatorLockForm'
+import {
+  CreatorLockForm,
+  lockToFormValues,
+  formValuesToLock,
+} from '../../../components/creator/CreatorLockForm'
 import {
   FORM_LOCK_NAME_MISSING,
   FORM_MAX_KEYS_INVALID,
@@ -11,16 +15,98 @@ import {
 
 import { INFINITY, UNLIMITED_KEYS_COUNT } from '../../../constants'
 
+describe('lockToFormValues', () => {
+  it('should return an object with the expirationDuration in the right unit', () => {
+    expect.assertions(1)
+    const lock = {
+      expirationDuration: 24 * 60 * 60 * 365, // 1 year in seconds
+      expirationDurationUnit: 86400, // 1 day
+    }
+    expect(lockToFormValues(lock).expirationDuration).toBe(365)
+  })
+
+  it('should preserve the name, address, keyPrice, outstandingKeys and balance', () => {
+    expect.assertions(6)
+    const lock = {
+      name: 'hello',
+      address: 'address',
+      keyPrice: '0.1',
+      outstandingKeys: '1',
+      balance: '10',
+      maxNumberOfKeys: '100',
+    }
+    const formValues = lockToFormValues(lock)
+    expect(formValues.name).toBe(lock.name)
+    expect(formValues.address).toBe(lock.address)
+    expect(formValues.keyPrice).toBe(lock.keyPrice)
+    expect(formValues.outstandingKeys).toBe(lock.outstandingKeys)
+    expect(formValues.balance).toBe(lock.balance)
+    expect(formValues.maxNumberOfKeys).toBe(lock.maxNumberOfKeys)
+  })
+
+  it('should return an object with the right format for unlimitedKeys', () => {
+    expect.assertions(2)
+    const lock = {
+      maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+    }
+    expect(lockToFormValues(lock).unlimitedKeys).toBe(true)
+    expect(lockToFormValues(lock).maxNumberOfKeys).toBe(INFINITY)
+  })
+})
+
+describe('formValuesToLock', () => {
+  it('should return an object with the name, keyPrice, maxNumberOfKeys', () => {
+    expect.assertions(5)
+    const formValues = {
+      name: 'Lock',
+      keyPrice: '0.1',
+      maxNumberOfKeys: '10',
+      expirationDuration: '1',
+      expirationDurationUnit: '1',
+      address: '0xabc',
+    }
+    expect(formValuesToLock(formValues).name).toBe(formValues.name)
+    expect(formValuesToLock(formValues).keyPrice).toBe(formValues.keyPrice)
+    expect(formValuesToLock(formValues).maxNumberOfKeys).toBe(
+      formValues.maxNumberOfKeys
+    )
+    expect(formValuesToLock(formValues).expirationDuration).toBe(1)
+    expect(formValuesToLock(formValues).address).toBe(formValues.address)
+  })
+
+  it('should handle unlimitedKeys', () => {
+    expect.assertions(1)
+    const formValues = {
+      name: 'Lock',
+      keyPrice: '0.1',
+      maxNumberOfKeys: '10',
+      expirationDuration: '1',
+      unlimitedKeys: true,
+    }
+    expect(formValuesToLock(formValues).maxNumberOfKeys).toBe(
+      UNLIMITED_KEYS_COUNT
+    )
+  })
+})
+
 describe('CreatorLockForm', () => {
-  let createLock
-  let hideAction
-  let setError
-  let resetError
-  function makeLockForm(values = {}) {
-    createLock = jest.fn()
-    hideAction = jest.fn()
-    setError = jest.fn()
-    resetError = jest.fn()
+  let actions = {}
+
+  function makeLockForm(
+    lock = {},
+    {
+      createLock = jest.fn(),
+      hideAction = jest.fn(),
+      setError = jest.fn(),
+      resetError = jest.fn(),
+    } = {}
+  ) {
+    actions = {
+      createLock,
+      hideAction,
+      setError,
+      resetError,
+    }
     const ret = rtl.render(
       <CreatorLockForm
         account={{ address: 'hi' }}
@@ -28,7 +114,7 @@ describe('CreatorLockForm', () => {
         hideAction={hideAction}
         setError={setError}
         resetError={resetError}
-        {...values}
+        lock={lock}
       />
     )
     return ret
@@ -40,15 +126,18 @@ describe('CreatorLockForm', () => {
     FORM_MAX_KEYS_INVALID,
     FORM_LOCK_NAME_MISSING,
   ]
+
   function expectErrors(errorList = []) {
-    expect(resetError).toHaveBeenCalledTimes(
+    expect(actions.resetError).toHaveBeenCalledTimes(
       allFormErrors.length - errorList.length
     )
-    expect(setError).toHaveBeenCalledTimes(errorList.length)
-    errorList.forEach(error => expect(setError).toHaveBeenCalledWith(error))
+    expect(actions.setError).toHaveBeenCalledTimes(errorList.length)
+    errorList.forEach(error =>
+      expect(actions.setError).toHaveBeenCalledWith(error)
+    )
     allFormErrors
       .filter(error => !errorList.includes(error))
-      .forEach(error => expect(resetError).toHaveBeenCalledWith(error))
+      .forEach(error => expect(actions.resetError).toHaveBeenCalledWith(error))
   }
 
   describe('things that should not fail', () => {
@@ -71,31 +160,6 @@ describe('CreatorLockForm', () => {
       expect.assertions(1)
       const wrapper = makeLockForm({ name: '' })
       expect(wrapper.getByValue('').dataset.valid).toBe('false')
-    })
-
-    it('key expiration is not a number', () => {
-      expect.assertions(1)
-      const save = console.error // eslint-disable-line
-      console.error = () => {} // eslint-disable-line
-      try {
-        const wrapper = makeLockForm({ expirationDuration: 'abc' })
-
-        expect(wrapper.getByValue('abc').dataset.valid).toBe('false')
-      } finally {
-        console.error = save // eslint-disable-line
-      }
-    })
-
-    it('key expiration is missing', () => {
-      expect.assertions(1)
-      const save = console.error // eslint-disable-line
-      console.error = () => {} // eslint-disable-line
-      try {
-        const wrapper = makeLockForm({ expirationDuration: '' })
-        expect(wrapper.getByValue('').dataset.valid).toBe('false')
-      } finally {
-        console.error = save // eslint-disable-line
-      }
     })
 
     it('key expiration is a negative number', () => {
@@ -244,6 +308,7 @@ describe('CreatorLockForm', () => {
       })
     })
   })
+
   describe('valid values', () => {
     it('calls resetErrors', () => {
       expect.assertions(0) // WEIRD: we do not assert anything!
@@ -290,12 +355,11 @@ describe('CreatorLockForm', () => {
       const submit = wrapper.getByText('Submit')
       expect(submit).not.toBeNull()
       rtl.fireEvent.click(submit)
-      expect(createLock).toHaveBeenCalledWith(
+      expect(actions.createLock).toHaveBeenCalledWith(
         expect.objectContaining({
           expirationDuration: 2592000,
           keyPrice: '0.01',
           maxNumberOfKeys: 10,
-          unlimitedKeys: false,
           name: 'New Lock',
           owner: 'hi',
         })
@@ -312,11 +376,74 @@ describe('CreatorLockForm', () => {
     })
   })
 
+  describe('saving', () => {
+    it('should skip saving locks when the price is not changed', () => {
+      expect.assertions(2)
+      const createLock = jest.fn()
+      const lock = {
+        keyPrice: '999',
+        address: '0x123',
+      }
+      const wrapper = makeLockForm({ createLock, lock })
+      const submit = wrapper.getByText('Submit')
+      expect(submit).not.toBeNull()
+      rtl.fireEvent.click(submit)
+      expect(createLock).not.toHaveBeenCalled()
+    })
+
+    it('should save the lock when the price has been updated', () => {
+      expect.assertions(2)
+      const createLock = jest.fn()
+      const lock = {
+        keyPrice: '999',
+        address: '0x123',
+      }
+      const wrapper = makeLockForm(lock, { createLock })
+
+      // Change the keyPrice
+      const input = wrapper.getByValue('999')
+      rtl.fireEvent.change(input, {
+        target: {
+          value: '1000',
+        },
+      })
+
+      const submit = wrapper.getByText('Submit')
+      expect(submit).not.toBeNull()
+      rtl.fireEvent.click(submit)
+      expect(createLock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          address: '0x123',
+          keyPrice: '1000',
+        })
+      )
+    })
+
+    it('should save a new lock', () => {
+      expect.assertions(2)
+      const createLock = jest.fn()
+      const wrapper = makeLockForm({} /* lock */, { createLock })
+
+      const submit = wrapper.getByText('Submit')
+      expect(submit).not.toBeNull()
+      rtl.fireEvent.click(submit)
+      expect(createLock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          keyPrice: '0.01',
+          maxNumberOfKeys: 10,
+          name: 'New Lock',
+          address: null,
+          expirationDuration: 2592000,
+        })
+      )
+    })
+  })
+
   it('cancel dismisses the form', () => {
     expect.assertions(1)
     const wrapper = makeLockForm()
     const cancel = wrapper.getByText('Cancel')
     rtl.fireEvent.click(cancel)
-    expect(hideAction).toHaveBeenCalled()
+    expect(actions.hideAction).toHaveBeenCalled()
   })
 })

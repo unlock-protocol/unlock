@@ -43,15 +43,18 @@ describe('mutationObserver', () => {
       callback = jest.fn()
     })
     it('bails if no nodes added', () => {
+      expect.assertions(1)
       changeListener(callback, [])
       expect(callback).not.toBeCalled()
     })
     it('bails if node is not a meta tag', () => {
+      expect.assertions(1)
       const mutations = makeMutation([tag('notmeta', 'hi', 'content')])
       changeListener(callback, mutations)
       expect(callback).not.toBeCalled()
     })
     it('bails if node is not a meta tag named "lock"', () => {
+      expect.assertions(1)
       const mutations = makeMutation([
         tag('notmeta', 'hi', 'content'),
         tag('meta', 'hi', 'content2'),
@@ -60,6 +63,7 @@ describe('mutationObserver', () => {
       expect(callback).not.toBeCalled()
     })
     it('calls callback with content attribute', () => {
+      expect.assertions(1)
       const mutations = makeMutation([
         tag('notmeta', 'hi', 'content'),
         tag('meta', 'hi', 'content2'),
@@ -80,10 +84,12 @@ describe('mutationObserver', () => {
       jest.restoreAllMocks()
     })
     it('immediately calls callback if a lock meta tag already exists in the page', () => {
+      expect.assertions(1)
       listenForNewLocks(callback, mockHead('hi'))
       expect(callback).toBeCalledWith('hi')
     })
     it('creates MutationObserver and calls observe', () => {
+      expect.assertions(3)
       global.MutationObserver = function() {
         this.observe = jest.fn()
         observer = this

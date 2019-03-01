@@ -1,7 +1,7 @@
 import * as rtl from 'react-testing-library'
 import React from 'react'
 
-import { ConfigContext } from '../../../hooks/utils/useConfig'
+import { ConfigContext } from '../../../utils/withConfig'
 import usePostMessage from '../../../hooks/browser/usePostMessage'
 
 describe('usePostMessage hook', () => {
@@ -18,7 +18,11 @@ describe('usePostMessage hook', () => {
     fakeWindow = {
       parent: {
         postMessage: jest.fn(),
-        origin: 'origin',
+      },
+      location: {
+        pathname: '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
+        search: '?origin=origin',
+        hash: '',
       },
     }
     config = { isServer: false, isInIframe: true }
@@ -79,6 +83,24 @@ describe('usePostMessage hook', () => {
   })
   it('ignores calls with an empty message', () => {
     expect.assertions(1)
+
+    const {
+      result: {
+        current: { postMessage },
+      },
+    } = rtl.testHook(() => usePostMessage(fakeWindow), {
+      wrapper,
+    })
+
+    rtl.act(() => {
+      postMessage()
+    })
+    expect(fakeWindow.parent.postMessage).not.toHaveBeenCalled()
+  })
+  it('ignores calls with an empty origin', () => {
+    expect.assertions(1)
+
+    fakeWindow.location.search = '' // remove origin
 
     const {
       result: {

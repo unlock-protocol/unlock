@@ -29,59 +29,81 @@ import {
 
 import { INFINITY, UNLIMITED_KEYS_COUNT } from '../../constants'
 
+/**
+ * Converts the lock values into form values
+ * @param {*} lockValues
+ */
+export const lockToFormValues = lockValues => {
+  const formValues = Object.assign({}, lockValues)
+
+  // In the form, duration is shown in days, vs seconds in the lock object
+  formValues.expirationDuration =
+    lockValues.expirationDuration / lockValues.expirationDurationUnit
+
+  // Unlimited keys
+  if (lockValues.maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
+    formValues.unlimitedKeys = true
+    formValues.maxNumberOfKeys = INFINITY
+  }
+
+  return formValues
+}
+
+/**
+ * Converts the form values into lock values
+ * @param {*} lockValues
+ */
+export const formValuesToLock = formValues => {
+  const lockValues = {}
+
+  lockValues.keyPrice = formValues.keyPrice
+  lockValues.maxNumberOfKeys = formValues.maxNumberOfKeys
+  lockValues.name = formValues.name
+  lockValues.address = formValues.address
+
+  // In the form, duration is shown in days, vs seconds in the lock object
+  lockValues.expirationDuration =
+    formValues.expirationDuration * formValues.expirationDurationUnit
+
+  // Unlimited keys
+  if (formValues.unlimitedKeys) {
+    lockValues.maxNumberOfKeys = UNLIMITED_KEYS_COUNT
+  }
+
+  return lockValues
+}
+
 export class CreatorLockForm extends React.Component {
+  /**
+   *
+   * @param {*} props
+   * @param {*} context
+   */
   constructor(props, context) {
     super(props, context)
-    let expirationDuration = props.expirationDuration
-    let keyPrice = props.keyPrice
-    let maxNumberOfKeys = props.maxNumberOfKeys
-    // these try/catch blocks are designed to allow us to accept
-    // a wide range of both valid and invalid input
-    // and use the form itself to display invalid values
-    // keeping with the principle of accepting as much as possible
-    // and being strict in what data we send out
-    try {
-      if (!keyPrice.match(/^[0-9]+$/)) {
-        keyPrice = props.keyPrice
-      }
-    } catch (e) {
-      // silently ignore invalid value, leave as what the original was
-      keyPrice = props.keyPrice
+
+    const newLockDefaults = {
+      expirationDuration: 30 * 86400, // 30 days in seconds
+      expirationDurationUnit: 86400, // days
+      keyPrice: '0.01',
+      maxNumberOfKeys: 10,
+      name: 'New Lock',
+      address: null,
     }
-    try {
-      expirationDuration =
-        parseInt(expirationDuration) / props.expirationDurationUnit
-      if (isNaN(expirationDuration)) {
-        expirationDuration = props.expirationDuration
-      }
-    } catch (e) {
-      // silently ignore invalid value, leave as what the original was
-      expirationDuration = props.expirationDuration
-    }
-    // unlimited keys is represented differently in the frontend and the backend,
-    // so when a lock has `maxNumberOfKeys` set to UNLIMITED_KEYS_COUNT,
-    // convert it to infinity symbol for frontend display
-    if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
-      maxNumberOfKeys = INFINITY
-    }
-    this.state = {
-      expirationDuration: expirationDuration,
-      expirationDurationUnit: props.expirationDurationUnit, // Days
-      keyPrice: keyPrice,
-      maxNumberOfKeys,
-      unlimitedKeys: maxNumberOfKeys === INFINITY,
-      name: props.name,
-      address: props.address,
-    }
-    const { validityState: valid, errors } = this.formValidity(this.state)
-    this.state.valid = valid
-    this.state.errors = errors
+
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleUnlimitedClick = this.handleUnlimitedClick.bind(this)
     this.saveLock = this.saveLock.bind(this)
     this.processFormErrors = this.sendErrorsToRedux.bind(this)
+
+    // State represents the values in the form... and we may get a different format for them
+    this.state = lockToFormValues(Object.assign(newLockDefaults, props.lock))
+
+    const { validityState: valid, errors } = this.formValidity(this.state)
+    this.state.valid = valid
+    this.state.errors = errors
   }
 
   /**
@@ -145,28 +167,14 @@ export class CreatorLockForm extends React.Component {
   }
 
   saveLock() {
-    const { account, createLock } = this.props
-    const {
-      expirationDuration,
-      expirationDurationUnit,
-      maxNumberOfKeys,
-      unlimitedKeys,
-      keyPrice,
-      name,
-      address,
-    } = this.state
-
-    const lock = {
-      address: address,
-      name: name,
-      expirationDuration: expirationDuration * expirationDurationUnit,
-      keyPrice: keyPrice.toString(10), // In Eth
-      maxNumberOfKeys: unlimitedKeys ? UNLIMITED_KEYS_COUNT : maxNumberOfKeys,
-      owner: account.address,
-      unlimitedKeys,
+    const { account, createLock, lock } = this.props
+    const newLock = formValuesToLock(this.state)
+    if (!lock.address || lock.keyPrice !== newLock.keyPrice) {
+      createLock({
+        ...newLock,
+        owner: account.address,
+      })
     }
-
-    createLock(lock)
   }
 
   /**
@@ -225,7 +233,8 @@ export class CreatorLockForm extends React.Component {
   }
 
   render() {
-    const { pending } = this.props
+    const { lock } = this.props
+    const isNew = !lock || !lock.address
     const {
       expirationDuration,
       maxNumberOfKeys,
@@ -246,8 +255,8 @@ export class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             defaultValue={name}
             data-valid={valid.name}
-            required={pending}
-            disabled={!pending}
+            required={isNew}
+            disabled={!isNew}
           />
         </FormLockName>
         <FormLockDuration>
@@ -259,8 +268,8 @@ export class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             defaultValue={expirationDuration}
             data-valid={valid.expirationDuration}
-            required={pending}
-            disabled={!pending}
+            required={isNew}
+            disabled={!isNew}
           />{' '}
           days
         </FormLockDuration>
@@ -271,10 +280,10 @@ export class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             value={maxNumberOfKeys}
             data-valid={valid.maxNumberOfKeys}
-            required={pending}
-            disabled={!pending}
+            required={isNew}
+            disabled={!isNew}
           />
-          {pending && !unlimitedKeys && (
+          {isNew && !unlimitedKeys && (
             <LockLabelUnlimited onClick={this.handleUnlimitedClick}>
               Unlimited
             </LockLabelUnlimited>
@@ -311,23 +320,11 @@ CreatorLockForm.propTypes = {
   createLock: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   resetError: PropTypes.func.isRequired,
-  expirationDuration: PropTypes.number,
-  expirationDurationUnit: PropTypes.number,
-  keyPrice: PropTypes.string,
-  maxNumberOfKeys: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // string is for '∞'
-  name: PropTypes.string,
-  address: PropTypes.string,
-  pending: PropTypes.bool,
+  lock: UnlockPropTypes.lock,
 }
 
 CreatorLockForm.defaultProps = {
-  expirationDuration: 30 * 86400,
-  expirationDurationUnit: 86400, // Days
-  keyPrice: '0.01',
-  maxNumberOfKeys: 10,
-  name: 'New Lock',
-  pending: false,
-  address: null,
+  lock: {},
 }
 
 const mapStateToProps = state => {

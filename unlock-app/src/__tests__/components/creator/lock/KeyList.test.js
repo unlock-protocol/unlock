@@ -2,6 +2,7 @@ import {
   mapStateToProps,
   mapDispatchToProps,
 } from '../../../../components/creator/lock/KeyList'
+import { SET_KEYS_ON_PAGE_FOR_LOCK } from '../../../../actions/keysPages'
 
 describe('KeyList', () => {
   describe('mapStateToProps', () => {
@@ -39,7 +40,7 @@ describe('KeyList', () => {
       const props = mapDispatchToProps(dispatch, { lock })
       props.loadPage(page)
       expect(dispatch).toHaveBeenCalledWith({
-        type: 'SET_KEYS_ON_PAGE_FOR_LOCK',
+        type: SET_KEYS_ON_PAGE_FOR_LOCK,
         keys: undefined,
         lock: lock.address,
         page: page - 1, // The UI pagination starts at 1, while the webService starts at 0

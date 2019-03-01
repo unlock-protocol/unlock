@@ -1,6 +1,6 @@
-export const PURCHASE_KEY = 'PURCHASE_KEY'
-export const ADD_KEY = 'ADD_KEY'
-export const UPDATE_KEY = 'UPDATE_KEY'
+export const PURCHASE_KEY = 'key/PURCHASE_KEY'
+export const ADD_KEY = 'key/ADD_KEY'
+export const UPDATE_KEY = 'key/UPDATE_KEY'
 
 export const purchaseKey = key => ({
   type: PURCHASE_KEY,

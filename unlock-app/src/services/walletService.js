@@ -51,6 +51,7 @@ export default class WalletService extends EventEmitter {
       updateKeyPrice: 1000000,
       purchaseKey: 1000000,
       withdrawFromLock: 1000000,
+      partialWithdrawFromLock: 1000000,
     }
   }
 
@@ -264,6 +265,37 @@ export default class WalletService extends EventEmitter {
   }
 
   /**
+   * Triggers a transaction to withdraw some funds from the lock and assign them
+   * to the owner.
+   * @param {PropTypes.address} lock
+   * @param {PropTypes.address} account
+   * @param {string} ethAmount
+   * @param {Function} callback
+   */
+  partialWithdrawFromLock(lock, account, ethAmount, callback) {
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
+    const weiAmount = Web3Utils.toWei(ethAmount)
+    const data = lockContract.methods.partialWithdraw(weiAmount).encodeABI()
+
+    return this._sendTransaction(
+      {
+        to: lock,
+        from: account,
+        data,
+        gas: WalletService.gasAmountConstants().partialWithdrawFromLock,
+        contract: LockContract,
+      },
+      error => {
+        if (error) {
+          this.emit('error', new Error(FAILED_TO_WITHDRAW_FROM_LOCK))
+          return callback(error)
+        }
+        return callback()
+      }
+    )
+  }
+
+  /**
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
    * @param {PropTypes.address} lock
    * @param {PropTypes.address} account
@@ -299,19 +331,34 @@ export default class WalletService extends EventEmitter {
    * @param {*} callback
    */
   signData(account, data, callback) {
-    const fallback = () => {
-      this.web3.eth.sign(data, account, callback)
+    let method
+
+    if (this.web3.currentProvider.isMetaMask) {
+      method = 'eth_signTypedData_v3'
+      data = JSON.stringify(data)
+    } else {
+      method = 'eth_signTypedData'
     }
 
-    try {
-      this.web3.eth.personal.sign(data, account, (error, signature) => {
-        if (error) {
-          return fallback()
+    return this.web3.currentProvider.send(
+      {
+        method: method,
+        params: [account, data],
+        from: account,
+      },
+      (err, result) => {
+        // network failure
+        if (err) {
+          return callback(err, null)
         }
-        return callback(error, signature)
-      })
-    } catch (error) {
-      fallback()
-    }
+
+        // signature failure on the node
+        if (result.error) {
+          return callback(result.error, null)
+        }
+
+        callback(null, Buffer.from(result.result).toString('base64'))
+      }
+    )
   }
 }

@@ -9,11 +9,12 @@ import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
 import './mixins/MixinApproval.sol';
 import './mixins/MixinDisableAndDestroy.sol';
-import './mixins/MixinKeyOwner.sol';
 import './mixins/MixinKeys.sol';
 import './mixins/MixinLockCore.sol';
 import './mixins/MixinRefunds.sol';
+import './mixins/MixinLockMetadata.sol';
 import './mixins/MixinNoFallback.sol';
+import './mixins/MixinTransfer.sol';
 
 /**
  * @title The Lock contract
@@ -21,7 +22,7 @@ import './mixins/MixinNoFallback.sol';
  * Eventually: implement ERC721.
  * @dev ERC165 allows our contract to be queried to determine whether it implements a given interface.
  * Every ERC-721 compliant contract must implement the ERC165 interface.
- * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
+ * https://eips.ethereum.org/EIPS/eip-721
  */
 contract PublicLock is
   MixinNoFallback,
@@ -31,11 +32,12 @@ contract PublicLock is
   ERC165,
   Ownable,
   MixinDisableAndDestroy,
-  MixinKeyOwner,
-  MixinApproval,
   MixinKeys,
+  MixinApproval,
   MixinLockCore,
-  MixinRefunds
+  MixinLockMetadata,
+  MixinRefunds,
+  MixinTransfer
 {
   using SafeMath for uint;
 
@@ -48,9 +50,13 @@ contract PublicLock is
     uint _keyPrice,
     uint _maxNumberOfKeys,
     uint _version
-  ) public
+  )
+    public
     MixinLockCore(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys, _version)
   {
+    // registering the interface for erc721 with ERC165.sol using
+    // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
+    _registerInterface(0x80ac58cd);
   }
 
   /**
@@ -86,89 +92,6 @@ contract PublicLock is
     hasValidKey(_referrer)
   {
     return _purchaseFor(_recipient, _referrer, _data);
-  }
-
-  /**
-   * This is payable because at some point we want to allow the LOCK to capture a fee on 2ndary
-   * market transactions...
-   */
-  function transferFrom(
-    address _from,
-    address _recipient,
-    uint _tokenId
-  )
-    external
-    payable
-    onlyIfAlive
-    notSoldOut()
-    hasValidKey(_from)
-    onlyKeyOwnerOrApproved(_tokenId)
-  {
-    require(_recipient != address(0), 'INVALID_ADDRESS');
-
-    Key storage fromKey = _getKeyFor(_from);
-    Key storage toKey = _getKeyFor(_recipient);
-
-    uint previousExpiration = toKey.expirationTimestamp;
-
-    if (previousExpiration == 0) {
-      // The recipient did not have a key previously
-      _addNewOwner(_recipient);
-      _setKeyOwner(_tokenId, _recipient);
-      toKey.tokenId = _tokenId;
-    }
-
-    if (previousExpiration <= block.timestamp) {
-      // The recipient did not have a key, or had a key but it expired. The new expiration is the
-      // sender's key expiration
-      toKey.expirationTimestamp = fromKey.expirationTimestamp;
-    } else {
-      // The recipient has a non expired key. We just add them the corresponding remaining time
-      // SafeSub is not required since the if confirms `previousExpiration - block.timestamp` cannot underflow
-      toKey.expirationTimestamp = fromKey
-        .expirationTimestamp.add(previousExpiration - block.timestamp);
-    }
-    // Overwite data in all cases
-    toKey.data = fromKey.data;
-
-    // Effectively expiring the key for the previous owner
-    fromKey.expirationTimestamp = block.timestamp;
-
-    // Clear any previous approvals
-    _clearApproval(_tokenId);
-
-    // trigger event
-    emit Transfer(
-      _from,
-      _recipient,
-      _tokenId
-    );
-  }
-
-  /**
-   * @notice Handle the receipt of an NFT
-   * @dev The ERC721 smart contract calls this function on the recipient
-   * after a `safeTransfer`. This function MUST return the function selector,
-   * otherwise the caller will revert the transaction. The selector to be
-   * returned can be obtained as `this.onERC721Received.selector`. This
-   * function MAY throw to revert and reject the transfer.
-   * Note: the ERC721 contract address is always the message sender.
-   * @param operator The address which called `safeTransferFrom` function
-   * @param from The address which previously owned the token
-   * @param tokenId The NFT identifier which is being transferred
-   * @param data Additional data with no specified format
-   * @return `bytes4(keccak256('onERC721Received(address,address,uint,bytes)'))`
-   */
-  function onERC721Received(
-    address operator, // solhint-disable-line no-unused-vars
-    address from, // solhint-disable-line no-unused-vars
-    uint tokenId, // solhint-disable-line no-unused-vars
-    bytes data // solhint-disable-line no-unused-vars
-  )
-    public
-    returns(bytes4)
-  {
-    return this.onERC721Received.selector;
   }
 
   /**

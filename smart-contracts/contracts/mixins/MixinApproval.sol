@@ -2,7 +2,7 @@ pragma solidity 0.4.25;
 
 import '../interfaces/IERC721.sol';
 import './MixinDisableAndDestroy.sol';
-import './MixinKeyOwner.sol';
+import './MixinKeys.sol';
 
 
 /**
@@ -15,7 +15,7 @@ import './MixinKeyOwner.sol';
 contract MixinApproval is
   IERC721,
   MixinDisableAndDestroy,
-  MixinKeyOwner
+  MixinKeys
 {
   // Keeping track of approved transfers
   // This is a mapping of addresses which have approved
@@ -117,7 +117,7 @@ contract MixinApproval is
   function _isApproved(
     uint _tokenId,
     address _user
-  ) internal
+  ) internal view
     returns (bool)
   {
     return approved[_tokenId] == _user;

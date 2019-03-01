@@ -24,9 +24,16 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
     return
   }
 
+  // in the paywall, postMessage needs to know the origin of the parent window
+  // This allows us to securely pass it in
+  const originUrl = `?origin=${encodeURIComponent(window.origin)}`
   const paywallUrl =
-    findPaywallUrl(document) + `/paywall/${lockAddress}/` + window.location.hash
-  const iframe = getIframe(document, paywallUrl)
+    findPaywallUrl(document) + `/${lockAddress}/` + window.location.hash
+  const paywallUrlWithOrigin =
+    findPaywallUrl(document) +
+    `/${lockAddress}/${originUrl}` +
+    window.location.hash
+  const iframe = getIframe(document, paywallUrlWithOrigin)
   add(document, iframe)
 
   // iOS allows the page to scroll even when the paywall is up. Our

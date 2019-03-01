@@ -4,10 +4,19 @@ module.exports = {
   testPathIgnorePatterns: [
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
-    '<rootDir>/src/__tests__/utils/fixtures/',
+    '<rootDir>/src/__tests__/test-helpers/',
   ],
   transform: {
-    '^.+\\.(js|jsx)$': '<rootDir>/node_modules/babel-jest',
+    '^.+\\.(js|jsx)$': 'babel-jest',
   },
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
+  collectCoverage: true,
+  coverageThreshold: {
+    global: {
+      branches: 76.39,
+      functions: 79.09,
+      lines: 87.37,
+      statements: 86.36,
+    },
+  },
 }

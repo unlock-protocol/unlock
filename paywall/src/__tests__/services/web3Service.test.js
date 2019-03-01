@@ -12,8 +12,6 @@ import LockContract from '../../artifacts/contracts/PublicLock.json'
 import configure from '../../config'
 import { TRANSACTION_TYPES } from '../../constants'
 
-jest.unmock('web3')
-
 const nodeAccounts = [
   '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
   '0xaca94ef8bd5ffee41947b4585a84bda5a3d3da6e',
@@ -938,14 +936,13 @@ describe('Web3Service', () => {
 
   describe('getKeysForLockOnPage', () => {
     it('should get as many owners as there are per page, starting at the right index', done => {
+      expect.assertions(9)
       const onPage = 0
       const byPage = 5
       const keyHolder = [
         '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
         '0xC66Ef2E0D0eDCce723b3fdd4307db6c5F0Dda1b8',
       ]
-
-      expect.assertions(9)
 
       web3Service._getKeyByLockForOwner = jest.fn(() => {
         return new Promise(resolve => {
@@ -977,6 +974,7 @@ describe('Web3Service', () => {
 
     describe('when the on contract method does not exist', () => {
       it('should use the iterative method of providing keyholder', done => {
+        expect.assertions(3)
         const onPage = 0
         const byPage = 2
 
