@@ -19,7 +19,7 @@ contract('Lock ERC721', accounts => {
           locks['FIRST'].approve(accounts[2], 42, {
             from: accounts[1]
           }),
-          'ONLY_KEY_OWNER'
+          'NO_SUCH_KEY'
         )
       })
     })
@@ -43,7 +43,7 @@ contract('Lock ERC721', accounts => {
             locks['FIRST'].approve(accounts[2], ID, {
               from: accounts[2]
             }),
-            'ONLY_KEY_OWNER'
+            'ONLY_KEY_OWNER_OR_APPROVED'
           )
         })
       })
@@ -79,6 +79,35 @@ contract('Lock ERC721', accounts => {
           assert.equal(event.args._owner, accounts[1])
           assert.equal(event.args._approved, accounts[2])
           assert(event.args._tokenId.eq(ID))
+        })
+
+        describe('when reaffirming the approved address', () => {
+          before(async () => {
+            let result = await locks['FIRST'].approve(accounts[2], ID, {
+              from: accounts[1]
+            })
+            event = result.logs[0]
+          })
+
+          it('Approval emits when the approved address is reaffirmed', async () => {
+            assert.equal(event.event, 'Approval')
+            assert.equal(event.args._owner, accounts[1])
+            assert.equal(event.args._approved, accounts[2])
+            assert(event.args._tokenId.eq(ID))
+          })
+        })
+
+        describe('when clearing the approved address', () => {
+          before(async () => {
+            let result = await locks['FIRST'].approve(Web3Utils.padLeft(0, 40), ID, {
+              from: accounts[1]
+            })
+            event = result.logs[0]
+          })
+
+          it('The zero address indicates there is no approved address', async () => {
+            await shouldFail(locks['FIRST'].getApproved.call(ID), 'NONE_APPROVED')
+          })
         })
       })
     })
