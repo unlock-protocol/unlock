@@ -450,7 +450,7 @@ describe('WalletService', () => {
             to: walletService.unlockContractAddress,
             from: owner,
             data,
-            gas: 2500000,
+            gas: WalletService.gasAmountConstants().createLock,
             contract: UnlockContract,
           },
           expect.any(Function)
@@ -538,7 +538,7 @@ describe('WalletService', () => {
             to: lock,
             from: account,
             data,
-            gas: 1000000,
+            gas: WalletService.gasAmountConstants().purchaseKey,
             contract: LockContract,
             value: '100000000000000000000000000', // Web3Utils.toWei(keyPrice, 'ether')
           },
@@ -603,7 +603,7 @@ describe('WalletService', () => {
             to: lock,
             from: account,
             data,
-            gas: 1000000,
+            gas: WalletService.gasAmountConstants().updateKeyPrice,
             contract: LockContract,
           },
           expect.any(Function)
@@ -806,7 +806,7 @@ describe('WalletService', () => {
             to: lock,
             from: account,
             data,
-            gas: 1000000,
+            gas: WalletService.gasAmountConstants().withdrawFromLock,
             contract: LockContract,
           },
           expect.any(Function)
