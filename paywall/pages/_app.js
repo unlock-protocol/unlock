@@ -16,6 +16,7 @@ import web3Middleware from '../src/middlewares/web3Middleware'
 import currencyConversionMiddleware from '../src/middlewares/currencyConversionMiddleware'
 import walletMiddleware from '../src/middlewares/walletMiddleware'
 import interWindowCommunicationMiddleware from '../src/middlewares/interWindowCommunicationMiddleware'
+import { WindowContext } from '../src/hooks/browser/useWindow'
 
 const config = configure()
 
@@ -100,12 +101,14 @@ The Unlock team
       <Container>
         <GlobalStyle />
         <Provider store={store}>
-          <WalletCheckOverlay />
-          <ConnectedRouter history={history}>
-            <ConfigProvider value={config}>
-              <Component {...pageProps} router={router} />
-            </ConfigProvider>
-          </ConnectedRouter>
+          <WindowContext value={window}>
+            <WalletCheckOverlay />
+            <ConnectedRouter history={history}>
+              <ConfigProvider value={config}>
+                <Component {...pageProps} router={router} />
+              </ConfigProvider>
+            </ConnectedRouter>
+          </WindowContext>
         </Provider>
       </Container>
     )
