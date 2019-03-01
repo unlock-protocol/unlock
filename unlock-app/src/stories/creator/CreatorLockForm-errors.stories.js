@@ -60,7 +60,7 @@ storiesOf('CreatorLockForm/invalid', module)
   })
   .add('invalid key price', () => {
     const lock = {
-      keyPrice: -1,
+      keyPrice: '-1',
       valid: false,
     }
     return (
