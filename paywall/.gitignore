@@ -12,7 +12,7 @@
 /build
 /dist
 .next/
-out/
+src/out/
 paywall.min.js
 
 # misc
