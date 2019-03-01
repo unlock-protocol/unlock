@@ -44,7 +44,6 @@ export default function useListenForPostMessage(
   const { isInIframe, isServer } = useConfig()
   const parent = window && window.parent
   const [data, setData] = useState(defaultValue)
-
   const saveData = event => {
     // origin is passed in by the paywall, see paywall-builder/build.js
     const { origin } = getRouteFromWindow(window)
