@@ -112,12 +112,13 @@ export default withRouter(Header)
 Header.propTypes = {
   title: PropTypes.string,
   forContent: PropTypes.bool,
-  router: UnlockPropTypes.router.isRequired,
+  router: UnlockPropTypes.router,
 }
 
 Header.defaultProps = {
   title: 'Unlock',
   forContent: false,
+  router: { pathname: '/' },
 }
 
 const TopHeader = styled.header`
