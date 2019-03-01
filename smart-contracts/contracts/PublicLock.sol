@@ -32,9 +32,9 @@ contract PublicLock is
   ERC165,
   Ownable,
   MixinDisableAndDestroy,
+  MixinLockCore,
   MixinKeys,
   MixinApproval,
-  MixinLockCore,
   MixinLockMetadata,
   MixinRefunds,
   MixinTransfer

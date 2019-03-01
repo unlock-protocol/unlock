@@ -1,7 +1,7 @@
 pragma solidity 0.4.25;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
-
+import './MixinDisableAndDestroy.sol';
 
 /**
  * @title Mixin for core lock data and functions.
@@ -10,7 +10,8 @@ import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
  * separates logically groupings of code to ease readability. 
  */
 contract MixinLockCore is
-  Ownable
+  Ownable,
+  MixinDisableAndDestroy
 {
   event PriceChanged(
     uint oldKeyPrice,
@@ -104,6 +105,7 @@ contract MixinLockCore is
   )
     external
     onlyOwner
+    onlyIfAlive
   {
     uint oldKeyPrice = keyPrice;
     keyPrice = _keyPrice;

@@ -8,8 +8,8 @@ import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 
 contract MixinRefunds is
   Ownable,
-  MixinKeys,
-  MixinLockCore
+  MixinLockCore,
+  MixinKeys
 {
   using SafeMath for uint;
 

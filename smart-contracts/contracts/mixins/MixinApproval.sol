@@ -76,6 +76,7 @@ contract MixinApproval is
     address _to,
     bool _approved
   ) external
+    onlyIfAlive
   {
     require(_to != msg.sender, 'APPROVE_SELF');
     ownerToOperatorApproved[msg.sender][_to] = _approved;

@@ -17,9 +17,10 @@ import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
  */
 
 contract MixinTransfer is
+  MixinLockCore,
   MixinKeys,
-  MixinApproval,
-  MixinLockCore {
+  MixinApproval
+{
   using SafeMath for uint;
   using Address for address;
 
