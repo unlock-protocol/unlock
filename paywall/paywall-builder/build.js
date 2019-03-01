@@ -59,8 +59,8 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
 
     const scrollPosition = baseBannerHeight() + 100 * (pageTop / maximumScroll)
     iframe.contentWindow.postMessage(
-      { type: POST_MESSAGE_SCROLL_POSITION, scrollPosition },
-      '*'
+      { type: POST_MESSAGE_SCROLL_POSITION, payload: scrollPosition },
+      findPaywallUrl(document)
     )
 
     window.requestAnimationFrame(scrollLoop)
