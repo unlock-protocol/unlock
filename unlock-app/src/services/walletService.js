@@ -270,8 +270,9 @@ export default class WalletService extends EventEmitter {
    * @param {PropTypes.address} lock
    * @param {PropTypes.address} account
    * @param {string} ethAmount
+   * @param {Function} callback
    */
-  partialWithdrawFromLock(lock, account, ethAmount) {
+  partialWithdrawFromLock(lock, account, ethAmount, callback) {
     const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
     const weiAmount = Web3Utils.toWei(ethAmount)
     const data = lockContract.methods.partialWithdraw(weiAmount).encodeABI()
@@ -281,13 +282,15 @@ export default class WalletService extends EventEmitter {
         to: lock,
         from: account,
         data,
-        gas: WalletService.gasAmountConstants().withdrawFromLock,
+        gas: WalletService.gasAmountConstants().partialWithdrawFromLock,
         contract: LockContract,
       },
       error => {
         if (error) {
-          return this.emit('error', new Error(FAILED_TO_WITHDRAW_FROM_LOCK))
+          this.emit('error', new Error(FAILED_TO_WITHDRAW_FROM_LOCK))
+          return callback(error)
         }
+        return callback()
       }
     )
   }

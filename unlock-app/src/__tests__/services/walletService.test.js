@@ -744,37 +744,40 @@ describe('WalletService', () => {
       })
 
       it('should invoke sendTransaction with the right params', done => {
-        expect.assertions(4)
+        expect.assertions(3)
         const data = '' // mock abi data for partialWithdraw
-        const cb = (args, cb) => {
-          expect(args).toEqual({
-            to: lock,
-            from: account,
-            data,
-            gas: 1000000,
-            contract: LockContract,
-          })
-          expect(cb).toBeInstanceOf(Function)
-          done()
-        }
-        walletService._sendTransaction = cb
 
-        const ContractClass = class {
+        walletService._sendTransaction = jest.fn((args, cb) => {
+          done()
+        })
+
+        const MockContractClass = class {
           constructor(abi, address) {
             expect(abi).toBe(LockContract.abi)
             expect(address).toBe(lock)
             this.methods = {
-              partialWithdraw: () => {
-                return this
-              },
+              partialWithdraw: () => this,
             }
             this.encodeABI = jest.fn(() => data)
           }
         }
 
-        walletService.web3.eth.Contract = ContractClass
+        walletService.web3.eth.Contract = MockContractClass
 
-        walletService.partialWithdrawFromLock(lock, account, '3')
+        walletService.partialWithdrawFromLock(lock, account, '3', () => {
+          done()
+        })
+
+        expect(walletService._sendTransaction).toHaveBeenCalledWith(
+          {
+            to: lock,
+            from: account,
+            data,
+            gas: WalletService.gasAmountConstants().partialWithdrawFromLock,
+            contract: LockContract,
+          },
+          expect.any(Function)
+        )
       })
 
       it('should emit an error if the transaction cannot be sent', done => {
@@ -790,7 +793,23 @@ describe('WalletService', () => {
           done()
         })
 
-        walletService.partialWithdrawFromLock(lock, account, '3')
+        walletService.partialWithdrawFromLock(lock, account, '3', () => {})
+      })
+
+      it('should not emit an error when `error` is falsy', done => {
+        expect.assertions(1)
+        const error = undefined
+
+        walletService._sendTransaction = jest.fn((args, cb) => {
+          return cb(error)
+        })
+
+        walletService.emit = jest.fn()
+
+        walletService.partialWithdrawFromLock(lock, account, '3', () => {
+          expect(walletService.emit).not.toHaveBeenCalled()
+          done()
+        })
       })
     })
 
