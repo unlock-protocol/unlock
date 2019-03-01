@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
-import UnlockPropTypes from '../../propTypes'
 import { RoundedLogo, WordMarkLogo } from './Logo'
 import Buttons from './buttons/layout'
 import { ButtonLink } from './buttons/Button'
@@ -61,7 +60,7 @@ export default class Header extends React.PureComponent {
           </Title>
         )}
         <AppButtons>
-          {appButtons.map(({ Button, page }) => {
+          {appButtons.map(({ Button }) => {
             return <Button key={Button} />
           })}
         </AppButtons>
