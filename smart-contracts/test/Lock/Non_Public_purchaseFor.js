@@ -12,7 +12,7 @@ contract('Lock', (accounts) => {
     return Unlock.deployed()
       .then(_unlock => {
         unlock = _unlock
-        return deployLocks(unlock)
+        return deployLocks(unlock, accounts[0])
       })
       .then(_locks => {
         locks = _locks

@@ -9,7 +9,7 @@ let unlock, locks, ID
 contract('Lock ERC721', accounts => {
   before(async () => {
     unlock = await Unlock.deployed()
-    locks = await deployLocks(unlock)
+    locks = await deployLocks(unlock, accounts[0])
   })
 
   describe('approve', () => {

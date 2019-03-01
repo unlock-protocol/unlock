@@ -11,7 +11,7 @@ contract('Lock', (accounts) => {
   describe('updateKeyPrice', () => {
     before(async () => {
       unlock = await Unlock.deployed()
-      locks = await deployLocks(unlock)
+      locks = await deployLocks(unlock, accounts[0])
       keyPriceBefore = new BigNumber(await locks['FIRST'].keyPrice.call())
       assert.equal(keyPriceBefore.toFixed(), 10000000000000000)
       transaction = await locks['FIRST'].updateKeyPrice(Units.convert('0.3', 'eth', 'wei'))

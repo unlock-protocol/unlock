@@ -15,6 +15,7 @@ import './mixins/MixinNoFallback.sol';
 import './mixins/MixinTransfer.sol';
 import './mixins/MixinPurchase.sol';
 
+
 /**
  * @title The Lock contract
  * @author Julien Genestoux (unlock-protocol.com)

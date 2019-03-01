@@ -13,7 +13,7 @@ let keyDataAfter
 contract('Lock ERC721', accounts => {
   before(async () => {
     unlock = await Unlock.deployed()
-    locks = await deployLocks(unlock)
+    locks = await deployLocks(unlock, accounts[0])
   })
   // function safeTransferFrom() still uses transferFrom() under the hood, but adds an additional check afterwards. transferFrom is already well-tested, so here we add a few checks to test only the new functionality.
   describe('safeTransferFrom', () => {
