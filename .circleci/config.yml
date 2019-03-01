@@ -113,7 +113,7 @@ jobs:
           command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
       - run:
           name: Deploy to Netlify
-          command: scripts/deploy.sh netlify "$CIRCLE_SHA1" "$CIRCLE_TAG" "$CIRCLE_BRANCH" "$IS_PULL_REQUEST"
+          command: scripts/deploy.sh unlock-app netlify "$CIRCLE_SHA1" "$CIRCLE_TAG" "$CIRCLE_BRANCH" "$IS_PULL_REQUEST"
 
   deploy-locksmith-beanstalk:
     machine: true
