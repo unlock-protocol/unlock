@@ -425,17 +425,6 @@ describe('WalletService', () => {
 
         walletService._sendTransaction = jest.fn()
 
-        const unlockMockContract = {
-          methods: {
-            createLock: jest.fn(() => {
-              return unlockMockContract.methods
-            }),
-            encodeABI: jest.fn(() => {
-              return data
-            }),
-          },
-        }
-
         const ContractClass = class {
           constructor(abi, address) {
             expect(abi).toBe(UnlockContract.abi)
@@ -461,7 +450,7 @@ describe('WalletService', () => {
             to: walletService.unlockContractAddress,
             from: owner,
             data,
-            gas: 2500000,
+            gas: WalletService.gasAmountConstants().createLock,
             contract: UnlockContract,
           },
           expect.any(Function)
@@ -525,17 +514,6 @@ describe('WalletService', () => {
 
         walletService._sendTransaction = jest.fn()
 
-        const unlockMockContract = {
-          methods: {
-            purchaseFor: jest.fn(() => {
-              return unlockMockContract.methods
-            }),
-            encodeABI: jest.fn(() => {
-              return data
-            }),
-          },
-        }
-
         const ContractClass = class {
           constructor(abi, address) {
             expect(abi).toBe(LockContract.abi)
@@ -560,7 +538,7 @@ describe('WalletService', () => {
             to: lock,
             from: account,
             data,
-            gas: 1000000,
+            gas: WalletService.gasAmountConstants().purchaseKey,
             contract: LockContract,
             value: '100000000000000000000000000', // Web3Utils.toWei(keyPrice, 'ether')
           },
@@ -602,17 +580,6 @@ describe('WalletService', () => {
 
         walletService._sendTransaction = jest.fn()
 
-        const unlockMockContract = {
-          methods: {
-            updateKeyPrice: jest.fn(() => {
-              return unlockMockContract.methods
-            }),
-            encodeABI: jest.fn(() => {
-              return data
-            }),
-          },
-        }
-
         const ContractClass = class {
           constructor(abi, address) {
             expect(abi).toBe(LockContract.abi)
@@ -636,7 +603,7 @@ describe('WalletService', () => {
             to: lock,
             from: account,
             data,
-            gas: 1000000,
+            gas: WalletService.gasAmountConstants().updateKeyPrice,
             contract: LockContract,
           },
           expect.any(Function)
@@ -817,17 +784,6 @@ describe('WalletService', () => {
 
         walletService._sendTransaction = jest.fn()
 
-        const unlockMockContract = {
-          methods: {
-            withdrawFromLock: jest.fn(() => {
-              return unlockMockContract.methods
-            }),
-            encodeABI: jest.fn(() => {
-              return data
-            }),
-          },
-        }
-
         const ContractClass = class {
           constructor(abi, address) {
             expect(abi).toBe(LockContract.abi)
@@ -850,7 +806,7 @@ describe('WalletService', () => {
             to: lock,
             from: account,
             data,
-            gas: 1000000,
+            gas: WalletService.gasAmountConstants().withdrawFromLock,
             contract: LockContract,
           },
           expect.any(Function)
