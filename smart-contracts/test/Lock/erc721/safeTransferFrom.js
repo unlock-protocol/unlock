@@ -8,6 +8,7 @@ const shouldFail = require('../../helpers/shouldFail')
 const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock, locks
+let keyDataAfter
 
 contract('Lock ERC721', accounts => {
   before(async () => {
@@ -34,9 +35,9 @@ contract('Lock ERC721', accounts => {
         from
       })
       let ownerOf = await locks['FIRST'].ownerOf.call(ID)
-      let data = await locks['FIRST'].keyDataFor.call(to)
+      keyDataAfter = await locks['FIRST'].keyDataFor.call(to)
       assert.equal(ownerOf, to)
-      assert.equal(Web3Utils.toUtf8(data), 'Julien')
+      assert.equal(Web3Utils.toUtf8(keyDataAfter), '')
     })
 
     it('should work if some data is passed in ', async () => {
@@ -80,8 +81,9 @@ contract('Lock ERC721', accounts => {
       })
       let ownerOf = await locks['FIRST'].ownerOf.call(ID)
       assert.equal(ownerOf, accounts[6])
-      let data = await locks['FIRST'].keyDataFor.call(accounts[6])
-      assert.equal(Web3Utils.toUtf8(data), 'Julien')
+      keyDataAfter = await locks['FIRST'].keyDataFor.call(receiver)
+      // while we may pass data to the safeTransferFrom function, it is not currently utilized in any way other than being passed to the `onERC721Received` function in MixinTransfer.sol
+      assert.equal(Web3Utils.toUtf8(keyDataAfter), '')
     })
 
     it('should fail if trying to transfer a key to a contract which does not implement onERC721Received', async () => {
