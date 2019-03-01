@@ -91,18 +91,11 @@ jest.mock('../../services/walletService', () => {
   }
 })
 
-let mockGenerateSignature = jest.fn(() => Promise.resolve())
-
-jest.mock('../../utils/signature', () => () => {
-  return mockGenerateSignature()
-})
-
 jest.useFakeTimers()
 
 beforeEach(() => {
   // Reset the mock
   mockWalletService = new MockWalletService()
-  mockGenerateSignature = jest.fn(() => Promise.resolve())
 
   // Reset state!
   account = {
