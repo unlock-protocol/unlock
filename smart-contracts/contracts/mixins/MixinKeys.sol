@@ -19,6 +19,9 @@ contract MixinKeys is
     bytes data; // Note: This can be expensive?
   }
 
+  // Called when the Lock owner expires a user's Key
+  event ExpireKey(uint tokenId);
+
   // Keys
   // Each owner can have at most exactly one key
   // TODO: could we use public here? (this could be confusing though because it getter will
@@ -86,7 +89,9 @@ contract MixinKeys is
     onlyOwner
     hasValidKey(_owner)
   {
-    keyByOwner[_owner].expirationTimestamp = block.timestamp; // Effectively expiring the key
+    Key storage key = keyByOwner[_owner];
+    key.expirationTimestamp = block.timestamp; // Effectively expiring the key
+    emit ExpireKey(key.tokenId);
   }
 
   /**
