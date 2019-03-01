@@ -20,13 +20,8 @@ import {
 import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
 
 import WalletService from '../services/walletService'
-import { signatureError } from '../actions/signature'
-import { storeLockName } from '../actions/storage'
-import configure from '../config'
 import { NO_USER_ACCOUNT } from '../errors'
-import generateSignature from '../utils/signature'
-
-const config = configure()
+import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
@@ -129,29 +124,7 @@ export default function walletMiddleware({ getState, dispatch }) {
         walletService.connect(action.provider)
       } else if (action.type === CREATE_LOCK && action.lock.address) {
         ensureReadyBefore(() => {
-          walletService
-            .createLock(action.lock, getState().account.address)
-            .then(() => {
-              if (config.services.storage) {
-                generateSignature(
-                  walletService.web3,
-                  getState().account.address,
-                  action.lock
-                )
-                  .then(token => {
-                    dispatch(
-                      storeLockName(
-                        getState().account.address,
-                        token.data,
-                        token.result
-                      )
-                    )
-                  })
-                  .catch(error => {
-                    dispatch(signatureError(error))
-                  })
-              }
-            })
+          walletService.createLock(action.lock, getState().account.address)
         })
       } else if (action.type === PURCHASE_KEY) {
         ensureReadyBefore(() => {
@@ -182,6 +155,18 @@ export default function walletMiddleware({ getState, dispatch }) {
             action.price
           )
         })
+      } else if (action.type === SIGN_DATA) {
+        const account = getState().account
+        walletService.signData(
+          account.address,
+          action.data,
+          (error, signature) => {
+            if (error) {
+              dispatch(signatureError(error))
+            }
+            dispatch(signedData(action.data, signature))
+          }
+        )
       }
 
       next(action)

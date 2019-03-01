@@ -1,8 +1,10 @@
 import storageMiddleware from '../../middlewares/storageMiddleware'
-import { UPDATE_LOCK, updateLock } from '../../actions/lock'
+import { UPDATE_LOCK, updateLock, CREATE_LOCK } from '../../actions/lock'
 import { STORE_LOCK_NAME } from '../../actions/storage'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT } from '../../actions/accounts'
+import { SIGNED_DATA } from '../../actions/signature'
+import UnlockLock from '../../structured_data/unlockLock'
 
 /**
  * This is a "fake" middleware caller
@@ -32,6 +34,8 @@ jest.mock('../../services/storageService', () => {
     return mockStorageService
   }
 })
+
+jest.mock('../../structured_data/unlockLock.js')
 
 describe('Storage middleware', () => {
   beforeEach(() => {
@@ -165,6 +169,71 @@ describe('Storage middleware', () => {
         expect(store.dispatch).toHaveBeenCalledWith(
           updateLock(lock.address, { name: 'A lock has no name' })
         )
+      })
+    })
+  })
+
+  describe('handling SIGNED_DATA', () => {
+    it('should not do anything if the signed message is not for a lock', () => {
+      expect.assertions(2)
+      const data = 'data'
+      const signature = 'signature'
+      const { next, invoke } = create()
+      const action = { type: SIGNED_DATA, data, signature }
+      mockStorageService.storeLockDetails = jest.fn()
+
+      invoke(action)
+      expect(mockStorageService.storeLockDetails).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledTimes(1)
+    })
+
+    it('should store the lock details if the signed message is for a lock', () => {
+      expect.assertions(2)
+      const data = {
+        message: {
+          lock: {},
+        },
+      }
+      const signature = 'signature'
+      const { next, invoke } = create()
+      const action = { type: SIGNED_DATA, data, signature }
+      mockStorageService.storeLockDetails = jest.fn(() => Promise.resolve())
+
+      invoke(action)
+      expect(mockStorageService.storeLockDetails).toHaveBeenCalledWith(
+        data,
+        signature
+      )
+      expect(next).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('handling CREATE_LOCK', () => {
+    it('should dispatch an action to sign message to change the name of a lock', () => {
+      expect.assertions(3)
+      const lock = {
+        address: '0x123',
+        name: 'my lock',
+        owner: '0xabc',
+      }
+      const data = {
+        message: {
+          lock: {},
+        },
+      }
+
+      UnlockLock.build = jest.fn(() => {
+        return data
+      })
+      const { next, invoke, store } = create()
+      const action = { type: CREATE_LOCK, lock }
+
+      invoke(action)
+      expect(UnlockLock.build).toHaveBeenCalledWith(lock)
+      expect(next).toHaveBeenCalledTimes(1)
+      expect(store.dispatch).toHaveBeenCalledWith({
+        data,
+        type: 'signature/SIGN_DATA',
       })
     })
   })

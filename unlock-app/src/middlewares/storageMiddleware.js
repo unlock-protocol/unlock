@@ -1,17 +1,20 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
-import { UPDATE_LOCK, updateLock } from '../actions/lock'
+import { UPDATE_LOCK, updateLock, CREATE_LOCK } from '../actions/lock'
 import StorageService from '../services/storageService'
 import { STORE_LOCK_NAME, storageError } from '../actions/storage'
 
 import configure from '../config'
 import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
 import { SET_ACCOUNT } from '../actions/accounts'
+import UnlockLock from '../structured_data/unlockLock'
+import { SIGNED_DATA, signData } from '../actions/signature'
 
 const { services } = configure(global)
 
 export default function storageMiddleware({ getState, dispatch }) {
   const storageService = new StorageService(services.storage.host)
+
   return next => {
     return action => {
       // TODO: never async/await middlewares
@@ -47,6 +50,32 @@ export default function storageMiddleware({ getState, dispatch }) {
           })
       }
 
+      if (
+        action.type === SIGNED_DATA &&
+        action.data.message &&
+        action.data.message.lock
+      ) {
+        // Once signed, let's save it!
+        storageService
+          .storeLockDetails(action.data, action.signature)
+          .catch(error => {
+            dispatch(storageError(error))
+          })
+      }
+
+      // TODO: isolate the logic below so we can also make it happen on lock updates
+      if (action.type === CREATE_LOCK && action.lock.address) {
+        // Build the data to sign
+        let data = UnlockLock.build({
+          name: action.lock.name,
+          owner: action.lock.owner,
+          address: action.lock.address,
+        })
+        // Ask someone to sign it!
+        dispatch(signData(data))
+      }
+
+      // TODO : remove me because it is not needed anymore
       if (action.type === STORE_LOCK_NAME) {
         // A new lock has been created
         storageService
