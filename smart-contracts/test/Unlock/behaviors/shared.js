@@ -7,9 +7,9 @@ const recordKeyPurchase = require('./recordKeyPurchase')
 exports.shouldBehaveLikeV1 = function (accounts, unlockOwner) {
   describe('should behave like v1', function () {
     initialization.shouldHaveInitialized(unlockOwner)
-    computeAvailableDiscountFor.shouldComputeAvailableDiscountFor()
+    computeAvailableDiscountFor.shouldComputeAvailableDiscountFor(accounts)
     createLock.shouldCreateLock(accounts)
-    recordConsumedDiscount.shouldRecordConsumedDiscount()
-    recordKeyPurchase.shouldRecordKeyPurchase()
+    recordConsumedDiscount.shouldRecordConsumedDiscount(accounts)
+    recordKeyPurchase.shouldRecordKeyPurchase(accounts)
   })
 }
