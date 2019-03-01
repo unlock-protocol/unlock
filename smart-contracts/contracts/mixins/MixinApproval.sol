@@ -57,9 +57,8 @@ contract MixinApproval is
     external
     payable
     onlyIfAlive
-    onlyKeyOwner(_tokenId)
+    onlyKeyOwnerOrApproved(_tokenId)
   {
-    require(_approved != address(0), 'INVALID_ADDRESS');
     require(msg.sender != _approved, 'APPROVE_SELF');
 
     approved[_tokenId] = _approved;
