@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
+import { withRouter } from 'next/router'
 import { RoundedLogo, WordMarkLogo } from './Logo'
 import Buttons from './buttons/layout'
 import { ButtonLink } from './buttons/Button'
@@ -15,7 +16,12 @@ const navigationButtons = [
   Buttons.Telegram,
 ]
 
-export default class Header extends React.PureComponent {
+const appButtons = [
+  { Button: Buttons.Dashboard, page: '/dashboard' },
+  { Button: Buttons.Log, page: '/log' },
+]
+
+class Header extends React.PureComponent {
   constructor(props) {
     super(props)
     this.toggleMenu = this.toggleMenu.bind(this)
@@ -26,9 +32,18 @@ export default class Header extends React.PureComponent {
     this.setState(prevState => ({ menu: !prevState.menu }))
   }
 
+  activePage() {
+    const { router } = this.props
+    return router.pathname
+  }
+
   render() {
     const { menu } = this.state
-    const { forContent, title } = this.props
+    const {
+      forContent,
+      title,
+      router: { pathname },
+    } = this.props
 
     return (
       <TopHeader>
@@ -54,6 +69,18 @@ export default class Header extends React.PureComponent {
             {title}
           </Title>
         )}
+        <AppButtons>
+          {appButtons.map(({ Button, page }) => {
+            const isActive = page === pathname
+            return (
+              <Button
+                key={Button}
+                backgroundColor={isActive ? 'var(--link)' : 'var(--lightgrey)'}
+                fillColor={isActive ? 'var(--white)' : 'var(--grey)'}
+              />
+            )
+          })}
+        </AppButtons>
         <DesktopButtons>
           {navigationButtons.map(NavButton => (
             <NavButton key={NavButton} />
@@ -79,6 +106,8 @@ export default class Header extends React.PureComponent {
   }
 }
 
+export default withRouter(Header)
+
 Header.propTypes = {
   title: PropTypes.string,
   forContent: PropTypes.bool,
@@ -92,7 +121,8 @@ Header.defaultProps = {
 const TopHeader = styled.header`
   display: grid;
   grid-gap: 0;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 256px 1fr auto;
+  column-gap: 16px;
   grid-auto-flow: column;
   align-items: center;
   height: 70px;
@@ -125,6 +155,10 @@ const DesktopButtons = styled.div`
   ${Media.phone`
     display: none;
   `};
+`
+
+const AppButtons = styled(DesktopButtons)`
+  grid-template-columns: repeat(${() => appButtons.length}, 24px);
 `
 
 const MobileToggle = styled.div`
