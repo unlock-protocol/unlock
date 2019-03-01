@@ -51,6 +51,7 @@ export default class WalletService extends EventEmitter {
       updateKeyPrice: 1000000,
       purchaseKey: 1000000,
       withdrawFromLock: 1000000,
+      partialWithdrawFromLock: 1000000,
     }
   }
 
@@ -259,6 +260,37 @@ export default class WalletService extends EventEmitter {
         if (error) {
           return this.emit('error', new Error(FAILED_TO_PURCHASE_KEY))
         }
+      }
+    )
+  }
+
+  /**
+   * Triggers a transaction to withdraw some funds from the lock and assign them
+   * to the owner.
+   * @param {PropTypes.address} lock
+   * @param {PropTypes.address} account
+   * @param {string} ethAmount
+   * @param {Function} callback
+   */
+  partialWithdrawFromLock(lock, account, ethAmount, callback) {
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
+    const weiAmount = Web3Utils.toWei(ethAmount)
+    const data = lockContract.methods.partialWithdraw(weiAmount).encodeABI()
+
+    return this._sendTransaction(
+      {
+        to: lock,
+        from: account,
+        data,
+        gas: WalletService.gasAmountConstants().partialWithdrawFromLock,
+        contract: LockContract,
+      },
+      error => {
+        if (error) {
+          this.emit('error', new Error(FAILED_TO_WITHDRAW_FROM_LOCK))
+          return callback(error)
+        }
+        return callback()
       }
     )
   }
