@@ -22,6 +22,7 @@ contract('Unlock', accounts => {
 
   describe('Upgrade from v0 to v1', () => {
     let lockV0
+    let v0LockData
 
     before(async () => {
       // Deploy
@@ -49,6 +50,9 @@ contract('Unlock', accounts => {
         value: keyPrice,
         from: keyOwner
       })
+
+      // Record sample lock data
+      v0LockData = await unlock.locks.call(lockV0.address)
     })
 
     it('the versions V0 and V1 have different bytecode', async () => {
@@ -89,6 +93,11 @@ contract('Unlock', accounts => {
         it('grossNetworkProduct remains', async () => {
           const grossNetworkProduct = new BigNumber(await unlock.grossNetworkProduct.call())
           assert.equal(grossNetworkProduct.toFixed(), new BigNumber(keyPrice).times(3).toFixed())
+        })
+
+        it('lock data should persist state between upgrades', async function () {
+          const resultsAfter = await unlock.locks.call(lockV0.address)
+          assert.equal(JSON.stringify(resultsAfter), JSON.stringify(v0LockData))
         })
       })
 
