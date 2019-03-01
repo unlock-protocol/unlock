@@ -15,8 +15,8 @@ import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
  */
 contract MixinPurchase is
   MixinDisableAndDestroy,
-  MixinKeys,
-  MixinLockCore
+  MixinLockCore,
+  MixinKeys
 {
   using SafeMath for uint;
 
