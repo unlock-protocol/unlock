@@ -32,11 +32,6 @@ class Header extends React.PureComponent {
     this.setState(prevState => ({ menu: !prevState.menu }))
   }
 
-  activePage() {
-    const { router } = this.props
-    return router.pathname
-  }
-
   render() {
     const { menu } = this.state
     const {
@@ -44,6 +39,8 @@ class Header extends React.PureComponent {
       title,
       router: { pathname },
     } = this.props
+
+    const onAppPage = appButtons.some(b => b.page === pathname)
 
     return (
       <TopHeader>
@@ -70,16 +67,19 @@ class Header extends React.PureComponent {
           </Title>
         )}
         <AppButtons>
-          {appButtons.map(({ Button, page }) => {
-            const isActive = page === pathname
-            return (
-              <Button
-                key={Button}
-                backgroundColor={isActive ? 'var(--link)' : 'var(--lightgrey)'}
-                fillColor={isActive ? 'var(--white)' : 'var(--grey)'}
-              />
-            )
-          })}
+          {onAppPage &&
+            appButtons.map(({ Button, page }) => {
+              const isActive = page === pathname
+              return (
+                <Button
+                  key={Button}
+                  backgroundColor={
+                    isActive ? 'var(--link)' : 'var(--lightgrey)'
+                  }
+                  fillColor={isActive ? 'var(--white)' : 'var(--grey)'}
+                />
+              )
+            })}
         </AppButtons>
         <DesktopButtons>
           {navigationButtons.map(NavButton => (
