@@ -66,8 +66,6 @@ contract MixinTransfer is
       toKey.expirationTimestamp = fromKey
         .expirationTimestamp.add(previousExpiration - block.timestamp);
     }
-    // Overwite data in all cases
-    toKey.data = fromKey.data;
 
     // Effectively expiring the key for the previous owner
     fromKey.expirationTimestamp = block.timestamp;
