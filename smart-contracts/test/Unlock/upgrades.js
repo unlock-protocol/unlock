@@ -55,7 +55,7 @@ contract('Unlock', accounts => {
       })
 
       // Record sample lock data
-      v0LockData = await unlock.locks.call(lockV0.address)
+      v0LockData = await unlock.methods.locks.call(lockV0.address)
     })
 
     it('the versions V0 and V1 have different bytecode', async () => {
