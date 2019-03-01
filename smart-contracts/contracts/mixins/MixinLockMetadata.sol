@@ -21,7 +21,7 @@ contract MixinLockMetadata is
    * Allows the Lock owner to assign a descriptive name for this Lock.
    */
   function updateLockName(
-    string _lockName
+    string calldata _lockName
   ) external
     onlyOwner
   {

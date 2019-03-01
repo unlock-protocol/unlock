@@ -115,7 +115,7 @@ contract MixinTransfer is
     address _from,
     address _to,
     uint _tokenId,
-    bytes _data
+    bytes memory _data
   )
     public
     payable
@@ -167,7 +167,7 @@ contract MixinTransfer is
     address from,
     address to,
     uint256 tokenId,
-    bytes _data
+    bytes memory _data
   )
     internal
     returns (bool)
