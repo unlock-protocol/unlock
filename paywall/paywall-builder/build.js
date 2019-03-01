@@ -1,5 +1,11 @@
 import { getIframe, add, show, hide } from './iframe'
 import { findPaywallUrl } from './script'
+import {
+  POST_MESSAGE_LOCKED,
+  POST_MESSAGE_UNLOCKED,
+  POST_MESSAGE_REDIRECT,
+  POST_MESSAGE_SCROLL_POSITION,
+} from './constants'
 
 // Currently, the constraint on the banner is that it starts out at
 // 30% of height, but at least 375px
@@ -52,7 +58,10 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
     }
 
     const scrollPosition = baseBannerHeight() + 100 * (pageTop / maximumScroll)
-    iframe.contentWindow.postMessage({ scrollPosition }, '*')
+    iframe.contentWindow.postMessage(
+      { type: POST_MESSAGE_SCROLL_POSITION, scrollPosition },
+      '*'
+    )
 
     window.requestAnimationFrame(scrollLoop)
   }
@@ -62,17 +71,17 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
   window.addEventListener(
     'message',
     event => {
-      if (event.data === 'locked' && !locked) {
+      if (event.data === POST_MESSAGE_LOCKED && !locked) {
         locked = true
         show(iframe, document)
         blocker.remove()
       }
-      if (event.data === 'unlocked' && locked) {
+      if (event.data === POST_MESSAGE_UNLOCKED && locked) {
         locked = false
         hide(iframe, document)
         blocker.remove()
       }
-      if (event.data === 'redirect') {
+      if (event.data === POST_MESSAGE_REDIRECT) {
         redirect(window, paywallUrl)
       }
     },
