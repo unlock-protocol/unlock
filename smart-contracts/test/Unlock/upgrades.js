@@ -55,7 +55,7 @@ contract('Unlock', accounts => {
       })
 
       // Record sample lock data
-      v0LockData = await unlock.methods.locks.call(lockV0.address)
+      v0LockData = await unlock.methods.locks(lockV0.address).call()
     })
 
     it('the versions V0 and V1 have different bytecode', async () => {
@@ -104,7 +104,7 @@ contract('Unlock', accounts => {
         })
 
         it('lock data should persist state between upgrades', async function () {
-          const resultsAfter = await unlock.locks.call(lockV0.address)
+          const resultsAfter = await unlock.methods.locks(lockV0.address).call()
           assert.equal(JSON.stringify(resultsAfter), JSON.stringify(v0LockData))
         })
       })
