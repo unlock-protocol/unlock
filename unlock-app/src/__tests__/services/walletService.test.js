@@ -662,73 +662,62 @@ describe('WalletService', () => {
 
     describe('signData', () => {
       const account = '0x123'
-      const data = 'please sign me'
+      let data = 'please sign me'
 
-      it('should call first eth.personal.sign', done => {
-        expect.assertions(4)
-        walletService.web3.eth.personal.sign = jest.fn(
-          (dataToSign, signer, callback) => {
-            expect(dataToSign).toEqual(data)
-            expect(signer).toEqual(account)
-            return callback(null /* error */, 'signature')
-          }
-        )
+      describe('if the provider is metamask', () => {
+        it('should use eth_signTypedData_v3 and stringify the data', done => {
+          expect.assertions(2)
+          data = []
+          walletService.web3.currentProvider.isMetaMask = true
+          walletService.web3.currentProvider.send = jest.fn((args, cb) => {
+            expect(args.method).toBe('eth_signTypedData_v3')
+            expect(args.params[1]).toBe(JSON.stringify(data))
+            return cb(null, { result: '' })
+          })
+          walletService.signData(account, data, () => {
+            done()
+          })
+        })
+      })
+
+      it('should send the the method to the provider with the right params and yield the signature when it is not metamask (legacy/opaque signing)', done => {
+        expect.assertions(5)
+        const result = 'RESULT'
+        walletService.web3.currentProvider.send = jest.fn((args, cb) => {
+          expect(args.method).toBe('eth_signTypedData')
+          expect(args.params[0]).toBe(account)
+          expect(args.params[1]).toBe(data)
+          expect(args.from).toBe(account)
+          return cb(null, {
+            result,
+          })
+        })
         walletService.signData(account, data, (error, signature) => {
-          expect(walletService.web3.eth.personal.sign).toHaveBeenCalled()
-          expect(signature).toEqual('signature')
+          expect(signature).toBe(Buffer.from(result).toString('base64'))
           done()
         })
       })
 
-      it('should call web3.eth.sign if eth.personal.sign fails', done => {
-        expect.assertions(7)
-
-        walletService.web3.eth.personal.sign = jest.fn(
-          (dataToSign, signer, callback) => {
-            expect(dataToSign).toEqual(data)
-            expect(signer).toEqual(account)
-            const error = {}
-            return callback(error, null /* signature */)
-          }
-        )
-
-        walletService.web3.eth.sign = jest.fn(
-          (dataToSign, signer, callback) => {
-            expect(dataToSign).toEqual(data)
-            expect(signer).toEqual(account)
-            return callback(null /* error */, 'signature')
-          }
-        )
-
-        walletService.signData(account, data, (error, signature) => {
-          expect(walletService.web3.eth.personal.sign).toHaveBeenCalled()
-          expect(walletService.web3.eth.sign).toHaveBeenCalled()
-          expect(signature).toEqual('signature')
+      it('should yield an error if there was a network error', done => {
+        expect.assertions(1)
+        const networkError = new Error('network')
+        walletService.web3.currentProvider.send = jest.fn((args, cb) => {
+          return cb(networkError, null)
+        })
+        walletService.signData(account, data, error => {
+          expect(error).toBe(networkError)
           done()
         })
       })
 
-      it('should call web3.eth.sign if eth.personal.sign throws', done => {
-        expect.assertions(7)
-
-        walletService.web3.eth.personal.sign = jest.fn((dataToSign, signer) => {
-          expect(dataToSign).toEqual(data)
-          expect(signer).toEqual(account)
-          throw new Error()
+      it('should yield an error if there was a signature error', done => {
+        expect.assertions(1)
+        const signatureError = new Error('signature')
+        walletService.web3.currentProvider.send = jest.fn((args, cb) => {
+          return cb(null, { error: signatureError })
         })
-
-        walletService.web3.eth.sign = jest.fn(
-          (dataToSign, signer, callback) => {
-            expect(dataToSign).toEqual(data)
-            expect(signer).toEqual(account)
-            return callback(null /* error */, 'signature')
-          }
-        )
-
-        walletService.signData(account, data, (error, signature) => {
-          expect(walletService.web3.eth.personal.sign).toHaveBeenCalled()
-          expect(walletService.web3.eth.sign).toHaveBeenCalled()
-          expect(signature).toEqual('signature')
+        walletService.signData(account, data, error => {
+          expect(error).toBe(signatureError)
           done()
         })
       })

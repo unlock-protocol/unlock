@@ -299,19 +299,34 @@ export default class WalletService extends EventEmitter {
    * @param {*} callback
    */
   signData(account, data, callback) {
-    const fallback = () => {
-      this.web3.eth.sign(data, account, callback)
+    let method
+
+    if (this.web3.currentProvider.isMetaMask) {
+      method = 'eth_signTypedData_v3'
+      data = JSON.stringify(data)
+    } else {
+      method = 'eth_signTypedData'
     }
 
-    try {
-      this.web3.eth.personal.sign(data, account, (error, signature) => {
-        if (error) {
-          return fallback()
+    return this.web3.currentProvider.send(
+      {
+        method: method,
+        params: [account, data],
+        from: account,
+      },
+      (err, result) => {
+        // network failure
+        if (err) {
+          return callback(err, null)
         }
-        return callback(error, signature)
-      })
-    } catch (error) {
-      fallback()
-    }
+
+        // signature failure on the node
+        if (result.error) {
+          return callback(result.error, null)
+        }
+
+        callback(null, Buffer.from(result.result).toString('base64'))
+      }
+    )
   }
 }
