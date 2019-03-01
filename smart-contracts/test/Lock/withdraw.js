@@ -63,6 +63,12 @@ contract('Lock', (accounts) => {
       it('should set the lock\'s balance to 0', async () => {
         assert.equal(await web3.eth.getBalance(locks['OWNED'].address), 0)
       })
+
+      it('should fail if there is nothing left to withdraw', async () => {
+        await shouldFail(locks['OWNED'].withdraw({
+          from: owner
+        }), 'NOT_ENOUGH_FUNDS')
+      })
     })
   })
 })

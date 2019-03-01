@@ -92,7 +92,7 @@ contract MixinLockCore is
   {
     require(_amount > 0, 'GREATER_THAN_ZERO');
     uint256 balance = address(this).balance;
-    require(balance > 0 && balance >= _amount, 'NOT_ENOUGH_FUNDS');
+    require(balance >= _amount, 'NOT_ENOUGH_FUNDS');
     // Security: re-entrancy not a risk as this is the last line of an external function
     _withdraw(_amount);
   }
