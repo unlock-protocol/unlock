@@ -3,6 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { withRouter } from 'next/router'
+import UnlockPropTypes from '../../propTypes'
 import { RoundedLogo, WordMarkLogo } from './Logo'
 import Buttons from './buttons/layout'
 import { ButtonLink } from './buttons/Button'
@@ -111,6 +112,7 @@ export default withRouter(Header)
 Header.propTypes = {
   title: PropTypes.string,
   forContent: PropTypes.bool,
+  router: UnlockPropTypes.router.isRequired,
 }
 
 Header.defaultProps = {
