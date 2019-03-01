@@ -25,6 +25,8 @@ contract('Lock ERC721', accounts => {
     const accountWithExpiredKey = accounts[8]
     let keyExpiration
     let ID
+    let keyDataBefore
+    let keyDataAfter
 
     before(() => {
       return Promise.all([
@@ -107,6 +109,9 @@ contract('Lock ERC721', accounts => {
           )
           // Then let's expire the key for accountWithExpiredKey
           await locks['FIRST'].expireKeyFor(accountWithExpiredKey)
+          keyDataBefore = await locks['FIRST'].keyDataFor.call(
+            accountWithExpiredKey
+          )
           await locks['FIRST'].transferFrom(from, accountWithExpiredKey, ID, {
             from
           })
@@ -119,6 +124,13 @@ contract('Lock ERC721', accounts => {
             expirationTimestamp.toFixed(),
             fromExpirationTimestamp.toFixed()
           )
+        })
+
+        it("should preserve the recipient's key data", async () => {
+          keyDataAfter = await locks['FIRST'].keyDataFor.call(
+            accountWithExpiredKey
+          )
+          assert.equal(keyDataBefore, keyDataAfter)
         })
       })
 
@@ -139,6 +151,7 @@ contract('Lock ERC721', accounts => {
           previousExpirationTimestamp = new BigNumber(
             await locks['FIRST'].keyExpirationTimestampFor.call(accounts[1])
           )
+          keyDataBefore = await locks['FIRST'].keyDataFor.call(accountWithKey)
           await locks['FIRST'].transferFrom(from, accountWithKey, ID, {
             from
           })
@@ -173,6 +186,11 @@ contract('Lock ERC721', accounts => {
           const now = Math.floor(new Date().getTime() / 1000)
           // Check only 10 seconds in the future to ensure deterministic test
           assert(expirationTimestamp.lt(now + 10))
+        })
+
+        it("should preserve the recipient's key data", async () => {
+          keyDataAfter = await locks['FIRST'].keyDataFor.call(accountWithKey)
+          assert.equal(keyDataBefore, keyDataAfter)
         })
       })
 
@@ -253,9 +271,9 @@ contract('Lock ERC721', accounts => {
           assert.equal(expirationTimestamp.toFixed(), keyExpiration.toFixed())
         })
 
-        it('should have assigned the key data field to the new owner', () => {
+        it('should have cleared the key data field for the new owner', () => {
           return locks['FIRST'].keyDataFor.call(to).then(keyData => {
-            assert.equal(Web3Utils.toUtf8(keyData), 'Julien')
+            assert.equal(Web3Utils.toUtf8(keyData), '')
           })
         })
       })
