@@ -54,9 +54,10 @@ fi
 
 # PUBLISH: whether to publish/promote the deployed version
 PUBLISH="false"
-if [ "$BRANCH" = "master" ] && [ "$IS_PULL_REQUEST" = "false" ]; then
+if [ "$BRANCH" = "master" ] && ! [ "$IS_PULL_REQUEST" == "false" ]; then
   PUBLISH="true"
 fi
+
 
 # Deploy options
 OPTS="$ENV_TARGET $COMMIT $PUBLISH"
