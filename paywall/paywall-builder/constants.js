@@ -1,4 +1,4 @@
-export const LOCKED = 'locked'
-export const UNLOCKED = 'unlocked'
-export const SCROLL_POSITION = 'scrollPosition'
-export const REDIRECT = 'redirect'
+export const POST_MESSAGE_LOCKED = 'locked'
+export const POST_MESSAGE_UNLOCKED = 'unlocked'
+export const POST_MESSAGE_SCROLL_POSITION = 'scrollPosition'
+export const POST_MESSAGE_REDIRECT = 'redirect'

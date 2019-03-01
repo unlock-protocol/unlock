@@ -2,7 +2,7 @@ import { openNewWindowModal, hideModal } from '../../actions/modal'
 import { setAccount } from '../../actions/accounts'
 import interWindowCommunicationMiddleware from '../../middlewares/interWindowCommunicationMiddleware'
 import { updateKey } from '../../actions/key'
-import { REDIRECT } from '../../../paywall-builder/constants'
+import { POST_MESSAGE_REDIRECT } from '../../../paywall-builder/constants'
 
 jest.mock('../../utils/localStorage')
 
@@ -254,7 +254,7 @@ describe('interWindowCommunicationMiddleware', () => {
 
         expect(next).toHaveBeenCalledWith(action)
         expect(window.parent.postMessage).toHaveBeenCalledWith(
-          REDIRECT,
+          POST_MESSAGE_REDIRECT,
           'origin'
         )
       })

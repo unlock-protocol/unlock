@@ -6,7 +6,7 @@ import { inIframe } from '../config'
 import { lockRoute } from '../utils/routes'
 import { setAccount } from '../actions/accounts'
 import localStorageAvailable from '../utils/localStorage'
-import { REDIRECT } from '../../paywall-builder/constants'
+import { POST_MESSAGE_REDIRECT } from '../../paywall-builder/constants'
 
 function redirectToContentFromPaywall(window, getState) {
   const {
@@ -73,7 +73,7 @@ const interWindowCommunicationMiddleware = window => ({
       if (prefix !== 'paywall') return next(action)
       if (isInIframe) {
         if (action.type === OPEN_MODAL_IN_NEW_WINDOW) {
-          parent.postMessage(REDIRECT, parent.origin)
+          parent.postMessage(POST_MESSAGE_REDIRECT, parent.origin)
         }
       } else {
         if (action.type === HIDE_MODAL) {
