@@ -1,18 +1,21 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+
+import UnlockPropTypes from '../propTypes'
 import DemoComponent from '../components/interface/Demo'
 import { lockRoute } from '../utils/routes'
+import withConfig from '../utils/withConfig'
 
 /**
  * This is the actual demo page with JS which injects a paywall'ed iframe.
  * @param {*} lock
  * @param {*} domain
  */
-const Demo = ({ lock, domain }) => {
+const Demo = ({ lock, config: { paywallUrl, paywallScriptUrl } }) => {
   return (
     <DemoComponent>
-      <script src="/static/paywall.min.js" data-unlock-url={domain} />
+      <script src={paywallScriptUrl} data-unlock-url={paywallUrl} />
       {lock && <meta name="lock" content={lock} />}
     </DemoComponent>
   )
@@ -20,7 +23,7 @@ const Demo = ({ lock, domain }) => {
 
 Demo.propTypes = {
   lock: PropTypes.string,
-  domain: PropTypes.string.isRequired,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 Demo.defaultProps = {
@@ -29,14 +32,9 @@ Demo.defaultProps = {
 
 export const mapStateToProps = ({ router }) => {
   const { lockAddress } = lockRoute(router.location.pathname)
-  const domain =
-    global.document && document.location
-      ? document.location.protocol + '//' + document.location.host
-      : ''
   return {
     lock: lockAddress,
-    domain,
   }
 }
 
-export default connect(mapStateToProps)(Demo)
+export default withConfig(connect(mapStateToProps)(Demo))
