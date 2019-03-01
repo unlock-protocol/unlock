@@ -747,7 +747,7 @@ describe('WalletService', () => {
         expect.assertions(3)
         const data = '' // mock abi data for partialWithdraw
 
-        walletService._sendTransaction = jest.fn((args, cb) => {
+        walletService._sendTransaction = jest.fn(() => {
           done()
         })
 
