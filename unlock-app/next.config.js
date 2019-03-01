@@ -10,6 +10,7 @@ module.exports = withSourceMaps({
     unlockEnv: process.env.UNLOCK_ENV || 'dev',
     httpProvider: process.env.HTTP_PROVIDER || '127.0.0.1',
     paywallUrl: process.env.PAYWALL_URL,
+    paywallScriptUrl: process.env.PAYWALL_SCRIPT_URL,
     readOnlyProvider: process.env.READ_ONLY_PROVIDER,
     locksmithHost: process.env.LOCKSMITH_URI,
   },
