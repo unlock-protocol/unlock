@@ -1,4 +1,4 @@
-pragma solidity 0.4.25;
+pragma solidity 0.5.4;
 
 /// @title ERC-721 Non-Fungible Token Standard
 /// @dev See https://eips.ethereum.org/EIPS/eip-721
