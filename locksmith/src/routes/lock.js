@@ -1,11 +1,11 @@
 var express = require('express')
 
 var router = express.Router()
-var lock_controller = require('../controllers/lockController')
+var lockController = require('../controllers/lockController')
 
-router.put('/lock/:lockAddress', lock_controller.lock_update)
-router.post('/lock', lock_controller.lock_create)
-router.get('/lock/:lockAddress', lock_controller.lock_get)
-router.get('/:owner/locks', lock_controller.lock_owner_get)
+router.put('/lock/:lockAddress', lockController.lockUpdate)
+router.post('/lock', lockController.lockCreate)
+router.get('/lock/:lockAddress', lockController.lockGet)
+router.get('/:owner/locks', lockController.lockOwnerGet)
 
 module.exports = router

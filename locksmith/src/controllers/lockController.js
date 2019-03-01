@@ -5,7 +5,7 @@ const Lock = require('../lock')
 
 const Op = Sequelize.Op
 
-const lock_update = async (req, res) => {
+const lockUpdate = async (req, res) => {
   let lock = req.body.message.lock
 
   if (lock && lock.address == req.params.lockAddress) {
@@ -36,7 +36,7 @@ const lock_update = async (req, res) => {
   }
 }
 
-const lock_create = async (req, res) => {
+const lockCreate = async (req, res) => {
   let lock = req.body.message.lock
 
   if (lock.address && lock.name) {
@@ -60,7 +60,7 @@ const lock_create = async (req, res) => {
   }
 }
 
-const lock_get = async (req, res) => {
+const lockGet = async (req, res) => {
   let lockAddress = ethJsUtil.toChecksumAddress(req.params.lockAddress)
   logger.logLockDetailsRequest(lockAddress)
 
@@ -77,7 +77,7 @@ const lock_get = async (req, res) => {
   }
 }
 
-const lock_owner_get = async (req, res) => {
+const lockOwnerGet = async (req, res) => {
   const owner = ethJsUtil.toChecksumAddress(req.params.owner)
 
   let locks = await Lock.findAll({
@@ -90,4 +90,4 @@ const lock_owner_get = async (req, res) => {
   res.json({ locks: locks })
 }
 
-module.exports = { lock_get, lock_owner_get, lock_create, lock_update }
+module.exports = { lockGet, lockOwnerGet, lockCreate, lockUpdate }
