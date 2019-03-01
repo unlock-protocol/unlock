@@ -1,5 +1,4 @@
 const Units = require('ethereumjs-units')
-const PublicLockV1 = artifacts.require('PublicLock.sol')
 const Web3Utils = require('web3-utils')
 const { TestHelper } = require('zos')
 const BigNumber = require('bignumber.js')
@@ -8,6 +7,7 @@ ZWeb3.initialize(web3.currentProvider)
 const UnlockV0 = Contracts.getFromLocal('../../../versions/Unlock_V0')
 const PublicLockV0 = require('../../published-npm-modules/V0/abi_V0.json')
 const UnlockV1 = Contracts.getFromLocal('Unlock')
+const PublicLockV1 = Contracts.getFromLocal('PublicLock')
 
 let project, proxy, unlock
 
@@ -129,9 +129,10 @@ contract('Unlock', accounts => {
           lockV1 = await PublicLockV1.at(evt.returnValues.newLockAddress)
 
           // Buy Key
-          await lockV1.purchaseFor(keyOwner, Web3Utils.toHex('Julien'), {
+          await lockV1.methods.purchaseFor(keyOwner, Web3Utils.toHex('Julien')).send({
             value: keyPrice,
-            from: keyOwner
+            from: keyOwner,
+            gas: 4000000
           })
         })
 
@@ -141,13 +142,13 @@ contract('Unlock', accounts => {
         })
 
         it('v1 Key is owned', async () => {
-          const id = await lockV1.getTokenIdFor(keyOwner)
-          assert.equal(id, 1)
+          const id = new BigNumber(await lockV1.methods.getTokenIdFor(keyOwner).call())
+          assert.equal(id.toFixed(), 1)
         })
 
         it('v0 Key is still owned', async () => {
-          const id = await lockV0.getTokenIdFor(keyOwner)
-          assert.equal(id, 1)
+          const id = new BigNumber(await lockV0.getTokenIdFor.call(keyOwner))
+          assert.equal(id.toFixed(), 1)
         })
       })
     })
