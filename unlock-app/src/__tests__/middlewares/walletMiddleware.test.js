@@ -303,7 +303,7 @@ describe('Wallet middleware', () => {
       mockWalletService.ready = false
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: 'error/SET_ERROR',
+        type: SET_ERROR,
         error: NO_USER_ACCOUNT,
       })
 
@@ -338,7 +338,7 @@ describe('Wallet middleware', () => {
       mockWalletService.ready = false
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: 'error/SET_ERROR',
+        type: SET_ERROR,
         error: NO_USER_ACCOUNT,
       })
 
@@ -371,7 +371,7 @@ describe('Wallet middleware', () => {
         mockWalletService.ready = false
         invoke(action)
         expect(store.dispatch).toHaveBeenCalledWith({
-          type: 'error/SET_ERROR',
+          type: SET_ERROR,
           error: NO_USER_ACCOUNT,
         })
 
@@ -427,7 +427,7 @@ describe('Wallet middleware', () => {
       mockWalletService.ready = false
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: 'error/SET_ERROR',
+        type: SET_ERROR,
         error: NO_USER_ACCOUNT,
       })
 
