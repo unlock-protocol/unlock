@@ -425,17 +425,6 @@ describe('WalletService', () => {
 
         walletService._sendTransaction = jest.fn()
 
-        const unlockMockContract = {
-          methods: {
-            createLock: jest.fn(() => {
-              return unlockMockContract.methods
-            }),
-            encodeABI: jest.fn(() => {
-              return data
-            }),
-          },
-        }
-
         const ContractClass = class {
           constructor(abi, address) {
             expect(abi).toBe(UnlockContract.abi)
@@ -525,17 +514,6 @@ describe('WalletService', () => {
 
         walletService._sendTransaction = jest.fn()
 
-        const unlockMockContract = {
-          methods: {
-            purchaseFor: jest.fn(() => {
-              return unlockMockContract.methods
-            }),
-            encodeABI: jest.fn(() => {
-              return data
-            }),
-          },
-        }
-
         const ContractClass = class {
           constructor(abi, address) {
             expect(abi).toBe(LockContract.abi)
@@ -601,17 +579,6 @@ describe('WalletService', () => {
         const data = '' // mock abi data for purchaseKey
 
         walletService._sendTransaction = jest.fn()
-
-        const unlockMockContract = {
-          methods: {
-            updateKeyPrice: jest.fn(() => {
-              return unlockMockContract.methods
-            }),
-            encodeABI: jest.fn(() => {
-              return data
-            }),
-          },
-        }
 
         const ContractClass = class {
           constructor(abi, address) {
@@ -816,17 +783,6 @@ describe('WalletService', () => {
         const data = '' // mock abi data for purchaseKey
 
         walletService._sendTransaction = jest.fn()
-
-        const unlockMockContract = {
-          methods: {
-            withdrawFromLock: jest.fn(() => {
-              return unlockMockContract.methods
-            }),
-            encodeABI: jest.fn(() => {
-              return data
-            }),
-          },
-        }
 
         const ContractClass = class {
           constructor(abi, address) {
