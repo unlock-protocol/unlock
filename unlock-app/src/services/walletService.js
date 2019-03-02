@@ -47,7 +47,7 @@ export default class WalletService extends EventEmitter {
 
   static gasAmountConstants() {
     return {
-      createLock: 2500000,
+      createLock: 3000000,
       updateKeyPrice: 1000000,
       purchaseKey: 1000000,
       withdrawFromLock: 1000000,
