@@ -1,3 +1,5 @@
-const ABI = require('abi_V0.json')
+const PublicLock = require('./PublicLock.json')
+const Unlock = require('./Unlock.json')
 
-export default ABI
+exports.Unlock = Unlock
+exports.PublicLock = PublicLock
