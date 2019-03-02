@@ -3,7 +3,7 @@
 # This script removes all transient directories (node_modules and build results)
 # To only be used after you've stopped all servers
 
-NUKE_DIRS="node_modules unlock-app/node_modules/ locksmith/node_modules/ tests/node_modules/ smart-contracts/node_modules/ unlock-app/build unlock-app/coverage unlock-app/src/out unlock-app/src/.next unlock-app/coverage unlock-app/src/out unlock-app/src/.next smart-contracts/build/contracts/*.json"
+NUKE_DIRS="node_modules locksmith/node_modules/ locksmith/development.sqlite3 locksmith/logs/*.log tests/node_modules/ smart-contracts/node_modules/ smart-contracts/.zos.session smart-contracts/zos.dev-1984.json smart-contracts/ethereum smart-contracts/build smart-contracts/build/contracts/*.json unlock-app/node_modules/ unlock-app/build unlock-app/coverage unlock-app/src/out unlock-app/src/.next unlock-app/coverage unlock-app/src/out unlock-app/src/.next paywall/node_modules/ paywall/build paywall/coverage paywall/src/out paywall/src/.next paywall/coverage paywall/src/out paywall/src/.next paywall/static/paywall.min.js */node_modules .*/node_modules "
 
 # First check if ganache is running
 GANACHE_PORT=8545
