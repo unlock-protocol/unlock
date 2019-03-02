@@ -20,7 +20,7 @@ class Error extends React.Component {
           req.connection.remoteAddress.match(/^127.0.0.1|^localhost/)
         )
       ) {
-        res.writeHead(301, {
+        res.writeHead(307, {
           Location: '/',
         })
         res.end()
