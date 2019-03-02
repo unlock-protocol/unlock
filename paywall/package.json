@@ -10,6 +10,7 @@
     "dev": "nodemon src/server.js",
     "before": "npm run build-paywall",
     "build": "npm run before && next build",
+    "deploy": "next export -o src/out",
     "start": "npm run before && next start",
     "test": "cross-env UNLOCK_ENV=test jest test.js --env=jsdom",
     "lint": "eslint .",
