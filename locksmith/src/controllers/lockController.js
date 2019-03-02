@@ -5,58 +5,56 @@ const Lock = require('../lock')
 
 const Op = Sequelize.Op
 
-const lockUpdate = async (req, res) => {
+const lockSave = async (req, res) => {
   let lock = req.body.message.lock
 
-  if (lock && lock.address == req.params.lockAddress) {
-    try {
+  if (lock.name && lock.owner && lock.address) {
+    // First: find the lock if it exists
+    let databaseLock = await Lock.findOne({
+      where: { address: { [Op.eq]: lock.address } },
+    })
+    // If it does not: easy, we create a new one
+    if (!databaseLock) {
+      try {
+        await Lock.create({
+          name: lock.name,
+          address: lock.address,
+          owner: lock.owner,
+        })
+      } catch (error) {
+        logger.logFailureToStoreLock(error)
+        res.sendStatus(500)
+      }
+      logger.logLockDetailsStored(lock.address)
+      return res.sendStatus(200)
+    } else {
+      // If it does exist, check that the owner is correct
+      if (lock.owner !== databaseLock.owner) {
+        logger.logAttemptedOverwrite(lock.address)
+        return res.sendStatus(401)
+      }
+
+      // Udpate, with a constraint on the owner
       let result = await Lock.update(
         { name: lock.name },
         {
           where: {
             address: {
-              [Op.eq]: ethJsUtil.toChecksumAddress(req.params.lockAddress),
+              [Op.eq]: ethJsUtil.toChecksumAddress(lock.address),
             },
             owner: { [Op.eq]: ethJsUtil.toChecksumAddress(lock.owner) },
           },
           raw: true,
         }
       )
-
       if (result[0] > 0) {
-        res.sendStatus(202)
+        logger.logAttemptedOverwrite(lock.address)
+        return res.sendStatus(202)
       } else {
-        res.sendStatus(412)
+        logger.logLockDetailsStored(lock.address)
+        return res.sendStatus(412)
       }
-    } catch (e) {
-      res.sendStatus(412)
     }
-  } else {
-    res.sendStatus(412)
-  }
-}
-
-const lockCreate = async (req, res) => {
-  let lock = req.body.message.lock
-
-  if (lock.address && lock.name) {
-    let lockAddress = ethJsUtil.toChecksumAddress(lock.address)
-    let lockOwner = ethJsUtil.toChecksumAddress(req.owner)
-
-    try {
-      await Lock.create({
-        name: lock.name,
-        address: lockAddress,
-        owner: lockOwner,
-      })
-      logger.logLockDetailsStored(lockAddress)
-      res.sendStatus(200)
-    } catch (e) {
-      logger.logAttemptedOverwrite(lockAddress)
-      res.sendStatus(412)
-    }
-  } else {
-    res.sendStatus(400)
   }
 }
 
@@ -90,4 +88,4 @@ const lockOwnerGet = async (req, res) => {
   res.json({ locks: locks })
 }
 
-module.exports = { lockGet, lockOwnerGet, lockCreate, lockUpdate }
+module.exports = { lockGet, lockOwnerGet, lockSave }
