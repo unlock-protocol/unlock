@@ -3,6 +3,7 @@ export const CREATE_LOCK = 'lock/CREATE_LOCK'
 export const DELETE_LOCK = 'lock/DELETE_LOCK'
 export const UPDATE_LOCK = 'lock/UPDATE_LOCK'
 export const UPDATE_LOCK_KEY_PRICE = 'lock/UPDATE_LOCK_KEY_PRICE'
+export const UPDATE_LOCK_NAME = 'lock/UPDATE_LOCK_NAME'
 export const WITHDRAW_FROM_LOCK = 'lock/WITHDRAW_FROM_LOCK'
 
 export const createLock = lock => ({
@@ -32,8 +33,15 @@ export const withdrawFromLock = lock => ({
   lock,
 })
 
+// TODO: name should be updateLockKeyPrice
 export const updateKeyPrice = (address, price) => ({
   type: UPDATE_LOCK_KEY_PRICE,
   address,
   price,
+})
+
+export const updateLockName = (address, name) => ({
+  type: UPDATE_LOCK_NAME,
+  address,
+  name,
 })
