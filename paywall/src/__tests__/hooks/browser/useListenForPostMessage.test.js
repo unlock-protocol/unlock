@@ -1,5 +1,6 @@
 import * as rtl from 'react-testing-library'
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import { ConfigContext } from '../../../utils/withConfig'
 import useListenForPostMessage from '../../../hooks/browser/useListenForPostMessage'
@@ -32,19 +33,25 @@ describe('useListenForPostMessage hook', () => {
     config = { isServer: false, isInIframe: true }
   })
 
-  function MockListener({
-    /* eslint-disable react/prop-types */
-    type = 'listenFor',
-    defaultValue = 'hi',
-    validator = false,
-    /* eslint-enable react/prop-types */
-  }) {
+  function MockListener({ type, defaultValue, validator }) {
     const value = useListenForPostMessage(fakeWindow, {
       type,
       defaultValue,
       validator,
     })
     return <div title="value">{value}</div>
+  }
+
+  MockListener.propTypes = {
+    type: PropTypes.string,
+    defaultValue: PropTypes.string,
+    validator: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+  }
+
+  MockListener.defaultProps = {
+    type: 'listenFor',
+    defaultValue: 'hi',
+    validator: false,
   }
 
   function getListener() {

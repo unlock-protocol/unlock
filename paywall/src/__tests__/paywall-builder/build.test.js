@@ -1,6 +1,10 @@
-import buildPaywall, { redirect } from '../../../paywall-builder/build'
+import buildPaywall, {
+  redirect,
+  scrollLoop,
+} from '../../../paywall-builder/build'
 import * as script from '../../../paywall-builder/script'
 import * as iframeManager from '../../../paywall-builder/iframe'
+import { POST_MESSAGE_SCROLL_POSITION } from '../../../paywall-builder/constants'
 
 global.window = {} // this is fun...
 global.MutationObserver = function() {
@@ -11,11 +15,14 @@ const fakeLockAddress = 'lockaddress'
 
 describe('buildPaywall', () => {
   let document
+  function scrollThatPage(window) {
+    window.pageYOffset += 20
+  }
 
   beforeEach(() => {
     document = {
       documentElement: {
-        scrollHeight: 0,
+        scrollHeight: 22293,
       },
     }
   })
@@ -40,12 +47,14 @@ describe('buildPaywall', () => {
     let mockIframeImpl
     let mockAdd
     let window
+    let postMessage
     beforeEach(() => {
       mockScript = jest.spyOn(script, 'findPaywallUrl')
       mockIframe = jest.spyOn(iframeManager, 'getIframe')
+      postMessage = jest.fn()
       mockIframeImpl = {
         contentWindow: {
-          postMessage: () => {},
+          postMessage,
         },
       }
 
@@ -58,11 +67,16 @@ describe('buildPaywall', () => {
           expect(type).toBe('message')
           expect(listener).not.toBe(null)
         },
-        requestAnimationFrame() {},
+        requestAnimationFrame: () => {},
         location: {
           hash: '',
         },
         origin: 'origin/',
+        URL: () => {
+          return {
+            origin: 'origin',
+          }
+        },
       }
     })
 
@@ -107,6 +121,17 @@ describe('buildPaywall', () => {
       expect(mockAdd).toHaveBeenCalledWith(document, mockIframeImpl)
     })
 
+    it('passes the correct origin to scrollLoop', () => {
+      expect.assertions(4)
+
+      scrollThatPage(window)
+
+      buildPaywall(window, document, fakeLockAddress)
+      // new URL().origin
+      expect(postMessage).toHaveBeenCalled()
+      expect(postMessage.mock.calls[0][1]).toBe('origin')
+    })
+
     it('sets up the message event listeners', () => {
       expect.assertions(3) // 2 are in the addEventListener in the mock window (see beforeEach)
       jest.spyOn(window, 'addEventListener')
@@ -126,10 +151,17 @@ describe('buildPaywall', () => {
           addEventListener(type, listener) {
             callbacks[type] = listener
           },
-          requestAnimationFrame() {},
+          requestAnimationFrame: jest.fn(),
+          innerHeight: 266,
+          pageYOffset: 0, // change to "scroll"
           location: {
             href: 'href',
             hash: '',
+          },
+          URL: () => {
+            return {
+              origin: 'origin',
+            }
           },
         }
         blocker = {
@@ -184,6 +216,90 @@ describe('buildPaywall', () => {
         callbacks.message({ data: 'redirect' })
 
         expect(window.location.href).toBe('/url/lockaddress/href')
+      })
+    })
+    describe('scrollLoop', () => {
+      let window
+      let iframe
+      beforeEach(() => {
+        iframe = {
+          contentWindow: {
+            postMessage: jest.fn(),
+          },
+        }
+        window = {
+          addEventListener(type, listener) {
+            expect(type).toBe('message')
+            expect(listener).not.toBe(null)
+          },
+          requestAnimationFrame: jest.fn(),
+          innerHeight: 266,
+          pageYOffset: 0, // change to "scroll"
+          location: {
+            hash: '',
+          },
+          origin: 'origin/',
+        }
+      })
+      it('does not send scroll if the window is fully scrolled', () => {
+        expect.assertions(1)
+        document.documentElement.scrollHeight = window.innerHeight
+        scrollLoop(window, document, iframe, 'origin')
+
+        expect(iframe.contentWindow.postMessage).not.toHaveBeenCalled()
+      })
+      it('sends a scroll position if the window is scrolled', () => {
+        expect.assertions(1)
+        scrollLoop(window, document, iframe, 'origin')
+
+        expect(iframe.contentWindow.postMessage).toHaveBeenCalledWith(
+          {
+            type: POST_MESSAGE_SCROLL_POSITION,
+            payload: 140.97744360902254,
+          },
+          'origin'
+        )
+      })
+      it('sends a weighted scroll position', () => {
+        expect.assertions(2)
+        scrollLoop(window, document, iframe, 'origin')
+        scrollThatPage(window) // scroll down 20 pixels
+        scrollLoop(window, document, iframe, 'origin')
+
+        expect(iframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
+          1,
+          {
+            type: POST_MESSAGE_SCROLL_POSITION,
+            payload: 140.97744360902254,
+          },
+          'origin'
+        )
+
+        expect(iframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
+          2,
+          {
+            type: POST_MESSAGE_SCROLL_POSITION,
+            payload: 141.06824126644298,
+          },
+          'origin'
+        )
+      })
+      it('requests a new animation frame for the next scroll check', () => {
+        expect.assertions(1)
+        scrollLoop(window, document, iframe, 'origin')
+
+        expect(window.requestAnimationFrame).toHaveBeenCalled()
+      })
+      it('calls scrollLoop in the requestAnimationFrame callback', () => {
+        expect.assertions(2)
+        scrollLoop(window, document, iframe, 'origin')
+
+        expect(window.requestAnimationFrame).toHaveBeenCalled()
+        const scrollCb = window.requestAnimationFrame.mock.calls[0][0]
+
+        scrollCb()
+
+        expect(iframe.contentWindow.postMessage).toHaveBeenCalledTimes(2)
       })
     })
   })
