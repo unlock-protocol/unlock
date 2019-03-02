@@ -1,11 +1,11 @@
 {
-  "name": "public-lock-abi-0",
+  "name": "unlock-abi-0",
   "version": "1.0.0",
-  "description": "The ABI (application binary interface) for version 0 of Unlock-protocol's PublicLock contract.",
+  "description": "The ABI (application binary interface) for version 0 of Unlock-protocol's PublicLock and Unlock contracts. These are built out of commit d2a3cc65 inside the main unlock repository",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "unlock-protocol",
-  "license": "ISC"
+  "license": "MIT"
 }
