@@ -34,7 +34,7 @@ script:
   - scripts/integration-tests.sh
 after_success:
   - scripts/deploy.sh netlify "$TRAVIS_COMMIT" "$TRAVIS_TAG" "$TRAVIS_BRANCH" "$TRAVIS_PULL_REQUEST"
-  - scripts/deploy-elasticbeanstalk.sh "$TRAVIS_BUILD_ID" "$TRAVIS_BRANCH" "$TRAVIS_PULL_REQUEST" "$TRAVIS_COMMIT_MESSAGE"
+  - locksmith/scripts/deploy-elasticbeanstalk.sh "$TRAVIS_BUILD_ID" "$TRAVIS_BRANCH" "$TRAVIS_PULL_REQUEST" "$TRAVIS_COMMIT_MESSAGE"
   - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && scripts/push-image.sh unlock $TRAVIS_BRANCH
   - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && scripts/push-image.sh unlock-integration "$TRAVIS_BRANCH"
 after_failure:

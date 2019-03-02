@@ -129,7 +129,7 @@ jobs:
           command: ./scripts/circleci/set-is-pull-request.sh >> $BASH_ENV
       - run:
           name: Deploy to to Beanstalk
-          command: scripts/deploy-elasticbeanstalk.sh "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_PULL_REQUEST" "$GIT_COMMIT_DESC"
+          command: locksmith/scripts/deploy-elasticbeanstalk.sh "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_PULL_REQUEST" "$GIT_COMMIT_DESC"
 
   promote-unlock-image:
     machine: true
