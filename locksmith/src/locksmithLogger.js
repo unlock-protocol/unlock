@@ -22,4 +22,7 @@ module.exports = {
   logFailureRequestingBlockTimestamp: error => {
     logger.error(error)
   },
+  logFailureToStoreLock: error => {
+    logger.error(error)
+  },
 }
