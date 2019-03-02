@@ -1,3 +1,4 @@
+import UnlockJs from '@unlock-protocol/unlock-js'
 import EventEmitter from 'events'
 import { LOCATION_CHANGE } from 'connected-next-router'
 import web3Middleware from '../../middlewares/web3Middleware'
@@ -65,11 +66,13 @@ class MockWebService extends EventEmitter {
 
 let mockWeb3Service = new MockWebService()
 
-jest.mock('../../services/web3Service', () => {
-  return function() {
+jest.mock('@unlock-protocol/unlock-js', () => ({
+  Web3Service: function() {
     return mockWeb3Service
-  }
-})
+  },
+}))
+
+UnlockJs.mockImplementation = MockWebService
 
 beforeEach(() => {
   // Reset the mock
