@@ -8,7 +8,6 @@ import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
 import {
   MISSING_PROVIDER,
-  NON_DEPLOYED_CONTRACT,
   NOT_ENABLED_IN_PROVIDER,
   FAILED_TO_CREATE_LOCK,
   FAILED_TO_PURCHASE_KEY,
@@ -27,9 +26,7 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
 export default class WalletService extends EventEmitter {
   constructor({ providers, unlockAddress } = configure()) {
     super()
-    if (unlockAddress) {
-      this.unlockContractAddress = Web3Utils.toChecksumAddress(unlockAddress)
-    }
+    this.unlockContractAddress = unlockAddress
     this.providers = providers
     this.ready = false
     this.providerName = null
@@ -91,18 +88,6 @@ export default class WalletService extends EventEmitter {
     this.web3 = new Web3(provider)
 
     const networkId = await this.web3.eth.net.getId()
-    // unlockContractAddress is set in the constructor if config provides one in unlockAddress
-    // this is set for staging and production
-    if (!this.unlockContractAddress) {
-      if (UnlockContract.networks[networkId]) {
-        // If we do not have an address from config let's use the artifact files
-        this.unlockContractAddress = Web3Utils.toChecksumAddress(
-          UnlockContract.networks[networkId].address
-        )
-      } else {
-        return this.emit('error', new Error(NON_DEPLOYED_CONTRACT))
-      }
-    }
 
     if (this.networkId !== networkId) {
       this.networkId = networkId

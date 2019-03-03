@@ -12,7 +12,6 @@ import WalletService from '../../services/walletService'
 import {
   NOT_ENABLED_IN_PROVIDER,
   MISSING_PROVIDER,
-  NON_DEPLOYED_CONTRACT,
   FAILED_TO_CREATE_LOCK,
   FAILED_TO_PURCHASE_KEY,
   FAILED_TO_UPDATE_KEY_PRICE,
@@ -103,53 +102,6 @@ describe('WalletService', () => {
       })
 
       walletService.connect('AnotherProvider')
-    })
-
-    describe('smart contract has not been deployed on this network', () => {
-      it('should not emit an error event when we have a contract address from config', done => {
-        expect.assertions(3)
-        config.unlockAddress = '0x1234567890123456789012345678901234567890'
-        const walletService2 = new WalletService(config)
-
-        expect(walletService2.ready).toBe(false)
-
-        const netVersion = Math.floor(Math.random() * 100000)
-        netVersionAndYield(netVersion)
-
-        expect(walletService2.ready).toBe(false)
-
-        expect(walletService2.unlockContractAddress).toBe(
-          '0x1234567890123456789012345678901234567890'
-        )
-
-        walletService2.on('error', error => {
-          expect(error).toBe('should not error')
-          done()
-        })
-        walletService2.on('network.changed', () => {
-          done()
-        })
-
-        walletService2.connect('HTTP')
-      })
-
-      it('should emit an error event when there is no config-provided contract address', done => {
-        expect.assertions(3)
-
-        expect(walletService.ready).toBe(false)
-        UnlockContract.networks = {}
-
-        const netVersion = Math.floor(Math.random() * 100000)
-        netVersionAndYield(netVersion)
-
-        expect(walletService.ready).toBe(false)
-        walletService.on('error', error => {
-          expect(error.message).toBe(NON_DEPLOYED_CONTRACT)
-          done()
-        })
-
-        walletService.connect('HTTP')
-      })
     })
 
     it('should silently ignore requests to connect again to the same provider', done => {
