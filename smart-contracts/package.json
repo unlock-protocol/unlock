@@ -23,8 +23,8 @@
     "solium": "^1.2.3",
     "truffle": "^5.0.6",
     "truffle-hdwallet-provider": "^1.0.3",
-    "web3-eth-abi": "^1.0.0-beta.46",
-    "web3-utils": "^1.0.0-beta.36",
+    "web3-eth-abi": "^1.0.0-beta.47",
+    "web3-utils": "^1.0.0-beta.37",
     "zos": "^2.2.1",
     "zos-lib": "^2.2.1"
   },
