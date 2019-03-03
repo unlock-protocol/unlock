@@ -273,7 +273,7 @@ contract('Lock ERC721', accounts => {
 
         it('should have cleared the key data field for the new owner', () => {
           return locks['FIRST'].keyDataFor.call(to).then(keyData => {
-            assert.equal(Web3Utils.toUtf8(keyData), '')
+            assert.equal(keyData, null)
           })
         })
       })
