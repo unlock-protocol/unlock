@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 
-# This script invokes the deployment script for the target (as first arg) inside the default docker
-# image by copying all the Travis env variables inside the docker image
-# The second argument indicates if the build is for staging or production
+# This script invokes the deployment script for the service (first arg), to the target (second arg).
 
-TARGET=$1
-COMMIT=$2
-TAG=$3
-BRANCH=$4
-IS_PULL_REQUEST=$5
+
+SERVICE=$1
+TARGET=$2
+COMMIT=$3
+TAG=$4
+BRANCH=$5
+IS_PULL_REQUEST=$6
 ENV_TARGET="staging"
 NPM_SCRIPT="npm run deploy-$TARGET"
-SERVICE="unlock"
 REPO_ROOT=`dirname "$0"`/..
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
 
@@ -59,6 +58,7 @@ if [ "$BRANCH" = "master" ] && [ "$IS_PULL_REQUEST" = "false" ]; then
 fi
 
 # Deploy options
-OPTS="$ENV_TARGET $COMMIT $PUBLISH"
+OPTS="$SERVICE $ENV_TARGET $COMMIT $PUBLISH"
 
+echo "docker-compose -f $DOCKER_COMPOSE_FILE run $ENV_VARS $SERVICE $NPM_SCRIPT -- $OPTS"
 docker-compose -f $DOCKER_COMPOSE_FILE run $ENV_VARS $SERVICE $NPM_SCRIPT -- $OPTS
