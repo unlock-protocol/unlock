@@ -461,7 +461,7 @@ describe('WalletService', () => {
             to: walletService.unlockContractAddress,
             from: owner,
             data,
-            gas: 2500000,
+            gas: 3000000,
             contract: UnlockContract,
           },
           expect.any(Function)

@@ -1,8 +1,5 @@
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
-const Web3Abi = require('web3-eth-abi')
-const abi = new Web3Abi.AbiCoder()
-
 const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
 const Unlock = artifacts.require('../../Unlock.sol')
@@ -37,53 +34,24 @@ contract('Lock ERC721', accounts => {
       let ownerOf = await locks['FIRST'].ownerOf.call(ID)
       keyDataAfter = await locks['FIRST'].keyDataFor.call(to)
       assert.equal(ownerOf, to)
-      assert.equal(Web3Utils.toUtf8(keyDataAfter), '')
+      assert.equal(keyDataAfter, null)
     })
 
-    it('should work if some data is passed in ', async () => {
+    it('should work if some data is passed in', async () => {
       await locks['FIRST'].purchaseFor(accounts[7], Web3Utils.toHex('Julien'), {
         value: Units.convert('0.01', 'eth', 'wei'),
         from: accounts[7]
       })
       ID = await locks['FIRST'].getTokenIdFor.call(accounts[7])
-      let sender = Web3Utils.toChecksumAddress(accounts[7])
-      let receiver = Web3Utils.toChecksumAddress(accounts[6])
-      // Using encodeFunctionCall as a workaround until the upgrade to Truffle v5.x. Can't call overloaded functions from js currently...
-      let encodedCall = abi.encodeFunctionCall(
-        {
-          name: 'safeTransferFrom',
-          type: 'function',
-          inputs: [
-            {
-              type: 'address',
-              name: '_from'
-            },
-            {
-              type: 'address',
-              name: '_to'
-            },
-            {
-              type: 'uint256',
-              name: '_tokenId'
-            },
-            {
-              type: 'bytes',
-              name: 'data'
-            }
-          ]
-        },
-        [sender, receiver, Web3Utils.toHex(ID), Web3Utils.toHex('Julien')]
+      await locks['FIRST'].methods['safeTransferFrom(address,address,uint256,bytes)'](
+        accounts[7], accounts[6], Web3Utils.toHex(ID), Web3Utils.toHex('Julien'), { from: accounts[7] }
       )
-
-      await locks['FIRST'].sendTransaction({
-        from: accounts[7],
-        data: encodedCall
-      })
       let ownerOf = await locks['FIRST'].ownerOf.call(ID)
       assert.equal(ownerOf, accounts[6])
-      keyDataAfter = await locks['FIRST'].keyDataFor.call(receiver)
+      keyDataAfter = await locks['FIRST'].keyDataFor.call(accounts[7])
       // while we may pass data to the safeTransferFrom function, it is not currently utilized in any way other than being passed to the `onERC721Received` function in MixinTransfer.sol
-      assert.equal(Web3Utils.toUtf8(keyDataAfter), '')
+      assert.equal(await locks['FIRST'].keyDataFor.call(accounts[6]), null)
+      assert.equal(Web3Utils.toUtf8(await locks['FIRST'].keyDataFor.call(accounts[7])), 'Julien')
     })
 
     it('should fail if trying to transfer a key to a contract which does not implement onERC721Received', async () => {

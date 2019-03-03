@@ -23,11 +23,17 @@ contract('Unlock', accounts => {
     })
 
     it('can call a function by name', async () => {
-      await lock.sendTransaction({ data: abi.encodeFunctionSignature('numberOfOwners()') })
+      await web3.eth.call({
+        to: lock.address,
+        data: abi.encodeFunctionSignature('numberOfOwners()')
+      })
     })
 
     it('cannot call a function which does not exist', async () => {
-      await shouldFail(lock.sendTransaction({ data: abi.encodeFunctionSignature('dne()') }), 'NO_FALLBACK')
+      await shouldFail(web3.eth.call({
+        to: lock.address,
+        data: abi.encodeFunctionSignature('dne()')
+      }), 'NO_FALLBACK')
     })
   })
 })

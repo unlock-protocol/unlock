@@ -1,4 +1,4 @@
-pragma solidity 0.4.25;
+pragma solidity 0.5.4;
 
 
 /**
@@ -14,7 +14,7 @@ interface ILockCore {
   */
   function purchaseFor(
     address _recipient,
-    bytes  _data
+    bytes calldata _data
   )
     external
     payable;
@@ -28,7 +28,7 @@ interface ILockCore {
   function purchaseForFrom(
     address _recipient,
     address _referrer,
-    bytes  _data
+    bytes calldata _data
   )
     external
     payable;

@@ -6,7 +6,7 @@ module.exports = function deployLocks (unlock, from) {
   return Promise.all(
     Object.keys(Locks).map(async name => {
       let createCall
-      if (unlock.methods) {
+      if (unlock.methods && unlock.methods.createLock) {
         createCall = unlock.methods.createLock(
           Locks[name].expirationDuration.toFixed(),
           Locks[name].keyPrice.toFixed(),
@@ -28,7 +28,7 @@ module.exports = function deployLocks (unlock, from) {
       } else {
         const tx = await createCall
         // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
-        const evt = tx.logs[0]
+        const evt = tx.logs[1]
         locks[name] = await PublicLock.at(evt.args.newLockAddress)
         locks[name].params = Locks[name]
       }

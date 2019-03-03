@@ -14,7 +14,7 @@ contract('Reports', (accounts) => {
 
     // First usage costs more, skip it
     await lock
-      .purchaseFor(accounts[0], '', {
+      .purchaseFor(accounts[0], Web3Utils.toHex(''), {
         value: Units.convert('0.01', 'eth', 'wei')
       })
   })
@@ -30,7 +30,7 @@ contract('Reports', (accounts) => {
     const createLock = new BigNumber(tx.receipt.gasUsed)
 
     tx = await lock
-      .purchaseFor(accounts[1], '', {
+      .purchaseFor(accounts[1], Web3Utils.toHex(''), {
         value: Units.convert('0.01', 'eth', 'wei')
       })
     const purchaseForNoData = new BigNumber(tx.receipt.gasUsed)
