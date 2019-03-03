@@ -12,7 +12,6 @@ import WalletService from '../../services/walletService'
 import {
   NOT_ENABLED_IN_PROVIDER,
   MISSING_PROVIDER,
-  NON_DEPLOYED_CONTRACT,
   FAILED_TO_CREATE_LOCK,
   FAILED_TO_PURCHASE_KEY,
   FAILED_TO_UPDATE_KEY_PRICE,
@@ -103,53 +102,6 @@ describe('WalletService', () => {
       })
 
       walletService.connect('AnotherProvider')
-    })
-
-    describe('smart contract has not been deployed on this network', () => {
-      it('should not emit an error event when we have a contract address from config', done => {
-        expect.assertions(3)
-        config.unlockAddress = '0x1234567890123456789012345678901234567890'
-        const walletService2 = new WalletService(config)
-
-        expect(walletService2.ready).toBe(false)
-
-        const netVersion = Math.floor(Math.random() * 100000)
-        netVersionAndYield(netVersion)
-
-        expect(walletService2.ready).toBe(false)
-
-        expect(walletService2.unlockContractAddress).toBe(
-          '0x1234567890123456789012345678901234567890'
-        )
-
-        walletService2.on('error', error => {
-          expect(error).toBe('should not error')
-          done()
-        })
-        walletService2.on('network.changed', () => {
-          done()
-        })
-
-        walletService2.connect('HTTP')
-      })
-
-      it('should emit an error event when there is no config-provided contract address', done => {
-        expect.assertions(3)
-
-        expect(walletService.ready).toBe(false)
-        UnlockContract.networks = {}
-
-        const netVersion = Math.floor(Math.random() * 100000)
-        netVersionAndYield(netVersion)
-
-        expect(walletService.ready).toBe(false)
-        walletService.on('error', error => {
-          expect(error.message).toBe(NON_DEPLOYED_CONTRACT)
-          done()
-        })
-
-        walletService.connect('HTTP')
-      })
     })
 
     it('should silently ignore requests to connect again to the same provider', done => {
@@ -425,17 +377,6 @@ describe('WalletService', () => {
 
         walletService._sendTransaction = jest.fn()
 
-        const unlockMockContract = {
-          methods: {
-            createLock: jest.fn(() => {
-              return unlockMockContract.methods
-            }),
-            encodeABI: jest.fn(() => {
-              return data
-            }),
-          },
-        }
-
         const ContractClass = class {
           constructor(abi, address) {
             expect(abi).toBe(UnlockContract.abi)
@@ -461,7 +402,7 @@ describe('WalletService', () => {
             to: walletService.unlockContractAddress,
             from: owner,
             data,
-            gas: 3000000,
+            gas: WalletService.gasAmountConstants().createLock,
             contract: UnlockContract,
           },
           expect.any(Function)
@@ -525,17 +466,6 @@ describe('WalletService', () => {
 
         walletService._sendTransaction = jest.fn()
 
-        const unlockMockContract = {
-          methods: {
-            purchaseFor: jest.fn(() => {
-              return unlockMockContract.methods
-            }),
-            encodeABI: jest.fn(() => {
-              return data
-            }),
-          },
-        }
-
         const ContractClass = class {
           constructor(abi, address) {
             expect(abi).toBe(LockContract.abi)
@@ -560,7 +490,7 @@ describe('WalletService', () => {
             to: lock,
             from: account,
             data,
-            gas: 1000000,
+            gas: WalletService.gasAmountConstants().purchaseKey,
             contract: LockContract,
             value: '100000000000000000000000000', // Web3Utils.toWei(keyPrice, 'ether')
           },
@@ -602,17 +532,6 @@ describe('WalletService', () => {
 
         walletService._sendTransaction = jest.fn()
 
-        const unlockMockContract = {
-          methods: {
-            updateKeyPrice: jest.fn(() => {
-              return unlockMockContract.methods
-            }),
-            encodeABI: jest.fn(() => {
-              return data
-            }),
-          },
-        }
-
         const ContractClass = class {
           constructor(abi, address) {
             expect(abi).toBe(LockContract.abi)
@@ -636,7 +555,7 @@ describe('WalletService', () => {
             to: lock,
             from: account,
             data,
-            gas: 1000000,
+            gas: WalletService.gasAmountConstants().updateKeyPrice,
             contract: LockContract,
           },
           expect.any(Function)
@@ -662,73 +581,141 @@ describe('WalletService', () => {
 
     describe('signData', () => {
       const account = '0x123'
-      const data = 'please sign me'
+      let data = 'please sign me'
 
-      it('should call first eth.personal.sign', done => {
-        expect.assertions(4)
-        walletService.web3.eth.personal.sign = jest.fn(
-          (dataToSign, signer, callback) => {
-            expect(dataToSign).toEqual(data)
-            expect(signer).toEqual(account)
-            return callback(null /* error */, 'signature')
-          }
-        )
+      describe('if the provider is metamask', () => {
+        it('should use eth_signTypedData_v3 and stringify the data', done => {
+          expect.assertions(2)
+          data = []
+          walletService.web3.currentProvider.isMetaMask = true
+          walletService.web3.currentProvider.send = jest.fn((args, cb) => {
+            expect(args.method).toBe('eth_signTypedData_v3')
+            expect(args.params[1]).toBe(JSON.stringify(data))
+            return cb(null, { result: '' })
+          })
+          walletService.signData(account, data, () => {
+            done()
+          })
+        })
+      })
+
+      it('should send the the method to the provider with the right params and yield the signature when it is not metamask (legacy/opaque signing)', done => {
+        expect.assertions(5)
+        const result = 'RESULT'
+        walletService.web3.currentProvider.send = jest.fn((args, cb) => {
+          expect(args.method).toBe('eth_signTypedData')
+          expect(args.params[0]).toBe(account)
+          expect(args.params[1]).toBe(data)
+          expect(args.from).toBe(account)
+          return cb(null, {
+            result,
+          })
+        })
         walletService.signData(account, data, (error, signature) => {
-          expect(walletService.web3.eth.personal.sign).toHaveBeenCalled()
-          expect(signature).toEqual('signature')
+          expect(signature).toBe(Buffer.from(result).toString('base64'))
           done()
         })
       })
 
-      it('should call web3.eth.sign if eth.personal.sign fails', done => {
-        expect.assertions(7)
-
-        walletService.web3.eth.personal.sign = jest.fn(
-          (dataToSign, signer, callback) => {
-            expect(dataToSign).toEqual(data)
-            expect(signer).toEqual(account)
-            const error = {}
-            return callback(error, null /* signature */)
-          }
-        )
-
-        walletService.web3.eth.sign = jest.fn(
-          (dataToSign, signer, callback) => {
-            expect(dataToSign).toEqual(data)
-            expect(signer).toEqual(account)
-            return callback(null /* error */, 'signature')
-          }
-        )
-
-        walletService.signData(account, data, (error, signature) => {
-          expect(walletService.web3.eth.personal.sign).toHaveBeenCalled()
-          expect(walletService.web3.eth.sign).toHaveBeenCalled()
-          expect(signature).toEqual('signature')
+      it('should yield an error if there was a network error', done => {
+        expect.assertions(1)
+        const networkError = new Error('network')
+        walletService.web3.currentProvider.send = jest.fn((args, cb) => {
+          return cb(networkError, null)
+        })
+        walletService.signData(account, data, error => {
+          expect(error).toBe(networkError)
           done()
         })
       })
 
-      it('should call web3.eth.sign if eth.personal.sign throws', done => {
-        expect.assertions(7)
+      it('should yield an error if there was a signature error', done => {
+        expect.assertions(1)
+        const signatureError = new Error('signature')
+        walletService.web3.currentProvider.send = jest.fn((args, cb) => {
+          return cb(null, { error: signatureError })
+        })
+        walletService.signData(account, data, error => {
+          expect(error).toBe(signatureError)
+          done()
+        })
+      })
+    })
 
-        walletService.web3.eth.personal.sign = jest.fn((dataToSign, signer) => {
-          expect(dataToSign).toEqual(data)
-          expect(signer).toEqual(account)
-          throw new Error()
+    describe('partialWithdrawFromLock', () => {
+      let lock
+      let account
+
+      beforeEach(() => {
+        lock = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
+        account = '0xdeadbeef'
+      })
+
+      it('should invoke sendTransaction with the right params', done => {
+        expect.assertions(3)
+        const data = '' // mock abi data for partialWithdraw
+
+        walletService._sendTransaction = jest.fn(() => {
+          done()
         })
 
-        walletService.web3.eth.sign = jest.fn(
-          (dataToSign, signer, callback) => {
-            expect(dataToSign).toEqual(data)
-            expect(signer).toEqual(account)
-            return callback(null /* error */, 'signature')
+        const MockContractClass = class {
+          constructor(abi, address) {
+            expect(abi).toBe(LockContract.abi)
+            expect(address).toBe(lock)
+            this.methods = {
+              partialWithdraw: () => this,
+            }
+            this.encodeABI = jest.fn(() => data)
           }
-        )
+        }
 
-        walletService.signData(account, data, (error, signature) => {
-          expect(walletService.web3.eth.personal.sign).toHaveBeenCalled()
-          expect(walletService.web3.eth.sign).toHaveBeenCalled()
-          expect(signature).toEqual('signature')
+        walletService.web3.eth.Contract = MockContractClass
+
+        walletService.partialWithdrawFromLock(lock, account, '3', () => {
+          done()
+        })
+
+        expect(walletService._sendTransaction).toHaveBeenCalledWith(
+          {
+            to: lock,
+            from: account,
+            data,
+            gas: WalletService.gasAmountConstants().partialWithdrawFromLock,
+            contract: LockContract,
+          },
+          expect.any(Function)
+        )
+      })
+
+      it('should emit an error if the transaction cannot be sent', done => {
+        expect.assertions(1)
+        const error = {}
+
+        walletService._sendTransaction = jest.fn((args, cb) => {
+          return cb(error)
+        })
+
+        walletService.on('error', error => {
+          expect(error.message).toBe(FAILED_TO_WITHDRAW_FROM_LOCK)
+          done()
+        })
+
+        walletService.partialWithdrawFromLock(lock, account, '3', () => {})
+      })
+
+      it('should not emit an error when `error` is falsy', done => {
+        expect.assertions(1)
+        const error = undefined
+
+        walletService._sendTransaction = jest.fn((args, cb) => {
+          return cb(error)
+        })
+
+        walletService.emit = jest.fn()
+
+        walletService.partialWithdrawFromLock(lock, account, '3', () => {
+          expect(walletService.emit).not.toHaveBeenCalled()
           done()
         })
       })
@@ -748,17 +735,6 @@ describe('WalletService', () => {
         const data = '' // mock abi data for purchaseKey
 
         walletService._sendTransaction = jest.fn()
-
-        const unlockMockContract = {
-          methods: {
-            withdrawFromLock: jest.fn(() => {
-              return unlockMockContract.methods
-            }),
-            encodeABI: jest.fn(() => {
-              return data
-            }),
-          },
-        }
 
         const ContractClass = class {
           constructor(abi, address) {
@@ -782,7 +758,7 @@ describe('WalletService', () => {
             to: lock,
             from: account,
             data,
-            gas: 1000000,
+            gas: WalletService.gasAmountConstants().withdrawFromLock,
             contract: LockContract,
           },
           expect.any(Function)
