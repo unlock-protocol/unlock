@@ -1,8 +1,6 @@
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
-const Web3Abi = require('web3-eth-abi')
-const abi = new Web3Abi.AbiCoder()
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
 const Unlock = artifacts.require('../Unlock.sol')
@@ -158,40 +156,12 @@ contract('Lock', accounts => {
 
       it('should fail to safeTransferFrom w/ data', async () => {
         ID = await lock.getTokenIdFor.call(keyOwner)
-        let sender = Web3Utils.toChecksumAddress(keyOwner)
-        let receiver = Web3Utils.toChecksumAddress(accounts[6])
-        // Using encodeFunctionCall as a workaround until the upgrade to Truffle v5.x. Can't call overloaded functions from js currently...
-        let encodedCall = abi.encodeFunctionCall(
-          {
-            name: 'safeTransferFrom',
-            type: 'function',
-            inputs: [
-              {
-                type: 'address',
-                name: '_from'
-              },
-              {
-                type: 'address',
-                name: '_to'
-              },
-              {
-                type: 'uint256',
-                name: '_tokenId'
-              },
-              {
-                type: 'bytes',
-                name: 'data'
-              }
-            ]
-          },
-          [sender, receiver, Web3Utils.toHex(ID), Web3Utils.toHex('Julien')]
-        )
-
-        await shouldFail(locks['FIRST'].sendTransaction({
-          from: accounts[7],
-          data: encodedCall
-        }),
-        'LOCK_DEPRECATED'
+        await shouldFail(
+          lock.methods['safeTransferFrom(address,address,uint256,bytes)'](keyOwner, accounts[3], ID, Web3Utils.toHex('Julien'), {
+            from: keyOwner,
+            value: Units.convert('0.01', 'eth', 'wei')
+          }),
+          'LOCK_DEPRECATED'
         )
       })
     })
