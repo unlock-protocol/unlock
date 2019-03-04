@@ -1,6 +1,9 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
-import { connectRouter, routerMiddleware } from 'connected-react-router'
-import { createMemoryHistory } from 'history'
+import {
+  routerReducer,
+  createRouterMiddleware,
+  initialRouterState,
+} from 'connected-next-router'
 
 import configure from './config'
 
@@ -41,13 +44,9 @@ import walletStatusReducer, {
 
 const config = configure()
 
-export const createUnlockStore = (
-  defaultState = {},
-  history = createMemoryHistory(),
-  middlewares = []
-) => {
+export const createUnlockStore = (defaultState = {}, middlewares = []) => {
   const reducers = {
-    router: connectRouter(history),
+    router: routerReducer,
     account: accountReducer,
     keys: keysReducer,
     keysForLockByPage: keysPagesReducer,
@@ -89,7 +88,7 @@ export const createUnlockStore = (
     defaultState
   )
 
-  middlewares.push(routerMiddleware(history))
+  middlewares.push(createRouterMiddleware())
 
   const composeEnhancers =
     (global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
