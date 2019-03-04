@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 import { ConfigContext } from '../../../utils/withConfig'
 import useListenForPostMessage from '../../../hooks/browser/useListenForPostMessage'
+import { WindowContext } from '../../../hooks/browser/useWindow'
 
 describe('useListenForPostMessage hook', () => {
   const { Provider } = ConfigContext
@@ -14,7 +15,9 @@ describe('useListenForPostMessage hook', () => {
   function Wrapper(props) {
     return (
       <Provider value={config}>
-        <MockListener {...props} />
+        <WindowContext.Provider value={fakeWindow}>
+          <MockListener {...props} />
+        </WindowContext.Provider>
       </Provider>
     )
   }
@@ -34,7 +37,7 @@ describe('useListenForPostMessage hook', () => {
   })
 
   function MockListener({ type, defaultValue, validator }) {
-    const value = useListenForPostMessage(fakeWindow, {
+    const value = useListenForPostMessage({
       type,
       defaultValue,
       validator,

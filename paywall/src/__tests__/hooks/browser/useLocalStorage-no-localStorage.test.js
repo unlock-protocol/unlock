@@ -1,11 +1,20 @@
 import * as rtl from 'react-testing-library'
+import React, { useEffect } from 'react'
 import useLocalStorage from '../../../hooks/browser/useLocalStorage'
+import { WindowContext } from '../../../hooks/browser/useWindow'
 
 jest.mock('../../../utils/localStorage', () => () => false)
 
 describe('no localStorage', () => {
   let fakeWindow
 
+  function MockStorage() {
+    const [value, setValue] = useLocalStorage()
+    useEffect(() => {
+      setValue('nope')
+    })
+    return <div>{value}</div>
+  }
   beforeEach(() => {
     jest.resetModules()
     fakeWindow = {
@@ -18,21 +27,18 @@ describe('no localStorage', () => {
     }
   })
   it('does nothing', () => {
-    expect.assertions(2)
+    expect.assertions(1)
     fakeWindow.localStorage.removeItem = () => {
       throw new Error('nope')
     }
 
-    const {
-      result: {
-        current: [, setValue],
-      },
-    } = rtl.testHook(() => useLocalStorage(fakeWindow, 'hi'))
-
-    expect(fakeWindow.localStorage.setItem).not.toHaveBeenCalled()
-
-    rtl.act(() => setValue('nope'))
-
+    rtl.act(() => {
+      rtl.render(
+        <WindowContext.Provider value={fakeWindow}>
+          <MockStorage />
+        </WindowContext.Provider>
+      )
+    })
     expect(fakeWindow.localStorage.setItem).not.toHaveBeenCalled()
   })
 })

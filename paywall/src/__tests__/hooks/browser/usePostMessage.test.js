@@ -3,15 +3,27 @@ import React from 'react'
 
 import { ConfigContext } from '../../../utils/withConfig'
 import usePostMessage from '../../../hooks/browser/usePostMessage'
+import { WindowContext } from '../../../hooks/browser/useWindow'
 
 describe('usePostMessage hook', () => {
-  const { Provider } = ConfigContext
-
   let fakeWindow
   let config
+  let postMessage
 
-  function wrapper(props) {
-    return <Provider value={config} {...props} />
+  function MockPostMessage() {
+    const { postMessage: ret } = usePostMessage()
+    postMessage = ret
+    return <div>unused</div>
+  }
+
+  function Wrapper() {
+    return (
+      <WindowContext.Provider value={fakeWindow}>
+        <ConfigContext.Provider value={config}>
+          <MockPostMessage />
+        </ConfigContext.Provider>
+      </WindowContext.Provider>
+    )
   }
 
   beforeEach(() => {
@@ -31,13 +43,7 @@ describe('usePostMessage hook', () => {
   it('posts a message to the window parent when postMessage is called', () => {
     expect.assertions(2)
 
-    const {
-      result: {
-        current: { postMessage },
-      },
-    } = rtl.testHook(() => usePostMessage(fakeWindow), {
-      wrapper,
-    })
+    rtl.render(<Wrapper />)
 
     expect(typeof postMessage).toBe('function')
     rtl.act(() => {
@@ -50,13 +56,7 @@ describe('usePostMessage hook', () => {
 
     config.isServer = true
 
-    const {
-      result: {
-        current: { postMessage },
-      },
-    } = rtl.testHook(() => usePostMessage(fakeWindow), {
-      wrapper,
-    })
+    rtl.render(<Wrapper />)
 
     rtl.act(() => {
       postMessage('hi')
@@ -68,13 +68,7 @@ describe('usePostMessage hook', () => {
 
     config.isInIframe = false
 
-    const {
-      result: {
-        current: { postMessage },
-      },
-    } = rtl.testHook(() => usePostMessage(fakeWindow), {
-      wrapper,
-    })
+    rtl.render(<Wrapper />)
 
     rtl.act(() => {
       postMessage('hi')
@@ -84,13 +78,7 @@ describe('usePostMessage hook', () => {
   it('ignores calls with an empty message', () => {
     expect.assertions(1)
 
-    const {
-      result: {
-        current: { postMessage },
-      },
-    } = rtl.testHook(() => usePostMessage(fakeWindow), {
-      wrapper,
-    })
+    rtl.render(<Wrapper />)
 
     rtl.act(() => {
       postMessage()
@@ -102,13 +90,7 @@ describe('usePostMessage hook', () => {
 
     fakeWindow.location.search = '' // remove origin
 
-    const {
-      result: {
-        current: { postMessage },
-      },
-    } = rtl.testHook(() => usePostMessage(fakeWindow), {
-      wrapper,
-    })
+    rtl.render(<Wrapper />)
 
     rtl.act(() => {
       postMessage()
@@ -118,13 +100,7 @@ describe('usePostMessage hook', () => {
   it('does not call postMessage twice with the same message', () => {
     expect.assertions(1)
 
-    const {
-      result: {
-        current: { postMessage },
-      },
-    } = rtl.testHook(() => usePostMessage(fakeWindow), {
-      wrapper,
-    })
+    rtl.render(<Wrapper />)
 
     rtl.act(() => {
       postMessage('hi')
@@ -138,13 +114,7 @@ describe('usePostMessage hook', () => {
   it('does call postMessage when the message changes', () => {
     expect.assertions(2)
 
-    const {
-      result: {
-        current: { postMessage },
-      },
-    } = rtl.testHook(() => usePostMessage(fakeWindow), {
-      wrapper,
-    })
+    rtl.render(<Wrapper />)
 
     rtl.act(() => {
       postMessage('hi')
