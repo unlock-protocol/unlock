@@ -1,5 +1,9 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
-import { routerReducer, createRouterMiddleware } from 'connected-next-router'
+import {
+  routerReducer,
+  createRouterMiddleware,
+  initialRouterState,
+} from 'connected-next-router'
 
 import configure from './config'
 
@@ -40,7 +44,11 @@ import walletStatusReducer, {
 
 const config = configure()
 
-export const createUnlockStore = (defaultState = {}, middlewares = []) => {
+export const createUnlockStore = (
+  defaultState = {},
+  middlewares = [],
+  path
+) => {
   const reducers = {
     router: routerReducer,
     account: accountReducer,
@@ -66,6 +74,7 @@ export const createUnlockStore = (defaultState = {}, middlewares = []) => {
   // Then some overides and finally whatever state we have stored locally.
   const initialState = Object.assign(
     {
+      router: initialRouterState(path),
       account: defaultAccount,
       keys: defaultKeys,
       keysForLockByPage: defaultKeysPages,

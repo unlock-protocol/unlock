@@ -21,7 +21,7 @@ const config = configure()
 
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
-function getOrCreateStore(initialState) {
+function getOrCreateStore(initialState, path) {
   const middlewares = [
     interWindowCommunicationMiddleware(global),
     web3Middleware,
@@ -35,12 +35,16 @@ function getOrCreateStore(initialState) {
 
   // Always make a new store if server, otherwise state is shared between requests
   if (config.isServer) {
-    return createUnlockStore(initialState, middlewares)
+    return createUnlockStore(initialState, middlewares, path)
   }
 
   // Create store if unavailable on the client and set it on the window object
   if (!window[__NEXT_REDUX_STORE__]) {
-    window[__NEXT_REDUX_STORE__] = createUnlockStore(initialState, middlewares)
+    window[__NEXT_REDUX_STORE__] = createUnlockStore(
+      initialState,
+      middlewares,
+      path
+    )
   }
   return window[__NEXT_REDUX_STORE__]
 }
@@ -90,8 +94,12 @@ The Unlock team
   }
 
   render() {
-    const { Component, pageProps, router } = this.props
-    const store = getOrCreateStore({})
+    const {
+      Component,
+      pageProps,
+      router: { pathname },
+    } = this.props
+    const store = getOrCreateStore({}, pathname)
 
     return (
       <Container>
@@ -100,7 +108,7 @@ The Unlock team
           <WalletCheckOverlay />
           <ConnectedRouter>
             <ConfigProvider value={config}>
-              <Component {...pageProps} router={router} />
+              <Component {...pageProps} />
             </ConfigProvider>
           </ConnectedRouter>
         </Provider>
