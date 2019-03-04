@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import localStorageAvailable from '../../utils/localStorage'
+import useWindow from './useWindow'
 
-export default function useLocalStorage(window, key) {
+export default function useLocalStorage(key) {
+  const window = useWindow()
   const available = localStorageAvailable(window)
 
   let startVal
