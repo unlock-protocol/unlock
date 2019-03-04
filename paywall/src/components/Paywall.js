@@ -17,13 +17,13 @@ import {
 } from '../../paywall-builder/constants'
 import { isPositiveInteger } from '../utils/validators'
 
-export function Paywall({ locks, locked, redirect, window }) {
-  const scrollPosition = useListenForPostMessage(window, {
+export function Paywall({ locks, locked, redirect }) {
+  const scrollPosition = useListenForPostMessage({
     type: 'scrollPosition',
     defaultValue: 0,
     validator: isPositiveInteger,
   })
-  const { postMessage } = usePostMessage(window)
+  const { postMessage } = usePostMessage()
   useEffect(
     () => {
       if (locked) {
@@ -56,7 +56,6 @@ Paywall.propTypes = {
   locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
   locked: PropTypes.bool.isRequired,
   redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  window: PropTypes.shape({ postMessage: PropTypes.func }).isRequired, // for ease of unit testing
 }
 
 Paywall.defaultProps = {
@@ -85,7 +84,7 @@ export const mapStateToProps = ({ locks, keys, modals, router }) => {
 
   const modalShown = !!modals[locksFromUri.map(l => l.address).join('-')]
   const locked = validKeys.length === 0 || modalShown
-  return { locked, locks: locksFromUri, redirect, window }
+  return { locked, locks: locksFromUri, redirect }
 }
 
 export default connect(mapStateToProps)(Paywall)

@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import createUnlockStore from '../../createUnlockStore'
 import { Paywall, mapStateToProps } from '../../components/Paywall'
 import { ConfigContext } from '../../utils/withConfig'
+import { WindowContext } from '../../hooks/browser/useWindow'
 
 const lock = { address: '0x4983D5ECDc5cc0E499c2D23BF4Ac32B982bAe53a' }
 const locks = {
@@ -25,6 +26,8 @@ const noRedirectRouter = {
   },
 }
 
+let fakeWindow
+let config
 let futureDate = new Date()
 futureDate.setYear(futureDate.getFullYear() + 1)
 futureDate = futureDate.getTime() / 1000
@@ -39,12 +42,24 @@ const modals = []
 
 const store = createUnlockStore({ locks, keys, modals, router })
 
+function renderMockPaywall(props = {}) {
+  return rtl.render(
+    <ConfigContext.Provider value={config}>
+      <WindowContext.Provider value={fakeWindow}>
+        <Provider store={store}>
+          <Paywall locks={[]} locked redirect={false} {...props} />
+        </Provider>
+      </WindowContext.Provider>
+    </ConfigContext.Provider>
+  )
+}
+
 afterEach(() => {
   rtl.cleanup()
 })
 describe('Paywall', () => {
-  let fakeWindow
   beforeEach(() => {
+    config = { providers: [], isInIframe: true }
     fakeWindow = {
       location: {
         pathname: `/${lock.address}`,
@@ -91,95 +106,6 @@ describe('Paywall', () => {
       })
       expect(props.redirect).toBeFalsy()
     })
-  })
-
-  describe('handleIframe', () => {
-    it('should post "locked" when it is locked in iframe', () => {
-      expect.assertions(1)
-      rtl.act(() => {
-        rtl.render(
-          <ConfigContext.Provider value={{ providers: [], isInIframe: true }}>
-            <Provider store={store}>
-              <Paywall window={fakeWindow} locks={[]} locked redirect={false} />
-            </Provider>
-          </ConfigContext.Provider>
-        )
-      })
-
-      expect(fakeWindow.parent.postMessage).toHaveBeenCalledWith(
-        'locked',
-        'http://example.com'
-      )
-    })
-    it('should not post any message when it is in the main window', () => {
-      expect.assertions(1)
-      rtl.act(() => {
-        rtl.render(
-          <ConfigContext.Provider value={{ providers: [], isInIframe: false }}>
-            <Provider store={store}>
-              <Paywall window={fakeWindow} locks={[]} locked redirect={false} />
-            </Provider>
-          </ConfigContext.Provider>
-        )
-      })
-
-      expect(fakeWindow.parent.postMessage).not.toHaveBeenCalled()
-    })
-    it('should post "unlocked" when it is unlocked in iframe', () => {
-      expect.assertions(1)
-      rtl.act(() => {
-        rtl.render(
-          <ConfigContext.Provider value={{ providers: [], isInIframe: true }}>
-            <Provider store={store}>
-              <Paywall
-                window={fakeWindow}
-                locks={[]}
-                locked={false}
-                redirect={false}
-              />
-            </Provider>
-          </ConfigContext.Provider>
-        )
-      })
-
-      expect(fakeWindow.parent.postMessage).toHaveBeenCalledWith(
-        'unlocked',
-        'http://example.com'
-      )
-    })
-  })
-
-  describe('the unlocked flag', () => {
-    it('should be present when the paywall is unlocked', () => {
-      expect.assertions(1)
-      const { queryByText } = rtl.render(
-        <ConfigContext.Provider value={{ providers: [], isInIframe: true }}>
-          <Provider store={store}>
-            <Paywall
-              window={fakeWindow}
-              locks={[]}
-              locked={false}
-              redirect={false}
-            />
-          </Provider>
-        </ConfigContext.Provider>
-      )
-      const flagText = queryByText('Subscribed with Unlock')
-      expect(flagText).not.toBeNull()
-    })
-
-    it('should not be present when the paywall is locked', () => {
-      expect.assertions(1)
-      const { queryByText } = rtl.render(
-        <ConfigContext.Provider value={{ providers: [], isInIframe: true }}>
-          <Provider store={store}>
-            <Paywall window={fakeWindow} locks={[]} locked redirect={false} />
-          </Provider>
-        </ConfigContext.Provider>
-      )
-      const flagText = queryByText('Subscribed with Unlock')
-      expect(flagText).toBeNull()
-    })
 
     it('should pull the redirect parameter from the page', () => {
       expect.assertions(1)
@@ -194,6 +120,60 @@ describe('Paywall', () => {
       }
       const props = mapStateToProps({ locks, router, keys, modals })
       expect(props.redirect).toBe('http://example.com')
+    })
+  })
+
+  describe('handleIframe', () => {
+    it('should post "locked" when it is locked in iframe', () => {
+      expect.assertions(1)
+      config.isInIframe = true
+      rtl.act(() => {
+        renderMockPaywall()
+      })
+
+      expect(fakeWindow.parent.postMessage).toHaveBeenCalledWith(
+        'locked',
+        'http://example.com'
+      )
+    })
+    it('should not post any message when it is in the main window', () => {
+      expect.assertions(1)
+      config.isInIframe = false
+      rtl.act(() => {
+        renderMockPaywall()
+      })
+
+      expect(fakeWindow.parent.postMessage).not.toHaveBeenCalled()
+    })
+    it('should post "unlocked" when it is unlocked in iframe', () => {
+      expect.assertions(1)
+      config.isInIframe = true
+      rtl.act(() => {
+        renderMockPaywall({ locked: false })
+      })
+
+      expect(fakeWindow.parent.postMessage).toHaveBeenCalledWith(
+        'unlocked',
+        'http://example.com'
+      )
+    })
+  })
+
+  describe('the unlocked flag', () => {
+    it('should be present when the paywall is unlocked', () => {
+      expect.assertions(1)
+      const { queryByText } = renderMockPaywall({ locked: false })
+
+      const flagText = queryByText('Subscribed with Unlock')
+      expect(flagText).not.toBeNull()
+    })
+
+    it('should not be present when the paywall is locked', () => {
+      expect.assertions(1)
+      const { queryByText } = renderMockPaywall({ locked: true })
+
+      const flagText = queryByText('Subscribed with Unlock')
+      expect(flagText).toBeNull()
     })
   })
 })
