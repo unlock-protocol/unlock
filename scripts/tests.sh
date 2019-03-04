@@ -9,7 +9,8 @@ COMMAND="npm run ci"
 
 # We pass only the relevent env vars, which are prefixed with the service name, uppercased
 # UNLOCK_APP_X will be passed to the container for tests in unlock_app as X.
-ENV_VARS_PREFIX="${SERVICE^^}_"
+UPCASE_SERVICE="${SERVICE^^}"
+ENV_VARS_PREFIX="${UPCASE_SERVICE//-/_}_"
 ENV_VARS=`env | grep $ENV_VARS_PREFIX | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$ENV_VARS_PREFIX//g"`
 
 docker-compose -f $DOCKER_COMPOSE_FILE run -e CI=true $ENV_VARS $SERVICE $COMMAND
