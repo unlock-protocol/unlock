@@ -101,14 +101,14 @@ The Unlock team
       <Container>
         <GlobalStyle />
         <Provider store={store}>
-          <WindowContext value={window}>
+          <WindowContext.Provider value={global.window}>
             <WalletCheckOverlay />
             <ConnectedRouter history={history}>
               <ConfigProvider value={config}>
                 <Component {...pageProps} router={router} />
               </ConfigProvider>
             </ConnectedRouter>
-          </WindowContext>
+          </WindowContext.Provider>
         </Provider>
       </Container>
     )
