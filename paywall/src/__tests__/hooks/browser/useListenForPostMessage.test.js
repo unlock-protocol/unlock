@@ -1,5 +1,6 @@
 import * as rtl from 'react-testing-library'
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import { ConfigContext } from '../../../utils/withConfig'
 import useListenForPostMessage from '../../../hooks/browser/useListenForPostMessage'
@@ -10,8 +11,12 @@ describe('useListenForPostMessage hook', () => {
   let fakeWindow
   let config
 
-  function wrapper(props) {
-    return <Provider value={config} {...props} />
+  function Wrapper(props) {
+    return (
+      <Provider value={config}>
+        <MockListener {...props} />
+      </Provider>
+    )
   }
 
   beforeEach(() => {
@@ -28,164 +33,151 @@ describe('useListenForPostMessage hook', () => {
     config = { isServer: false, isInIframe: true }
   })
 
-  it('sets up the event listener', () => {
-    expect.assertions(1)
+  function MockListener({ type, defaultValue, validator }) {
+    const value = useListenForPostMessage(fakeWindow, {
+      type,
+      defaultValue,
+      validator,
+    })
+    return <div title="value">{value}</div>
+  }
 
-    rtl.testHook(() => useListenForPostMessage(fakeWindow), {
-      wrapper,
+  MockListener.propTypes = {
+    type: PropTypes.string,
+    defaultValue: PropTypes.string,
+    validator: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+  }
+
+  MockListener.defaultProps = {
+    type: 'listenFor',
+    defaultValue: 'hi',
+    validator: false,
+  }
+
+  function getListener() {
+    return fakeWindow.addEventListener.mock.calls[0][1]
+  }
+
+  describe('does nothing in invalid contexts', () => {
+    it.each([
+      ['on server', () => (config.isServer = true)],
+      ['in main window', () => (config.isInIframe = false)],
+    ])('%s', (a, setConfig) => {
+      expect.assertions(2)
+      setConfig()
+
+      let wrapper
+      rtl.act(() => {
+        wrapper = rtl.render(<Wrapper />)
+      })
+
+      expect(wrapper.getByTitle('value')).toHaveTextContent('hi')
+      expect(fakeWindow.addEventListener).not.toHaveBeenCalled()
+    })
+  })
+  describe('subscription', () => {
+    it('subscribes on mount only', () => {
+      expect.assertions(2)
+
+      let wrapper
+      rtl.act(() => {
+        wrapper = rtl.render(<Wrapper />)
+      })
+
+      expect(fakeWindow.addEventListener).toHaveBeenCalledTimes(1)
+
+      rtl.act(() => {
+        wrapper.rerender()
+      })
+
+      expect(fakeWindow.addEventListener).toHaveBeenCalledTimes(1)
+    })
+  })
+  it('unsubscribes on unmount', () => {
+    expect.assertions(2)
+
+    let wrapper
+    rtl.act(() => {
+      wrapper = rtl.render(<Wrapper />)
     })
 
-    expect(fakeWindow.addEventListener).toHaveBeenCalledWith(
-      'message',
-      expect.any(Function)
-    )
-  })
+    expect(fakeWindow.removeEventListener).not.toHaveBeenCalled()
 
-  it('only subscribes on mount, and not on update', () => {
-    expect.assertions(1)
-
-    const { rerender } = rtl.testHook(
-      () => useListenForPostMessage(fakeWindow),
-      {
-        wrapper,
-      }
-    )
-
-    rerender()
+    rtl.act(() => {
+      wrapper.unmount()
+    })
 
     expect(fakeWindow.addEventListener).toHaveBeenCalledTimes(1)
   })
-
-  it('unsubscribes on unmount', () => {
-    expect.assertions(1)
-
-    const { unmount } = rtl.testHook(
-      () => useListenForPostMessage(fakeWindow),
-      {
-        wrapper,
-      }
-    )
-
-    unmount()
-
-    expect(fakeWindow.removeEventListener).toHaveBeenCalledWith(
-      'message',
-      expect.any(Function)
-    )
-  })
-
-  it('ignores calls on the server', () => {
-    expect.assertions(1)
-
-    config.isServer = true
-
-    rtl.testHook(() => useListenForPostMessage(fakeWindow), {
-      wrapper,
-    })
-
-    expect(fakeWindow.addEventListener).not.toHaveBeenCalled()
-  })
-
-  it('ignores calls in the main window', () => {
-    expect.assertions(1)
-
-    config.isInIframe = false
-
-    rtl.testHook(() => useListenForPostMessage(fakeWindow), {
-      wrapper,
-    })
-
-    expect(fakeWindow.addEventListener).not.toHaveBeenCalled()
-  })
-
-  it('does not throw when window is not set', () => {
-    expect.assertions(0)
-    rtl.testHook(() => useListenForPostMessage(false), {
-      wrapper,
-    })
-  })
-
-  it('sets data when event is received', () => {
-    expect.assertions(2)
-
-    const { result } = rtl.testHook(() => useListenForPostMessage(fakeWindow), {
-      wrapper,
-    })
-
-    const eventCallback = fakeWindow.addEventListener.mock.calls[0][1]
-
-    expect(result.current).toBe(undefined)
-    rtl.act(() =>
-      eventCallback({
+  describe('postmessage event handling', () => {
+    let event
+    beforeEach(() => {
+      event = {
         source: fakeWindow.parent,
         origin: 'origin',
-        data: 'data',
-      })
-    )
-
-    expect(result.current).toBe('data')
-  })
-
-  describe('insecure postMessage events', () => {
-    it('ignores source that is not the parent', () => {
-      expect.assertions(2)
-
-      const { result } = rtl.testHook(
-        () => useListenForPostMessage(fakeWindow),
-        {
-          wrapper,
-        }
-      )
-
-      const eventCallback = fakeWindow.addEventListener.mock.calls[0][1]
-
-      expect(result.current).toBe(undefined)
-      rtl.act(() =>
-        eventCallback({
-          source: fakeWindow.parent,
-          origin: 'origin',
-          data: 'data',
-        })
-      )
-      rtl.act(() =>
-        eventCallback({
-          source: 'nope',
-          origin: 'origin',
-          data: 'next',
-        })
-      )
-
-      expect(result.current).toBe('data')
+        data: {
+          type: 'listenFor',
+          payload: 'got it!',
+        },
+      }
     })
-    it('ignores origin that is not the parent', () => {
-      expect.assertions(2)
+    describe('invalid postmessage events', () => {
+      it.each([
+        [
+          'source is not the parent window',
+          () => (event.source = 'nope'),
+          false,
+        ],
+        [
+          'origin does not match expected origin',
+          () => (event.origin = 'nope'),
+          false,
+        ],
+        ['data is not set', () => (event.data = false), false],
+        ['data has no type', () => (event.data.type = false), false],
+        ['data type does not match', () => (event.data.type = 'nope'), false],
+        [
+          'data validator returns falsy',
+          () => (event.data.type = 'nope'),
+          () => false,
+        ],
+      ])('%s', (_, setup, validator) => {
+        expect.assertions(1)
+        setup()
 
-      const { result } = rtl.testHook(
-        () => useListenForPostMessage(fakeWindow),
-        {
-          wrapper,
-        }
-      )
-
-      const eventCallback = fakeWindow.addEventListener.mock.calls[0][1]
-
-      expect(result.current).toBe(undefined)
-      rtl.act(() =>
-        eventCallback({
-          source: fakeWindow.parent,
-          origin: 'origin',
-          data: 'data',
+        let wrapper
+        rtl.act(() => {
+          wrapper = rtl.render(<Wrapper validator={validator} />)
         })
-      )
-      rtl.act(() =>
-        eventCallback({
-          source: fakeWindow.parent,
-          origin: 'nope',
-          data: 'next',
-        })
-      )
 
-      expect(result.current).toBe('data')
+        // this is the callback saveData, which was passed to addEventListener
+        const listener = getListener()
+
+        rtl.act(() => {
+          listener(event)
+        })
+
+        expect(wrapper.getByTitle('value')).toHaveTextContent('hi')
+      })
+    })
+    describe('valid postmessage events', () => {
+      it('updates the value', () => {
+        expect.assertions(1)
+
+        let wrapper
+        rtl.act(() => {
+          wrapper = rtl.render(<Wrapper />)
+        })
+
+        // this is the callback saveData, which was passed to addEventListener
+        const listener = getListener()
+
+        rtl.act(() => {
+          listener(event)
+        })
+
+        expect(wrapper.getByTitle('value')).toHaveTextContent('got it!')
+      })
     })
   })
 })
