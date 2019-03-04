@@ -10,14 +10,12 @@ import UnlockContract from '../artifacts/contracts/Unlock.json'
 
 import configure from '../config'
 import { TRANSACTION_TYPES, MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
-import { NON_DEPLOYED_CONTRACT } from '../errors'
 
 const {
   readOnlyProvider,
   providers,
   unlockAddress,
   blockTime,
-  requiredNetworkId,
   requiredConfirmations,
 } = configure()
 
@@ -36,6 +34,8 @@ export default class Web3Service extends EventEmitter {
     } else {
       this.web3 = new Web3(Object.values(providers)[0]) // Defaulting to the first provider.
     }
+
+    this.unlockContractAddress = unlockContractAddress
 
     // TODO: detect discrepancy in providers
 
@@ -108,19 +108,6 @@ export default class Web3Service extends EventEmitter {
           balance: '0', // Must be expressed in Eth!
         })
       },
-    }
-
-    if (unlockContractAddress) {
-      this.unlockContractAddress = Web3Utils.toChecksumAddress(
-        unlockContractAddress
-      )
-    } else if (UnlockContract.networks[requiredNetworkId]) {
-      // If we do not have an address from config let's use the artifact files
-      this.unlockContractAddress = Web3Utils.toChecksumAddress(
-        UnlockContract.networks[requiredNetworkId].address
-      )
-    } else {
-      return this.emit('error', new Error(NON_DEPLOYED_CONTRACT))
     }
   }
 
