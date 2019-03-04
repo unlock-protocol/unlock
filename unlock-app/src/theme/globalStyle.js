@@ -18,7 +18,7 @@ const globalStyle = `
     --darkgrey: #4a4a4a;
     --slate: #333333;
     --link: #4d8be8;
-    --green: #3cff00;
+    --green: #74ce63;
     --darkgreen: #368043;
     --activegreen: #59c245;
     --pink: #ed6e82;
