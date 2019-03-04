@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 const fs = require('fs')
 const { join } = require('path')
 const { promisify } = require('util')
@@ -5,15 +7,31 @@ const withSourceMaps = require('@zeit/next-source-maps')
 
 const copyFile = promisify(fs.copyFile)
 
+const requiredConfigVariables = {
+  unlockEnv: process.env.UNLOCK_ENV || 'dev',
+  httpProvider: process.env.HTTP_PROVIDER || '127.0.0.1',
+  paywallUrl: process.env.PAYWALL_URL,
+  paywallScriptUrl: process.env.PAYWALL_SCRIPT_URL,
+  readOnlyProvider: process.env.READ_ONLY_PROVIDER,
+  locksmithHost: process.env.LOCKSMITH_URI,
+}
+
+Object.keys(requiredConfigVariables).forEach(configVariableName => {
+  if (!requiredConfigVariables[configVariableName]) {
+    if (['test', 'dev'].indexOf(requiredConfigVariables.unlockEnv) > -1) {
+      console.error(
+        `The configuration variable ${configVariableName} is falsy.`
+      )
+    } else {
+      process.exit(
+        `The application cannot be started because the variable ${configVariableName} is falsy`
+      )
+    }
+  }
+})
+
 module.exports = withSourceMaps({
-  publicRuntimeConfig: {
-    unlockEnv: process.env.UNLOCK_ENV || 'dev',
-    httpProvider: process.env.HTTP_PROVIDER || '127.0.0.1',
-    paywallUrl: process.env.PAYWALL_URL,
-    paywallScriptUrl: process.env.PAYWALL_SCRIPT_URL,
-    readOnlyProvider: process.env.READ_ONLY_PROVIDER,
-    locksmithHost: process.env.LOCKSMITH_URI,
-  },
+  publicRuntimeConfig: requiredConfigVariables,
   webpack(config) {
     return config
   },
