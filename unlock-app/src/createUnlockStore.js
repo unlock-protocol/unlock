@@ -1,9 +1,5 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
-import {
-  routerReducer,
-  createRouterMiddleware,
-  initialRouterState,
-} from 'connected-next-router'
+import { routerReducer, createRouterMiddleware } from 'connected-next-router'
 
 import configure from './config'
 
