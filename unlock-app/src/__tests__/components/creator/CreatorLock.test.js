@@ -2,11 +2,19 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
 
-import { CreatorLock } from '../../../components/creator/CreatorLock'
+import {
+  CreatorLock,
+  mapDispatchToProps,
+} from '../../../components/creator/CreatorLock'
 import configure from '../../../config'
 import createUnlockStore from '../../../createUnlockStore'
 import { UNLIMITED_KEYS_COUNT } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
+import {
+  UPDATE_LOCK_KEY_PRICE,
+  UPDATE_LOCK,
+  UPDATE_LOCK_NAME,
+} from '../../../actions/lock'
 
 jest.mock('next/link', () => {
   return ({ children }) => children
@@ -62,6 +70,8 @@ describe('CreatorLock', () => {
             lock={lock}
             transaction={transaction}
             updateKeyPrice={() => {}}
+            updateLockName={() => {}}
+            updateLock={() => {}}
           />
         </Provider>
       </ConfigProvider>
@@ -100,6 +110,8 @@ describe('CreatorLock', () => {
             lock={lock}
             transaction={transaction}
             updateKeyPrice={() => {}}
+            updateLockName={() => {}}
+            updateLock={() => {}}
           />
         </Provider>
       </ConfigProvider>
@@ -131,6 +143,8 @@ describe('CreatorLock', () => {
             lock={keylock}
             transaction={transaction}
             updateKeyPrice={() => {}}
+            updateLockName={() => {}}
+            updateLock={() => {}}
           />
         </Provider>
       </ConfigProvider>
@@ -159,11 +173,60 @@ describe('CreatorLock', () => {
             lock={unlimitedlock}
             transaction={transaction}
             updateKeyPrice={() => {}}
+            updateLockName={() => {}}
+            updateLock={() => {}}
           />
         </Provider>
       </ConfigProvider>
     )
 
     expect(wrapper.queryByText('1/∞')).not.toBeNull()
+  })
+
+  describe('mapDispatchToProps', () => {
+    it('should dispatch updateKeyPrice if the lock key price has been changed', () => {
+      expect.assertions(1)
+      const newLock = Object.assign({}, unlimitedlock)
+      newLock.keyPrice = '6.66'
+      const dispatch = jest.fn()
+      const { updateLock } = mapDispatchToProps(dispatch, { lock })
+      updateLock(newLock)
+
+      expect(dispatch).toHaveBeenCalledWith({
+        address: lock.address,
+        price: '6.66',
+        type: UPDATE_LOCK_KEY_PRICE,
+      })
+    })
+
+    it('should dispatch updateLockName if the lock name has been changed', () => {
+      expect.assertions(1)
+      const newLock = Object.assign({}, unlimitedlock)
+      newLock.name = 'A New name'
+      const dispatch = jest.fn()
+      const { updateLock } = mapDispatchToProps(dispatch, { lock })
+      updateLock(newLock)
+
+      expect(dispatch).toHaveBeenCalledWith({
+        address: lock.address,
+        name: newLock.name,
+        type: UPDATE_LOCK_NAME,
+      })
+    })
+
+    it('should dispatch updateLock', () => {
+      expect.assertions(1)
+      const newLock = Object.assign({}, unlimitedlock)
+      newLock.name = 'A New name'
+      const dispatch = jest.fn()
+      const { updateLock } = mapDispatchToProps(dispatch, { lock })
+      updateLock(newLock)
+
+      expect(dispatch).toHaveBeenCalledWith({
+        address: lock.address,
+        update: newLock,
+        type: UPDATE_LOCK,
+      })
+    })
   })
 })

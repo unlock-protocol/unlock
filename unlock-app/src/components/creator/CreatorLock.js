@@ -23,7 +23,7 @@ import {
   DoubleHeightCell,
   BalanceContainer,
 } from './LockStyles'
-import { updateKeyPrice } from '../../actions/lock'
+import { updateKeyPrice, updateLockName, updateLock } from '../../actions/lock'
 
 import { INFINITY } from '../../constants'
 
@@ -56,11 +56,6 @@ export class CreatorLock extends React.Component {
     this.toggleKeys = this.toggleKeys.bind(this)
   }
 
-  updateLock(lock) {
-    const { updateKeyPrice } = this.props
-    updateKeyPrice(lock.address, lock.keyPrice)
-  }
-
   toggleEmbedCode() {
     this.setState(previousState => ({
       showEmbedCode: !previousState.showEmbedCode,
@@ -76,7 +71,7 @@ export class CreatorLock extends React.Component {
   render() {
     // TODO add all-time balance to lock
 
-    const { lock } = this.props
+    const { lock, updateLock } = this.props
     const { showEmbedCode, showKeys, editing } = this.state
 
     if (editing) {
@@ -84,7 +79,7 @@ export class CreatorLock extends React.Component {
         <CreatorLockForm
           lock={lock}
           hideAction={() => this.setState({ editing: false })}
-          createLock={lock => this.updateLock(lock)}
+          createLock={newLock => updateLock(newLock)}
         />
       )
     }
@@ -142,11 +137,28 @@ export class CreatorLock extends React.Component {
 }
 
 CreatorLock.propTypes = {
-  updateKeyPrice: PropTypes.func.isRequired,
+  updateLock: PropTypes.func.isRequired,
   lock: UnlockPropTypes.lock.isRequired,
 }
 
-const mapDispatchToProps = { updateKeyPrice }
+export const mapDispatchToProps = (dispatch, { lock }) => {
+  return {
+    updateLock: newLock => {
+      // If the price has changed
+      if (lock.keyPrice !== newLock.keyPrice) {
+        dispatch(updateKeyPrice(lock.address, newLock.keyPrice))
+      }
+
+      // If the name has changed
+      if (lock.name !== newLock.name) {
+        dispatch(updateLockName(lock.address, newLock.name))
+      }
+
+      // Reflect all changes
+      dispatch(updateLock(lock.address, newLock))
+    },
+  }
+}
 
 export default connect(
   undefined,
