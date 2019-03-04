@@ -1,5 +1,10 @@
 import storageMiddleware from '../../middlewares/storageMiddleware'
-import { UPDATE_LOCK, updateLock, CREATE_LOCK } from '../../actions/lock'
+import {
+  UPDATE_LOCK,
+  updateLock,
+  CREATE_LOCK,
+  UPDATE_LOCK_NAME,
+} from '../../actions/lock'
 import { STORE_LOCK_NAME } from '../../actions/storage'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT } from '../../actions/accounts'
@@ -227,6 +232,39 @@ describe('Storage middleware', () => {
       })
       const { next, invoke, store } = create()
       const action = { type: CREATE_LOCK, lock }
+
+      invoke(action)
+      expect(UnlockLock.build).toHaveBeenCalledWith(lock)
+      expect(next).toHaveBeenCalledTimes(1)
+      expect(store.dispatch).toHaveBeenCalledWith({
+        data,
+        type: 'signature/SIGN_DATA',
+      })
+    })
+  })
+
+  describe('UPDATE_LOCK_NAME', () => {
+    it('should dispatch an action to sign message to update the name of a lock', () => {
+      expect.assertions(3)
+      const lock = {
+        address: '0x123',
+        name: 'my lock',
+        owner: '0xabc',
+      }
+      const data = {
+        message: {
+          lock: {},
+        },
+      }
+      const newName = 'a new name'
+      const { next, invoke, store } = create()
+      state.locks[lock.address] = lock
+
+      const action = {
+        type: UPDATE_LOCK_NAME,
+        address: lock.address,
+        name: newName,
+      }
 
       invoke(action)
       expect(UnlockLock.build).toHaveBeenCalledWith(lock)

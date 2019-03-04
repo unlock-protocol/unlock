@@ -1,6 +1,11 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
-import { UPDATE_LOCK, updateLock, CREATE_LOCK } from '../actions/lock'
+import {
+  UPDATE_LOCK,
+  updateLock,
+  CREATE_LOCK,
+  UPDATE_LOCK_NAME,
+} from '../actions/lock'
 import StorageService from '../services/storageService'
 import { STORE_LOCK_NAME, storageError } from '../actions/storage'
 
@@ -70,6 +75,18 @@ export default function storageMiddleware({ getState, dispatch }) {
           name: action.lock.name,
           owner: action.lock.owner,
           address: action.lock.address,
+        })
+        // Ask someone to sign it!
+        dispatch(signData(data))
+      }
+
+      if (action.type === UPDATE_LOCK_NAME) {
+        const lock = getState().locks[action.address]
+        // Build the data to sign
+        let data = UnlockLock.build({
+          name: action.name,
+          owner: lock.owner,
+          address: lock.address,
         })
         // Ask someone to sign it!
         dispatch(signData(data))
