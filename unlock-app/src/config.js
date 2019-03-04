@@ -82,6 +82,9 @@ export default function configure(
   let chainExplorerUrlBuilders = {
     etherScan: () => false,
   }
+
+  services['currencyPriceLookup'] =
+    'https://api.coinbase.com/v2/prices/ETH-USD/buy'
   const readOnlyProviderUrl = runtimeConfig.readOnlyProvider
 
   if (env === 'test') {
