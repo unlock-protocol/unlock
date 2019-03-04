@@ -1,11 +1,27 @@
+import React from 'react'
 import * as rtl from 'react-testing-library'
 import useLocalStorage from '../../../hooks/browser/useLocalStorage'
+import { WindowContext } from '../../../hooks/browser/useWindow'
 
 jest.mock('../../../utils/localStorage')
 
 describe('useLocalStorage hook', () => {
   let fakeWindow
+  let setValue
 
+  function MockStorage() {
+    const [value, thisValue] = useLocalStorage('hi')
+    setValue = thisValue
+    return <div>{value}</div>
+  }
+
+  function Wrapper() {
+    return (
+      <WindowContext.Provider value={fakeWindow}>
+        <MockStorage />
+      </WindowContext.Provider>
+    )
+  }
   beforeEach(() => {
     jest.resetModules()
     fakeWindow = {
@@ -21,27 +37,21 @@ describe('useLocalStorage hook', () => {
     expect.assertions(2)
     fakeWindow.storage.hi = 'there'
 
-    expect.assertions(2)
+    let wrapper
+    rtl.act(() => {
+      wrapper = rtl.render(<Wrapper />)
+    })
 
-    rtl.act(() => {})
-    const { result } = rtl.testHook(() => useLocalStorage(fakeWindow, 'hi'))
-
-    const [value, setter] = result.current
-
-    expect(value).toBe('there')
-    expect(typeof setter).toBe('function')
+    expect(wrapper.getByText('there')).not.toBeNull()
+    expect(typeof setValue).toBe('function')
   })
   it('sets the value of the localStorage key when the setter is called', () => {
     expect.assertions(1)
     fakeWindow.storage['hi'] = 'there'
 
-    expect.assertions(1)
-
-    const {
-      result: {
-        current: [, setValue],
-      },
-    } = rtl.testHook(() => useLocalStorage(fakeWindow, 'hi'))
+    rtl.act(() => {
+      rtl.render(<Wrapper />)
+    })
 
     rtl.act(() => setValue('wow'))
 
@@ -52,11 +62,10 @@ describe('useLocalStorage hook', () => {
 
     fakeWindow.storage['hi'] = 'there'
 
-    const {
-      result: {
-        current: [, setValue],
-      },
-    } = rtl.testHook(() => useLocalStorage(fakeWindow, 'hi'))
+    rtl.act(() => {
+      rtl.render(<Wrapper />)
+    })
+
     expect(fakeWindow.localStorage.setItem).toHaveBeenCalledTimes(1)
 
     rtl.act(() => setValue('wow'))

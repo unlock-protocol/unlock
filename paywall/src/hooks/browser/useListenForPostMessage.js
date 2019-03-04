@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import useConfig from '../utils/useConfig'
+import useWindow from './useWindow'
 import { getRouteFromWindow } from '../../utils/routes'
 
 /**
@@ -37,10 +38,12 @@ import { getRouteFromWindow } from '../../utils/routes'
  * @param {*} [params.defaultValue]: a value you want to return instead of "undefined"
  *                                   if no message has been received yet
  */
-export default function useListenForPostMessage(
-  window,
-  { type, validator = false, defaultValue }
-) {
+export default function useListenForPostMessage({
+  type,
+  validator = false,
+  defaultValue,
+}) {
+  const window = useWindow()
   const { isInIframe, isServer } = useConfig()
   const parent = window && window.parent
   const [data, setData] = useState(defaultValue)
