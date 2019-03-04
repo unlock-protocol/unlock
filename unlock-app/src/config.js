@@ -71,7 +71,10 @@ export default function configure(
   let requiredNetwork = 'Dev'
   let requiredNetworkId = 1984
   let requiredConfirmations = 12
-  let unlockAddress = ''
+  // Unlock address by default
+  // Smart contract deployments yield the same address on a "clean" node as long as long as the
+  // migration script runs in the same order.
+  let unlockAddress = '0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B'
   let services = {}
   let supportedProviders = []
   let paywallUrl = runtimeConfig.paywallUrl || 'http://localhost:3000/paywall'
@@ -144,7 +147,7 @@ export default function configure(
       'https://staging.unlock-protocol.com/static/paywall.min.js'
 
     // Address for the Unlock smart contract
-    unlockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
+    unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
 
     // rinkeby block time is roughly same as main net
     blockTime = 8000
@@ -172,7 +175,7 @@ export default function configure(
       'https://unlock-protocol.com/static/paywall.min.js'
 
     // Address for the Unlock smart contract
-    unlockAddress = '0x3d5409cce1d45233de1d4ebdee74b8e004abdd13'
+    unlockAddress = '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
 
     // See https://www.reddit.com/r/ethereum/comments/3c8v2i/what_is_the_expected_block_time/
     blockTime = 8000
