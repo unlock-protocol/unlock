@@ -179,6 +179,9 @@ workflows:
       - unlock-app-tests:
           requires:
             - build-unlock
+      - unlock-app-chromatic:
+          requires:
+            - build-unlock
       - smart-contracts-tests:
           requires:
             - build-unlock
