@@ -8,7 +8,6 @@ import UnlockContract from '../artifacts/contracts/Unlock.json'
 import configure from '../config'
 import {
   MISSING_PROVIDER,
-  NON_DEPLOYED_CONTRACT,
   NOT_ENABLED_IN_PROVIDER,
   FAILED_TO_CREATE_LOCK,
   FAILED_TO_PURCHASE_KEY,
@@ -27,9 +26,7 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
 export default class WalletService extends EventEmitter {
   constructor({ providers, unlockAddress } = configure()) {
     super()
-    if (unlockAddress) {
-      this.unlockContractAddress = Web3Utils.toChecksumAddress(unlockAddress)
-    }
+    this.unlockContractAddress = unlockAddress
     this.providers = providers
     this.ready = false
     this.providerName = null
@@ -51,6 +48,7 @@ export default class WalletService extends EventEmitter {
       updateKeyPrice: 1000000,
       purchaseKey: 1000000,
       withdrawFromLock: 1000000,
+      partialWithdrawFromLock: 1000000,
     }
   }
 
@@ -90,18 +88,6 @@ export default class WalletService extends EventEmitter {
     this.web3 = new Web3(provider)
 
     const networkId = await this.web3.eth.net.getId()
-    // unlockContractAddress is set in the constructor if config provides one in unlockAddress
-    // this is set for staging and production
-    if (!this.unlockContractAddress) {
-      if (UnlockContract.networks[networkId]) {
-        // If we do not have an address from config let's use the artifact files
-        this.unlockContractAddress = Web3Utils.toChecksumAddress(
-          UnlockContract.networks[networkId].address
-        )
-      } else {
-        return this.emit('error', new Error(NON_DEPLOYED_CONTRACT))
-      }
-    }
 
     if (this.networkId !== networkId) {
       this.networkId = networkId
@@ -264,6 +250,37 @@ export default class WalletService extends EventEmitter {
   }
 
   /**
+   * Triggers a transaction to withdraw some funds from the lock and assign them
+   * to the owner.
+   * @param {PropTypes.address} lock
+   * @param {PropTypes.address} account
+   * @param {string} ethAmount
+   * @param {Function} callback
+   */
+  partialWithdrawFromLock(lock, account, ethAmount, callback) {
+    const lockContract = new this.web3.eth.Contract(LockContract.abi, lock)
+    const weiAmount = Web3Utils.toWei(ethAmount)
+    const data = lockContract.methods.partialWithdraw(weiAmount).encodeABI()
+
+    return this._sendTransaction(
+      {
+        to: lock,
+        from: account,
+        data,
+        gas: WalletService.gasAmountConstants().partialWithdrawFromLock,
+        contract: LockContract,
+      },
+      error => {
+        if (error) {
+          this.emit('error', new Error(FAILED_TO_WITHDRAW_FROM_LOCK))
+          return callback(error)
+        }
+        return callback()
+      }
+    )
+  }
+
+  /**
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
    * @param {PropTypes.address} lock
    * @param {PropTypes.address} account
@@ -299,19 +316,34 @@ export default class WalletService extends EventEmitter {
    * @param {*} callback
    */
   signData(account, data, callback) {
-    const fallback = () => {
-      this.web3.eth.sign(data, account, callback)
+    let method
+
+    if (this.web3.currentProvider.isMetaMask) {
+      method = 'eth_signTypedData_v3'
+      data = JSON.stringify(data)
+    } else {
+      method = 'eth_signTypedData'
     }
 
-    try {
-      this.web3.eth.personal.sign(data, account, (error, signature) => {
-        if (error) {
-          return fallback()
+    return this.web3.currentProvider.send(
+      {
+        method: method,
+        params: [account, data],
+        from: account,
+      },
+      (err, result) => {
+        // network failure
+        if (err) {
+          return callback(err, null)
         }
-        return callback(error, signature)
-      })
-    } catch (error) {
-      fallback()
-    }
+
+        // signature failure on the node
+        if (result.error) {
+          return callback(result.error, null)
+        }
+
+        callback(null, Buffer.from(result.result).toString('base64'))
+      }
+    )
   }
 }
