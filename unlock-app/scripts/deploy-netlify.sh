@@ -8,7 +8,7 @@ APP_PATH=$1
 DEPLOY_ENV=$2
 COMMIT=$3
 PUBLISH=$4
-BUILD_PATH="src/out/";
+BUILD_PATH="out/";
 
 if [ "$DEPLOY_ENV" = "staging" ]; then
   if [ "$PUBLISH" = "true" ]; then
@@ -29,6 +29,7 @@ fi
 
 if [ -n "$NETLIFY_SITE_ID" ] && [ -n "$NETLIFY_AUTH_TOKEN" ]; then
   UNLOCK_ENV="$DEPLOY_ENV" npm run deploy;
+
   echo $MESSAGE
   netlify deploy -s $NETLIFY_SITE_ID --dir=$BUILD_PATH $PROD --message='$MESSAGE'
 else

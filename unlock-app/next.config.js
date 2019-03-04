@@ -23,8 +23,8 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
         `The configuration variable ${configVariableName} is falsy.`
       )
     } else {
-      process.exit(
-        `The application cannot be started because the variable ${configVariableName} is falsy`
+      throw new Error(
+        `The configuration variable ${configVariableName} is falsy.`
       )
     }
   }
