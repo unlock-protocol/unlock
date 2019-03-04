@@ -2,7 +2,6 @@ import React from 'react'
 import { configure, addDecorator } from '@storybook/react'
 import 'storybook-chromatic'
 import StoryRouter from 'storybook-react-router'
-
 import GlobalStyle from '../src/theme/globalStyle'
 import Fonts from '../src/theme/fonts'
 
