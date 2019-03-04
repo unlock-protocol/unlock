@@ -2,19 +2,22 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
 import axios from 'axios'
-
 import { setConversionRate } from '../actions/currencyConvert'
+import configure from '../config'
+
+const { services } = configure(global)
+const currencyPriceLookupURI = services.currencyPriceLookup
 
 export default store => {
   axios
-    .get('https://api.coinbase.com/v2/prices/ETH-USD/buy')
+    .get(currencyPriceLookupURI)
     .then(info =>
       store.dispatch(
         setConversionRate(info.data.data.currency, info.data.data.amount)
       )
     )
   setInterval(() => {
-    axios.get('https://api.coinbase.com/v2/prices/ETH-USD/buy').then(info => {
+    axios.get(currencyPriceLookupURI).then(info => {
       const {
         data: {
           data: { currency, amount },
