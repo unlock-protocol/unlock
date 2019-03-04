@@ -97,24 +97,6 @@ describe('usePostMessage hook', () => {
     })
     expect(fakeWindow.parent.postMessage).not.toHaveBeenCalled()
   })
-  it('ignores calls with an empty origin', () => {
-    expect.assertions(1)
-
-    fakeWindow.location.search = '' // remove origin
-
-    const {
-      result: {
-        current: { postMessage },
-      },
-    } = rtl.testHook(() => usePostMessage(fakeWindow), {
-      wrapper,
-    })
-
-    rtl.act(() => {
-      postMessage()
-    })
-    expect(fakeWindow.parent.postMessage).not.toHaveBeenCalled()
-  })
   it('does not call postMessage twice with the same message', () => {
     expect.assertions(1)
 
