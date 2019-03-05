@@ -1,5 +1,5 @@
 import EventEmitter from 'events'
-import { LOCATION_CHANGE } from 'connected-react-router'
+import { LOCATION_CHANGE } from 'connected-next-router'
 import web3Middleware from '../../middlewares/web3Middleware'
 import { ADD_LOCK, UPDATE_LOCK, CREATE_LOCK } from '../../actions/lock'
 import { UPDATE_KEY } from '../../actions/key'

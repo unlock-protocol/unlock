@@ -1,8 +1,7 @@
 import App, { Container } from 'next/app'
 import React from 'react'
 import { Provider } from 'react-redux'
-import { ConnectedRouter } from 'connected-react-router'
-import { createBrowserHistory, createMemoryHistory } from 'history'
+import { ConnectedRouter } from 'connected-next-router'
 import configure from '../config'
 import { createUnlockStore } from '../createUnlockStore'
 
@@ -22,7 +21,7 @@ const config = configure()
 
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
-function getOrCreateStore(initialState, history) {
+function getOrCreateStore(initialState, path) {
   const middlewares = [
     interWindowCommunicationMiddleware(global),
     web3Middleware,
@@ -36,15 +35,15 @@ function getOrCreateStore(initialState, history) {
 
   // Always make a new store if server, otherwise state is shared between requests
   if (config.isServer) {
-    return createUnlockStore(initialState, history, middlewares)
+    return createUnlockStore(initialState, middlewares, path)
   }
 
   // Create store if unavailable on the client and set it on the window object
   if (!window[__NEXT_REDUX_STORE__]) {
     window[__NEXT_REDUX_STORE__] = createUnlockStore(
       initialState,
-      history,
-      middlewares
+      middlewares,
+      path
     )
   }
   return window[__NEXT_REDUX_STORE__]
@@ -95,20 +94,21 @@ The Unlock team
   }
 
   render() {
-    const { Component, pageProps, router } = this.props
-    const history = config.isServer
-      ? createMemoryHistory()
-      : createBrowserHistory()
-    const store = getOrCreateStore({}, history)
+    const {
+      Component,
+      pageProps,
+      router: { pathname },
+    } = this.props
+    const store = getOrCreateStore({}, pathname)
 
     return (
       <Container>
         <GlobalStyle />
         <Provider store={store}>
           <WalletCheckOverlay />
-          <ConnectedRouter history={history}>
+          <ConnectedRouter>
             <ConfigProvider value={config}>
-              <Component {...pageProps} router={router} />
+              <Component {...pageProps} />
             </ConfigProvider>
           </ConnectedRouter>
         </Provider>
