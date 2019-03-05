@@ -1,33 +1,29 @@
-// TODO convert to fetch instead of using axios when it is supported well enough
 /* eslint promise/prefer-await-to-then: 0 */
 
-import axios from 'axios'
 import { setConversionRate } from '../actions/currencyConvert'
 import configure from '../config'
+import CurrencyLookupService from '../services/currencyLookupService'
+import { CURRENCY_CONVERSION_MIDDLEWARE_RETRY_INTERVAL } from '../constants'
 
 const { services } = configure(global)
 const currencyPriceLookupURI = services.currencyPriceLookup
 
 export default store => {
-  axios
-    .get(currencyPriceLookupURI)
-    .then(info =>
-      store.dispatch(
-        setConversionRate(info.data.data.currency, info.data.data.amount)
-      )
-    )
-  setInterval(() => {
-    axios.get(currencyPriceLookupURI).then(info => {
-      const {
-        data: {
-          data: { currency, amount },
-        },
-      } = info
-      const current = store.getState().currency[currency]
-      if (current === +amount) return
+  const currencyLookupService = new CurrencyLookupService(
+    currencyPriceLookupURI
+  )
 
-      store.dispatch(setConversionRate(currency, amount))
+  currencyLookupService
+    .lookupPrice('ETH', 'USD')
+    .then(info => store.dispatch(setConversionRate(info.currency, info.amount)))
+
+  setInterval(() => {
+    currencyLookupService.lookupPrice('ETH', 'USD').then(info => {
+      const current = store.getState().currency[info.currency]
+      if (current === info.amount) return
+
+      store.dispatch(setConversionRate(info.currency, info.amount))
     })
-  }, 10000)
+  }, CURRENCY_CONVERSION_MIDDLEWARE_RETRY_INTERVAL)
   return next => action => next(action)
 }

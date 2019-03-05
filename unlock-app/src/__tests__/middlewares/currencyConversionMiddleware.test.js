@@ -1,19 +1,16 @@
-import mockAxios from 'jest-mock-axios'
 import { setConversionRate } from '../../actions/currencyConvert'
 
-afterEach(() => mockAxios.reset())
+jest.mock('../../services/currencyLookupService', () => () => ({
+  lookupPrice: jest
+    .fn()
+    .mockResolvedValueOnce({ currency: 'USD', amount: '195.99' })
+    .mockResolvedValueOnce({ currency: 'USD', amount: '198.20' })
+    .mockResolvedValueOnce({ currency: 'USD', amount: '195.99' }),
+}))
 
 describe('Currency conversion service retrieval middleware', () => {
-  const response1 = {
-    data: { base: 'ETH', currency: 'USD', amount: '195.99' },
-  }
-  const response2 = {
-    data: { base: 'ETH', currency: 'USD', amount: '198.20' },
-  }
-  const APIaddress = 'https://api.coinbase.com/v2/prices/ETH-USD/buy'
-
-  it('service called, action dispatched to set currency conversion rate', () => {
-    expect.assertions(4)
+  it('service called, action dispatched to set currency conversion rate', async () => {
+    expect.assertions(2)
     jest.useFakeTimers()
     const middleware = require('../../middlewares/currencyConversionMiddleware')
       .default
@@ -24,29 +21,22 @@ describe('Currency conversion service retrieval middleware', () => {
       },
     }
 
-    middleware(store)
+    await middleware(store)
 
-    expect(mockAxios.get).toHaveBeenCalledWith(APIaddress)
-    mockAxios.mockResponse({ data: response1 })
     expect(store.dispatch).toHaveBeenCalledWith(
       setConversionRate('USD', '195.99')
     )
 
     store.dispatch = jest.fn() // reset
-    mockAxios.reset()
-
-    jest.advanceTimersByTime(10000) // test the setInterval
-
-    expect(mockAxios.get).toHaveBeenCalledWith(APIaddress)
-    mockAxios.mockResponse({ data: response2 })
+    await jest.advanceTimersByTime(10000) // test the setInterval
 
     expect(store.dispatch).toHaveBeenCalledWith(
       setConversionRate('USD', '198.20')
     )
   })
 
-  it("service called, values are the same, so don't dispatch", () => {
-    expect.assertions(2)
+  it("service called, values are the same, so don't dispatch", async () => {
+    expect.assertions(1)
     jest.useFakeTimers()
     const middleware = require('../../middlewares/currencyConversionMiddleware')
       .default
@@ -54,17 +44,10 @@ describe('Currency conversion service retrieval middleware', () => {
       dispatch: jest.fn(),
     }
 
-    middleware(store)
+    await middleware(store)
     store.dispatch = jest.fn() // reset
     store.getState = () => ({ currency: { USD: 195.99 } })
-
-    mockAxios.reset()
-
     jest.advanceTimersByTime(10000) // test the setInterval
-
-    expect(mockAxios.get).toHaveBeenCalledWith(APIaddress)
-    mockAxios.mockResponse({ data: response1 })
-
     expect(store.dispatch).not.toHaveBeenCalled()
   })
 })

@@ -110,3 +110,5 @@ export const MAX_UINT =
 
 // the number of ms between checking for account changes in walletService
 export const POLLING_INTERVAL = 500
+
+export const CURRENCY_CONVERSION_MIDDLEWARE_RETRY_INTERVAL = 10000
