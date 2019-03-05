@@ -11,7 +11,7 @@ import {
 } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
 import { SET_KEYS_ON_PAGE_FOR_LOCK } from '../../actions/keysPages'
-import { PGN_ITEMS_PER_PAGE } from '../../constants'
+import { PGN_ITEMS_PER_PAGE, UNLIMITED_KEYS_COUNT } from '../../constants'
 
 /**
  * Fake state
@@ -180,6 +180,31 @@ describe('Lock middleware', () => {
           type: ADD_LOCK,
           address: lock.address,
           lock: update,
+        })
+      )
+    })
+
+    it('it should ADD_LOCK with the right unlimitedKey field', () => {
+      expect.assertions(1)
+      const { store } = create()
+      const lock = {
+        address: '0x123',
+      }
+
+      const update = {
+        maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+      }
+      mockWeb3Service.getKeyByLockForOwner = jest.fn()
+
+      mockWeb3Service.emit('lock.updated', lock.address, update)
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: ADD_LOCK,
+          address: lock.address,
+          lock: expect.objectContaining({
+            maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+            unlimitedKeys: true,
+          }),
         })
       )
     })
