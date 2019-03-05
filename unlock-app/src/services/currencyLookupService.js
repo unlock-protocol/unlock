@@ -7,6 +7,11 @@ const URL = require('url')
  */
 export default class CurrencyLookupService {
   constructor(uri) {
+    /* 
+    Added as our lint rules are currently configured for node 11, the 
+    functionality utilized below is indeed deprecated 
+    */
+
     /* eslint-disable node/no-deprecated-api */
     this.host = URL.parse(uri).host
   }
