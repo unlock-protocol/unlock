@@ -1,21 +1,23 @@
-const Unlock = artifacts.require('./Unlock.sol')
-const shell = require('shelljs')
+// Load zos scripts and truffle wrapper function
+const { scripts, ConfigVariablesInitializer } = require('zos')
+const { add, push, create } = scripts
 
-module.exports = function deployProxy (deployer, network, accounts) {
-  const unlockOwner = accounts[0]
-  const proxyAdmin = accounts[9]
+module.exports = function (deployer, networkName, accounts) {
+  deployer.then(async () => {
+    const { network, txParams } = await ConfigVariablesInitializer.initNetworkConfiguration({ network: networkName, from: accounts[1] })
+    txParams.gas = 4000000
+    const options = { network, txParams }
+    // Register v0 of MyContract in the zos project
+    add({ contractsData: [{ name: 'Unlock', alias: 'Unlock' }] })
 
-  deployer.then(() => {
-    if (network === 'test' || network === 'development') {
-      return deployer.deploy(Unlock, unlockOwner)
-    } else {
-      if (
-        shell.exec(
-          `zos push --reset --network ${network} --from ${proxyAdmin}`
-        ).code !== 0
-      ) {
-        throw new Error('Migration failed')
-      }
-    }
+    // Push implementation contracts to the network
+    await push(options)
+
+    // Create an instance of MyContract, setting initial value to 42
+    await create(Object.assign({
+      contractAlias: 'Unlock',
+      initMethod: 'initialize',
+      initArgs: [accounts[9]]
+    }, options))
   })
 }
