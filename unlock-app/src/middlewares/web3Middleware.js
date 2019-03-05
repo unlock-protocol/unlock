@@ -18,7 +18,7 @@ import {
   ADD_TRANSACTION,
   NEW_TRANSACTION,
 } from '../actions/transaction'
-import { PGN_ITEMS_PER_PAGE } from '../constants'
+import { PGN_ITEMS_PER_PAGE, UNLIMITED_KEYS_COUNT } from '../constants'
 
 import Web3Service from '../services/web3Service'
 import {
@@ -52,6 +52,12 @@ export default function web3Middleware({ getState, dispatch }) {
    */
   web3Service.on('lock.updated', (address, update) => {
     const lock = getState().locks[address]
+
+    // Our app defines a unlimitedKeys boolean
+    if (update.maxNumberOfKeys) {
+      update.unlimitedKeys = update.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
+    }
+
     if (lock) {
       // Only dispatch the updates which are more recent than the current value
       if (!lock.asOf || lock.asOf < update.asOf) {
