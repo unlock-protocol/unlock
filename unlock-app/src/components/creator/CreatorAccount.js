@@ -5,8 +5,7 @@ import Jazzicon from 'react-jazzicon'
 import UnlockPropTypes from '../../propTypes'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
 
-import Media, { NoPhone } from '../../theme/media'
-import Buttons from '../interface/buttons/lock'
+import Media from '../../theme/media'
 import Balance from '../helpers/Balance'
 
 export function CreatorAccount({ account, network }) {
@@ -15,10 +14,6 @@ export function CreatorAccount({ account, network }) {
     : 'Unknown Network'
   // Using https://github.com/MetaMask/metamask-extension/blob/develop/ui/lib/icon-factory.js#L60 to make sure jazzicons are consistent between Metamask and unlock.
   const iconSeed = parseInt(account.address.slice(2, 10), 16)
-  // this is a toggle. The buttons below (upload / etherscan / download / export)
-  // are disabled because they don't do anything yet. When we are ready to enable them
-  // set this toggle to true
-  const enableTheseButtons = false
 
   return (
     <Account>
@@ -33,46 +28,17 @@ export function CreatorAccount({ account, network }) {
         </DoubleHeightCell>
         <Label>Address</Label>
         <Label>Balance</Label>
-        <Label>Earning</Label>
-        {/* reinstate upload / etherscan / download / export functionality when we're ready  */
-        enableTheseButtons ? (
-          <>
-            <DoubleHeightCell>
-              <NoPhone>
-                <Buttons.Upload />
-              </NoPhone>
-            </DoubleHeightCell>
-            <DoubleHeightCell>
-              <NoPhone>
-                <Buttons.Etherscan />
-              </NoPhone>
-            </DoubleHeightCell>
-            <DoubleHeightCell>
-              <NoPhone>
-                <Buttons.Download />
-              </NoPhone>
-            </DoubleHeightCell>
-            <DoubleHeightCell>
-              <NoPhone>
-                <Buttons.ExportLock />
-              </NoPhone>
-            </DoubleHeightCell>
-          </>
-        ) : (
-          <>
-            <DoubleHeightCell />
-            <DoubleHeightCell />
-            <DoubleHeightCell />
-            <DoubleHeightCell />
-          </>
-        )}{' '}
+        <DoubleHeightCell />
+        <DoubleHeightCell />
+        <DoubleHeightCell />
+        <DoubleHeightCell />
+        <DoubleHeightCell />
         {/* eslint-disable-line */
         /* prettier formats this as 12 spaces, eslint wants 10 :/ */}
         <Address>{account.address}</Address>
         <Value>
           <Balance amount={account.balance} convertCurrency={false} />
         </Value>
-        <Value>0.00</Value>
       </AccountDetails>
     </Account>
   )

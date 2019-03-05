@@ -15595,11 +15595,6 @@ Object {
             Balance
           </div>
           <div
-            class="c4"
-          >
-            Earning
-          </div>
-          <div
             class="c3"
           />
           <div
@@ -15611,7 +15606,9 @@ Object {
           <div
             class="c3"
           />
-           
+          <div
+            class="c3"
+          />
           <div
             class="c5"
           >
@@ -15637,11 +15634,6 @@ Object {
               </span>
               
             </div>
-          </div>
-          <div
-            class="c6"
-          >
-            0.00
           </div>
         </div>
       </section>
@@ -15738,11 +15730,6 @@ Object {
           Balance
         </div>
         <div
-          class="sc-9u6rci-5 RSAkA"
-        >
-          Earning
-        </div>
-        <div
           class="sc-9u6rci-4 ejQGsP"
         />
         <div
@@ -15754,7 +15741,9 @@ Object {
         <div
           class="sc-9u6rci-4 ejQGsP"
         />
-         
+        <div
+          class="sc-9u6rci-4 ejQGsP"
+        />
         <div
           class="sc-9u6rci-6 gvRTKt"
         >
@@ -15780,11 +15769,6 @@ Object {
             </span>
             
           </div>
-        </div>
-        <div
-          class="sc-9u6rci-7 gwJHpE"
-        >
-          0.00
         </div>
       </div>
     </section>
@@ -16044,11 +16028,6 @@ Object {
             Balance
           </div>
           <div
-            class="c4"
-          >
-            Earning
-          </div>
-          <div
             class="c3"
           />
           <div
@@ -16060,7 +16039,9 @@ Object {
           <div
             class="c3"
           />
-           
+          <div
+            class="c3"
+          />
           <div
             class="c5"
           >
@@ -16086,11 +16067,6 @@ Object {
               </span>
               
             </div>
-          </div>
-          <div
-            class="c6"
-          >
-            0.00
           </div>
         </div>
       </section>
@@ -16187,11 +16163,6 @@ Object {
           Balance
         </div>
         <div
-          class="sc-9u6rci-5 RSAkA"
-        >
-          Earning
-        </div>
-        <div
           class="sc-9u6rci-4 ejQGsP"
         />
         <div
@@ -16203,7 +16174,9 @@ Object {
         <div
           class="sc-9u6rci-4 ejQGsP"
         />
-         
+        <div
+          class="sc-9u6rci-4 ejQGsP"
+        />
         <div
           class="sc-9u6rci-6 gvRTKt"
         >
@@ -16229,11 +16202,6 @@ Object {
             </span>
             
           </div>
-        </div>
-        <div
-          class="sc-9u6rci-7 gwJHpE"
-        >
-          0.00
         </div>
       </div>
     </section>
@@ -16951,7 +16919,59 @@ exports[`Storyshots CreatorLock Deployed 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c15 {
+    .c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c6 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c6:before {
+  content: '三';
+}
+
+.c9 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c9:before {
+  content: '$';
+}
+
+.c7 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c8 {
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
+}
+
+.c15 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -17020,58 +17040,6 @@ Object {
 
 .c14:hover .c17 {
   display: inline-block;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c6 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c6:before {
-  content: '三';
-}
-
-.c9 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c9:before {
-  content: '$';
-}
-
-.c7 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c8 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 }
 
 .c12 {
@@ -17791,7 +17759,59 @@ exports[`Storyshots CreatorLock Not found 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c15 {
+    .c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c6 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c6:before {
+  content: '三';
+}
+
+.c9 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c9:before {
+  content: '$';
+}
+
+.c7 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c8 {
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
+}
+
+.c15 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -17860,58 +17880,6 @@ Object {
 
 .c14:hover .c17 {
   display: inline-block;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c6 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c6:before {
-  content: '三';
-}
-
-.c9 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c9:before {
-  content: '$';
-}
-
-.c7 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c8 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 }
 
 .c12 {
@@ -19286,7 +19254,59 @@ exports[`Storyshots CreatorLock With key 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c15 {
+    .c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c6 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c6:before {
+  content: '三';
+}
+
+.c9 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c9:before {
+  content: '$';
+}
+
+.c7 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c8 {
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
+}
+
+.c15 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -19355,58 +19375,6 @@ Object {
 
 .c14:hover .c17 {
   display: inline-block;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c6 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c6:before {
-  content: '三';
-}
-
-.c9 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c9:before {
-  content: '$';
-}
-
-.c7 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c8 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 }
 
 .c12 {
@@ -20126,7 +20094,59 @@ exports[`Storyshots CreatorLock Withdrawal submitted 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c15 {
+    .c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c6 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c6:before {
+  content: '三';
+}
+
+.c9 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c9:before {
+  content: '$';
+}
+
+.c7 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c8 {
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
+}
+
+.c15 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -20195,58 +20215,6 @@ Object {
 
 .c14:hover .c17 {
   display: inline-block;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c6 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c6:before {
-  content: '三';
-}
-
-.c9 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c9:before {
-  content: '$';
-}
-
-.c7 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c8 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 }
 
 .c12 {
@@ -20966,7 +20934,59 @@ exports[`Storyshots CreatorLock Withdrawing 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c15 {
+    .c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c6 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c6:before {
+  content: '三';
+}
+
+.c9 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c9:before {
+  content: '$';
+}
+
+.c7 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c8 {
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
+}
+
+.c15 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -21035,58 +21055,6 @@ Object {
 
 .c14:hover .c17 {
   display: inline-block;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c6 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c6:before {
-  content: '三';
-}
-
-.c9 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c9:before {
-  content: '$';
-}
-
-.c7 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c8 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 }
 
 .c12 {
@@ -25249,78 +25217,7 @@ exports[`Storyshots Dashboard dashboard, no locks 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c10 {
-  background-color: var(--grey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c10 > svg {
-  fill: white;
-  height: 24px;
-  width: 24px;
-}
-
-.c10:hover {
-  background-color: var(--link);
-}
-
-.c10:hover > svg {
-  fill: white;
-}
-
-.c13 {
-  background-color: var(--grey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 48px;
-  width: 48px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 48px;
-}
-
-.c13 > svg {
-  fill: white;
-  height: 48px;
-  width: 48px;
-}
-
-.c13:hover {
-  background-color: var(--link);
-}
-
-.c13:hover > svg {
-  fill: white;
-}
-
-.c11 {
-  display: none;
-  position: relative;
-  z-index: var(--alwaysontop);
-  white-space: nowrap;
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
-  color: var(--link);
-}
-
-.c9:hover .c11 {
-  display: inline-block;
-}
-
-.c22 {
+    .c22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -25418,6 +25315,77 @@ Object {
   font-size: 16px;
   font-weight: 500;
   color: var(--darkgrey);
+}
+
+.c10 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c10 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c10:hover {
+  background-color: var(--link);
+}
+
+.c10:hover > svg {
+  fill: white;
+}
+
+.c13 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 48px;
+}
+
+.c13 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
+}
+
+.c13:hover {
+  background-color: var(--link);
+}
+
+.c13:hover > svg {
+  fill: white;
+}
+
+.c11 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c9:hover .c11 {
+  display: inline-block;
 }
 
 .c2 {
@@ -26108,11 +26076,6 @@ Object {
                 Balance
               </div>
               <div
-                class="c19"
-              >
-                Earning
-              </div>
-              <div
                 class="c18"
               />
               <div
@@ -26124,7 +26087,9 @@ Object {
               <div
                 class="c18"
               />
-               
+              <div
+                class="c18"
+              />
               <div
                 class="c20"
               >
@@ -26150,11 +26115,6 @@ Object {
                   </span>
                   
                 </div>
-              </div>
-              <div
-                class="c21"
-              >
-                0.00
               </div>
             </div>
           </section>
@@ -26509,11 +26469,6 @@ Object {
               Balance
             </div>
             <div
-              class="sc-9u6rci-5 RSAkA"
-            >
-              Earning
-            </div>
-            <div
               class="sc-9u6rci-4 ejQGsP"
             />
             <div
@@ -26525,7 +26480,9 @@ Object {
             <div
               class="sc-9u6rci-4 ejQGsP"
             />
-             
+            <div
+              class="sc-9u6rci-4 ejQGsP"
+            />
             <div
               class="sc-9u6rci-6 gvRTKt"
             >
@@ -26551,11 +26508,6 @@ Object {
                 </span>
                 
               </div>
-            </div>
-            <div
-              class="sc-9u6rci-7 gwJHpE"
-            >
-              0.00
             </div>
           </div>
         </section>
@@ -28327,7 +28279,123 @@ exports[`Storyshots Dashboard the dashboard 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c45 {
+    .c22 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c23 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c24 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c24:before {
+  content: '三';
+}
+
+.c39 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c39:before {
+  content: '$';
+}
+
+.c25 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c38 {
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
+}
+
+.c15 {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-gap: 8px;
+}
+
+.c16 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--red);
+}
+
+.c17 {
+  font-family: 'IBM Plex Mono',monospace;
+  display: grid;
+  row-gap: 8px;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
+}
+
+.c18 {
+  display: grid;
+  height: 40px;
+  grid-row: span 2;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  font-size: 24px;
+  -webkit-align-content: start;
+  -ms-flex-line-pack: start;
+  align-content: start;
+}
+
+.c19 {
+  font-weight: 100;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  font-size: 8px;
+}
+
+.c20 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  width: 128px;
+  font-weight: 300;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.c21 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--darkgrey);
+}
+
+.c45 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -28448,122 +28516,6 @@ Object {
 
 .c9:hover .c11 {
   display: inline-block;
-}
-
-.c22 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c23 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c24 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c24:before {
-  content: '三';
-}
-
-.c39 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c39:before {
-  content: '$';
-}
-
-.c25 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c38 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
-}
-
-.c15 {
-  display: grid;
-  grid-template-columns: auto 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  grid-gap: 8px;
-}
-
-.c16 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--red);
-}
-
-.c17 {
-  font-family: 'IBM Plex Mono',monospace;
-  display: grid;
-  row-gap: 8px;
-  -webkit-column-gap: 16px;
-  column-gap: 16px;
-  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
-}
-
-.c18 {
-  display: grid;
-  height: 40px;
-  grid-row: span 2;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-  font-size: 24px;
-  -webkit-align-content: start;
-  -ms-flex-line-pack: start;
-  align-content: start;
-}
-
-.c19 {
-  font-weight: 100;
-  text-transform: uppercase;
-  -webkit-letter-spacing: 1px;
-  -moz-letter-spacing: 1px;
-  -ms-letter-spacing: 1px;
-  letter-spacing: 1px;
-  font-size: 8px;
-}
-
-.c20 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  width: 128px;
-  font-weight: 300;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-
-.c21 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--darkgrey);
 }
 
 .c40 {
@@ -29348,11 +29300,6 @@ Object {
                 Balance
               </div>
               <div
-                class="c19"
-              >
-                Earning
-              </div>
-              <div
                 class="c18"
               />
               <div
@@ -29364,7 +29311,9 @@ Object {
               <div
                 class="c18"
               />
-               
+              <div
+                class="c18"
+              />
               <div
                 class="c20"
               >
@@ -29390,11 +29339,6 @@ Object {
                   </span>
                   
                 </div>
-              </div>
-              <div
-                class="c21"
-              >
-                0.00
               </div>
             </div>
           </section>
@@ -30426,11 +30370,6 @@ Object {
               Balance
             </div>
             <div
-              class="sc-9u6rci-5 RSAkA"
-            >
-              Earning
-            </div>
-            <div
               class="sc-9u6rci-4 ejQGsP"
             />
             <div
@@ -30442,7 +30381,9 @@ Object {
             <div
               class="sc-9u6rci-4 ejQGsP"
             />
-             
+            <div
+              class="sc-9u6rci-4 ejQGsP"
+            />
             <div
               class="sc-9u6rci-6 gvRTKt"
             >
@@ -30468,11 +30409,6 @@ Object {
                 </span>
                 
               </div>
-            </div>
-            <div
-              class="sc-9u6rci-7 gwJHpE"
-            >
-              0.00
             </div>
           </div>
         </section>
@@ -31277,7 +31213,123 @@ exports[`Storyshots Dashboard the dashboard, waiting for wallet 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c48 {
+    .c25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c27 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c27:before {
+  content: '三';
+}
+
+.c42 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c42:before {
+  content: '$';
+}
+
+.c28 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c41 {
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
+}
+
+.c18 {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-gap: 8px;
+}
+
+.c19 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--red);
+}
+
+.c20 {
+  font-family: 'IBM Plex Mono',monospace;
+  display: grid;
+  row-gap: 8px;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
+}
+
+.c21 {
+  display: grid;
+  height: 40px;
+  grid-row: span 2;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  font-size: 24px;
+  -webkit-align-content: start;
+  -ms-flex-line-pack: start;
+  align-content: start;
+}
+
+.c22 {
+  font-weight: 100;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  font-size: 8px;
+}
+
+.c23 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  width: 128px;
+  font-weight: 300;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.c24 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--darkgrey);
+}
+
+.c48 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -31398,122 +31450,6 @@ Object {
 
 .c12:hover .c14 {
   display: inline-block;
-}
-
-.c25 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c26 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c27 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c27:before {
-  content: '三';
-}
-
-.c42 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c42:before {
-  content: '$';
-}
-
-.c28 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c41 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
-}
-
-.c18 {
-  display: grid;
-  grid-template-columns: auto 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  grid-gap: 8px;
-}
-
-.c19 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--red);
-}
-
-.c20 {
-  font-family: 'IBM Plex Mono',monospace;
-  display: grid;
-  row-gap: 8px;
-  -webkit-column-gap: 16px;
-  column-gap: 16px;
-  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
-}
-
-.c21 {
-  display: grid;
-  height: 40px;
-  grid-row: span 2;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-  font-size: 24px;
-  -webkit-align-content: start;
-  -ms-flex-line-pack: start;
-  align-content: start;
-}
-
-.c22 {
-  font-weight: 100;
-  text-transform: uppercase;
-  -webkit-letter-spacing: 1px;
-  -moz-letter-spacing: 1px;
-  -ms-letter-spacing: 1px;
-  letter-spacing: 1px;
-  font-size: 8px;
-}
-
-.c23 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  width: 128px;
-  font-weight: 300;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-
-.c24 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--darkgrey);
 }
 
 .c43 {
@@ -32377,11 +32313,6 @@ Object {
                 Balance
               </div>
               <div
-                class="c22"
-              >
-                Earning
-              </div>
-              <div
                 class="c21"
               />
               <div
@@ -32393,7 +32324,9 @@ Object {
               <div
                 class="c21"
               />
-               
+              <div
+                class="c21"
+              />
               <div
                 class="c23"
               >
@@ -32419,11 +32352,6 @@ Object {
                   </span>
                   
                 </div>
-              </div>
-              <div
-                class="c24"
-              >
-                0.00
               </div>
             </div>
           </section>
@@ -33471,11 +33399,6 @@ Object {
               Balance
             </div>
             <div
-              class="sc-9u6rci-5 RSAkA"
-            >
-              Earning
-            </div>
-            <div
               class="sc-9u6rci-4 ejQGsP"
             />
             <div
@@ -33487,7 +33410,9 @@ Object {
             <div
               class="sc-9u6rci-4 ejQGsP"
             />
-             
+            <div
+              class="sc-9u6rci-4 ejQGsP"
+            />
             <div
               class="sc-9u6rci-6 gvRTKt"
             >
@@ -33513,11 +33438,6 @@ Object {
                 </span>
                 
               </div>
-            </div>
-            <div
-              class="sc-9u6rci-7 gwJHpE"
-            >
-              0.00
             </div>
           </div>
         </section>
@@ -53875,78 +53795,7 @@ exports[`Storyshots Transaction Log the log 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c10 {
-  background-color: var(--grey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c10 > svg {
-  fill: white;
-  height: 24px;
-  width: 24px;
-}
-
-.c10:hover {
-  background-color: var(--link);
-}
-
-.c10:hover > svg {
-  fill: white;
-}
-
-.c13 {
-  background-color: var(--grey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 48px;
-  width: 48px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 48px;
-}
-
-.c13 > svg {
-  fill: white;
-  height: 48px;
-  width: 48px;
-}
-
-.c13:hover {
-  background-color: var(--link);
-}
-
-.c13:hover > svg {
-  fill: white;
-}
-
-.c11 {
-  display: none;
-  position: relative;
-  z-index: var(--alwaysontop);
-  white-space: nowrap;
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
-  color: var(--link);
-}
-
-.c9:hover .c11 {
-  display: inline-block;
-}
-
-.c22 {
+    .c22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -54044,6 +53893,77 @@ Object {
   font-size: 16px;
   font-weight: 500;
   color: var(--darkgrey);
+}
+
+.c10 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c10 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c10:hover {
+  background-color: var(--link);
+}
+
+.c10:hover > svg {
+  fill: white;
+}
+
+.c13 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 48px;
+}
+
+.c13 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
+}
+
+.c13:hover {
+  background-color: var(--link);
+}
+
+.c13:hover > svg {
+  fill: white;
+}
+
+.c11 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c9:hover .c11 {
+  display: inline-block;
 }
 
 .c2 {
@@ -54603,11 +54523,6 @@ Object {
                 Balance
               </div>
               <div
-                class="c19"
-              >
-                Earning
-              </div>
-              <div
                 class="c18"
               />
               <div
@@ -54619,7 +54534,9 @@ Object {
               <div
                 class="c18"
               />
-               
+              <div
+                class="c18"
+              />
               <div
                 class="c20"
               >
@@ -54645,11 +54562,6 @@ Object {
                   </span>
                   
                 </div>
-              </div>
-              <div
-                class="c21"
-              >
-                0.00
               </div>
             </div>
           </section>
@@ -55006,11 +54918,6 @@ Object {
               Balance
             </div>
             <div
-              class="sc-9u6rci-5 RSAkA"
-            >
-              Earning
-            </div>
-            <div
               class="sc-9u6rci-4 ejQGsP"
             />
             <div
@@ -55022,7 +54929,9 @@ Object {
             <div
               class="sc-9u6rci-4 ejQGsP"
             />
-             
+            <div
+              class="sc-9u6rci-4 ejQGsP"
+            />
             <div
               class="sc-9u6rci-6 gvRTKt"
             >
@@ -55048,11 +54957,6 @@ Object {
                 </span>
                 
               </div>
-            </div>
-            <div
-              class="sc-9u6rci-7 gwJHpE"
-            >
-              0.00
             </div>
           </div>
         </section>
