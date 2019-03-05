@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { RoundedLogo, WordMarkLogo } from './Logo'
@@ -20,7 +21,7 @@ const appButtons = [
   { Button: Buttons.Log, page: '/log' },
 ]
 
-export default class Header extends React.PureComponent {
+class Header extends React.PureComponent {
   constructor(props) {
     super(props)
     this.toggleMenu = this.toggleMenu.bind(this)
@@ -33,7 +34,9 @@ export default class Header extends React.PureComponent {
 
   render() {
     const { menu } = this.state
-    const { forContent, title } = this.props
+    const { forContent, title, pathname } = this.props
+
+    const onAppPage = appButtons.some(button => button.page === pathname)
 
     return (
       <TopHeader>
@@ -60,9 +63,19 @@ export default class Header extends React.PureComponent {
           </Title>
         )}
         <AppButtons>
-          {appButtons.map(({ Button }) => {
-            return <Button key={Button} />
-          })}
+          {onAppPage &&
+            appButtons.map(({ Button, page }) => {
+              const isActivePage = page === pathname
+              return (
+                <Button
+                  key={Button}
+                  backgroundColor={
+                    isActivePage ? 'var(--link)' : 'var(--lightgrey)'
+                  }
+                  fillColor={isActivePage ? 'var(--white)' : 'var(--grey)'}
+                />
+              )
+            })}
         </AppButtons>
         <DesktopButtons>
           {navigationButtons.map(NavButton => (
@@ -88,6 +101,16 @@ export default class Header extends React.PureComponent {
     )
   }
 }
+
+const mapStateToProps = ({
+  router: {
+    location: { pathname },
+  },
+}) => {
+  return { pathname }
+}
+
+export default connect(mapStateToProps)(Header)
 
 Header.propTypes = {
   title: PropTypes.string,
