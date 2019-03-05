@@ -7,6 +7,7 @@ const URL = require('url')
  */
 export default class CurrencyLookupService {
   constructor(uri) {
+    /* eslint-disable node/no-deprecated-api */
     this.host = URL.parse(uri).host
   }
 
