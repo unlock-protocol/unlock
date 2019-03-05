@@ -73,8 +73,6 @@ export const delay = PropTypes.number
 
 export const keyList = PropTypes.arrayOf(key)
 
-export const router = PropTypes.shape({ pathname: PropTypes.string })
-
 export default {
   account,
   address,
@@ -99,5 +97,4 @@ export default {
   transactions,
   status,
   showDashboardForm,
-  router,
 }
