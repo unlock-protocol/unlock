@@ -1,13 +1,14 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
-
+import { Provider } from 'react-redux'
 import GlobalErrorConsumer, {
   displayError,
 } from '../../../components/interface/GlobalErrorConsumer'
 import { GlobalErrorContext } from '../../../utils/GlobalErrorProvider'
 import { FATAL_NO_USER_ACCOUNT, FATAL_MISSING_PROVIDER } from '../../../errors'
+import createUnlockStore from '../../../createUnlockStore'
 
-const Provider = GlobalErrorContext.Provider
+const ErrorProvider = GlobalErrorContext.Provider
 
 describe('GlobalErrorConsumer', () => {
   it('passes error and errorMetadata to displayError prop', () => {
@@ -15,14 +16,14 @@ describe('GlobalErrorConsumer', () => {
 
     const listen = jest.fn(() => <div>internal</div>)
     const wrapper = rtl.render(
-      <Provider
+      <ErrorProvider
         value={{
           error: FATAL_NO_USER_ACCOUNT,
           errorMetadata: { thing: 'thingy' },
         }}
       >
         <GlobalErrorConsumer displayError={listen}>hi</GlobalErrorConsumer>
-      </Provider>
+      </ErrorProvider>
     )
 
     expect(wrapper.getByText('internal')).not.toBeNull()
@@ -42,14 +43,14 @@ describe('GlobalErrorConsumer', () => {
 
     const listen = jest.fn(() => <div>internal</div>)
     const wrapper = rtl.render(
-      <Provider
+      <ErrorProvider
         value={{
           error: false,
           errorMetadata: {},
         }}
       >
         <GlobalErrorConsumer displayError={listen}>hi</GlobalErrorConsumer>
-      </Provider>
+      </ErrorProvider>
     )
 
     expect(wrapper.queryByText('internal')).not.toBeNull()
@@ -62,7 +63,9 @@ describe('GlobalErrorConsumer', () => {
     it('displays the error if initialized', () => {
       expect.assertions(2)
       const wrapper = rtl.render(
-        displayError(FATAL_MISSING_PROVIDER, {}, <div>children</div>)
+        <Provider store={createUnlockStore({})}>
+          {displayError(FATAL_MISSING_PROVIDER, {}, <div>children</div>)}
+        </Provider>
       )
       expect(wrapper.queryByText('Wallet missing')).not.toBeNull()
       expect(wrapper.queryByText('children')).toBeNull()

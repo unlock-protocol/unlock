@@ -40,7 +40,11 @@ const transactions = {
 }
 
 const router = {
-  route: '/dashboard',
+  location: {
+    pathname: '/log',
+    search: '',
+    hash: '',
+  },
 }
 
 const currency = {

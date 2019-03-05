@@ -115,11 +115,13 @@ export default connect(mapStateToProps)(Header)
 Header.propTypes = {
   title: PropTypes.string,
   forContent: PropTypes.bool,
+  pathname: PropTypes.string,
 }
 
 Header.defaultProps = {
   title: 'Unlock',
   forContent: false,
+  pathname: '',
 }
 
 const TopHeader = styled.header`
