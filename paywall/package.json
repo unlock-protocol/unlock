@@ -61,6 +61,7 @@
     "storybook-react-router": "^1.0.2",
     "styled-components": "^4.1.3",
     "typescript": "^3.3.3",
+    "unlock-abi-0": "^1.0.1",
     "web3": "1.0.0-beta.37",
     "web3-eth-abi": "1.0.0-beta.37",
     "web3-utils": "1.0.0-beta.37"
