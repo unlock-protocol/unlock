@@ -38,18 +38,17 @@ fi
 # deploys we pass all environment variables which start with PROD_. We also remove the prefix so that
 # the deploy script is identical in both cases
 ENV_PREFIX="STAGING_"
-if [ "$TARGET" = "prod" ]; then
+if [ "$ENV_TARGET" = "prod" ]; then
   ENV_PREFIX="PROD_"
 fi
 
-# Extracting environment variables
-DEPLOYMENT_ENV_VARS=`env | grep $ENV_PREFIX | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$ENV_PREFIX//g"`
-ENV_VARS="$DEPLOYMENT_ENV_VARS"
-
-## Custom variables passed for netlify
-if [ "$TARGET" = "netlify" ]; then
-  ENV_VARS="$ENV_VARS -e NETLIFY_AUTH_TOKEN=$NETLIFY_AUTH_TOKEN"
-fi
+# Custom variables passed for the target
+# The convention is to name the environment variables starting with the UPPERCASE version of the $TARGET,
+# then the $TARGET and finally $ENV_TARGET.
+# For example: UNLOCK_APP_NETLIFY_STAGING_SITE_ID will be passed as SITE_ID
+UPCASE_SERVICE="${SERVICE^^}"
+TARGET_PREFIX="${UPCASE_SERVICE//-/_}_${TARGET^^}_$ENV_PREFIX"
+ENV_VARS=`env | grep $TARGET_PREFIX | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$TARGET_PREFIX//g"`
 
 # PUBLISH: whether to publish/promote the deployed version
 PUBLISH="false"
@@ -60,5 +59,4 @@ fi
 # Deploy options
 OPTS="$SERVICE $ENV_TARGET $COMMIT $PUBLISH"
 
-echo "docker-compose -f $DOCKER_COMPOSE_FILE run $ENV_VARS $SERVICE $NPM_SCRIPT -- $OPTS"
 docker-compose -f $DOCKER_COMPOSE_FILE run $ENV_VARS $SERVICE $NPM_SCRIPT -- $OPTS
