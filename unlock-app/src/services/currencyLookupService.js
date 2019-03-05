@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+const URL = require('url').URL
+
 export default class CurrencyLookupService {
   constructor(uri) {
     this.host = new URL(uri).host
