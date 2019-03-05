@@ -31,7 +31,7 @@ if [ -n "$SITE_ID" ] && [ -n "$AUTH_TOKEN" ]; then
   UNLOCK_ENV="$DEPLOY_ENV" npm run deploy;
   # And ship!
   echo $MESSAGE
-  netlify deploy -s $SITE_ID --dir=$BUILD_PATH $PROD --message='$MESSAGE'
+  netlify deploy -s $SITE_ID -a $AUTH_TOKEN --dir=$BUILD_PATH $PROD --message='$MESSAGE'
 else
   echo "Failed to deploy to Netlify because we're missing SITE_ID and/or AUTH_TOKEN"
   exit 1
