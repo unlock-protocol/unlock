@@ -1,11 +1,11 @@
 import React from 'react'
 import Svg from '../../svg'
-import LayoutButton from '../LayoutButton'
+import PageNavButton from '../PageNavButton'
 
 const Log = props => (
-  <LayoutButton href="/log" label="Log" {...props}>
+  <PageNavButton href="/log" label="Log" {...props}>
     <Svg.Log title="Log" />
-  </LayoutButton>
+  </PageNavButton>
 )
 
 export default Log

@@ -1,11 +1,11 @@
 import React from 'react'
 import Svg from '../../svg'
-import LayoutButton from '../LayoutButton'
+import PageNavButton from '../PageNavButton'
 
 const Dashboard = props => (
-  <LayoutButton href="/dashboard" label="Dashboard" {...props}>
+  <PageNavButton href="/dashboard" label="Dashboard" {...props}>
     <Svg.Home title="Dashboard" />
-  </LayoutButton>
+  </PageNavButton>
 )
 
 export default Dashboard

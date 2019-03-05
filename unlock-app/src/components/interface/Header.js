@@ -64,17 +64,8 @@ class Header extends React.PureComponent {
         )}
         <AppButtons>
           {onAppPage &&
-            appButtons.map(({ Button, page }) => {
-              const isActivePage = page === pathname
-              return (
-                <Button
-                  key={Button}
-                  backgroundColor={
-                    isActivePage ? 'var(--link)' : 'var(--lightgrey)'
-                  }
-                  fillColor={isActivePage ? 'var(--white)' : 'var(--grey)'}
-                />
-              )
+            appButtons.map(({ Button }) => {
+              return <Button key={Button} activePath={pathname} />
             })}
         </AppButtons>
         <DesktopButtons>
