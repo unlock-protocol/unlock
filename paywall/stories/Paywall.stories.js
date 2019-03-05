@@ -94,8 +94,8 @@ function FakeItTillYouMakeIt({ children }) {
         marginRight: '-104px',
         transition: 'margin-right 0.4s ease-in',
       }}
-      onMouseEnter={e => (divit.current.style.marginRight = 0)}
-      onMouseLeave={e => (divit.current.style.marginRight = '-104px')}
+      onMouseEnter={() => (divit.current.style.marginRight = 0)}
+      onMouseLeave={() => (divit.current.style.marginRight = '-104px')}
     >
       {children}
     </div>
