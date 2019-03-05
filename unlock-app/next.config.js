@@ -14,6 +14,8 @@ const requiredConfigVariables = {
   paywallScriptUrl: process.env.PAYWALL_SCRIPT_URL,
   readOnlyProvider: process.env.READ_ONLY_PROVIDER,
   locksmithHost: process.env.LOCKSMITH_URI,
+  unlockAddress:
+    process.env.UNLOCK_ADDRESS || '0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B', // default for CI
 }
 
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
