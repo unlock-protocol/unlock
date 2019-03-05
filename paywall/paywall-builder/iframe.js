@@ -41,15 +41,9 @@ export function hide(iframe, document) {
   iframe.style.backgroundColor = 'transparent'
   iframe.style.backgroundImage = 'none'
   iframe.style['margin-right'] = collapsedMargin
-  iframe.contentDocument.body.style.margin = '0'
-  iframe.contentDocument.body.style.height = height
-  iframe.contentDocument.body.style.display = 'flex'
-  iframe.contentDocument.body.style['flex-direction'] = 'column'
-  iframe.contentDocument.body.style['justify-content'] = 'center'
 
   // so that there's no scroll when it goes off the edge
   iframe.style.overflow = 'hidden'
-  iframe.contentDocument.body.style.overflow = 'hidden'
 
   // new dimensions
   iframe.style.width = width
