@@ -16,8 +16,10 @@ import {
   POST_MESSAGE_UNLOCKED,
 } from '../../paywall-builder/constants'
 import { isPositiveInteger } from '../utils/validators'
+import useWindow from '../hooks/browser/useWindow'
 
 export function Paywall({ locks, locked, redirect }) {
+  const window = useWindow()
   const scrollPosition = useListenForPostMessage({
     type: 'scrollPosition',
     defaultValue: 0,
@@ -30,6 +32,14 @@ export function Paywall({ locks, locked, redirect }) {
         postMessage(POST_MESSAGE_LOCKED)
       } else {
         postMessage(POST_MESSAGE_UNLOCKED)
+        const height = '160px'
+        const body = window.document.body
+        body.style.margin = '0'
+        body.style.height = height
+        body.style.display = 'flex'
+        body.style.flexDirection = 'column'
+        body.style.justifyContent = 'center'
+        body.style.overflow = 'hidden'
       }
     },
     [locked]
