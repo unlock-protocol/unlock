@@ -1,13 +1,12 @@
-// TODO convert to fetch instead of using axios when it is supported well enough
 /* eslint promise/prefer-await-to-then: 0 */
 
 import { setConversionRate } from '../actions/currencyConvert'
 import configure from '../config'
 import CurrencyLookupService from '../services/currencyLookupService'
+import { CURRENCY_CONVERSION_MIDDLEWARE_RETRY_INTERVAL } from '../constants'
 
 const { services } = configure(global)
 const currencyPriceLookupURI = services.currencyPriceLookup
-const retryInterval = 10000
 
 export default store => {
   const currencyLookupService = new CurrencyLookupService(
@@ -25,6 +24,6 @@ export default store => {
 
       store.dispatch(setConversionRate(info.currency, info.amount))
     })
-  }, retryInterval)
+  }, CURRENCY_CONVERSION_MIDDLEWARE_RETRY_INTERVAL)
   return next => action => next(action)
 }

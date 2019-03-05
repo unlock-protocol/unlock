@@ -27,13 +27,13 @@ describe('CurrencyLookupService', () => {
         )
       })
     })
+
     describe('when configured for anything that isnt coinbase', () => {
       it('return a rejected promise', () => {
         expect.assertions(1)
         currencyLookupService = new CurrencyLookupService(
           'https://somelocksmithinstallation'
         )
-
         expect(currencyLookupService.lookupPrice('ETC', 'GBP')).rejects.toMatch(
           ''
         )
