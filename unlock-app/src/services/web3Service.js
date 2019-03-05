@@ -111,7 +111,7 @@ export default class Web3Service extends EventEmitter {
           balance: '0', // Must be expressed in Eth!
         })
       },
-      purchaseFor: async (transactionHash, contractAddress, params) => {
+      purchaseFor: async (transactionHash, contractAddress) => {
         this.emit('transaction.updated', transactionHash, {
           lock: contractAddress,
         })
