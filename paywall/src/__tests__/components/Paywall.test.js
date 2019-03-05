@@ -162,12 +162,14 @@ describe('Paywall', () => {
         'http://example.com'
       )
     })
-    it('should update the CSS of document.body on unlock for the flag to be positioned correctly', () => {
+    it('should update body css', () => {
       expect.assertions(1)
+
+      config.isInIframe = true
       rtl.act(() => {
         renderMockPaywall({ locked: false })
-        )
       })
+
       expect(fakeWindow.document.body.style).toEqual({
         display: 'flex',
         flexDirection: 'column',

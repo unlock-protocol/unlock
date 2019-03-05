@@ -6,9 +6,11 @@ import createUnlockStore from '../../src/createUnlockStore'
 import { GlobalErrorContext } from '../../src/utils/GlobalErrorProvider'
 import { FATAL_WRONG_NETWORK, FATAL_NO_USER_ACCOUNT } from '../../src/errors'
 import { ConfigContext } from '../../src/utils/withConfig'
+import { WindowContext } from '../../src/hooks/browser/useWindow'
 
 const ErrorProvider = GlobalErrorContext.Provider
 const ConfigProvider = ConfigContext.Provider
+const WindowProvider = WindowContext.Provider
 
 const config = {
   isInIframe: true,
@@ -68,15 +70,17 @@ const render = (
     </ul>
 
     <ConfigProvider value={thisConfig}>
-      <ErrorProvider value={errors}>
-        <Overlay
-          scrollPosition={0}
-          locks={locks}
-          hideModal={() => {}}
-          showModal={() => {}}
-          openInNewWindow={false}
-        />
-      </ErrorProvider>
+      <WindowProvider value={{ document: { body: { style: {} } } }}>
+        <ErrorProvider value={errors}>
+          <Overlay
+            scrollPosition={0}
+            locks={locks}
+            hideModal={() => {}}
+            showModal={() => {}}
+            openInNewWindow={false}
+          />
+        </ErrorProvider>
+      </WindowProvider>
     </ConfigProvider>
   </section>
 )
