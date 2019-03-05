@@ -1,5 +1,6 @@
 import { Provider } from 'react-redux'
-import React from 'react'
+import React, { useRef } from 'react'
+import PropTypes from 'prop-types'
 import { storiesOf } from '@storybook/react'
 import Paywall from '../src/components/Paywall'
 import createUnlockStore from '../src/createUnlockStore'
@@ -79,6 +80,32 @@ const config = {
   },
 }
 
+function FakeItTillYouMakeIt({ children }) {
+  const divit = useRef()
+  return (
+    <div
+      ref={divit}
+      style={{
+        position: 'absolute',
+        right: 0,
+        bottom: '105px',
+        width: '134px',
+        height: '160px',
+        marginRight: '-104px',
+        transition: 'margin-right 0.4s ease-in',
+      }}
+      onMouseEnter={e => (divit.current.style.marginRight = 0)}
+      onMouseLeave={e => (divit.current.style.marginRight = '-104px')}
+    >
+      {children}
+    </div>
+  )
+}
+
+FakeItTillYouMakeIt.propTypes = {
+  children: PropTypes.node.isRequired,
+}
+
 storiesOf('Paywall', module)
   // pass in a fake window object, to avoid modifying the real body and munging storyshots
   .addDecorator(getStory => (
@@ -89,7 +116,7 @@ storiesOf('Paywall', module)
           location: { pathname: '/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e' },
         }}
       >
-        {getStory()}
+        <FakeItTillYouMakeIt>{getStory()}</FakeItTillYouMakeIt>
       </WindowContext.Provider>
     </ConfigContext.Provider>
   ))
