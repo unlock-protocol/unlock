@@ -7,7 +7,7 @@
     "@storybook/addon-actions": "^4.1.13",
     "@storybook/addon-knobs": "^4.1.13",
     "@storybook/addon-storyshots": "^4.1.13",
-    "@storybook/addons": "^4.1.13",
+    "@storybook/addons": "^5.0.0",
     "@storybook/react": "4.1.13",
     "@zeit/next-source-maps": "0.0.3",
     "axios": "^0.18.0",
