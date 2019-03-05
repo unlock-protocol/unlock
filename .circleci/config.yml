@@ -53,6 +53,19 @@ jobs:
           name: Creator Dashboard stories
           command: scripts/storybook.sh unlock-app
 
+  unlock-app-chromatic-master:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          name: Pull Unlock Image
+          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+      - run:
+          name: Creator Dashboard stories (master build)
+          command: scripts/storybook.sh unlock-app --auto-accept-changes
+
   smart-contracts-tests:
     machine: true
     environment:
@@ -179,7 +192,16 @@ workflows:
       - unlock-app-tests:
           requires:
             - build-unlock
+      - unlock-app-chromatic-master:
+          filters:
+            branches:
+              only: master
+          requires:
+            - build-unlock
       - unlock-app-chromatic:
+          filters:
+            branches:
+              ignore: master
           requires:
             - build-unlock
       - smart-contracts-tests:
