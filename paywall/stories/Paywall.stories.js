@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react'
 import Paywall from '../src/components/Paywall'
 import createUnlockStore from '../src/createUnlockStore'
 import { ConfigContext } from '../src/utils/withConfig'
+import { WindowContext } from '../src/hooks/browser/useWindow'
 
 const lock = {
   address: '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e',
@@ -79,21 +80,30 @@ const config = {
 }
 
 storiesOf('Paywall', module)
+  // pass in a fake window object, to avoid modifying the real body and munging storyshots
+  .addDecorator(getStory => (
+    <ConfigContext.Provider value={config}>
+      <WindowContext.Provider
+        value={{
+          document: { body: { style: {} } },
+          location: { pathname: '/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e' },
+        }}
+      >
+        {getStory()}
+      </WindowContext.Provider>
+    </ConfigContext.Provider>
+  ))
   .add('the paywall overlay', () => {
     return (
-      <ConfigContext.Provider value={config}>
-        <Provider store={lockedStore}>
-          <Paywall />
-        </Provider>
-      </ConfigContext.Provider>
+      <Provider store={lockedStore}>
+        <Paywall />
+      </Provider>
     )
   })
   .add('the paywall overlay, unlocked', () => {
     return (
-      <ConfigContext.Provider value={config}>
-        <Provider store={unlockedStore}>
-          <Paywall />
-        </Provider>
-      </ConfigContext.Provider>
+      <Provider store={unlockedStore}>
+        <Paywall />
+      </Provider>
     )
   })
