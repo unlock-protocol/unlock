@@ -61,7 +61,8 @@ module.exports = withTypescript({
       )
     }
 
-    return {
+    // Our statically-defined pages to export
+    let pages = {
       '/': { page: '/' },
       '/about': { page: '/about' },
       '/jobs': { page: '/jobs' },
@@ -71,6 +72,33 @@ module.exports = withTypescript({
       '/terms': { page: '/terms' },
       '/privacy': { page: '/privacy' },
       '/log': { page: '/log' },
+      '/post': { page: '/post' },
     }
+
+    // Find blog posts to export and render them as static pages (*.md files in the /blog folder)
+    let posts = fs.readdirSync(join(dir, 'static', 'blog'))
+
+    // Ensure posts are sorted in reverse chronological order for the index
+    // TODO: save index data and build blog homepage / feed
+    posts.sort(function(a, b) {
+      return (
+        fs.statSync(dir + b).mtime.getTime() -
+        fs.statSync(dir + a).mtime.getTime()
+      )
+    })
+
+    // Establish a page route for each valid blog post
+    posts.forEach(postFile => {
+      if (postFile.substr(-3) === '.md') {
+        let slug = postFile.substr(0, postFile.length - 3)
+
+        pages['/blog/' + slug] = {
+          page: '/post',
+          query: { slug: slug },
+        }
+      }
+    })
+
+    return pages
   },
 })

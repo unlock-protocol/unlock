@@ -78,6 +78,10 @@ export const delay = PropTypes.number
 
 export const keyList = PropTypes.arrayOf(key)
 
+export const post = PropTypes.shape({})
+
+export const slug = PropTypes.string
+
 export default {
   account,
   address,
@@ -98,7 +102,9 @@ export default {
   network,
   networks,
   mechanism,
+  post,
   provider,
+  slug,
   transaction,
   transactions,
   status,

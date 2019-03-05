@@ -27,6 +27,9 @@ function _server(port, dev) {
         } else if (path === 'demo') {
           const params = route('/demo/:lockaddress')(pathname)
           app.render(req, res, '/demo', Object.assign(params, query))
+        } else if (path === 'blog') {
+          const params = route('/blog/:slug')(pathname)
+          app.render(req, res, '/post', Object.assign(params, query))
         } else {
           handle(req, res)
           return

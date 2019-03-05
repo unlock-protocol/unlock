@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 import { Markdown } from 'react-showdown'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
@@ -9,9 +10,12 @@ export const BlogPost = ({
   publishDate,
   body,
   authorName,
+  permalink,
 }) => (
   <Post>
-    <Title>{title}</Title>
+    <Title>
+      <Link href={permalink}>{title}</Link>
+    </Title>
     {subTitle && <SubTitle>{subTitle}</SubTitle>}
     <Byline>
       <AuthorName>{authorName}</AuthorName>
@@ -29,6 +33,7 @@ BlogPost.propTypes = {
   body: PropTypes.string.isRequired,
   authorName: PropTypes.string,
   publishDate: PropTypes.string.isRequired,
+  permalink: PropTypes.string.isRequired,
 }
 
 BlogPost.defaultProps = {
@@ -39,17 +44,20 @@ BlogPost.defaultProps = {
 export default BlogPost
 
 const Post = styled.div`
+  width: 100%;
   max-width: 730px;
   margin: auto;
   font-family: 'IBM Plex Serif', serif;
 `
 
 const Title = styled.h1`
-  color: var(--darkgrey);
-  font-size: 36px;
-  font-weight: 700;
-  font-family: 'IBM Plex Sans', Helvetica, sans-serif;
   margin-bottom: 0;
+  a {
+    color: var(--darkgrey);
+    font-weight: 700;
+    font-family: 'IBM Plex Sans', Helvetica, sans-serif;
+    font-size: 36px;
+  }
 `
 
 const Byline = styled.div`
