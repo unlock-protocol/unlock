@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 # This script deploys a static build to netlify.
-# It requires NETLIFY_AUTH_TOKEN to be set, as well as
-# is production in the netlify sense, so it could be on staging.unlock-protocol.com).
+# It requires AUTH_TOKEN and SITE_ID to be set (see details on how to set them using deploy.sh)
 
 APP_PATH=$1
 DEPLOY_ENV=$2
@@ -27,11 +26,13 @@ if [ "$DEPLOY_ENV" = "prod" ]; then
   MESSAGE="Deploying version $COMMIT to production";
 fi
 
-if [ -n "$NETLIFY_SITE_ID" ] && [ -n "$NETLIFY_AUTH_TOKEN" ]; then
+if [ -n "$SITE_ID" ] && [ -n "$AUTH_TOKEN" ]; then
+  # Package
   UNLOCK_ENV="$DEPLOY_ENV" npm run deploy;
-
+  # And ship!
   echo $MESSAGE
-  netlify deploy -s $NETLIFY_SITE_ID --dir=$BUILD_PATH $PROD --message='$MESSAGE'
+  netlify deploy -s $SITE_ID --dir=$BUILD_PATH $PROD --message='$MESSAGE'
 else
-  echo "Skipping deployment to Netlify ($NETLIFY_SITE_ID)"
+  echo "Failed to deploy to Netlify because we're missing SITE_ID and/or AUTH_TOKEN"
+  exit 1
 fi
