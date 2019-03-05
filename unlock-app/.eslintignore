@@ -2,6 +2,6 @@
 /coverage
 /__tests__/utils/withConfig/__snapshots
 /src/.next
-/src/out
+/out
 /.cache
 paywall.min.js
