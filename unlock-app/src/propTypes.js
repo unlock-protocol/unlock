@@ -18,6 +18,7 @@ export const lock = PropTypes.shape({
   owner: PropTypes.string,
   outstandingKeys: PropTypes.number,
   balance: PropTypes.string, // Must be expressed in Eth!
+  unlimitedKeys: PropTypes.bool,
 })
 
 export const transaction = PropTypes.shape({
