@@ -38,7 +38,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-ganache": "ganache-cli -i 1984 --mnemonic 'hello unlock save the web'",
     "postinstall": "./scripts/postinstall.sh",
-    "deploy-lock": "cd smart-contracts && npm run deploy -- --network local",
+    "deploy-lock": "cd smart-contracts && npm run deploy",
     "build": "cd smart-contracts && npm run build && cd ../unlock-app && npm run build && cd ../locksmith && npm run build",
     "start": "./scripts/start.sh",
     "deploy-netlify": "./scripts/deploy-netlify.sh",

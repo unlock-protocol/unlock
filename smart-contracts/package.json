@@ -34,7 +34,7 @@
   },
   "scripts": {
     "remix": "remixd -s contracts --remix-ide http://localhost:8080 --read-only",
-    "test": "cross-env NODE_ENV=test truffle test --network development",
+    "test": "cross-env NODE_ENV=test truffle migrate && truffle test",
     "lint": "solhint \"contracts/**/*.sol\" && solium -d ./contracts/ && eslint .",
     "dev": "npm run lint && npm run build && npm run test",
     "ci": "npm run lint && npm run test && npm run reports",
