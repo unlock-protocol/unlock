@@ -16,7 +16,6 @@
     "babel-plugin-styled-components": "1.10.0",
     "color-scheme": "^1.0.1",
     "connected-next-router": "^1.0.1",
-    "connected-react-router": "^6.1.0",
     "cross-env": "^5.2.0",
     "ethereumjs-util": "^6.0.0",
     "history": "^4.7.2",
