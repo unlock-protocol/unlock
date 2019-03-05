@@ -7,13 +7,11 @@ module.exports = function (deployer, networkName, accounts) {
     const { network, txParams } = await ConfigVariablesInitializer.initNetworkConfiguration({ network: networkName, from: accounts[1] })
     txParams.gas = 4000000
     const options = { network, txParams }
-    // Register v0 of MyContract in the zos project
+
     add({ contractsData: [{ name: 'Unlock', alias: 'Unlock' }] })
 
-    // Push implementation contracts to the network
     await push(options)
 
-    // Create an instance of MyContract, setting initial value to 42
     await create(Object.assign({
       contractAlias: 'Unlock',
       initMethod: 'initialize',
