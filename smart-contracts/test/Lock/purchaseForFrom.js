@@ -1,5 +1,4 @@
 const Units = require('ethereumjs-units')
-const Web3Utils = require('web3-utils')
 
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')

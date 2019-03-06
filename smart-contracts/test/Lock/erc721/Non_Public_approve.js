@@ -1,5 +1,3 @@
-const Web3Utils = require('web3-utils')
-
 const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
 const Unlock = artifacts.require('../../Unlock.sol')
