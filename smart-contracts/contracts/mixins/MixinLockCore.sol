@@ -61,7 +61,6 @@ contract MixinLockCore is
   {
     require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, 'MAX_EXPIRATION_100_YEARS');
     unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract.
-    Ownable.initialize(_owner);
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
