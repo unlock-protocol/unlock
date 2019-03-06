@@ -9,7 +9,7 @@ let unlock, lock
 contract('Reports', (accounts) => {
   beforeEach(async () => {
     unlock = await Unlock.deployed()
-    const locks = await deployLocks(unlock)
+    const locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
 
     // First usage costs more, skip it
