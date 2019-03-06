@@ -6,7 +6,7 @@ const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock, locks
 
-contract('Lock ERC721', (accounts) => {
+contract('Lock / erc721 / Non_Public_approve', (accounts) => {
   before(() => {
     return Unlock.deployed()
       .then(_unlock => {
