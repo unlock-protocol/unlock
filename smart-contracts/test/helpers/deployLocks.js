@@ -16,7 +16,8 @@ module.exports = function deployLocks (unlock, from) {
         createCall = unlock.createLock(
           Locks[name].expirationDuration.toFixed(),
           Locks[name].keyPrice.toFixed(),
-          Locks[name].maxNumberOfKeys.toFixed()
+          Locks[name].maxNumberOfKeys.toFixed(),
+          { from }
         )
       }
       if (createCall.send) {
