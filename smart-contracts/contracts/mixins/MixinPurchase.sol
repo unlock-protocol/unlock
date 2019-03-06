@@ -3,7 +3,6 @@ pragma solidity 0.5.4;
 import './MixinDisableAndDestroy.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
-import '../interfaces/IUnlock.sol';
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 
 
@@ -77,11 +76,10 @@ contract MixinPurchase is
     require(_recipient != address(0), 'INVALID_ADDRESS');
 
     // Let's get the actual price for the key from the Unlock smart contract
-    IUnlock unlock = IUnlock(unlockProtocol);
     uint discount;
     uint tokens;
     uint inMemoryKeyPrice = keyPrice;
-    (discount, tokens) = unlock.computeAvailableDiscountFor(_recipient, inMemoryKeyPrice);
+    (discount, tokens) = unlockProtocol.computeAvailableDiscountFor(_recipient, inMemoryKeyPrice);
     uint netPrice = inMemoryKeyPrice;
     if (discount > inMemoryKeyPrice) {
       netPrice = 0;
@@ -121,10 +119,10 @@ contract MixinPurchase is
     toKey.data = _data;
 
     if (discount > 0) {
-      unlock.recordConsumedDiscount(discount, tokens);
+      unlockProtocol.recordConsumedDiscount(discount, tokens);
     }
 
-    unlock.recordKeyPurchase(netPrice, _referrer);
+    unlockProtocol.recordKeyPurchase(netPrice, _referrer);
 
     // trigger event
     emit Transfer(
