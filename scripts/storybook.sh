@@ -10,9 +10,9 @@ COMMAND="npm run chromatic"
 
 # on master, we will auto-accept any changes, because they have been approved in the pull request stage
 if [ "$BRANCH" == "master" ]; then
-  AUTO_ACCEPT_CHANGES = "--auto-accept-changes"
+  AUTO_ACCEPT_CHANGES="--auto-accept-changes"
 else
-  AUTO_ACCEPT_CHANGES = ""
+  AUTO_ACCEPT_CHANGES=""
 fi
 
 # We pass only the relevent env vars, which are prefixed with the service name, uppercased
