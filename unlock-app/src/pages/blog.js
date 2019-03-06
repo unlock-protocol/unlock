@@ -49,13 +49,6 @@ Blog.getInitialProps = async () => {
     // For now we'll limit the blog homepage to 10 posts.
     // TODO: add pagination
     posts = index.items.slice(0, 10)
-
-    /*    let post
-    for (let i = 0; i < feed.length; i++) {
-      post = yamlFront.loadFront(await (await fetch(unlockUrl + '/static/blog/' + feed[i] + '.md')).text())
-      post.slug = feed[i]
-      posts.push(post)
-    }*/
   }
 
   return { posts: posts }

@@ -10,7 +10,7 @@
 /build
 
 #blog
-/static/blog.json
+/src/static/blog.json
 
 # misc
 .DS_Store
