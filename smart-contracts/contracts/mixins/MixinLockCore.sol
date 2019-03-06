@@ -2,6 +2,8 @@ pragma solidity 0.5.4;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import './MixinDisableAndDestroy.sol';
+import '../interfaces/IUnlock.sol';
+
 
 /**
  * @title Mixin for core lock data and functions.
@@ -25,7 +27,7 @@ contract MixinLockCore is
   
   // Unlock Protocol address
   // TODO: should we make that private/internal?
-  address public unlockProtocol;
+  IUnlock public unlockProtocol;
 
   // Duration in seconds for which the keys are valid, after creation
   // should we take a smaller type use less gas?
@@ -60,7 +62,7 @@ contract MixinLockCore is
   ) internal
   {
     require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, 'MAX_EXPIRATION_100_YEARS');
-    unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract.
+    unlockProtocol = IUnlock(msg.sender); // Make sure we link back to Unlock's smart contract.
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
