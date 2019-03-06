@@ -27,7 +27,7 @@ function getOrCreateStore(initialState, history) {
     interWindowCommunicationMiddleware(global),
     web3Middleware,
     currencyConversionMiddleware,
-    walletMiddleware,
+    walletMiddleware(config),
   ]
 
   // Always make a new store if server, otherwise state is shared between requests
