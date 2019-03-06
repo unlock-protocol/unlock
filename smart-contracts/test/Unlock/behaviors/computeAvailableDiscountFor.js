@@ -1,7 +1,7 @@
 const deployLocks = require('../../helpers/deployLocks')
 
 exports.shouldComputeAvailableDiscountFor = function (accounts) {
-  describe('computeAvailableDiscountFor', function () {
+  describe('Unlock / behaviors / computeAvailableDiscountFor', function () {
     beforeEach(async function () {
       await deployLocks(this.unlock, accounts[0])
     })

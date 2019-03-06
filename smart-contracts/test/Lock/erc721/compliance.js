@@ -3,7 +3,7 @@ const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock, locks
 
-contract('Lock ERC165', accounts => {
+contract('Lock / erc721 / compliance', accounts => {
   before(() => {
     return Unlock.deployed()
       .then(_unlock => {
@@ -15,11 +15,9 @@ contract('Lock ERC165', accounts => {
       })
   })
 
-  describe('Supports ERC721 Interface', () => {
-    it('should support the erc721 interface()', async function () {
-      // Note: the ERC-165 identifier for the erc721 interface is "0x80ac58cd"
-      const result = await locks['FIRST'].supportsInterface.call('0x80ac58cd')
-      assert.equal(result, true)
-    })
+  it('should support the erc721 interface()', async function () {
+    // Note: the ERC-165 identifier for the erc721 interface is "0x80ac58cd"
+    const result = await locks['FIRST'].supportsInterface.call('0x80ac58cd')
+    assert.equal(result, true)
   })
 })

@@ -2,7 +2,7 @@
 const deployLocks = require('../../helpers/deployLocks')
 
 exports.shouldRecordKeyPurchase = function (accounts) {
-  describe('recordKeyPurchase', function () {
+  describe('Unlock / behaviors / recordKeyPurchase', function () {
     beforeEach(async function () {
       await deployLocks(this.unlock, accounts[0])
     })
