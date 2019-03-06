@@ -3,10 +3,8 @@
 import EventEmitter from 'events'
 import nock from 'nock'
 import Web3Utils from 'web3-utils'
-/* eslint-disable import/no-unresolved */
-import UnlockContract from '../../artifacts/contracts/Unlock.json'
-import LockContract from '../../artifacts/contracts/PublicLock.json'
-/* eslint-enable import/no-unresolved */
+import { PublicLock, Unlock } from 'unlock-abi-0'
+
 import configure from '../../config'
 import WalletService from '../../services/walletService'
 import {
@@ -76,7 +74,7 @@ describe('WalletService', () => {
       const netVersion = Math.floor(Math.random() * 100000)
       netVersionAndYield(netVersion)
 
-      UnlockContract.networks = {
+      Unlock.networks = {
         [netVersion]: {
           events: {},
           links: {},
@@ -127,11 +125,11 @@ describe('WalletService', () => {
       expect.assertions(3)
 
       expect(walletService.ready).toBe(false)
-      UnlockContract.networks = {}
+      Unlock.networks = {}
 
       const netVersion = Math.floor(Math.random() * 100000)
       netVersionAndYield(netVersion)
-      UnlockContract.networks = {
+      Unlock.networks = {
         [netVersion]: {
           events: {},
           links: {},
@@ -155,7 +153,7 @@ describe('WalletService', () => {
       expect.assertions(4)
 
       expect(walletService.ready).toBe(false)
-      UnlockContract.networks = {}
+      Unlock.networks = {}
 
       const enable = (providers.HTTP.enable = jest.fn(() => Promise.reject()))
 
@@ -176,7 +174,7 @@ describe('WalletService', () => {
     beforeEach(done => {
       netVersionAndYield(netVersion)
 
-      UnlockContract.networks = {
+      Unlock.networks = {
         [netVersion]: {
           events: {},
           links: {},
@@ -379,7 +377,7 @@ describe('WalletService', () => {
 
         const ContractClass = class {
           constructor(abi, address) {
-            expect(abi).toBe(UnlockContract.abi)
+            expect(abi).toBe(Unlock.abi)
             expect(address).toBe(walletService.unlockContractAddress)
             this.methods = {
               createLock: (duration, price, numberOfKeys) => {
@@ -403,7 +401,7 @@ describe('WalletService', () => {
             from: owner,
             data,
             gas: WalletService.gasAmountConstants().createLock,
-            contract: UnlockContract,
+            contract: Unlock,
           },
           expect.any(Function)
         )
@@ -468,7 +466,7 @@ describe('WalletService', () => {
 
         const ContractClass = class {
           constructor(abi, address) {
-            expect(abi).toBe(LockContract.abi)
+            expect(abi).toBe(PublicLock.abi)
             expect(address).toBe(lock)
             this.methods = {
               purchaseFor: (customer, data) => {
@@ -491,7 +489,7 @@ describe('WalletService', () => {
             from: account,
             data,
             gas: WalletService.gasAmountConstants().purchaseKey,
-            contract: LockContract,
+            contract: PublicLock,
             value: '100000000000000000000000000', // Web3Utils.toWei(keyPrice, 'ether')
           },
           expect.any(Function)
@@ -534,7 +532,7 @@ describe('WalletService', () => {
 
         const ContractClass = class {
           constructor(abi, address) {
-            expect(abi).toBe(LockContract.abi)
+            expect(abi).toBe(PublicLock.abi)
             expect(address).toBe(lock)
             this.methods = {
               updateKeyPrice: newPrice => {
@@ -556,7 +554,7 @@ describe('WalletService', () => {
             from: account,
             data,
             gas: WalletService.gasAmountConstants().updateKeyPrice,
-            contract: LockContract,
+            contract: PublicLock,
           },
           expect.any(Function)
         )
@@ -661,7 +659,7 @@ describe('WalletService', () => {
 
         const MockContractClass = class {
           constructor(abi, address) {
-            expect(abi).toBe(LockContract.abi)
+            expect(abi).toBe(PublicLock.abi)
             expect(address).toBe(lock)
             this.methods = {
               partialWithdraw: () => this,
@@ -682,7 +680,7 @@ describe('WalletService', () => {
             from: account,
             data,
             gas: WalletService.gasAmountConstants().partialWithdrawFromLock,
-            contract: LockContract,
+            contract: PublicLock,
           },
           expect.any(Function)
         )
@@ -738,7 +736,7 @@ describe('WalletService', () => {
 
         const ContractClass = class {
           constructor(abi, address) {
-            expect(abi).toBe(LockContract.abi)
+            expect(abi).toBe(PublicLock.abi)
             expect(address).toBe(lock)
             this.methods = {
               withdraw: () => {
@@ -759,7 +757,7 @@ describe('WalletService', () => {
             from: account,
             data,
             gas: WalletService.gasAmountConstants().withdrawFromLock,
-            contract: LockContract,
+            contract: PublicLock,
           },
           expect.any(Function)
         )

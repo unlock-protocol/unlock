@@ -74,7 +74,7 @@ export default function configure(
   // Unlock address by default
   // Smart contract deployments yield the same address on a "clean" node as long as long as the
   // migration script runs in the same order.
-  let unlockAddress = '0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B'
+  let unlockAddress = runtimeConfig.unlockAddress
   let services = {}
   let supportedProviders = []
   let paywallUrl = runtimeConfig.paywallUrl || 'http://localhost:3000/paywall'
