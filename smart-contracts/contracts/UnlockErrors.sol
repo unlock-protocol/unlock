@@ -1,4 +1,4 @@
-pragma solidity 0.5.4;
+pragma solidity 0.5.5;
 
 
 // This contract documents the revert reasons used in Unlock and Lock contracts.

@@ -1,4 +1,4 @@
-pragma solidity 0.5.4;
+pragma solidity 0.5.5;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import './MixinDisableAndDestroy.sol';
