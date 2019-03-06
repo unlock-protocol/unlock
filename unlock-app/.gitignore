@@ -9,7 +9,7 @@
 # production
 /build
 
-#blog
+# blog
 /src/static/blog.json
 
 # misc
