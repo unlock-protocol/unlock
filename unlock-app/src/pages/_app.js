@@ -99,7 +99,6 @@ The Unlock team
       pageProps,
       router: { asPath },
     } = this.props
-    console.log(asPath, this.props.router)
     const store = getOrCreateStore({}, asPath)
 
     return (
