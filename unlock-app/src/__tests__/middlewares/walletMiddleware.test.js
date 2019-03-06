@@ -25,6 +25,7 @@ import {
   SIGNED_DATA,
   SIGNATURE_ERROR,
 } from '../../actions/signature'
+import configure from '../../config'
 
 /**
  * Fake state
@@ -52,6 +53,7 @@ const network = {
   name: 'test',
 }
 const provider = 'Toshi'
+let config
 
 /**
  * This is a "fake" middleware caller
@@ -64,7 +66,7 @@ const create = () => {
   }
   const next = jest.fn()
 
-  const handler = walletMiddleware(store)
+  const handler = walletMiddleware(config)(store)
 
   const invoke = action => handler(next)(action)
 
@@ -119,9 +121,13 @@ beforeEach(() => {
       waiting: true,
     },
   }
+  config = configure()
 })
 
 describe('Wallet middleware', () => {
+  beforeEach(() => {
+    setTimeout.mockClear()
+  })
   it('should handle account.changed events triggered by the walletService', () => {
     expect.assertions(3)
     const { store } = create()
@@ -145,6 +151,19 @@ describe('Wallet middleware', () => {
       expect.any(Function),
       POLLING_INTERVAL
     )
+  })
+
+  it('should ignore account.changed events triggered by the walletService on the server', () => {
+    expect.assertions(2)
+    config.isServer = true
+    const { store } = create()
+    const address = '0x123'
+    mockWalletService.getAccount = jest.fn()
+
+    mockWalletService.emit('account.changed', address)
+
+    expect(setTimeout).not.toHaveBeenCalled()
+    expect(store.dispatch).not.toHaveBeenCalled()
   })
 
   it('should handle transaction.pending events triggered by the walletService', () => {

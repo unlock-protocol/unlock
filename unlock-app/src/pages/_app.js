@@ -26,7 +26,7 @@ function getOrCreateStore(initialState, path) {
     interWindowCommunicationMiddleware(global),
     web3Middleware,
     currencyConversionMiddleware,
-    walletMiddleware,
+    walletMiddleware(config),
   ]
 
   if (config.services.storage) {
