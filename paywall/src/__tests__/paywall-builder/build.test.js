@@ -1,10 +1,7 @@
-import buildPaywall, {
-  redirect,
-  scrollLoop,
-} from '../../../paywall-builder/build'
-import * as script from '../../../paywall-builder/script'
-import * as iframeManager from '../../../paywall-builder/iframe'
-import { POST_MESSAGE_SCROLL_POSITION } from '../../../paywall-builder/constants'
+import buildPaywall, { redirect, scrollLoop } from '../../paywall-builder/build'
+import * as script from '../../paywall-builder/script'
+import * as iframeManager from '../../paywall-builder/iframe'
+import { POST_MESSAGE_SCROLL_POSITION } from '../../paywall-builder/constants'
 
 global.window = {} // this is fun...
 global.MutationObserver = function() {

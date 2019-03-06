@@ -2,10 +2,10 @@ import { Provider } from 'react-redux'
 import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
 import { storiesOf } from '@storybook/react'
-import Paywall from '../src/components/Paywall'
-import createUnlockStore from '../src/createUnlockStore'
-import { ConfigContext } from '../src/utils/withConfig'
-import { WindowContext } from '../src/hooks/browser/useWindow'
+import Paywall from '../components/Paywall'
+import createUnlockStore from '../createUnlockStore'
+import { ConfigContext } from '../utils/withConfig'
+import { WindowContext } from '../hooks/browser/useWindow'
 
 const lock = {
   address: '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e',
