@@ -97,9 +97,10 @@ The Unlock team
     const {
       Component,
       pageProps,
-      router: { pathname },
+      router: { asPath },
     } = this.props
-    const store = getOrCreateStore({}, pathname)
+    console.log(asPath, this.props.router)
+    const store = getOrCreateStore({}, asPath)
 
     return (
       <Container>
