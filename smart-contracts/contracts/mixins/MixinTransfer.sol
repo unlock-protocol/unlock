@@ -1,4 +1,4 @@
-pragma solidity 0.5.4;
+pragma solidity 0.5.5;
 
 import './MixinDisableAndDestroy.sol';
 import './MixinApproval.sol';
