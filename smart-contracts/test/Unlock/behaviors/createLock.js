@@ -4,7 +4,7 @@ const shouldFail = require('../../helpers/shouldFail')
 const PublicLock = artifacts.require('../../PublicLock.sol')
 
 exports.shouldCreateLock = function (accounts) {
-  describe('createLock', function () {
+  describe('Unlock / behaviors / createLock', function () {
     describe('lock created successfully', function () {
       let transaction
       beforeEach(async function () {

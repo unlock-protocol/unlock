@@ -7,7 +7,7 @@ const Unlock = artifacts.require('../Unlock.sol')
 
 let unlock, locks
 
-contract('Lock', (accounts) => {
+contract('Lock / Non_Public_purchaseFor', (accounts) => {
   before(() => {
     return Unlock.deployed()
       .then(_unlock => {
@@ -19,16 +19,14 @@ contract('Lock', (accounts) => {
       })
   })
 
-  describe('purchaseFor', () => {
-    // from purchaseFor.js, ln#23:
-    describe.skip('if the contract has a private key release', () => {
-      it('should fail', async () => {
-        const lock = locks['PRIVATE']
-        await shouldFail(lock
-          .purchaseFor(accounts[0], Web3Utils.toHex('Julien')), '')
-        // Making sure we do not have a key set!
-        await shouldFail(lock.keyExpirationTimestampFor.call(accounts[0]), '')
-      })
+  // from purchaseFor.js, ln#23:
+  describe.skip('if the contract has a private key release', () => {
+    it('should fail', async () => {
+      const lock = locks['PRIVATE']
+      await shouldFail(lock
+        .purchaseFor(accounts[0], Web3Utils.toHex('Julien')), '')
+      // Making sure we do not have a key set!
+      await shouldFail(lock.keyExpirationTimestampFor.call(accounts[0]), '')
     })
   })
 

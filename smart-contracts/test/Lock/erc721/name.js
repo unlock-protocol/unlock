@@ -4,75 +4,73 @@ const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock, lock
 
-contract('Lock ERC721', accounts => {
+contract('Lock / erc721 / name', accounts => {
   before(async () => {
     unlock = await Unlock.deployed()
     const locks = await deployLocks(unlock)
     lock = locks['FIRST']
   })
 
-  describe('name', () => {
-    describe('when there is no name', () => {
-      it('should return nothing when attempting to read the name', async () => {
-        assert.equal(await lock.name.call(), '')
-      })
+  describe('when there is no name', () => {
+    it('should return nothing when attempting to read the name', async () => {
+      assert.equal(await lock.name.call(), '')
+    })
 
-      it('should fail if someone other than the owner tries to set the name', async () => {
-        await shouldFail(
-          lock.updateLockName('Hardly', {
-            from: accounts[1]
-          })
-        )
-      })
-
-      it('should allow the owner to set a name', async () => {
-        await lock.updateLockName('Hardly', {
-          from: accounts[0]
+    it('should fail if someone other than the owner tries to set the name', async () => {
+      await shouldFail(
+        lock.updateLockName('Hardly', {
+          from: accounts[1]
         })
+      )
+    })
+
+    it('should allow the owner to set a name', async () => {
+      await lock.updateLockName('Hardly', {
+        from: accounts[0]
+      })
+    })
+  })
+
+  describe('when the Lock has a name', () => {
+    before(async () => {
+      await lock.updateLockName('Hardly', {
+        from: accounts[0]
       })
     })
 
-    describe('when the Lock has a name', () => {
+    it('should return return the expected name', async () => {
+      assert.equal(await lock.name.call(), 'Hardly')
+    })
+
+    it('should fail if someone other than the owner tries to change the name', async () => {
+      await shouldFail(
+        lock.updateLockName('Difficult', {
+          from: accounts[1]
+        })
+      )
+    })
+
+    describe('should allow the owner to set a name', () => {
       before(async () => {
-        await lock.updateLockName('Hardly', {
+        await lock.updateLockName('Difficult', {
           from: accounts[0]
         })
       })
 
       it('should return return the expected name', async () => {
-        assert.equal(await lock.name.call(), 'Hardly')
+        assert.equal(await lock.name.call(), 'Difficult')
       })
+    })
 
-      it('should fail if someone other than the owner tries to change the name', async () => {
-        await shouldFail(
-          lock.updateLockName('Difficult', {
-            from: accounts[1]
-          })
-        )
-      })
-
-      describe('should allow the owner to set a name', () => {
-        before(async () => {
-          await lock.updateLockName('Difficult', {
-            from: accounts[0]
-          })
-        })
-
-        it('should return return the expected name', async () => {
-          assert.equal(await lock.name.call(), 'Difficult')
+    describe('should allow the owner to unset the name', () => {
+      before(async () => {
+        await lock.updateLockName('', {
+          from: accounts[0]
         })
       })
 
-      describe('should allow the owner to unset the name', () => {
-        before(async () => {
-          await lock.updateLockName('', {
-            from: accounts[0]
-          })
-        })
-
-        it('should return return the expected name', async () => {
-          assert.equal(await lock.name.call(), '')
-        })
+      it('should return return the expected name', async () => {
+        assert.equal(await lock.name.call(), '')
       })
     })
   })

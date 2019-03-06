@@ -6,7 +6,7 @@ const Unlock = artifacts.require('../Unlock.sol')
 
 let unlock, locks
 
-contract('Lock', accounts => {
+contract('Lock / Lock', accounts => {
   before(() => {
     return Unlock.deployed()
       .then(_unlock => {
