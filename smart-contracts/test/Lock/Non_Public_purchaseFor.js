@@ -24,7 +24,7 @@ contract('Lock / Non_Public_purchaseFor', (accounts) => {
     it('should fail', async () => {
       const lock = locks['PRIVATE']
       await shouldFail(lock
-        .purchaseFor(accounts[0], Web3Utils.toHex('Julien')), '')
+        .purchaseFor(accounts[0]), '')
       // Making sure we do not have a key set!
       await shouldFail(lock.keyExpirationTimestampFor.call(accounts[0]), '')
     })
@@ -42,7 +42,7 @@ contract('Lock / Non_Public_purchaseFor', (accounts) => {
 
     it('should fail if the sending account was not pre-approved', async () => {
       await shouldFail(locks['RESTRICTED']
-        .purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
+        .purchaseFor(accounts[1], {
           value: Units.convert('0.01', 'eth', 'wei')
         }), '')
     })
@@ -54,15 +54,9 @@ contract('Lock / Non_Public_purchaseFor', (accounts) => {
           from: owner
         })
         .then(() => {
-          locks['RESTRICTED'].purchaseFor(accounts[3], Web3Utils.toHex('Szabo'), {
+          locks['RESTRICTED'].purchaseFor(accounts[3], {
             value: Units.convert('0.01', 'eth', 'wei')
           })
-        })
-        .then(() => {
-          return locks['RESTRICTED'].keyDataFor.call(accounts[3])
-        })
-        .then(keyData => {
-          assert.equal(Web3Utils.toUtf8(keyData), 'Szabo')
         })
     })
   })

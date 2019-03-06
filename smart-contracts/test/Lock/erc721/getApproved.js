@@ -29,7 +29,6 @@ contract('Lock / erc721 / getApproved', accounts => {
   before(async function () {
     await locks['FIRST'].purchaseFor(
       keyPurchaser,
-      Web3Utils.toHex('Vitalik'),
       {
         value: Units.convert('0.01', 'eth', 'wei'),
         from: keyPurchaser

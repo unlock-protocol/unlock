@@ -32,7 +32,7 @@ contract('Lock / expireKeyFor', (accounts) => {
   })
 
   it('should fail if the key has already expired', async () => {
-    await locks['FIRST'].purchaseFor(accounts[2], Web3Utils.toHex('Julien'), {
+    await locks['FIRST'].purchaseFor(accounts[2], {
       value: locks['FIRST'].params.keyPrice.toFixed(),
       from: accounts[0]
     })
@@ -52,7 +52,7 @@ contract('Lock / expireKeyFor', (accounts) => {
     let event
 
     before(async () => {
-      await locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Julien'), {
+      await locks['FIRST'].purchaseFor(accounts[1], {
         value: locks['FIRST'].params.keyPrice.toFixed(),
         from: accounts[0]
       })

@@ -21,19 +21,19 @@ contract('Lock / owners', accounts => {
   before(() => {
     // Purchase keys!
     return Promise.all([
-      lock.purchaseFor(accounts[1], Web3Utils.toHex('Julien'), {
+      lock.purchaseFor(accounts[1], {
         value: lock.params.keyPrice.toFixed(),
         from: accounts[0]
       }),
-      lock.purchaseFor(accounts[2], Web3Utils.toHex('Ben'), {
+      lock.purchaseFor(accounts[2], {
         value: lock.params.keyPrice.toFixed(),
         from: accounts[0]
       }),
-      lock.purchaseFor(accounts[3], Web3Utils.toHex('Satoshi'), {
+      lock.purchaseFor(accounts[3], {
         value: lock.params.keyPrice.toFixed(),
         from: accounts[0]
       }),
-      lock.purchaseFor(accounts[4], Web3Utils.toHex('Vitalik'), {
+      lock.purchaseFor(accounts[4], {
         value: lock.params.keyPrice.toFixed(),
         from: accounts[0]
       })

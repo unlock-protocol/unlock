@@ -25,7 +25,7 @@ contract('Lock / destroyLock', accounts => {
     let initialLockBalance, initialOwnerBalance, txObj, event
 
     before(async () => {
-      await lock.purchaseFor(accounts[1], Web3Utils.toHex('Julien'), {
+      await lock.purchaseFor(accounts[1], {
         value: Units.convert('0.01', 'eth', 'wei')
       })
       assert.equal(await lock.getHasValidKey.call(accounts[1]), true) // pre-req
@@ -91,7 +91,7 @@ contract('Lock / destroyLock', accounts => {
         assert.equal(initialLockBalance, 0)
 
         // This line does not fail, but instead calls the fallback function and sends msg.value to the destroyed contract.
-        await lock.purchaseFor(accounts[1], Web3Utils.toHex('Julien'), {
+        await lock.purchaseFor(accounts[1], {
           value: Units.convert('0.01', 'eth', 'wei')
         })
 
@@ -105,7 +105,7 @@ contract('Lock / destroyLock', accounts => {
         // assert.equal(await lock.getHasValidKey.call(accounts[1]), false)
       } else {
         try {
-          await lock.purchaseFor(accounts[1], Web3Utils.toHex('Julien'), {
+          await lock.purchaseFor(accounts[1], {
             value: Units.convert('0.01', 'eth', 'wei')
           })
         } catch (e) {

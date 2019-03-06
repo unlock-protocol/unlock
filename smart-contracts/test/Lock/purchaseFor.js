@@ -23,7 +23,7 @@ contract('Lock / purchaseFor', (accounts) => {
   describe('when the contract has a public key release', () => {
     it('should fail if the price is not enough', async () => {
       await shouldFail(locks['FIRST']
-        .purchaseFor(accounts[0], Web3Utils.toHex('Julien'), {
+        .purchaseFor(accounts[0], {
           value: Units.convert('0.0001', 'eth', 'wei')
         }), 'NOT_ENOUGH_FUNDS')
       // Making sure we do not have a key set!
@@ -32,21 +32,18 @@ contract('Lock / purchaseFor', (accounts) => {
 
     it('should fail if we reached the max number of keys', async () => {
       await locks['SINGLE KEY']
-        .purchaseFor(accounts[0], Web3Utils.toHex('Julien'), {
+        .purchaseFor(accounts[0], {
           value: Units.convert('0.01', 'eth', 'wei')
         })
-      const keyData = await locks['SINGLE KEY'].keyDataFor.call(accounts[0])
-      assert.equal(Web3Utils.toUtf8(keyData), 'Julien')
-      await shouldFail(locks['SINGLE KEY'].purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
+      await shouldFail(locks['SINGLE KEY'].purchaseFor(accounts[1], {
         value: Units.convert('0.01', 'eth', 'wei'),
         from: accounts[1]
       }), 'LOCK_SOLD_OUT')
-      await shouldFail(locks['SINGLE KEY'].keyDataFor.call(accounts[1]), 'NO_SUCH_KEY')
     })
 
     it('should trigger an event when successful', async () => {
       const tx = await locks['FIRST']
-        .purchaseFor(accounts[2], Web3Utils.toHex('Vitalik'), {
+        .purchaseFor(accounts[2], {
           value: Units.convert('0.01', 'eth', 'wei')
         })
       assert.equal(tx.logs[0].event, 'Transfer')
@@ -56,13 +53,13 @@ contract('Lock / purchaseFor', (accounts) => {
 
     describe('when the user already owns an expired key', () => {
       it('should expand the validity by the default key duration', async () => {
-        await locks['SECOND'].purchaseFor(accounts[4], Web3Utils.toHex('Satoshi'), {
+        await locks['SECOND'].purchaseFor(accounts[4], {
           value: Units.convert('0.01', 'eth', 'wei')
         })
         // let's now expire the key
         await locks['SECOND'].expireKeyFor(accounts[4])
         // Purchase a new one
-        await locks['SECOND'].purchaseFor(accounts[4], Web3Utils.toHex('Satoshi'), {
+        await locks['SECOND'].purchaseFor(accounts[4], {
           value: Units.convert('0.01', 'eth', 'wei')
         })
         // And check the expiration which shiuld be exactly now + keyDuration
@@ -76,18 +73,14 @@ contract('Lock / purchaseFor', (accounts) => {
 
     describe('when the user already owns a non expired key', () => {
       it('should expand the validity by the default key duration', async () => {
-        await locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
+        await locks['FIRST'].purchaseFor(accounts[1], {
           value: Units.convert('0.01', 'eth', 'wei')
         })
-        const firstKeyData = await locks['FIRST'].keyDataFor.call(accounts[1])
-        assert.equal(Web3Utils.toUtf8(firstKeyData), 'Satoshi')
         const firstExpiration = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(accounts[1]))
         assert(firstExpiration.gt(0))
-        await locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Szabo'), {
+        await locks['FIRST'].purchaseFor(accounts[1], {
           value: Units.convert('0.01', 'eth', 'wei')
         })
-        const keyData = await locks['FIRST'].keyDataFor.call(accounts[1])
-        assert.equal(Web3Utils.toUtf8(keyData), 'Szabo')
         const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(accounts[1]))
         assert.equal(expirationTimestamp.toFixed(), firstExpiration.plus(locks['FIRST'].params.expirationDuration).toFixed())
       })
@@ -101,17 +94,9 @@ contract('Lock / purchaseFor', (accounts) => {
         outstandingKeys = new BigNumber(await locks['FIRST'].outstandingKeys.call())
         now = parseInt(new Date().getTime() / 1000)
         numberOfOwners = new BigNumber(await locks['FIRST'].numberOfOwners.call())
-        return locks['FIRST'].purchaseFor(accounts[0], Web3Utils.toHex('Julien'), {
+        return locks['FIRST'].purchaseFor(accounts[0], {
           value: Units.convert('0.01', 'eth', 'wei')
         })
-      })
-
-      it('should have the right data for the key', () => {
-        return locks['FIRST']
-          .keyDataFor.call(accounts[0])
-          .then(keyData => {
-            assert.equal(Web3Utils.toUtf8(keyData), 'Julien')
-          })
       })
 
       it('should have the right expiration timestamp for the key', async () => {

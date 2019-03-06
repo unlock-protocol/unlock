@@ -25,7 +25,7 @@ contract('Lock / withdraw', (accounts) => {
 
   before(() => {
     const purchases = [accounts[1], accounts[2]].map((account) => {
-      return locks['OWNED'].purchaseFor(account, Web3Utils.toHex(''), {
+      return locks['OWNED'].purchaseFor(account, {
         value: price,
         from: account
       })

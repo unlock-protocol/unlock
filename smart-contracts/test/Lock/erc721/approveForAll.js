@@ -20,7 +20,6 @@ contract('Lock / erc721 / approveForAll', accounts => {
     before(async () => {
       await lock.purchaseFor(
         owner,
-        Web3Utils.toHex('Satoshi'),
         {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: owner

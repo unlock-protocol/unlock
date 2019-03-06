@@ -22,42 +22,37 @@ contract MixinPurchase is
   /**
   * @dev Purchase function, public version, with no referrer.
   * @param _recipient address of the recipient of the purchased key
-  * @param _data optional marker for the key
   */
   function purchaseFor(
-    address _recipient,
-    bytes calldata _data
+    address _recipient
   )
     external
     payable
     onlyIfAlive
   {
-    return _purchaseFor(_recipient, address(0), _data);
+    return _purchaseFor(_recipient, address(0));
   }
 
   /**
   * @dev Purchase function, public version, with referrer.
   * @param _recipient address of the recipient of the purchased key
   * @param _referrer address of the user making the referral
-  * @param _data optional marker for the key
   */
   function purchaseForFrom(
     address _recipient,
-    address _referrer,
-    bytes calldata _data
+    address _referrer
   )
     external
     payable
     onlyIfAlive
     hasValidKey(_referrer)
   {
-    return _purchaseFor(_recipient, _referrer, _data);
+    return _purchaseFor(_recipient, _referrer);
   }
 
   /**
   * @dev Purchase function: this lets a user purchase a key from the lock for another user
   * @param _recipient address of the recipient of the purchased key
-  * @param _data optional marker for the key
   * This will fail if
   *  - the keyReleaseMechanism is private
   *  - the keyReleaseMechanism is Approved and the recipient has not been previously approved
@@ -67,8 +62,7 @@ contract MixinPurchase is
   */
   function _purchaseFor(
     address _recipient,
-    address _referrer,
-    bytes memory _data
+    address _referrer
   )
     private
     notSoldOut()
@@ -115,8 +109,6 @@ contract MixinPurchase is
       // This is an existing owner trying to extend their key
       toKey.expirationTimestamp = previousExpiration.add(expirationDuration);
     }
-    // Overwite data in all cases
-    toKey.data = _data;
 
     if (discount > 0) {
       unlockProtocol.recordConsumedDiscount(discount, tokens);
