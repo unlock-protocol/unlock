@@ -2,7 +2,7 @@ import { openNewWindowModal, hideModal } from '../../actions/modal'
 import { setAccount } from '../../actions/accounts'
 import interWindowCommunicationMiddleware from '../../middlewares/interWindowCommunicationMiddleware'
 import { updateKey } from '../../actions/key'
-import { POST_MESSAGE_REDIRECT } from '../../../paywall-builder/constants'
+import { POST_MESSAGE_REDIRECT } from '../../paywall-builder/constants'
 
 jest.mock('../../utils/localStorage')
 

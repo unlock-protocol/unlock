@@ -1,10 +1,10 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { Provider } from 'react-redux'
-import { Lock } from '../../src/components/lock/Lock'
-import createUnlockStore from '../../src/createUnlockStore'
-import { ConfigContext } from '../../src/utils/withConfig'
-import { UNLIMITED_KEYS_COUNT } from '../../src/constants'
+import { Lock } from '../../components/lock/Lock'
+import createUnlockStore from '../../createUnlockStore'
+import { ConfigContext } from '../../utils/withConfig'
+import { UNLIMITED_KEYS_COUNT } from '../../constants'
 
 // lock, account, keys, purchaseKey
 const purchaseKey = () => {}

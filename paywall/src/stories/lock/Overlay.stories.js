@@ -1,12 +1,12 @@
 import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import Overlay from '../../src/components/lock/Overlay'
-import createUnlockStore from '../../src/createUnlockStore'
-import { GlobalErrorContext } from '../../src/utils/GlobalErrorProvider'
-import { FATAL_WRONG_NETWORK, FATAL_NO_USER_ACCOUNT } from '../../src/errors'
-import { ConfigContext } from '../../src/utils/withConfig'
-import { WindowContext } from '../../src/hooks/browser/useWindow'
+import Overlay from '../../components/lock/Overlay'
+import createUnlockStore from '../../createUnlockStore'
+import { GlobalErrorContext } from '../../utils/GlobalErrorProvider'
+import { FATAL_WRONG_NETWORK, FATAL_NO_USER_ACCOUNT } from '../../errors'
+import { ConfigContext } from '../../utils/withConfig'
+import { WindowContext } from '../../hooks/browser/useWindow'
 
 const ErrorProvider = GlobalErrorContext.Provider
 const ConfigProvider = ConfigContext.Provider

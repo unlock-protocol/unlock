@@ -2,7 +2,7 @@ import {
   findPaywallUrl,
   DEFAULT_URL,
   findLocks,
-} from '../../../paywall-builder/script'
+} from '../../paywall-builder/script'
 
 function makeFakeScript(src, domain) {
   return {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { object, text, withKnobs } from '@storybook/addon-knobs'
-import { DeveloperOverlay } from '../../src/components/developer/DeveloperOverlay'
+import { DeveloperOverlay } from '../../components/developer/DeveloperOverlay'
 
 storiesOf('DeveloperOverlay', DeveloperOverlay)
   .addDecorator(withKnobs)
