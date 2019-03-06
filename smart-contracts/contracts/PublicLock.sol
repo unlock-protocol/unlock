@@ -53,5 +53,7 @@ contract PublicLock is
     // registering the interface for erc721 with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
     _registerInterface(0x80ac58cd);
+    // We must manually initialize Ownable.sol
+    Ownable.initialize(_owner);
   }
 }

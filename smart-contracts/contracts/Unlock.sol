@@ -76,8 +76,6 @@ contract Unlock is MixinNoFallback, IUnlock, Initializable, Ownable {
   {
     // We must manually initialize Ownable.sol
     Ownable.initialize(_owner);
-    grossNetworkProduct = 0;
-    totalDiscountGranted = 0;
   }
 
   /**
