@@ -60,12 +60,12 @@ Log.propTypes = {
 const Content = styled.div`
   display: grid;
   grid-template-columns: min-content min-content min-content;
-  grid-auto-rows: 20px;
+  grid-auto-rows: 28px;
   grid-column-gap: 20px;
 `
 
 const LogHeader = styled.div`
-  font-size: 8px;
+  font-size: 11px;
   font-weight: normal;
   text-transform: uppercase;
   color: var(--grey);
@@ -73,7 +73,7 @@ const LogHeader = styled.div`
 `
 
 const LogElement = styled.div`
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 300;
   font-family: 'IBM Plex Mono', Courier, monospace;
 `
@@ -89,7 +89,7 @@ const Type = styled(LogElement)`
 `
 
 const Address = styled.a`
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 300;
   font-family: 'IBM Plex Mono', Courier, monospace;
 `
