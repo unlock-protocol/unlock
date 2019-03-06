@@ -7,7 +7,7 @@ let unlock, lock
 contract('Lock / erc721 / name', accounts => {
   before(async () => {
     unlock = await Unlock.deployed()
-    const locks = await deployLocks(unlock)
+    const locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
   })
 
