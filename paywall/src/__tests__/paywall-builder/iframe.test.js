@@ -4,7 +4,7 @@ import {
   add,
   show,
   hide,
-} from '../../../paywall-builder/iframe'
+} from '../../paywall-builder/iframe'
 
 describe('iframe', () => {
   it('add appends the iframe to document.body', () => {
