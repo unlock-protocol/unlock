@@ -4,31 +4,26 @@
 # it will install/ci all the subdirectories dependencies
 # unless SKIP_SERVICES is set to true
 
-get_json_val() {
-  python -c "import json,sys;sys.stdout.write(json.dumps(json.load(sys.stdin)$1))";
-}
-
-get_npm_command() {
-  local temp=$(echo $npm_config_argv | get_json_val "['original'][0]")
-  echo "$temp" | tr -dc "[:alnum:]"
-}
-
 if [ "$SKIP_SERVICES" != "true" ]; then
-
-  # Will be either 'install' or 'ci'
-  CMD="$(get_npm_command)"
 
   SERVICES=( paywall smart-contracts unlock-app locksmith tests )
 
   for i in "${SERVICES[@]}"
   do
     cd $i
-    npm $CMD
+    npm ci # We run npm ci by default.
     cd .. # back to root
   done
 
   # Copy the parent binaries into the sub projects
   npm run link-parent-bin
-  # remove node_modules from wiki, we don't wants it
+  # remove node_modules from subfolders who do not need it
+  # TODO: fix link-parent-bin to only run in the folders where we need it!
+  rm -rf .circleci/node_modules
+  rm -rf .git/node_modules
+  rm -rf .github/node_modules
+  rm -rf docker/node_modules
+  rm -rf scripts/node_modules
+  rm -rf versions/node_modules
   rm -rf wiki/node_modules
 fi
