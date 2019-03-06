@@ -50,7 +50,7 @@ contract('Unlock / upgrades', accounts => {
 
     // Buy Key
     await lockV0.methods
-      .purchaseFor(keyOwner)
+      .purchaseFor(keyOwner, Web3Utils.toHex('Julien'))
       .send({
         value: keyPrice,
         from: keyOwner,
@@ -84,7 +84,7 @@ contract('Unlock / upgrades', accounts => {
 
       it('New keys may still be purchased', async () => {
         const tx = await lockV0.methods
-          .purchaseFor(accounts[6])
+          .purchaseFor(accounts[6], Web3Utils.toHex('Julien'))
           .send({
             value: keyPrice,
             from: accounts[6],
@@ -95,7 +95,7 @@ contract('Unlock / upgrades', accounts => {
 
       it('Keys may still be transfered', async () => {
         await lockV0.methods
-          .purchaseFor(accounts[7])
+          .purchaseFor(accounts[7], Web3Utils.toHex('Julien'))
           .send({
             value: keyPrice,
             from: accounts[7],
@@ -153,7 +153,7 @@ contract('Unlock / upgrades', accounts => {
 
         // Buy Key
         await lockV1.methods
-          .purchaseFor(keyOwner, Web3Utils.toHex('Julien'))
+          .purchaseFor(keyOwner)
           .send({
             value: keyPrice,
             from: keyOwner,
