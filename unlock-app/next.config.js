@@ -4,6 +4,7 @@ const fs = require('fs')
 const { join } = require('path')
 const { promisify } = require('util')
 const withTypescript = require('@zeit/next-typescript')
+const yamlFront = require('yaml-front-matter')
 
 const copyFile = promisify(fs.copyFile)
 
@@ -73,13 +74,14 @@ module.exports = withTypescript({
       '/privacy': { page: '/privacy' },
       '/log': { page: '/log' },
       '/post': { page: '/post' },
+      '/blog': { page: '/blog' },
     }
 
     // Find blog posts to export and render them as static pages (*.md files in the /blog folder)
     let posts = fs.readdirSync(join(dir, 'static', 'blog'))
+    let postFeed = [] // We will use this to populate the homepage and (later) an RSS feed
 
     // Ensure posts are sorted in reverse chronological order for the index
-    // TODO: save index data and build blog homepage / feed
     posts.sort(function(a, b) {
       return (
         fs.statSync(dir + b).mtime.getTime() -
@@ -96,8 +98,22 @@ module.exports = withTypescript({
           page: '/post',
           query: { slug: slug },
         }
+
+        // Cache post metadata for feed; used in blog homepage and eventually RSS
+        let post = yamlFront.loadFront(
+          fs.readFileSync(join(dir, 'static', 'blog', postFile))
+        )
+        post.slug = slug
+        postFeed.push(post)
       }
     })
+
+    // Write blog post index to output directory
+    fs.writeFile(
+      join(dir, 'static', 'blog.json'),
+      JSON.stringify({ items: postFeed }),
+      'utf8'
+    )
 
     return pages
   },

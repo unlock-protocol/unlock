@@ -14,7 +14,9 @@ export const BlogPost = ({
 }) => (
   <Post>
     <Title>
-      <Link href={permalink}>{title}</Link>
+      <Link href={permalink}>
+        <a>{title}</a>
+      </Link>
     </Title>
     {subTitle && <SubTitle>{subTitle}</SubTitle>}
     <Byline>
@@ -104,8 +106,8 @@ const Body = styled.div`
   }
 `
 
-const AuthorName = styled.h3`
+export const AuthorName = styled.h3`
   color: var(--brand);
 `
 
-const PublishDate = styled.div``
+export const PublishDate = styled.div``

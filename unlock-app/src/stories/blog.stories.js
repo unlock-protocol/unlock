@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { ConfigContext } from '../utils/withConfig'
 import createUnlockStore from '../createUnlockStore'
 import Post from '../pages/post'
+import Blog from '../pages/blog'
 
 const ConfigProvider = ConfigContext.Provider
 
@@ -47,4 +48,34 @@ are intentionally not generated from this file date, in case we want to override
     }
 
     return <Post slug={slug} post={post} />
+  })
+  .add('Blog index page', () => {
+    const posts = [
+      {
+        title: 'Latest post',
+        authorName: 'Unlock team',
+        publishDate: 'Tuesday, March 5, 2019',
+        description: `
+This post was published most recently. It is an important post about a great many things, all of which are vital. You
+should pay great attention.`,
+        slug: 'post3',
+      },
+      {
+        title: 'Another post from us!',
+        authorName: 'Julien Genestoux',
+        publishDate: 'Friday, March 1, 2019',
+        description: `
+Short description.`,
+        slug: 'post2',
+      },
+      {
+        title: 'This is our first post.',
+        authorName: 'Unlock team',
+        publishDate: 'Monday, August 20, 2018',
+        description: `
+Look at us! We're posting on our very own blog! How exciting!`,
+        slug: 'post1',
+      },
+    ]
+    return <Blog posts={posts} />
   })

@@ -82,6 +82,8 @@ export const post = PropTypes.shape({})
 
 export const slug = PropTypes.string
 
+export const postFeed = PropTypes.array
+
 export default {
   account,
   address,
@@ -103,6 +105,7 @@ export default {
   networks,
   mechanism,
   post,
+  postFeed,
   provider,
   slug,
   transaction,

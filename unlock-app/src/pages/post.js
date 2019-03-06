@@ -9,18 +9,17 @@ import { pageTitle } from '../constants'
 import { TwitterTags } from '../components/page/TwitterTags'
 import OpenGraphTags from '../components/page/OpenGraphTags'
 import configure from '../config'
-import withConfig from '../utils/withConfig'
 
 const yamlFront = require('yaml-front-matter')
 
-const Post = ({ slug, post, config }) => {
+const Post = ({ slug, post }) => {
   let title = post.title || ''
   let subTitle = post.subTitle || ''
   let description = post.description || ''
   let authorName = post.authorName || 'Unlock team'
   let publishDate = post.publishDate || ''
   let body = post.__content || ''
-  let permalink = config.unlockUrl + '/blog/' + slug
+  let permalink = '/blog/' + slug
 
   return (
     <Layout forContent>
@@ -30,7 +29,7 @@ const Post = ({ slug, post, config }) => {
         <OpenGraphTags
           title={pageTitle(title)}
           description={description}
-          canonicalPath={'/blog/' + slug}
+          canonicalPath={permalink}
         />
       </Head>
       <BlogPost
@@ -48,7 +47,6 @@ const Post = ({ slug, post, config }) => {
 Post.propTypes = {
   slug: UnlockPropTypes.slug.isRequired,
   post: UnlockPropTypes.post.isRequired,
-  config: UnlockPropTypes.configuration.isRequired,
 }
 
 Post.getInitialProps = async context => {
@@ -64,4 +62,4 @@ Post.getInitialProps = async context => {
   return { slug, post }
 }
 
-export default withConfig(Post)
+export default Post

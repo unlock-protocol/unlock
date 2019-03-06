@@ -78,6 +78,7 @@ storiesOf('BlogPost', module)
         publishDate={publishDate}
         title={title}
         subTitle={subtitle}
+        permalink="#"
       />
     )
   })
@@ -88,6 +89,7 @@ storiesOf('BlogPost', module)
         publishDate={publishDate}
         title={title}
         subTitle={subtitle}
+        permalink="#"
       />
     )
   })
@@ -98,11 +100,17 @@ storiesOf('BlogPost', module)
         publishDate={publishDate}
         title={title}
         authorName={authorName}
+        permalink="#"
       />
     )
   })
   .add('Blog post from markdown with no subtitle or author', () => {
     return (
-      <BlogPost body={markdownBody} publishDate={publishDate} title={title} />
+      <BlogPost
+        body={markdownBody}
+        publishDate={publishDate}
+        title={title}
+        permalink="#"
+      />
     )
   })
