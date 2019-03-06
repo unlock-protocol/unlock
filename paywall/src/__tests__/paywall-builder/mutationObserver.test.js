@@ -1,7 +1,7 @@
 import {
   listenForNewLocks,
   changeListener,
-} from '../../../paywall-builder/mutationObserver'
+} from '../../paywall-builder/mutationObserver'
 
 function tag(tagName, name, content) {
   return { nodeName: tagName.toUpperCase(), name, content }
@@ -14,9 +14,11 @@ function makeMutation(nodes = []) {
       addedNodes: {
         length: nodes.length,
         entries() {
-          return nodes.map(node => {
-            return [0, node]
-          })
+          return nodes
+            .map(node => {
+              return [0, node]
+            })
+            [Symbol.iterator]()
         },
       },
     },

@@ -1,6 +1,6 @@
-import * as mutations from '../../../paywall-builder/mutationObserver'
-import * as buildManager from '../../../paywall-builder/build'
-import * as blockerManager from '../../../paywall-builder/blocker'
+import * as mutations from '../../paywall-builder/mutationObserver'
+import * as buildManager from '../../paywall-builder/build'
+import * as blockerManager from '../../paywall-builder/blocker'
 
 describe('paywall builder integration', () => {
   let listenForNewLocks
@@ -28,7 +28,7 @@ describe('paywall builder integration', () => {
     expect.assertions(5)
     global.window = {}
 
-    require('../../../paywall-builder')
+    require('../../paywall-builder')
     window.onload()
 
     expect(listenForNewLocks.mock.calls[0][1]).toBe(document.head)

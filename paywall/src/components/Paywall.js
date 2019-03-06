@@ -14,7 +14,7 @@ import usePostMessage from '../hooks/browser/usePostMessage'
 import {
   POST_MESSAGE_LOCKED,
   POST_MESSAGE_UNLOCKED,
-} from '../../paywall-builder/constants'
+} from '../paywall-builder/constants'
 import { isPositiveInteger } from '../utils/validators'
 import useWindow from '../hooks/browser/useWindow'
 

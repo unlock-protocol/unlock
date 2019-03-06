@@ -6,7 +6,7 @@ import { inIframe } from '../config'
 import { lockRoute } from '../utils/routes'
 import { setAccount } from '../actions/accounts'
 import localStorageAvailable from '../utils/localStorage'
-import { POST_MESSAGE_REDIRECT } from '../../paywall-builder/constants'
+import { POST_MESSAGE_REDIRECT } from '../paywall-builder/constants'
 
 function redirectToContentFromPaywall(window, getState) {
   const {

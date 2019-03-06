@@ -1,4 +1,4 @@
-import * as blockerManager from '../../../paywall-builder/blocker'
+import * as blockerManager from '../../paywall-builder/blocker'
 
 describe('paywall builder', () => {
   describe('blocker', () => {
