@@ -2,7 +2,7 @@ const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
 exports.shouldHaveInitialized = function (unlockOwner) {
-  describe('initialization', function () {
+  describe('Unlock / behaviors / initialization', function () {
     it('should have an owner', async function () {
       const owner = await this.unlock.methods.owner().call()
       assert.equal(owner, Web3Utils.toChecksumAddress(unlockOwner))

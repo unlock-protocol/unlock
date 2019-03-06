@@ -3,7 +3,7 @@ const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock
 
-contract('Lock ERC721', (accounts) => {
+contract('Lock / erc721 / Non_Public_transferFrom', (accounts) => {
   before(async () => {
     unlock = await Unlock.deployed()
     await deployLocks(unlock, accounts[0])

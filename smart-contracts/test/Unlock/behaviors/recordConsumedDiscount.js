@@ -1,7 +1,7 @@
 const deployLocks = require('../../helpers/deployLocks')
 
 exports.shouldRecordConsumedDiscount = function (accounts) {
-  describe('recordConsumedDiscount', function () {
+  describe('Unlock / behaviors / recordConsumedDiscount', function () {
     beforeEach(async function () {
       await deployLocks(this.unlock, accounts[0])
     })
