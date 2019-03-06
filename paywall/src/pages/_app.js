@@ -3,20 +3,20 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 import { createBrowserHistory, createMemoryHistory } from 'history'
-import configure from '../src/config'
-import { createUnlockStore } from '../src/createUnlockStore'
+import configure from '../config'
+import { createUnlockStore } from '../createUnlockStore'
 
-import GlobalStyle from '../src/theme/globalStyle'
-import { ConfigContext } from '../src/utils/withConfig'
+import GlobalStyle from '../theme/globalStyle'
+import { ConfigContext } from '../utils/withConfig'
 
-import WalletCheckOverlay from '../src/components/interface/FullScreenModals'
+import WalletCheckOverlay from '../components/interface/FullScreenModals'
 
 // Middlewares
-import web3Middleware from '../src/middlewares/web3Middleware'
-import currencyConversionMiddleware from '../src/middlewares/currencyConversionMiddleware'
-import walletMiddleware from '../src/middlewares/walletMiddleware'
-import interWindowCommunicationMiddleware from '../src/middlewares/interWindowCommunicationMiddleware'
-import { WindowContext } from '../src/hooks/browser/useWindow'
+import web3Middleware from '../middlewares/web3Middleware'
+import currencyConversionMiddleware from '../middlewares/currencyConversionMiddleware'
+import walletMiddleware from '../middlewares/walletMiddleware'
+import interWindowCommunicationMiddleware from '../middlewares/interWindowCommunicationMiddleware'
+import { WindowContext } from '../hooks/browser/useWindow'
 
 const config = configure()
 

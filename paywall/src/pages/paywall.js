@@ -1,6 +1,6 @@
 import React from 'react'
-import Paywall from '../src/components/Paywall'
-import BrowserOnly from '../src/components/helpers/BrowserOnly'
+import Paywall from '../components/Paywall'
+import BrowserOnly from '../components/helpers/BrowserOnly'
 
 export default function NextPaywall() {
   return (

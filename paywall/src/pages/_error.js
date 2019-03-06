@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import UnlockPropTypes from '../src/propTypes'
-import withConfig from '../src/utils/withConfig'
+import UnlockPropTypes from '../propTypes'
+import withConfig from '../utils/withConfig'
 
 class Error extends React.Component {
   static getInitialProps({ res, err }) {

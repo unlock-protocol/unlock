@@ -115,6 +115,22 @@ jobs:
           name: Deploy to Netlify
           command: scripts/deploy.sh unlock-app netlify "$CIRCLE_SHA1" "$CIRCLE_TAG" "$CIRCLE_BRANCH" "$IS_PULL_REQUEST"
 
+  deploy-paywall-netlify:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          name: Set IS_PULL_REQUEST
+          command: scripts/circleci/set-is-pull-request.sh >> $BASH_ENV
+      - run:
+          name: Pull Unlock Image
+          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+      - run:
+          name: Deploy to Netlify
+          command: scripts/deploy.sh paywall netlify "$CIRCLE_SHA1" "$CIRCLE_TAG" "$CIRCLE_BRANCH" "$IS_PULL_REQUEST"
+
   deploy-locksmith-beanstalk:
     machine: true
     environment:
@@ -180,6 +196,13 @@ workflows:
             - build-unlock
             - build-unlock-integration
       - deploy-unlock-app-netlify:
+          requires:
+            - unlock-app-tests
+            - smart-contracts-tests
+            - locksmith-tests
+            - paywall-tests
+            - integration-tests
+      - deploy-paywall-netlify:
           requires:
             - unlock-app-tests
             - smart-contracts-tests
