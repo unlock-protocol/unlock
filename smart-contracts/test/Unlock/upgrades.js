@@ -28,6 +28,7 @@ contract('Unlock', accounts => {
 
     before(async () => {
       // Deploy
+      UnlockV0.schema.contractName = 'UnlockV0'
       proxy = await project.createProxy(UnlockV0, {
         UnlockV0,
         initMethod: 'initialize',
@@ -64,6 +65,11 @@ contract('Unlock', accounts => {
       v0LockData = await unlock.methods.locks(lockV0._address).call()
     })
 
+    it('v0 Key is owned', async () => {
+      const id = await lockV0.methods.getTokenIdFor(keyOwner).call()
+      assert.equal(Web3Utils.toChecksumAddress(Web3Utils.toHex(id)), keyOwner)
+    })
+
     it('the versions V0 and V1 have different bytecode', async () => {
       assert.notEqual(UnlockV1.schema.bytecode, UnlockV0.schema.bytecode)
     })
@@ -77,7 +83,7 @@ contract('Unlock', accounts => {
       describe('Lock created with UnlockV0 is still available', () => {
         it('v0 Key is still owned', async () => {
           const id = await lockV0.methods.getTokenIdFor(keyOwner).call()
-          assert.equal(id, 1)
+          assert.equal(Web3Utils.toChecksumAddress(Web3Utils.toHex(id)), keyOwner)
         })
 
         it('New keys may still be purchased', async () => {
@@ -177,10 +183,8 @@ contract('Unlock', accounts => {
         })
 
         it('v0 Key is still owned', async () => {
-          const id = new BigNumber(
-            await lockV0.methods.getTokenIdFor(keyOwner).call()
-          )
-          assert.equal(id.toFixed(), 1)
+          const id = await lockV0.methods.getTokenIdFor(keyOwner).call()
+          assert.equal(Web3Utils.toChecksumAddress(Web3Utils.toHex(id)), keyOwner)
         })
       })
     })
