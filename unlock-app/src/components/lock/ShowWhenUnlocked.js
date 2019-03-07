@@ -6,7 +6,7 @@ export default function ShowWhenUnlocked({ locked, children }) {
     return null
   }
 
-  return <>{children}</>
+  return <React.Fragment>{children}</React.Fragment>
 }
 
 ShowWhenUnlocked.propTypes = {

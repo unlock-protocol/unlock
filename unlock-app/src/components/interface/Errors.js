@@ -19,7 +19,7 @@ export const Errors = ({ errors, close }) => {
     return null
   }
 
-  return <>{content}</>
+  return <React.Fragment>{content}</React.Fragment>
 }
 
 export const mapStateToProps = ({ errors }) => ({ errors })

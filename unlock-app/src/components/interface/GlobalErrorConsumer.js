@@ -12,7 +12,7 @@ export const displayError = (error, errorMetadata, children) => {
     const Error = mapErrorToComponent(error, errorMetadata)
     return <Layout title="">{Error}</Layout>
   }
-  return <>{children}</>
+  return <React.Fragment>{children}</React.Fragment>
 }
 
 export default function GlobalErrorConsumer({ displayError, children }) {

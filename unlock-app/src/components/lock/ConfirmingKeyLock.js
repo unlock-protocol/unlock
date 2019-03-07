@@ -20,12 +20,12 @@ export const ConfirmingKeyLock = ({ lock, transaction, config }) => (
       <BalanceProvider
         amount={lock.keyPrice}
         render={(ethPrice, fiatPrice) => (
-          <>
+          <React.Fragment>
             <LockDetails>
               <LockDetail bold>{ethPrice} ETH</LockDetail>
               <LockDetail>${fiatPrice}</LockDetail>
             </LockDetails>
-          </>
+          </React.Fragment>
         )}
       />
       <TransactionStatus>

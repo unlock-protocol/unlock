@@ -19,7 +19,7 @@ export class Catcher extends React.Component {
     const { children } = this.props
     const { error } = this.state
     if (error) return <div>{error}</div>
-    return <>{children}</>
+    return <React.Fragment>{children}</React.Fragment>
   }
 }
 
