@@ -18,6 +18,14 @@ const requiredConfigVariables = {
     process.env.UNLOCK_ADDRESS || '0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B', // default for CI
 }
 
+if (requiredConfigVariables.unlockEnv === 'dev') {
+  // Dev setup script can't set environment variables in a way that we can
+  // access them everywhere we need them, so this gets hardcoded. Update if abi
+  // package changes.
+  requiredConfigVariables.unlockAddress =
+    '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
+}
+
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
   if (!requiredConfigVariables[configVariableName]) {
     if (requiredConfigVariables.unlockEnv === 'test') return
