@@ -1,5 +1,5 @@
 import React from 'react'
-import { configure, addDecorator } from '@storybook/react'
+import { configure, addDecorator, addParameters } from '@storybook/react'
 import 'storybook-chromatic'
 import StoryRouter from 'storybook-react-router'
 import GlobalStyle from '../src/theme/globalStyle'
@@ -27,6 +27,9 @@ const GlobalStyleDecorator = storyFn => (
   </React.Fragment>
 )
 
+addParameters({
+  chromatic: { viewports: [320, 1200] },
+})
 addDecorator(GlobalStyleDecorator)
 addDecorator(StoryRouter())
 configure(loadStories, module)
