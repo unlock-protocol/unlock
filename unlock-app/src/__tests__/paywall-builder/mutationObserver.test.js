@@ -14,9 +14,11 @@ function makeMutation(nodes = []) {
       addedNodes: {
         length: nodes.length,
         entries() {
-          return nodes.map(node => {
-            return [0, node]
-          })
+          return nodes
+            .map(node => {
+              return [0, node]
+            })
+            [Symbol.iterator]()
         },
       },
     },
@@ -36,7 +38,7 @@ function mockHead(content = false) {
   }
 }
 
-describe('mutationobserver', () => {
+describe('mutationObserver', () => {
   describe('changeListener', () => {
     let callback
     beforeEach(() => {
@@ -88,7 +90,6 @@ describe('mutationobserver', () => {
       listenForNewLocks(callback, mockHead('hi'))
       expect(callback).toBeCalledWith('hi')
     })
-
     it('creates MutationObserver and calls observe', () => {
       expect.assertions(3)
       global.MutationObserver = function() {
