@@ -1,6 +1,7 @@
 pragma solidity 0.5.5;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
+import './MixinLockCore.sol';
 
 
 /**
@@ -10,7 +11,8 @@ import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
  * separates logically groupings of code to ease readability. 
  */
 contract MixinKeys is
-  Ownable
+  Ownable,
+  MixinLockCore
 {
   // The struct for a key
   struct Key {
@@ -238,27 +240,39 @@ contract MixinKeys is
   {
     return ownerByTokenId[_tokenId];
   }
-  
+
   /**
-   * Adds a new (unique) Key owner.
+   * Assigns the key a new tokenId (from numberOfKeysSold) if it does not already have
+   * one assigned.
    */
-  function _addNewOwner(
-    address _owner
+  function _assignNewTokenId(
+    Key storage _key
   ) internal
   {
-    owners.push(_owner);
+    if (_key.tokenId == 0) {
+      // This is a brand new owner, else an owner of an expired key buying an extension.
+      // We increment the tokenId counter
+      numberOfKeysSold++;
+      // we assign the incremented `numberOfKeysSold` as the tokenId for the new key
+      _key.tokenId = numberOfKeysSold;
+    }
   }
 
   /**
-   * Sets the Key owner for a given tokenId.
+   * Records the owner of a given tokenId
    */
-  function _setKeyOwner(
-    uint _tokenId,
-    address _owner
+  function _recordOwner(
+    address _owner,
+    uint _tokenId
   ) internal
   {
-    ownerByTokenId[_tokenId] = _owner;
-  } 
+    if (ownerByTokenId[_tokenId] != _owner) {
+      // TODO: this may include duplicate entries
+      owners.push(_owner);
+      // We register the owner of the tokenID
+      ownerByTokenId[_tokenId] = _owner;
+    }
+  }
 
   /**
    * Returns the Key struct for the given owner.
