@@ -73,7 +73,7 @@ const monthNames = [
 ]
 
 const Post = ({ date, summary, link }) => (
-  <>
+  <React.Fragment>
     <p>
       {monthNames[date.getMonth()]}
       &nbsp;
@@ -86,7 +86,7 @@ const Post = ({ date, summary, link }) => (
         More...
       </a>
     </p>
-  </>
+  </React.Fragment>
 )
 
 Post.propTypes = {
