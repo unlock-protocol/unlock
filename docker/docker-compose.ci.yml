@@ -6,6 +6,12 @@ services:
     expose:
       - 8545
     command: ["-h=0.0.0.0", "-m=hello unlock save the web", "-i=1984"]
+  ganache-integration:
+    restart: always
+    image: trufflesuite/ganache-cli:v6.2.3
+    expose:
+      - 8545
+    command: ["-h=0.0.0.0", "-m=hello unlock save the web", "-i=1984", "-b 1"]    
   db:
     image: postgres
     expose:
@@ -23,7 +29,7 @@ services:
     expose:
       - 3000
     environment:
-      HTTP_PROVIDER: ganache
+      HTTP_PROVIDER: ganache-integration
       CI: "${CI}"
     command: ["npm", "run", "start"]
   smart-contracts:
@@ -47,7 +53,7 @@ services:
       - UNLOCK_HOST=unlock
       - CI=true
     depends_on:
-      - ganache
+      - ganache-integration
       - unlock
     working_dir: /home/unlock/tests
   locksmith:
