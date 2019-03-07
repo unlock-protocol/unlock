@@ -24,7 +24,7 @@ const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 function getOrCreateStore(initialState, path) {
   const middlewares = [
     createInterWindowCommunicationMiddleware(global),
-    web3Middleware(config),
+    web3Middleware,
     createCurrencyConversionMiddleware(config),
     createWalletMiddleware(config),
   ]
