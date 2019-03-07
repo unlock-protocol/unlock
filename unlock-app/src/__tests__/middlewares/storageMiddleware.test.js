@@ -10,6 +10,7 @@ import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { SIGNED_DATA } from '../../actions/signature'
 import UnlockLock from '../../structured_data/unlockLock'
+import configure from '../../config'
 
 /**
  * This is a "fake" middleware caller
@@ -20,6 +21,7 @@ let state
 let account
 let lock
 let network
+let config
 
 const create = () => {
   const store = {
@@ -27,7 +29,7 @@ const create = () => {
     dispatch: jest.fn(() => true),
   }
   const next = jest.fn()
-  const handler = storageMiddleware(store)
+  const handler = storageMiddleware(config)(store)
   const invoke = action => handler(next)(action)
   return { next, invoke, store }
 }
@@ -44,6 +46,7 @@ jest.mock('../../structured_data/unlockLock.js')
 
 describe('Storage middleware', () => {
   beforeEach(() => {
+    config = configure()
     account = {
       address: '0xabc',
     }

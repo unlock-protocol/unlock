@@ -13,7 +13,7 @@ import WalletCheckOverlay from '../components/interface/FullScreenModals'
 // Middlewares
 import web3Middleware from '../middlewares/web3Middleware'
 import createCurrencyConversionMiddleware from '../middlewares/currencyConversionMiddleware'
-import storageMiddleware from '../middlewares/storageMiddleware'
+import createStorageMiddleware from '../middlewares/storageMiddleware'
 import createWalletMiddleware from '../middlewares/walletMiddleware'
 import createInterWindowCommunicationMiddleware from '../middlewares/interWindowCommunicationMiddleware'
 
@@ -30,7 +30,7 @@ function getOrCreateStore(initialState, path) {
   ]
 
   if (config.services.storage) {
-    middlewares.push(storageMiddleware)
+    middlewares.push(createStorageMiddleware(config))
   }
 
   // Always make a new store if server, otherwise state is shared between requests

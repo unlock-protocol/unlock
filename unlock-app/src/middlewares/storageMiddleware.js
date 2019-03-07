@@ -9,15 +9,12 @@ import {
 import StorageService from '../services/storageService'
 import { STORE_LOCK_NAME, storageError } from '../actions/storage'
 
-import configure from '../config'
 import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
 import { SET_ACCOUNT } from '../actions/accounts'
 import UnlockLock from '../structured_data/unlockLock'
 import { SIGNED_DATA, signData } from '../actions/signature'
 
-const { services } = configure(global)
-
-export default function storageMiddleware({ getState, dispatch }) {
+const createStorageMiddleware = ({ services }) => ({ getState, dispatch }) => {
   const storageService = new StorageService(services.storage.host)
 
   return next => {
@@ -121,3 +118,5 @@ export default function storageMiddleware({ getState, dispatch }) {
     }
   }
 }
+
+export default createStorageMiddleware
