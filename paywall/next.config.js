@@ -13,12 +13,15 @@ const publicRuntimeConfig = {
 }
 
 if (publicRuntimeConfig.unlockEnv === 'dev') {
+  // Dev setup script can't set environment variables in a way that we can
+  // access them everywhere we need them, so this gets hardcoded. Update if abi
+  // package changes.
   publicRuntimeConfig.unlockAddress =
     '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
 }
 
 module.exports = withSourceMaps({
-  publicRuntimeConfig: {},
+  publicRuntimeConfig,
   webpack: config => {
     // Fixes npm packages that depend on `fs` module
     config.node = {
