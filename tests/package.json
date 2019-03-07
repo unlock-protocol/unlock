@@ -4,7 +4,7 @@
   "description": "Integration tests for Unlock",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --runInBand",
     "lint": "eslint .",
     "ci": "npm run test"
   },
