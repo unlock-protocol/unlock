@@ -1,6 +1,10 @@
 /* eslint-disable no-console */
 
 const Web3 = require('web3')
+
+// If you upgrade this dependency, the contract address will change. As a
+// result, the fallback addresses in the `unlock-app` and the `paywall` configs
+// will need to be updated to reflect the new address.
 const Unlock = require('unlock-abi-0').Unlock
 
 /*
