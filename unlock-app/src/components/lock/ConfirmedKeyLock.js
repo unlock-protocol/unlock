@@ -20,12 +20,12 @@ const ConfirmedKeyLock = ({ lock, hideModal }) => (
       <BalanceProvider
         amount={lock.keyPrice}
         render={(ethPrice, fiatPrice) => (
-          <>
+          <React.Fragment>
             <LockDetails>
               <LockDetail bold>{ethPrice} ETH</LockDetail>
               <LockDetail>${fiatPrice}</LockDetail>
             </LockDetails>
-          </>
+          </React.Fragment>
         )}
       />
       <ConfirmedKey hideModal={hideModal} size="50px" />

@@ -9,9 +9,9 @@ const Consumer = GlobalErrorContext.Consumer
 export const displayError = (error, errorMetadata, children) => {
   if (error) {
     const Error = mapErrorToComponent(error, errorMetadata)
-    return <>{Error}</> // note: this is different from the main repo
+    return <React.Fragment>{Error}</React.Fragment> // note: this is different from the main repo
   }
-  return <>{children}</>
+  return <React.Fragment>{children}</React.Fragment>
 }
 
 export default function GlobalErrorConsumer({ displayError, children }) {
