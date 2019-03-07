@@ -20,6 +20,11 @@ import { NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
 import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../../constants'
 import { NO_USER_ACCOUNT } from '../../errors'
+import {
+  SIGN_DATA,
+  SIGNED_DATA,
+  SIGNATURE_ERROR,
+} from '../../actions/signature'
 
 /**
  * Fake state
@@ -86,18 +91,11 @@ jest.mock('../../services/walletService', () => {
   }
 })
 
-let mockGenerateSignature = jest.fn(() => Promise.resolve())
-
-jest.mock('../../utils/signature', () => () => {
-  return mockGenerateSignature()
-})
-
 jest.useFakeTimers()
 
 beforeEach(() => {
   // Reset the mock
   mockWalletService = new MockWalletService()
-  mockGenerateSignature = jest.fn(() => Promise.resolve())
 
   // Reset state!
   account = {
@@ -303,7 +301,7 @@ describe('Wallet middleware', () => {
       mockWalletService.ready = false
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: 'error/SET_ERROR',
+        type: SET_ERROR,
         error: NO_USER_ACCOUNT,
       })
 
@@ -338,7 +336,7 @@ describe('Wallet middleware', () => {
       mockWalletService.ready = false
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: 'error/SET_ERROR',
+        type: SET_ERROR,
         error: NO_USER_ACCOUNT,
       })
 
@@ -371,7 +369,7 @@ describe('Wallet middleware', () => {
         mockWalletService.ready = false
         invoke(action)
         expect(store.dispatch).toHaveBeenCalledWith({
-          type: 'error/SET_ERROR',
+          type: SET_ERROR,
           error: NO_USER_ACCOUNT,
         })
 
@@ -427,7 +425,7 @@ describe('Wallet middleware', () => {
       mockWalletService.ready = false
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: 'error/SET_ERROR',
+        type: SET_ERROR,
         error: NO_USER_ACCOUNT,
       })
 
@@ -452,6 +450,63 @@ describe('Wallet middleware', () => {
         '0.03'
       )
       expect(next).toHaveBeenCalledWith(action)
+    })
+  })
+
+  describe('SIGN_DATA', () => {
+    it('should invoke the walletService to sign the data and dispatch an event with the signature', () => {
+      expect.assertions(3)
+
+      const data = 'data to sign'
+      const signature = 'signature'
+
+      const { next, invoke, store } = create()
+      const action = {
+        type: SIGN_DATA,
+        data,
+      }
+      mockWalletService.signData = jest.fn((signer, data, callback) => {
+        return callback(null, signature)
+      })
+      invoke(action)
+      expect(mockWalletService.signData).toHaveBeenCalledWith(
+        store.getState().account.address,
+        data,
+        expect.any(Function)
+      )
+      expect(next).toHaveBeenCalledWith(action)
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SIGNED_DATA,
+        data,
+        signature,
+      })
+    })
+
+    it('should invoke the walletService to sign the data and handle failures to sign', () => {
+      expect.assertions(3)
+
+      const data = 'data to sign'
+      const error = new Error('error')
+
+      const { next, invoke, store } = create()
+      const action = {
+        type: SIGN_DATA,
+        data,
+      }
+      mockWalletService.signData = jest.fn((signer, data, callback) => {
+        return callback(error)
+      })
+      invoke(action)
+      expect(mockWalletService.signData).toHaveBeenCalledWith(
+        store.getState().account.address,
+        data,
+        expect.any(Function)
+      )
+      expect(next).toHaveBeenCalledWith(action)
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SIGNATURE_ERROR,
+        error,
+      })
     })
   })
 })
