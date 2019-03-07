@@ -26,6 +26,7 @@
     "@storybook/addon-actions": "^4.1.13",
     "@storybook/addon-knobs": "^4.1.13",
     "@storybook/addon-storyshots": "^4.1.13",
+    "@storybook/addon-viewport": "^4.1.13",
     "@storybook/react": "^4.1.13",
     "@types/jest": "^24.0.0",
     "@types/node": "^10.12.24",
