@@ -13,7 +13,7 @@
     "deploy": "next export src -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "start": "npm run before && next start",
-    "test": "cross-env UNLOCK_ENV=test jest test.js --env=jsdom",
+    "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint .",
     "reformat": "prettier-eslint \"src/**/*.js\" --write",
     "fail-pending-changes": "../scripts/pending-changes.sh",
