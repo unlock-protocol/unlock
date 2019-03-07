@@ -32,7 +32,7 @@ export const displayError = isMainWindow =>
         return Error
       }
     }
-    return <>{children}</>
+    return <React.Fragment>{children}</React.Fragment>
   }
 
 export const Overlay = ({
