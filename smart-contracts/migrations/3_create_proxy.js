@@ -32,13 +32,6 @@ module.exports = function (deployer, networkName, accounts) {
     })
     txParams.gas = 4000000
     const options = { network, txParams }
-
-    if (networkName === 'test' || networkName === 'development') {
-      console.log(
-        `Skipping proxy creation in 3_create_proxy.js while on network '${network}'. Exiting...`
-      )
-    } else {
-      await deploy(options, accounts)
-    }
+    await deploy(options, accounts)
   })
 }
