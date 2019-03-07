@@ -98,16 +98,8 @@ contract MixinPurchase is
     Key storage toKey = _getKeyFor(_recipient);
     uint previousExpiration = toKey.expirationTimestamp;
     if (previousExpiration < block.timestamp) {
-      if (previousExpiration == 0) {
-        // This is a brand new owner, else an owner of an expired key buying an extension.
-        // We increment the tokenId counter
-        numberOfKeysSold++;
-        _addNewOwner(_recipient);
-        // We register the owner of the new tokenID
-        _setKeyOwner(numberOfKeysSold, _recipient);
-        // we assign the incremented `numberOfKeysSold` as the tokenId for the new key
-        toKey.tokenId = numberOfKeysSold;
-      }
+      _assignNewTokenId(toKey);
+      _recordOwner(_recipient, toKey.tokenId);
       // SafeAdd is not required here since expirationDuration is capped to a tiny value
       // (relative to the size of a uint)
       toKey.expirationTimestamp = block.timestamp + expirationDuration;
