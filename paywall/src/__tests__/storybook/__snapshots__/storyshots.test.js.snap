@@ -2983,7 +2983,7 @@ Object {
   grid-column: 1;
 }
 
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+@media only screen and (min-width:0px) and (max-width:736px) {
   .c13 {
     display: none;
   }
@@ -3250,7 +3250,7 @@ Object {
             </li>
           </ul>
           <footer
-            class="sc-1549ebs-8 SGDXW"
+            class="sc-1549ebs-8 ckuUyi"
           >
             <div
               class="sth0f3-0 kwQJpX"
@@ -3471,7 +3471,7 @@ Object {
   grid-column: 1;
 }
 
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+@media only screen and (min-width:0px) and (max-width:736px) {
   .c7 {
     display: none;
   }
@@ -3690,7 +3690,7 @@ Object {
             </section>
           </ul>
           <footer
-            class="sc-1549ebs-8 SGDXW"
+            class="sc-1549ebs-8 ckuUyi"
           >
             <div
               class="sth0f3-0 kwQJpX"
@@ -3979,7 +3979,7 @@ Object {
   grid-column: 1;
 }
 
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+@media only screen and (min-width:0px) and (max-width:736px) {
   .c13 {
     display: none;
   }
@@ -4246,7 +4246,7 @@ Object {
             </li>
           </ul>
           <footer
-            class="sc-1549ebs-8 SGDXW"
+            class="sc-1549ebs-8 ckuUyi"
           >
             <div
               class="sth0f3-0 kwQJpX"
@@ -4467,7 +4467,7 @@ Object {
   grid-column: 1;
 }
 
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+@media only screen and (min-width:0px) and (max-width:736px) {
   .c7 {
     display: none;
   }
@@ -4686,7 +4686,7 @@ Object {
             </section>
           </ul>
           <footer
-            class="sc-1549ebs-8 SGDXW"
+            class="sc-1549ebs-8 ckuUyi"
           >
             <div
               class="sth0f3-0 kwQJpX"
@@ -4975,7 +4975,7 @@ Object {
   grid-column: 1;
 }
 
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+@media only screen and (min-width:0px) and (max-width:736px) {
   .c13 {
     display: none;
   }
@@ -5334,7 +5334,7 @@ Object {
             </li>
           </ul>
           <footer
-            class="sc-1549ebs-8 SGDXW"
+            class="sc-1549ebs-8 ckuUyi"
           >
             <div
               class="sth0f3-0 kwQJpX"
@@ -5550,13 +5550,13 @@ Object {
   transition: opacity 0.4s ease-in;
 }
 
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+@media only screen and (min-width:0px) and (max-width:736px) {
   .c0 {
     display: none;
   }
 }
 
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+@media only screen and (min-width:0px) and (max-width:736px) {
   .c0 {
     display: none;
   }
@@ -5601,7 +5601,7 @@ Object {
       style="position: absolute; right: 0px; bottom: 105px; width: 134px; height: 160px; margin-right: -104px; transition: margin-right 0.4s ease-in;"
     >
       <footer
-        class="sc-1549ebs-8 sc-15m75z9-0 dLWldV"
+        class="sc-1549ebs-8 sc-15m75z9-0 jLFIBx"
       >
         <div
           class="sth0f3-0 kwQJpX"
@@ -5746,13 +5746,13 @@ Object {
   transition: opacity 0.4s ease-in;
 }
 
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+@media only screen and (min-width:0px) and (max-width:736px) {
   .c0 {
     display: none;
   }
 }
 
-@media only screen and (min-device-width:0px) and (max-device-width:736px) {
+@media only screen and (min-width:0px) and (max-width:736px) {
   .c0 {
     display: none;
   }
@@ -5790,7 +5790,7 @@ Object {
       rel="stylesheet"
     />
     <footer
-      class="sc-1549ebs-8 sc-15m75z9-0 dLWldV"
+      class="sc-1549ebs-8 sc-15m75z9-0 jLFIBx"
     >
       <div
         class="sth0f3-0 kwQJpX"
