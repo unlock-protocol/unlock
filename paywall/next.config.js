@@ -5,13 +5,20 @@ const withSourceMaps = require('@zeit/next-source-maps')
 
 const copyFile = promisify(fs.copyFile)
 
+const publicRuntimeConfig = {
+  unlockEnv: process.env.UNLOCK_ENV || 'dev',
+  httpProvider: process.env.HTTP_PROVIDER || '127.0.0.1',
+  readOnlyProvider: process.env.READ_ONLY_PROVIDER,
+  locksmithHost: process.env.LOCKSMITH_HOST,
+}
+
+if (publicRuntimeConfig.unlockEnv === 'dev') {
+  publicRuntimeConfig.unlockAddress =
+    '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
+}
+
 module.exports = withSourceMaps({
-  publicRuntimeConfig: {
-    unlockEnv: process.env.UNLOCK_ENV || 'dev',
-    httpProvider: process.env.HTTP_PROVIDER || '127.0.0.1',
-    readOnlyProvider: process.env.READ_ONLY_PROVIDER,
-    locksmithHost: process.env.LOCKSMITH_HOST,
-  },
+  publicRuntimeConfig: {},
   webpack: config => {
     // Fixes npm packages that depend on `fs` module
     config.node = {
