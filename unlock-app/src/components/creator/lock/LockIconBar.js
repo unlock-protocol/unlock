@@ -57,9 +57,17 @@ export function LockIconBar({
             lock={lock}
             withdrawalTransaction={withdrawalTransaction}
           />
-          <Buttons.Edit as="button" action={() => edit(lock.address)} />
+          <Buttons.Edit
+            as="button"
+            action={() => edit(lock.address)}
+            id={`EditLockButton_${lock.address}`}
+          />
           {/* Reinstate when we're ready <Buttons.ExportLock /> */}
-          <Buttons.Code action={toggleCode} as="button" />
+          <Buttons.Code
+            action={toggleCode}
+            as="button"
+            id={`LockEmbeddCode_${lock.address}`}
+          />
         </IconBar>
       </IconBarContainer>
       <SubStatus>

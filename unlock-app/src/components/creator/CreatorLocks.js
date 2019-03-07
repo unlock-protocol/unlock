@@ -34,7 +34,7 @@ export class CreatorLocks extends React.Component {
 
     return (
       <Locks>
-        <LockHeaderRow>
+        <LockHeaderRow id="LockHeaderRow">
           <LockHeader>Locks</LockHeader>
           <LockMinorHeader>Name / Address</LockMinorHeader>
           <LockMinorHeader>Key Duration</LockMinorHeader>
@@ -44,7 +44,9 @@ export class CreatorLocks extends React.Component {
             <NoPhone>Balance</NoPhone>
             <Phone>Balance</Phone>
           </LockMinorHeader>
-          <CreateButton onClick={this.toggleForm}>Create Lock</CreateButton>
+          <CreateButton onClick={this.toggleForm} id="CreateLockButton">
+            Create Lock
+          </CreateButton>
         </LockHeaderRow>
         <Errors />
         {showDashboardForm && (
