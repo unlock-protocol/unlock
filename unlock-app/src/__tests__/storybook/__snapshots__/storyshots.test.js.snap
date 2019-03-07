@@ -54117,13 +54117,13 @@ Object {
 
 .c26 {
   display: grid;
-  grid-template-columns: 125px 1fr 1fr;
-  grid-auto-rows: 28px;
+  grid-template-columns: 125px 2fr 1fr;
+  grid-auto-rows: 32px;
   grid-column-gap: 20px;
 }
 
 .c27 {
-  font-size: 8px;
+  font-size: 10px;
   font-weight: normal;
   text-transform: uppercase;
   color: var(--grey);
@@ -54131,7 +54131,7 @@ Object {
 }
 
 .c28 {
-  font-size: 11px;
+  font-size: 14px;
   line-height: 14px;
   color: var(--darkgrey);
   font-weight: 300;
@@ -54139,30 +54139,27 @@ Object {
 }
 
 .c30 {
-  font-size: 11px;
+  font-size: 14px;
   line-height: 14px;
   color: var(--darkgrey);
   font-weight: 300;
   font-family: 'IBM Plex Mono',Courier,monospace;
   color: var(--green);
   white-space: nowrap;
-  font-size: 14px;
 }
 
 .c31 {
-  font-size: 11px;
+  font-size: 14px;
   line-height: 14px;
   color: var(--darkgrey);
   font-weight: 300;
   font-family: 'IBM Plex Mono',Courier,monospace;
   color: var(--slate);
   white-space: nowrap;
-  font-size: 14px;
 }
 
 .c29 {
   font-size: 14px;
-  line-height: 14px;
   font-weight: 300;
   font-family: 'IBM Plex Mono',Courier,monospace;
 }
@@ -54970,70 +54967,70 @@ Object {
           </div>
         </section>
         <div
-          class="sc-117g4ck-0 eBySgn"
+          class="sc-117g4ck-0 kpaVpz"
         >
           <div
-            class="sc-117g4ck-1 koleYv"
+            class="sc-117g4ck-1 bykYLB"
           >
             Block Number
           </div>
           <div
-            class="sc-117g4ck-1 koleYv"
+            class="sc-117g4ck-1 bykYLB"
           >
             Lock Name/Address
           </div>
           <div
-            class="sc-117g4ck-1 koleYv"
+            class="sc-117g4ck-1 bykYLB"
           >
             Type
           </div>
           <div
-            class="sc-117g4ck-2 fkKAIC"
+            class="sc-117g4ck-2 dTRAfq"
           >
             3
           </div>
           <a
-            class="sc-117g4ck-4 iZFyiG"
+            class="sc-117g4ck-4 dYHDGK"
             target="_blank"
           >
             0xc43efE2C7116CB94d563b5A9D68F260CCc44256F
           </a>
           <div
-            class="sc-117g4ck-2 sc-117g4ck-3 cxNziq"
+            class="sc-117g4ck-2 sc-117g4ck-3 leeqzy"
             type="LOCK_CREATION"
           >
             Lock Creation
           </div>
           <div
-            class="sc-117g4ck-2 fkKAIC"
+            class="sc-117g4ck-2 dTRAfq"
           >
             2
           </div>
           <a
-            class="sc-117g4ck-4 iZFyiG"
+            class="sc-117g4ck-4 dYHDGK"
             target="_blank"
           >
             0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
           </a>
           <div
-            class="sc-117g4ck-2 sc-117g4ck-3 MWUcI"
+            class="sc-117g4ck-2 sc-117g4ck-3 kichWx"
             type="UPDATE_KEY_PRICE"
           >
             Update Key Price
           </div>
           <div
-            class="sc-117g4ck-2 fkKAIC"
+            class="sc-117g4ck-2 dTRAfq"
           >
             1
           </div>
           <a
-            class="sc-117g4ck-4 iZFyiG"
+            class="sc-117g4ck-4 dYHDGK"
             target="_blank"
           >
             0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
           </a>
           <div
-            class="sc-117g4ck-2 sc-117g4ck-3 cxNziq"
+            class="sc-117g4ck-2 sc-117g4ck-3 leeqzy"
             type="LOCK_CREATION"
           >
             Lock Creation
