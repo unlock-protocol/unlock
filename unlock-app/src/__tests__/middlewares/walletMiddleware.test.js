@@ -25,6 +25,7 @@ import {
   SIGNED_DATA,
   SIGNATURE_ERROR,
 } from '../../actions/signature'
+import configure from '../../config'
 
 /**
  * Fake state
@@ -38,6 +39,7 @@ let lock = {
   owner: account,
 }
 let state = {}
+let config
 
 let key = {
   id: '123',
@@ -64,7 +66,7 @@ const create = () => {
   }
   const next = jest.fn()
 
-  const handler = walletMiddleware(store)
+  const handler = walletMiddleware(config)(store)
 
   const invoke = action => handler(next)(action)
 
@@ -96,6 +98,7 @@ jest.useFakeTimers()
 beforeEach(() => {
   // Reset the mock
   mockWalletService = new MockWalletService()
+  config = configure()
 
   // Reset state!
   account = {

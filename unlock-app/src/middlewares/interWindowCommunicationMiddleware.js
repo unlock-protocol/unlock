@@ -21,7 +21,7 @@ function redirectToContentFromPaywall(window, getState) {
 
 // store is unused in this middleware, it is only for listening for actions
 // and converting them into postMessage
-const interWindowCommunicationMiddleware = window => ({
+const createInterWindowCommunicationMiddleware = window => ({
   getState,
   dispatch,
 }) => {
@@ -104,4 +104,4 @@ const interWindowCommunicationMiddleware = window => ({
   }
 }
 
-export default interWindowCommunicationMiddleware
+export default createInterWindowCommunicationMiddleware

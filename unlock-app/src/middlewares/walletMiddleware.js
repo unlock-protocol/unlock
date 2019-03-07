@@ -26,8 +26,8 @@ import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
 
-export default function walletMiddleware({ getState, dispatch }) {
-  const walletService = new WalletService()
+const createWalletMiddleware = config => ({ getState, dispatch }) => {
+  const walletService = new WalletService(config)
 
   /**
    * Helper function which ensures that the walletService is ready
@@ -173,3 +173,5 @@ export default function walletMiddleware({ getState, dispatch }) {
     }
   }
 }
+
+export default createWalletMiddleware
