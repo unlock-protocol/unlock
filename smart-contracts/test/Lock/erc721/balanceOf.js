@@ -30,7 +30,7 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
   })
 
   it('should return 1 if the user has a non expired key', async () => {
-    await locks['FIRST'].purchaseFor(accounts[1], Web3Utils.toHex('Satoshi'), {
+    await locks['FIRST'].purchaseFor(accounts[1], {
       value: Units.convert('0.01', 'eth', 'wei'),
       from: accounts[1]
     })
@@ -39,7 +39,7 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
   })
 
   it('should return 1 if the user has an expired key', async () => {
-    await locks['FIRST'].purchaseFor(accounts[5], Web3Utils.toHex('Satoshi'), {
+    await locks['FIRST'].purchaseFor(accounts[5], {
       value: Units.convert('0.01', 'eth', 'wei'),
       from: accounts[5]
     })

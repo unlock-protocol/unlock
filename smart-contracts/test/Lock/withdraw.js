@@ -1,5 +1,4 @@
 const Units = require('ethereumjs-units')
-const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
@@ -25,7 +24,7 @@ contract('Lock / withdraw', (accounts) => {
 
   before(() => {
     const purchases = [accounts[1], accounts[2]].map((account) => {
-      return locks['OWNED'].purchaseFor(account, Web3Utils.toHex(''), {
+      return locks['OWNED'].purchaseFor(account, {
         value: price,
         from: account
       })

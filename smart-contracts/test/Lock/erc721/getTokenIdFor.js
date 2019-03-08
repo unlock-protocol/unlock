@@ -1,5 +1,4 @@
 const Units = require('ethereumjs-units')
-const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../../helpers/deployLocks')
@@ -24,7 +23,6 @@ contract('Lock / erc721 / getTokenIdFor', accounts => {
   it("should return the tokenId for the owner's key", async () => {
     await locks['FIRST'].purchaseFor(
       accounts[1],
-      Web3Utils.toHex('Satoshi'),
       {
         value: Units.convert('0.01', 'eth', 'wei'),
         from: accounts[1]

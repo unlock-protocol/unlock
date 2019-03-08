@@ -2,7 +2,6 @@ const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
 const Zos = require('zos')
 const TestHelper = Zos.TestHelper
-const Web3Utils = require('web3-utils')
 const Units = require('ethereumjs-units')
 const { ZWeb3, Contracts } = require('zos-lib')
 ZWeb3.initialize(web3.currentProvider)
@@ -29,7 +28,6 @@ contract('Lock / erc721 / getApproved', accounts => {
   before(async function () {
     await locks['FIRST'].purchaseFor(
       keyPurchaser,
-      Web3Utils.toHex('Vitalik'),
       {
         value: Units.convert('0.01', 'eth', 'wei'),
         from: keyPurchaser
