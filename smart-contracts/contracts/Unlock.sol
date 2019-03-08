@@ -96,8 +96,7 @@ contract Unlock is MixinNoFallback, IUnlock, Initializable, Ownable {
       msg.sender,
       _expirationDuration,
       _keyPrice,
-      _maxNumberOfKeys,
-      1 // set Lock version explicitly
+      _maxNumberOfKeys
     );
 
     // Assign the new Lock
