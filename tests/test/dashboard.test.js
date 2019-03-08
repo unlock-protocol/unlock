@@ -30,6 +30,7 @@ describe('The Unlock Dashboard', () => {
     })
 
     it('should persist the lock', async () => {
+      await expect(page).toFill('input[name="name"]', 'Updated Lock Name')
       await expect(page).toClick('button', { text: 'Submit' })
       await page.waitFor(500)
       await expect(page).toMatch('30 days')
@@ -63,6 +64,14 @@ describe('The Unlock Dashboard', () => {
         await expect(page).toClick('button', { text: 'Submit' })
         await expect(page).toMatch('0.33')
       })
+    })
+  })
+
+  describe('Data existing after refresh', () => {
+    it('should retain the lock name', async () => {
+      await page.reload()
+      await page.waitFor(3500)
+      await expect(page).toMatch('Updated Lock Name')
     })
   })
 })
