@@ -25,7 +25,7 @@ services:
     user: node
     working_dir: /home/unlock
     depends_on:
-      - ganache
+      - ganache-integration
     expose:
       - 3000
     environment:
