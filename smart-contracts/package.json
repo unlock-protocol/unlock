@@ -30,11 +30,10 @@
     "zos-lib": "^2.2.1"
   },
   "devDependencies": {
-    "remix-ide": "^0.7.5",
     "remixd": "^0.1.8-alpha.6"
   },
   "scripts": {
-    "remix": "remixd -s contracts --remix-ide http://localhost:8080 --read-only",
+    "remix": "remixd -s contracts --remix-ide https://remix.ethereum.org",
     "test": "cross-env NODE_ENV=test truffle test --network development",
     "lint": "solium -d ./contracts/ && eslint .",
     "dev": "npm run lint && npm run build && npm run test",
