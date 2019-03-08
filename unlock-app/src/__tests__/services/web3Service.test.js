@@ -901,6 +901,31 @@ describe('Web3Service', () => {
       )
     })
 
+    it('should handle Transfer and also emit transaction.updated', done => {
+      expect.assertions(2)
+      const transactionHash = '0x123'
+      const contractAddress = '0x456'
+      const blockNumber = 1337
+
+      const params = {
+        _to: '0x789',
+      }
+
+      web3Service.once('transaction.updated', (transactionHash, update) => {
+        expect(update.lock).toBe(contractAddress)
+        expect(update.key).toBe('0x456-0x789')
+        done()
+      })
+
+      web3Service.emitContractEvent(
+        transactionHash,
+        contractAddress,
+        blockNumber,
+        'Transfer',
+        params
+      )
+    })
+
     it('should handle PriceChanged and emit key.save', done => {
       expect.assertions(3)
       const transactionHash = '0x123'
