@@ -74,4 +74,17 @@ describe('The Unlock Dashboard', () => {
       await expect(page).toMatch('Updated Lock Name')
     })
   })
+  
+  describe('Paywall demo', () => {
+    it('should display a lock on the demo page with a paywall', async () => {
+      await expect(page).toClick('button', { text: 'Create Lock' })
+      await expect(page).toClick('button', { text: 'Submit' })
+
+      await Promise.all([
+        page.goto(url(`/demo/${testLockAddress}`)),
+        page.waitForNavigation(),
+      ])
+      await expect(page).toMatchElement(`#Lock_${testLockAddress}`)
+    }, 10000)
+  })
 })
