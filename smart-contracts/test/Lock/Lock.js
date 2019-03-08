@@ -1,16 +1,13 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
-const dev1984 = require('../../zos.dev-1984.json')
-const ProxyAddress = dev1984.proxies['unlock-protocol/Unlock'][0].address
 const deployLocks = require('../helpers/deployLocks')
-const Unlock = artifacts.require('../Unlock.sol')
+const setUnlockProxy = require('../helpers/proxy')
 
 let unlock, locks
 
 contract('Lock / Lock', accounts => {
   before(async () => {
-    console.log(ProxyAddress)
-    unlock = await Unlock.at(ProxyAddress)
+    unlock = await setUnlockProxy()
     locks = await deployLocks(unlock, accounts[0])
   })
 

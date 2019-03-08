@@ -4,7 +4,6 @@ const proxiesArray = dev1984.proxies['unlock-protocol/Unlock']
 const mostRecentProxy = proxiesArray.length - 1
 const ProxyAddress =
   dev1984.proxies['unlock-protocol/Unlock'][mostRecentProxy].address
-// use the packaged ABI here?
 const Unlock = artifacts.require('../Unlock.sol')
 
 let unlock
