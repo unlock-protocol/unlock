@@ -17,6 +17,9 @@ storiesOf('FatalError', module)
   .add('Account missing', () => {
     return <FatalError.MissingAccount />
   })
+  .add('Unlock not deployed', () => {
+    return <FatalError.ContractNotDeployed />
+  })
   .add('Non-critical error', () => {
     return (
       <FatalError.DefaultError title="Non-critical error" critical={false} />
