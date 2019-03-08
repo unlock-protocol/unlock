@@ -48,8 +48,6 @@ contract MixinRefunds is
     // expirationTimestamp is a proxy for hasKey, setting this to `block.timestamp` instead
     // of 0 so that we can still differentiate hasKey from hasValidKey.
     key.expirationTimestamp = block.timestamp;
-    // Remove data as we don't need this any longer
-    delete key.data;
 
     if (refund > 0) {
       // Security: doing this last to avoid re-entrancy concerns

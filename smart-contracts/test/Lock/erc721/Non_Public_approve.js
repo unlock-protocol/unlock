@@ -1,5 +1,3 @@
-const Web3Utils = require('web3-utils')
-
 const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
 const Unlock = artifacts.require('../../Unlock.sol')
@@ -58,7 +56,7 @@ contract('Lock / erc721 / Non_Public_approve', (accounts) => {
           })
           .then(() => {
             // accounts[2] purchases a key
-            return locks['RESTRICTED'].purchaseFor(accounts[2], Web3Utils.toHex('Julien'), {
+            return locks['RESTRICTED'].purchaseFor(accounts[2], {
               value: locks['RESTRICTED'].params.keyPrice.toFixed(),
               from: accounts[2]
             })
@@ -103,7 +101,7 @@ contract('Lock / erc721 / Non_Public_approve', (accounts) => {
             from: owner
           })
         // accounts[5] purchases a key
-        await locks['RESTRICTED'].purchaseFor(accounts[5], Web3Utils.toHex('Julien'), {
+        await locks['RESTRICTED'].purchaseFor(accounts[5], {
           value: locks['RESTRICTED'].params.keyPrice.toFixed(),
           from: accounts[5]
         })
@@ -120,7 +118,7 @@ contract('Lock / erc721 / Non_Public_approve', (accounts) => {
             from: owner
           })
         // accounts[5] purchases a key
-        await locks['RESTRICTED'].purchaseFor(accounts[5], Web3Utils.toHex('Julien'), {
+        await locks['RESTRICTED'].purchaseFor(accounts[5], {
           value: locks['RESTRICTED'].params.keyPrice.toFixed(),
           from: accounts[5]
         })

@@ -24,22 +24,19 @@ contract('Lock / erc721 / transferFrom', accounts => {
   const accountWithExpiredKey = accounts[8]
   let keyExpiration
   let ID
-  let keyDataBefore
-  let keyDataAfter
 
   before(() => {
     return Promise.all([
-      locks['FIRST'].purchaseFor(accountWithKey, Web3Utils.toHex('Satoshi'), {
+      locks['FIRST'].purchaseFor(accountWithKey, {
         value: Units.convert('0.01', 'eth', 'wei'),
         from: accountWithKey
       }),
-      locks['FIRST'].purchaseFor(from, Web3Utils.toHex('Julien'), {
+      locks['FIRST'].purchaseFor(from, {
         value: Units.convert('0.01', 'eth', 'wei'),
         from
       }),
       locks['FIRST'].purchaseFor(
         accountWithExpiredKey,
-        Web3Utils.toHex('Finley'),
         {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: accountWithExpiredKey
@@ -47,7 +44,6 @@ contract('Lock / erc721 / transferFrom', accounts => {
       ),
       locks['FIRST'].purchaseFor(
         accountWithKeyApproved,
-        Web3Utils.toHex('Ben'),
         {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: accountWithKeyApproved
@@ -96,7 +92,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
       it('should transfer the key validity without extending it', async () => {
         // First let's make sure from has a key!
         let fromExpirationTimestamp, ID
-        await locks['FIRST'].purchaseFor(from, Web3Utils.toHex('Julien'), {
+        await locks['FIRST'].purchaseFor(from, {
           value: Units.convert('0.01', 'eth', 'wei'),
           from
         })
@@ -108,9 +104,6 @@ contract('Lock / erc721 / transferFrom', accounts => {
         )
         // Then let's expire the key for accountWithExpiredKey
         await locks['FIRST'].expireKeyFor(accountWithExpiredKey)
-        keyDataBefore = await locks['FIRST'].keyDataFor.call(
-          accountWithExpiredKey
-        )
         await locks['FIRST'].transferFrom(from, accountWithExpiredKey, ID, {
           from
         })
@@ -124,13 +117,6 @@ contract('Lock / erc721 / transferFrom', accounts => {
           fromExpirationTimestamp.toFixed()
         )
       })
-
-      it("should preserve the recipient's key data", async () => {
-        keyDataAfter = await locks['FIRST'].keyDataFor.call(
-          accountWithExpiredKey
-        )
-        assert.equal(keyDataBefore, keyDataAfter)
-      })
     })
 
     describe('when the recipient already has a non expired key', () => {
@@ -138,7 +124,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
       let previousExpirationTimestamp
 
       before(async () => {
-        await locks['FIRST'].purchaseFor(from, Web3Utils.toHex('Julien'), {
+        await locks['FIRST'].purchaseFor(from, {
           value: Units.convert('0.01', 'eth', 'wei'),
           from
         })
@@ -150,7 +136,6 @@ contract('Lock / erc721 / transferFrom', accounts => {
         previousExpirationTimestamp = new BigNumber(
           await locks['FIRST'].keyExpirationTimestampFor.call(accounts[1])
         )
-        keyDataBefore = await locks['FIRST'].keyDataFor.call(accountWithKey)
         await locks['FIRST'].transferFrom(from, accountWithKey, ID, {
           from
         })
@@ -185,11 +170,6 @@ contract('Lock / erc721 / transferFrom', accounts => {
         const now = Math.floor(new Date().getTime() / 1000)
         // Check only 10 seconds in the future to ensure deterministic test
         assert(expirationTimestamp.lt(now + 10))
-      })
-
-      it("should preserve the recipient's key data", async () => {
-        keyDataAfter = await locks['FIRST'].keyDataFor.call(accountWithKey)
-        assert.equal(keyDataBefore, keyDataAfter)
       })
     })
 
@@ -242,7 +222,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
     describe('when the key owner is the sender', () => {
       before(async () => {
         // first, let's purchase a brand new key that we can transfer
-        await locks['FIRST'].purchaseFor(from, Web3Utils.toHex('Julien'), {
+        await locks['FIRST'].purchaseFor(from, {
           value: Units.convert('0.01', 'eth', 'wei'),
           from
         })
@@ -269,12 +249,6 @@ contract('Lock / erc721 / transferFrom', accounts => {
         )
         assert.equal(expirationTimestamp.toFixed(), keyExpiration.toFixed())
       })
-
-      it('should have cleared the key data field for the new owner', () => {
-        return locks['FIRST'].keyDataFor.call(to).then(keyData => {
-          assert.equal(keyData, null)
-        })
-      })
     })
 
     describe('when the lock is sold out', () => {
@@ -282,7 +256,6 @@ contract('Lock / erc721 / transferFrom', accounts => {
         // first we create a lock with only 1 key
         await locks['SINGLE KEY'].purchaseFor(
           from,
-          Web3Utils.toHex('Julien'),
           {
             value: Units.convert('0.01', 'eth', 'wei'),
             from
@@ -292,7 +265,6 @@ contract('Lock / erc721 / transferFrom', accounts => {
         await shouldFail(
           locks['SINGLE KEY'].purchaseFor(
             accounts[8],
-            Web3Utils.toHex('Julien'),
             {
               value: Units.convert('0.01', 'eth', 'wei'),
               from: accounts[8]

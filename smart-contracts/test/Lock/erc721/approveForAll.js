@@ -1,5 +1,4 @@
 const Units = require('ethereumjs-units')
-const Web3Utils = require('web3-utils')
 const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
 const Unlock = artifacts.require('../../Unlock.sol')
@@ -20,7 +19,6 @@ contract('Lock / erc721 / approveForAll', accounts => {
     before(async () => {
       await lock.purchaseFor(
         owner,
-        Web3Utils.toHex('Satoshi'),
         {
           value: Units.convert('0.01', 'eth', 'wei'),
           from: owner

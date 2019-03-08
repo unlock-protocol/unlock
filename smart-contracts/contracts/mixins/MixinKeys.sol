@@ -18,7 +18,6 @@ contract MixinKeys is
   struct Key {
     uint tokenId;
     uint expirationTimestamp;
-    bytes data; // Note: This can be expensive?
   }
 
   // Called when the Lock owner expires a user's Key
@@ -186,21 +185,6 @@ contract MixinKeys is
     return ownerByTokenId[_tokenId] == _owner;
   }
   
-  /**
-  * @dev Returns the key's data field for a given owner.
-  * @param _owner address of the user for whom we search the key
-  */
-  function keyDataFor(
-    address _owner
-  )
-    public
-    view
-    hasKey(_owner)
-    returns (bytes memory data)
-  {
-    return keyByOwner[_owner].data;
-  }
-
   /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
   * @param _owner address of the user for whom we search the key
