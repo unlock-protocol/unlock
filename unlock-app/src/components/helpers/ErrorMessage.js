@@ -13,12 +13,6 @@ const genericError = message => (
 
 const defaultMessages = {
   MISSING_PROVIDER: <p>You need a web3 provider to use Unlock.</p>,
-  MISSING_TRANSACTION: (
-    <p>
-      The transaction you are looking for is missing. Are you on the right
-      network?
-    </p>
-  ),
   NOT_ENABLED_IN_PROVIDER: <p>Please enable Unlock in your web3 Provider</p>,
   NON_DEPLOYED_CONTRACT: (
     <p>Unlock has not been deployed on the current network.</p>
@@ -41,7 +35,9 @@ const defaultMessages = {
     <p>Funds from your lock could not be withdrawn</p>
   ),
 
-  NO_USER_ACCOUNT: <p>You need an Ethereum wallet to perform this action</p>,
+  FATAL_NO_USER_ACCOUNT: (
+    <p>You need an Ethereum wallet to perform this action</p>
+  ),
 }
 
 /**

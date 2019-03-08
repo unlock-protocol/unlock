@@ -19,7 +19,7 @@ import { SET_PROVIDER } from '../../actions/provider'
 import { NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
 import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../../constants'
-import { NO_USER_ACCOUNT } from '../../errors'
+import { FATAL_NO_USER_ACCOUNT } from '../../errors'
 import {
   SIGN_DATA,
   SIGNED_DATA,
@@ -302,7 +302,7 @@ describe('Wallet middleware', () => {
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
-        error: NO_USER_ACCOUNT,
+        error: FATAL_NO_USER_ACCOUNT,
       })
 
       expect(mockWalletService.purchaseKey).not.toHaveBeenCalled()
@@ -337,7 +337,7 @@ describe('Wallet middleware', () => {
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
-        error: NO_USER_ACCOUNT,
+        error: FATAL_NO_USER_ACCOUNT,
       })
 
       expect(mockWalletService.withdrawFromLock).not.toHaveBeenCalled()
@@ -370,7 +370,7 @@ describe('Wallet middleware', () => {
         invoke(action)
         expect(store.dispatch).toHaveBeenCalledWith({
           type: SET_ERROR,
-          error: NO_USER_ACCOUNT,
+          error: FATAL_NO_USER_ACCOUNT,
         })
 
         expect(mockWalletService.createLock).not.toHaveBeenCalled()
@@ -426,7 +426,7 @@ describe('Wallet middleware', () => {
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
-        error: NO_USER_ACCOUNT,
+        error: FATAL_NO_USER_ACCOUNT,
       })
 
       expect(mockWalletService.updateKeyPrice).not.toHaveBeenCalled()
