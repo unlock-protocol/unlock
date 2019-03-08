@@ -876,6 +876,7 @@ describe('Web3Service', () => {
     })
 
     it('should handle NewLock and emit transaction.updated with the new lock address', () => {
+      expect.assertions(1)
       const transactionHash = '0x123'
       const contractAddress = '0x456'
       const blockNumber = 1337
