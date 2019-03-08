@@ -1,5 +1,4 @@
 const Units = require('ethereumjs-units')
-const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 const deployLocks = require('../helpers/deployLocks')
 const Unlock = artifacts.require('../Unlock.sol')
@@ -16,7 +15,7 @@ contract('Lock / gas', (accounts) => {
 
   it(`gas used to purchaseFor is less than wallet service limit`, async () => {
     let tx = await lock
-      .purchaseFor(accounts[0], Web3Utils.toHex('Julien'), {
+      .purchaseFor(accounts[0], {
         value: Units.convert('0.01', 'eth', 'wei')
       })
     const gasUsed = new BigNumber(tx.receipt.gasUsed)

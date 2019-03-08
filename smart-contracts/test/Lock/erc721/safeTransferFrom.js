@@ -5,7 +5,6 @@ const shouldFail = require('../../helpers/shouldFail')
 const Unlock = artifacts.require('../../Unlock.sol')
 
 let unlock, locks
-let keyDataAfter
 
 contract('Lock / erc721 / safeTransferFrom', accounts => {
   before(async () => {
@@ -20,7 +19,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
 
   before(async () => {
     // first, let's purchase a brand new key that we can transfer
-    await locks['FIRST'].purchaseFor(from, Web3Utils.toHex('Julien'), {
+    await locks['FIRST'].purchaseFor(from, {
       value: Units.convert('0.01', 'eth', 'wei'),
       from
     })
@@ -32,32 +31,26 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
       from
     })
     let ownerOf = await locks['FIRST'].ownerOf.call(ID)
-    keyDataAfter = await locks['FIRST'].keyDataFor.call(to)
     assert.equal(ownerOf, to)
-    assert.equal(keyDataAfter, null)
   })
 
   it('should work if some data is passed in', async () => {
-    await locks['FIRST'].purchaseFor(accounts[7], Web3Utils.toHex('Julien'), {
+    await locks['FIRST'].purchaseFor(accounts[7], {
       value: Units.convert('0.01', 'eth', 'wei'),
       from: accounts[7]
     })
     ID = await locks['FIRST'].getTokenIdFor.call(accounts[7])
     await locks['FIRST'].methods['safeTransferFrom(address,address,uint256,bytes)'](
-      accounts[7], accounts[6], Web3Utils.toHex(ID), Web3Utils.toHex('Julien'), { from: accounts[7] }
+      accounts[7], accounts[6], ID, Web3Utils.toHex('Julien'), { from: accounts[7] }
     )
     let ownerOf = await locks['FIRST'].ownerOf.call(ID)
     assert.equal(ownerOf, accounts[6])
-    keyDataAfter = await locks['FIRST'].keyDataFor.call(accounts[7])
     // while we may pass data to the safeTransferFrom function, it is not currently utilized in any way other than being passed to the `onERC721Received` function in MixinTransfer.sol
-    assert.equal(await locks['FIRST'].keyDataFor.call(accounts[6]), null)
-    assert.equal(Web3Utils.toUtf8(await locks['FIRST'].keyDataFor.call(accounts[7])), 'Julien')
   })
 
   it('should fail if trying to transfer a key to a contract which does not implement onERC721Received', async () => {
     await locks['FIRST'].purchaseFor(
       accounts[5],
-      Web3Utils.toHex('Someone Else'),
       {
         value: Units.convert('0.01', 'eth', 'wei'),
         from: accounts[5]
