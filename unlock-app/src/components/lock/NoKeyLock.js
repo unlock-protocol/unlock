@@ -25,8 +25,8 @@ export const NoKeyLock = ({
       amount={lock.keyPrice}
       render={(ethPrice, fiatPrice) => (
         <div>
-          <Body disabled={disabled}>
-            <EthPrice>{ethPrice} Eth</EthPrice>
+          <Body disabled={disabled} id={`Lock_${lock.address}`}>
+            <EthPrice id={`EthPrice_${lock.address}`}>{ethPrice} Eth</EthPrice>
             <div>
               <FiatPrice>${fiatPrice}</FiatPrice>
               <Separator> | </Separator>
