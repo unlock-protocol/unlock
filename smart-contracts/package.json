@@ -39,7 +39,6 @@
     "dev": "npm run lint && npm run build && npm run test",
     "ci": "npm run lint && npm run test && npm run reports",
     "build": "truffle compile --all",
-    "deploy": "truffle deploy --reset",
     "zos": "zos",
     "reports": "truffle test ./reports/gas.js"
   },
