@@ -1,5 +1,4 @@
 import React from 'react'
-import * as rtl from 'react-testing-library'
 import { renderHook } from 'react-hooks-testing-library'
 
 import configuration from '../../../config'
