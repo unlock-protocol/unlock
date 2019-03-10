@@ -76,15 +76,23 @@ describe('The Unlock Dashboard', () => {
   })
   
   describe('Paywall demo', () => {
-    it('should display a lock on the demo page with a paywall', async () => {
-      await expect(page).toClick('button', { text: 'Create Lock' })
-      await expect(page).toClick('button', { text: 'Submit' })
-
+    beforeAll(async () => {
       await Promise.all([
         page.goto(url(`/demo/${testLockAddress}`)),
         page.waitForNavigation(),
       ])
-      await expect(page).toMatchElement(`#Lock_${testLockAddress}`)
+      await page.waitFor(1000)
+    })
+    afterAll(async () => {
+      await Promise.all([
+        page.goto(url('/dashboard')),
+        page.waitForNavigation(),
+      ])
+    })
+    it('should display a lock on the demo page with a paywall', async () => {
+      const paywallBody = await page.mainFrame().childFrames()[0].$('body')
+      await page.mainFrame().childFrames()[0].waitForSelector(`#Lock_${testLockAddress}`)
+      await expect(paywallBody).toMatch('0.33 Eth')
     }, 10000)
   })
 })
