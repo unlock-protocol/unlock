@@ -4,15 +4,9 @@
 # Based on the environment it may also deploy the smart contracts.
 
 if [ -n "$CI" ]; then
-  # Before running the application, when in CI, we first need to deploy the smart contracts
-  # The artifact needs to be re-written before the application starts
-  cd smart-contracts
-  npm run deploy -- --network development
-  cd ".."
-
-  # We need to rebuild the application to take the changes to artifacts files into account
+  # We need to deploy the locks
   cd unlock-app
-  npm run build
+  npm run deploy-unlock-contract
   cd ".."
 fi
 

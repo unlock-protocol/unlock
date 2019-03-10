@@ -15,7 +15,7 @@ const requiredConfigVariables = {
   readOnlyProvider: process.env.READ_ONLY_PROVIDER,
   locksmithHost: process.env.LOCKSMITH_URI,
   unlockAddress:
-    process.env.UNLOCK_ADDRESS || '0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B', // default for CI
+    process.env.UNLOCK_ADDRESS || '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93', // default for CI
 }
 
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
