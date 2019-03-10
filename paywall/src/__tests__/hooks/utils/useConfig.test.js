@@ -1,5 +1,5 @@
 import React from 'react'
-import * as rtl from 'react-testing-library'
+import { renderHook } from 'react-hooks-testing-library'
 
 import configuration from '../../../config'
 import useConfig from '../../../hooks/utils/useConfig'
@@ -25,7 +25,7 @@ describe('useConfig hook', () => {
     }
     const {
       result: { current },
-    } = rtl.testHook(() => useConfig(), { wrapper })
+    } = renderHook(() => useConfig(), { wrapper })
 
     expect(current).toBe(config)
   })
