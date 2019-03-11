@@ -14,6 +14,7 @@ import {
   FAILED_TO_PURCHASE_KEY,
   FAILED_TO_UPDATE_KEY_PRICE,
   FAILED_TO_WITHDRAW_FROM_LOCK,
+  FATAL_NON_DEPLOYED_CONTRACT,
 } from '../../errors'
 
 jest.mock('../../utils/promises')
@@ -49,6 +50,15 @@ const accountsAndYield = accounts => {
   return jsonRpcRequest('eth_accounts', [], accounts)
 }
 
+// eth_getCode
+const ethGetCodeAndYield = (address, opCode) => {
+  return jsonRpcRequest(
+    'eth_getCode',
+    [address.toLowerCase(), 'latest'],
+    opCode
+  )
+}
+
 nock.emitter.on('no match', function(clientRequestObject, options, body) {
   if (debug) {
     console.log(`NO HTTP MOCK EXISTS FOR THAT REQUEST\n${body}`)
@@ -71,6 +81,7 @@ describe('WalletService', () => {
     it('should get the network id', done => {
       expect.assertions(1)
 
+      ethGetCodeAndYield(config.unlockAddress, 'opCode')
       const netVersion = Math.floor(Math.random() * 100000)
       netVersionAndYield(netVersion)
 
@@ -85,6 +96,19 @@ describe('WalletService', () => {
       }
       walletService.on('network.changed', networkId => {
         expect(networkId).toEqual(netVersion)
+        return done()
+      })
+
+      walletService.connect('HTTP')
+    })
+
+    it('should fail if the Unlock contract has not been deployed', done => {
+      expect.assertions(1)
+
+      ethGetCodeAndYield(config.unlockAddress, '0x')
+
+      walletService.on('error', error => {
+        expect(error.message).toEqual(FATAL_NON_DEPLOYED_CONTRACT)
         return done()
       })
 
@@ -127,6 +151,7 @@ describe('WalletService', () => {
       expect(walletService.ready).toBe(false)
       Unlock.networks = {}
 
+      ethGetCodeAndYield(config.unlockAddress, 'opCode')
       const netVersion = Math.floor(Math.random() * 100000)
       netVersionAndYield(netVersion)
       Unlock.networks = {
@@ -149,7 +174,7 @@ describe('WalletService', () => {
       walletService.connect('HTTP')
     })
 
-    it('should fail while if a user rejects access', done => {
+    it('should fail if a user rejects access', done => {
       expect.assertions(4)
 
       expect(walletService.ready).toBe(false)
@@ -172,6 +197,7 @@ describe('WalletService', () => {
     const netVersion = Math.floor(Math.random() * 100000)
 
     beforeEach(done => {
+      ethGetCodeAndYield(config.unlockAddress, 'opCode')
       netVersionAndYield(netVersion)
 
       Unlock.networks = {

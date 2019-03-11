@@ -119,10 +119,17 @@ export const MissingAccount = () => (
   </DefaultError>
 )
 
+export const ContractNotDeployed = () => (
+  <DefaultError title="Unlock not deployed">
+    <p>The Unlock contract has not been deployed at the configured address.</p>
+  </DefaultError>
+)
+
 export const mapping = {
   FATAL_MISSING_PROVIDER: MissingProvider,
   FATAL_NO_USER_ACCOUNT: MissingAccount,
   FATAL_WRONG_NETWORK: WrongNetwork,
+  FATAL_NON_DEPLOYED_CONTRACT: ContractNotDeployed,
   '*': DefaultError,
 }
 
@@ -146,4 +153,5 @@ export default {
   WrongNetwork,
   MissingProvider,
   MissingAccount,
+  ContractNotDeployed,
 }

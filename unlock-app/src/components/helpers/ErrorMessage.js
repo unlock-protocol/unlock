@@ -14,7 +14,7 @@ const genericError = message => (
 const defaultMessages = {
   MISSING_PROVIDER: <p>You need a web3 provider to use Unlock.</p>,
   NOT_ENABLED_IN_PROVIDER: <p>Please enable Unlock in your web3 Provider</p>,
-  NON_DEPLOYED_CONTRACT: (
+  FATAL_NON_DEPLOYED_CONTRACT: (
     <p>Unlock has not been deployed on the current network.</p>
   ),
 

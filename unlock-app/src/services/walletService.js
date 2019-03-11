@@ -11,6 +11,7 @@ import {
   FAILED_TO_PURCHASE_KEY,
   FAILED_TO_UPDATE_KEY_PRICE,
   FAILED_TO_WITHDRAW_FROM_LOCK,
+  FATAL_NON_DEPLOYED_CONTRACT,
 } from '../errors'
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
@@ -84,6 +85,13 @@ export default class WalletService extends EventEmitter {
     }
 
     this.web3 = new Web3(provider)
+
+    // Check if the Unlock contract has been deployed
+    const opCode = await this.web3.eth.getCode(this.unlockContractAddress)
+    // 0x means that no contract has been deployed at that address
+    if (opCode === '0x') {
+      return this.emit('error', new Error(FATAL_NON_DEPLOYED_CONTRACT))
+    }
 
     const networkId = await this.web3.eth.net.getId()
 
