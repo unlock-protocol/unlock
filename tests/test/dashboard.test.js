@@ -1,11 +1,23 @@
 const url = require('../helpers/url')
 
+// change to true to enable logging of all console calls in the page context
+const debug = false
+
 describe('The Unlock Dashboard', () => {
   beforeAll(async () => {
     await page.goto(url('/dashboard'))
+    if (debug) {
+      page.on('console', (msg) => {
+        console.log(`console.${msg.type()}`, msg.args().map(n => `${n}`))
+      })
+    }
   })
 
   const testLockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
+
+  function lockSelector(name) {
+    return `#${name}_${testLockAddress}`
+  }
 
   it('should load the creator dashboard', async () => {
     await expect(page).toMatch('Creator Dashboard')
@@ -90,9 +102,34 @@ describe('The Unlock Dashboard', () => {
     })
     it('should display a lock on the demo page with a paywall', async () => {
       await page.waitForFunction(() => window.frames.length, { polling: 'mutation' })
-      const paywallBody = await page.mainFrame().childFrames()[0].$('body')
-      await page.mainFrame().childFrames()[0].waitForSelector(`#Lock_${testLockAddress}`)
-      await expect(paywallBody).toMatch('0.33 Eth')
-    }, 10000)
+      const paywallIframe = page.mainFrame().childFrames()[0]
+      await paywallIframe.waitForSelector(lockSelector('Lock'))
+      await paywallIframe.waitForFunction((ethPriceSelector) => {
+        const eth = document.querySelector(ethPriceSelector)
+        if (!eth) return false
+        return eth.innerText === '0.33 ETH'
+      }, {}, lockSelector('EthPrice'))
+    }, 15000)
+    it('clicking the lock purchases a key', async () => {
+      const paywallIframe = page.mainFrame().childFrames()[0]
+      const paywallBody = await paywallIframe.$('body')
+      await expect(paywallBody).toClick(lockSelector('PurchaseKey'))
+      await paywallIframe.waitForFunction((footerSelector) => {
+        const footer = document.querySelector(footerSelector)
+        if (!footer) return false
+        return footer.innerText === 'Payment Pending'
+      }, {}, 'footer')
+    }, 15000)
+    it('after key purchase, unlocked flag appears', async () => {
+      await page.reload()
+      await page.waitFor(1000)
+      await page.waitForFunction(() => window.frames.length, { polling: 'mutation' })
+      const paywallIframe = page.mainFrame().childFrames()[0]
+      await paywallIframe.waitForFunction(() => {
+        const unlockFlag = document.querySelector('UnlockFlag')
+        if (!unlockFlag) return false
+        return true
+      })
+    })
   })
 })
