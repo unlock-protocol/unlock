@@ -28,7 +28,8 @@
     "link-parent-bin": "^1.0.0",
     "netlify-cli": "^2.6.0",
     "prettier": "^1.15.3",
-    "prettier-eslint-cli": "^4.7.1"
+    "prettier-eslint-cli": "^4.7.1",
+    "typescript": "^3.3.3333"
   },
   "devDependencies": {
     "ganache-cli": "^6.4.1",
