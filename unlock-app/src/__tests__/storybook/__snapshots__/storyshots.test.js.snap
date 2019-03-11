@@ -52800,6 +52800,22 @@ Object {
   position: absolute;
 }
 
+.c28 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c28:hover {
+  background-color: var(--offwhite);
+}
+
+.c28:hover:before {
+  content: 'Home';
+  position: absolute;
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -53215,6 +53231,19 @@ Object {
                 clip-rule="evenodd"
                 d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
                 fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c28"
+            name="Home"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 0 0 .351.856h1.214V17.5a.5.5 0 0 0 .5.5h2.572a.5.5 0 0 0 .5-.5v-2.885h3.428V17.5a.5.5 0 0 0 .5.5h2.572a.5.5 0 0 0 .5-.5v-4.577H18.5a.5.5 0 0 0 .351-.856L12.5 5.5z"
               />
             </svg>
           </div>
@@ -53637,6 +53666,19 @@ Object {
               clip-rule="evenodd"
               d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
               fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="lx77hn-1 izfAkl"
+          name="Home"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 0 0 .351.856h1.214V17.5a.5.5 0 0 0 .5.5h2.572a.5.5 0 0 0 .5-.5v-2.885h3.428V17.5a.5.5 0 0 0 .5.5h2.572a.5.5 0 0 0 .5-.5v-4.577H18.5a.5.5 0 0 0 .351-.856L12.5 5.5z"
             />
           </svg>
         </div>
