@@ -1,19 +1,22 @@
-const dev1984 = require('../../zos.dev-1984.json')
-const proxiesArray = dev1984.proxies['unlock-protocol/Unlock']
-// Get the last (most recent) entry
-const mostRecentProxy = proxiesArray.length - 1
-const ProxyAddress =
-  dev1984.proxies['unlock-protocol/Unlock'][mostRecentProxy].address
-const Unlock = artifacts.require('../Unlock.sol')
+let networkFile
+let proxiesArray
+let mostRecentProxy
+let ProxyAddress
+let proxiedUnlock
 
-let unlock
+module.exports = function setUnlockProxy (_Unlock, _network) {
+  networkFile = require(`../../zos.${_network}.json`)
+  proxiesArray = networkFile.proxies['unlock-protocol/Unlock']
+  mostRecentProxy = proxiesArray.length - 1
+  ProxyAddress =
+    networkFile.proxies['unlock-protocol/Unlock'][mostRecentProxy].address
 
-module.exports = function setUnlockProxy () {
-  return Unlock.at(ProxyAddress)
-    .then(_unlock => {
-      unlock = _unlock
+  return _Unlock
+    .at(ProxyAddress)
+    .then(_proxiedUnlock => {
+      proxiedUnlock = _proxiedUnlock
     })
     .then(() => {
-      return unlock
+      return proxiedUnlock
     })
 }
