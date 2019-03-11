@@ -2,7 +2,8 @@
   "env": {
     "development": {
       "presets": [
-        "next/babel"
+        "next/babel",
+        "@zeit/next-typescript/babel"
       ],
       "plugins": [
         [
@@ -17,7 +18,8 @@
     },
     "production": {
       "presets": [
-        "next/babel"
+        "next/babel",
+        "@zeit/next-typescript/babel"
       ],
       "plugins": [
         [
