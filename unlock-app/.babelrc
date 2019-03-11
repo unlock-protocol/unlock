@@ -40,7 +40,8 @@
             "preset-env": {
               "modules": "commonjs"
             }
-          }
+          },
+          "@zeit/next-typescript/babel"
         ]
       ],
       "plugins": [
