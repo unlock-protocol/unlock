@@ -72,7 +72,6 @@ describe('The Unlock Dashboard', () => {
         page.goto(url(`/demo/${testLockAddress}`)),
         page.waitForNavigation(),
       ])
-      await page.waitFor(1000)
     })
     afterAll(async () => {
       await Promise.all([
@@ -81,6 +80,7 @@ describe('The Unlock Dashboard', () => {
       ])
     })
     it('should display a lock on the demo page with a paywall', async () => {
+      await page.waitForFunction(() => window.frames.length, { polling: 'mutation' })
       const paywallBody = await page.mainFrame().childFrames()[0].$('body')
       await page.mainFrame().childFrames()[0].waitForSelector(`#Lock_${testLockAddress}`)
       await expect(paywallBody).toMatch('0.33 Eth')
