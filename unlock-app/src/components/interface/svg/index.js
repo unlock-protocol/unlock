@@ -61,5 +61,5 @@ export default {
   Twitter: wrapViewBox(Twitter, '0 0 24 24'),
   Bars: wrapViewBox(Bars, '0 0 56 42'),
   ChevronUp: wrapViewBox(ChevronUp, '0 0 58 32'),
-  Home: wrapViewBox(Home, '-5 -5 24 24'),
+  Home: wrapViewBox(Home, '0 0 24 24'),
 }
