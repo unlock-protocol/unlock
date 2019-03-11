@@ -20,6 +20,7 @@
     "cross-env": "^5.2.0",
     "ethereumjs-util": "^6.0.0",
     "history": "^4.7.2",
+    "isomorphic-unfetch": "^3.0.0",
     "jest-dom": "^3.1.0",
     "jest-mock-axios": "^2.1.11",
     "jest-styled-components": "^6.3.1",
@@ -49,7 +50,8 @@
     "terser": "^3.16.1",
     "unlock-abi-0": "^1.0.1",
     "web3": "1.0.0-beta.37",
-    "web3-utils": "1.0.0-beta.37"
+    "web3-utils": "1.0.0-beta.37",
+    "yaml-front-matter": "^4.0.0"
   },
   "devDependencies": {
     "@svgr/cli": "^4.1.0",
