@@ -4,6 +4,9 @@ pragma solidity 0.5.5;
 // This contract documents the revert reasons used in Unlock and Lock contracts.
 // This is intended to serve as a reference, but is not actually used for efficiency reasons.
 contract UnlockErrors {
+  // The target user already owns a valid key for this lock.
+  string public constant ALREADY_OWNS_KEY = 'ALREADY_OWNS_KEY';
+
   // You can't approve yourself.
   string public constant APPROVE_SELF = 'APPROVE_SELF';
 
