@@ -8,8 +8,8 @@ import { PublicLock, Unlock } from 'unlock-abi-0'
 import configure from '../../config'
 import WalletService from '../../services/walletService'
 import {
-  NOT_ENABLED_IN_PROVIDER,
-  MISSING_PROVIDER,
+  FATAL_NOT_ENABLED_IN_PROVIDER,
+  FATAL_MISSING_PROVIDER,
   FAILED_TO_CREATE_LOCK,
   FAILED_TO_PURCHASE_KEY,
   FAILED_TO_UPDATE_KEY_PRICE,
@@ -95,7 +95,7 @@ describe('WalletService', () => {
       expect.assertions(1)
 
       walletService.on('error', error => {
-        expect(error.message).toEqual(MISSING_PROVIDER)
+        expect(error.message).toEqual(FATAL_MISSING_PROVIDER)
         return done()
       })
 
@@ -106,7 +106,7 @@ describe('WalletService', () => {
       expect.assertions(1)
 
       walletService.once('error', error => {
-        expect(error.message).toBe(MISSING_PROVIDER)
+        expect(error.message).toBe(FATAL_MISSING_PROVIDER)
 
         walletService.once('error', () => {
           // This should not trigger
@@ -160,7 +160,7 @@ describe('WalletService', () => {
       expect(walletService.ready).toBe(false)
       walletService.once('error', error => {
         expect(enable).toHaveBeenCalled()
-        expect(error.message).toBe(NOT_ENABLED_IN_PROVIDER)
+        expect(error.message).toBe(FATAL_NOT_ENABLED_IN_PROVIDER)
         done()
       })
 
