@@ -7,12 +7,14 @@
     "doc": "docs"
   },
   "dependencies": {
+    "@typescript-eslint/parser": "^1.4.2",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "eslint": "^5.8.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-config-standard": "^12.0.0",
+    "eslint-import-resolver-typescript": "^1.1.1",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jest": "^22.3.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",

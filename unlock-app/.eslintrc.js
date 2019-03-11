@@ -14,7 +14,7 @@ module.exports = {
     browser: true,
     jest: true,
   },
-  plugins: ['jest', 'mocha', 'promise'],
+  plugins: ['jest', 'mocha', 'promise', 'import'],
   parser: 'babel-eslint',
   settings: {
     react: {
@@ -52,5 +52,14 @@ module.exports = {
     'jest/no-identical-title': 'error',
     'jest/no-focused-tests': 'error',
     'jest/prefer-expect-assertions': 'error',
+  },
+  settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
+    'import/resolver': {
+      //use <root>/tsconfig.json
+      typescript: {},
+    },
   },
 }
