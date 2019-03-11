@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import babel from 'rollup-plugin-babel'
-import { uglify } from 'rollup-plugin-uglify'
+import { terser } from 'rollup-plugin-terser'
 
 const config = {
   input: 'src/paywall-builder/index.js',
@@ -13,7 +13,7 @@ const config = {
       exclude: '**/node_modules/**',
       runtimeHelpers: true,
     }),
-    uglify({
+    terser({
       compress: {
         pure_getters: true,
         unsafe: true,
