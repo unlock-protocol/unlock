@@ -1,4 +1,5 @@
 import EventEmitter from 'events'
+import WalletService from '../../services/walletService'
 import walletMiddleware from '../../middlewares/walletMiddleware'
 import {
   CREATE_LOCK,
@@ -68,7 +69,8 @@ const create = () => {
   }
   const next = jest.fn()
 
-  const handler = walletMiddleware(store)
+  const walletService = new WalletService(mockConfig)
+  const handler = walletMiddleware(walletService)(store)
 
   const invoke = action => handler(next)(action)
 

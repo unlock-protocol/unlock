@@ -19,7 +19,6 @@ import {
 } from '../actions/walletStatus'
 import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
 
-import WalletService from '../services/walletService'
 import { FATAL_NO_USER_ACCOUNT } from '../errors'
 import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 import configure from '../config'
@@ -27,9 +26,8 @@ import configure from '../config'
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
 
-export default function walletMiddleware({ getState, dispatch }) {
+const makeWalletMiddleware = walletService => ({ getState, dispatch }) => {
   const config = configure()
-  const walletService = new WalletService(config)
 
   /**
    * Helper function which ensures that the walletService is ready
@@ -176,3 +174,5 @@ export default function walletMiddleware({ getState, dispatch }) {
     }
   }
 }
+
+export default makeWalletMiddleware
