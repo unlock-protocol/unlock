@@ -4,13 +4,15 @@ const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
-const Unlock = artifacts.require('../../Unlock.sol')
+const network = 'dev-1984'
+const unlockContract = artifacts.require('../Unlock.sol')
+const getUnlockProxy = require('../../helpers/proxy')
 
 let unlock, locks
 
 contract('Lock / erc721 / transferFrom', accounts => {
   before(async () => {
-    unlock = await Unlock.deployed()
+    unlock = await getUnlockProxy(unlockContract, network)
     locks = await deployLocks(unlock, accounts[0])
   })
 
@@ -35,20 +37,14 @@ contract('Lock / erc721 / transferFrom', accounts => {
         value: Units.convert('0.01', 'eth', 'wei'),
         from
       }),
-      locks['FIRST'].purchaseFor(
-        accountWithExpiredKey,
-        {
-          value: Units.convert('0.01', 'eth', 'wei'),
-          from: accountWithExpiredKey
-        }
-      ),
-      locks['FIRST'].purchaseFor(
-        accountWithKeyApproved,
-        {
-          value: Units.convert('0.01', 'eth', 'wei'),
-          from: accountWithKeyApproved
-        }
-      )
+      locks['FIRST'].purchaseFor(accountWithExpiredKey, {
+        value: Units.convert('0.01', 'eth', 'wei'),
+        from: accountWithExpiredKey
+      }),
+      locks['FIRST'].purchaseFor(accountWithKeyApproved, {
+        value: Units.convert('0.01', 'eth', 'wei'),
+        from: accountWithKeyApproved
+      })
     ]).then(async () => {
       keyExpiration = new BigNumber(
         await locks['FIRST'].keyExpirationTimestampFor.call(from)
@@ -254,22 +250,16 @@ contract('Lock / erc721 / transferFrom', accounts => {
     describe('when the lock is sold out', () => {
       before(async () => {
         // first we create a lock with only 1 key
-        await locks['SINGLE KEY'].purchaseFor(
-          from,
-          {
-            value: Units.convert('0.01', 'eth', 'wei'),
-            from
-          }
-        )
+        await locks['SINGLE KEY'].purchaseFor(from, {
+          value: Units.convert('0.01', 'eth', 'wei'),
+          from
+        })
         // confirm that the lock is sold out
         await shouldFail(
-          locks['SINGLE KEY'].purchaseFor(
-            accounts[8],
-            {
-              value: Units.convert('0.01', 'eth', 'wei'),
-              from: accounts[8]
-            }
-          ),
+          locks['SINGLE KEY'].purchaseFor(accounts[8], {
+            value: Units.convert('0.01', 'eth', 'wei'),
+            from: accounts[8]
+          }),
           'LOCK_SOLD_OUT'
         )
       })
@@ -277,14 +267,9 @@ contract('Lock / erc721 / transferFrom', accounts => {
       it('should still allow the transfer of keys', async () => {
         ID = await locks['SINGLE KEY'].getTokenIdFor.call(from)
         let ownerOfBefore = await locks['SINGLE KEY'].ownerOf.call(ID)
-        await locks['SINGLE KEY'].transferFrom(
-          ownerOfBefore,
-          accounts[9],
-          ID,
-          {
-            from: ownerOfBefore
-          }
-        )
+        await locks['SINGLE KEY'].transferFrom(ownerOfBefore, accounts[9], ID, {
+          from: ownerOfBefore
+        })
         let ownerOfAfter = await locks['SINGLE KEY'].ownerOf.call(ID)
         assert.equal(ownerOfAfter, accounts[9])
       })

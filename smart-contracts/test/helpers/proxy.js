@@ -3,13 +3,12 @@ const { ZosPackageFile } = Zos.files
 const packageFile = new ZosPackageFile()
 
 let networkFile
-let proxiesArray
 let proxies
 let mostRecentProxy
 let ProxyAddress
 let proxiedUnlock
 
-module.exports = function setUnlockProxy (_Unlock, _network) {
+module.exports = function getUnlockProxy (_Unlock, _network) {
   networkFile = packageFile.networkFile(`${_network}`)
   proxies = networkFile.getProxies({ contract: `Unlock` })
   mostRecentProxy = proxies.length - 1

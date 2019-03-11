@@ -3,48 +3,50 @@ const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
-const Unlock = artifacts.require('../Unlock.sol')
+const network = 'dev-1984'
+const unlockContract = artifacts.require('../Unlock.sol')
+const getUnlockProxy = require('../helpers/proxy')
 
 let unlock, locks
 
-contract('Lock / purchaseFor', (accounts) => {
-  before(() => {
-    return Unlock.deployed()
-      .then(_unlock => {
-        unlock = _unlock
-        return deployLocks(unlock, accounts[0])
-      })
-      .then(_locks => {
-        locks = _locks
-      })
+contract('Lock / purchaseFor', accounts => {
+  before(async () => {
+    unlock = await getUnlockProxy(unlockContract, network)
+    locks = await deployLocks(unlock, accounts[0])
   })
 
   describe('when the contract has a public key release', () => {
     it('should fail if the price is not enough', async () => {
-      await shouldFail(locks['FIRST']
-        .purchaseFor(accounts[0], {
+      await shouldFail(
+        locks['FIRST'].purchaseFor(accounts[0], {
           value: Units.convert('0.0001', 'eth', 'wei')
-        }), 'NOT_ENOUGH_FUNDS')
+        }),
+        'NOT_ENOUGH_FUNDS'
+      )
       // Making sure we do not have a key set!
-      await shouldFail(locks['FIRST'].keyExpirationTimestampFor.call(accounts[0]), 'NO_SUCH_KEY')
+      await shouldFail(
+        locks['FIRST'].keyExpirationTimestampFor.call(accounts[0]),
+        'NO_SUCH_KEY'
+      )
     })
 
     it('should fail if we reached the max number of keys', async () => {
-      await locks['SINGLE KEY']
-        .purchaseFor(accounts[0], {
-          value: Units.convert('0.01', 'eth', 'wei')
-        })
-      await shouldFail(locks['SINGLE KEY'].purchaseFor(accounts[1], {
-        value: Units.convert('0.01', 'eth', 'wei'),
-        from: accounts[1]
-      }), 'LOCK_SOLD_OUT')
+      await locks['SINGLE KEY'].purchaseFor(accounts[0], {
+        value: Units.convert('0.01', 'eth', 'wei')
+      })
+      await shouldFail(
+        locks['SINGLE KEY'].purchaseFor(accounts[1], {
+          value: Units.convert('0.01', 'eth', 'wei'),
+          from: accounts[1]
+        }),
+        'LOCK_SOLD_OUT'
+      )
     })
 
     it('should trigger an event when successful', async () => {
-      const tx = await locks['FIRST']
-        .purchaseFor(accounts[2], {
-          value: Units.convert('0.01', 'eth', 'wei')
-        })
+      const tx = await locks['FIRST'].purchaseFor(accounts[2], {
+        value: Units.convert('0.01', 'eth', 'wei')
+      })
       assert.equal(tx.logs[0].event, 'Transfer')
       assert.equal(tx.logs[0].args._from, 0)
       assert.equal(tx.logs[0].args._to, accounts[2])
@@ -62,11 +64,21 @@ contract('Lock / purchaseFor', (accounts) => {
           value: Units.convert('0.01', 'eth', 'wei')
         })
         // And check the expiration which shiuld be exactly now + keyDuration
-        const expirationTimestamp = new BigNumber(await locks['SECOND'].keyExpirationTimestampFor.call(accounts[4]))
+        const expirationTimestamp = new BigNumber(
+          await locks['SECOND'].keyExpirationTimestampFor.call(accounts[4])
+        )
         const now = parseInt(new Date().getTime() / 1000)
         // we check +/- 10 seconds to fix for now being different inside the EVM and here... :(
-        assert(expirationTimestamp.gt(locks['SECOND'].params.expirationDuration.plus(now - 10)))
-        assert(expirationTimestamp.lt(locks['SECOND'].params.expirationDuration.plus(now + 10)))
+        assert(
+          expirationTimestamp.gt(
+            locks['SECOND'].params.expirationDuration.plus(now - 10)
+          )
+        )
+        assert(
+          expirationTimestamp.lt(
+            locks['SECOND'].params.expirationDuration.plus(now + 10)
+          )
+        )
       })
     })
 
@@ -75,13 +87,22 @@ contract('Lock / purchaseFor', (accounts) => {
         await locks['FIRST'].purchaseFor(accounts[1], {
           value: Units.convert('0.01', 'eth', 'wei')
         })
-        const firstExpiration = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(accounts[1]))
+        const firstExpiration = new BigNumber(
+          await locks['FIRST'].keyExpirationTimestampFor.call(accounts[1])
+        )
         assert(firstExpiration.gt(0))
         await locks['FIRST'].purchaseFor(accounts[1], {
           value: Units.convert('0.01', 'eth', 'wei')
         })
-        const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(accounts[1]))
-        assert.equal(expirationTimestamp.toFixed(), firstExpiration.plus(locks['FIRST'].params.expirationDuration).toFixed())
+        const expirationTimestamp = new BigNumber(
+          await locks['FIRST'].keyExpirationTimestampFor.call(accounts[1])
+        )
+        assert.equal(
+          expirationTimestamp.toFixed(),
+          firstExpiration
+            .plus(locks['FIRST'].params.expirationDuration)
+            .toFixed()
+        )
       })
     })
 
@@ -89,28 +110,45 @@ contract('Lock / purchaseFor', (accounts) => {
       let outstandingKeys, numberOfOwners, balance, now
 
       before(async () => {
-        balance = new BigNumber(await web3.eth.getBalance(locks['FIRST'].address))
-        outstandingKeys = new BigNumber(await locks['FIRST'].outstandingKeys.call())
+        balance = new BigNumber(
+          await web3.eth.getBalance(locks['FIRST'].address)
+        )
+        outstandingKeys = new BigNumber(
+          await locks['FIRST'].outstandingKeys.call()
+        )
         now = parseInt(new Date().getTime() / 1000)
-        numberOfOwners = new BigNumber(await locks['FIRST'].numberOfOwners.call())
+        numberOfOwners = new BigNumber(
+          await locks['FIRST'].numberOfOwners.call()
+        )
         return locks['FIRST'].purchaseFor(accounts[0], {
           value: Units.convert('0.01', 'eth', 'wei')
         })
       })
 
       it('should have the right expiration timestamp for the key', async () => {
-        const expirationTimestamp = new BigNumber(await locks['FIRST'].keyExpirationTimestampFor.call(accounts[0]))
-        const expirationDuration = new BigNumber(await locks['FIRST'].expirationDuration.call())
+        const expirationTimestamp = new BigNumber(
+          await locks['FIRST'].keyExpirationTimestampFor.call(accounts[0])
+        )
+        const expirationDuration = new BigNumber(
+          await locks['FIRST'].expirationDuration.call()
+        )
         assert(expirationTimestamp.gte(expirationDuration.plus(now)))
       })
 
       it('should have added the funds to the contract', async () => {
-        let newBalance = new BigNumber(await web3.eth.getBalance(locks['FIRST'].address))
-        assert.equal(parseFloat(Units.convert(newBalance, 'wei', 'eth')), parseFloat(Units.convert(balance, 'wei', 'eth')) + 0.01)
+        let newBalance = new BigNumber(
+          await web3.eth.getBalance(locks['FIRST'].address)
+        )
+        assert.equal(
+          parseFloat(Units.convert(newBalance, 'wei', 'eth')),
+          parseFloat(Units.convert(balance, 'wei', 'eth')) + 0.01
+        )
       })
 
       it('should have increased the number of outstanding keys', async () => {
-        const _outstandingKeys = new BigNumber(await locks['FIRST'].outstandingKeys.call())
+        const _outstandingKeys = new BigNumber(
+          await locks['FIRST'].outstandingKeys.call()
+        )
         assert.equal(
           _outstandingKeys.toFixed(),
           outstandingKeys.plus(1).toFixed()
@@ -118,7 +156,9 @@ contract('Lock / purchaseFor', (accounts) => {
       })
 
       it('should have increased the number of owners', async () => {
-        const _numberOfOwners = new BigNumber(await locks['FIRST'].numberOfOwners.call())
+        const _numberOfOwners = new BigNumber(
+          await locks['FIRST'].numberOfOwners.call()
+        )
         assert.equal(
           _numberOfOwners.toFixed(),
           numberOfOwners.plus(1).toFixed()

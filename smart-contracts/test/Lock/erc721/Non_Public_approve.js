@@ -1,28 +1,26 @@
 const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
-const Unlock = artifacts.require('../../Unlock.sol')
+const network = 'dev-1984'
+const unlockContract = artifacts.require('../Unlock.sol')
+const getUnlockProxy = require('../../helpers/proxy')
 
 let unlock, locks
 
-contract('Lock / erc721 / Non_Public_approve', (accounts) => {
-  before(() => {
-    return Unlock.deployed()
-      .then(_unlock => {
-        unlock = _unlock
-        return deployLocks(unlock, accounts[0])
-      })
-      .then(_locks => {
-        locks = _locks
-      })
+contract('Lock / erc721 / Non_Public_approve', accounts => {
+  before(async () => {
+    unlock = await getUnlockProxy(unlockContract, network)
+    locks = await deployLocks(unlock, accounts[0])
   })
 
   // from approve.js, ln#23:
   describe.skip('when the lock is private', () => {
     it('should fail', async () => {
-      await shouldFail(locks['PRIVATE']
-        .approve(accounts[2], accounts[1], {
+      await shouldFail(
+        locks['PRIVATE'].approve(accounts[2], accounts[1], {
           from: accounts[1]
-        }), '')
+        }),
+        ''
+      )
     })
   })
 
@@ -30,7 +28,7 @@ contract('Lock / erc721 / Non_Public_approve', (accounts) => {
     let owner
 
     before(() => {
-      return locks['RESTRICTED'].owner.call().then((_owner) => {
+      return locks['RESTRICTED'].owner.call().then(_owner => {
         owner = _owner
       })
     })
@@ -44,7 +42,7 @@ contract('Lock / erc721 / Non_Public_approve', (accounts) => {
           .then(() => {
             return locks['RESTRICTED'].getApproved.call(accounts[1])
           })
-          .then((approved) => {
+          .then(approved => {
             assert.equal(approved, accounts[1])
           })
       })
@@ -63,16 +61,15 @@ contract('Lock / erc721 / Non_Public_approve', (accounts) => {
           })
           .then(() => {
             // Lock owner approves the transfer of accounts[2]'s key
-            return locks['RESTRICTED']
-              .approve(accounts[3], accounts[2], {
-                from: owner
-              })
+            return locks['RESTRICTED'].approve(accounts[3], accounts[2], {
+              from: owner
+            })
           })
           .then(() => {
             // Let's retrieve the approved key
             return locks['RESTRICTED'].getApproved.call(accounts[2])
           })
-          .then((approved) => {
+          .then(approved => {
             // and make sure it is right
             assert.equal(approved, accounts[3])
           })
@@ -87,7 +84,7 @@ contract('Lock / erc721 / Non_Public_approve', (accounts) => {
             // Let's retrieve the approved key
             return locks['RESTRICTED'].getApproved.call(accounts[5])
           })
-          .then((approved) => {
+          .then(approved => {
             // and make sure it is right
             assert.equal(approved, accounts[4])
           })
@@ -96,45 +93,49 @@ contract('Lock / erc721 / Non_Public_approve', (accounts) => {
 
     describe.skip('if the sender is the owner of the key', () => {
       it('should fail if the owner of a key tries to approve transfer of her key', async () => {
-        await locks['RESTRICTED']
-          .approve(accounts[5], accounts[5], {
-            from: owner
-          })
+        await locks['RESTRICTED'].approve(accounts[5], accounts[5], {
+          from: owner
+        })
         // accounts[5] purchases a key
         await locks['RESTRICTED'].purchaseFor(accounts[5], {
           value: locks['RESTRICTED'].params.keyPrice.toFixed(),
           from: accounts[5]
         })
         // Key owner tries to approve the transfer of her key
-        await shouldFail(locks['RESTRICTED']
-          .approve(accounts[3], accounts[5], {
+        await shouldFail(
+          locks['RESTRICTED'].approve(accounts[3], accounts[5], {
             from: accounts[5]
-          }), '')
+          }),
+          ''
+        )
       })
 
       it('should fail if sender is trying to allow another key transfer', async () => {
-        await locks['RESTRICTED']
-          .approve(accounts[5], accounts[5], {
-            from: owner
-          })
+        await locks['RESTRICTED'].approve(accounts[5], accounts[5], {
+          from: owner
+        })
         // accounts[5] purchases a key
         await locks['RESTRICTED'].purchaseFor(accounts[5], {
           value: locks['RESTRICTED'].params.keyPrice.toFixed(),
           from: accounts[5]
         })
         // Key owner tries to approve the transfer of her key
-        await shouldFail(locks['RESTRICTED']
-          .approve(accounts[3], accounts[4], {
+        await shouldFail(
+          locks['RESTRICTED'].approve(accounts[3], accounts[4], {
             from: accounts[5]
-          }), '')
+          }),
+          ''
+        )
       })
     })
 
     it('should fail if the sender does not own a key', async () => {
-      await shouldFail(locks['RESTRICTED']
-        .approve(accounts[5], accounts[5], {
+      await shouldFail(
+        locks['RESTRICTED'].approve(accounts[5], accounts[5], {
           from: accounts[9]
-        }), '')
+        }),
+        ''
+      )
     })
   })
 })

@@ -3,7 +3,9 @@ const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
-const Unlock = artifacts.require('../Unlock.sol')
+const network = 'dev-1984'
+const unlockContract = artifacts.require('../Unlock.sol')
+const getUnlockProxy = require('../helpers/proxy')
 
 let unlock, locks
 
@@ -11,7 +13,7 @@ contract('Lock / destroyLock', accounts => {
   let lock
 
   before(async () => {
-    unlock = await Unlock.deployed()
+    unlock = await getUnlockProxy(unlockContract, network)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
   })
@@ -56,7 +58,10 @@ contract('Lock / destroyLock', accounts => {
 
     it('should trigger the Destroy event', () => {
       assert.equal(event.event, 'Destroy')
-      assert.equal(new BigNumber(event.args.balance).toFixed(), initialLockBalance.toFixed())
+      assert.equal(
+        new BigNumber(event.args.balance).toFixed(),
+        initialLockBalance.toFixed()
+      )
       assert.equal(event.args.owner, accounts[0])
     })
 
@@ -67,7 +72,7 @@ contract('Lock / destroyLock', accounts => {
         } catch (e) {
           assert.equal(
             e,
-            'Error: Returned values aren\'t valid, did it run Out of Gas?'
+            "Error: Returned values aren't valid, did it run Out of Gas?"
           )
         }
       } else {

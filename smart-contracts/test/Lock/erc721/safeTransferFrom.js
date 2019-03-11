@@ -2,13 +2,15 @@ const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
-const Unlock = artifacts.require('../../Unlock.sol')
+const network = 'dev-1984'
+const unlockContract = artifacts.require('../Unlock.sol')
+const getUnlockProxy = require('../../helpers/proxy')
 
 let unlock, locks
 
 contract('Lock / erc721 / safeTransferFrom', accounts => {
   before(async () => {
-    unlock = await Unlock.deployed()
+    unlock = await getUnlockProxy(unlockContract, network)
     locks = await deployLocks(unlock, accounts[0])
   })
 
@@ -49,13 +51,10 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
   })
 
   it('should fail if trying to transfer a key to a contract which does not implement onERC721Received', async () => {
-    await locks['FIRST'].purchaseFor(
-      accounts[5],
-      {
-        value: Units.convert('0.01', 'eth', 'wei'),
-        from: accounts[5]
-      }
-    )
+    await locks['FIRST'].purchaseFor(accounts[5], {
+      value: Units.convert('0.01', 'eth', 'wei'),
+      from: accounts[5]
+    })
     ID = await locks['FIRST'].getTokenIdFor.call(accounts[5])
     // A contract which does NOT implement onERC721Received:
     let nonCompliantContract = unlock.address

@@ -1,13 +1,15 @@
 const Units = require('ethereumjs-units')
 const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
-const Unlock = artifacts.require('../../Unlock.sol')
+const network = 'dev-1984'
+const unlockContract = artifacts.require('../Unlock.sol')
+const getUnlockProxy = require('../../helpers/proxy')
 
 let unlock, lock, ID
 
 contract('Lock / erc721 / approveForAll', accounts => {
   before(async () => {
-    unlock = await Unlock.deployed()
+    unlock = await getUnlockProxy(unlockContract, network)
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
   })
@@ -17,21 +19,15 @@ contract('Lock / erc721 / approveForAll', accounts => {
 
   describe('when the key exists', () => {
     before(async () => {
-      await lock.purchaseFor(
-        owner,
-        {
-          value: Units.convert('0.01', 'eth', 'wei'),
-          from: owner
-        }
-      )
+      await lock.purchaseFor(owner, {
+        value: Units.convert('0.01', 'eth', 'wei'),
+        from: owner
+      })
       ID = await lock.getTokenIdFor.call(owner)
     })
 
     it('isApprovedForAll defaults to false', async () => {
-      assert.equal(
-        await lock.isApprovedForAll.call(owner, approvedUser),
-        false
-      )
+      assert.equal(await lock.isApprovedForAll.call(owner, approvedUser), false)
     })
 
     describe('when the sender is self approving', () => {

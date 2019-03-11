@@ -1,18 +1,14 @@
 const deployLocks = require('../../helpers/deployLocks')
-const Unlock = artifacts.require('../../Unlock.sol')
+const network = 'dev-1984'
+const unlockContract = artifacts.require('../Unlock.sol')
+const getUnlockProxy = require('../../helpers/proxy')
 
 let unlock, locks
 
 contract('Lock / erc721 / compliance', accounts => {
-  before(() => {
-    return Unlock.deployed()
-      .then(_unlock => {
-        unlock = _unlock
-        return deployLocks(unlock, accounts[0])
-      })
-      .then(_locks => {
-        locks = _locks
-      })
+  before(async () => {
+    unlock = await getUnlockProxy(unlockContract, network)
+    locks = await deployLocks(unlock, accounts[0])
   })
 
   it('should support the erc721 interface()', async function () {
