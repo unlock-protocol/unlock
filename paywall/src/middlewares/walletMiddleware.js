@@ -20,14 +20,16 @@ import {
 import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
 
 import WalletService from '../services/walletService'
-import { NO_USER_ACCOUNT } from '../errors'
+import { FATAL_NO_USER_ACCOUNT } from '../errors'
 import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
+import configure from '../config'
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
 
 export default function walletMiddleware({ getState, dispatch }) {
-  const walletService = new WalletService()
+  const config = configure()
+  const walletService = new WalletService(config)
 
   /**
    * Helper function which ensures that the walletService is ready
@@ -36,7 +38,7 @@ export default function walletMiddleware({ getState, dispatch }) {
    */
   const ensureReadyBefore = callback => {
     if (!walletService.ready) {
-      return dispatch(setError(NO_USER_ACCOUNT))
+      return dispatch(setError(FATAL_NO_USER_ACCOUNT))
     }
     return callback()
   }
@@ -46,6 +48,7 @@ export default function walletMiddleware({ getState, dispatch }) {
    * The setAccount action will reset other relevant redux state
    */
   walletService.on('account.changed', account => {
+    if (config.isServer) return
     // Let's poll to detect account changes
     setTimeout(walletService.getAccount.bind(walletService), POLLING_INTERVAL)
 
