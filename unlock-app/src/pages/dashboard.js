@@ -20,27 +20,31 @@ export const Dashboard = ({ account, network, lockFeed }) => {
           <Head>
             <title>{pageTitle('Dashboard')}</title>
           </Head>
-          <BrowserOnly>
-            <CreatorAccount network={network} account={account} />
-            <CreatorLocks lockFeed={lockFeed} />
-            <DeveloperOverlay />
-          </BrowserOnly>
+          {account && (
+            <BrowserOnly>
+              <CreatorAccount network={network} account={account} />
+              <CreatorLocks lockFeed={lockFeed} />
+              <DeveloperOverlay />
+            </BrowserOnly>
+          )}
         </Layout>
       </GlobalErrorConsumer>
     </GlobalErrorProvider>
   )
 }
 
+// TODO: is this used?
 Dashboard.displayName = 'Dashboard'
 
 Dashboard.propTypes = {
-  account: UnlockPropTypes.account.isRequired,
+  account: UnlockPropTypes.account,
   network: UnlockPropTypes.network.isRequired,
   lockFeed: PropTypes.arrayOf(UnlockPropTypes.lock),
 }
 
 Dashboard.defaultProps = {
   lockFeed: [],
+  account: null,
 }
 
 export const mapStateToProps = state => {
