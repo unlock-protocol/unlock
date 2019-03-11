@@ -19,12 +19,16 @@ import { SET_PROVIDER } from '../../actions/provider'
 import { NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
 import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../../constants'
-import { NO_USER_ACCOUNT } from '../../errors'
+import { FATAL_NO_USER_ACCOUNT } from '../../errors'
 import {
   SIGN_DATA,
   SIGNED_DATA,
   SIGNATURE_ERROR,
 } from '../../actions/signature'
+
+let mockConfig
+
+jest.mock('../../config', () => () => mockConfig)
 
 /**
  * Fake state
@@ -94,6 +98,7 @@ jest.mock('../../services/walletService', () => {
 jest.useFakeTimers()
 
 beforeEach(() => {
+  mockConfig = jest.requireActual('../../config').default()
   // Reset the mock
   mockWalletService = new MockWalletService()
 
@@ -145,6 +150,28 @@ describe('Wallet middleware', () => {
       expect.any(Function),
       POLLING_INTERVAL
     )
+  })
+  it('on the server, it should not handle account.changed events triggered by the walletService', () => {
+    expect.assertions(2)
+    setTimeout.mockClear()
+    mockConfig.isServer = true
+    const { store } = create()
+    const address = '0x123'
+    const account = {
+      address,
+    }
+    mockWalletService.getAccount = jest.fn()
+
+    mockWalletService.emit('account.changed', address)
+
+    expect(store.dispatch).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: SET_ACCOUNT,
+        account,
+      })
+    )
+
+    expect(setTimeout).not.toHaveBeenCalled()
   })
 
   it('should handle transaction.pending events triggered by the walletService', () => {
@@ -302,7 +329,7 @@ describe('Wallet middleware', () => {
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
-        error: NO_USER_ACCOUNT,
+        error: FATAL_NO_USER_ACCOUNT,
       })
 
       expect(mockWalletService.purchaseKey).not.toHaveBeenCalled()
@@ -337,7 +364,7 @@ describe('Wallet middleware', () => {
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
-        error: NO_USER_ACCOUNT,
+        error: FATAL_NO_USER_ACCOUNT,
       })
 
       expect(mockWalletService.withdrawFromLock).not.toHaveBeenCalled()
@@ -370,7 +397,7 @@ describe('Wallet middleware', () => {
         invoke(action)
         expect(store.dispatch).toHaveBeenCalledWith({
           type: SET_ERROR,
-          error: NO_USER_ACCOUNT,
+          error: FATAL_NO_USER_ACCOUNT,
         })
 
         expect(mockWalletService.createLock).not.toHaveBeenCalled()
@@ -426,7 +453,7 @@ describe('Wallet middleware', () => {
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
-        error: NO_USER_ACCOUNT,
+        error: FATAL_NO_USER_ACCOUNT,
       })
 
       expect(mockWalletService.updateKeyPrice).not.toHaveBeenCalled()
