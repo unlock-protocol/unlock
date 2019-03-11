@@ -10,6 +10,8 @@ import { ConfigContext } from '../utils/withConfig'
 
 import WalletCheckOverlay from '../components/interface/FullScreenModals'
 
+// Services
+import Web3Service from '../services/web3Service'
 // Middlewares
 import web3Middleware from '../middlewares/web3Middleware'
 import currencyConversionMiddleware from '../middlewares/currencyConversionMiddleware'
@@ -22,9 +24,10 @@ const config = configure()
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
 function getOrCreateStore(initialState, path) {
+  const web3Service = new Web3Service()
   const middlewares = [
     interWindowCommunicationMiddleware(global),
-    web3Middleware,
+    web3Middleware(web3Service),
     currencyConversionMiddleware,
     walletMiddleware,
   ]

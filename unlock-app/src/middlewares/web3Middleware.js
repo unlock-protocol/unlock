@@ -20,7 +20,6 @@ import {
 } from '../actions/transaction'
 import { PGN_ITEMS_PER_PAGE, UNLIMITED_KEYS_COUNT } from '../constants'
 
-import Web3Service from '../services/web3Service'
 import {
   SET_KEYS_ON_PAGE_FOR_LOCK,
   setKeysOnPageForLock,
@@ -29,9 +28,7 @@ import { lockRoute } from '../utils/routes'
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
-export default function web3Middleware({ getState, dispatch }) {
-  const web3Service = new Web3Service()
-
+const createWeb3Middleware = web3Service => ({ getState, dispatch }) => {
   web3Service.on('account.updated', (account, update) => {
     dispatch(updateAccount(update))
   })
@@ -197,3 +194,5 @@ export default function web3Middleware({ getState, dispatch }) {
     }
   }
 }
+
+export default createWeb3Middleware

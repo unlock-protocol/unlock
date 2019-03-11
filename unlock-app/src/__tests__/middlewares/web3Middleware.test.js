@@ -1,5 +1,6 @@
 import EventEmitter from 'events'
 import { LOCATION_CHANGE } from 'connected-next-router'
+import Web3Service from '../../services/web3Service'
 import web3Middleware from '../../middlewares/web3Middleware'
 import { ADD_LOCK, UPDATE_LOCK, CREATE_LOCK } from '../../actions/lock'
 import { UPDATE_KEY } from '../../actions/key'
@@ -44,7 +45,8 @@ const create = () => {
   }
   const next = jest.fn()
 
-  const handler = web3Middleware(store)
+  const service = new Web3Service()
+  const handler = web3Middleware(service)(store)
 
   const invoke = action => handler(next)(action)
 
