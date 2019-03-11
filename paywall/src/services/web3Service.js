@@ -41,7 +41,7 @@ export default class Web3Service extends EventEmitter {
     this.eventsHandlers = {
       NewLock: (transactionHash, contractAddress, blockNumber, args) => {
         this.emit('transaction.updated', transactionHash, {
-          lock: contractAddress,
+          lock: args.newLockAddress,
         })
         this.emit('lock.updated', args.newLockAddress, {
           asOf: blockNumber,
@@ -54,6 +54,7 @@ export default class Web3Service extends EventEmitter {
         const owner = args._to
         this.emit('transaction.updated', transactionHash, {
           key: keyId(contractAddress, owner),
+          lock: contractAddress,
         })
         return this.emit('key.saved', keyId(contractAddress, owner), {
           lock: contractAddress,
