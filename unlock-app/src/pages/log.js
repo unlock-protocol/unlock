@@ -59,13 +59,13 @@ Log.propTypes = {
 
 const Content = styled.div`
   display: grid;
-  grid-template-columns: min-content min-content min-content;
-  grid-auto-rows: 20px;
+  grid-template-columns: 125px 2fr 1fr;
+  grid-auto-rows: 32px;
   grid-column-gap: 20px;
 `
 
 const LogHeader = styled.div`
-  font-size: 8px;
+  font-size: 10px;
   font-weight: normal;
   text-transform: uppercase;
   color: var(--grey);
@@ -73,7 +73,9 @@ const LogHeader = styled.div`
 `
 
 const LogElement = styled.div`
-  font-size: 11px;
+  font-size: 14px;
+  line-height: 14px;
+  color: var(--darkgrey);
   font-weight: 300;
   font-family: 'IBM Plex Mono', Courier, monospace;
 `
@@ -84,12 +86,12 @@ const typeColors = {
 }
 
 const Type = styled(LogElement)`
-  color: ${props => 'var(--' + typeColors[props.type] || 'darkgrey'});
+  color: ${props => 'var(--' + (typeColors[props.type] || 'slate')});
   white-space: nowrap;
 `
 
 const Address = styled.a`
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 300;
   font-family: 'IBM Plex Mono', Courier, monospace;
 `
