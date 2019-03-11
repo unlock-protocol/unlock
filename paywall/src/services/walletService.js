@@ -5,8 +5,8 @@ import { PublicLock, Unlock } from 'unlock-abi-0'
 
 import configure from '../config'
 import {
-  MISSING_PROVIDER,
-  NOT_ENABLED_IN_PROVIDER,
+  FATAL_MISSING_PROVIDER,
+  FATAL_NOT_ENABLED_IN_PROVIDER,
   FAILED_TO_CREATE_LOCK,
   FAILED_TO_PURCHASE_KEY,
   FAILED_TO_UPDATE_KEY_PRICE,
@@ -70,7 +70,7 @@ export default class WalletService extends EventEmitter {
 
     // We fail: it appears that we are trying to connect but do not have a provider available...
     if (!provider) {
-      return this.emit('error', new Error(MISSING_PROVIDER))
+      return this.emit('error', new Error(FATAL_MISSING_PROVIDER))
     }
 
     try {
@@ -80,7 +80,7 @@ export default class WalletService extends EventEmitter {
         await provider.enable()
       }
     } catch (error) {
-      return this.emit('error', new Error(NOT_ENABLED_IN_PROVIDER))
+      return this.emit('error', new Error(FATAL_NOT_ENABLED_IN_PROVIDER))
     }
 
     this.web3 = new Web3(provider)
