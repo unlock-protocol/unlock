@@ -17,6 +17,6 @@
     "target": "esnext"
   },
   "include": [
-    "./src/**/*.js"
+    "./src/**/*"
   ]
 }
