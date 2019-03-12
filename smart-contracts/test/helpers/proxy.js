@@ -1,38 +1,19 @@
-const Zos = require('zos')
-const { ZosPackageFile } = Zos.files
-const packageFile = new ZosPackageFile()
+const getNetworkFile = require('../../helpers/ZosNetworkFile.js')
 
-let networkFile
 let proxies
 let mostRecentProxy
 let ProxyAddress
 let proxiedUnlock
-let network
 
 module.exports = function getUnlockProxy (_Unlock) {
-  return web3.eth.net
-    .getId()
-    .then(_Id => {
-      switch (_Id) {
-        case '1':
-          network = 'mainnet'
-          break
-        case '4':
-          network = 'rinkeby'
-          break
-        default:
-          network = `dev-${_Id}`
-      }
-    })
-    .then(() => {
-      networkFile = packageFile.networkFile(`${network}`)
-      proxies = networkFile.getProxies({ contract: `Unlock` })
-      mostRecentProxy = proxies.length - 1
-      ProxyAddress = proxies[mostRecentProxy].address
-      return _Unlock.at(ProxyAddress)
-    })
-    .then(_proxiedUnlock => {
-      proxiedUnlock = _proxiedUnlock
-      return proxiedUnlock
-    })
+  return getNetworkFile(web3).then(networkFile => {
+    proxies = networkFile.getProxies({ contract: `Unlock` })
+    mostRecentProxy = proxies.length - 1
+    ProxyAddress = proxies[mostRecentProxy].address
+    return _Unlock.at(ProxyAddress)
+      .then(_proxiedUnlock => {
+        proxiedUnlock = _proxiedUnlock
+        return proxiedUnlock
+      })
+  })
 }
