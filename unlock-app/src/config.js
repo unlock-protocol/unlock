@@ -97,7 +97,7 @@ export default function configure(
     )
     blockTime = 10 // in mseconds.
     supportedProviders = ['HTTP']
-    services['storage'] = { host: 'http://127.0.0.1:8080' }
+    services['storage'] = { host: runtimeConfig.locksmithHost }
     isRequiredNetwork = networkId => networkId === 1984
   }
 
@@ -107,7 +107,7 @@ export default function configure(
     providers['HTTP'] = new Web3.providers.HttpProvider(
       `http://${runtimeConfig.httpProvider}:8545`
     )
-    services['storage'] = { host: 'http://127.0.0.1:8080' }
+    services['storage'] = { host: runtimeConfig.locksmithHost }
 
     // If there is an existing web3 injected provider, we also add this one to the list of possible providers
     if (typeof environment.web3 !== 'undefined') {
