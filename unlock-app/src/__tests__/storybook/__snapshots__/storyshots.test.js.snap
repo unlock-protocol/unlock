@@ -6469,7 +6469,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c1 {
-  background-color: var(--lightgrey);
+  background-color: var(--link);
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -6481,7 +6481,7 @@ Object {
 }
 
 .c1 > svg {
-  fill: var(--grey);
+  fill: var(--white);
   height: 24px;
   width: 24px;
 }
@@ -6561,23 +6561,25 @@ Object {
       />
       <a
         class="c0 c1"
-        href="/dashboard"
-        title="Dashboard"
+        href="/log"
+        title="Log"
       >
         <svg
           viewBox="0 0 24 24"
         >
           <title>
-            Dashboard
+            Log
           </title>
           <path
-            d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 0 0 .351.856h1.214V17.5a.5.5 0 0 0 .5.5h2.572a.5.5 0 0 0 .5-.5v-2.885h3.428V17.5a.5.5 0 0 0 .5.5h2.572a.5.5 0 0 0 .5-.5v-4.577H18.5a.5.5 0 0 0 .351-.856L12.5 5.5z"
+            clip-rule="evenodd"
+            d="M10.5 8a.5.5 0 0 1 0-1h6a.5.5 0 0 1 0 1h-6zm6.5 2.5a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h6a.5.5 0 0 1 .5.5zm-7 3a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 0-1h-6a.5.5 0 0 0-.5.5zm7 3a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h6a.5.5 0 0 1 .5.5zm-10-6a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0-.5.5zM7.5 8a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1h-1zM7 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0-.5.5zm2 3a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1 0-1h1a.5.5 0 0 1 .5.5z"
+            fill-rule="evenodd"
           />
         </svg>
         <small
           class="c2"
         >
-          Dashboard
+          Log
         </small>
       </a>
     </div>
@@ -6588,24 +6590,26 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 cTTpHL"
-      href="/dashboard"
-      title="Dashboard"
+      class="sc-850ddk-0 eeFTKH"
+      href="/log"
+      title="Log"
     >
       <svg
         viewBox="0 0 24 24"
       >
         <title>
-          Dashboard
+          Log
         </title>
         <path
-          d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 0 0 .351.856h1.214V17.5a.5.5 0 0 0 .5.5h2.572a.5.5 0 0 0 .5-.5v-2.885h3.428V17.5a.5.5 0 0 0 .5.5h2.572a.5.5 0 0 0 .5-.5v-4.577H18.5a.5.5 0 0 0 .351-.856L12.5 5.5z"
+          clip-rule="evenodd"
+          d="M10.5 8a.5.5 0 0 1 0-1h6a.5.5 0 0 1 0 1h-6zm6.5 2.5a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h6a.5.5 0 0 1 .5.5zm-7 3a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 0-1h-6a.5.5 0 0 0-.5.5zm7 3a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h6a.5.5 0 0 1 .5.5zm-10-6a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0-.5.5zM7.5 8a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1h-1zM7 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0-.5.5zm2 3a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1 0-1h1a.5.5 0 0 1 .5.5z"
+          fill-rule="evenodd"
         />
       </svg>
       <small
         class="sc-850ddk-1 fnqGzL"
       >
-        Dashboard
+        Log
       </small>
     </a>
   </div>,
