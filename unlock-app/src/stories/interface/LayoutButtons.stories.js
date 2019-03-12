@@ -39,15 +39,3 @@ storiesOf('Buttons/Layout Buttons', module)
   .add('Twitter', () => {
     return <LayoutButtons.Twitter />
   })
-  .add('Dashboard', () => {
-    return <LayoutButtons.Dashboard activePath="/" />
-  })
-  .add('Dashboard, active', () => {
-    return <LayoutButtons.Dashboard activePath="/dashboard" />
-  })
-  .add('Log', () => {
-    return <LayoutButtons.Log activePath="/" />
-  })
-  .add('Log, active', () => {
-    return <LayoutButtons.Log activePath="/log" />
-  })
