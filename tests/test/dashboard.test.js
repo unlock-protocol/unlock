@@ -1,5 +1,4 @@
 const url = require('../helpers/url')
-const debugPage = require('../helpers/debugging')
 
 describe('The Unlock Dashboard', () => {
   beforeAll(async () => {
