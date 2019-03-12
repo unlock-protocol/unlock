@@ -20,7 +20,7 @@ import {
 import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
 
 import WalletService from '../services/walletService'
-import { FATAL_NO_USER_ACCOUNT } from '../errors'
+import { FATAL_NO_USER_ACCOUNT, FATAL_NON_DEPLOYED_CONTRACT } from '../errors'
 import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 import configure from '../config'
 
@@ -108,14 +108,23 @@ export default function walletMiddleware({ getState, dispatch }) {
   })
 
   /**
-   * When the network has changed, we need to get a new account
-   * as well as reset all the reducers
+   * When the network has changed, we need to ensure Unlock has been deployed there and
+   * get a new account as well as reset all the reducers
    */
   walletService.on('network.changed', networkId => {
     // Set the new network, which should also clean up all reducers
-    // And we need a new account!
     dispatch(setNetwork(networkId))
-    return walletService.getAccount(true /* createIfNone */)
+    // Check if the smart contract exists
+    walletService.isUnlockContractDeployed((error, isDeployed) => {
+      if (error) {
+        return dispatch(setError(error.message))
+      }
+      if (!isDeployed) {
+        return dispatch(setError(FATAL_NON_DEPLOYED_CONTRACT))
+      }
+      // We need a new account!
+      return walletService.getAccount(true /* createIfNone */)
+    })
   })
 
   return function(next) {
