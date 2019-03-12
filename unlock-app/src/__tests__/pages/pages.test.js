@@ -11,6 +11,20 @@ import createUnlockStore from '../../createUnlockStore'
 
 jest.mock('../../constants')
 
+const network = {
+  name: 4,
+}
+const currency = {
+  USD: 195.99,
+}
+const router = {
+  location: {
+    pathname: '/',
+  },
+}
+ETHEREUM_NETWORKS_NAMES[network.name] = ['A Name']
+const store = createUnlockStore({ currency, network, router })
+
 describe('Pages', () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -22,7 +36,11 @@ describe('Pages', () => {
       const config = {
         env: 'prod',
       }
-      rtl.render(<Home config={config} />)
+      rtl.render(
+        <Provider store={store}>
+          <Home config={config} />
+        </Provider>
+      )
       expect(pageTitle).toBeCalled()
     })
   })
@@ -30,7 +48,11 @@ describe('Pages', () => {
   describe('Jobs', () => {
     it('should render title correctly', () => {
       expect.assertions(1)
-      rtl.render(<Jobs />)
+      rtl.render(
+        <Provider store={store}>
+          <Jobs />
+        </Provider>
+      )
       expect(pageTitle).toBeCalledWith('Work at Unlock')
     })
   })
@@ -38,7 +60,11 @@ describe('Pages', () => {
   describe('About', () => {
     it('should render title correctly', () => {
       expect.assertions(1)
-      rtl.render(<About />)
+      rtl.render(
+        <Provider store={store}>
+          <About />
+        </Provider>
+      )
       expect(pageTitle).toBeCalledWith('About')
     })
   })
@@ -46,14 +72,7 @@ describe('Pages', () => {
   describe('Dashboard', () => {
     it('should render title correctly', () => {
       expect.assertions(1)
-      const network = {
-        name: 4,
-      }
-      const currency = {
-        USD: 195.99,
-      }
-      ETHEREUM_NETWORKS_NAMES[network.name] = ['A Name']
-      const store = createUnlockStore({ currency, network })
+
       const account = {
         address: '0xabc',
         privateKey: 'deadbeef',
