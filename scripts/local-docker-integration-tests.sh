@@ -30,6 +30,5 @@ docker build -t unlock -f "$REPO_ROOT/docker/unlock.dockerfile" $REPO_ROOT
 docker build -t unlock-integration -f "$REPO_ROOT/docker/unlock-integration.dockerfile" $REPO_ROOT
 
 # Run the tests
-COMMAND="npm run ci"
-docker-compose -f $DOCKER_COMPOSE_FILE run integration-tests bash -c "$COMMAND" 
+$REPO_ROOT/scripts/integration-tests.sh
 
