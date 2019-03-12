@@ -30,6 +30,8 @@ services:
       CI: "${CI}"
       HTTP_PROVIDER: "${HTTP_PROVIDER}"
       LOCKSMITH_URI: "${LOCKSMITH_URI}"
+      PAYWALL_URL: "${PAYWALL_URL}"
+      PAYWALL_SCRIPT_URL: "${PAYWALL_SCRIPT_URL}"
     command: ["npm", "run", "start"]
   smart-contracts:
     image: unlock
@@ -49,8 +51,8 @@ services:
     image: unlock-integration
     user: node
     environment:
-      - UNLOCK_HOST=unlock
-      - CI=true
+      UNLOCK_HOST: "unlock"
+      CI: "${CI}"
     depends_on:
       - ganache-integration
       - unlock
