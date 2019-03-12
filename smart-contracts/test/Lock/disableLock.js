@@ -3,7 +3,8 @@ const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
-const Unlock = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('../Unlock.sol')
+const getUnlockProxy = require('../helpers/proxy')
 
 let unlock, locks, ID
 
@@ -13,7 +14,7 @@ contract('Lock / disableLock', accounts => {
   let keyOwner2 = accounts[2]
 
   before(async () => {
-    unlock = await Unlock.deployed()
+    unlock = await getUnlockProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
     await lock.purchaseFor(keyOwner, {
@@ -30,10 +31,7 @@ contract('Lock / disableLock', accounts => {
   })
 
   it('should fail if called before the lock is disabled', async () => {
-    await shouldFail(
-      lock.destroyLock(),
-      'DISABLE_FIRST'
-    )
+    await shouldFail(lock.destroyLock(), 'DISABLE_FIRST')
   })
 
   describe('when the lock has been disabled', () => {
@@ -48,10 +46,7 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('should fail if called while lock is disabled', async () => {
-      await shouldFail(
-        lock.disableLock(),
-        'LOCK_DEPRECATED'
-      )
+      await shouldFail(lock.disableLock(), 'LOCK_DEPRECATED')
     })
 
     it('should fail if a user tries to purchase a key', async () => {
@@ -65,13 +60,9 @@ contract('Lock / disableLock', accounts => {
 
     it('should fail if a user tries to purchase a key with a referral', async () => {
       await shouldFail(
-        lock.purchaseForFrom(
-          keyOwner,
-          accounts[3],
-          {
-            value: Units.convert('0.01', 'eth', 'wei')
-          }
-        ),
+        lock.purchaseForFrom(keyOwner, accounts[3], {
+          value: Units.convert('0.01', 'eth', 'wei')
+        }),
         'LOCK_DEPRECATED'
       )
     })
@@ -136,10 +127,7 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('should fail to updateKeyPrice', async () => {
-      await shouldFail(
-        lock.updateKeyPrice(1),
-        'LOCK_DEPRECATED'
-      )
+      await shouldFail(lock.updateKeyPrice(1), 'LOCK_DEPRECATED')
     })
 
     it('should fail to safeTransferFrom w/o data', async () => {
@@ -155,10 +143,16 @@ contract('Lock / disableLock', accounts => {
     it('should fail to safeTransferFrom w/ data', async () => {
       ID = await lock.getTokenIdFor.call(keyOwner)
       await shouldFail(
-        lock.methods['safeTransferFrom(address,address,uint256,bytes)'](keyOwner, accounts[3], ID, Web3Utils.toHex('Julien'), {
-          from: keyOwner,
-          value: Units.convert('0.01', 'eth', 'wei')
-        }),
+        lock.methods['safeTransferFrom(address,address,uint256,bytes)'](
+          keyOwner,
+          accounts[3],
+          ID,
+          Web3Utils.toHex('Julien'),
+          {
+            from: keyOwner,
+            value: Units.convert('0.01', 'eth', 'wei')
+          }
+        ),
         'LOCK_DEPRECATED'
       )
     })

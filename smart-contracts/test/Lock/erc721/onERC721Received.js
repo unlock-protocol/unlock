@@ -1,7 +1,8 @@
 const Web3Utils = require('web3-utils')
 
 const deployLocks = require('../../helpers/deployLocks')
-const Unlock = artifacts.require('../../Unlock.sol')
+const unlockContract = artifacts.require('../Unlock.sol')
+const getUnlockProxy = require('../../helpers/proxy')
 
 let unlock, locks, operator, from, tokenId, data
 
@@ -11,15 +12,9 @@ contract('Lock / erc721 / onERC721Received', accounts => {
   tokenId = 11
   data = Web3Utils.toHex('')
 
-  before(() => {
-    return Unlock.deployed()
-      .then(_unlock => {
-        unlock = _unlock
-        return deployLocks(unlock, accounts[0])
-      })
-      .then(_locks => {
-        locks = _locks
-      })
+  before(async () => {
+    unlock = await getUnlockProxy(unlockContract)
+    locks = await deployLocks(unlock, accounts[0])
   })
 
   it('should implement the onERC721Received() function', async function () {
