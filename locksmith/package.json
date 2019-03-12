@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "predev": "NODE_ENV=development sequelize db:migrate",
-    "dev": "nodemon server.js",
+    "dev": "nodemon build/server.js",
     "pretest": "NODE_ENV=test sequelize db:migrate",
     "test": "jest --forceExit",
     "lint": "eslint .",
@@ -29,8 +29,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/cors": "^2.8.4",
     "@types/express": "^4.16.1",
     "@types/jest": "^24.0.11",
+    "@types/supertest": "^2.0.7",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "cross-env": "^5.2.0",

@@ -1,9 +1,9 @@
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const express = require('express')
-const signatureValidationMiddleware = require('./signatureValidationMiddleware')
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import express from 'express'
+import signatureValidationMiddleware = require('./signatureValidationMiddleware')
 
-const app = express()
+const app: express.Application = express()
 const router = express.Router()
 
 var transactionRouter = require('./routes/transaction')
@@ -19,4 +19,4 @@ app.use('/', transactionRouter)
 app.use('/', lockRouter)
 app.use('/block', blockRouter)
 
-module.exports = app
+export default app
