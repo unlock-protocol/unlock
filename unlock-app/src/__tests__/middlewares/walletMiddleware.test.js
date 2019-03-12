@@ -330,6 +330,7 @@ describe('Wallet middleware', () => {
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
         error: FATAL_NO_USER_ACCOUNT,
+        data: {},
       })
 
       expect(mockWalletService.purchaseKey).not.toHaveBeenCalled()
@@ -365,6 +366,7 @@ describe('Wallet middleware', () => {
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
         error: FATAL_NO_USER_ACCOUNT,
+        data: {},
       })
 
       expect(mockWalletService.withdrawFromLock).not.toHaveBeenCalled()
@@ -398,6 +400,7 @@ describe('Wallet middleware', () => {
         expect(store.dispatch).toHaveBeenCalledWith({
           type: SET_ERROR,
           error: FATAL_NO_USER_ACCOUNT,
+          data: {},
         })
 
         expect(mockWalletService.createLock).not.toHaveBeenCalled()
@@ -454,6 +457,7 @@ describe('Wallet middleware', () => {
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
         error: FATAL_NO_USER_ACCOUNT,
+        data: {},
       })
 
       expect(mockWalletService.updateKeyPrice).not.toHaveBeenCalled()
