@@ -1,7 +1,6 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 const PublicLock = artifacts.require('../../PublicLock.sol')
-const network = 'dev-1984'
 const getUnlockProxy = require('../helpers/proxy')
 const unlockContract = artifacts.require('../Unlock.sol')
 
@@ -9,7 +8,7 @@ let unlock
 
 contract('Lock / createLockWithInfiniteKeys', accounts => {
   before(async function () {
-    unlock = await getUnlockProxy(unlockContract, network)
+    unlock = await getUnlockProxy(unlockContract)
   })
 
   describe('Create a Lock with infinite keys', function () {

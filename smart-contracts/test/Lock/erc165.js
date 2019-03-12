@@ -1,5 +1,4 @@
 const deployLocks = require('../helpers/deployLocks')
-const network = 'dev-1984'
 const unlockContract = artifacts.require('../Unlock.sol')
 const getUnlockProxy = require('../helpers/proxy')
 
@@ -7,7 +6,7 @@ let unlock, locks
 
 contract('Lock / erc165', accounts => {
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract, network)
+    unlock = await getUnlockProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
   })
 

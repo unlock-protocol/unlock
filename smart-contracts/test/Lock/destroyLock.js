@@ -3,7 +3,6 @@ const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
-const network = 'dev-1984'
 const unlockContract = artifacts.require('../Unlock.sol')
 const getUnlockProxy = require('../helpers/proxy')
 
@@ -13,7 +12,7 @@ contract('Lock / destroyLock', accounts => {
   let lock
 
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract, network)
+    unlock = await getUnlockProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
   })

@@ -2,7 +2,6 @@ const Web3Utils = require('web3-utils')
 
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
-const network = 'dev-1984'
 const unlockContract = artifacts.require('../Unlock.sol')
 const getUnlockProxy = require('../helpers/proxy')
 
@@ -14,7 +13,7 @@ contract('Lock / grantKeys', accounts => {
   const validExpirationTimestamp = Math.round(Date.now() / 1000 + 600)
 
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract, network)
+    unlock = await getUnlockProxy(unlockContract)
     locks = await deployLocks(unlock, lockOwner)
     lock = locks['FIRST']
   })

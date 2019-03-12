@@ -1,7 +1,6 @@
 const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
 const Units = require('ethereumjs-units')
-const network = 'dev-1984'
 const unlockContract = artifacts.require('../Unlock.sol')
 const getUnlockProxy = require('../../helpers/proxy')
 
@@ -11,7 +10,7 @@ contract('Lock / erc721 / getApproved', accounts => {
   const keyPurchaser = accounts[3]
 
   before(async function () {
-    this.unlock = await getUnlockProxy(unlockContract, network)
+    this.unlock = await getUnlockProxy(unlockContract)
     locks = await deployLocks(this.unlock, accounts[0])
   })
 

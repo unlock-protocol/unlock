@@ -1,5 +1,4 @@
 const shouldFail = require('../helpers/shouldFail')
-const network = 'dev-1984'
 const unlockContract = artifacts.require('../Unlock.sol')
 const getUnlockProxy = require('../helpers/proxy')
 const Web3Abi = require('web3-eth-abi')
@@ -9,7 +8,7 @@ let unlock
 
 contract('Unlock / noFallback', accounts => {
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract, network)
+    unlock = await getUnlockProxy(unlockContract)
   })
 
   it('cannot call the fallback function directly', async () => {

@@ -1,7 +1,6 @@
 const Web3Utils = require('web3-utils')
 
 const deployLocks = require('../../helpers/deployLocks')
-const network = 'dev-1984'
 const unlockContract = artifacts.require('../Unlock.sol')
 const getUnlockProxy = require('../../helpers/proxy')
 
@@ -14,7 +13,7 @@ contract('Lock / erc721 / onERC721Received', accounts => {
   data = Web3Utils.toHex('')
 
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract, network)
+    unlock = await getUnlockProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
   })
 

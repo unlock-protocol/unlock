@@ -3,7 +3,6 @@ const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
-const network = 'dev-1984'
 const unlockContract = artifacts.require('../Unlock.sol')
 const getUnlockProxy = require('../helpers/proxy')
 
@@ -11,7 +10,7 @@ let unlock, locks, keyPriceBefore, transaction
 
 contract('Lock / updateKeyPrice', accounts => {
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract, network)
+    unlock = await getUnlockProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     keyPriceBefore = new BigNumber(await locks['FIRST'].keyPrice.call())
     assert.equal(keyPriceBefore.toFixed(), 10000000000000000)
