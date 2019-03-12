@@ -45,5 +45,6 @@ module.exports = {
         "eol-last": [
             "error"
         ],
+        "no-console": [ "error" ]
     }
 };
