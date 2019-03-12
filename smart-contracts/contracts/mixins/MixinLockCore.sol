@@ -3,6 +3,7 @@ pragma solidity 0.5.5;
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import './MixinDisableAndDestroy.sol';
 import '../interfaces/IUnlock.sol';
+import './interfaces/IMixinFunds.sol';
 
 
 /**
@@ -13,6 +14,7 @@ import '../interfaces/IUnlock.sol';
  */
 contract MixinLockCore is
   Ownable,
+  IMixinFunds,
   MixinDisableAndDestroy
 {
   event PriceChanged(
@@ -77,7 +79,7 @@ contract MixinLockCore is
     external
     onlyOwner
   {
-    uint balance = address(this).balance;
+    uint balance = _getBalance(address(this));
     require(balance > 0, 'NOT_ENOUGH_FUNDS');
     // Security: re-entrancy not a risk as this is the last line of an external function
     _withdraw(balance);
@@ -92,7 +94,7 @@ contract MixinLockCore is
     onlyOwner
   {
     require(_amount > 0, 'GREATER_THAN_ZERO');
-    uint256 balance = address(this).balance;
+    uint balance = _getBalance(address(this));
     require(balance >= _amount, 'NOT_ENOUGH_FUNDS');
     // Security: re-entrancy not a risk as this is the last line of an external function
     _withdraw(_amount);
@@ -133,7 +135,7 @@ contract MixinLockCore is
   function _withdraw(uint _amount)
     private
   {
-    address(uint160(Ownable.owner())).transfer(_amount);
+    _transfer(Ownable.owner(), _amount);
     emit Withdrawal(msg.sender, _amount);
   }
 }
