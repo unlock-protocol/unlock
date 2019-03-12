@@ -22,6 +22,7 @@ import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../../constants'
 import {
   FATAL_NO_USER_ACCOUNT,
   FATAL_NON_DEPLOYED_CONTRACT,
+  FATAL_WRONG_NETWORK,
 } from '../../errors'
 import {
   SIGN_DATA,
@@ -236,6 +237,31 @@ describe('Wallet middleware', () => {
 
   describe('when receiving a network.changed event triggered by the walletService', () => {
     describe('when the network.changed is different from the store value', () => {
+      describe('when the network does not match the required network', () => {
+        it('should dispatch an error', () => {
+          expect.assertions(2)
+          const { store } = create()
+          const networkId = 1984
+          mockWalletService.isUnlockContractDeployed = jest.fn()
+          mockConfig.isRequiredNetwork = jest.fn(() => false)
+          mockWalletService.emit('network.changed', networkId)
+
+          expect(store.dispatch).toHaveBeenCalledWith(
+            expect.objectContaining({
+              type: SET_ERROR,
+              error: FATAL_WRONG_NETWORK,
+              data: {
+                currentNetwork: 'Winston',
+                requiredNetworkId: 1984,
+              },
+            })
+          )
+          expect(
+            mockWalletService.isUnlockContractDeployed
+          ).not.toHaveBeenCalled()
+        })
+      })
+
       it('should dispatch an error if it could not check whether the contract was deployed', () => {
         expect.assertions(2)
         const { store } = create()

@@ -5,7 +5,7 @@ import createUnlockStore from '../../../createUnlockStore'
 import GlobalErrorProvider, {
   GlobalErrorContext,
 } from '../../../utils/GlobalErrorProvider'
-import { FATAL_NO_USER_ACCOUNT, FATAL_WRONG_NETWORK } from '../../../errors'
+import { FATAL_NO_USER_ACCOUNT } from '../../../errors'
 
 describe('GlobalErrorProvider', () => {
   function makeTestStore(newValues = {}) {
@@ -54,89 +54,6 @@ describe('GlobalErrorProvider', () => {
 
     expect(wrapper.getByTestId('error')).toHaveTextContent('false')
     expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent('{}')
-  })
-
-  describe('should populate with wrong network error if the wallet is set up on a different network', () => {
-    it('mainnet', () => {
-      expect.assertions(2)
-
-      const store = makeTestStore({
-        network: {
-          name: 1,
-        },
-      })
-      const wrapper = rtl.render(
-        <Provider store={store}>
-          <GlobalErrorProvider>
-            <PeekAtContextConsumer />
-          </GlobalErrorProvider>
-        </Provider>
-      )
-
-      expect(wrapper.getByTestId('error')).toHaveTextContent(
-        FATAL_WRONG_NETWORK
-      )
-      expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent(
-        JSON.stringify({
-          currentNetwork: 'Mainnet',
-          requiredNetworkId: 1984,
-        })
-      )
-    })
-
-    it('rinkeby', () => {
-      expect.assertions(2)
-
-      const store = makeTestStore({
-        network: {
-          name: 4,
-        },
-      })
-      const wrapper = rtl.render(
-        <Provider store={store}>
-          <GlobalErrorProvider>
-            <PeekAtContextConsumer />
-          </GlobalErrorProvider>
-        </Provider>
-      )
-
-      expect(wrapper.getByTestId('error')).toHaveTextContent(
-        FATAL_WRONG_NETWORK
-      )
-      expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent(
-        JSON.stringify({
-          currentNetwork: 'Rinkeby',
-          requiredNetworkId: 1984,
-        })
-      )
-    })
-
-    it('unknown network', () => {
-      expect.assertions(2)
-
-      const store = makeTestStore({
-        network: {
-          name: 6,
-        },
-      })
-      const wrapper = rtl.render(
-        <Provider store={store}>
-          <GlobalErrorProvider>
-            <PeekAtContextConsumer />
-          </GlobalErrorProvider>
-        </Provider>
-      )
-
-      expect(wrapper.getByTestId('error')).toHaveTextContent(
-        FATAL_WRONG_NETWORK
-      )
-      expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent(
-        JSON.stringify({
-          currentNetwork: 'Unknown Network',
-          requiredNetworkId: 1984,
-        })
-      )
-    })
   })
 
   it('should populate with missing account error if account is not set', () => {

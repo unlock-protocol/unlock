@@ -96,14 +96,6 @@ const waitingStore = createUnlockStore({
   },
 })
 
-const wrongNetworkStore = createUnlockStore({
-  account,
-  network: {
-    name: 4,
-  },
-  router,
-})
-
 const noUserStore = createUnlockStore({
   account: undefined,
   network,
@@ -141,13 +133,6 @@ storiesOf('Dashboard', module)
       <Provider store={waitingStore}>
         <WalletCheckOverlay />
         <Dashboard network={network} account={account} lockFeed={lockFeed} />
-      </Provider>
-    )
-  })
-  .add('dashboard, wrong network', () => {
-    return (
-      <Provider store={wrongNetworkStore}>
-        <Dashboard network={network} account={account} />
       </Provider>
     )
   })

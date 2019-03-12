@@ -8,19 +8,13 @@ import PropTypes from 'prop-types'
 
 import configure from '../config'
 import UnlockPropTypes from '../propTypes'
-import { ETHEREUM_NETWORKS_NAMES } from '../constants'
-import {
-  FATAL_MISSING_PROVIDER,
-  FATAL_WRONG_NETWORK,
-  FATAL_NO_USER_ACCOUNT,
-} from '../errors'
+import { FATAL_MISSING_PROVIDER, FATAL_NO_USER_ACCOUNT } from '../errors'
 
 export const GlobalErrorContext = createContext()
 
-export function mapStateToProps({ router, network, account }) {
+export function mapStateToProps({ router, account }) {
   return {
     router,
-    network,
     account,
   }
 }
@@ -28,8 +22,8 @@ export function mapStateToProps({ router, network, account }) {
 const config = configure()
 
 export class GlobalErrorProvider extends Component {
+  // TODO: consistency: we do not define propTypes like that anywhere else in the app...
   static propTypes = {
-    network: UnlockPropTypes.network.isRequired,
     // note: account can be empty if we are not logged in. It's not required, but we don't want a default value
     // so we need to disable eslint to prevent a warning
     // eslint-disable-next-line
@@ -69,33 +63,6 @@ export class GlobalErrorProvider extends Component {
     }
   }
 
-  detectWrongNetwork(state) {
-    const { router, network } = this.props
-    // Ensuring that the provider is using the right network!
-    if (
-      router.route !== '/provider' &&
-      config.isRequiredNetwork &&
-      !config.isRequiredNetwork(network.name)
-    ) {
-      const currentNetwork = ETHEREUM_NETWORKS_NAMES[network.name]
-        ? ETHEREUM_NETWORKS_NAMES[network.name][0]
-        : 'Unknown Network'
-      if (
-        state.error === FATAL_WRONG_NETWORK &&
-        state.errorMetadata.currentNetwork === currentNetwork
-      ) {
-        return null
-      }
-      return {
-        error: FATAL_WRONG_NETWORK,
-        errorMetadata: {
-          currentNetwork: currentNetwork,
-          requiredNetworkId: config.requiredNetworkId,
-        },
-      }
-    }
-  }
-
   detectNoAccount(state) {
     const { account } = this.props
     // Ensuring that an account is defined
@@ -120,10 +87,6 @@ export class GlobalErrorProvider extends Component {
       // Ensuring that we have at least 1 provider
       const testProvider = this.detectMissingProvider(state)
       if (testProvider !== undefined) return testProvider
-
-      // Ensuring that the provider is using the right network!
-      const testNetwork = this.detectWrongNetwork(state)
-      if (testNetwork !== undefined) return testNetwork
 
       // Ensuring that an account is defined
       const testAccount = this.detectNoAccount(state)
