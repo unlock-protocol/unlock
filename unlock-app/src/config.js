@@ -88,7 +88,9 @@ export default function configure(
 
   services['currencyPriceLookup'] =
     'https://api.coinbase.com/v2/prices/ETH-USD/buy'
-  const readOnlyProviderUrl = runtimeConfig.readOnlyProvider
+  const readOnlyProviderUrl =
+    runtimeConfig.readOnlyProvider ||
+    `http://${runtimeConfig.httpProvider}:8545`
 
   if (env === 'test') {
     // In test, we fake the HTTP provider

@@ -7,6 +7,7 @@ const withSourceMaps = require('@zeit/next-source-maps')
 
 const copyFile = promisify(fs.copyFile)
 
+// TODO renames these: URLs need to be URLs, hosts need to be hosts... etc
 const requiredConfigVariables = {
   unlockEnv: process.env.UNLOCK_ENV || 'dev',
   httpProvider: process.env.HTTP_PROVIDER || '127.0.0.1',

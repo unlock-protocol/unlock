@@ -86,16 +86,21 @@ nock.emitter.on('no match', function(clientRequestObject, options, body) {
 })
 
 // This unlock address smart contract is fake
-const unlockSmartContractAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
+const unlockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
 
 let web3Service
 
-const { blockTime } = configure()
+const { blockTime, readOnlyProvider, requiredConfirmations } = configure()
 
 describe('Web3Service', () => {
   beforeEach(() => {
     nock.cleanAll()
-    web3Service = new Web3Service(unlockSmartContractAddress)
+    web3Service = new Web3Service({
+      readOnlyProvider,
+      unlockAddress,
+      blockTime,
+      requiredConfirmations,
+    })
   })
 
   const lockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
@@ -181,7 +186,7 @@ describe('Web3Service', () => {
       class MockContract {
         constructor(abi, address) {
           expect(abi).toBe(Unlock.abi)
-          expect(address).toEqual(web3Service.unlockContractAddress)
+          expect(address).toEqual(web3Service.unlockAddress)
         }
       }
 
@@ -340,7 +345,7 @@ describe('Web3Service', () => {
         transaction.hash,
         Unlock,
         input,
-        web3Service.unlockContractAddress
+        web3Service.unlockAddress
       )
     })
 
@@ -379,7 +384,7 @@ describe('Web3Service', () => {
           input
         )
         expect(transactionHash).toEqual(transaction.hash)
-        expect(contractAddress).toEqual(web3Service.unlockContractAddress)
+        expect(contractAddress).toEqual(web3Service.unlockAddress)
         expect(args).toEqual(params)
         // Clean up!
         web3Service.web3.eth.abi.decodeParameters = decodeParams
@@ -390,7 +395,7 @@ describe('Web3Service', () => {
         transaction.hash,
         FakeContract,
         `${method.signature}${input}`,
-        web3Service.unlockContractAddress
+        web3Service.unlockAddress
       )
     })
   })
@@ -573,7 +578,7 @@ describe('Web3Service', () => {
           status: '0x1',
         }
         ethGetTransactionReceipt(transaction.hash, transactionReceipt)
-        const previousAddress = web3Service.unlockContractAddress
+        const previousAddress = web3Service.unlockAddress
 
         web3Service.getTransactionType = jest.fn(() => 'TYPE')
 
@@ -586,14 +591,14 @@ describe('Web3Service', () => {
           expect(contract).toEqual(Unlock)
           expect(receipt.blockNumber).toEqual(344)
           expect(receipt.logs).toEqual([])
-          web3Service.unlockContractAddress = previousAddress
+          web3Service.unlockAddress = previousAddress
           expect(web3Service.getTransactionType).toHaveBeenCalledWith(
             Unlock,
             blockTransaction.input
           )
           done()
         }
-        web3Service.unlockContractAddress = blockTransaction.to
+        web3Service.unlockAddress = blockTransaction.to
         web3Service.getTransaction(transaction.hash)
       })
 

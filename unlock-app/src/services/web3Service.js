@@ -5,16 +5,7 @@ import ethJsUtil from 'ethereumjs-util'
 
 import { PublicLock, Unlock } from 'unlock-abi-0'
 
-import configure from '../config'
 import { TRANSACTION_TYPES, MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
-
-const {
-  readOnlyProvider,
-  providers,
-  unlockAddress,
-  blockTime,
-  requiredConfirmations,
-} = configure()
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
@@ -23,18 +14,18 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * All transactions should be sent via the WalletService.
  */
 export default class Web3Service extends EventEmitter {
-  constructor(unlockContractAddress = unlockAddress) {
+  constructor({
+    readOnlyProvider,
+    unlockAddress,
+    blockTime,
+    requiredConfirmations,
+  }) {
     super()
 
-    if (readOnlyProvider) {
-      this.web3 = new Web3(readOnlyProvider)
-    } else {
-      this.web3 = new Web3(Object.values(providers)[0]) // Defaulting to the first provider.
-    }
-
-    this.unlockContractAddress = unlockContractAddress
-
-    // TODO: detect discrepancy in providers
+    this.web3 = new Web3(readOnlyProvider)
+    this.unlockAddress = unlockAddress
+    this.blockTime = blockTime
+    this.requiredConfirmations = requiredConfirmations
 
     // Transactions create events which we use here to build the state.
     // TODO we should ensure that the contracts triggering the events are the right ones
@@ -119,11 +110,11 @@ export default class Web3Service extends EventEmitter {
    */
   async generateLockAddress() {
     let transactionCount = await this.web3.eth.getTransactionCount(
-      this.unlockContractAddress
+      this.unlockAddress
     )
     return Web3Utils.toChecksumAddress(
       ethJsUtil.bufferToHex(
-        ethJsUtil.generateAddress(this.unlockContractAddress, transactionCount)
+        ethJsUtil.generateAddress(this.unlockAddress, transactionCount)
       )
     )
   }
@@ -205,10 +196,7 @@ export default class Web3Service extends EventEmitter {
    * @param {*} address
    */
   getPastLockCreationsTransactionsForUser(address) {
-    const unlock = new this.web3.eth.Contract(
-      Unlock.abi,
-      this.unlockContractAddress
-    )
+    const unlock = new this.web3.eth.Contract(Unlock.abi, this.unlockAddress)
     return this._getPastTransactionsForContract(unlock, 'NewLock', {
       lockOwner: address,
     })
@@ -354,7 +342,7 @@ export default class Web3Service extends EventEmitter {
   _watchTransaction(transactionHash) {
     setTimeout(() => {
       this.getTransaction(transactionHash)
-    }, blockTime / 2)
+    }, this.blockTime / 2)
   }
 
   /**
@@ -375,7 +363,7 @@ export default class Web3Service extends EventEmitter {
     // If we have default values for the transaction (passed by the walletService)
     if (defaults) {
       const contract =
-        this.unlockContractAddress === Web3Utils.toChecksumAddress(defaults.to)
+        this.unlockAddress === Web3Utils.toChecksumAddress(defaults.to)
           ? Unlock
           : PublicLock
 
@@ -405,8 +393,7 @@ export default class Web3Service extends EventEmitter {
     this._watchTransaction(blockTransaction.hash)
 
     const contract =
-      this.unlockContractAddress ===
-      Web3Utils.toChecksumAddress(blockTransaction.to)
+      this.unlockAddress === Web3Utils.toChecksumAddress(blockTransaction.to)
         ? Unlock
         : PublicLock
 
@@ -448,8 +435,7 @@ export default class Web3Service extends EventEmitter {
       // The transaction has been mined :
 
       const contract =
-        this.unlockContractAddress ===
-        Web3Utils.toChecksumAddress(blockTransaction.to)
+        this.unlockAddress === Web3Utils.toChecksumAddress(blockTransaction.to)
           ? Unlock
           : PublicLock
 
@@ -459,7 +445,10 @@ export default class Web3Service extends EventEmitter {
       )
 
       // Let's watch for more confirmations if needed
-      if (blockNumber - blockTransaction.blockNumber < requiredConfirmations) {
+      if (
+        blockNumber - blockTransaction.blockNumber <
+        this.requiredConfirmations
+      ) {
         this._watchTransaction(transactionHash)
       }
 
