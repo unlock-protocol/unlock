@@ -46,6 +46,9 @@ contract UnlockErrors {
   // Not enough funds available for the requested action.
   string public constant NOT_ENOUGH_FUNDS = 'NOT_ENOUGH_FUNDS';
 
+  // The requested feature has not yet been implemented.
+  string public constant NOT_IMPLEMENTED = 'NOT_IMPLEMENTED';
+
   // This function may only be called by the key owner.
   string public constant ONLY_KEY_OWNER = 'ONLY_KEY_OWNER';
 
