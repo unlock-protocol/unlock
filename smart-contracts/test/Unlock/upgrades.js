@@ -140,6 +140,7 @@ contract('Unlock / upgrades', accounts => {
         const lockTx = await unlock.methods
           .createLock(
             60 * 60 * 24, // expirationDuration 1 day
+            Web3Utils.padLeft(0, 40),
             keyPrice,
             5 // maxNumberOfKeys
           )

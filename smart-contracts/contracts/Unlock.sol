@@ -81,36 +81,43 @@ contract Unlock is MixinNoFallback, IUnlock, Initializable, Ownable {
   /**
   * @dev Create lock
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
+  * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
   */
   function createLock(
     uint _expirationDuration,
+    address _tokenAddress,
     uint _keyPrice,
     uint _maxNumberOfKeys
   )
     public
     returns (ILockCore lock)
   {
-
     // create lock
-    PublicLock newPublicLock = new PublicLock(
-      msg.sender,
-      _expirationDuration,
-      _keyPrice,
-      _maxNumberOfKeys
-    );
+    ILockCore newLock;
+    
+    if(_tokenAddress == address(0)) {
+      newLock = new PublicLock(
+        msg.sender,
+        _expirationDuration,
+        _keyPrice,
+        _maxNumberOfKeys
+      );
+    } else {
+      revert('NOT_IMPLEMENTED');
+    }
 
     // Assign the new Lock
-    locks[address(newPublicLock)] = LockBalances({
+    locks[address(newLock)] = LockBalances({
       deployed: true,
       totalSales: 0,
       yieldedDiscountTokens: 0
     });
 
     // trigger event
-    emit NewLock(msg.sender, address(newPublicLock));
+    emit NewLock(msg.sender, address(newLock));
 
     // return the created lock
-    return newPublicLock;
+    return newLock;
   }
 
   /**
