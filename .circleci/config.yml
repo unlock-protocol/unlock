@@ -6,36 +6,48 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
+      - run: mkdir -p ../caches
       - checkout
       - run:
           name: Build Unlock Image
           command: scripts/build-image.sh unlock
       - run:
-          name: Publish Unlock Image
-          command: scripts/push-image.sh unlock $CIRCLE_SHA1
+          name: Cache image locally
+          command: docker save -o "../caches/unlock.tar" unlock
+      - persist_to_workspace:
+          root: "../caches"
+          paths:
+            - "unlock.tar"
 
   build-unlock-integration:
     machine: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
+      - run: mkdir -p ../caches
       - checkout
       - run:
           name: Build Unlock Integration Image
           command: scripts/build-image.sh unlock-integration
       - run:
-          name: Publish Unlock Integration Image
-          command: scripts/push-image.sh unlock-integration $CIRCLE_SHA1
+          name: Cache image locally
+          command: docker save -o "../caches/unlock-integration.tar" unlock-integration
+      - persist_to_workspace:
+          root: "../caches"
+          paths:
+            - "unlock-integration.tar"
 
   unlock-app-tests:
     machine: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
+      - attach_workspace:
+          at: ../caches
       - checkout
       - run:
-          name: Pull Unlock Image
-          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+          name: Load Unlock Image
+          command: docker load -i  "../caches/unlock.tar"
       - run:
           name: Creator Dashboard tests
           command: scripts/tests.sh unlock-app
@@ -45,10 +57,12 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
+      - attach_workspace:
+          at: ../caches
       - checkout
       - run:
-          name: Pull Unlock Image
-          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+          name: Load Unlock Image
+          command: docker load -i  "../caches/unlock.tar"
       - run:
           name: Creator Dashboard stories
           command: scripts/storybook.sh unlock-app "$CIRCLE_BRANCH"
@@ -58,10 +72,12 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
+      - attach_workspace:
+          at: ../caches
       - checkout
       - run:
-          name: Pull Unlock Image
-          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+          name: Load Unlock Image
+          command: docker load -i  "../caches/unlock.tar"
       - run:
           name: Smart Contract Tests
           command: scripts/tests.sh smart-contracts
@@ -75,10 +91,12 @@ jobs:
       DB_NAME: locksmith_test
       DB_HOSTNAME: db
     steps:
+      - attach_workspace:
+          at: ../caches
       - checkout
       - run:
-          name: Pull Unlock Image
-          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+          name: Load Unlock Image
+          command: docker load -i  "../caches/unlock.tar"
       - run:
           name: Smart Contract Tests
           command: scripts/tests.sh locksmith
@@ -88,10 +106,12 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
+      - attach_workspace:
+          at: ../caches
       - checkout
       - run:
-          name: Pull Unlock Image
-          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+          name: Load Unlock Image
+          command: docker load -i  "../caches/unlock.tar"
       - run:
           name: Smart Contract Tests
           command: scripts/tests.sh paywall
@@ -101,13 +121,15 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
+      - attach_workspace:
+          at: ../caches
       - checkout
       - run:
-          name: Pull Unlock Image
-          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+          name: Load Unlock Image
+          command: docker load -i  "../caches/unlock.tar"
       - run:
-          name: Pull Unlock Integration Image
-          command: scripts/pull-image.sh unlock-integration "$CIRCLE_SHA1"
+          name: Load Unlock Integration Image
+          command: docker load -i "../caches/unlock-integration.tar"
       - run:
           name: Integration Tests
           command: scripts/integration-tests.sh
@@ -117,13 +139,15 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
+      - attach_workspace:
+          at: ../caches
       - checkout
       - run:
           name: Set IS_PULL_REQUEST
           command: scripts/circleci/set-is-pull-request.sh >> $BASH_ENV
       - run:
-          name: Pull Unlock Image
-          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+          name: Load Unlock Image
+          command: docker load -i  "../caches/unlock.tar"
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh unlock-app netlify "$CIRCLE_SHA1" "$CIRCLE_TAG" "$CIRCLE_BRANCH" "$IS_PULL_REQUEST"
@@ -133,13 +157,15 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
+      - attach_workspace:
+          at: ../caches
       - checkout
       - run:
           name: Set IS_PULL_REQUEST
           command: scripts/circleci/set-is-pull-request.sh >> $BASH_ENV
       - run:
-          name: Pull Unlock Image
-          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+          name: Load Unlock Image
+          command: docker load -i "../caches/unlock.tar"
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh paywall netlify "$CIRCLE_SHA1" "$CIRCLE_TAG" "$CIRCLE_BRANCH" "$IS_PULL_REQUEST"
@@ -165,10 +191,12 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
+      - attach_workspace:
+          at: ../caches
       - checkout
       - run:
-          name: Pull Unlock Image
-          command: scripts/pull-image.sh unlock "$CIRCLE_SHA1"
+          name: Load Unlock Image
+          command: docker load -i  "../caches/unlock.tar"
       - run:
           name: Push Unlock Image as master
           command: scripts/push-image.sh unlock master
@@ -178,10 +206,12 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
+      - attach_workspace:
+          at: ../caches
       - checkout
       - run:
-          name: Pull Unlock Integration Image
-          command: scripts/pull-image.sh unlock-integration "$CIRCLE_SHA1"
+          name: Load Unlock Integration Image
+          command: docker load -i  "../caches/unlock-integration.tar"
       - run:
           name: Push Unlock Integration Image as master
           command: scripts/push-image.sh unlock-integration master
