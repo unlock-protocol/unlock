@@ -17,6 +17,6 @@ module.exports = function getNetworkFile (web3) {
         default:
           network = `dev-${_Id}`
       }
-      return packageFile.networkFile(`${network}`)
+      return packageFile.networkFile(network)
     })
 }
