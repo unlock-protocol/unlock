@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { GlobalErrorContext } from '../../utils/GlobalErrorProvider'
 import Layout from './Layout'
 import { mapErrorToComponent } from '../creator/FatalError'
+import UnlockPropTypes from '../../propTypes'
 
 // DEPRECATED we should not use the Context to detect errors
 const Consumer = GlobalErrorContext.Consumer
@@ -22,8 +23,9 @@ export const displayError = (error, errorMetadata, children) => {
  * and prevent the UI from displaying anything else.
  */
 export function GlobalErrorConsumer({ displayError, children, error }) {
+  // the error object in this case is coming from the redux store and has a structure of {name, data}
   if (error) {
-    return displayError(error, {}, children)
+    return displayError(error.name, error.data, children)
   }
   return (
     <Consumer>
@@ -37,7 +39,7 @@ export function GlobalErrorConsumer({ displayError, children, error }) {
 GlobalErrorConsumer.propTypes = {
   children: PropTypes.node.isRequired,
   displayError: PropTypes.func,
-  error: PropTypes.string,
+  error: UnlockPropTypes.error,
 }
 
 GlobalErrorConsumer.defaultProps = {
@@ -53,7 +55,7 @@ export const mapStateToProps = state => {
   if (!state.errors) {
     return {}
   }
-  const error = state.errors.find(error => error.startsWith('FATAL_'))
+  const error = state.errors.find(error => error.name.startsWith('FATAL_'))
   return {
     error: error,
   }

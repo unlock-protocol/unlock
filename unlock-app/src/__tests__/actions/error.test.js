@@ -11,9 +11,11 @@ describe('error actions', () => {
   it('should create an action to set the error', () => {
     expect.assertions(1)
     const error = MY_ERROR
+    const data = {}
     const expectedAction = {
       type: SET_ERROR,
       error,
+      data,
     }
 
     expect(setError(error)).toEqual(expectedAction)
@@ -25,6 +27,7 @@ describe('error actions', () => {
     const expectedAction = {
       type: SET_ERROR,
       error,
+      data: {},
     }
 
     expect(setError(error)).toEqual(expectedAction)
