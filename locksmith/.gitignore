@@ -3,3 +3,6 @@ development.sqlite3
 
 # testing
 /coverage
+
+# typescript build artificats
+/build
