@@ -26,6 +26,7 @@ services:
     working_dir: /home/unlock
     expose:
       - 3000
+      - 3001
     environment:
       CI: "${CI}"
       HTTP_PROVIDER: "${HTTP_PROVIDER}"
@@ -54,6 +55,7 @@ services:
     depends_on:
       - ganache-integration
       - unlock
+      - paywall
       - locksmith
     working_dir: /home/unlock/tests
   locksmith:
