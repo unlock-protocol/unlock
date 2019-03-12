@@ -1,23 +1,25 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
-const Unlock = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('../Unlock.sol')
+const getUnlockProxy = require('../helpers/proxy')
 const WalletService = require('../helpers/walletServiceMock.js')
 
 let unlock
 
-contract('Unlock / gas', (accounts) => {
+contract('Unlock / gas', accounts => {
   let createLockGas = new BigNumber(42)
 
   beforeEach(async () => {
-    unlock = await Unlock.deployed()
+    unlock = await getUnlockProxy(unlockContract)
 
     let tx = await unlock.createLock(
       60 * 60 * 24 * 30, // expirationDuration: 30 days
       Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
-      100 // maxNumberOfKeys
-      , {
+      100, // maxNumberOfKeys
+      {
         from: accounts[0]
-      })
+      }
+    )
     createLockGas = new BigNumber(tx.receipt.gasUsed)
   })
 

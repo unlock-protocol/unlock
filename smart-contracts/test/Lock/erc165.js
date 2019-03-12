@@ -1,18 +1,13 @@
 const deployLocks = require('../helpers/deployLocks')
-const Unlock = artifacts.require('../../Unlock.sol')
+const unlockContract = artifacts.require('../Unlock.sol')
+const getUnlockProxy = require('../helpers/proxy')
 
 let unlock, locks
 
 contract('Lock / erc165', accounts => {
-  before(() => {
-    return Unlock.deployed()
-      .then(_unlock => {
-        unlock = _unlock
-        return deployLocks(unlock, accounts[0])
-      })
-      .then(_locks => {
-        locks = _locks
-      })
+  before(async () => {
+    unlock = await getUnlockProxy(unlockContract)
+    locks = await deployLocks(unlock, accounts[0])
   })
 
   it('should support the erc165 interface()', async function () {
