@@ -31,4 +31,3 @@ docker build -t unlock-integration -f "$REPO_ROOT/docker/unlock-integration.dock
 
 # Run the tests
 $REPO_ROOT/scripts/integration-tests.sh
-
