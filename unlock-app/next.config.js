@@ -13,7 +13,7 @@ const requiredConfigVariables = {
   paywallUrl: process.env.PAYWALL_URL,
   paywallScriptUrl: process.env.PAYWALL_SCRIPT_URL,
   readOnlyProvider: process.env.READ_ONLY_PROVIDER,
-  locksmithHost: process.env.LOCKSMITH_URI,
+  locksmithHost: process.env.LOCKSMITH_URI || 'http://127.0.0.1:8080',
   unlockAddress:
     process.env.UNLOCK_ADDRESS || '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93', // default for CI
 }
