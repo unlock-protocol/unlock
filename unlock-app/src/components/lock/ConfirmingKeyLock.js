@@ -14,7 +14,7 @@ import BalanceProvider from '../helpers/BalanceProvider'
 import withConfig from '../../utils/withConfig'
 
 export const ConfirmingKeyLock = ({ lock, transaction, config }) => (
-  <LockWrapper>
+  <LockWrapper id={`Confirming_${lock.address}`}>
     <LockHeader>{lock.name}</LockHeader>
     <Body>
       <BalanceProvider
