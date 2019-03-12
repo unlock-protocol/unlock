@@ -27,8 +27,9 @@ services:
     expose:
       - 3000
     environment:
-      HTTP_PROVIDER: ganache-integration
       CI: "${CI}"
+      HTTP_PROVIDER: "${HTTP_PROVIDER}"
+      LOCKSMITH_URI: "${LOCKSMITH_URI}"
     command: ["npm", "run", "start"]
   smart-contracts:
     image: unlock
@@ -53,6 +54,7 @@ services:
     depends_on:
       - ganache-integration
       - unlock
+      - locksmith
     working_dir: /home/unlock/tests
   locksmith:
     environment:
@@ -60,10 +62,12 @@ services:
       - DB_PASSWORD
       - DB_NAME
       - DB_HOSTNAME
+      - NODE_ENV=production
     image: unlock
     user: node
     working_dir: /home/unlock/locksmith
-    ports:
+    command: sh -c './scripts/wait-for.sh db:5432 -- npm run db:migrate && npm run start'
+    expose:
       - 8080
     depends_on:
       - db
