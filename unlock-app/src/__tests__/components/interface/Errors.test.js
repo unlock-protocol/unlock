@@ -26,7 +26,7 @@ describe('Errors Component', () => {
       expect.assertions(2)
       const close = jest.fn()
       const wrapper = rtl.render(
-        <Errors close={close} errors={['There was an error.']} />
+        <Errors close={close} errors={[{ name: 'There was an error.' }]} />
       )
       rtl.fireEvent.click(wrapper.getByTitle(/close/i))
       expect(close).toHaveBeenCalledTimes(1)
@@ -38,7 +38,9 @@ describe('Errors Component', () => {
     it('should display the content of the children', () => {
       expect.assertions(1)
       const message = 'Broken'
-      const wrapper = rtl.render(<Errors close={close} errors={[message]} />)
+      const wrapper = rtl.render(
+        <Errors close={close} errors={[{ name: message }]} />
+      )
       expect(
         wrapper.queryByText(
           'There was an error (Broken). Please retry and report if it happens again.'
@@ -50,7 +52,11 @@ describe('Errors Component', () => {
   describe('connecting to redux', () => {
     it('mapStateToProps', () => {
       expect.assertions(1)
-      const expectedState = ['error 1', 'error 2', 'error 3']
+      const expectedState = [
+        { name: 'error 1' },
+        { name: 'error 2' },
+        { name: 'error 3' },
+      ]
       expect(mapStateToProps({ errors: expectedState })).toEqual({
         errors: expectedState,
       })

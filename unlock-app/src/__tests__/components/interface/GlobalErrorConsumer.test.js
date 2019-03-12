@@ -87,23 +87,23 @@ describe('GlobalErrorConsumer', () => {
 
     it('should not map non fatal errors', () => {
       expect.assertions(1)
-      const state = { errors: ['AN_ERROR'] }
+      const state = { errors: [{ name: 'AN_ERROR' }] }
       const props = mapStateToProps(state)
       expect(props.error).toBe(undefined)
     })
 
     it('should map fatal errors', () => {
       expect.assertions(1)
-      const state = { errors: ['FATAL_ERROR'] }
+      const state = { errors: [{ name: 'FATAL_ERROR' }] }
       const props = mapStateToProps(state)
-      expect(props.error).toEqual('FATAL_ERROR')
+      expect(props.error).toEqual({ name: 'FATAL_ERROR' })
     })
   })
 
   describe('when called with a fatal error', () => {
     it('should invoke displayError with that error', () => {
       expect.assertions(2)
-      const fatalError = 'FATAL_ERROR'
+      const fatalError = { name: 'FATAL_ERROR', data: {} }
       const listen = jest.fn(() => <div>internal</div>)
       rtl.render(
         <GlobalErrorConsumer displayError={listen} error={fatalError}>
@@ -112,7 +112,11 @@ describe('GlobalErrorConsumer', () => {
       )
 
       expect(listen).toHaveBeenCalledTimes(1)
-      expect(listen).toHaveBeenCalledWith(fatalError, {}, <p>App</p>)
+      expect(listen).toHaveBeenCalledWith(
+        fatalError.name,
+        fatalError.data,
+        <p>App</p>
+      )
     })
   })
 })

@@ -3,14 +3,14 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { Errors } from '../../components/interface/Errors'
 
-const errors = ['error 1', 'error 2', 'error 3']
+const errors = [{ name: 'error 1' }, { name: 'error 2' }, { name: 'error 3' }]
 
 storiesOf('Errors', module)
   .add('Simple Error', () => {
     return (
       <Errors
         close={action('close')}
-        errors={['We could not process that transaction.']}
+        errors={[{ name: 'We could not process that transaction.' }]}
       />
     )
   })

@@ -31,6 +31,11 @@ export const transaction = PropTypes.shape({
   type: PropTypes.oneOf(Object.values(TRANSACTION_TYPES)),
 })
 
+export const error = PropTypes.shape({
+  name: PropTypes.string,
+  data: PropTypes.shape({}),
+})
+
 export const conversion = PropTypes.objectOf(PropTypes.number)
 
 export const children = PropTypes.shape({})
@@ -82,6 +87,7 @@ export default {
   conversion,
   delay,
   element,
+  error,
   layout,
   lock,
   locks,
