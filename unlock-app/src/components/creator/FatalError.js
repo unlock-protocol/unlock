@@ -125,11 +125,18 @@ export const ContractNotDeployed = () => (
   </DefaultError>
 )
 
+export const NotEnabledInProvider = () => (
+  <DefaultError title="Not enabled in provider">
+    <p>You did not approve Unlock in your web3 wallet.</p>
+  </DefaultError>
+)
+
 export const mapping = {
   FATAL_MISSING_PROVIDER: MissingProvider,
   FATAL_NO_USER_ACCOUNT: MissingAccount,
   FATAL_WRONG_NETWORK: WrongNetwork,
   FATAL_NON_DEPLOYED_CONTRACT: ContractNotDeployed,
+  FATAL_NOT_ENABLED_IN_PROVIDER: NotEnabledInProvider,
   '*': DefaultError,
 }
 
@@ -154,4 +161,5 @@ export default {
   MissingProvider,
   MissingAccount,
   ContractNotDeployed,
+  NotEnabledInProvider,
 }
