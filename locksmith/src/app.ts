@@ -1,6 +1,6 @@
-import bodyParser from 'body-parser'
-import cors from 'cors'
-import express from 'express'
+import bodyParser = require('body-parser')
+import cors = require('cors')
+import express = require('express')
 import signatureValidationMiddleware = require('./signatureValidationMiddleware')
 
 const app: express.Application = express()
