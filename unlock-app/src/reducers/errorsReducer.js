@@ -25,16 +25,10 @@ const errorsReducer = (state = initialState, action) => {
     if (!action.error) return initialState
 
     // If the error to be reset is not in the list, nothing changes
-    if (!state.map(error => error.name).includes(action.error)) return state
+    if (!state.find(error => action.error === error.name)) return state
 
     // Otherwise, only push to new state the all the other errors
-    const newState = []
-    state.forEach(error => {
-      if (error.name !== action.error) {
-        newState.push(error)
-      }
-    })
-    return newState
+    return state.filter(error => error.name !== action.error)
   }
 
   return state
