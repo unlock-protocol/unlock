@@ -1,4 +1,4 @@
-import request from 'supertest'
+import request = require('supertest')
 import app from '../src/app'
 import Lock from '../src/lock'
 import Transaction from '../src/transaction'
@@ -96,7 +96,7 @@ describe('Setting lock details', () => {
 
     await request(app)
       .post('/lock')
-      .set('Accept', /json/)
+      .set('Accept', 'json')
       .set('Authorization', `Bearer ${validLockSignature}`)
       .send(lockPayload)
 
@@ -112,11 +112,11 @@ describe('Setting lock details', () => {
     Date.now = jest.fn(() => 1546130837000)
     let response = await request(app)
       .post('/lock')
-      .set('Accept', /json/)
+      .set('Accept', 'json')
       .set('Authorization', `Bearer ${validLockSignature}`)
       .send(lockPayload)
 
-    expect(response.statusCode).toBe(200)
+    expect(response.status).toBe(200)
   })
 
   describe('when the lock exists', () => {
@@ -132,7 +132,7 @@ describe('Setting lock details', () => {
 
       let response = await request(app)
         .post('/lock')
-        .set('Accept', /json/)
+        .set('Accept', 'json')
         .set('Authorization', `Bearer ${validLockSignature}`)
         .send(lockPayload)
 
@@ -140,7 +140,7 @@ describe('Setting lock details', () => {
         where: { address: validLockAddress },
       })
       expect(lock.address).toBe(validLockAddress)
-      expect(response.statusCode).toBe(202)
+      expect(response.status).toBe(202)
     })
   })
 
@@ -156,11 +156,11 @@ describe('Setting lock details', () => {
 
       let response = await request(app)
         .post('/lock')
-        .set('Accept', /json/)
+        .set('Accept', 'json')
         .set('Authorization', `Bearer ${validLockSignature}`)
         .send(lockPayload)
 
-      expect(response.statusCode).toBe(401)
+      expect(response.status).toBe(401)
     })
   })
 })
@@ -177,7 +177,7 @@ describe('Requesting Lock details of a given address', () => {
 
       let response = await request(app)
         .get(`/${owner}/locks`)
-        .set('Accept', /json/)
+        .set('Accept', 'json')
 
       expect(response.body.locks).toHaveLength(2)
 
@@ -198,7 +198,7 @@ describe('Requesting Lock details of a given address', () => {
       expect.assertions(1)
       let response = await request(app)
         .get('/0xd489fF3/locks')
-        .set('Accept', /json/)
+        .set('Accept', 'json')
       expect(response.body).toEqual({ locks: [] })
     })
   })
@@ -234,7 +234,7 @@ describe('Requesting Lock details of a given address', () => {
         let response = await request(app)
           .get('/transactions')
           .query({ sender: '0xd489fF3' })
-          .set('Accept', /json/)
+          .set('Accept', 'json')
         expect(response.body).toEqual({ transactions: [] })
       })
     })
@@ -247,7 +247,7 @@ describe('Requesting Lock details of a given address', () => {
         let response = await request(app)
           .get('/transactions')
           .query({ sender: sender })
-          .set('Accept', /json/)
+          .set('Accept', 'json')
 
         expect(response.body.transactions.length).toEqual(2)
       })
@@ -260,7 +260,7 @@ describe('Requesting Lock details of a given address', () => {
 
           let response = await request(app)
             .post('/transaction')
-            .set('Accept', /json/)
+            .set('Accept', 'json')
             .send({
               transactionHash: '0xsdbegjkbg,egf',
               sender: '0xSDgErGR',
@@ -271,7 +271,7 @@ describe('Requesting Lock details of a given address', () => {
             where: { sender: '0xSDgErGR', recipient: '0xSdaG433r' },
           })
           expect(record.sender).toBe('0xSDgErGR')
-          expect(response.statusCode).toBe(202)
+          expect(response.status).toBe(202)
         })
       })
 
@@ -280,14 +280,14 @@ describe('Requesting Lock details of a given address', () => {
           expect.assertions(1)
           let response = await request(app)
             .post('/transaction')
-            .set('Accept', /json/)
+            .set('Accept', 'json')
             .send({
               transactionHash: '0x345546565',
               sender: '0xcAFe',
               recipient: '0xbeefe',
             })
 
-          expect(response.statusCode).toBe(202)
+          expect(response.status).toBe(202)
         })
       })
     })

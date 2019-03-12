@@ -1,7 +1,7 @@
-const request = require('supertest')
-const nock = require('nock')
-const app = require('../../src/app')
-const Block = require('../../src/block')
+import request = require('supertest')
+import * as nock from 'nock'
+import app from '../../src/app'
+import Block from '../../src/block'
 
 nock.back.fixtures = __dirname + '/fixtures/blockController'
 nock.disableNetConnect()
@@ -11,7 +11,7 @@ beforeEach(async () => {
 })
 
 const blockNumber = 3346773
-
+ 
 describe('block_get', () => {
   describe('when a valid chain id is provided', () => {
     it('returns the block timestamp and persists the value', async () => {
@@ -21,7 +21,7 @@ describe('block_get', () => {
         .get(`/block/${blockNumber}`)
         .query({ chain: 3 })
 
-      expect(response.statusCode).toBe(200)
+      expect(response.status).toBe(200)
       expect(
         await Block.findOne({ where: { number: 3346773, chain: 3 } })
       ).not.toBeNull()
@@ -34,7 +34,7 @@ describe('block_get', () => {
       await nock.back('no_chain.json')
 
       let response = await request(app).get(`/block/${blockNumber}`)
-      expect(response.statusCode).toBe(200)
+      expect(response.status).toBe(200)
       expect(
         await Block.findOne({ where: { number: 3346773, chain: 1 } })
       ).not.toBeNull()
@@ -49,7 +49,7 @@ describe('block_get', () => {
       let response = await request(app)
         .get(`/block/${blockNumber}`)
         .query({ chain: 'dfodfvdf' })
-      expect(response.statusCode).toBe(400)
+      expect(response.status).toBe(400)
     })
   })
 })
