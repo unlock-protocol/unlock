@@ -29,6 +29,7 @@ pragma solidity 0.5.5;
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import 'zos-lib/contracts/Initializable.sol';
 import './PublicLock.sol';
+import './PublicErc20Lock.sol';
 import './interfaces/IUnlock.sol';
 import './mixins/MixinNoFallback.sol';
 
@@ -103,7 +104,13 @@ contract Unlock is MixinNoFallback, IUnlock, Initializable, Ownable {
         _maxNumberOfKeys
       );
     } else {
-      revert('NOT_IMPLEMENTED');
+      newLock = new PublicErc20Lock(
+        msg.sender,
+        _expirationDuration,
+        _tokenAddress,
+        _keyPrice,
+        _maxNumberOfKeys
+      );
     }
 
     // Assign the new Lock

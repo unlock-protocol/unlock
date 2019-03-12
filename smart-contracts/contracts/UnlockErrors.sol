@@ -19,6 +19,9 @@ contract UnlockErrors {
   // The specified address is not valid (i.e. must not be 0).
   string public constant INVALID_ADDRESS = 'INVALID_ADDRESS';
 
+  // The token address provided does not refer to a valid Erc20 token on this network.
+  string public constant INVALID_TOKEN = 'INVALID_TOKEN';
+
   // The user does not have a valid key, they may or may not have purchased one previously.
   string public constant KEY_NOT_VALID = 'KEY_NOT_VALID';
 
@@ -63,4 +66,7 @@ contract UnlockErrors {
 
   // This contract does NOT implement the IERC721Receiver interface.
   string public constant NON_COMPLIANT_ERC721_RECEIVER = 'NON_COMPLIANT_ERC721_RECEIVER';
+
+  // Transfering funds did not work as expected.
+  string public constant TRANSFER_FAILED = 'TRANSFER_FAILED';
 }
