@@ -34,17 +34,56 @@ describe('errors reducer', () => {
 
   it('should set the error accordingly when receiving SET_ERROR', () => {
     expect.assertions(1)
-    expect(reducer(undefined, action)).toEqual([error])
+    expect(reducer(undefined, action)).toEqual([
+      {
+        name: error,
+        data: {},
+      },
+    ])
   })
 
-  it('should set add an error when receiving SET_ERROR again', () => {
+  it('should add another error when receiving SET_ERROR again', () => {
     expect.assertions(1)
-    expect(reducer([error], action2)).toEqual([error, error2])
+    expect(
+      reducer(
+        [
+          {
+            name: error,
+            data: {},
+          },
+        ],
+        action2
+      )
+    ).toEqual([
+      {
+        name: error,
+        data: {},
+      },
+      {
+        name: error2,
+        data: {},
+      },
+    ])
   })
 
   it('should not set the same error twice', () => {
     expect.assertions(1)
-    expect(reducer([error], action)).toEqual([error])
+    expect(
+      reducer(
+        [
+          {
+            name: error,
+            data: {},
+          },
+        ],
+        action
+      )
+    ).toEqual([
+      {
+        name: error,
+        data: {},
+      },
+    ])
   })
 
   it('should not change state if RESET_ERROR with non-existing error is called', () => {
@@ -60,8 +99,9 @@ describe('errors reducer', () => {
 
   it('should reset a specific error if RESET_ERROR is called with a specific error', () => {
     expect.assertions(3)
-    expect(reducer([1, 2], resetError(1))).toEqual([2])
-    expect(reducer([1, 2], resetError(2))).toEqual([1])
-    expect(reducer([1, 2], resetError(3))).toEqual([1, 2])
+    const state = [{ name: 1, data: {} }, { name: 2, data: {} }]
+    expect(reducer(state, resetError(1))).toEqual([{ name: 2, data: {} }])
+    expect(reducer(state, resetError(2))).toEqual([{ name: 1, data: {} }])
+    expect(reducer(state, resetError(3))).toEqual(state)
   })
 })

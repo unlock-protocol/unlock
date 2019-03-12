@@ -5,12 +5,13 @@ import styled from 'styled-components'
 import { resetError } from '../../actions/error'
 import Buttons from './buttons/layout'
 import ErrorMessage from '../helpers/ErrorMessage'
+import UnlockPropTypes from '../../propTypes'
 
 export const Errors = ({ errors, close }) => {
   const content = errors.map(error => (
-    <Wrapper key={error}>
-      <Error>{ErrorMessage(error)}</Error>
-      <Buttons.Close as="button" onClick={() => close(error)} size="16px">
+    <Wrapper key={error.name}>
+      <Error>{ErrorMessage(error.name)}</Error>
+      <Buttons.Close as="button" onClick={() => close(error.name)} size="16px">
         X
       </Buttons.Close>
     </Wrapper>
@@ -31,7 +32,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 Errors.propTypes = {
-  errors: PropTypes.arrayOf(PropTypes.string),
+  errors: PropTypes.arrayOf(UnlockPropTypes.error),
   close: PropTypes.func.isRequired,
 }
 
