@@ -20,6 +20,9 @@ storiesOf('FatalError', module)
   .add('Unlock not deployed', () => {
     return <FatalError.ContractNotDeployed />
   })
+  .add('Provider not approved', () => {
+    return <FatalError.NotEnabledInProvider />
+  })
   .add('Non-critical error', () => {
     return (
       <FatalError.DefaultError title="Non-critical error" critical={false} />
