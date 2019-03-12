@@ -4,10 +4,12 @@ import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
+import './interfaces/IMixinFunds.sol';
 
 
 contract MixinRefunds is
   Ownable,
+  IMixinFunds,
   MixinLockCore,
   MixinKeys
 {
@@ -51,7 +53,7 @@ contract MixinRefunds is
 
     if (refund > 0) {
       // Security: doing this last to avoid re-entrancy concerns
-      msg.sender.transfer(refund);
+      _transfer(msg.sender, refund);
     }
   }
 
