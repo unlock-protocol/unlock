@@ -22,10 +22,12 @@ interface IUnlock {
   /**
   * @dev Create lock
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
+  * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
   * Return type `ILockCore` is the most specific interface from which all lock types inherit.
   */
   function createLock(
     uint _expirationDuration,
+    address _tokenAddress,
     uint _keyPrice,
     uint _maxNumberOfKeys
   )

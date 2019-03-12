@@ -10,6 +10,7 @@ exports.shouldCreateLock = function (accounts) {
       beforeEach(async function () {
         transaction = await this.unlock.methods.createLock(
           60 * 60 * 24 * 30, // expirationDuration: 30 days
+          Web3Utils.padLeft(0, 40),
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
           100 // maxNumberOfKeys
         ).send({
@@ -45,6 +46,7 @@ exports.shouldCreateLock = function (accounts) {
       it('should fail if expirationDuration is too large', async function () {
         await shouldFail(this.unlock.methods.createLock(
           60 * 60 * 24 * 365 * 101, // expirationDuration: 101 years
+          Web3Utils.padLeft(0, 40),
           Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
           100 // maxNumberOfKeys
         ).send({
