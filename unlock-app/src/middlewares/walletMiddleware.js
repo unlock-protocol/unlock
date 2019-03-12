@@ -17,10 +17,18 @@ import {
   gotWallet,
   dismissWalletCheck,
 } from '../actions/walletStatus'
-import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
+import {
+  TRANSACTION_TYPES,
+  POLLING_INTERVAL,
+  ETHEREUM_NETWORKS_NAMES,
+} from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
 
 import WalletService from '../services/walletService'
-import { FATAL_NO_USER_ACCOUNT, FATAL_NON_DEPLOYED_CONTRACT } from '../errors'
+import {
+  FATAL_NO_USER_ACCOUNT,
+  FATAL_WRONG_NETWORK,
+  FATAL_NON_DEPLOYED_CONTRACT,
+} from '../errors'
 import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 import configure from '../config'
 
@@ -114,6 +122,20 @@ export default function walletMiddleware({ getState, dispatch }) {
   walletService.on('network.changed', networkId => {
     // Set the new network, which should also clean up all reducers
     dispatch(setNetwork(networkId))
+
+    // Let's check if we're on the right network
+    if (config.isRequiredNetwork && !config.isRequiredNetwork(networkId)) {
+      const currentNetwork = ETHEREUM_NETWORKS_NAMES[networkId]
+        ? ETHEREUM_NETWORKS_NAMES[networkId][0]
+        : 'Unknown Network'
+      return dispatch(
+        setError(FATAL_WRONG_NETWORK, {
+          currentNetwork: currentNetwork,
+          requiredNetworkId: config.requiredNetworkId,
+        })
+      )
+    }
+
     // Check if the smart contract exists
     walletService.isUnlockContractDeployed((error, isDeployed) => {
       if (error) {
