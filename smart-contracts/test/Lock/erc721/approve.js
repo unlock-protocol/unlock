@@ -2,13 +2,14 @@ const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
-const Unlock = artifacts.require('../../Unlock.sol')
+const unlockContract = artifacts.require('../Unlock.sol')
+const getUnlockProxy = require('../../helpers/proxy')
 
 let unlock, locks, ID
 
 contract('Lock / erc721 / approve', accounts => {
   before(async () => {
-    unlock = await Unlock.deployed()
+    unlock = await getUnlockProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
   })
 
@@ -25,13 +26,10 @@ contract('Lock / erc721 / approve', accounts => {
 
   describe('when the key exists', () => {
     before(() => {
-      return locks['FIRST'].purchaseFor(
-        accounts[1],
-        {
-          value: Units.convert('0.01', 'eth', 'wei'),
-          from: accounts[1]
-        }
-      )
+      return locks['FIRST'].purchaseFor(accounts[1], {
+        value: Units.convert('0.01', 'eth', 'wei'),
+        from: accounts[1]
+      })
     })
 
     describe('when the sender is not the token owner', () => {
@@ -97,9 +95,13 @@ contract('Lock / erc721 / approve', accounts => {
 
       describe('when clearing the approved address', () => {
         before(async () => {
-          let result = await locks['FIRST'].approve(Web3Utils.padLeft(0, 40), ID, {
-            from: accounts[1]
-          })
+          let result = await locks['FIRST'].approve(
+            Web3Utils.padLeft(0, 40),
+            ID,
+            {
+              from: accounts[1]
+            }
+          )
           event = result.logs[0]
         })
 

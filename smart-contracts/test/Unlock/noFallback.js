@@ -1,5 +1,6 @@
 const shouldFail = require('../helpers/shouldFail')
-const Unlock = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('../Unlock.sol')
+const getUnlockProxy = require('../helpers/proxy')
 const Web3Abi = require('web3-eth-abi')
 const abi = new Web3Abi.AbiCoder()
 
@@ -7,7 +8,7 @@ let unlock
 
 contract('Unlock / noFallback', accounts => {
   before(async () => {
-    unlock = await Unlock.deployed()
+    unlock = await getUnlockProxy(unlockContract)
   })
 
   it('cannot call the fallback function directly', async () => {
@@ -26,9 +27,12 @@ contract('Unlock / noFallback', accounts => {
   })
 
   it('cannot call a function which does not exist', async () => {
-    await shouldFail(web3.eth.call({
-      to: unlock.address,
-      data: abi.encodeFunctionSignature('dne()')
-    }), 'NO_FALLBACK')
+    await shouldFail(
+      web3.eth.call({
+        to: unlock.address,
+        data: abi.encodeFunctionSignature('dne()')
+      }),
+      'NO_FALLBACK'
+    )
   })
 })
