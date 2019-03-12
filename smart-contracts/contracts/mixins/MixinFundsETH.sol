@@ -3,9 +3,8 @@ pragma solidity 0.5.5;
 import './interfaces/IMixinFunds.sol';
 
 /**
- * @title An interface to be leveraged by other mixins, allowing them to interact
- * with funds without knowing the details about how it is implemented 
- * (e.g. ETH or ERC20 tokens).
+ * @title An implementation of the IMixinFunds interface specifically for transacting
+ * in ETH.
  * @author HardlyDifficult (unlock-protocol.com)
  */
 contract MixinFundsETH is
