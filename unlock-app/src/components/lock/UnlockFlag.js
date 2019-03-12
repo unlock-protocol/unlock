@@ -15,7 +15,7 @@ export function LockedFlag() {
 }
 
 export const UnlockedFlag = () => (
-  <Flag>
+  <Flag id="UnlockFlag">
     <RoundedLogo size="28px" />
     <p>Subscribed with Unlock</p>
   </Flag>
