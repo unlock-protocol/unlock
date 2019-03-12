@@ -1,13 +1,28 @@
 version: 2
+cached-checkout: &cached-checkout
+  attach_workspace:
+    at: ".."
+images-caches: &images-caches
+  attach_workspace:
+    at: ../caches
+
 jobs:
+  checkout-and-cache:
+    machine: true
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ".."
+          paths:
+            - project
+
   build-unlock:
     machine: true
-    docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
       - run: mkdir -p ../caches
-      - checkout
+      - *cached-checkout
       - run:
           name: Build Unlock Image
           command: scripts/build-image.sh unlock
@@ -25,7 +40,7 @@ jobs:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
       - run: mkdir -p ../caches
-      - checkout
+      - *cached-checkout
       - run:
           name: Build Unlock Integration Image
           command: scripts/build-image.sh unlock-integration
@@ -42,9 +57,8 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - attach_workspace:
-          at: ../caches
-      - checkout
+      - *images-caches
+      - *cached-checkout
       - run:
           name: Load Unlock Image
           command: docker load -i  "../caches/unlock.tar"
@@ -57,9 +71,8 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - attach_workspace:
-          at: ../caches
-      - checkout
+      - *images-caches
+      - *cached-checkout
       - run:
           name: Load Unlock Image
           command: docker load -i  "../caches/unlock.tar"
@@ -74,9 +87,8 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - attach_workspace:
-          at: ../caches
-      - checkout
+      - *images-caches
+      - *cached-checkout
       - run:
           name: Load Unlock Image
           command: docker load -i  "../caches/unlock.tar"
@@ -93,9 +105,8 @@ jobs:
       DB_NAME: locksmith_test
       DB_HOSTNAME: db
     steps:
-      - attach_workspace:
-          at: ../caches
-      - checkout
+      - *images-caches
+      - *cached-checkout
       - run:
           name: Load Unlock Image
           command: docker load -i  "../caches/unlock.tar"
@@ -108,9 +119,8 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - attach_workspace:
-          at: ../caches
-      - checkout
+      - *images-caches
+      - *cached-checkout
       - run:
           name: Load Unlock Image
           command: docker load -i  "../caches/unlock.tar"
@@ -123,9 +133,8 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - attach_workspace:
-          at: ../caches
-      - checkout
+      - *images-caches
+      - *cached-checkout
       - run:
           name: Load Unlock Image
           command: docker load -i  "../caches/unlock.tar"
@@ -141,9 +150,8 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - attach_workspace:
-          at: ../caches
-      - checkout
+      - *images-caches
+      - *cached-checkout
       - run:
           name: Set IS_PULL_REQUEST
           command: scripts/circleci/set-is-pull-request.sh >> $BASH_ENV
@@ -159,9 +167,8 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - attach_workspace:
-          at: ../caches
-      - checkout
+      - *images-caches
+      - *cached-checkout
       - run:
           name: Set IS_PULL_REQUEST
           command: scripts/circleci/set-is-pull-request.sh >> $BASH_ENV
@@ -177,7 +184,7 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - checkout
+      - *cached-checkout
       - run:
           name: Set GIT_COMMIT_DESC
           command: echo 'export GIT_COMMIT_DESC=$(git log --format=%B -n 1 "$CIRCLE_SHA1")' >> $BASH_ENV
@@ -193,9 +200,8 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - attach_workspace:
-          at: ../caches
-      - checkout
+      - *images-caches
+      - *cached-checkout
       - run:
           name: Load Unlock Image
           command: docker load -i  "../caches/unlock.tar"
@@ -208,9 +214,8 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - attach_workspace:
-          at: ../caches
-      - checkout
+      - *images-caches
+      - *cached-checkout
       - run:
           name: Load Unlock Integration Image
           command: docker load -i  "../caches/unlock-integration.tar"
@@ -222,8 +227,13 @@ workflows:
   version: 2
   build-test-and-deploy:
     jobs:
-      - build-unlock
-      - build-unlock-integration
+      - checkout-and-cache
+      - build-unlock:
+          requires:
+            - checkout-and-cache
+      - build-unlock-integration:
+          requires:
+            - checkout-and-cache
       - unlock-app-tests:
           requires:
             - build-unlock
