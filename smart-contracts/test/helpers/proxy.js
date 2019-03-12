@@ -14,14 +14,14 @@ module.exports = function getUnlockProxy (_Unlock) {
     .getId()
     .then(_Id => {
       switch (_Id) {
-        case '1984':
-          network = 'dev-1984'
+        case '1':
+          network = 'mainnet'
           break
         case '4':
           network = 'rinkeby'
           break
         default:
-          network = 'dev-1984'
+          network = `dev-${_Id}`
       }
     })
     .then(() => {
