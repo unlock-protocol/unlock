@@ -80,7 +80,9 @@ export default function configure(
   let services = {}
   let supportedProviders = []
   let blockTime = 8000 // in mseconds.
-  const readOnlyProviderUrl = runtimeConfig.readOnlyProvider
+  const readOnlyProviderUrl =
+    runtimeConfig.readOnlyProvider ||
+    `http://${runtimeConfig.httpProvider}:8545`
 
   if (env === 'test') {
     // In test, we fake the HTTP provider

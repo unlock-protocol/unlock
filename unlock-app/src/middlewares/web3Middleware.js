@@ -26,11 +26,24 @@ import {
   setKeysOnPageForLock,
 } from '../actions/keysPages'
 import { lockRoute } from '../utils/routes'
+import configure from '../config'
+
+const {
+  readOnlyProvider,
+  unlockAddress,
+  blockTime,
+  requiredConfirmations,
+} = configure()
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
 export default function web3Middleware({ getState, dispatch }) {
-  const web3Service = new Web3Service()
+  const web3Service = new Web3Service({
+    readOnlyProvider,
+    unlockAddress,
+    blockTime,
+    requiredConfirmations,
+  })
 
   web3Service.on('account.updated', (account, update) => {
     dispatch(updateAccount(update))
