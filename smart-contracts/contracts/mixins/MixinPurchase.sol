@@ -4,6 +4,7 @@ import './MixinDisableAndDestroy.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
+import './interfaces/IMixinFunds.sol';
 
 
 /**
@@ -13,6 +14,7 @@ import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinPurchase is
+  IMixinFunds,
   MixinDisableAndDestroy,
   MixinLockCore,
   MixinKeys
@@ -82,11 +84,8 @@ contract MixinPurchase is
       netPrice = inMemoryKeyPrice - discount;
     }
 
-    // We explicitly allow for greater amounts to allow 'donations' or partial refunds after
-    // discounts (TODO implement partial refunds)
-    require(msg.value >= netPrice, 'NOT_ENOUGH_FUNDS');
-    // TODO: If there is more than the required price, then let's return whatever is extra
-    // extra (CAREFUL: re-entrancy!)
+    // We explicitly allow for greater amounts of ETH to allow 'donations'
+    _chargeAtLeast(netPrice);
 
     // Assign the key
     Key storage toKey = _getKeyFor(_recipient);
