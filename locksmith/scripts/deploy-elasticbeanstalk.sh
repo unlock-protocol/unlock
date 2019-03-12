@@ -84,5 +84,8 @@ check_preconditions
 package_application ${APPLICATION} ${ARTIFACT_LOCATION}
 upload_to_s3 ${ARTIFACT_LOCATION} ${S3_BUCKET}
 elasticbeanstalk_create_application_version ${S3_BUCKET} ${BUILD}.zip
-update_environment Locksmith-env-1 ${BUILD}
+
+if ! update_environment Locksmith-env-1 ${BUILD} ; 
+then echo "Unable to update environment, not ready at this time.";
+fi
 
