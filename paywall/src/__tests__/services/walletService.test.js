@@ -49,6 +49,15 @@ const accountsAndYield = accounts => {
   return jsonRpcRequest('eth_accounts', [], accounts)
 }
 
+// eth_getCode
+const ethGetCodeAndYield = (address, opCode) => {
+  return jsonRpcRequest(
+    'eth_getCode',
+    [address.toLowerCase(), 'latest'],
+    opCode
+  )
+}
+
 nock.emitter.on('no match', function(clientRequestObject, options, body) {
   if (debug) {
     console.log(`NO HTTP MOCK EXISTS FOR THAT REQUEST\n${body}`)
@@ -149,7 +158,7 @@ describe('WalletService', () => {
       walletService.connect('HTTP')
     })
 
-    it('should fail while if a user rejects access', done => {
+    it('should fail if a user rejects access', done => {
       expect.assertions(4)
 
       expect(walletService.ready).toBe(false)
@@ -188,6 +197,43 @@ describe('WalletService', () => {
         done()
       })
       return walletService.connect('HTTP')
+    })
+
+    describe('isUnlockContractDeployed', () => {
+      it('should yield true if the opCode is not 0x', done => {
+        expect.assertions(2)
+        ethGetCodeAndYield(config.unlockAddress, '0xdeadbeef')
+
+        walletService.isUnlockContractDeployed((error, isDeployed) => {
+          expect(error).toBe(null)
+          expect(isDeployed).toBe(true)
+          done()
+        })
+      })
+
+      it('should yield false if the opCode is 0x', done => {
+        expect.assertions(2)
+        ethGetCodeAndYield(config.unlockAddress, '0x')
+
+        walletService.isUnlockContractDeployed((error, isDeployed) => {
+          expect(error).toBe(null)
+          expect(isDeployed).toBe(false)
+          done()
+        })
+      })
+
+      it('should yield an error if we could not retrieve the opCode', done => {
+        expect.assertions(2)
+        const err = new Error('getCode failed')
+        walletService.web3.eth.getCode = jest.fn(() => {
+          throw err
+        })
+        walletService.isUnlockContractDeployed((error, isDeployed) => {
+          expect(error).toBe(err)
+          expect(isDeployed).toBe(undefined)
+          done()
+        })
+      })
     })
 
     describe('getAccount', () => {

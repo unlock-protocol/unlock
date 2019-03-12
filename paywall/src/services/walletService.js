@@ -94,6 +94,21 @@ export default class WalletService extends EventEmitter {
   }
 
   /**
+   * Checks if the contract has been deployed at the address.
+   * Invokes the callback with the result.
+   * Addresses which do not have a contract attached will return 0x
+   */
+  async isUnlockContractDeployed(callback) {
+    let opCode = '0x' // Default
+    try {
+      opCode = await this.web3.eth.getCode(this.unlockContractAddress)
+    } catch (error) {
+      return callback(error)
+    }
+    return callback(null, opCode !== '0x')
+  }
+
+  /**
    * Function which yields the address of the account on the provider or creates a key pair.
    */
   async getAccount(createIfNone = false) {

@@ -23,6 +23,7 @@ describe('GlobalErrorProvider', () => {
       ...newValues,
     })
   }
+
   // eslint-disable-next-line
   function PeekAtContextConsumer() {
     return (
@@ -38,6 +39,7 @@ describe('GlobalErrorProvider', () => {
       </GlobalErrorContext.Consumer>
     )
   }
+
   it('should populate with no error normally', () => {
     expect.assertions(2)
 
@@ -53,6 +55,7 @@ describe('GlobalErrorProvider', () => {
     expect(wrapper.getByTestId('error')).toHaveTextContent('false')
     expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent('{}')
   })
+
   describe('should populate with wrong network error if the wallet is set up on a different network', () => {
     it('mainnet', () => {
       expect.assertions(2)
@@ -80,6 +83,7 @@ describe('GlobalErrorProvider', () => {
         })
       )
     })
+
     it('rinkeby', () => {
       expect.assertions(2)
 
@@ -106,6 +110,7 @@ describe('GlobalErrorProvider', () => {
         })
       )
     })
+
     it('unknown network', () => {
       expect.assertions(2)
 
@@ -133,6 +138,7 @@ describe('GlobalErrorProvider', () => {
       )
     })
   })
+
   it('should populate with missing account error if account is not set', () => {
     expect.assertions(2)
 

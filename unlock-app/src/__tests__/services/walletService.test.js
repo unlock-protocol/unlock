@@ -14,7 +14,6 @@ import {
   FAILED_TO_PURCHASE_KEY,
   FAILED_TO_UPDATE_KEY_PRICE,
   FAILED_TO_WITHDRAW_FROM_LOCK,
-  FATAL_NON_DEPLOYED_CONTRACT,
 } from '../../errors'
 
 jest.mock('../../utils/promises')
@@ -81,7 +80,6 @@ describe('WalletService', () => {
     it('should get the network id', done => {
       expect.assertions(1)
 
-      ethGetCodeAndYield(config.unlockAddress, 'opCode')
       const netVersion = Math.floor(Math.random() * 100000)
       netVersionAndYield(netVersion)
 
@@ -96,19 +94,6 @@ describe('WalletService', () => {
       }
       walletService.on('network.changed', networkId => {
         expect(networkId).toEqual(netVersion)
-        return done()
-      })
-
-      walletService.connect('HTTP')
-    })
-
-    it('should fail if the Unlock contract has not been deployed', done => {
-      expect.assertions(1)
-
-      ethGetCodeAndYield(config.unlockAddress, '0x')
-
-      walletService.on('error', error => {
-        expect(error.message).toEqual(FATAL_NON_DEPLOYED_CONTRACT)
         return done()
       })
 
@@ -151,7 +136,6 @@ describe('WalletService', () => {
       expect(walletService.ready).toBe(false)
       Unlock.networks = {}
 
-      ethGetCodeAndYield(config.unlockAddress, 'opCode')
       const netVersion = Math.floor(Math.random() * 100000)
       netVersionAndYield(netVersion)
       Unlock.networks = {
@@ -197,7 +181,6 @@ describe('WalletService', () => {
     const netVersion = Math.floor(Math.random() * 100000)
 
     beforeEach(done => {
-      ethGetCodeAndYield(config.unlockAddress, 'opCode')
       netVersionAndYield(netVersion)
 
       Unlock.networks = {
@@ -214,6 +197,43 @@ describe('WalletService', () => {
         done()
       })
       return walletService.connect('HTTP')
+    })
+
+    describe('isUnlockContractDeployed', () => {
+      it('should yield true if the opCode is not 0x', done => {
+        expect.assertions(2)
+        ethGetCodeAndYield(config.unlockAddress, '0xdeadbeef')
+
+        walletService.isUnlockContractDeployed((error, isDeployed) => {
+          expect(error).toBe(null)
+          expect(isDeployed).toBe(true)
+          done()
+        })
+      })
+
+      it('should yield false if the opCode is 0x', done => {
+        expect.assertions(2)
+        ethGetCodeAndYield(config.unlockAddress, '0x')
+
+        walletService.isUnlockContractDeployed((error, isDeployed) => {
+          expect(error).toBe(null)
+          expect(isDeployed).toBe(false)
+          done()
+        })
+      })
+
+      it('should yield an error if we could not retrieve the opCode', done => {
+        expect.assertions(2)
+        const err = new Error('getCode failed')
+        walletService.web3.eth.getCode = jest.fn(() => {
+          throw err
+        })
+        walletService.isUnlockContractDeployed((error, isDeployed) => {
+          expect(error).toBe(err)
+          expect(isDeployed).toBe(undefined)
+          done()
+        })
+      })
     })
 
     describe('getAccount', () => {

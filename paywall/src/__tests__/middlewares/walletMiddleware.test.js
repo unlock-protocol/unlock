@@ -19,7 +19,10 @@ import { SET_PROVIDER } from '../../actions/provider'
 import { NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
 import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../../constants'
-import { FATAL_NO_USER_ACCOUNT } from '../../errors'
+import {
+  FATAL_NO_USER_ACCOUNT,
+  FATAL_NON_DEPLOYED_CONTRACT,
+} from '../../errors'
 import {
   SIGN_DATA,
   SIGNED_DATA,
@@ -233,15 +236,65 @@ describe('Wallet middleware', () => {
 
   describe('when receiving a network.changed event triggered by the walletService', () => {
     describe('when the network.changed is different from the store value', () => {
-      it('should get a new account', () => {
-        expect.assertions(1)
-        create()
+      it('should dispatch an error if it could not check whether the contract was deployed', () => {
+        expect.assertions(2)
+        const { store } = create()
+        const networkId = 1984
+        const error = new Error('An error')
+        mockWalletService.getAccount = jest.fn()
+        mockWalletService.isUnlockContractDeployed = jest.fn(callback => {
+          return callback(error)
+        })
+
+        mockWalletService.emit('network.changed', networkId)
+
+        expect(store.dispatch).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: SET_ERROR,
+            error: error.message,
+          })
+        )
+
+        expect(mockWalletService.getAccount).not.toHaveBeenCalled()
+      })
+
+      it('should dispatch FATAL_NON_DEPLOYED_CONTRACT if the contract was not deployed', () => {
+        expect.assertions(2)
+        const { store } = create()
         const networkId = 1984
 
-        state.network.name = 1773
         mockWalletService.getAccount = jest.fn()
+        mockWalletService.isUnlockContractDeployed = jest.fn(callback => {
+          return callback(null, false /* non deployed */)
+        })
+
         mockWalletService.emit('network.changed', networkId)
-        expect(mockWalletService.getAccount).toHaveBeenCalledWith(true) // create an account if none is set
+
+        expect(store.dispatch).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: SET_ERROR,
+            error: FATAL_NON_DEPLOYED_CONTRACT,
+          })
+        )
+
+        expect(mockWalletService.getAccount).not.toHaveBeenCalled()
+      })
+
+      describe('if the contract was deployed', () => {
+        it('should get a new account', () => {
+          expect.assertions(1)
+          create()
+          const networkId = 1984
+
+          state.network.name = 1773
+          mockWalletService.getAccount = jest.fn()
+          mockWalletService.isUnlockContractDeployed = jest.fn(callback => {
+            return callback(null, true /* deployed */)
+          })
+
+          mockWalletService.emit('network.changed', networkId)
+          expect(mockWalletService.getAccount).toHaveBeenCalledWith(true) // create an account if none is set
+        })
       })
 
       it('should dispatch a SET_NETWORK action', () => {
@@ -251,6 +304,7 @@ describe('Wallet middleware', () => {
 
         state.network.name = 1773
         mockWalletService.getAccount = jest.fn()
+        mockWalletService.isUnlockContractDeployed = jest.fn()
         mockWalletService.emit('network.changed', networkId)
         expect(store.dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
