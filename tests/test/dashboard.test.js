@@ -4,9 +4,6 @@ const debugPage = require('../helpers/debugging')
 describe('The Unlock Dashboard', () => {
   beforeAll(async () => {
     await page.goto(url('/dashboard'))
-    // chagne the "false" below to "true" to display all console calls in the
-    // unlock app, including errors and calls to console in page.evaluate() calls
-    debugPage(page, true)
   })
 
   const testLockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
@@ -47,9 +44,6 @@ describe('The Unlock Dashboard', () => {
 
   describe('Lock Embedd Code', () => {
     it('should toggle the embed code', async () => {
-      page.evaluate((t) => {
-        console.log('thing', document.querySelector(`#LockRow_${t}`))
-      }, testLockAddress)
       await page.waitForSelector(`#LockEmbeddCode_${testLockAddress}`)
       await expect(page).toClick(`#LockEmbeddCode_${testLockAddress}`)
       await expect(page).toMatch('Code snippet')
@@ -61,7 +55,7 @@ describe('The Unlock Dashboard', () => {
     }, 25000)
   })
 
-  xdescribe('Lock Editing', () => {
+  describe('Lock Editing', () => {
     it('a button exists to edit the Lock details', async () => {
       await expect(page).toMatchElement(`#EditLockButton_${testLockAddress}`)
     })
@@ -93,12 +87,6 @@ describe('The Unlock Dashboard', () => {
         page.waitForNavigation(),
       ])
     })
-    afterAll(async () => {
-      await Promise.all([
-        page.goto(url('/dashboard')),
-        page.waitForNavigation(),
-      ])
-    })
     it('should display a lock on the demo page with a paywall', async () => {
       await page.waitForFunction(() => window.frames.length)
       const paywallIframe = page.mainFrame().childFrames()[0]
@@ -125,10 +113,10 @@ describe('The Unlock Dashboard', () => {
       await page.waitForFunction(() => window.frames.length)
       const paywallIframe = page.mainFrame().childFrames()[0]
       await paywallIframe.waitForFunction(() => {
-        const unlockFlag = document.querySelector('UnlockFlag')
+        const unlockFlag = document.querySelector('#UnlockFlag')
         if (!unlockFlag) return false
         return true
       })
-    })
+    }, 15000)
   })
 })
