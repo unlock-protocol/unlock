@@ -77,10 +77,10 @@ export default function configure(
   let unlockAddress = runtimeConfig.unlockAddress
   let services = {}
   let supportedProviders = []
-  let paywallUrl = runtimeConfig.paywallUrl || 'http://localhost:3000/paywall'
+  let paywallUrl = runtimeConfig.paywallUrl || 'http://localhost:3001'
   let paywallScriptUrl =
     runtimeConfig.paywallScriptUrl ||
-    'http://localhost:3000/static/paywall.min.js'
+    'http://localhost:3001/static/paywall.min.js'
   let blockTime = 8000 // in mseconds.
   let chainExplorerUrlBuilders = {
     etherScan: () => false,
@@ -143,10 +143,10 @@ export default function configure(
     supportedProviders = ['Metamask', 'Opera']
     services['storage'] = { host: runtimeConfig.locksmithHost }
     paywallUrl =
-      runtimeConfig.paywallUrl || 'https://staging.unlock-protocol.com/paywall'
+      runtimeConfig.paywallUrl || 'https://staging-paywall.unlock-protocol.com'
     paywallScriptUrl =
       runtimeConfig.paywallScriptUrl ||
-      'https://staging.unlock-protocol.com/static/paywall.min.js'
+      'https://staging-paywall.unlock-protocol.com/static/paywall.min.js'
 
     // Address for the Unlock smart contract
     unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
@@ -171,10 +171,10 @@ export default function configure(
     supportedProviders = ['Metamask', 'Opera']
     services['storage'] = { host: runtimeConfig.locksmithHost }
     paywallUrl =
-      runtimeConfig.paywallUrl || 'https://unlock-protocol.com/paywall'
+      runtimeConfig.paywallUrl || 'https://paywall.unlock-protocol.com/'
     paywallScriptUrl =
       runtimeConfig.paywallScriptUrl ||
-      'https://unlock-protocol.com/static/paywall.min.js'
+      'https://paywall.unlock-protocol.com/static/paywall.min.js'
 
     // Address for the Unlock smart contract
     unlockAddress = '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
