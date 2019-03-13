@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 
 import configure from '../config'
 import UnlockPropTypes from '../propTypes'
-import { FATAL_MISSING_PROVIDER, FATAL_NO_USER_ACCOUNT } from '../errors'
+import { FATAL_NO_USER_ACCOUNT } from '../errors'
 
 export const GlobalErrorContext = createContext()
 
@@ -55,14 +55,6 @@ export class GlobalErrorProvider extends Component {
     this.detectErrors()
   }
 
-  detectMissingProvider(state) {
-    // Ensuring that we have at least 1 provider
-    if (Object.keys(config.providers).length === 0) {
-      if (state.error === FATAL_MISSING_PROVIDER) return null
-      return { error: FATAL_MISSING_PROVIDER, errorMetadata: {} }
-    }
-  }
-
   detectNoAccount(state) {
     const { account } = this.props
     // Ensuring that an account is defined
@@ -83,10 +75,6 @@ export class GlobalErrorProvider extends Component {
         }
         return null // don't modify errors state unless we have an error condition to clear
       }
-
-      // Ensuring that we have at least 1 provider
-      const testProvider = this.detectMissingProvider(state)
-      if (testProvider !== undefined) return testProvider
 
       // Ensuring that an account is defined
       const testAccount = this.detectNoAccount(state)
