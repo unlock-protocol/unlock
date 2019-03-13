@@ -162,21 +162,26 @@ describe('Paywall', () => {
         'http://example.com'
       )
     })
-    it('should update body css', () => {
-      expect.assertions(1)
+    describe('updating body css', () => {
+      it.each([
+        ['mobile', 412, { display: 'none', height: 0 }],
+        ['desktop', 1000, { display: 'flex', height: '160px' }],
+      ])('%s', (type, size, expected) => {
+        expect.assertions(1)
 
-      config.isInIframe = true
-      rtl.act(() => {
-        renderMockPaywall({ locked: false })
-      })
+        fakeWindow.innerWidth = size
+        config.isInIframe = true
+        rtl.act(() => {
+          renderMockPaywall({ locked: false })
+        })
 
-      expect(fakeWindow.document.body.style).toEqual({
-        display: 'flex',
-        flexDirection: 'column',
-        height: '160px',
-        justifyContent: 'center',
-        margin: '0',
-        overflow: 'hidden',
+        expect(fakeWindow.document.body.style).toEqual({
+          ...expected,
+          flexDirection: 'column',
+          justifyContent: 'center',
+          margin: '0',
+          overflow: 'hidden',
+        })
       })
     })
   })
