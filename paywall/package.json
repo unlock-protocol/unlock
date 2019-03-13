@@ -3,10 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "npm run before && npm run set-link && npm run set-link",
-    "set-link": "run-script-os",
-    "set-link:darwin:freebsd:linux:sunos": "cd src && ((test -e artifacts && rm -f artifacts) || echo 'no artifacts') && ln -s ../../smart-contracts/build artifacts",
-    "set-link:win32": "cd src && (if exist artifacts (rmdir artifacts /q /s || del artifacts)) && cmd /c mklink /d artifacts ..\\..\\smart-contracts\\build",
+    "predev": "npm run before",
     "dev": "nodemon src/server.js",
     "before": "npm run build-paywall",
     "build": "npm run before && next build src",
@@ -17,7 +14,7 @@
     "lint": "eslint .",
     "reformat": "prettier-eslint \"src/**/*.js\" --write",
     "fail-pending-changes": "../scripts/pending-changes.sh",
-    "build-paywall": "cross-env NODE_ENV=production rollup -c rollup.paywall.config.js -o ./static/paywall.min.js",
+    "build-paywall": "cross-env NODE_ENV=production rollup -c rollup.paywall.config.js -o ./src/static/paywall.min.js",
     "storybook": "start-storybook -p 9002 -c .storybook -s .",
     "ci": "npm run lint && npm test && npm run reformat && npm run fail-pending-changes"
   },
