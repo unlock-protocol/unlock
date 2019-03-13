@@ -41,7 +41,7 @@ const transactions = {
 
 const router = {
   location: {
-    pathname: '/dashboard',
+    pathname: '/log',
     search: '',
     hash: '',
   },
