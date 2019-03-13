@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Script fails if any command fails
+set -e
+
 # This script deploys a static build to netlify.
 # It requires AUTH_TOKEN and SITE_ID to be set (see details on how to set them using deploy.sh)
 
