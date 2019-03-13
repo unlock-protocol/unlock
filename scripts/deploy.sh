@@ -3,13 +3,12 @@
 # This script invokes the deployment script for the service (first arg), to the target (second arg).
 
 
-SERVICE=$1
-TARGET=$2
-COMMIT=$3
-TAG=$4
+ENV_TARGET=${1:-staging} # defaults to staging
+SERVICE=$2
+TARGET=$3
+COMMIT=$4
 BRANCH=$5
 IS_FORKED_PR=$6
-ENV_TARGET="staging"
 NPM_SCRIPT="npm run deploy-$TARGET"
 REPO_ROOT=`dirname "$0"`/..
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
@@ -17,25 +16,6 @@ DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
 if [ "$IS_FORKED_PR" = "true" ]; then
   echo "Skipping deployment because this is a pull request from a forked repository."
   exit 0
-fi
-
-# Identify the environment for the target (production or staging)
-if [ -n "$TAG" ] &&
-   [ -n "$COMMIT" ]; then
-  # Check that the COMMIT is actually on the master branch to avoid deploying tags which are not on master
-  git config --replace-all remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
-  git fetch >> /dev/null
-  git branch -r --contains $COMMIT | grep 'master' >> /dev/null
-  if [ $? -eq 0 ]; then
-    # This is a tag build on master. We deploy to the main site!
-    ENV_TARGET="prod"
-  else
-    echo "Skipping deployment because commit $COMMIT for tag $TAG is not on master"
-    exit 0
-  fi
-else
-  # This is a branch build. We deploy to the staging site
-  ENV_TARGET="staging"
 fi
 
 # For staging deploys we pass all environment variables which start with STAGING_ and for production
