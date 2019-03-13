@@ -20,6 +20,8 @@ const currency = {
 const router = {
   location: {
     pathname: '/',
+    search: '',
+    hash: '',
   },
 }
 ETHEREUM_NETWORKS_NAMES[network.name] = ['A Name']
