@@ -8,16 +8,20 @@ TARGET=$2
 COMMIT=$3
 TAG=$4
 BRANCH=$5
-IS_PULL_REQUEST=$6
+IS_FORKED_PR=$6
 ENV_TARGET="staging"
 NPM_SCRIPT="npm run deploy-$TARGET"
 REPO_ROOT=`dirname "$0"`/..
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
 
+if [ "$IS_FORKED_PR" = "true" ]; then
+  echo "Skipping deployment because this is a pull request from a forked repository."
+  exit 0
+fi
+
 # Identify the environment for the target (production or staging)
 if [ -n "$TAG" ] &&
-   [ -n "$COMMIT" ] &&
-   [ "$IS_PULL_REQUEST" = "false" ]; then
+   [ -n "$COMMIT" ]; then
   # Check that the COMMIT is actually on the master branch to avoid deploying tags which are not on master
   git config --replace-all remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
   git fetch >> /dev/null
@@ -52,7 +56,7 @@ ENV_VARS=`env | grep $TARGET_PREFIX | awk '{print "-e ",$1}' ORS=' ' | sed -e "s
 
 # PUBLISH: whether to publish/promote the deployed version
 PUBLISH="false"
-if [ "$BRANCH" = "master" ] && [ "$IS_PULL_REQUEST" = "false" ]; then
+if [ "$BRANCH" = "master" ]; then
   PUBLISH="true"
 fi
 
