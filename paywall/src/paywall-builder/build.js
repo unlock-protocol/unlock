@@ -7,6 +7,8 @@ import {
   POST_MESSAGE_SCROLL_POSITION,
 } from './constants'
 
+let locked = false
+
 // Currently, the constraint on the banner is that it starts out at
 // 30% of height, but at least 375px
 const baseBannerHeight = window => {
@@ -23,6 +25,7 @@ const baseBannerHeight = window => {
 // scroll-handling function here to preserve the context of the actual
 // page, not the iframe.
 export const scrollLoop = (window, document, iframe, origin) => {
+  if (!locked) return // no need to look for this unless the page is locked
   const pageTop = window.pageYOffset
   const viewportHeight = window.innerHeight
   const pageHeight = document.documentElement.scrollHeight
@@ -72,7 +75,6 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
 
   scrollLoop(window, document, iframe, origin)
 
-  let locked = false
   window.addEventListener(
     'message',
     event => {
