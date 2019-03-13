@@ -8,7 +8,7 @@
 
 BUILD_ID=$1
 BRANCH=$2
-IS_PULL_REQUEST=$3
+IS_FORKED_PR=$3
 COMMIT_MESSAGE=$4
 
 readonly BUILD="locksmith-${BUILD_ID}"
@@ -68,8 +68,7 @@ function check_preconditions()
 {
     if [ -n "$AWS_ACCESS_KEY_ID" ] && \
        [ -n "$AWS_SECRET_ACCESS_KEY" ] && \
-       [ "$BRANCH" = "master" ] &&  \
-       [ "$IS_PULL_REQUEST" = "false" ]; then
+       [ "$BRANCH" = "master" ]; then
         pip install --user awscli;
         export PATH=$PATH:$HOME/.local/bin;
 
@@ -80,12 +79,20 @@ function check_preconditions()
     fi
 }
 
+function check_is_forked_pr()
+{
+    if [ "$IS_FORKED_PR" = "true" ]; then
+        echo "Skipping deployment because this is a pull request from a forked repository."
+        exit 0
+    fi
+}
+
 check_preconditions
 package_application ${APPLICATION} ${ARTIFACT_LOCATION}
 upload_to_s3 ${ARTIFACT_LOCATION} ${S3_BUCKET}
 elasticbeanstalk_create_application_version ${S3_BUCKET} ${BUILD}.zip
 
-if ! update_environment Locksmith-env-1 ${BUILD} ; 
+if ! update_environment Locksmith-env-1 ${BUILD} ;
 then echo "Unable to update environment, not ready at this time.";
 fi
 
