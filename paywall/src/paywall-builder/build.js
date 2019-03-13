@@ -7,8 +7,6 @@ import {
   POST_MESSAGE_SCROLL_POSITION,
 } from './constants'
 
-let locked = false
-
 // Currently, the constraint on the banner is that it starts out at
 // 30% of height, but at least 375px
 const baseBannerHeight = window => {
@@ -19,19 +17,24 @@ const baseBannerHeight = window => {
   // can use it as the basis to scroll from
   return minHeightPct > 30 ? minHeightPct : 30
 }
+let scrollPolling = true
 // iOS allows the page to scroll even when the paywall is up. Our
 // solution to this is to make the paywall grow to obscure the page
 // content as the user scrolls down the page. We register the
 // scroll-handling function here to preserve the context of the actual
 // page, not the iframe.
 export const scrollLoop = (window, document, iframe, origin) => {
+  const disablePolling = () => {
+    scrollPolling = false
+  }
+  if (!scrollPolling) return // the page is unlocked
   const pageTop = window.pageYOffset
   const viewportHeight = window.innerHeight
   const pageHeight = document.documentElement.scrollHeight
   const maximumScroll = pageHeight - viewportHeight
   // Avoiding a divide-by-zero error when the page does not scroll!
   if (maximumScroll === 0) {
-    return
+    return disablePolling
   }
 
   const scrollPosition =
@@ -44,6 +47,7 @@ export const scrollLoop = (window, document, iframe, origin) => {
   window.requestAnimationFrame(() =>
     scrollLoop(window, document, iframe, origin)
   )
+  return disablePolling
 }
 
 export function redirect(window, paywallUrl) {
@@ -72,17 +76,20 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
 
   const origin = new window.URL(paywallUrl).origin
 
+  let locked = false
+  let disablePolling
   window.addEventListener(
     'message',
     event => {
       if (event.data === POST_MESSAGE_LOCKED && !locked) {
         locked = true
         show(iframe, document)
-        scrollLoop(window, document, iframe, origin)
+        disablePolling = scrollLoop(window, document, iframe, origin)
         blocker.remove()
       }
       if (event.data === POST_MESSAGE_UNLOCKED && locked) {
         locked = false
+        disablePolling()
         hide(iframe, document)
         blocker.remove()
       }
