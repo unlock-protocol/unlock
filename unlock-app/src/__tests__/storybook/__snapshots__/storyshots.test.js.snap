@@ -7166,7 +7166,8 @@ Object {
 exports[`Storyshots Content pages the About page 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c8 {
+  "baseElement": <body>
+    .c8 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -7555,8 +7556,7 @@ Object {
   }
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
@@ -8922,7 +8922,8 @@ Object {
 exports[`Storyshots Content pages the Home page 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c8 {
+  "baseElement": <body>
+    .c8 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -9378,8 +9379,7 @@ Object {
   }
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
@@ -10183,7 +10183,8 @@ Object {
 exports[`Storyshots Content pages the Jobs page 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c8 {
+  "baseElement": <body>
+    .c8 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -10565,8 +10566,7 @@ Object {
   }
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
@@ -12252,7 +12252,8 @@ Object {
 exports[`Storyshots Content pages the Privacy Policy page 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c8 {
+  "baseElement": <body>
+    .c8 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -12600,8 +12601,7 @@ Object {
   }
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
@@ -14169,7 +14169,8 @@ Object {
 exports[`Storyshots Content pages the Terms of Service page 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c8 {
+  "baseElement": <body>
+    .c8 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -14517,8 +14518,7 @@ Object {
   }
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
@@ -26199,7 +26199,8 @@ Object {
 exports[`Storyshots Dashboard dashboard, no locks 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c25 {
+  "baseElement": <body>
+    .c25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -26299,32 +26300,6 @@ Object {
   color: var(--darkgrey);
 }
 
-.c10 {
-  background-color: var(--link);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c10 > svg {
-  fill: var(--white);
-  height: 24px;
-  width: 24px;
-}
-
-.c10:hover {
-  background-color: var(--link);
-}
-
-.c10:hover > svg {
-  fill: white;
-}
-
 .c12 {
   background-color: var(--lightgrey);
   cursor: pointer;
@@ -26348,6 +26323,32 @@ Object {
 }
 
 .c12:hover > svg {
+  fill: white;
+}
+
+.c10 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c10 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c10:hover {
+  background-color: var(--link);
+}
+
+.c10:hover > svg {
   fill: white;
 }
 
@@ -26855,8 +26856,7 @@ Object {
   }
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
@@ -27796,33 +27796,8 @@ Object {
 exports[`Storyshots Dashboard dashboard, no user account 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c10 {
-  background-color: var(--link);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c10 > svg {
-  fill: var(--white);
-  height: 24px;
-  width: 24px;
-}
-
-.c10:hover {
-  background-color: var(--link);
-}
-
-.c10:hover > svg {
-  fill: white;
-}
-
-.c12 {
+  "baseElement": <body>
+    .c12 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -27845,6 +27820,32 @@ Object {
 }
 
 .c12:hover > svg {
+  fill: white;
+}
+
+.c10 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c10 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c10:hover {
+  background-color: var(--link);
+}
+
+.c10:hover > svg {
   fill: white;
 }
 
@@ -28322,8 +28323,7 @@ Object {
   }
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
@@ -29254,7 +29254,8 @@ Object {
 exports[`Storyshots Dashboard the dashboard 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c25 {
+  "baseElement": <body>
+    .c25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -29370,8 +29371,8 @@ Object {
   color: var(--darkgrey);
 }
 
-.c10 {
-  background-color: var(--link);
+.c48 {
+  background-color: white;
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -29382,18 +29383,18 @@ Object {
   line-height: 15px;
 }
 
-.c10 > svg {
-  fill: var(--white);
+.c48 > svg {
+  fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c10:hover {
-  background-color: var(--link);
+.c48:hover {
+  background-color: white;
 }
 
-.c10:hover > svg {
-  fill: white;
+.c48:hover > svg {
+  fill: var(--lightgrey);
 }
 
 .c12 {
@@ -29419,6 +29420,32 @@ Object {
 }
 
 .c12:hover > svg {
+  fill: white;
+}
+
+.c10 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c10 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c10:hover {
+  background-color: var(--link);
+}
+
+.c10:hover > svg {
   fill: white;
 }
 
@@ -29472,32 +29499,6 @@ Object {
 
 .c16:hover > svg {
   fill: white;
-}
-
-.c48 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c48 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c48:hover {
-  background-color: white;
-}
-
-.c48:hover > svg {
-  fill: var(--lightgrey);
 }
 
 .c11 {
@@ -30046,8 +30047,7 @@ Object {
   }
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
@@ -32357,7 +32357,8 @@ Object {
 exports[`Storyshots Dashboard the dashboard, waiting for wallet 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c28 {
+  "baseElement": <body>
+    .c28 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -32473,8 +32474,8 @@ Object {
   color: var(--darkgrey);
 }
 
-.c13 {
-  background-color: var(--link);
+.c51 {
+  background-color: white;
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -32485,18 +32486,18 @@ Object {
   line-height: 15px;
 }
 
-.c13 > svg {
-  fill: var(--white);
+.c51 > svg {
+  fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c13:hover {
-  background-color: var(--link);
+.c51:hover {
+  background-color: white;
 }
 
-.c13:hover > svg {
-  fill: white;
+.c51:hover > svg {
+  fill: var(--lightgrey);
 }
 
 .c15 {
@@ -32522,6 +32523,32 @@ Object {
 }
 
 .c15:hover > svg {
+  fill: white;
+}
+
+.c13 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c13 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c13:hover {
+  background-color: var(--link);
+}
+
+.c13:hover > svg {
   fill: white;
 }
 
@@ -32575,32 +32602,6 @@ Object {
 
 .c19:hover > svg {
   fill: white;
-}
-
-.c51 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c51 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c51:hover {
-  background-color: white;
-}
-
-.c51:hover > svg {
-  fill: var(--lightgrey);
 }
 
 .c14 {
@@ -33212,8 +33213,7 @@ Object {
   }
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
@@ -37746,7 +37746,8 @@ Object {
 exports[`Storyshots Header the header for a content page 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c5 {
+  "baseElement": <body>
+    .c5 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -37978,8 +37979,7 @@ Object {
   }
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
@@ -38345,7 +38345,8 @@ Object {
 exports[`Storyshots Header the header with a title 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c7 {
+  "baseElement": <body>
+    .c7 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -38606,8 +38607,7 @@ Object {
   }
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
@@ -38993,7 +38993,8 @@ Object {
 exports[`Storyshots Header the header without a title 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c7 {
+  "baseElement": <body>
+    .c7 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -39254,8 +39255,7 @@ Object {
   }
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
@@ -43601,7 +43601,8 @@ Object {
 exports[`Storyshots Layout the layout for the content page 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c8 {
+  "baseElement": <body>
+    .c8 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -43898,8 +43899,7 @@ Object {
   }
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
@@ -44485,33 +44485,8 @@ Object {
 exports[`Storyshots Layout the layout for the dashboard 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c10 {
-  background-color: var(--link);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c10 > svg {
-  fill: var(--white);
-  height: 24px;
-  width: 24px;
-}
-
-.c10:hover {
-  background-color: var(--link);
-}
-
-.c10:hover > svg {
-  fill: white;
-}
-
-.c12 {
+  "baseElement": <body>
+    .c12 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -44534,6 +44509,32 @@ Object {
 }
 
 .c12:hover > svg {
+  fill: white;
+}
+
+.c10 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c10 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c10:hover {
+  background-color: var(--link);
+}
+
+.c10:hover > svg {
   fill: white;
 }
 
@@ -44853,8 +44854,7 @@ Object {
   }
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
@@ -55791,7 +55791,8 @@ Object {
 exports[`Storyshots Transaction Log the log 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c25 {
+  "baseElement": <body>
+    .c25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -56322,8 +56323,7 @@ Object {
   }
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
