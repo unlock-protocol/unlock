@@ -27797,7 +27797,107 @@ exports[`Storyshots Dashboard dashboard, no user account 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c12 {
+    .c25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c27 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c27:before {
+  content: '三';
+}
+
+.c28 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c18 {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-gap: 8px;
+}
+
+.c19 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--red);
+}
+
+.c20 {
+  font-family: 'IBM Plex Mono',monospace;
+  display: grid;
+  row-gap: 8px;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
+}
+
+.c21 {
+  display: grid;
+  height: 40px;
+  grid-row: span 2;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  font-size: 24px;
+  -webkit-align-content: start;
+  -ms-flex-line-pack: start;
+  align-content: start;
+}
+
+.c22 {
+  font-weight: 100;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  font-size: 8px;
+}
+
+.c23 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  width: 128px;
+  font-weight: 300;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.c24 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--darkgrey);
+}
+
+.c12 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -28084,7 +28184,7 @@ Object {
   width: 100%;
 }
 
-.c18 {
+.c37 {
   display: grid;
   row-gap: 16px;
   -webkit-column-gap: 32px;
@@ -28101,35 +28201,35 @@ Object {
   padding-bottom: 40px;
 }
 
-.c19 {
+.c38 {
   width: 72px;
 }
 
-.c20 {
+.c39 {
   display: grid;
   grid-gap: 16px;
 }
 
-.c20 > h1 {
+.c39 > h1 {
   font-weight: bold;
   color: var(--grey);
   margin: 0px;
   padding: 0px;
 }
 
-.c20 > p {
+.c39 > p {
   margin: 0px;
   padding: 0px;
   font-size: 16px;
   color: var(--dimgrey);
 }
 
-.c26 {
+.c29 {
   display: grid;
   grid-gap: 32px;
 }
 
-.c27 {
+.c30 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   padding-left: 8px;
@@ -28143,7 +28243,7 @@ Object {
   align-items: center;
 }
 
-.c28 {
+.c31 {
   font-family: 'IBM Plex Sans';
   font-size: 13px;
   font-weight: bold;
@@ -28157,22 +28257,7 @@ Object {
   color: var(--grey);
 }
 
-.c29 {
-  font-family: 'IBM Plex Mono';
-  font-size: 8px;
-  font-weight: thin;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  -webkit-letter-spacing: 1px;
-  -moz-letter-spacing: 1px;
-  -ms-letter-spacing: 1px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--darkgrey);
-}
-
-.c30 {
+.c32 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -28188,6 +28273,21 @@ Object {
 }
 
 .c33 {
+  font-family: 'IBM Plex Mono';
+  font-size: 8px;
+  font-weight: thin;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--darkgrey);
+}
+
+.c36 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -28204,24 +28304,24 @@ Object {
   align-self: end;
 }
 
-.c33:hover {
+.c36:hover {
   background-color: var(--activegreen);
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c31 {
+  .c34 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c32 {
+  .c35 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c17 {
+  .c20 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
     grid-template-columns: 45px 145px repeat(2,80px);
@@ -28229,7 +28329,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c18 {
+  .c21 {
     height: 0px;
   }
 }
@@ -28310,16 +28410,46 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c21 {
+  .c40 {
     display: none;
   }
 }
 
 @media (max-width:500px) {
-  .c18 {
+  .c37 {
     grid-template-columns: 1fr;
     grid-auto-flow: row;
     padding: 16px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c30 {
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+    -webkit-align-items: start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: start;
+    grid-gap: 4px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c31 {
+    grid-row: span 2;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c33 {
+    grid-row: span 2;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c36 {
+    display: none;
   }
 }
 
@@ -28564,15 +28694,24 @@ Object {
           <section
             class="c18"
           >
-            <img
-              class="c19"
-              src="/static/images/illustrations/error.svg"
-            />
+            <header
+              class="c18"
+            >
+              <h2>
+                Account
+              </h2>
+              <span
+                class="c19"
+                id="NetworkName"
+              >
+                Winston
+              </span>
+            </header>
             <div
               class="c20"
             >
               <div
-                class="c18"
+                class="c21"
               >
                 <div
                   class="paper"
@@ -28629,51 +28768,51 @@ Object {
                 </div>
               </div>
               <div
-                class="c19"
+                class="c22"
               >
                 Address
               </div>
               <div
-                class="c19"
+                class="c22"
               >
                 Balance
               </div>
               <div
-                class="c18"
+                class="c21"
               />
               <div
-                class="c18"
+                class="c21"
               />
               <div
-                class="c18"
+                class="c21"
               />
               <div
-                class="c18"
+                class="c21"
               />
               <div
-                class="c18"
+                class="c21"
               />
               <div
-                class="c20"
+                class="c23"
                 id="UserAddress"
               >
                 0x3ca206264762caf81a8f0a843bbb850987b41e16
               </div>
               <div
-                class="c21"
+                class="c24"
                 id="AccountBalance"
               >
                 <div
-                  class="c22"
+                  class="c25"
                 >
                   <span
-                    class="c23"
+                    class="c26"
                   >
                     <span
-                      class="c24"
+                      class="c27"
                     />
                     <span
-                      class="c25"
+                      class="c28"
                     >
                        - 
                     </span>
@@ -28684,67 +28823,67 @@ Object {
             </div>
           </section>
           <section
-            class="c26"
+            class="c29"
           >
             <div
-              class="c27"
+              class="c30"
               id="LockHeaderRow"
             >
               <div
-                class="c28"
+                class="c31"
               >
                 Locks
               </div>
               <div
-                class="c29"
+                class="c32"
               >
                 Name / Address
               </div>
               <div
-                class="c29"
+                class="c32"
               >
                 Key Duration
               </div>
               <div
-                class="c30"
+                class="c33"
               >
                 Key Quantity
               </div>
               <div
-                class="c29"
+                class="c32"
               >
                 Price
               </div>
               <div
-                class="c29"
+                class="c32"
               >
                 <div
-                  class="c31"
+                  class="c34"
                 >
                   Balance
                 </div>
                 <div
-                  class="c32"
+                  class="c35"
                 >
                   Balance
                 </div>
               </div>
               <button
-                class="c33"
+                class="c36"
                 id="CreateLockButton"
               >
                 Create Lock
               </button>
             </div>
             <section
-              class="c34"
+              class="c37"
             >
               <img
-                class="c35"
+                class="c38"
                 src="/static/images/illustrations/lock.svg"
               />
               <div
-                class="c36"
+                class="c39"
               >
                 <h1>
                   Create a lock to get started
@@ -28755,7 +28894,7 @@ Object {
           </section>
         </div>
         <div
-          class="c21"
+          class="c40"
         />
       </div>
     </div>
