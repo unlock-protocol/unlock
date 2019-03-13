@@ -17,6 +17,7 @@ const baseBannerHeight = window => {
   // can use it as the basis to scroll from
   return minHeightPct > 30 ? minHeightPct : 30
 }
+let lastIframe
 let scrollPolling = true
 // iOS allows the page to scroll even when the paywall is up. Our
 // solution to this is to make the paywall grow to obscure the page
@@ -27,7 +28,7 @@ export const scrollLoop = (window, document, iframe, origin) => {
   const disablePolling = () => {
     scrollPolling = false
   }
-  if (!scrollPolling) return // the page is unlocked
+  if (!scrollPolling) return disablePolling // the page is unlocked
   const pageTop = window.pageYOffset
   const viewportHeight = window.innerHeight
   const pageHeight = document.documentElement.scrollHeight
@@ -43,6 +44,7 @@ export const scrollLoop = (window, document, iframe, origin) => {
     { type: POST_MESSAGE_SCROLL_POSITION, payload: scrollPosition },
     origin
   )
+  lastIframe = iframe
 
   window.requestAnimationFrame(() =>
     scrollLoop(window, document, iframe, origin)
@@ -83,6 +85,7 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
     event => {
       if (event.data === POST_MESSAGE_LOCKED && !locked) {
         locked = true
+        scrollPolling = true
         show(iframe, document)
         disableScrollPolling = scrollLoop(window, document, iframe, origin)
         blocker.remove()
