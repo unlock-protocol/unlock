@@ -12,6 +12,7 @@ describe('The Unlock Dashboard', () => {
   })
 
   it('should list the address of the current user', async () => {
+    await page.waitForSelector('#UserAddress')
     const userAddress = await page.$eval('#UserAddress', e => e.innerText)
     await expect(userAddress).toMatch('0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2')
   })
