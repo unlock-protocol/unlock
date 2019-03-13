@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
@@ -15,7 +16,13 @@ const navigationButtons = [
   Buttons.Telegram,
 ]
 
-export default class Header extends React.PureComponent {
+export const mapStateToProps = ({
+  router: {
+    location: { pathname },
+  },
+}) => ({ pathname })
+
+export class Header extends React.PureComponent {
   constructor(props) {
     super(props)
     this.toggleMenu = this.toggleMenu.bind(this)
@@ -88,6 +95,8 @@ Header.defaultProps = {
   title: 'Unlock',
   forContent: false,
 }
+
+export default connect(mapStateToProps)(Header)
 
 const TopHeader = styled.header`
   display: grid;
