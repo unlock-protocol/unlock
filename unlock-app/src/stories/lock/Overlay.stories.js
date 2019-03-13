@@ -3,11 +3,9 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Overlay from '../../components/lock/Overlay'
 import createUnlockStore from '../../createUnlockStore'
-import { GlobalErrorContext } from '../../utils/GlobalErrorProvider'
 import { FATAL_WRONG_NETWORK, FATAL_NO_USER_ACCOUNT } from '../../errors'
 import { ConfigContext } from '../../utils/withConfig'
 
-const ErrorProvider = GlobalErrorContext.Provider
 const ConfigProvider = ConfigContext.Provider
 
 const config = {
@@ -21,11 +19,7 @@ const store = createUnlockStore({
   },
 })
 
-const render = (
-  locks,
-  errors = { error: false, errorMetadata: {} },
-  thisConfig = config
-) => (
+const render = (locks, thisConfig = config) => (
   <section>
     <h1>HTML Ipsum Presents</h1>
 
@@ -68,15 +62,13 @@ const render = (
     </ul>
 
     <ConfigProvider value={thisConfig}>
-      <ErrorProvider value={errors}>
-        <Overlay
-          scrollPosition={0}
-          locks={locks}
-          hideModal={() => {}}
-          showModal={() => {}}
-          openInNewWindow={false}
-        />
-      </ErrorProvider>
+      <Overlay
+        scrollPosition={0}
+        locks={locks}
+        hideModal={() => {}}
+        showModal={() => {}}
+        openInNewWindow={false}
+      />
     </ConfigProvider>
   </section>
 )

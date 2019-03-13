@@ -9,27 +9,24 @@ import CreatorLocks from '../components/creator/CreatorLocks'
 import DeveloperOverlay from '../components/developer/DeveloperOverlay'
 import BrowserOnly from '../components/helpers/BrowserOnly'
 import GlobalErrorConsumer from '../components/interface/GlobalErrorConsumer'
-import GlobalErrorProvider from '../utils/GlobalErrorProvider'
 import { pageTitle } from '../constants'
 
 export const Dashboard = ({ account, network, lockFeed }) => {
   return (
-    <GlobalErrorProvider>
-      <GlobalErrorConsumer>
-        <Layout title="Creator Dashboard">
-          <Head>
-            <title>{pageTitle('Dashboard')}</title>
-          </Head>
-          {account && (
-            <BrowserOnly>
-              <CreatorAccount network={network} account={account} />
-              <CreatorLocks lockFeed={lockFeed} />
-              <DeveloperOverlay />
-            </BrowserOnly>
-          )}
-        </Layout>
-      </GlobalErrorConsumer>
-    </GlobalErrorProvider>
+    <GlobalErrorConsumer>
+      <Layout title="Creator Dashboard">
+        <Head>
+          <title>{pageTitle('Dashboard')}</title>
+        </Head>
+        {account && (
+          <BrowserOnly>
+            <CreatorAccount network={network} account={account} />
+            <CreatorLocks lockFeed={lockFeed} />
+            <DeveloperOverlay />
+          </BrowserOnly>
+        )}
+      </Layout>
+    </GlobalErrorConsumer>
   )
 }
 

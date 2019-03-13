@@ -7,7 +7,6 @@ import DeveloperOverlay from '../components/developer/DeveloperOverlay'
 import ShowWhenLocked from '../components/lock/ShowWhenLocked'
 import ShowWhenUnlocked from '../components/lock/ShowWhenUnlocked'
 import BrowserOnly from '../components/helpers/BrowserOnly'
-import GlobalErrorProvider from '../utils/GlobalErrorProvider'
 import { lockPage, unlockPage } from '../services/iframeService'
 import { UnlockedFlag } from '../components/lock/UnlockFlag'
 import { lockRoute } from '../utils/routes'
@@ -51,19 +50,17 @@ class Paywall extends React.Component {
     const { locks, locked, redirect } = this.props
     return (
       <BrowserOnly>
-        <GlobalErrorProvider>
-          <ShowWhenLocked locked={locked}>
-            <Overlay
-              scrollPosition={scrollPosition}
-              locks={locks}
-              redirect={redirect}
-            />
-            <DeveloperOverlay />
-          </ShowWhenLocked>
-          <ShowWhenUnlocked locked={locked}>
-            <UnlockedFlag />
-          </ShowWhenUnlocked>
-        </GlobalErrorProvider>
+        <ShowWhenLocked locked={locked}>
+          <Overlay
+            scrollPosition={scrollPosition}
+            locks={locks}
+            redirect={redirect}
+          />
+          <DeveloperOverlay />
+        </ShowWhenLocked>
+        <ShowWhenUnlocked locked={locked}>
+          <UnlockedFlag />
+        </ShowWhenUnlocked>
       </BrowserOnly>
     )
   }

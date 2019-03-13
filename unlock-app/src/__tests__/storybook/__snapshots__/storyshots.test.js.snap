@@ -49705,58 +49705,36 @@ exports[`Storyshots Overlay main window, account error is displayed 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c8 {
+    .c14 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c8 > svg {
+.c14 > svg {
   fill: white;
 }
 
-.c4 {
-  display: grid;
-  row-gap: 16px;
-  -webkit-column-gap: 32px;
-  column-gap: 32px;
-  border: solid 1px var(--lightgrey);
-  grid-template-columns: 72px;
-  grid-auto-flow: column;
-  border-radius: 4px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 32px;
-  padding-bottom: 40px;
-}
-
 .c5 {
-  width: 72px;
-}
-
-.c6 {
   display: grid;
-  grid-gap: 16px;
-}
-
-.c6 > h1 {
-  font-weight: bold;
-  color: var(--red);
-  margin: 0px;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 4px 4px 0px 0px;
   padding: 0px;
+  color: var(--grey);
 }
 
-.c6 > p {
-  margin: 0px;
-  padding: 0px;
-  font-size: 16px;
-  color: var(--dimgrey);
-}
-
-.c7 {
+.c13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -49783,7 +49761,7 @@ Object {
   margin-right: -33px;
 }
 
-.c7 > * {
+.c13 > * {
   justify-self: left;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
@@ -49791,7 +49769,7 @@ Object {
   margin-left: -14px;
 }
 
-.c7 > p {
+.c13 > p {
   margin-left: auto;
   margin-right: auto;
   width: 63px;
@@ -49805,6 +49783,96 @@ Object {
   line-height: normal;
   font-size: 12px;
   color: var(--darkgrey);
+}
+
+.c4 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.c12 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+}
+
+.c6 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 0px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  padding-top: 13px;
+}
+
+.c6:hover {
+  border: 1px solid var(--activegreen);
+}
+
+.c6:hover .c11 {
+  background-color: var(--activegreen);
+}
+
+.c7 {
+  font-size: 30px;
+  text-transform: uppercase;
+  color: var(--slate);
+  font-weight: bold;
+}
+
+.c8 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+.c10 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+.c9 {
+  color: var(--lightgrey);
 }
 
 .c0 {
@@ -49854,16 +49922,8 @@ Object {
   grid-column: 1;
 }
 
-@media (max-width:500px) {
-  .c4 {
-    grid-template-columns: 1fr;
-    grid-auto-flow: row;
-    padding: 16px;
-  }
-}
-
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
+  .c13 {
     display: none;
   }
 }
@@ -49939,30 +49999,61 @@ Object {
             <ul
               class="c3"
             >
-              <section
+              <li
                 class="c4"
+                id="PurchaseKey_undefined"
               >
-                <img
+                <header
                   class="c5"
-                  src="/static/images/illustrations/error.svg"
-                />
-                <div
-                  class="c6"
                 >
-                  <h1>
-                    Need account
-                  </h1>
-                  <p>
-                    In order to display this content, you need to connect a crypto-wallet to your browser.
-                  </p>
+                  One Month
+                </header>
+                <div>
+                  <div
+                    class="c6"
+                    id="Lock_undefined"
+                  >
+                    <div
+                      class="c7"
+                      id="EthPrice_undefined"
+                    >
+                      0.12
+                       Eth
+                    </div>
+                    <div>
+                      <span
+                        class="c8"
+                      >
+                        $
+                        24.19
+                      </span>
+                      <span
+                        class="c9"
+                      >
+                         | 
+                      </span>
+                      <span
+                        class="c10"
+                      >
+                        <span>
+                           - 
+                        </span>
+                      </span>
+                    </div>
+                    <footer
+                      class="c11 c12"
+                    >
+                      Purchase
+                    </footer>
+                  </div>
                 </div>
-              </section>
+              </li>
             </ul>
             <footer
-              class="c7"
+              class="c13"
             >
               <div
-                class="c8"
+                class="c14"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -50053,24 +50144,55 @@ Object {
           <ul
             class="vaayz9-3 bANiLD"
           >
-            <section
-              class="sc-1g6piw8-0 jXGMmL"
+            <li
+              class="sc-1ws9jnj-0 yqqxp4-0 jbcRkc"
+              id="PurchaseKey_undefined"
             >
-              <img
-                class="sc-1g6piw8-1 fcKGMu"
-                src="/static/images/illustrations/error.svg"
-              />
-              <div
-                class="sc-1g6piw8-2 gCvXha"
+              <header
+                class="sc-1ws9jnj-1 kgNRxZ"
               >
-                <h1>
-                  Need account
-                </h1>
-                <p>
-                  In order to display this content, you need to connect a crypto-wallet to your browser.
-                </p>
+                One Month
+              </header>
+              <div>
+                <div
+                  class="sc-1ws9jnj-3 yqqxp4-2 dzEKTb"
+                  id="Lock_undefined"
+                >
+                  <div
+                    class="yqqxp4-3 kxjMda"
+                    id="EthPrice_undefined"
+                  >
+                    0.12
+                     Eth
+                  </div>
+                  <div>
+                    <span
+                      class="yqqxp4-4 fcTWoc"
+                    >
+                      $
+                      24.19
+                    </span>
+                    <span
+                      class="yqqxp4-6 gEUJdZ"
+                    >
+                       | 
+                    </span>
+                    <span
+                      class="yqqxp4-4 yqqxp4-5 djpTSh"
+                    >
+                      <span>
+                         - 
+                      </span>
+                    </span>
+                  </div>
+                  <footer
+                    class="sc-1ws9jnj-2 yqqxp4-1 ghSrYu"
+                  >
+                    Purchase
+                  </footer>
+                </div>
               </div>
-            </section>
+            </li>
           </ul>
           <footer
             class="sc-1ws9jnj-8 bMvCsG"
@@ -50707,58 +50829,36 @@ exports[`Storyshots Overlay with error 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c8 {
+    .c14 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c8 > svg {
+.c14 > svg {
   fill: white;
 }
 
-.c4 {
-  display: grid;
-  row-gap: 16px;
-  -webkit-column-gap: 32px;
-  column-gap: 32px;
-  border: solid 1px var(--lightgrey);
-  grid-template-columns: 72px;
-  grid-auto-flow: column;
-  border-radius: 4px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 32px;
-  padding-bottom: 40px;
-}
-
 .c5 {
-  width: 72px;
-}
-
-.c6 {
   display: grid;
-  grid-gap: 16px;
-}
-
-.c6 > h1 {
-  font-weight: bold;
-  color: var(--red);
-  margin: 0px;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 4px 4px 0px 0px;
   padding: 0px;
+  color: var(--grey);
 }
 
-.c6 > p {
-  margin: 0px;
-  padding: 0px;
-  font-size: 16px;
-  color: var(--dimgrey);
-}
-
-.c7 {
+.c13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -50785,7 +50885,7 @@ Object {
   margin-right: -33px;
 }
 
-.c7 > * {
+.c13 > * {
   justify-self: left;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
@@ -50793,7 +50893,7 @@ Object {
   margin-left: -14px;
 }
 
-.c7 > p {
+.c13 > p {
   margin-left: auto;
   margin-right: auto;
   width: 63px;
@@ -50807,6 +50907,96 @@ Object {
   line-height: normal;
   font-size: 12px;
   color: var(--darkgrey);
+}
+
+.c4 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.c12 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+}
+
+.c6 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 0px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  padding-top: 13px;
+}
+
+.c6:hover {
+  border: 1px solid var(--activegreen);
+}
+
+.c6:hover .c11 {
+  background-color: var(--activegreen);
+}
+
+.c7 {
+  font-size: 30px;
+  text-transform: uppercase;
+  color: var(--slate);
+  font-weight: bold;
+}
+
+.c8 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+.c10 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+.c9 {
+  color: var(--lightgrey);
 }
 
 .c0 {
@@ -50856,16 +51046,8 @@ Object {
   grid-column: 1;
 }
 
-@media (max-width:500px) {
-  .c4 {
-    grid-template-columns: 1fr;
-    grid-auto-flow: row;
-    padding: 16px;
-  }
-}
-
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
+  .c13 {
     display: none;
   }
 }
@@ -50941,30 +51123,61 @@ Object {
             <ul
               class="c3"
             >
-              <section
+              <li
                 class="c4"
+                id="PurchaseKey_undefined"
               >
-                <img
+                <header
                   class="c5"
-                  src="/static/images/illustrations/network.svg"
-                />
-                <div
-                  class="c6"
                 >
-                  <h1>
-                    Network mismatch
-                  </h1>
-                  <p>
-                    You’re currently on the Foobar network but you need to be on the Rinkeby network. Please switch to Rinkeby.
-                  </p>
+                  One Month
+                </header>
+                <div>
+                  <div
+                    class="c6"
+                    id="Lock_undefined"
+                  >
+                    <div
+                      class="c7"
+                      id="EthPrice_undefined"
+                    >
+                      0.12
+                       Eth
+                    </div>
+                    <div>
+                      <span
+                        class="c8"
+                      >
+                        $
+                        24.19
+                      </span>
+                      <span
+                        class="c9"
+                      >
+                         | 
+                      </span>
+                      <span
+                        class="c10"
+                      >
+                        <span>
+                           - 
+                        </span>
+                      </span>
+                    </div>
+                    <footer
+                      class="c11 c12"
+                    >
+                      Purchase
+                    </footer>
+                  </div>
                 </div>
-              </section>
+              </li>
             </ul>
             <footer
-              class="c7"
+              class="c13"
             >
               <div
-                class="c8"
+                class="c14"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -51055,24 +51268,55 @@ Object {
           <ul
             class="vaayz9-3 bANiLD"
           >
-            <section
-              class="sc-1g6piw8-0 jXGMmL"
+            <li
+              class="sc-1ws9jnj-0 yqqxp4-0 jbcRkc"
+              id="PurchaseKey_undefined"
             >
-              <img
-                class="sc-1g6piw8-1 fcKGMu"
-                src="/static/images/illustrations/network.svg"
-              />
-              <div
-                class="sc-1g6piw8-2 gCvXha"
+              <header
+                class="sc-1ws9jnj-1 kgNRxZ"
               >
-                <h1>
-                  Network mismatch
-                </h1>
-                <p>
-                  You’re currently on the Foobar network but you need to be on the Rinkeby network. Please switch to Rinkeby.
-                </p>
+                One Month
+              </header>
+              <div>
+                <div
+                  class="sc-1ws9jnj-3 yqqxp4-2 dzEKTb"
+                  id="Lock_undefined"
+                >
+                  <div
+                    class="yqqxp4-3 kxjMda"
+                    id="EthPrice_undefined"
+                  >
+                    0.12
+                     Eth
+                  </div>
+                  <div>
+                    <span
+                      class="yqqxp4-4 fcTWoc"
+                    >
+                      $
+                      24.19
+                    </span>
+                    <span
+                      class="yqqxp4-6 gEUJdZ"
+                    >
+                       | 
+                    </span>
+                    <span
+                      class="yqqxp4-4 yqqxp4-5 djpTSh"
+                    >
+                      <span>
+                         - 
+                      </span>
+                    </span>
+                  </div>
+                  <footer
+                    class="sc-1ws9jnj-2 yqqxp4-1 ghSrYu"
+                  >
+                    Purchase
+                  </footer>
+                </div>
               </div>
-            </section>
+            </li>
           </ul>
           <footer
             class="sc-1ws9jnj-8 bMvCsG"
