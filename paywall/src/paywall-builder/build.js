@@ -25,7 +25,6 @@ const baseBannerHeight = window => {
 // scroll-handling function here to preserve the context of the actual
 // page, not the iframe.
 export const scrollLoop = (window, document, iframe, origin) => {
-  if (!locked) return // no need to look for this unless the page is locked
   const pageTop = window.pageYOffset
   const viewportHeight = window.innerHeight
   const pageHeight = document.documentElement.scrollHeight
@@ -73,14 +72,13 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
 
   const origin = new window.URL(paywallUrl).origin
 
-  scrollLoop(window, document, iframe, origin)
-
   window.addEventListener(
     'message',
     event => {
       if (event.data === POST_MESSAGE_LOCKED && !locked) {
         locked = true
         show(iframe, document)
+        scrollLoop(window, document, iframe, origin)
         blocker.remove()
       }
       if (event.data === POST_MESSAGE_UNLOCKED && locked) {
