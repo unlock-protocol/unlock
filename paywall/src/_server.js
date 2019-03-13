@@ -6,7 +6,7 @@ const pathMatch = require('path-match')
 
 function _server(port, dev) {
   return new Promise((resolve, reject) => {
-    const app = next({ dir: `${__dirname}/../`, dev, quiet: true })
+    const app = next({ dir: `${__dirname}/`, dev, quiet: true })
     const handle = app.getRequestHandler()
     const route = pathMatch()
 
@@ -19,7 +19,7 @@ function _server(port, dev) {
 
           // assigning `query` into the params means that we still
           // get the query string passed to our application
-          if (!pathname.match('/paywall')) {
+          if (pathname.match('/0x')) {
             const params = route('/:lockAddress/:redirect?')(pathname)
             app.render(req, res, '/', Object.assign(params, query))
           } else {
