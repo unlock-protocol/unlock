@@ -5620,7 +5620,10 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c0 {
-    display: none;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
   }
 }
 
@@ -5664,7 +5667,7 @@ Object {
       style="position: absolute; right: 0px; bottom: 105px; width: 134px; height: 160px; margin-right: -104px; transition: margin-right 0.4s ease-in;"
     >
       <footer
-        class="sc-1549ebs-8 sc-15m75z9-0 jLFIBx"
+        class="sc-1549ebs-8 sc-15m75z9-0 ctTzbX"
         id="UnlockFlag"
       >
         <div
@@ -5818,7 +5821,10 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c0 {
-    display: none;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
   }
 }
 
@@ -5855,7 +5861,7 @@ Object {
       rel="stylesheet"
     />
     <footer
-      class="sc-1549ebs-8 sc-15m75z9-0 jLFIBx"
+      class="sc-1549ebs-8 sc-15m75z9-0 ctTzbX"
       id="UnlockFlag"
     >
       <div
