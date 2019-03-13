@@ -1,13 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { GlobalErrorContext } from '../../utils/GlobalErrorProvider'
 import Layout from './Layout'
 import { mapErrorToComponent } from '../creator/FatalError'
 import UnlockPropTypes from '../../propTypes'
-
-// DEPRECATED we should not use the Context to detect errors
-const Consumer = GlobalErrorContext.Consumer
 
 // TODO: move that logic back to <GlobalErrorConsumer> once the Context logic is gone
 export const displayError = (error, errorMetadata, children) => {
@@ -27,13 +23,7 @@ export function GlobalErrorConsumer({ displayError, children, error }) {
   if (error) {
     return displayError(error.name, error.data, children)
   }
-  return (
-    <Consumer>
-      {({ error, errorMetadata }) => {
-        return displayError(error, errorMetadata, children)
-      }}
-    </Consumer>
-  )
+  return <React.Fragment>{children}</React.Fragment>
 }
 
 GlobalErrorConsumer.propTypes = {

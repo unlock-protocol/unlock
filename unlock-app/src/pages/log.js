@@ -8,7 +8,6 @@ import Layout from '../components/interface/Layout'
 import CreatorAccount from '../components/creator/CreatorAccount'
 import BrowserOnly from '../components/helpers/BrowserOnly'
 import GlobalErrorConsumer from '../components/interface/GlobalErrorConsumer'
-import GlobalErrorProvider from '../utils/GlobalErrorProvider'
 import { pageTitle } from '../constants'
 import withConfig from '../utils/withConfig'
 
@@ -20,32 +19,30 @@ export const humanize = type => {
 
 export const Log = ({ account, network, transactionFeed }) => {
   return (
-    <GlobalErrorProvider>
-      <GlobalErrorConsumer>
-        <Layout title="Creator Log">
-          <Head>
-            <title>{pageTitle('Log')}</title>
-          </Head>
-          <BrowserOnly>
-            <CreatorAccount network={network} account={account} />
-            <Content>
-              <LogHeader>Block Number</LogHeader>
-              <LogHeader>Lock Name/Address</LogHeader>
-              <LogHeader>Type</LogHeader>
-              {transactionFeed.map(tx => (
-                <React.Fragment key={tx.hash}>
-                  <LogElement>{tx.blockNumber}</LogElement>
-                  <Address href={tx.href} target="_blank">
-                    {tx.lock}
-                  </Address>
-                  <Type type={tx.type}>{tx.readableName}</Type>
-                </React.Fragment>
-              ))}
-            </Content>
-          </BrowserOnly>
-        </Layout>
-      </GlobalErrorConsumer>
-    </GlobalErrorProvider>
+    <GlobalErrorConsumer>
+      <Layout title="Creator Log">
+        <Head>
+          <title>{pageTitle('Log')}</title>
+        </Head>
+        <BrowserOnly>
+          <CreatorAccount network={network} account={account} />
+          <Content>
+            <LogHeader>Block Number</LogHeader>
+            <LogHeader>Lock Name/Address</LogHeader>
+            <LogHeader>Type</LogHeader>
+            {transactionFeed.map(tx => (
+              <React.Fragment key={tx.hash}>
+                <LogElement>{tx.blockNumber}</LogElement>
+                <Address href={tx.href} target="_blank">
+                  {tx.lock}
+                </Address>
+                <Type type={tx.type}>{tx.readableName}</Type>
+              </React.Fragment>
+            ))}
+          </Content>
+        </BrowserOnly>
+      </Layout>
+    </GlobalErrorConsumer>
   )
 }
 
