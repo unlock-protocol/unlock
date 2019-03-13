@@ -8,6 +8,10 @@ import { About } from '../../pages/about'
 import { Dashboard } from '../../pages/dashboard'
 import { pageTitle, ETHEREUM_NETWORKS_NAMES } from '../../constants'
 import createUnlockStore from '../../createUnlockStore'
+import { ConfigContext } from '../../utils/withConfig'
+import configure from '../../config'
+
+const config = configure()
 
 jest.mock('../../constants')
 
@@ -59,15 +63,18 @@ describe('Pages', () => {
         privateKey: 'deadbeef',
         balance: '200',
       }
+      const ConfigProvider = ConfigContext.Provider
       rtl.render(
-        <Provider store={store}>
-          <Dashboard
-            account={account}
-            network={network}
-            transactions={{}}
-            locks={{}}
-          />
-        </Provider>
+        <ConfigProvider value={config}>
+          <Provider store={store}>
+            <Dashboard
+              account={account}
+              network={network}
+              transactions={{}}
+              locks={{}}
+            />
+          </Provider>
+        </ConfigProvider>
       )
       expect(pageTitle).toBeCalledWith('Dashboard')
     })
