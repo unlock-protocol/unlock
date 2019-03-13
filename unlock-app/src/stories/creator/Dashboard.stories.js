@@ -65,7 +65,11 @@ const locks = {
 }
 
 const router = {
-  route: '/dashboard',
+  location: {
+    pathname: '/dashboard',
+    search: '',
+    hash: '',
+  },
 }
 
 const currency = {
