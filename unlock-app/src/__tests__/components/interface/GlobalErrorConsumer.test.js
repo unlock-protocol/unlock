@@ -1,6 +1,7 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
 
+import { Provider } from 'react-redux'
 import {
   GlobalErrorConsumer,
   displayError,
@@ -8,8 +9,16 @@ import {
 } from '../../../components/interface/GlobalErrorConsumer'
 import { GlobalErrorContext } from '../../../utils/GlobalErrorProvider'
 import { FATAL_NO_USER_ACCOUNT, FATAL_MISSING_PROVIDER } from '../../../errors'
+import { createUnlockStore } from '../../../createUnlockStore'
 
-const Provider = GlobalErrorContext.Provider
+const store = createUnlockStore({
+  router: {
+    location: {
+      pathname: '',
+      search: '',
+    },
+  },
+})
 
 describe('GlobalErrorConsumer', () => {
   it('passes error and errorMetadata to displayError prop', () => {
@@ -17,14 +26,14 @@ describe('GlobalErrorConsumer', () => {
 
     const listen = jest.fn(() => <div>internal</div>)
     const wrapper = rtl.render(
-      <Provider
+      <GlobalErrorContext.Provider
         value={{
           error: FATAL_NO_USER_ACCOUNT,
           errorMetadata: { thing: 'thingy' },
         }}
       >
         <GlobalErrorConsumer displayError={listen}>hi</GlobalErrorConsumer>
-      </Provider>
+      </GlobalErrorContext.Provider>
     )
 
     expect(wrapper.getByText('internal')).not.toBeNull()
@@ -44,14 +53,14 @@ describe('GlobalErrorConsumer', () => {
 
     const listen = jest.fn(() => <div>internal</div>)
     const wrapper = rtl.render(
-      <Provider
+      <GlobalErrorContext.Provider
         value={{
           error: false,
           errorMetadata: {},
         }}
       >
         <GlobalErrorConsumer displayError={listen}>hi</GlobalErrorConsumer>
-      </Provider>
+      </GlobalErrorContext.Provider>
     )
 
     expect(wrapper.queryByText('internal')).not.toBeNull()
@@ -64,7 +73,9 @@ describe('GlobalErrorConsumer', () => {
     it('displays the error if initialized', () => {
       expect.assertions(2)
       const wrapper = rtl.render(
-        displayError(FATAL_MISSING_PROVIDER, {}, <div>children</div>)
+        <Provider store={store}>
+          {displayError(FATAL_MISSING_PROVIDER, {}, <div>children</div>)}
+        </Provider>
       )
       expect(wrapper.queryByText('Wallet missing')).not.toBeNull()
       expect(wrapper.queryByText('children')).toBeNull()
@@ -72,7 +83,11 @@ describe('GlobalErrorConsumer', () => {
 
     it('displays the children if no error is initialized', () => {
       expect.assertions(1)
-      const wrapper = rtl.render(displayError(false, {}, <div>children</div>))
+      const wrapper = rtl.render(
+        <Provider store={store}>
+          {displayError(false, {}, <div>children</div>)}
+        </Provider>
+      )
       expect(wrapper.queryByText('children')).not.toBeNull()
     })
   })
