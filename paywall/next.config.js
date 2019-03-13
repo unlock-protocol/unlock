@@ -11,6 +11,9 @@ module.exports = withSourceMaps({
     httpProvider: process.env.HTTP_PROVIDER || '127.0.0.1',
     readOnlyProvider: process.env.READ_ONLY_PROVIDER,
     locksmithHost: process.env.LOCKSMITH_HOST,
+    unlockAddress:
+      process.env.UNLOCK_ADDRESS ||
+      '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93', // default for CI
   },
   webpack: config => {
     // Fixes npm packages that depend on `fs` module
@@ -24,25 +27,24 @@ module.exports = withSourceMaps({
     // Export robots.txt and humans.txt in non-dev environments
     if (!dev && outDir) {
       await copyFile(
-        join(dir, '..', 'static', 'robots.txt'),
+        join(dir, 'src', 'static', 'robots.txt'),
         join(outDir, 'robots.txt')
       )
 
       await copyFile(
-        join(dir, '..', 'static', 'humans.txt'),
+        join(dir, 'src', 'static', 'humans.txt'),
         join(outDir, 'humans.txt')
       )
 
       // Export _redirects which is used by netlify for URL rewrites
       await copyFile(
-        join(dir, '..', 'static', '_redirects'),
+        join(dir, 'src', 'static', '_redirects'),
         join(outDir, '_redirects')
       )
     }
 
     return {
       '/': { page: '/' },
-      '/paywall': { page: '/paywall' },
     }
   },
 })
