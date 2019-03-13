@@ -8,7 +8,6 @@ import PropTypes from 'prop-types'
 
 import configure from '../config'
 import UnlockPropTypes from '../propTypes'
-import { FATAL_NO_USER_ACCOUNT } from '../errors'
 
 export const GlobalErrorContext = createContext()
 
@@ -55,18 +54,6 @@ export class GlobalErrorProvider extends Component {
     this.detectErrors()
   }
 
-  detectNoAccount(state) {
-    const { account } = this.props
-    // Ensuring that an account is defined
-    if (!account) {
-      if (state.error === FATAL_NO_USER_ACCOUNT) return null
-      return {
-        error: FATAL_NO_USER_ACCOUNT,
-        errorMetadata: {},
-      }
-    }
-  }
-
   detectErrors() {
     return this.setState(state => {
       if (config.isServer) {
@@ -75,10 +62,6 @@ export class GlobalErrorProvider extends Component {
         }
         return null // don't modify errors state unless we have an error condition to clear
       }
-
-      // Ensuring that an account is defined
-      const testAccount = this.detectNoAccount(state)
-      if (testAccount !== undefined) return testAccount
 
       // reset any existing errors
       if (state.error) {
