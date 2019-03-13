@@ -9,6 +9,7 @@
 # First this script will deploy from an instance of unlock:latest
 REPO_ROOT=`dirname "$0"`/..
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
+EXTRA_ARGS=$*
 
 # environment variables passed in. Update as needed for testing
 export DB_USERNAME='username'
@@ -30,5 +31,5 @@ docker build -t unlock -f "$REPO_ROOT/docker/unlock.dockerfile" $REPO_ROOT
 docker build -t unlock-integration -f "$REPO_ROOT/docker/unlock-integration.dockerfile" $REPO_ROOT
 
 # Run the tests
-$REPO_ROOT/scripts/integration-tests.sh
+$REPO_ROOT/scripts/integration-tests.sh $EXTRA_ARGS
 
