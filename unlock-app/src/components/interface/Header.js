@@ -5,8 +5,10 @@ import styled from 'styled-components'
 import Link from 'next/link'
 import { RoundedLogo, WordMarkLogo } from './Logo'
 import Buttons from './buttons/layout'
+import PageNavButtons from './buttons/navigation'
 import { ButtonLink } from './buttons/Button'
 import Media from '../../theme/media'
+import PageNavButton from './buttons/PageNavButton'
 
 // add new navigation buttons here, layout will reflow appropriately
 const navigationButtons = [
@@ -14,6 +16,13 @@ const navigationButtons = [
   Buttons.Jobs,
   Buttons.Github,
   Buttons.Telegram,
+]
+
+// distinct from the above buttons are page nav buttons -- they are only visible
+// from within the app and not from the homepage or other static pages.
+const appButtons = [
+  { Button: PageNavButtons.Dashboard, page: '/dashboard' },
+  { Button: PageNavButtons.Log, page: '/log' },
 ]
 
 export const mapStateToProps = ({
@@ -35,7 +44,9 @@ export class Header extends React.PureComponent {
 
   render() {
     const { menu } = this.state
-    const { forContent, title } = this.props
+    const { forContent, title, pathname } = this.props
+
+    const onAppPage = appButtons.some(button => button.page === pathname)
 
     return (
       <TopHeader>
@@ -61,6 +72,12 @@ export class Header extends React.PureComponent {
             {title}
           </Title>
         )}
+        <AppButtons>
+          {onAppPage &&
+            appButtons.map(({ Button }) => (
+              <Button key={Button} activePath={pathname} />
+            ))}
+        </AppButtons>
         <DesktopButtons>
           {navigationButtons.map(NavButton => (
             <NavButton key={NavButton} />
@@ -89,11 +106,13 @@ export class Header extends React.PureComponent {
 Header.propTypes = {
   title: PropTypes.string,
   forContent: PropTypes.bool,
+  pathname: PropTypes.string,
 }
 
 Header.defaultProps = {
   title: 'Unlock',
   forContent: false,
+  pathname: '/',
 }
 
 export default connect(mapStateToProps)(Header)
@@ -101,7 +120,8 @@ export default connect(mapStateToProps)(Header)
 const TopHeader = styled.header`
   display: grid;
   grid-gap: 0;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 256px 1fr auto;
+  column-gap: 16px;
   grid-auto-flow: column;
   align-items: center;
   height: 70px;
@@ -134,6 +154,10 @@ const DesktopButtons = styled.div`
   ${Media.phone`
     display: none;
   `};
+`
+
+const AppButtons = styled(DesktopButtons)`
+  grid-template-columns: repeat(${() => appButtons.length}, 24px);
 `
 
 const MobileToggle = styled.div`
