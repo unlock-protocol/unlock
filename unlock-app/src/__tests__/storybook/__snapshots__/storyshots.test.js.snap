@@ -27493,7 +27493,107 @@ exports[`Storyshots Dashboard dashboard, no user account 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c10 {
+    .c22 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c23 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c24 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c24:before {
+  content: '三';
+}
+
+.c25 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c15 {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-gap: 8px;
+}
+
+.c16 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--red);
+}
+
+.c17 {
+  font-family: 'IBM Plex Mono',monospace;
+  display: grid;
+  row-gap: 8px;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
+}
+
+.c18 {
+  display: grid;
+  height: 40px;
+  grid-row: span 2;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  font-size: 24px;
+  -webkit-align-content: start;
+  -ms-flex-line-pack: start;
+  align-content: start;
+}
+
+.c19 {
+  font-weight: 100;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  font-size: 8px;
+}
+
+.c20 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  width: 128px;
+  font-weight: 300;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.c21 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--darkgrey);
+}
+
+.c10 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -27713,7 +27813,7 @@ Object {
   width: 100%;
 }
 
-.c15 {
+.c34 {
   display: grid;
   row-gap: 16px;
   -webkit-column-gap: 32px;
@@ -27730,27 +27830,137 @@ Object {
   padding-bottom: 40px;
 }
 
-.c16 {
+.c35 {
   width: 72px;
 }
 
-.c17 {
+.c36 {
   display: grid;
   grid-gap: 16px;
 }
 
-.c17 > h1 {
+.c36 > h1 {
   font-weight: bold;
-  color: var(--red);
+  color: var(--grey);
   margin: 0px;
   padding: 0px;
 }
 
-.c17 > p {
+.c36 > p {
   margin: 0px;
   padding: 0px;
   font-size: 16px;
   color: var(--dimgrey);
+}
+
+.c26 {
+  display: grid;
+  grid-gap: 32px;
+}
+
+.c27 {
+  font-family: 'IBM Plex Mono','Courier New',Serif;
+  font-weight: 200;
+  padding-left: 8px;
+  font-size: 14px;
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c28 {
+  font-family: 'IBM Plex Sans';
+  font-size: 13px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  -webkit-letter-spacing: normal;
+  -moz-letter-spacing: normal;
+  -ms-letter-spacing: normal;
+  letter-spacing: normal;
+  color: var(--grey);
+}
+
+.c29 {
+  font-family: 'IBM Plex Mono';
+  font-size: 8px;
+  font-weight: thin;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--darkgrey);
+}
+
+.c30 {
+  font-family: 'IBM Plex Mono';
+  font-size: 8px;
+  font-weight: thin;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--darkgrey);
+}
+
+.c33 {
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--darkgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  padding: 10px;
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+}
+
+.c33:hover {
+  background-color: var(--activegreen);
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c31 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c32 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c17 {
+    -webkit-column-gap: 2px;
+    column-gap: 2px;
+    grid-template-columns: 45px 145px repeat(2,80px);
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c18 {
+    height: 0px;
+  }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -27823,16 +28033,46 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c18 {
+  .c37 {
     display: none;
   }
 }
 
 @media (max-width:500px) {
-  .c15 {
+  .c34 {
     grid-template-columns: 1fr;
     grid-auto-flow: row;
     padding: 16px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c27 {
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+    -webkit-align-items: start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: start;
+    grid-gap: 4px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c28 {
+    grid-row: span 2;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c30 {
+    grid-row: span 2;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c33 {
+    display: none;
   }
 }
 
@@ -27893,7 +28133,7 @@ Object {
                   </div>
                 </a>
               </div>
-              
+              Creator Dashboard
             </h1>
             <div
               class="c8"
@@ -28027,26 +28267,209 @@ Object {
             />
           </header>
           <section
-            class="c15"
+            class=""
           >
-            <img
-              class="c16"
-              src="/static/images/illustrations/error.svg"
-            />
+            <header
+              class="c15"
+            >
+              <h2>
+                Account
+              </h2>
+              <span
+                class="c16"
+                id="NetworkName"
+              >
+                Winston
+              </span>
+            </header>
             <div
               class="c17"
             >
-              <h1>
-                Need account
-              </h1>
-              <p>
-                In order to display this content, you need to connect a crypto-wallet to your browser.
-              </p>
+              <div
+                class="c18"
+              >
+                <div
+                  class="paper"
+                  style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
+                >
+                  <svg
+                    height="40"
+                    width="40"
+                    x="0"
+                    xmlns="http://www.w3.org/2000/svg"
+                    y="0"
+                  >
+                    <rect
+                      fill="#F5B400"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#F92F01"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#FB186F"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#18A9F2"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="c19"
+              >
+                Address
+              </div>
+              <div
+                class="c19"
+              >
+                Balance
+              </div>
+              <div
+                class="c18"
+              />
+              <div
+                class="c18"
+              />
+              <div
+                class="c18"
+              />
+              <div
+                class="c18"
+              />
+              <div
+                class="c18"
+              />
+              <div
+                class="c20"
+                id="UserAddress"
+              >
+                0x3ca206264762caf81a8f0a843bbb850987b41e16
+              </div>
+              <div
+                class="c21"
+                id="AccountBalance"
+              >
+                <div
+                  class="c22"
+                >
+                  <span
+                    class="c23"
+                  >
+                    <span
+                      class="c24"
+                    />
+                    <span
+                      class="c25"
+                    >
+                       - 
+                    </span>
+                  </span>
+                  
+                </div>
+              </div>
             </div>
+          </section>
+          <section
+            class="c26"
+          >
+            <div
+              class="c27"
+              id="LockHeaderRow"
+            >
+              <div
+                class="c28"
+              >
+                Locks
+              </div>
+              <div
+                class="c29"
+              >
+                Name / Address
+              </div>
+              <div
+                class="c29"
+              >
+                Key Duration
+              </div>
+              <div
+                class="c30"
+              >
+                Key Quantity
+              </div>
+              <div
+                class="c29"
+              >
+                Price
+              </div>
+              <div
+                class="c29"
+              >
+                <div
+                  class="c31"
+                >
+                  Balance
+                </div>
+                <div
+                  class="c32"
+                >
+                  Balance
+                </div>
+              </div>
+              <button
+                class="c33"
+                id="CreateLockButton"
+              >
+                Create Lock
+              </button>
+            </div>
+            <section
+              class="c34"
+            >
+              <img
+                class="c35"
+                src="/static/images/illustrations/lock.svg"
+              />
+              <div
+                class="c36"
+              >
+                <h1>
+                  Create a lock to get started
+                </h1>
+                If you have already created some locks, they should appear here momentarily.
+              </div>
+            </section>
           </section>
         </div>
         <div
-          class="c18"
+          class="c37"
         />
       </div>
     </div>
@@ -28108,7 +28531,7 @@ Object {
                 </div>
               </a>
             </div>
-            
+            Creator Dashboard
           </h1>
           <div
             class="sc-1glv5oz-2 bnaOgb"
@@ -28242,22 +28665,205 @@ Object {
           />
         </header>
         <section
-          class="sc-1g6piw8-0 jXGMmL"
+          class="sc-9u6rci-0 gDZljF"
         >
-          <img
-            class="sc-1g6piw8-1 fcKGMu"
-            src="/static/images/illustrations/error.svg"
-          />
-          <div
-            class="sc-1g6piw8-2 gCvXha"
+          <header
+            class="sc-9u6rci-1 jlPSng"
           >
-            <h1>
-              Need account
-            </h1>
-            <p>
-              In order to display this content, you need to connect a crypto-wallet to your browser.
-            </p>
+            <h2>
+              Account
+            </h2>
+            <span
+              class="sc-9u6rci-2 gZunnY"
+              id="NetworkName"
+            >
+              Winston
+            </span>
+          </header>
+          <div
+            class="sc-9u6rci-3 fSzJBJ"
+          >
+            <div
+              class="sc-9u6rci-4 eXwiFo"
+            >
+              <div
+                class="paper"
+                style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
+              >
+                <svg
+                  height="40"
+                  width="40"
+                  x="0"
+                  xmlns="http://www.w3.org/2000/svg"
+                  y="0"
+                >
+                  <rect
+                    fill="#F5B400"
+                    height="40"
+                    rx="0"
+                    ry="0"
+                    transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
+                    width="40"
+                    x="0"
+                    y="0"
+                  />
+                  <rect
+                    fill="#F92F01"
+                    height="40"
+                    rx="0"
+                    ry="0"
+                    transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
+                    width="40"
+                    x="0"
+                    y="0"
+                  />
+                  <rect
+                    fill="#FB186F"
+                    height="40"
+                    rx="0"
+                    ry="0"
+                    transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
+                    width="40"
+                    x="0"
+                    y="0"
+                  />
+                  <rect
+                    fill="#18A9F2"
+                    height="40"
+                    rx="0"
+                    ry="0"
+                    transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
+                    width="40"
+                    x="0"
+                    y="0"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div
+              class="sc-9u6rci-5 RSAkA"
+            >
+              Address
+            </div>
+            <div
+              class="sc-9u6rci-5 RSAkA"
+            >
+              Balance
+            </div>
+            <div
+              class="sc-9u6rci-4 eXwiFo"
+            />
+            <div
+              class="sc-9u6rci-4 eXwiFo"
+            />
+            <div
+              class="sc-9u6rci-4 eXwiFo"
+            />
+            <div
+              class="sc-9u6rci-4 eXwiFo"
+            />
+            <div
+              class="sc-9u6rci-4 eXwiFo"
+            />
+            <div
+              class="sc-9u6rci-6 gvRTKt"
+              id="UserAddress"
+            >
+              0x3ca206264762caf81a8f0a843bbb850987b41e16
+            </div>
+            <div
+              class="sc-9u6rci-7 gwJHpE"
+              id="AccountBalance"
+            >
+              <div
+                class="buwkmd-0 bYclZI"
+              >
+                <span
+                  class="buwkmd-1 jZYwNd"
+                >
+                  <span
+                    class="buwkmd-2 buwkmd-3 cwENmW"
+                  />
+                  <span
+                    class="buwkmd-5 dKpFcq"
+                  >
+                     - 
+                  </span>
+                </span>
+                
+              </div>
+            </div>
           </div>
+        </section>
+        <section
+          class="sc-1olgoav-0 gKWPIY"
+        >
+          <div
+            class="sc-1olgoav-1 gBcaxh"
+            id="LockHeaderRow"
+          >
+            <div
+              class="sc-1olgoav-2 irfbOa"
+            >
+              Locks
+            </div>
+            <div
+              class="sc-1olgoav-3 hxpbwC"
+            >
+              Name / Address
+            </div>
+            <div
+              class="sc-1olgoav-3 hxpbwC"
+            >
+              Key Duration
+            </div>
+            <div
+              class="sc-1olgoav-3 sc-1olgoav-4 cahOOH"
+            >
+              Key Quantity
+            </div>
+            <div
+              class="sc-1olgoav-3 hxpbwC"
+            >
+              Price
+            </div>
+            <div
+              class="sc-1olgoav-3 hxpbwC"
+            >
+              <div
+                class="sc-1w50r7k-0 fSpCqa"
+              >
+                Balance
+              </div>
+              <div
+                class="sc-1w50r7k-1 cwqVOH"
+              >
+                Balance
+              </div>
+            </div>
+            <button
+              class="sc-1olgoav-5 sc-1olgoav-6 dOthuf"
+              id="CreateLockButton"
+            >
+              Create Lock
+            </button>
+          </div>
+          <section
+            class="sc-1g6piw8-0 jXGMmL"
+          >
+            <img
+              class="sc-1g6piw8-1 fcKGMu"
+              src="/static/images/illustrations/lock.svg"
+            />
+            <div
+              class="sc-1g6piw8-2 evbCld"
+            >
+              <h1>
+                Create a lock to get started
+              </h1>
+              If you have already created some locks, they should appear here momentarily.
+            </div>
+          </section>
         </section>
       </div>
       <div

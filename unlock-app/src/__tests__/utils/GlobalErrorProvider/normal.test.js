@@ -5,7 +5,6 @@ import createUnlockStore from '../../../createUnlockStore'
 import GlobalErrorProvider, {
   GlobalErrorContext,
 } from '../../../utils/GlobalErrorProvider'
-import { FATAL_NO_USER_ACCOUNT } from '../../../errors'
 
 describe('GlobalErrorProvider', () => {
   function makeTestStore(newValues = {}) {
@@ -54,25 +53,5 @@ describe('GlobalErrorProvider', () => {
 
     expect(wrapper.getByTestId('error')).toHaveTextContent('false')
     expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent('{}')
-  })
-
-  it('should populate with missing account error if account is not set', () => {
-    expect.assertions(2)
-
-    const store = makeTestStore({
-      account: undefined,
-    })
-    const wrapper = rtl.render(
-      <Provider store={store}>
-        <GlobalErrorProvider>
-          <PeekAtContextConsumer />
-        </GlobalErrorProvider>
-      </Provider>
-    )
-
-    expect(wrapper.getByTestId('error')).toHaveTextContent(
-      FATAL_NO_USER_ACCOUNT
-    )
-    expect(wrapper.getByTestId('errorMetadata')).toHaveTextContent('')
   })
 })
