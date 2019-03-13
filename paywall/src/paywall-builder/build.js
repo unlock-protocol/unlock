@@ -77,19 +77,19 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
   const origin = new window.URL(paywallUrl).origin
 
   let locked = false
-  let disablePolling
+  let disableScrollPolling = () => {}
   window.addEventListener(
     'message',
     event => {
       if (event.data === POST_MESSAGE_LOCKED && !locked) {
         locked = true
         show(iframe, document)
-        disablePolling = scrollLoop(window, document, iframe, origin)
+        disableScrollPolling = scrollLoop(window, document, iframe, origin)
         blocker.remove()
       }
       if (event.data === POST_MESSAGE_UNLOCKED && locked) {
         locked = false
-        disablePolling()
+        disableScrollPolling()
         hide(iframe, document)
         blocker.remove()
       }
