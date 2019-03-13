@@ -52,6 +52,8 @@ jobs:
       - run:
           name: Creator Dashboard stories
           command: scripts/storybook.sh unlock-app "$CIRCLE_BRANCH"
+          environment:
+            CHROMATIC_APP_CODE: swpc6wf70qp
 
   smart-contracts-tests:
     machine: true
