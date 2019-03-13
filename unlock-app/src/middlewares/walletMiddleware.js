@@ -151,7 +151,10 @@ export default function walletMiddleware({ getState, dispatch }) {
 
   return function(next) {
     // Connect to the current provider
-    walletService.connect(getState().provider)
+    // We connect once the middleware has been initialized, using setTimout (warning: fragile?)
+    setTimeout(() => {
+      walletService.connect(getState().provider)
+    })
 
     return function(action) {
       if (action.type === SET_PROVIDER) {
