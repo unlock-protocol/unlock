@@ -35,8 +35,8 @@ export function Paywall({ locks, locked, redirect }) {
         const height = '160px'
         const body = window.document.body
         body.style.margin = '0'
-        body.style.height = height
-        body.style.display = 'flex'
+        body.style.height = window.innerWidth >= 768 ? height : 0
+        body.style.display = window.innerWidth >= 768 ? 'flex' : 'none'
         body.style.flexDirection = 'column'
         body.style.justifyContent = 'center'
         body.style.overflow = 'hidden'

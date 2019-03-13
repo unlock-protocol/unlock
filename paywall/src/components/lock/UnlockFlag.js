@@ -34,6 +34,6 @@ const Flag = styled(Colophon)`
   }
 
   ${Media.phone`
-    display: none;
-  `}
+    display: flex;
+`}
 `
