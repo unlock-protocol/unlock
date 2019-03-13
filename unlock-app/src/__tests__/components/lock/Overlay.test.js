@@ -9,12 +9,10 @@ import Overlay, {
   mapStateToProps,
   displayError,
 } from '../../../components/lock/Overlay'
-import { GlobalErrorContext } from '../../../utils/GlobalErrorProvider'
 import { FATAL_NO_USER_ACCOUNT, FATAL_MISSING_PROVIDER } from '../../../errors'
 import createUnlockStore from '../../../createUnlockStore'
 import { ConfigContext } from '../../../utils/withConfig'
 
-const ErrorProvider = GlobalErrorContext.Provider
 const ConfigProvider = ConfigContext.Provider
 
 describe('Overlay', () => {
@@ -134,14 +132,12 @@ describe('Overlay', () => {
           <ConfigProvider
             value={{ requiredConfirmations: 12, isInIframe: true }}
           >
-            <ErrorProvider value={{ error: false, errorMetadata: {} }}>
-              <Overlay
-                scrollPosition={0}
-                hideModal={() => {}}
-                showModal={() => {}}
-                locks={[lock]}
-              />
-            </ErrorProvider>
+            <Overlay
+              scrollPosition={0}
+              hideModal={() => {}}
+              showModal={() => {}}
+              locks={[lock]}
+            />
           </ConfigProvider>
         </Provider>
       )
@@ -155,55 +151,23 @@ describe('Overlay', () => {
       ).not.toBeNull()
     })
 
-    it('displays error, headline, and flag when there is an error', () => {
+    it('displays lock when the error is missing account', () => {
       expect.assertions(3)
+
+      store.errors = [{ error: FATAL_NO_USER_ACCOUNT }]
       const wrapper = rtl.render(
         <Provider store={store}>
           <ConfigProvider
             value={{ requiredConfirmations: 12, isInIframe: true }}
           >
-            <ErrorProvider
-              value={{ error: FATAL_MISSING_PROVIDER, errorMetadata: {} }}
-            >
-              <Overlay
-                scrollPosition={0}
-                hideModal={() => {}}
-                showModal={() => {}}
-                locks={[lock]}
-              />
-            </ErrorProvider>
+            <Overlay
+              scrollPosition={0}
+              hideModal={() => {}}
+              showModal={() => {}}
+              locks={[lock]}
+              openInNewWindow={false}
+            />
           </ConfigProvider>
-        </Provider>
-      )
-
-      expect(wrapper.queryByText('100000.00 Eth')).toBeNull()
-      expect(wrapper.queryByText('Powered by Unlock')).not.toBeNull()
-      expect(
-        wrapper.queryByText(
-          'You have reached your limit of free articles. Please purchase access'
-        )
-      ).not.toBeNull()
-    })
-
-    it('displays lock when the error is missing account', () => {
-      expect.assertions(3)
-      const wrapper = rtl.render(
-        <Provider store={store}>
-          <ErrorProvider
-            value={{ error: FATAL_NO_USER_ACCOUNT, errorMetadata: {} }}
-          >
-            <ConfigProvider
-              value={{ requiredConfirmations: 12, isInIframe: true }}
-            >
-              <Overlay
-                scrollPosition={0}
-                hideModal={() => {}}
-                showModal={() => {}}
-                locks={[lock]}
-                openInNewWindow={false}
-              />
-            </ConfigProvider>
-          </ErrorProvider>
         </Provider>
       )
 
