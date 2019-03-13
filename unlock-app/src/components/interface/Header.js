@@ -8,7 +8,6 @@ import Buttons from './buttons/layout'
 import PageNavButtons from './buttons/navigation'
 import { ButtonLink } from './buttons/Button'
 import Media from '../../theme/media'
-import PageNavButton from './buttons/PageNavButton'
 
 // add new navigation buttons here, layout will reflow appropriately
 const navigationButtons = [
