@@ -56,8 +56,8 @@ export default class WalletService extends EventEmitter {
    * @return
    */
   async connect(providerName) {
-    if (providerName === this.providerName) {
-      // If the provider did not really change, no need to reset it
+    if (providerName && providerName === this.providerName) {
+      // If the provider is set and did not really change, no need to reset it
       return
     }
 
