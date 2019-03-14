@@ -26,6 +26,8 @@ import Telegram from './Telegram'
 import Twitter from './Twitter'
 import Bars from './Bars'
 import ChevronUp from './ChevronUp'
+import KeyText from './KeyText'
+import Box from './Box'
 
 function wrapViewBox(WrappedComponent, viewBox) {
   const Wrapped = props => <WrappedComponent viewBox={viewBox} {...props} />
@@ -60,4 +62,6 @@ export default {
   Twitter: wrapViewBox(Twitter, '0 0 24 24'),
   Bars: wrapViewBox(Bars, '0 0 56 42'),
   ChevronUp: wrapViewBox(ChevronUp, '0 0 58 32'),
+  KeyText: wrapViewBox(KeyText, '0 0 200 245'),
+  Box: wrapViewBox(Box, '0 0 24 24'),
 }
