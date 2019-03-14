@@ -14,7 +14,8 @@
     "db:migrate": "sequelize db:migrate",
     "fail-pending-changes": "../scripts/pending-changes.sh",
     "ci": "npm run lint && npm test && npm run reformat && npm run fail-pending-changes",
-    "build": "echo 'Nothing to build'"
+    "build": "echo 'Nothing to build'",
+    "tsc": "tsc"
   },
   "lint-staged": {
     "linters": {
