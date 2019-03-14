@@ -8,7 +8,7 @@ Este repositorio incluye todo el código implementado por Unlock, incluyendo los
 
 Lea más sobre [por qué estamos construyendo Unlock](https://medium.com/unlock-protocol/its-time-to-unlock-the-web-b98e9b94add1).
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://travis-ci.com/unlock-protocol/unlock.svg?branch=master)](https://travis-ci.com/unlock-protocol/unlock)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://circleci.com/gh/unlock-protocol/unlock.svg?style=svg)](https://circleci.com/gh/unlock-protocol/unlock)
 
 ## Demo
 
@@ -32,7 +32,7 @@ Un sitio web estático para unlock-protocol.com. Eventualmente estará obsoleto 
 
 ### unlock-app
 
-El código para la aplicación React, que interactúa con los contratos inteligentes desplegados. 
+El código para la aplicación React, que interactúa con los contratos inteligentes desplegados.
 
 ## Ejecutando tests/ci
 
