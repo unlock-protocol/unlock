@@ -40,19 +40,22 @@
     "jest": "^23.6.0",
     "jsontokens": "^1.0.0",
     "lodash.isequal": "^4.5.0",
+    "nock": "~10.0.6",
     "node-mocks-http": "^1.7.3",
     "pg": "^7.7.1",
     "sequelize": "^4.41.2",
     "sequelize-cli": "^5.4.0",
     "supertest": "^3.3.0",
+    "ts-jest": "^24.0.0",
+    "typescript": "^3.3.3333",
     "web3": "^1.0.0-beta.37",
-    "winston": "^3.1.0",
-    "nock": "~10.0.6"
+    "winston": "^3.1.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.8",
     "sqlite3": "^4.0.6",
-    "supertest": "^3.3.0"
+    "supertest": "^3.3.0",
+    "tsc-watch": "^2.1.2"
   },
   "jest": {
     "testMatch": [
