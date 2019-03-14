@@ -29,9 +29,12 @@
     "prettier-eslint-cli": "^4.7.1"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "^1.4.2",
+    "eslint-import-resolver-typescript": "^1.1.1",
     "ganache-cli": "^6.4.1",
     "husky": "^1.2.0",
-    "lint-staged": "^8.0.5"
+    "lint-staged": "^8.0.5",
+    "typescript": "^3.3.3333"
   },
   "scripts": {
     "link-parent-bin": "link-parent-bin -c . -s true",
