@@ -1,14 +1,11 @@
 pragma solidity 0.5.6;
 
-import './interfaces/IMixinFunds.sol';
 
 /**
- * @title An implementation of the IMixinFunds interface specifically for transacting
- * in ETH.
+ * @title An implementation of the money related functions.
  * @author HardlyDifficult (unlock-protocol.com)
  */
-contract MixinFundsETH is
-  IMixinFunds
+contract MixinFunds
 {
   /**
    * Ensures that the msg.sender has paid at least the price stated.

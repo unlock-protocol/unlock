@@ -3,7 +3,7 @@ pragma solidity 0.5.6;
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import './MixinDisableAndDestroy.sol';
 import '../interfaces/IUnlock.sol';
-import './interfaces/IMixinFunds.sol';
+import './MixinFunds.sol';
 
 
 /**
@@ -14,7 +14,7 @@ import './interfaces/IMixinFunds.sol';
  */
 contract MixinLockCore is
   Ownable,
-  IMixinFunds,
+  MixinFunds,
   MixinDisableAndDestroy
 {
   event PriceChanged(
