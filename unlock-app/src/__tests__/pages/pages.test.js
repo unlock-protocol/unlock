@@ -113,7 +113,7 @@ describe('Pages', () => {
 
   describe('Post', () => {
     it('should render title correctly', () => {
-      expect.assertions(1)
+      expect.assertions(2)
       let post = {
         title: 'Test post',
         slug: 'test1',

@@ -25,7 +25,7 @@ const Post = ({ slug, post }) => {
     <Layout forContent>
       <Head>
         <title>{pageTitle(title)}</title>
-        <TwitterTags title={title} description={description} />
+        <TwitterTags title={pageTitle(title)} description={description} />
         <OpenGraphTags
           title={pageTitle(title)}
           description={description}
