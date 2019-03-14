@@ -58,5 +58,8 @@
     // "experimentalDecorators": true,        /* Enables experimental support for ES7 decorators. */
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
     "skipLibCheck": true                      /* This trusts that typings files (@types) are accurate and don't need to be checked by the compiler. This speeds build times. */
-  }
+  },
+  "include": [
+    "./src/**/*"
+  ]
 }
