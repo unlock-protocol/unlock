@@ -4648,12 +4648,12 @@
       }
     },
     "jest": {
-      "version": "24.5.0",
-      "resolved": "https://registry.npmjs.org/jest/-/jest-24.5.0.tgz",
-      "integrity": "sha512-lxL+Fq5/RH7inxxmfS2aZLCf8MsS+YCUBfeiNO6BWz/MmjhDGaIEA/2bzEf9q4Q0X+mtFHiinHFvQ0u+RvW/qQ==",
+      "version": "24.1.0",
+      "resolved": "https://registry.npmjs.org/jest/-/jest-24.1.0.tgz",
+      "integrity": "sha512-+q91L65kypqklvlRFfXfdzUKyngQLOcwGhXQaLmVHv+d09LkNXuBuGxlofTFW42XMzu3giIcChchTsCNUjQ78A==",
       "requires": {
         "import-local": "^2.0.0",
-        "jest-cli": "^24.5.0"
+        "jest-cli": "^24.1.0"
       },
       "dependencies": {
         "ci-info": {
