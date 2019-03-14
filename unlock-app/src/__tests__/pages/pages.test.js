@@ -106,7 +106,11 @@ describe('Pages', () => {
   describe('Blog', () => {
     it('should render title correctly', () => {
       expect.assertions(1)
-      rtl.render(<Blog posts={[]} />)
+      rtl.render(
+        <Provider store={store}>
+          <Blog posts={[]} />
+        </Provider>
+      )
 
       expect(pageTitle).toBeCalledWith('Blog')
     })
@@ -123,7 +127,11 @@ describe('Pages', () => {
         },
       ]
 
-      const page = rtl.render(<Blog posts={posts} />)
+      const page = rtl.render(
+        <Provider store={store}>
+          <Blog posts={posts} />
+        </Provider>
+      )
 
       expect(page.queryByText(posts[0].title)).not.toBeNull()
       expect(page.queryByText(posts[0].authorName)).not.toBeNull()
@@ -142,7 +150,11 @@ describe('Pages', () => {
         __content: 'Now is the limiter of this content',
       }
       const slug = 'test1'
-      const page = rtl.render(<Post post={post} slug={slug} />)
+      const page = rtl.render(
+        <Provider store={store}>
+          <Post post={post} slug={slug} />
+        </Provider>
+      )
 
       expect(pageTitle).toBeCalledWith(post.title)
       expect(page.queryByText(post.publishDate)).not.toBeNull()

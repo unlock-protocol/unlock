@@ -1,20 +1,2908 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Storyshots Blog pages Blog index page 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c4 {
+  fill: var(--brand);
+}
+
+.c8 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c8 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c8:hover {
+  background-color: var(--link);
+}
+
+.c8:hover > svg {
+  fill: white;
+}
+
+.c8:focus {
+  outline: none;
+}
+
+.c11 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 48px;
+}
+
+.c11 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
+}
+
+.c11:hover {
+  background-color: var(--link);
+}
+
+.c11:hover > svg {
+  fill: white;
+}
+
+.c11:focus {
+  outline: none;
+}
+
+.c9 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c7:hover .c9 {
+  display: inline-block;
+}
+
+.c3 {
+  display: grid;
+  grid-gap: 0;
+  grid-template-columns: 256px 1fr auto;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 70px;
+}
+
+.c6 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+}
+
+.c5 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+  grid-template-columns: repeat(2,24px);
+}
+
+.c10 {
+  display: none;
+  height: auto;
+  grid-column: second;
+}
+
+.c10 .c7 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c10 .c7:nth-child(1) {
+  pointer-events: none;
+}
+
+.c10 .c7:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c10 .c7 > svg {
+  fill: var(--grey);
+}
+
+.c10 .c7:hover > svg {
+  fill: var(--grey);
+}
+
+.c12 {
+  background-color: var(--white);
+  width: 100%;
+  height: auto;
+  z-index: var(--foreground);
+  padding-bottom: 30px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  height: 0%;
+  pointer-events: none;
+  top: 50px;
+}
+
+.c12 .c7 {
+  margin: 24px;
+}
+
+.c12 .c7 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c20 {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(3,24px) 1fr;
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c21 {
+  justify-self: end;
+  font-size: 12px;
+  font-weight: 200;
+  font-style: italic;
+  font-family: 'IBM Plex Mono','Courier New',Serif;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+}
+
+.c1 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  height: 24px;
+}
+
+.c2 {
+  color: var(--darkgrey);
+  display: grid;
+  row-gap: 24px;
+  width: 100%;
+}
+
+.c18 {
+  color: var(--brand);
+}
+
+.c14 {
+  margin: auto;
+  width: 100%;
+  max-with: 750px;
+}
+
+.c16 {
+  margin-bottom: 0;
+}
+
+.c16 a {
+  color: var(--darkgrey);
+  font-weight: 700;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  font-size: 20px;
+}
+
+.c17 {
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  color: var(--darkgrey);
+  font-size: 12px;
+  line-height: 12px;
+  margin-top: 0;
+}
+
+.c19 {
+  color: var(--darkgrey);
+  font-weight: 300;
+  line-height: 28px;
+  font-size: 16px;
+}
+
+.c15 {
+  margin-bottom: 20px;
+}
+
+.c13 {
+  margin-bottom: 0;
+  color: var(--darkgrey);
+  font-weight: 700;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  font-size: 36px;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c3 {
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c6 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c5 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c10 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c10 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c12 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c12 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c1 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c22 {
+    display: none;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        />
+        <div
+          class="c2"
+        >
+          <header
+            class="c3"
+          >
+            <a
+              href="/"
+            >
+              <svg
+                class="c4"
+                height="28px"
+                name="Unlock"
+                viewBox="0 0 1200 256"
+              >
+                <title />
+                <path
+                  d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+                />
+              </svg>
+            </a>
+            <div
+              class="c5"
+            />
+            <div
+              class="c6"
+            >
+              <a
+                class="c7 c8"
+                href="/about"
+                title="About"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    About
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c9"
+                >
+                  About
+                </small>
+              </a>
+              <a
+                class="c7 c8"
+                href="/jobs"
+                title="Join us"
+              >
+                <svg
+                  name="Jobs"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c9"
+                >
+                  Join us
+                </small>
+              </a>
+              <a
+                class="c7 c8"
+                href="https://github.com/unlock-protocol/unlock"
+                title="Source Code"
+              >
+                <svg
+                  name="Github"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                  />
+                </svg>
+                <small
+                  class="c9"
+                >
+                  Source Code
+                </small>
+              </a>
+              <a
+                class="c7 c8"
+                href="https://t.me/unlockprotocol"
+                title="Telegram"
+              >
+                <svg
+                  name="Telegram"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c9"
+                >
+                  Telegram
+                </small>
+              </a>
+            </div>
+            <div
+              class="c10"
+            >
+              <a
+                class="c7 c11"
+              >
+                <svg
+                  viewBox="0 0 56 42"
+                >
+                  <title>
+                    Bars
+                  </title>
+                  <path
+                    d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                  />
+                </svg>
+                
+              </a>
+              <a
+                class="c7 c11"
+              >
+                <svg
+                  viewBox="0 0 58 32"
+                >
+                  <title>
+                    Chevron Up
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                
+              </a>
+            </div>
+            <div
+              class="c12"
+            />
+          </header>
+          <h1
+            class="c13"
+          >
+            Unlock Blog
+          </h1>
+          <div
+            class="c14"
+          >
+            <div
+              class="c15"
+            >
+              <div
+                class="c16"
+              >
+                <a
+                  href="/blog/post3"
+                >
+                  Latest post
+                </a>
+              </div>
+              <div
+                class="c17"
+              >
+                <h3
+                  class="c18"
+                >
+                  Unlock team
+                </h3>
+                <div
+                  class=""
+                >
+                  Tuesday, March 5, 2019
+                </div>
+              </div>
+              <div
+                class="c19"
+              >
+                
+This post was published most recently. It is an important post about a great many things, all of which are vital. You
+should pay great attention.
+              </div>
+            </div>
+            <div
+              class="c15"
+            >
+              <div
+                class="c16"
+              >
+                <a
+                  href="/blog/post2"
+                >
+                  Another post from us!
+                </a>
+              </div>
+              <div
+                class="c17"
+              >
+                <h3
+                  class="c18"
+                >
+                  Julien Genestoux
+                </h3>
+                <div
+                  class=""
+                >
+                  Friday, March 1, 2019
+                </div>
+              </div>
+              <div
+                class="c19"
+              >
+                
+Short description.
+              </div>
+            </div>
+            <div
+              class="c15"
+            >
+              <div
+                class="c16"
+              >
+                <a
+                  href="/blog/post1"
+                >
+                  This is our first post.
+                </a>
+              </div>
+              <div
+                class="c17"
+              >
+                <h3
+                  class="c18"
+                >
+                  Unlock team
+                </h3>
+                <div
+                  class=""
+                >
+                  Monday, August 20, 2018
+                </div>
+              </div>
+              <div
+                class="c19"
+              >
+                
+Look at us! We're posting on our very own blog! How exciting!
+              </div>
+            </div>
+          </div>
+          <footer
+            class="c20"
+          >
+            <a
+              class="c7 c8"
+              href="/about"
+              title="About"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  About
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c9"
+              >
+                About
+              </small>
+            </a>
+            <a
+              class="c7 c8"
+              href="/jobs"
+              title="Join us"
+            >
+              <svg
+                name="Jobs"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c9"
+              >
+                Join us
+              </small>
+            </a>
+            <a
+              class="c7 c8"
+              href="https://github.com/unlock-protocol/unlock"
+              title="Source Code"
+            >
+              <svg
+                name="Github"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                />
+              </svg>
+              <small
+                class="c9"
+              >
+                Source Code
+              </small>
+            </a>
+            <a
+              class="c7 c8"
+              href="https://t.me/unlockprotocol"
+              title="Telegram"
+            >
+              <svg
+                name="Telegram"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c9"
+              >
+                Telegram
+              </small>
+            </a>
+            <span
+              class="c21"
+            >
+              Made with passion in Brooklyn, NY
+            </span>
+          </footer>
+        </div>
+        <div
+          class="c22"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="hm3mhg-0 evMwRH"
+    >
+      <div
+        class="hm3mhg-1 hHesyi"
+      />
+      <div
+        class="hm3mhg-3 yKIjT"
+      >
+        <header
+          class="sc-1glv5oz-0 gDNkcP"
+        >
+          <a
+            href="/"
+          >
+            <svg
+              class="cenpj1-1 cCNAun"
+              height="28px"
+              name="Unlock"
+              viewBox="0 0 1200 256"
+            >
+              <title />
+              <path
+                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+              />
+            </svg>
+          </a>
+          <div
+            class="sc-1glv5oz-2 sc-1glv5oz-3 fyORqW"
+          />
+          <div
+            class="sc-1glv5oz-2 bnaOgb"
+          >
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="/about"
+              title="About"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  About
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                About
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="/jobs"
+              title="Join us"
+            >
+              <svg
+                name="Jobs"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Join us
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="https://github.com/unlock-protocol/unlock"
+              title="Source Code"
+            >
+              <svg
+                name="Github"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Source Code
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="https://t.me/unlockprotocol"
+              title="Telegram"
+            >
+              <svg
+                name="Telegram"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Telegram
+              </small>
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-4 dZOOLw"
+          >
+            <a
+              class="sc-850ddk-0 fWWxcb"
+            >
+              <svg
+                viewBox="0 0 56 42"
+              >
+                <title>
+                  Bars
+                </title>
+                <path
+                  d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                />
+              </svg>
+              
+            </a>
+            <a
+              class="sc-850ddk-0 fWWxcb"
+            >
+              <svg
+                viewBox="0 0 58 32"
+              >
+                <title>
+                  Chevron Up
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-5 bIiIbj"
+          />
+        </header>
+        <h1
+          class="sc-5kpfof-0 iAnxqz"
+        >
+          Unlock Blog
+        </h1>
+        <div
+          class="fbx9r2-0 BJvfu"
+        >
+          <div
+            class="fbx9r2-4 bJIQes"
+          >
+            <div
+              class="fbx9r2-1 fmHqJA"
+            >
+              <a
+                href="/blog/post3"
+              >
+                Latest post
+              </a>
+            </div>
+            <div
+              class="fbx9r2-2 dIywgX"
+            >
+              <h3
+                class="b1qsww-5 dadLRQ"
+              >
+                Unlock team
+              </h3>
+              <div
+                class="b1qsww-6 hPjVGB"
+              >
+                Tuesday, March 5, 2019
+              </div>
+            </div>
+            <div
+              class="fbx9r2-3 fvVqt"
+            >
+              
+This post was published most recently. It is an important post about a great many things, all of which are vital. You
+should pay great attention.
+            </div>
+          </div>
+          <div
+            class="fbx9r2-4 bJIQes"
+          >
+            <div
+              class="fbx9r2-1 fmHqJA"
+            >
+              <a
+                href="/blog/post2"
+              >
+                Another post from us!
+              </a>
+            </div>
+            <div
+              class="fbx9r2-2 dIywgX"
+            >
+              <h3
+                class="b1qsww-5 dadLRQ"
+              >
+                Julien Genestoux
+              </h3>
+              <div
+                class="b1qsww-6 hPjVGB"
+              >
+                Friday, March 1, 2019
+              </div>
+            </div>
+            <div
+              class="fbx9r2-3 fvVqt"
+            >
+              
+Short description.
+            </div>
+          </div>
+          <div
+            class="fbx9r2-4 bJIQes"
+          >
+            <div
+              class="fbx9r2-1 fmHqJA"
+            >
+              <a
+                href="/blog/post1"
+              >
+                This is our first post.
+              </a>
+            </div>
+            <div
+              class="fbx9r2-2 dIywgX"
+            >
+              <h3
+                class="b1qsww-5 dadLRQ"
+              >
+                Unlock team
+              </h3>
+              <div
+                class="b1qsww-6 hPjVGB"
+              >
+                Monday, August 20, 2018
+              </div>
+            </div>
+            <div
+              class="fbx9r2-3 fvVqt"
+            >
+              
+Look at us! We're posting on our very own blog! How exciting!
+            </div>
+          </div>
+        </div>
+        <footer
+          class="sc-2ix2yp-0 clvjsX"
+        >
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="/about"
+            title="About"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                About
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              About
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="/jobs"
+            title="Join us"
+          >
+            <svg
+              name="Jobs"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Join us
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="https://github.com/unlock-protocol/unlock"
+            title="Source Code"
+          >
+            <svg
+              name="Github"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Source Code
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="https://t.me/unlockprotocol"
+            title="Telegram"
+          >
+            <svg
+              name="Telegram"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Telegram
+            </small>
+          </a>
+          <span
+            class="sc-2ix2yp-1 gloJyL"
+          >
+            Made with passion in Brooklyn, NY
+          </span>
+        </footer>
+      </div>
+      <div
+        class="hm3mhg-2 kyyqtC"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Blog pages Blog post page 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": .c4 {
+  fill: var(--brand);
+}
+
+.c8 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c8 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c8:hover {
+  background-color: var(--link);
+}
+
+.c8:hover > svg {
+  fill: white;
+}
+
+.c8:focus {
+  outline: none;
+}
+
+.c11 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 48px;
+}
+
+.c11 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
+}
+
+.c11:hover {
+  background-color: var(--link);
+}
+
+.c11:hover > svg {
+  fill: white;
+}
+
+.c11:focus {
+  outline: none;
+}
+
+.c9 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c7:hover .c9 {
+  display: inline-block;
+}
+
+.c3 {
+  display: grid;
+  grid-gap: 0;
+  grid-template-columns: 256px 1fr auto;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 70px;
+}
+
+.c6 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+}
+
+.c5 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+  grid-template-columns: repeat(2,24px);
+}
+
+.c10 {
+  display: none;
+  height: auto;
+  grid-column: second;
+}
+
+.c10 .c7 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c10 .c7:nth-child(1) {
+  pointer-events: none;
+}
+
+.c10 .c7:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c10 .c7 > svg {
+  fill: var(--grey);
+}
+
+.c10 .c7:hover > svg {
+  fill: var(--grey);
+}
+
+.c12 {
+  background-color: var(--white);
+  width: 100%;
+  height: auto;
+  z-index: var(--foreground);
+  padding-bottom: 30px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  height: 0%;
+  pointer-events: none;
+  top: 50px;
+}
+
+.c12 .c7 {
+  margin: 24px;
+}
+
+.c12 .c7 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c19 {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(3,24px) 1fr;
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c20 {
+  justify-self: end;
+  font-size: 12px;
+  font-weight: 200;
+  font-style: italic;
+  font-family: 'IBM Plex Mono','Courier New',Serif;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+}
+
+.c1 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  height: 24px;
+}
+
+.c2 {
+  color: var(--darkgrey);
+  display: grid;
+  row-gap: 24px;
+  width: 100%;
+}
+
+.c13 {
+  width: 100%;
+  max-width: 730px;
+  margin: auto;
+  font-family: 'IBM Plex Serif',serif;
+}
+
+.c14 {
+  margin-bottom: 0;
+}
+
+.c14 a {
+  color: var(--darkgrey);
+  font-weight: 700;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  font-size: 36px;
+}
+
+.c16 {
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  color: var(--darkgrey);
+  font-size: 12px;
+  line-height: 12px;
+  margin-top: 0;
+  margin-bottom: 35px;
+}
+
+.c15 {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  color: var(--dimgrey);
+}
+
+.c18 {
+  color: var(--darkgrey);
+  font-weight: 300;
+  line-height: 28px;
+  font-size: 16px;
+}
+
+.c18 strong {
+  font-weight: 800;
+}
+
+.c18 p {
+  margin-top: 0;
+}
+
+.c18 h2 {
+  font-weight: 800;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  font-size: 18px;
+}
+
+.c18 img {
+  max-width: 730px;
+}
+
+.c17 {
+  color: var(--brand);
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c3 {
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c6 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c5 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c10 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c10 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c12 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c12 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c1 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c21 {
+    display: none;
+  }
+}
+
+<body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        />
+        <div
+          class="c2"
+        >
+          <header
+            class="c3"
+          >
+            <a
+              href="/"
+            >
+              <svg
+                class="c4"
+                height="28px"
+                name="Unlock"
+                viewBox="0 0 1200 256"
+              >
+                <title />
+                <path
+                  d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+                />
+              </svg>
+            </a>
+            <div
+              class="c5"
+            />
+            <div
+              class="c6"
+            >
+              <a
+                class="c7 c8"
+                href="/about"
+                title="About"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    About
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c9"
+                >
+                  About
+                </small>
+              </a>
+              <a
+                class="c7 c8"
+                href="/jobs"
+                title="Join us"
+              >
+                <svg
+                  name="Jobs"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c9"
+                >
+                  Join us
+                </small>
+              </a>
+              <a
+                class="c7 c8"
+                href="https://github.com/unlock-protocol/unlock"
+                title="Source Code"
+              >
+                <svg
+                  name="Github"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                  />
+                </svg>
+                <small
+                  class="c9"
+                >
+                  Source Code
+                </small>
+              </a>
+              <a
+                class="c7 c8"
+                href="https://t.me/unlockprotocol"
+                title="Telegram"
+              >
+                <svg
+                  name="Telegram"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c9"
+                >
+                  Telegram
+                </small>
+              </a>
+            </div>
+            <div
+              class="c10"
+            >
+              <a
+                class="c7 c11"
+              >
+                <svg
+                  viewBox="0 0 56 42"
+                >
+                  <title>
+                    Bars
+                  </title>
+                  <path
+                    d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                  />
+                </svg>
+                
+              </a>
+              <a
+                class="c7 c11"
+              >
+                <svg
+                  viewBox="0 0 58 32"
+                >
+                  <title>
+                    Chevron Up
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                
+              </a>
+            </div>
+            <div
+              class="c12"
+            />
+          </header>
+          <div
+            class="c13"
+          >
+            <h1
+              class="c14"
+            >
+              <a
+                href="/blog/testpost"
+              >
+                Sample title
+              </a>
+            </h1>
+            <h2
+              class="c15"
+            >
+              Some advice from the field
+            </h2>
+            <div
+              class="c16"
+            >
+              <h3
+                class="c17"
+              >
+                Alice "Storybook" Bob
+              </h3>
+              <div
+                class=""
+              >
+                August 20, 2018
+              </div>
+            </div>
+            <div
+              class="c18"
+            >
+              <div>
+                <p>
+                  This is some sample markdown content for the purposes of displaying a blog post within Storybook. You can edit this
+markdown content within the blog post story itself.
+                </p>
+                
+
+                <h2
+                  id="howcaniwriteblogposts"
+                >
+                  How can I write blog posts?
+                </h2>
+                
+
+                <p>
+                  Blog posts are written as markdown files and saved in /static/blog/. They will be displayed in file order. Publish dates
+are intentionally not generated from this file date, in case we want to override the date.
+                </p>
+                
+
+                <ul>
+                  
+
+                  <li>
+                    You can use any standard markdown
+                  </li>
+                  
+
+                  <li>
+                    All you need to do is edit the markdown file and the system will do the rest
+                  </li>
+                  
+
+                  <li>
+                    The blog uses standard components and system styles so there is no separate style system to maintain
+                  </li>
+                  
+
+                </ul>
+                
+
+                <h2
+                  id="anythingelse"
+                >
+                  Anything else?
+                </h2>
+                
+
+                <p>
+                  <strong>
+                    Here is some bold text.
+                  </strong>
+                   We can also 
+                  <em>
+                    italicize text
+                  </em>
+                   or 
+                  <a
+                    href="https://unlock-protocol.com"
+                  >
+                    link to outside websites
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+          </div>
+          <footer
+            class="c19"
+          >
+            <a
+              class="c7 c8"
+              href="/about"
+              title="About"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  About
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c9"
+              >
+                About
+              </small>
+            </a>
+            <a
+              class="c7 c8"
+              href="/jobs"
+              title="Join us"
+            >
+              <svg
+                name="Jobs"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c9"
+              >
+                Join us
+              </small>
+            </a>
+            <a
+              class="c7 c8"
+              href="https://github.com/unlock-protocol/unlock"
+              title="Source Code"
+            >
+              <svg
+                name="Github"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                />
+              </svg>
+              <small
+                class="c9"
+              >
+                Source Code
+              </small>
+            </a>
+            <a
+              class="c7 c8"
+              href="https://t.me/unlockprotocol"
+              title="Telegram"
+            >
+              <svg
+                name="Telegram"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c9"
+              >
+                Telegram
+              </small>
+            </a>
+            <span
+              class="c20"
+            >
+              Made with passion in Brooklyn, NY
+            </span>
+          </footer>
+        </div>
+        <div
+          class="c21"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="hm3mhg-0 evMwRH"
+    >
+      <div
+        class="hm3mhg-1 hHesyi"
+      />
+      <div
+        class="hm3mhg-3 yKIjT"
+      >
+        <header
+          class="sc-1glv5oz-0 gDNkcP"
+        >
+          <a
+            href="/"
+          >
+            <svg
+              class="cenpj1-1 cCNAun"
+              height="28px"
+              name="Unlock"
+              viewBox="0 0 1200 256"
+            >
+              <title />
+              <path
+                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+              />
+            </svg>
+          </a>
+          <div
+            class="sc-1glv5oz-2 sc-1glv5oz-3 fyORqW"
+          />
+          <div
+            class="sc-1glv5oz-2 bnaOgb"
+          >
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="/about"
+              title="About"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  About
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                About
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="/jobs"
+              title="Join us"
+            >
+              <svg
+                name="Jobs"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Join us
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="https://github.com/unlock-protocol/unlock"
+              title="Source Code"
+            >
+              <svg
+                name="Github"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Source Code
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="https://t.me/unlockprotocol"
+              title="Telegram"
+            >
+              <svg
+                name="Telegram"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Telegram
+              </small>
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-4 dZOOLw"
+          >
+            <a
+              class="sc-850ddk-0 fWWxcb"
+            >
+              <svg
+                viewBox="0 0 56 42"
+              >
+                <title>
+                  Bars
+                </title>
+                <path
+                  d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                />
+              </svg>
+              
+            </a>
+            <a
+              class="sc-850ddk-0 fWWxcb"
+            >
+              <svg
+                viewBox="0 0 58 32"
+              >
+                <title>
+                  Chevron Up
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-5 bIiIbj"
+          />
+        </header>
+        <div
+          class="b1qsww-0 hRCMaV"
+        >
+          <h1
+            class="b1qsww-1 hTQZJB"
+          >
+            <a
+              href="/blog/testpost"
+            >
+              Sample title
+            </a>
+          </h1>
+          <h2
+            class="b1qsww-3 jKKooL"
+          >
+            Some advice from the field
+          </h2>
+          <div
+            class="b1qsww-2 kKmmMr"
+          >
+            <h3
+              class="b1qsww-5 dadLRQ"
+            >
+              Alice "Storybook" Bob
+            </h3>
+            <div
+              class="b1qsww-6 hPjVGB"
+            >
+              August 20, 2018
+            </div>
+          </div>
+          <div
+            class="b1qsww-4 bKHcAy"
+          >
+            <div>
+              <p>
+                This is some sample markdown content for the purposes of displaying a blog post within Storybook. You can edit this
+markdown content within the blog post story itself.
+              </p>
+              
+
+              <h2
+                id="howcaniwriteblogposts"
+              >
+                How can I write blog posts?
+              </h2>
+              
+
+              <p>
+                Blog posts are written as markdown files and saved in /static/blog/. They will be displayed in file order. Publish dates
+are intentionally not generated from this file date, in case we want to override the date.
+              </p>
+              
+
+              <ul>
+                
+
+                <li>
+                  You can use any standard markdown
+                </li>
+                
+
+                <li>
+                  All you need to do is edit the markdown file and the system will do the rest
+                </li>
+                
+
+                <li>
+                  The blog uses standard components and system styles so there is no separate style system to maintain
+                </li>
+                
+
+              </ul>
+              
+
+              <h2
+                id="anythingelse"
+              >
+                Anything else?
+              </h2>
+              
+
+              <p>
+                <strong>
+                  Here is some bold text.
+                </strong>
+                 We can also 
+                <em>
+                  italicize text
+                </em>
+                 or 
+                <a
+                  href="https://unlock-protocol.com"
+                >
+                  link to outside websites
+                </a>
+                .
+              </p>
+            </div>
+          </div>
+        </div>
+        <footer
+          class="sc-2ix2yp-0 clvjsX"
+        >
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="/about"
+            title="About"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                About
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              About
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="/jobs"
+            title="Join us"
+          >
+            <svg
+              name="Jobs"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Join us
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="https://github.com/unlock-protocol/unlock"
+            title="Source Code"
+          >
+            <svg
+              name="Github"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Source Code
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="https://t.me/unlockprotocol"
+            title="Telegram"
+          >
+            <svg
+              name="Telegram"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Telegram
+            </small>
+          </a>
+          <span
+            class="sc-2ix2yp-1 gloJyL"
+          >
+            Made with passion in Brooklyn, NY
+          </span>
+        </footer>
+      </div>
+      <div
+        class="hm3mhg-2 kyyqtC"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots BlogIndex Blog index with multiple posts 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c4 {
+  color: var(--brand);
+}
+
+.c0 {
+  margin: auto;
+  width: 100%;
+  max-with: 750px;
+}
+
+.c2 {
+  margin-bottom: 0;
+}
+
+.c2 a {
+  color: var(--darkgrey);
+  font-weight: 700;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  font-size: 20px;
+}
+
+.c3 {
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  color: var(--darkgrey);
+  font-size: 12px;
+  line-height: 12px;
+  margin-top: 0;
+}
+
+.c5 {
+  color: var(--darkgrey);
+  font-weight: 300;
+  line-height: 28px;
+  font-size: 16px;
+}
+
+.c1 {
+  margin-bottom: 20px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <div
+            class="c2"
+          >
+            <a
+              href="/blog/post3"
+            >
+              Latest post
+            </a>
+          </div>
+          <div
+            class="c3"
+          >
+            <h3
+              class="c4"
+            >
+              Unlock team
+            </h3>
+            <div
+              class=""
+            >
+              Tuesday, March 5, 2019
+            </div>
+          </div>
+          <div
+            class="c5"
+          >
+            
+This post was published most recently. It is an important post about a great many things, all of which are vital. You
+should pay great attention.
+          </div>
+        </div>
+        <div
+          class="c1"
+        >
+          <div
+            class="c2"
+          >
+            <a
+              href="/blog/post2"
+            >
+              Another post from us!
+            </a>
+          </div>
+          <div
+            class="c3"
+          >
+            <h3
+              class="c4"
+            >
+              Julien Genestoux
+            </h3>
+            <div
+              class=""
+            >
+              Friday, March 1, 2019
+            </div>
+          </div>
+          <div
+            class="c5"
+          >
+            
+Short description.
+          </div>
+        </div>
+        <div
+          class="c1"
+        >
+          <div
+            class="c2"
+          >
+            <a
+              href="/blog/post1"
+            >
+              This is our first post.
+            </a>
+          </div>
+          <div
+            class="c3"
+          >
+            <h3
+              class="c4"
+            >
+              Unlock team
+            </h3>
+            <div
+              class=""
+            >
+              Monday, August 20, 2018
+            </div>
+          </div>
+          <div
+            class="c5"
+          >
+            
+Look at us! We're posting on our very own blog! How exciting!
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="fbx9r2-0 BJvfu"
+    >
+      <div
+        class="fbx9r2-4 bJIQes"
+      >
+        <div
+          class="fbx9r2-1 fmHqJA"
+        >
+          <a
+            href="/blog/post3"
+          >
+            Latest post
+          </a>
+        </div>
+        <div
+          class="fbx9r2-2 dIywgX"
+        >
+          <h3
+            class="b1qsww-5 dadLRQ"
+          >
+            Unlock team
+          </h3>
+          <div
+            class="b1qsww-6 hPjVGB"
+          >
+            Tuesday, March 5, 2019
+          </div>
+        </div>
+        <div
+          class="fbx9r2-3 fvVqt"
+        >
+          
+This post was published most recently. It is an important post about a great many things, all of which are vital. You
+should pay great attention.
+        </div>
+      </div>
+      <div
+        class="fbx9r2-4 bJIQes"
+      >
+        <div
+          class="fbx9r2-1 fmHqJA"
+        >
+          <a
+            href="/blog/post2"
+          >
+            Another post from us!
+          </a>
+        </div>
+        <div
+          class="fbx9r2-2 dIywgX"
+        >
+          <h3
+            class="b1qsww-5 dadLRQ"
+          >
+            Julien Genestoux
+          </h3>
+          <div
+            class="b1qsww-6 hPjVGB"
+          >
+            Friday, March 1, 2019
+          </div>
+        </div>
+        <div
+          class="fbx9r2-3 fvVqt"
+        >
+          
+Short description.
+        </div>
+      </div>
+      <div
+        class="fbx9r2-4 bJIQes"
+      >
+        <div
+          class="fbx9r2-1 fmHqJA"
+        >
+          <a
+            href="/blog/post1"
+          >
+            This is our first post.
+          </a>
+        </div>
+        <div
+          class="fbx9r2-2 dIywgX"
+        >
+          <h3
+            class="b1qsww-5 dadLRQ"
+          >
+            Unlock team
+          </h3>
+          <div
+            class="b1qsww-6 hPjVGB"
+          >
+            Monday, August 20, 2018
+          </div>
+        </div>
+        <div
+          class="fbx9r2-3 fvVqt"
+        >
+          
+Look at us! We're posting on our very own blog! How exciting!
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots BlogIndex Blog index with no posts 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  margin: auto;
+  width: 100%;
+  max-with: 750px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      />
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="fbx9r2-0 BJvfu"
+    />
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots BlogIndex Blog index with one post 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c4 {
+  color: var(--brand);
+}
+
+.c0 {
+  margin: auto;
+  width: 100%;
+  max-with: 750px;
+}
+
+.c2 {
+  margin-bottom: 0;
+}
+
+.c2 a {
+  color: var(--darkgrey);
+  font-weight: 700;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  font-size: 20px;
+}
+
+.c3 {
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  color: var(--darkgrey);
+  font-size: 12px;
+  line-height: 12px;
+  margin-top: 0;
+}
+
+.c5 {
+  color: var(--darkgrey);
+  font-weight: 300;
+  line-height: 28px;
+  font-size: 16px;
+}
+
+.c1 {
+  margin-bottom: 20px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <div
+            class="c2"
+          >
+            <a
+              href="/blog/post3"
+            >
+              Latest post
+            </a>
+          </div>
+          <div
+            class="c3"
+          >
+            <h3
+              class="c4"
+            >
+              Unlock team
+            </h3>
+            <div
+              class=""
+            >
+              Tuesday, March 5, 2019
+            </div>
+          </div>
+          <div
+            class="c5"
+          >
+            
+This post was published most recently. It is an important post about a great many things, all of which are vital. You
+should pay great attention.
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="fbx9r2-0 BJvfu"
+    >
+      <div
+        class="fbx9r2-4 bJIQes"
+      >
+        <div
+          class="fbx9r2-1 fmHqJA"
+        >
+          <a
+            href="/blog/post3"
+          >
+            Latest post
+          </a>
+        </div>
+        <div
+          class="fbx9r2-2 dIywgX"
+        >
+          <h3
+            class="b1qsww-5 dadLRQ"
+          >
+            Unlock team
+          </h3>
+          <div
+            class="b1qsww-6 hPjVGB"
+          >
+            Tuesday, March 5, 2019
+          </div>
+        </div>
+        <div
+          class="fbx9r2-3 fvVqt"
+        >
+          
+This post was published most recently. It is an important post about a great many things, all of which are vital. You
+should pay great attention.
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots BlogPost Blog post from markdown with author and subtitle 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c0 {
+  "baseElement": <body>
+    .c0 {
+  width: 100%;
   max-width: 730px;
   margin: auto;
   font-family: 'IBM Plex Serif',serif;
 }
 
 .c1 {
+  margin-bottom: 0;
+}
+
+.c1 a {
   color: var(--darkgrey);
-  font-size: 36px;
   font-weight: 700;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
-  margin-bottom: 0;
+  font-size: 36px;
 }
 
 .c3 {
@@ -65,8 +2953,7 @@ Object {
   color: var(--brand);
 }
 
-<body>
-    <div>
+<div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
@@ -77,7 +2964,11 @@ Object {
         <h1
           class="c1"
         >
-          Introduction to Unlock
+          <a
+            href="#"
+          >
+            Introduction to Unlock
+          </a>
         </h1>
         <h2
           class="c2"
@@ -290,12 +3181,16 @@ genuinely collaborative ecosystem, where many companies and services can operate
       rel="stylesheet"
     />
     <div
-      class="b1qsww-0 QgVND"
+      class="b1qsww-0 hRCMaV"
     >
       <h1
-        class="b1qsww-1 iIMngf"
+        class="b1qsww-1 hTQZJB"
       >
-        Introduction to Unlock
+        <a
+          href="#"
+        >
+          Introduction to Unlock
+        </a>
       </h1>
       <h2
         class="b1qsww-3 jKKooL"
@@ -552,17 +3447,21 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c0 {
+  width: 100%;
   max-width: 730px;
   margin: auto;
   font-family: 'IBM Plex Serif',serif;
 }
 
 .c1 {
+  margin-bottom: 0;
+}
+
+.c1 a {
   color: var(--darkgrey);
-  font-size: 36px;
   font-weight: 700;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
-  margin-bottom: 0;
+  font-size: 36px;
 }
 
 .c2 {
@@ -616,7 +3515,11 @@ Object {
         <h1
           class="c1"
         >
-          Introduction to Unlock
+          <a
+            href="#"
+          >
+            Introduction to Unlock
+          </a>
         </h1>
         
         <div
@@ -825,12 +3728,16 @@ genuinely collaborative ecosystem, where many companies and services can operate
       rel="stylesheet"
     />
     <div
-      class="b1qsww-0 QgVND"
+      class="b1qsww-0 hRCMaV"
     >
       <h1
-        class="b1qsww-1 iIMngf"
+        class="b1qsww-1 hTQZJB"
       >
-        Introduction to Unlock
+        <a
+          href="#"
+        >
+          Introduction to Unlock
+        </a>
       </h1>
       
       <div
@@ -1083,17 +3990,21 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c0 {
+  width: 100%;
   max-width: 730px;
   margin: auto;
   font-family: 'IBM Plex Serif',serif;
 }
 
 .c1 {
+  margin-bottom: 0;
+}
+
+.c1 a {
   color: var(--darkgrey);
-  font-size: 36px;
   font-weight: 700;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
-  margin-bottom: 0;
+  font-size: 36px;
 }
 
 .c2 {
@@ -1147,7 +4058,11 @@ Object {
         <h1
           class="c1"
         >
-          Introduction to Unlock
+          <a
+            href="#"
+          >
+            Introduction to Unlock
+          </a>
         </h1>
         
         <div
@@ -1356,12 +4271,16 @@ genuinely collaborative ecosystem, where many companies and services can operate
       rel="stylesheet"
     />
     <div
-      class="b1qsww-0 QgVND"
+      class="b1qsww-0 hRCMaV"
     >
       <h1
-        class="b1qsww-1 iIMngf"
+        class="b1qsww-1 hTQZJB"
       >
-        Introduction to Unlock
+        <a
+          href="#"
+        >
+          Introduction to Unlock
+        </a>
       </h1>
       
       <div
@@ -1614,17 +4533,21 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c0 {
+  width: 100%;
   max-width: 730px;
   margin: auto;
   font-family: 'IBM Plex Serif',serif;
 }
 
 .c1 {
+  margin-bottom: 0;
+}
+
+.c1 a {
   color: var(--darkgrey);
-  font-size: 36px;
   font-weight: 700;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
-  margin-bottom: 0;
+  font-size: 36px;
 }
 
 .c3 {
@@ -1686,7 +4609,11 @@ Object {
         <h1
           class="c1"
         >
-          Introduction to Unlock
+          <a
+            href="#"
+          >
+            Introduction to Unlock
+          </a>
         </h1>
         <h2
           class="c2"
@@ -1899,12 +4826,16 @@ genuinely collaborative ecosystem, where many companies and services can operate
       rel="stylesheet"
     />
     <div
-      class="b1qsww-0 QgVND"
+      class="b1qsww-0 hRCMaV"
     >
       <h1
-        class="b1qsww-1 iIMngf"
+        class="b1qsww-1 hTQZJB"
       >
-        Introduction to Unlock
+        <a
+          href="#"
+        >
+          Introduction to Unlock
+        </a>
       </h1>
       <h2
         class="b1qsww-3 jKKooL"
@@ -7267,7 +10198,11 @@ exports[`Storyshots Content pages the About page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c8 {
+    .c4 {
+  fill: var(--brand);
+}
+
+.c8 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -7344,10 +10279,6 @@ Object {
 
 .c7:hover .c9 {
   display: inline-block;
-}
-
-.c4 {
-  fill: var(--brand);
 }
 
 .c3 {
@@ -9031,7 +11962,11 @@ exports[`Storyshots Content pages the Home page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c8 {
+    .c4 {
+  fill: var(--brand);
+}
+
+.c8 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -9108,10 +12043,6 @@ Object {
 
 .c7:hover .c9 {
   display: inline-block;
-}
-
-.c4 {
-  fill: var(--brand);
 }
 
 .c3 {
@@ -10300,7 +13231,11 @@ exports[`Storyshots Content pages the Jobs page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c8 {
+    .c4 {
+  fill: var(--brand);
+}
+
+.c8 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -10377,10 +13312,6 @@ Object {
 
 .c7:hover .c9 {
   display: inline-block;
-}
-
-.c4 {
-  fill: var(--brand);
 }
 
 .c3 {
@@ -12377,7 +15308,11 @@ exports[`Storyshots Content pages the Privacy Policy page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c8 {
+    .c4 {
+  fill: var(--brand);
+}
+
+.c8 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -12454,10 +15389,6 @@ Object {
 
 .c7:hover .c9 {
   display: inline-block;
-}
-
-.c4 {
-  fill: var(--brand);
 }
 
 .c3 {
@@ -14302,7 +17233,11 @@ exports[`Storyshots Content pages the Terms of Service page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c8 {
+    .c4 {
+  fill: var(--brand);
+}
+
+.c8 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -14379,10 +17314,6 @@ Object {
 
 .c7:hover .c9 {
   display: inline-block;
-}
-
-.c4 {
-  fill: var(--brand);
 }
 
 .c3 {
@@ -17986,59 +20917,7 @@ exports[`Storyshots CreatorLock Deployed 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c6 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c6:before {
-  content: '三';
-}
-
-.c9 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c9:before {
-  content: '$';
-}
-
-.c7 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c8 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
-}
-
-.c15 {
+    .c15 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -18115,6 +20994,99 @@ Object {
 
 .c14:hover .c17 {
   display: inline-block;
+}
+
+.c19 .c14 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c19 .c14:nth-child(1) {
+  pointer-events: none;
+}
+
+.c19 .c14:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c19 .c14 > svg {
+  fill: var(--grey);
+}
+
+.c19 .c14:hover > svg {
+  fill: var(--grey);
+}
+
+.c20 .c14 {
+  margin: 24px;
+}
+
+.c20 .c14 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c6 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c6:before {
+  content: '三';
+}
+
+.c9 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c9:before {
+  content: '$';
+}
+
+.c7 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c8 {
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
 }
 
 .c12 {
@@ -18842,59 +21814,7 @@ exports[`Storyshots CreatorLock Not found 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c6 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c6:before {
-  content: '三';
-}
-
-.c9 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c9:before {
-  content: '$';
-}
-
-.c7 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c8 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
-}
-
-.c15 {
+    .c15 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -18971,6 +21891,99 @@ Object {
 
 .c14:hover .c17 {
   display: inline-block;
+}
+
+.c19 .c14 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c19 .c14:nth-child(1) {
+  pointer-events: none;
+}
+
+.c19 .c14:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c19 .c14 > svg {
+  fill: var(--grey);
+}
+
+.c19 .c14:hover > svg {
+  fill: var(--grey);
+}
+
+.c20 .c14 {
+  margin: 24px;
+}
+
+.c20 .c14 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c6 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c6:before {
+  content: '三';
+}
+
+.c9 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c9:before {
+  content: '$';
+}
+
+.c7 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c8 {
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
 }
 
 .c12 {
@@ -20357,59 +23370,7 @@ exports[`Storyshots CreatorLock With key 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c6 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c6:before {
-  content: '三';
-}
-
-.c9 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c9:before {
-  content: '$';
-}
-
-.c7 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c8 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
-}
-
-.c15 {
+    .c15 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -20486,6 +23447,99 @@ Object {
 
 .c14:hover .c17 {
   display: inline-block;
+}
+
+.c19 .c14 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c19 .c14:nth-child(1) {
+  pointer-events: none;
+}
+
+.c19 .c14:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c19 .c14 > svg {
+  fill: var(--grey);
+}
+
+.c19 .c14:hover > svg {
+  fill: var(--grey);
+}
+
+.c20 .c14 {
+  margin: 24px;
+}
+
+.c20 .c14 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c6 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c6:before {
+  content: '三';
+}
+
+.c9 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c9:before {
+  content: '$';
+}
+
+.c7 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c8 {
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
 }
 
 .c12 {
@@ -21213,59 +24267,7 @@ exports[`Storyshots CreatorLock Withdrawal submitted 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c6 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c6:before {
-  content: '三';
-}
-
-.c9 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c9:before {
-  content: '$';
-}
-
-.c7 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c8 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
-}
-
-.c15 {
+    .c15 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -21342,6 +24344,99 @@ Object {
 
 .c14:hover .c17 {
   display: inline-block;
+}
+
+.c19 .c14 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c19 .c14:nth-child(1) {
+  pointer-events: none;
+}
+
+.c19 .c14:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c19 .c14 > svg {
+  fill: var(--grey);
+}
+
+.c19 .c14:hover > svg {
+  fill: var(--grey);
+}
+
+.c20 .c14 {
+  margin: 24px;
+}
+
+.c20 .c14 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c6 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c6:before {
+  content: '三';
+}
+
+.c9 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c9:before {
+  content: '$';
+}
+
+.c7 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c8 {
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
 }
 
 .c12 {
@@ -22069,59 +25164,7 @@ exports[`Storyshots CreatorLock Withdrawing 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c6 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c6:before {
-  content: '三';
-}
-
-.c9 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c9:before {
-  content: '$';
-}
-
-.c7 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c8 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
-}
-
-.c15 {
+    .c15 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -22198,6 +25241,99 @@ Object {
 
 .c14:hover .c17 {
   display: inline-block;
+}
+
+.c19 .c14 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c19 .c14:nth-child(1) {
+  pointer-events: none;
+}
+
+.c19 .c14:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c19 .c14 > svg {
+  fill: var(--grey);
+}
+
+.c19 .c14:hover > svg {
+  fill: var(--grey);
+}
+
+.c20 .c14 {
+  margin: 24px;
+}
+
+.c20 .c14 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c6 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c6:before {
+  content: '三';
+}
+
+.c9 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c9:before {
+  content: '$';
+}
+
+.c7 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c8 {
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
 }
 
 .c12 {
@@ -26380,164 +29516,26 @@ exports[`Storyshots Dashboard dashboard, no locks 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c25 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c26 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c27 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c27:before {
-  content: '三';
-}
-
-.c28 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c18 {
-  display: grid;
-  grid-template-columns: auto 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  grid-gap: 8px;
-}
-
-.c19 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--red);
-}
-
-.c20 {
-  font-family: 'IBM Plex Mono',monospace;
-  display: grid;
-  row-gap: 8px;
-  -webkit-column-gap: 16px;
-  column-gap: 16px;
-  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
-}
-
-.c21 {
-  display: grid;
-  height: 40px;
-  grid-row: span 2;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-  font-size: 24px;
-  -webkit-align-content: start;
-  -ms-flex-line-pack: start;
-  align-content: start;
-}
-
-.c22 {
-  font-weight: 100;
-  text-transform: uppercase;
-  -webkit-letter-spacing: 1px;
-  -moz-letter-spacing: 1px;
-  -ms-letter-spacing: 1px;
-  letter-spacing: 1px;
-  font-size: 8px;
-}
-
-.c23 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  width: 128px;
-  font-weight: 300;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-
-.c24 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--darkgrey);
-}
-
-.c12 {
-  background-color: var(--lightgrey);
-  cursor: pointer;
+    .c2 {
+  background-color: var(--brand);
+  height: 56px;
+  width: 56px;
   border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
 }
 
-.c12 > svg {
-  fill: var(--grey);
-  height: 24px;
-  width: 24px;
-}
-
-.c12:hover {
-  background-color: var(--link);
-}
-
-.c12:hover > svg {
+.c2 > svg {
   fill: white;
 }
 
-.c12:focus {
-  outline: none;
-}
-
-.c10 {
-  background-color: var(--link);
-  cursor: pointer;
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
   border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
 }
 
-.c10 > svg {
-  fill: var(--white);
-  height: 24px;
-  width: 24px;
-}
-
-.c10:hover {
-  background-color: var(--link);
-}
-
-.c10:hover > svg {
+.c7 > svg {
   fill: white;
-}
-
-.c10:focus {
-  outline: none;
 }
 
 .c14 {
@@ -26600,6 +29598,66 @@ Object {
   outline: none;
 }
 
+.c12 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c12 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c12:hover {
+  background-color: var(--link);
+}
+
+.c12:hover > svg {
+  fill: white;
+}
+
+.c12:focus {
+  outline: none;
+}
+
+.c10 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c10 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c10:hover {
+  background-color: var(--link);
+}
+
+.c10:hover > svg {
+  fill: white;
+}
+
+.c10:focus {
+  outline: none;
+}
+
 .c11 {
   display: none;
   position: relative;
@@ -26617,28 +29675,6 @@ Object {
 
 .c9:hover .c11 {
   display: inline-block;
-}
-
-.c2 {
-  background-color: var(--brand);
-  height: 56px;
-  width: 56px;
-  border-radius: 50%;
-}
-
-.c2 > svg {
-  fill: white;
-}
-
-.c7 {
-  background-color: var(--brand);
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-}
-
-.c7 > svg {
-  fill: white;
 }
 
 .c4 {
@@ -26783,6 +29819,106 @@ Object {
   width: 100%;
 }
 
+.c25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c27 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c27:before {
+  content: '三';
+}
+
+.c28 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c18 {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-gap: 8px;
+}
+
+.c19 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--red);
+}
+
+.c20 {
+  font-family: 'IBM Plex Mono',monospace;
+  display: grid;
+  row-gap: 8px;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
+}
+
+.c21 {
+  display: grid;
+  height: 40px;
+  grid-row: span 2;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  font-size: 24px;
+  -webkit-align-content: start;
+  -ms-flex-line-pack: start;
+  align-content: start;
+}
+
+.c22 {
+  font-weight: 100;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  font-size: 8px;
+}
+
+.c23 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  width: 128px;
+  font-weight: 300;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.c24 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--darkgrey);
+}
+
 .c37 {
   display: grid;
   row-gap: 16px;
@@ -26920,20 +30056,6 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c20 {
-    -webkit-column-gap: 2px;
-    column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2,80px);
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c21 {
-    height: 0px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
   .c4 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
@@ -27011,6 +30133,20 @@ Object {
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c40 {
     display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c20 {
+    -webkit-column-gap: 2px;
+    column-gap: 2px;
+    grid-template-columns: 45px 145px repeat(2,80px);
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c21 {
+    height: 0px;
   }
 }
 
@@ -27993,164 +31129,26 @@ exports[`Storyshots Dashboard dashboard, no user account 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c25 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c26 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c27 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c27:before {
-  content: '三';
-}
-
-.c28 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c18 {
-  display: grid;
-  grid-template-columns: auto 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  grid-gap: 8px;
-}
-
-.c19 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--red);
-}
-
-.c20 {
-  font-family: 'IBM Plex Mono',monospace;
-  display: grid;
-  row-gap: 8px;
-  -webkit-column-gap: 16px;
-  column-gap: 16px;
-  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
-}
-
-.c21 {
-  display: grid;
-  height: 40px;
-  grid-row: span 2;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-  font-size: 24px;
-  -webkit-align-content: start;
-  -ms-flex-line-pack: start;
-  align-content: start;
-}
-
-.c22 {
-  font-weight: 100;
-  text-transform: uppercase;
-  -webkit-letter-spacing: 1px;
-  -moz-letter-spacing: 1px;
-  -ms-letter-spacing: 1px;
-  letter-spacing: 1px;
-  font-size: 8px;
-}
-
-.c23 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  width: 128px;
-  font-weight: 300;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-
-.c24 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--darkgrey);
-}
-
-.c12 {
-  background-color: var(--lightgrey);
-  cursor: pointer;
+    .c2 {
+  background-color: var(--brand);
+  height: 56px;
+  width: 56px;
   border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
 }
 
-.c12 > svg {
-  fill: var(--grey);
-  height: 24px;
-  width: 24px;
-}
-
-.c12:hover {
-  background-color: var(--link);
-}
-
-.c12:hover > svg {
+.c2 > svg {
   fill: white;
 }
 
-.c12:focus {
-  outline: none;
-}
-
-.c10 {
-  background-color: var(--link);
-  cursor: pointer;
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
   border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
 }
 
-.c10 > svg {
-  fill: var(--white);
-  height: 24px;
-  width: 24px;
-}
-
-.c10:hover {
-  background-color: var(--link);
-}
-
-.c10:hover > svg {
+.c7 > svg {
   fill: white;
-}
-
-.c10:focus {
-  outline: none;
 }
 
 .c14 {
@@ -28213,6 +31211,66 @@ Object {
   outline: none;
 }
 
+.c12 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c12 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c12:hover {
+  background-color: var(--link);
+}
+
+.c12:hover > svg {
+  fill: white;
+}
+
+.c12:focus {
+  outline: none;
+}
+
+.c10 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c10 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c10:hover {
+  background-color: var(--link);
+}
+
+.c10:hover > svg {
+  fill: white;
+}
+
+.c10:focus {
+  outline: none;
+}
+
 .c11 {
   display: none;
   position: relative;
@@ -28230,28 +31288,6 @@ Object {
 
 .c9:hover .c11 {
   display: inline-block;
-}
-
-.c2 {
-  background-color: var(--brand);
-  height: 56px;
-  width: 56px;
-  border-radius: 50%;
-}
-
-.c2 > svg {
-  fill: white;
-}
-
-.c7 {
-  background-color: var(--brand);
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-}
-
-.c7 > svg {
-  fill: white;
 }
 
 .c4 {
@@ -28396,6 +31432,106 @@ Object {
   width: 100%;
 }
 
+.c25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c27 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c27:before {
+  content: '三';
+}
+
+.c28 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c18 {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-gap: 8px;
+}
+
+.c19 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--red);
+}
+
+.c20 {
+  font-family: 'IBM Plex Mono',monospace;
+  display: grid;
+  row-gap: 8px;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
+}
+
+.c21 {
+  display: grid;
+  height: 40px;
+  grid-row: span 2;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  font-size: 24px;
+  -webkit-align-content: start;
+  -ms-flex-line-pack: start;
+  align-content: start;
+}
+
+.c22 {
+  font-weight: 100;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  font-size: 8px;
+}
+
+.c23 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  width: 128px;
+  font-weight: 300;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.c24 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--darkgrey);
+}
+
 .c37 {
   display: grid;
   row-gap: 16px;
@@ -28533,20 +31669,6 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c20 {
-    -webkit-column-gap: 2px;
-    column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2,80px);
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c21 {
-    height: 0px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
   .c4 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
@@ -28624,6 +31746,20 @@ Object {
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c40 {
     display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c20 {
+    -webkit-column-gap: 2px;
+    column-gap: 2px;
+    grid-template-columns: 45px 145px repeat(2,80px);
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c21 {
+    height: 0px;
   }
 }
 
@@ -29606,120 +32742,86 @@ exports[`Storyshots Dashboard the dashboard 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c25 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+    .c2 {
+  background-color: var(--brand);
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
 }
 
-.c26 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
+.c2 > svg {
+  fill: white;
 }
 
-.c27 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
 }
 
-.c27:before {
-  content: '三';
+.c7 > svg {
+  fill: white;
 }
 
-.c42 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
+.c14 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
 }
 
-.c42:before {
-  content: '$';
+.c14 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
 }
 
-.c28 {
-  white-space: nowrap;
-  text-transform: uppercase;
+.c14:hover {
+  background-color: var(--link);
 }
 
-.c41 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
+.c14:hover > svg {
+  fill: white;
 }
 
-.c18 {
-  display: grid;
-  grid-template-columns: auto 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  grid-gap: 8px;
+.c14:focus {
+  outline: none;
 }
 
-.c19 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--red);
+.c16 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 48px;
 }
 
-.c20 {
-  font-family: 'IBM Plex Mono',monospace;
-  display: grid;
-  row-gap: 8px;
-  -webkit-column-gap: 16px;
-  column-gap: 16px;
-  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
+.c16 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
 }
 
-.c21 {
-  display: grid;
-  height: 40px;
-  grid-row: span 2;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-  font-size: 24px;
-  -webkit-align-content: start;
-  -ms-flex-line-pack: start;
-  align-content: start;
+.c16:hover {
+  background-color: var(--link);
 }
 
-.c22 {
-  font-weight: 100;
-  text-transform: uppercase;
-  -webkit-letter-spacing: 1px;
-  -moz-letter-spacing: 1px;
-  -ms-letter-spacing: 1px;
-  letter-spacing: 1px;
-  font-size: 8px;
+.c16:hover > svg {
+  fill: white;
 }
 
-.c23 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  width: 128px;
-  font-weight: 300;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-
-.c24 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--darkgrey);
+.c16:focus {
+  outline: none;
 }
 
 .c48 {
@@ -29812,66 +32914,6 @@ Object {
   outline: none;
 }
 
-.c14 {
-  background-color: var(--grey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c14 > svg {
-  fill: white;
-  height: 24px;
-  width: 24px;
-}
-
-.c14:hover {
-  background-color: var(--link);
-}
-
-.c14:hover > svg {
-  fill: white;
-}
-
-.c14:focus {
-  outline: none;
-}
-
-.c16 {
-  background-color: var(--grey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 48px;
-  width: 48px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 48px;
-}
-
-.c16 > svg {
-  fill: white;
-  height: 48px;
-  width: 48px;
-}
-
-.c16:hover {
-  background-color: var(--link);
-}
-
-.c16:hover > svg {
-  fill: white;
-}
-
-.c16:focus {
-  outline: none;
-}
-
 .c11 {
   display: none;
   position: relative;
@@ -29889,142 +32931,6 @@ Object {
 
 .c9:hover .c11 {
   display: inline-block;
-}
-
-.c43 {
-  -webkit-align-self: stretch;
-  -ms-flex-item-align: stretch;
-  align-self: stretch;
-  -webkit-align-items: stretch;
-  -webkit-box-align: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
-  display: grid;
-  text-transform: capitalize;
-  background-color: var(--lightgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: 200;
-  color: var(--grey);
-  border-radius: 0 4px 4px 0;
-}
-
-.c44 {
-  display: grid;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  font-size: 13px;
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-}
-
-.c45 {
-  display: grid;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  font-size: 10px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  margin-bottom: 15px;
-}
-
-.c46 {
-  display: grid;
-  justify-items: end;
-  padding-right: 24px;
-}
-
-.c47 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(3,24px);
-}
-
-.c49 {
-  margin-top: 13px;
-  font-size: 10px;
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: normal;
-  color: var(--green);
-  text-align: right;
-  padding-right: 24px;
-}
-
-.c37 {
-  font-family: 'IBM Plex Mono','Courier New',Serif;
-  font-weight: 200;
-  min-height: 48px;
-  padding-left: 8px;
-  color: var(--slate);
-  font-size: 14px;
-  box-shadow: 0 0 40px 0 rgba(0,0,0,0.08);
-  -webkit-transition: box-shadow 100ms ease;
-  transition: box-shadow 100ms ease;
-  border-radius: 4px;
-  display: grid;
-  grid-row-gap: 0;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  cursor: pointer;
-}
-
-.c37 > * {
-  padding-top: 16px;
-}
-
-.c37:hover {
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-  -webkit-transition: box-shadow 100ms ease;
-  transition: box-shadow 100ms ease;
-}
-
-.c38 {
-  grid-row: span 2;
-}
-
-.c39 {
-  color: var(--link);
-  font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c40 {
-  color: var(--grey);
-  font-weight: 200;
-  white-space: nowrap;
-  font-size: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c2 {
-  background-color: var(--brand);
-  height: 56px;
-  width: 56px;
-  border-radius: 50%;
-}
-
-.c2 > svg {
-  fill: white;
-}
-
-.c7 {
-  background-color: var(--brand);
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-}
-
-.c7 > svg {
-  fill: white;
 }
 
 .c4 {
@@ -30169,6 +33075,236 @@ Object {
   width: 100%;
 }
 
+.c25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c27 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c27:before {
+  content: '三';
+}
+
+.c42 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c42:before {
+  content: '$';
+}
+
+.c28 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c41 {
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
+}
+
+.c18 {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-gap: 8px;
+}
+
+.c19 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--red);
+}
+
+.c20 {
+  font-family: 'IBM Plex Mono',monospace;
+  display: grid;
+  row-gap: 8px;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
+}
+
+.c21 {
+  display: grid;
+  height: 40px;
+  grid-row: span 2;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  font-size: 24px;
+  -webkit-align-content: start;
+  -ms-flex-line-pack: start;
+  align-content: start;
+}
+
+.c22 {
+  font-weight: 100;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  font-size: 8px;
+}
+
+.c23 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  width: 128px;
+  font-weight: 300;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.c24 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--darkgrey);
+}
+
+.c43 {
+  -webkit-align-self: stretch;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  display: grid;
+  text-transform: capitalize;
+  background-color: var(--lightgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: 200;
+  color: var(--grey);
+  border-radius: 0 4px 4px 0;
+}
+
+.c44 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  font-size: 13px;
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+}
+
+.c45 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  font-size: 10px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  margin-bottom: 15px;
+}
+
+.c46 {
+  display: grid;
+  justify-items: end;
+  padding-right: 24px;
+}
+
+.c47 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(3,24px);
+}
+
+.c49 {
+  margin-top: 13px;
+  font-size: 10px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: normal;
+  color: var(--green);
+  text-align: right;
+  padding-right: 24px;
+}
+
+.c37 {
+  font-family: 'IBM Plex Mono','Courier New',Serif;
+  font-weight: 200;
+  min-height: 48px;
+  padding-left: 8px;
+  color: var(--slate);
+  font-size: 14px;
+  box-shadow: 0 0 40px 0 rgba(0,0,0,0.08);
+  -webkit-transition: box-shadow 100ms ease;
+  transition: box-shadow 100ms ease;
+  border-radius: 4px;
+  display: grid;
+  grid-row-gap: 0;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  cursor: pointer;
+}
+
+.c37 > * {
+  padding-top: 16px;
+}
+
+.c37:hover {
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  -webkit-transition: box-shadow 100ms ease;
+  transition: box-shadow 100ms ease;
+}
+
+.c38 {
+  grid-row: span 2;
+}
+
+.c39 {
+  color: var(--link);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c40 {
+  color: var(--grey);
+  font-weight: 200;
+  white-space: nowrap;
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .c29 {
   display: grid;
   grid-gap: 32px;
@@ -30266,48 +33402,6 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c20 {
-    -webkit-column-gap: 2px;
-    column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2,80px);
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c21 {
-    height: 0px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c46 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c37 {
-    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
-    grid-template-rows: 84px;
-    grid-column-gap: 16px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c37 {
-    grid-column-gap: 4px;
-    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
-    grid-auto-flow: column;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c39 {
-    grid-column: span 2;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
   .c4 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
@@ -30385,6 +33479,48 @@ Object {
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c50 {
     display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c20 {
+    -webkit-column-gap: 2px;
+    column-gap: 2px;
+    grid-template-columns: 45px 145px repeat(2,80px);
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c21 {
+    height: 0px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c46 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c37 {
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c37 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c39 {
+    grid-column: span 2;
   }
 }
 
@@ -32729,120 +35865,86 @@ exports[`Storyshots Dashboard the dashboard, waiting for wallet 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c28 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+    .c5 {
+  background-color: var(--brand);
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
 }
 
-.c29 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
+.c5 > svg {
+  fill: white;
 }
 
-.c30 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
+.c10 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
 }
 
-.c30:before {
-  content: '三';
+.c10 > svg {
+  fill: white;
 }
 
-.c45 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
+.c17 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
 }
 
-.c45:before {
-  content: '$';
+.c17 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
 }
 
-.c31 {
-  white-space: nowrap;
-  text-transform: uppercase;
+.c17:hover {
+  background-color: var(--link);
 }
 
-.c44 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
+.c17:hover > svg {
+  fill: white;
 }
 
-.c21 {
-  display: grid;
-  grid-template-columns: auto 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  grid-gap: 8px;
+.c17:focus {
+  outline: none;
 }
 
-.c22 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--red);
+.c19 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 48px;
 }
 
-.c23 {
-  font-family: 'IBM Plex Mono',monospace;
-  display: grid;
-  row-gap: 8px;
-  -webkit-column-gap: 16px;
-  column-gap: 16px;
-  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
+.c19 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
 }
 
-.c24 {
-  display: grid;
-  height: 40px;
-  grid-row: span 2;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-  font-size: 24px;
-  -webkit-align-content: start;
-  -ms-flex-line-pack: start;
-  align-content: start;
+.c19:hover {
+  background-color: var(--link);
 }
 
-.c25 {
-  font-weight: 100;
-  text-transform: uppercase;
-  -webkit-letter-spacing: 1px;
-  -moz-letter-spacing: 1px;
-  -ms-letter-spacing: 1px;
-  letter-spacing: 1px;
-  font-size: 8px;
+.c19:hover > svg {
+  fill: white;
 }
 
-.c26 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  width: 128px;
-  font-weight: 300;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-
-.c27 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--darkgrey);
+.c19:focus {
+  outline: none;
 }
 
 .c51 {
@@ -32935,66 +36037,6 @@ Object {
   outline: none;
 }
 
-.c17 {
-  background-color: var(--grey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c17 > svg {
-  fill: white;
-  height: 24px;
-  width: 24px;
-}
-
-.c17:hover {
-  background-color: var(--link);
-}
-
-.c17:hover > svg {
-  fill: white;
-}
-
-.c17:focus {
-  outline: none;
-}
-
-.c19 {
-  background-color: var(--grey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 48px;
-  width: 48px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 48px;
-}
-
-.c19 > svg {
-  fill: white;
-  height: 48px;
-  width: 48px;
-}
-
-.c19:hover {
-  background-color: var(--link);
-}
-
-.c19:hover > svg {
-  fill: white;
-}
-
-.c19:focus {
-  outline: none;
-}
-
 .c14 {
   display: none;
   position: relative;
@@ -33012,142 +36054,6 @@ Object {
 
 .c12:hover .c14 {
   display: inline-block;
-}
-
-.c46 {
-  -webkit-align-self: stretch;
-  -ms-flex-item-align: stretch;
-  align-self: stretch;
-  -webkit-align-items: stretch;
-  -webkit-box-align: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
-  display: grid;
-  text-transform: capitalize;
-  background-color: var(--lightgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: 200;
-  color: var(--grey);
-  border-radius: 0 4px 4px 0;
-}
-
-.c47 {
-  display: grid;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  font-size: 13px;
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-}
-
-.c48 {
-  display: grid;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  font-size: 10px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  margin-bottom: 15px;
-}
-
-.c49 {
-  display: grid;
-  justify-items: end;
-  padding-right: 24px;
-}
-
-.c50 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(3,24px);
-}
-
-.c52 {
-  margin-top: 13px;
-  font-size: 10px;
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: normal;
-  color: var(--green);
-  text-align: right;
-  padding-right: 24px;
-}
-
-.c40 {
-  font-family: 'IBM Plex Mono','Courier New',Serif;
-  font-weight: 200;
-  min-height: 48px;
-  padding-left: 8px;
-  color: var(--slate);
-  font-size: 14px;
-  box-shadow: 0 0 40px 0 rgba(0,0,0,0.08);
-  -webkit-transition: box-shadow 100ms ease;
-  transition: box-shadow 100ms ease;
-  border-radius: 4px;
-  display: grid;
-  grid-row-gap: 0;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  cursor: pointer;
-}
-
-.c40 > * {
-  padding-top: 16px;
-}
-
-.c40:hover {
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-  -webkit-transition: box-shadow 100ms ease;
-  transition: box-shadow 100ms ease;
-}
-
-.c41 {
-  grid-row: span 2;
-}
-
-.c42 {
-  color: var(--link);
-  font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c43 {
-  color: var(--grey);
-  font-weight: 200;
-  white-space: nowrap;
-  font-size: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c5 {
-  background-color: var(--brand);
-  height: 56px;
-  width: 56px;
-  border-radius: 50%;
-}
-
-.c5 > svg {
-  fill: white;
-}
-
-.c10 {
-  background-color: var(--brand);
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-}
-
-.c10 > svg {
-  fill: white;
 }
 
 .c7 {
@@ -33290,6 +36196,236 @@ Object {
   display: grid;
   row-gap: 24px;
   width: 100%;
+}
+
+.c28 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c29 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c30 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c30:before {
+  content: '三';
+}
+
+.c45 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c45:before {
+  content: '$';
+}
+
+.c31 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c44 {
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
+}
+
+.c21 {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-gap: 8px;
+}
+
+.c22 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--red);
+}
+
+.c23 {
+  font-family: 'IBM Plex Mono',monospace;
+  display: grid;
+  row-gap: 8px;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
+}
+
+.c24 {
+  display: grid;
+  height: 40px;
+  grid-row: span 2;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  font-size: 24px;
+  -webkit-align-content: start;
+  -ms-flex-line-pack: start;
+  align-content: start;
+}
+
+.c25 {
+  font-weight: 100;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  font-size: 8px;
+}
+
+.c26 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  width: 128px;
+  font-weight: 300;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.c27 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--darkgrey);
+}
+
+.c46 {
+  -webkit-align-self: stretch;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  display: grid;
+  text-transform: capitalize;
+  background-color: var(--lightgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: 200;
+  color: var(--grey);
+  border-radius: 0 4px 4px 0;
+}
+
+.c47 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  font-size: 13px;
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+}
+
+.c48 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  font-size: 10px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  margin-bottom: 15px;
+}
+
+.c49 {
+  display: grid;
+  justify-items: end;
+  padding-right: 24px;
+}
+
+.c50 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(3,24px);
+}
+
+.c52 {
+  margin-top: 13px;
+  font-size: 10px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: normal;
+  color: var(--green);
+  text-align: right;
+  padding-right: 24px;
+}
+
+.c40 {
+  font-family: 'IBM Plex Mono','Courier New',Serif;
+  font-weight: 200;
+  min-height: 48px;
+  padding-left: 8px;
+  color: var(--slate);
+  font-size: 14px;
+  box-shadow: 0 0 40px 0 rgba(0,0,0,0.08);
+  -webkit-transition: box-shadow 100ms ease;
+  transition: box-shadow 100ms ease;
+  border-radius: 4px;
+  display: grid;
+  grid-row-gap: 0;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  cursor: pointer;
+}
+
+.c40 > * {
+  padding-top: 16px;
+}
+
+.c40:hover {
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  -webkit-transition: box-shadow 100ms ease;
+  transition: box-shadow 100ms ease;
+}
+
+.c41 {
+  grid-row: span 2;
+}
+
+.c42 {
+  color: var(--link);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c43 {
+  color: var(--grey);
+  font-weight: 200;
+  white-space: nowrap;
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .c32 {
@@ -33452,48 +36588,6 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c23 {
-    -webkit-column-gap: 2px;
-    column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2,80px);
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c24 {
-    height: 0px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c49 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c40 {
-    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
-    grid-template-rows: 84px;
-    grid-column-gap: 16px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c40 {
-    grid-column-gap: 4px;
-    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
-    grid-auto-flow: column;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c42 {
-    grid-column: span 2;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
   .c7 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
@@ -33571,6 +36665,48 @@ Object {
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c53 {
     display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c23 {
+    -webkit-column-gap: 2px;
+    column-gap: 2px;
+    grid-template-columns: 45px 145px repeat(2,80px);
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c24 {
+    height: 0px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c49 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c40 {
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c40 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c42 {
+    grid-column: span 2;
   }
 }
 
@@ -38150,7 +41286,11 @@ exports[`Storyshots Header the header for a content page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c5 {
+    .c1 {
+  fill: var(--brand);
+}
+
+.c5 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -38227,10 +41367,6 @@ Object {
 
 .c4:hover .c6 {
   display: inline-block;
-}
-
-.c1 {
-  fill: var(--brand);
 }
 
 .c0 {
@@ -38757,7 +41893,18 @@ exports[`Storyshots Header the header with a title 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c7 {
+    .c3 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c3 > svg {
+  fill: white;
+}
+
+.c7 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -38834,17 +41981,6 @@ Object {
 
 .c6:hover .c8 {
   display: inline-block;
-}
-
-.c3 {
-  background-color: var(--brand);
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-}
-
-.c3 > svg {
-  fill: white;
 }
 
 .c0 {
@@ -39413,7 +42549,18 @@ exports[`Storyshots Header the header without a title 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c7 {
+    .c3 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c3 > svg {
+  fill: white;
+}
+
+.c7 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -39490,17 +42637,6 @@ Object {
 
 .c6:hover .c8 {
   display: inline-block;
-}
-
-.c3 {
-  background-color: var(--brand);
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-}
-
-.c3 > svg {
-  fill: white;
 }
 
 .c0 {
@@ -44029,7 +47165,11 @@ exports[`Storyshots Layout the layout for the content page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c8 {
+    .c4 {
+  fill: var(--brand);
+}
+
+.c8 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -44106,10 +47246,6 @@ Object {
 
 .c7:hover .c9 {
   display: inline-block;
-}
-
-.c4 {
-  fill: var(--brand);
 }
 
 .c3 {
@@ -44921,64 +48057,26 @@ exports[`Storyshots Layout the layout for the dashboard 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c12 {
-  background-color: var(--lightgrey);
-  cursor: pointer;
+    .c2 {
+  background-color: var(--brand);
+  height: 56px;
+  width: 56px;
   border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
 }
 
-.c12 > svg {
-  fill: var(--grey);
-  height: 24px;
-  width: 24px;
-}
-
-.c12:hover {
-  background-color: var(--link);
-}
-
-.c12:hover > svg {
+.c2 > svg {
   fill: white;
 }
 
-.c12:focus {
-  outline: none;
-}
-
-.c10 {
-  background-color: var(--link);
-  cursor: pointer;
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
   border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
 }
 
-.c10 > svg {
-  fill: var(--white);
-  height: 24px;
-  width: 24px;
-}
-
-.c10:hover {
-  background-color: var(--link);
-}
-
-.c10:hover > svg {
+.c7 > svg {
   fill: white;
-}
-
-.c10:focus {
-  outline: none;
 }
 
 .c14 {
@@ -45041,6 +48139,66 @@ Object {
   outline: none;
 }
 
+.c12 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c12 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c12:hover {
+  background-color: var(--link);
+}
+
+.c12:hover > svg {
+  fill: white;
+}
+
+.c12:focus {
+  outline: none;
+}
+
+.c10 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c10 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c10:hover {
+  background-color: var(--link);
+}
+
+.c10:hover > svg {
+  fill: white;
+}
+
+.c10:focus {
+  outline: none;
+}
+
 .c11 {
   display: none;
   position: relative;
@@ -45058,28 +48216,6 @@ Object {
 
 .c9:hover .c11 {
   display: inline-block;
-}
-
-.c2 {
-  background-color: var(--brand);
-  height: 56px;
-  width: 56px;
-  border-radius: 50%;
-}
-
-.c2 > svg {
-  fill: white;
-}
-
-.c7 {
-  background-color: var(--brand);
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-}
-
-.c7 > svg {
-  fill: white;
 }
 
 .c4 {
@@ -48522,44 +51658,6 @@ Object {
   display: inline-block;
 }
 
-.c3 {
-  display: grid;
-  grid-auto-flow: row;
-  grid-template-rows: repeat(auto-fill,24px);
-  grid-gap: 24px;
-}
-
-.c1 {
-  grid-column: 1/3;
-  text-transform: uppercase;
-  font-size: 9px;
-  color: var(--4a4a4a);
-}
-
-.c0 {
-  padding-top: 16px;
-  padding-left: 48px;
-  padding-right: 24px;
-  padding-bottom: 24px;
-  display: grid;
-  grid-template-columns: 1fr 24px;
-  grid-row-gap: 4px;
-  grid-column-gap: 16px;
-  margin-bottom: 10px;
-}
-
-.c2 {
-  padding: 8px;
-  border-radius: 4px;
-  border: 0;
-  background-color: var(--offwhite);
-  font-family: 'IBM Plex Mono';
-  font-size: 14px;
-  font-weight: 300;
-  color: var(--darkgrey);
-  min-height: 170px;
-}
-
 .c7 .c4 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -48599,6 +51697,44 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+}
+
+.c3 {
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-rows: repeat(auto-fill,24px);
+  grid-gap: 24px;
+}
+
+.c1 {
+  grid-column: 1/3;
+  text-transform: uppercase;
+  font-size: 9px;
+  color: var(--4a4a4a);
+}
+
+.c0 {
+  padding-top: 16px;
+  padding-left: 48px;
+  padding-right: 24px;
+  padding-bottom: 24px;
+  display: grid;
+  grid-template-columns: 1fr 24px;
+  grid-row-gap: 4px;
+  grid-column-gap: 16px;
+  margin-bottom: 10px;
+}
+
+.c2 {
+  padding: 8px;
+  border-radius: 4px;
+  border: 0;
+  background-color: var(--offwhite);
+  font-family: 'IBM Plex Mono';
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--darkgrey);
+  min-height: 170px;
 }
 
 <div>
@@ -48889,28 +52025,6 @@ Object {
   display: inline-block;
 }
 
-.c0 {
-  display: grid;
-  justify-items: end;
-  padding-right: 24px;
-}
-
-.c1 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(3,24px);
-}
-
-.c6 {
-  margin-top: 13px;
-  font-size: 10px;
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: normal;
-  color: var(--green);
-  text-align: right;
-  padding-right: 24px;
-}
-
 .c7 .c2 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -48950,6 +52064,28 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+}
+
+.c0 {
+  display: grid;
+  justify-items: end;
+  padding-right: 24px;
+}
+
+.c1 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(3,24px);
+}
+
+.c6 {
+  margin-top: 13px;
+  font-size: 10px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: normal;
+  color: var(--green);
+  text-align: right;
+  padding-right: 24px;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -56503,164 +59639,26 @@ exports[`Storyshots Transaction Log the log 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c25 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c26 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c27 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c27:before {
-  content: '三';
-}
-
-.c28 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c18 {
-  display: grid;
-  grid-template-columns: auto 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  grid-gap: 8px;
-}
-
-.c19 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--red);
-}
-
-.c20 {
-  font-family: 'IBM Plex Mono',monospace;
-  display: grid;
-  row-gap: 8px;
-  -webkit-column-gap: 16px;
-  column-gap: 16px;
-  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
-}
-
-.c21 {
-  display: grid;
-  height: 40px;
-  grid-row: span 2;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-  font-size: 24px;
-  -webkit-align-content: start;
-  -ms-flex-line-pack: start;
-  align-content: start;
-}
-
-.c22 {
-  font-weight: 100;
-  text-transform: uppercase;
-  -webkit-letter-spacing: 1px;
-  -moz-letter-spacing: 1px;
-  -ms-letter-spacing: 1px;
-  letter-spacing: 1px;
-  font-size: 8px;
-}
-
-.c23 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  width: 128px;
-  font-weight: 300;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-
-.c24 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--darkgrey);
-}
-
-.c10 {
-  background-color: var(--lightgrey);
-  cursor: pointer;
+    .c2 {
+  background-color: var(--brand);
+  height: 56px;
+  width: 56px;
   border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
 }
 
-.c10 > svg {
-  fill: var(--grey);
-  height: 24px;
-  width: 24px;
-}
-
-.c10:hover {
-  background-color: var(--link);
-}
-
-.c10:hover > svg {
+.c2 > svg {
   fill: white;
 }
 
-.c10:focus {
-  outline: none;
-}
-
-.c12 {
-  background-color: var(--link);
-  cursor: pointer;
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
   border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
 }
 
-.c12 > svg {
-  fill: var(--white);
-  height: 24px;
-  width: 24px;
-}
-
-.c12:hover {
-  background-color: var(--link);
-}
-
-.c12:hover > svg {
+.c7 > svg {
   fill: white;
-}
-
-.c12:focus {
-  outline: none;
 }
 
 .c14 {
@@ -56723,6 +59721,66 @@ Object {
   outline: none;
 }
 
+.c10 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c10 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c10:hover {
+  background-color: var(--link);
+}
+
+.c10:hover > svg {
+  fill: white;
+}
+
+.c10:focus {
+  outline: none;
+}
+
+.c12 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c12 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c12:hover {
+  background-color: var(--link);
+}
+
+.c12:hover > svg {
+  fill: white;
+}
+
+.c12:focus {
+  outline: none;
+}
+
 .c11 {
   display: none;
   position: relative;
@@ -56740,28 +59798,6 @@ Object {
 
 .c9:hover .c11 {
   display: inline-block;
-}
-
-.c2 {
-  background-color: var(--brand);
-  height: 56px;
-  width: 56px;
-  border-radius: 50%;
-}
-
-.c2 > svg {
-  fill: white;
-}
-
-.c7 {
-  background-color: var(--brand);
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-}
-
-.c7 > svg {
-  fill: white;
 }
 
 .c4 {
@@ -56906,6 +59942,106 @@ Object {
   width: 100%;
 }
 
+.c25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c27 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c27:before {
+  content: '三';
+}
+
+.c28 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c18 {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-gap: 8px;
+}
+
+.c19 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--red);
+}
+
+.c20 {
+  font-family: 'IBM Plex Mono',monospace;
+  display: grid;
+  row-gap: 8px;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
+}
+
+.c21 {
+  display: grid;
+  height: 40px;
+  grid-row: span 2;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  font-size: 24px;
+  -webkit-align-content: start;
+  -ms-flex-line-pack: start;
+  align-content: start;
+}
+
+.c22 {
+  font-weight: 100;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  font-size: 8px;
+}
+
+.c23 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  width: 128px;
+  font-weight: 300;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.c24 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--darkgrey);
+}
+
 .c29 {
   display: grid;
   grid-template-columns: 125px 2fr 1fr;
@@ -56953,20 +60089,6 @@ Object {
   font-size: 14px;
   font-weight: 300;
   font-family: 'IBM Plex Mono',Courier,monospace;
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c20 {
-    -webkit-column-gap: 2px;
-    column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2,80px);
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c21 {
-    height: 0px;
-  }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -57047,6 +60169,20 @@ Object {
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c35 {
     display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c20 {
+    -webkit-column-gap: 2px;
+    column-gap: 2px;
+    grid-template-columns: 45px 145px repeat(2,80px);
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c21 {
+    height: 0px;
   }
 }
 

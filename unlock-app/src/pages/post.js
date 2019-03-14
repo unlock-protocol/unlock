@@ -7,8 +7,7 @@ import BlogPost from '../components/content/BlogPost'
 import { pageTitle } from '../constants'
 import { TwitterTags } from '../components/page/TwitterTags'
 import OpenGraphTags from '../components/page/OpenGraphTags'
-import configure from '../config'
-import { loadBlogPost } from '../utils/blogLoader'
+import { preparePostProps } from '../utils/blogLoader'
 
 const Post = ({ slug, post }) => {
   let title = post.title || ''
@@ -48,13 +47,7 @@ Post.propTypes = {
 }
 
 Post.getInitialProps = async context => {
-  const { slug } = context.query
-  const { unlockUrl } = configure()
-
-  // Next.js will cache this result and turn the page into a static page. The payload will not be reloaded on the client.
-  const post = await loadBlogPost(unlockUrl + '/static/blog/' + slug + '.md')
-
-  return { slug, post }
+  return await preparePostProps(context)
 }
 
 export default Post
