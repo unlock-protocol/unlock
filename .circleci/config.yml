@@ -16,6 +16,19 @@ jobs:
           paths:
             - project
 
+  checkout-and-cache-stable-version:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: "Travel back in time to 4 days ago"
+          command: scripts/get-git-history.sh
+      - run: 'git log -1 --pretty="%H: %cD - %s"'
+      - persist_to_workspace:
+          root: ".."
+          paths:
+            - project
+
   build-unlock:
     machine: true
     environment:
@@ -160,7 +173,7 @@ jobs:
           command: docker load -i  "../caches/unlock.tar"
       - run:
           name: Deploy to Netlify
-          command: scripts/deploy.sh unlock-app netlify "$CIRCLE_SHA1" "$CIRCLE_TAG" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
+          command: scripts/deploy.sh "$ENV_TARGET" unlock-app netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-paywall-netlify:
     machine: true
@@ -177,7 +190,7 @@ jobs:
           command: docker load -i "../caches/unlock.tar"
       - run:
           name: Deploy to Netlify
-          command: scripts/deploy.sh paywall netlify "$CIRCLE_SHA1" "$CIRCLE_TAG" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
+          command: scripts/deploy.sh "$ENV_TARGET" paywall netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-locksmith-beanstalk:
     machine: true
@@ -225,6 +238,27 @@ jobs:
 
 workflows:
   version: 2
+  deploy: # The deploy workflow will not re-run tests, just build an image with the "older" version and deploy it
+    triggers:
+      - schedule:
+          cron: "0,5,10,15,20,25,30,35,40,45,50,55 * * * *" # use cron syntax to set the schedule
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - checkout-and-cache-stable-version
+      - build-unlock:
+          requires:
+            - checkout-and-cache-stable-version
+      # I cannot test things below for now... because  I want to make sure things above this are working as expected, on master
+      # - deploy-unlock-app-netlify:
+      #     requires:
+      #       - build-unlock
+      # - deploy-paywall-netlify:
+      #     requires:
+      #       - build-unlock
+
   build-test-and-deploy:
     jobs:
       - checkout-and-cache
