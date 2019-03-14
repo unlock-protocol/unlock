@@ -7,7 +7,7 @@ import Button from '../Button'
 const Preview = ({ lock, ...props }) => (
   <Button
     href={`/demo/${lock.address}`}
-    label="Preview lock"
+    label="Preview"
     {...props}
     id={`PreviewButton_${lock.address}`}
   >

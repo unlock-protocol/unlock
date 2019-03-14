@@ -82,6 +82,9 @@ export const ButtonLink = styled.a`
       fill: ${props => props.fillHoverColor || 'white'};
     }
   }
+  & :focus {
+    outline: none;
+  }
 `
 
 export const Label = styled.small`

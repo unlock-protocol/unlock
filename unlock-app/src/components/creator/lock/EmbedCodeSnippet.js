@@ -49,7 +49,7 @@ const Actions = styled.div`
   display: grid;
   grid-auto-flow: row;
   grid-template-rows: repeat(auto-fill, 24px);
-  grid-gap: 16px;
+  grid-gap: 24px;
 `
 
 const Label = styled.span`
