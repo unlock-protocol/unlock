@@ -102,8 +102,12 @@ contract MixinRefunds is
     Key storage key = _getKeyFor(_owner);
     // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
     uint timeRemaining = key.expirationTimestamp - block.timestamp;
-    // Math: using safeMul in case keyPrice or timeRemaining is very large
-    refund = keyPrice.mul(timeRemaining) / expirationDuration;
+    if(timeRemaining >= expirationDuration) {
+      refund = keyPrice;
+    } else {
+      // Math: using safeMul in case keyPrice or timeRemaining is very large
+      refund = keyPrice.mul(timeRemaining) / expirationDuration;
+    }
     if (refundPenaltyDenominator > 0) {
       uint penalty = keyPrice / refundPenaltyDenominator;
       if (refund > penalty) {
