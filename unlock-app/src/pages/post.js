@@ -8,8 +8,7 @@ import { pageTitle } from '../constants'
 import { TwitterTags } from '../components/page/TwitterTags'
 import OpenGraphTags from '../components/page/OpenGraphTags'
 import configure from '../config'
-
-const yamlFront = require('yaml-front-matter')
+import { loadBlogPost } from '../utils/blogLoader'
 
 const Post = ({ slug, post }) => {
   let title = post.title || ''
@@ -48,15 +47,14 @@ Post.propTypes = {
   post: UnlockPropTypes.post.isRequired,
 }
 
-Post.getInitialProps = async ({ context }) => {
+Post.getInitialProps = async context => {
   const { slug } = context.query
   const { unlockUrl } = configure()
 
   // Next.js will cache this result and turn the page into a static page. The payload will not be reloaded on the client.
-  const fileContents = await (await fetch(
-    unlockUrl + '/static/blog/' + slug + '.md'
-  )).text()
-  return yamlFront.loadFront(fileContents)
+  const post = await loadBlogPost(unlockUrl + '/static/blog/' + slug + '.md')
+
+  return { slug, post }
 }
 
 export default Post

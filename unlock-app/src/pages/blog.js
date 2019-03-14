@@ -9,6 +9,7 @@ import { pageTitle } from '../constants'
 import { TwitterTags } from '../components/page/TwitterTags'
 import OpenGraphTags from '../components/page/OpenGraphTags'
 import BlogIndex from '../components/content/BlogIndex'
+import { loadBlogIndexFile } from '../utils/blogLoader'
 
 const Blog = ({ posts }) => {
   const title = 'Blog'
@@ -39,16 +40,8 @@ Blog.getInitialProps = async () => {
   const { unlockUrl } = configure()
 
   // Next.js will cache this result and turn the page into a static page. The payload will not be reloaded on the client.
-  const response = await fetch(unlockUrl + '/static/blog.json', 10)
-  const index = await response.json()
-
-  let posts = []
-
-  if (index.items) {
-    // TODO: add pagination
-    // For now we'll limit the blog homepage to 10 posts.
-    posts = index.items.slice(0, 10)
-  }
+  // For now we'll limit the blog homepage to 10 posts.
+  const posts = await loadBlogIndexFile(unlockUrl + '/static/blog.json', 10)
 
   return { posts: posts }
 }
