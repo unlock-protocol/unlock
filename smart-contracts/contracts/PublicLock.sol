@@ -52,7 +52,7 @@ contract PublicLock is
     uint _maxNumberOfKeys
   )
     public
-    MixinFundsETH(_tokenAddress)
+    MixinFunds(_tokenAddress)
     MixinLockCore(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys, 1)
   {
     // registering the interface for erc721 with ERC165.sol using
