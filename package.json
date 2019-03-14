@@ -40,7 +40,6 @@
     "postinstall": "./scripts/postinstall.sh",
     "build": "cd smart-contracts && npm run build && cd ../unlock-app && npm run build && cd ../locksmith && npm run build",
     "start": "./scripts/start.sh",
-    "deploy-netlify": "./scripts/deploy-netlify.sh",
     "nuke": "./scripts/nuke.sh",
     "start-locksmith": "cd locksmith && npm start"
   },
