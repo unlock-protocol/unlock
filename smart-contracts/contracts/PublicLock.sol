@@ -47,10 +47,12 @@ contract PublicLock is
   constructor(
     address _owner,
     uint _expirationDuration,
+    address _tokenAddress,
     uint _keyPrice,
     uint _maxNumberOfKeys
   )
     public
+    MixinFundsETH(_tokenAddress)
     MixinLockCore(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys, 1)
   {
     // registering the interface for erc721 with ERC165.sol using
