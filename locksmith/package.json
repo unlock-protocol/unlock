@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "predev": "NODE_ENV=development sequelize db:migrate",
-    "dev": "nodemon server.js",
+    "dev": "tsc-watch --onSuccess 'node build/server.js' --onFailure 'echo Beep! Compilation Failed'",
     "pretest": "NODE_ENV=test sequelize db:migrate",
     "test": "jest --forceExit",
     "lint": "eslint .",
