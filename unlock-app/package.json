@@ -55,11 +55,17 @@
   },
   "devDependencies": {
     "@svgr/cli": "^4.1.0",
+    "@types/jest": "^24.0.11",
+    "@types/react": "^16.8.8",
+    "@types/react-redux": "^7.0.3",
+    "@zeit/next-typescript": "^1.1.1",
     "depcheck": "^0.7.1",
     "nodemon": "^1.18.9",
     "npm-check": "^5.9.0",
-    "web3-eth-abi": "1.0.0-beta.37",
-    "react-router-test-context": "^0.1.0"
+    "react-router-test-context": "^0.1.0",
+    "ts-jest": "^24.0.0",
+    "typescript": "^3.3.3333",
+    "web3-eth-abi": "1.0.0-beta.37"
   },
   "engines": {
     "node": "=8.11.4"
