@@ -62,6 +62,7 @@
   "devDependencies": {
     "@svgr/cli": "^4.1.0",
     "depcheck": "^0.7.1",
+    "jest-fetch-mock": "^2.1.1",
     "nodemon": "^1.18.9",
     "npm-check": "^5.9.0",
     "react-router-test-context": "^0.1.0",
