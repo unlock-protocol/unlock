@@ -9,4 +9,5 @@ module.exports = {
       statements: 91.63,
     },
   },
+  preset: 'ts-jest/presets/js-with-ts',
 }
