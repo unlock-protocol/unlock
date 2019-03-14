@@ -127,32 +127,6 @@ contract MixinTransfer is
   }
 
   /**
-  * @notice Handle the receipt of an NFT
-  * @dev The ERC721 smart contract calls this function on the recipient
-  * after a `safeTransfer`. This function MUST return the function selector,
-  * otherwise the caller will revert the transaction. The selector to be
-  * returned can be obtained as `this.onERC721Received.selector`. This
-  * function MAY throw to revert and reject the transfer.
-  * Note: the ERC721 contract address is always the message sender.
-  * @param operator The address which called `safeTransferFrom` function
-  * @param from The address which previously owned the token
-  * @param tokenId The NFT identifier which is being transferred
-  * @param data Additional data with no specified format
-  * @return `bytes4(keccak256('onERC721Received(address,address,uint,bytes)'))`
-  */
-  function onERC721Received(
-    address operator, // solhint-disable-line no-unused-vars
-    address from, // solhint-disable-line no-unused-vars
-    uint tokenId, // solhint-disable-line no-unused-vars
-    bytes memory data // solhint-disable-line no-unused-vars
-  )
-    public
-    returns(bytes4)
-  {
-    return bytes4(keccak256('onERC721Received(address,address,uint256,bytes)'));
-  }
-
-  /**
    * @dev Internal function to invoke `onERC721Received` on a target address
    * The call is not executed if the target address is not a contract
    * @param from address representing the previous owner of the given token ID
