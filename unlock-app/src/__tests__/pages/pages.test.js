@@ -107,21 +107,46 @@ describe('Pages', () => {
     it('should render title correctly', () => {
       expect.assertions(1)
       rtl.render(<Blog posts={[]} />)
+
       expect(pageTitle).toBeCalledWith('Blog')
+    })
+    it('should render post preview correctly', () => {
+      expect.assertions(3)
+
+      const posts = [
+        {
+          slug: 'test1',
+          title: 'Test post',
+          publishDate: 'November 23, 1963',
+          authorName: 'Susan Foreman',
+          description: 'One day, I will come back.',
+        },
+      ]
+
+      const page = rtl.render(<Blog posts={posts} />)
+
+      expect(page.queryByText(posts[0].title)).not.toBeNull()
+      expect(page.queryByText(posts[0].authorName)).not.toBeNull()
+      expect(page.queryByText(posts[0].description)).not.toBeNull()
     })
   })
 
   describe('Post', () => {
     it('should render title correctly', () => {
-      expect.assertions(2)
-      let post = {
+      expect.assertions(3)
+      const post = {
         title: 'Test post',
         slug: 'test1',
         description: 'Test description',
+        publishDate: 'November 23, 1963',
+        __content: 'Now is the limiter of this content',
       }
-      let slug = 'test1'
-      rtl.render(<Post post={post} slug={slug} />)
+      const slug = 'test1'
+      const page = rtl.render(<Post post={post} slug={slug} />)
+
       expect(pageTitle).toBeCalledWith(post.title)
+      expect(page.queryByText(post.publishDate)).not.toBeNull()
+      expect(page.queryByText(post.__content)).not.toBeNull()
     })
   })
 })

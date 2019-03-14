@@ -1,6 +1,5 @@
 import React from 'react'
 import Head from 'next/head'
-import fetch from 'isomorphic-unfetch'
 import styled from 'styled-components'
 
 import configure from '../config'
@@ -40,14 +39,14 @@ Blog.getInitialProps = async () => {
   const { unlockUrl } = configure()
 
   // Next.js will cache this result and turn the page into a static page. The payload will not be reloaded on the client.
-  const response = await fetch(unlockUrl + '/static/blog.json')
+  const response = await fetch(unlockUrl + '/static/blog.json', 10)
   const index = await response.json()
 
   let posts = []
 
   if (index.items) {
-    // For now we'll limit the blog homepage to 10 posts.
     // TODO: add pagination
+    // For now we'll limit the blog homepage to 10 posts.
     posts = index.items.slice(0, 10)
   }
 

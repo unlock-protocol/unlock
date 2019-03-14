@@ -4,7 +4,11 @@ const fs = require('fs')
 const { join } = require('path')
 const { promisify } = require('util')
 const withTypescript = require('@zeit/next-typescript')
-const { generateBlogIndex } = require('./src/utils/blog')
+const {
+  generateBlogFeed,
+  generateBlogPages,
+  generateBlogIndexFile,
+} = require('./src/utils/blog')
 
 const copyFile = promisify(fs.copyFile)
 
@@ -77,7 +81,9 @@ module.exports = withTypescript({
       '/blog': { page: '/blog' },
     }
 
-    let blogPages = generateBlogIndex(dir)
+    let blogFeed = generateBlogFeed(dir)
+    let blogPages = generateBlogPages(blogFeed)
+    generateBlogIndexFile(dir, blogFeed)
 
     return { ...pages, ...blogPages }
   },

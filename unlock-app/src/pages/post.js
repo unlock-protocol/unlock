@@ -1,6 +1,5 @@
 import React from 'react'
 import Head from 'next/head'
-import fetch from 'isomorphic-unfetch'
 
 import UnlockPropTypes from '../propTypes'
 import Layout from '../components/interface/Layout'
@@ -49,7 +48,7 @@ Post.propTypes = {
   post: UnlockPropTypes.post.isRequired,
 }
 
-Post.getInitialProps = async context => {
+Post.getInitialProps = async ({ context }) => {
   const { slug } = context.query
   const { unlockUrl } = configure()
 
@@ -57,9 +56,7 @@ Post.getInitialProps = async context => {
   const fileContents = await (await fetch(
     unlockUrl + '/static/blog/' + slug + '.md'
   )).text()
-  const post = yamlFront.loadFront(fileContents)
-
-  return { slug, post }
+  return yamlFront.loadFront(fileContents)
 }
 
 export default Post
