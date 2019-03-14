@@ -241,7 +241,7 @@ workflows:
   deploy: # The deploy workflow will not re-run tests, just build an image with the "older" version and deploy it
     triggers:
       - schedule:
-          cron: "0,5,10,15,20,25,30,35,40,45,50,55 * * * *" # use cron syntax to set the schedule
+          cron: "0,10,20,30,40,50 * * * *" # use cron syntax to set the schedule
           filters:
             branches:
               only:
