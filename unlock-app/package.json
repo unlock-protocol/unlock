@@ -28,6 +28,7 @@
     "jest-dom": "^3.1.0",
     "jest-mock-axios": "^2.1.11",
     "jest-styled-components": "^6.3.1",
+    "jest-fetch-mock": "^2.1.1",
     "jsonwebtoken": "^8.4.0",
     "next": "^8.0.3",
     "nock": "^10.0.5",
@@ -62,7 +63,6 @@
   "devDependencies": {
     "@svgr/cli": "^4.1.0",
     "depcheck": "^0.7.1",
-    "jest-fetch-mock": "^2.1.1",
     "nodemon": "^1.18.9",
     "npm-check": "^5.9.0",
     "react-router-test-context": "^0.1.0",
