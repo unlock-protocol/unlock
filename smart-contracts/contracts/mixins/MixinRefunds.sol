@@ -4,12 +4,12 @@ import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
-import './interfaces/IMixinFunds.sol';
+import './MixinFunds.sol';
 
 
 contract MixinRefunds is
   Ownable,
-  IMixinFunds,
+  MixinFunds,
   MixinLockCore,
   MixinKeys
 {

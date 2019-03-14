@@ -4,7 +4,7 @@ import './MixinDisableAndDestroy.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
-import './interfaces/IMixinFunds.sol';
+import './MixinFunds.sol';
 
 
 /**
@@ -14,7 +14,7 @@ import './interfaces/IMixinFunds.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinPurchase is
-  IMixinFunds,
+  MixinFunds,
   MixinDisableAndDestroy,
   MixinLockCore,
   MixinKeys
