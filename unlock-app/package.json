@@ -92,7 +92,8 @@
     "eslint-check": "eslint --print-config . | eslint-config-prettier-check",
     "ci": "npm run lint && npm test && npm run reformat && npm run fail-pending-changes",
     "depcheck": "depcheck --parsers=\"*.js:react,*.js:es6\"",
-    "npm-check": "npm-check -u"
+    "npm-check": "npm-check -u",
+    "tsc": "tsc"
   },
   "lint-staged": {
     "linters": {
