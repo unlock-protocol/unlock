@@ -30,6 +30,15 @@ export const mapStateToProps = ({
   },
 }) => ({ pathname })
 
+/**
+ * Helper function which returns the path on the button if the current pathname matches it
+ */
+export const isOnAppPage = pathname => {
+  return (
+    appButtons.map(button => button.page).find(page => pathname.match(page)) ||
+    false
+  )
+}
 export class Header extends React.PureComponent {
   constructor(props) {
     super(props)
@@ -44,9 +53,7 @@ export class Header extends React.PureComponent {
   render() {
     const { menu } = this.state
     const { forContent, title, pathname } = this.props
-
-    const onAppPage = appButtons.some(button => button.page === pathname)
-
+    const onAppPage = isOnAppPage(pathname)
     return (
       <TopHeader>
         {forContent ? (
@@ -74,7 +81,7 @@ export class Header extends React.PureComponent {
         <AppButtons>
           {onAppPage &&
             appButtons.map(({ Button }) => (
-              <Button key={Button} activePath={pathname} />
+              <Button key={Button} activePath={onAppPage} />
             ))}
         </AppButtons>
         <DesktopButtons>
