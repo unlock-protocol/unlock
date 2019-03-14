@@ -8,6 +8,9 @@ import { About } from '../../pages/about'
 import { Dashboard } from '../../pages/dashboard'
 import { pageTitle, ETHEREUM_NETWORKS_NAMES } from '../../constants'
 import createUnlockStore from '../../createUnlockStore'
+import BlogIndex from '../../components/content/BlogIndex'
+import Blog from '../../pages/blog'
+import Post from '../../pages/post'
 import { ConfigContext } from '../../utils/withConfig'
 import configure from '../../config'
 
@@ -98,6 +101,28 @@ describe('Pages', () => {
         </ConfigProvider>
       )
       expect(pageTitle).toBeCalledWith('Dashboard')
+    })
+  })
+
+  describe('Blog', () => {
+    it('should render title correctly', () => {
+      expect.assertions(1)
+      rtl.render(<Blog posts={[]} />)
+      expect(pageTitle).toBeCalledWith('Blog')
+    })
+  })
+
+  describe('Post', () => {
+    it('should render title correctly', () => {
+      expect.assertions(1)
+      let post = {
+        title: 'Test post',
+        slug: 'test1',
+        description: 'Test description',
+      }
+      let slug = 'test1'
+      rtl.render(<Post post={post} slug={slug} />)
+      expect(pageTitle).toBeCalledWith(post.title)
     })
   })
 })
