@@ -8,7 +8,7 @@ This repository includes all the code deployed by Unlock, including smart contra
 
 Read more about [why we're building Unlock](https://medium.com/unlock-protocol/its-time-to-unlock-the-web-b98e9b94add1).
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://travis-ci.com/unlock-protocol/unlock.svg?branch=master)](https://travis-ci.com/unlock-protocol/unlock) [![Greenkeeper badge](https://badges.greenkeeper.io/unlock-protocol/unlock.svg)](https://greenkeeper.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://circleci.com/gh/unlock-protocol/unlock.svg?style=svg)](https://circleci.com/gh/unlock-protocol/unlock) [![Greenkeeper badge](https://badges.greenkeeper.io/unlock-protocol/unlock.svg)](https://greenkeeper.io/)
 
 ## Demo
 
@@ -19,7 +19,7 @@ We recorded a screencast to show how Unlock works for a paywall.
 [You can try Unlock using the Ethereum blockchain on our homepage.](https://unlock-protocol.com/)
 
 We are building this in the open, which means you can also run the code locally (see instructions below).
-You can try out the staging version - which runs the latest, in-progress code - at [https://staging.unlock-protocol.com](https://staging.unlock-protocol.com). 
+You can try out the staging version - which runs the latest, in-progress code - at [https://staging.unlock-protocol.com](https://staging.unlock-protocol.com).
 Finally, you can learn more [on our documentation wiki](https://github.com/unlock-protocol/unlock/wiki).
 
 ## Contributing
@@ -71,7 +71,6 @@ docker-compose -f docker/docker-compose.ci.yml up --abort-on-container-exit
 ```
 
 ## Thank you
-
 
 [<img src="https://user-images.githubusercontent.com/624104/52508260-d0daa180-2ba8-11e9-970c-3ef9596f6b4e.png" height="35">](https://browserstack.com)
 
