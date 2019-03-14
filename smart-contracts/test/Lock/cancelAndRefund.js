@@ -35,9 +35,17 @@ contract('Lock / cancelAndRefund', accounts => {
     assert.equal(penalty, 10) // default of 10%
   })
 
-  it('the amount of refund should be less than the original keyPrice', async () => {
+  it('the amount of refund should be less than the original keyPrice when purchased normally', async () => {
     const estimatedRefund = new BigNumber(
       await lock.getCancelAndRefundValueFor.call(keyOwners[0])
+    )
+    assert(estimatedRefund.lt(keyPrice))
+  })
+
+  it('the amount of refund should be less than the original keyPrice when expiration is very far in the future', async () => {
+    await lock.grantKey(accounts[5], 999999999999, { from: accounts[0] })
+    const estimatedRefund = new BigNumber(
+      await lock.getCancelAndRefundValueFor.call(accounts[5])
     )
     assert(estimatedRefund.lt(keyPrice))
   })
