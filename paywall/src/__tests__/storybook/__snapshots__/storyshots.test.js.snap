@@ -1,5 +1,1419 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Storyshots Buttons/Layout Buttons About 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c2 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+        href="/about"
+        title="About"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            About
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        <small
+          class="c2"
+        >
+          About
+        </small>
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="is925m-0 lnZuor"
+      href="/about"
+      title="About"
+    >
+      <svg
+        viewBox="0 0 24 24"
+      >
+        <title>
+          About
+        </title>
+        <path
+          clip-rule="evenodd"
+          d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      <small
+        class="is925m-1 dHyZKY"
+      >
+        About
+      </small>
+    </a>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Bars 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+      >
+        <svg
+          viewBox="0 0 56 42"
+        >
+          <title>
+            Bars
+          </title>
+          <path
+            d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+          />
+        </svg>
+        
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="is925m-0 lnZuor"
+    >
+      <svg
+        viewBox="0 0 56 42"
+      >
+        <title>
+          Bars
+        </title>
+        <path
+          d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+        />
+      </svg>
+      
+    </a>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons ChevronUp 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+      >
+        <svg
+          viewBox="0 0 58 32"
+        >
+          <title>
+            Chevron Up
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="is925m-0 lnZuor"
+    >
+      <svg
+        viewBox="0 0 58 32"
+      >
+        <title>
+          Chevron Up
+        </title>
+        <path
+          clip-rule="evenodd"
+          d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      
+    </a>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Close Large 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 100px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 100px;
+  width: 100px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <button
+        class="c0 c1"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </button>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <button
+      class="is925m-0 gxKouS"
+    >
+      <svg
+        viewBox="0 0 24 24"
+      >
+        <title>
+          Close
+        </title>
+        <path
+          clip-rule="evenodd"
+          d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      
+    </button>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Close Small 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 16px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 16px;
+  width: 16px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <button
+        class="c0 c1"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </button>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <button
+      class="is925m-0 kJtNJC"
+    >
+      <svg
+        viewBox="0 0 24 24"
+      >
+        <title>
+          Close
+        </title>
+        <path
+          clip-rule="evenodd"
+          d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      
+    </button>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Github 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c2 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+        href="https://github.com/unlock-protocol/unlock"
+        title="Source Code"
+      >
+        <svg
+          name="Github"
+          viewBox="0 0 24 24"
+        >
+          <title />
+          <path
+            d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+          />
+        </svg>
+        <small
+          class="c2"
+        >
+          Source Code
+        </small>
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="is925m-0 lnZuor"
+      href="https://github.com/unlock-protocol/unlock"
+      title="Source Code"
+    >
+      <svg
+        name="Github"
+        viewBox="0 0 24 24"
+      >
+        <title />
+        <path
+          d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+        />
+      </svg>
+      <small
+        class="is925m-1 dHyZKY"
+      >
+        Source Code
+      </small>
+    </a>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Jobs 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c2 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+        href="/jobs"
+        title="Join us"
+      >
+        <svg
+          name="Jobs"
+          viewBox="0 0 24 24"
+        >
+          <title />
+          <path
+            clip-rule="evenodd"
+            d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        <small
+          class="c2"
+        >
+          Join us
+        </small>
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="is925m-0 lnZuor"
+      href="/jobs"
+      title="Join us"
+    >
+      <svg
+        name="Jobs"
+        viewBox="0 0 24 24"
+      >
+        <title />
+        <path
+          clip-rule="evenodd"
+          d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      <small
+        class="is925m-1 dHyZKY"
+      >
+        Join us
+      </small>
+    </a>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Newsletter 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c2 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+        href="/newsletter"
+        title="Newsletter"
+      >
+        <svg
+          name="Newsletter"
+          viewBox="0 0 24 24"
+        >
+          <title />
+          <path
+            clip-rule="evenodd"
+            d="M5.044 7.705A1 1 0 0 0 5 8v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8a.998.998 0 0 0-.044-.295.497.497 0 0 1-.171.206l-5.931 4.106a1.5 1.5 0 0 1-1.708 0l-5.93-4.106a.498.498 0 0 1-.172-.206zm13.25-.66A1 1 0 0 0 18 7H6a1 1 0 0 0-.295.044.503.503 0 0 1 .08.045l5.93 4.106a.5.5 0 0 0 .57 0l5.93-4.106a.502.502 0 0 1 .08-.045z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        <small
+          class="c2"
+        >
+          Newsletter
+        </small>
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="is925m-0 lnZuor"
+      href="/newsletter"
+      title="Newsletter"
+    >
+      <svg
+        name="Newsletter"
+        viewBox="0 0 24 24"
+      >
+        <title />
+        <path
+          clip-rule="evenodd"
+          d="M5.044 7.705A1 1 0 0 0 5 8v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8a.998.998 0 0 0-.044-.295.497.497 0 0 1-.171.206l-5.931 4.106a1.5 1.5 0 0 1-1.708 0l-5.93-4.106a.498.498 0 0 1-.172-.206zm13.25-.66A1 1 0 0 0 18 7H6a1 1 0 0 0-.295.044.503.503 0 0 1 .08.045l5.93 4.106a.5.5 0 0 0 .57 0l5.93-4.106a.502.502 0 0 1 .08-.045z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      <small
+        class="is925m-1 dHyZKY"
+      >
+        Newsletter
+      </small>
+    </a>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Telegram 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c2 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+        href="https://t.me/unlockprotocol"
+        title="Telegram"
+      >
+        <svg
+          name="Telegram"
+          viewBox="0 0 24 24"
+        >
+          <title />
+          <path
+            clip-rule="evenodd"
+            d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        <small
+          class="c2"
+        >
+          Telegram
+        </small>
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="is925m-0 lnZuor"
+      href="https://t.me/unlockprotocol"
+      title="Telegram"
+    >
+      <svg
+        name="Telegram"
+        viewBox="0 0 24 24"
+      >
+        <title />
+        <path
+          clip-rule="evenodd"
+          d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      <small
+        class="is925m-1 dHyZKY"
+      >
+        Telegram
+      </small>
+    </a>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Twitter 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c2 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+        href="/twitter"
+        title="Twitter"
+      >
+        <svg
+          name="Twitter"
+          viewBox="0 0 24 24"
+        >
+          <title />
+          <path
+            clip-rule="evenodd"
+            d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+            fill-rule="evenodd"
+          />
+        </svg>
+        <small
+          class="c2"
+        >
+          Twitter
+        </small>
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="is925m-0 lnZuor"
+      href="/twitter"
+      title="Twitter"
+    >
+      <svg
+        name="Twitter"
+        viewBox="0 0 24 24"
+      >
+        <title />
+        <path
+          clip-rule="evenodd"
+          d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+          fill-rule="evenodd"
+        />
+      </svg>
+      <small
+        class="is925m-1 dHyZKY"
+      >
+        Twitter
+      </small>
+    </a>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots DeveloperOverlay the developer overlay (invisible outside development) 1`] = `
 Object {
   "asFragment": [Function],
@@ -1668,7 +3082,7 @@ Object {
   align-content: center;
 }
 
-.c7 {
+.c8 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -1680,21 +3094,25 @@ Object {
   line-height: 50px;
 }
 
-.c7 > svg {
+.c8 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c7:hover {
+.c8:hover {
   background-color: var(--green);
 }
 
-.c7:hover > svg {
+.c8:hover > svg {
   fill: white;
 }
 
-.c14 {
+.c7:hover .c16 {
+  display: inline-block;
+}
+
+.c15 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -1718,7 +3136,7 @@ Object {
   display: none;
 }
 
-.c12 {
+.c13 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -1741,7 +3159,7 @@ Object {
   align-self: end;
 }
 
-.c10 {
+.c11 {
   display: none;
 }
 
@@ -1751,19 +3169,19 @@ Object {
   align-self: center;
 }
 
-.c6:hover .c9 {
+.c6:hover .c10 {
   display: block;
 }
 
-.c6:hover .c8 {
+.c6:hover .c9 {
   display: none;
 }
 
-.c6:hover ~ .c13 {
+.c6:hover ~ .c14 {
   display: grid;
 }
 
-.c6:hover ~ .c11 {
+.c6:hover ~ .c12 {
   display: none;
 }
 
@@ -1824,10 +3242,10 @@ Object {
             </div>
           </div>
           <a
-            class="c6 c7"
+            class="c6 c7 c8"
           >
             <svg
-              class="c8 "
+              class="c9 "
               viewBox="0 0 24 24"
             >
               <title />
@@ -1838,7 +3256,7 @@ Object {
               />
             </svg>
             <svg
-              class="c9 c10"
+              class="c10 c11"
               viewBox="0 0 24 24"
             >
               <title />
@@ -1851,12 +3269,12 @@ Object {
             
           </a>
           <footer
-            class="c11 c12"
+            class="c12 c13"
           >
             Payment Confirmed
           </footer>
           <footer
-            class="c13 c14"
+            class="c14 c15"
           >
             Go to Content
           </footer>
