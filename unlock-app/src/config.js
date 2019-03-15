@@ -85,6 +85,7 @@ export default function configure(
   let chainExplorerUrlBuilders = {
     etherScan: () => false,
   }
+  let unlockUrl = runtimeConfig.unlockUrl
 
   services['currencyPriceLookup'] =
     'https://api.coinbase.com/v2/prices/ETH-USD/buy'
@@ -216,6 +217,7 @@ export default function configure(
     paywallUrl,
     paywallScriptUrl,
     supportedProviders,
+    unlockUrl,
     chainExplorerUrlBuilders,
   }
 }
