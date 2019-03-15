@@ -10,7 +10,7 @@ module.exports = withSourceMaps({
     unlockEnv: process.env.UNLOCK_ENV || 'dev',
     httpProvider: process.env.HTTP_PROVIDER || '127.0.0.1',
     readOnlyProvider: process.env.READ_ONLY_PROVIDER,
-    locksmithHost: process.env.LOCKSMITH_HOST,
+    locksmithHost: process.env.LOCKSMITH_URI || 'http://127.0.0.1:8080',
     unlockAddress:
       process.env.UNLOCK_ADDRESS ||
       '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93', // default for CI
