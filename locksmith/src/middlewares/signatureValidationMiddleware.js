@@ -1,6 +1,6 @@
 var sigUtil = require('eth-sig-util')
 const ethJsUtil = require('ethereumjs-util')
-const Base64 = require('./utils/base64')
+const Base64 = require('../utils/base64')
 
 const extractToken = req => {
   if (
