@@ -58,12 +58,14 @@ export const preparePostProps = async context => {
  * Loads the blog index and returns an array of posts
  * @returns {Promise<{posts: Array}>}
  */
-export const prepareBlogProps = async () => {
+export const prepareBlogProps = async maxPosts => {
   const { unlockUrl } = configure()
 
   // Next.js will cache this result and turn the page into a static page. The payload will not be reloaded on the client.
-  // For now we'll limit the blog homepage to 10 posts.
-  const posts = await loadBlogIndexFile(unlockUrl + '/static/blog.json', 10)
+  const posts = await loadBlogIndexFile(
+    unlockUrl + '/static/blog.json',
+    maxPosts
+  )
 
   return { posts }
 }
