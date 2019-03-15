@@ -9,7 +9,7 @@ const { unlockUrl } = require('./src/utils/unlockUrl')
 const copyFile = promisify(fs.copyFile)
 
 // TODO renames these: URLs need to be URLs, hosts need to be hosts... etc
-const requiredConfigVariables = {
+let requiredConfigVariables = {
   unlockEnv: process.env.UNLOCK_ENV || 'dev',
   httpProvider: process.env.HTTP_PROVIDER || '127.0.0.1',
   paywallUrl: process.env.PAYWALL_URL,
