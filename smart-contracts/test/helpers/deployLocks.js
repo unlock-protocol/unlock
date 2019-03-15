@@ -2,7 +2,7 @@ const PublicLock = artifacts.require('./PublicLock.sol')
 const Web3Utils = require('web3-utils')
 const Locks = require('../fixtures/locks')
 
-module.exports = function deployLocks(unlock, from) {
+module.exports = function deployLocks (unlock, from, tokenAddress = Web3Utils.padLeft(0, 40)) {
   let locks = {}
   return Promise.all(
     Object.keys(Locks).map(async name => {
@@ -10,14 +10,14 @@ module.exports = function deployLocks(unlock, from) {
       if (unlock.methods && unlock.methods.createLock) {
         createCall = unlock.methods.createLock(
           Locks[name].expirationDuration.toFixed(),
-          Web3Utils.padLeft(0, 40),
+          tokenAddress,
           Locks[name].keyPrice.toFixed(),
           Locks[name].maxNumberOfKeys.toFixed()
         )
       } else {
         createCall = unlock.createLock(
           Locks[name].expirationDuration.toFixed(),
-          Web3Utils.padLeft(0, 40),
+          tokenAddress,
           Locks[name].keyPrice.toFixed(),
           Locks[name].maxNumberOfKeys.toFixed(),
           { from }
