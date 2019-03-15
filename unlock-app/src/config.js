@@ -1,6 +1,11 @@
 import Web3 from 'web3'
 import getConfig from 'next/config'
-import { ETHEREUM_NETWORKS_NAMES } from './constants'
+import {
+  CANONICAL_BASE_DEV_URL,
+  CANONICAL_BASE_STAGING_URL,
+  CANONICAL_BASE_URL,
+  ETHEREUM_NETWORKS_NAMES,
+} from './constants'
 
 // There is no standard way to detect the provider name...
 export function getCurrentProvider(environment) {
@@ -85,7 +90,7 @@ export default function configure(
   let chainExplorerUrlBuilders = {
     etherScan: () => false,
   }
-  let unlockUrl = runtimeConfig.unlockUrl
+  let unlockUrl = runtimeConfig.unlockUrl || CANONICAL_BASE_DEV_URL
 
   services['currencyPriceLookup'] =
     'https://api.coinbase.com/v2/prices/ETH-USD/buy'
@@ -117,6 +122,8 @@ export default function configure(
       providers[getCurrentProvider(environment)] =
         environment.web3.currentProvider
     }
+
+    if (!runtimeConfig.unlockUrl) unlockUrl = CANONICAL_BASE_DEV_URL
 
     supportedProviders = ['HTTP']
 
@@ -152,6 +159,7 @@ export default function configure(
     paywallScriptUrl =
       runtimeConfig.paywallScriptUrl ||
       'https://staging-paywall.unlock-protocol.com/static/paywall.min.js'
+    if (!runtimeConfig.unlockUrl) unlockUrl = CANONICAL_BASE_STAGING_URL
 
     // Address for the Unlock smart contract
     unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
@@ -184,6 +192,7 @@ export default function configure(
     paywallScriptUrl =
       runtimeConfig.paywallScriptUrl ||
       'https://paywall.unlock-protocol.com/static/paywall.min.js'
+    if (!runtimeConfig.unlockUrl) unlockUrl = CANONICAL_BASE_URL
 
     // Address for the Unlock smart contract
     unlockAddress = '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'

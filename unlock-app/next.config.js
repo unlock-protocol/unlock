@@ -4,7 +4,6 @@ const fs = require('fs')
 const { join } = require('path')
 const { promisify } = require('util')
 const withTypescript = require('@zeit/next-typescript')
-const { unlockUrl } = require('./src/utils/unlockUrl')
 
 const copyFile = promisify(fs.copyFile)
 
@@ -20,10 +19,9 @@ let requiredConfigVariables = {
     process.env.UNLOCK_ADDRESS || '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93', // default for CI
 }
 
-requiredConfigVariables.unlockUrl = unlockUrl(
-  process.env,
-  requiredConfigVariables
-)
+// If the URL is set in an env variable, use it - otherwise it'll be overridden in config.js
+if (process.env.UNLOCK_URL)
+  requiredConfigVariables.unlockUrl = process.env.UNLOCK_URL
 
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
   if (!requiredConfigVariables[configVariableName]) {
