@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const ethJsUtil = require('ethereumjs-util')
-const Transaction = require('../transaction')
+const Transaction = require('../models').Transaction
 
 const Op = Sequelize.Op
 

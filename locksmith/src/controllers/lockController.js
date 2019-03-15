@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const ethJsUtil = require('ethereumjs-util')
 const logger = require('../locksmithLogger')
-const Lock = require('../lock')
+const Lock = require('../models').Lock
 
 const Op = Sequelize.Op
 

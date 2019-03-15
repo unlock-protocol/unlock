@@ -1,7 +1,7 @@
 const request = require('supertest')
 const nock = require('nock')
 const app = require('../../src/app')
-const Block = require('../../src/block')
+const Block = require('../../src/models').Block
 
 nock.back.fixtures = __dirname + '/fixtures/blockController'
 nock.disableNetConnect()
