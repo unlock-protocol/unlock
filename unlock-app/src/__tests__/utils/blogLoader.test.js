@@ -63,7 +63,7 @@ describe('blogLoader', () => {
     expect.assertions(2)
 
     fetch.mockResponseOnce(blogJson)
-    let { posts } = await prepareBlogProps()
+    let { posts } = await prepareBlogProps(10)
     expect(posts[0].slug).toEqual('test2')
     expect(posts[1].slug).toEqual('test1')
   })
