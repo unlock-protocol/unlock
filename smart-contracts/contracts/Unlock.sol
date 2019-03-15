@@ -93,18 +93,13 @@ contract Unlock is MixinNoFallback, IUnlock, Initializable, Ownable {
     returns (ILockCore lock)
   {
     // create lock
-    ILockCore newLock;
-    
-    if(_tokenAddress == address(0)) {
-      newLock = new PublicLock(
-        msg.sender,
-        _expirationDuration,
-        _keyPrice,
-        _maxNumberOfKeys
-      );
-    } else {
-      revert('NOT_IMPLEMENTED');
-    }
+    ILockCore newLock = new PublicLock(
+      msg.sender,
+      _expirationDuration,
+      _tokenAddress,
+      _keyPrice,
+      _maxNumberOfKeys
+    );
 
     // Assign the new Lock
     locks[address(newLock)] = LockBalances({
