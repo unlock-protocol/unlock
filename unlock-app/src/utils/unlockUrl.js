@@ -1,9 +1,3 @@
-import {
-  CANONICAL_BASE_STAGING_URL,
-  CANONICAL_BASE_DEV_URL,
-  CANONICAL_BASE_URL,
-} from '../constants'
-
 const unlockUrl = (env, config) => {
   if (env && env.UNLOCK_URL) return env.UNLOCK_URL
 
@@ -12,12 +6,12 @@ const unlockUrl = (env, config) => {
 
   switch (unlockEnv) {
     case 'staging':
-      return CANONICAL_BASE_STAGING_URL
+      return 'https://staging.unlock-protocol.com'
     case 'prod':
-      return CANONICAL_BASE_URL
+      return 'https://unlock-protocol.com'
     case 'dev':
     default:
-      return CANONICAL_BASE_DEV_URL
+      return 'http://localhost:3000'
   }
 }
 

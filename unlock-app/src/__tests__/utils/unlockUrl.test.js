@@ -1,9 +1,3 @@
-import {
-  CANONICAL_BASE_STAGING_URL,
-  CANONICAL_BASE_DEV_URL,
-  CANONICAL_BASE_URL,
-} from '../../constants'
-
 const { unlockUrl } = require('../../utils/unlockUrl')
 
 describe('unlockUrl', () => {
@@ -17,18 +11,18 @@ describe('unlockUrl', () => {
     expect.assertions(1)
 
     const url = unlockUrl()
-    expect(url).toEqual(CANONICAL_BASE_DEV_URL)
+    expect(url).toEqual('http://localhost:3000')
   })
   it('should return a default production url', () => {
     expect.assertions(1)
 
     const url = unlockUrl({}, { unlockEnv: 'prod' })
-    expect(url).toEqual(CANONICAL_BASE_URL)
+    expect(url).toEqual('https://unlock-protocol.com')
   })
   it('should return a default staging url', () => {
     expect.assertions(1)
 
     const url = unlockUrl({}, { unlockEnv: 'staging' })
-    expect(url).toEqual(CANONICAL_BASE_STAGING_URL)
+    expect(url).toEqual('https://staging.unlock-protocol.com')
   })
 })
