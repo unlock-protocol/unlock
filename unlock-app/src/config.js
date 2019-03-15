@@ -142,8 +142,12 @@ export default function configure(
     paywallUrl = 'https://'
     supportedProviders = ['Metamask', 'Opera']
     services['storage'] = { host: runtimeConfig.locksmithHost }
+    // note: for staging.unlock-protocol.com this is purely for decoration. If this value needs to be changed,
+    // please edit the UNLOCK_APP_NETLIFY_STAGING_PAYWALL_URL env variable on CircleCI
     paywallUrl =
       runtimeConfig.paywallUrl || 'https://staging-paywall.unlock-protocol.com'
+    // note: for staging.unlock-protocol.com this is purely for decoration. If this value needs to be changed,
+    // please edit the UNLOCK_APP_NETLIFY_STAGING_PAYWALL_SCRIPT_URL env variable on CircleCI
     paywallScriptUrl =
       runtimeConfig.paywallScriptUrl ||
       'https://staging-paywall.unlock-protocol.com/static/paywall.min.js'
@@ -170,8 +174,12 @@ export default function configure(
 
     supportedProviders = ['Metamask', 'Opera']
     services['storage'] = { host: runtimeConfig.locksmithHost }
+    // note: for unlock-protocol.com this is purely for decoration. If this value needs to be changed,
+    // please edit the UNLOCK_APP_NETLIFY_PROD_PAYWALL_URL env variable on CircleCI
     paywallUrl =
       runtimeConfig.paywallUrl || 'https://paywall.unlock-protocol.com/'
+    // note: for unlock-protocol.com this is purely for decoration. If this value needs to be changed,
+    // please edit the UNLOCK_APP_NETLIFY_PROD_PAYWALL_SCRIPT_URL env variable on CircleCI
     paywallScriptUrl =
       runtimeConfig.paywallScriptUrl ||
       'https://paywall.unlock-protocol.com/static/paywall.min.js'
