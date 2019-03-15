@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
@@ -15,12 +14,6 @@ const navigationButtons = [
   Buttons.Github,
   Buttons.Telegram,
 ]
-
-export const mapStateToProps = ({
-  router: {
-    location: { pathname },
-  },
-}) => ({ pathname })
 
 export function Header({ title }) {
   const [menu, setMenu] = useState(false)
@@ -63,7 +56,7 @@ Header.defaultProps = {
   title: 'Unlock',
 }
 
-export default connect(mapStateToProps)(Header)
+export default Header
 
 const TopHeader = styled.header`
   display: grid;
