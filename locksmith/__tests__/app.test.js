@@ -1,7 +1,7 @@
 const request = require('supertest')
 const app = require('../src/app')
-const Lock = require('../src/lock')
-const Transaction = require('../src/transaction')
+const Lock = require('../src/models').Lock
+const Transaction = require('../src/models').Transaction
 
 const validLockOwner = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const validLockAddress = '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83'

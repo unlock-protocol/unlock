@@ -1,6 +1,6 @@
 const ethers = require('ethers')
 const logger = require('../locksmithLogger')
-const Block = require('../block')
+const Block = require('../models').Block
 
 const blockGet = async (req, res) => {
   let chain
