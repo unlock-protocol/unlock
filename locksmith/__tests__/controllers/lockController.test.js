@@ -8,7 +8,7 @@ const validLockAddress = '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83'
 const testLockDetails = {
   name: 'Test Lock',
   address: '0xab7c74abC0C4d48d1bdad5DCB26153FC8780f83E',
-  owner: '0xDEadbED123',
+  owner: '0xCA750f9232C1c38e34D27e77534e1631526eC99e',
 }
 
 const ownedLocks = [
@@ -180,9 +180,9 @@ describe('lockController', () => {
 
     describe('when the address owns locks', () => {
       const owner = '0x423893453'
+
       it('return the details of the owned locks', async () => {
         expect.assertions(3)
-
         let response = await request(app)
           .get(`/${owner}/locks`)
           .set('Accept', /json/)
@@ -192,11 +192,13 @@ describe('lockController', () => {
         expect(response.body.locks).toContainEqual({
           name: 'a mighty fine lock',
           address: 'jqfqod74',
+          owner: '0x423893453',
         })
 
         expect(response.body.locks).toContainEqual({
           name: 'A random other lock',
           address: 'jqfqod75',
+          owner: '0x423893453',
         })
       })
     })
