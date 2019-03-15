@@ -241,7 +241,7 @@ workflows:
   deploy: # The deploy workflow will not re-run tests, just build an image with the "older" version and deploy it
     triggers:
       - schedule:
-          cron: "0,10,20,30,40,50 * * * *" # use cron syntax to set the schedule
+          cron: "30 20 * * 2" # use cron syntax to set the schedule trigger on Teusday at 430pm ET (2030 UTC)
           filters:
             branches:
               only:
@@ -251,13 +251,14 @@ workflows:
       - build-unlock:
           requires:
             - checkout-and-cache-stable-version
-      # I cannot test things below for now... because  I want to make sure things above this are working as expected, on master
-      # - deploy-unlock-app-netlify:
-      #     requires:
-      #       - build-unlock
-      # - deploy-paywall-netlify:
-      #     requires:
-      #       - build-unlock
+      - deploy-unlock-app-netlify:
+          context: PRODUCTION # see config on CircleCI
+          requires:
+            - build-unlock
+      - deploy-paywall-netlify:
+          context: PRODUCTION # see config on CircleCI
+          requires:
+            - build-unlock
 
   build-test-and-deploy:
     jobs:
