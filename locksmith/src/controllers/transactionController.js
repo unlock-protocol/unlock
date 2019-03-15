@@ -4,7 +4,7 @@ const Transaction = require('../transaction')
 
 const Op = Sequelize.Op
 
-const transaction_creation = async (req, res) => {
+const transactionCreate = async (req, res) => {
   let transaction = req.body
 
   if (
@@ -30,7 +30,7 @@ const transaction_creation = async (req, res) => {
   }
 }
 
-const transaction_get = async (req, res) => {
+const transactionGet = async (req, res) => {
   const sender = ethJsUtil.toChecksumAddress(req.query.sender)
 
   let transactions = await Transaction.findAll({
@@ -42,4 +42,4 @@ const transaction_get = async (req, res) => {
   res.json({ transactions: transactions })
 }
 
-module.exports = { transaction_creation, transaction_get }
+module.exports = { transactionCreate, transactionGet }

@@ -2,7 +2,7 @@ const ethers = require('ethers')
 const logger = require('../locksmithLogger')
 const Block = require('../block')
 
-const block_get = async (req, res) => {
+const blockGet = async (req, res) => {
   let chain
   let provider = ethers.getDefaultProvider(chain)
   let blockNumber = req.params.blockNumber
@@ -60,4 +60,4 @@ const prepareChainId = chainIdentifier => {
   }
 }
 
-module.exports = { block_get }
+module.exports = { blockGet }

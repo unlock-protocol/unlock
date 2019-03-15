@@ -12,7 +12,7 @@ beforeEach(async () => {
 
 const blockNumber = 3346773
 
-describe('block_get', () => {
+describe('blockGet', () => {
   describe('when a valid chain id is provided', () => {
     it('returns the block timestamp and persists the value', async () => {
       expect.assertions(2)
