@@ -1,4 +1,9 @@
 import configure, { inIframe } from '../config'
+import {
+  CANONICAL_BASE_DEV_URL,
+  CANONICAL_BASE_STAGING_URL,
+  CANONICAL_BASE_URL,
+} from '../constants'
 
 describe('config', () => {
   describe('inIframe', () => {
@@ -105,6 +110,11 @@ describe('config', () => {
       })
     })
 
+    it('should contain the right fallback url', () => {
+      expect.assertions(1)
+      expect(config.unlockUrl).toEqual(CANONICAL_BASE_DEV_URL)
+    })
+
     it('should have the right keys in dev when there is a web3 provider', () => {
       expect.assertions(1)
       config = configure(
@@ -180,6 +190,11 @@ describe('config', () => {
         'https://rinkeby.etherscan.io/address/0x0'
       )
     })
+
+    it('should contain the right fallback URL', () => {
+      expect.assertions(1)
+      expect(config.unlockUrl).toEqual(CANONICAL_BASE_STAGING_URL)
+    })
   })
 
   describe('production', () => {
@@ -208,6 +223,11 @@ describe('config', () => {
       expect(config.chainExplorerUrlBuilders.etherScan('0x0')).toEqual(
         'https://etherscan.io/address/0x0'
       )
+    })
+
+    it('should contain the right fallback URL', () => {
+      expect.assertions(1)
+      expect(config.unlockUrl).toEqual(CANONICAL_BASE_URL)
     })
   })
 })

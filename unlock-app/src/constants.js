@@ -75,6 +75,10 @@ export const PAGE_DEFAULT_IMAGE =
 
 export const CANONICAL_BASE_URL = 'https://unlock-protocol.com' // Leave trailing slash off
 
+export const CANONICAL_BASE_DEV_URL = 'http://localhost:3000'
+
+export const CANONICAL_BASE_STAGING_URL = 'https://staging.unlock-protocol.com'
+
 export const MONTH_NAMES = [
   'Jan',
   'Feb',
