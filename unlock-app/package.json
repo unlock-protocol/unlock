@@ -14,6 +14,7 @@
     "@types/react": "^16.8.8",
     "@types/react-redux": "^7.0.3",
     "@types/storybook__react": "^4.0.1",
+    "@types/styled-components": "^4.1.12",
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "^1.1.1",
     "axios": "^0.18.0",
