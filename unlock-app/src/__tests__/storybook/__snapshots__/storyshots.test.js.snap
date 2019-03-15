@@ -56929,6 +56929,12 @@ Object {
   font-family: 'IBM Plex Mono',Courier,monospace;
 }
 
+.c32 {
+  font-size: 14px;
+  font-weight: 300;
+  font-family: 'IBM Plex Mono',Courier,monospace;
+}
+
 .c33 {
   font-size: 14px;
   line-height: 14px;
@@ -56947,12 +56953,6 @@ Object {
   font-family: 'IBM Plex Mono',Courier,monospace;
   color: var(--slate);
   white-space: nowrap;
-}
-
-.c32 {
-  font-size: 14px;
-  font-weight: 300;
-  font-family: 'IBM Plex Mono',Courier,monospace;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -57866,70 +57866,70 @@ Object {
           </div>
         </section>
         <div
-          class="sc-117g4ck-0 kpaVpz"
+          class="sc-bdVaJa hKxrir"
         >
           <div
-            class="sc-117g4ck-1 bykYLB"
+            class="sc-bwzfXH fhiPxo"
           >
             Block Number
           </div>
           <div
-            class="sc-117g4ck-1 bykYLB"
+            class="sc-bwzfXH fhiPxo"
           >
             Lock Name/Address
           </div>
           <div
-            class="sc-117g4ck-1 bykYLB"
+            class="sc-bwzfXH fhiPxo"
           >
             Type
           </div>
           <div
-            class="sc-117g4ck-2 dTRAfq"
+            class="sc-htpNat sc-bxivhb dilxLS"
           >
             3
           </div>
           <a
-            class="sc-117g4ck-4 dYHDGK"
+            class="sc-ifAKCX fxZpxU"
             target="_blank"
           >
             0xc43efE2C7116CB94d563b5A9D68F260CCc44256F
           </a>
           <div
-            class="sc-117g4ck-2 sc-117g4ck-3 leeqzy"
+            class="sc-htpNat sc-EHOje hkXZAI"
             type="LOCK_CREATION"
           >
             Lock Creation
           </div>
           <div
-            class="sc-117g4ck-2 dTRAfq"
+            class="sc-htpNat sc-bxivhb dilxLS"
           >
             2
           </div>
           <a
-            class="sc-117g4ck-4 dYHDGK"
+            class="sc-ifAKCX fxZpxU"
             target="_blank"
           >
             0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
           </a>
           <div
-            class="sc-117g4ck-2 sc-117g4ck-3 kichWx"
+            class="sc-htpNat sc-EHOje hFQCCE"
             type="UPDATE_KEY_PRICE"
           >
             Update Key Price
           </div>
           <div
-            class="sc-117g4ck-2 dTRAfq"
+            class="sc-htpNat sc-bxivhb dilxLS"
           >
             1
           </div>
           <a
-            class="sc-117g4ck-4 dYHDGK"
+            class="sc-ifAKCX fxZpxU"
             target="_blank"
           >
             0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
           </a>
           <div
-            class="sc-117g4ck-2 sc-117g4ck-3 leeqzy"
+            class="sc-htpNat sc-EHOje hkXZAI"
             type="LOCK_CREATION"
           >
             Lock Creation

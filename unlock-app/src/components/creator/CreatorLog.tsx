@@ -22,7 +22,7 @@ const LogTransactions = (props: Props) => {
     <HeaderItem>Lock Name/Address</HeaderItem>
     <HeaderItem>Type</HeaderItem>
     {transactionFeed.map(tx => (
-      <React.Fragment>
+      <React.Fragment key={tx.hash}>
         <BlockNumber>{tx.blockNumber}</BlockNumber>
         <Address href={tx.href} target="_blank">
           {tx.lock}
