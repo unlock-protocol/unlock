@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
-import { RoundedLogo, WordMarkLogo } from './Logo'
+import { WordMarkLogo } from './Logo'
 import Buttons from './buttons/layout'
 import { ButtonLink } from './buttons/Button'
 import Media from '../../theme/media'
@@ -57,12 +57,10 @@ export function Header({ title }) {
 
 Header.propTypes = {
   title: PropTypes.string,
-  forContent: PropTypes.bool,
 }
 
 Header.defaultProps = {
   title: 'Unlock',
-  forContent: false,
 }
 
 export default connect(mapStateToProps)(Header)
@@ -200,11 +198,4 @@ const MobilePopover = styled.div`
   ${Media.nophone`
     display: none;
   `};
-`
-
-const LogoContainer = styled.div`
-  ${Media.nophone`
-    display: none;
-  `};
-  padding-top: 2px;
 `
