@@ -8,7 +8,7 @@ const withTypescript = require('@zeit/next-typescript')
 const copyFile = promisify(fs.copyFile)
 
 // TODO renames these: URLs need to be URLs, hosts need to be hosts... etc
-const requiredConfigVariables = {
+let requiredConfigVariables = {
   unlockEnv: process.env.UNLOCK_ENV || 'dev',
   httpProvider: process.env.HTTP_PROVIDER || '127.0.0.1',
   paywallUrl: process.env.PAYWALL_URL,
@@ -18,6 +18,10 @@ const requiredConfigVariables = {
   unlockAddress:
     process.env.UNLOCK_ADDRESS || '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93', // default for CI
 }
+
+// If the URL is set in an env variable, use it - otherwise it'll be overridden in config.js
+if (process.env.UNLOCK_URL)
+  requiredConfigVariables.unlockUrl = process.env.UNLOCK_URL
 
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
   if (!requiredConfigVariables[configVariableName]) {
