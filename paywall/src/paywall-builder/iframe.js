@@ -1,3 +1,5 @@
+import { SHOW_FLAG_FOR } from '../constants'
+
 export const iframeStyles = [
   'display:none',
   'position:fixed',
@@ -46,7 +48,7 @@ export function hide(iframe, document) {
   setTimeout(() => {
     open = false
     iframe.style.marginRight = collapsedMargin
-  }, 2000)
+  }, SHOW_FLAG_FOR)
 
   // so that there's no scroll when it goes off the edge
   iframe.style.overflow = 'hidden'
