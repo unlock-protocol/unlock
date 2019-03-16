@@ -12,6 +12,15 @@ function _server(port, dev) {
 
     app.prepare().then(() => {
       let server = createServer((req, res) => {
+        const fixedPathname = req.url.replace(/\/+/g, '/')
+        if (req.url !== fixedPathname) {
+          console.info(`${req.url} --> ${fixedPathname}`)
+          res.writeHead(301, {
+            Location: fixedPathname,
+          })
+          resolve(res.end())
+          return
+        }
         console.info(`${req.method} ${req.url} > ${res.statusCode} `)
         try {
           const parsedUrl = new URL(req.url, `http://${req.headers.host}/`)
@@ -19,8 +28,7 @@ function _server(port, dev) {
 
           // assigning `query` into the params means that we still
           // get the query string passed to our application
-          const fixedPathname = pathname.replace(/\/+/g, '/')
-          if (fixedPathname.match('/0x')) {
+          if (pathname.match('/0x')) {
             const params = route('/:lockAddress/:redirect?')(pathname)
             app.render(req, res, '/', Object.assign(params, query))
           } else {
@@ -28,7 +36,7 @@ function _server(port, dev) {
             return
           }
         } catch (error) {
-          reject(error)
+          throw reject(error)
         }
       }).listen(port, err => {
         if (err) throw reject(err)
