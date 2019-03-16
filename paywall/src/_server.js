@@ -19,7 +19,7 @@ function _server(port, dev) {
 
           // assigning `query` into the params means that we still
           // get the query string passed to our application
-          if (pathname.match('/0x')) {
+          if (pathname.match('/0x') || pathname === '/') {
             const params = route('/:lockAddress/:redirect?')(pathname)
             app.render(req, res, '/', Object.assign(params, query))
           } else {
