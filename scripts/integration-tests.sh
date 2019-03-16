@@ -15,6 +15,7 @@ REPO_ROOT=`dirname "$0"`/..
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
 EXTRA_ARGS=$*
 
+
 # Run the tests
 COMMAND="npm run ci"
 
