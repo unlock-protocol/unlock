@@ -1,14 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
-interface Transaction {
-  blockNumber: number,
-  hash: string,
-  href: string,
-  lock: string,
-  readableName: string,
-  type: string,
-}
+import { Transaction } from '../../unlock'
 
 interface Props {
   transactionFeed: Transaction[]

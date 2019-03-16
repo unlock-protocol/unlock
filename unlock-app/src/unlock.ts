@@ -9,11 +9,17 @@ export enum TransactionType {
 }
 
 export interface Transaction {
-  status: string,
-  confirmations: number,
-  createdAt: number,
-  hash: string,
-  lock: string,
-  name: string,
-  type: TransactionType,
+  status: string
+  confirmations: number
+  createdAt: number
+  hash: string
+  lock: string
+  name: string
+  type: TransactionType
+
+  // The following properties are optional, Transactions are augmented with
+  // these props in the mapStateToProps for the transaction log page.
+  blockNumber?: number
+  href?: string
+  readableName?: string
 }
