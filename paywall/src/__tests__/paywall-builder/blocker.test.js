@@ -1,9 +1,15 @@
 import * as blockerManager from '../../paywall-builder/blocker'
 
+jest.mock('../../paywall-builder/script', () => {
+  return {
+    findPaywallUrl: () => 'https://foo',
+  }
+})
+
 describe('paywall builder', () => {
   describe('blocker', () => {
     it('getBlocker', () => {
-      expect.assertions(2)
+      expect.assertions(3)
       const document = {
         createElement() {
           return { style: {}, appendChild: jest.fn() }
@@ -19,6 +25,7 @@ describe('paywall builder', () => {
             alignItems: 'center',
             background: 'white',
             display: 'flex',
+            flexDirection: 'column',
             fontSize: '30px',
             height: '100vh',
             justifyContent: 'center',
@@ -31,9 +38,22 @@ describe('paywall builder', () => {
         })
       )
 
-      expect(blocker.appendChild).toHaveBeenCalledWith(
+      expect(blocker.appendChild).toHaveBeenNthCalledWith(
+        1,
         expect.objectContaining({
           innerText: 'Loading access rights...',
+        })
+      )
+
+      expect(blocker.appendChild).toHaveBeenNthCalledWith(
+        2,
+        expect.objectContaining({
+          src: 'https://foo/static/images/loading.svg',
+          style: {
+            height: '80px',
+            width: '80px',
+            border: 'none',
+          },
         })
       )
     })
