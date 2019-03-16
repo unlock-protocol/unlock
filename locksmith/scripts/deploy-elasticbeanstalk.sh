@@ -22,10 +22,10 @@ function package_application()
 {
     local application=${1}
     local artifact_location=${2}
-
+    
     mkdir builds
-    pushd ./${application}
-    zip ../${artifact_location} -r * .[^.]* --exclude=*node_modules*
+    pushd ./${application}/build
+    zip -r ../${artifact_location} . ../package.json ../package-lock.json
     popd
     return 0
 }

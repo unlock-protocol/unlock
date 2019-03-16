@@ -2,3 +2,4 @@
 /models
 /migrations
 node_modules
+/build
