@@ -1,6 +1,5 @@
 import { Provider } from 'react-redux'
-import React, { useRef } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Index from '../components/Index'
 import createUnlockStore from '../createUnlockStore'
