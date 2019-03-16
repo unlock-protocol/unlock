@@ -11,8 +11,7 @@ import ConfirmingKeyLock from './ConfirmingKeyLock'
 import ConfirmedKeyLock from './ConfirmedKeyLock'
 import NoKeyLock from './NoKeyLock'
 import { UNLIMITED_KEYS_COUNT, TRANSACTION_TYPES } from '../../constants'
-import usePostMessage from '../../hooks/browser/usePostMessage'
-import { POST_MESSAGE_REDIRECT } from '../../paywall-builder/constants'
+import usePurchaseKey from '../../hooks/usePurchaseKey'
 
 export const Lock = ({
   account,
@@ -25,13 +24,7 @@ export const Lock = ({
   hideModal,
   openInNewWindow,
 }) => {
-  const { postMessage } = usePostMessage()
-  const purchase = key => {
-    if (openInNewWindow) {
-      return postMessage(POST_MESSAGE_REDIRECT)
-    }
-    purchaseKey(key)
-  }
+  const purchase = usePurchaseKey(purchaseKey, openInNewWindow)
   if (
     transaction &&
     ['submitted', 'pending'].indexOf(transaction.status) > -1
