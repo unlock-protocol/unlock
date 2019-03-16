@@ -35,12 +35,18 @@ export function hide(iframe, document) {
   const width = '134px'
   const height = '160px'
   const collapsedMargin = '-104px'
+  let open = true
 
   // general settings
   document.body.style.overflow = ''
   iframe.style.backgroundColor = 'transparent'
   iframe.style.backgroundImage = 'none'
-  iframe.style['margin-right'] = collapsedMargin
+  iframe.style.marginRight = 0
+
+  setTimeout(() => {
+    open = false
+    iframe.style.marginRight = collapsedMargin
+  }, 2000)
 
   // so that there's no scroll when it goes off the edge
   iframe.style.overflow = 'hidden'
@@ -59,9 +65,10 @@ export function hide(iframe, document) {
   iframe.style.transition = 'margin-right 0.4s ease-in'
 
   iframe.addEventListener('mouseenter', () => {
-    iframe.style['margin-right'] = '0'
+    iframe.style.marginRight = '0'
   })
   iframe.addEventListener('mouseleave', () => {
-    iframe.style['margin-right'] = collapsedMargin
+    if (open) return
+    iframe.style.marginRight = collapsedMargin
   })
 }
