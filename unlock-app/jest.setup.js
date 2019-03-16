@@ -7,6 +7,8 @@ import 'jest-styled-components'
 import { setConfig } from 'next/config'
 import config from './next.config'
 
+global.fetch = require('jest-fetch-mock')
+
 // Make sure you can use getConfig
 setConfig({
   publicRuntimeConfig: config.publicRuntimeConfig,
