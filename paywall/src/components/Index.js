@@ -8,11 +8,9 @@ import LandingPage from './LandingPage'
 export default function Index({ path }) {
   if (path === '/') return <LandingPage />
   return (
-    <div>
-      <BrowserOnly>
-        <Paywall />
-      </BrowserOnly>
-    </div>
+    <BrowserOnly>
+      <Paywall />
+    </BrowserOnly>
   )
 }
 
