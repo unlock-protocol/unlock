@@ -45,7 +45,6 @@ module.exports = withSourceMaps({
 
     return {
       '/': { page: '/' },
-      about: { page: 'about' },
     }
   },
 })

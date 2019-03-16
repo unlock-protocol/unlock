@@ -1,13 +1,14 @@
 import React from 'react'
-import Paywall from '../components/Paywall'
-import BrowserOnly from '../components/helpers/BrowserOnly'
+import PropTypes from 'prop-types'
 
-export default function NextPaywall() {
-  return (
-    <div>
-      <BrowserOnly>
-        <Paywall />
-      </BrowserOnly>
-    </div>
-  )
+import Index from '../components/Index'
+
+export default function NextPaywall({ router }) {
+  return <Index path={router.asPath} />
+}
+
+NextPaywall.propTypes = {
+  router: PropTypes.shape({
+    asPath: PropTypes.string.isRequired,
+  }).isRequired,
 }
