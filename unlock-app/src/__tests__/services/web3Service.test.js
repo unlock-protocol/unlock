@@ -6,7 +6,7 @@ import nock from 'nock'
 import { PublicLock, Unlock } from 'unlock-abi-0'
 import Web3Service from '../../services/web3Service'
 import configure from '../../config'
-import { TRANSACTION_TYPES } from '../../constants'
+import { TransactionType } from '../../unlock'
 
 const nodeAccounts = [
   '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
@@ -828,7 +828,7 @@ describe('Web3Service', () => {
         .createLock('1000', '1000000000', '1')
         .encodeABI()
       expect(web3Service.getTransactionType(Unlock, data)).toBe(
-        TRANSACTION_TYPES.LOCK_CREATION
+        TransactionType.LOCK_CREATION
       )
     })
 
@@ -839,7 +839,7 @@ describe('Web3Service', () => {
         .purchaseFor(nodeAccounts[0], Web3Utils.utf8ToHex(''))
         .encodeABI()
       expect(web3Service.getTransactionType(PublicLock, data)).toBe(
-        TRANSACTION_TYPES.KEY_PURCHASE
+        TransactionType.KEY_PURCHASE
       )
     })
 
@@ -848,7 +848,7 @@ describe('Web3Service', () => {
       const lock = new web3Service.web3.eth.Contract(PublicLock.abi, '')
       const data = lock.methods.withdraw().encodeABI()
       expect(web3Service.getTransactionType(PublicLock, data)).toBe(
-        TRANSACTION_TYPES.WITHDRAWAL
+        TransactionType.WITHDRAWAL
       )
     })
   })

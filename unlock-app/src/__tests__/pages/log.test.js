@@ -1,5 +1,5 @@
 import { mapStateToProps, humanize } from '../../pages/log'
-import { TRANSACTION_TYPES } from '../../constants'
+import { TransactionType } from '../../unlock'
 import configure from '../../config'
 
 const transactions = {
@@ -9,7 +9,7 @@ const transactions = {
     status: 'mined',
     lock: '0x12345678a',
     blockNumber: 1,
-    type: TRANSACTION_TYPES.LOCK_CREATION,
+    type: TransactionType.LOCK_CREATION,
   },
   '0x5678': {
     hash: '0x56781234',
@@ -17,7 +17,7 @@ const transactions = {
     status: 'mined',
     lock: '0x56781234a',
     blockNumber: 2,
-    type: TRANSACTION_TYPES.LOCK_CREATION,
+    type: TransactionType.LOCK_CREATION,
   },
   '0x89ab': {
     hash: '0x9abcdef0',
@@ -25,7 +25,7 @@ const transactions = {
     status: 'mined',
     lock: '0x9abcdef0a',
     blockNumber: 3,
-    type: TRANSACTION_TYPES.LOCK_CREATION,
+    type: TransactionType.LOCK_CREATION,
   },
 }
 
@@ -33,9 +33,9 @@ describe('Transaction Log', () => {
   describe('humanize - make transaction types more readable', () => {
     it('should correctly handle transaction types of various lengths', () => {
       expect.assertions(3)
-      expect(humanize(TRANSACTION_TYPES.LOCK_CREATION)).toEqual('Lock Creation')
-      expect(humanize(TRANSACTION_TYPES.WITHDRAWAL)).toEqual('Withdrawal')
-      expect(humanize(TRANSACTION_TYPES.UPDATE_KEY_PRICE)).toEqual(
+      expect(humanize(TransactionType.LOCK_CREATION)).toEqual('Lock Creation')
+      expect(humanize(TransactionType.WITHDRAWAL)).toEqual('Withdrawal')
+      expect(humanize(TransactionType.UPDATE_KEY_PRICE)).toEqual(
         'Update Key Price'
       )
     })
