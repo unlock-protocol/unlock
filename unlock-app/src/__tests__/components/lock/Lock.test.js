@@ -3,7 +3,7 @@ import {
   mapDispatchToProps,
 } from '../../../components/lock/Lock'
 import { purchaseKey } from '../../../actions/key'
-import { TRANSACTION_TYPES } from '../../../constants'
+import { TransactionType } from '../../../unlock'
 import { openNewWindowModal } from '../../../actions/modal'
 
 describe('Lock', () => {
@@ -88,7 +88,7 @@ describe('Lock', () => {
         },
         transactions: {
           '0x777': {
-            type: TRANSACTION_TYPES.KEY_PURCHASE,
+            type: TransactionType.KEY_PURCHASE,
             status: 'pending',
             hash: '0x777',
             key: '0x123-0x456',
