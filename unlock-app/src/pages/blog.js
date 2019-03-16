@@ -36,7 +36,8 @@ Blog.propTypes = {
 }
 
 Blog.getInitialProps = async () => {
-  return await prepareBlogProps()
+  // Showing 10 posts on the blog page
+  return await prepareBlogProps(10)
 }
 
 export default Blog
