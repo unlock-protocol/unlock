@@ -8,7 +8,7 @@ import UnlockPropTypes from '../../../propTypes'
 import CreatorLockStatus from './CreatorLockStatus'
 import Media from '../../../theme/media'
 import withConfig from '../../../utils/withConfig'
-import { TRANSACTION_TYPES } from '../../../constants'
+import { TransactionType } from '../../../unlock'
 
 import configure from '../../../config'
 
@@ -111,7 +111,7 @@ const mapStateToProps = ({ transactions }, { lock }) => {
 
   Object.values(transactions).forEach(transaction => {
     if (
-      transaction.type === TRANSACTION_TYPES.WITHDRAWAL &&
+      transaction.type === TransactionType.WITHDRAWAL &&
       transaction.lock === lock.address &&
       transaction.confirmations < config.requiredConfirmations
     )
@@ -121,7 +121,7 @@ const mapStateToProps = ({ transactions }, { lock }) => {
   let priceUpdateTransaction = null
   Object.values(transactions).forEach(transaction => {
     if (
-      transaction.type === TRANSACTION_TYPES.UPDATE_KEY_PRICE &&
+      transaction.type === TransactionType.UPDATE_KEY_PRICE &&
       transaction.lock === lock.address &&
       transaction.confirmations < config.requiredConfirmations
     ) {
