@@ -5,7 +5,8 @@ import ethJsUtil from 'ethereumjs-util'
 
 import { PublicLock, Unlock } from 'unlock-abi-0'
 
-import { TRANSACTION_TYPES, MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
+import { MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
+import { TransactionType } from '../unlock'
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
@@ -142,25 +143,25 @@ export default class Web3Service extends EventEmitter {
     })
 
     if (contract.contractName === 'Unlock' && method.name === 'createLock') {
-      return TRANSACTION_TYPES.LOCK_CREATION
+      return TransactionType.LOCK_CREATION
     }
 
     if (
       contract.contractName === 'PublicLock' &&
       method.name === 'purchaseFor'
     ) {
-      return TRANSACTION_TYPES.KEY_PURCHASE
+      return TransactionType.KEY_PURCHASE
     }
 
     if (contract.contractName === 'PublicLock' && method.name === 'withdraw') {
-      return TRANSACTION_TYPES.WITHDRAWAL
+      return TransactionType.WITHDRAWAL
     }
 
     if (
       contract.contractName === 'PublicLock' &&
       method.name === 'updateKeyPrice'
     ) {
-      return TRANSACTION_TYPES.UPDATE_KEY_PRICE
+      return TransactionType.UPDATE_KEY_PRICE
     }
 
     // Unknown transaction

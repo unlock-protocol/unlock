@@ -3,7 +3,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Log from '../../pages/log'
 import createUnlockStore from '../../createUnlockStore'
-import { TRANSACTION_TYPES } from '../../constants'
+import { TransactionType } from '../../unlock'
 import { ConfigContext } from '../../utils/withConfig'
 
 const account = {
@@ -19,7 +19,7 @@ const transactions = {
     status: 'mined',
     lock: '0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B',
     blockNumber: 1,
-    type: TRANSACTION_TYPES.LOCK_CREATION,
+    type: TransactionType.LOCK_CREATION,
   },
   '0x5678': {
     hash: '0x56781234',
@@ -27,7 +27,7 @@ const transactions = {
     status: 'mined',
     lock: '0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B',
     blockNumber: 2,
-    type: TRANSACTION_TYPES.UPDATE_KEY_PRICE,
+    type: TransactionType.UPDATE_KEY_PRICE,
   },
   '0x89ab': {
     hash: '0x9abcdef0',
@@ -35,7 +35,7 @@ const transactions = {
     status: 'mined',
     lock: '0xc43efE2C7116CB94d563b5A9D68F260CCc44256F',
     blockNumber: 3,
-    type: TRANSACTION_TYPES.LOCK_CREATION,
+    type: TransactionType.LOCK_CREATION,
   },
 }
 

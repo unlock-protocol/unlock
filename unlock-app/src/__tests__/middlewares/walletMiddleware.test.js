@@ -18,7 +18,8 @@ import { SET_NETWORK } from '../../actions/network'
 import { SET_PROVIDER } from '../../actions/provider'
 import { NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
-import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../../constants'
+import { POLLING_INTERVAL } from '../../constants'
+import { TransactionType } from '../../unlock'
 import {
   FATAL_NO_USER_ACCOUNT,
   FATAL_NON_DEPLOYED_CONTRACT,
@@ -350,7 +351,7 @@ describe('Wallet middleware', () => {
       const { store } = create()
       const transaction = {
         hash: '123',
-        type: TRANSACTION_TYPES.LOCK_CREATION,
+        type: TransactionType.LOCK_CREATION,
         lock: '0x123',
       }
       state.transactions = {

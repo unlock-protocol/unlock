@@ -11,7 +11,8 @@ import PendingKeyLock from './PendingKeyLock'
 import ConfirmingKeyLock from './ConfirmingKeyLock'
 import ConfirmedKeyLock from './ConfirmedKeyLock'
 import NoKeyLock from './NoKeyLock'
-import { UNLIMITED_KEYS_COUNT, TRANSACTION_TYPES } from '../../constants'
+import { UNLIMITED_KEYS_COUNT } from '../../constants'
+import { TransactionType } from '../../unlock'
 
 export const Lock = ({
   account,
@@ -113,7 +114,7 @@ export const mapStateToProps = (state, { lock }) => {
   // This transaction is of type KEY_PURCHASE
   transaction = Object.values(state.transactions).find(
     transaction =>
-      transaction.type === TRANSACTION_TYPES.KEY_PURCHASE &&
+      transaction.type === TransactionType.KEY_PURCHASE &&
       transaction.key === lockKey.id
   )
 
