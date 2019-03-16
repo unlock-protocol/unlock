@@ -5,8 +5,9 @@ module.exports = {
     global: {
       branches: 77.42,
       functions: 82.76,
-      lines: 91.63,
-      statements: 91.63,
+      lines: 90,
+      statements: 90,
     },
   },
+  preset: 'ts-jest/presets/js-with-ts',
 }
