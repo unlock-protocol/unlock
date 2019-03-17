@@ -124,7 +124,7 @@ jobs:
           name: Load Unlock Image
           command: docker load -i  "../caches/unlock.tar"
       - run:
-          name: Smart Contract Tests
+          name: Locksmith Tests
           command: scripts/tests.sh locksmith
 
   paywall-tests:
@@ -138,7 +138,7 @@ jobs:
           name: Load Unlock Image
           command: docker load -i  "../caches/unlock.tar"
       - run:
-          name: Smart Contract Tests
+          name: Paywall Tests
           command: scripts/tests.sh paywall
 
   integration-tests:
