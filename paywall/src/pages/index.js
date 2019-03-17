@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 
 import Index from '../components/Index'
 
-export default function NextPaywall({ router }) {
+export default function PaywallHome({ router }) {
   return <Index path={router.asPath} />
 }
 
-NextPaywall.propTypes = {
+PaywallHome.propTypes = {
   router: PropTypes.shape({
     asPath: PropTypes.string.isRequired,
   }).isRequired,
