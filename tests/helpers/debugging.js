@@ -12,8 +12,8 @@ module.exports = {
       })
     }
   },
-  async screenshot(page, file='test') {
-    await page.screenshot({ path: `/screenshots/${file}-${counter}.jpg` })
+  async screenshot(page, file = 'test') {
+    await page.screenshot({ path: `/screenshots/${file}-${counter}.jpg`, fullPage: true })
     counter += 1
   },
 }
