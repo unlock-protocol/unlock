@@ -1,7 +1,10 @@
 import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { Dashboard, mapStateToProps } from '../../pages/dashboard'
+import {
+  DashboardContent,
+  mapStateToProps,
+} from '../../components/content/DashboardContent'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import WalletCheckOverlay from '../../components/interface/FullScreenModals'
@@ -114,7 +117,7 @@ const config = {
   requiredConfirmations: 12,
 }
 
-storiesOf('Dashboard', module)
+storiesOf('DashboardContent', module)
   .addDecorator(getStory => (
     <ConfigProvider value={config}>{getStory()}</ConfigProvider>
   ))
@@ -126,7 +129,11 @@ storiesOf('Dashboard', module)
     return (
       <Provider store={store}>
         <WalletCheckOverlay />
-        <Dashboard network={network} account={account} lockFeed={lockFeed} />
+        <DashboardContent
+          network={network}
+          account={account}
+          lockFeed={lockFeed}
+        />
       </Provider>
     )
   })
@@ -136,21 +143,25 @@ storiesOf('Dashboard', module)
     return (
       <Provider store={waitingStore}>
         <WalletCheckOverlay />
-        <Dashboard network={network} account={account} lockFeed={lockFeed} />
+        <DashboardContent
+          network={network}
+          account={account}
+          lockFeed={lockFeed}
+        />
       </Provider>
     )
   })
   .add('dashboard, no user account', () => {
     return (
       <Provider store={noUserStore}>
-        <Dashboard network={network} account={account} />
+        <DashboardContent network={network} account={account} />
       </Provider>
     )
   })
   .add('dashboard, no locks', () => {
     return (
       <Provider store={store}>
-        <Dashboard network={network} account={account} lockFeed={[]} />
+        <DashboardContent network={network} account={account} lockFeed={[]} />
       </Provider>
     )
   })

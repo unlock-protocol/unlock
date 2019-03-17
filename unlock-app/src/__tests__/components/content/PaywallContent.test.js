@@ -1,12 +1,14 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
-import createUnlockStore from '../../createUnlockStore'
-import Paywall, { mapStateToProps } from '../../pages/paywall'
-import { lockPage, unlockPage } from '../../services/iframeService'
-import { ConfigContext } from '../../utils/withConfig'
+import createUnlockStore from '../../../createUnlockStore'
+import Paywall, {
+  mapStateToProps,
+} from '../../../components/content/PaywallContent'
+import { lockPage, unlockPage } from '../../../services/iframeService'
+import { ConfigContext } from '../../../utils/withConfig'
 
-jest.mock('../../services/iframeService.js')
+jest.mock('../../../services/iframeService.js')
 
 const lock = { address: '0x4983D5ECDc5cc0E499c2D23BF4Ac32B982bAe53a' }
 const locks = {
