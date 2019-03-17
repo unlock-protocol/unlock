@@ -4,7 +4,7 @@ import { POST_MESSAGE_REDIRECT } from '../paywall-builder/constants'
 
 export default function usePurchaseKey(purchaseKey, openInNewWindow) {
   const { postMessage } = usePostMessage()
-  const purchase = useCallback(
+  return useCallback(
     key => {
       if (openInNewWindow) {
         return postMessage(POST_MESSAGE_REDIRECT)
@@ -13,5 +13,4 @@ export default function usePurchaseKey(purchaseKey, openInNewWindow) {
     },
     [purchaseKey, postMessage, openInNewWindow]
   )
-  return purchase
 }

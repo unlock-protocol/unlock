@@ -94,6 +94,7 @@ describe('Lock', () => {
       expect(newProps.transaction).toEqual(state.transactions['0x777'])
     })
   })
+
   describe('usePurchaseKey is called for purchases', () => {
     let purchase
     const config = {

@@ -25,6 +25,7 @@ describe('usePurchaseKey hook', () => {
       </button>
     )
   }
+
   describe('purchase', () => {
     it('calls purchaseKey if openInNewWindow is false', () => {
       expect.assertions(2)
@@ -39,6 +40,7 @@ describe('usePurchaseKey hook', () => {
       expect(purchaseKey).toHaveBeenCalledWith('hi')
       expect(postMessage).not.toHaveBeenCalled()
     })
+
     it('calls postMessage if openInNewWindow is true', () => {
       expect.assertions(2)
 
