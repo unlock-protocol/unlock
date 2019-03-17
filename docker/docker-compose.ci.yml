@@ -26,7 +26,6 @@ services:
     working_dir: /home/unlock
     expose:
       - 3000
-      - 3001
     environment:
       CI: "${CI}"
       HTTP_PROVIDER: "${HTTP_PROVIDER}"
@@ -48,11 +47,20 @@ services:
     image: unlock
     user: node
     working_dir: /home/unlock/paywall
+    expose:
+      - 3001
+    environment:
+      CI: "${CI}"
+      HTTP_PROVIDER: "${HTTP_PROVIDER}"
+    command: ["npm", "run", "start"]
   integration-tests:
     image: unlock-integration
     user: node
     environment:
       UNLOCK_HOST: "unlock"
+      PAYWALL_URL: "${PAYWALL_URL}"
+      PAYWALL_SCRIPT_URL: "${PAYWALL_SCRIPT_URL}"
+      LOCKSMITH_URI: "${LOCKSMITH_URI}"
       CI: "${CI}"
     depends_on:
       - ganache-integration
