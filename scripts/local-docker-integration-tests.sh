@@ -31,5 +31,5 @@ docker build -t unlock -f "$REPO_ROOT/docker/unlock.dockerfile" $REPO_ROOT
 docker build -t unlock-integration -f "$REPO_ROOT/docker/unlock-integration.dockerfile" $REPO_ROOT
 
 # Run the tests
-$REPO_ROOT/scripts/integration-tests.sh $EXTRA_ARGS
+$REPO_ROOT/scripts/integration-tests.sh -v $PWD:/screenshots $EXTRA_ARGS
 
