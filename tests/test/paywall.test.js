@@ -1,5 +1,7 @@
 const url = require('../helpers/url')
 
+jest.setTimeout(30000)
+
 describe('The Unlock Paywall', () => {
   const testLockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
 
@@ -17,10 +19,14 @@ describe('The Unlock Paywall', () => {
       page.goto(url(`/demo/${testLockAddress}`)),
       page.waitForNavigation(),
     ])
-    await page.waitForFunction(() => window.frames.length)
+  }, 10000)
+
+  it('should remove the blocker', async () => {
+    await page.waitForFunction(() => !document.querySelector('#_unlock_blocker'))
   })
 
-  it('should load the creator dashboard', async () => {
+  it('should display the lock after the blocker is gone', async () => {
+    await page.waitForFunction(() => window.frames.length)
     const paywallIframe = page.mainFrame().childFrames()[0]
     await paywallIframe.waitForSelector(lockSelector('Lock'))
     await paywallIframe.waitForFunction((ethPriceSelector) => {
