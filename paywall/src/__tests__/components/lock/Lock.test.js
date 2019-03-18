@@ -136,6 +136,7 @@ describe('Lock', () => {
         </Provider>
       )
     }
+
     it('should call useKeyPurchase purchase', () => {
       expect.assertions(1)
       purchase = jest.fn()
