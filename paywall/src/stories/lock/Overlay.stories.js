@@ -12,6 +12,16 @@ const ErrorProvider = GlobalErrorContext.Provider
 const ConfigProvider = ConfigContext.Provider
 const WindowProvider = WindowContext.Provider
 
+const fakeWindow = {
+  location: {
+    href: '/',
+    pathname: '',
+    search: '',
+    hash: '',
+  },
+  document: { body: { style: {} } },
+}
+
 const config = {
   isInIframe: true,
   requiredConfirmations: 12,
@@ -70,7 +80,7 @@ const render = (
     </ul>
 
     <ConfigProvider value={thisConfig}>
-      <WindowProvider value={{ document: { body: { style: {} } } }}>
+      <WindowProvider value={fakeWindow}>
         <ErrorProvider value={errors}>
           <Overlay
             scrollPosition={0}

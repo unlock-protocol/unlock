@@ -5,13 +5,13 @@ import UnlockPropTypes from '../../propTypes'
 import withConfig from '../../utils/withConfig'
 
 import { purchaseKey } from '../../actions/key'
-import { openNewWindowModal } from '../../actions/modal'
 
 import PendingKeyLock from './PendingKeyLock'
 import ConfirmingKeyLock from './ConfirmingKeyLock'
 import ConfirmedKeyLock from './ConfirmedKeyLock'
 import NoKeyLock from './NoKeyLock'
 import { UNLIMITED_KEYS_COUNT, TRANSACTION_TYPES } from '../../constants'
+import usePurchaseKey from '../../hooks/usePurchaseKey'
 
 export const Lock = ({
   account,
@@ -22,7 +22,9 @@ export const Lock = ({
   config,
   disabled,
   hideModal,
+  openInNewWindow,
 }) => {
+  const purchase = usePurchaseKey(purchaseKey, openInNewWindow)
   if (
     transaction &&
     ['submitted', 'pending'].indexOf(transaction.status) > -1
@@ -52,7 +54,7 @@ export const Lock = ({
       <NoKeyLock
         lock={lock}
         disabled={disabled}
-        purchaseKey={purchaseKey}
+        purchaseKey={purchase}
         soldOut={soldOut}
         tooExpensive={tooExpensive}
         lockKey={lockKey}
@@ -68,6 +70,7 @@ Lock.propTypes = {
   purchaseKey: PropTypes.func.isRequired,
   config: UnlockPropTypes.configuration.isRequired,
   hideModal: PropTypes.func.isRequired,
+  showModal: PropTypes.func.isRequired,
   openInNewWindow: PropTypes.bool.isRequired,
 }
 
@@ -76,14 +79,8 @@ Lock.defaultProps = {
   transaction: null,
 }
 
-export const mapDispatchToProps = (
-  dispatch,
-  { showModal, openInNewWindow }
-) => ({
+export const mapDispatchToProps = (dispatch, { showModal }) => ({
   purchaseKey: key => {
-    if (openInNewWindow) {
-      return dispatch(openNewWindowModal())
-    }
     showModal()
     dispatch(purchaseKey(key))
   },
