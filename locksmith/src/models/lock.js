@@ -12,7 +12,11 @@ module.exports = (sequelize, DataTypes) => {
   Lock.associate = function() {
     // associations can be defined here
   }
+
   Lock.removeAttribute('id')
+
+  // The list of fields which can be exposed publicly
+  Lock.publicFields = ['owner', 'address', 'name']
 
   return Lock
 }
