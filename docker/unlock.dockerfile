@@ -64,6 +64,13 @@ COPY --chown=node paywall/package.json /home/unlock/paywall/.
 WORKDIR /home/unlock/paywall
 RUN npm ci --production
 
+# Dependencies for Wedlocks
+RUN mkdir /home/unlock/wedlocks
+COPY --chown=node wedlocks/package-lock.json /home/unlock/wedlocks/.
+COPY --chown=node wedlocks/package.json /home/unlock/wedlocks/.
+WORKDIR /home/unlock/wedlocks
+RUN npm ci --production
+
 WORKDIR /home/unlock/
 # Copy the scripts which are used for builds
 COPY --chown=node ./scripts /home/unlock/scripts
@@ -90,6 +97,11 @@ RUN npm run build
 # Build paywall
 WORKDIR /home/unlock/paywall
 COPY --chown=node paywall/ /home/unlock/paywall/.
+RUN npm run build
+
+# Build wedlocks
+WORKDIR /home/unlock/wedlocks
+COPY --chown=node wedlocks/ /home/unlock/wedlocks/.
 RUN npm run build
 
 WORKDIR /home/unlock/

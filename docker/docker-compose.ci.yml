@@ -53,6 +53,12 @@ services:
       CI: "${CI}"
       HTTP_PROVIDER: "${HTTP_PROVIDER}"
     command: ["npm", "run", "start"]
+  wedlocks:
+    image: unlock
+    user: node
+    working_dir: /home/unlock/wedlocks
+    environment:
+      CI: "${CI}"
   integration-tests:
     image: unlock-integration
     user: node

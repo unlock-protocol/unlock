@@ -14,7 +14,6 @@ const config = {
   output: {
     path: OUT_DIR,
     filename: '[name].js',
-    library: '[name]',
     libraryTarget: 'umd'
   },
   target: 'node',
