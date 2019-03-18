@@ -8540,7 +8540,7 @@ Object {
                 Akeem Adeniji
               </h2>
               <img
-                class="sc-1y07p1o-0 ekCmWE"
+                class="sc-1kp7rit-0 cHJGJA"
                 src="/static/images/illustrations/akeem.jpg"
               />
               <p>
@@ -8578,7 +8578,7 @@ Object {
                 Ben Werdmuller
               </h2>
               <img
-                class="sc-1y07p1o-0 ekCmWE"
+                class="sc-1kp7rit-0 cHJGJA"
                 src="/static/images/illustrations/ben.jpg"
               />
               <p>
@@ -8616,7 +8616,7 @@ Object {
                 Christopher Nascone
               </h2>
               <img
-                class="sc-1y07p1o-0 ekCmWE"
+                class="sc-1kp7rit-0 cHJGJA"
                 src="/static/images/illustrations/chris.jpg"
               />
               <p>
@@ -8644,7 +8644,7 @@ Object {
                 Gregory Beaver
               </h2>
               <img
-                class="sc-1y07p1o-0 ekCmWE"
+                class="sc-1kp7rit-0 cHJGJA"
                 src="/static/images/illustrations/greg.jpg"
               />
               <p>
@@ -8681,7 +8681,7 @@ Object {
                 Julien Genestoux
               </h2>
               <img
-                class="sc-1y07p1o-0 ekCmWE"
+                class="sc-1kp7rit-0 cHJGJA"
                 src="/static/images/illustrations/julien.jpg"
               />
               <p>
@@ -8719,7 +8719,7 @@ Object {
                 Sascha Mombartz
               </h2>
               <img
-                class="sc-1y07p1o-0 ekCmWE"
+                class="sc-1kp7rit-0 cHJGJA"
                 src="/static/images/illustrations/sascha.jpg"
               />
               <p>
@@ -8759,7 +8759,7 @@ Object {
             News
           </h1>
           <div
-            class="sc-1y07p1o-1 dGkgLI"
+            class="sc-1kp7rit-1 iQktLf"
           >
             <p>
               January
@@ -10040,7 +10040,7 @@ Object {
           />
         </header>
         <h1
-          class="sc-3na8w6-1 dJtvOQ"
+          class="sc-1lwhgj0-1 fNAMFh"
         >
           The Web's new business model
         </h1>
@@ -10075,10 +10075,10 @@ Object {
               No More Middlemen
             </h2>
             <div
-              class="sc-3na8w6-0 eEACOQ"
+              class="sc-1lwhgj0-0 cSSxBG"
             />
             <p
-              class="sc-3na8w6-2 ghOOTr"
+              class="sc-1lwhgj0-2 LMEe"
             >
               There are no middlemen, no fees and no gatekeeper who could shut you down or control your distribution.
             </p>
@@ -10092,10 +10092,10 @@ Object {
               Simple Integration
             </h2>
             <div
-              class="sc-3na8w6-0 ivExRd"
+              class="sc-1lwhgj0-0 cMBTTv"
             />
             <p
-              class="sc-3na8w6-2 ghOOTr"
+              class="sc-1lwhgj0-2 LMEe"
             >
               Unlock provides a simple snippet of code to integrate easily with your website, as well as with several other integration tools...
             </p>
@@ -10109,10 +10109,10 @@ Object {
               And Much More
             </h2>
             <div
-              class="sc-3na8w6-0 ecozYg"
+              class="sc-1lwhgj0-0 hfIxqd"
             />
             <p
-              class="sc-3na8w6-2 ghOOTr"
+              class="sc-1lwhgj0-2 LMEe"
             >
               For example, Unlock comes with a points system to reward your most loyal fans when they share your content with their friends!
             </p>
@@ -11810,7 +11810,7 @@ Object {
                  
                 which has a bounty (look for the
                 <span
-                  class="cb8o6l-1 ibqNsY"
+                  class="sjz2v8-1 kHEXzM"
                 >
                   <span
                     aria-label="bounty"
@@ -11854,7 +11854,7 @@ Object {
               Full Stack Engineer
             </h1>
             <div
-              class="cb8o6l-0 dmCBAM"
+              class="sjz2v8-0 fSfseQ"
             >
               New York — Engineering — Full Time
             </div>
@@ -12043,7 +12043,7 @@ Object {
               Front-End Engineer
             </h1>
             <div
-              class="cb8o6l-0 dmCBAM"
+              class="sjz2v8-0 fSfseQ"
             >
               New York — Engineering — Full Time
             </div>
@@ -26376,7 +26376,7 @@ Object {
 }
 `;
 
-exports[`Storyshots Dashboard dashboard, no locks 1`] = `
+exports[`Storyshots DashboardContent dashboard, no locks 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -27989,7 +27989,7 @@ Object {
 }
 `;
 
-exports[`Storyshots Dashboard dashboard, no user account 1`] = `
+exports[`Storyshots DashboardContent dashboard, no user account 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -29602,7 +29602,7 @@ Object {
 }
 `;
 
-exports[`Storyshots Dashboard the dashboard 1`] = `
+exports[`Storyshots DashboardContent the dashboard 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -32725,7 +32725,7 @@ Object {
 }
 `;
 
-exports[`Storyshots Dashboard the dashboard, waiting for wallet 1`] = `
+exports[`Storyshots DashboardContent the dashboard, waiting for wallet 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -57866,70 +57866,70 @@ Object {
           </div>
         </section>
         <div
-          class="sc-117g4ck-0 kpaVpz"
+          class="sc-14l6ji-0 cRPuYj"
         >
           <div
-            class="sc-117g4ck-1 bykYLB"
+            class="sc-14l6ji-1 eEpKOI"
           >
             Block Number
           </div>
           <div
-            class="sc-117g4ck-1 bykYLB"
+            class="sc-14l6ji-1 eEpKOI"
           >
             Lock Name/Address
           </div>
           <div
-            class="sc-117g4ck-1 bykYLB"
+            class="sc-14l6ji-1 eEpKOI"
           >
             Type
           </div>
           <div
-            class="sc-117g4ck-2 dTRAfq"
+            class="sc-14l6ji-2 gjCHNT"
           >
             3
           </div>
           <a
-            class="sc-117g4ck-4 dYHDGK"
+            class="sc-14l6ji-4 cqOjkX"
             target="_blank"
           >
             0xc43efE2C7116CB94d563b5A9D68F260CCc44256F
           </a>
           <div
-            class="sc-117g4ck-2 sc-117g4ck-3 leeqzy"
+            class="sc-14l6ji-2 sc-14l6ji-3 zafjW"
             type="LOCK_CREATION"
           >
             Lock Creation
           </div>
           <div
-            class="sc-117g4ck-2 dTRAfq"
+            class="sc-14l6ji-2 gjCHNT"
           >
             2
           </div>
           <a
-            class="sc-117g4ck-4 dYHDGK"
+            class="sc-14l6ji-4 cqOjkX"
             target="_blank"
           >
             0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
           </a>
           <div
-            class="sc-117g4ck-2 sc-117g4ck-3 kichWx"
+            class="sc-14l6ji-2 sc-14l6ji-3 fOybBE"
             type="UPDATE_KEY_PRICE"
           >
             Update Key Price
           </div>
           <div
-            class="sc-117g4ck-2 dTRAfq"
+            class="sc-14l6ji-2 gjCHNT"
           >
             1
           </div>
           <a
-            class="sc-117g4ck-4 dYHDGK"
+            class="sc-14l6ji-4 cqOjkX"
             target="_blank"
           >
             0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
           </a>
           <div
-            class="sc-117g4ck-2 sc-117g4ck-3 leeqzy"
+            class="sc-14l6ji-2 sc-14l6ji-3 zafjW"
             type="LOCK_CREATION"
           >
             Lock Creation
