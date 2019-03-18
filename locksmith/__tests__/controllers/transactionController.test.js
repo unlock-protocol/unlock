@@ -28,7 +28,7 @@ describe('transactionController', () => {
   })
 
   describe('retrieving transactions for a user', () => {
-    describe('when the address has 0 transactions', async () => {
+    describe('when the address has 0 transactions', () => {
       it('returns an empty collection', async () => {
         expect.assertions(1)
         let response = await request(app)
