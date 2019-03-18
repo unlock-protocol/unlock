@@ -4,7 +4,7 @@ const fs = require('fs')
 const { join } = require('path')
 const { promisify } = require('util')
 const withTypescript = require('@zeit/next-typescript')
-const { addBlogPagesToNext } = require('./src/utils/blog')
+const { addBlogPagesToPageObject } = require('./src/utils/blog')
 
 const copyFile = promisify(fs.copyFile)
 
@@ -77,6 +77,6 @@ module.exports = withTypescript({
       '/blog': { page: '/blog' },
     }
 
-    return addBlogPagesToNext(dir, pages)
+    return addBlogPagesToPageObject(dir, pages)
   },
 })
