@@ -21,7 +21,7 @@ function _server(port, dev) {
           // get the query string passed to our application
           if (pathname.match('/0x') || pathname === '/') {
             const params = route('/:lockAddress/:redirect?')(pathname)
-            app.render(req, res, '/', Object.assign(params, query))
+            app.render(req, res, '/home', Object.assign(params, query))
           } else {
             handle(req, res)
             return
