@@ -74,7 +74,7 @@ const generateBlogIndexFile = (baseDir, postFeed) => {
  * @param pages
  * @returns {}
  */
-const addBlogPagesToNext = (dir, pages) => {
+const addBlogPagesToPageObject = (dir, pages) => {
   let blogFeed = generateBlogFeed(dir)
   let blogPages = generateBlogPages(blogFeed)
   generateBlogIndexFile(dir, blogFeed)
@@ -86,5 +86,5 @@ module.exports = {
   generateBlogFeed,
   generateBlogPages,
   generateBlogIndexFile,
-  addBlogPagesToNext,
+  addBlogPagesToPageObject,
 }

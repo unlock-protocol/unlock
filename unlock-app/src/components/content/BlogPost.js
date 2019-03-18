@@ -39,17 +39,18 @@ BlogPost.defaultProps = {
 export default BlogPost
 
 const Post = styled.div`
+  width: 100%;
   max-width: 730px;
   margin: auto;
   font-family: 'IBM Plex Serif', serif;
 `
 
 const Title = styled.h1`
+  margin-bottom: 0;
   color: var(--darkgrey);
-  font-size: 36px;
   font-weight: 700;
   font-family: 'IBM Plex Sans', Helvetica, sans-serif;
-  margin-bottom: 0;
+  font-size: 36px;
 `
 
 const Byline = styled.div`
@@ -96,8 +97,8 @@ const Body = styled.div`
   }
 `
 
-const AuthorName = styled.h3`
+export const AuthorName = styled.h3`
   color: var(--brand);
 `
 
-const PublishDate = styled.div``
+export const PublishDate = styled.div``
