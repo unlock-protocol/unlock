@@ -23,7 +23,6 @@ module.exports = {
   },
   rules: {
     'react/prefer-stateless-function': [2],
-    'linebreak-style': ['error', 'unix'],
     quotes: [
       'error',
       'single',
