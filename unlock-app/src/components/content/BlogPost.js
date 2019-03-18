@@ -1,5 +1,4 @@
 import React from 'react'
-import Link from 'next/link'
 import { Markdown } from 'react-showdown'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
@@ -30,7 +29,6 @@ BlogPost.propTypes = {
   body: PropTypes.string.isRequired,
   authorName: PropTypes.string,
   publishDate: PropTypes.string.isRequired,
-  permalink: PropTypes.string.isRequired,
 }
 
 BlogPost.defaultProps = {
