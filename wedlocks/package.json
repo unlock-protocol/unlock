@@ -1,0 +1,27 @@
+{
+  "name": "wedlocks",
+  "version": "1.0.0",
+  "description": "The email server for Unlock",
+  "main": "src/server.js",
+  "dependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.3.4",
+    "aws-sdk": "^2.423.0",
+    "babel-loader": "^8.0.5",
+    "nodemon": "^1.18.10",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "webpack",
+    "dev": "nodemon src/server.js --exec babel-node",
+    "test": "jest",
+    "lint": "eslint .",
+    "ci": "npm run lint && npm test"
+  },
+  "author": "",
+  "license": "MIT"
+}
