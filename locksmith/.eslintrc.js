@@ -35,5 +35,6 @@ module.exports = {
     'jest/no-focused-tests': 'warn',
     'jest/prefer-expect-assertions': 'warn',
     'jest/prefer-expect-assertions': 'warn', // TODO: fix errors and change into error
+    'eol-last': ['error'],
   },
 }
