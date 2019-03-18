@@ -47,12 +47,10 @@ const Post = styled.div`
 
 const Title = styled.h1`
   margin-bottom: 0;
-  a {
-    color: var(--darkgrey);
-    font-weight: 700;
-    font-family: 'IBM Plex Sans', Helvetica, sans-serif;
-    font-size: 36px;
-  }
+  color: var(--darkgrey);
+  font-weight: 700;
+  font-family: 'IBM Plex Sans', Helvetica, sans-serif;
+  font-size: 36px;
 `
 
 const Byline = styled.div`
