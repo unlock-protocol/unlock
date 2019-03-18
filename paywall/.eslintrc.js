@@ -52,5 +52,6 @@ module.exports = {
     'jest/no-identical-title': 'error',
     'jest/no-focused-tests': 'error',
     'jest/prefer-expect-assertions': 'warn', // TODO: fix errors and change into error
+    'eol-last': ['error'],
   },
 }
