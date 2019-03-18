@@ -5,11 +5,22 @@ import { Lock } from '../../components/lock/Lock'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import { UNLIMITED_KEYS_COUNT } from '../../constants'
+import { WindowContext } from '../../hooks/browser/useWindow'
 
 // lock, account, keys, purchaseKey
 const purchaseKey = () => {}
 const config = {
   requiredConfirmations: 3,
+  isInIframe: false,
+  isServer: false,
+}
+const fakeWindow = {
+  location: {
+    href: '/',
+    pathname: '',
+    search: '',
+    hash: '',
+  },
 }
 
 const lock = {
@@ -32,6 +43,7 @@ const store = createUnlockStore({
 })
 
 const ConfigProvider = ConfigContext.Provider
+const WindowProvider = WindowContext.Provider
 
 const storyConfig = {
   requiredConfirmations: 12,
@@ -39,9 +51,12 @@ const storyConfig = {
 
 storiesOf('Lock', module)
   .addDecorator(getStory => (
-    <ConfigProvider value={storyConfig}>{getStory()}</ConfigProvider>
+    <ConfigProvider value={storyConfig}>
+      <WindowProvider value={fakeWindow}>
+        <Provider store={store}>{getStory()}</Provider>
+      </WindowProvider>
+    </ConfigProvider>
   ))
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('with no key (check hover state too)', () => {
     return (
       <Lock
@@ -51,6 +66,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        showModal={() => {}}
         openInNewWindow={false}
       />
     )
@@ -65,6 +81,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        showModal={() => {}}
         openInNewWindow={false}
       />
     )
@@ -78,6 +95,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        showModal={() => {}}
         openInNewWindow={false}
       />
     )
@@ -95,6 +113,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        showModal={() => {}}
         openInNewWindow={false}
       />
     )
@@ -114,6 +133,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        showModal={() => {}}
         openInNewWindow={false}
       />
     )
@@ -134,6 +154,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        showModal={() => {}}
         openInNewWindow={false}
       />
     )
@@ -154,6 +175,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        showModal={() => {}}
         openInNewWindow={false}
       />
     )
@@ -175,6 +197,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        showModal={() => {}}
         openInNewWindow={false}
       />
     )
@@ -192,6 +215,7 @@ storiesOf('Lock', module)
         purchaseKey={purchaseKey}
         config={config}
         hideModal={() => {}}
+        showModal={() => {}}
         openInNewWindow={false}
       />
     )
