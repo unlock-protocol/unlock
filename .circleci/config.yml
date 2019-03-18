@@ -141,6 +141,20 @@ jobs:
           name: Paywall Tests
           command: scripts/tests.sh paywall
 
+  wedlocks-tests:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - *images-caches
+      - *cached-checkout
+      - run:
+          name: Load Unlock Image
+          command: docker load -i  "../caches/unlock.tar"
+      - run:
+          name: Wedlocks Tests
+          command: scripts/tests.sh wedlocks
+
   integration-tests:
     machine: true
     environment:
@@ -191,6 +205,23 @@ jobs:
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" paywall netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
+
+  deploy-wedlocks-netlify:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - *images-caches
+      - *cached-checkout
+      - run:
+          name: Set IS_FORKED_PR
+          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
+      - run:
+          name: Load Unlock Image
+          command: docker load -i "../caches/unlock.tar"
+      - run:
+          name: Deploy to Netlify
+          command: scripts/deploy.sh "$ENV_TARGET" wedlocks netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-locksmith-beanstalk:
     machine: true
@@ -284,6 +315,9 @@ workflows:
       - paywall-tests:
           requires:
             - build-unlock
+      - wedlocks-tests:
+          requires:
+            - build-unlock
       - integration-tests:
           requires:
             - build-unlock
@@ -294,6 +328,7 @@ workflows:
             - smart-contracts-tests
             - locksmith-tests
             - paywall-tests
+            - wedlocks-tests
             - integration-tests
       - deploy-paywall-netlify:
           requires:
@@ -301,6 +336,7 @@ workflows:
             - smart-contracts-tests
             - locksmith-tests
             - paywall-tests
+            - wedlocks-tests
             - integration-tests
       - promote-unlock-image:
           filters:
@@ -311,6 +347,7 @@ workflows:
             - smart-contracts-tests
             - locksmith-tests
             - paywall-tests
+            - wedlocks-tests
             - integration-tests
       - promote-unlock-integration-image:
           filters:
@@ -321,6 +358,7 @@ workflows:
             - smart-contracts-tests
             - locksmith-tests
             - paywall-tests
+            - wedlocks-tests
             - integration-tests
       - deploy-locksmith-beanstalk:
           filters:
@@ -331,4 +369,16 @@ workflows:
             - smart-contracts-tests
             - locksmith-tests
             - paywall-tests
+            - wedlocks-tests
+            - integration-tests
+      - deploy-wedlocks-netlify:
+          filters:
+            branches:
+              only: master
+          requires:
+            - unlock-app-tests
+            - smart-contracts-tests
+            - locksmith-tests
+            - paywall-tests
+            - wedlocks-tests
             - integration-tests
