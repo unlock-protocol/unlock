@@ -78,7 +78,14 @@ export const delay = PropTypes.number
 
 export const keyList = PropTypes.arrayOf(key)
 
-export const post = PropTypes.shape({})
+export const post = PropTypes.shape({
+  title: PropTypes.string,
+  description: PropTypes.string,
+  subTitle: PropTypes.string,
+  authorName: PropTypes.string,
+  publishDate: PropTypes.string,
+  __content: PropTypes.string,
+})
 
 export const slug = PropTypes.string
 

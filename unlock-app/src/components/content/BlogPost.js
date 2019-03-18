@@ -10,14 +10,9 @@ export const BlogPost = ({
   publishDate,
   body,
   authorName,
-  permalink,
 }) => (
   <Post>
-    <Title>
-      <Link href={permalink}>
-        <a>{title}</a>
-      </Link>
-    </Title>
+    <Title>{title}</Title>
     {subTitle && <SubTitle>{subTitle}</SubTitle>}
     <Byline>
       <AuthorName>{authorName}</AuthorName>
