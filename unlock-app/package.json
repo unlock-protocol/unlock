@@ -87,7 +87,7 @@
     "start-ganache:win32": "cd .. && (START /b npm run start-ganache -- -b 3 ) ",
     "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint .",
-    "reformat": "prettier-eslint \"src/**/*.js\" --write",
+    "reformat": "prettier-eslint \"src/**/*.js\" --write --parser typescript",
     "fail-pending-changes": "../scripts/pending-changes.sh",
     "storybook": "start-storybook -p 9001 -c .storybook -s src",
     "chromatic": "chromatic test --exit-zero-on-changes",
