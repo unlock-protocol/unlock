@@ -1408,9 +1408,6 @@ Object {
 
 .c14 {
   margin-bottom: 0;
-}
-
-.c14 a {
   color: var(--darkgrey);
   font-weight: 700;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
@@ -2069,7 +2066,7 @@ are intentionally not generated from this file date, in case we want to override
           class="b1qsww-0 hRCMaV"
         >
           <h1
-            class="b1qsww-1 hTQZJB"
+            class="b1qsww-1 dxIltO"
           >
             Sample title
           </h1>
@@ -2888,9 +2885,6 @@ Object {
 
 .c1 {
   margin-bottom: 0;
-}
-
-.c1 a {
   color: var(--darkgrey);
   font-weight: 700;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
@@ -3172,7 +3166,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
       class="b1qsww-0 hRCMaV"
     >
       <h1
-        class="b1qsww-1 hTQZJB"
+        class="b1qsww-1 dxIltO"
       >
         Introduction to Unlock
       </h1>
@@ -3439,9 +3433,6 @@ Object {
 
 .c1 {
   margin-bottom: 0;
-}
-
-.c1 a {
   color: var(--darkgrey);
   font-weight: 700;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
@@ -3711,7 +3702,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
       class="b1qsww-0 hRCMaV"
     >
       <h1
-        class="b1qsww-1 hTQZJB"
+        class="b1qsww-1 dxIltO"
       >
         Introduction to Unlock
       </h1>
@@ -3974,9 +3965,6 @@ Object {
 
 .c1 {
   margin-bottom: 0;
-}
-
-.c1 a {
   color: var(--darkgrey);
   font-weight: 700;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
@@ -4246,7 +4234,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
       class="b1qsww-0 hRCMaV"
     >
       <h1
-        class="b1qsww-1 hTQZJB"
+        class="b1qsww-1 dxIltO"
       >
         Introduction to Unlock
       </h1>
@@ -4509,9 +4497,6 @@ Object {
 
 .c1 {
   margin-bottom: 0;
-}
-
-.c1 a {
   color: var(--darkgrey);
   font-weight: 700;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
@@ -4793,7 +4778,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
       class="b1qsww-0 hRCMaV"
     >
       <h1
-        class="b1qsww-1 hTQZJB"
+        class="b1qsww-1 dxIltO"
       >
         Introduction to Unlock
       </h1>
