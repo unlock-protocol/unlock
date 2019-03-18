@@ -2,10 +2,16 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import * as rtl from 'react-testing-library'
 
-import { Home } from '../../pages/index'
-import { Jobs } from '../../pages/jobs'
-import { About } from '../../pages/about'
-import { Dashboard } from '../../pages/dashboard'
+import Home from '../../pages/index'
+import Jobs from '../../pages/jobs'
+import About from '../../pages/about'
+import Demo from '../../pages/demo'
+import Log from '../../pages/log'
+import Paywall from '../../pages/paywall'
+import Dashboard from '../../pages/dashboard'
+import Privacy from '../../pages/privacy'
+import Terms from '../../pages/terms'
+
 import { pageTitle, ETHEREUM_NETWORKS_NAMES } from '../../constants'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
@@ -28,48 +34,30 @@ const router = {
     hash: '',
   },
 }
+const account = {
+  address: '0xabc',
+  privateKey: 'deadbeef',
+  balance: '200',
+}
+
 ETHEREUM_NETWORKS_NAMES[network.name] = ['A Name']
 const store = createUnlockStore({ currency, network, router })
+const ConfigProvider = ConfigContext.Provider
 
 describe('Pages', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  describe('Home', () => {
-    it('should render title correctly', () => {
-      expect.assertions(1)
-      const config = {
-        env: 'prod',
-      }
-      rtl.render(
-        <Provider store={store}>
-          <Home config={config} />
-        </Provider>
-      )
-      expect(pageTitle).toBeCalled()
-    })
-  })
-
-  describe('Jobs', () => {
-    it('should render title correctly', () => {
-      expect.assertions(1)
-      rtl.render(
-        <Provider store={store}>
-          <Jobs />
-        </Provider>
-      )
-      expect(pageTitle).toBeCalledWith('Work at Unlock')
-    })
-  })
-
   describe('About', () => {
     it('should render title correctly', () => {
       expect.assertions(1)
       rtl.render(
-        <Provider store={store}>
-          <About />
-        </Provider>
+        <ConfigProvider value={config}>
+          <Provider store={store}>
+            <About />
+          </Provider>
+        </ConfigProvider>
       )
       expect(pageTitle).toBeCalledWith('About')
     })
@@ -79,12 +67,6 @@ describe('Pages', () => {
     it('should render title correctly', () => {
       expect.assertions(1)
 
-      const account = {
-        address: '0xabc',
-        privateKey: 'deadbeef',
-        balance: '200',
-      }
-      const ConfigProvider = ConfigContext.Provider
       rtl.render(
         <ConfigProvider value={config}>
           <Provider store={store}>
@@ -98,6 +80,104 @@ describe('Pages', () => {
         </ConfigProvider>
       )
       expect(pageTitle).toBeCalledWith('Dashboard')
+    })
+  })
+
+  describe('Demo', () => {
+    it('should render title correctly', () => {
+      expect.assertions(1)
+      rtl.render(
+        <ConfigProvider value={config}>
+          <Provider store={store}>
+            <Demo />
+          </Provider>
+        </ConfigProvider>
+      )
+      expect(pageTitle).toBeCalledWith('Demo')
+    })
+  })
+
+  describe('Home', () => {
+    it('should render title correctly', () => {
+      expect.assertions(1)
+      rtl.render(
+        <ConfigProvider value={config}>
+          <Provider store={store}>
+            <Home />
+          </Provider>
+        </ConfigProvider>
+      )
+      expect(pageTitle).toBeCalled()
+    })
+  })
+
+  describe('Jobs', () => {
+    it('should render title correctly', () => {
+      expect.assertions(1)
+      rtl.render(
+        <ConfigProvider value={config}>
+          <Provider store={store}>
+            <Jobs />
+          </Provider>
+        </ConfigProvider>
+      )
+      expect(pageTitle).toBeCalledWith('Work at Unlock')
+    })
+  })
+
+  describe('Log', () => {
+    it('should render title correctly', () => {
+      expect.assertions(1)
+      rtl.render(
+        <ConfigProvider value={config}>
+          <Provider store={store}>
+            <Log account={account} />
+          </Provider>
+        </ConfigProvider>
+      )
+      expect(pageTitle).toBeCalledWith('Log')
+    })
+  })
+
+  describe('Paywall', () => {
+    it('should render title correctly', () => {
+      expect.assertions(1)
+      rtl.render(
+        <ConfigProvider value={config}>
+          <Provider store={store}>
+            <Paywall account={account} />
+          </Provider>
+        </ConfigProvider>
+      )
+      expect(pageTitle).toBeCalledWith('Paywall Demo')
+    })
+  })
+
+  describe('Privacy', () => {
+    it('should render title correctly', () => {
+      expect.assertions(1)
+      rtl.render(
+        <ConfigProvider value={config}>
+          <Provider store={store}>
+            <Privacy account={account} />
+          </Provider>
+        </ConfigProvider>
+      )
+      expect(pageTitle).toBeCalledWith('Privacy Policy')
+    })
+  })
+
+  describe('Terms', () => {
+    it('should render title correctly', () => {
+      expect.assertions(1)
+      rtl.render(
+        <ConfigProvider value={config}>
+          <Provider store={store}>
+            <Terms account={account} />
+          </Provider>
+        </ConfigProvider>
+      )
+      expect(pageTitle).toBeCalledWith('Terms of Service')
     })
   })
 })

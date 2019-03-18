@@ -1,4 +1,4 @@
-import { mapStateToProps } from '../../pages/dashboard'
+import { mapStateToProps } from '../../../components/content/DashboardContent'
 
 const transactions = {
   '0x1234': {
@@ -81,7 +81,7 @@ const locksMinusATransaction = {
   },
 }
 
-describe('Dashboard', () => {
+describe('DashboardContent', () => {
   it('should sort locks in descending order by blockNumber', () => {
     expect.assertions(4)
     const state = {

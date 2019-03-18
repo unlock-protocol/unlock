@@ -1,6 +1,9 @@
-import { mapStateToProps, humanize } from '../../pages/log'
-import { TransactionType } from '../../unlock'
-import configure from '../../config'
+import {
+  mapStateToProps,
+  humanize,
+} from '../../../components/content/LogContent'
+import { TransactionType } from '../../../unlock'
+import configure from '../../../config'
 
 const transactions = {
   '0x1234': {

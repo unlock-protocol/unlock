@@ -1,4 +1,4 @@
-import { mapStateToProps } from '../../pages/demo'
+import { mapStateToProps } from '../../../components/content/DemoContent'
 
 describe('Demo', () => {
   describe('mapStateToProps', () => {
