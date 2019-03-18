@@ -10,11 +10,6 @@ describe('The Unlock Paywall', () => {
   }
 
   beforeAll(async () => {
-    await page.goto(url('/dashboard'))
-    await expect(page).toMatch('Creator Dashboard')
-    await page.waitFor('#CreateLockButton')
-    await page.waitForSelector(`#LockEmbeddCode_${testLockAddress}`)
-    await expect(page).toMatch('30 days')
     await Promise.all([
       page.goto(url(`/demo/${testLockAddress}`)),
       page.waitForNavigation(),
@@ -34,7 +29,8 @@ describe('The Unlock Paywall', () => {
       if (!eth) return false
       return eth.innerText === '0.33 ETH'
     }, {}, lockSelector('EthPrice'))
-  }, 20000)
+  })
+
   it('clicking the lock purchases a key', async () => {
     const paywallIframe = page.mainFrame().childFrames()[0]
     const paywallBody = await paywallIframe.$('body')
@@ -44,7 +40,8 @@ describe('The Unlock Paywall', () => {
       if (!footer) return false
       return footer.innerText === 'Payment Pending'
     }, {}, 'footer')
-  }, 15000)
+  })
+
   it('after key purchase, unlocked flag appears', async () => {
     await page.reload()
     await page.waitForFunction(() => window.frames.length)
@@ -54,5 +51,5 @@ describe('The Unlock Paywall', () => {
       if (!unlockFlag) return false
       return true
     })
-  }, 15000)
+  })
 })
