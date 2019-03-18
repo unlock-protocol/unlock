@@ -78,6 +78,19 @@ export const delay = PropTypes.number
 
 export const keyList = PropTypes.arrayOf(key)
 
+export const post = PropTypes.shape({
+  title: PropTypes.string,
+  description: PropTypes.string,
+  subTitle: PropTypes.string,
+  authorName: PropTypes.string,
+  publishDate: PropTypes.string,
+  __content: PropTypes.string,
+})
+
+export const slug = PropTypes.string
+
+export const postFeed = PropTypes.array
+
 export default {
   account,
   address,
@@ -98,7 +111,10 @@ export default {
   network,
   networks,
   mechanism,
+  post,
+  postFeed,
   provider,
+  slug,
   transaction,
   transactions,
   status,

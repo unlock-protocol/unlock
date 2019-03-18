@@ -95,7 +95,7 @@ describe('blog', () => {
       '/blog': { page: '/blog' },
     }
 
-    const combinedPages = blog.addBlogPagesToNext('/foo/bar', pages)
+    const combinedPages = blog.addBlogPagesToPageObject('/foo/bar', pages)
 
     expect(combinedPages['/log'].page).toEqual('/log')
     expect(combinedPages['/blog/test1'].page).toEqual('/post')
