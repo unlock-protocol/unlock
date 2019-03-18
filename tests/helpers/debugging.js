@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 let counter = 1
 module.exports = {
   debugPage(page, debug = false) {
