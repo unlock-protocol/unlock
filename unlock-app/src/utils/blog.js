@@ -77,7 +77,6 @@ const generateBlogIndexFile = (baseDir, postFeed) => {
 const addBlogPagesToPageObject = (dir, pages) => {
   let blogFeed = generateBlogFeed(dir)
   let blogPages = generateBlogPages(blogFeed)
-  generateBlogIndexFile(dir, blogFeed)
 
   return { ...pages, ...blogPages }
 }
