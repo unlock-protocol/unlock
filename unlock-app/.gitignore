@@ -9,9 +9,6 @@
 # production
 /build
 
-# blog
-/src/static/blog.json
-
 # misc
 .DS_Store
 .env.local
