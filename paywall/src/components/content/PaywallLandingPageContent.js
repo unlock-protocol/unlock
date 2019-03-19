@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import Layout from './interface/Layout'
-import KeyText from './interface/svg/KeyText'
-import Media from '../theme/media'
+import Layout from '../interface/Layout'
+import KeyText from '../interface/svg/KeyText'
+import Media from '../../theme/media'
 
-export default function LandingPage() {
+export default function PaywallLandingPageContent() {
   return (
     <Layout title="Paywall" forContent>
       <section>

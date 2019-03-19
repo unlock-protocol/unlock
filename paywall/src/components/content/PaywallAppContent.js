@@ -1,24 +1,24 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import UnlockPropTypes from '../propTypes'
-import Overlay from './lock/Overlay'
-import DeveloperOverlay from './developer/DeveloperOverlay'
-import ShowWhenLocked from './lock/ShowWhenLocked'
-import ShowWhenUnlocked from './lock/ShowWhenUnlocked'
-import GlobalErrorProvider from '../utils/GlobalErrorProvider'
-import { UnlockedFlag } from './lock/UnlockFlag'
-import { lockRoute } from '../utils/routes'
-import useListenForPostMessage from '../hooks/browser/useListenForPostMessage'
-import usePostMessage from '../hooks/browser/usePostMessage'
+import UnlockPropTypes from '../../propTypes'
+import Overlay from '../lock/Overlay'
+import DeveloperOverlay from '../developer/DeveloperOverlay'
+import ShowWhenLocked from '../lock/ShowWhenLocked'
+import ShowWhenUnlocked from '../lock/ShowWhenUnlocked'
+import GlobalErrorProvider from '../../utils/GlobalErrorProvider'
+import { UnlockedFlag } from '../lock/UnlockFlag'
+import { lockRoute } from '../../utils/routes'
+import useListenForPostMessage from '../../hooks/browser/useListenForPostMessage'
+import usePostMessage from '../../hooks/browser/usePostMessage'
 import {
   POST_MESSAGE_LOCKED,
   POST_MESSAGE_UNLOCKED,
-} from '../paywall-builder/constants'
-import { isPositiveNumber } from '../utils/validators'
-import useWindow from '../hooks/browser/useWindow'
+} from '../../paywall-builder/constants'
+import { isPositiveNumber } from '../../utils/validators'
+import useWindow from '../../hooks/browser/useWindow'
 
-export function Paywall({ locks, locked, redirect }) {
+export function PaywallAppContent({ locks, locked, redirect }) {
   const window = useWindow()
   const scrollPosition = useListenForPostMessage({
     type: 'scrollPosition',
@@ -59,13 +59,13 @@ export function Paywall({ locks, locked, redirect }) {
   )
 }
 
-Paywall.propTypes = {
+PaywallAppContent.propTypes = {
   locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
   locked: PropTypes.bool.isRequired,
   redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 }
 
-Paywall.defaultProps = {
+PaywallAppContent.defaultProps = {
   redirect: false,
 }
 
@@ -94,4 +94,4 @@ export const mapStateToProps = ({ locks, keys, modals, router }) => {
   return { locked, locks: locksFromUri, redirect }
 }
 
-export default connect(mapStateToProps)(Paywall)
+export default connect(mapStateToProps)(PaywallAppContent)

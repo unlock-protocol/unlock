@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Index from '../components/Index'
+import PaywallHomeContent from '../components/content/PaywallHomeContent'
 
 export default function PaywallHome({ router }) {
-  return <Index path={router.asPath} />
+  return <PaywallHomeContent path={router.asPath} />
 }
 
 PaywallHome.propTypes = {
