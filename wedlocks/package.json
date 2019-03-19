@@ -11,6 +11,7 @@
     "aws-sdk": "^2.423.0",
     "babel-loader": "^8.0.5",
     "netlify-cli": "^2.8.3",
+    "nodemailer": "^5.1.1",
     "nodemon": "^1.18.10",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0"
