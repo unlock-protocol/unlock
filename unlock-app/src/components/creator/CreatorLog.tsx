@@ -1,32 +1,35 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Transaction } from '../../unlock'
+import * as UnlockTypes from '../../unlock'
 
 interface Props {
-  transactionFeed: Transaction[]
+  transactionFeed: UnlockTypes.Transaction[]
+  transactionMetadata: UnlockTypes.TransactionMetadata
 }
 
-const LogTransactions = (props: Props) => {
-  const { transactionFeed } = props
+const CreatorLog = (props: Props) => {
+  const { transactionFeed, transactionMetadata } = props
   return (
     <Grid>
     <HeaderItem>Block Number</HeaderItem>
     <HeaderItem>Lock Name/Address</HeaderItem>
     <HeaderItem>Type</HeaderItem>
-    {transactionFeed.map(tx => (
+    {transactionFeed.map(tx => {
+      const { href, readableName } = transactionMetadata[tx.hash]
+      return (
       <React.Fragment key={tx.hash}>
         <BlockNumber>{tx.blockNumber}</BlockNumber>
-        <Address href={tx.href} target="_blank">
+        <Address href={href} target="_blank">
           {tx.lock}
         </Address>
-        <Type type={tx.type}>{tx.readableName}</Type>
+        <Type type={tx.type}>{readableName}</Type>
       </React.Fragment>
-    ))}
+    )})}
     </Grid>
   )
 }
 
-export default LogTransactions
+export default CreatorLog
 
 const Grid = styled.div`
   display: grid;
