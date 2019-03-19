@@ -1,8 +1,9 @@
-const Sequelize = require('sequelize')
-const ethJsUtil = require('ethereumjs-util')
-const Transaction = require('../models').Transaction
+const transactionOperations = require('../operations/transactionOperations')
 
-const Op = Sequelize.Op
+const {
+  findOrCreateTransaction,
+  getTransactionsBySender,
+} = transactionOperations
 
 const transactionCreate = async (req, res) => {
   let transaction = req.body
@@ -13,16 +14,7 @@ const transactionCreate = async (req, res) => {
     transaction.recipient
   ) {
     try {
-      await Transaction.findOrCreate({
-        where: {
-          transactionHash: transaction.transactionHash,
-        },
-        defaults: {
-          transactionHash: transaction.transactionHash,
-          sender: ethJsUtil.toChecksumAddress(transaction.sender),
-          recipient: ethJsUtil.toChecksumAddress(transaction.recipient),
-        },
-      })
+      await findOrCreateTransaction(transaction)
       res.sendStatus(202)
     } catch (e) {
       res.sendStatus(400)
@@ -30,16 +22,12 @@ const transactionCreate = async (req, res) => {
   }
 }
 
-const transactionGet = async (req, res) => {
-  const sender = ethJsUtil.toChecksumAddress(req.query.sender)
-
-  let transactions = await Transaction.findAll({
-    where: {
-      sender: { [Op.eq]: sender },
-    },
-  })
-
+const transactionsGet = async (req, res) => {
+  let transactions = []
+  if (req.query.sender) {
+    transactions = await getTransactionsBySender(req.query.sender)
+  }
   res.json({ transactions: transactions })
 }
 
-module.exports = { transactionCreate, transactionGet }
+module.exports = { transactionCreate, transactionsGet }
