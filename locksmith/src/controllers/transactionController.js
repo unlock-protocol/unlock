@@ -30,4 +30,16 @@ const transactionsGet = async (req, res) => {
   res.json({ transactions: transactions })
 }
 
-module.exports = { transactionCreate, transactionsGet }
+/**
+ * This will retun a JSON object to indicate the likelines that a transaction has to succeed.
+ * 0: the transaction will surely fail
+ * 1: the transaction will surecly succeed
+ * TODO: implement logic
+ * @param {*} req
+ * @param {*} res
+ */
+const transactionGetOdds = async (req, res) => {
+  res.json({ willSucceed: 1 })
+}
+
+module.exports = { transactionCreate, transactionsGet, transactionGetOdds }
