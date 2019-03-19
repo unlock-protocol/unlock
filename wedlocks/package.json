@@ -21,7 +21,8 @@
     "dev": "nodemon src/server.js --exec babel-node",
     "test": "jest",
     "lint": "eslint .",
-    "ci": "npm run lint && npm test"
+    "ci": "npm run lint && npm test",
+    "deploy-netlify": "./scripts/deploy-netlify.sh"
   },
   "author": "",
   "license": "MIT"
