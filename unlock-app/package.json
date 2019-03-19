@@ -75,7 +75,8 @@
   },
   "engineStrict": true,
   "scripts": {
-    "dev": "npm run start-ganache && npm run build-paywall && npm run build-blog && npm run deploy-unlock-contract && nodemon src/server.js",
+    "predev": "npm run start-ganache && npm run build-paywall && npm run build-blog && npm run deploy-unlock-contract",
+    "dev": "nodemon src/server.js",
     "build": "npm run build-paywall && next build src",
     "build-blog": "node scripts/build-blog.js",
     "build-paywall": "cross-env NODE_ENV=production rollup -c rollup.paywall.config.js -o ./src/static/paywall.min.js",
