@@ -2,4 +2,5 @@
   "trailingComma": "es5",
   "singleQuote": true,
   "semi": false,
+  "endOfLine": "lf"
 }
