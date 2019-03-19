@@ -112,7 +112,7 @@ describe('iframe', () => {
       overflow: 'hidden',
       width: '134px',
       height: '160px',
-      'margin-right': '-104px',
+      marginRight: 0,
       left: null,
       top: null,
       right: '0',
