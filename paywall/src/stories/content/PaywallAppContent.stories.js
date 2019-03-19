@@ -2,10 +2,10 @@ import { Provider } from 'react-redux'
 import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
 import { storiesOf } from '@storybook/react'
-import Paywall from '../components/Paywall'
-import createUnlockStore from '../createUnlockStore'
-import { ConfigContext } from '../utils/withConfig'
-import { WindowContext } from '../hooks/browser/useWindow'
+import PaywallAppContent from '../../components/content/PaywallAppContent'
+import createUnlockStore from '../../createUnlockStore'
+import { ConfigContext } from '../../utils/withConfig'
+import { WindowContext } from '../../hooks/browser/useWindow'
 
 const lock = {
   address: '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e',
@@ -106,7 +106,7 @@ FakeItTillYouMakeIt.propTypes = {
   children: PropTypes.node.isRequired,
 }
 
-storiesOf('Paywall', module)
+storiesOf('Paywall App Content', module)
   // pass in a fake window object, to avoid modifying the real body and munging storyshots
   .addDecorator(getStory => (
     <ConfigContext.Provider value={config}>
@@ -123,14 +123,14 @@ storiesOf('Paywall', module)
   .add('the paywall overlay', () => {
     return (
       <Provider store={lockedStore}>
-        <Paywall />
+        <PaywallAppContent />
       </Provider>
     )
   })
   .add('the paywall overlay, unlocked', () => {
     return (
       <Provider store={unlockedStore}>
-        <Paywall />
+        <PaywallAppContent />
       </Provider>
     )
   })

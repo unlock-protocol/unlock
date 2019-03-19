@@ -1,11 +1,14 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
-import createUnlockStore from '../../createUnlockStore'
-import { Paywall, mapStateToProps } from '../../components/Paywall'
-import { ConfigContext } from '../../utils/withConfig'
-import { WindowContext } from '../../hooks/browser/useWindow'
-import { POST_MESSAGE_SCROLL_POSITION } from '../../paywall-builder/constants'
+import createUnlockStore from '../../../createUnlockStore'
+import {
+  PaywallAppContent,
+  mapStateToProps,
+} from '../../../components/content/PaywallAppContent'
+import { ConfigContext } from '../../../utils/withConfig'
+import { WindowContext } from '../../../hooks/browser/useWindow'
+import { POST_MESSAGE_SCROLL_POSITION } from '../../../paywall-builder/constants'
 
 jest.useFakeTimers()
 
@@ -50,7 +53,7 @@ function renderMockPaywall(props = {}) {
     <ConfigContext.Provider value={config}>
       <WindowContext.Provider value={fakeWindow}>
         <Provider store={store}>
-          <Paywall locks={[]} locked redirect={false} {...props} />
+          <PaywallAppContent locks={[]} locked redirect={false} {...props} />
         </Provider>
       </WindowContext.Provider>
     </ConfigContext.Provider>
@@ -64,7 +67,7 @@ function getPostmessageEventListener() {
 afterEach(() => {
   rtl.cleanup()
 })
-describe('Paywall', () => {
+describe('PaywallAppContent', () => {
   beforeEach(() => {
     config = { providers: [], isInIframe: true }
     fakeWindow = {

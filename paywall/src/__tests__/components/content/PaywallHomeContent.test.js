@@ -2,10 +2,10 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
 
-import Index from '../../components/Index'
-import createUnlockStore from '../../createUnlockStore'
-import { ConfigContext } from '../../utils/withConfig'
-import { WindowContext } from '../../hooks/browser/useWindow'
+import PaywallHomeContent from '../../../components/content/PaywallHomeContent'
+import createUnlockStore from '../../../createUnlockStore'
+import { ConfigContext } from '../../../utils/withConfig'
+import { WindowContext } from '../../../hooks/browser/useWindow'
 
 jest.useFakeTimers()
 describe('Index component', () => {
@@ -15,7 +15,7 @@ describe('Index component', () => {
     '0x1bd7cf2e0d9f7ede3473ba1588fa5258a4920d57e9c97cd10350c7482d3cbff2'
   it('should return the landing page if no lock is passed', () => {
     expect.assertions(2)
-    const component = rtl.render(<Index path="/" />)
+    const component = rtl.render(<PaywallHomeContent path="/" />)
 
     expect(component.getByText('Pay for Content Seamlessly')).not.toBeNull()
     expect(component.queryByText('30 days')).toBeNull()
@@ -69,7 +69,7 @@ describe('Index component', () => {
       <Provider store={store}>
         <WindowContext.Provider value={window}>
           <ConfigContext.Provider value={config}>
-            <Index path={`/${lock}`} />
+            <PaywallHomeContent path={`/${lock}`} />
           </ConfigContext.Provider>
         </WindowContext.Provider>
       </Provider>

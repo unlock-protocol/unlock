@@ -2,13 +2,13 @@ import React from 'react'
 import { Provider } from 'react-redux'
 
 import { storiesOf } from '@storybook/react'
-import LandingPage from '../components/LandingPage'
-import createUnlockStore from '../createUnlockStore'
+import PaywallLandingPageContent from '../../components/content/PaywallLandingPageContent'
+import createUnlockStore from '../../createUnlockStore'
 
 const store = createUnlockStore()
 
-storiesOf('Landing Page', module)
+storiesOf('Paywall Landing Page', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('The Landing Page', () => {
-    return <LandingPage />
+    return <PaywallLandingPageContent />
   })
