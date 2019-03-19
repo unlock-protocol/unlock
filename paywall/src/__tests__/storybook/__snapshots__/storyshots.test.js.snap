@@ -11867,10 +11867,10 @@ Object {
   float: right;
   box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
   background: var(--white);
-  opacity: 0.5;
+  margin-right: 0;
+  opacity: 1;
   -webkit-transition: opacity 0.4s ease-in;
   transition: opacity 0.4s ease-in;
-  margin-right: 0;
 }
 
 .c0 > * {
@@ -11958,7 +11958,7 @@ Object {
       style="position: absolute; right: 0px; bottom: 105px; width: 134px; height: 160px; margin-right: -104px; transition: margin-right 0.4s ease-in;"
     >
       <footer
-        class="sc-1549ebs-8 sc-15m75z9-0 ctTzbX"
+        class="sc-1549ebs-8 sc-15m75z9-0 dmOLvv"
         id="UnlockFlag"
       >
         <div
@@ -13544,10 +13544,10 @@ Object {
   float: right;
   box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
   background: var(--white);
-  opacity: 0.5;
+  margin-right: 0;
+  opacity: 1;
   -webkit-transition: opacity 0.4s ease-in;
   transition: opacity 0.4s ease-in;
-  margin-right: 0;
 }
 
 .c0 > * {
@@ -13628,7 +13628,7 @@ Object {
       rel="stylesheet"
     />
     <footer
-      class="sc-1549ebs-8 sc-15m75z9-0 ctTzbX"
+      class="sc-1549ebs-8 sc-15m75z9-0 dmOLvv"
       id="UnlockFlag"
     >
       <div
