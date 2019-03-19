@@ -4,48 +4,44 @@ const TestErc20Token = artifacts.require('TestErc20Token.sol')
 const getUnlockProxy = require('../helpers/proxy')
 const shouldFail = require('../helpers/shouldFail')
 const deployLocks = require('../helpers/deployLocks')
+const LockApi = require('../helpers/lockApi')
 
-let unlock, token, locks
+contract('Lock / erc20', accounts => {
+  let token, lock, lockApi
 
-contract('Unlock / erc20', accounts => {
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
     token = await TestErc20Token.new()
-    locks = await deployLocks(unlock, accounts[0], token.address)
+    const unlock = await getUnlockProxy(unlockContract)
+    const locks = await deployLocks(unlock, accounts[0], token.address)
+    lock = locks['FIRST']
+    lockApi = new LockApi(lock)
   })
 
   describe('creating ERC20 priced locks', () => {
-    let lock
     let keyPrice
+    const keyOwner = accounts[1]
+    const keyOwner2 = accounts[2]
+    const defaultBalance = new BigNumber(100000000000000000)
 
     before(async () => {
-      lock = locks['FIRST']
+      // Pre-req
+      assert.equal(await token.balanceOf(keyOwner), 0)
+      assert.equal(await token.balanceOf(lock.address), 0)
+
+      // Mint some tokens for testing
+      await token.mint(keyOwner, defaultBalance)
+      await token.mint(keyOwner2, defaultBalance)
+
+      // Approve the lock to make transfers
+      await token.approve(lock.address, -1, { from: keyOwner })
+      await token.approve(lock.address, -1, { from: keyOwner2 })
+
       keyPrice = new BigNumber(await lock.keyPrice.call())
     })
 
     describe('users can purchase keys', () => {
-      const keyOwner = accounts[1]
-      const defaultBalance = new BigNumber(100000000000000000)
-
-      before(async () => {
-        // Pre-req
-        assert.equal(await token.balanceOf(keyOwner), 0)
-        assert.equal(await token.balanceOf(lock.address), 0)
-      })
-
       it('can purchase', async () => {
-        // Mint some tokens for testing
-        await token.mint(keyOwner, defaultBalance)
-
-        await token.approve(lock.address, -1, { from: keyOwner })
-
-        try {
-          await lock.purchaseFor(keyOwner, { from: keyOwner, gas: 5000000 })
-        } catch (e) {
-          // TODO why is there an out of gas error here?!
-          // Tests below show that the tx was actually successful.
-          console.log(e)
-        }
+        await lockApi.purchaseFor(keyOwner)
       })
 
       it('charges correct amount on purchaseKey', async () => {
@@ -60,13 +56,7 @@ contract('Unlock / erc20', accounts => {
 
       it('when a key owner cancels a key, they are refunded in tokens', async () => {
         const balance = new BigNumber(await token.balanceOf(keyOwner))
-        try {
-          await lock.cancelAndRefund({ from: keyOwner })
-        } catch (e) {
-          // TODO why is there an out of gas error here?!
-          // assert below shows that the tx was actually successful.
-          console.log(e)
-        }
+        await lockApi.cancelAndRefund(keyOwner)
         assert(balance.lt(await token.balanceOf(keyOwner)))
       })
 
@@ -74,13 +64,7 @@ contract('Unlock / erc20', accounts => {
         const lockBalance = new BigNumber(await token.balanceOf(lock.address))
         const ownerBalance = new BigNumber(await token.balanceOf(accounts[0]))
 
-        try {
-          await lock.partialWithdraw(1)
-        } catch (e) {
-          // TODO why is there an out of gas error here?!
-          // assert below shows that the tx was actually successful.
-          console.log(e)
-        }
+        await lockApi.partialWithdraw(1, accounts[0])
 
         assert.equal(await token.balanceOf(lock.address), lockBalance.minus(1).toFixed())
         assert.equal(await token.balanceOf(accounts[0]), ownerBalance.plus(1).toFixed())
@@ -90,28 +74,33 @@ contract('Unlock / erc20', accounts => {
         const lockBalance = new BigNumber(await token.balanceOf(lock.address))
         const ownerBalance = new BigNumber(await token.balanceOf(accounts[0]))
 
-        try {
-          await lock.withdraw()
-        } catch (e) {
-          // TODO why is there an out of gas error here?!
-          // assert below shows that the tx was actually successful.
-          console.log(e)
-        }
+        await lockApi.withdraw(accounts[0])
 
         assert.equal(await token.balanceOf(lock.address), 0)
         assert.equal(await token.balanceOf(accounts[0]), ownerBalance.plus(lockBalance).toFixed())
       })
+
+      it('purchaseForFrom works as well', async () => {
+        // The referrer needs a valid key for this test
+        await lockApi.purchaseFor(keyOwner)
+        const balanceBefore = new BigNumber(await token.balanceOf(keyOwner2))
+
+        await lockApi.purchaseForFrom(keyOwner2, keyOwner)
+
+        const balance = new BigNumber(await token.balanceOf(keyOwner2))
+        assert.equal(balance.toFixed(), balanceBefore.minus(keyPrice).toFixed())
+      })
     })
 
     it('purchaseKey fails when the user does not have enough funds', async () => {
-      const account = accounts[2]
+      const account = accounts[3]
       await token.approve(lock.address, -1)
       await token.mint(account, keyPrice.minus(1))
       await shouldFail(lock.purchaseFor(account, { from: account }))
     })
 
     it('purchaseKey fails when the user did not give the contract an allowance', async () => {
-      const account = accounts[2]
+      const account = accounts[4]
       await token.approve(lock.address, -1)
       await token.mint(account, keyPrice)
       await shouldFail(lock.purchaseFor(account, { from: account }))
