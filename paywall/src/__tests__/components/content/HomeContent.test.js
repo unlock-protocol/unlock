@@ -2,7 +2,7 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
 
-import PaywallHomeContent from '../../../components/content/PaywallHomeContent'
+import PaywallHomeContent from '../../../components/content/HomeContent'
 import createUnlockStore from '../../../createUnlockStore'
 import { ConfigContext } from '../../../utils/withConfig'
 import { WindowContext } from '../../../hooks/browser/useWindow'

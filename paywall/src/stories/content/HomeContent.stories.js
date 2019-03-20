@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import PaywallHomeContent from '../../components/content/PaywallHomeContent'
+import HomeContent from '../../components/content/HomeContent'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
@@ -64,12 +64,12 @@ storiesOf('Paywall Home page', module)
     </ConfigContext.Provider>
   ))
   .add('Paywall home page, path is /', () => {
-    return <PaywallHomeContent path="/" />
+    return <HomeContent path="/" />
   })
   .add('Paywall home page, path is /<lock address>', () => {
     return (
       <Provider store={lockedStore}>
-        <PaywallHomeContent path="/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e" />
+        <HomeContent path="/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e" />
       </Provider>
     )
   })

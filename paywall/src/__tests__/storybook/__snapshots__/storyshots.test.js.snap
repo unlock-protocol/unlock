@@ -9505,8 +9505,7 @@ Object {
 exports[`Storyshots Paywall Home page Paywall home page, path is / 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": <body>
-    .c10 {
+  "baseElement": .c10 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -9906,7 +9905,8 @@ Object {
   }
 }
 
-<div>
+<body>
+    <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"

@@ -44,7 +44,7 @@ module.exports = withSourceMaps({
     }
 
     return {
-      '/': { page: '/paywallHome' },
+      '/': { page: '/home' },
     }
   },
 })
