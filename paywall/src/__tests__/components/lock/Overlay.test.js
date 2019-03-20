@@ -77,7 +77,27 @@ describe('Overlay', () => {
 
       expect(wrapper.getByText('children')).not.toBeNull()
     })
-    it('should display error if present', () => {
+    it('should display error', () => {
+      expect.assertions(1)
+      const wrapper = rtl.render(
+        displayError(true /* isMainWindow */)('foobar', {}, <div>children</div>)
+      )
+
+      expect(wrapper.getByText('Fatal Error')).not.toBeNull()
+    })
+    it('should display children if provider is missing and in the iframe', () => {
+      expect.assertions(1)
+      const wrapper = rtl.render(
+        displayError(false /* iframe */)(
+          FATAL_MISSING_PROVIDER,
+          {},
+          <div>children</div>
+        )
+      )
+
+      expect(wrapper.queryByText('Wallet missing')).toBeNull()
+    })
+    it('should display error if provider is missing and in the main window', () => {
       expect.assertions(1)
       const wrapper = rtl.render(
         displayError(true /* isMainWindow */)(
@@ -157,9 +177,7 @@ describe('Overlay', () => {
           <ConfigProvider
             value={{ requiredConfirmations: 12, isInIframe: true }}
           >
-            <ErrorProvider
-              value={{ error: FATAL_MISSING_PROVIDER, errorMetadata: {} }}
-            >
+            <ErrorProvider value={{ error: 'foobar', errorMetadata: {} }}>
               <Overlay
                 scrollPosition={0}
                 hideModal={() => {}}
