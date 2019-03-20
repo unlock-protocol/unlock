@@ -21,7 +21,9 @@ function _server(port, dev) {
         // assigning `query` into the params means that we still
         // get the query string passed to our application
         const path = pathname.split('/')[1]
-        if (path === 'paywall') {
+        if (path === '') {
+          app.render(req, res, '/home', {})
+        } else if (path === 'paywall') {
           const params = route('/paywall/:lockAddress/:redirect?')(pathname)
           app.render(req, res, '/paywall', Object.assign(params, query))
         } else if (path === 'demo') {

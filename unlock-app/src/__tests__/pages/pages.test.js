@@ -2,7 +2,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import * as rtl from 'react-testing-library'
 
-import Home from '../../pages/index'
+import Home from '../../pages/home'
 import Jobs from '../../pages/jobs'
 import About from '../../pages/about'
 import Demo from '../../pages/demo'

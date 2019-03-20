@@ -64,7 +64,7 @@ module.exports = withTypescript({
 
     // Our statically-defined pages to export
     let pages = {
-      '/': { page: '/' },
+      '/': { page: '/home' },
       '/about': { page: '/about' },
       '/jobs': { page: '/jobs' },
       '/dashboard': { page: '/dashboard' },

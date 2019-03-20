@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { Provider } from 'react-redux'
 
-import Home from '../pages'
+import Home from '../pages/home'
 import About from '../pages/about'
 import Jobs from '../pages/jobs'
 import Terms from '../pages/terms'
