@@ -5,7 +5,7 @@ import PaywallAppContent from './PaywallAppContent'
 import BrowserOnly from '../helpers/BrowserOnly'
 import PaywallLandingPageContent from './PaywallLandingPageContent'
 
-export default function IndexContent({ path }) {
+export default function PaywallHomeContent({ path }) {
   if (path === '/') return <PaywallLandingPageContent />
   return (
     <BrowserOnly>
@@ -14,6 +14,6 @@ export default function IndexContent({ path }) {
   )
 }
 
-IndexContent.propTypes = {
+PaywallHomeContent.propTypes = {
   path: PropTypes.string.isRequired,
 }
