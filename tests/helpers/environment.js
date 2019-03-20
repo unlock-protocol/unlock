@@ -1,45 +1,26 @@
-const net = require('net')
-const PuppeteerEnvironment = require('jest-environment-puppeteer')
+/* eslint no-console: 0 */
 
-const port = process.env.UNLOCK_PORT || 3000
+const PuppeteerEnvironment = require('jest-environment-puppeteer')
+const serverIsUp = require('./serverIsUp')
+
+const unlockPort = process.env.UNLOCK_PORT || 3000
+const locksmithPort = process.env.LOCKSMITH_PORT || 8080
+const paywallPort = process.env.PAYWALL_PORT || 3001
 const ci = process.env.CI
 
-/**
- * This is a helper function to ensure that we start the test suite only when the server is up
- * We will retry for
- */
-const serverIsUp = (delay, maxAttempts) => new Promise((resolve, reject) => {
-  let attempts = 1
-  const tryConnecting = () => {
-    const socket = net.connect(
-      port,
-      'unlock',
-      () => {
-        resolve()
-        return socket.end() // clean-up
-      }
-    )
-
-    socket.on('error', (error) => {
-      if (error.code === 'ECONNREFUSED') {
-        if (attempts < maxAttempts) {
-          attempts += 1
-          return setTimeout(tryConnecting, delay)
-        }
-        return reject(error)
-      }
-      return reject(error)
-    })
-  }
-  tryConnecting()
-})
+const unlockHost = ci ? 'unlock' : '127.0.0.1'
+const locksmithHost = ci ? 'locksmith' : '127.0.0.1'
+const paywallHost = ci ? 'paywall' : '127.0.0.1'
 
 class UnlockEnvironment extends PuppeteerEnvironment {
   async setup() {
     await super.setup()
-    if (ci) {
-      await serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
-    }
+    console.log('Waiting for Unlock')
+    await serverIsUp(unlockHost, unlockPort, 1000 /* every s */, 120 /* up to 2m */)
+    console.log('Waiting for Locksmith')
+    await serverIsUp(locksmithHost, locksmithPort, 1000 /* every s */, 120 /* up to 2m */)
+    console.log('Waiting for Paywall')
+    await serverIsUp(paywallHost, paywallPort, 1000 /* every s */, 120 /* up to 2m */)
   }
 
   async teardown() {
