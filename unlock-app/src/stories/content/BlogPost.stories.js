@@ -44,7 +44,7 @@ And a numbered list:
  
 And an image:
 
-![Unlock](https://raw.githubusercontent.com/unlock-protocol/unlock/master/unlock-app/src/static/images/unlock-word-mark.png?sanitize=true)
+![Unlock](/static/images/unlock-word-mark.png)
 
 ## Why do we need to remove middlemen?
 
