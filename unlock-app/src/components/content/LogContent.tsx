@@ -11,7 +11,7 @@ import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { pageTitle } from '../../constants'
 import withConfig from '../../utils/withConfig'
 
-export const humanize = type => {
+export const humanize = (type: string) => {
   if (!type) return ''
   let parts = type.split('_')
   return parts.map(part => part[0] + part.slice(1).toLowerCase()).join(' ')
