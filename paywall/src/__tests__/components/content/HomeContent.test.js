@@ -2,7 +2,7 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
 
-import PaywallHomeContent from '../../../components/content/HomeContent'
+import HomeContent from '../../../components/content/HomeContent'
 import createUnlockStore from '../../../createUnlockStore'
 import { ConfigContext } from '../../../utils/withConfig'
 import { WindowContext } from '../../../hooks/browser/useWindow'
@@ -15,7 +15,7 @@ describe('Index component', () => {
     '0x1bd7cf2e0d9f7ede3473ba1588fa5258a4920d57e9c97cd10350c7482d3cbff2'
   it('should return the landing page if no lock is passed', () => {
     expect.assertions(2)
-    const component = rtl.render(<PaywallHomeContent path="/" />)
+    const component = rtl.render(<HomeContent path="/" />)
 
     expect(component.getByText('Pay for Content Seamlessly')).not.toBeNull()
     expect(component.queryByText('30 days')).toBeNull()
@@ -69,7 +69,7 @@ describe('Index component', () => {
       <Provider store={store}>
         <WindowContext.Provider value={window}>
           <ConfigContext.Provider value={config}>
-            <PaywallHomeContent path={`/${lock}`} />
+            <HomeContent path={`/${lock}`} />
           </ConfigContext.Provider>
         </WindowContext.Provider>
       </Provider>
