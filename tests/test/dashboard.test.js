@@ -75,7 +75,7 @@ describe('The Unlock Dashboard', () => {
       await page.waitFor(3500)
       await expect(page).toMatch('Updated Lock Name')
     })
-    it('should retain the lock name', async () => {
+    it('should retain the lock price', async () => {
       await expect(page).toMatch('0.33')
     })
   })
