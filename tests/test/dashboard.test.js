@@ -63,6 +63,7 @@ describe('The Unlock Dashboard', () => {
         await expect(page).toMatchElement(`#KeyPriceEditField_${testLockAddress}`)
         await expect(page).toFill(`input[id="KeyPriceEditField_${testLockAddress}"]`, '0.33')
         await expect(page).toClick('button', { text: 'Submit' })
+        await page.waitFor(1000)
         await expect(page).toMatch('0.33')
       })
     })
@@ -73,6 +74,9 @@ describe('The Unlock Dashboard', () => {
       await page.reload()
       await page.waitFor(3500)
       await expect(page).toMatch('Updated Lock Name')
+    })
+    it('should retain the lock name', async () => {
+      await expect(page).toMatch('0.33')
     })
   })
 })
