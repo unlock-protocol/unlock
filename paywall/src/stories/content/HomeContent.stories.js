@@ -1,10 +1,10 @@
 import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import Index from '../components/Index'
-import createUnlockStore from '../createUnlockStore'
-import { ConfigContext } from '../utils/withConfig'
-import { WindowContext } from '../hooks/browser/useWindow'
+import HomeContent from '../../components/content/HomeContent'
+import createUnlockStore from '../../createUnlockStore'
+import { ConfigContext } from '../../utils/withConfig'
+import { WindowContext } from '../../hooks/browser/useWindow'
 
 const lock = {
   address: '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e',
@@ -49,7 +49,7 @@ const config = {
   },
 }
 
-storiesOf('Index', module)
+storiesOf('Paywall home page', module)
   // pass in a fake window object, to avoid modifying the real body and munging storyshots
   .addDecorator(getStory => (
     <ConfigContext.Provider value={config}>
@@ -63,13 +63,13 @@ storiesOf('Index', module)
       </WindowContext.Provider>
     </ConfigContext.Provider>
   ))
-  .add('Index, path is /', () => {
-    return <Index path="/" />
+  .add('path is /', () => {
+    return <HomeContent path="/" />
   })
-  .add('Index, path is /<lock address>', () => {
+  .add('path is /<lock address>', () => {
     return (
       <Provider store={lockedStore}>
-        <Index path="/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e" />
+        <HomeContent path="/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e" />
       </Provider>
     )
   })

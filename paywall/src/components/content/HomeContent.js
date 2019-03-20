@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Paywall from './Paywall'
-import BrowserOnly from './helpers/BrowserOnly'
-import LandingPage from './LandingPage'
+import Paywall from '../Paywall'
+import BrowserOnly from '../helpers/BrowserOnly'
+import LandingPage from '../LandingPage'
 
-export default function Index({ path }) {
+export default function HomeContent({ path }) {
   if (path === '/') return <LandingPage />
   return (
     <BrowserOnly>
@@ -14,6 +14,6 @@ export default function Index({ path }) {
   )
 }
 
-Index.propTypes = {
+HomeContent.propTypes = {
   path: PropTypes.string.isRequired,
 }
