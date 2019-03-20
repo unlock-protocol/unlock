@@ -5,6 +5,9 @@ import createUnlockStore from '../../createUnlockStore'
 import { Paywall, mapStateToProps } from '../../components/Paywall'
 import { ConfigContext } from '../../utils/withConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
+import { POST_MESSAGE_SCROLL_POSITION } from '../../paywall-builder/constants'
+
+jest.useFakeTimers()
 
 const lock = { address: '0x4983D5ECDc5cc0E499c2D23BF4Ac32B982bAe53a' }
 const locks = {
@@ -52,6 +55,10 @@ function renderMockPaywall(props = {}) {
       </WindowContext.Provider>
     </ConfigContext.Provider>
   )
+}
+
+function getPostmessageEventListener() {
+  return fakeWindow.addEventListener.mock.calls[0][1]
 }
 
 afterEach(() => {
@@ -125,6 +132,28 @@ describe('Paywall', () => {
       }
       const props = mapStateToProps({ locks, router, keys, modals })
       expect(props.redirect).toBe('http://example.com')
+    })
+  })
+
+  describe('listen for scroll position', () => {
+    it('should accept a scroll position that is a real number', () => {
+      expect.assertions(1)
+      let component
+      rtl.act(() => {
+        component = renderMockPaywall({ locks: [lock] })
+      })
+      const listener = getPostmessageEventListener()
+
+      rtl.act(() => {
+        listener({
+          origin: 'http://example.com',
+          source: fakeWindow.parent,
+          data: { type: POST_MESSAGE_SCROLL_POSITION, payload: 1.23 },
+        })
+        jest.runAllTimers()
+      })
+
+      expect(component.getByTestId('paywall-banner').style.height).toBe('1.23%')
     })
   })
 
