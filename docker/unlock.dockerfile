@@ -102,7 +102,6 @@ RUN npm run build
 # Build wedlocks
 WORKDIR /home/unlock/wedlocks
 COPY --chown=node wedlocks/ /home/unlock/wedlocks/.
-RUN npm run build
 
 WORKDIR /home/unlock/
 
