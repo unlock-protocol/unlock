@@ -9379,6 +9379,7 @@ Object {
         >
           <div
             class="c1"
+            data-testid="paywall-banner"
             style="height: 0%;"
           >
             <h1
@@ -9524,6 +9525,7 @@ Object {
       >
         <div
           class="sc-7wmxqm-1 kmwBAR"
+          data-testid="paywall-banner"
           style="height: 0%;"
         >
           <h1
@@ -9881,6 +9883,7 @@ Object {
         >
           <div
             class="c1"
+            data-testid="paywall-banner"
             style="height: 0%;"
           >
             <h1
@@ -9995,6 +9998,7 @@ Object {
       >
         <div
           class="sc-7wmxqm-1 kmwBAR"
+          data-testid="paywall-banner"
           style="height: 0%;"
         >
           <h1
@@ -10381,6 +10385,7 @@ Object {
         >
           <div
             class="c1"
+            data-testid="paywall-banner"
             style="height: 0%;"
           >
             <h1
@@ -10526,6 +10531,7 @@ Object {
       >
         <div
           class="sc-7wmxqm-1 kmwBAR"
+          data-testid="paywall-banner"
           style="height: 0%;"
         >
           <h1
@@ -10883,6 +10889,7 @@ Object {
         >
           <div
             class="c1"
+            data-testid="paywall-banner"
             style="height: 0%;"
           >
             <h1
@@ -10997,6 +11004,7 @@ Object {
       >
         <div
           class="sc-7wmxqm-1 kmwBAR"
+          data-testid="paywall-banner"
           style="height: 0%;"
         >
           <h1
@@ -11383,6 +11391,7 @@ Object {
         >
           <div
             class="c1"
+            data-testid="paywall-banner"
             style="height: 0%;"
           >
             <h1
@@ -11577,6 +11586,7 @@ Object {
       >
         <div
           class="sc-7wmxqm-1 kmwBAR"
+          data-testid="paywall-banner"
           style="height: 0%;"
         >
           <h1

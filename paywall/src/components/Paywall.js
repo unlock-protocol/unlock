@@ -15,7 +15,7 @@ import {
   POST_MESSAGE_LOCKED,
   POST_MESSAGE_UNLOCKED,
 } from '../paywall-builder/constants'
-import { isPositiveInteger } from '../utils/validators'
+import { isPositiveNumber } from '../utils/validators'
 import useWindow from '../hooks/browser/useWindow'
 
 export function Paywall({ locks, locked, redirect }) {
@@ -23,7 +23,7 @@ export function Paywall({ locks, locked, redirect }) {
   const scrollPosition = useListenForPostMessage({
     type: 'scrollPosition',
     defaultValue: 0,
-    validator: isPositiveInteger,
+    validator: isPositiveNumber,
   })
   const { postMessage } = usePostMessage()
   useEffect(() => {
