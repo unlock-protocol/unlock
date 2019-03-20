@@ -44,7 +44,7 @@ export const Overlay = ({
   config: { isInIframe },
 }) => (
   <FullPage>
-    <Banner scrollPosition={scrollPosition} data-testid="paywall-banner">
+    <Banner scrollPosition={scrollPosition}>
       <Headline>
         You have reached your limit of free articles. Please purchase access
       </Headline>
