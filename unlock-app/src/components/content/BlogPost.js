@@ -93,7 +93,7 @@ const Body = styled.div`
   }
 
   img {
-    max-width: 730px;
+    max-width: 90%;
   }
 `
 
