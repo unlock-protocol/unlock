@@ -28,16 +28,17 @@ export interface Transactions {
 
 export interface Account {
   address: string
-  balance: string
+  balance: string // TODO: Stricter balance type (enforce currency, precision)
 }
 
 export interface Network {
-  name: number
+  name: number // TODO: This is very misleading, change property name to id
 }
 
 // TransactionMetadata and TransactionMetadataMap are used in the log page to
 // pass additional information about transactions that do not belong in the
-// state.
+// state. TODO: There is certainly a better way to handle this, find out what
+// that is and do it.
 export interface TransactionMetadata {
   href: string
   readableName: string
