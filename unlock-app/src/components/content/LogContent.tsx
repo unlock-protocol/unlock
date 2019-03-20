@@ -39,8 +39,7 @@ export const LogContent = (props: Props) => {
   )
 }
 
-export const readable = (type: string) => {
-  if (!type) return ''
+export const readable = (type: UnlockTypes.TransactionType) => {
   let parts = type.split('_')
   return parts.map(part => part[0] + part.slice(1).toLowerCase()).join(' ')
 }
