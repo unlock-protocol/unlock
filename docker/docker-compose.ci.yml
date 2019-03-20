@@ -33,6 +33,8 @@ services:
       PAYWALL_URL: "${PAYWALL_URL}"
       PAYWALL_SCRIPT_URL: "${PAYWALL_SCRIPT_URL}"
     command: ["npm", "run", "start"]
+    depends_on:
+      - locksmith
   smart-contracts:
     image: unlock
     user: node
