@@ -1455,7 +1455,7 @@ Object {
 }
 
 .c18 img {
-  max-width: 730px;
+  max-width: 100%;
 }
 
 .c17 {
@@ -2090,7 +2090,7 @@ are intentionally not generated from this file date, in case we want to override
             </div>
           </div>
           <div
-            class="b1qsww-4 bKHcAy"
+            class="b1qsww-4 dhqFyH"
           >
             <div>
               <p>
@@ -2932,7 +2932,7 @@ Object {
 }
 
 .c5 img {
-  max-width: 730px;
+  max-width: 100%;
 }
 
 .c4 {
@@ -3190,7 +3190,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </div>
       </div>
       <div
-        class="b1qsww-4 bKHcAy"
+        class="b1qsww-4 dhqFyH"
       >
         <div>
           <p>
@@ -3472,7 +3472,7 @@ Object {
 }
 
 .c4 img {
-  max-width: 730px;
+  max-width: 100%;
 }
 
 .c3 {
@@ -3722,7 +3722,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </div>
       </div>
       <div
-        class="b1qsww-4 bKHcAy"
+        class="b1qsww-4 dhqFyH"
       >
         <div>
           <p>
@@ -4004,7 +4004,7 @@ Object {
 }
 
 .c4 img {
-  max-width: 730px;
+  max-width: 100%;
 }
 
 .c3 {
@@ -4254,7 +4254,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </div>
       </div>
       <div
-        class="b1qsww-4 bKHcAy"
+        class="b1qsww-4 dhqFyH"
       >
         <div>
           <p>
@@ -4544,7 +4544,7 @@ Object {
 }
 
 .c5 img {
-  max-width: 730px;
+  max-width: 100%;
 }
 
 .c4 {
@@ -4802,7 +4802,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </div>
       </div>
       <div
-        class="b1qsww-4 bKHcAy"
+        class="b1qsww-4 dhqFyH"
       >
         <div>
           <p>
