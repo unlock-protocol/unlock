@@ -9,7 +9,7 @@ jest.mock('../../paywall-builder/script', () => {
 describe('paywall builder', () => {
   describe('blocker', () => {
     it('getBlocker', () => {
-      expect.assertions(3)
+      expect.assertions(2)
       const document = {
         createElement() {
           return { style: {}, appendChild: jest.fn() }
@@ -40,13 +40,6 @@ describe('paywall builder', () => {
 
       expect(blocker.appendChild).toHaveBeenNthCalledWith(
         1,
-        expect.objectContaining({
-          innerText: 'Loading access rights...',
-        })
-      )
-
-      expect(blocker.appendChild).toHaveBeenNthCalledWith(
-        2,
         expect.objectContaining({
           src: 'https://foo/static/images/loading.svg',
           style: {
