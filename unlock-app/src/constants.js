@@ -24,16 +24,6 @@ export const pageTitle = title => {
   return (pageTitle += "Unlock: The Web's new business model")
 }
 
-/**
- * Transaction types
- */
-export const TRANSACTION_TYPES = {
-  LOCK_CREATION: 'LOCK_CREATION',
-  KEY_PURCHASE: 'KEY_PURCHASE',
-  WITHDRAWAL: 'WITHDRAWAL',
-  UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE',
-}
-
 // used in defining the helpers for LOCK_PATH_NAME_REGEXP and ACCOUNT_REGEXP
 const accountRegex = '0x[a-fA-F0-9]{40}'
 
