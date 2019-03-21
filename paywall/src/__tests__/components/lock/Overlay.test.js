@@ -36,6 +36,7 @@ describe('Overlay', () => {
       })
     })
   })
+
   describe('mapStateToProps', () => {
     it('should set openInNewWindow based on the value of account', () => {
       expect.assertions(3)
@@ -68,6 +69,7 @@ describe('Overlay', () => {
       })
     })
   })
+
   describe('displayError', () => {
     it('should display children if there is no error', () => {
       expect.assertions(1)
@@ -77,6 +79,7 @@ describe('Overlay', () => {
 
       expect(wrapper.getByText('children')).not.toBeNull()
     })
+
     it('should display error', () => {
       expect.assertions(1)
       const wrapper = rtl.render(
@@ -85,6 +88,7 @@ describe('Overlay', () => {
 
       expect(wrapper.getByText('Fatal Error')).not.toBeNull()
     })
+
     it('should display children if provider is missing and in the iframe', () => {
       expect.assertions(1)
       const wrapper = rtl.render(
@@ -97,6 +101,7 @@ describe('Overlay', () => {
 
       expect(wrapper.queryByText('Wallet missing')).toBeNull()
     })
+
     it('should display error if provider is missing and in the main window', () => {
       expect.assertions(1)
       const wrapper = rtl.render(
@@ -109,6 +114,7 @@ describe('Overlay', () => {
 
       expect(wrapper.getByText('Wallet missing')).not.toBeNull()
     })
+
     it('should display children if account is missing and in the iframe', () => {
       expect.assertions(1)
       const wrapper = rtl.render(
@@ -121,6 +127,7 @@ describe('Overlay', () => {
 
       expect(wrapper.queryByText('error')).toBeNull()
     })
+
     it('should display error if account is missing and in the main window', () => {
       expect.assertions(1)
       const wrapper = rtl.render(
@@ -143,6 +150,7 @@ describe('Overlay', () => {
     }
     let store
     beforeEach(() => (store = createUnlockStore()))
+
     it('displays lock when there is no error', () => {
       expect.assertions(3)
       const wrapper = rtl.render(
@@ -170,6 +178,7 @@ describe('Overlay', () => {
         )
       ).not.toBeNull()
     })
+
     it('displays error, headline, and flag when there is an error', () => {
       expect.assertions(3)
       const wrapper = rtl.render(
@@ -197,6 +206,7 @@ describe('Overlay', () => {
         )
       ).not.toBeNull()
     })
+
     it('displays lock when the error is missing account', () => {
       expect.assertions(3)
       const wrapper = rtl.render(
