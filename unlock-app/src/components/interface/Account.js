@@ -8,7 +8,7 @@ import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
 import Media from '../../theme/media'
 import Balance from '../helpers/Balance'
 
-export function CreatorAccount({ account, network }) {
+export function Account({ account, network }) {
   const networkName = ETHEREUM_NETWORKS_NAMES[network.name]
     ? ETHEREUM_NETWORKS_NAMES[network.name][0]
     : 'Unknown Network'
@@ -16,7 +16,7 @@ export function CreatorAccount({ account, network }) {
   const iconSeed = parseInt(account.address.slice(2, 10), 16)
 
   return (
-    <Account>
+    <AccountWrapper>
       <AccountHead>
         <h2>Account</h2>
         <NetworkInfo id="NetworkName">{networkName}</NetworkInfo>
@@ -40,18 +40,19 @@ export function CreatorAccount({ account, network }) {
           <Balance amount={account.balance} convertCurrency={false} />
         </Value>
       </AccountDetails>
-    </Account>
+    </AccountWrapper>
   )
 }
 
-CreatorAccount.propTypes = {
+Account.propTypes = {
   account: UnlockPropTypes.account.isRequired,
   network: UnlockPropTypes.network.isRequired,
 }
 
-export default CreatorAccount
+export default Account
 
-const Account = styled.section``
+const AccountWrapper = styled.section``
+
 const AccountHead = styled.header`
   display: grid;
   grid-template-columns: auto 1fr 1fr;

@@ -2,7 +2,7 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
 // Note, we use name import to import the non connected version of the component for testing
-import { CreatorAccount } from '../../../components/creator/CreatorAccount'
+import { Account } from '../../../components/interface/Account'
 import createUnlockStore from '../../../createUnlockStore'
 
 const account = {
@@ -20,11 +20,11 @@ const store = createUnlockStore({ currency })
 let wrapper
 
 afterEach(rtl.cleanup)
-describe('CreatorAccount', () => {
+describe('Account', () => {
   beforeEach(() => {
     wrapper = rtl.render(
       <Provider store={store}>
-        <CreatorAccount account={account} network={network} />
+        <Account account={account} network={network} />
       </Provider>
     )
   })

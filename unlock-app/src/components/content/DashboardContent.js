@@ -4,7 +4,7 @@ import Head from 'next/head'
 import PropTypes from 'prop-types'
 import UnlockPropTypes from '../../propTypes'
 import Layout from '../interface/Layout'
-import CreatorAccount from '../creator/CreatorAccount'
+import Account from '../interface/Account'
 import CreatorLocks from '../creator/CreatorLocks'
 import DeveloperOverlay from '../developer/DeveloperOverlay'
 import BrowserOnly from '../helpers/BrowserOnly'
@@ -20,7 +20,7 @@ export const DashboardContent = ({ account, network, lockFeed }) => {
         </Head>
         {account && (
           <BrowserOnly>
-            <CreatorAccount network={network} account={account} />
+            <Account network={network} account={account} />
             <CreatorLocks lockFeed={lockFeed} />
             <DeveloperOverlay />
           </BrowserOnly>

@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { Provider } from 'react-redux'
 
-import { CreatorAccount } from '../../components/creator/CreatorAccount'
+import { Account } from '../../components/interface/Account'
 import createUnlockStore from '../../createUnlockStore'
 
 const store = createUnlockStore({
@@ -11,7 +11,7 @@ const store = createUnlockStore({
   },
 })
 
-storiesOf('CreatorAccount', module)
+storiesOf('Account', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('With no key purchased', () => {
     const account = {
@@ -20,7 +20,7 @@ storiesOf('CreatorAccount', module)
     const network = {
       name: 4,
     }
-    return <CreatorAccount network={network} account={account} />
+    return <Account network={network} account={account} />
   })
   .add('With balance', () => {
     const account = {
@@ -30,5 +30,5 @@ storiesOf('CreatorAccount', module)
     const network = {
       name: 4,
     }
-    return <CreatorAccount network={network} account={account} />
+    return <Account network={network} account={account} />
   })
