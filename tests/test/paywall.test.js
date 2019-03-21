@@ -1,4 +1,4 @@
-const url = require('../helpers/url')
+const url = require('../helpers/url').main
 
 jest.setTimeout(30000)
 
