@@ -1,9 +1,10 @@
 var express = require('express')
 
 var router = express.Router()
-var transaction_controller = require('../controllers/transactionController')
+var transactionController = require('../controllers/transactionController')
 
-router.post('/transaction', transaction_controller.transactionCreate)
-router.get('/transactions', transaction_controller.transactionsGet)
+router.post('/transaction', transactionController.transactionCreate)
+router.get('/transactions', transactionController.transactionsGet)
+router.get('/transaction/:hash/odds', transactionController.transactionGetOdds)
 
 module.exports = router
