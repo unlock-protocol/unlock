@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
-import Header from './Header'
+import LeftHeader from './LeftHeader'
+import FullHeader from './Header'
 import Footer from './Footer'
 import Media from '../../theme/media'
 
-export default function Layout({ title, children }) {
+export default function Layout({ title, children, showIcons }) {
+  const Header = showIcons ? FullHeader : LeftHeader
   return (
     <Container>
       <Left />
@@ -22,11 +24,13 @@ export default function Layout({ title, children }) {
 Layout.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node,
+  showIcons: PropTypes.bool,
 }
 
 Layout.defaultProps = {
   title: 'Unlock',
   children: null,
+  showIcons: false,
 }
 
 const Container = styled.div`
