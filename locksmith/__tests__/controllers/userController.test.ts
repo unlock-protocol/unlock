@@ -57,6 +57,24 @@ describe('User Controller', () => {
         expect(response.statusCode).toBe(400)
       })
     })
+
+    describe('when there is an attempt to associate an email address with an existing public key', () => {
+      it('will not create a new record', async () => {
+        let response = await request(app)
+          .post('/users')
+          .set('Accept', /json/)
+          .send({
+            user: {
+              emailAddress: 'rejected-user@example.com',
+              publicKey: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
+              passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
+              recoveryPhrase: 'a recovery phrase',
+            },
+          })
+
+        expect(response.statusCode).toBe(400)
+      })
+    })
   })
 
   describe('encrypted private key retrevial', () => {
@@ -72,7 +90,7 @@ describe('User Controller', () => {
 
         await UserOperations.createUser(userCreationDetails)
 
-        let response = await request(app).get(`/users/${emailAddress}`)
+        let response = await request(app).get(`/users/${emailAddress}/privatekey`)
 
         expect(response.body).toEqual({
           passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
@@ -83,7 +101,7 @@ describe('User Controller', () => {
     describe('when the provided email does not within the existing persistence layer', () => {
       it('returns an error code', async () => {
         let emailAddress = 'non-existing@example.com'
-        let response = await request(app).get(`/users/${emailAddress}`)
+        let response = await request(app).get(`/users/${emailAddress}/privatekey`)
         expect(response.statusCode).toBe(400)
       })
     })

@@ -6,8 +6,8 @@ let UserReference: any = models.UserReference
 
 describe('User creation', () => {
   let userCreationDetails = {
-    emailAddress: 'user@example.com',
-    publicKey: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
+    emailAddress: 'USER@EXAMPLE.COM',
+    publicKey: '0x21cc9c438d9751a3225496f6fd1f1215c7bd5d83',
     passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
     recoveryPhrase: 'recoveryPhrase',
   }
@@ -31,7 +31,7 @@ describe('User creation', () => {
       )
     })
 
-    it('should normalize the public key/address', async () => {
+    it('should normalize the public key/address & email address', async () => {
       UserReference.create = jest.fn(() => {})
       expect.assertions(1)
       await UserOperations.createUser(userCreationDetails)
