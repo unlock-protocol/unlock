@@ -18,11 +18,6 @@ export function getBlocker(document) {
   blocker.style.fontSize = '30px'
   blocker.style.zIndex = 222222222222222
 
-  const text = document.createElement('div')
-
-  text.innerText = 'Loading access rights...'
-  blocker.appendChild(text)
-
   const spinner = document.createElement('img')
 
   spinner.style.height = '80px'
