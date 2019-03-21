@@ -204,7 +204,6 @@ describe('buildPaywall', () => {
         }
         blocker = {
           remove: jest.fn(),
-          appendChild: jest.fn(),
         }
         mockShow = jest.spyOn(iframeManager, 'show')
         mockShow.mockImplementation(() => {})
