@@ -96,9 +96,9 @@ export default class Web3Service extends EventEmitter {
         this.emit('lock.updated', newLockAddress, {
           transaction: transactionHash,
           address: newLockAddress,
-          expirationDuration: params._expirationDuration,
+          expirationDuration: +params._expirationDuration,
           keyPrice: Web3Utils.fromWei(params._keyPrice, 'ether'), // Must be expressed in Eth!
-          maxNumberOfKeys: params._maxNumberOfKeys,
+          maxNumberOfKeys: +params._maxNumberOfKeys,
           outstandingKeys: 0,
           balance: '0', // Must be expressed in Eth!
         })
