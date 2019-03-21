@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { WordMarkLogo } from './Logo'
 import Media from '../../theme/media'
 
-export function Header({ title }) {
+export function HeaderTitle({ title }) {
   return (
     <Title forContent>
       <Link href="/">
@@ -18,15 +18,15 @@ export function Header({ title }) {
   )
 }
 
-Header.propTypes = {
+HeaderTitle.propTypes = {
   title: PropTypes.string,
 }
 
-Header.defaultProps = {
+HeaderTitle.defaultProps = {
   title: 'Unlock',
 }
 
-export default Header
+export default HeaderTitle
 
 const TitleLink = styled.a`
   padding-bottom: 2px;

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import HeaderTitle from './HeaderTitle'
 import Media from '../../theme/media'
 
-export default function Header({ title }) {
+export default function LeftHeader({ title }) {
   return (
     <TopHeader>
       <HeaderTitle title={title} />
@@ -12,11 +12,11 @@ export default function Header({ title }) {
   )
 }
 
-Header.propTypes = {
+LeftHeader.propTypes = {
   title: PropTypes.string,
 }
 
-Header.defaultProps = {
+LeftHeader.defaultProps = {
   title: 'Unlock',
 }
 

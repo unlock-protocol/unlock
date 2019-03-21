@@ -2,17 +2,17 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import LeftHeader from './LeftHeader'
-import FullHeader from './Header'
+import Header from './Header'
 import Footer from './Footer'
 import Media from '../../theme/media'
 
 export default function Layout({ title, children, showIcons }) {
-  const Header = showIcons ? FullHeader : LeftHeader
+  const ThisHeader = showIcons ? Header : LeftHeader
   return (
     <Container>
       <Left />
       <Content>
-        <Header title={title} />
+        <ThisHeader title={title} />
         {children}
         <Footer />
       </Content>
