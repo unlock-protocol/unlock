@@ -3,7 +3,8 @@ const { join } = require('path')
 const yamlFront = require('yaml-front-matter')
 
 /**
- * Master function that takes a base directory, generates static blog index data, and
+ * Master function that takes a base directory and returns a reverse-chronologically ordered list of blog posts,
+ * as derived from markdown files
  * @param baseDir
  * @returns {Array}
  */

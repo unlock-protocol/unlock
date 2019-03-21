@@ -6,7 +6,7 @@ import {
 } from '../../utils/blogLoader'
 
 const blogJson =
-  '{"items":[{"title":"This is a second sample post","subTitle":"And some sample metadata","publishDate":"Jan 7, 1979","slug":"test2"},{"title":"This is a sample post","subTitle":"And some sample metadata","publishDate":"Dec 31, 1978","slug":"test1"}]}'
+  '{"items":[{"title":"This is a second sample post","subTitle":"And some sample metadata","publishDate":"Jan 7, 1979","slug":"test2"},{"title":"This is a sample post","subTitle":"And some sample metadata","publishDate":"Dec 31, 1978","slug":"test1"},{"title":"This is a FUTURE POST","subTitle":"IT IS FROM THE FUTURE","publishDate":"Jan 7, 2037","slug":"future"}]}'
 
 const blogPost = `---
 title: This is a sample post
@@ -75,5 +75,14 @@ describe('blogLoader', () => {
     )
     let posts = await loadBlogIndexFile('https://foo/bar', 10)
     expect(posts.length).toEqual(0)
+  })
+  it('ignores future posts', async () => {
+    expect.assertions(3)
+
+    fetch.mockResponseOnce(blogJson)
+    let posts = await loadBlogIndexFile('https://foo/bar', 10)
+    expect(posts.length).toEqual(2) // Ignores the future post
+    expect(posts[0].slug).toEqual('test2')
+    expect(posts[1].slug).toEqual('test1')
   })
 })
