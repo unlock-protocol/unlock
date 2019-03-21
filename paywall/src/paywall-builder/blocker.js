@@ -30,6 +30,14 @@ export function getBlocker(document) {
   return blocker
 }
 
+export function errorBlocker(document, blocker) {
+  const error = document.createElement('div')
+
+  error.innerText = 'An error occurred, please refresh the page'
+  error.style.color = 'red'
+  blocker.appendChild(error)
+}
+
 export function addBlocker(document, blocker) {
   document.body.appendChild(blocker)
 }

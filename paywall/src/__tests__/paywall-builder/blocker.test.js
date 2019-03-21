@@ -74,5 +74,27 @@ describe('paywall builder', () => {
 
       expect(blocker.remove).toHaveBeenCalled()
     })
+
+    it('errorBlocker', () => {
+      expect.assertions(1)
+      const document = {
+        createElement() {
+          return { style: {} }
+        },
+      }
+
+      const blocker = {
+        appendChild: jest.fn(),
+      }
+
+      blockerManager.errorBlocker(document, blocker)
+
+      expect(blocker.appendChild).toHaveBeenCalledWith({
+        innerText: 'An error occurred, please refresh the page',
+        style: {
+          color: 'red',
+        },
+      })
+    })
   })
 })
