@@ -24,17 +24,22 @@ contract MixinTransfer is
   using SafeMath for uint;
   using Address for address;
 
-  event TransferFeeDenominatorChanged(
+  event TransferFeeChanged(
+    uint oldTransferFeeNumerator,
     uint oldTransferFeeDenominator,
+    uint transferFeeNumerator,
     uint transferFeeDenominator
   );
 
   // 0x150b7a02 == bytes4(keccak256('onERC721Received(address,address,uint256,bytes)'))
   bytes4 private constant _ERC721_RECEIVED = 0x150b7a02;
 
-  // The fee relative to keyPrice to charge when transfering a Key to another account (potentially on a 0x marketplace).
+  // The fee relative to keyPrice to charge when transfering a Key to another account
+  // (potentially on a 0x marketplace).
+  // This is calculated as `keyPrice * transferFeeNumerator / transferFeeDenominator`.
   // TODO: this value is currently ignored and no fee is charged yet!
-  uint public transferFeeDenominator = 10;
+  uint public transferFeeNumerator = 5;
+  uint public transferFeeDenominator = 100;
 
   /**
    * This is payable because at some point we want to allow the LOCK to capture a fee on 2ndary
@@ -136,15 +141,22 @@ contract MixinTransfer is
   }
 
   /**
-   * Allow the owner to change the refund penalty.
+   * Allow the Lock owner to change the transfer fee.
    */
-  function updateTransferFeeDenominator(
+  function updateTransferFee(
+    uint _transferFeeNumerator,
     uint _transferFeeDenominator
   )
     external
     onlyOwner
   {
-    emit TransferFeeDenominatorChanged(transferFeeDenominator, _transferFeeDenominator);
+    emit TransferFeeChanged(
+      transferFeeNumerator,
+      transferFeeDenominator,
+      _transferFeeNumerator,
+      _transferFeeDenominator
+    );
+    transferFeeNumerator = _transferFeeNumerator;
     transferFeeDenominator = _transferFeeDenominator;
   }
 
