@@ -8,4 +8,8 @@ describe('url test helper, from environment', () => {
     expect(url.main()).toBe('http://host:999/')
     expect(url.main('/path')).toBe('http://host:999/path')
   })
+  it('paywall', () => {
+    expect(url.paywall()).toBe('http://whatever/')
+    expect(url.paywall('/path')).toBe('http://whatever/path')
+  })
 })
