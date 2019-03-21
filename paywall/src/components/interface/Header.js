@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import Link from 'next/link'
-import { WordMarkLogo } from './Logo'
+import HeaderTitle from './HeaderTitle'
 import Buttons from './buttons/layout'
 import { ButtonLink } from './buttons/Button'
 import Media from '../../theme/media'
@@ -20,14 +19,7 @@ export function Header({ title }) {
   const toggleMenu = useCallback(() => setMenu(showing => !showing), [setMenu])
   return (
     <TopHeader>
-      <Title forContent>
-        <Link href="/">
-          <TitleLink>
-            <WordMarkLogo viewBox="0 0 1200 256" height="28px" name="Unlock" />
-          </TitleLink>
-        </Link>
-        <TitleText>{title}</TitleText>
-      </Title>
+      <HeaderTitle title={title} />
       <DesktopButtons>
         {navigationButtons.map(NavButton => (
           <NavButton key={NavButton} />
@@ -72,31 +64,6 @@ const TopHeader = styled.header`
       props.visibilityToggle ? '[first] auto [second]' : '[first]'} auto;
     height: auto;
   `};
-`
-
-const TitleLink = styled.a`
-  padding-bottom: 2px;
-  margin-right: -8px;
-`
-
-const Title = styled.h1`
-  color: var(--darkgrey);
-  display: flex;
-  align-items: flex-end;
-  ${Media.phone`
-    display: grid;
-    grid-gap: 0;
-    ${props =>
-      props.forContent
-        ? 'grid-template-columns: 123px auto;'
-        : 'grid-template-columns: 50px auto;'}
-  `};
-`
-
-const TitleText = styled.span`
-  font-size: 32px;
-  line-height: 47px;
-  font-weight: 300;
 `
 
 const DesktopButtons = styled.div`
