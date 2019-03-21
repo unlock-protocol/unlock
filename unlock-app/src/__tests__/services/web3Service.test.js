@@ -1081,8 +1081,9 @@ describe('Web3Service', () => {
         const params = {
           _expirationDuration: '7',
           _maxNumberOfKeys: '5',
-          _keyPrice: '0.05',
+          _keyPrice: '5',
         }
+        web3Service.generateLockAddress = jest.fn()
         web3Service.on('lock.updated', (newLockAddress, update) => {
           expect(update.expirationDuration).toBe(7)
           expect(update.maxNumberOfKeys).toBe(5)
