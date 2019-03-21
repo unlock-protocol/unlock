@@ -1,7 +1,4 @@
-import {
-  mapStateToProps,
-  humanize,
-} from '../../../components/content/LogContent'
+import { mapStateToProps } from '../../../components/content/LogContent'
 import { TransactionType } from '../../../unlock'
 import configure from '../../../config'
 
