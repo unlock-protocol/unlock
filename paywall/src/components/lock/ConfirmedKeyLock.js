@@ -28,7 +28,11 @@ const ConfirmedKeyLock = ({ lock, hideModal }) => (
           </React.Fragment>
         )}
       />
-      <ConfirmedKey hideModal={hideModal} size="50px" />
+      <ConfirmedKey
+        hideModal={hideModal}
+        size="50px"
+        id={`Confirmed_${lock.address}`}
+      />
       <NotHoverFooter backgroundColor="var(--green)">
         Payment Confirmed
       </NotHoverFooter>
