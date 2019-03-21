@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import Link from 'next/link'
-import { WordMarkLogo } from './Logo'
 import HeaderTitle from './HeaderTitle'
 import Buttons from './buttons/layout'
 import { ButtonLink } from './buttons/Button'
