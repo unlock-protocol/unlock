@@ -4,7 +4,9 @@
   "description": "an unlock storage service",
   "main": "server.js",
   "scripts": {
-    "predev": "NODE_ENV=development sequelize db:migrate",
+    "prestart": "npm run build",
+    "start" : "node ./build/server.js",
+    "predev": "NODE_ENV=development npm run db:migrate",
     "dev": "tsc-watch --onSuccess 'node build/server.js' --onFailure 'echo Beep! Compilation Failed'",
     "pretest": "NODE_ENV=test sequelize db:migrate",
     "test": "jest --forceExit",
@@ -29,6 +31,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/jest": "^24.0.11",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "cross-env": "^5.2.0",
@@ -48,6 +51,8 @@
     "sequelize-cli": "^5.4.0",
     "supertest": "^3.3.0",
     "ts-jest": "^24.0.0",
+    "@types/express": "^4.16.1",
+    "@types/node": "^11.11.3",
     "typescript": "^3.3.3333",
     "web3": "^1.0.0-beta.37",
     "winston": "^3.1.0"

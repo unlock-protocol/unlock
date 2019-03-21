@@ -12,8 +12,20 @@ module.exports = {
     browser: true,
     jest: true,
   },
-  plugins: ['jest', 'mocha', 'promise'],
+  plugins: ['jest', 'mocha', 'promise', 'import'],
   parser: 'babel-eslint',
+  settings: {
+    react: {
+      version: 'detect',
+    },
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
+    'import/resolver': {
+      // use <root>/tsconfig.json
+      typescript: {},
+    },
+  },
   rules: {
     'linebreak-style': ['error', 'unix'],
     quotes: [
