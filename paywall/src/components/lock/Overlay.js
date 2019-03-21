@@ -8,7 +8,7 @@ import { hideModal, showModal } from '../../actions/modal'
 import { LockedFlag } from './UnlockFlag'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { mapErrorToComponent } from '../creator/FatalError'
-import { FATAL_NO_USER_ACCOUNT } from '../../errors'
+import { FATAL_NO_USER_ACCOUNT, FATAL_MISSING_PROVIDER } from '../../errors'
 import withConfig from '../../utils/withConfig'
 
 export const displayError = isMainWindow =>
@@ -28,7 +28,11 @@ export const displayError = isMainWindow =>
         return Error
       }
     } else {
-      if (error && error !== FATAL_NO_USER_ACCOUNT) {
+      if (
+        error &&
+        error !== FATAL_NO_USER_ACCOUNT &&
+        error !== FATAL_MISSING_PROVIDER
+      ) {
         return Error
       }
     }
