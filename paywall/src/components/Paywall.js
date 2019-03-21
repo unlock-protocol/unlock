@@ -18,7 +18,7 @@ import {
 import { isPositiveNumber } from '../utils/validators'
 import useWindow from '../hooks/browser/useWindow'
 
-export function Paywall({ locks, locked, redirect }) {
+export function Paywall({ locks, locked, redirect, account }) {
   const window = useWindow()
   const scrollPosition = useListenForPostMessage({
     type: 'scrollPosition',
@@ -32,7 +32,8 @@ export function Paywall({ locks, locked, redirect }) {
     } else {
       postMessage(POST_MESSAGE_UNLOCKED)
       if (redirect) {
-        window.location.href = redirect
+        const withAccount = account ? '#' + account : ''
+        window.location.href = redirect + withAccount
       }
       const height = '160px'
       const body = window.document.body
@@ -66,13 +67,15 @@ Paywall.propTypes = {
   locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
   locked: PropTypes.bool.isRequired,
   redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  account: PropTypes.string,
 }
 
 Paywall.defaultProps = {
   redirect: false,
+  account: null,
 }
 
-export const mapStateToProps = ({ locks, keys, modals, router }) => {
+export const mapStateToProps = ({ locks, keys, modals, router, account }) => {
   const { lockAddress, redirect } = lockRoute(router.location.pathname)
 
   const lockFromUri = Object.values(locks).find(
@@ -94,7 +97,12 @@ export const mapStateToProps = ({ locks, keys, modals, router }) => {
 
   const modalShown = !!modals[locksFromUri.map(l => l.address).join('-')]
   const locked = validKeys.length === 0 || modalShown
-  return { locked, locks: locksFromUri, redirect }
+  return {
+    locked,
+    locks: locksFromUri,
+    redirect,
+    account: account && account.address,
+  }
 }
 
 export default connect(mapStateToProps)(Paywall)
