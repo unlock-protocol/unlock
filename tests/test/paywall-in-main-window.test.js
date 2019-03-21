@@ -51,7 +51,7 @@ describe('Paywall in main window', () => {
     await expect(page).toMatch('Example Domain')
   })
 
-  it('redirecting from purchased key when returning to paywall in main window', async () => {
+  it('returning to the main window redirects to content', async () => {
     await Promise.all([
       page.goto(paywall(`/${testLockAddress}/http%3A%2F%2Fexample.com`)),
       page.waitForNavigation(),
