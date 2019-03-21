@@ -5,9 +5,20 @@ import ethJsUtil from 'ethereumjs-util'
 
 import { PublicLock, Unlock } from 'unlock-abi-0'
 
-import { TRANSACTION_TYPES, MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
-
 export const keyId = (lock, owner) => [lock, owner].join('-')
+
+export const Constants = {
+  MAX_UINT:
+    '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+  UNLIMITED_KEYS_COUNT: -1,
+}
+
+export const TransactionType = {
+  LOCK_CREATION: 'LOCK_CREATION',
+  KEY_PURCHASE: 'KEY_PURCHASE',
+  WITHDRAWAL: 'WITHDRAWAL',
+  UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE',
+}
 
 /**
  * This service reads data from the RPC endpoint.
@@ -88,8 +99,8 @@ export default class Web3Service extends EventEmitter {
           lock: newLockAddress,
         })
 
-        if (params._maxNumberOfKeys === MAX_UINT) {
-          params._maxNumberOfKeys = UNLIMITED_KEYS_COUNT
+        if (params._maxNumberOfKeys === Constants.MAX_UINT) {
+          params._maxNumberOfKeys = Constants.UNLIMITED_KEYS_COUNT
         }
 
         this.emit('lock.updated', newLockAddress, {
@@ -142,25 +153,25 @@ export default class Web3Service extends EventEmitter {
     })
 
     if (contract.contractName === 'Unlock' && method.name === 'createLock') {
-      return TRANSACTION_TYPES.LOCK_CREATION
+      return TransactionType.LOCK_CREATION
     }
 
     if (
       contract.contractName === 'PublicLock' &&
       method.name === 'purchaseFor'
     ) {
-      return TRANSACTION_TYPES.KEY_PURCHASE
+      return TransactionType.KEY_PURCHASE
     }
 
     if (contract.contractName === 'PublicLock' && method.name === 'withdraw') {
-      return TRANSACTION_TYPES.WITHDRAWAL
+      return TransactionType.WITHDRAWAL
     }
 
     if (
       contract.contractName === 'PublicLock' &&
       method.name === 'updateKeyPrice'
     ) {
-      return TRANSACTION_TYPES.UPDATE_KEY_PRICE
+      return TransactionType.UPDATE_KEY_PRICE
     }
 
     // Unknown transaction
@@ -495,8 +506,8 @@ export default class Web3Service extends EventEmitter {
       keyPrice: x => Web3Utils.fromWei(x, 'ether'),
       expirationDuration: parseInt,
       maxNumberOfKeys: value => {
-        if (value === MAX_UINT) {
-          return UNLIMITED_KEYS_COUNT
+        if (value === Constants.MAX_UINT) {
+          return Constants.UNLIMITED_KEYS_COUNT
         }
         return parseInt(value)
       },

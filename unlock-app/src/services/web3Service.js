@@ -5,10 +5,20 @@ import ethJsUtil from 'ethereumjs-util'
 
 import { PublicLock, Unlock } from 'unlock-abi-0'
 
-import { MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
-import { TransactionType } from '../unlock'
-
 export const keyId = (lock, owner) => [lock, owner].join('-')
+
+export const Constants = {
+  MAX_UINT:
+    '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+  UNLIMITED_KEYS_COUNT: -1,
+}
+
+export const TransactionType = {
+  LOCK_CREATION: 'LOCK_CREATION',
+  KEY_PURCHASE: 'KEY_PURCHASE',
+  WITHDRAWAL: 'WITHDRAWAL',
+  UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE',
+}
 
 /**
  * This service reads data from the RPC endpoint.
@@ -89,8 +99,8 @@ export default class Web3Service extends EventEmitter {
           lock: newLockAddress,
         })
 
-        if (params._maxNumberOfKeys === MAX_UINT) {
-          params._maxNumberOfKeys = UNLIMITED_KEYS_COUNT
+        if (params._maxNumberOfKeys === Constants.MAX_UINT) {
+          params._maxNumberOfKeys = Constants.UNLIMITED_KEYS_COUNT
         }
 
         this.emit('lock.updated', newLockAddress, {
@@ -496,8 +506,8 @@ export default class Web3Service extends EventEmitter {
       keyPrice: x => Web3Utils.fromWei(x, 'ether'),
       expirationDuration: parseInt,
       maxNumberOfKeys: value => {
-        if (value === MAX_UINT) {
-          return UNLIMITED_KEYS_COUNT
+        if (value === Constants.MAX_UINT) {
+          return Constants.UNLIMITED_KEYS_COUNT
         }
         return parseInt(value)
       },

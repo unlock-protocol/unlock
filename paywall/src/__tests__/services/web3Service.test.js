@@ -4,9 +4,7 @@ import Web3Utils from 'web3-utils'
 import Web3EthAbi from 'web3-eth-abi'
 import nock from 'nock'
 import { PublicLock, Unlock } from 'unlock-abi-0'
-import Web3Service from '../../services/web3Service'
-import configure from '../../config'
-import { TRANSACTION_TYPES } from '../../constants'
+import Web3Service, { TransactionType } from '../../services/web3Service'
 
 const nodeAccounts = [
   '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
@@ -19,7 +17,11 @@ const transaction = {
   hash: '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
 }
 
-const nockScope = nock('http://127.0.0.1:8545', { encodedQueryParams: true })
+const blockTime = 3
+const readOnlyProvider = 'http://127.0.0.1:8545'
+const requiredConfirmations = 12
+
+const nockScope = nock(readOnlyProvider, { encodedQueryParams: true })
 
 let rpcRequestId = 0
 
@@ -89,8 +91,6 @@ nock.emitter.on('no match', function(clientRequestObject, options, body) {
 const unlockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
 
 let web3Service
-
-const { blockTime, readOnlyProvider, requiredConfirmations } = configure()
 
 describe('Web3Service', () => {
   beforeEach(() => {
@@ -828,7 +828,7 @@ describe('Web3Service', () => {
         .createLock('1000', '1000000000', '1')
         .encodeABI()
       expect(web3Service.getTransactionType(Unlock, data)).toBe(
-        TRANSACTION_TYPES.LOCK_CREATION
+        TransactionType.LOCK_CREATION
       )
     })
 
@@ -839,7 +839,7 @@ describe('Web3Service', () => {
         .purchaseFor(nodeAccounts[0], Web3Utils.utf8ToHex(''))
         .encodeABI()
       expect(web3Service.getTransactionType(PublicLock, data)).toBe(
-        TRANSACTION_TYPES.KEY_PURCHASE
+        TransactionType.KEY_PURCHASE
       )
     })
 
@@ -848,7 +848,7 @@ describe('Web3Service', () => {
       const lock = new web3Service.web3.eth.Contract(PublicLock.abi, '')
       const data = lock.methods.withdraw().encodeABI()
       expect(web3Service.getTransactionType(PublicLock, data)).toBe(
-        TRANSACTION_TYPES.WITHDRAWAL
+        TransactionType.WITHDRAWAL
       )
     })
   })
