@@ -6,7 +6,6 @@ import {
   POST_MESSAGE_REDIRECT,
   POST_MESSAGE_SCROLL_POSITION,
 } from './constants'
-import { errorBlocker } from './blocker'
 
 // Currently, the constraint on the banner is that it starts out at
 // 30% of height, but at least 375px
@@ -101,14 +100,15 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
             redirect(window, paywallUrl)
           }
         } catch (e) {
-          errorBlocker(document, blocker)
+          iframe.remove()
+          blocker.remove()
           throw e
         }
       },
       false
     )
   } catch (e) {
-    errorBlocker(document, blocker)
+    blocker.remove()
     throw e
   }
 }

@@ -75,6 +75,7 @@ describe('buildPaywall', () => {
           postMessage,
         },
         style: {},
+        remove: jest.fn(),
       }
 
       mockAdd = jest.spyOn(iframeManager, 'add')
@@ -99,7 +100,7 @@ describe('buildPaywall', () => {
         },
       }
       blocker = {
-        remove() {},
+        remove: jest.fn(),
       }
     })
 
@@ -112,16 +113,13 @@ describe('buildPaywall', () => {
 
     it('bails out on error', () => {
       expect.assertions(2)
-      const blocker = {
-        appendChild: jest.fn(),
+      window.URL = () => {
+        throw new Error('kill')
       }
-      mockIframe.mockImplementation(() => {
-        throw new Error('thrown')
-      })
       expect(() => {
         buildPaywall(window, document, '123', blocker)
       }).toThrow()
-      expect(blocker.appendChild).toHaveBeenCalled()
+      expect(blocker.remove).toHaveBeenCalled()
     })
 
     it('sets up the iframe with correct url', () => {
@@ -182,6 +180,7 @@ describe('buildPaywall', () => {
     describe('event listeners', () => {
       let window
       let callbacks
+      let iframe
       beforeEach(() => {
         callbacks = {}
         window = {
@@ -211,25 +210,36 @@ describe('buildPaywall', () => {
         mockShow.mockImplementation(() => {})
         mockHide = jest.spyOn(iframeManager, 'hide')
         mockHide.mockImplementation(() => {})
+        mockIframe = jest.spyOn(iframeManager, 'getIframe')
+        iframe = {
+          contentWindow: {
+            postMessage,
+          },
+          style: {},
+          remove: jest.fn(),
+        }
+
+        mockIframe.mockImplementation(() => iframe)
         buildPaywall(window, document, fakeLockAddress, blocker)
       })
 
       it('bails out on error in locked event', () => {
-        expect.assertions(2)
+        expect.assertions(3)
         mockShow.mockImplementation(() => {
           throw new Error('thrown')
         })
         expect(() => {
           callbacks.message({ data: POST_MESSAGE_LOCKED })
         }).toThrow()
-        expect(blocker.appendChild).toHaveBeenCalled()
+        expect(iframe.remove).toHaveBeenCalled()
+        expect(blocker.remove).toHaveBeenCalled()
       })
 
       it('triggers show on locked event', () => {
         expect.assertions(2)
         callbacks.message({ data: POST_MESSAGE_LOCKED })
 
-        expect(mockShow).toHaveBeenCalledWith(mockIframeImpl, document)
+        expect(mockShow).toHaveBeenCalledWith(iframe, document)
         expect(mockHide).not.toHaveBeenCalled()
       })
 
@@ -241,7 +251,7 @@ describe('buildPaywall', () => {
       })
 
       it('bails out on error in unlocked event', () => {
-        expect.assertions(2)
+        expect.assertions(3)
         mockHide.mockImplementationOnce(() => {
           throw new Error('thrown')
         })
@@ -249,7 +259,8 @@ describe('buildPaywall', () => {
           callbacks.message({ data: POST_MESSAGE_LOCKED })
           callbacks.message({ data: POST_MESSAGE_UNLOCKED })
         }).toThrow()
-        expect(blocker.appendChild).toHaveBeenCalled()
+        expect(iframe.remove).toHaveBeenCalled()
+        expect(blocker.remove).toHaveBeenCalled()
       })
 
       it('closes the blocker on unlocked event', () => {
@@ -275,20 +286,21 @@ describe('buildPaywall', () => {
         callbacks.message({ data: POST_MESSAGE_UNLOCKED })
         callbacks.message({ data: POST_MESSAGE_UNLOCKED })
 
-        expect(mockHide).toHaveBeenCalledWith(mockIframeImpl, document)
+        expect(mockHide).toHaveBeenCalledWith(iframe, document)
         expect(mockHide).toHaveBeenCalledTimes(1)
         expect(mockShow).toHaveBeenCalledTimes(1)
       })
 
       it('bails out on error in redirect event', () => {
-        expect.assertions(2)
+        expect.assertions(3)
         window.encodeURIComponent = () => {
           throw new Error('thrown')
         }
         expect(() => {
           callbacks.message({ data: POST_MESSAGE_REDIRECT })
         }).toThrow()
-        expect(blocker.appendChild).toHaveBeenCalled()
+        expect(iframe.remove).toHaveBeenCalled()
+        expect(blocker.remove).toHaveBeenCalled()
       })
 
       it('calls redirect on redirect event', () => {
