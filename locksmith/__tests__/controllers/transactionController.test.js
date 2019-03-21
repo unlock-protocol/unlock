@@ -92,4 +92,15 @@ describe('transactionController', () => {
       })
     })
   })
+
+  describe('getting the odds of success of a transaction', () => {
+    it('returns a json object with the willSucceed property', async () => {
+      expect.assertions(2)
+      let response = await request(app)
+        .get('/transaction/0x345546565/odds')
+        .set('Accept', /json/)
+      expect(response.statusCode).toBe(200)
+      expect(response.body.willSucceed).toBe(1) // default until we implement things
+    })
+  })
 })
