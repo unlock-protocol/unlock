@@ -216,11 +216,27 @@ describe('Paywall', () => {
   })
 
   describe('on unlocking', () => {
-    it('should redirect if requested', () => {
+    it('should redirect with account if requested', () => {
       expect.assertions(1)
 
       rtl.act(() => {
-        renderMockPaywall({ locked: false, redirect: 'http://example.com' })
+        renderMockPaywall({
+          locked: false,
+          redirect: 'http://example.com',
+          account: 'account',
+        })
+      })
+
+      expect(fakeWindow.location.href).toBe('http://example.com#account')
+    })
+    it('should redirect without account if requested', () => {
+      expect.assertions(1)
+
+      rtl.act(() => {
+        renderMockPaywall({
+          locked: false,
+          redirect: 'http://example.com',
+        })
       })
 
       expect(fakeWindow.location.href).toBe('http://example.com')
