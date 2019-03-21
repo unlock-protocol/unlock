@@ -84,7 +84,7 @@ services:
     image: unlock
     user: node
     working_dir: /home/unlock/locksmith
-    command: sh -c './scripts/wait-for.sh db:5432 -- npm run db:migrate && npm run start'
+    command: sh -c './scripts/wait-for.sh db:5432 -- npm run db:migrate && npm start'
     expose:
       - 8080
     depends_on:
