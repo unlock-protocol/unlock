@@ -13,25 +13,7 @@ describe('User creation', () => {
     recoveryPhrase: 'recoveryPhrase',
   }
 
-  describe("when a user for the public key doesn't exist", () => {
-    it('should create a user and associated data', async () => {
-      expect.assertions(1)
-      UserReference.create = jest.fn(() => {})
-
-      await UserOperations.createUser(userCreationDetails)
-      expect(UserReference.create).toHaveBeenCalledWith(
-        {
-          User: {
-            passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
-            publicKey: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
-            recoveryPhrase: 'recoveryPhrase',
-          },
-          emailAddress: 'user@example.com',
-        },
-        { include: User }
-      )
-    })
-
+  describe('data normalization', () => {
     it('should normalize the public key/address & email address', async () => {
       expect.assertions(1)
       UserReference.create = jest.fn(() => {})
@@ -48,6 +30,30 @@ describe('User creation', () => {
         },
         { include: User }
       )
+    })
+  })
+
+  describe('when able to create the user and associated data', () => {
+    it('returns true', async () => {
+      expect.assertions(1)
+      UserReference.create = jest.fn(() => {
+        return {}
+      })
+
+      let result = await UserOperations.createUser(userCreationDetails)
+      expect(result).toBe(true)
+    })
+  })
+
+  describe('when unable to create the user and associated data', () => {
+    it('returns false', async () => {
+      expect.assertions(1)
+      UserReference.create = jest.fn(() => {
+        return null
+      })
+
+      let result = await UserOperations.createUser(userCreationDetails)
+      expect(result).toBe(false)
     })
   })
 })
