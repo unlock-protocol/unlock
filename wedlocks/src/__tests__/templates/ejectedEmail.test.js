@@ -13,7 +13,7 @@ describe('ejectedEmail', () => {
     ).toBe(
     `Hi there!
 
-Because your account has continued to carry a balance of 1080 ETH on your account at Unlock, we have
+Because your account has continued to carry a total balance of 1080 ETH on your locks at Unlock, we have
 disconnected it from our service. This is for your safety, because Unlock isn't designed to store large amounts of 
 funds for a long time.
 
