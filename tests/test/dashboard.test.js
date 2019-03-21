@@ -1,4 +1,4 @@
-const url = require('../helpers/url')
+const url = require('../helpers/url').main
 
 describe('The Unlock Dashboard', () => {
   beforeAll(async () => {
