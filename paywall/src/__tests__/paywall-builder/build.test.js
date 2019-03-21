@@ -48,6 +48,8 @@ describe('buildPaywall', () => {
       location: {
         href: 'href/',
       },
+      // needed because we use encodeURIComponent to trigger a fake error when testing the
+      // paywall's resilience to unexpected errors
       encodeURIComponent: u => global.encodeURIComponent(u),
     }
 
@@ -187,6 +189,7 @@ describe('buildPaywall', () => {
           addEventListener(type, listener) {
             callbacks[type] = listener
           },
+          // needed in order to test the paywall's resilience to unexpected errors
           encodeURIComponent: u => global.encodeURIComponent(u),
           requestAnimationFrame: jest.fn(),
           innerHeight: 266,

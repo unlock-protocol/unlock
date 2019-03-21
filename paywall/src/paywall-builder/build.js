@@ -51,6 +51,8 @@ export const scrollLoop = (window, document, iframe, origin) => {
 }
 
 export function redirect(window, paywallUrl) {
+  // we use window.encodeURIComponent here to make testing
+  // for resilience to errors easier
   const redirectTo = window.encodeURIComponent(window.location.href)
 
   window.location.href = paywallUrl + redirectTo
