@@ -51,7 +51,9 @@ export const scrollLoop = (window, document, iframe, origin) => {
 }
 
 export function redirect(window, paywallUrl) {
-  const redirectTo = encodeURIComponent(window.location.href)
+  // we use window.encodeURIComponent here to make testing
+  // for resilience to errors easier
+  const redirectTo = window.encodeURIComponent(window.location.href)
 
   window.location.href = paywallUrl + redirectTo
 }
@@ -62,42 +64,53 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
     return
   }
 
-  // in the paywall, postMessage needs to know the origin of the parent window
-  // This allows us to securely pass it in
-  const originUrl = `?origin=${encodeURIComponent(window.origin)}`
-  const paywallUrl =
-    findPaywallUrl(document) + `/${lockAddress}/` + window.location.hash
-  const paywallUrlWithOrigin =
-    findPaywallUrl(document) +
-    `/${lockAddress}/${originUrl}` +
-    window.location.hash
-  const iframe = getIframe(document, paywallUrlWithOrigin)
-  add(document, iframe)
+  try {
+    // in the paywall, postMessage needs to know the origin of the parent window
+    // This allows us to securely pass it in
+    const originUrl = `?origin=${encodeURIComponent(window.origin)}`
+    const paywallUrl =
+      findPaywallUrl(document) + `/${lockAddress}/` + window.location.hash
+    const paywallUrlWithOrigin =
+      findPaywallUrl(document) +
+      `/${lockAddress}/${originUrl}` +
+      window.location.hash
+    const iframe = getIframe(document, paywallUrlWithOrigin)
+    add(document, iframe)
 
-  const origin = new window.URL(paywallUrl).origin
+    const origin = new window.URL(paywallUrl).origin
 
-  let locked = false
-  let disableScrollPolling = () => {}
-  window.addEventListener(
-    'message',
-    event => {
-      if (event.data === POST_MESSAGE_LOCKED && !locked) {
-        locked = true
-        scrollPolling = true
-        show(iframe, document)
-        disableScrollPolling = scrollLoop(window, document, iframe, origin)
-        blocker.remove()
-      }
-      if (event.data === POST_MESSAGE_UNLOCKED && locked) {
-        locked = false
-        disableScrollPolling()
-        hide(iframe, document)
-        blocker.remove()
-      }
-      if (event.data === POST_MESSAGE_REDIRECT) {
-        redirect(window, paywallUrl)
-      }
-    },
-    false
-  )
+    let locked = false
+    let disableScrollPolling = () => {}
+    window.addEventListener(
+      'message',
+      event => {
+        try {
+          if (event.data === POST_MESSAGE_LOCKED && !locked) {
+            locked = true
+            scrollPolling = true
+            show(iframe, document)
+            disableScrollPolling = scrollLoop(window, document, iframe, origin)
+            blocker.remove()
+          }
+          if (event.data === POST_MESSAGE_UNLOCKED && locked) {
+            locked = false
+            disableScrollPolling()
+            hide(iframe, document)
+            blocker.remove()
+          }
+          if (event.data === POST_MESSAGE_REDIRECT) {
+            redirect(window, paywallUrl)
+          }
+        } catch (e) {
+          iframe.remove()
+          blocker.remove()
+          throw e
+        }
+      },
+      false
+    )
+  } catch (e) {
+    blocker.remove()
+    throw e
+  }
 }
