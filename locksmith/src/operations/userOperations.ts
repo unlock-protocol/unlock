@@ -1,12 +1,10 @@
 const ethJsUtil = require('ethereumjs-util')
 const models = require('../models')
 const { User, UserReference } = models
-import * as types from '../types'
+import { UserCreationInput } from '../types'
 
 namespace UserOperations {
-  export async function createUser(
-    input: types.UserCreationInput
-  ): Promise<Boolean> {
+  export async function createUser(input: UserCreationInput): Promise<Boolean> {
     let userReference = await UserReference.create(
       {
         emailAddress: input.emailAddress.toLowerCase(),

@@ -5,6 +5,7 @@ let User: any = models.User
 let UserReference: any = models.UserReference
 
 describe('User creation', () => {
+  /* details are crafted to ensure normalization downstream*/
   let userCreationDetails = {
     emailAddress: 'USER@EXAMPLE.COM',
     publicKey: '0x21cc9c438d9751a3225496f6fd1f1215c7bd5d83',
@@ -14,9 +15,9 @@ describe('User creation', () => {
 
   describe("when a user for the public key doesn't exist", () => {
     it('should create a user and associated data', async () => {
+      expect.assertions(1)
       UserReference.create = jest.fn(() => {})
 
-      expect.assertions(1)
       await UserOperations.createUser(userCreationDetails)
       expect(UserReference.create).toHaveBeenCalledWith(
         {
@@ -32,8 +33,9 @@ describe('User creation', () => {
     })
 
     it('should normalize the public key/address & email address', async () => {
-      UserReference.create = jest.fn(() => {})
       expect.assertions(1)
+      UserReference.create = jest.fn(() => {})
+
       await UserOperations.createUser(userCreationDetails)
       expect(UserReference.create).toHaveBeenCalledWith(
         {
