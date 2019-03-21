@@ -31,8 +31,9 @@ contract('Lock / cancelAndRefund', accounts => {
   })
 
   it('should return the correct penalty', async () => {
-    const penalty = await lock.refundPenaltyDenominator.call()
-    assert.equal(penalty, 10) // default of 10%
+    const numerator = new BigNumber(await lock.refundPenaltyNumerator.call())
+    const denominator = await lock.refundPenaltyDenominator.call()
+    assert.equal(numerator.div(denominator).toFixed(), 0.1) // default of 10%
   })
 
   it('the amount of refund should be less than the original keyPrice when purchased normally', async () => {
@@ -121,26 +122,35 @@ contract('Lock / cancelAndRefund', accounts => {
     let tx
 
     before(async () => {
-      tx = await lock.updateRefundPenaltyDenominator(5) // 20%
+      tx = await lock.updateRefundPenalty(2, 10) // 20%
     })
 
     it('should trigger an event', async () => {
       const event = tx.logs.find(log => {
-        return log.event === 'RefundPenaltyDenominatorChanged'
+        return log.event === 'RefundPenaltyChanged'
       })
       assert.equal(
-        new BigNumber(event.args.oldPenaltyDenominator).toFixed(),
+        new BigNumber(event.args.oldRefundPenaltyNumerator).toFixed(),
+        1
+      )
+      assert.equal(
+        new BigNumber(event.args.oldRefundPenaltyDenominator).toFixed(),
         10
       )
       assert.equal(
+        new BigNumber(event.args.refundPenaltyNumerator).toFixed(),
+        2
+      )
+      assert.equal(
         new BigNumber(event.args.refundPenaltyDenominator).toFixed(),
-        5
+        10
       )
     })
 
     it('should return the correct penalty', async () => {
-      const penalty = await lock.refundPenaltyDenominator.call()
-      assert.equal(penalty, 5) // updated to 20%
+      const numerator = new BigNumber(await lock.refundPenaltyNumerator.call())
+      const denominator = await lock.refundPenaltyDenominator.call()
+      assert.equal(numerator.div(denominator).toFixed(), 0.2) // updated to 20%
     })
 
     it('should still allow refund', async () => {

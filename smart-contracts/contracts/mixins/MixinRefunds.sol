@@ -16,8 +16,9 @@ contract MixinRefunds is
   using SafeMath for uint;
 
   // CancelAndRefund will return funds based on time remaining minus this penalty.
-  // This is a denominator, so 10 means 10% penalty and 20 means 5% penalty.
-  uint public refundPenaltyDenominator;
+  // This is calculated as `proRatedRefund * refundPenaltyNumerator / refundPenaltyDenominator`.
+  uint public refundPenaltyNumerator = 1;
+  uint public refundPenaltyDenominator = 10;
 
   event CancelKey(
     uint indexed tokenId,
@@ -25,16 +26,12 @@ contract MixinRefunds is
     uint refund
   );
 
-  event RefundPenaltyDenominatorChanged(
-    uint oldPenaltyDenominator,
+  event RefundPenaltyChanged(
+    uint oldRefundPenaltyNumerator,
+    uint oldRefundPenaltyDenominator,
+    uint refundPenaltyNumerator,
     uint refundPenaltyDenominator
   );
-
-  constructor(
-  ) internal
-  {
-    refundPenaltyDenominator = 10;
-  }
 
   /**
    * @dev Destroys the user's key and sends a refund based on the amount of time remaining.
@@ -60,13 +57,20 @@ contract MixinRefunds is
   /**
    * Allow the owner to change the refund penalty.
    */
-  function updateRefundPenaltyDenominator(
+  function updateRefundPenalty(
+    uint _refundPenaltyNumerator,
     uint _refundPenaltyDenominator
   )
     external
     onlyOwner
   {
-    emit RefundPenaltyDenominatorChanged(refundPenaltyDenominator, _refundPenaltyDenominator);
+    emit RefundPenaltyChanged(
+      refundPenaltyNumerator,
+      refundPenaltyDenominator,
+      _refundPenaltyNumerator,
+      _refundPenaltyDenominator
+    );
+    refundPenaltyNumerator = _refundPenaltyNumerator;
     refundPenaltyDenominator = _refundPenaltyDenominator;
   }
 
@@ -109,7 +113,7 @@ contract MixinRefunds is
       refund = keyPrice.mul(timeRemaining) / expirationDuration;
     }
     if (refundPenaltyDenominator > 0) {
-      uint penalty = keyPrice / refundPenaltyDenominator;
+      uint penalty = keyPrice.mul(refundPenaltyNumerator) / refundPenaltyDenominator;
       if (refund > penalty) {
         // Math: safeSub is not required since the if confirms this won't underflow
         refund -= penalty;
