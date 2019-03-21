@@ -2941,6 +2941,152 @@ Object {
 }
 `;
 
+exports[`Storyshots HeaderTitle header title 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c2 {
+  fill: var(--brand);
+}
+
+.c1 {
+  padding-bottom: 2px;
+  margin-right: -8px;
+}
+
+.c0 {
+  color: var(--darkgrey);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+}
+
+.c3 {
+  font-size: 32px;
+  line-height: 47px;
+  font-weight: 300;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c0 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 123px auto;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <h1
+        class="c0"
+      >
+        <a
+          class="c1"
+        >
+          <svg
+            class="c2"
+            height="28px"
+            name="Unlock"
+            viewBox="0 0 1200 256"
+          >
+            <title />
+            <path
+              d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+            />
+          </svg>
+        </a>
+        <span
+          class="c3"
+        >
+          Roses are red
+        </span>
+      </h1>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <h1
+      class="sc-12d5f0e-1 fBgYoW"
+    >
+      <a
+        class="sc-12d5f0e-0 eUFnmt"
+      >
+        <svg
+          class="sth0f3-1 iRirFt"
+          height="28px"
+          name="Unlock"
+          viewBox="0 0 1200 256"
+        >
+          <title />
+          <path
+            d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+          />
+        </svg>
+      </a>
+      <span
+        class="sc-12d5f0e-2 iBQZtb"
+      >
+        Roses are red
+      </span>
+    </h1>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Landing Page The Landing Page 1`] = `
 Object {
   "asFragment": [Function],
@@ -3793,6 +3939,180 @@ Object {
         class="gmrrpf-2 GaeDw"
       />
     </div>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots LeftHeader header, no icons 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c3 {
+  fill: var(--brand);
+}
+
+.c2 {
+  padding-bottom: 2px;
+  margin-right: -8px;
+}
+
+.c1 {
+  color: var(--darkgrey);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+}
+
+.c4 {
+  font-size: 32px;
+  line-height: 47px;
+  font-weight: 300;
+}
+
+.c0 {
+  display: grid;
+  grid-gap: 0;
+  grid-template-columns: 1fr auto;
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 70px;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c1 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 123px auto;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c0 {
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <header
+        class="c0"
+      >
+        <h1
+          class="c1"
+        >
+          <a
+            class="c2"
+          >
+            <svg
+              class="c3"
+              height="28px"
+              name="Unlock"
+              viewBox="0 0 1200 256"
+            >
+              <title />
+              <path
+                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+              />
+            </svg>
+          </a>
+          <span
+            class="c4"
+          >
+            Roses are red
+          </span>
+        </h1>
+      </header>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <header
+      class="sc-4839jp-0 eTcVNE"
+    >
+      <h1
+        class="sc-12d5f0e-1 fBgYoW"
+      >
+        <a
+          class="sc-12d5f0e-0 eUFnmt"
+        >
+          <svg
+            class="sth0f3-1 iRirFt"
+            height="28px"
+            name="Unlock"
+            viewBox="0 0 1200 256"
+          >
+            <title />
+            <path
+              d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+            />
+          </svg>
+        </a>
+        <span
+          class="sc-12d5f0e-2 iBQZtb"
+        >
+          Roses are red
+        </span>
+      </h1>
+    </header>
   </div>,
   "debug": [Function],
   "getAllByAltText": [Function],
