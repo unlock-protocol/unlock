@@ -31,6 +31,9 @@ export function Paywall({ locks, locked, redirect }) {
       postMessage(POST_MESSAGE_LOCKED)
     } else {
       postMessage(POST_MESSAGE_UNLOCKED)
+      if (redirect) {
+        window.location.href = redirect
+      }
       const height = '160px'
       const body = window.document.body
       body.style.margin = '0'

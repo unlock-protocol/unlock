@@ -215,6 +215,18 @@ describe('Paywall', () => {
     })
   })
 
+  describe('on unlocking', () => {
+    it('should redirect if requested', () => {
+      expect.assertions(1)
+
+      rtl.act(() => {
+        renderMockPaywall({ locked: false, redirect: 'http://example.com' })
+      })
+
+      expect(fakeWindow.location.href).toBe('http://example.com')
+    })
+  })
+
   describe('the unlocked flag', () => {
     it('should be present when the paywall is unlocked', () => {
       expect.assertions(1)
