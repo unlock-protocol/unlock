@@ -1,7 +1,4 @@
-import {
-  mapStateToProps,
-  humanize,
-} from '../../../components/content/LogContent'
+import { mapStateToProps } from '../../../components/content/LogContent'
 import { TransactionType } from '../../../unlock'
 import configure from '../../../config'
 
@@ -33,17 +30,6 @@ const transactions = {
 }
 
 describe('Transaction Log', () => {
-  describe('humanize - make transaction types more readable', () => {
-    it('should correctly handle transaction types of various lengths', () => {
-      expect.assertions(3)
-      expect(humanize(TransactionType.LOCK_CREATION)).toEqual('Lock Creation')
-      expect(humanize(TransactionType.WITHDRAWAL)).toEqual('Withdrawal')
-      expect(humanize(TransactionType.UPDATE_KEY_PRICE)).toEqual(
-        'Update Key Price'
-      )
-    })
-  })
-
   describe('mapStateToProps', () => {
     const state = {
       account: {},
@@ -59,11 +45,10 @@ describe('Transaction Log', () => {
       expect(transactionFeed[1].blockNumber).toEqual(2)
       expect(transactionFeed[2].blockNumber).toEqual(1)
     })
-    it('should include href to explorer and readable name in the feed', () => {
-      expect.assertions(2)
+    it('should include href to explorer in the feed', () => {
+      expect.assertions(1)
       const tx = transactionFeed[0]
       expect(tx).toHaveProperty('href')
-      expect(tx).toHaveProperty('readableName')
     })
   })
 })

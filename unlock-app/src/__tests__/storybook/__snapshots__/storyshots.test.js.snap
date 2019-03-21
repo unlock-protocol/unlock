@@ -60531,7 +60531,7 @@ Object {
             </a>
             <div
               class="c33"
-              type="LOCK_CREATION"
+              type="Lock Creation"
             >
               Lock Creation
             </div>
@@ -60548,7 +60548,7 @@ Object {
             </a>
             <div
               class="c34"
-              type="UPDATE_KEY_PRICE"
+              type="Update Key Price"
             >
               Update Key Price
             </div>
@@ -60565,7 +60565,7 @@ Object {
             </a>
             <div
               class="c33"
-              type="LOCK_CREATION"
+              type="Lock Creation"
             >
               Lock Creation
             </div>
@@ -60977,7 +60977,7 @@ Object {
           </a>
           <div
             class="sc-14l6ji-2 sc-14l6ji-3 zafjW"
-            type="LOCK_CREATION"
+            type="Lock Creation"
           >
             Lock Creation
           </div>
@@ -60994,7 +60994,7 @@ Object {
           </a>
           <div
             class="sc-14l6ji-2 sc-14l6ji-3 fOybBE"
-            type="UPDATE_KEY_PRICE"
+            type="Update Key Price"
           >
             Update Key Price
           </div>
@@ -61011,7 +61011,7 @@ Object {
           </a>
           <div
             class="sc-14l6ji-2 sc-14l6ji-3 zafjW"
-            type="LOCK_CREATION"
+            type="Lock Creation"
           >
             Lock Creation
           </div>

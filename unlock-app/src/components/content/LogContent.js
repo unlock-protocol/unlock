@@ -11,12 +11,6 @@ import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { pageTitle } from '../../constants'
 import withConfig from '../../utils/withConfig'
 
-export const humanize = type => {
-  if (!type) return ''
-  let parts = type.split('_')
-  return parts.map(part => part[0] + part.slice(1).toLowerCase()).join(' ')
-}
-
 export const LogContent = ({ account, network, transactionFeed }) => {
   return (
     <GlobalErrorConsumer>
@@ -37,7 +31,7 @@ export const LogContent = ({ account, network, transactionFeed }) => {
                   <Address href={tx.href} target="_blank">
                     {tx.lock}
                   </Address>
-                  <Type type={tx.type}>{tx.readableName}</Type>
+                  <Type type={tx.type}>{tx.type}</Type>
                 </React.Fragment>
               ))}
             </Content>
@@ -83,7 +77,7 @@ const LogElement = styled.div`
 
 // TODO: determine which transaction types get which color
 const typeColors = {
-  LOCK_CREATION: 'green',
+  'Lock Creation': 'green',
 }
 
 const Type = styled(LogElement)`
@@ -108,7 +102,6 @@ export const mapStateToProps = (
   transactionFeed.forEach((tx, i) => {
     transactionFeed[i].href =
       chainExplorerUrlBuilders.etherScan(tx.lock) || undefined
-    transactionFeed[i].readableName = humanize(tx.type)
   })
 
   return {

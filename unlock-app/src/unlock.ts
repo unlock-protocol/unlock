@@ -2,10 +2,10 @@
 // throughout unlock-app.
 
 export enum TransactionType {
-  LOCK_CREATION = 'LOCK_CREATION',
-  KEY_PURCHASE  = 'KEY_PURCHASE',
-  WITHDRAWAL    = 'WITHDRAWAL',
-  UPDATE_KEY_PRICE = 'UPDATE_KEY_PRICE',
+  LOCK_CREATION = 'Lock Creation',
+  KEY_PURCHASE  = 'Key Purchase',
+  WITHDRAWAL    = 'Withdrawal',
+  UPDATE_KEY_PRICE = 'Update Key Price',
 }
 
 export interface Transaction {
