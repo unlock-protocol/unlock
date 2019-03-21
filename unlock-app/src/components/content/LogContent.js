@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import UnlockPropTypes from '../../propTypes'
 import Layout from '../interface/Layout'
-import CreatorAccount from '../creator/CreatorAccount'
+import Account from '../interface/Account'
 import BrowserOnly from '../helpers/BrowserOnly'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { pageTitle } from '../../constants'
@@ -26,7 +26,7 @@ export const LogContent = ({ account, network, transactionFeed }) => {
         </Head>
         {account && (
           <BrowserOnly>
-            <CreatorAccount network={network} account={account} />
+            <Account network={network} account={account} />
             <Content>
               <LogHeader>Block Number</LogHeader>
               <LogHeader>Lock Name/Address</LogHeader>
