@@ -1,4 +1,5 @@
 import confirmEmail from './confirmEmail'
+import ejectedEmail from './ejectedEmail'
 import ejectionWarningEmail from './ejectionWarningEmail'
 import recoveryKeyEmail from './recoveryKeyEmail'
 
