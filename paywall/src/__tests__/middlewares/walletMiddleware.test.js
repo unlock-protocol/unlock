@@ -317,39 +317,6 @@ describe('Wallet middleware', () => {
   })
 
   describe('error events triggered by the walletService', () => {
-    it('should handle error triggered when creating a lock', () => {
-      expect.assertions(3)
-      const { store } = create()
-      const transaction = {
-        hash: '123',
-        type: TRANSACTION_TYPES.LOCK_CREATION,
-        lock: '0x123',
-      }
-      state.transactions = {
-        [transaction.hash]: transaction,
-      }
-      mockWalletService.emit(
-        'error',
-        { message: 'this was broken' },
-        transaction.hash
-      )
-      expect(store.dispatch).toHaveBeenNthCalledWith(
-        1,
-        expect.objectContaining({ type: DISMISS_CHECK })
-      )
-      expect(store.dispatch).toHaveBeenNthCalledWith(2, {
-        type: DELETE_LOCK,
-        address: transaction.lock,
-      })
-      expect(store.dispatch).toHaveBeenNthCalledWith(
-        3,
-        expect.objectContaining({
-          type: SET_ERROR,
-          error: 'Failed to create lock. Did you decline the transaction?',
-        })
-      )
-    })
-
     it('it should handle error events triggered by the walletService', () => {
       expect.assertions(1)
       const { store } = create()

@@ -92,18 +92,10 @@ export default function walletMiddleware({ getState, dispatch }) {
     dispatch(updateLock(address, update))
   })
 
-  walletService.on('error', (error, transactionHash) => {
+  walletService.on('error', error => {
     // If we didn't successfully interact with the wallet, we need to clear the
     // overlay
     dispatch(dismissWalletCheck())
-    const transaction = getState().transactions[transactionHash]
-    if (transaction && transaction.type === TRANSACTION_TYPES.LOCK_CREATION) {
-      // delete the lock
-      dispatch(deleteLock(transaction.lock))
-      return dispatch(
-        setError('Failed to create lock. Did you decline the transaction?')
-      )
-    }
     dispatch(setError(error.message))
   })
 
