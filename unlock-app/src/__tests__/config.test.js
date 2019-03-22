@@ -146,7 +146,7 @@ describe('config', () => {
     it('should contain the right URLs for chain explorers', () => {
       expect.assertions(2)
       expect(Object.keys(config.chainExplorerUrlBuilders)).toHaveLength(1)
-      expect(config.chainExplorerUrlBuilders.etherScan('0x0')).toEqual(false)
+      expect(config.chainExplorerUrlBuilders.etherScan('0x0')).toEqual('')
     })
   })
 
