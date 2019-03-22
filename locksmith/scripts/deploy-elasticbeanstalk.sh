@@ -24,8 +24,8 @@ function package_application()
     local artifact_location=${2}
     
     mkdir builds
-    pushd ./${application}/build
-    zip -r ../${artifact_location} . ../package.json ../package-lock.json
+    pushd ./${application}
+    npm run dist ../${artifact_location} 
     popd
     return 0
 }
