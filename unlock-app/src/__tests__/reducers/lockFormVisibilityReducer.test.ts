@@ -11,28 +11,28 @@ describe('lock form visibility reducer', () => {
 
   it('should return the initial state when receiving SET_PROVIDER', () => {
     expect.assertions(1)
-    expect(reducer({ showLockCreationForm: true }, { type: SET_PROVIDER }))
+    expect(reducer({ visible: true }, { type: SET_PROVIDER }))
       .toEqual(initialState)
   })
 
   it('should return the initial state when receiving SET_NETWORK', () => {
     expect.assertions(1)
-    expect(reducer({ showLockCreationForm: true }, { type: SET_NETWORK }))
+    expect(reducer({ visible: true }, { type: SET_NETWORK }))
       .toEqual(initialState)
   })
 
   it('should show the form', () => {
     expect.assertions(1)
     expect(reducer(initialState, { type: SHOW_FORM })).toEqual({
-      showLockCreationForm: true,
+      visible: true,
     })
   })
 
   it('should hide the form', () => {
     expect.assertions(1)
-    expect(reducer({ showLockCreationForm: true },
+    expect(reducer({ visible: true },
                    { type: HIDE_FORM })).toEqual({
-      showLockCreationForm: false,
+      visible: false,
     })
   })
 })

@@ -5,7 +5,7 @@ import { SET_PROVIDER } from '../actions/provider'
 import { SET_NETWORK } from '../actions/network'
 
 export const initialState = {
-  showLockCreationForm: false,
+  visible: false,
 }
 
 const lockFormVisibilityReducer = (state = initialState,
@@ -16,7 +16,7 @@ const lockFormVisibilityReducer = (state = initialState,
 
   if (action.type === SHOW_FORM) {
     return {
-      showLockCreationForm: true,
+      visible: true,
     }
   }
 
