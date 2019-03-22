@@ -51,7 +51,7 @@ describe('The Unlock Dashboard', () => {
     }, 25000)
   })
 
-  describe('Lock Editing', () => {
+  describe.skip('Lock Editing', () => {
     it('a button exists to edit the Lock details', async () => {
       await expect(page).toMatchElement(`#EditLockButton_${testLockAddress}`)
     })
@@ -69,7 +69,7 @@ describe('The Unlock Dashboard', () => {
     })
   })
 
-  describe('Data existing after refresh', () => {
+  describe.skip('Data existing after refresh', () => {
     it('should retain the lock name', async () => {
       await page.reload()
       await page.waitFor(3500)
