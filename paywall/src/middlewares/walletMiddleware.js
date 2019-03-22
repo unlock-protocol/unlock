@@ -1,5 +1,4 @@
 /* eslint promise/prefer-await-to-then: 0 */
-import { WITHDRAW_FROM_LOCK, updateLock } from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
 import { setAccount } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
@@ -133,11 +132,6 @@ export default function walletMiddleware({ getState, dispatch }) {
             account.address,
             action.key.data
           )
-        })
-      } else if (action.type === WITHDRAW_FROM_LOCK) {
-        ensureReadyBefore(() => {
-          const account = getState().account
-          walletService.withdrawFromLock(action.lock.address, account.address)
         })
       }
 

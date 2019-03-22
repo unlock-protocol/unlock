@@ -1,6 +1,5 @@
 import EventEmitter from 'events'
 import walletMiddleware from '../../middlewares/walletMiddleware'
-import { WITHDRAW_FROM_LOCK, UPDATE_LOCK } from '../../actions/lock'
 import {
   WAIT_FOR_WALLET,
   GOT_WALLET,
@@ -359,38 +358,6 @@ describe('Wallet middleware', () => {
         lock.keyPrice,
         account.address,
         key.data
-      )
-      expect(next).toHaveBeenCalledWith(action)
-    })
-  })
-
-  describe('WITHDRAW_FROM_LOCK', () => {
-    it('when the service is not ready it should set an error and not try to withdraw from the lock', () => {
-      expect.assertions(3)
-      const { next, invoke, store } = create()
-      const action = { type: WITHDRAW_FROM_LOCK, lock }
-      mockWalletService.withdrawFromLock = jest.fn()
-      mockWalletService.ready = false
-      invoke(action)
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: SET_ERROR,
-        error: FATAL_NO_USER_ACCOUNT,
-      })
-
-      expect(mockWalletService.withdrawFromLock).not.toHaveBeenCalled()
-      expect(next).toHaveBeenCalledWith(action)
-    })
-
-    it('should handle WITHDRAW_FROM_LOCK by calling withdrawFromLock from walletService', () => {
-      expect.assertions(2)
-      const { next, invoke, store } = create()
-      const action = { type: WITHDRAW_FROM_LOCK, lock }
-      mockWalletService.withdrawFromLock = jest.fn()
-      mockWalletService.ready = true
-      invoke(action)
-      expect(mockWalletService.withdrawFromLock).toHaveBeenCalledWith(
-        lock.address,
-        store.getState().account.address
       )
       expect(next).toHaveBeenCalledWith(action)
     })
