@@ -175,8 +175,8 @@ export default function web3Middleware({ getState, dispatch }) {
           },
         } = getState()
 
-        const { lockAddress, prefix } = lockRoute(pathname)
-        if (lockAddress && prefix === 'paywall') {
+        const { lockAddress } = lockRoute(pathname)
+        if (lockAddress) {
           web3Service.getKeyByLockForOwner(lockAddress, action.account.address)
         }
       }
