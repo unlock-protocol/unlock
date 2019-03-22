@@ -2,7 +2,6 @@
 import {
   CREATE_LOCK,
   WITHDRAW_FROM_LOCK,
-  deleteLock,
   UPDATE_LOCK_KEY_PRICE,
   updateLock,
 } from '../actions/lock'
@@ -17,7 +16,7 @@ import {
   gotWallet,
   dismissWalletCheck,
 } from '../actions/walletStatus'
-import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
+import { POLLING_INTERVAL } from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
 
 import WalletService from '../services/walletService'
 import { FATAL_NO_USER_ACCOUNT, FATAL_NON_DEPLOYED_CONTRACT } from '../errors'
@@ -92,18 +91,10 @@ export default function walletMiddleware({ getState, dispatch }) {
     dispatch(updateLock(address, update))
   })
 
-  walletService.on('error', (error, transactionHash) => {
+  walletService.on('error', error => {
     // If we didn't successfully interact with the wallet, we need to clear the
     // overlay
     dispatch(dismissWalletCheck())
-    const transaction = getState().transactions[transactionHash]
-    if (transaction && transaction.type === TRANSACTION_TYPES.LOCK_CREATION) {
-      // delete the lock
-      dispatch(deleteLock(transaction.lock))
-      return dispatch(
-        setError('Failed to create lock. Did you decline the transaction?')
-      )
-    }
     dispatch(setError(error.message))
   })
 
