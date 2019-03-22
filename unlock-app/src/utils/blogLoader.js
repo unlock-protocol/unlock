@@ -22,8 +22,13 @@ export const loadBlogIndexFile = async (url, maxPosts) => {
   let posts = []
 
   if (index.items) {
+    index.items.forEach(item => {
+      if (Date.parse(item.publishDate) <= Date.now()) {
+        posts.push(item)
+      }
+    })
     // TODO: add pagination
-    posts = index.items.slice(0, maxPosts)
+    posts = posts.slice(0, maxPosts)
   }
 
   return posts
