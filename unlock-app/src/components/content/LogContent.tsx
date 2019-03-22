@@ -1,17 +1,23 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import UnlockPropTypes from '../../propTypes'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import BrowserOnly from '../helpers/BrowserOnly'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
+import CreatorLog from '../creator/CreatorLog'
 import { pageTitle } from '../../constants'
 import withConfig from '../../utils/withConfig'
+import * as UnlockTypes from '../../unlock'
 
-export const LogContent = ({ account, network, transactionFeed }) => {
+interface Props {
+  account: UnlockTypes.Account
+  network: UnlockTypes.Network
+  transactionFeed: UnlockTypes.Transaction[]
+  explorerLinks: { [key: string]: string }
+}
+
+export const LogContent = ({ account, network, transactionFeed, explorerLinks }: Props) => {
   return (
     <GlobalErrorConsumer>
       <Layout title="Creator Log">
@@ -21,20 +27,7 @@ export const LogContent = ({ account, network, transactionFeed }) => {
         {account && (
           <BrowserOnly>
             <Account network={network} account={account} />
-            <Content>
-              <LogHeader>Block Number</LogHeader>
-              <LogHeader>Lock Name/Address</LogHeader>
-              <LogHeader>Type</LogHeader>
-              {transactionFeed.map(tx => (
-                <React.Fragment key={tx.hash}>
-                  <LogElement>{tx.blockNumber}</LogElement>
-                  <Address href={tx.href} target="_blank">
-                    {tx.lock}
-                  </Address>
-                  <Type type={tx.type}>{tx.type}</Type>
-                </React.Fragment>
-              ))}
-            </Content>
+            <CreatorLog transactionFeed={transactionFeed} explorerLinks={explorerLinks} />
           </BrowserOnly>
         )}
       </Layout>
@@ -42,72 +35,35 @@ export const LogContent = ({ account, network, transactionFeed }) => {
   )
 }
 
-LogContent.propTypes = {
-  account: UnlockPropTypes.account,
-  network: UnlockPropTypes.network.isRequired,
-  transactionFeed: PropTypes.arrayOf(UnlockPropTypes.transaction).isRequired,
+interface State {
+  account: UnlockTypes.Account
+  network: UnlockTypes.Network
+  transactions: UnlockTypes.Transactions
 }
 
-LogContent.defaultProps = {
-  account: null,
+interface Config {
+  chainExplorerUrlBuilders: UnlockTypes.ChainExplorerURLBuilders
 }
-
-const Content = styled.div`
-  display: grid;
-  grid-template-columns: 125px 2fr 1fr;
-  grid-auto-rows: 32px;
-  grid-column-gap: 20px;
-`
-
-const LogHeader = styled.div`
-  font-size: 10px;
-  font-weight: normal;
-  text-transform: uppercase;
-  color: var(--grey);
-  white-space: nowrap;
-`
-
-const LogElement = styled.div`
-  font-size: 14px;
-  line-height: 14px;
-  color: var(--darkgrey);
-  font-weight: 300;
-  font-family: 'IBM Plex Mono', Courier, monospace;
-`
-
-// TODO: determine which transaction types get which color
-const typeColors = {
-  'Lock Creation': 'green',
-}
-
-const Type = styled(LogElement)`
-  color: ${props => 'var(--' + (typeColors[props.type] || 'slate')});
-  white-space: nowrap;
-`
-
-const Address = styled.a`
-  font-size: 14px;
-  font-weight: 300;
-  font-family: 'IBM Plex Mono', Courier, monospace;
-`
 
 export const mapStateToProps = (
-  { account, network, transactions },
-  { config: { chainExplorerUrlBuilders } }
+  { account, network, transactions }: State,
+  { config: { chainExplorerUrlBuilders } }: { config: Config }
 ) => {
   const transactionFeed = Object.values(transactions).sort(
     (a, b) => b.blockNumber - a.blockNumber
   )
 
-  transactionFeed.forEach((tx, i) => {
-    transactionFeed[i].href =
-      chainExplorerUrlBuilders.etherScan(tx.lock) || undefined
+  const explorerLinks: {[key: string] : string} = {}
+
+  transactionFeed.forEach((tx) => {
+    explorerLinks[tx.hash] = chainExplorerUrlBuilders.etherScan(tx.lock)
   })
 
   return {
     account,
     network,
     transactionFeed,
+    explorerLinks,
   }
 }
 

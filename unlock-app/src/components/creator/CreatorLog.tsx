@@ -4,25 +4,23 @@ import * as UnlockTypes from '../../unlock'
 
 interface Props {
   transactionFeed: UnlockTypes.Transaction[]
-  transactionMetadata: UnlockTypes.TransactionMetadataMap
+  explorerLinks: { [key: string]: string }
 }
 
-const CreatorLog = (props: Props) => {
-  const { transactionFeed, transactionMetadata } = props
+const CreatorLog = ({ transactionFeed, explorerLinks }: Props) => {
   return (
     <Grid>
       <HeaderItem>Block Number</HeaderItem>
       <HeaderItem>Lock Name/Address</HeaderItem>
       <HeaderItem>Type</HeaderItem>
       {transactionFeed.map(tx => {
-        const { href, readableName } = transactionMetadata[tx.hash]
         return (
           <React.Fragment key={tx.hash}>
             <BlockNumber>{tx.blockNumber}</BlockNumber>
-            <Address href={href} target="_blank">
+            <Address href={explorerLinks[tx.hash]} target="_blank">
               {tx.lock}
             </Address>
-            <Type type={tx.type}>{readableName}</Type>
+            <Type type={tx.type}>{tx.type}</Type>
           </React.Fragment>
         )})}
     </Grid>
@@ -62,11 +60,14 @@ const Address = styled.a`
     font-family: 'IBM Plex Mono', Courier, monospace;
 `
 
-const typeColors: { [key: string]: string } = {
-  'LOCK_CREATION': 'green',
+const typeColors: { [key in UnlockTypes.TransactionType]: string } = {
+  [UnlockTypes.TransactionType.LOCK_CREATION]: 'green',
+  [UnlockTypes.TransactionType.KEY_PURCHASE]: 'slate',
+  [UnlockTypes.TransactionType.UPDATE_KEY_PRICE]: 'slate',
+  [UnlockTypes.TransactionType.WITHDRAWAL]: 'slate',
 }
 
 const Type = styled(Entry)`
-  color: ${(props: { type: string } ) => 'var(--' + (typeColors[props.type] || 'slate')});
+  color: ${(props: { type: UnlockTypes.TransactionType } ) => 'var(--' + typeColors[props.type]});
   white-space: nowrap;
 `
