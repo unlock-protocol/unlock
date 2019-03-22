@@ -13,7 +13,7 @@ import {
 import BalanceProvider from '../helpers/BalanceProvider'
 
 export const PendingKeyLock = ({ lock }) => (
-  <LockWrapper>
+  <LockWrapper lock={lock}>
     <LockHeader>{lock.name}</LockHeader>
     <Body>
       <BalanceProvider

@@ -25,7 +25,7 @@ export const UnlockedFlag = () => {
     return () => clearTimeout(timeout)
   }, [setHidden])
   return (
-    <Flag id="UnlockFlag" data-testid="unlocked" hidden={hidden}>
+    <Flag data-testid="unlocked" hidden={hidden}>
       <RoundedLogo />
       <p>Powered by</p>
       <a href="/">Unlock</a>
@@ -33,7 +33,9 @@ export const UnlockedFlag = () => {
   )
 }
 
-const Flag = styled(Colophon)`
+const Flag = styled(Colophon).attrs({
+  className: 'flag',
+})`
   float: right;
   box-shadow: 14px 0px 40px rgba(0, 0, 0, 0.08);
   background: var(--white);
@@ -55,7 +57,7 @@ const Flag = styled(Colophon)`
     justify-self: center;
     height: 43px;
     float: none;
-  
+
     opacity: 1;
   `}
 `
