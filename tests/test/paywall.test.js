@@ -1,8 +1,13 @@
 const url = require('../helpers/url').main
 
+// TODO: understand why this is needed... and probably get rid of it!
 jest.setTimeout(30000)
 
-describe.skip('The Unlock Paywall', () => {
+describe('The Unlock Paywall', () => {
+  // TODO Have more confidence that this address is the real lock address
+  // One way to achieve this is to actually start by explicitly deploying a lock, and using
+  // its address, rather than 'hope' that someone else deployed a lock at that address.
+  // This would also make tests faster because we can run them in parallel.
   const testLockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
 
   function lockSelector(name) {
