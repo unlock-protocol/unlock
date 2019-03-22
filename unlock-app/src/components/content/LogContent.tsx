@@ -48,7 +48,7 @@ interface Config {
 export const mapStateToProps = (
   { account, network, transactions }: State,
   { config: { chainExplorerUrlBuilders } }: { config: Config }
-) => {
+): Props => {
   const transactionFeed = Object.values(transactions).sort(
     (a, b) => b.blockNumber - a.blockNumber
   )
