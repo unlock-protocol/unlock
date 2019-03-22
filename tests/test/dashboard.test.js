@@ -38,7 +38,7 @@ describe('The Unlock Dashboard', () => {
     }, 8000)
   })
 
-  describe('Lock Embedd Code', () => {
+  describe.skip('Lock Embedd Code', () => {
     it('should toggle the embed code', async () => {
       await page.waitForSelector(`#LockEmbeddCode_${testLockAddress}`)
       await expect(page).toClick(`#LockEmbeddCode_${testLockAddress}`)
