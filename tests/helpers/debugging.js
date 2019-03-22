@@ -32,10 +32,10 @@ module.exports = {
     if (debug) {
       page.on('console', async msg => {
         const locationInfo = msg.location()
-        const fileInfo = `${locationInfo.url ? locationInfo.url : ''}${
+        const fileInfo = `${locationInfo.url ? locationInfo.url : '_'}${
           locationInfo.lineNumber !== undefined
             ? ` Line ${locationInfo.lineNumber}`
-            : ''
+            : 'Line _'
         }`
         const args = await Promise.all(msg.args().map(arg => arg.jsonValue()))
         console.log(`console.${msg.type()} ${fileInfo}`, args)
