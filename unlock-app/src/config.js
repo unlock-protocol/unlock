@@ -88,7 +88,7 @@ export default function configure(
     'http://localhost:3001/static/paywall.min.js'
   let blockTime = 8000 // in mseconds.
   let chainExplorerUrlBuilders = {
-    etherScan: () => false,
+    etherScan: () => '',
   }
   let unlockUrl = runtimeConfig.unlockUrl || CANONICAL_BASE_DEV_URL
 
