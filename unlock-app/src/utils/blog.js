@@ -1,6 +1,7 @@
 const fs = require('fs')
 const { join } = require('path')
 const yamlFront = require('yaml-front-matter')
+const rss = require('rss')
 
 /**
  * Master function that takes a base directory and returns a reverse-chronologically ordered list of blog posts,
@@ -67,6 +68,21 @@ const generateBlogIndexFile = (baseDir, postFeed) => {
     JSON.stringify({ items: postFeed }),
     'utf8'
   )
+}
+
+const generateRSSFile = (baseDir, postFeed) => {
+  // Build list of items that don't have future publish dates
+  let items = []
+  let now = Date.now()
+
+  postFeed.forEach(post => {
+    if (Date.parse(post.publishDate) < now) {
+      items.push({
+        title: post.title,
+        description: post.description,
+      })
+    }
+  })
 }
 
 /**
