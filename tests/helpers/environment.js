@@ -36,6 +36,7 @@ class UnlockEnvironment extends PuppeteerEnvironment {
       1000 /* every s */,
       120 /* up to 2m */
     )
+    this.global.page.setViewport({ width: 1024, height: 768 })
   }
 
   async teardown() {

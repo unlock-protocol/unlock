@@ -4,8 +4,9 @@
  */
 module.exports = {
   launch: {
-    headless: true,
-    devtools: false,
+    headless: !!process.env.CI,
+    devtools: !process.env.CI,
+    slowMo: 100, // slow down by 100ms to mimick real world usage (even if that slows down test suite...)
     args: [
       // Required for Docker version of Puppeteer
       '--no-sandbox',
