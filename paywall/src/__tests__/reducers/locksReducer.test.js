@@ -1,7 +1,6 @@
 import reducer, { initialState } from '../../reducers/locksReducer'
 import {
   ADD_LOCK,
-  CREATE_LOCK,
   DELETE_LOCK,
   UPDATE_LOCK,
   UPDATE_LOCK_KEY_PRICE,
@@ -47,30 +46,6 @@ describe('locks reducer', () => {
         }
       )
     ).toBe(initialState)
-  })
-
-  it('should add the lock when receiving CREATE_LOCK and if it was not there yet', () => {
-    expect.assertions(1)
-    expect(
-      reducer(undefined, {
-        type: CREATE_LOCK,
-        lock,
-      })
-    ).toEqual({
-      [lock.address]: lock,
-    })
-  })
-
-  it('should not add the lock when receiving CREATE_LOCK if the lock has no address', () => {
-    expect.assertions(1)
-    expect(
-      reducer(initialState, {
-        type: CREATE_LOCK,
-        lock: {
-          name: 'no address lock',
-        },
-      })
-    ).toEqual(initialState)
   })
 
   it('should delete a lock when DELETE_TRANSACTION is called for a transaction which created that lock', () => {
