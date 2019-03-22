@@ -56,7 +56,6 @@ contract MixinLockCore is
   }
 
   constructor(
-    address _owner,
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys,
