@@ -1073,4 +1073,25 @@ describe('Web3Service', () => {
       expect(web3Service.getTransaction).toHaveBeenCalledWith(transactionHash)
     })
   })
+
+  describe('inputsHandlers', () => {
+    describe('createLock', () => {
+      it('should emit lock.updated with correctly typed values', async done => {
+        expect.assertions(2)
+        const params = {
+          _expirationDuration: '7',
+          _maxNumberOfKeys: '5',
+          _keyPrice: '5',
+        }
+        web3Service.generateLockAddress = jest.fn()
+        web3Service.on('lock.updated', (newLockAddress, update) => {
+          expect(update.expirationDuration).toBe(7)
+          expect(update.maxNumberOfKeys).toBe(5)
+          done()
+        })
+
+        await web3Service.inputsHandlers.createLock('0x123', '0x456', params)
+      })
+    })
+  })
 })
