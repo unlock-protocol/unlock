@@ -1,14 +1,7 @@
 const url = require('../helpers/url').main
 const wait = require('../helpers/wait')
-
-/**
- * Helper function to list locks on the dashboard
- */
-const listLocksOnPage = async () =>
-  page.evaluate(() => {
-    const lockElements = document.getElementsByClassName('lock')
-    return Array.from(lockElements).map(el => el.getAttribute('data-address'))
-  })
+const dashboard = require('../helpers/dashboard')
+const debug = require('../helpers/debugging')
 
 describe('The Unlock Dashboard', () => {
   beforeAll(async () => {
@@ -18,6 +11,7 @@ describe('The Unlock Dashboard', () => {
 
   it('should load the creator dashboard', async () => {
     expect.assertions(1)
+    await debug.screenshot(page)
     await expect(page).toMatch('Creator Dashboard')
   })
 
@@ -41,7 +35,7 @@ describe('The Unlock Dashboard', () => {
     let newLock
 
     beforeAll(async () => {
-      existingLocks = await listLocksOnPage()
+      existingLocks = await dashboard.listLocks()
     })
 
     it('should display the lock creation form', async () => {
@@ -58,9 +52,10 @@ describe('The Unlock Dashboard', () => {
       const name = `My lock ${Math.random()
         .toString(36)
         .substring(7)}`
-      const expirationDuration = Math.floor(1000 * Math.random()).toString(10)
+      const expirationDuration =
+        Math.floor(1000 * Math.random()).toString(10) + 1
       const maxNumberOfKeys = Math.floor(100000 * Math.random()).toString(10)
-      const keyPrice = (Math.floor(10000 * Math.random()) / 100.0).toString(10)
+      const keyPrice = (Math.floor(990 * Math.random()) / 100.0).toString(10) // we want key prices less than 10 Eth
 
       await expect(page).toFill('input[name="name"]', name)
       await expect(page).toFill(
@@ -76,7 +71,7 @@ describe('The Unlock Dashboard', () => {
       await wait.untilIsGone('.lockForm')
 
       // List all locks (there should be a new one)
-      const locks = await listLocksOnPage()
+      const locks = await dashboard.listLocks()
       expect(locks.length).toBe(existingLocks.length + 1)
 
       // This is the new lock
@@ -123,7 +118,7 @@ describe('The Unlock Dashboard', () => {
 
     beforeAll(async () => {
       await wait.forLoadingDone()
-      const existingLocks = await listLocksOnPage()
+      const existingLocks = await dashboard.listLocks()
       lockSelector = `[data-address="${existingLocks[0]}"]`
       // Let's make sure the lock is not pending!
       await wait.untilIsFalse(_lockSelector => {
@@ -165,7 +160,7 @@ describe('The Unlock Dashboard', () => {
     describe('Lock Editing', () => {
       let lockToEditSelector
       beforeEach(async () => {
-        const existingLocks = await listLocksOnPage()
+        const existingLocks = await dashboard.listLocks()
         lockToEditSelector = `[data-address="${existingLocks[0]}"]`
       })
 

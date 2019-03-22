@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -15,6 +17,8 @@ import { pageTitle } from '../../constants'
  * @param {*} domain
  */
 const DemoContent = ({ lock, config: { paywallUrl, paywallScriptPath } }) => {
+  console.log('DEMO CONTENT ON PAGE')
+  console.log(paywallUrl + paywallScriptPath)
   return (
     <Fragment>
       <Head>

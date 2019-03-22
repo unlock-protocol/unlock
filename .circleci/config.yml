@@ -1,7 +1,7 @@
 version: 2
 cached-checkout: &cached-checkout
   attach_workspace:
-    at: ".."
+    at: '..'
 images-caches: &images-caches
   attach_workspace:
     at: ../caches
@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout
       - persist_to_workspace:
-          root: ".."
+          root: '..'
           paths:
             - project
 
@@ -21,7 +21,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Open automated production pull request"
+          name: 'Open automated production pull request'
           command: scripts/open-production-pull-request.sh
 
   build-unlock:
@@ -38,9 +38,9 @@ jobs:
           name: Cache image locally
           command: docker save -o "../caches/unlock.tar" unlock
       - persist_to_workspace:
-          root: "../caches"
+          root: '../caches'
           paths:
-            - "unlock.tar"
+            - 'unlock.tar'
 
   build-unlock-integration:
     machine: true
@@ -56,9 +56,9 @@ jobs:
           name: Cache image locally
           command: docker save -o "../caches/unlock-integration.tar" unlock-integration
       - persist_to_workspace:
-          root: "../caches"
+          root: '../caches'
           paths:
-            - "unlock-integration.tar"
+            - 'unlock-integration.tar'
 
   unlock-protocol-com-tests:
     machine: true
@@ -321,7 +321,7 @@ workflows:
   promote: # The promote workflow will checkout an old version of master (4 days old) and rebase it onto the production branch
     triggers:
       - schedule:
-          cron: "30 20 * * 2" # use cron syntax to set the schedule trigger on Teusday at 430pm ET (2030 UTC)
+          cron: '30 20 * * 2' # use cron syntax to set the schedule trigger on Teusday at 430pm ET (2030 UTC)
           filters:
             branches:
               only:
@@ -338,88 +338,7 @@ workflows:
       - build-unlock-integration:
           requires:
             - checkout-and-cache
-      - unlock-protocol-com-tests:
-          requires:
-            - build-unlock
-      - unlock-app-tests:
-          requires:
-            - build-unlock
-      - unlock-app-chromatic:
-          requires:
-            - build-unlock
-      - smart-contracts-tests:
-          requires:
-            - build-unlock
-      - locksmith-tests:
-          requires:
-            - build-unlock
-      - paywall-tests:
-          requires:
-            - build-unlock
-      - wedlocks-tests:
-          requires:
-            - build-unlock
       - integration-tests:
           requires:
             - build-unlock
             - build-unlock-integration
-      - deploy-unlock-app-netlify:
-          requires:
-            - unlock-app-tests
-            - integration-tests
-      - deploy-paywall-netlify:
-          requires:
-            - paywall-tests
-            - integration-tests
-      - deploy-unlock-protocol-com-netlify:
-          requires:
-            - unlock-protocol-com-tests
-            - integration-tests
-      - promote-unlock-image:
-          filters:
-            branches:
-              only: master
-          requires:
-            - unlock-protocol-com-tests
-            - unlock-app-tests
-            - smart-contracts-tests
-            - locksmith-tests
-            - paywall-tests
-            - wedlocks-tests
-            - integration-tests
-      - promote-unlock-integration-image:
-          filters:
-            branches:
-              only: master
-          requires:
-            - unlock-protocol-com-tests
-            - unlock-app-tests
-            - smart-contracts-tests
-            - locksmith-tests
-            - paywall-tests
-            - wedlocks-tests
-            - integration-tests
-      - deploy-locksmith-beanstalk:
-          filters:
-            branches:
-              only: master
-          requires:
-            - unlock-protocol-com-tests
-            - unlock-app-tests
-            - smart-contracts-tests
-            - locksmith-tests
-            - paywall-tests
-            - wedlocks-tests
-            - integration-tests
-      - deploy-wedlocks-netlify:
-          filters:
-            branches:
-              only: master
-          requires:
-            - unlock-protocol-com-tests
-            - unlock-app-tests
-            - smart-contracts-tests
-            - locksmith-tests
-            - paywall-tests
-            - wedlocks-tests
-            - integration-tests

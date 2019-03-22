@@ -1,38 +1,36 @@
-version: "3"
+version: '3'
 services:
   ganache:
     restart: always
     image: trufflesuite/ganache-cli:v6.4.1
     expose:
       - 8545
-    command: ["-h=0.0.0.0", "-m=hello unlock save the web", "-i=1984"]
+    command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1984']
   ganache-integration:
     restart: always
     image: trufflesuite/ganache-cli:v6.4.1
+    ports:
+      - 8545:8545
     expose:
       - 8545
-    command: ["-h=0.0.0.0", "-m=hello unlock save the web", "-i=1984", "-b 1"]
+    command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1984', '-b 1']
   db:
     image: postgres
     expose:
       - 5432
     environment:
-      POSTGRES_USER: "${DB_USERNAME}"
-      POSTGRES_PASSWORD: "${DB_PASSWORD}"
-      POSTGRES_DB: "${DB_NAME}"
-  unlock:
+      POSTGRES_USER: '${DB_USERNAME}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
+      POSTGRES_DB: '${DB_NAME}'
+  unlock-contract-deployer: # Used for integration tests to deploy the smart contract
     image: unlock
     user: node
-    working_dir: /home/unlock
-    expose:
-      - 3000
+    working_dir: /home/unlock/unlock-app
     environment:
-      CI: "${CI}"
-      HTTP_PROVIDER: "${HTTP_PROVIDER}"
-      LOCKSMITH_URI: "${LOCKSMITH_URI}"
-      PAYWALL_URL: "${PAYWALL_URL}"
-      PAYWALL_SCRIPT_URL: "${PAYWALL_SCRIPT_URL}"
-    command: ["npm", "run", "start"]
+      CI: '${CI}'
+      HTTP_PROVIDER: '${HTTP_PROVIDER}'
+    depends_on:
+      - ganache-integration
   smart-contracts:
     image: unlock
     user: node
@@ -43,52 +41,77 @@ services:
     image: unlock
     user: node
     working_dir: /home/unlock/unlock-app
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+    environment:
+      CI: '${CI}'
+      UNLOCK_ENV: '${UNLOCK_ENV}'
+      HTTP_PROVIDER: '${HTTP_PROVIDER}'
+      READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
+      LOCKSMITH_URI: '${LOCKSMITH_URI}'
+      PAYWALL_URL: '${PAYWALL_URL}'
+      PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
+    command: ['npm', 'run', 'start']
   unlock-protocol-com:
     image: unlock
     user: node
     working_dir: /home/unlock/unlock-protocol.com
+    ports:
+      - 3002:3002
     expose:
       - 3002
-    command: ["npm", "run", "start"]
+    environment:
+      CI: '${CI}'
+      UNLOCK_ENV: '${UNLOCK_ENV}'
+      DASHBOARD_URL: '${DASHBOARD_URL}'
+    command: ['npm', 'run', 'start']
   paywall:
     image: unlock
     user: node
     working_dir: /home/unlock/paywall
+    ports:
+      - 3001:3001
     expose:
       - 3001
     environment:
-      CI: "${CI}"
-      HTTP_PROVIDER: "${HTTP_PROVIDER}"
-    command: ["npm", "run", "start"]
+      CI: '${CI}'
+      UNLOCK_ENV: '${UNLOCK_ENV}'
+      HTTP_PROVIDER: '${HTTP_PROVIDER}'
+      READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
+      LOCKSMITH_URI: '${LOCKSMITH_URI}'
+      PAYWALL_URL: '${PAYWALL_URL}'
+      PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
+    command: ['npm', 'run', 'start']
   wedlocks:
     image: unlock
     user: node
     working_dir: /home/unlock/wedlocks
-    environment:
-      CI: "${CI}"
   integration-tests:
     image: unlock-integration
     user: node
     environment:
-      UNLOCK_HOST: "unlock"
-      PAYWALL_URL: "${PAYWALL_URL}"
-      PAYWALL_SCRIPT_URL: "${PAYWALL_SCRIPT_URL}"
-      LOCKSMITH_URI: "${LOCKSMITH_URI}"
-      CI: "${CI}"
+      CI: '${CI}'
+      UNLOCK_PORT: '${UNLOCK_PORT}'
+      LOCKSMITH_PORT: '${LOCKSMITH_PORT}'
+      PAYWALL_PORT: '${PAYWALL_PORT}'
+      UNLOCK_HOST: '${UNLOCK_HOST}'
+      PAYWALL_URL: '${PAYWALL_URL}'
     depends_on:
       - ganache-integration
-      - unlock
+      - unlock-app
       - paywall
       - locksmith
       - unlock-protocol-com
     working_dir: /home/unlock/tests
   locksmith:
     environment:
-      - DB_USERNAME
-      - DB_PASSWORD
-      - DB_NAME
-      - DB_HOSTNAME
-      - NODE_ENV=production
+      DB_USERNAME: '${DB_USERNAME}'
+      DB_PASSWORD: '${DB_PASSWORD}'
+      DB_NAME: '${DB_NAME}'
+      DB_HOSTNAME: '${DB_HOSTNAME}'
+      NODE_ENV: 'production' # TODO: verify if this is right?
     image: unlock
     user: node
     working_dir: /home/unlock/locksmith

@@ -82,6 +82,7 @@ export default function configure(
     runtimeConfig.paywallScriptUrl ||
     'http://localhost:3001/static/paywall.min.js'
   let httpProvider = runtimeConfig.httpProvider || '127.0.0.1'
+
   let blockTime = 8000 // in mseconds.
   let chainExplorerUrlBuilders = {
     etherScan: () => '',
