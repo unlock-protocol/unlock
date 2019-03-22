@@ -11,6 +11,7 @@ import {
   CreateLockButton,
   AccountWrapper
 } from '../interface/buttons/ActionButton'
+import Link from 'next/link'
 import withConfig from '../../utils/withConfig'
 import * as UnlockTypes from '../../unlock'
 
@@ -37,7 +38,11 @@ export const LogContent = ({
           <BrowserOnly>
             <AccountWrapper>
               <Account network={network} account={account} />
-              <CreateLockButton>Create Lock</CreateLockButton>
+              <Link href="/dashboard">
+                <CreateLockButton>
+                  Create Lock
+                </CreateLockButton>
+              </Link>
             </AccountWrapper>
             <CreatorLog
               transactionFeed={transactionFeed}

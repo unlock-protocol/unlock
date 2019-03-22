@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import PropTypes from 'prop-types'
@@ -18,6 +18,8 @@ import {
 
 // TODO : move lockFeed extraction in CreatorLocks since it's just being passed down there
 export const DashboardContent = ({ account, network, lockFeed }) => {
+  const [showForm, setShowForm] = useState(false)
+  console.log({ showForm })
   return (
     <GlobalErrorConsumer>
       <Layout title="Creator Dashboard">
@@ -28,9 +30,15 @@ export const DashboardContent = ({ account, network, lockFeed }) => {
           <BrowserOnly>
             <AccountWrapper>
               <Account network={network} account={account} />
-              <CreateLockButton>Create Lock</CreateLockButton>
+              <CreateLockButton onClick={() => setShowForm(!showForm)}>
+                Create Lock
+              </CreateLockButton>
             </AccountWrapper>
-            <CreatorLocks lockFeed={lockFeed} />
+            <CreatorLocks
+              setShowForm={setShowForm}
+              showForm={showForm}
+              lockFeed={lockFeed}
+            />
             <DeveloperOverlay />
           </BrowserOnly>
         )}
