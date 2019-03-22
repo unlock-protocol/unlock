@@ -2,7 +2,6 @@ import EventEmitter from 'events'
 import walletMiddleware from '../../middlewares/walletMiddleware'
 import {
   CREATE_LOCK,
-  DELETE_LOCK,
   WITHDRAW_FROM_LOCK,
   UPDATE_LOCK_KEY_PRICE,
   UPDATE_LOCK,
@@ -18,7 +17,7 @@ import { SET_NETWORK } from '../../actions/network'
 import { SET_PROVIDER } from '../../actions/provider'
 import { NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
-import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../../constants'
+import { POLLING_INTERVAL } from '../../constants'
 import {
   FATAL_NO_USER_ACCOUNT,
   FATAL_NON_DEPLOYED_CONTRACT,
