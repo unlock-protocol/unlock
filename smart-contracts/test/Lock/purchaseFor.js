@@ -106,14 +106,14 @@ contract('Lock / purchaseFor', accounts => {
     })
 
     describe('when the key was successfuly purchased', () => {
-      let outstandingKeys, numberOfOwners, balance, now
+      let totalSupply, numberOfOwners, balance, now
 
       before(async () => {
         balance = new BigNumber(
           await web3.eth.getBalance(locks['FIRST'].address)
         )
-        outstandingKeys = new BigNumber(
-          await locks['FIRST'].outstandingKeys.call()
+        totalSupply = new BigNumber(
+          await locks['FIRST'].totalSupply.call()
         )
         now = parseInt(new Date().getTime() / 1000)
         numberOfOwners = new BigNumber(
@@ -145,12 +145,12 @@ contract('Lock / purchaseFor', accounts => {
       })
 
       it('should have increased the number of outstanding keys', async () => {
-        const _outstandingKeys = new BigNumber(
-          await locks['FIRST'].outstandingKeys.call()
+        const _totalSupply = new BigNumber(
+          await locks['FIRST'].totalSupply.call()
         )
         assert.equal(
-          _outstandingKeys.toFixed(),
-          outstandingKeys.plus(1).toFixed()
+          _totalSupply.toFixed(),
+          totalSupply.plus(1).toFixed()
         )
       })
 
