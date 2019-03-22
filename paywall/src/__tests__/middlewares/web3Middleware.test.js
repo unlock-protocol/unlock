@@ -355,7 +355,7 @@ describe('Lock middleware', () => {
       mockWeb3Service.getPastLockTransactions = jest.fn()
 
       const lock = '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9'
-      state.router.location.pathname = `/paywall/${lock}/`
+      state.router.location.pathname = `/${lock}/`
 
       const { invoke } = create()
 
