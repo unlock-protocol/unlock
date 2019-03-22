@@ -10,7 +10,6 @@ import {
   NEW_TRANSACTION,
 } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
-import { PGN_ITEMS_PER_PAGE } from '../../constants'
 
 /**
  * Fake state
