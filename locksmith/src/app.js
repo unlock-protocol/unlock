@@ -9,6 +9,7 @@ const router = express.Router()
 var transactionRouter = require('./routes/transaction')
 var lockRouter = require('./routes/lock')
 var blockRouter = require('./routes/block')
+var userRouter = require('./routes/user')
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -18,5 +19,6 @@ app.use('/', router)
 app.use('/', transactionRouter)
 app.use('/', lockRouter)
 app.use('/block', blockRouter)
+app.use('/users', userRouter)
 
 module.exports = app
