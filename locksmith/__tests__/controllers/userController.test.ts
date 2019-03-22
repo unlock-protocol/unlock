@@ -1,7 +1,7 @@
 const request = require('supertest')
 const app = require('../../src/app')
 const models = require('../../src/models')
-import UserOperations = require('../../src/operations/userOperations')
+const UserOperations = require('../../src/operations/userOperations')
 
 let User = models.User
 let UserReference = models.UserReference
