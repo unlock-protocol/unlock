@@ -7,6 +7,10 @@ import BrowserOnly from '../helpers/BrowserOnly'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import CreatorLog from '../creator/CreatorLog'
 import { pageTitle } from '../../constants'
+import {
+  CreateLockButton,
+  AccountWrapper
+} from '../interface/buttons/ActionButton'
 import withConfig from '../../utils/withConfig'
 import * as UnlockTypes from '../../unlock'
 
@@ -31,7 +35,10 @@ export const LogContent = ({
         </Head>
         {account && (
           <BrowserOnly>
-            <Account network={network} account={account} />
+            <AccountWrapper>
+              <Account network={network} account={account} />
+              <CreateLockButton>Create Lock</CreateLockButton>
+            </AccountWrapper>
             <CreatorLog
               transactionFeed={transactionFeed}
               explorerLinks={explorerLinks}

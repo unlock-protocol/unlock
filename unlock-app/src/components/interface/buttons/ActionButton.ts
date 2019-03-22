@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Media from '../../../theme/media'
 
 export const ActionButton = styled.button`
   background-color: ${props =>
@@ -14,4 +15,19 @@ export const ActionButton = styled.button`
   & :hover {
     background-color: var(--activegreen);
   }
+`
+
+export const CreateLockButton = styled(ActionButton)`
+  padding: 10px;
+  align-self: end;
+  height: 48px;
+  ${Media.phone`
+    display: none;
+  `};
+`
+
+export const AccountWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 144px;
+  align-items: center;
 `

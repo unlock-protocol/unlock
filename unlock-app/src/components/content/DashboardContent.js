@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import UnlockPropTypes from '../../propTypes'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
@@ -10,6 +11,10 @@ import DeveloperOverlay from '../developer/DeveloperOverlay'
 import BrowserOnly from '../helpers/BrowserOnly'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { pageTitle } from '../../constants'
+import {
+  CreateLockButton,
+  AccountWrapper,
+} from '../interface/buttons/ActionButton'
 
 // TODO : move lockFeed extraction in CreatorLocks since it's just being passed down there
 export const DashboardContent = ({ account, network, lockFeed }) => {
@@ -21,7 +26,10 @@ export const DashboardContent = ({ account, network, lockFeed }) => {
         </Head>
         {account && (
           <BrowserOnly>
-            <Account network={network} account={account} />
+            <AccountWrapper>
+              <Account network={network} account={account} />
+              <CreateLockButton>Create Lock</CreateLockButton>
+            </AccountWrapper>
             <CreatorLocks lockFeed={lockFeed} />
             <DeveloperOverlay />
           </BrowserOnly>
