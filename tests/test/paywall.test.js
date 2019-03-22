@@ -31,6 +31,22 @@ describe('The Unlock Paywall', () => {
     }, {}, lockSelector('EthPrice'))
   })
 
+  it('scrolling is disabled', async () => {
+    // scroll the page prior to the paywall displaying
+    await page.evaluate(() => {
+      window.scrollBy(0, 200)
+    })
+    await page.waitForFunction(() => window.frames.length)
+    const paywallIframe = page.mainFrame().childFrames()[0]
+    await paywallIframe.waitForSelector('#Paywall_Headline')
+    const headlineLocation = await paywallIframe.evaluate(() => document.querySelector('#Paywall_Headline').getBoundingClientRect().top)
+    // paywall has grown to hide the content.
+    // actual value of the headline is 45.390625
+    // when scrolling has not happened, it is 270.39062
+    // so this assertion should be safe in all future cases
+    expect(headlineLocation).toBeLessThan(50)
+  })
+
   it('clicking the lock purchases a key', async () => {
     const paywallIframe = page.mainFrame().childFrames()[0]
     const paywallBody = await paywallIframe.$('body')
