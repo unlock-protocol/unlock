@@ -173,6 +173,10 @@ jobs:
           command: scripts/integration-tests.sh
       - store_artifacts:
           path: /tmp/screenshots
+      - run:
+          name: Log failing tests
+          command: ./scripts/docker-compose-log.sh
+          when: on_fail
 
   deploy-unlock-app-netlify:
     machine: true

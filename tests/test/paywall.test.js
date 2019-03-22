@@ -40,7 +40,9 @@ describe.skip('The Unlock Paywall', () => {
     await page.waitForFunction(() => window.frames.length)
     const paywallIframe = page.mainFrame().childFrames()[0]
     await paywallIframe.waitForSelector('#Paywall_Headline')
-    const headlineLocation = await paywallIframe.evaluate(() => document.querySelector('#Paywall_Headline').getBoundingClientRect().top)
+    const headlineLocation = await paywallIframe.evaluate(
+      () => document.querySelector('#Paywall_Headline').getBoundingClientRect().top
+    )
     // paywall has grown to hide the content.
     // actual value of the headline is 45.390625
     // when scrolling has not happened, it is 270.39062
