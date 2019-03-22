@@ -20,7 +20,6 @@ import { POLLING_INTERVAL } from '../constants' // TODO change POLLING_INTERVAL 
 
 import WalletService from '../services/walletService'
 import { FATAL_NO_USER_ACCOUNT, FATAL_NON_DEPLOYED_CONTRACT } from '../errors'
-import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 import configure from '../config'
 
 // This middleware listen to redux events and invokes the walletService API.
@@ -158,18 +157,6 @@ export default function walletMiddleware({ getState, dispatch }) {
             action.price
           )
         })
-      } else if (action.type === SIGN_DATA) {
-        const account = getState().account
-        walletService.signData(
-          account.address,
-          action.data,
-          (error, signature) => {
-            if (error) {
-              dispatch(signatureError(error))
-            }
-            dispatch(signedData(action.data, signature))
-          }
-        )
       }
 
       next(action)
