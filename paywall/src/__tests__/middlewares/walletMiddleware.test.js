@@ -1,7 +1,6 @@
 import EventEmitter from 'events'
 import walletMiddleware from '../../middlewares/walletMiddleware'
 import {
-  CREATE_LOCK,
   WITHDRAW_FROM_LOCK,
   UPDATE_LOCK_KEY_PRICE,
   UPDATE_LOCK,
@@ -403,63 +402,6 @@ describe('Wallet middleware', () => {
         store.getState().account.address
       )
       expect(next).toHaveBeenCalledWith(action)
-    })
-  })
-
-  describe('CREATE_LOCK', () => {
-    describe('when the lock has an address', () => {
-      it('when the service is not ready it should set an error and not try to create the lock', () => {
-        expect.assertions(3)
-        const { next, invoke, store } = create()
-        const action = { type: CREATE_LOCK, lock }
-        mockWalletService.createLock = jest.fn()
-        mockWalletService.ready = false
-        invoke(action)
-        expect(store.dispatch).toHaveBeenCalledWith({
-          type: SET_ERROR,
-          error: FATAL_NO_USER_ACCOUNT,
-        })
-
-        expect(mockWalletService.createLock).not.toHaveBeenCalled()
-        expect(next).toHaveBeenCalledWith(action)
-      })
-
-      it("should handle CREATE_LOCK by calling walletService's createLock", () => {
-        expect.assertions(2)
-        const { next, invoke, store } = create()
-        const action = { type: CREATE_LOCK, lock }
-
-        mockWalletService.createLock = jest
-          .fn()
-          .mockImplementation(() => Promise.resolve())
-        mockWalletService.ready = true
-
-        invoke(action)
-        expect(mockWalletService.createLock).toHaveBeenCalledWith(
-          lock,
-          store.getState().account.address
-        )
-
-        expect(next).toHaveBeenCalledWith(action)
-      })
-    })
-
-    describe('when the lock does not have an address', () => {
-      it('should not try to createLock', () => {
-        expect.assertions(2)
-        let lock = {
-          keyPrice: '100',
-          owner: account,
-        }
-        mockWalletService.createLock = jest.fn()
-        const { next, invoke } = create()
-        const action = { type: CREATE_LOCK, lock }
-        mockWalletService.ready = true
-
-        invoke(action)
-        expect(next).toHaveBeenCalled()
-        expect(mockWalletService.createLock).not.toHaveBeenCalled()
-      })
     })
   })
 
