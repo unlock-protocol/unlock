@@ -70,19 +70,40 @@ const generateBlogIndexFile = (baseDir, postFeed) => {
   )
 }
 
-const generateRSSFile = (baseDir, postFeed) => {
+/**
+ * Saves an RSS file based on an array of blog posts
+ * @param baseDir
+ * @param postFeed
+ * @param unlockUrl
+ */
+const generateRSSFile = (baseDir, postFeed, unlockUrl) => {
   // Build list of items that don't have future publish dates
-  let items = []
   let now = Date.now()
+
+  const rssFeed = new rss({
+    title: 'Unlock Blog',
+    description: "News and updates from the Web's new business model.",
+    site_url: unlockUrl + '/blog',
+    feed_url: unlockUrl + '/static/blog.rss',
+    generator: 'Unlock Blog Engine',
+  })
 
   postFeed.forEach(post => {
     if (Date.parse(post.publishDate) < now) {
-      items.push({
+      rssFeed.item({
         title: post.title,
         description: post.description,
+        url: unlockUrl + '/blog/' + post.slug,
+        author: post.authorName,
+        date: Date.parse(post.publishDate),
       })
     }
   })
+
+  fs.writeFile(
+    join(baseDir, 'static', 'blog.rss'),
+    rssFeed.xml({ indent: true })
+  )
 }
 
 /**
@@ -102,5 +123,6 @@ module.exports = {
   generateBlogFeed,
   generateBlogPages,
   generateBlogIndexFile,
+  generateRSSFile,
   addBlogPagesToPageObject,
 }
