@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import HomeContent from '../../components/content/HomeContent'
+import PaywallContent from '../../components/content/PaywallContent'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
@@ -49,7 +49,7 @@ const config = {
   },
 }
 
-storiesOf('Paywall landing page', module)
+storiesOf('Paywall app page', module)
   // pass in a fake window object, to avoid modifying the real body and munging storyshots
   .addDecorator(getStory => (
     <ConfigContext.Provider value={config}>
@@ -63,6 +63,10 @@ storiesOf('Paywall landing page', module)
       </WindowContext.Provider>
     </ConfigContext.Provider>
   ))
-  .add('Landing page', () => {
-    return <HomeContent path="/" />
+  .add('Paywall', () => {
+    return (
+      <Provider store={lockedStore}>
+        <PaywallContent path="/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e" />
+      </Provider>
+    )
   })
