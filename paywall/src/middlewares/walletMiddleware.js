@@ -2,7 +2,6 @@
 import {
   CREATE_LOCK,
   WITHDRAW_FROM_LOCK,
-  deleteLock,
   UPDATE_LOCK_KEY_PRICE,
   updateLock,
 } from '../actions/lock'
@@ -17,7 +16,7 @@ import {
   gotWallet,
   dismissWalletCheck,
 } from '../actions/walletStatus'
-import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
+import { POLLING_INTERVAL } from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
 
 import WalletService from '../services/walletService'
 import { FATAL_NO_USER_ACCOUNT, FATAL_NON_DEPLOYED_CONTRACT } from '../errors'
