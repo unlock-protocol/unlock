@@ -49,7 +49,7 @@ export const Overlay = ({
 }) => (
   <FullPage>
     <Banner scrollPosition={scrollPosition} data-testid="paywall-banner">
-      <Headline>
+      <Headline id="Paywall_Headline">
         You have reached your limit of free articles. Please purchase access
       </Headline>
       <Locks>
