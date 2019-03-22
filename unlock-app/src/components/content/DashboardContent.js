@@ -19,7 +19,6 @@ import {
 // TODO : move lockFeed extraction in CreatorLocks since it's just being passed down there
 export const DashboardContent = ({ account, network, lockFeed }) => {
   const [showForm, setShowForm] = useState(false)
-  console.log({ showForm })
   return (
     <GlobalErrorConsumer>
       <Layout title="Creator Dashboard">
