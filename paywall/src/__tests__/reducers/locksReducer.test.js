@@ -113,20 +113,18 @@ describe('locks reducer', () => {
 
   // Upon changing account, we need to clear the existing locks. The web3 middleware will
   // re-populate them
-  it('should clear the locks when receiving SET_ACCOUNT', () => {
+  it('should not clear the locks when receiving SET_ACCOUNT', () => {
     expect.assertions(1)
     const account = {}
+    const locks = {
+      [lock.address]: lock,
+    }
     expect(
-      reducer(
-        {
-          [lock.address]: lock,
-        },
-        {
-          type: SET_ACCOUNT,
-          account,
-        }
-      )
-    ).toBe(initialState)
+      reducer(locks, {
+        type: SET_ACCOUNT,
+        account,
+      })
+    ).toBe(locks)
   })
 
   describe('DELETE_LOCK', () => {
