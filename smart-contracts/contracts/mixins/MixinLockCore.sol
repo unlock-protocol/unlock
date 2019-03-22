@@ -119,7 +119,7 @@ contract MixinLockCore is
    * Public function which returns the total number of unique keys sold (both
    * expired and valid)
    */
-  function outstandingKeys()
+  function totalSupply()
     public
     view
     returns (uint)

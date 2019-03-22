@@ -37,8 +37,8 @@ contract('Lock / owners', accounts => {
   })
 
   it('should have the right number of keys', async () => {
-    const outstandingKeys = new BigNumber(await lock.outstandingKeys.call())
-    assert.equal(outstandingKeys.toFixed(), 4)
+    const totalSupply = new BigNumber(await lock.totalSupply.call())
+    assert.equal(totalSupply.toFixed(), 4)
   })
 
   it('should have the right number of owners', async () => {
@@ -73,13 +73,13 @@ contract('Lock / owners', accounts => {
     })
 
     it('should have the right number of keys', async () => {
-      const outstandingKeys = new BigNumber(await lock.outstandingKeys.call())
-      assert.equal(outstandingKeys.toFixed(), 4)
+      const totalSupply = new BigNumber(await lock.totalSupply.call())
+      assert.equal(totalSupply.toFixed(), 4)
     })
 
     it('should have the right number of keys', async () => {
-      const outstandingKeys = new BigNumber(await lock.outstandingKeys.call())
-      assert.equal(outstandingKeys.toFixed(), 4)
+      const totalSupply = new BigNumber(await lock.totalSupply.call())
+      assert.equal(totalSupply.toFixed(), 4)
     })
 
     it('should have the right number of owners', async () => {
@@ -109,13 +109,13 @@ contract('Lock / owners', accounts => {
     })
 
     it('should have the right number of keys', async () => {
-      const outstandingKeys = new BigNumber(await lock.outstandingKeys.call())
-      assert.equal(outstandingKeys.toFixed(), 4)
+      const totalSupply = new BigNumber(await lock.totalSupply.call())
+      assert.equal(totalSupply.toFixed(), 4)
     })
 
     it('should have the right number of keys', async () => {
-      const outstandingKeys = new BigNumber(await lock.outstandingKeys.call())
-      assert.equal(outstandingKeys.toFixed(), 4)
+      const totalSupply = new BigNumber(await lock.totalSupply.call())
+      assert.equal(totalSupply.toFixed(), 4)
     })
 
     it('should have the right number of owners', async () => {

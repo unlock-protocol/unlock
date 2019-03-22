@@ -63,8 +63,8 @@ It has the following fields:
 These are the function which change some parameters for the Lock or check its status
 
 - setKeyPrice (TODO) : updates the price of new keys
-- outstandingKeys : get the number of outstanding keys
-- numberOfOwners : get the total number of unique owners (both expired and valid).  This may be larger than outstandingKeys.
+- totalSupply : get the number of outstanding keys
+- numberOfOwners : get the total number of unique owners (both expired and valid).  This may be larger than totalSupply.
 - balanceOf (ERC721) : get the number of keys for a given owner (0 or 1)
 - ownerOf (ERC721) : get the owner of a key (if applicable)
 - keyDataFor : get the value of the data field for a key

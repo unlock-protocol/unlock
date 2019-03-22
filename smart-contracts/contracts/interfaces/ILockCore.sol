@@ -112,7 +112,7 @@ interface ILockCore {
 
   /**
    * Public function which returns the total number of unique owners (both expired
-   * and valid).  This may be larger than outstandingKeys.
+   * and valid).  This may be larger than totalSupply.
    */
   function numberOfOwners()
     external
@@ -121,8 +121,14 @@ interface ILockCore {
 
   /**
    * Public function which returns the total number of keys (both expired and valid)
+   *
+   * This function signature is from the ERC-721 enumerable extension.
+   * https://eips.ethereum.org/EIPS/eip-721
+   * @notice Count NFTs tracked by this contract
+   * @return A count of valid NFTs tracked by this contract, where each one of
+   * them has an assigned and queryable owner not equal to the zero address
    */
-  function outstandingKeys()
+  function totalSupply()
     external
     view
     returns (uint);
