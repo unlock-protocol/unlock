@@ -1,6 +1,5 @@
 /* eslint promise/prefer-await-to-then: 0 */
 import {
-  CREATE_LOCK,
   WITHDRAW_FROM_LOCK,
   UPDATE_LOCK_KEY_PRICE,
   updateLock,
@@ -124,10 +123,6 @@ export default function walletMiddleware({ getState, dispatch }) {
     return function(action) {
       if (action.type === SET_PROVIDER) {
         walletService.connect(action.provider)
-      } else if (action.type === CREATE_LOCK && action.lock.address) {
-        ensureReadyBefore(() => {
-          walletService.createLock(action.lock, getState().account.address)
-        })
       } else if (action.type === PURCHASE_KEY) {
         ensureReadyBefore(() => {
           const account = getState().account
