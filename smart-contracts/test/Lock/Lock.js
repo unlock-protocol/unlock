@@ -19,7 +19,7 @@ contract('Lock / Lock', accounts => {
       lock.expirationDuration.call(),
       lock.keyPrice.call(),
       lock.maxNumberOfKeys.call(),
-      lock.outstandingKeys.call(),
+      lock.totalSupply.call(),
       lock.numberOfOwners.call(),
       lock.publicLockVersion.call(),
       lock.isAlive.call()
@@ -29,7 +29,7 @@ contract('Lock / Lock', accounts => {
         expirationDuration,
         keyPrice,
         maxNumberOfKeys,
-        outstandingKeys,
+        totalSupply,
         numberOfOwners,
         publicLockVersion,
         isAlive
@@ -37,14 +37,14 @@ contract('Lock / Lock', accounts => {
         expirationDuration = new BigNumber(expirationDuration)
         keyPrice = new BigNumber(keyPrice)
         maxNumberOfKeys = new BigNumber(maxNumberOfKeys)
-        outstandingKeys = new BigNumber(outstandingKeys)
+        totalSupply = new BigNumber(totalSupply)
         numberOfOwners = new BigNumber(numberOfOwners)
         publicLockVersion = new BigNumber(publicLockVersion)
         assert.strictEqual(owner, accounts[0])
         assert.equal(expirationDuration.toFixed(), 60 * 60 * 24 * 30)
         assert.strictEqual(Units.convert(keyPrice, 'wei', 'eth'), '0.01')
         assert.equal(maxNumberOfKeys.toFixed(), 10)
-        assert.equal(outstandingKeys.toFixed(), 0)
+        assert.equal(totalSupply.toFixed(), 0)
         assert.equal(numberOfOwners.toFixed(), 0)
         assert.equal(publicLockVersion.toFixed(), 1) // needs updating each lock-version change
         assert.equal(isAlive, true)
