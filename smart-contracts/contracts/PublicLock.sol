@@ -53,7 +53,7 @@ contract PublicLock is
   )
     public
     MixinFunds(_tokenAddress)
-    MixinLockCore(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys, 1)
+    MixinLockCore(_expirationDuration, _keyPrice, _maxNumberOfKeys, 1)
   {
     // registering the interface for erc721 with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
