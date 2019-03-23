@@ -1,9 +1,5 @@
 /* eslint promise/prefer-await-to-then: 0 */
-import {
-  WITHDRAW_FROM_LOCK,
-  UPDATE_LOCK_KEY_PRICE,
-  updateLock,
-} from '../actions/lock'
+import { WITHDRAW_FROM_LOCK, updateLock } from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
 import { setAccount } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
@@ -142,15 +138,6 @@ export default function walletMiddleware({ getState, dispatch }) {
         ensureReadyBefore(() => {
           const account = getState().account
           walletService.withdrawFromLock(action.lock.address, account.address)
-        })
-      } else if (action.type === UPDATE_LOCK_KEY_PRICE) {
-        ensureReadyBefore(() => {
-          const account = getState().account
-          walletService.updateKeyPrice(
-            action.address,
-            account.address,
-            action.price
-          )
         })
       }
 
