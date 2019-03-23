@@ -1,6 +1,7 @@
 const fs = require('fs')
 const { join } = require('path')
 const yamlFront = require('yaml-front-matter')
+const rss = require('rss')
 
 /**
  * Master function that takes a base directory and returns a reverse-chronologically ordered list of blog posts,
@@ -70,6 +71,42 @@ const generateBlogIndexFile = (baseDir, postFeed) => {
 }
 
 /**
+ * Saves an RSS file based on an array of blog posts
+ * @param baseDir
+ * @param postFeed
+ * @param unlockUrl
+ */
+const generateRSSFile = (baseDir, postFeed, unlockUrl) => {
+  // Build list of items that don't have future publish dates
+  let now = Date.now()
+
+  const rssFeed = new rss({
+    title: 'Unlock Blog',
+    description: "News and updates from the Web's new business model.",
+    site_url: unlockUrl + '/blog',
+    feed_url: unlockUrl + '/static/blog.rss',
+    generator: 'Unlock Blog Engine',
+  })
+
+  postFeed.forEach(post => {
+    if (Date.parse(post.publishDate) < now) {
+      rssFeed.item({
+        title: post.title,
+        description: post.description,
+        url: unlockUrl + '/blog/' + post.slug,
+        author: post.authorName,
+        date: Date.parse(post.publishDate),
+      })
+    }
+  })
+
+  fs.writeFile(
+    join(baseDir, 'static', 'blog.rss'),
+    rssFeed.xml({ indent: true })
+  )
+}
+
+/**
  * Given a blog post directory, returns a set of page routes of posts, suitable for using with next.config.js
  * @param dir
  * @param pages
@@ -86,5 +123,6 @@ module.exports = {
   generateBlogFeed,
   generateBlogPages,
   generateBlogIndexFile,
+  generateRSSFile,
   addBlogPagesToPageObject,
 }

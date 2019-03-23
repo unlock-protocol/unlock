@@ -16,6 +16,13 @@ Here is some markdown
   '/foo/bar/static/blog/test3.txt': `
 Here is some non-markdown text content
 `,
+  '/foo/bar/static/blog/test3.md': `---
+title: This is a post from the future
+subTitle: And some sample metadata
+publishDate: Jan 7, 2099
+---
+Here is some markdown 
+`,
 }
 
 const blogJson =
@@ -45,6 +52,7 @@ describe('blog', () => {
       }),
     }))
   })
+
   it('should generate a blog feed array from a set of given markdown files', () => {
     expect.assertions(4)
     const blog = require('../../utils/blog')
@@ -55,6 +63,7 @@ describe('blog', () => {
     expect(feed[0].__content).toEqual(undefined)
     expect(feed[1].__content).toEqual(undefined)
   })
+
   it('should generate a blog pages array from a blog feed', () => {
     expect.assertions(4)
     const blog = require('../../utils/blog')
@@ -67,6 +76,7 @@ describe('blog', () => {
     expect(pages['/blog/test2'].page).toEqual('/post')
     expect(pages['/blog/test2'].query.slug).toEqual('test2')
   })
+
   it('should generate a blog index file from a blog index array', () => {
     expect.assertions(1)
 
@@ -77,6 +87,36 @@ describe('blog', () => {
 
     expect(writtenData).toEqual(blogJson)
   })
+
+  it('should generate a blog RSS feed from a blog index array', () => {
+    expect.assertions(6)
+
+    const blog = require('../../utils/blog')
+
+    let feed = blog.generateBlogFeed('/foo/bar')
+    blog.generateRSSFile('/foo/bar', feed, 'https://unlock-protocol.com')
+
+    const parser = new DOMParser()
+    let xmlDoc = parser.parseFromString(writtenData, 'text/xml')
+
+    let items = xmlDoc.getElementsByTagName('item')
+
+    expect(xmlDoc.getElementsByTagName('channel').length).toEqual(1)
+    expect(items.length).toEqual(2)
+    expect(items[0].querySelector('title').textContent).toEqual(
+      'This is a second sample post'
+    )
+    expect(items[1].querySelector('title').textContent).toEqual(
+      'This is a sample post'
+    )
+    expect(items[0].querySelector('link').textContent).toEqual(
+      'https://unlock-protocol.com/blog/test2'
+    )
+    expect(items[1].querySelector('link').textContent).toEqual(
+      'https://unlock-protocol.com/blog/test1'
+    )
+  })
+
   it('should combine next-provided pages and blog index pages', () => {
     expect.assertions(2)
     const blog = require('../../utils/blog')

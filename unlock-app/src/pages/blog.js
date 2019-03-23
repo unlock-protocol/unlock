@@ -24,6 +24,11 @@ const Blog = ({ posts }) => {
           description={description}
           canonicalPath="/blog"
         />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          href="/static/blog.rss"
+        />
       </Head>
       <Title>Unlock Blog</Title>
       <BlogIndex posts={posts} />
