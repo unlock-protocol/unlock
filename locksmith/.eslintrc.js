@@ -5,6 +5,7 @@ module.exports = {
     'eslint:recommended',
     'prettier',
     'prettier/standard',
+    'plugin:prettier/recommended',
   ],
   env: {
     es6: true,
@@ -12,7 +13,7 @@ module.exports = {
     browser: true,
     jest: true,
   },
-  plugins: ['jest', 'mocha', 'promise', 'import'],
+  plugins: ['prettier', 'jest', 'mocha', 'promise', 'import'],
   parser: 'babel-eslint',
   settings: {
     react: {
@@ -27,6 +28,7 @@ module.exports = {
     },
   },
   rules: {
+    'prettier/prettier': 'error',
     'linebreak-style': ['error', 'unix'],
     quotes: [
       'error',

@@ -1,12 +1,17 @@
 module.exports = {
-  extends: ['standard', 'airbnb', 'eslint:recommended'],
+  extends: [
+    'standard',
+    'airbnb',
+    'eslint:recommended',
+    'plugin:prettier/recommended'
+  ],
   env: {
     es6: true,
     node: true,
     browser: true,
     jest: true
   },
-  plugins: ['jest', 'promise', 'import'],
+  plugins: ['prettier', 'jest', 'promise', 'import'],
   parser: 'babel-eslint',
   settings: {
     'import/parsers': {
@@ -18,6 +23,7 @@ module.exports = {
     }
   },
   rules: {
+    'prettier/prettier': 'error',
     'linebreak-style': ['error', 'unix'],
     quotes: [
       'error',
