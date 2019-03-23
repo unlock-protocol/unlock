@@ -9,7 +9,7 @@ router.get(
   userController.retrieveEncryptedPrivatekey
 )
 router.get(
-  '/:emailAddress/recovery_phrase',
+  '/:emailAddress/recoveryphrase',
   userController.retrieveRecoveryPhrase
 )
 

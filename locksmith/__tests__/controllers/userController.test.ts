@@ -115,7 +115,7 @@ describe('User Controller', () => {
     describe('when the user exists', () => {
       it("returns the user's recovery phrase", async () => {
         let response = await request(app).get(
-          '/users/user@example.com/recovery_phrase'
+          '/users/user@example.com/recoveryphrase'
         )
         expect(response.body).toEqual({ recoveryPhrase: 'a recovery phrase' })
       })
@@ -124,7 +124,7 @@ describe('User Controller', () => {
     describe('when the user does not exist', () => {
       it('returns an error code', async () => {
         let response = await request(app).get(
-          `/users/non-existing@example.com/recovery_phrase`
+          `/users/non-existing@example.com/recoveryphrase`
         )
         expect(response.statusCode).toBe(400)
       })
