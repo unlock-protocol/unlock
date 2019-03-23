@@ -10,6 +10,7 @@ import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { SIGNED_DATA } from '../../actions/signature'
 import UnlockLock from '../../structured_data/unlockLock'
+import { startLoading, doneLoading } from '../../actions/loading'
 
 /**
  * This is a "fake" middleware caller
@@ -93,8 +94,8 @@ describe('Storage middleware', () => {
   })
 
   describe('handling SET_ACCOUNT', () => {
-    it('should store the transaction', async () => {
-      expect.assertions(5)
+    it('should retrieve the transactions for that user', async () => {
+      expect.assertions(7)
       const { next, invoke, store } = create()
       const account = {
         address: '0x123',
@@ -105,6 +106,10 @@ describe('Storage middleware', () => {
         return Promise.resolve(['0xabc', '0xdef'])
       })
       await invoke(action)
+
+      expect(store.dispatch).toHaveBeenNthCalledWith(1, startLoading())
+      expect(store.dispatch).toHaveBeenNthCalledWith(2, doneLoading())
+
       expect(
         mockStorageService.getTransactionsHashesSentBy
       ).toHaveBeenCalledWith(account.address)
@@ -113,14 +118,14 @@ describe('Storage middleware', () => {
       ).toHaveBeenCalledWith(account.address)
 
       expect(store.dispatch).toHaveBeenNthCalledWith(
-        1,
+        3,
         addTransaction({
           hash: '0xabc',
         })
       )
 
       expect(store.dispatch).toHaveBeenNthCalledWith(
-        2,
+        4,
         addTransaction({
           hash: '0xdef',
         })

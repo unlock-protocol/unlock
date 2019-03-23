@@ -12,6 +12,7 @@ import {
 import { SET_ERROR } from '../../actions/error'
 import { SET_KEYS_ON_PAGE_FOR_LOCK } from '../../actions/keysPages'
 import { PGN_ITEMS_PER_PAGE, UNLIMITED_KEYS_COUNT } from '../../constants'
+import { START_LOADING, DONE_LOADING } from '../../actions/loading'
 
 /**
  * Fake state
@@ -498,30 +499,56 @@ describe('Lock middleware', () => {
     })
   })
 
-  it('should handle ADD_TRANSACTION', () => {
-    expect.assertions(2)
-    const { next, invoke } = create()
+  it('should handle ADD_TRANSACTION', async () => {
+    expect.assertions(4)
+    const { next, invoke, store } = create()
     const action = { type: ADD_TRANSACTION, transaction }
-    mockWeb3Service.getTransaction = jest.fn()
+    const web3Transaction = {}
+    const transactionPromise = Promise.resolve(web3Transaction)
+    mockWeb3Service.getTransaction = jest.fn(() => transactionPromise)
 
     invoke(action)
     expect(next).toHaveBeenCalled()
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: START_LOADING,
+      })
+    )
     expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
       transaction.hash
     )
+    await transactionPromise
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: DONE_LOADING,
+      })
+    )
   })
 
-  it('should handle NEW_TRANSACTION', () => {
-    expect.assertions(2)
-    const { next, invoke } = create()
+  it('should handle NEW_TRANSACTION', async () => {
+    expect.assertions(4)
+    const { next, invoke, store } = create()
     const action = { type: NEW_TRANSACTION, transaction }
-    mockWeb3Service.getTransaction = jest.fn()
+    const web3Transaction = {}
+    const transactionPromise = Promise.resolve(web3Transaction)
+    mockWeb3Service.getTransaction = jest.fn(() => transactionPromise)
 
     invoke(action)
     expect(next).toHaveBeenCalled()
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: START_LOADING,
+      })
+    )
     expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
       transaction.hash,
       transaction
+    )
+    await transactionPromise
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: DONE_LOADING,
+      })
     )
   })
 
