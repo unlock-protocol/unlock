@@ -16,6 +16,7 @@ import {
   FATAL_NO_USER_ACCOUNT,
   FATAL_NON_DEPLOYED_CONTRACT,
 } from '../../errors'
+import { UPDATE_LOCK } from '../../actions/lock'
 
 let mockConfig
 

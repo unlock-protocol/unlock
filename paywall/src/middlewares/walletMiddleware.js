@@ -1,4 +1,5 @@
 /* eslint promise/prefer-await-to-then: 0 */
+import { updateLock } from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
 import { setAccount } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
