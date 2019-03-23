@@ -18,13 +18,8 @@ import {
   ADD_TRANSACTION,
   NEW_TRANSACTION,
 } from '../actions/transaction'
-import { PGN_ITEMS_PER_PAGE } from '../constants'
 
 import Web3Service from '../services/web3Service'
-import {
-  SET_KEYS_ON_PAGE_FOR_LOCK,
-  setKeysOnPageForLock,
-} from '../actions/keysPages'
 import { lockRoute } from '../utils/routes'
 
 import configure from '../config'
@@ -113,23 +108,8 @@ export default function web3Middleware({ getState, dispatch }) {
     dispatch(setError(error.message))
   })
 
-  web3Service.on('keys.page', (lock, page, keys) => {
-    dispatch(setKeysOnPageForLock(page, lock, keys))
-  })
-
   return function(next) {
     return function(action) {
-      // When the keys for a lock are loaded on the dashboard
-      if (action.type === SET_KEYS_ON_PAGE_FOR_LOCK) {
-        if (!action.keys) {
-          web3Service.getKeysForLockOnPage(
-            action.lock,
-            action.page,
-            PGN_ITEMS_PER_PAGE
-          )
-        }
-      }
-
       if (action.type === ADD_TRANSACTION) {
         web3Service.getTransaction(action.transaction.hash)
       }

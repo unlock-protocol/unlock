@@ -8,9 +8,6 @@ import configure from './config'
 import keysReducer, {
   initialState as defaultKeys,
 } from './reducers/keysReducer'
-import keysPagesReducer, {
-  initialState as defaultKeysPages,
-} from './reducers/keysPagesReducer'
 import locksReducer, {
   initialState as defaultLocks,
 } from './reducers/locksReducer'
@@ -50,7 +47,6 @@ export const createUnlockStore = (
     router: connectRouter(history),
     account: accountReducer,
     keys: keysReducer,
-    keysForLockByPage: keysPagesReducer,
     locks: locksReducer,
     modals: modalReducer,
     network: networkReducer,
@@ -73,7 +69,6 @@ export const createUnlockStore = (
     {
       account: defaultAccount,
       keys: defaultKeys,
-      keysForLockByPage: defaultKeysPages,
       locks: defaultLocks,
       modals: defaultModals,
       network: defaultNetwork,
