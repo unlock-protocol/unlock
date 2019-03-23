@@ -8,5 +8,9 @@ router.get(
   '/:emailAddress/privatekey',
   userController.retrieveEncryptedPrivatekey
 )
+router.get(
+  '/:emailAddress/recovery_phrase',
+  userController.retrieveRecoveryPhrase
+)
 
 module.exports = router
