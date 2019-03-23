@@ -1,6 +1,5 @@
 import {
   ADD_LOCK,
-  CREATE_LOCK,
   DELETE_LOCK,
   UPDATE_LOCK,
   UPDATE_LOCK_KEY_PRICE,
@@ -33,15 +32,6 @@ const locksReducer = (state = initialState, action) => {
         address: action.address,
         ...action.lock,
       },
-    }
-  }
-
-  if (action.type === CREATE_LOCK) {
-    if (action.lock.address) {
-      return {
-        ...state,
-        [action.lock.address]: action.lock,
-      }
     }
   }
 

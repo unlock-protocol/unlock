@@ -1,11 +1,9 @@
 import {
   addLock,
-  createLock,
   deleteLock,
   updateLock,
   withdrawFromLock,
   updateKeyPrice,
-  CREATE_LOCK,
   ADD_LOCK,
   DELETE_LOCK,
   UPDATE_LOCK,
@@ -14,16 +12,6 @@ import {
 } from '../../actions/lock'
 
 describe('lock actions', () => {
-  it('should create an action to create a lock', () => {
-    expect.assertions(1)
-    const lock = {}
-    const expectedAction = {
-      type: CREATE_LOCK,
-      lock,
-    }
-    expect(createLock(lock)).toEqual(expectedAction)
-  })
-
   it('should create an action to update the lock', () => {
     expect.assertions(1)
     const address = '0x1234'

@@ -1,7 +1,7 @@
 import EventEmitter from 'events'
 import { LOCATION_CHANGE } from 'connected-react-router'
 import web3Middleware from '../../middlewares/web3Middleware'
-import { ADD_LOCK, UPDATE_LOCK, CREATE_LOCK } from '../../actions/lock'
+import { ADD_LOCK, UPDATE_LOCK } from '../../actions/lock'
 import { UPDATE_KEY } from '../../actions/key'
 import { UPDATE_ACCOUNT, setAccount } from '../../actions/accounts'
 import {
@@ -387,41 +387,6 @@ describe('Lock middleware', () => {
       transaction.hash,
       transaction
     )
-  })
-
-  describe('CREATE_LOCK', () => {
-    it('should generateLockAddress if the address is missing', () => {
-      expect.assertions(2)
-      const { next, invoke } = create()
-      const lock = {
-        name: 'my lock',
-      }
-      const address = '0x123'
-      const action = { type: CREATE_LOCK, lock }
-      mockWeb3Service.generateLockAddress = jest.fn(() => {
-        return Promise.resolve(address)
-      })
-
-      invoke(action)
-      expect(mockWeb3Service.generateLockAddress).toHaveBeenCalledWith()
-      expect(next).toHaveBeenCalledWith(action)
-    })
-
-    it('should do nothing is the lock has an address', () => {
-      expect.assertions(2)
-      let lock = {
-        keyPrice: '100',
-        owner: account,
-        address: '0x123',
-      }
-      const { next, invoke } = create()
-      const action = { type: CREATE_LOCK, lock }
-      mockWeb3Service.generateLockAddress = jest.fn()
-
-      invoke(action)
-      expect(next).toHaveBeenCalled()
-      expect(mockWeb3Service.generateLockAddress).not.toHaveBeenCalled()
-    })
   })
 
   describe('UPDATE_LOCK', () => {
