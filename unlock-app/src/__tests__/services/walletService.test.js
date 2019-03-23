@@ -15,6 +15,7 @@ import {
   FAILED_TO_UPDATE_KEY_PRICE,
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../../errors'
+import { TransactionType } from '../../services/web3Service'
 
 jest.mock('../../utils/promises')
 
@@ -449,7 +450,8 @@ describe('WalletService', () => {
             gas: WalletService.gasAmountConstants().createLock,
             contract: Unlock,
           },
-          expect.any(Function)
+          expect.any(Function),
+          TransactionType.LOCK_CREATION
         )
       })
 
@@ -538,7 +540,8 @@ describe('WalletService', () => {
             contract: PublicLock,
             value: '100000000000000000000000000', // Web3Utils.toWei(keyPrice, 'ether')
           },
-          expect.any(Function)
+          expect.any(Function),
+          TransactionType.KEY_PURCHASE
         )
       })
 
@@ -602,7 +605,8 @@ describe('WalletService', () => {
             gas: WalletService.gasAmountConstants().updateKeyPrice,
             contract: PublicLock,
           },
-          expect.any(Function)
+          expect.any(Function),
+          TransactionType.UPDATE_KEY_PRICE
         )
       })
 
@@ -728,7 +732,8 @@ describe('WalletService', () => {
             gas: WalletService.gasAmountConstants().partialWithdrawFromLock,
             contract: PublicLock,
           },
-          expect.any(Function)
+          expect.any(Function),
+          TransactionType.WITHDRAWAL
         )
       })
 
@@ -805,7 +810,8 @@ describe('WalletService', () => {
             gas: WalletService.gasAmountConstants().withdrawFromLock,
             contract: PublicLock,
           },
-          expect.any(Function)
+          expect.any(Function),
+          TransactionType.WITHDRAWAL
         )
       })
 

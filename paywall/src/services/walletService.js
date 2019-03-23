@@ -12,6 +12,7 @@ import {
   FAILED_TO_UPDATE_KEY_PRICE,
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../errors'
+import { TRANSACTION_TYPES } from '../constants'
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
@@ -139,7 +140,7 @@ export default class WalletService extends EventEmitter {
    * receipt... etc)
    * @private
    */
-  _sendTransaction({ to, from, data, value, gas }, callback) {
+  _sendTransaction({ to, from, data, value, gas }, callback, transactionType) {
     const web3TransactionPromise = this.web3.eth.sendTransaction({
       to,
       from,
@@ -148,7 +149,7 @@ export default class WalletService extends EventEmitter {
       gas,
     })
 
-    this.emit('transaction.pending')
+    this.emit('transaction.pending', transactionType)
 
     return web3TransactionPromise
       .once('transactionHash', hash => {
@@ -184,7 +185,8 @@ export default class WalletService extends EventEmitter {
         if (error) {
           return this.emit('error', new Error(FAILED_TO_UPDATE_KEY_PRICE))
         }
-      }
+      },
+      TRANSACTION_TYPES.UPDATE_KEY_PRICE
     )
   }
 
@@ -223,7 +225,8 @@ export default class WalletService extends EventEmitter {
         // This is an exception because, until we are able to determine the lock address
         // before the transaction is mined, we need to link the lock and transaction.
         return this.emit('lock.updated', lock.address, { transaction: hash })
-      }
+      },
+      TRANSACTION_TYPES.LOCK_CREATION
     )
   }
 
@@ -258,7 +261,8 @@ export default class WalletService extends EventEmitter {
         if (error) {
           return this.emit('error', new Error(FAILED_TO_PURCHASE_KEY))
         }
-      }
+      },
+      TRANSACTION_TYPES.KEY_PURCHASE
     )
   }
 
@@ -289,7 +293,8 @@ export default class WalletService extends EventEmitter {
           return callback(error)
         }
         return callback()
-      }
+      },
+      TRANSACTION_TYPES.WITHDRAWAL
     )
   }
 
@@ -315,7 +320,8 @@ export default class WalletService extends EventEmitter {
         if (error) {
           return this.emit('error', new Error(FAILED_TO_WITHDRAW_FROM_LOCK))
         }
-      }
+      },
+      TRANSACTION_TYPES.WITHDRAWAL
     )
   }
 
