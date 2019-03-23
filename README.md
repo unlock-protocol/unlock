@@ -72,6 +72,10 @@ docker-compose -f docker/docker-compose.ci.yml up --abort-on-container-exit
 
 ## Thank you
 
-[<img src="https://user-images.githubusercontent.com/624104/52508260-d0daa180-2ba8-11e9-970c-3ef9596f6b4e.png" height="35">](https://browserstack.com)
+<a href="https://www.chromaticqa.com/"><img src="https://cdn-images-1.medium.com/letterbox/147/36/50/50/1*oHHjTjInDOBxIuYHDY2gFA.png?source=logoAvatar-d7276495b101---37816ec27d7a" alt="Chromatic Logo" width="120"/></a>
 
-Thank you to BrowserStack for their open source browser testing infrastructure.
+Thanks to [Chromatic](https://www.chromaticqa.com/) for providing the visual testing platform that help us catch unexpected changes on time.
+
+<a href="https://www.browserstack.com/"><img src="https://live.browserstack.com/images/opensource/browserstack-logo.svg" alt="BrowserStack Logo" width="120"> </a>
+
+Thanks to [BrowserStack](https://www.browserstack.com/) for providing the infrastructure that allows us to test in real browsers.
