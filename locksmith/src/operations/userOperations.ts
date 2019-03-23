@@ -40,6 +40,21 @@ namespace UserOperations {
       return null
     }
   }
+
+  export async function getUserRecoveryPhraseByEmailAddress(
+    emailAddress: String
+  ): Promise<String | null> {
+    let user = await UserReference.findOne({
+      where: { emailAddress: emailAddress.toLowerCase() },
+      include: [{ model: User, attributes: ['recoveryPhrase'] }],
+    })
+
+    if (user) {
+      return user.User.recoveryPhrase
+    } else {
+      return null
+    }
+  }
 }
 
 export = UserOperations

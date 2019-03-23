@@ -59,18 +59,20 @@ describe('User creation', () => {
 })
 
 describe('Private Key Lookup', () => {
-  UserReference.findOne = jest
-    .fn()
-    .mockImplementationOnce(() => {
-      return {
-        User: {
-          passwordEncryptedPrivateKey: 'the value',
-        },
-      }
-    })
-    .mockImplementationOnce(() => {
-      null
-    })
+  beforeAll(() => {
+    UserReference.findOne = jest
+      .fn()
+      .mockImplementationOnce(() => {
+        return {
+          User: {
+            passwordEncryptedPrivateKey: 'the value',
+          },
+        }
+      })
+      .mockImplementationOnce(() => {
+        null
+      })
+  })
 
   describe('when the email address exists in persistence', () => {
     it('returns the appropriate encrypted private key', async () => {
@@ -86,6 +88,43 @@ describe('Private Key Lookup', () => {
     it('returns null', async () => {
       expect.assertions(1)
       let result = await UserOperations.getUserPrivateKeyByEmailAddress(
+        'non-existant@example.com'
+      )
+      expect(result).toEqual(null)
+    })
+  })
+})
+
+describe('Recovery Phrase Lookup', () => {
+  beforeAll(() => {
+    UserReference.findOne = jest
+      .fn()
+      .mockImplementationOnce(() => {
+        return {
+          User: {
+            recoveryPhrase: 'a recovery phrase',
+          },
+        }
+      })
+      .mockImplementationOnce(() => {
+        null
+      })
+  })
+
+  describe('when the email address exists in persistence', () => {
+    it('returns the appropriate encrypted private key', async () => {
+      expect.assertions(1)
+      let result = await UserOperations.getUserRecoveryPhraseByEmailAddress(
+        'existing@example.com'
+      )
+      expect(result).toEqual('a recovery phrase')
+    })
+  })
+
+  describe('when the email does not exist in persistence', () => {
+    it('returns null', async () => {
+      expect.assertions(1)
+      let result = await UserOperations.getUserRecoveryPhraseByEmailAddress(
         'non-existant@example.com'
       )
       expect(result).toEqual(null)

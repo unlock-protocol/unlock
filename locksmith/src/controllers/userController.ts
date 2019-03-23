@@ -7,12 +7,12 @@ namespace UserController {
 
     try {
       if (user) {
-        let creationStatus: Boolean = await UserOperations.createUser(
-          { emailAddress: user.emailAddress,
+        let creationStatus: Boolean = await UserOperations.createUser({
+          emailAddress: user.emailAddress,
           publicKey: user.publicKey,
           passwordEncryptedPrivateKey: user.passwordEncryptedPrivateKey,
-          recoveryPhrase: user.recoveryPhrase}
-        )
+          recoveryPhrase: user.recoveryPhrase,
+        })
 
         let status = creationStatus ? 200 : 400
         return res.sendStatus(status)
@@ -27,10 +27,27 @@ namespace UserController {
     res: Response
   ): Promise<any> {
     let emailAddress = req.params.emailAddress
-    let result = await UserOperations.getUserPrivateKeyByEmailAddress(emailAddress)
+    let result = await UserOperations.getUserPrivateKeyByEmailAddress(
+      emailAddress
+    )
 
     if (result) {
       return res.json({ passwordEncryptedPrivateKey: result })
+    } else {
+      return res.sendStatus(400)
+    }
+  }
+
+  export async function retrieveRecoveryPhrase(
+    req: Request,
+    res: Response
+  ): Promise<any> {
+    let emailAddress = req.params.emailAddress
+    let result = await UserOperations.getUserRecoveryPhraseByEmailAddress(emailAddress)
+
+
+    if (result) {
+      return res.json({ recoveryPhrase: result })
     } else {
       return res.sendStatus(400)
     }
