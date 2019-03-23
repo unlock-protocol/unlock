@@ -1,14 +1,7 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
 import { LOCATION_CHANGE } from 'connected-react-router'
-import {
-  ADD_LOCK,
-  CREATE_LOCK,
-  UPDATE_LOCK,
-  addLock,
-  updateLock,
-  createLock,
-} from '../actions/lock'
+import { ADD_LOCK, UPDATE_LOCK, addLock, updateLock } from '../actions/lock'
 import { updateKey, addKey } from '../actions/key'
 import { updateAccount, SET_ACCOUNT } from '../actions/accounts'
 import { setError } from '../actions/error'
@@ -116,13 +109,6 @@ export default function web3Middleware({ getState, dispatch }) {
 
       if (action.type === NEW_TRANSACTION) {
         web3Service.getTransaction(action.transaction.hash, action.transaction)
-      }
-
-      if (action.type === CREATE_LOCK && !action.lock.address) {
-        web3Service.generateLockAddress().then(address => {
-          action.lock.address = address
-          dispatch(createLock(action.lock))
-        })
       }
 
       next(action)
