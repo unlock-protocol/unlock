@@ -13,6 +13,7 @@ import EthSub from './EthSub'
 import Export from './Export'
 import Github from './Github'
 import Lemniscate from './Lemniscate'
+import Loading from './Loading'
 import LockClosed from './LockClosed'
 import Log from './Log'
 import Jobs from './Jobs'
@@ -48,6 +49,7 @@ export default {
   Export: wrapViewBox(Export, '0 0 24 24'),
   Github: wrapViewBox(Github, '0 0 24 24'),
   Lemniscate: wrapViewBox(Lemniscate, '0 0 24 24'),
+  Loading: wrapViewBox(Loading, '0 0 32 32'),
   LockClosed: wrapViewBox(LockClosed, '0 0 24 24'),
   Log: wrapViewBox(Log, '0 0 24 24'),
   Preview: wrapViewBox(Preview, '0 0 24 24'),
