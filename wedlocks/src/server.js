@@ -14,7 +14,7 @@ http
         {
           httpMethod: req.method,
           headers: req.headers,
-          body
+          body,
         },
         {},
         (error, response) => {

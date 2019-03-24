@@ -2,16 +2,16 @@ import recoveryKeyEmail from '../../templates/recoveryKeyEmail'
 
 describe('recoveryKeyEmail', () => {
   it('should have the right subject', () => {
-    expect(recoveryKeyEmail.subject()).toBe('Here\'s your private recovery key')
+    expect(recoveryKeyEmail.subject()).toBe("Here's your private recovery key")
   })
 
   it('should have the right text', () => {
     expect(
-    recoveryKeyEmail.text({
-      recoveryKey: 'klaatu barada nikto'
-    })
+      recoveryKeyEmail.text({
+        recoveryKey: 'klaatu barada nikto',
+      })
     ).toBe(
-    `Unlock is designed to make sure we can never access your data: it's encrypted by your password. Because of that, we
+      `Unlock is designed to make sure we can never access your data: it's encrypted by your password. Because of that, we
 can't reset your password like other services.
 
 We know that sometimes things happen, and you may find that you need to reset your password in the future. To do that,
