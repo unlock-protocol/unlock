@@ -14,6 +14,9 @@ import keysReducer, {
 import keysPagesReducer, {
   initialState as defaultKeysPages,
 } from './reducers/keysPagesReducer'
+import loadingReducer, {
+  initialState as defaultLoading,
+} from './reducers/loadingReducer'
 import locksReducer, {
   initialState as defaultLocks,
 } from './reducers/locksReducer'
@@ -54,6 +57,7 @@ export const createUnlockStore = (
     account: accountReducer,
     keys: keysReducer,
     keysForLockByPage: keysPagesReducer,
+    loading: loadingReducer,
     locks: locksReducer,
     modals: modalReducer,
     network: networkReducer,
@@ -78,6 +82,7 @@ export const createUnlockStore = (
       account: defaultAccount,
       keys: defaultKeys,
       keysForLockByPage: defaultKeysPages,
+      loading: defaultLoading,
       locks: defaultLocks,
       modals: defaultModals,
       network: defaultNetwork,
