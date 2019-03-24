@@ -1,6 +1,6 @@
 module.exports = {
-  extends: ["standard", "plugin:prettier/recommended"],
-  plugins: ["prettier", "mocha"],
+  extends: ['standard', 'plugin:prettier/recommended'],
+  plugins: ['mocha'],
   globals: {
     it: true,
     artifacts: true,
@@ -9,11 +9,11 @@ module.exports = {
     before: true,
     beforeEach: true,
     web3: true,
-    assert: true
+    assert: true,
   },
   rules: {
-    "prettier/prettier": "error",
-    "mocha/no-exclusive-tests": "error",
-    "eol-last": ["error"]
-  }
+    'prettier/prettier': 'error',
+    'mocha/no-exclusive-tests': 'error',
+    'eol-last': ['error'],
+  },
 }

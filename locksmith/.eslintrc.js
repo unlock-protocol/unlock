@@ -13,7 +13,7 @@ module.exports = {
     browser: true,
     jest: true,
   },
-  plugins: ['prettier', 'jest', 'mocha', 'promise', 'import'],
+  plugins: ['jest', 'mocha', 'promise', 'import'],
   parser: 'babel-eslint',
   settings: {
     react: {
