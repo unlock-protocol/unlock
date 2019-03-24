@@ -140,7 +140,7 @@ export default class WalletService extends EventEmitter {
    * receipt... etc)
    * @private
    */
-  _sendTransaction({ to, from, data, value, gas }, callback, transactionType) {
+  _sendTransaction({ to, from, data, value, gas }, transactionType, callback) {
     const web3TransactionPromise = this.web3.eth.sendTransaction({
       to,
       from,
@@ -181,12 +181,12 @@ export default class WalletService extends EventEmitter {
         gas: WalletService.gasAmountConstants().updateKeyPrice,
         contract: PublicLock,
       },
+      TransactionType.UPDATE_KEY_PRICE,
       error => {
         if (error) {
           return this.emit('error', new Error(FAILED_TO_UPDATE_KEY_PRICE))
         }
-      },
-      TransactionType.UPDATE_KEY_PRICE
+      }
     )
   }
 
@@ -217,6 +217,7 @@ export default class WalletService extends EventEmitter {
         gas: WalletService.gasAmountConstants().createLock,
         contract: Unlock,
       },
+      TransactionType.LOCK_CREATION,
       (error, hash) => {
         if (error) {
           return this.emit('error', new Error(FAILED_TO_CREATE_LOCK))
@@ -225,8 +226,7 @@ export default class WalletService extends EventEmitter {
         // This is an exception because, until we are able to determine the lock address
         // before the transaction is mined, we need to link the lock and transaction.
         return this.emit('lock.updated', lock.address, { transaction: hash })
-      },
-      TransactionType.LOCK_CREATION
+      }
     )
   }
 
@@ -257,12 +257,12 @@ export default class WalletService extends EventEmitter {
         value: Web3Utils.toWei(keyPrice, 'ether'),
         contract: PublicLock,
       },
+      TransactionType.KEY_PURCHASE,
       error => {
         if (error) {
           return this.emit('error', new Error(FAILED_TO_PURCHASE_KEY))
         }
-      },
-      TransactionType.KEY_PURCHASE
+      }
     )
   }
 
@@ -287,14 +287,14 @@ export default class WalletService extends EventEmitter {
         gas: WalletService.gasAmountConstants().partialWithdrawFromLock,
         contract: PublicLock,
       },
+      TransactionType.WITHDRAWAL,
       error => {
         if (error) {
           this.emit('error', new Error(FAILED_TO_WITHDRAW_FROM_LOCK))
           return callback(error)
         }
         return callback()
-      },
-      TransactionType.WITHDRAWAL
+      }
     )
   }
 
@@ -316,12 +316,12 @@ export default class WalletService extends EventEmitter {
         gas: WalletService.gasAmountConstants().withdrawFromLock,
         contract: PublicLock,
       },
+      TransactionType.WITHDRAWAL,
       error => {
         if (error) {
           return this.emit('error', new Error(FAILED_TO_WITHDRAW_FROM_LOCK))
         }
-      },
-      TransactionType.WITHDRAWAL
+      }
     )
   }
 
