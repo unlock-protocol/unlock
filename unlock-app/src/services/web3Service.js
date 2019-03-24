@@ -423,7 +423,7 @@ export default class Web3Service extends EventEmitter {
    * @param {object} filter
    */
   getTransaction(transactionHash, defaults) {
-    Promise.all([
+    return Promise.all([
       this.web3.eth.getBlockNumber(),
       this.web3.eth.getTransaction(transactionHash),
     ]).then(([blockNumber, blockTransaction]) => {
