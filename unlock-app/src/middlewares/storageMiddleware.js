@@ -6,6 +6,9 @@ import {
   CREATE_LOCK,
   UPDATE_LOCK_NAME,
 } from '../actions/lock'
+
+import { startLoading, doneLoading } from '../actions/loading'
+
 import StorageService from '../services/storageService'
 import { STORE_LOCK_NAME, storageError } from '../actions/storage'
 
@@ -24,10 +27,12 @@ export default function storageMiddleware({ getState, dispatch }) {
     return action => {
       // TODO: never async/await middlewares
       if (action.type === SET_ACCOUNT) {
+        dispatch(startLoading())
         // When we set the account, we want to retrieve the list of transactions
         storageService
           .getTransactionsHashesSentBy(action.account.address)
           .then(transactionHashes => {
+            dispatch(doneLoading())
             // Dispatch each lock. Greg probably wants to a batch action?
             transactionHashes.forEach(hash => {
               dispatch(
@@ -38,6 +43,7 @@ export default function storageMiddleware({ getState, dispatch }) {
             })
           })
           .catch(error => {
+            dispatch(doneLoading())
             dispatch(storageError(error))
           })
       }

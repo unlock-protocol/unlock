@@ -9,6 +9,8 @@ import {
   updateLock,
   createLock,
 } from '../actions/lock'
+
+import { startLoading, doneLoading } from '../actions/loading'
 import { updateKey, addKey } from '../actions/key'
 import { updateAccount, SET_ACCOUNT } from '../actions/accounts'
 import { setError } from '../actions/error'
@@ -136,11 +138,19 @@ export default function web3Middleware({ getState, dispatch }) {
       }
 
       if (action.type === ADD_TRANSACTION) {
-        web3Service.getTransaction(action.transaction.hash)
+        dispatch(startLoading())
+        web3Service.getTransaction(action.transaction.hash).then(() => {
+          dispatch(doneLoading())
+        })
       }
 
       if (action.type === NEW_TRANSACTION) {
-        web3Service.getTransaction(action.transaction.hash, action.transaction)
+        dispatch(startLoading())
+        web3Service
+          .getTransaction(action.transaction.hash, action.transaction)
+          .then(() => {
+            dispatch(doneLoading())
+          })
       }
 
       if (action.type === CREATE_LOCK && !action.lock.address) {
@@ -160,9 +170,11 @@ export default function web3Middleware({ getState, dispatch }) {
         // TODO: when the account has been updated we should reset web3Service and remove all listeners
         // So that pending API calls do not interract with our "new" state.
         web3Service.refreshAccountBalance(action.account)
+        dispatch(startLoading())
         web3Service
           .getPastLockCreationsTransactionsForUser(action.account.address)
           .then(lockCreations => {
+            dispatch(doneLoading())
             lockCreations.forEach(lockCreation => {
               web3Service.getTransaction(lockCreation.transactionHash)
             })
