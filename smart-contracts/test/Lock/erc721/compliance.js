@@ -10,7 +10,7 @@ contract('Lock / erc721 / compliance', accounts => {
     locks = await deployLocks(unlock, accounts[0])
   })
 
-  it('should support the erc721 interface()', async function () {
+  it('should support the erc721 interface()', async function() {
     // Note: the ERC-165 identifier for the erc721 interface is "0x80ac58cd"
     const result = await locks['FIRST'].supportsInterface.call('0x80ac58cd')
     assert.equal(result, true)

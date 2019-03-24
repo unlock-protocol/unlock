@@ -22,7 +22,7 @@ contract('Lock / Lock', accounts => {
       lock.totalSupply.call(),
       lock.numberOfOwners.call(),
       lock.publicLockVersion.call(),
-      lock.isAlive.call()
+      lock.isAlive.call(),
     ]).then(
       ([
         owner,
@@ -32,7 +32,7 @@ contract('Lock / Lock', accounts => {
         totalSupply,
         numberOfOwners,
         publicLockVersion,
-        isAlive
+        isAlive,
       ]) => {
         expirationDuration = new BigNumber(expirationDuration)
         keyPrice = new BigNumber(keyPrice)

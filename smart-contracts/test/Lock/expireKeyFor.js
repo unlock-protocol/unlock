@@ -16,7 +16,7 @@ contract('Lock / expireKeyFor', accounts => {
   it('should fail if not invoked by lock owner', async () => {
     await shouldFail(
       locks['FIRST'].expireKeyFor(accounts[1], {
-        from: accounts[8]
+        from: accounts[8],
       }),
       ''
     )
@@ -25,7 +25,7 @@ contract('Lock / expireKeyFor', accounts => {
   it('should fail if there is no such key', async () => {
     await shouldFail(
       locks['FIRST'].expireKeyFor(accounts[1], {
-        from: accounts[0]
+        from: accounts[0],
       }),
       'KEY_NOT_VALID'
     )
@@ -34,7 +34,7 @@ contract('Lock / expireKeyFor', accounts => {
   it('should fail if the key has already expired', async () => {
     await locks['FIRST'].purchaseFor(accounts[2], {
       value: locks['FIRST'].params.keyPrice.toFixed(),
-      from: accounts[0]
+      from: accounts[0],
     })
     const expirationTimestamp = new BigNumber(
       await locks['FIRST'].keyExpirationTimestampFor.call(accounts[2])
@@ -42,11 +42,11 @@ contract('Lock / expireKeyFor', accounts => {
     const now = Math.floor(new Date().getTime() / 1000)
     assert(expirationTimestamp.gt(now))
     await locks['FIRST'].expireKeyFor(accounts[2], {
-      from: accounts[0]
+      from: accounts[0],
     })
     await shouldFail(
       locks['FIRST'].expireKeyFor(accounts[2], {
-        from: accounts[0]
+        from: accounts[0],
       }),
       'KEY_NOT_VALID'
     )
@@ -59,7 +59,7 @@ contract('Lock / expireKeyFor', accounts => {
     before(async () => {
       await locks['FIRST'].purchaseFor(accounts[1], {
         value: locks['FIRST'].params.keyPrice.toFixed(),
-        from: accounts[0]
+        from: accounts[0],
       })
       ID = await locks['FIRST'].getTokenIdFor(accounts[1])
       const expirationTimestamp = new BigNumber(
@@ -69,7 +69,7 @@ contract('Lock / expireKeyFor', accounts => {
       // Pre-condition
       assert(expirationTimestamp.gt(now))
       const result = await locks['FIRST'].expireKeyFor(accounts[1], {
-        from: accounts[0]
+        from: accounts[0],
       })
       event = result.logs[0]
     })

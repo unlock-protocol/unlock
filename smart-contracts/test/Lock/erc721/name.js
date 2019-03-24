@@ -20,14 +20,14 @@ contract('Lock / erc721 / name', accounts => {
     it('should fail if someone other than the owner tries to set the name', async () => {
       await shouldFail(
         lock.updateLockName('Hardly', {
-          from: accounts[1]
+          from: accounts[1],
         })
       )
     })
 
     it('should allow the owner to set a name', async () => {
       await lock.updateLockName('Hardly', {
-        from: accounts[0]
+        from: accounts[0],
       })
     })
   })
@@ -35,7 +35,7 @@ contract('Lock / erc721 / name', accounts => {
   describe('when the Lock has a name', () => {
     before(async () => {
       await lock.updateLockName('Hardly', {
-        from: accounts[0]
+        from: accounts[0],
       })
     })
 
@@ -46,7 +46,7 @@ contract('Lock / erc721 / name', accounts => {
     it('should fail if someone other than the owner tries to change the name', async () => {
       await shouldFail(
         lock.updateLockName('Difficult', {
-          from: accounts[1]
+          from: accounts[1],
         })
       )
     })
@@ -54,7 +54,7 @@ contract('Lock / erc721 / name', accounts => {
     describe('should allow the owner to set a name', () => {
       before(async () => {
         await lock.updateLockName('Difficult', {
-          from: accounts[0]
+          from: accounts[0],
         })
       })
 
@@ -66,7 +66,7 @@ contract('Lock / erc721 / name', accounts => {
     describe('should allow the owner to unset the name', () => {
       before(async () => {
         await lock.updateLockName('', {
-          from: accounts[0]
+          from: accounts[0],
         })
       })
 

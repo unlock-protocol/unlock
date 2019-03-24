@@ -23,7 +23,7 @@ contract('Lock / cancelAndRefund', accounts => {
     const purchases = keyOwners.map(account => {
       return lock.purchaseFor(account, {
         value: keyPrice.toFixed(),
-        from: account
+        from: account,
       })
     })
     await Promise.all(purchases)
@@ -68,7 +68,7 @@ contract('Lock / cancelAndRefund', accounts => {
         await lock.getCancelAndRefundValueFor.call(keyOwners[0])
       )
       txObj = await lock.cancelAndRefund({
-        from: keyOwners[0]
+        from: keyOwners[0],
       })
       withdrawalAmount = new BigNumber(
         await web3.eth.getBalance(lock.address)
@@ -145,7 +145,7 @@ contract('Lock / cancelAndRefund', accounts => {
 
     it('should still allow refund', async () => {
       const txObj = await lock.cancelAndRefund({
-        from: keyOwners[2]
+        from: keyOwners[2],
       })
       const refund = new BigNumber(txObj.logs[0].args.refund)
       assert(refund.gt(0))
@@ -155,11 +155,11 @@ contract('Lock / cancelAndRefund', accounts => {
   describe('should fail when', () => {
     it('should fail if the Lock owner withdraws too much funds', async () => {
       await lock.withdraw({
-        from: lockOwner
+        from: lockOwner,
       })
       await shouldFail(
         lock.cancelAndRefund({
-          from: keyOwners[3]
+          from: keyOwners[3],
         }),
         ''
       )
@@ -167,11 +167,11 @@ contract('Lock / cancelAndRefund', accounts => {
 
     it('the key is expired', async () => {
       await lock.expireKeyFor(keyOwners[3], {
-        from: lockOwner
+        from: lockOwner,
       })
       await shouldFail(
         lock.cancelAndRefund({
-          from: keyOwners[3]
+          from: keyOwners[3],
         }),
         'KEY_NOT_VALID'
       )
@@ -180,7 +180,7 @@ contract('Lock / cancelAndRefund', accounts => {
     it('the owner does not have a key', async () => {
       await shouldFail(
         lock.cancelAndRefund({
-          from: accounts[7]
+          from: accounts[7],
         }),
         'KEY_NOT_VALID'
       )

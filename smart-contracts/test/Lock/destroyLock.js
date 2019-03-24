@@ -26,7 +26,7 @@ contract('Lock / destroyLock', accounts => {
 
     before(async () => {
       await lock.purchaseFor(accounts[1], {
-        value: Units.convert('0.01', 'eth', 'wei')
+        value: Units.convert('0.01', 'eth', 'wei'),
       })
       assert.equal(await lock.getHasValidKey.call(accounts[1]), true) // pre-req
 
@@ -95,7 +95,7 @@ contract('Lock / destroyLock', accounts => {
 
         // This line does not fail, but instead calls the fallback function and sends msg.value to the destroyed contract.
         await lock.purchaseFor(accounts[1], {
-          value: Units.convert('0.01', 'eth', 'wei')
+          value: Units.convert('0.01', 'eth', 'wei'),
         })
 
         let finalLockBalance = new BigNumber(
@@ -109,7 +109,7 @@ contract('Lock / destroyLock', accounts => {
       } else {
         try {
           await lock.purchaseFor(accounts[1], {
-            value: Units.convert('0.01', 'eth', 'wei')
+            value: Units.convert('0.01', 'eth', 'wei'),
           })
         } catch (e) {
           assert(e.message.endsWith('is not a contract address'))
