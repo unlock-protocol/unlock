@@ -90,7 +90,9 @@ describe('User Controller', () => {
 
         await UserOperations.createUser(userCreationDetails)
 
-        let response = await request(app).get(`/users/${emailAddress}/privatekey`)
+        let response = await request(app).get(
+          `/users/${emailAddress}/privatekey`
+        )
 
         expect(response.body).toEqual({
           passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
@@ -101,7 +103,29 @@ describe('User Controller', () => {
     describe('when the provided email does not within the existing persistence layer', () => {
       it('returns an error code', async () => {
         let emailAddress = 'non-existing@example.com'
-        let response = await request(app).get(`/users/${emailAddress}/privatekey`)
+        let response = await request(app).get(
+          `/users/${emailAddress}/privatekey`
+        )
+        expect(response.statusCode).toBe(400)
+      })
+    })
+  })
+
+  describe("retrieving a user's recovery phrase", () => {
+    describe('when the user exists', () => {
+      it("returns the user's recovery phrase", async () => {
+        let response = await request(app).get(
+          '/users/user@example.com/recoveryphrase'
+        )
+        expect(response.body).toEqual({ recoveryPhrase: 'a recovery phrase' })
+      })
+    })
+
+    describe('when the user does not exist', () => {
+      it('returns an error code', async () => {
+        let response = await request(app).get(
+          `/users/non-existing@example.com/recoveryphrase`
+        )
         expect(response.statusCode).toBe(400)
       })
     })
