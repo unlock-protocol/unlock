@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title><![CDATA[Unlock Blog]]></title>
+        <description><![CDATA[News and updates from the Web's new business model.]]></description>
+        <link>https://unlock-protocol.com/blog</link>
+        <generator>Unlock Blog Engine</generator>
+        <lastBuildDate>Fri, 22 Mar 2019 21:07:32 GMT</lastBuildDate>
+        <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[What is Unlock?]]></title>
+            <description><![CDATA[Why we’re building a business model as an open protocol.]]></description>
+            <link>https://unlock-protocol.com/blog/20190226_what_is_unlock</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/20190226_what_is_unlock</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Tue, 26 Feb 2019 08:00:00 GMT</pubDate>
+        </item>
+    </channel>
+</rss>
