@@ -16,7 +16,7 @@ contract('Lock / erc721 / Non_Public_approve', accounts => {
     it('should fail', async () => {
       await shouldFail(
         locks['PRIVATE'].approve(accounts[2], accounts[1], {
-          from: accounts[1]
+          from: accounts[1],
         }),
         ''
       )
@@ -36,7 +36,7 @@ contract('Lock / erc721 / Non_Public_approve', accounts => {
       it('should allow the owner of the lock to approve a purchase by setting the the _tokenId to the same value as the _approved', () => {
         return locks['RESTRICTED']
           .approve(accounts[1], accounts[1], {
-            from: owner
+            from: owner,
           })
           .then(() => {
             return locks['RESTRICTED'].getApproved.call(accounts[1])
@@ -49,19 +49,19 @@ contract('Lock / erc721 / Non_Public_approve', accounts => {
       it('should allow the owner of the lock to approve a transfer of an existing key', () => {
         return locks['RESTRICTED']
           .approve(accounts[2], accounts[2], {
-            from: owner
+            from: owner,
           })
           .then(() => {
             // accounts[2] purchases a key
             return locks['RESTRICTED'].purchaseFor(accounts[2], {
               value: locks['RESTRICTED'].params.keyPrice.toFixed(),
-              from: accounts[2]
+              from: accounts[2],
             })
           })
           .then(() => {
             // Lock owner approves the transfer of accounts[2]'s key
             return locks['RESTRICTED'].approve(accounts[3], accounts[2], {
-              from: owner
+              from: owner,
             })
           })
           .then(() => {
@@ -77,7 +77,7 @@ contract('Lock / erc721 / Non_Public_approve', accounts => {
       it('should allow the owner of the lock to approve a transfer of a non existing key', () => {
         return locks['RESTRICTED']
           .approve(accounts[4], accounts[5], {
-            from: owner
+            from: owner,
           })
           .then(() => {
             // Let's retrieve the approved key
@@ -93,17 +93,17 @@ contract('Lock / erc721 / Non_Public_approve', accounts => {
     describe.skip('if the sender is the owner of the key', () => {
       it('should fail if the owner of a key tries to approve transfer of her key', async () => {
         await locks['RESTRICTED'].approve(accounts[5], accounts[5], {
-          from: owner
+          from: owner,
         })
         // accounts[5] purchases a key
         await locks['RESTRICTED'].purchaseFor(accounts[5], {
           value: locks['RESTRICTED'].params.keyPrice.toFixed(),
-          from: accounts[5]
+          from: accounts[5],
         })
         // Key owner tries to approve the transfer of her key
         await shouldFail(
           locks['RESTRICTED'].approve(accounts[3], accounts[5], {
-            from: accounts[5]
+            from: accounts[5],
           }),
           ''
         )
@@ -111,17 +111,17 @@ contract('Lock / erc721 / Non_Public_approve', accounts => {
 
       it('should fail if sender is trying to allow another key transfer', async () => {
         await locks['RESTRICTED'].approve(accounts[5], accounts[5], {
-          from: owner
+          from: owner,
         })
         // accounts[5] purchases a key
         await locks['RESTRICTED'].purchaseFor(accounts[5], {
           value: locks['RESTRICTED'].params.keyPrice.toFixed(),
-          from: accounts[5]
+          from: accounts[5],
         })
         // Key owner tries to approve the transfer of her key
         await shouldFail(
           locks['RESTRICTED'].approve(accounts[3], accounts[4], {
-            from: accounts[5]
+            from: accounts[5],
           }),
           ''
         )
@@ -131,7 +131,7 @@ contract('Lock / erc721 / Non_Public_approve', accounts => {
     it('should fail if the sender does not own a key', async () => {
       await shouldFail(
         locks['RESTRICTED'].approve(accounts[5], accounts[5], {
-          from: accounts[9]
+          from: accounts[9],
         }),
         ''
       )

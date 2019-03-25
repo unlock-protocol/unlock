@@ -19,7 +19,7 @@ contract('Unlock / gas', accounts => {
       Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
       100, // maxNumberOfKeys
       {
-        from: accounts[0]
+        from: accounts[0],
       }
     )
     createLockGas = new BigNumber(tx.receipt.gasUsed)

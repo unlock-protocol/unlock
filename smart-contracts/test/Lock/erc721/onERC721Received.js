@@ -17,7 +17,7 @@ contract('Lock / erc721 / onERC721Received', accounts => {
     locks = await deployLocks(unlock, accounts[0])
   })
 
-  it('should implement the onERC721Received() function', async function () {
+  it('should implement the onERC721Received() function', async function() {
     // PublicLock.onERC721Received.selector == 0x150b7a02`
     const ERC721_RECEIVED = 0x150b7a02
     const result = await locks['FIRST'].onERC721Received.call(

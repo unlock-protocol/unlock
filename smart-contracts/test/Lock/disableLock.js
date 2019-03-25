@@ -18,10 +18,10 @@ contract('Lock / disableLock', accounts => {
     locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
     await lock.purchaseFor(keyOwner, {
-      value: Units.convert('0.01', 'eth', 'wei')
+      value: Units.convert('0.01', 'eth', 'wei'),
     })
     await lock.purchaseFor(keyOwner2, {
-      value: Units.convert('0.01', 'eth', 'wei')
+      value: Units.convert('0.01', 'eth', 'wei'),
     })
     ID = new BigNumber(await lock.getTokenIdFor(keyOwner)).toFixed()
   })
@@ -52,7 +52,7 @@ contract('Lock / disableLock', accounts => {
     it('should fail if a user tries to purchase a key', async () => {
       await shouldFail(
         lock.purchaseFor(keyOwner, {
-          value: Units.convert('0.01', 'eth', 'wei')
+          value: Units.convert('0.01', 'eth', 'wei'),
         }),
         'LOCK_DEPRECATED'
       )
@@ -61,7 +61,7 @@ contract('Lock / disableLock', accounts => {
     it('should fail if a user tries to purchase a key with a referral', async () => {
       await shouldFail(
         lock.purchaseForFrom(keyOwner, accounts[3], {
-          value: Units.convert('0.01', 'eth', 'wei')
+          value: Units.convert('0.01', 'eth', 'wei'),
         }),
         'LOCK_DEPRECATED'
       )
@@ -71,7 +71,7 @@ contract('Lock / disableLock', accounts => {
       await shouldFail(
         lock.transferFrom(keyOwner, accounts[3], ID, {
           from: keyOwner,
-          value: Units.convert('0.01', 'eth', 'wei')
+          value: Units.convert('0.01', 'eth', 'wei'),
         }),
         'LOCK_DEPRECATED'
       )
@@ -80,7 +80,7 @@ contract('Lock / disableLock', accounts => {
     it('should fail if a key owner tries to a approve an address', async () => {
       await shouldFail(
         lock.approve(accounts[3], ID, {
-          from: keyOwner
+          from: keyOwner,
         }),
         'LOCK_DEPRECATED'
       )
@@ -93,7 +93,7 @@ contract('Lock / disableLock', accounts => {
 
     it('Key owners can still cancel for a partial refund', async () => {
       await lock.cancelAndRefund({
-        from: keyOwner
+        from: keyOwner,
       })
     })
 
@@ -120,7 +120,7 @@ contract('Lock / disableLock', accounts => {
     it('should fail to setApprovalForAll', async () => {
       await shouldFail(
         lock.setApprovalForAll(accounts[3], true, {
-          from: keyOwner
+          from: keyOwner,
         }),
         'LOCK_DEPRECATED'
       )
@@ -134,7 +134,7 @@ contract('Lock / disableLock', accounts => {
       await shouldFail(
         lock.safeTransferFrom(keyOwner, accounts[3], ID, {
           from: keyOwner,
-          value: Units.convert('0.01', 'eth', 'wei')
+          value: Units.convert('0.01', 'eth', 'wei'),
         }),
         'LOCK_DEPRECATED'
       )
@@ -150,7 +150,7 @@ contract('Lock / disableLock', accounts => {
           Web3Utils.toHex('Julien'),
           {
             from: keyOwner,
-            value: Units.convert('0.01', 'eth', 'wei')
+            value: Units.convert('0.01', 'eth', 'wei'),
           }
         ),
         'LOCK_DEPRECATED'

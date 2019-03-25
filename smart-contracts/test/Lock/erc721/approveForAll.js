@@ -20,7 +20,7 @@ contract('Lock / erc721 / approveForAll', accounts => {
     before(async () => {
       await lock.purchaseFor(owner, {
         value: Units.convert('0.01', 'eth', 'wei'),
-        from: owner
+        from: owner,
       })
       ID = await lock.getTokenIdFor.call(owner)
     })
@@ -33,7 +33,7 @@ contract('Lock / erc721 / approveForAll', accounts => {
       it('should fail', async () => {
         await shouldFail(
           lock.setApprovalForAll(owner, true, {
-            from: owner
+            from: owner,
           }),
           'APPROVE_SELF'
         )
@@ -44,7 +44,7 @@ contract('Lock / erc721 / approveForAll', accounts => {
       let event
       before(async () => {
         let result = await lock.setApprovalForAll(approvedUser, true, {
-          from: owner
+          from: owner,
         })
         event = result.logs[0]
       })
@@ -67,7 +67,7 @@ contract('Lock / erc721 / approveForAll', accounts => {
         let newApprovedUser = accounts[8]
 
         await lock.approve(newApprovedUser, ID, {
-          from: approvedUser
+          from: approvedUser,
         })
 
         assert.equal(await lock.getApproved.call(ID), newApprovedUser)
@@ -75,12 +75,12 @@ contract('Lock / erc721 / approveForAll', accounts => {
 
       it('should allow the approved user to transferFrom', async () => {
         await lock.transferFrom(owner, accounts[3], ID, {
-          from: approvedUser
+          from: approvedUser,
         })
 
         // Transfer it back to the original owner for other tests
         await lock.transferFrom(accounts[3], owner, ID, {
-          from: accounts[3]
+          from: accounts[3],
         })
       })
 
@@ -96,7 +96,7 @@ contract('Lock / erc721 / approveForAll', accounts => {
 
         before(async () => {
           await lock.setApprovalForAll(newApprovedUser, true, {
-            from: owner
+            from: owner,
           })
         })
 
@@ -121,10 +121,10 @@ contract('Lock / erc721 / approveForAll', accounts => {
 
       before(async () => {
         await lock.setApprovalForAll(approvedUser, true, {
-          from: owner
+          from: owner,
         })
         let result = await lock.setApprovalForAll(approvedUser, false, {
-          from: owner
+          from: owner,
         })
         event = result.logs[0]
       })
@@ -155,7 +155,7 @@ contract('Lock / erc721 / approveForAll', accounts => {
     describe('allows the owner to call approveForAll', () => {
       before(async () => {
         await lock.setApprovalForAll(approvedUser, true, {
-          from: ownerWithoutAKey
+          from: ownerWithoutAKey,
         })
       })
 

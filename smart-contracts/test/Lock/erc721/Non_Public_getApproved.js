@@ -21,7 +21,7 @@ contract('Lock / erc721 / Non_Public_getApproved', accounts => {
   it.skip('should return the address of the approved owner for a key', () => {
     return locks['FIRST']
       .approve(accounts[3], accounts[3], {
-        from: lockOwner
+        from: lockOwner,
       })
       .then(() => {
         return locks['FIRST'].getApproved.call(accounts[3])

@@ -7,12 +7,12 @@ describe('ejectionWarningEmail', () => {
 
   it('should have the right text', () => {
     expect(
-    ejectionWarningEmail.text({
-      balance: 1080,
-      dueDate: 'April 8, 2020',
-    })
+      ejectionWarningEmail.text({
+        balance: 1080,
+        dueDate: 'April 8, 2020',
+      })
     ).toBe(
-    `Hi there!
+      `Hi there!
 
 We've noticed that you're carrying a total balance of 1080 ETH on your locks at Unlock. You should consider
 withdrawing your funds to a safe wallet on another service.

@@ -8,13 +8,13 @@ const unlockContract = artifacts.require('../Unlock.sol')
 let unlock
 
 contract('Lock / createLockWithInfiniteKeys', accounts => {
-  before(async function () {
+  before(async function() {
     unlock = await getUnlockProxy(unlockContract)
   })
 
-  describe('Create a Lock with infinite keys', function () {
+  describe('Create a Lock with infinite keys', function() {
     let transaction
-    before(async function () {
+    before(async function() {
       transaction = await unlock.createLock(
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         Web3Utils.padLeft(0, 40),
@@ -23,7 +23,7 @@ contract('Lock / createLockWithInfiniteKeys', accounts => {
       )
     })
 
-    it('should have created the lock with an infinite number of keys', async function () {
+    it('should have created the lock with an infinite number of keys', async function() {
       let publicLock = await PublicLock.at(
         transaction.logs[1].args.newLockAddress
       )
@@ -38,9 +38,9 @@ contract('Lock / createLockWithInfiniteKeys', accounts => {
     })
   })
 
-  describe('Create a Lock with 0 keys', function () {
+  describe('Create a Lock with 0 keys', function() {
     let transaction
-    before(async function () {
+    before(async function() {
       transaction = await unlock.createLock(
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         Web3Utils.padLeft(0, 40),
@@ -49,7 +49,7 @@ contract('Lock / createLockWithInfiniteKeys', accounts => {
       )
     })
 
-    it('should have created the lock with 0 keys', async function () {
+    it('should have created the lock with 0 keys', async function() {
       let publicLock = await PublicLock.at(
         transaction.logs[1].args.newLockAddress
       )

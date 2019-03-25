@@ -20,7 +20,7 @@ contract('Lock / erc721 / ownerOf', accounts => {
   it('should return the owner of the key', async () => {
     await locks['FIRST'].purchaseFor(accounts[1], {
       value: Units.convert('0.01', 'eth', 'wei'),
-      from: accounts[1]
+      from: accounts[1],
     })
     let ID = await locks['FIRST'].getTokenIdFor.call(accounts[1])
     let address = await locks['FIRST'].ownerOf.call(ID)

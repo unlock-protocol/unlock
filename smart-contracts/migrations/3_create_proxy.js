@@ -2,7 +2,7 @@
 const { scripts, ConfigVariablesInitializer } = require('zos')
 const { create } = scripts
 
-async function deploy (options, accounts) {
+async function deploy(options, accounts) {
   // default account used by ganache
   const unlockOwner = accounts[0]
 
@@ -12,23 +12,23 @@ async function deploy (options, accounts) {
       {
         contractAlias: 'Unlock',
         initMethod: 'initialize',
-        initArgs: [unlockOwner]
+        initArgs: [unlockOwner],
       },
       options
     )
   )
 }
 
-module.exports = function (deployer, networkName, accounts) {
+module.exports = function(deployer, networkName, accounts) {
   const proxyAdmin = accounts[9]
 
   deployer.then(async () => {
     const {
       network,
-      txParams
+      txParams,
     } = await ConfigVariablesInitializer.initNetworkConfiguration({
       network: networkName,
-      from: proxyAdmin
+      from: proxyAdmin,
     })
     txParams.gas = 4000000
     const options = { network, txParams }

@@ -21,7 +21,7 @@ const mnemonic = require('./mnemonic')
 // When running CI, we connect to the 'ganache' container
 const testHost = process.env.CI ? 'ganache' : '127.0.0.1'
 
-const mainnetProvider = function () {
+const mainnetProvider = function() {
   return new HDWalletProvider(
     mnemonic.seed,
     process.env.MAIN_NET_NODE,
@@ -35,18 +35,18 @@ module.exports = {
       // used for local dev
       host: testHost,
       port: 8545,
-      network_id: '*' // Match any network id
+      network_id: '*', // Match any network id
     },
     rinkeby: {
       provider: new Web3.providers.HttpProvider(rinkebyProviderUrl),
-      network_id: '4' // Network Id for Rinkeby
+      network_id: '4', // Network Id for Rinkeby
     },
     mainnet: {
       provider: mainnetProvider,
       network_id: 1,
       gas: 7000000,
-      gasPrice: 35000000000
-    }
+      gasPrice: 35000000000,
+    },
   },
   compilers: {
     solc: {
@@ -54,12 +54,12 @@ module.exports = {
       settings: {
         optimizer: {
           enabled: true,
-          runs: 200
-        }
-      }
-    }
+          runs: 200,
+        },
+      },
+    },
   },
   mocha: {
-    useColors: true
-  }
+    useColors: true,
+  },
 }

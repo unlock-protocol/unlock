@@ -8,7 +8,7 @@ describe('handler', () => {
     expect.assertions(2)
     handler(
       {
-        httpMethod: 'GET'
+        httpMethod: 'GET',
       },
       {},
       (error, response) => {
@@ -23,7 +23,7 @@ describe('handler', () => {
     expect.assertions(2)
     handler(
       {
-        httpMethod: 'POST'
+        httpMethod: 'POST',
       },
       {},
       (error, response) => {
@@ -40,8 +40,8 @@ describe('handler', () => {
       {
         httpMethod: 'POST',
         headers: {
-          'content-type': 'text/html'
-        }
+          'content-type': 'text/html',
+        },
       },
       {},
       (error, response) => {
@@ -58,9 +58,9 @@ describe('handler', () => {
       {
         httpMethod: 'POST',
         headers: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
         },
-        body: 'hello world'
+        body: 'hello world',
       },
       {},
       (error, response) => {
@@ -74,10 +74,10 @@ describe('handler', () => {
   it('should route the request and yields its response', done => {
     expect.assertions(3)
     const body = {
-      hello: 'world'
+      hello: 'world',
     }
     const responseBody = {
-      lorem: 'ipsum'
+      lorem: 'ipsum',
     }
     route.mockImplementationOnce((_body, _callback) => {
       expect(_body).toEqual(body)
@@ -88,9 +88,9 @@ describe('handler', () => {
       {
         httpMethod: 'POST',
         headers: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
       },
       {},
       (error, response) => {
@@ -104,7 +104,7 @@ describe('handler', () => {
   it('should route the request and yields its response when it is an error', done => {
     expect.assertions(3)
     const body = {
-      hello: 'world'
+      hello: 'world',
     }
     const error = 'Could not send email'
     route.mockImplementationOnce((_body, _callback) => {
@@ -116,9 +116,9 @@ describe('handler', () => {
       {
         httpMethod: 'POST',
         headers: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
       },
       {},
       (_error, response) => {
@@ -132,7 +132,7 @@ describe('handler', () => {
   it('should route the request and catch errors in response processing', done => {
     expect.assertions(3)
     const body = {
-      hello: 'world'
+      hello: 'world',
     }
 
     const error = new Error('Processing error')
@@ -146,9 +146,9 @@ describe('handler', () => {
       {
         httpMethod: 'POST',
         headers: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
       },
       {},
       (_error, response) => {

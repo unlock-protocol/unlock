@@ -7,6 +7,7 @@ module.exports = {
     'prettier',
     'prettier/react',
     'prettier/standard',
+    'plugin:prettier/recommended',
   ],
   env: {
     es6: true,
@@ -22,6 +23,7 @@ module.exports = {
     },
   },
   rules: {
+    'prettier/prettier': 'error',
     'react/prefer-stateless-function': [2],
     'linebreak-style': ['error', 'unix'],
     quotes: [

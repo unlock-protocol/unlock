@@ -21,7 +21,7 @@ contract('Lock / withdraw', accounts => {
     const purchases = [accounts[1], accounts[2]].map(account => {
       return locks['OWNED'].purchaseFor(account, {
         value: price,
-        from: account
+        from: account,
       })
     })
     return Promise.all(purchases)
@@ -37,7 +37,7 @@ contract('Lock / withdraw', accounts => {
     assert.notEqual(owner, accounts[1]) // Making sure
     await shouldFail(
       locks['OWNED'].withdraw({
-        from: accounts[1]
+        from: accounts[1],
       }),
       ''
     )
@@ -48,7 +48,7 @@ contract('Lock / withdraw', accounts => {
     before(async () => {
       ownerBalance = new BigNumber(await web3.eth.getBalance(owner))
       return locks['OWNED'].withdraw({
-        from: owner
+        from: owner,
       })
     })
     it("should increase the owner's balance with the funds from the lock", async () => {
@@ -63,7 +63,7 @@ contract('Lock / withdraw', accounts => {
     it('should fail if there is nothing left to withdraw', async () => {
       await shouldFail(
         locks['OWNED'].withdraw({
-          from: owner
+          from: owner,
         }),
         'NOT_ENOUGH_FUNDS'
       )

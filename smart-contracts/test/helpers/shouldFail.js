@@ -1,4 +1,4 @@
-module.exports = async function shouldFail (promise, expectedRevertReason) {
+module.exports = async function shouldFail(promise, expectedRevertReason) {
   let expectedMessage = `Returned error: VM Exception while processing transaction: `
   if (expectedRevertReason === 'invalid opcode') {
     expectedMessage += expectedRevertReason
@@ -14,9 +14,15 @@ module.exports = async function shouldFail (promise, expectedRevertReason) {
   } catch (error) {
     // Using `startsWith` as some error.message may include '-- Reason given: ${expectedRevertReason}.'
     if (!error.message.startsWith(expectedMessage)) {
-      throw new Error(`shouldFail reason for revert does not match. Got "${error.message}"; expected "${expectedMessage}"`)
+      throw new Error(
+        `shouldFail reason for revert does not match. Got "${
+          error.message
+        }"; expected "${expectedMessage}"`
+      )
     }
     return
   }
-  throw new Error(`Call should have failed but did not. Expected "${expectedMessage}"`)
+  throw new Error(
+    `Call should have failed but did not. Expected "${expectedMessage}"`
+  )
 }

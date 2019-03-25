@@ -33,11 +33,11 @@ contract('Lock / purchaseForFrom', accounts => {
       const lock = locks['FIRST']
       return lock
         .purchaseFor(accounts[0], {
-          value: Units.convert('0.01', 'eth', 'wei')
+          value: Units.convert('0.01', 'eth', 'wei'),
         })
         .then(() => {
           return lock.purchaseForFrom(accounts[1], accounts[0], {
-            value: Units.convert('0.01', 'eth', 'wei')
+            value: Units.convert('0.01', 'eth', 'wei'),
           })
         })
     })

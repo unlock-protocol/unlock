@@ -36,7 +36,7 @@ contract('Lock / Non_Public_purchaseFor', accounts => {
     it('should fail if the sending account was not pre-approved', async () => {
       await shouldFail(
         locks['RESTRICTED'].purchaseFor(accounts[1], {
-          value: Units.convert('0.01', 'eth', 'wei')
+          value: Units.convert('0.01', 'eth', 'wei'),
         }),
         ''
       )
@@ -46,11 +46,11 @@ contract('Lock / Non_Public_purchaseFor', accounts => {
     it('should succeed if the sending account was pre-approved', () => {
       return locks['RESTRICTED']
         .approve(accounts[3], accounts[3], {
-          from: owner
+          from: owner,
         })
         .then(() => {
           locks['RESTRICTED'].purchaseFor(accounts[3], {
-            value: Units.convert('0.01', 'eth', 'wei')
+            value: Units.convert('0.01', 'eth', 'wei'),
           })
         })
     })

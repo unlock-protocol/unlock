@@ -2,10 +2,10 @@ const Migrations = artifacts.require('./Migrations.sol')
 const getNetworkFile = require('../helpers/ZosNetworkFile.js')
 const fs = require('fs')
 
-module.exports = function initialMigration (deployer) {
+module.exports = function initialMigration(deployer) {
   // If the network is `--reset`, then also delete the ZOS configuration so that ZOS resets.
   // This prevents an error where ZOS attempts to use a proxy which does not exist any longer.
-  return getNetworkFile(web3).then((networkFile) => {
+  return getNetworkFile(web3).then(networkFile => {
     fs.unlink(networkFile.fileName, () => {})
 
     return deployer.deploy(Migrations)

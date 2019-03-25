@@ -19,20 +19,20 @@ contract('Lock / owners', accounts => {
     return Promise.all([
       lock.purchaseFor(accounts[1], {
         value: lock.params.keyPrice.toFixed(),
-        from: accounts[0]
+        from: accounts[0],
       }),
       lock.purchaseFor(accounts[2], {
         value: lock.params.keyPrice.toFixed(),
-        from: accounts[0]
+        from: accounts[0],
       }),
       lock.purchaseFor(accounts[3], {
         value: lock.params.keyPrice.toFixed(),
-        from: accounts[0]
+        from: accounts[0],
       }),
       lock.purchaseFor(accounts[4], {
         value: lock.params.keyPrice.toFixed(),
-        from: accounts[0]
-      })
+        from: accounts[0],
+      }),
     ])
   })
 
@@ -51,7 +51,7 @@ contract('Lock / owners', accounts => {
       lock.owners.call(0),
       lock.owners.call(1),
       lock.owners.call(2),
-      lock.owners.call(3)
+      lock.owners.call(3),
     ]).then(owners => {
       assert.deepEqual(owners.sort(), accounts.slice(1, 5).sort())
     })
@@ -68,7 +68,7 @@ contract('Lock / owners', accounts => {
       numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
       let ID = await lock.getTokenIdFor.call(accounts[1])
       await lock.transferFrom(accounts[1], accounts[5], ID, {
-        from: accounts[1]
+        from: accounts[1],
       })
     })
 
@@ -90,7 +90,7 @@ contract('Lock / owners', accounts => {
     it('should fail if I transfer from the same account again', async () => {
       await shouldFail(
         lock.transferFrom(accounts[1], accounts[5], accounts[1], {
-          from: accounts[1]
+          from: accounts[1],
         }),
         'KEY_NOT_VALID'
       )
@@ -104,7 +104,7 @@ contract('Lock / owners', accounts => {
       numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
       let ID = await lock.getTokenIdFor.call(accounts[2])
       await lock.transferFrom(accounts[2], accounts[3], ID, {
-        from: accounts[2]
+        from: accounts[2],
       })
     })
 

@@ -22,7 +22,7 @@ contract('Unlock / noFallback', accounts => {
   it('can call a function by name', async () => {
     await web3.eth.call({
       to: unlock.address,
-      data: abi.encodeFunctionSignature('totalDiscountGranted()')
+      data: abi.encodeFunctionSignature('totalDiscountGranted()'),
     })
   })
 
@@ -30,7 +30,7 @@ contract('Unlock / noFallback', accounts => {
     await shouldFail(
       web3.eth.call({
         to: unlock.address,
-        data: abi.encodeFunctionSignature('dne()')
+        data: abi.encodeFunctionSignature('dne()'),
       }),
       'NO_FALLBACK'
     )

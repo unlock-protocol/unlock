@@ -5,7 +5,9 @@ const BigNumber = require('bignumber.js')
 const { ZWeb3, Contracts } = require('zos-lib')
 ZWeb3.initialize(web3.currentProvider)
 // Path is relative to `build/contracts/` directory
-const UnlockV0 = Contracts.getFromLocal('../../node_modules/unlock-abi-0/Unlock')
+const UnlockV0 = Contracts.getFromLocal(
+  '../../node_modules/unlock-abi-0/Unlock'
+)
 const PublicLockV0 = require('public-lock-abi-0/abi_V0')
 const UnlockV1 = Contracts.getFromLocal('Unlock')
 const PublicLockV1 = Contracts.getFromLocal('PublicLock')
@@ -28,7 +30,7 @@ contract('Unlock / upgrades', accounts => {
     proxy = await project.createProxy(UnlockV0, {
       UnlockV0,
       initMethod: 'initialize',
-      initArgs: [unlockOwner]
+      initArgs: [unlockOwner],
     })
 
     unlock = await UnlockV0.at(proxy.address)
@@ -49,13 +51,11 @@ contract('Unlock / upgrades', accounts => {
     )
 
     // Buy Key
-    await lockV0.methods
-      .purchaseFor(keyOwner, Web3Utils.toHex('Julien'))
-      .send({
-        value: keyPrice,
-        from: keyOwner,
-        gas: 4000000
-      })
+    await lockV0.methods.purchaseFor(keyOwner, Web3Utils.toHex('Julien')).send({
+      value: keyPrice,
+      from: keyOwner,
+      gas: 4000000,
+    })
 
     // Record sample lock data
     v0LockData = await unlock.methods.locks(lockV0._address).call()
@@ -88,7 +88,7 @@ contract('Unlock / upgrades', accounts => {
           .send({
             value: keyPrice,
             from: accounts[6],
-            gas: 4000000
+            gas: 4000000,
           })
         assert.equal(tx.events.Transfer.event, 'Transfer')
       })
@@ -99,7 +99,7 @@ contract('Unlock / upgrades', accounts => {
           .send({
             value: keyPrice,
             from: accounts[7],
-            gas: 4000000
+            gas: 4000000,
           })
         const tx = await lockV0.methods
           .transferFrom(
@@ -109,7 +109,7 @@ contract('Unlock / upgrades', accounts => {
           )
           .send({
             from: accounts[7],
-            gas: 4000000
+            gas: 4000000,
           })
         assert.equal(tx.events.Transfer.event, 'Transfer')
       })
@@ -124,10 +124,8 @@ contract('Unlock / upgrades', accounts => {
         )
       })
 
-      it('lock data should persist state between upgrades', async function () {
-        const resultsAfter = await unlock.methods
-          .locks(lockV0._address)
-          .call()
+      it('lock data should persist state between upgrades', async function() {
+        const resultsAfter = await unlock.methods.locks(lockV0._address).call()
         assert.equal(JSON.stringify(resultsAfter), JSON.stringify(v0LockData))
       })
     })
@@ -146,20 +144,18 @@ contract('Unlock / upgrades', accounts => {
           )
           .send({
             from: lockOwner,
-            gas: 4000000
+            gas: 4000000,
           })
         // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
         const evt = lockTx.events.NewLock
         lockV1 = await PublicLockV1.at(evt.returnValues.newLockAddress)
 
         // Buy Key
-        await lockV1.methods
-          .purchaseFor(keyOwner)
-          .send({
-            value: keyPrice,
-            from: keyOwner,
-            gas: 4000000
-          })
+        await lockV1.methods.purchaseFor(keyOwner).send({
+          value: keyPrice,
+          from: keyOwner,
+          gas: 4000000,
+        })
       })
 
       it('grossNetworkProduct sums previous version purchases with new version purchases', async () => {

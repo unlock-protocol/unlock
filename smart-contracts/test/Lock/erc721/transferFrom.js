@@ -30,20 +30,20 @@ contract('Lock / erc721 / transferFrom', accounts => {
     return Promise.all([
       locks['FIRST'].purchaseFor(accountWithKey, {
         value: Units.convert('0.01', 'eth', 'wei'),
-        from: accountWithKey
+        from: accountWithKey,
       }),
       locks['FIRST'].purchaseFor(from, {
         value: Units.convert('0.01', 'eth', 'wei'),
-        from
+        from,
       }),
       locks['FIRST'].purchaseFor(accountWithExpiredKey, {
         value: Units.convert('0.01', 'eth', 'wei'),
-        from: accountWithExpiredKey
+        from: accountWithExpiredKey,
       }),
       locks['FIRST'].purchaseFor(accountWithKeyApproved, {
         value: Units.convert('0.01', 'eth', 'wei'),
-        from: accountWithKeyApproved
-      })
+        from: accountWithKeyApproved,
+      }),
     ]).then(async () => {
       keyExpiration = new BigNumber(
         await locks['FIRST'].keyExpirationTimestampFor.call(from)
@@ -71,7 +71,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
           Web3Utils.padLeft(0, 40),
           await locks['FIRST'].getTokenIdFor.call(from),
           {
-            from
+            from,
           }
         ),
         'INVALID_ADDRESS'
@@ -89,7 +89,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
         let fromExpirationTimestamp, ID
         await locks['FIRST'].purchaseFor(from, {
           value: Units.convert('0.01', 'eth', 'wei'),
-          from
+          from,
         })
         // Get the tokenID
         ID = await locks['FIRST'].getTokenIdFor.call(from)
@@ -100,7 +100,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
         // Then let's expire the key for accountWithExpiredKey
         await locks['FIRST'].expireKeyFor(accountWithExpiredKey)
         await locks['FIRST'].transferFrom(from, accountWithExpiredKey, ID, {
-          from
+          from,
         })
         const expirationTimestamp = new BigNumber(
           await locks['FIRST'].keyExpirationTimestampFor.call(
@@ -121,7 +121,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
       before(async () => {
         await locks['FIRST'].purchaseFor(from, {
           value: Units.convert('0.01', 'eth', 'wei'),
-          from
+          from,
         })
         ID = await locks['FIRST'].getTokenIdFor.call(from)
         // First let's get the current expiration
@@ -132,7 +132,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
           await locks['FIRST'].keyExpirationTimestampFor.call(accounts[1])
         )
         await locks['FIRST'].transferFrom(from, accountWithKey, ID, {
-          from
+          from,
         })
       })
 
@@ -175,7 +175,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
         )
         await shouldFail(
           locks['FIRST'].transferFrom(from, accountNotApproved, ID, {
-            from: accountNotApproved
+            from: accountNotApproved,
           }),
           'KEY_NOT_VALID'
         )
@@ -192,14 +192,14 @@ contract('Lock / erc721 / transferFrom', accounts => {
       it('should succeed if the sender has been approved for that key', async () => {
         ID = await locks['FIRST'].getTokenIdFor.call(accountWithKeyApproved)
         await locks['FIRST'].approve(accountApproved, ID, {
-          from: accountWithKeyApproved
+          from: accountWithKeyApproved,
         })
         await locks['FIRST'].transferFrom(
           accountWithKeyApproved,
           accountApproved,
           ID,
           {
-            from: accountApproved
+            from: accountApproved,
           }
         )
         let balance = await locks['FIRST'].balanceOf.call(accountApproved)
@@ -219,14 +219,14 @@ contract('Lock / erc721 / transferFrom', accounts => {
         // first, let's purchase a brand new key that we can transfer
         await locks['FIRST'].purchaseFor(from, {
           value: Units.convert('0.01', 'eth', 'wei'),
-          from
+          from,
         })
         ID = await locks['FIRST'].getTokenIdFor.call(from)
         keyExpiration = new BigNumber(
           await locks['FIRST'].keyExpirationTimestampFor.call(from)
         )
         await locks['FIRST'].transferFrom(from, to, ID, {
-          from
+          from,
         })
       })
 
@@ -251,13 +251,13 @@ contract('Lock / erc721 / transferFrom', accounts => {
         // first we create a lock with only 1 key
         await locks['SINGLE KEY'].purchaseFor(from, {
           value: Units.convert('0.01', 'eth', 'wei'),
-          from
+          from,
         })
         // confirm that the lock is sold out
         await shouldFail(
           locks['SINGLE KEY'].purchaseFor(accounts[8], {
             value: Units.convert('0.01', 'eth', 'wei'),
-            from: accounts[8]
+            from: accounts[8],
           }),
           'LOCK_SOLD_OUT'
         )
@@ -267,7 +267,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
         ID = await locks['SINGLE KEY'].getTokenIdFor.call(from)
         let ownerOfBefore = await locks['SINGLE KEY'].ownerOf.call(ID)
         await locks['SINGLE KEY'].transferFrom(ownerOfBefore, accounts[9], ID, {
-          from: ownerOfBefore
+          from: ownerOfBefore,
         })
         let ownerOfAfter = await locks['SINGLE KEY'].ownerOf.call(ID)
         assert.equal(ownerOfAfter, accounts[9])

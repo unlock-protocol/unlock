@@ -8,10 +8,10 @@ describe('confirmEmail', () => {
   it('should have the right text', () => {
     expect(
       confirmEmail.text({
-        confirmLink: 'https://unlock-protocol.com/confirm...'
+        confirmLink: 'https://unlock-protocol.com/confirm...',
       })
     ).toBe(
-    `Welcome to Unlock!
+      `Welcome to Unlock!
 
 To get started, please confirm your email address by clicking on the following link:
 

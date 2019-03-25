@@ -16,11 +16,26 @@ class UnlockEnvironment extends PuppeteerEnvironment {
   async setup() {
     await super.setup()
     console.log('Waiting for Unlock')
-    await serverIsUp(unlockHost, unlockPort, 1000 /* every s */, 120 /* up to 2m */)
+    await serverIsUp(
+      unlockHost,
+      unlockPort,
+      1000 /* every s */,
+      120 /* up to 2m */
+    )
     console.log('Waiting for Locksmith')
-    await serverIsUp(locksmithHost, locksmithPort, 1000 /* every s */, 120 /* up to 2m */)
+    await serverIsUp(
+      locksmithHost,
+      locksmithPort,
+      1000 /* every s */,
+      120 /* up to 2m */
+    )
     console.log('Waiting for Paywall')
-    await serverIsUp(paywallHost, paywallPort, 1000 /* every s */, 120 /* up to 2m */)
+    await serverIsUp(
+      paywallHost,
+      paywallPort,
+      1000 /* every s */,
+      120 /* up to 2m */
+    )
   }
 
   async teardown() {

@@ -1,9 +1,11 @@
 export default {
   subject: () => 'Your account has been disconnected',
   text: params =>
-  `Hi there!
+    `Hi there!
 
-Because your account has continued to carry a total balance of ${params.balance} ETH on your locks at Unlock, we have
+Because your account has continued to carry a total balance of ${
+      params.balance
+    } ETH on your locks at Unlock, we have
 disconnected it from our service. This is for your safety, because Unlock isn't designed to store large amounts of 
 funds for a long time.
 
@@ -13,5 +15,5 @@ from the Unlock service.
 If you have any questions, you can always email us at hello@unlock-protocol.com.
 
 - The Unlock team
-`
+`,
 }

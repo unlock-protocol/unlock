@@ -18,7 +18,7 @@ contract('Lock / purchaseFor', accounts => {
     it('should fail if the price is not enough', async () => {
       await shouldFail(
         locks['FIRST'].purchaseFor(accounts[0], {
-          value: Units.convert('0.0001', 'eth', 'wei')
+          value: Units.convert('0.0001', 'eth', 'wei'),
         }),
         'NOT_ENOUGH_FUNDS'
       )
@@ -31,12 +31,12 @@ contract('Lock / purchaseFor', accounts => {
 
     it('should fail if we reached the max number of keys', async () => {
       await locks['SINGLE KEY'].purchaseFor(accounts[0], {
-        value: Units.convert('0.01', 'eth', 'wei')
+        value: Units.convert('0.01', 'eth', 'wei'),
       })
       await shouldFail(
         locks['SINGLE KEY'].purchaseFor(accounts[1], {
           value: Units.convert('0.01', 'eth', 'wei'),
-          from: accounts[1]
+          from: accounts[1],
         }),
         'LOCK_SOLD_OUT'
       )
@@ -44,7 +44,7 @@ contract('Lock / purchaseFor', accounts => {
 
     it('should trigger an event when successful', async () => {
       const tx = await locks['FIRST'].purchaseFor(accounts[2], {
-        value: Units.convert('0.01', 'eth', 'wei')
+        value: Units.convert('0.01', 'eth', 'wei'),
       })
       assert.equal(tx.logs[0].event, 'Transfer')
       assert.equal(tx.logs[0].args._from, 0)
@@ -54,13 +54,13 @@ contract('Lock / purchaseFor', accounts => {
     describe('when the user already owns an expired key', () => {
       it('should expand the validity by the default key duration', async () => {
         await locks['SECOND'].purchaseFor(accounts[4], {
-          value: Units.convert('0.01', 'eth', 'wei')
+          value: Units.convert('0.01', 'eth', 'wei'),
         })
         // let's now expire the key
         await locks['SECOND'].expireKeyFor(accounts[4])
         // Purchase a new one
         await locks['SECOND'].purchaseFor(accounts[4], {
-          value: Units.convert('0.01', 'eth', 'wei')
+          value: Units.convert('0.01', 'eth', 'wei'),
         })
         // And check the expiration which shiuld be exactly now + keyDuration
         const expirationTimestamp = new BigNumber(
@@ -84,14 +84,14 @@ contract('Lock / purchaseFor', accounts => {
     describe('when the user already owns a non expired key', () => {
       it('should expand the validity by the default key duration', async () => {
         await locks['FIRST'].purchaseFor(accounts[1], {
-          value: Units.convert('0.01', 'eth', 'wei')
+          value: Units.convert('0.01', 'eth', 'wei'),
         })
         const firstExpiration = new BigNumber(
           await locks['FIRST'].keyExpirationTimestampFor.call(accounts[1])
         )
         assert(firstExpiration.gt(0))
         await locks['FIRST'].purchaseFor(accounts[1], {
-          value: Units.convert('0.01', 'eth', 'wei')
+          value: Units.convert('0.01', 'eth', 'wei'),
         })
         const expirationTimestamp = new BigNumber(
           await locks['FIRST'].keyExpirationTimestampFor.call(accounts[1])
@@ -112,15 +112,13 @@ contract('Lock / purchaseFor', accounts => {
         balance = new BigNumber(
           await web3.eth.getBalance(locks['FIRST'].address)
         )
-        totalSupply = new BigNumber(
-          await locks['FIRST'].totalSupply.call()
-        )
+        totalSupply = new BigNumber(await locks['FIRST'].totalSupply.call())
         now = parseInt(new Date().getTime() / 1000)
         numberOfOwners = new BigNumber(
           await locks['FIRST'].numberOfOwners.call()
         )
         return locks['FIRST'].purchaseFor(accounts[0], {
-          value: Units.convert('0.01', 'eth', 'wei')
+          value: Units.convert('0.01', 'eth', 'wei'),
         })
       })
 
@@ -148,10 +146,7 @@ contract('Lock / purchaseFor', accounts => {
         const _totalSupply = new BigNumber(
           await locks['FIRST'].totalSupply.call()
         )
-        assert.equal(
-          _totalSupply.toFixed(),
-          totalSupply.plus(1).toFixed()
-        )
+        assert.equal(_totalSupply.toFixed(), totalSupply.plus(1).toFixed())
       })
 
       it('should have increased the number of owners', async () => {

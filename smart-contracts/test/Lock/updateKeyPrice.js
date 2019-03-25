@@ -42,7 +42,7 @@ contract('Lock / updateKeyPrice', accounts => {
       keyPrice = new BigNumber(await locks['FIRST'].keyPrice.call())
       await shouldFail(
         locks['FIRST'].updateKeyPrice(Units.convert('0.3', 'eth', 'wei'), {
-          from: accounts[3]
+          from: accounts[3],
         }),
         ''
       )

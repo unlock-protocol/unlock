@@ -10,11 +10,16 @@ describe.skip('The Unlock Paywall', () => {
   }
 
   beforeAll(async () => {
-    await Promise.all([page.goto(url(`/demo/${testLockAddress}`)), page.waitForNavigation()])
+    await Promise.all([
+      page.goto(url(`/demo/${testLockAddress}`)),
+      page.waitForNavigation(),
+    ])
   }, 10000)
 
   it('should remove the blocker', async () => {
-    await page.waitForFunction(() => !document.querySelector('#_unlock_blocker'))
+    await page.waitForFunction(
+      () => !document.querySelector('#_unlock_blocker')
+    )
   })
 
   it('should display the lock after the blocker is gone', async () => {
@@ -22,7 +27,7 @@ describe.skip('The Unlock Paywall', () => {
     const paywallIframe = page.mainFrame().childFrames()[0]
     await paywallIframe.waitForSelector(lockSelector('Lock'))
     await paywallIframe.waitForFunction(
-      (ethPriceSelector) => {
+      ethPriceSelector => {
         const eth = document.querySelector(ethPriceSelector)
         if (!eth) return false
         return eth.innerText === '0.33 ETH'
@@ -41,7 +46,8 @@ describe.skip('The Unlock Paywall', () => {
     const paywallIframe = page.mainFrame().childFrames()[0]
     await paywallIframe.waitForSelector('#Paywall_Headline')
     const headlineLocation = await paywallIframe.evaluate(
-      () => document.querySelector('#Paywall_Headline').getBoundingClientRect().top
+      () =>
+        document.querySelector('#Paywall_Headline').getBoundingClientRect().top
     )
     // paywall has grown to hide the content.
     // actual value of the headline is 45.390625
@@ -55,7 +61,7 @@ describe.skip('The Unlock Paywall', () => {
     const paywallBody = await paywallIframe.$('body')
     await expect(paywallBody).toClick(lockSelector('PurchaseKey'))
     await paywallIframe.waitForFunction(
-      (footerSelector) => {
+      footerSelector => {
         const footer = document.querySelector(footerSelector)
         if (!footer) return false
         return footer.innerText === 'Payment Pending'

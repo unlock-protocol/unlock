@@ -32,7 +32,7 @@ contract('Lock / erc721 / balanceOf', accounts => {
   it('should return 1 if the user has a non expired key', async () => {
     await locks['FIRST'].purchaseFor(accounts[1], {
       value: Units.convert('0.01', 'eth', 'wei'),
-      from: accounts[1]
+      from: accounts[1],
     })
     const balance = new BigNumber(
       await locks['FIRST'].balanceOf.call(accounts[1])
@@ -43,10 +43,10 @@ contract('Lock / erc721 / balanceOf', accounts => {
   it('should return 1 if the user has an expired key', async () => {
     await locks['FIRST'].purchaseFor(accounts[5], {
       value: Units.convert('0.01', 'eth', 'wei'),
-      from: accounts[5]
+      from: accounts[5],
     })
     await locks['FIRST'].expireKeyFor(accounts[5], {
-      from: accounts[0]
+      from: accounts[0],
     })
     const balance = new BigNumber(
       await locks['FIRST'].balanceOf.call(accounts[5])

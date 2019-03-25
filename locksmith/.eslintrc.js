@@ -5,6 +5,7 @@ module.exports = {
     'eslint:recommended',
     'prettier',
     'prettier/standard',
+    'plugin:prettier/recommended',
   ],
   env: {
     es6: true,
@@ -27,6 +28,7 @@ module.exports = {
     },
   },
   rules: {
+    'prettier/prettier': 'error',
     'linebreak-style': ['error', 'unix'],
     quotes: [
       'error',

@@ -14,7 +14,9 @@ describe('The Unlock Dashboard', () => {
   it('should list the address of the current user', async () => {
     await page.waitForSelector('#UserAddress')
     const userAddress = await page.$eval('#UserAddress', e => e.innerText)
-    await expect(userAddress).toMatch('0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2')
+    await expect(userAddress).toMatch(
+      '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+    )
   })
 
   it('should have a button allowing the creation of a Lock', async () => {
@@ -60,8 +62,13 @@ describe('The Unlock Dashboard', () => {
       it('allows the lock owner to update the price of the lock', async () => {
         await expect(page).toMatchElement(`#EditLockButton_${testLockAddress}`)
         await expect(page).toClick(`#EditLockButton_${testLockAddress}`)
-        await expect(page).toMatchElement(`#KeyPriceEditField_${testLockAddress}`)
-        await expect(page).toFill(`input[id="KeyPriceEditField_${testLockAddress}"]`, '0.33')
+        await expect(page).toMatchElement(
+          `#KeyPriceEditField_${testLockAddress}`
+        )
+        await expect(page).toFill(
+          `input[id="KeyPriceEditField_${testLockAddress}"]`,
+          '0.33'
+        )
         await expect(page).toClick('button', { text: 'Submit' })
         await page.waitFor(1000)
         await expect(page).toMatch('0.33')
