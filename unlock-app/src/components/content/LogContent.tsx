@@ -9,17 +9,19 @@ import CreatorLog from '../creator/CreatorLog'
 import { pageTitle } from '../../constants'
 import {
   CreateLockButton,
-  AccountWrapper
+  AccountWrapper,
 } from '../interface/buttons/ActionButton'
 import Link from 'next/link'
 import withConfig from '../../utils/withConfig'
 import * as UnlockTypes from '../../unlock'
+import { showForm } from '../../actions/lockFormVisibility'
 
 interface Props {
   account: UnlockTypes.Account
   network: UnlockTypes.Network
   transactionFeed: UnlockTypes.Transaction[]
   explorerLinks: { [key: string]: string }
+  showForm?: () => { type: string }
 }
 
 export const LogContent = ({
@@ -27,6 +29,7 @@ export const LogContent = ({
   network,
   transactionFeed,
   explorerLinks,
+  showForm,
 }: Props) => {
   return (
     <GlobalErrorConsumer>
@@ -39,7 +42,7 @@ export const LogContent = ({
             <AccountWrapper>
               <Account network={network} account={account} />
               <Link href="/dashboard">
-                <CreateLockButton>
+                <CreateLockButton onClick={showForm}>
                   Create Lock
                 </CreateLockButton>
               </Link>
@@ -87,4 +90,9 @@ export const mapStateToProps = (
   }
 }
 
-export default withConfig(connect(mapStateToProps)(LogContent))
+export default withConfig(
+  connect(
+    mapStateToProps,
+    { showForm }
+  )(LogContent)
+)
