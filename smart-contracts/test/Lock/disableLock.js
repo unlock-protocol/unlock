@@ -114,7 +114,7 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('Lock owner can still updateRefundPenaltyDenominator', async () => {
-      await lock.updateRefundPenaltyDenominator(5)
+      await lock.updateRefundPenalty(5, 100)
     })
 
     it('should fail to setApprovalForAll', async () => {
