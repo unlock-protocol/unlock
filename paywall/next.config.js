@@ -11,7 +11,7 @@ module.exports = withSourceMaps({
     httpProvider: process.env.HTTP_PROVIDER || '127.0.0.1',
     readOnlyProvider: process.env.READ_ONLY_PROVIDER,
     paywallUrl: process.env.PAYWALL_URL,
-    paywallScriptUrl: process.env.PAYWALL_SCRIPT_PATH,
+    paywallScriptPath: process.env.PAYWALL_SCRIPT_PATH,
     locksmithHost: process.env.LOCKSMITH_URI || 'http://127.0.0.1:8080',
     unlockAddress:
       process.env.UNLOCK_ADDRESS ||
