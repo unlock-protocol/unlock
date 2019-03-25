@@ -30,6 +30,7 @@ import {
   SIGNED_DATA,
   SIGNATURE_ERROR,
 } from '../../actions/signature'
+import { HIDE_FORM } from '../../actions/lockFormVisibility'
 
 let mockConfig
 
@@ -156,6 +157,7 @@ describe('Wallet middleware', () => {
       POLLING_INTERVAL
     )
   })
+
   it('on the server, it should not handle account.changed events triggered by the walletService', () => {
     expect.assertions(2)
     setTimeout.mockClear()
@@ -221,7 +223,7 @@ describe('Wallet middleware', () => {
   })
 
   it('it should handle lock.updated events triggered by the walletService', () => {
-    expect.assertions(1)
+    expect.assertions(2)
     const { store } = create()
     const update = {
       transaction: '0x123',
@@ -232,6 +234,11 @@ describe('Wallet middleware', () => {
         type: UPDATE_LOCK,
         address: lock.address,
         update,
+      })
+    )
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: HIDE_FORM,
       })
     )
   })
