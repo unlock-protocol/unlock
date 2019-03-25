@@ -139,7 +139,8 @@ export default function configure(
     unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
 
     // Paywall URL for staging
-    paywallUrl = 'https://staging-paywall.unlock-protocol.com'
+    paywallUrl =
+      runtimeConfig.paywallUrl || 'https://staging-paywall.unlock-protocol.com'
 
     // rinkeby block time is roughly same as main net
     blockTime = 8000
@@ -162,7 +163,8 @@ export default function configure(
     unlockAddress = '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
 
     // Paywall URL for production
-    paywallUrl = 'https://paywall.unlock-protocol.com'
+    paywallUrl =
+      runtimeConfig.paywallUrl || 'https://paywall.unlock-protocol.com'
 
     // See https://www.reddit.com/r/ethereum/comments/3c8v2i/what_is_the_expected_block_time/
     blockTime = 8000
