@@ -31,6 +31,13 @@
   "devDependencies": {
     "remixd": "^0.1.8-alpha.6"
   },
+  "lint-staged": {
+    "linters": {
+      "*.{js,ts,tsx}": [
+        "eslint"
+      ]
+    }
+  },
   "scripts": {
     "remix": "remixd -s contracts --remix-ide https://remix.ethereum.org",
     "test": "cross-env NODE_ENV=test truffle test --network development",

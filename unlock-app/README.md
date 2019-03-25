@@ -1,7 +1,7 @@
 ## Default accounts for testing (set up thru ganache-cli)
 
-Available Accounts
-==================
+# Available Accounts
+
 (0) 0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2
 
 (1) 0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8
@@ -22,8 +22,8 @@ Available Accounts
 
 (9) 0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a
 
-Private Keys
-==================
+# Private Keys
+
 (0) 0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229
 
 (1) 0xe5986c22698a3c1eb5f84455895ad6826fbdff7b82dbeee240bad0024469d93a
@@ -44,8 +44,7 @@ Private Keys
 
 (9) 0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61
 
-
-------
+---
 
 This project uses [Next.js](https://github.com/zeit/next.js).
 
@@ -54,16 +53,3 @@ This project uses [Next.js](https://github.com/zeit/next.js).
 ```
 npm run dev
 ```
-
-### Setting up prettier-eslint
-
-You can either run prettier-eslint prior to commit:
-
-```
-npm run reformat
-```
-
-or set it up to run automatically on file changes.
-
-Instructions for most IDEs: https://prettier.io/docs/en/editors.html
-Instructions for Webstorm: https://prettier.io/docs/en/webstorm.html

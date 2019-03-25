@@ -14,7 +14,14 @@
     "testEnvironment": "./helpers/environment.js",
     "setupTestFrameworkScriptFile": "expect-puppeteer"
   },
-  "author": "",
+  "author": "Unlock Inc",
+  "lint-staged": {
+    "linters": {
+      "*.{js,ts,tsx}": [
+        "eslint"
+      ]
+    }
+  },
   "license": "MIT",
   "dependencies": {
     "eslint": "^5.8.0",
