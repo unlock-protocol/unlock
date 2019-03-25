@@ -15,10 +15,24 @@ import {
   CreateLockButton,
   AccountWrapper,
 } from '../interface/buttons/ActionButton'
+import { showForm, hideForm } from '../../actions/lockFormVisibility'
 
 // TODO : move lockFeed extraction in CreatorLocks since it's just being passed down there
-export const DashboardContent = ({ account, network, lockFeed }) => {
-  const [showForm, setShowForm] = useState(false)
+export const DashboardContent = ({
+  account,
+  network,
+  lockFeed,
+  lockFormStatus,
+  showForm,
+  hideForm,
+}) => {
+  const handleClick = () => {
+    if (lockFormStatus.visible) {
+      hideForm()
+    } else {
+      showForm()
+    }
+  }
   return (
     <GlobalErrorConsumer>
       <Layout title="Creator Dashboard">
@@ -29,15 +43,11 @@ export const DashboardContent = ({ account, network, lockFeed }) => {
           <BrowserOnly>
             <AccountWrapper>
               <Account network={network} account={account} />
-              <CreateLockButton onClick={() => setShowForm(!showForm)}>
+              <CreateLockButton onClick={handleClick}>
                 Create Lock
               </CreateLockButton>
             </AccountWrapper>
-            <CreatorLocks
-              setShowForm={setShowForm}
-              showForm={showForm}
-              lockFeed={lockFeed}
-            />
+            <CreatorLocks lockFeed={lockFeed} />
             <DeveloperOverlay />
           </BrowserOnly>
         )}
@@ -57,28 +67,43 @@ DashboardContent.defaultProps = {
   account: null,
 }
 
-export const mapStateToProps = state => {
+const actionCreators = {
+  showForm,
+  hideForm,
+}
+
+export const mapStateToProps = ({
+  transactions,
+  account,
+  network,
+  locks,
+  lockFormStatus,
+}) => {
   // We want to display newer locks first, so sort the locks by blockNumber in descending order
   const locksComparator = (a, b) => {
     // Newly created locks may not have a transaction associated just yet
     // -- those always go right to the top
-    if (!state.transactions[a.transaction]) {
+    if (!transactions[a.transaction]) {
       return -1
     }
-    if (!state.transactions[b.transaction]) {
+    if (!transactions[b.transaction]) {
       return 1
     }
     return (
-      state.transactions[b.transaction].blockNumber -
-      state.transactions[a.transaction].blockNumber
+      transactions[b.transaction].blockNumber -
+      transactions[a.transaction].blockNumber
     )
   }
-  const lockFeed = Object.values(state.locks).sort(locksComparator)
+  const lockFeed = Object.values(locks).sort(locksComparator)
   return {
-    account: state.account,
-    network: state.network,
+    account,
+    network,
     lockFeed,
+    lockFormStatus,
   }
 }
 
-export default connect(mapStateToProps)(DashboardContent)
+export default connect(
+  mapStateToProps,
+  actionCreators
+)(DashboardContent)
