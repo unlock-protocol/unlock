@@ -51,13 +51,6 @@ export default Account
 
 const AccountWrapper = styled.section``
 
-const AccountHead = styled.header`
-  display: grid;
-  grid-template-columns: auto 1fr 1fr;
-  align-items: center;
-  grid-gap: 8px;
-`
-
 const NetworkInfo = styled.span`
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
