@@ -11,6 +11,7 @@ import BrowserOnly from '../helpers/BrowserOnly'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { pageTitle } from '../../constants'
 
+// TODO : move lockFeed extraction in CreatorLocks since it's just being passed down there
 export const DashboardContent = ({ account, network, lockFeed }) => {
   return (
     <GlobalErrorConsumer>

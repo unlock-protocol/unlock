@@ -11,6 +11,7 @@ import Errors from '../interface/Errors'
 import Media, { NoPhone, Phone } from '../../theme/media'
 import { createLock } from '../../actions/lock'
 import { DefaultError } from './FatalError'
+import Svg from '../interface/svg'
 
 export class CreatorLocks extends React.Component {
   constructor(props, context) {
@@ -29,7 +30,7 @@ export class CreatorLocks extends React.Component {
   }
 
   render() {
-    const { createLock, lockFeed } = this.props
+    const { createLock, lockFeed, loading } = this.props
     const { showDashboardForm } = this.state
 
     return (
@@ -60,15 +61,20 @@ export class CreatorLocks extends React.Component {
           lockFeed.map(lock => {
             return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
           })}
-        {lockFeed.length === 0 && !showDashboardForm && (
+        {lockFeed.length === 0 && !loading && !showDashboardForm && (
           <DefaultError
             title="Create a lock to get started"
             illustration="/static/images/illustrations/lock.svg"
             critical={false}
           >
-            If you have already created some locks, they should appear here
-            momentarily.
+            You have not created any locks yet. Create your first lock in
+            seconds by clicking on the &#8216;Create Lock&#8217; button.
           </DefaultError>
+        )}
+        {loading && (
+          <LoadingWrapper>
+            <Svg.Loading title="loading" />
+          </LoadingWrapper>
         )}
       </Locks>
     )
@@ -79,9 +85,11 @@ CreatorLocks.propTypes = {
   createLock: PropTypes.func.isRequired,
   showForm: UnlockPropTypes.showDashboardForm,
   lockFeed: PropTypes.arrayOf(UnlockPropTypes.lock),
+  loading: PropTypes.bool,
 }
 
 CreatorLocks.defaultProps = {
+  loading: false,
   showForm: false,
   lockFeed: [],
 }
@@ -90,10 +98,25 @@ const mapDispatchToProps = dispatch => ({
   createLock: lock => dispatch(createLock(lock)),
 })
 
+export const mapStateToProps = ({ loading }) => {
+  return {
+    loading: !!loading,
+  }
+}
+
 export default connect(
-  undefined, // no mapStateToProps for CreatorLocks, we only use mapDispatchToProps
+  mapStateToProps,
   mapDispatchToProps
 )(CreatorLocks)
+
+const LoadingWrapper = styled.section`
+  display: grid;
+  justify-items: center;
+  svg {
+    fill: var(--lightgrey);
+    width: 60px;
+  }
+`
 
 const Locks = styled.section`
   display: grid;
