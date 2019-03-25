@@ -17,7 +17,7 @@ contract('Lock / erc721 / approve', accounts => {
     it('should fail', async () => {
       await shouldFail(
         locks['FIRST'].approve(accounts[2], 42, {
-          from: accounts[1]
+          from: accounts[1],
         }),
         'NO_SUCH_KEY'
       )
@@ -28,7 +28,7 @@ contract('Lock / erc721 / approve', accounts => {
     before(() => {
       return locks['FIRST'].purchaseFor(accounts[1], {
         value: Units.convert('0.01', 'eth', 'wei'),
-        from: accounts[1]
+        from: accounts[1],
       })
     })
 
@@ -37,7 +37,7 @@ contract('Lock / erc721 / approve', accounts => {
         ID = await locks['FIRST'].getTokenIdFor.call(accounts[1])
         await shouldFail(
           locks['FIRST'].approve(accounts[2], ID, {
-            from: accounts[2]
+            from: accounts[2],
           }),
           'ONLY_KEY_OWNER_OR_APPROVED'
         )
@@ -48,7 +48,7 @@ contract('Lock / erc721 / approve', accounts => {
       it('should fail', async () => {
         await shouldFail(
           locks['FIRST'].approve(accounts[1], ID, {
-            from: accounts[1]
+            from: accounts[1],
           }),
           'APPROVE_SELF'
         )
@@ -59,7 +59,7 @@ contract('Lock / erc721 / approve', accounts => {
       let event
       before(async () => {
         let result = await locks['FIRST'].approve(accounts[2], ID, {
-          from: accounts[1]
+          from: accounts[1],
         })
         event = result.logs[0]
       })
@@ -80,7 +80,7 @@ contract('Lock / erc721 / approve', accounts => {
       describe('when reaffirming the approved address', () => {
         before(async () => {
           let result = await locks['FIRST'].approve(accounts[2], ID, {
-            from: accounts[1]
+            from: accounts[1],
           })
           event = result.logs[0]
         })
@@ -99,7 +99,7 @@ contract('Lock / erc721 / approve', accounts => {
             Web3Utils.padLeft(0, 40),
             ID,
             {
-              from: accounts[1]
+              from: accounts[1],
             }
           )
           event = result.logs[0]

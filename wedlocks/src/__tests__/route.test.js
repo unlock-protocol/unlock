@@ -23,12 +23,12 @@ describe('route', () => {
       expect.assertions(4)
       templates['template'] = {
         subject: jest.fn(() => 'subject'),
-        text: jest.fn(() => 'text')
+        text: jest.fn(() => 'text'),
       }
       const args = {
         template: 'template',
         params: { hello: 'world' },
-        recipient: 'julien@unlock-protocol.com'
+        recipient: 'julien@unlock-protocol.com',
       }
       const transporter = {
         sendMail: jest.fn((options, callback) => {
@@ -37,10 +37,10 @@ describe('route', () => {
             html: null,
             subject: 'subject',
             text: 'text',
-            to: args.recipient
+            to: args.recipient,
           })
           return callback()
-        })
+        }),
       }
       nodemailer.createTransport = jest.fn(params => {
         expect(params).toEqual(config)
@@ -59,19 +59,19 @@ describe('route', () => {
         expect.assertions(3)
         templates['template'] = {
           subject: jest.fn(() => 'subject'),
-          text: jest.fn(() => 'text')
+          text: jest.fn(() => 'text'),
         }
         const args = {
           template: 'template',
           params: { hello: 'world' },
-          recipient: 'julien@unlock-protocol.com'
+          recipient: 'julien@unlock-protocol.com',
         }
         const transporter = {
           sendMail: jest.fn((options, callback) => {
             return callback(null, {
-              messageId: 'abc123'
+              messageId: 'abc123',
             })
-          })
+          }),
         }
         nodemailer.createTransport = jest.fn(params => {
           expect(params).toEqual(config)
@@ -81,7 +81,7 @@ describe('route', () => {
         route(args, (error, result) => {
           expect(error).toBe(null)
           expect(result).toEqual({
-            messageId: 'abc123'
+            messageId: 'abc123',
           })
           done()
         })
@@ -93,17 +93,17 @@ describe('route', () => {
         expect.assertions(3)
         templates['template'] = {
           subject: jest.fn(() => 'subject'),
-          text: jest.fn(() => 'text')
+          text: jest.fn(() => 'text'),
         }
         const args = {
           template: 'template',
           params: { hello: 'world' },
-          recipient: 'julien@unlock-protocol.com'
+          recipient: 'julien@unlock-protocol.com',
         }
         const transporter = {
           sendMail: jest.fn((options, callback) => {
             return callback(new Error('something went wrong'))
-          })
+          }),
         }
         nodemailer.createTransport = jest.fn(params => {
           expect(params).toEqual(config)

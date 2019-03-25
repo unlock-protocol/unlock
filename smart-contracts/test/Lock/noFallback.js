@@ -25,7 +25,7 @@ contract('Lock / noFallback', accounts => {
   it('can call a function by name', async () => {
     await web3.eth.call({
       to: lock.address,
-      data: abi.encodeFunctionSignature('numberOfOwners()')
+      data: abi.encodeFunctionSignature('numberOfOwners()'),
     })
   })
 
@@ -33,7 +33,7 @@ contract('Lock / noFallback', accounts => {
     await shouldFail(
       web3.eth.call({
         to: lock.address,
-        data: abi.encodeFunctionSignature('dne()')
+        data: abi.encodeFunctionSignature('dne()'),
       }),
       'NO_FALLBACK'
     )

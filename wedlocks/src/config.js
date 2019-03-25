@@ -4,8 +4,8 @@ export default {
   secure: false,
   auth: {
     user: process.env.SMTP_USERNAME,
-    pass: process.env.SMTP_PASSWORD
+    pass: process.env.SMTP_PASSWORD,
   },
   sender:
-    process.env.SMTP_FROM_ADDRESS || 'Unlock <no-reply@unlock-protocol.com>' // TODO: can we do better eventually?
+    process.env.SMTP_FROM_ADDRESS || 'Unlock <no-reply@unlock-protocol.com>', // TODO: can we do better eventually?
 }

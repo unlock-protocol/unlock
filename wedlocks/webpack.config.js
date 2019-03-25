@@ -17,7 +17,7 @@ requiredVariables.forEach(envVar => {
 const config = {
   mode: 'production',
   entry: {
-    handler: path.resolve(SRC_DIR, 'handler.js')
+    handler: path.resolve(SRC_DIR, 'handler.js'),
   },
   // aws-sdk is already available in the Node.js Lambda environment
   // so it should not be included in function bundles
@@ -25,7 +25,7 @@ const config = {
   output: {
     path: OUT_DIR,
     filename: '[name].js',
-    libraryTarget: 'umd'
+    libraryTarget: 'umd',
   },
   target: 'node',
   module: {
@@ -36,11 +36,11 @@ const config = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env']
-          }
-        }
-      }
-    ]
+            presets: ['@babel/preset-env'],
+          },
+        },
+      },
+    ],
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -50,9 +50,9 @@ const config = {
       'process.env.SMTP_PASSWORD': JSON.stringify(process.env.SMTP_PASSWORD),
       'process.env.SMTP_FROM_ADDRESS': JSON.stringify(
         process.env.SMTP_FROM_ADDRESS
-      )
-    })
-  ]
+      ),
+    }),
+  ],
 }
 
 module.exports = config
