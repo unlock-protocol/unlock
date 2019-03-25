@@ -64,6 +64,8 @@ contract MixinRefunds is
     external
     onlyOwner
   {
+    require(_refundPenaltyDenominator != 0, 'INVALID_RATE');
+
     emit RefundPenaltyChanged(
       refundPenaltyNumerator,
       refundPenaltyDenominator,
@@ -112,14 +114,12 @@ contract MixinRefunds is
       // Math: using safeMul in case keyPrice or timeRemaining is very large
       refund = keyPrice.mul(timeRemaining) / expirationDuration;
     }
-    if (refundPenaltyDenominator > 0) {
-      uint penalty = keyPrice.mul(refundPenaltyNumerator) / refundPenaltyDenominator;
-      if (refund > penalty) {
-        // Math: safeSub is not required since the if confirms this won't underflow
-        refund -= penalty;
-      } else {
-        refund = 0;
-      }
+    uint penalty = keyPrice.mul(refundPenaltyNumerator) / refundPenaltyDenominator;
+    if (refund > penalty) {
+      // Math: safeSub is not required since the if confirms this won't underflow
+      refund -= penalty;
+    } else {
+      refund = 0;
     }
   }
 }

@@ -195,5 +195,9 @@ contract('Lock / cancelAndRefund', accounts => {
         'KEY_NOT_VALID'
       )
     })
+
+    it('attempt to set the denominator to 0', async () => {
+      await shouldFail(lock.updateRefundPenalty(1, 0), 'INVALID_RATE')
+    })
   })
 })
