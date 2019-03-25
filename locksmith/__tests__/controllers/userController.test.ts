@@ -101,7 +101,7 @@ describe('User Controller', () => {
     })
 
     describe('when the provided email does not exist within the existing persistence layer', () => {
-      it('returns an error code', async () => {
+      it('returns details from the decoy user', async () => {
         let emailAddress = 'non-existing@example.com'
         let response = await request(app).get(
           `/users/${emailAddress}/privatekey`
@@ -127,7 +127,7 @@ describe('User Controller', () => {
     })
 
     describe('when the user does not exist', () => {
-      it('returns an error code', async () => {
+      it('returns details from the decoy user', async () => {
         let response = await request(app).get(
           `/users/non-existing@example.com/recoveryphrase`
         )
