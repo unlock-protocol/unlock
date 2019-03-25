@@ -15,6 +15,7 @@
     "ci": "npm run lint && npm test",
     "build": "tsc",
     "tsc": "tsc",
+    "predist": "npm run build",
     "dist": "sh ./scripts/dist.sh"
   },
   "lint-staged": {
