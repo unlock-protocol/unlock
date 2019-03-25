@@ -15,7 +15,7 @@ const transactionFeed: UnlockTypes.Transaction[] = [
   },
 ]
 
-const explorerLinks: { [key: string]: string} = {
+const explorerLinks: { [key: string]: string } = {
   '0x123': 'http://www.this_is_my_href.com/',
 }
 
@@ -27,10 +27,11 @@ describe('CreatorLog', () => {
     wrapper = rtl.render(
       <CreatorLog
         transactionFeed={transactionFeed}
-        explorerLinks={explorerLinks} />
+        explorerLinks={explorerLinks}
+      />
     )
   })
-  
+
   it('should show the blockNumber of the transaction', () => {
     expect.assertions(1)
     expect(wrapper.queryByText('1205')).not.toBeNull()
