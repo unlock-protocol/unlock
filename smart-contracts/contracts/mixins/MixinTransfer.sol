@@ -150,6 +150,7 @@ contract MixinTransfer is
     external
     onlyOwner
   {
+    require(_transferFeeDenominator != 0, 'INVALID_RATE');
     emit TransferFeeChanged(
       transferFeeNumerator,
       transferFeeDenominator,

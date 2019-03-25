@@ -18,7 +18,9 @@ contract('Lock / transferFee', accounts => {
 
   it('has a default fee of 5%', async () => {
     const feeNumerator = new BigNumber(await lock.transferFeeNumerator.call())
-    const feeDenominator = new BigNumber(await lock.transferFeeDenominator.call())
+    const feeDenominator = new BigNumber(
+      await lock.transferFeeDenominator.call()
+    )
     assert.equal(feeNumerator.div(feeDenominator).toFixed(), 0.05)
   })
 
@@ -32,7 +34,9 @@ contract('Lock / transferFee', accounts => {
 
     it('has an updated fee', async () => {
       const feeNumerator = new BigNumber(await lock.transferFeeNumerator.call())
-      const feeDenominator = new BigNumber(await lock.transferFeeDenominator.call())
+      const feeDenominator = new BigNumber(
+        await lock.transferFeeDenominator.call()
+      )
       assert.equal(feeNumerator.div(feeDenominator).toFixed(), 0.00025)
     })
 
@@ -48,6 +52,10 @@ contract('Lock / transferFee', accounts => {
   describe('should fail if', () => {
     it('called by an account which does not own the lock', async () => {
       await shouldFail(lock.updateTransferFee(1, 100, { from: accounts[1] }))
+    })
+
+    it('attempt to set the denominator to 0', async () => {
+      await shouldFail(lock.updateTransferFee(1, 0), 'INVALID_RATE')
     })
   })
 })
