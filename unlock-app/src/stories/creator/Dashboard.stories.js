@@ -145,9 +145,33 @@ storiesOf('DashboardContent', module)
           network={network}
           account={account}
           lockFeed={lockFeed}
-          hideForm={jest.fn()}
-          showForm={jest.fn()}
+          hideForm={() => {}}
+          showForm={() => {}}
           formIsVisible={false}
+        />
+      </Provider>
+    )
+  })
+  .add('the dashboard, creating a lock', () => {
+    // The overlay should not render here, because walletStatus:waiting is set
+    // to false in the state
+    const lockFeed = mapStateToProps({
+      locks,
+      transactions,
+      account,
+      network,
+      lockFormStatus,
+    }).lockFeed
+    return (
+      <Provider store={store}>
+        <WalletCheckOverlay />
+        <DashboardContent
+          network={network}
+          account={account}
+          lockFeed={lockFeed}
+          hideForm={() => {}}
+          showForm={() => {}}
+          formIsVisible
         />
       </Provider>
     )
@@ -167,8 +191,8 @@ storiesOf('DashboardContent', module)
           network={network}
           account={account}
           lockFeed={lockFeed}
-          hideForm={jest.fn()}
-          showForm={jest.fn()}
+          hideForm={() => {}}
+          showForm={() => {}}
           formIsVisible={false}
         />
       </Provider>
@@ -180,8 +204,8 @@ storiesOf('DashboardContent', module)
         <DashboardContent
           network={network}
           account={account}
-          hideForm={jest.fn()}
-          showForm={jest.fn()}
+          hideForm={() => {}}
+          showForm={() => {}}
           formIsVisible={false}
         />
       </Provider>
@@ -194,8 +218,8 @@ storiesOf('DashboardContent', module)
           network={network}
           account={account}
           lockFeed={[]}
-          hideForm={jest.fn()}
-          showForm={jest.fn()}
+          hideForm={() => {}}
+          showForm={() => {}}
           formIsVisible={false}
         />
       </Provider>

@@ -41549,6 +41549,3608 @@ Object {
 }
 `;
 
+exports[`Storyshots DashboardContent the dashboard, creating a lock 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c2 {
+  background-color: var(--brand);
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
+}
+
+.c2 > svg {
+  fill: white;
+}
+
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c7 > svg {
+  fill: white;
+}
+
+.c14 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c14 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c14:hover {
+  background-color: var(--link);
+}
+
+.c14:hover > svg {
+  fill: white;
+}
+
+.c14:focus {
+  outline: none;
+}
+
+.c16 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 48px;
+}
+
+.c16 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
+}
+
+.c16:hover {
+  background-color: var(--link);
+}
+
+.c16:hover > svg {
+  fill: white;
+}
+
+.c16:focus {
+  outline: none;
+}
+
+.c56 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c56 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c56:hover {
+  background-color: white;
+}
+
+.c56:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c56:focus {
+  outline: none;
+}
+
+.c12 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c12 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c12:hover {
+  background-color: var(--link);
+}
+
+.c12:hover > svg {
+  fill: white;
+}
+
+.c12:focus {
+  outline: none;
+}
+
+.c10 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c10 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c10:hover {
+  background-color: var(--link);
+}
+
+.c10:hover > svg {
+  fill: white;
+}
+
+.c10:focus {
+  outline: none;
+}
+
+.c11 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c9:hover .c11 {
+  display: inline-block;
+}
+
+.c4 {
+  display: grid;
+  grid-gap: 0;
+  grid-template-columns: 256px 1fr auto;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 70px;
+}
+
+.c5 {
+  color: var(--grey);
+}
+
+.c13 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+}
+
+.c8 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+  grid-template-columns: repeat(2,24px);
+}
+
+.c15 {
+  display: none;
+  height: auto;
+  grid-column: second;
+}
+
+.c15 .c9 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c15 .c9:nth-child(1) {
+  pointer-events: none;
+}
+
+.c15 .c9:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c15 .c9 > svg {
+  fill: var(--grey);
+}
+
+.c15 .c9:hover > svg {
+  fill: var(--grey);
+}
+
+.c17 {
+  background-color: var(--white);
+  width: 100%;
+  height: auto;
+  z-index: var(--foreground);
+  padding-bottom: 30px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  height: 0%;
+  pointer-events: none;
+  top: 50px;
+}
+
+.c17 .c9 {
+  margin: 24px;
+}
+
+.c17 .c9 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c6 {
+  padding-top: 2px;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+}
+
+.c1 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  height: 24px;
+}
+
+.c3 {
+  color: var(--darkgrey);
+  display: grid;
+  row-gap: 24px;
+  width: 100%;
+}
+
+.c51 {
+  -webkit-align-self: stretch;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  display: grid;
+  text-transform: capitalize;
+  background-color: var(--lightgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: 200;
+  color: var(--grey);
+  border-radius: 0 4px 4px 0;
+}
+
+.c52 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  font-size: 13px;
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+}
+
+.c53 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  font-size: 10px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  margin-bottom: 15px;
+}
+
+.c54 {
+  display: grid;
+  justify-items: end;
+  padding-right: 24px;
+}
+
+.c55 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(3,24px);
+}
+
+.c57 {
+  margin-top: 13px;
+  font-size: 10px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: normal;
+  color: var(--green);
+  text-align: right;
+  padding-right: 24px;
+}
+
+.c24 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c26 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c26:before {
+  content: '三';
+}
+
+.c50 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c50:before {
+  content: '$';
+}
+
+.c27 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c49 {
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
+}
+
+.c45 {
+  font-family: 'IBM Plex Mono','Courier New',Serif;
+  font-weight: 200;
+  min-height: 48px;
+  padding-left: 8px;
+  color: var(--slate);
+  font-size: 14px;
+  box-shadow: 0 0 40px 0 rgba(0,0,0,0.08);
+  -webkit-transition: box-shadow 100ms ease;
+  transition: box-shadow 100ms ease;
+  border-radius: 4px;
+  display: grid;
+  grid-row-gap: 0;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  cursor: pointer;
+}
+
+.c45 > * {
+  padding-top: 16px;
+}
+
+.c45:hover {
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  -webkit-transition: box-shadow 100ms ease;
+  transition: box-shadow 100ms ease;
+}
+
+.c46 {
+  grid-row: span 2;
+}
+
+.c47 {
+  color: var(--link);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c48 {
+  color: var(--grey);
+  font-weight: 200;
+  white-space: nowrap;
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c40 {
+  color: var(--link);
+  font-size: 11px;
+  width: 100%;
+  padding: 5px;
+}
+
+.c36 {
+  font-family: 'IBM Plex Mono','Courier New',Serif;
+  font-weight: 200;
+  min-height: 48px;
+  padding-left: 8px;
+  color: var(--slate);
+  font-size: 14px;
+  box-shadow: 0 0 40px 0 rgba(0,0,0,0.08);
+  -webkit-transition: box-shadow 100ms ease;
+  transition: box-shadow 100ms ease;
+  border-radius: 4px;
+  display: grid;
+  grid-row-gap: 0;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  cursor: pointer;
+  -webkit-animation: 400ms ease slideIn;
+  animation: 400ms ease slideIn;
+}
+
+.c36 > * {
+  padding-top: 16px;
+}
+
+.c36:hover {
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  -webkit-transition: box-shadow 100ms ease;
+  transition: box-shadow 100ms ease;
+}
+
+.c36 input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.c36 input::-webkit-outer-spin-button,
+.c36 input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.c36 input {
+  background: var(--lightgrey);
+  border: 1px solid var(--lightgrey);
+  border-radius: 4px;
+  height: 26px;
+  padding: 0 8px;
+  font-family: 'IBM Plex Mono',sans serif;
+  font-size: 14px;
+  font-weight: 200;
+}
+
+.c36 input:focus {
+  outline: none;
+  border: 1px solid var(--grey);
+  -webkit-transition: border 100ms ease;
+  transition: border 100ms ease;
+}
+
+.c36 input[data-valid='false'] {
+  border: 1px solid var(--red);
+}
+
+.c36 input:disabled {
+  color: var(--silver);
+}
+
+.c36 100% {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.c42 {
+  -webkit-align-self: stretch;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  display: grid;
+  text-transform: capitalize;
+  background-color: var(--lightgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: 200;
+  color: var(--grey);
+  border-radius: 0 4px 4px 0;
+  padding-bottom: 15px;
+}
+
+.c37 {
+  color: var(--link);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c37 input[type='text'],
+.c37 input[type='number'] {
+  min-width: 70px;
+  width: 80%;
+}
+
+.c38 input[type='text'],
+.c38 input[type='number'] {
+  min-width: 30px;
+  width: 50%;
+  text-align: right;
+}
+
+.c39 input[type='text'],
+.c39 input[type='number'] {
+  min-width: 30px;
+  width: 80%;
+  text-align: right;
+}
+
+.c41 {
+  white-space: nowrap;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.c41 input[type='text'],
+.c41 input[type='number'] {
+  min-width: 30px;
+  width: 77%;
+  padding-right: 0;
+}
+
+.c43 {
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+  background: none;
+  color: inherit;
+  border: none;
+  outline: inherit;
+  padding: 0;
+}
+
+.c43:hover {
+  color: #333;
+  -webkit-transition: color 100ms ease;
+  transition: color 100ms ease;
+}
+
+.c44 {
+  cursor: pointer;
+  font: inherit;
+  font-size: 10px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  background: none;
+  color: inherit;
+  border: none;
+  outline: inherit;
+  padding: 0;
+}
+
+.c44:hover {
+  color: #333;
+  -webkit-transition: color 100ms ease;
+  transition: color 100ms ease;
+}
+
+.c29 {
+  display: grid;
+  grid-gap: 32px;
+}
+
+.c30 {
+  font-family: 'IBM Plex Mono','Courier New',Serif;
+  font-weight: 200;
+  padding-left: 8px;
+  font-size: 14px;
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c31 {
+  font-family: 'IBM Plex Sans';
+  font-size: 13px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  -webkit-letter-spacing: normal;
+  -moz-letter-spacing: normal;
+  -ms-letter-spacing: normal;
+  letter-spacing: normal;
+  color: var(--grey);
+}
+
+.c32 {
+  font-family: 'IBM Plex Mono';
+  font-size: 8px;
+  font-weight: thin;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--darkgrey);
+}
+
+.c33 {
+  font-family: 'IBM Plex Mono';
+  font-size: 8px;
+  font-weight: thin;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--darkgrey);
+}
+
+.c19 {
+  font-family: 'IBM Plex Mono',monospace;
+  display: grid;
+  row-gap: 8px;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
+}
+
+.c20 {
+  display: grid;
+  height: 40px;
+  grid-row: span 2;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  font-size: 24px;
+  -webkit-align-content: start;
+  -ms-flex-line-pack: start;
+  align-content: start;
+}
+
+.c21 {
+  font-weight: 100;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  font-size: 8px;
+}
+
+.c22 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  width: 128px;
+  font-weight: 300;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.c23 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--darkgrey);
+}
+
+.c28 {
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--darkgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  padding: 10px;
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+  height: 48px;
+}
+
+.c28 :hover {
+  background-color: var(--activegreen);
+}
+
+.c18 {
+  display: grid;
+  grid-template-columns: 1fr 144px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c34 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c35 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c4 {
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c5 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c13 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c15 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c15 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c17 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c17 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c6 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c1 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c58 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c54 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c45 {
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c45 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c47 {
+    grid-column: span 2;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c36 {
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c36 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c37 {
+    grid-column: span 2;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c30 {
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+    -webkit-align-items: start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: start;
+    grid-gap: 4px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c31 {
+    grid-row: span 2;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c33 {
+    grid-row: span 2;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c19 {
+    -webkit-column-gap: 2px;
+    column-gap: 2px;
+    grid-template-columns: 45px 145px repeat(2,80px);
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c20 {
+    height: 0px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c28 {
+    display: none;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <a
+            href="/"
+          >
+            <div
+              class="c2"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </a>
+        </div>
+        <div
+          class="c3"
+        >
+          <header
+            class="c4"
+          >
+            <h1
+              class="c5"
+            >
+              <div
+                class="c6"
+              >
+                <a
+                  href="/"
+                >
+                  <div
+                    class="c7"
+                  >
+                    <svg
+                      viewBox="0 0 56 56"
+                    >
+                      <title />
+                      <path
+                        d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                      />
+                    </svg>
+                  </div>
+                </a>
+              </div>
+              Creator Dashboard
+            </h1>
+            <div
+              class="c8"
+            >
+              <a
+                class="c9 c10"
+                href="/dashboard"
+                title="Dashboard"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Dashboard
+                  </title>
+                  <path
+                    d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 0 0 .351.856h1.214V17.5a.5.5 0 0 0 .5.5h2.572a.5.5 0 0 0 .5-.5v-2.885h3.428V17.5a.5.5 0 0 0 .5.5h2.572a.5.5 0 0 0 .5-.5v-4.577H18.5a.5.5 0 0 0 .351-.856L12.5 5.5z"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Dashboard
+                </small>
+              </a>
+              <a
+                class="c9 c12"
+                href="/log"
+                title="Log"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Log
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M10.5 8a.5.5 0 0 1 0-1h6a.5.5 0 0 1 0 1h-6zm6.5 2.5a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h6a.5.5 0 0 1 .5.5zm-7 3a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 0-1h-6a.5.5 0 0 0-.5.5zm7 3a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h6a.5.5 0 0 1 .5.5zm-10-6a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0-.5.5zM7.5 8a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1h-1zM7 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0-.5.5zm2 3a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1 0-1h1a.5.5 0 0 1 .5.5z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Log
+                </small>
+              </a>
+            </div>
+            <div
+              class="c13"
+            >
+              <a
+                class="c9 c14"
+                href="/about"
+                title="About"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    About
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  About
+                </small>
+              </a>
+              <a
+                class="c9 c14"
+                href="/jobs"
+                title="Join us"
+              >
+                <svg
+                  name="Jobs"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Join us
+                </small>
+              </a>
+              <a
+                class="c9 c14"
+                href="https://github.com/unlock-protocol/unlock"
+                title="Source Code"
+              >
+                <svg
+                  name="Github"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Source Code
+                </small>
+              </a>
+              <a
+                class="c9 c14"
+                href="https://t.me/unlockprotocol"
+                title="Telegram"
+              >
+                <svg
+                  name="Telegram"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Telegram
+                </small>
+              </a>
+            </div>
+            <div
+              class="c15"
+            >
+              <a
+                class="c9 c16"
+              >
+                <svg
+                  viewBox="0 0 56 42"
+                >
+                  <title>
+                    Bars
+                  </title>
+                  <path
+                    d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                  />
+                </svg>
+                
+              </a>
+              <a
+                class="c9 c16"
+              >
+                <svg
+                  viewBox="0 0 58 32"
+                >
+                  <title>
+                    Chevron Up
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                
+              </a>
+            </div>
+            <div
+              class="c17"
+            />
+          </header>
+          <div
+            class="c18"
+          >
+            <section
+              class=""
+            >
+              <div
+                class="c19"
+              >
+                <div
+                  class="c20"
+                >
+                  <div
+                    class="paper"
+                    style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
+                  >
+                    <svg
+                      height="40"
+                      width="40"
+                      x="0"
+                      xmlns="http://www.w3.org/2000/svg"
+                      y="0"
+                    >
+                      <rect
+                        fill="#F5B400"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                      <rect
+                        fill="#F92F01"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                      <rect
+                        fill="#FB186F"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                      <rect
+                        fill="#18A9F2"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <div
+                  class="c21"
+                >
+                  Address
+                </div>
+                <div
+                  class="c21"
+                >
+                  Balance
+                </div>
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c22"
+                  id="UserAddress"
+                >
+                  0x3ca206264762caf81a8f0a843bbb850987b41e16
+                </div>
+                <div
+                  class="c23"
+                  id="AccountBalance"
+                >
+                  <div
+                    class="c24"
+                  >
+                    <span
+                      class="c25"
+                    >
+                      <span
+                        class="c26"
+                      />
+                      <span
+                        class="c27"
+                      >
+                         - 
+                      </span>
+                    </span>
+                    
+                  </div>
+                </div>
+              </div>
+            </section>
+            <button
+              class="c28"
+            >
+              Create Lock
+            </button>
+          </div>
+          <section
+            class="c29"
+          >
+            <div
+              class="c30"
+              id="LockHeaderRow"
+            >
+              <div
+                class="c31"
+              >
+                Locks
+              </div>
+              <div
+                class="c32"
+              >
+                Name / Address
+              </div>
+              <div
+                class="c32"
+              >
+                Key Duration
+              </div>
+              <div
+                class="c33"
+              >
+                Key Quantity
+              </div>
+              <div
+                class="c32"
+              >
+                Price
+              </div>
+              <div
+                class="c32"
+              >
+                <div
+                  class="c34"
+                >
+                  Balance
+                </div>
+                <div
+                  class="c35"
+                >
+                  Balance
+                </div>
+              </div>
+            </div>
+            <div
+              class="c36"
+            >
+              <svg
+                viewBox="0 0 216 216"
+                width="100%"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+              >
+                <defs>
+                  <circle
+                    cx="108"
+                    cy="108"
+                    id="a"
+                    r="108"
+                  />
+                  <circle
+                    cx="108"
+                    cy="108"
+                    id="c"
+                    r="60.75"
+                  />
+                </defs>
+                <g>
+                  <mask
+                    fill="#fff"
+                    id="b"
+                  >
+                    <use
+                      xlink:href="#a"
+                    />
+                  </mask>
+                  <g
+                    transform="rotate(0, 108, 108)"
+                  >
+                    <circle
+                      cx="195.75"
+                      cy="114.75"
+                      fill="#8c8c8c"
+                      mask="url(#b)"
+                      r="114.75"
+                    />
+                    <circle
+                      cx="33.75"
+                      cy="162"
+                      fill="#e8e8e8"
+                      mask="url(#b)"
+                      r="114.75"
+                    />
+                    <circle
+                      cx="121.5"
+                      cy="0"
+                      fill="#c3c3c3"
+                      mask="url(#b)"
+                      r="114.75"
+                    />
+                  </g>
+                  <mask
+                    fill="#fff"
+                    id="d"
+                  >
+                    <use
+                      xlink:href="#c"
+                    />
+                  </mask>
+                  <use
+                    fill="#FFF"
+                    xlink:href="#c"
+                  />
+                  <path
+                    d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                    fill="#8c8c8c"
+                    mask="url(#d)"
+                  />
+                </g>
+              </svg>
+              <div
+                class="c37"
+              >
+                <input
+                  data-valid="true"
+                  name="name"
+                  required=""
+                  type="text"
+                  value="New Lock"
+                />
+              </div>
+              <div
+                class="c38"
+              >
+                <input
+                  data-valid="true"
+                  inputmode="numeric"
+                  name="expirationDuration"
+                  required=""
+                  step="1"
+                  type="number"
+                  value="30"
+                />
+                 
+                days
+              </div>
+              <div
+                class="c39"
+              >
+                <input
+                  data-valid="true"
+                  name="maxNumberOfKeys"
+                  required=""
+                  type="text"
+                  value="10"
+                />
+                <div
+                  class="c40"
+                >
+                  Unlimited
+                </div>
+              </div>
+              <span
+                class="c41"
+              >
+                <span
+                  class="c26"
+                />
+                <input
+                  data-valid="true"
+                  id="KeyPriceEditField_undefined"
+                  inputmode="numeric"
+                  name="keyPrice"
+                  required=""
+                  step="0.00001"
+                  type="number"
+                  value="0.01"
+                />
+              </span>
+              <div>
+                -
+              </div>
+              <div
+                class="c42"
+              >
+                <button
+                  class="c43"
+                >
+                  Submit
+                </button>
+                <button
+                  class="c44"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+            <div
+              class="c45"
+              id="LockRow_0x9abcdef0"
+            >
+              <div
+                class="c46"
+              >
+                <svg
+                  viewBox="0 0 216 216"
+                  width="100%"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                >
+                  <defs>
+                    <circle
+                      cx="108"
+                      cy="108"
+                      id="a"
+                      r="108"
+                    />
+                    <circle
+                      cx="108"
+                      cy="108"
+                      id="c"
+                      r="60.75"
+                    />
+                  </defs>
+                  <g>
+                    <mask
+                      fill="#fff"
+                      id="b"
+                    >
+                      <use
+                        xlink:href="#a"
+                      />
+                    </mask>
+                    <g
+                      transform="rotate(240, 108, 108)"
+                    >
+                      <circle
+                        cx="195.75"
+                        cy="114.75"
+                        fill="#4d819a"
+                        mask="url(#b)"
+                        r="114.75"
+                      />
+                      <circle
+                        cx="33.75"
+                        cy="162"
+                        fill="#406b80"
+                        mask="url(#b)"
+                        r="114.75"
+                      />
+                      <circle
+                        cx="121.5"
+                        cy="0"
+                        fill="#cfdee6"
+                        mask="url(#b)"
+                        r="114.75"
+                      />
+                    </g>
+                    <mask
+                      fill="#fff"
+                      id="d"
+                    >
+                      <use
+                        xlink:href="#c"
+                      />
+                    </mask>
+                    <use
+                      fill="#FFF"
+                      xlink:href="#c"
+                    />
+                    <path
+                      d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                      fill="#4d819a"
+                      mask="url(#d)"
+                    />
+                  </g>
+                </svg>
+              </div>
+              <div
+                class="c47"
+              >
+                Infinite Lock
+                <div
+                  class="c48"
+                >
+                  0x9abcdef0
+                </div>
+              </div>
+              <div
+                class=""
+                id="LockDuration_0x9abcdef0"
+              >
+                <span>
+                  2 days
+                </span>
+              </div>
+              <div
+                class=""
+              >
+                10/0
+              </div>
+              <div
+                class="c24"
+              >
+                <span
+                  class="c25"
+                >
+                  <span
+                    class="c26"
+                  />
+                  <span
+                    class="c27"
+                  >
+                    0.027
+                  </span>
+                </span>
+                <div
+                  class="c49"
+                >
+                  <span
+                    class="c25"
+                  >
+                    <span
+                      class="c50"
+                    />
+                    <span
+                      class="c27"
+                    >
+                      5.29
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div
+                class=""
+              >
+                <div
+                  class="c34"
+                >
+                  <div
+                    class="c24"
+                  >
+                    <span
+                      class="c25"
+                    >
+                      <span
+                        class="c26"
+                      />
+                      <span
+                        class="c27"
+                      >
+                         - 
+                      </span>
+                    </span>
+                    <div
+                      class="c49"
+                    >
+                      <span
+                        class="c25"
+                      >
+                        <span
+                          class="c50"
+                        />
+                        <span
+                          class="c27"
+                        >
+                           - 
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="c35"
+                >
+                  <div
+                    class="c24"
+                  >
+                    <span
+                      class="c25"
+                    >
+                      <span
+                        class="c26"
+                      />
+                      <span
+                        class="c27"
+                      >
+                         - 
+                      </span>
+                    </span>
+                    
+                  </div>
+                </div>
+              </div>
+              <div
+                class="c51"
+              >
+                <div
+                  class="c52"
+                >
+                  Confirming
+                </div>
+                <div
+                  class="c53"
+                >
+                  2
+                   / 
+                  12
+                </div>
+              </div>
+            </div>
+            <div
+              class="c45"
+              id="LockRow_0x56781234a"
+            >
+              <div
+                class="c46"
+              >
+                <svg
+                  viewBox="0 0 216 216"
+                  width="100%"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                >
+                  <defs>
+                    <circle
+                      cx="108"
+                      cy="108"
+                      id="a"
+                      r="108"
+                    />
+                    <circle
+                      cx="108"
+                      cy="108"
+                      id="c"
+                      r="60.75"
+                    />
+                  </defs>
+                  <g>
+                    <mask
+                      fill="#fff"
+                      id="b"
+                    >
+                      <use
+                        xlink:href="#a"
+                      />
+                    </mask>
+                    <g
+                      transform="rotate(340, 108, 108)"
+                    >
+                      <circle
+                        cx="108"
+                        cy="108"
+                        fill="#c7e673"
+                        mask="url(#b)"
+                        r="114.75"
+                      />
+                      <circle
+                        cx="64"
+                        cy="0"
+                        fill="#6f8040"
+                        mask="url(#b)"
+                        r="114.75"
+                      />
+                      <circle
+                        cx="64"
+                        cy="216"
+                        fill="#dfe6cf"
+                        mask="url(#b)"
+                        r="114.75"
+                      />
+                    </g>
+                    <mask
+                      fill="#fff"
+                      id="d"
+                    >
+                      <use
+                        xlink:href="#c"
+                      />
+                    </mask>
+                    <use
+                      fill="#FFF"
+                      xlink:href="#c"
+                    />
+                    <path
+                      d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                      fill="#c7e673"
+                      mask="url(#d)"
+                    />
+                  </g>
+                </svg>
+              </div>
+              <div
+                class="c47"
+              >
+                New Lock
+                <div
+                  class="c48"
+                >
+                  0x56781234a
+                </div>
+              </div>
+              <div
+                class=""
+                id="LockDuration_0x56781234a"
+              >
+                <span>
+                  1 day
+                </span>
+              </div>
+              <div
+                class=""
+              >
+                32/800
+              </div>
+              <div
+                class="c24"
+              >
+                <span
+                  class="c25"
+                >
+                  <span
+                    class="c26"
+                  />
+                  <span
+                    class="c27"
+                  >
+                    0.01
+                  </span>
+                </span>
+                <div
+                  class="c49"
+                >
+                  <span
+                    class="c25"
+                  >
+                    <span
+                      class="c50"
+                    />
+                    <span
+                      class="c27"
+                    >
+                      1.96
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div
+                class=""
+              >
+                <div
+                  class="c34"
+                >
+                  <div
+                    class="c24"
+                  >
+                    <span
+                      class="c25"
+                    >
+                      <span
+                        class="c26"
+                      />
+                      <span
+                        class="c27"
+                      >
+                         - 
+                      </span>
+                    </span>
+                    <div
+                      class="c49"
+                    >
+                      <span
+                        class="c25"
+                      >
+                        <span
+                          class="c50"
+                        />
+                        <span
+                          class="c27"
+                        >
+                           - 
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="c35"
+                >
+                  <div
+                    class="c24"
+                  >
+                    <span
+                      class="c25"
+                    >
+                      <span
+                        class="c26"
+                      />
+                      <span
+                        class="c27"
+                      >
+                         - 
+                      </span>
+                    </span>
+                    
+                  </div>
+                </div>
+              </div>
+              <div
+                class="c51"
+              >
+                <div
+                  class="c52"
+                >
+                  Confirming
+                </div>
+                <div
+                  class="c53"
+                >
+                  4
+                   / 
+                  12
+                </div>
+              </div>
+            </div>
+            <div
+              class="c45"
+              id="LockRow_0x12345678a"
+            >
+              <div
+                class="c46"
+              >
+                <svg
+                  viewBox="0 0 216 216"
+                  width="100%"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                >
+                  <defs>
+                    <circle
+                      cx="108"
+                      cy="108"
+                      id="a"
+                      r="108"
+                    />
+                    <circle
+                      cx="108"
+                      cy="108"
+                      id="c"
+                      r="60.75"
+                    />
+                  </defs>
+                  <g>
+                    <mask
+                      fill="#fff"
+                      id="b"
+                    >
+                      <use
+                        xlink:href="#a"
+                      />
+                    </mask>
+                    <g
+                      transform="rotate(100, 108, 108)"
+                    >
+                      <circle
+                        cx="108"
+                        cy="108"
+                        fill="#4d819a"
+                        mask="url(#b)"
+                        r="114.75"
+                      />
+                      <circle
+                        cx="64"
+                        cy="0"
+                        fill="#406b80"
+                        mask="url(#b)"
+                        r="114.75"
+                      />
+                      <circle
+                        cx="64"
+                        cy="216"
+                        fill="#cfdee6"
+                        mask="url(#b)"
+                        r="114.75"
+                      />
+                    </g>
+                    <mask
+                      fill="#fff"
+                      id="d"
+                    >
+                      <use
+                        xlink:href="#c"
+                      />
+                    </mask>
+                    <use
+                      fill="#FFF"
+                      xlink:href="#c"
+                    />
+                    <path
+                      d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                      fill="#4d819a"
+                      mask="url(#d)"
+                    />
+                  </g>
+                </svg>
+              </div>
+              <div
+                class="c47"
+              >
+                My Blog
+                <div
+                  class="c48"
+                >
+                  0x12345678a
+                </div>
+              </div>
+              <div
+                class=""
+                id="LockDuration_0x12345678a"
+              >
+                <span>
+                  2 days
+                </span>
+              </div>
+              <div
+                class=""
+              >
+                3/240
+              </div>
+              <div
+                class="c24"
+              >
+                <span
+                  class="c25"
+                >
+                  <span
+                    class="c26"
+                  />
+                  <span
+                    class="c27"
+                  >
+                    0.027
+                  </span>
+                </span>
+                <div
+                  class="c49"
+                >
+                  <span
+                    class="c25"
+                  >
+                    <span
+                      class="c50"
+                    />
+                    <span
+                      class="c27"
+                    >
+                      5.29
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div
+                class=""
+              >
+                <div
+                  class="c34"
+                >
+                  <div
+                    class="c24"
+                  >
+                    <span
+                      class="c25"
+                    >
+                      <span
+                        class="c26"
+                      />
+                      <span
+                        class="c27"
+                      >
+                         - 
+                      </span>
+                    </span>
+                    <div
+                      class="c49"
+                    >
+                      <span
+                        class="c25"
+                      >
+                        <span
+                          class="c50"
+                        />
+                        <span
+                          class="c27"
+                        >
+                           - 
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="c35"
+                >
+                  <div
+                    class="c24"
+                  >
+                    <span
+                      class="c25"
+                    >
+                      <span
+                        class="c26"
+                      />
+                      <span
+                        class="c27"
+                      >
+                         - 
+                      </span>
+                    </span>
+                    
+                  </div>
+                </div>
+              </div>
+              <div
+                class=""
+              >
+                <div
+                  class="c54"
+                >
+                  <div
+                    class="c55"
+                  >
+                    <button
+                      class="c9 c56"
+                    >
+                      <svg
+                        name="Withdraw"
+                        viewBox="0 0 24 24"
+                      >
+                        <title />
+                        <path
+                          clip-rule="evenodd"
+                          d="M12 4.5a6.5 6.5 0 0 0-3 12.268v1.108A7.502 7.502 0 0 1 12 3.5a7.5 7.5 0 0 1 3 14.376v-1.108A6.5 6.5 0 0 0 12 4.5zm-.485 9.599c-.48-.036-.885-.147-1.215-.333-.33-.186-.6-.423-.81-.711l.649-.621c.204.246.42.438.648.576.227.132.486.213.773.243v-2.061l-.207-.036a2.732 2.732 0 0 1-.764-.243 1.648 1.648 0 0 1-.514-.396 1.504 1.504 0 0 1-.287-.513 2.04 2.04 0 0 1-.09-.612c0-.51.159-.915.476-1.215.319-.306.766-.489 1.341-.549v-.927h.756v.927c.396.042.738.141 1.026.297.288.156.537.369.747.639l-.657.594a1.792 1.792 0 0 0-.504-.45 1.604 1.604 0 0 0-.656-.216V10.4l.242.036c.3.054.556.135.766.243.21.108.38.24.513.396.138.15.237.321.296.513.06.192.09.396.09.612 0 .516-.162.939-.486 1.269-.317.33-.777.531-1.377.603v.945h-.756v-.918zm-.864-4.734c0 .252.07.45.207.594.144.138.378.243.702.315v-1.8c-.606.072-.909.369-.909.891zm2.53 2.88c0-.27-.075-.474-.225-.612-.144-.144-.387-.249-.73-.315v1.926c.313-.048.55-.156.711-.324.163-.168.244-.393.244-.675zM12 22.5a.5.5 0 0 1-.38-.175l-2-2.333a.5.5 0 0 1 .76-.65l1.12 1.306V16.5a.5.5 0 0 1 1 0v4.148l1.12-1.307a.5.5 0 1 1 .76.651l-2 2.333a.5.5 0 0 1-.38.175z"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                      
+                    </button>
+                    <button
+                      class="c9 c12"
+                      id="EditLockButton_0x12345678a"
+                      title="Edit"
+                    >
+                      <svg
+                        name="Edit"
+                        viewBox="0 0 24 24"
+                      >
+                        <title />
+                        <path
+                          d="M7.853 13.843l-.498 3.828 3.706-1.435L9.5 15l-1.647-1.157z"
+                        />
+                        <path
+                          clip-rule="evenodd"
+                          d="M17.295 7.9c.178.562.131 1.192-.303 1.733l-5.541 6.916a.5.5 0 0 1-.21.153l-3.705 1.435a.5.5 0 0 1-.677-.53l.498-3.829a.5.5 0 0 1 .106-.248l5.628-7.023c.434-.542 1.038-.724 1.625-.673.569.05 1.128.316 1.576.675.448.36.83.847 1.003 1.392zm-3.424-.768c.191-.239.446-.329.757-.302.33.03.707.193 1.039.46.332.266.575.599.674.913.095.298.062.566-.129.805l-5.23 6.527-1.172-.927a.52.52 0 0 0-.023-.017l-1.211-.851 5.295-6.608zm-5.629 7.595l.959.674.864.684-2.106.816.283-2.174z"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                      <small
+                        class="c11"
+                      >
+                        Edit
+                      </small>
+                    </button>
+                    <button
+                      class="c9 c12"
+                      id="LockEmbeddCode_0x12345678a"
+                      title="Embed"
+                    >
+                      <svg
+                        name="Code"
+                        viewBox="0 0 24 24"
+                      >
+                        <title />
+                        <path
+                          clip-rule="evenodd"
+                          d="M9.697 17.808a.5.5 0 0 1-.27-.654l4.616-11.077a.5.5 0 1 1 .923.385l-4.615 11.076a.5.5 0 0 1-.654.27zm6.478-1.928a.5.5 0 0 1-.055-.705L18.841 12l-2.72-3.175a.5.5 0 1 1 .759-.65l3 3.5a.5.5 0 0 1 0 .65l-3 3.5a.5.5 0 0 1-.705.055zM7.88 8.825a.5.5 0 0 0-.76-.65l-3 3.5a.5.5 0 0 0 0 .65l3 3.5a.5.5 0 1 0 .76-.65L5.159 12l2.72-3.175z"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                      <small
+                        class="c11"
+                      >
+                        Embed
+                      </small>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="c57"
+                />
+              </div>
+            </div>
+          </section>
+        </div>
+        <div
+          class="c58"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="hm3mhg-0 iORsGm"
+    >
+      <div
+        class="hm3mhg-1 dNChnF"
+      >
+        <a
+          href="/"
+        >
+          <div
+            class="cenpj1-0 eJifmz"
+          >
+            <svg
+              viewBox="0 0 56 56"
+            >
+              <title />
+              <path
+                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+              />
+            </svg>
+          </div>
+        </a>
+      </div>
+      <div
+        class="hm3mhg-3 yKIjT"
+      >
+        <header
+          class="sc-1glv5oz-0 dSkZMA"
+        >
+          <h1
+            class="sc-1glv5oz-1 kYxvfi"
+          >
+            <div
+              class="sc-1glv5oz-6 boGsdq"
+            >
+              <a
+                href="/"
+              >
+                <div
+                  class="cenpj1-0 eCEwze"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+              </a>
+            </div>
+            Creator Dashboard
+          </h1>
+          <div
+            class="sc-1glv5oz-2 sc-1glv5oz-3 kmXWur"
+          >
+            <a
+              class="sc-850ddk-0 kmwKuX"
+              href="/dashboard"
+              title="Dashboard"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Dashboard
+                </title>
+                <path
+                  d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 0 0 .351.856h1.214V17.5a.5.5 0 0 0 .5.5h2.572a.5.5 0 0 0 .5-.5v-2.885h3.428V17.5a.5.5 0 0 0 .5.5h2.572a.5.5 0 0 0 .5-.5v-4.577H18.5a.5.5 0 0 0 .351-.856L12.5 5.5z"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Dashboard
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 eZjxtV"
+              href="/log"
+              title="Log"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Log
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M10.5 8a.5.5 0 0 1 0-1h6a.5.5 0 0 1 0 1h-6zm6.5 2.5a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h6a.5.5 0 0 1 .5.5zm-7 3a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 0-1h-6a.5.5 0 0 0-.5.5zm7 3a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h6a.5.5 0 0 1 .5.5zm-10-6a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0-.5.5zM7.5 8a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1h-1zM7 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0-.5.5zm2 3a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1 0-1h1a.5.5 0 0 1 .5.5z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Log
+              </small>
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-2 ladmVI"
+          >
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="/about"
+              title="About"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  About
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                About
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="/jobs"
+              title="Join us"
+            >
+              <svg
+                name="Jobs"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Join us
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="https://github.com/unlock-protocol/unlock"
+              title="Source Code"
+            >
+              <svg
+                name="Github"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Source Code
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="https://t.me/unlockprotocol"
+              title="Telegram"
+            >
+              <svg
+                name="Telegram"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Telegram
+              </small>
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-4 hTWTAD"
+          >
+            <a
+              class="sc-850ddk-0 fWWxcb"
+            >
+              <svg
+                viewBox="0 0 56 42"
+              >
+                <title>
+                  Bars
+                </title>
+                <path
+                  d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                />
+              </svg>
+              
+            </a>
+            <a
+              class="sc-850ddk-0 fWWxcb"
+            >
+              <svg
+                viewBox="0 0 58 32"
+              >
+                <title>
+                  Chevron Up
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-5 KamSF"
+          />
+        </header>
+        <div
+          class="sc-bZQynM ksIuNY"
+        >
+          <section
+            class="sc-17tbx18-0 hTxyeH"
+          >
+            <div
+              class="sc-17tbx18-3 fGzqbz"
+            >
+              <div
+                class="sc-17tbx18-4 jwbmco"
+              >
+                <div
+                  class="paper"
+                  style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
+                >
+                  <svg
+                    height="40"
+                    width="40"
+                    x="0"
+                    xmlns="http://www.w3.org/2000/svg"
+                    y="0"
+                  >
+                    <rect
+                      fill="#F5B400"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#F92F01"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#FB186F"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#18A9F2"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="sc-17tbx18-5 cUFMgS"
+              >
+                Address
+              </div>
+              <div
+                class="sc-17tbx18-5 cUFMgS"
+              >
+                Balance
+              </div>
+              <div
+                class="sc-17tbx18-4 jwbmco"
+              />
+              <div
+                class="sc-17tbx18-4 jwbmco"
+              />
+              <div
+                class="sc-17tbx18-4 jwbmco"
+              />
+              <div
+                class="sc-17tbx18-4 jwbmco"
+              />
+              <div
+                class="sc-17tbx18-4 jwbmco"
+              />
+              <div
+                class="sc-17tbx18-6 glGVHP"
+                id="UserAddress"
+              >
+                0x3ca206264762caf81a8f0a843bbb850987b41e16
+              </div>
+              <div
+                class="sc-17tbx18-7 ewhOnv"
+                id="AccountBalance"
+              >
+                <div
+                  class="buwkmd-0 bYclZI"
+                >
+                  <span
+                    class="buwkmd-1 jZYwNd"
+                  >
+                    <span
+                      class="buwkmd-2 buwkmd-3 cwENmW"
+                    />
+                    <span
+                      class="buwkmd-5 dKpFcq"
+                    >
+                       - 
+                    </span>
+                  </span>
+                  
+                </div>
+              </div>
+            </div>
+          </section>
+          <button
+            class="sc-ifAKCX sc-EHOje jqltvJ"
+          >
+            Create Lock
+          </button>
+        </div>
+        <section
+          class="sc-1olgoav-1 lotZQF"
+        >
+          <div
+            class="sc-1olgoav-2 hMqYDA"
+            id="LockHeaderRow"
+          >
+            <div
+              class="sc-1olgoav-3 fURRxE"
+            >
+              Locks
+            </div>
+            <div
+              class="sc-1olgoav-4 hEEWiT"
+            >
+              Name / Address
+            </div>
+            <div
+              class="sc-1olgoav-4 hEEWiT"
+            >
+              Key Duration
+            </div>
+            <div
+              class="sc-1olgoav-4 sc-1olgoav-5 hiaPKS"
+            >
+              Key Quantity
+            </div>
+            <div
+              class="sc-1olgoav-4 hEEWiT"
+            >
+              Price
+            </div>
+            <div
+              class="sc-1olgoav-4 hEEWiT"
+            >
+              <div
+                class="sc-bdVaJa huHMtj"
+              >
+                Balance
+              </div>
+              <div
+                class="sc-bwzfXH eehYvQ"
+              >
+                Balance
+              </div>
+            </div>
+          </div>
+          <div
+            class="mlglvd-0 sc-1u8ov25-1 eySPLN"
+          >
+            <svg
+              viewBox="0 0 216 216"
+              width="100%"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <defs>
+                <circle
+                  cx="108"
+                  cy="108"
+                  id="a"
+                  r="108"
+                />
+                <circle
+                  cx="108"
+                  cy="108"
+                  id="c"
+                  r="60.75"
+                />
+              </defs>
+              <g>
+                <mask
+                  fill="#fff"
+                  id="b"
+                >
+                  <use
+                    xlink:href="#a"
+                  />
+                </mask>
+                <g
+                  transform="rotate(0, 108, 108)"
+                >
+                  <circle
+                    cx="195.75"
+                    cy="114.75"
+                    fill="#8c8c8c"
+                    mask="url(#b)"
+                    r="114.75"
+                  />
+                  <circle
+                    cx="33.75"
+                    cy="162"
+                    fill="#e8e8e8"
+                    mask="url(#b)"
+                    r="114.75"
+                  />
+                  <circle
+                    cx="121.5"
+                    cy="0"
+                    fill="#c3c3c3"
+                    mask="url(#b)"
+                    r="114.75"
+                  />
+                </g>
+                <mask
+                  fill="#fff"
+                  id="d"
+                >
+                  <use
+                    xlink:href="#c"
+                  />
+                </mask>
+                <use
+                  fill="#FFF"
+                  xlink:href="#c"
+                />
+                <path
+                  d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                  fill="#8c8c8c"
+                  mask="url(#d)"
+                />
+              </g>
+            </svg>
+            <div
+              class="mlglvd-4 sc-1u8ov25-3 dhwAJt"
+            >
+              <input
+                data-valid="true"
+                name="name"
+                required=""
+                type="text"
+                value="New Lock"
+              />
+            </div>
+            <div
+              class="mlglvd-6 sc-1u8ov25-4 bBCopM"
+            >
+              <input
+                data-valid="true"
+                inputmode="numeric"
+                name="expirationDuration"
+                required=""
+                step="1"
+                type="number"
+                value="30"
+              />
+               
+              days
+            </div>
+            <div
+              class="mlglvd-7 sc-1u8ov25-5 foqKED"
+            >
+              <input
+                data-valid="true"
+                name="maxNumberOfKeys"
+                required=""
+                type="text"
+                value="10"
+              />
+              <div
+                class="mlglvd-1 sc-1u8ov25-0 eiQcmf"
+              >
+                Unlimited
+              </div>
+            </div>
+            <span
+              class="buwkmd-5 sc-1u8ov25-6 louuyM"
+            >
+              <span
+                class="buwkmd-2 buwkmd-3 cwENmW"
+              />
+              <input
+                data-valid="true"
+                id="KeyPriceEditField_undefined"
+                inputmode="numeric"
+                name="keyPrice"
+                required=""
+                step="0.00001"
+                type="number"
+                value="0.01"
+              />
+            </span>
+            <div>
+              -
+            </div>
+            <div
+              class="aicx7v-0 sc-1u8ov25-2 dpNRpO"
+            >
+              <button
+                class="sc-1u8ov25-7 jSpMeN"
+              >
+                Submit
+              </button>
+              <button
+                class="sc-1u8ov25-7 gScjsJ"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+          <div
+            class="mlglvd-0 kdIVWb"
+            id="LockRow_0x9abcdef0"
+          >
+            <div
+              class="mlglvd-2 hfdYVl"
+            >
+              <svg
+                viewBox="0 0 216 216"
+                width="100%"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+              >
+                <defs>
+                  <circle
+                    cx="108"
+                    cy="108"
+                    id="a"
+                    r="108"
+                  />
+                  <circle
+                    cx="108"
+                    cy="108"
+                    id="c"
+                    r="60.75"
+                  />
+                </defs>
+                <g>
+                  <mask
+                    fill="#fff"
+                    id="b"
+                  >
+                    <use
+                      xlink:href="#a"
+                    />
+                  </mask>
+                  <g
+                    transform="rotate(240, 108, 108)"
+                  >
+                    <circle
+                      cx="195.75"
+                      cy="114.75"
+                      fill="#4d819a"
+                      mask="url(#b)"
+                      r="114.75"
+                    />
+                    <circle
+                      cx="33.75"
+                      cy="162"
+                      fill="#406b80"
+                      mask="url(#b)"
+                      r="114.75"
+                    />
+                    <circle
+                      cx="121.5"
+                      cy="0"
+                      fill="#cfdee6"
+                      mask="url(#b)"
+                      r="114.75"
+                    />
+                  </g>
+                  <mask
+                    fill="#fff"
+                    id="d"
+                  >
+                    <use
+                      xlink:href="#c"
+                    />
+                  </mask>
+                  <use
+                    fill="#FFF"
+                    xlink:href="#c"
+                  />
+                  <path
+                    d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                    fill="#4d819a"
+                    mask="url(#d)"
+                  />
+                </g>
+              </svg>
+            </div>
+            <div
+              class="mlglvd-4 byEgaL"
+            >
+              Infinite Lock
+              <div
+                class="mlglvd-5 dUQSRx"
+              >
+                0x9abcdef0
+              </div>
+            </div>
+            <div
+              class="mlglvd-6 hNoahq"
+              id="LockDuration_0x9abcdef0"
+            >
+              <span>
+                2 days
+              </span>
+            </div>
+            <div
+              class="mlglvd-7 EehSr"
+            >
+              10/0
+            </div>
+            <div
+              class="buwkmd-0 bYclZI"
+            >
+              <span
+                class="buwkmd-1 jZYwNd"
+              >
+                <span
+                  class="buwkmd-2 buwkmd-3 cwENmW"
+                />
+                <span
+                  class="buwkmd-5 dKpFcq"
+                >
+                  0.027
+                </span>
+              </span>
+              <div
+                class="buwkmd-6 iwxAFp"
+              >
+                <span
+                  class="buwkmd-1 jZYwNd"
+                >
+                  <span
+                    class="buwkmd-2 buwkmd-4 rbRZi"
+                  />
+                  <span
+                    class="buwkmd-5 dKpFcq"
+                  >
+                    5.29
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div
+              class="mlglvd-3 VbhUE"
+            >
+              <div
+                class="sc-bdVaJa huHMtj"
+              >
+                <div
+                  class="buwkmd-0 bYclZI"
+                >
+                  <span
+                    class="buwkmd-1 jZYwNd"
+                  >
+                    <span
+                      class="buwkmd-2 buwkmd-3 cwENmW"
+                    />
+                    <span
+                      class="buwkmd-5 dKpFcq"
+                    >
+                       - 
+                    </span>
+                  </span>
+                  <div
+                    class="buwkmd-6 iwxAFp"
+                  >
+                    <span
+                      class="buwkmd-1 jZYwNd"
+                    >
+                      <span
+                        class="buwkmd-2 buwkmd-4 rbRZi"
+                      />
+                      <span
+                        class="buwkmd-5 dKpFcq"
+                      >
+                         - 
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="sc-bwzfXH eehYvQ"
+              >
+                <div
+                  class="buwkmd-0 bYclZI"
+                >
+                  <span
+                    class="buwkmd-1 jZYwNd"
+                  >
+                    <span
+                      class="buwkmd-2 buwkmd-3 cwENmW"
+                    />
+                    <span
+                      class="buwkmd-5 dKpFcq"
+                    >
+                       - 
+                    </span>
+                  </span>
+                  
+                </div>
+              </div>
+            </div>
+            <div
+              class="aicx7v-0 bdTBPS"
+            >
+              <div
+                class="aicx7v-1 kxSRDy"
+              >
+                Confirming
+              </div>
+              <div
+                class="aicx7v-2 niYxE"
+              >
+                2
+                 / 
+                12
+              </div>
+            </div>
+          </div>
+          <div
+            class="mlglvd-0 kdIVWb"
+            id="LockRow_0x56781234a"
+          >
+            <div
+              class="mlglvd-2 hfdYVl"
+            >
+              <svg
+                viewBox="0 0 216 216"
+                width="100%"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+              >
+                <defs>
+                  <circle
+                    cx="108"
+                    cy="108"
+                    id="a"
+                    r="108"
+                  />
+                  <circle
+                    cx="108"
+                    cy="108"
+                    id="c"
+                    r="60.75"
+                  />
+                </defs>
+                <g>
+                  <mask
+                    fill="#fff"
+                    id="b"
+                  >
+                    <use
+                      xlink:href="#a"
+                    />
+                  </mask>
+                  <g
+                    transform="rotate(340, 108, 108)"
+                  >
+                    <circle
+                      cx="108"
+                      cy="108"
+                      fill="#c7e673"
+                      mask="url(#b)"
+                      r="114.75"
+                    />
+                    <circle
+                      cx="64"
+                      cy="0"
+                      fill="#6f8040"
+                      mask="url(#b)"
+                      r="114.75"
+                    />
+                    <circle
+                      cx="64"
+                      cy="216"
+                      fill="#dfe6cf"
+                      mask="url(#b)"
+                      r="114.75"
+                    />
+                  </g>
+                  <mask
+                    fill="#fff"
+                    id="d"
+                  >
+                    <use
+                      xlink:href="#c"
+                    />
+                  </mask>
+                  <use
+                    fill="#FFF"
+                    xlink:href="#c"
+                  />
+                  <path
+                    d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                    fill="#c7e673"
+                    mask="url(#d)"
+                  />
+                </g>
+              </svg>
+            </div>
+            <div
+              class="mlglvd-4 byEgaL"
+            >
+              New Lock
+              <div
+                class="mlglvd-5 dUQSRx"
+              >
+                0x56781234a
+              </div>
+            </div>
+            <div
+              class="mlglvd-6 hNoahq"
+              id="LockDuration_0x56781234a"
+            >
+              <span>
+                1 day
+              </span>
+            </div>
+            <div
+              class="mlglvd-7 EehSr"
+            >
+              32/800
+            </div>
+            <div
+              class="buwkmd-0 bYclZI"
+            >
+              <span
+                class="buwkmd-1 jZYwNd"
+              >
+                <span
+                  class="buwkmd-2 buwkmd-3 cwENmW"
+                />
+                <span
+                  class="buwkmd-5 dKpFcq"
+                >
+                  0.01
+                </span>
+              </span>
+              <div
+                class="buwkmd-6 iwxAFp"
+              >
+                <span
+                  class="buwkmd-1 jZYwNd"
+                >
+                  <span
+                    class="buwkmd-2 buwkmd-4 rbRZi"
+                  />
+                  <span
+                    class="buwkmd-5 dKpFcq"
+                  >
+                    1.96
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div
+              class="mlglvd-3 VbhUE"
+            >
+              <div
+                class="sc-bdVaJa huHMtj"
+              >
+                <div
+                  class="buwkmd-0 bYclZI"
+                >
+                  <span
+                    class="buwkmd-1 jZYwNd"
+                  >
+                    <span
+                      class="buwkmd-2 buwkmd-3 cwENmW"
+                    />
+                    <span
+                      class="buwkmd-5 dKpFcq"
+                    >
+                       - 
+                    </span>
+                  </span>
+                  <div
+                    class="buwkmd-6 iwxAFp"
+                  >
+                    <span
+                      class="buwkmd-1 jZYwNd"
+                    >
+                      <span
+                        class="buwkmd-2 buwkmd-4 rbRZi"
+                      />
+                      <span
+                        class="buwkmd-5 dKpFcq"
+                      >
+                         - 
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="sc-bwzfXH eehYvQ"
+              >
+                <div
+                  class="buwkmd-0 bYclZI"
+                >
+                  <span
+                    class="buwkmd-1 jZYwNd"
+                  >
+                    <span
+                      class="buwkmd-2 buwkmd-3 cwENmW"
+                    />
+                    <span
+                      class="buwkmd-5 dKpFcq"
+                    >
+                       - 
+                    </span>
+                  </span>
+                  
+                </div>
+              </div>
+            </div>
+            <div
+              class="aicx7v-0 bdTBPS"
+            >
+              <div
+                class="aicx7v-1 kxSRDy"
+              >
+                Confirming
+              </div>
+              <div
+                class="aicx7v-2 niYxE"
+              >
+                4
+                 / 
+                12
+              </div>
+            </div>
+          </div>
+          <div
+            class="mlglvd-0 kdIVWb"
+            id="LockRow_0x12345678a"
+          >
+            <div
+              class="mlglvd-2 hfdYVl"
+            >
+              <svg
+                viewBox="0 0 216 216"
+                width="100%"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+              >
+                <defs>
+                  <circle
+                    cx="108"
+                    cy="108"
+                    id="a"
+                    r="108"
+                  />
+                  <circle
+                    cx="108"
+                    cy="108"
+                    id="c"
+                    r="60.75"
+                  />
+                </defs>
+                <g>
+                  <mask
+                    fill="#fff"
+                    id="b"
+                  >
+                    <use
+                      xlink:href="#a"
+                    />
+                  </mask>
+                  <g
+                    transform="rotate(100, 108, 108)"
+                  >
+                    <circle
+                      cx="108"
+                      cy="108"
+                      fill="#4d819a"
+                      mask="url(#b)"
+                      r="114.75"
+                    />
+                    <circle
+                      cx="64"
+                      cy="0"
+                      fill="#406b80"
+                      mask="url(#b)"
+                      r="114.75"
+                    />
+                    <circle
+                      cx="64"
+                      cy="216"
+                      fill="#cfdee6"
+                      mask="url(#b)"
+                      r="114.75"
+                    />
+                  </g>
+                  <mask
+                    fill="#fff"
+                    id="d"
+                  >
+                    <use
+                      xlink:href="#c"
+                    />
+                  </mask>
+                  <use
+                    fill="#FFF"
+                    xlink:href="#c"
+                  />
+                  <path
+                    d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                    fill="#4d819a"
+                    mask="url(#d)"
+                  />
+                </g>
+              </svg>
+            </div>
+            <div
+              class="mlglvd-4 byEgaL"
+            >
+              My Blog
+              <div
+                class="mlglvd-5 dUQSRx"
+              >
+                0x12345678a
+              </div>
+            </div>
+            <div
+              class="mlglvd-6 hNoahq"
+              id="LockDuration_0x12345678a"
+            >
+              <span>
+                2 days
+              </span>
+            </div>
+            <div
+              class="mlglvd-7 EehSr"
+            >
+              3/240
+            </div>
+            <div
+              class="buwkmd-0 bYclZI"
+            >
+              <span
+                class="buwkmd-1 jZYwNd"
+              >
+                <span
+                  class="buwkmd-2 buwkmd-3 cwENmW"
+                />
+                <span
+                  class="buwkmd-5 dKpFcq"
+                >
+                  0.027
+                </span>
+              </span>
+              <div
+                class="buwkmd-6 iwxAFp"
+              >
+                <span
+                  class="buwkmd-1 jZYwNd"
+                >
+                  <span
+                    class="buwkmd-2 buwkmd-4 rbRZi"
+                  />
+                  <span
+                    class="buwkmd-5 dKpFcq"
+                  >
+                    5.29
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div
+              class="mlglvd-3 VbhUE"
+            >
+              <div
+                class="sc-bdVaJa huHMtj"
+              >
+                <div
+                  class="buwkmd-0 bYclZI"
+                >
+                  <span
+                    class="buwkmd-1 jZYwNd"
+                  >
+                    <span
+                      class="buwkmd-2 buwkmd-3 cwENmW"
+                    />
+                    <span
+                      class="buwkmd-5 dKpFcq"
+                    >
+                       - 
+                    </span>
+                  </span>
+                  <div
+                    class="buwkmd-6 iwxAFp"
+                  >
+                    <span
+                      class="buwkmd-1 jZYwNd"
+                    >
+                      <span
+                        class="buwkmd-2 buwkmd-4 rbRZi"
+                      />
+                      <span
+                        class="buwkmd-5 dKpFcq"
+                      >
+                         - 
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="sc-bwzfXH eehYvQ"
+              >
+                <div
+                  class="buwkmd-0 bYclZI"
+                >
+                  <span
+                    class="buwkmd-1 jZYwNd"
+                  >
+                    <span
+                      class="buwkmd-2 buwkmd-3 cwENmW"
+                    />
+                    <span
+                      class="buwkmd-5 dKpFcq"
+                    >
+                       - 
+                    </span>
+                  </span>
+                  
+                </div>
+              </div>
+            </div>
+            <div
+              class="sc-1dp5gbn-2 fpHeqB"
+            >
+              <div
+                class="sc-1dp5gbn-0 bEBjnO"
+              >
+                <div
+                  class="sc-1dp5gbn-1 hxNcaM"
+                >
+                  <button
+                    class="sc-850ddk-0 GBCms"
+                  >
+                    <svg
+                      name="Withdraw"
+                      viewBox="0 0 24 24"
+                    >
+                      <title />
+                      <path
+                        clip-rule="evenodd"
+                        d="M12 4.5a6.5 6.5 0 0 0-3 12.268v1.108A7.502 7.502 0 0 1 12 3.5a7.5 7.5 0 0 1 3 14.376v-1.108A6.5 6.5 0 0 0 12 4.5zm-.485 9.599c-.48-.036-.885-.147-1.215-.333-.33-.186-.6-.423-.81-.711l.649-.621c.204.246.42.438.648.576.227.132.486.213.773.243v-2.061l-.207-.036a2.732 2.732 0 0 1-.764-.243 1.648 1.648 0 0 1-.514-.396 1.504 1.504 0 0 1-.287-.513 2.04 2.04 0 0 1-.09-.612c0-.51.159-.915.476-1.215.319-.306.766-.489 1.341-.549v-.927h.756v.927c.396.042.738.141 1.026.297.288.156.537.369.747.639l-.657.594a1.792 1.792 0 0 0-.504-.45 1.604 1.604 0 0 0-.656-.216V10.4l.242.036c.3.054.556.135.766.243.21.108.38.24.513.396.138.15.237.321.296.513.06.192.09.396.09.612 0 .516-.162.939-.486 1.269-.317.33-.777.531-1.377.603v.945h-.756v-.918zm-.864-4.734c0 .252.07.45.207.594.144.138.378.243.702.315v-1.8c-.606.072-.909.369-.909.891zm2.53 2.88c0-.27-.075-.474-.225-.612-.144-.144-.387-.249-.73-.315v1.926c.313-.048.55-.156.711-.324.163-.168.244-.393.244-.675zM12 22.5a.5.5 0 0 1-.38-.175l-2-2.333a.5.5 0 0 1 .76-.65l1.12 1.306V16.5a.5.5 0 0 1 1 0v4.148l1.12-1.307a.5.5 0 1 1 .76.651l-2 2.333a.5.5 0 0 1-.38.175z"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                    
+                  </button>
+                  <button
+                    class="sc-850ddk-0 eZjxtV"
+                    id="EditLockButton_0x12345678a"
+                    title="Edit"
+                  >
+                    <svg
+                      name="Edit"
+                      viewBox="0 0 24 24"
+                    >
+                      <title />
+                      <path
+                        d="M7.853 13.843l-.498 3.828 3.706-1.435L9.5 15l-1.647-1.157z"
+                      />
+                      <path
+                        clip-rule="evenodd"
+                        d="M17.295 7.9c.178.562.131 1.192-.303 1.733l-5.541 6.916a.5.5 0 0 1-.21.153l-3.705 1.435a.5.5 0 0 1-.677-.53l.498-3.829a.5.5 0 0 1 .106-.248l5.628-7.023c.434-.542 1.038-.724 1.625-.673.569.05 1.128.316 1.576.675.448.36.83.847 1.003 1.392zm-3.424-.768c.191-.239.446-.329.757-.302.33.03.707.193 1.039.46.332.266.575.599.674.913.095.298.062.566-.129.805l-5.23 6.527-1.172-.927a.52.52 0 0 0-.023-.017l-1.211-.851 5.295-6.608zm-5.629 7.595l.959.674.864.684-2.106.816.283-2.174z"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                    <small
+                      class="sc-850ddk-1 fnqGzL"
+                    >
+                      Edit
+                    </small>
+                  </button>
+                  <button
+                    class="sc-850ddk-0 eZjxtV"
+                    id="LockEmbeddCode_0x12345678a"
+                    title="Embed"
+                  >
+                    <svg
+                      name="Code"
+                      viewBox="0 0 24 24"
+                    >
+                      <title />
+                      <path
+                        clip-rule="evenodd"
+                        d="M9.697 17.808a.5.5 0 0 1-.27-.654l4.616-11.077a.5.5 0 1 1 .923.385l-4.615 11.076a.5.5 0 0 1-.654.27zm6.478-1.928a.5.5 0 0 1-.055-.705L18.841 12l-2.72-3.175a.5.5 0 1 1 .759-.65l3 3.5a.5.5 0 0 1 0 .65l-3 3.5a.5.5 0 0 1-.705.055zM7.88 8.825a.5.5 0 0 0-.76-.65l-3 3.5a.5.5 0 0 0 0 .65l3 3.5a.5.5 0 1 0 .76-.65L5.159 12l2.72-3.175z"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                    <small
+                      class="sc-850ddk-1 fnqGzL"
+                    >
+                      Embed
+                    </small>
+                  </button>
+                </div>
+              </div>
+              <div
+                class="sc-1dp5gbn-3 dpQaVY"
+              />
+            </div>
+          </div>
+        </section>
+      </div>
+      <div
+        class="hm3mhg-2 eixicz"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots DashboardContent the dashboard, waiting for wallet 1`] = `
 Object {
   "asFragment": [Function],
