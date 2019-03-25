@@ -1,0 +1,36 @@
+import React from 'react'
+import { storiesOf } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
+
+import { Provider } from 'react-redux'
+import LockIconBar from '../../components/creator/lock/LockIconBar'
+import createUnlockStore from '../../createUnlockStore'
+import { ConfigContext } from '../../utils/withConfig'
+
+const store = createUnlockStore({})
+
+const ConfigProvider = ConfigContext.Provider
+
+const config = {}
+
+storiesOf('LockIconBar', module)
+  .addDecorator(getStory => (
+    <ConfigProvider value={config}>{getStory()}</ConfigProvider>
+  ))
+  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
+  .add('LockIconBar', () => {
+    const lock = {
+      keyPrice: '10000000000000000000',
+      expirationDuration: 172800,
+      maxNumberOfKeys: 240,
+      outstandingKeys: 3,
+      address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
+    }
+    return (
+      <LockIconBar
+        lock={lock}
+        toggleCode={action('toggleCode')}
+        edit={action('edit')}
+      />
+    )
+  })
