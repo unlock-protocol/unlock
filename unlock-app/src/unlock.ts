@@ -3,8 +3,8 @@
 
 export enum TransactionType {
   LOCK_CREATION = 'Lock Creation',
-  KEY_PURCHASE  = 'Key Purchase',
-  WITHDRAWAL    = 'Withdrawal',
+  KEY_PURCHASE = 'Key Purchase',
+  WITHDRAWAL = 'Withdrawal',
   UPDATE_KEY_PRICE = 'Update Key Price',
 }
 
@@ -16,9 +16,9 @@ export interface Transaction {
   name: string
   type: TransactionType
   blockNumber: number
-  
+
   key?: string // TODO: tighten up our types, hopefully we won't have too many
-               // optional properties.
+  // optional properties.
 }
 
 // Analogous to the transactions in Redux

@@ -12,20 +12,23 @@ describe('lock form visibility reducer', () => {
 
   it('should return the initial state when receiving SET_PROVIDER', () => {
     expect.assertions(1)
-    expect(reducer({ visible: true }, { type: SET_PROVIDER }))
-      .toEqual(initialState)
+    expect(reducer({ visible: true }, { type: SET_PROVIDER })).toEqual(
+      initialState
+    )
   })
 
   it('should return the initial state when receiving SET_NETWORK', () => {
     expect.assertions(1)
-    expect(reducer({ visible: true }, { type: SET_NETWORK }))
-      .toEqual(initialState)
+    expect(reducer({ visible: true }, { type: SET_NETWORK })).toEqual(
+      initialState
+    )
   })
 
   it('should return the initial state when receiving SET_ACCOUNT', () => {
     expect.assertions(1)
-    expect(reducer({ visible: true }, { type: SET_ACCOUNT }))
-      .toEqual(initialState)
+    expect(reducer({ visible: true }, { type: SET_ACCOUNT })).toEqual(
+      initialState
+    )
   })
 
   it('should show the form', () => {
@@ -37,8 +40,7 @@ describe('lock form visibility reducer', () => {
 
   it('should hide the form', () => {
     expect.assertions(1)
-    expect(reducer({ visible: true },
-                   { type: HIDE_FORM })).toEqual({
+    expect(reducer({ visible: true }, { type: HIDE_FORM })).toEqual({
       visible: false,
     })
   })
