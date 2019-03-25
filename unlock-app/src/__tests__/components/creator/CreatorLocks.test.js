@@ -59,6 +59,7 @@ describe('CreatorLocks', () => {
           lockFeed={lockFeed}
           loading={loading}
           createLock={() => {}}
+          hideForm={() => {}}
         />
       </Provider>
     )

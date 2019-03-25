@@ -46,17 +46,36 @@ storiesOf('CreatorLocks', module)
     <ConfigProvider value={config}>{getStory()}</ConfigProvider>
   ))
   .add('no lock', () => {
-    return <CreatorLocks createLock={createLock} lockFeed={[]} />
+    return (
+      <CreatorLocks hideForm={() => {}} createLock={createLock} lockFeed={[]} />
+    )
   })
   .add('no lock, showForm', () => {
-    return <CreatorLocks createLock={createLock} lockFeed={[]} showForm />
+    return (
+      <CreatorLocks
+        hideForm={() => {}}
+        createLock={createLock}
+        lockFeed={[]}
+        showForm
+      />
+    )
   })
   .add('single lock', () => {
-    return <CreatorLocks createLock={createLock} lockFeed={[lock]} />
+    return (
+      <CreatorLocks
+        hideForm={() => {}}
+        createLock={createLock}
+        lockFeed={[lock]}
+      />
+    )
   })
   .add('multiple locks', () => {
     return (
-      <CreatorLocks createLock={createLock} lockFeed={[lock, anotherLock]} />
+      <CreatorLocks
+        hideForm={() => {}}
+        createLock={createLock}
+        lockFeed={[lock, anotherLock]}
+      />
     )
   })
   .add('loading with locks', () => {
@@ -64,10 +83,18 @@ storiesOf('CreatorLocks', module)
       <CreatorLocks
         createLock={createLock}
         lockFeed={[lock, anotherLock]}
+        hideForm={() => {}}
         loading
       />
     )
   })
   .add('loading with no lock', () => {
-    return <CreatorLocks createLock={createLock} lockFeed={[]} loading />
+    return (
+      <CreatorLocks
+        hideForm={() => {}}
+        createLock={createLock}
+        lockFeed={[]}
+        loading
+      />
+    )
   })
