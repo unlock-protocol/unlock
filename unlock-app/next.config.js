@@ -68,6 +68,7 @@ module.exports = withTypescript({
       '/about': { page: '/about' },
       '/jobs': { page: '/jobs' },
       '/dashboard': { page: '/dashboard' },
+      '/keychain': { page: '/keyChain' },
       '/paywall': { page: '/paywall' },
       '/demo': { page: '/demo' },
       '/terms': { page: '/terms' },
