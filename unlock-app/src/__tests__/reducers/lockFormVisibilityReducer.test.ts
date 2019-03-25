@@ -2,6 +2,7 @@ import reducer, { initialState } from '../../reducers/lockFormVisibilityReducer'
 import { SHOW_FORM, HIDE_FORM } from '../../actions/lockFormVisibility'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
+import { SET_ACCOUNT } from '../../actions/accounts'
 
 describe('lock form visibility reducer', () => {
   it('should return the initial state', () => {
@@ -18,6 +19,12 @@ describe('lock form visibility reducer', () => {
   it('should return the initial state when receiving SET_NETWORK', () => {
     expect.assertions(1)
     expect(reducer({ visible: true }, { type: SET_NETWORK }))
+      .toEqual(initialState)
+  })
+
+  it('should return the initial state when receiving SET_ACCOUNT', () => {
+    expect.assertions(1)
+    expect(reducer({ visible: true }, { type: SET_ACCOUNT }))
       .toEqual(initialState)
   })
 

@@ -3,6 +3,7 @@ import { SHOW_FORM,
 } from '../actions/lockFormVisibility'
 import { SET_PROVIDER } from '../actions/provider'
 import { SET_NETWORK } from '../actions/network'
+import { SET_ACCOUNT } from '../actions/accounts'
 
 export const initialState = {
   visible: false,
@@ -10,7 +11,7 @@ export const initialState = {
 
 const lockFormVisibilityReducer = (state = initialState,
                                    action: { type: string }) => {
-  if ([SET_PROVIDER, SET_NETWORK].indexOf(action.type) > -1) {
+  if ([SET_PROVIDER, SET_NETWORK, SET_ACCOUNT].indexOf(action.type) > -1) {
     return initialState
   }
 
