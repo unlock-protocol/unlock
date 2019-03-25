@@ -39,7 +39,7 @@ export const DashboardContent = ({
           <BrowserOnly>
             <AccountWrapper>
               <Account network={network} account={account} />
-              <CreateLockButton onClick={handleClick}>
+              <CreateLockButton id="CreateLockButton" onClick={handleClick}>
                 Create Lock
               </CreateLockButton>
             </AccountWrapper>
