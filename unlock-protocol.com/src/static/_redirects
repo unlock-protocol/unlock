@@ -1,0 +1,5 @@
+# This file is custom to netlify and used to perform redirects and URL rewrites
+# See https://www.netlify.com/docs/redirects/#rewrites-and-proxying
+
+/demo/* /demo 200
+/paywall/* /paywall 200

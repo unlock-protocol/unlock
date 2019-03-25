@@ -1,0 +1,58 @@
+import React from 'react'
+import Head from 'next/head'
+
+import UnlockPropTypes from '../propTypes'
+import Layout from '../components/interface/Layout'
+import BlogPost from '../components/content/BlogPost'
+import { pageTitle } from '../constants'
+import { TwitterTags } from '../components/page/TwitterTags'
+import OpenGraphTags from '../components/page/OpenGraphTags'
+import { preparePostProps } from '../utils/blogLoader'
+
+const Post = ({ slug, post }) => {
+  let title = post.title || ''
+  let subTitle = post.subTitle || ''
+  let description = post.description || ''
+  let authorName = post.authorName || 'Unlock team'
+  let publishDate = post.publishDate || ''
+  let body = post.__content || ''
+  let permalink = '/blog/' + slug
+
+  return (
+    <Layout forContent>
+      <Head>
+        <title>{pageTitle(title)}</title>
+        <TwitterTags title={pageTitle(title)} description={description} />
+        <OpenGraphTags
+          title={pageTitle(title)}
+          description={description}
+          canonicalPath={permalink}
+        />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          href="/static/blog.rss"
+        />
+      </Head>
+      <BlogPost
+        body={body}
+        publishDate={publishDate}
+        title={title}
+        subTitle={subTitle}
+        authorName={authorName}
+        permalink={permalink}
+      />
+    </Layout>
+  )
+}
+
+Post.propTypes = {
+  slug: UnlockPropTypes.slug.isRequired,
+  post: UnlockPropTypes.post.isRequired,
+}
+
+Post.getInitialProps = async context => {
+  return await preparePostProps(context)
+}
+
+export default Post
