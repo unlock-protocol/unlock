@@ -22,16 +22,12 @@ export const DashboardContent = ({
   account,
   network,
   lockFeed,
-  lockFormStatus,
+  formIsVisible,
   showForm,
   hideForm,
 }) => {
   const handleClick = () => {
-    if (lockFormStatus.visible) {
-      hideForm()
-    } else {
-      showForm()
-    }
+    formIsVisible ? hideForm() : showForm()
   }
   return (
     <GlobalErrorConsumer>
@@ -47,7 +43,11 @@ export const DashboardContent = ({
                 Create Lock
               </CreateLockButton>
             </AccountWrapper>
-            <CreatorLocks lockFeed={lockFeed} />
+            <CreatorLocks
+              lockFeed={lockFeed}
+              hideForm={hideForm}
+              formIsVisible={formIsVisible}
+            />
             <DeveloperOverlay />
           </BrowserOnly>
         )}
@@ -60,6 +60,9 @@ DashboardContent.propTypes = {
   account: UnlockPropTypes.account,
   network: UnlockPropTypes.network.isRequired,
   lockFeed: PropTypes.arrayOf(UnlockPropTypes.lock),
+  formIsVisible: PropTypes.bool.isRequired,
+  showForm: PropTypes.func.isRequired,
+  hideForm: PropTypes.func.isRequired,
 }
 
 DashboardContent.defaultProps = {
@@ -77,7 +80,7 @@ export const mapStateToProps = ({
   account,
   network,
   locks,
-  lockFormStatus,
+  lockFormStatus: { visible },
 }) => {
   // We want to display newer locks first, so sort the locks by blockNumber in descending order
   const locksComparator = (a, b) => {
@@ -95,11 +98,12 @@ export const mapStateToProps = ({
     )
   }
   const lockFeed = Object.values(locks).sort(locksComparator)
+  const formIsVisible = visible
   return {
     account,
     network,
     lockFeed,
-    lockFormStatus,
+    formIsVisible,
   }
 }
 
