@@ -15,6 +15,7 @@ import {
   FAILED_TO_UPDATE_KEY_PRICE,
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../../errors'
+import { TRANSACTION_TYPES } from '../../constants'
 
 jest.mock('../../utils/promises')
 
@@ -322,6 +323,7 @@ describe('WalletService', () => {
 
         walletService._sendTransaction(
           { to, from, data, value, gas, privateKey, contract },
+          'type',
           () => {}
         )
 
@@ -336,12 +338,13 @@ describe('WalletService', () => {
 
       it('should trigger the transaction.pending event', done => {
         expect.assertions(1)
-        walletService.on('transaction.pending', () => {
-          expect(true).toBe(true)
+        walletService.on('transaction.pending', type => {
+          expect(type).toBe('type')
           done()
         })
         walletService._sendTransaction(
           { to, from, data, value, gas, privateKey, contract },
+          'type',
           () => {}
         )
       })
@@ -363,6 +366,7 @@ describe('WalletService', () => {
 
         walletService._sendTransaction(
           { to, from, data, value, gas, privateKey, contract },
+          'type',
           () => {}
         )
 
@@ -374,6 +378,7 @@ describe('WalletService', () => {
         const transactionHash = '0x123'
         walletService._sendTransaction(
           { to, from, data, value, gas, privateKey, contract },
+          'type',
           (error, hash) => {
             expect(hash).toEqual(transactionHash)
             done()
@@ -389,6 +394,7 @@ describe('WalletService', () => {
 
         walletService._sendTransaction(
           { to, from, data, value, gas, privateKey, contract },
+          'type',
           error => {
             expect(error).toBe(error)
             done()
@@ -449,6 +455,7 @@ describe('WalletService', () => {
             gas: WalletService.gasAmountConstants().createLock,
             contract: Unlock,
           },
+          TRANSACTION_TYPES.LOCK_CREATION,
           expect.any(Function)
         )
       })
@@ -457,7 +464,7 @@ describe('WalletService', () => {
         expect.assertions(2)
         const hash = '0x1213'
 
-        walletService._sendTransaction = jest.fn((args, cb) => {
+        walletService._sendTransaction = jest.fn((args, type, cb) => {
           return cb(null, hash)
         })
 
@@ -476,7 +483,7 @@ describe('WalletService', () => {
         expect.assertions(1)
         const error = {}
 
-        walletService._sendTransaction = jest.fn((args, cb) => {
+        walletService._sendTransaction = jest.fn((args, type, cb) => {
           return cb(error)
         })
 
@@ -538,6 +545,7 @@ describe('WalletService', () => {
             contract: PublicLock,
             value: '100000000000000000000000000', // Web3Utils.toWei(keyPrice, 'ether')
           },
+          TRANSACTION_TYPES.KEY_PURCHASE,
           expect.any(Function)
         )
       })
@@ -546,7 +554,7 @@ describe('WalletService', () => {
         expect.assertions(1)
         const error = {}
 
-        walletService._sendTransaction = jest.fn((args, cb) => {
+        walletService._sendTransaction = jest.fn((args, type, cb) => {
           return cb(error)
         })
 
@@ -602,6 +610,7 @@ describe('WalletService', () => {
             gas: WalletService.gasAmountConstants().updateKeyPrice,
             contract: PublicLock,
           },
+          TRANSACTION_TYPES.UPDATE_KEY_PRICE,
           expect.any(Function)
         )
       })
@@ -610,7 +619,7 @@ describe('WalletService', () => {
         expect.assertions(1)
         const error = {}
 
-        walletService._sendTransaction = jest.fn((args, cb) => {
+        walletService._sendTransaction = jest.fn((args, type, cb) => {
           return cb(error)
         })
 
@@ -728,6 +737,7 @@ describe('WalletService', () => {
             gas: WalletService.gasAmountConstants().partialWithdrawFromLock,
             contract: PublicLock,
           },
+          TRANSACTION_TYPES.WITHDRAWAL,
           expect.any(Function)
         )
       })
@@ -736,7 +746,7 @@ describe('WalletService', () => {
         expect.assertions(1)
         const error = {}
 
-        walletService._sendTransaction = jest.fn((args, cb) => {
+        walletService._sendTransaction = jest.fn((args, type, cb) => {
           return cb(error)
         })
 
@@ -752,7 +762,7 @@ describe('WalletService', () => {
         expect.assertions(1)
         const error = undefined
 
-        walletService._sendTransaction = jest.fn((args, cb) => {
+        walletService._sendTransaction = jest.fn((args, type, cb) => {
           return cb(error)
         })
 
@@ -805,6 +815,7 @@ describe('WalletService', () => {
             gas: WalletService.gasAmountConstants().withdrawFromLock,
             contract: PublicLock,
           },
+          TRANSACTION_TYPES.WITHDRAWAL,
           expect.any(Function)
         )
       })
@@ -813,7 +824,7 @@ describe('WalletService', () => {
         expect.assertions(1)
         const error = {}
 
-        walletService._sendTransaction = jest.fn((args, cb) => {
+        walletService._sendTransaction = jest.fn((args, type, cb) => {
           return cb(error)
         })
 
