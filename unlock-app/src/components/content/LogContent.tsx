@@ -17,7 +17,12 @@ interface Props {
   explorerLinks: { [key: string]: string }
 }
 
-export const LogContent = ({ account, network, transactionFeed, explorerLinks }: Props) => {
+export const LogContent = ({
+  account,
+  network,
+  transactionFeed,
+  explorerLinks,
+}: Props) => {
   return (
     <GlobalErrorConsumer>
       <Layout title="Creator Log">
@@ -27,7 +32,10 @@ export const LogContent = ({ account, network, transactionFeed, explorerLinks }:
         {account && (
           <BrowserOnly>
             <Account network={network} account={account} />
-            <CreatorLog transactionFeed={transactionFeed} explorerLinks={explorerLinks} />
+            <CreatorLog
+              transactionFeed={transactionFeed}
+              explorerLinks={explorerLinks}
+            />
           </BrowserOnly>
         )}
       </Layout>
@@ -53,9 +61,9 @@ export const mapStateToProps = (
     (a, b) => b.blockNumber - a.blockNumber
   )
 
-  const explorerLinks: {[key: string] : string} = {}
+  const explorerLinks: { [key: string]: string } = {}
 
-  transactionFeed.forEach((tx) => {
+  transactionFeed.forEach(tx => {
     explorerLinks[tx.hash] = chainExplorerUrlBuilders.etherScan(tx.lock)
   })
 

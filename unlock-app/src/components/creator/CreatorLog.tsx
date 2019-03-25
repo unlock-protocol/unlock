@@ -22,7 +22,8 @@ const CreatorLog = ({ transactionFeed, explorerLinks }: Props) => {
             </Address>
             <Type type={tx.type}>{tx.type}</Type>
           </React.Fragment>
-        )})}
+        )
+      })}
     </Grid>
   )
 }
@@ -30,34 +31,34 @@ const CreatorLog = ({ transactionFeed, explorerLinks }: Props) => {
 export default CreatorLog
 
 const Grid = styled.div`
-    display: grid;
-    grid-template-columns: 125px 2fr 1fr;
-    grid-auto-rows: 32px;
-    grid-column-gap: 20px;
+  display: grid;
+  grid-template-columns: 125px 2fr 1fr;
+  grid-auto-rows: 32px;
+  grid-column-gap: 20px;
 `
 
 const HeaderItem = styled.div`
-    font-size: 10px;
-    font-weight: normal;
-    text-transform: uppercase;
-    color: var(--grey);
-    white-space: nowrap;
+  font-size: 10px;
+  font-weight: normal;
+  text-transform: uppercase;
+  color: var(--grey);
+  white-space: nowrap;
 `
 
 const Entry = styled.div`
-    font-size: 14px;
-    line-height: 14px;
-    color: var(--darkgrey);
-    font-weight: 300;
-    font-family: 'IBM Plex Mono', Courier, monospace;
+  font-size: 14px;
+  line-height: 14px;
+  color: var(--darkgrey);
+  font-weight: 300;
+  font-family: 'IBM Plex Mono', Courier, monospace;
 `
 
 const BlockNumber = styled(Entry)``
 
 const Address = styled.a`
-    font-size: 14px;
-    font-weight: 300;
-    font-family: 'IBM Plex Mono', Courier, monospace;
+  font-size: 14px;
+  font-weight: 300;
+  font-family: 'IBM Plex Mono', Courier, monospace;
 `
 
 const typeColors: { [key in UnlockTypes.TransactionType]: string } = {
@@ -68,6 +69,7 @@ const typeColors: { [key in UnlockTypes.TransactionType]: string } = {
 }
 
 const Type = styled(Entry)`
-  color: ${(props: { type: UnlockTypes.TransactionType } ) => 'var(--' + typeColors[props.type]});
+  color: ${(props: { type: UnlockTypes.TransactionType }) =>
+    'var(--' + typeColors[props.type]});
   white-space: nowrap;
 `

@@ -106,7 +106,7 @@
   },
   "lint-staged": {
     "linters": {
-      "*.js": [
+      "*.{js,ts,tsx}": [
         "prettier-eslint --write",
         "git add"
       ]

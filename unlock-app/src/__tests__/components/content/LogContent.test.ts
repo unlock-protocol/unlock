@@ -45,10 +45,13 @@ describe('Transaction Log', () => {
     }
     const config = {
       chainExplorerUrlBuilders: {
-        etherScan: (address: string) => `https://blockchain.party/address/${address}/`
+        etherScan: (address: string) =>
+          `https://blockchain.party/address/${address}/`,
       },
     }
-    const { transactionFeed, explorerLinks } = mapStateToProps(state, { config })
+    const { transactionFeed, explorerLinks } = mapStateToProps(state, {
+      config,
+    })
     it('Should provide a feed of transactions sorted by blockNumber, descending', () => {
       expect.assertions(4)
       expect(transactionFeed).toHaveLength(3)
@@ -59,7 +62,9 @@ describe('Transaction Log', () => {
     it('should include a separate feed of URLs to chain explorer for each transaction', () => {
       expect.assertions(2)
       expect(Object.keys(explorerLinks)).toHaveLength(3)
-      expect(explorerLinks['0x9abcdef0']).toBe('https://blockchain.party/address/0x9abcdef0a/')
+      expect(explorerLinks['0x9abcdef0']).toBe(
+        'https://blockchain.party/address/0x9abcdef0a/'
+      )
     })
   })
 })
