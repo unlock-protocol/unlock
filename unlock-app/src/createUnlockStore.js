@@ -44,6 +44,9 @@ import modalReducer, {
 import walletStatusReducer, {
   initialState as defaultWalletStatus,
 } from './reducers/walletStatusReducer'
+import lockFormVisibilityReducer, {
+  initialState as defaultLockFormVisibility,
+} from './reducers/lockFormVisibilityReducer'
 
 const config = configure()
 
@@ -66,6 +69,7 @@ export const createUnlockStore = (
     currency: currencyReducer,
     errors: errorsReducer,
     walletStatus: walletStatusReducer,
+    lockFormStatus: lockFormVisibilityReducer,
   }
 
   // Cleanup the defaultState to remove all null values so that we do not overwrite existing
@@ -91,6 +95,7 @@ export const createUnlockStore = (
       currency: defaultCurrency,
       errors: defaultError,
       walletStatus: defaultWalletStatus,
+      lockFormStatus: defaultLockFormVisibility,
     },
     {
       provider: Object.keys(config.providers)[0],
