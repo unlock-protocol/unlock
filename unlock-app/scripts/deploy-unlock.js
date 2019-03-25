@@ -18,14 +18,10 @@ const serverIsUp = (delay, maxAttempts) =>
   new Promise((resolve, reject) => {
     let attempts = 1
     const tryConnecting = () => {
-      const socket = net.connect(
-        port,
-        host,
-        () => {
-          resolve()
-          return socket.end() // clean-up
-        }
-      )
+      const socket = net.connect(port, host, () => {
+        resolve()
+        return socket.end() // clean-up
+      })
 
       socket.on('error', error => {
         if (error.code === 'ECONNREFUSED') {

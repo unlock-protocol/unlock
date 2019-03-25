@@ -3,7 +3,7 @@ const TestErc20Token = artifacts.require('TestErc20Token.sol')
 
 let token
 
-contract('test-artifacts / TestErc20Token', (accounts) => {
+contract('test-artifacts / TestErc20Token', accounts => {
   before(async () => {
     token = await TestErc20Token.new()
   })
@@ -16,7 +16,9 @@ contract('test-artifacts / TestErc20Token', (accounts) => {
 
   it('can approve and transferFrom', async () => {
     await token.approve(accounts[0], -1, { from: accounts[1] })
-    await token.transferFrom(accounts[1], accounts[2], 20, { from: accounts[0] })
+    await token.transferFrom(accounts[1], accounts[2], 20, {
+      from: accounts[0],
+    })
     const balance1 = new BigNumber(await token.balanceOf(accounts[1]))
     assert.equal(balance1.toFixed(), 22)
     const balance2 = new BigNumber(await token.balanceOf(accounts[2]))

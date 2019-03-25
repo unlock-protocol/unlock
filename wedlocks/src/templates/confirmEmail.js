@@ -1,7 +1,7 @@
 export default {
   subject: () => 'Please confirm your email address',
   text: params =>
-`Welcome to Unlock!
+    `Welcome to Unlock!
 
 To get started, please confirm your email address by clicking on the following link:
 
@@ -14,5 +14,5 @@ If you have any questions, you can always email us at hello@unlock-protocol.com.
 And again, welcome!
 
 - The Unlock team
-`
+`,
 }

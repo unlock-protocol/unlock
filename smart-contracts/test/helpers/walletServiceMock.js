@@ -5,12 +5,12 @@
  * until we can create a shared dependancy.
  */
 module.exports = class WalletService {
-  static gasAmountConstants () {
+  static gasAmountConstants() {
     return {
       createLock: 3000000,
       updateKeyPrice: 1000000,
       purchaseKey: 1000000,
-      withdrawFromLock: 1000000
+      withdrawFromLock: 1000000,
     }
   }
 }

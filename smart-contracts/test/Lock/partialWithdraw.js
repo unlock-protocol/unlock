@@ -21,7 +21,7 @@ contract('Lock / partialWithdraw', accounts => {
     const purchases = [accounts[1], accounts[2]].map(account => {
       return locks['OWNED'].purchaseFor(account, {
         value: price.toFixed(),
-        from: account
+        from: account,
       })
     })
     return Promise.all(purchases)
@@ -37,7 +37,7 @@ contract('Lock / partialWithdraw', accounts => {
     assert.notEqual(owner, accounts[1]) // Making sure
     await shouldFail(
       locks['OWNED'].partialWithdraw(withdrawalAmount.toFixed(), {
-        from: accounts[1]
+        from: accounts[1],
       }),
       ''
     )
@@ -51,7 +51,7 @@ contract('Lock / partialWithdraw', accounts => {
       locks['OWNED'].partialWithdraw(
         initialLockBalance.plus(withdrawalAmount).toFixed(),
         {
-          from: owner
+          from: owner,
         }
       ),
       'NOT_ENOUGH_FUNDS'
@@ -61,7 +61,7 @@ contract('Lock / partialWithdraw', accounts => {
   it('should fail if requesting partial withdraw of 0', async () => {
     await shouldFail(
       locks['OWNED'].partialWithdraw(0, {
-        from: owner
+        from: owner,
       }),
       'GREATER_THAN_ZERO'
     )
@@ -82,7 +82,7 @@ contract('Lock / partialWithdraw', accounts => {
       expectedLockBalance = initialLockBalance.minus(withdrawalAmount)
       initialOwnerBalance = new BigNumber(await web3.eth.getBalance(owner))
       txObj = await locks['OWNED'].partialWithdraw(withdrawalAmount.toFixed(), {
-        from: owner
+        from: owner,
       })
     })
 
