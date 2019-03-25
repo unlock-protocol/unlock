@@ -66,15 +66,16 @@ export const CreatorLocks = ({
 
 CreatorLocks.propTypes = {
   createLock: PropTypes.func.isRequired,
-  showForm: UnlockPropTypes.showDashboardForm,
+  hideForm: PropTypes.func.isRequired,
   lockFeed: PropTypes.arrayOf(UnlockPropTypes.lock),
   loading: PropTypes.bool,
+  formIsVisible: PropTypes.bool,
 }
 
 CreatorLocks.defaultProps = {
   loading: false,
-  showForm: false,
   lockFeed: [],
+  formIsVisible: false,
 }
 
 const mapDispatchToProps = dispatch => ({

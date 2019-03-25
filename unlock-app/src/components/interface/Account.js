@@ -11,14 +11,23 @@ import Balance from '../helpers/Balance'
 export function Account({ account, network }) {
   // Using https://github.com/MetaMask/metamask-extension/blob/develop/ui/lib/icon-factory.js#L60 to make sure jazzicons are consistent between Metamask and unlock.
   const iconSeed = parseInt(account.address.slice(2, 10), 16)
-
+  const networkName = ETHEREUM_NETWORKS_NAMES[network.name]
+    ? ETHEREUM_NETWORKS_NAMES[network.name][0]
+    : 'Unknown Network'
   return (
     <AccountWrapper>
+      <AccountHead>
+        <h2>Account</h2>
+      </AccountHead>
+
       <AccountDetails>
         <DoubleHeightCell>
           <Jazzicon diameter={40} seed={iconSeed} />
         </DoubleHeightCell>
-        <Label>Address</Label>
+        <Label>
+          Address
+          <NetworkInfo id="NetworkName">{networkName}</NetworkInfo>
+        </Label>
         <Label>Balance</Label>
         <DoubleHeightCell />
         <DoubleHeightCell />
@@ -57,6 +66,8 @@ const NetworkInfo = styled.span`
   font-size: 10px;
   font-weight: 500;
   color: var(--red);
+  margin-left: 1em;
+  text-transform: none;
 `
 
 const AccountDetails = styled.div`

@@ -1,3 +1,4 @@
+import React from 'react'
 import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
 import DashboardContent, {
