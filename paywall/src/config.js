@@ -68,6 +68,8 @@ export default function configure(
 
   const env = runtimeConfig.unlockEnv
 
+  // note: the choice of 127.0.0.1 instead of localhost is deliberate, as it will
+  // allow us to test cross-origin requests from localhost/demo
   let paywallUrl = runtimeConfig.paywallUrl || 'http://127.0.0.1:3001'
   let paywallScriptPath =
     runtimeConfig.paywallScriptPath || '/static/paywall.min.js'
