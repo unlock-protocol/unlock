@@ -29,15 +29,14 @@
     "link-parent-bin": "^1.0.0",
     "netlify-cli": "^2.6.0",
     "prettier": "^1.16.4",
-    "prettier-eslint-cli": "^4.7.1",
     "typescript": "^3.3.3333"
   },
   "devDependencies": {
     "ganache-cli": "^6.4.1",
-    "husky": "^1.2.0",
-    "lint-staged": "^8.0.5"
+    "husky": "^1.2.0"
   },
   "scripts": {
+    "lint": "eslint .",
     "link-parent-bin": "link-parent-bin -c . -s true",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-ganache": "ganache-cli -i 1984 --mnemonic 'hello unlock save the web'",

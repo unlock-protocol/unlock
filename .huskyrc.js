@@ -13,11 +13,6 @@ const svg2Components = {
   path: "unlock-app"
 }
 
-// lintStaged actually just runs formatting rules on staged files
-const lintStaged = path => {
-  return { command: "lint-staged", path: path }
-}
-
 // Run eslint on the files inside path for the last commit
 // It will try to amend the latest commit if possible to fix.
 const eslint = path => {
@@ -25,6 +20,11 @@ const eslint = path => {
     command: `git diff --name-only --diff-filter=d $(git merge-base origin/master HEAD) | grep "^${path}.*js$" | sed 's/${path}\\///' | xargs eslint --fix`,
     path: path
   }
+}
+
+// lintStaged actually just runs formatting rules on staged files
+const lintStaged = path => {
+  return { command: `echo ${path} && lint-staged`, path: path }
 }
 
 // tasks are given a path
@@ -37,9 +37,12 @@ module.exports = {
     ]),
     "pre-commit": tasks([
       svg2Components,
-      lintStaged("unlock-app"),
       lintStaged("locksmith"),
-      lintStaged("paywall")
+      lintStaged("paywall"),
+      lintStaged("smart-contracts"),
+      lintStaged("tests"),
+      lintStaged("unlock-app"),
+      lintStaged("wedlocks")
     ])
   }
 }
