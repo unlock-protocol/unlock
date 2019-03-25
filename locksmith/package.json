@@ -5,31 +5,26 @@
   "main": "server.js",
   "scripts": {
     "prestart": "npm run build",
-    "start" : "node ./build/server.js",
+    "start": "node ./build/server.js",
     "predev": "NODE_ENV=development npm run db:migrate",
     "dev": "tsc-watch --onSuccess 'node build/server.js' --onFailure 'echo Beep! Compilation Failed'",
     "pretest": "NODE_ENV=test sequelize db:migrate",
     "test": "jest --forceExit",
     "lint": "eslint .",
-    "reformat": "prettier-eslint \"src/**/*.js\" --write",
-    "eslint-check": "eslint --print-config . | eslint-config-prettier-check",
     "db:migrate": "sequelize db:migrate",
-    "fail-pending-changes": "../scripts/pending-changes.sh",
-    "ci": "npm run lint && npm test && npm run reformat && npm run fail-pending-changes",
+    "ci": "npm run lint && npm test",
     "build": "tsc",
     "tsc": "tsc",
-    "dist" : "sh ./scripts/dist.sh"
+    "dist": "sh ./scripts/dist.sh"
   },
   "lint-staged": {
     "linters": {
-      "*.js": [
-        "eslint",
-        "npm run reformat",
-        "git add"
+      "*.{js,ts,tsx}": [
+        "eslint"
       ]
     }
   },
-  "author": "",
+  "author": "Unlock Inc",
   "license": "ISC",
   "dependencies": {
     "@types/jest": "^24.0.11",

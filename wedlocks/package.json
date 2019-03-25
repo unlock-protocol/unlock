@@ -16,6 +16,13 @@
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0"
   },
+  "lint-staged": {
+    "linters": {
+      ".{js,ts,tsx}": [
+        "eslint"
+      ]
+    }
+  },
   "devDependencies": {},
   "scripts": {
     "build": "webpack",
