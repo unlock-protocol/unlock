@@ -1,5 +1,6 @@
 import UserOperations = require('../operations/userOperations')
 import { Request, Response } from 'express-serve-static-core'
+import { DecoyUser } from '../utils/decoyUser'
 
 namespace UserController {
   export async function createUser(req: Request, res: Response): Promise<any> {
@@ -34,7 +35,11 @@ namespace UserController {
     if (result) {
       return res.json({ passwordEncryptedPrivateKey: result })
     } else {
-      return res.sendStatus(400)
+      let result = await new DecoyUser().encryptedPrivateKey()
+
+      return res.json({
+        passwordEncryptedPrivateKey: result,
+      })
     }
   }
 
@@ -43,13 +48,15 @@ namespace UserController {
     res: Response
   ): Promise<any> {
     let emailAddress = req.params.emailAddress
-    let result = await UserOperations.getUserRecoveryPhraseByEmailAddress(emailAddress)
-
+    let result = await UserOperations.getUserRecoveryPhraseByEmailAddress(
+      emailAddress
+    )
 
     if (result) {
       return res.json({ recoveryPhrase: result })
     } else {
-      return res.sendStatus(400)
+      let recoveryPhrase = new DecoyUser().recoveryPhrase()
+      return res.json({ recoveryPhrase: recoveryPhrase })
     }
   }
 }
