@@ -60,6 +60,8 @@
     "winston": "^3.1.0"
   },
   "devDependencies": {
+    "@types/eth-sig-util": "^2.1.0",
+    "@types/ethereumjs-util": "^5.2.0",
     "nodemon": "^1.18.8",
     "sqlite3": "^4.0.6",
     "supertest": "^3.3.0",
