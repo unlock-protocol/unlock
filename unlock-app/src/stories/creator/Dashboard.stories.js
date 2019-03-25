@@ -79,6 +79,10 @@ const currency = {
   USD: 195.99,
 }
 
+const lockFormStatus = {
+  visible: false,
+}
+
 const store = createUnlockStore({
   account,
   network,
@@ -89,6 +93,7 @@ const store = createUnlockStore({
   walletStatus: {
     waiting: false,
   },
+  lockFormStatus,
 })
 
 const waitingStore = createUnlockStore({
@@ -101,12 +106,14 @@ const waitingStore = createUnlockStore({
   walletStatus: {
     waiting: true,
   },
+  lockFormStatus,
 })
 
 const noUserStore = createUnlockStore({
   account: undefined,
   network,
   router,
+  lockFormStatus,
 })
 
 const ConfigProvider = ConfigContext.Provider
@@ -124,8 +131,13 @@ storiesOf('DashboardContent', module)
   .add('the dashboard', () => {
     // The overlay should not render here, because walletStatus:waiting is set
     // to false in the state
-    const lockFeed = mapStateToProps({ locks, transactions, account, network })
-      .lockFeed
+    const lockFeed = mapStateToProps({
+      locks,
+      transactions,
+      account,
+      network,
+      lockFormStatus,
+    }).lockFeed
     return (
       <Provider store={store}>
         <WalletCheckOverlay />
@@ -133,13 +145,21 @@ storiesOf('DashboardContent', module)
           network={network}
           account={account}
           lockFeed={lockFeed}
+          hideForm={jest.fn()}
+          showForm={jest.fn()}
+          formIsVisible={false}
         />
       </Provider>
     )
   })
   .add('the dashboard, waiting for wallet', () => {
-    const lockFeed = mapStateToProps({ locks, transactions, account, network })
-      .lockFeed
+    const lockFeed = mapStateToProps({
+      locks,
+      transactions,
+      account,
+      network,
+      lockFormStatus,
+    }).lockFeed
     return (
       <Provider store={waitingStore}>
         <WalletCheckOverlay />
@@ -147,6 +167,9 @@ storiesOf('DashboardContent', module)
           network={network}
           account={account}
           lockFeed={lockFeed}
+          hideForm={jest.fn()}
+          showForm={jest.fn()}
+          formIsVisible={false}
         />
       </Provider>
     )
@@ -154,14 +177,27 @@ storiesOf('DashboardContent', module)
   .add('dashboard, no user account', () => {
     return (
       <Provider store={noUserStore}>
-        <DashboardContent network={network} account={account} />
+        <DashboardContent
+          network={network}
+          account={account}
+          hideForm={jest.fn()}
+          showForm={jest.fn()}
+          formIsVisible={false}
+        />
       </Provider>
     )
   })
   .add('dashboard, no locks', () => {
     return (
       <Provider store={store}>
-        <DashboardContent network={network} account={account} lockFeed={[]} />
+        <DashboardContent
+          network={network}
+          account={account}
+          lockFeed={[]}
+          hideForm={jest.fn()}
+          showForm={jest.fn()}
+          formIsVisible={false}
+        />
       </Provider>
     )
   })
