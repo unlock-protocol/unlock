@@ -46,7 +46,10 @@ contract('Lock / erc20', accounts => {
 
       it('charges correct amount on purchaseKey', async () => {
         const balance = new BigNumber(await token.balanceOf(keyOwner))
-        assert.equal(balance.toFixed(), defaultBalance.minus(keyPrice).toFixed())
+        assert.equal(
+          balance.toFixed(),
+          defaultBalance.minus(keyPrice).toFixed()
+        )
       })
 
       it('transfered the tokens to the contract', async () => {
@@ -66,8 +69,14 @@ contract('Lock / erc20', accounts => {
 
         await lockApi.partialWithdraw(1, accounts[0])
 
-        assert.equal(await token.balanceOf(lock.address), lockBalance.minus(1).toFixed())
-        assert.equal(await token.balanceOf(accounts[0]), ownerBalance.plus(1).toFixed())
+        assert.equal(
+          await token.balanceOf(lock.address),
+          lockBalance.minus(1).toFixed()
+        )
+        assert.equal(
+          await token.balanceOf(accounts[0]),
+          ownerBalance.plus(1).toFixed()
+        )
       })
 
       it('the owner can withdraw tokens', async () => {
@@ -77,7 +86,10 @@ contract('Lock / erc20', accounts => {
         await lockApi.withdraw(accounts[0])
 
         assert.equal(await token.balanceOf(lock.address), 0)
-        assert.equal(await token.balanceOf(accounts[0]), ownerBalance.plus(lockBalance).toFixed())
+        assert.equal(
+          await token.balanceOf(accounts[0]),
+          ownerBalance.plus(lockBalance).toFixed()
+        )
       })
 
       it('purchaseForFrom works as well', async () => {

@@ -6,13 +6,11 @@ const walletService = require('./walletServiceMock')
  * At the moment, this is only for APIs with a unique call requirement:
  *  - https://github.com/trufflesuite/truffle/issues/1729
  */
-module.exports = function lockApi (lockContract) {
+module.exports = function lockApi(lockContract) {
   return {
-    async purchaseFor (keyOwner, from = keyOwner, ethValue = 0) {
+    async purchaseFor(keyOwner, from = keyOwner, ethValue = 0) {
       const call = web3.eth.abi.encodeFunctionCall(
-        lockContract.abi.find(
-          e => e.name === 'purchaseFor'
-        ),
+        lockContract.abi.find(e => e.name === 'purchaseFor'),
         [keyOwner]
       )
       return web3.eth.sendTransaction({
@@ -20,15 +18,13 @@ module.exports = function lockApi (lockContract) {
         value: ethValue,
         data: call,
         from,
-        gas: walletService.gasAmountConstants().purchaseKey
+        gas: walletService.gasAmountConstants().purchaseKey,
       })
     },
 
-    async purchaseForFrom (keyOwner, referrer, from = keyOwner, ethValue = 0) {
+    async purchaseForFrom(keyOwner, referrer, from = keyOwner, ethValue = 0) {
       const call = web3.eth.abi.encodeFunctionCall(
-        lockContract.abi.find(
-          e => e.name === 'purchaseForFrom'
-        ),
+        lockContract.abi.find(e => e.name === 'purchaseForFrom'),
         [keyOwner, referrer]
       )
       return web3.eth.sendTransaction({
@@ -36,53 +32,47 @@ module.exports = function lockApi (lockContract) {
         value: ethValue,
         data: call,
         from,
-        gas: walletService.gasAmountConstants().purchaseKey
+        gas: walletService.gasAmountConstants().purchaseKey,
       })
     },
 
-    async cancelAndRefund (from) {
+    async cancelAndRefund(from) {
       const call = web3.eth.abi.encodeFunctionCall(
-        lockContract.abi.find(
-          e => e.name === 'cancelAndRefund'
-        ),
+        lockContract.abi.find(e => e.name === 'cancelAndRefund'),
         []
       )
       return web3.eth.sendTransaction({
         to: lockContract.address,
         data: call,
         from,
-        gas: walletService.gasAmountConstants().cancelAndRefund
+        gas: walletService.gasAmountConstants().cancelAndRefund,
       })
     },
 
-    async partialWithdraw (amount, from) {
+    async partialWithdraw(amount, from) {
       const call = web3.eth.abi.encodeFunctionCall(
-        lockContract.abi.find(
-          e => e.name === 'partialWithdraw'
-        ),
+        lockContract.abi.find(e => e.name === 'partialWithdraw'),
         [amount]
       )
       return web3.eth.sendTransaction({
         to: lockContract.address,
         data: call,
         from,
-        gas: walletService.gasAmountConstants().withdrawFromLock
+        gas: walletService.gasAmountConstants().withdrawFromLock,
       })
     },
 
-    async withdraw (from) {
+    async withdraw(from) {
       const call = web3.eth.abi.encodeFunctionCall(
-        lockContract.abi.find(
-          e => e.name === 'withdraw'
-        ),
+        lockContract.abi.find(e => e.name === 'withdraw'),
         []
       )
       return web3.eth.sendTransaction({
         to: lockContract.address,
         data: call,
         from,
-        gas: walletService.gasAmountConstants().withdrawFromLock
+        gas: walletService.gasAmountConstants().withdrawFromLock,
       })
-    }
+    },
   }
 }

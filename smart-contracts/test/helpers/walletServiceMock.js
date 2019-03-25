@@ -11,7 +11,7 @@ module.exports = class WalletService {
       updateKeyPrice: 1000000,
       purchaseKey: 1000000,
       cancelAndRefund: 1000000,
-      withdrawFromLock: 1000000
+      withdrawFromLock: 1000000,
     }
   }
 }

@@ -2,7 +2,11 @@ const PublicLock = artifacts.require('./PublicLock.sol')
 const Web3Utils = require('web3-utils')
 const Locks = require('../fixtures/locks')
 
-module.exports = function deployLocks (unlock, from, tokenAddress = Web3Utils.padLeft(0, 40)) {
+module.exports = function deployLocks(
+  unlock,
+  from,
+  tokenAddress = Web3Utils.padLeft(0, 40)
+) {
   let locks = {}
   return Promise.all(
     Object.keys(Locks).map(async name => {
