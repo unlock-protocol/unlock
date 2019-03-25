@@ -25,6 +25,8 @@ function package_application()
     
     mkdir builds
     pushd ./${application}
+    npm install
+    npm run build
     npm run dist ../${artifact_location} 
     popd
     return 0
