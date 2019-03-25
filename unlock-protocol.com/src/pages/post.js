@@ -9,6 +9,7 @@ import { TwitterTags } from '../components/page/TwitterTags'
 import OpenGraphTags from '../components/page/OpenGraphTags'
 import { preparePostProps } from '../utils/blogLoader'
 
+// TODO: move to PostContent
 const Post = ({ slug, post }) => {
   let title = post.title || ''
   let subTitle = post.subTitle || ''

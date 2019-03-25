@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 
-import { ActionButton } from '../../../creator/CreatorLocks'
+import ActionButton from '../../ActionButton'
 
 export class HomepageButton extends React.Component {
   constructor(props, context) {

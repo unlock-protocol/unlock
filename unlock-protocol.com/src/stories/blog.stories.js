@@ -1,25 +1,9 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { Provider } from 'react-redux'
-import { ConfigContext } from '../utils/withConfig'
-import createUnlockStore from '../createUnlockStore'
 import Post from '../pages/post'
 import Blog from '../pages/blog'
 
-const ConfigProvider = ConfigContext.Provider
-
-const store = createUnlockStore({})
-
-const config = {
-  env: 'production',
-  unlockUrl: 'http://foo',
-}
-
 storiesOf('Blog pages', module)
-  .addDecorator(getStory => (
-    <ConfigProvider value={config}>{getStory()}</ConfigProvider>
-  ))
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Blog post page', () => {
     const slug = 'testpost'
     const post = {
@@ -40,7 +24,7 @@ are intentionally not generated from this file date, in case we want to override
  * You can use any standard markdown
  * All you need to do is edit the markdown file and the system will do the rest
  * The blog uses standard components and system styles so there is no separate style system to maintain
- 
+
 ## Anything else?
 
 **Here is some bold text.** We can also _italicize text_ or [link to outside websites](https://unlock-protocol.com).
