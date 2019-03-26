@@ -12,6 +12,7 @@ import Media, { NoPhone, Phone } from '../../theme/media'
 import { createLock } from '../../actions/lock'
 import { DefaultError } from './FatalError'
 import Svg from '../interface/svg'
+import { CreateLockButton } from '../interface/buttons/ActionButton'
 
 export class CreatorLocks extends React.Component {
   constructor(props, context) {
@@ -45,9 +46,9 @@ export class CreatorLocks extends React.Component {
             <NoPhone>Balance</NoPhone>
             <Phone>Balance</Phone>
           </LockMinorHeader>
-          <CreateButton onClick={this.toggleForm} id="CreateLockButton">
+          <CreateLockButton onClick={this.toggleForm} id="CreateLockButton">
             Create Lock
-          </CreateButton>
+          </CreateLockButton>
         </LockHeaderRow>
         <Errors />
         {showDashboardForm && (
@@ -166,29 +167,5 @@ const LockMinorHeader = styled.div`
 export const Quantity = styled(LockMinorHeader)`
   ${Media.phone`
     grid-row: span 2;
-  `};
-`
-
-export const ActionButton = styled.button`
-  background-color: ${props =>
-    props.disabled ? 'var(--grey)' : 'var(--green)'};
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans', sans-serif;
-  border-radius: 4px;
-  cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
-  outline: none;
-  transition: background-color 200ms ease;
-  & :hover {
-    background-color: var(--activegreen);
-  }
-`
-
-const CreateButton = styled(ActionButton)`
-  padding: 10px;
-  align-self: end;
-  ${Media.phone`
-    display: none;
   `};
 `
