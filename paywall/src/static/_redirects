@@ -2,4 +2,5 @@
 # See https://www.netlify.com/docs/redirects/#rewrites-and-proxying
 
 / /index 200
+/demo/* /demo 200
 /* /paywall 200
