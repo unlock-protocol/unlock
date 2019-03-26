@@ -3,30 +3,34 @@ import styled from 'styled-components'
 import Jazzicon from 'react-jazzicon'
 
 import UnlockPropTypes from '../../propTypes'
+import * as UnlockTypes from '../../unlock'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
 
 import Media from '../../theme/media'
 import Balance from '../helpers/Balance'
 
-export function Account({ account, network }) {
+interface Props {
+  account: UnlockTypes.Account
+  network: UnlockTypes.Network
+}
+
+export function Account({ account, network }: Props) {
   const networkName = ETHEREUM_NETWORKS_NAMES[network.name]
-    ? ETHEREUM_NETWORKS_NAMES[network.name][0]
-    : 'Unknown Network'
+                    ? ETHEREUM_NETWORKS_NAMES[network.name][0]
+                    : 'Unknown Network'
   // Using https://github.com/MetaMask/metamask-extension/blob/develop/ui/lib/icon-factory.js#L60 to make sure jazzicons are consistent between Metamask and unlock.
   const iconSeed = parseInt(account.address.slice(2, 10), 16)
 
   return (
     <AccountWrapper>
-      <AccountHead>
-        <h2>Account</h2>
-        <NetworkInfo id="NetworkName">{networkName}</NetworkInfo>
-      </AccountHead>
-
       <AccountDetails>
         <DoubleHeightCell>
           <Jazzicon diameter={40} seed={iconSeed} />
         </DoubleHeightCell>
-        <Label>Address</Label>
+        <Label>
+          Address
+          <NetworkInfo id="NetworkName">{networkName}</NetworkInfo>
+        </Label>
         <Label>Balance</Label>
         <DoubleHeightCell />
         <DoubleHeightCell />
@@ -53,18 +57,13 @@ export default Account
 
 const AccountWrapper = styled.section``
 
-const AccountHead = styled.header`
-  display: grid;
-  grid-template-columns: auto 1fr 1fr;
-  align-items: center;
-  grid-gap: 8px;
-`
-
 const NetworkInfo = styled.span`
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
   font-weight: 500;
   color: var(--red);
+  margin-left: 1em;
+  text-transform: none;
 `
 
 const AccountDetails = styled.div`
