@@ -4,7 +4,7 @@
  * Pair of network name and 'class' (dev, test, staging, main)
  * Taken from https://ethereum.stackexchange.com/questions/17051/how-to-select-a-network-id-or-is-there-a-list-of-network-ids
  */
-export const ETHEREUM_NETWORKS_NAMES = {
+export const ETHEREUM_NETWORKS_NAMES: { [id: number]: string[] } = {
   0: ['Olympic', 'main'],
   1: ['Mainnet', 'main'],
   2: ['Morden', 'staging'],
@@ -18,7 +18,7 @@ export const ETHEREUM_NETWORKS_NAMES = {
  * @param title
  * @returns {string}
  */
-export const pageTitle = title => {
+export const pageTitle = (title: string) => {
   let pageTitle = ''
   if (title) pageTitle += `${title} | `
   return (pageTitle += "Unlock: The Web's new business model")
