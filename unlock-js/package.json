@@ -1,7 +1,7 @@
 {
-  "name": "unlock",
-  "version": "1.0.0",
-  "description": "This module provides libraries to include Unlock APIs inside a Javascript application",
+  "name": "@unlock-protocol/unlock-js",
+  "version": "0.0.1",
+  "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "index.js",
   "scripts": {
     "test": "jest",
