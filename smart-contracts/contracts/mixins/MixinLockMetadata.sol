@@ -1,4 +1,4 @@
-pragma solidity 0.5.6;
+pragma solidity 0.5.7;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import '../interfaces/IERC721.sol';
@@ -7,8 +7,8 @@ import '../interfaces/IERC721.sol';
 /**
  * @title Mixin for metadata about the Lock.
  * @author HardlyDifficult
- * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply 
- * separates logically groupings of code to ease readability. 
+ * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
+ * separates logically groupings of code to ease readability.
  */
 contract MixinLockMetadata is
   IERC721,
@@ -33,7 +33,7 @@ contract MixinLockMetadata is
     * @return string representing the token name
     */
   function name(
-  ) external view 
+  ) external view
     returns (string memory)
   {
     return lockName;
