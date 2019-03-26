@@ -1,0 +1,30 @@
+{
+  "name": "unlock",
+  "version": "1.0.0",
+  "description": "This module provides libraries to include Unlock APIs inside a Javascript application",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint .",
+    "build": "./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",
+    "prepare": "npm run build"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.4.2",
+    "babel-jest": "^23.6.0",
+    "eslint": "^5.15.3",
+    "ethereumjs-util": "^6.0.0",
+    "jest": "^24.1.0",
+    "next": "^8.0.3",
+    "nock": "^10.0.5",
+    "unlock-abi-0": "^1.0.1",
+    "web3": "1.0.0-beta.37",
+    "web3-eth-abi": "1.0.0-beta.37",
+    "web3-utils": "1.0.0-beta.37"
+  },
+  "devDependencies": {}
+}
