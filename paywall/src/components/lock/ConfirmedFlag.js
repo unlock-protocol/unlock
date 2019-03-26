@@ -13,7 +13,7 @@ export default function ConfirmedFlag({ dismiss }) {
       </OptimisticLogo>
       <FlagContent>
         <p>Purchase Confirmed</p>
-        <ConfirmedKey height="24px" width="24px" onClick={dismiss} />
+        <ConfirmedKey height="24px" width="24px" hideModal={dismiss} />
       </FlagContent>
     </OptimisticFlag>
   )
