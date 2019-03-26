@@ -28,9 +28,6 @@ function _server(port, dev) {
         } else if (path === 'paywall') {
           const params = route('/paywall/:lockAddress/:redirect?')(pathname)
           app.render(req, res, '/paywall', Object.assign(params, query))
-        } else if (path === 'demo') {
-          const params = route('/demo/:lockaddress')(pathname)
-          app.render(req, res, '/demo', Object.assign(params, query))
         } else if (path === 'blog') {
           const params = route('/blog/:slug')(pathname)
           if (params.slug) {

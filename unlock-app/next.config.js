@@ -70,7 +70,6 @@ module.exports = withTypescript({
       '/dashboard': { page: '/dashboard' },
       '/keychain': { page: '/keyChain' },
       '/paywall': { page: '/paywall' },
-      '/demo': { page: '/demo' },
       '/terms': { page: '/terms' },
       '/privacy': { page: '/privacy' },
       '/log': { page: '/log' },
