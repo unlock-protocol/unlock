@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import { MAX_DEVICE_WIDTHS } from '../constants'
 
-let sizes = {
+let sizes: { [key: string]: any } = {
   desktop: {
     min: MAX_DEVICE_WIDTHS.TABLET,
     max: MAX_DEVICE_WIDTHS.DESKTOP,
@@ -25,12 +25,12 @@ sizes.nodesktop = {
   min: sizes.phone.min,
 }
 
-const Media = Object.keys(sizes).reduce((acc, label) => {
-  acc[label] = (...args) => css`
+const Media: { [key: string]: any } = Object.keys(sizes).reduce((acc: { [key: string]: any }, label) => {
+  acc[label] = (arg: any, ...args: any[]) => css`
     @media only screen and (min-width: ${sizes[label].min}px) ${sizes[label].max
         ? `and (max-width: ${sizes[label].max}px)`
         : ''} {
-      ${css(...args)};
+      ${css(arg, ...args)};
     }
   `
   return acc
