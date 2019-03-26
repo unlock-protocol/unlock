@@ -1,10 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-// This weird import is done so that I can declare react-jazzicon as any
-// (no types package available)
-const Jazzicon: any = import('react-jazzicon')
+import Jazzicon from 'react-jazzicon'
 
-import UnlockPropTypes from '../../propTypes'
 import * as UnlockTypes from '../../unlock'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
 
