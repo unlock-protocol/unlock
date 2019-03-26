@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import Jazzicon from 'react-jazzicon'
+// This weird import is done so that I can declare react-jazzicon as any
+// (no types package available)
+const Jazzicon: any = import('react-jazzicon')
 
 import UnlockPropTypes from '../../propTypes'
 import * as UnlockTypes from '../../unlock'
@@ -46,11 +48,6 @@ export function Account({ account, network }: Props) {
       </AccountDetails>
     </AccountWrapper>
   )
-}
-
-Account.propTypes = {
-  account: UnlockPropTypes.account.isRequired,
-  network: UnlockPropTypes.network.isRequired,
 }
 
 export default Account
