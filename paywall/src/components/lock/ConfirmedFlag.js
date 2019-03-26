@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { RoundedLogo } from '../interface/Logo'
 import ConfirmedKey from '../interface/buttons/overlay/ConfirmedKey'
-import { OptimisticFlag, OptimisticLogo, FlagContent } from './LockStyles'
+import { OptimisticFlag, OptimisticLogo, FlagContent } from './FlagStyles'
 
 export default function ConfirmedFlag({ dismiss }) {
   return (

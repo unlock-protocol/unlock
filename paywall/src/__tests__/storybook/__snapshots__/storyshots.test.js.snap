@@ -7603,6 +7603,32 @@ Object {
   text-align: center;
 }
 
+.c9 {
+  display: none;
+}
+
+.c4 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c4:hover .c8 {
+  display: block;
+}
+
+.c4:hover .c7 {
+  display: none;
+}
+
+.c4:hover ~ .c13 {
+  display: grid;
+}
+
+.c4:hover ~ .c14 {
+  display: none;
+}
+
 .c0 {
   height: 80px;
   width: 120px;
@@ -7650,32 +7676,6 @@ Object {
   margin-bottom: 3px;
 }
 
-.c9 {
-  display: none;
-}
-
-.c4 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c4:hover .c8 {
-  display: block;
-}
-
-.c4:hover .c7 {
-  display: none;
-}
-
-.c4:hover ~ .c13 {
-  display: grid;
-}
-
-.c4:hover ~ .c14 {
-  display: none;
-}
-
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -7688,7 +7688,7 @@ Object {
           class="c0"
         >
           <div
-            class="0 c1"
+            class="c1"
           >
             <div
               class="c2"
@@ -7704,7 +7704,7 @@ Object {
             </div>
           </div>
           <div
-            class="3 c3"
+            class="c3"
           >
             <p>
               Purchase Confirmed
@@ -7752,10 +7752,10 @@ Object {
       style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="sc-1549ebs-9 jZvPyH"
+        class="j1ncz7-0 bZCHNZ"
       >
         <div
-          class="sc-1549ebs-10 fLFWTN"
+          class="j1ncz7-1 kvurOe"
         >
           <div
             class="sth0f3-0 kwQJpX"
@@ -7771,7 +7771,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-1549ebs-13 joqblW"
+          class="j1ncz7-4 fgRiVp"
         >
           <p>
             Purchase Confirmed
@@ -7946,7 +7946,7 @@ Object {
           class="c0"
         >
           <div
-            class="0 c1"
+            class="c1"
           >
             <div
               class="c2"
@@ -7962,16 +7962,16 @@ Object {
             </div>
           </div>
           <div
-            class="3 c3"
+            class="c3"
           >
             <p>
               Confirming Purchase
             </p>
             <div
-              class="1 c4"
+              class="c4"
             >
               <div
-                class="1 c5"
+                class="c5"
               />
             </div>
           </div>
@@ -7988,10 +7988,10 @@ Object {
       style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="sc-1549ebs-9 jZvPyH"
+        class="j1ncz7-0 bZCHNZ"
       >
         <div
-          class="sc-1549ebs-10 fLFWTN"
+          class="j1ncz7-1 kvurOe"
         >
           <div
             class="sth0f3-0 kwQJpX"
@@ -8007,16 +8007,16 @@ Object {
           </div>
         </div>
         <div
-          class="sc-1549ebs-13 joqblW"
+          class="j1ncz7-4 fgRiVp"
         >
           <p>
             Confirming Purchase
           </p>
           <div
-            class="sc-1549ebs-11 hzVlcW"
+            class="j1ncz7-2 UUghW"
           >
             <div
-              class="sc-1549ebs-11 sc-1549ebs-12 fdPmaR"
+              class="j1ncz7-2 j1ncz7-3 hrKbli"
             />
           </div>
         </div>

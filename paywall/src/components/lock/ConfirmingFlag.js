@@ -8,7 +8,7 @@ import {
   ProgressBar,
   Progress,
   FlagContent,
-} from './LockStyles'
+} from './FlagStyles'
 import { TRANSACTION_TYPES } from '../../constants'
 import withConfig from '../../utils/withConfig'
 import UnlockPropTypes from '../../propTypes'
