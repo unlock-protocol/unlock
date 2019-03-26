@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { RoundedLogo, WordMarkLogo } from './Logo'
 import Buttons from './buttons/layout'
-import PageNavButtons from './buttons/navigation'
 import { ButtonLink } from './buttons/Button'
 import Media from '../../theme/media'
 
@@ -17,28 +15,6 @@ const navigationButtons = [
   Buttons.Telegram,
 ]
 
-// distinct from the above buttons are page nav buttons -- they are only visible
-// from within the app and not from the homepage or other static pages.
-const appButtons = [
-  { Button: PageNavButtons.Dashboard, page: '/dashboard' },
-  { Button: PageNavButtons.Log, page: '/log' },
-]
-
-export const mapStateToProps = ({
-  router: {
-    location: { pathname },
-  },
-}) => ({ pathname })
-
-/**
- * Helper function which returns the path on the button if the current pathname matches it
- */
-export const isOnAppPage = pathname => {
-  return (
-    appButtons.map(button => button.page).find(page => pathname.match(page)) ||
-    false
-  )
-}
 export class Header extends React.PureComponent {
   constructor(props) {
     super(props)
@@ -52,8 +28,7 @@ export class Header extends React.PureComponent {
 
   render() {
     const { menu } = this.state
-    const { forContent, title, pathname } = this.props
-    const onAppPage = isOnAppPage(pathname)
+    const { forContent, title } = this.props
     return (
       <TopHeader>
         {forContent ? (
@@ -78,12 +53,6 @@ export class Header extends React.PureComponent {
             {title}
           </Title>
         )}
-        <AppButtons>
-          {onAppPage &&
-            appButtons.map(({ Button }) => (
-              <Button key={Button} activePath={onAppPage} />
-            ))}
-        </AppButtons>
         <DesktopButtons>
           {navigationButtons.map(NavButton => (
             <NavButton key={NavButton} />
@@ -112,21 +81,19 @@ export class Header extends React.PureComponent {
 Header.propTypes = {
   title: PropTypes.string,
   forContent: PropTypes.bool,
-  pathname: PropTypes.string,
 }
 
 Header.defaultProps = {
   title: 'Unlock',
   forContent: false,
-  pathname: '/',
 }
 
-export default connect(mapStateToProps)(Header)
+export default Header
 
 const TopHeader = styled.header`
   display: grid;
   grid-gap: 0;
-  grid-template-columns: 256px 1fr auto;
+  grid-template-columns: 256px auto;
   column-gap: 16px;
   grid-auto-flow: column;
   align-items: center;
@@ -155,15 +122,12 @@ const DesktopButtons = styled.div`
   grid-template-columns: repeat(${() => navigationButtons.length}, 24px);
   grid-auto-flow: column;
   align-items: center;
+  justify-content: right;
   height: 100%;
 
   ${Media.phone`
     display: none;
   `};
-`
-
-const AppButtons = styled(DesktopButtons)`
-  grid-template-columns: repeat(${() => appButtons.length}, 24px);
 `
 
 const MobileToggle = styled.div`

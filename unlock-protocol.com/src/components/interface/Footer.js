@@ -8,7 +8,7 @@ const Footer = () => (
     <Buttons.Jobs />
     <Buttons.Github />
     <Buttons.Telegram />
-    <Colophon>Made with passion in Brooklyn, NY</Colophon>
+    <Colophon>Made with passion in New York</Colophon>
   </Container>
 )
 

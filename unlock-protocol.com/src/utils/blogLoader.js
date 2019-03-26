@@ -1,5 +1,4 @@
 import fetch from 'isomorphic-unfetch'
-import configure from '../config'
 
 const yamlFront = require('yaml-front-matter')
 
@@ -51,10 +50,11 @@ export const loadBlogPost = async url => {
  */
 export const preparePostProps = async context => {
   const { slug } = context.query
-  const { unlockUrl } = configure()
 
   // Next.js will cache this result and turn the page into a static page. The payload will not be reloaded on the client.
-  const post = await loadBlogPost(unlockUrl + '/static/blog/' + slug + '.md')
+  const post = await loadBlogPost(
+    'http://0.0.0.0:3000/static/blog/' + slug + '.md'
+  )
 
   return { slug, post }
 }
@@ -64,11 +64,9 @@ export const preparePostProps = async context => {
  * @returns {Promise<{posts: Array}>}
  */
 export const prepareBlogProps = async maxPosts => {
-  const { unlockUrl } = configure()
-
   // Next.js will cache this result and turn the page into a static page. The payload will not be reloaded on the client.
   const posts = await loadBlogIndexFile(
-    unlockUrl + '/static/blog.json',
+    'http://0.0.0.0:3000/static/blog.json',
     maxPosts
   )
 
