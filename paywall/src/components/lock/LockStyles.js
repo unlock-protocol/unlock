@@ -167,13 +167,16 @@ export const ProgressBar = styled.div`
 export const Progress = styled(ProgressBar)`
   position: absolute;
   background: ${({ confirmations, requiredConfirmations }) => {
-    if (confirmations === requiredConfirmations) {
+    if (confirmations >= requiredConfirmations) {
       return 'var(--green)}'
     }
     return 'var(--yellow)}'
   }};
   width: ${({ confirmations, requiredConfirmations }) => {
-    const width = Math.floor(confirmations * (74 / requiredConfirmations))
+    const width = Math.min(
+      Math.floor(confirmations * (74 / requiredConfirmations)),
+      74
+    )
     return `${width}px`
   }};
 `
