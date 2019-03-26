@@ -8,7 +8,6 @@ import { pageTitle } from '../../constants'
 import { TwitterTags } from '../page/TwitterTags'
 import { OpenGraphTags } from '../page/OpenGraphTags'
 import { HomepageButton } from '../interface/buttons/homepage/HomepageButton'
-import withConfig from '../../utils/withConfig'
 
 export const HomeContent = () => (
   <Layout forContent>
@@ -55,7 +54,7 @@ export const HomeContent = () => (
 
 HomeContent.propTypes = {}
 
-export default withConfig(HomeContent)
+export default HomeContent
 
 const ImageWithHover = styled.div`
   border-style: none;

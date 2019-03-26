@@ -10,6 +10,7 @@ import OpenGraphTags from '../components/page/OpenGraphTags'
 import BlogIndex from '../components/content/BlogIndex'
 import { prepareBlogProps } from '../utils/blogLoader'
 
+// TODO move to BlogContent
 const Blog = ({ posts }) => {
   const title = 'Blog'
   const description = 'News and updates from the Unlock Protocol team.'

@@ -1,14 +1,8 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { Provider } from 'react-redux'
 import LayoutButtons from '../../components/interface/buttons/layout'
 
-import createUnlockStore from '../../createUnlockStore'
-
-const store = createUnlockStore({})
-
 storiesOf('Buttons/Layout Buttons', module)
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Github', () => {
     return <LayoutButtons.Github />
   })

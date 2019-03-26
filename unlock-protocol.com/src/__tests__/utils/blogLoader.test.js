@@ -1,3 +1,4 @@
+import fetch from 'jest-fetch-mock'
 import {
   loadBlogIndexFile,
   loadBlogPost,
@@ -13,7 +14,7 @@ title: This is a sample post
 subTitle: And some sample metadata
 publishDate: Dec 31, 1978
 ---
-Here is some markdown 
+Here is some markdown
 `
 
 describe('blogLoader', () => {
