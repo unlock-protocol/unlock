@@ -9,9 +9,10 @@ const rss = require('rss')
  * @param baseDir
  * @returns {Array}
  */
-const generateBlogFeed = baseDir => {
+const generateBlogFeed = basedir => {
   // Find blog posts to export and render them as static pages (*.md files in the /blog folder)
-  let posts = fs.readdirSync(join(baseDir, 'static', 'blog'))
+  let blogDir = join(basedir, 'blog')
+  let posts = fs.readdirSync(blogDir)
   let postFeed = [] // We will use this to populate the homepage and (later) an RSS feed
 
   // Establish a page route for each valid blog post
@@ -20,9 +21,7 @@ const generateBlogFeed = baseDir => {
       let slug = postFile.substr(0, postFile.length - 3)
 
       // Cache post metadata for feed; used in blog homepage and eventually RSS
-      let post = yamlFront.loadFront(
-        fs.readFileSync(join(baseDir, 'static', 'blog', postFile))
-      )
+      let post = yamlFront.loadFront(fs.readFileSync(join(blogDir, postFile)))
       post.slug = slug
       delete post.__content // We don't need to store the content of the post here
 
@@ -64,7 +63,7 @@ const generateBlogPages = postFeed => {
 const generateBlogIndexFile = (baseDir, postFeed) => {
   // Write blog post index to output baseDirectory
   fs.writeFile(
-    join(baseDir, 'static', 'blog.json'),
+    join(baseDir, 'blog', 'blog.index'),
     JSON.stringify({ items: postFeed }),
     'utf8'
   )

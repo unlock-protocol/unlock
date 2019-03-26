@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
 
 const fs = require('fs')
-const { join } = require('path')
+const { join, resolve } = require('path')
 const { promisify } = require('util')
 const withTypescript = require('@zeit/next-typescript')
 const { addBlogPagesToPageObject } = require('./src/utils/blog')
@@ -29,6 +29,14 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
 module.exports = withTypescript({
   publicRuntimeConfig: requiredConfigVariables,
   webpack(config) {
+    config.module.rules.push({
+      test: /\.md$/,
+      use: 'raw-loader',
+    })
+    config.module.rules.push({
+      test: /blog\.index/,
+      use: 'raw-loader',
+    })
     return config
   },
   exportPathMap: async (defaultPathMap, { dev, dir, outDir }) => {
@@ -61,6 +69,6 @@ module.exports = withTypescript({
       '/blog': { page: '/blog' },
     }
 
-    return addBlogPagesToPageObject(dir, pages)
+    return addBlogPagesToPageObject(resolve(dir, '..'), pages)
   },
 })

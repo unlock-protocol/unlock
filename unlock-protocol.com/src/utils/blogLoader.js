@@ -1,19 +1,15 @@
-import fetch from 'isomorphic-unfetch'
-
 const yamlFront = require('yaml-front-matter')
 
 /**
  * Given the URL of a blog index file, returns an array of posts
- * @param url
  * @param maxPosts
  * @returns {Promise<Array>}
  */
-export const loadBlogIndexFile = async (url, maxPosts) => {
-  const response = await fetch(url)
-
+export const loadBlogIndexFile = async maxPosts => {
   let index
   try {
-    index = await response.json()
+    const response = await require('../../blog/blog.index')
+    index = await JSON.parse(response.default)
   } catch (e) {
     index = {} // Just set up a default object
   }
@@ -34,13 +30,17 @@ export const loadBlogIndexFile = async (url, maxPosts) => {
 }
 
 /**
- * Loads a parsed blog post object from a markdown file location
- * @param url
+ * Loads a parsed blog post object from a markdown file location (or an empty object if no blog post was found)
+ * @param slug
  * @returns {Promise<{}>}
  */
-export const loadBlogPost = async url => {
-  const fileContents = await (await fetch(url)).text()
-  return yamlFront.loadFront(fileContents)
+export const loadBlogPost = async slug => {
+  try {
+    const fileContents = await require('../../blog/' + slug + '.md') // eslint-disable-line import/no-dynamic-require
+    return yamlFront.loadFront(fileContents.default)
+  } catch (e) {
+    return {}
+  }
 }
 
 /**
@@ -51,10 +51,7 @@ export const loadBlogPost = async url => {
 export const preparePostProps = async context => {
   const { slug } = context.query
 
-  // Next.js will cache this result and turn the page into a static page. The payload will not be reloaded on the client.
-  const post = await loadBlogPost(
-    'http://0.0.0.0:3000/static/blog/' + slug + '.md'
-  )
+  const post = await loadBlogPost(slug)
 
   return { slug, post }
 }
@@ -64,11 +61,7 @@ export const preparePostProps = async context => {
  * @returns {Promise<{posts: Array}>}
  */
 export const prepareBlogProps = async maxPosts => {
-  // Next.js will cache this result and turn the page into a static page. The payload will not be reloaded on the client.
-  const posts = await loadBlogIndexFile(
-    'http://0.0.0.0:3000/static/blog.json',
-    maxPosts
-  )
+  const posts = await loadBlogIndexFile(maxPosts)
 
   return { posts }
 }
