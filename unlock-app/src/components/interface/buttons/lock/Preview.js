@@ -4,9 +4,11 @@ import UnlockPropTypes from '../../../../propTypes'
 import Svg from '../../svg'
 import Button from '../Button'
 
-const Preview = ({ lock, ...props }) => (
+import withConfig from '../../../../utils/withConfig'
+
+const Preview = ({ lock, config, ...props }) => (
   <Button
-    href={`/demo/${lock.address}`}
+    href={`${config.paywallUrl}/demo/${lock.address}`}
     label="Preview"
     {...props}
     id={`PreviewButton_${lock.address}`}
@@ -17,6 +19,7 @@ const Preview = ({ lock, ...props }) => (
 
 Preview.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
-export default Preview
+export default withConfig(Preview)
