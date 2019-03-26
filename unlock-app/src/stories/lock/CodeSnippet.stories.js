@@ -1,18 +1,24 @@
 import React from 'react'
+import { Provider } from 'react-redux'
 import { storiesOf } from '@storybook/react'
 import { EmbedCodeSnippet } from '../../components/creator/lock/EmbedCodeSnippet'
 import { ConfigContext } from '../../utils/withConfig'
+import createUnlockStore from '../../createUnlockStore'
+
+const store = createUnlockStore({})
 
 storiesOf('LockCodeSnippet', module)
   .addDecorator(getStory => (
-    <ConfigContext.Provider
-      value={{
-        paywallUrl: 'http://localhost',
-        paywallScriptUrl: 'http://localhost/static/paywall.min.js',
-      }}
-    >
-      {getStory()}
-    </ConfigContext.Provider>
+    <Provider store={store}>
+      <ConfigContext.Provider
+        value={{
+          paywallUrl: 'http://localhost',
+          paywallScriptUrl: 'http://localhost/static/paywall.min.js',
+        }}
+      >
+        {getStory()}
+      </ConfigContext.Provider>
+    </Provider>
   ))
   .add('with sample lock', () => {
     const lock = {
