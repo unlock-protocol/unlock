@@ -7517,6 +7517,558 @@ Object {
 }
 `;
 
+exports[`Storyshots Optimistic Unlocking Flags the confirmed flag 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c2 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c2 > svg {
+  fill: white;
+}
+
+.c6 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c6 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c6:hover {
+  background-color: var(--green);
+}
+
+.c6:hover > svg {
+  fill: white;
+}
+
+.c5:hover .c10 {
+  display: inline-block;
+}
+
+.c11 .c5 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c11 .c5:nth-child(1) {
+  pointer-events: none;
+}
+
+.c11 .c5:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c11 .c5 > svg {
+  fill: var(--grey);
+}
+
+.c11 .c5:hover > svg {
+  fill: var(--grey);
+}
+
+.c12 .c5 {
+  margin: 24px;
+}
+
+.c12 .c5 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c9 {
+  display: none;
+}
+
+.c4 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c4:hover .c8 {
+  display: block;
+}
+
+.c4:hover .c7 {
+  display: none;
+}
+
+.c4:hover ~ .c13 {
+  display: grid;
+}
+
+.c4:hover ~ .c14 {
+  display: none;
+}
+
+.c0 {
+  height: 80px;
+  width: 120px;
+  float: right;
+  box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
+  background: var(--white);
+  margin: auto;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.c1 {
+  position: absolute;
+  top: 26px;
+  left: -14px;
+  height: 28px;
+  width: 28px;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 74px;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-left: 14px;
+  font-size: 12px;
+}
+
+.c3 > p {
+  text-align: center;
+  margin-bottom: 3px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
+      >
+        <div
+          class="c0"
+        >
+          <div
+            class="c1"
+          >
+            <div
+              class="c2"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </div>
+          <div
+            class="c3"
+          >
+            <p>
+              Purchase Confirmed
+            </p>
+            <a
+              class="c4 c5 c6"
+              height="24px"
+              width="24px"
+            >
+              <svg
+                class="c7 "
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <svg
+                class="c8 c9"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
+    >
+      <div
+        class="j1ncz7-0 bZCHNZ"
+      >
+        <div
+          class="j1ncz7-1 kvurOe"
+        >
+          <div
+            class="sth0f3-0 kwQJpX"
+          >
+            <svg
+              viewBox="0 0 56 56"
+            >
+              <title />
+              <path
+                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          class="j1ncz7-4 fgRiVp"
+        >
+          <p>
+            Purchase Confirmed
+          </p>
+          <a
+            class="sc-1hzn3pu-2 ffRwyB is925m-0 kuCWTv"
+            height="24px"
+            width="24px"
+          >
+            <svg
+              class="sc-1hzn3pu-0 dozNUb"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <svg
+              class="sc-1hzn3pu-1 gckVYZ"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Optimistic Unlocking Flags the confirming flag 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c2 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c2 > svg {
+  fill: white;
+}
+
+.c0 {
+  height: 80px;
+  width: 120px;
+  float: right;
+  box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
+  background: var(--white);
+  margin: auto;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.c1 {
+  position: absolute;
+  top: 26px;
+  left: -14px;
+  height: 28px;
+  width: 28px;
+}
+
+.c4 {
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+}
+
+.c5 {
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+  position: absolute;
+  background: var(--yellow);
+  width: 29px;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 74px;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-left: 14px;
+  font-size: 12px;
+}
+
+.c3 > p {
+  text-align: center;
+  margin-bottom: 3px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
+      >
+        <div
+          class="c0"
+        >
+          <div
+            class="c1"
+          >
+            <div
+              class="c2"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </div>
+          <div
+            class="c3"
+          >
+            <p>
+              Confirming Purchase
+            </p>
+            <div
+              class="c4"
+            >
+              <div
+                class="c5"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
+    >
+      <div
+        class="j1ncz7-0 bZCHNZ"
+      >
+        <div
+          class="j1ncz7-1 kvurOe"
+        >
+          <div
+            class="sth0f3-0 kwQJpX"
+          >
+            <svg
+              viewBox="0 0 56 56"
+            >
+              <title />
+              <path
+                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          class="j1ncz7-4 fgRiVp"
+        >
+          <p>
+            Confirming Purchase
+          </p>
+          <div
+            class="j1ncz7-2 UUghW"
+          >
+            <div
+              class="j1ncz7-2 j1ncz7-3 hrKbli"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Overlay iframe, account error is ignored 1`] = `
 Object {
   "asFragment": [Function],
