@@ -8,6 +8,6 @@ if [ -z "$1" ]
 fi
 
 # Archive artifacts
-pushd 'build'
+cd 'build'
 zip ${archive} -r . ../package.json ../package-lock.json
-popd
+cd '..'
