@@ -193,7 +193,7 @@ storiesOf('DashboardContent', module)
   .add('dashboard, no locks', () => {
     return (
       <Provider store={store}>
-        <DashboardContent network={network} account={undefined} lockFeed={[]} />
+        <DashboardContent network={network} account={account} lockFeed={[]} />
       </Provider>
     )
   })
