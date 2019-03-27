@@ -4,7 +4,7 @@ import Web3Utils from 'web3-utils'
 import Web3EthAbi from 'web3-eth-abi'
 import nock from 'nock'
 import { PublicLock, Unlock } from 'unlock-abi-0'
-import Web3Service, { TransactionType } from '../web3Service'
+import Web3Service, { TransactionType, keyId } from '../web3Service'
 
 const nodeAccounts = [
   '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
@@ -397,6 +397,102 @@ describe('Web3Service', () => {
         `${method.signature}${input}`,
         web3Service.unlockAddress
       )
+    })
+
+    describe('inputsHandlers', () => {
+      it('createLock', async () => {
+        expect.assertions(4)
+        let resolveLockUpdater
+        let resolveTransactionUpdater
+        const fakeLockAddress = '0x123'
+        const fakeParams = {
+          _keyPrice: '100000000000000000',
+          _expirationDuration: '123',
+          _maxNumberOfKeys: '-1',
+        }
+        const fakeHash = '0x12345'
+  
+        const lockUpdater = new Promise(resolve => {
+          resolveLockUpdater = resolve
+        })
+        const transactionUpdater = new Promise(resolve => {
+          resolveTransactionUpdater = resolve
+        })
+        web3Service.generateLockAddress = () => Promise.resolve(fakeLockAddress)
+  
+        web3Service.once('lock.updated', (lockAddress, params) => {
+          expect(lockAddress).toBe(fakeLockAddress)
+          expect(params).toEqual({
+            transaction: fakeHash,
+            address: fakeLockAddress,
+            expirationDuration: 123,
+            keyPrice: '0.1',
+            maxNumberOfKeys: -1,
+            outstandingKeys: 0,
+            balance: '0',
+          })
+          resolveLockUpdater()
+        })
+  
+        web3Service.once('transaction.updated', (transactionHash, params) => {
+          expect(transactionHash).toBe(fakeHash)
+          expect(params).toEqual({
+            lock: fakeLockAddress,
+          })
+          resolveTransactionUpdater()
+        })
+  
+        web3Service.inputsHandlers.createLock(
+          fakeHash,
+          web3Service.unlockAddress,
+          fakeParams
+        )
+        await Promise.all([lockUpdater, transactionUpdater])
+      })
+  
+      it('purchaseFor', async () => {
+        expect.assertions(4)
+        let resolveKeySaver
+        let resolveTransactionUpdater
+        const owner = '0x9876'
+        const fakeParams = {
+          _recipient: owner,
+        }
+        const fakeContractAddress = '0xabc'
+        const fakeHash = '0x12345'
+  
+        const keySaver = new Promise(resolve => {
+          resolveKeySaver = resolve
+        })
+        const transactionUpdater = new Promise(resolve => {
+          resolveTransactionUpdater = resolve
+        })
+  
+        web3Service.once('transaction.updated', (transactionHash, params) => {
+          expect(transactionHash).toBe(fakeHash)
+          expect(params).toEqual({
+            key: keyId(fakeContractAddress, owner),
+            lock: fakeContractAddress,
+          })
+          resolveTransactionUpdater()
+        })
+  
+        web3Service.once('key.saved', (id, params) => {
+          expect(id).toBe(keyId(fakeContractAddress, owner))
+          expect(params).toEqual({
+            owner,
+            lock: fakeContractAddress,
+          })
+          resolveKeySaver()
+        })
+  
+        web3Service.inputsHandlers.purchaseFor(
+          fakeHash,
+          fakeContractAddress,
+          fakeParams
+        )
+        await Promise.all([keySaver, transactionUpdater])
+      })
     })
   })
 
