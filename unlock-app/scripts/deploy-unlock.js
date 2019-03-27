@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
 
+// TODO: move into unlock-js
+
 const Web3 = require('web3')
 const Unlock = require('unlock-abi-0').Unlock
 const net = require('net')

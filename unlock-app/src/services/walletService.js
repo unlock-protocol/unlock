@@ -12,7 +12,7 @@ import {
   FAILED_TO_UPDATE_KEY_PRICE,
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../errors'
-import { TransactionType } from './web3Service'
+import { TransactionType } from '../unlock'
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
