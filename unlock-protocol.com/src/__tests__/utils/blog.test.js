@@ -1,22 +1,22 @@
 const MOCK_FILE_INFO = {
-  '/foo/bar/static/blog/test1.md': `---
+  '/foo/bar/blog/test1.md': `---
 title: This is a sample post
 subTitle: And some sample metadata
 publishDate: Dec 31, 1978
 ---
 Here is some markdown 
 `,
-  '/foo/bar/static/blog/test2.md': `---
+  '/foo/bar/blog/test2.md': `---
 title: This is a second sample post
 subTitle: And some sample metadata
 publishDate: Jan 7, 1979
 ---
 Here is some markdown 
 `,
-  '/foo/bar/static/blog/test3.txt': `
+  '/foo/bar/blog/test3.txt': `
 Here is some non-markdown text content
 `,
-  '/foo/bar/static/blog/test3.md': `---
+  '/foo/bar/blog/test3.md': `---
 title: This is a post from the future
 subTitle: And some sample metadata
 publishDate: Jan 7, 2099
