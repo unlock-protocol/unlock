@@ -56,3 +56,7 @@ export interface Lock {
   unlimitedKeys: boolean
   transaction: string
 }
+
+export interface Locks {
+  [hash: string]: Lock
+}

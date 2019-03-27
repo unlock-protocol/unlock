@@ -1,18 +1,40 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
-import PropTypes from 'prop-types'
-import UnlockPropTypes from '../../propTypes'
 import Layout from '../interface/Layout'
-import Account from '../interface/Account'
+import AccountInfo from '../interface/Account'
 import CreatorLocks from '../creator/CreatorLocks'
 import DeveloperOverlay from '../developer/DeveloperOverlay'
 import BrowserOnly from '../helpers/BrowserOnly'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { pageTitle } from '../../constants'
+import { Account, Network, Locks, Lock, Transactions } from '../../unlock'
+import { CreateLockButton, AccountWrapper } from '../interface/buttons/ActionButton'
+import { showForm, hideForm } from '../../actions/lockFormVisibility';
+
+interface Props {
+  account: Account
+  network: Network
+  lockFeed: Lock[]
+  formIsVisible: boolean
+  showForm: () => any
+  hideForm: () => any
+}
 
 // TODO : move lockFeed extraction in CreatorLocks since it's just being passed down there
-export const DashboardContent = ({ account, network, lockFeed }) => {
+export const DashboardContent = ({
+  account,
+  network,
+  lockFeed,
+  formIsVisible,
+  showForm,
+  hideForm,
+}: Props) => {
+
+  const handleClick = () => {
+    formIsVisible ? hideForm() : showForm()
+  }
+  
   return (
     <GlobalErrorConsumer>
       <Layout title="Creator Dashboard">
@@ -21,8 +43,17 @@ export const DashboardContent = ({ account, network, lockFeed }) => {
         </Head>
         {account && (
           <BrowserOnly>
-            <Account network={network} account={account} />
-            <CreatorLocks lockFeed={lockFeed} />
+            <AccountWrapper>
+              <AccountInfo network={network} account={account} />
+              <CreateLockButton id="CreateLockButton" onClick={handleClick}>
+                Create Lock
+              </CreateLockButton>
+            </AccountWrapper>
+            <CreatorLocks
+              lockFeed={lockFeed}
+              hideForm={hideForm}
+              formIsVisible={formIsVisible}
+            />
             <DeveloperOverlay />
           </BrowserOnly>
         )}
@@ -31,39 +62,48 @@ export const DashboardContent = ({ account, network, lockFeed }) => {
   )
 }
 
-DashboardContent.propTypes = {
-  account: UnlockPropTypes.account,
-  network: UnlockPropTypes.network.isRequired,
-  lockFeed: PropTypes.arrayOf(UnlockPropTypes.lock),
+interface State {
+  transactions: Transactions
+  locks: Locks
+  account: Account
+  network: Network
+  lockFormStatus: { visible: boolean }
 }
 
-DashboardContent.defaultProps = {
-  lockFeed: [],
-  account: null,
-}
-
-export const mapStateToProps = state => {
+export const mapStateToProps = ({
+  transactions,
+  locks,
+  account,
+  network,
+  lockFormStatus: { visible },
+}: State) => {
   // We want to display newer locks first, so sort the locks by blockNumber in descending order
-  const locksComparator = (a, b) => {
+  const locksComparator = (a: Lock, b: Lock) => {
     // Newly created locks may not have a transaction associated just yet
     // -- those always go right to the top
-    if (!state.transactions[a.transaction]) {
+    if (!transactions[a.transaction]) {
       return -1
     }
-    if (!state.transactions[b.transaction]) {
+    if (!transactions[b.transaction]) {
       return 1
     }
     return (
-      state.transactions[b.transaction].blockNumber -
-      state.transactions[a.transaction].blockNumber
+      transactions[b.transaction].blockNumber -
+      transactions[a.transaction].blockNumber
     )
   }
-  const lockFeed = Object.values(state.locks).sort(locksComparator)
+  const lockFeed = Object.values(locks).sort(locksComparator)
   return {
-    account: state.account,
-    network: state.network,
+    account,
+    network,
     lockFeed,
+    formIsVisible: visible,
   }
 }
 
-export default connect(mapStateToProps)(DashboardContent)
+const mapDispatchToProps = (dispatch: any) => ({
+  showForm: dispatch(showForm),
+  hideForm: dispatch(hideForm),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardContent)
