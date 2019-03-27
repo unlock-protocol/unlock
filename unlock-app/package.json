@@ -65,10 +65,9 @@
   },
   "engineStrict": true,
   "scripts": {
-    "predev": "npm run start-ganache && npm run build-blog && npm run deploy-unlock-contract",
+    "predev": "npm run start-ganache && npm run deploy-unlock-contract",
     "dev": "nodemon src/server.js",
     "build": "next build src",
-    "build-blog": "node scripts/build-blog.js",
     "deploy": "next export src -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-unlock-contract": "node scripts/deploy-unlock.js",
