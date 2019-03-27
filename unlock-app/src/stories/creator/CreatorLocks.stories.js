@@ -49,7 +49,14 @@ storiesOf('CreatorLocks', module)
     return <CreatorLocks createLock={createLock} lockFeed={[]} />
   })
   .add('no lock, showForm', () => {
-    return <CreatorLocks createLock={createLock} lockFeed={[]} formIsVisible />
+    return (
+      <CreatorLocks
+        createLock={createLock}
+        lockFeed={[]}
+        hideForm={() => {}}
+        formIsVisible
+      />
+    )
   })
   .add('single lock', () => {
     return <CreatorLocks createLock={createLock} lockFeed={[lock]} />
