@@ -29,6 +29,7 @@
     "next": "^8.0.3",
     "path-match": "^1.2.4",
     "prop-types": "^15.6.1",
+    "raw-loader": "^2.0.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-showdown": "^1.6.0",
