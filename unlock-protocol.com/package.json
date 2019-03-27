@@ -24,7 +24,6 @@
     "fork-ts-checker-webpack-plugin": "^1.0.0",
     "isomorphic-unfetch": "^3.0.0",
     "jest-dom": "^3.1.0",
-    "jest-fetch-mock": "^2.1.1",
     "jest-styled-components": "^6.3.1",
     "next": "^8.0.3",
     "path-match": "^1.2.4",
