@@ -5,9 +5,7 @@ import * as rtl from 'react-testing-library'
 import Home from '../../pages/home'
 import Jobs from '../../pages/jobs'
 import About from '../../pages/about'
-import Demo from '../../pages/demo'
 import Log from '../../pages/log'
-import Paywall from '../../pages/paywall'
 import Dashboard from '../../pages/dashboard'
 import Privacy from '../../pages/privacy'
 import Terms from '../../pages/terms'
@@ -85,20 +83,6 @@ describe('Pages', () => {
     })
   })
 
-  describe('Demo', () => {
-    it('should render title correctly', () => {
-      expect.assertions(1)
-      rtl.render(
-        <ConfigProvider value={config}>
-          <Provider store={store}>
-            <Demo />
-          </Provider>
-        </ConfigProvider>
-      )
-      expect(pageTitle).toBeCalledWith('Demo')
-    })
-  })
-
   describe('Home', () => {
     it('should render title correctly', () => {
       expect.assertions(1)
@@ -138,20 +122,6 @@ describe('Pages', () => {
         </ConfigProvider>
       )
       expect(pageTitle).toBeCalledWith('Log')
-    })
-  })
-
-  describe('Paywall', () => {
-    it('should render title correctly', () => {
-      expect.assertions(1)
-      rtl.render(
-        <ConfigProvider value={config}>
-          <Provider store={store}>
-            <Paywall account={account} />
-          </Provider>
-        </ConfigProvider>
-      )
-      expect(pageTitle).toBeCalledWith('Paywall Demo')
     })
   })
 
