@@ -1,6 +1,7 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
 import { LOCATION_CHANGE } from 'react-router-redux'
+import UnlockJs from '@unlock-protocol/unlock-js'
 import {
   ADD_LOCK,
   CREATE_LOCK,
@@ -22,13 +23,14 @@ import {
 } from '../actions/transaction'
 import { PGN_ITEMS_PER_PAGE, UNLIMITED_KEYS_COUNT } from '../constants'
 
-import Web3Service from '../services/web3Service'
 import {
   SET_KEYS_ON_PAGE_FOR_LOCK,
   setKeysOnPageForLock,
 } from '../actions/keysPages'
 import { lockRoute } from '../utils/routes'
 import configure from '../config'
+
+const { Web3Service } = UnlockJs
 
 const {
   readOnlyProvider,
