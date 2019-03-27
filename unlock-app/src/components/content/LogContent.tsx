@@ -10,11 +10,19 @@ import { pageTitle } from '../../constants'
 import withConfig from '../../utils/withConfig'
 import * as UnlockTypes from '../../unlock'
 
+import {
+  CreateLockButton,
+  AccountWrapper,
+} from '../interface/buttons/ActionButton'
+import Link from 'next/link'
+import { showForm } from '../../actions/lockFormVisibility'
+
 interface Props {
   account: UnlockTypes.Account
   network: UnlockTypes.Network
   transactionFeed: UnlockTypes.Transaction[]
   explorerLinks: { [key: string]: string }
+  showForm: () => { type: string }
 }
 
 export const LogContent = ({
@@ -22,6 +30,7 @@ export const LogContent = ({
   network,
   transactionFeed,
   explorerLinks,
+  showForm,
 }: Props) => {
   return (
     <GlobalErrorConsumer>
@@ -31,7 +40,14 @@ export const LogContent = ({
         </Head>
         {account && (
           <BrowserOnly>
-            <Account network={network} account={account} />
+            <AccountWrapper>
+              <Account network={network} account={account} />
+              <Link href="/dashboard">
+                <CreateLockButton onClick={showForm}>
+                  Create Lock
+                </CreateLockButton>
+              </Link>
+            </AccountWrapper>
             <CreatorLog
               transactionFeed={transactionFeed}
               explorerLinks={explorerLinks}
@@ -56,7 +72,7 @@ interface Config {
 export const mapStateToProps = (
   { account, network, transactions }: State,
   { config: { chainExplorerUrlBuilders } }: { config: Config }
-): Props => {
+) => {
   const transactionFeed = Object.values(transactions).sort(
     (a, b) => b.blockNumber - a.blockNumber
   )
@@ -75,4 +91,10 @@ export const mapStateToProps = (
   }
 }
 
-export default withConfig(connect(mapStateToProps)(LogContent))
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    showForm: dispatch(showForm),
+  }
+}
+
+export default withConfig(connect(mapStateToProps, mapDispatchToProps)(LogContent))
