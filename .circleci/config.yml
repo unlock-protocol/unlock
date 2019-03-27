@@ -29,6 +29,14 @@ jobs:
           paths:
             - project
 
+  promote:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: "Open automated production pull request"
+          command: scripts/open-production-pull-request.sh
+
   build-unlock:
     machine: true
     environment:
@@ -275,6 +283,17 @@ jobs:
 
 workflows:
   version: 2
+  promote: # The promote workflow will checkout an old version of master (4 days old) and rebase it onto the production branch
+    triggers:
+      - schedule:
+          cron: "30 20 * * 2" # use cron syntax to set the schedule trigger on Teusday at 430pm ET (2030 UTC)
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - promote
+
   deploy: # The deploy workflow will not re-run tests, just build an image with the "older" version and deploy it
     triggers:
       - schedule:
