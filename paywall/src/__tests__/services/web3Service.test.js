@@ -450,6 +450,7 @@ describe('Web3Service', () => {
       )
       await Promise.all([lockUpdater, transactionUpdater])
     })
+
     it('purchaseFor', async () => {
       expect.assertions(4)
       let resolveKeySaver
