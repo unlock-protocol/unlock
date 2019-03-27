@@ -1,12 +1,14 @@
 // This file contains type definitions for the various kinds of data that we use
 // throughout unlock-app.
 
+/* eslint-disable no-unused-vars */
 export enum TransactionType {
   LOCK_CREATION = 'Lock Creation',
   KEY_PURCHASE = 'Key Purchase',
   WITHDRAWAL = 'Withdrawal',
   UPDATE_KEY_PRICE = 'Update Key Price',
 }
+/* eslint-enable no-unused-vars */
 
 export interface Transaction {
   status: string
