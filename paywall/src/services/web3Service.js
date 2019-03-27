@@ -113,6 +113,17 @@ export default class Web3Service extends EventEmitter {
           balance: '0', // Must be expressed in Eth!
         })
       },
+      purchaseFor: async (transactionHash, contractAddress, params) => {
+        const owner = params._recipient
+        this.emit('transaction.updated', transactionHash, {
+          key: keyId(contractAddress, owner),
+          lock: contractAddress,
+        })
+        return this.emit('key.saved', keyId(contractAddress, owner), {
+          lock: contractAddress,
+          owner,
+        })
+      },
     }
   }
 
