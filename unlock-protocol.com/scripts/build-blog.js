@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 
-const { join, resolve } = require('path')
+const { resolve } = require('path')
 const { generateBlogIndexFile, generateBlogFeed } = require('../src/utils/blog')
 
-const dir = join(resolve(__dirname, '..'), 'src/')
+const dir = resolve(__dirname, '..')
 
 generateBlogIndexFile(dir, generateBlogFeed(dir))
 
