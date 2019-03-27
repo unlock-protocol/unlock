@@ -75,45 +75,28 @@ const router = {
   },
 }
 
-const currency = {
-  USD: 195.99,
-}
-
-const lockFormStatus = {
-  visible: false,
-}
-
 const store = createUnlockStore({
   account,
   network,
   router,
-  locks,
-  transactions,
-  currency,
   walletStatus: {
     waiting: false,
   },
-  lockFormStatus,
 })
 
 const waitingStore = createUnlockStore({
   account,
   network,
   router,
-  locks,
-  transactions,
-  currency,
   walletStatus: {
     waiting: true,
   },
-  lockFormStatus,
 })
 
 const noUserStore = createUnlockStore({
   account: undefined,
   network,
   router,
-  lockFormStatus,
 })
 
 const ConfigProvider = ConfigContext.Provider
@@ -124,6 +107,8 @@ const config = {
   requiredConfirmations: 12,
 }
 
+const lockFormStatus = { visible: false }
+
 storiesOf('DashboardContent', module)
   .addDecorator(getStory => (
     <ConfigProvider value={config}>{getStory()}</ConfigProvider>
@@ -131,8 +116,13 @@ storiesOf('DashboardContent', module)
   .add('the dashboard', () => {
     // The overlay should not render here, because walletStatus:waiting is set
     // to false in the state
-    const lockFeed = mapStateToProps({ locks, transactions, account, network })
-      .lockFeed
+    const lockFeed = mapStateToProps({
+      locks,
+      transactions,
+      account,
+      network,
+      lockFormStatus,
+    }).lockFeed
     return (
       <Provider store={store}>
         <WalletCheckOverlay />
@@ -140,13 +130,21 @@ storiesOf('DashboardContent', module)
           network={network}
           account={account}
           lockFeed={lockFeed}
+          hideForm={() => {}}
+          showForm={() => {}}
+          formIsVisible={false}
         />
       </Provider>
     )
   })
   .add('the dashboard, waiting for wallet', () => {
-    const lockFeed = mapStateToProps({ locks, transactions, account, network })
-      .lockFeed
+    const lockFeed = mapStateToProps({
+      locks,
+      transactions,
+      account,
+      network,
+      lockFormStatus,
+    }).lockFeed
     return (
       <Provider store={waitingStore}>
         <WalletCheckOverlay />
@@ -154,6 +152,33 @@ storiesOf('DashboardContent', module)
           network={network}
           account={account}
           lockFeed={lockFeed}
+          hideForm={() => {}}
+          showForm={() => {}}
+          formIsVisible={false}
+        />
+      </Provider>
+    )
+  })
+  .add('the dashboard, creating a lock', () => {
+    // The overlay should not render here, because walletStatus:waiting is set
+    // to false in the state
+    const lockFeed = mapStateToProps({
+      locks,
+      transactions,
+      account,
+      network,
+      lockFormStatus,
+    }).lockFeed
+    return (
+      <Provider store={store}>
+        <WalletCheckOverlay />
+        <DashboardContent
+          network={network}
+          account={account}
+          lockFeed={lockFeed}
+          hideForm={() => {}}
+          showForm={() => {}}
+          formIsVisible
         />
       </Provider>
     )
@@ -161,14 +186,14 @@ storiesOf('DashboardContent', module)
   .add('dashboard, no user account', () => {
     return (
       <Provider store={noUserStore}>
-        <DashboardContent network={network} account={account} />
+        <DashboardContent network={network} account={account} lockFeed={[]} />
       </Provider>
     )
   })
   .add('dashboard, no locks', () => {
     return (
       <Provider store={store}>
-        <DashboardContent network={network} account={account} lockFeed={[]} />
+        <DashboardContent network={network} account={undefined} lockFeed={[]} />
       </Provider>
     )
   })
