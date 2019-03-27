@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { PageGroup, PageNumber, PageNumberActive } from './Pagination'
+import { PageGroup, PageNumber, PageNumberActive } from './PaginationComponents'
 import { PGN_MAX_NUMBER_OF_PAGES_TO_SHOW_ALL } from '../../../constants'
 
 const PageNumbers = ({ numberOfPages, currentPage, goToPage }) => {
