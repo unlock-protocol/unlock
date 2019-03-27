@@ -102,8 +102,8 @@ export const mapStateToProps = ({
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
-  showForm: dispatch(showForm),
-  hideForm: dispatch(hideForm),
+  showForm: () => dispatch(showForm()),
+  hideForm: () => dispatch(hideForm()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContent)

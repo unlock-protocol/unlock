@@ -1,4 +1,12 @@
-import { mapStateToProps } from '../../../components/content/DashboardContent'
+import React from 'react'
+import * as rtl from 'react-testing-library'
+import { Provider } from 'react-redux'
+import DashboardContent, {
+  mapStateToProps,
+} from '../../../components/content/DashboardContent'
+import createUnlockStore from '../../../createUnlockStore'
+import { ConfigContext } from '../../../utils/withConfig'
+import configure from '../../../config'
 
 const transactions = {
   '0x1234': {
@@ -81,47 +89,121 @@ const locksMinusATransaction = {
   },
 }
 
+const account = {
+  address: '0x12345678',
+  balance: '5',
+}
+
+const network = {
+  name: 1984,
+}
+
+const config = configure()
+const ConfigProvider = ConfigContext.Provider
+
 describe('DashboardContent', () => {
-  it('should sort locks in descending order by blockNumber', () => {
-    expect.assertions(4)
-    const state = {
-      account: {},
-      network: {},
-      locks,
-      transactions,
-    }
+  describe('mapStateToProps', () => {
+    it('should sort locks in descending order by blockNumber', () => {
+      expect.assertions(4)
+      const state = {
+        account: {},
+        network: {},
+        locks,
+        transactions,
+        lockFormStatus: {
+          visible: false,
+        },
+      }
 
-    const props = mapStateToProps(state)
-    const lockFeed = props.lockFeed
+      const props = mapStateToProps(state)
+      const lockFeed = props.lockFeed
 
-    expect(lockFeed).toHaveLength(3)
-    // Lock "The Gamma Blog" has the highest blockNumber, so it should always appear first
-    expect(lockFeed[0].name).toEqual('The Gamma Blog')
-    // "The Beta Blog" has the second highest blockNumber, so it should appear second
-    expect(lockFeed[1].name).toEqual('The Beta Blog')
-    // "The Alpha Blog" with the lowest  blockNumber appears last
-    expect(lockFeed[2].name).toEqual('The Alpha Blog')
+      expect(lockFeed).toHaveLength(3)
+      // Lock "The Gamma Blog" has the highest blockNumber, so it should always appear first
+      expect(lockFeed[0].name).toEqual('The Gamma Blog')
+      // "The Beta Blog" has the second highest blockNumber, so it should appear second
+      expect(lockFeed[1].name).toEqual('The Beta Blog')
+      // "The Alpha Blog" with the lowest  blockNumber appears last
+      expect(lockFeed[2].name).toEqual('The Alpha Blog')
+    })
+
+    it('should also sort correctly when a lock has no transaction yet', () => {
+      expect.assertions(4)
+      const state = {
+        account: {},
+        network: {},
+        locks: locksMinusATransaction,
+        transactions,
+        lockFormStatus: {
+          visible: false,
+        },
+      }
+
+      const props = mapStateToProps(state)
+      const lockFeed = props.lockFeed
+
+      expect(lockFeed).toHaveLength(3)
+      // This time "The Beta Blog" has no associated transaction, which means it is a brand
+      // new lock, and should always appear at the head of the list.
+      expect(lockFeed[0].name).toEqual('The Beta Blog')
+      // "The Gamma Blog" then has the highest blockNumber, so it should come next.
+      expect(lockFeed[1].name).toEqual('The Gamma Blog')
+      // And "The Alpha Blog" with the lowest blockNumber comes last again.
+      expect(lockFeed[2].name).toEqual('The Alpha Blog')
+    })
   })
 
-  it('should also sort correctly when a lock has no transaction yet', () => {
-    expect.assertions(4)
-    const state = {
-      account: {},
-      network: {},
-      locks: locksMinusATransaction,
-      transactions,
-    }
+  describe('create lock button', () => {
+    let store
+    let wrapper
+    beforeEach(() => {
+      store = createUnlockStore({
+        account,
+        network,
+        lockFormStatus: {
+          visible: false,
+        },
+      })
 
-    const props = mapStateToProps(state)
-    const lockFeed = props.lockFeed
+      wrapper = rtl.render(
+        <Provider store={store}>
+          <ConfigProvider value={config}>
+            <DashboardContent />
+          </ConfigProvider>
+        </Provider>
+      )
+    })
 
-    expect(lockFeed).toHaveLength(3)
-    // This time "The Beta Blog" has no associated transaction, which means it is a brand
-    // new lock, and should always appear at the head of the list.
-    expect(lockFeed[0].name).toEqual('The Beta Blog')
-    // "The Gamma Blog" then has the highest blockNumber, so it should come next.
-    expect(lockFeed[1].name).toEqual('The Gamma Blog')
-    // And "The Alpha Blog" with the lowest blockNumber comes last again.
-    expect(lockFeed[2].name).toEqual('The Alpha Blog')
+    it('should open the creator lock form when the create lock button is clicked', () => {
+      expect.assertions(4)
+
+      expect(wrapper.queryByValue('New Lock')).toBeNull()
+      expect(wrapper.queryByText('Submit')).toBeNull()
+
+      const createButton = wrapper.getByText('Create Lock')
+      rtl.fireEvent.click(createButton)
+
+      expect(wrapper.queryByValue('New Lock')).not.toBeNull()
+      expect(wrapper.queryByText('Submit')).not.toBeNull()
+    })
+
+    it('should disappear when cancel button is clicked', () => {
+      // This is really testing the behavior of the creator lock form...  But in
+      // order to test it end-to-end, it has to happen at this level so we have
+      // access to the button.
+      expect.assertions(4)
+
+      let createButton = wrapper.getByText('Create Lock')
+      rtl.fireEvent.click(createButton)
+
+      expect(wrapper.queryByValue('New Lock')).not.toBeNull()
+      expect(wrapper.queryByText('Submit')).not.toBeNull()
+
+      let cancelButton = wrapper.getByText('Cancel')
+      rtl.fireEvent.click(cancelButton)
+
+      expect(wrapper.queryByValue('New Lock')).toBeNull()
+      expect(wrapper.queryByText('Submit')).toBeNull()
+    })
   })
 })

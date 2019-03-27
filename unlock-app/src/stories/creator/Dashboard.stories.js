@@ -79,6 +79,10 @@ const currency = {
   USD: 195.99,
 }
 
+const lockFormStatus = {
+  visible: false,
+}
+
 const store = createUnlockStore({
   account,
   network,
@@ -89,6 +93,7 @@ const store = createUnlockStore({
   walletStatus: {
     waiting: false,
   },
+  lockFormStatus,
 })
 
 const waitingStore = createUnlockStore({
@@ -101,12 +106,14 @@ const waitingStore = createUnlockStore({
   walletStatus: {
     waiting: true,
   },
+  lockFormStatus,
 })
 
 const noUserStore = createUnlockStore({
   account: undefined,
   network,
   router,
+  lockFormStatus,
 })
 
 const ConfigProvider = ConfigContext.Provider
