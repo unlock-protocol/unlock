@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
+
 import {
   routerReducer,
   createRouterMiddleware,
