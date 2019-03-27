@@ -1,15 +1,7 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
-import { LOCATION_CHANGE } from 'react-router-redux'
 import UnlockJs from '@unlock-protocol/unlock-js'
-import {
-  ADD_LOCK,
-  CREATE_LOCK,
-  UPDATE_LOCK,
-  addLock,
-  updateLock,
-  createLock,
-} from '../actions/lock'
+import { CREATE_LOCK, addLock, updateLock, createLock } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
 import { updateKey, addKey } from '../actions/key'
@@ -27,7 +19,6 @@ import {
   SET_KEYS_ON_PAGE_FOR_LOCK,
   setKeysOnPageForLock,
 } from '../actions/keysPages'
-import { lockRoute } from '../utils/routes'
 import configure from '../config'
 
 const { Web3Service } = UnlockJs
@@ -181,38 +172,6 @@ export default function web3Middleware({ getState, dispatch }) {
               web3Service.getTransaction(lockCreation.transactionHash)
             })
           })
-        const {
-          router: {
-            location: { pathname },
-          },
-        } = getState()
-
-        const { lockAddress, prefix } = lockRoute(pathname)
-        if (lockAddress && prefix === 'paywall') {
-          web3Service.getKeyByLockForOwner(lockAddress, action.account.address)
-        }
-      }
-
-      if (action.type === ADD_LOCK || action.type == UPDATE_LOCK) {
-        const lock = getState().locks[action.address]
-        if (getState().account) {
-          web3Service.getKeyByLockForOwner(
-            lock.address,
-            getState().account.address
-          )
-        }
-      } else if (
-        action.type === LOCATION_CHANGE &&
-        action.payload.location &&
-        action.payload.location.pathname
-      ) {
-        // Location was changed, get the matching lock, if we are on a paywall page
-        const { lockAddress, prefix } = lockRoute(
-          action.payload.location.pathname
-        )
-        if (lockAddress && prefix === 'paywall') {
-          web3Service.getLock(lockAddress)
-        }
       }
     }
   }
