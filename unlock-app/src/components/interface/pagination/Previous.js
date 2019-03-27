@@ -1,6 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ArrowGroup, ArrowGroupDisabled, LeftArrow } from './Pagination'
+import {
+  ArrowGroup,
+  ArrowGroupDisabled,
+  LeftArrow,
+} from './PaginationComponents'
 
 const PreviousButtons = ({ currentPage, goToPage }) => {
   if (currentPage === 1) {
