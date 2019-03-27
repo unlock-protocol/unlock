@@ -1,6 +1,5 @@
 import UnlockJs from '@unlock-protocol/unlock-js'
 import EventEmitter from 'events'
-import { LOCATION_CHANGE } from 'connected-next-router'
 import web3Middleware from '../../middlewares/web3Middleware'
 import { ADD_LOCK, UPDATE_LOCK, CREATE_LOCK } from '../../actions/lock'
 import { UPDATE_KEY } from '../../actions/key'
@@ -368,72 +367,6 @@ describe('Lock middleware', () => {
     })
   })
 
-  describe('on the paywall', () => {
-    it('should handle SET_ACCOUNT by getting all keys for the owner of that account', async () => {
-      expect.assertions(4)
-      const mockTx = {
-        transactionHash: '0x123',
-      }
-      const lockCreationTransaction = Promise.resolve([mockTx])
-      mockWeb3Service.refreshAccountBalance = jest.fn()
-      mockWeb3Service.getPastLockCreationsTransactionsForUser = jest.fn(
-        () => lockCreationTransaction
-      )
-      mockWeb3Service.getKeyByLockForOwner = jest.fn()
-      mockWeb3Service.getTransaction = jest.fn()
-
-      const lock = '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9'
-      state.router.location.pathname = `/paywall/${lock}/`
-
-      const { invoke } = create()
-
-      const newAccount = {
-        address: '0x345',
-      }
-      invoke(setAccount(newAccount))
-
-      expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalled()
-      expect(
-        mockWeb3Service.getPastLockCreationsTransactionsForUser
-      ).toHaveBeenCalled()
-      // We need to await this for the next assertion to work
-      await lockCreationTransaction
-      expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
-        mockTx.transactionHash
-      )
-      expect(mockWeb3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
-        lock,
-        '0x345'
-      )
-    })
-  })
-
-  it("should handle LOCATION_CHANGE if on a paywall page by calling web3Service's getLock", () => {
-    expect.assertions(2)
-    const { next, invoke } = create()
-    const action = {
-      type: LOCATION_CHANGE,
-      payload: { location: { pathname: `/paywall/${lock.address}` } },
-    }
-    mockWeb3Service.getLock = jest.fn()
-    invoke(action)
-    expect(mockWeb3Service.getLock).toHaveBeenCalled()
-    expect(next).toHaveBeenCalledWith(action)
-  })
-
-  it("should handle LOCATION_CHANGE and not call web3Service's getLock if not on a paywall page", () => {
-    expect.assertions(2)
-    const { next, invoke } = create()
-    const action = {
-      type: LOCATION_CHANGE,
-      payload: { location: { pathname: `/demo/${lock.address}` } },
-    }
-    mockWeb3Service.getLock = jest.fn()
-    invoke(action)
-    expect(mockWeb3Service.getLock).not.toHaveBeenCalled()
-    expect(next).toHaveBeenCalledWith(action)
-  })
-
   describe('SET_KEYS_ON_PAGE_FOR_LOCK', () => {
     it('should call getKeysForLockOnPage on web3Service only if the keys variable is falsy', () => {
       expect.assertions(2)
@@ -469,36 +402,6 @@ describe('Lock middleware', () => {
       invoke(action)
 
       expect(mockWeb3Service.getKeysForLockOnPage).not.toHaveBeenCalled()
-      expect(next).toHaveBeenCalledWith(action)
-    })
-  })
-
-  describe('ADD_LOCK', () => {
-    it('should handle ADD_LOCK by loading keys for the current user', () => {
-      expect.assertions(2)
-      const { next, invoke, store } = create()
-      const action = { type: ADD_LOCK, address: lock.address }
-      mockWeb3Service.getKeyByLockForOwner = jest.fn()
-      invoke(action)
-
-      expect(mockWeb3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
-        lock.address,
-        store.getState().account.address
-      )
-      expect(next).toHaveBeenCalledWith(action)
-    })
-
-    it('should not retrieve the key if there is no current user', () => {
-      expect.assertions(2)
-      const { next, invoke } = create()
-      const action = { type: ADD_LOCK, address: lock.address }
-
-      delete state.account
-
-      mockWeb3Service.getKeyByLockForOwner = jest.fn()
-      invoke(action)
-
-      expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
       expect(next).toHaveBeenCalledWith(action)
     })
   })
@@ -588,22 +491,6 @@ describe('Lock middleware', () => {
       invoke(action)
       expect(next).toHaveBeenCalled()
       expect(mockWeb3Service.generateLockAddress).not.toHaveBeenCalled()
-    })
-  })
-
-  describe('UPDATE_LOCK', () => {
-    it('should handle UPDATE_LOCK by loading keys for the current user', () => {
-      expect.assertions(2)
-      const { next, invoke, store } = create()
-      const action = { type: UPDATE_LOCK, address: lock.address }
-      mockWeb3Service.getKeyByLockForOwner = jest.fn()
-      invoke(action)
-
-      expect(mockWeb3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
-        lock.address,
-        store.getState().account.address
-      )
-      expect(next).toHaveBeenCalledWith(action)
     })
   })
 })
