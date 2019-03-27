@@ -42,3 +42,17 @@ export interface Network {
 export interface ChainExplorerURLBuilders {
   [site: string]: (address: string) => string
 }
+
+export interface Lock {
+  address: string
+  asOf: number
+  balance: string
+  expirationDuration: number
+  keyPrice: string
+  maxNumberOfKeys: number
+  name: string
+  outstandingKeys: number
+  owner: string
+  unlimitedKeys: boolean
+  transaction: string
+}
