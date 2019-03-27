@@ -1,6 +1,8 @@
 // This file contains type definitions for the various kinds of data that we use
 // throughout unlock-app.
 
+// A bug in eslint causes it to think that this exported enum is "unused". So
+// disable eslint for that declaration until they fix it. TODO: follow up on this.
 /* eslint-disable no-unused-vars */
 export enum TransactionType {
   LOCK_CREATION = 'Lock Creation',
