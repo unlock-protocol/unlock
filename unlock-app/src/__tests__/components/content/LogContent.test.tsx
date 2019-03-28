@@ -8,6 +8,8 @@ import {
 import * as UnlockTypes from '../../../unlock'
 import createUnlockStore from '../../../createUnlockStore'
 
+jest.mock('next/router', () => {})
+
 const transactions = {
   '0x12345678': {
     hash: '0x12345678',
@@ -83,7 +85,6 @@ describe('Transaction Log', () => {
     })
   })
 
-  jest.mock('next/router', () => {})
   describe('create lock button', () => {
     // TODO: We need to test that clicking this button actually does something.
     it('should have a create lock button', () => {
