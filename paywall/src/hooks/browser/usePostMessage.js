@@ -6,6 +6,7 @@ import useWindow from './useWindow'
 export default function usePostMessage() {
   const window = useWindow()
   const { isInIframe, isServer } = useConfig()
+  // track the last message sent. useRef is the equivalent to using this.lastMessage in a class-based component
   const lastMessage = useRef()
   const postMessage = useCallback(
     message => {
@@ -20,8 +21,7 @@ export default function usePostMessage() {
         return
       lastMessage.current = message
       window.parent.postMessage(message, origin)
-    }, // not just when the postMessage call has changed the state to something else // This is important because the hook will be called on every render, // this next line tells React to only post the message if it has changed.
-    // and we only want to post the message on the very first time it is requested
+    },
     [isServer, isInIframe]
   )
   return { postMessage }
