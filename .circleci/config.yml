@@ -16,19 +16,6 @@ jobs:
           paths:
             - project
 
-  checkout-and-cache-stable-version:
-    machine: true
-    steps:
-      - checkout
-      - run:
-          name: "Travel back in time to 4 days ago"
-          command: scripts/get-git-history.sh
-      - run: 'git log -1 --pretty="%H: %cD - %s"'
-      - persist_to_workspace:
-          root: ".."
-          paths:
-            - project
-
   promote:
     machine: true
     steps:
@@ -194,6 +181,9 @@ jobs:
       - *images-caches
       - *cached-checkout
       - run:
+          name: Set ENV_TARGET
+          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
+      - run:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
@@ -210,6 +200,9 @@ jobs:
     steps:
       - *images-caches
       - *cached-checkout
+      - run:
+          name: Set ENV_TARGET
+          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
       - run:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
@@ -293,28 +286,6 @@ workflows:
                 - master
     jobs:
       - promote
-
-  deploy: # The deploy workflow will not re-run tests, just build an image with the "older" version and deploy it
-    triggers:
-      - schedule:
-          cron: "30 20 * * 2" # use cron syntax to set the schedule trigger on Teusday at 430pm ET (2030 UTC)
-          filters:
-            branches:
-              only:
-                - master
-    jobs:
-      - checkout-and-cache-stable-version
-      - build-unlock:
-          requires:
-            - checkout-and-cache-stable-version
-      - deploy-unlock-app-netlify:
-          context: PRODUCTION # see config on CircleCI
-          requires:
-            - build-unlock
-      - deploy-paywall-netlify:
-          context: PRODUCTION # see config on CircleCI
-          requires:
-            - build-unlock
 
   build-test-and-deploy:
     jobs:
