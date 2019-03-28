@@ -10,6 +10,7 @@ const copyFile = promisify(fs.copyFile)
 
 let requiredConfigVariables = {
   unlockEnv: process.env.UNLOCK_ENV || 'dev',
+  dashboardUrl: process.env.DASHBOARD_URL,
 }
 
 Object.keys(requiredConfigVariables).forEach(configVariableName => {

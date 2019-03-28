@@ -2,8 +2,11 @@ import styled from 'styled-components'
 import React from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
+import getConfig from 'next/config'
 
 import ActionButton from '../../ActionButton'
+
+const config = getConfig().publicRuntimeConfig
 
 export class HomepageButton extends React.Component {
   constructor(props, context) {
@@ -49,7 +52,7 @@ export class HomepageButton extends React.Component {
                 <a>Privacy Policy</a>
               </Link>
             </div>
-            <Link href="/dashboard">
+            <Link href={config.dashboardUrl || 'http://0.0.0.0:3000/dashboard'}>
               <a>
                 <TermsButton>I Agree</TermsButton>
               </a>
