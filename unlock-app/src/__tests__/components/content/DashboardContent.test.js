@@ -81,14 +81,28 @@ const locksMinusATransaction = {
   },
 }
 
+const account = {
+  address: '0x12345678',
+  balance: '5',
+}
+
+const network = {
+  name: 1984,
+}
+
+const lockFormStatus = {
+  visible: false,
+}
+
 describe('DashboardContent', () => {
   it('should sort locks in descending order by blockNumber', () => {
     expect.assertions(4)
     const state = {
-      account: {},
-      network: {},
+      account,
+      network,
       locks,
       transactions,
+      lockFormStatus,
     }
 
     const props = mapStateToProps(state)
@@ -106,10 +120,11 @@ describe('DashboardContent', () => {
   it('should also sort correctly when a lock has no transaction yet', () => {
     expect.assertions(4)
     const state = {
-      account: {},
-      network: {},
+      account,
+      network,
       locks: locksMinusATransaction,
       transactions,
+      lockFormStatus,
     }
 
     const props = mapStateToProps(state)
