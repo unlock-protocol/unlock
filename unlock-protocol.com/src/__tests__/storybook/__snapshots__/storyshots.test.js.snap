@@ -9136,7 +9136,7 @@ Object {
           </a>
         </div>
         <a
-          href="/dashboard"
+          href="http://0.0.0.0:3000/dashboard"
         >
           <button
             class="c1"
@@ -9170,7 +9170,7 @@ Object {
         </a>
       </div>
       <a
-        href="/dashboard"
+        href="http://0.0.0.0:3000/dashboard"
       >
         <button
           class="q8p5ah-0 sc-9upljg-1 fUPliI"

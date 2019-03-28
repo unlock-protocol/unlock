@@ -43,6 +43,13 @@ services:
     image: unlock
     user: node
     working_dir: /home/unlock/unlock-app
+  unlock-protocol-com:
+    image: unlock
+    user: node
+    working_dir: /home/unlock/unlock-protocol.com
+    expose:
+      - 3002
+    command: ["npm", "run", "start"]
   paywall:
     image: unlock
     user: node
@@ -73,6 +80,7 @@ services:
       - unlock
       - paywall
       - locksmith
+      - unlock-protocol-com
     working_dir: /home/unlock/tests
   locksmith:
     environment:
