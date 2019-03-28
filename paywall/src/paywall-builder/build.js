@@ -85,6 +85,14 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
       'message',
       event => {
         try {
+          if (
+            event.origin !== origin ||
+            event.source !== iframe.contentWindow
+          ) {
+            // nice try, hackers
+            return
+          }
+
           if (event.data === POST_MESSAGE_LOCKED && !locked) {
             locked = true
             scrollPolling = true
