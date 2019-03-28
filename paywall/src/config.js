@@ -71,6 +71,7 @@ export default function configure(
   // note: the choice of 127.0.0.1 instead of localhost is deliberate, as it will
   // allow us to test cross-origin requests from localhost/demo
   let paywallUrl = runtimeConfig.paywallUrl || 'http://127.0.0.1:3001'
+  const locksmithHost = runtimeConfig.locksmithHost
   let paywallScriptPath =
     runtimeConfig.paywallScriptPath || '/static/paywall.min.js'
   let providers = {}
@@ -188,6 +189,7 @@ export default function configure(
     env,
     providers,
     isRequiredNetwork,
+    locksmithHost,
     readOnlyProvider,
     requiredNetworkId,
     requiredNetwork,
