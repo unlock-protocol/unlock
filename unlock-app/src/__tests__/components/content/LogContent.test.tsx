@@ -1,5 +1,14 @@
-import { mapStateToProps } from '../../../components/content/LogContent'
+import React from 'react'
+import { Provider } from 'react-redux'
+import * as rtl from 'react-testing-library'
+import {
+  LogContent,
+  mapStateToProps,
+} from '../../../components/content/LogContent'
 import * as UnlockTypes from '../../../unlock'
+import createUnlockStore from '../../../createUnlockStore'
+
+jest.mock('next/router', () => {})
 
 const transactions = {
   '0x12345678': {
@@ -31,27 +40,34 @@ const transactions = {
   },
 }
 
+const account: UnlockTypes.Account = {
+  address: '0x12345678',
+  balance: '5',
+}
+
+const network: UnlockTypes.Network = {
+  name: 1984,
+}
+
+const state = {
+  account,
+  network,
+  transactions,
+}
+
+const config = {
+  chainExplorerUrlBuilders: {
+    etherScan: (address: string) =>
+      `https://blockchain.party/address/${address}/`,
+  },
+}
+
 describe('Transaction Log', () => {
   describe('mapStateToProps', () => {
-    const state = {
-      account: {
-        address: '0x123456',
-        balance: '5',
-      },
-      network: {
-        name: 1984,
-      },
-      transactions,
-    }
-    const config = {
-      chainExplorerUrlBuilders: {
-        etherScan: (address: string) =>
-          `https://blockchain.party/address/${address}/`,
-      },
-    }
     const { transactionFeed, explorerLinks } = mapStateToProps(state, {
       config,
     })
+
     it('Should provide a feed of transactions sorted by blockNumber, descending', () => {
       expect.assertions(4)
       expect(transactionFeed).toHaveLength(3)
@@ -59,12 +75,41 @@ describe('Transaction Log', () => {
       expect(transactionFeed[1].blockNumber).toEqual(2)
       expect(transactionFeed[2].blockNumber).toEqual(1)
     })
+
     it('should include a separate feed of URLs to chain explorer for each transaction', () => {
       expect.assertions(2)
       expect(Object.keys(explorerLinks)).toHaveLength(3)
       expect(explorerLinks['0x9abcdef0']).toBe(
         'https://blockchain.party/address/0x9abcdef0a/'
       )
+    })
+  })
+
+  describe('create lock button', () => {
+    // TODO: We need to test that clicking this button actually does something.
+    it('should have a create lock button', () => {
+      expect.assertions(1)
+      const showForm = jest.fn()
+      const {
+        account,
+        network,
+        transactionFeed,
+        explorerLinks,
+      } = mapStateToProps(state, { config })
+
+      const wrapper = rtl.render(
+        <Provider store={createUnlockStore(state)}>
+          <LogContent
+            account={account}
+            network={network}
+            transactionFeed={transactionFeed}
+            explorerLinks={explorerLinks}
+            showForm={showForm}
+          />
+        </Provider>
+      )
+
+      expect(wrapper.getByText('Create Lock')).not.toBeNull()
     })
   })
 })

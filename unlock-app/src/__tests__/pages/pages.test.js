@@ -6,7 +6,7 @@ import Home from '../../pages/home'
 import Jobs from '../../pages/jobs'
 import About from '../../pages/about'
 import Log from '../../pages/log'
-import Dashboard from '../../pages/dashboard'
+import DashboardContent from '../../components/content/DashboardContent'
 import Privacy from '../../pages/privacy'
 import Terms from '../../pages/terms'
 
@@ -68,11 +68,13 @@ describe('Pages', () => {
       rtl.render(
         <ConfigProvider value={config}>
           <Provider store={store}>
-            <Dashboard
+            <DashboardContent
               account={account}
               network={network}
               transactions={{}}
               locks={{}}
+              hideForm={() => {}}
+              showForm={() => {}}
             />
           </Provider>
         </ConfigProvider>

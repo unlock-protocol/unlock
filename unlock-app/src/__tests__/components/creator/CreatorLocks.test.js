@@ -13,53 +13,6 @@ jest.mock('next/link', () => {
 })
 
 describe('CreatorLocks', () => {
-  it('should display form when create lock button is clicked', () => {
-    expect.assertions(4)
-    const store = createUnlockStore({
-      account: {},
-    })
-
-    const wrapper = rtl.render(
-      <Provider store={store}>
-        <CreatorLocks createLock={() => {}} />
-      </Provider>
-    )
-
-    expect(wrapper.queryByValue('New Lock')).toBeNull()
-    expect(wrapper.queryByText('Submit')).toBeNull()
-
-    const createButton = wrapper.getByText('Create Lock')
-    rtl.fireEvent.click(createButton)
-
-    expect(wrapper.queryByValue('New Lock')).not.toBeNull()
-    expect(wrapper.queryByText('Submit')).not.toBeNull()
-  })
-
-  it('should disappear when cancel button is clicked', () => {
-    expect.assertions(4)
-    const store = createUnlockStore({
-      account: {},
-    })
-
-    let wrapper = rtl.render(
-      <Provider store={store}>
-        <CreatorLocks createLock={() => {}} />
-      </Provider>
-    )
-
-    let createButton = wrapper.getByText('Create Lock')
-    rtl.fireEvent.click(createButton)
-
-    expect(wrapper.queryByValue('New Lock')).not.toBeNull()
-    expect(wrapper.queryByText('Submit')).not.toBeNull()
-
-    let cancelButton = wrapper.getByText('Cancel')
-    rtl.fireEvent.click(cancelButton)
-
-    expect(wrapper.queryByValue('New Lock')).toBeNull()
-    expect(wrapper.queryByText('Submit')).toBeNull()
-  })
-
   it('should call createLock when submit button is pressed', () => {
     expect.assertions(1)
     const createLock = jest.fn()
@@ -70,12 +23,13 @@ describe('CreatorLocks', () => {
 
     const wrapper = rtl.render(
       <Provider store={store}>
-        <CreatorLocks createLock={createLock} />
+        <CreatorLocks
+          createLock={createLock}
+          formIsVisible
+          hideForm={() => {}}
+        />
       </Provider>
     )
-
-    const createButton = wrapper.getByText('Create Lock')
-    rtl.fireEvent.click(createButton)
 
     const submitButton = wrapper.getByText('Submit')
     rtl.fireEvent.click(submitButton)
@@ -94,6 +48,8 @@ describe('CreatorLocks', () => {
           lockFeed={lockFeed}
           loading={loading}
           createLock={() => {}}
+          formIsVisible={false}
+          hideForm={() => {}}
         />
       </Provider>
     )
@@ -111,6 +67,8 @@ describe('CreatorLocks', () => {
           lockFeed={lockFeed}
           loading={loading}
           createLock={() => {}}
+          formIsVisible={false}
+          hideForm={() => {}}
         />
       </Provider>
     )
@@ -120,8 +78,22 @@ describe('CreatorLocks', () => {
   describe('mapStateToProps', () => {
     it('should yield a loading boolean based on state', () => {
       expect.assertions(2)
-      expect(mapStateToProps({ loading: 3 }).loading).toBe(true)
-      expect(mapStateToProps({ loading: 0 }).loading).toBe(false)
+      expect(
+        mapStateToProps({
+          loading: 3,
+          lockFormStatus: {
+            visible: false,
+          },
+        }).loading
+      ).toBe(true)
+      expect(
+        mapStateToProps({
+          loading: 0,
+          lockFormStatus: {
+            visible: false,
+          },
+        }).loading
+      ).toBe(false)
     })
   })
 })
