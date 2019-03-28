@@ -6,7 +6,9 @@ const config = {
   input: 'src/paywall-builder/index.js',
   output: {
     format: 'umd',
-    name: 'paywall.min.js',
+    file: __dirname + '/src/static/paywall.min.js',
+    name: 'paywall',
+    sourcemap: true,
   },
   plugins: [
     babel({
