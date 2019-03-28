@@ -1,10 +1,14 @@
+import { UserCreationInput } from '../types' // eslint-disable-line no-unused-vars
+
 const ethJsUtil = require('ethereumjs-util')
 const models = require('../models')
+
 const { User, UserReference } = models
-import { UserCreationInput } from '../types'
 
 namespace UserOperations {
-  export async function createUser(input: UserCreationInput): Promise<Boolean> {
+  export const createUser = async (
+    input: UserCreationInput
+  ): Promise<Boolean> => {
     let userReference = await UserReference.create(
       {
         emailAddress: input.emailAddress.toLowerCase(),
@@ -26,9 +30,9 @@ namespace UserOperations {
     }
   }
 
-  export async function getUserPrivateKeyByEmailAddress(
+  export const getUserPrivateKeyByEmailAddress = async (
     emailAddress: String
-  ): Promise<String | null> {
+  ): Promise<String | null> => {
     let user = await UserReference.findOne({
       where: { emailAddress: emailAddress.toLowerCase() },
       include: [{ model: User, attributes: ['passwordEncryptedPrivateKey'] }],
@@ -41,9 +45,9 @@ namespace UserOperations {
     }
   }
 
-  export async function getUserRecoveryPhraseByEmailAddress(
+  export const getUserRecoveryPhraseByEmailAddress = async (
     emailAddress: String
-  ): Promise<String | null> {
+  ): Promise<String | null> => {
     let user = await UserReference.findOne({
       where: { emailAddress: emailAddress.toLowerCase() },
       include: [{ model: User, attributes: ['recoveryPhrase'] }],
