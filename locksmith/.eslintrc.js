@@ -13,8 +13,8 @@ module.exports = {
     browser: true,
     jest: true,
   },
-  plugins: ['jest', 'mocha', 'promise', 'import'],
-  parser: 'babel-eslint',
+  plugins: ['jest', 'mocha', 'promise', 'import', '@typescript-eslint'],
+  parser: '@typescript-eslint/parser',
   settings: {
     react: {
       version: 'detect',
