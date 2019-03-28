@@ -106,4 +106,4 @@ export const MAX_UINT =
 // the number of ms between checking for account changes in walletService
 export const POLLING_INTERVAL = 2000
 // the length of time to consider an optimistic key purchase to have become pessimistic
-export const OPTIMISM_TIME_LIMIT = 15000
+export const OPTIMISM_POLLING_INTERVAL = 15000

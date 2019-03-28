@@ -1,16 +1,19 @@
-import { useEffect, useReducer, useRef } from 'react'
+import { useEffect, useRef, useReducer } from 'react'
 
 import useLocksmith from './useLocksmith'
-import { OPTIMISM_TIME_LIMIT } from '../constants'
+import { OPTIMISM_POLLING_INTERVAL } from '../constants'
 
-export default function useOptimism(transactionHash) {
-  const locksmithOptimism = useLocksmith(
-    `/transaction/${transactionHash}/odds`,
+export default function useOptimism(transaction) {
+  const API = transaction ? `/transaction/${transaction.hash}/odds` : ''
+  const hash = transaction ? transaction.hash : false
+  const status = transaction ? transaction.status : 'inactive'
+  const [locksmithOptimism, resendQuery] = useLocksmith(
+    API,
     {
       willSucceed: 0,
-    }
-  ).willSucceed
-  const timeout = useRef()
+    },
+    transaction && transaction.status === 'pending'
+  )
   const [optimism, setOptimism] = useReducer(
     (state, newState) => {
       if (state.current !== newState) {
@@ -21,20 +24,39 @@ export default function useOptimism(transactionHash) {
       }
       return state
     },
-    { current: locksmithOptimism, past: 0 }
+    { current: locksmithOptimism.willSucceed, past: 0 }
   )
-  useEffect(() => {
-    if (!transactionHash) {
-      if (timeout.current) {
-        clearTimeout(timeout.current)
-        timeout.current = undefined
-      }
-    } else {
-      setTimeout(() => {
-        setOptimism(0)
-      }, OPTIMISM_TIME_LIMIT)
+  const timeout = useRef()
+  const reQuery = () => {
+    resendQuery()
+    setTimeout(reQuery, OPTIMISM_POLLING_INTERVAL)
+  }
+  const endPolling = () => {
+    if (timeout.current) {
+      clearTimeout(timeout.current)
+      timeout.current = undefined
     }
-  }, [transactionHash, locksmithOptimism])
+  }
+  useEffect(() => {
+    if (!hash) {
+      endPolling()
+    } else {
+      // if we reach here, there is a chance that we have
+      // gotten a new optimism value from locksmith, so
+      // pass it to the reducer
+      setOptimism(locksmithOptimism.willSucceed)
+
+      // set up polling from locksmith, which will happen until the
+      // transaction is mined
+      if (status !== 'pending') {
+        endPolling()
+        return
+      }
+      setTimeout(() => {
+        reQuery()
+      }, OPTIMISM_POLLING_INTERVAL)
+    }
+  }, [hash, status, locksmithOptimism])
 
   return optimism
 }
