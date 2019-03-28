@@ -10,98 +10,78 @@ import CreatorLockForm from './CreatorLockForm'
 import Errors from '../interface/Errors'
 import Media, { NoPhone, Phone } from '../../theme/media'
 import { createLock } from '../../actions/lock'
+import { hideForm } from '../../actions/lockFormVisibility'
 import { DefaultError } from './FatalError'
 import Svg from '../interface/svg'
-import { CreateLockButton } from '../interface/buttons/ActionButton'
 
-export class CreatorLocks extends React.Component {
-  constructor(props, context) {
-    super(props, context)
-    const { showForm } = this.props
-    this.state = {
-      showDashboardForm: !!showForm,
-    }
-    this.toggleForm = this.toggleForm.bind(this)
-  }
-
-  toggleForm() {
-    this.setState(previousState => ({
-      showDashboardForm: !previousState.showDashboardForm,
-    }))
-  }
-
-  render() {
-    const { createLock, lockFeed, loading } = this.props
-    const { showDashboardForm } = this.state
-
-    return (
-      <Locks>
-        <LockHeaderRow id="LockHeaderRow">
-          <LockHeader>Locks</LockHeader>
-          <LockMinorHeader>Name / Address</LockMinorHeader>
-          <LockMinorHeader>Key Duration</LockMinorHeader>
-          <Quantity>Key Quantity</Quantity>
-          <LockMinorHeader>Price</LockMinorHeader>
-          <LockMinorHeader>
-            <NoPhone>Balance</NoPhone>
-            <Phone>Balance</Phone>
-          </LockMinorHeader>
-          <CreateLockButton onClick={this.toggleForm} id="CreateLockButton">
-            Create Lock
-          </CreateLockButton>
-        </LockHeaderRow>
-        <Errors />
-        {showDashboardForm && (
-          <CreatorLockForm
-            hideAction={this.toggleForm}
-            createLock={createLock}
-            pending
-          />
-        )}
-        {lockFeed.length > 0 &&
-          lockFeed.map(lock => {
-            return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
-          })}
-        {lockFeed.length === 0 && !loading && !showDashboardForm && (
-          <DefaultError
-            title="Create a lock to get started"
-            illustration="/static/images/illustrations/lock.svg"
-            critical={false}
-          >
-            You have not created any locks yet. Create your first lock in
-            seconds by clicking on the &#8216;Create Lock&#8217; button.
-          </DefaultError>
-        )}
-        {loading && (
-          <LoadingWrapper>
-            <Svg.Loading title="loading" />
-          </LoadingWrapper>
-        )}
-      </Locks>
-    )
-  }
+export const CreatorLocks = props => {
+  const { createLock, lockFeed, loading, formIsVisible, hideForm } = props
+  return (
+    <Locks>
+      <LockHeaderRow id="LockHeaderRow">
+        <LockHeader>Locks</LockHeader>
+        <LockMinorHeader>Name / Address</LockMinorHeader>
+        <LockMinorHeader>Key Duration</LockMinorHeader>
+        <Quantity>Key Quantity</Quantity>
+        <LockMinorHeader>Price</LockMinorHeader>
+        <LockMinorHeader>
+          <NoPhone>Balance</NoPhone>
+          <Phone>Balance</Phone>
+        </LockMinorHeader>
+      </LockHeaderRow>
+      <Errors />
+      {formIsVisible && (
+        <CreatorLockForm
+          hideAction={hideForm}
+          createLock={createLock}
+          pending
+        />
+      )}
+      {lockFeed.length > 0 &&
+        lockFeed.map(lock => {
+          return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
+        })}
+      {lockFeed.length === 0 && !loading && !formIsVisible && (
+        <DefaultError
+          title="Create a lock to get started"
+          illustration="/static/images/illustrations/lock.svg"
+          critical={false}
+        >
+          You have not created any locks yet. Create your first lock in seconds
+          by clicking on the &#8216;Create Lock&#8217; button.
+        </DefaultError>
+      )}
+      {loading && (
+        <LoadingWrapper>
+          <Svg.Loading title="loading" />
+        </LoadingWrapper>
+      )}
+    </Locks>
+  )
 }
 
 CreatorLocks.propTypes = {
   createLock: PropTypes.func.isRequired,
-  showForm: UnlockPropTypes.showDashboardForm,
+  formIsVisible: PropTypes.bool.isRequired,
   lockFeed: PropTypes.arrayOf(UnlockPropTypes.lock),
   loading: PropTypes.bool,
+  hideForm: PropTypes.func.isRequired,
 }
 
 CreatorLocks.defaultProps = {
   loading: false,
-  showForm: false,
   lockFeed: [],
 }
 
 const mapDispatchToProps = dispatch => ({
   createLock: lock => dispatch(createLock(lock)),
+  hideForm: () => dispatch(hideForm()),
 })
 
-export const mapStateToProps = ({ loading }) => {
+export const mapStateToProps = ({ loading, lockFormStatus: { visible } }) => {
   return {
     loading: !!loading,
+    formIsVisible: visible,
   }
 }
 

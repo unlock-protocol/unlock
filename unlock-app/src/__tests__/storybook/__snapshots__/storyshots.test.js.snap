@@ -247,13 +247,13 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gzVnrw ibZhkv"
+      class="sc-ifAKCX cFlEyZ"
     >
       <div
-        class="sc-dnqmqq igZzXE"
+        class="sc-bZQynM ePIBLw"
       >
         <div
-          class="sc-iwsKbI bWJBJz"
+          class="sc-gzVnrw gZXrCQ"
         >
           <div
             class="paper"
@@ -310,44 +310,44 @@ Object {
           </div>
         </div>
         <div
-          class="sc-gZMcBi kEdgDY"
+          class="sc-htoDjs erHdrS"
         >
           Address
           <span
-            class="sc-htoDjs cOlBaJ"
+            class="sc-EHOje ePRmVK"
             id="NetworkName"
           >
             Rinkeby
           </span>
         </div>
         <div
-          class="sc-gZMcBi kEdgDY"
+          class="sc-htoDjs erHdrS"
         >
           Balance
         </div>
         <div
-          class="sc-iwsKbI bWJBJz"
+          class="sc-gzVnrw gZXrCQ"
         />
         <div
-          class="sc-iwsKbI bWJBJz"
+          class="sc-gzVnrw gZXrCQ"
         />
         <div
-          class="sc-iwsKbI bWJBJz"
+          class="sc-gzVnrw gZXrCQ"
         />
         <div
-          class="sc-iwsKbI bWJBJz"
+          class="sc-gzVnrw gZXrCQ"
         />
         <div
-          class="sc-iwsKbI bWJBJz"
+          class="sc-gzVnrw gZXrCQ"
         />
         <div
-          class="sc-gqjmRU cdfsbH"
+          class="sc-dnqmqq iSoGqQ"
           id="UserAddress"
         >
           0x3ca206264762caf81a8f0a843bbb850987b41e16
         </div>
         <div
-          class="sc-VigVT gzdgQt"
+          class="sc-iwsKbI caSLHP"
           id="AccountBalance"
         >
           <div
@@ -664,13 +664,13 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gzVnrw ibZhkv"
+      class="sc-ifAKCX cFlEyZ"
     >
       <div
-        class="sc-dnqmqq igZzXE"
+        class="sc-bZQynM ePIBLw"
       >
         <div
-          class="sc-iwsKbI bWJBJz"
+          class="sc-gzVnrw gZXrCQ"
         >
           <div
             class="paper"
@@ -727,44 +727,44 @@ Object {
           </div>
         </div>
         <div
-          class="sc-gZMcBi kEdgDY"
+          class="sc-htoDjs erHdrS"
         >
           Address
           <span
-            class="sc-htoDjs cOlBaJ"
+            class="sc-EHOje ePRmVK"
             id="NetworkName"
           >
             Rinkeby
           </span>
         </div>
         <div
-          class="sc-gZMcBi kEdgDY"
+          class="sc-htoDjs erHdrS"
         >
           Balance
         </div>
         <div
-          class="sc-iwsKbI bWJBJz"
+          class="sc-gzVnrw gZXrCQ"
         />
         <div
-          class="sc-iwsKbI bWJBJz"
+          class="sc-gzVnrw gZXrCQ"
         />
         <div
-          class="sc-iwsKbI bWJBJz"
+          class="sc-gzVnrw gZXrCQ"
         />
         <div
-          class="sc-iwsKbI bWJBJz"
+          class="sc-gzVnrw gZXrCQ"
         />
         <div
-          class="sc-iwsKbI bWJBJz"
+          class="sc-gzVnrw gZXrCQ"
         />
         <div
-          class="sc-gqjmRU cdfsbH"
+          class="sc-dnqmqq iSoGqQ"
           id="UserAddress"
         >
           0x3ca206264762caf81a8f0a843bbb850987b41e16
         </div>
         <div
-          class="sc-VigVT gzdgQt"
+          class="sc-iwsKbI caSLHP"
           id="AccountBalance"
         >
           <div
@@ -8441,7 +8441,7 @@ Object {
           class="sc-9upljg-3 kjuFdI"
         >
           <button
-            class="sc-ifAKCX sc-9upljg-0 cTMzWy"
+            class="sc-gZMcBi sc-9upljg-0 cTMzWy"
           >
             Go to Your Dashboard
           </button>
@@ -23890,7 +23890,7 @@ exports[`Storyshots CreatorLocks loading with locks 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c21 {
+    .c20 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -23902,25 +23902,25 @@ Object {
   line-height: 15px;
 }
 
-.c21 > svg {
+.c20 > svg {
   fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c21:hover {
+.c20:hover {
   background-color: white;
 }
 
-.c21:hover > svg {
+.c20:hover > svg {
   fill: var(--lightgrey);
 }
 
-.c21:focus {
+.c20:focus {
   outline: none;
 }
 
-.c22 {
+.c21 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -23932,25 +23932,25 @@ Object {
   line-height: 15px;
 }
 
-.c22 > svg {
+.c21 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c22:hover {
+.c21:hover {
   background-color: var(--link);
 }
 
-.c22:hover > svg {
+.c21:hover > svg {
   fill: white;
 }
 
-.c22:focus {
+.c21:focus {
   outline: none;
 }
 
-.c23 {
+.c22 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -23965,23 +23965,23 @@ Object {
   color: var(--link);
 }
 
-.c20:hover .c23 {
+.c19:hover .c22 {
   display: inline-block;
 }
 
-.c18 {
+.c17 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c19 {
+.c18 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(3,24px);
 }
 
-.c24 {
+.c23 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -23991,7 +23991,7 @@ Object {
   padding-right: 24px;
 }
 
-.c12 {
+.c11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -24001,7 +24001,7 @@ Object {
   flex-direction: column;
 }
 
-.c13 {
+.c12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -24012,38 +24012,38 @@ Object {
   padding-bottom: 0.5em;
 }
 
-.c14 {
+.c13 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c14:before {
+.c13:before {
   content: '三';
 }
 
-.c17 {
+.c16 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c17:before {
+.c16:before {
   content: '$';
 }
 
-.c15 {
+.c14 {
   white-space: nowrap;
   text-transform: uppercase;
 }
 
-.c16 {
+.c15 {
   font-size: 10px;
   color: var(--darkgrey);
   margin-top: 5px;
 }
 
-.c8 {
+.c7 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   min-height: 48px;
@@ -24063,28 +24063,28 @@ Object {
   cursor: pointer;
 }
 
-.c8 > * {
+.c7 > * {
   padding-top: 16px;
 }
 
-.c8:hover {
+.c7:hover {
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
   -webkit-transition: box-shadow 100ms ease;
   transition: box-shadow 100ms ease;
 }
 
-.c9 {
+.c8 {
   grid-row: span 2;
 }
 
-.c10 {
+.c9 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c11 {
+.c10 {
   color: var(--grey);
   font-weight: 200;
   white-space: nowrap;
@@ -24093,34 +24093,12 @@ Object {
   text-overflow: ellipsis;
 }
 
-.c7 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  padding: 10px;
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  height: 48px;
-}
-
-.c7 :hover {
-  background-color: var(--activegreen);
-}
-
-.c25 {
+.c24 {
   display: grid;
   justify-items: center;
 }
 
-.c25 svg {
+.c24 svg {
   fill: var(--lightgrey);
   width: 60px;
 }
@@ -24201,13 +24179,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c18 {
+  .c17 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c8 {
+  .c7 {
     grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
     grid-template-rows: 84px;
     grid-column-gap: 16px;
@@ -24215,7 +24193,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c8 {
+  .c7 {
     grid-column-gap: 4px;
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
@@ -24223,14 +24201,8 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c10 {
+  .c9 {
     grid-column: span 2;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
-    display: none;
   }
 }
 
@@ -24309,19 +24281,13 @@ Object {
               Balance
             </div>
           </div>
-          <button
-            class="c7"
-            id="CreateLockButton"
-          >
-            Create Lock
-          </button>
         </div>
         <div
-          class="c8"
+          class="c7"
           id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <div
-            class="c9"
+            class="c8"
           >
             <svg
               viewBox="0 0 216 216"
@@ -24397,11 +24363,11 @@ Object {
             </svg>
           </div>
           <div
-            class="c10"
+            class="c9"
           >
             First Lock
             <div
-              class="c11"
+              class="c10"
             >
               0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
             </div>
@@ -24420,31 +24386,31 @@ Object {
             3/240
           </div>
           <div
-            class="c12"
+            class="c11"
           >
             <span
-              class="c13"
+              class="c12"
             >
               <span
-                class="c14"
+                class="c13"
               />
               <span
-                class="c15"
+                class="c14"
               >
                 0.01
               </span>
             </span>
             <div
-              class="c16"
+              class="c15"
             >
               <span
-                class="c13"
+                class="c12"
               >
                 <span
-                  class="c17"
+                  class="c16"
                 />
                 <span
-                  class="c15"
+                  class="c14"
                 >
                   ---
                 </span>
@@ -24458,31 +24424,31 @@ Object {
               class="c5"
             >
               <div
-                class="c12"
+                class="c11"
               >
                 <span
-                  class="c13"
+                  class="c12"
                 >
                   <span
-                    class="c14"
+                    class="c13"
                   />
                   <span
-                    class="c15"
+                    class="c14"
                   >
                      - 
                   </span>
                 </span>
                 <div
-                  class="c16"
+                  class="c15"
                 >
                   <span
-                    class="c13"
+                    class="c12"
                   >
                     <span
-                      class="c17"
+                      class="c16"
                     />
                     <span
-                      class="c15"
+                      class="c14"
                     >
                        - 
                     </span>
@@ -24494,16 +24460,16 @@ Object {
               class="c6"
             >
               <div
-                class="c12"
+                class="c11"
               >
                 <span
-                  class="c13"
+                  class="c12"
                 >
                   <span
-                    class="c14"
+                    class="c13"
                   />
                   <span
-                    class="c15"
+                    class="c14"
                   >
                      - 
                   </span>
@@ -24516,13 +24482,13 @@ Object {
             class=""
           >
             <div
-              class="c18"
+              class="c17"
             >
               <div
-                class="c19"
+                class="c18"
               >
                 <button
-                  class="c20 c21"
+                  class="c19 c20"
                 >
                   <svg
                     name="Withdraw"
@@ -24538,7 +24504,7 @@ Object {
                   
                 </button>
                 <button
-                  class="c20 c22"
+                  class="c19 c21"
                   id="EditLockButton_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                   title="Edit"
                 >
@@ -24557,13 +24523,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c23"
+                    class="c22"
                   >
                     Edit
                   </small>
                 </button>
                 <button
-                  class="c20 c22"
+                  class="c19 c21"
                   id="LockEmbeddCode_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                   title="Embed"
                 >
@@ -24579,7 +24545,7 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c23"
+                    class="c22"
                   >
                     Embed
                   </small>
@@ -24587,16 +24553,16 @@ Object {
               </div>
             </div>
             <div
-              class="c24"
+              class="c23"
             />
           </div>
         </div>
         <div
-          class="c8"
+          class="c7"
           id="LockRow_0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
         >
           <div
-            class="c9"
+            class="c8"
           >
             <svg
               viewBox="0 0 216 216"
@@ -24672,11 +24638,11 @@ Object {
             </svg>
           </div>
           <div
-            class="c10"
+            class="c9"
           >
             Another Lock
             <div
-              class="c11"
+              class="c10"
             >
               0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83
             </div>
@@ -24695,31 +24661,31 @@ Object {
             1234/∞
           </div>
           <div
-            class="c12"
+            class="c11"
           >
             <span
-              class="c13"
+              class="c12"
             >
               <span
-                class="c14"
+                class="c13"
               />
               <span
-                class="c15"
+                class="c14"
               >
                 1.00
               </span>
             </span>
             <div
-              class="c16"
+              class="c15"
             >
               <span
-                class="c13"
+                class="c12"
               >
                 <span
-                  class="c17"
+                  class="c16"
                 />
                 <span
-                  class="c15"
+                  class="c14"
                 >
                   ---
                 </span>
@@ -24733,31 +24699,31 @@ Object {
               class="c5"
             >
               <div
-                class="c12"
+                class="c11"
               >
                 <span
-                  class="c13"
+                  class="c12"
                 >
                   <span
-                    class="c14"
+                    class="c13"
                   />
                   <span
-                    class="c15"
+                    class="c14"
                   >
                      - 
                   </span>
                 </span>
                 <div
-                  class="c16"
+                  class="c15"
                 >
                   <span
-                    class="c13"
+                    class="c12"
                   >
                     <span
-                      class="c17"
+                      class="c16"
                     />
                     <span
-                      class="c15"
+                      class="c14"
                     >
                        - 
                     </span>
@@ -24769,16 +24735,16 @@ Object {
               class="c6"
             >
               <div
-                class="c12"
+                class="c11"
               >
                 <span
-                  class="c13"
+                  class="c12"
                 >
                   <span
-                    class="c14"
+                    class="c13"
                   />
                   <span
-                    class="c15"
+                    class="c14"
                   >
                      - 
                   </span>
@@ -24791,13 +24757,13 @@ Object {
             class=""
           >
             <div
-              class="c18"
+              class="c17"
             >
               <div
-                class="c19"
+                class="c18"
               >
                 <button
-                  class="c20 c21"
+                  class="c19 c20"
                 >
                   <svg
                     name="Withdraw"
@@ -24813,7 +24779,7 @@ Object {
                   
                 </button>
                 <button
-                  class="c20 c22"
+                  class="c19 c21"
                   id="EditLockButton_0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
                   title="Edit"
                 >
@@ -24832,13 +24798,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c23"
+                    class="c22"
                   >
                     Edit
                   </small>
                 </button>
                 <button
-                  class="c20 c22"
+                  class="c19 c21"
                   id="LockEmbeddCode_0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
                   title="Embed"
                 >
@@ -24854,7 +24820,7 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c23"
+                    class="c22"
                   >
                     Embed
                   </small>
@@ -24862,12 +24828,12 @@ Object {
               </div>
             </div>
             <div
-              class="c24"
+              class="c23"
             />
           </div>
         </div>
         <section
-          class="c25"
+          class="c24"
         >
           <svg
             viewBox="0 0 32 32"
@@ -25074,12 +25040,6 @@ Object {
             Balance
           </div>
         </div>
-        <button
-          class="sc-ifAKCX sc-EHOje eNCBwO"
-          id="CreateLockButton"
-        >
-          Create Lock
-        </button>
       </div>
       <div
         class="mlglvd-0 jpUcBv"
@@ -25838,33 +25798,11 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c7 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  padding: 10px;
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  height: 48px;
-}
-
-.c7 :hover {
-  background-color: var(--activegreen);
-}
-
-.c8 {
   display: grid;
   justify-items: center;
 }
 
-.c8 svg {
+.c7 svg {
   fill: var(--lightgrey);
   width: 60px;
 }
@@ -25945,12 +25883,6 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
   .c1 {
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
@@ -26025,15 +25957,9 @@ Object {
               Balance
             </div>
           </div>
-          <button
-            class="c7"
-            id="CreateLockButton"
-          >
-            Create Lock
-          </button>
         </div>
         <section
-          class="c8"
+          class="c7"
         >
           <svg
             viewBox="0 0 32 32"
@@ -26240,12 +26166,6 @@ Object {
             Balance
           </div>
         </div>
-        <button
-          class="sc-ifAKCX sc-EHOje eNCBwO"
-          id="CreateLockButton"
-        >
-          Create Lock
-        </button>
       </div>
       <section
         class="sc-1olgoav-0 brRaoP"
@@ -26453,7 +26373,7 @@ exports[`Storyshots CreatorLocks multiple locks 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c21 {
+    .c20 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -26465,25 +26385,25 @@ Object {
   line-height: 15px;
 }
 
-.c21 > svg {
+.c20 > svg {
   fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c21:hover {
+.c20:hover {
   background-color: white;
 }
 
-.c21:hover > svg {
+.c20:hover > svg {
   fill: var(--lightgrey);
 }
 
-.c21:focus {
+.c20:focus {
   outline: none;
 }
 
-.c22 {
+.c21 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -26495,25 +26415,25 @@ Object {
   line-height: 15px;
 }
 
-.c22 > svg {
+.c21 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c22:hover {
+.c21:hover {
   background-color: var(--link);
 }
 
-.c22:hover > svg {
+.c21:hover > svg {
   fill: white;
 }
 
-.c22:focus {
+.c21:focus {
   outline: none;
 }
 
-.c23 {
+.c22 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -26528,23 +26448,23 @@ Object {
   color: var(--link);
 }
 
-.c20:hover .c23 {
+.c19:hover .c22 {
   display: inline-block;
 }
 
-.c18 {
+.c17 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c19 {
+.c18 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(3,24px);
 }
 
-.c24 {
+.c23 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -26554,7 +26474,7 @@ Object {
   padding-right: 24px;
 }
 
-.c12 {
+.c11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -26564,7 +26484,7 @@ Object {
   flex-direction: column;
 }
 
-.c13 {
+.c12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -26575,38 +26495,38 @@ Object {
   padding-bottom: 0.5em;
 }
 
-.c14 {
+.c13 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c14:before {
+.c13:before {
   content: '三';
 }
 
-.c17 {
+.c16 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c17:before {
+.c16:before {
   content: '$';
 }
 
-.c15 {
+.c14 {
   white-space: nowrap;
   text-transform: uppercase;
 }
 
-.c16 {
+.c15 {
   font-size: 10px;
   color: var(--darkgrey);
   margin-top: 5px;
 }
 
-.c8 {
+.c7 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   min-height: 48px;
@@ -26626,56 +26546,34 @@ Object {
   cursor: pointer;
 }
 
-.c8 > * {
+.c7 > * {
   padding-top: 16px;
 }
 
-.c8:hover {
+.c7:hover {
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
   -webkit-transition: box-shadow 100ms ease;
   transition: box-shadow 100ms ease;
 }
 
-.c9 {
+.c8 {
   grid-row: span 2;
 }
 
-.c10 {
+.c9 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c11 {
+.c10 {
   color: var(--grey);
   font-weight: 200;
   white-space: nowrap;
   font-size: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.c7 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  padding: 10px;
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  height: 48px;
-}
-
-.c7 :hover {
-  background-color: var(--activegreen);
 }
 
 .c0 {
@@ -26754,13 +26652,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c18 {
+  .c17 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c8 {
+  .c7 {
     grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
     grid-template-rows: 84px;
     grid-column-gap: 16px;
@@ -26768,7 +26666,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c8 {
+  .c7 {
     grid-column-gap: 4px;
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
@@ -26776,14 +26674,8 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c10 {
+  .c9 {
     grid-column: span 2;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
-    display: none;
   }
 }
 
@@ -26862,19 +26754,13 @@ Object {
               Balance
             </div>
           </div>
-          <button
-            class="c7"
-            id="CreateLockButton"
-          >
-            Create Lock
-          </button>
         </div>
         <div
-          class="c8"
+          class="c7"
           id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <div
-            class="c9"
+            class="c8"
           >
             <svg
               viewBox="0 0 216 216"
@@ -26950,11 +26836,11 @@ Object {
             </svg>
           </div>
           <div
-            class="c10"
+            class="c9"
           >
             First Lock
             <div
-              class="c11"
+              class="c10"
             >
               0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
             </div>
@@ -26973,31 +26859,31 @@ Object {
             3/240
           </div>
           <div
-            class="c12"
+            class="c11"
           >
             <span
-              class="c13"
+              class="c12"
             >
               <span
-                class="c14"
+                class="c13"
               />
               <span
-                class="c15"
+                class="c14"
               >
                 0.01
               </span>
             </span>
             <div
-              class="c16"
+              class="c15"
             >
               <span
-                class="c13"
+                class="c12"
               >
                 <span
-                  class="c17"
+                  class="c16"
                 />
                 <span
-                  class="c15"
+                  class="c14"
                 >
                   ---
                 </span>
@@ -27011,31 +26897,31 @@ Object {
               class="c5"
             >
               <div
-                class="c12"
+                class="c11"
               >
                 <span
-                  class="c13"
+                  class="c12"
                 >
                   <span
-                    class="c14"
+                    class="c13"
                   />
                   <span
-                    class="c15"
+                    class="c14"
                   >
                      - 
                   </span>
                 </span>
                 <div
-                  class="c16"
+                  class="c15"
                 >
                   <span
-                    class="c13"
+                    class="c12"
                   >
                     <span
-                      class="c17"
+                      class="c16"
                     />
                     <span
-                      class="c15"
+                      class="c14"
                     >
                        - 
                     </span>
@@ -27047,16 +26933,16 @@ Object {
               class="c6"
             >
               <div
-                class="c12"
+                class="c11"
               >
                 <span
-                  class="c13"
+                  class="c12"
                 >
                   <span
-                    class="c14"
+                    class="c13"
                   />
                   <span
-                    class="c15"
+                    class="c14"
                   >
                      - 
                   </span>
@@ -27069,13 +26955,13 @@ Object {
             class=""
           >
             <div
-              class="c18"
+              class="c17"
             >
               <div
-                class="c19"
+                class="c18"
               >
                 <button
-                  class="c20 c21"
+                  class="c19 c20"
                 >
                   <svg
                     name="Withdraw"
@@ -27091,7 +26977,7 @@ Object {
                   
                 </button>
                 <button
-                  class="c20 c22"
+                  class="c19 c21"
                   id="EditLockButton_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                   title="Edit"
                 >
@@ -27110,13 +26996,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c23"
+                    class="c22"
                   >
                     Edit
                   </small>
                 </button>
                 <button
-                  class="c20 c22"
+                  class="c19 c21"
                   id="LockEmbeddCode_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                   title="Embed"
                 >
@@ -27132,7 +27018,7 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c23"
+                    class="c22"
                   >
                     Embed
                   </small>
@@ -27140,16 +27026,16 @@ Object {
               </div>
             </div>
             <div
-              class="c24"
+              class="c23"
             />
           </div>
         </div>
         <div
-          class="c8"
+          class="c7"
           id="LockRow_0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
         >
           <div
-            class="c9"
+            class="c8"
           >
             <svg
               viewBox="0 0 216 216"
@@ -27225,11 +27111,11 @@ Object {
             </svg>
           </div>
           <div
-            class="c10"
+            class="c9"
           >
             Another Lock
             <div
-              class="c11"
+              class="c10"
             >
               0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83
             </div>
@@ -27248,31 +27134,31 @@ Object {
             1234/∞
           </div>
           <div
-            class="c12"
+            class="c11"
           >
             <span
-              class="c13"
+              class="c12"
             >
               <span
-                class="c14"
+                class="c13"
               />
               <span
-                class="c15"
+                class="c14"
               >
                 1.00
               </span>
             </span>
             <div
-              class="c16"
+              class="c15"
             >
               <span
-                class="c13"
+                class="c12"
               >
                 <span
-                  class="c17"
+                  class="c16"
                 />
                 <span
-                  class="c15"
+                  class="c14"
                 >
                   ---
                 </span>
@@ -27286,31 +27172,31 @@ Object {
               class="c5"
             >
               <div
-                class="c12"
+                class="c11"
               >
                 <span
-                  class="c13"
+                  class="c12"
                 >
                   <span
-                    class="c14"
+                    class="c13"
                   />
                   <span
-                    class="c15"
+                    class="c14"
                   >
                      - 
                   </span>
                 </span>
                 <div
-                  class="c16"
+                  class="c15"
                 >
                   <span
-                    class="c13"
+                    class="c12"
                   >
                     <span
-                      class="c17"
+                      class="c16"
                     />
                     <span
-                      class="c15"
+                      class="c14"
                     >
                        - 
                     </span>
@@ -27322,16 +27208,16 @@ Object {
               class="c6"
             >
               <div
-                class="c12"
+                class="c11"
               >
                 <span
-                  class="c13"
+                  class="c12"
                 >
                   <span
-                    class="c14"
+                    class="c13"
                   />
                   <span
-                    class="c15"
+                    class="c14"
                   >
                      - 
                   </span>
@@ -27344,13 +27230,13 @@ Object {
             class=""
           >
             <div
-              class="c18"
+              class="c17"
             >
               <div
-                class="c19"
+                class="c18"
               >
                 <button
-                  class="c20 c21"
+                  class="c19 c20"
                 >
                   <svg
                     name="Withdraw"
@@ -27366,7 +27252,7 @@ Object {
                   
                 </button>
                 <button
-                  class="c20 c22"
+                  class="c19 c21"
                   id="EditLockButton_0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
                   title="Edit"
                 >
@@ -27385,13 +27271,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c23"
+                    class="c22"
                   >
                     Edit
                   </small>
                 </button>
                 <button
-                  class="c20 c22"
+                  class="c19 c21"
                   id="LockEmbeddCode_0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
                   title="Embed"
                 >
@@ -27407,7 +27293,7 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c23"
+                    class="c22"
                   >
                     Embed
                   </small>
@@ -27415,7 +27301,7 @@ Object {
               </div>
             </div>
             <div
-              class="c24"
+              class="c23"
             />
           </div>
         </div>
@@ -27473,12 +27359,6 @@ Object {
             Balance
           </div>
         </div>
-        <button
-          class="sc-ifAKCX sc-EHOje eNCBwO"
-          id="CreateLockButton"
-        >
-          Create Lock
-        </button>
       </div>
       <div
         class="mlglvd-0 jpUcBv"
@@ -28082,7 +27962,7 @@ exports[`Storyshots CreatorLocks no lock 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c8 {
+    .c7 {
   display: grid;
   row-gap: 16px;
   -webkit-column-gap: 32px;
@@ -28099,49 +27979,27 @@ Object {
   padding-bottom: 40px;
 }
 
-.c9 {
+.c8 {
   width: 72px;
 }
 
-.c10 {
+.c9 {
   display: grid;
   grid-gap: 16px;
 }
 
-.c10 > h1 {
+.c9 > h1 {
   font-weight: bold;
   color: var(--grey);
   margin: 0px;
   padding: 0px;
 }
 
-.c10 > p {
+.c9 > p {
   margin: 0px;
   padding: 0px;
   font-size: 16px;
   color: var(--dimgrey);
-}
-
-.c7 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  padding: 10px;
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  height: 48px;
-}
-
-.c7 :hover {
-  background-color: var(--activegreen);
 }
 
 .c0 {
@@ -28220,16 +28078,10 @@ Object {
 }
 
 @media (max-width:500px) {
-  .c8 {
+  .c7 {
     grid-template-columns: 1fr;
     grid-auto-flow: row;
     padding: 16px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
-    display: none;
   }
 }
 
@@ -28308,22 +28160,16 @@ Object {
               Balance
             </div>
           </div>
-          <button
-            class="c7"
-            id="CreateLockButton"
-          >
-            Create Lock
-          </button>
         </div>
         <section
-          class="c8"
+          class="c7"
         >
           <img
-            class="c9"
+            class="c8"
             src="/static/images/illustrations/lock.svg"
           />
           <div
-            class="c10"
+            class="c9"
           >
             <h1>
               Create a lock to get started
@@ -28385,12 +28231,6 @@ Object {
             Balance
           </div>
         </div>
-        <button
-          class="sc-ifAKCX sc-EHOje eNCBwO"
-          id="CreateLockButton"
-        >
-          Create Lock
-        </button>
       </div>
       <section
         class="sc-1g6piw8-0 jXGMmL"
@@ -28460,24 +28300,24 @@ exports[`Storyshots CreatorLocks no lock, showForm 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c14 {
+    .c13 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c14:before {
+.c13:before {
   content: '三';
 }
 
-.c12 {
+.c11 {
   color: var(--link);
   font-size: 11px;
   width: 100%;
   padding: 5px;
 }
 
-.c8 {
+.c7 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   min-height: 48px;
@@ -28499,27 +28339,27 @@ Object {
   animation: 400ms ease slideIn;
 }
 
-.c8 > * {
+.c7 > * {
   padding-top: 16px;
 }
 
-.c8:hover {
+.c7:hover {
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
   -webkit-transition: box-shadow 100ms ease;
   transition: box-shadow 100ms ease;
 }
 
-.c8 input[type='number'] {
+.c7 input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.c8 input::-webkit-outer-spin-button,
-.c8 input::-webkit-inner-spin-button {
+.c7 input::-webkit-outer-spin-button,
+.c7 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.c8 input {
+.c7 input {
   background: var(--lightgrey);
   border: 1px solid var(--lightgrey);
   border-radius: 4px;
@@ -28530,29 +28370,29 @@ Object {
   font-weight: 200;
 }
 
-.c8 input:focus {
+.c7 input:focus {
   outline: none;
   border: 1px solid var(--grey);
   -webkit-transition: border 100ms ease;
   transition: border 100ms ease;
 }
 
-.c8 input[data-valid='false'] {
+.c7 input[data-valid='false'] {
   border: 1px solid var(--red);
 }
 
-.c8 input:disabled {
+.c7 input:disabled {
   color: var(--silver);
 }
 
-.c8 100% {
+.c7 100% {
   -webkit-transform: translateY(0);
   -ms-transform: translateY(0);
   transform: translateY(0);
   opacity: 1;
 }
 
-.c15 {
+.c14 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -28570,47 +28410,47 @@ Object {
   padding-bottom: 15px;
 }
 
-.c9 {
+.c8 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c9 input[type='text'],
-.c9 input[type='number'] {
+.c8 input[type='text'],
+.c8 input[type='number'] {
   min-width: 70px;
   width: 80%;
 }
 
-.c10 input[type='text'],
-.c10 input[type='number'] {
+.c9 input[type='text'],
+.c9 input[type='number'] {
   min-width: 30px;
   width: 50%;
   text-align: right;
 }
 
-.c11 input[type='text'],
-.c11 input[type='number'] {
+.c10 input[type='text'],
+.c10 input[type='number'] {
   min-width: 30px;
   width: 80%;
   text-align: right;
 }
 
-.c13 {
+.c12 {
   white-space: nowrap;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-.c13 input[type='text'],
-.c13 input[type='number'] {
+.c12 input[type='text'],
+.c12 input[type='number'] {
   min-width: 30px;
   width: 77%;
   padding-right: 0;
 }
 
-.c16 {
+.c15 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -28624,13 +28464,13 @@ Object {
   padding: 0;
 }
 
-.c16:hover {
+.c15:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
-.c17 {
+.c16 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -28644,32 +28484,10 @@ Object {
   padding: 0;
 }
 
-.c17:hover {
+.c16:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
-}
-
-.c7 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  padding: 10px;
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  height: 48px;
-}
-
-.c7 :hover {
-  background-color: var(--activegreen);
 }
 
 .c0 {
@@ -28748,7 +28566,7 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c8 {
+  .c7 {
     grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
     grid-template-rows: 84px;
     grid-column-gap: 16px;
@@ -28756,7 +28574,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c8 {
+  .c7 {
     grid-column-gap: 4px;
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
@@ -28764,14 +28582,8 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c9 {
+  .c8 {
     grid-column: span 2;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
-    display: none;
   }
 }
 
@@ -28850,15 +28662,9 @@ Object {
               Balance
             </div>
           </div>
-          <button
-            class="c7"
-            id="CreateLockButton"
-          >
-            Create Lock
-          </button>
         </div>
         <div
-          class="c8"
+          class="c7"
         >
           <svg
             viewBox="0 0 216 216"
@@ -28933,7 +28739,7 @@ Object {
             </g>
           </svg>
           <div
-            class="c9"
+            class="c8"
           >
             <input
               data-valid="true"
@@ -28944,7 +28750,7 @@ Object {
             />
           </div>
           <div
-            class="c10"
+            class="c9"
           >
             <input
               data-valid="true"
@@ -28959,7 +28765,7 @@ Object {
             days
           </div>
           <div
-            class="c11"
+            class="c10"
           >
             <input
               data-valid="true"
@@ -28969,16 +28775,16 @@ Object {
               value="10"
             />
             <div
-              class="c12"
+              class="c11"
             >
               Unlimited
             </div>
           </div>
           <span
-            class="c13"
+            class="c12"
           >
             <span
-              class="c14"
+              class="c13"
             />
             <input
               data-valid="true"
@@ -28995,15 +28801,15 @@ Object {
             -
           </div>
           <div
-            class="c15"
+            class="c14"
           >
             <button
-              class="c16"
+              class="c15"
             >
               Submit
             </button>
             <button
-              class="c17"
+              class="c16"
             >
               Cancel
             </button>
@@ -29063,12 +28869,6 @@ Object {
             Balance
           </div>
         </div>
-        <button
-          class="sc-ifAKCX sc-EHOje eNCBwO"
-          id="CreateLockButton"
-        >
-          Create Lock
-        </button>
       </div>
       <div
         class="mlglvd-0 sc-1u8ov25-1 hyBsBZ"
@@ -29274,7 +29074,7 @@ exports[`Storyshots CreatorLocks single lock 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c21 {
+    .c20 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -29286,25 +29086,25 @@ Object {
   line-height: 15px;
 }
 
-.c21 > svg {
+.c20 > svg {
   fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c21:hover {
+.c20:hover {
   background-color: white;
 }
 
-.c21:hover > svg {
+.c20:hover > svg {
   fill: var(--lightgrey);
 }
 
-.c21:focus {
+.c20:focus {
   outline: none;
 }
 
-.c22 {
+.c21 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -29316,25 +29116,25 @@ Object {
   line-height: 15px;
 }
 
-.c22 > svg {
+.c21 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c22:hover {
+.c21:hover {
   background-color: var(--link);
 }
 
-.c22:hover > svg {
+.c21:hover > svg {
   fill: white;
 }
 
-.c22:focus {
+.c21:focus {
   outline: none;
 }
 
-.c23 {
+.c22 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -29349,23 +29149,23 @@ Object {
   color: var(--link);
 }
 
-.c20:hover .c23 {
+.c19:hover .c22 {
   display: inline-block;
 }
 
-.c18 {
+.c17 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c19 {
+.c18 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(3,24px);
 }
 
-.c24 {
+.c23 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -29375,7 +29175,7 @@ Object {
   padding-right: 24px;
 }
 
-.c12 {
+.c11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -29385,7 +29185,7 @@ Object {
   flex-direction: column;
 }
 
-.c13 {
+.c12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -29396,38 +29196,38 @@ Object {
   padding-bottom: 0.5em;
 }
 
-.c14 {
+.c13 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c14:before {
+.c13:before {
   content: '三';
 }
 
-.c17 {
+.c16 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c17:before {
+.c16:before {
   content: '$';
 }
 
-.c15 {
+.c14 {
   white-space: nowrap;
   text-transform: uppercase;
 }
 
-.c16 {
+.c15 {
   font-size: 10px;
   color: var(--darkgrey);
   margin-top: 5px;
 }
 
-.c8 {
+.c7 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   min-height: 48px;
@@ -29447,56 +29247,34 @@ Object {
   cursor: pointer;
 }
 
-.c8 > * {
+.c7 > * {
   padding-top: 16px;
 }
 
-.c8:hover {
+.c7:hover {
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
   -webkit-transition: box-shadow 100ms ease;
   transition: box-shadow 100ms ease;
 }
 
-.c9 {
+.c8 {
   grid-row: span 2;
 }
 
-.c10 {
+.c9 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c11 {
+.c10 {
   color: var(--grey);
   font-weight: 200;
   white-space: nowrap;
   font-size: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.c7 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  padding: 10px;
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  height: 48px;
-}
-
-.c7 :hover {
-  background-color: var(--activegreen);
 }
 
 .c0 {
@@ -29575,13 +29353,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c18 {
+  .c17 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c8 {
+  .c7 {
     grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
     grid-template-rows: 84px;
     grid-column-gap: 16px;
@@ -29589,7 +29367,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c8 {
+  .c7 {
     grid-column-gap: 4px;
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
@@ -29597,14 +29375,8 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c10 {
+  .c9 {
     grid-column: span 2;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
-    display: none;
   }
 }
 
@@ -29683,19 +29455,13 @@ Object {
               Balance
             </div>
           </div>
-          <button
-            class="c7"
-            id="CreateLockButton"
-          >
-            Create Lock
-          </button>
         </div>
         <div
-          class="c8"
+          class="c7"
           id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <div
-            class="c9"
+            class="c8"
           >
             <svg
               viewBox="0 0 216 216"
@@ -29771,11 +29537,11 @@ Object {
             </svg>
           </div>
           <div
-            class="c10"
+            class="c9"
           >
             First Lock
             <div
-              class="c11"
+              class="c10"
             >
               0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
             </div>
@@ -29794,31 +29560,31 @@ Object {
             3/240
           </div>
           <div
-            class="c12"
+            class="c11"
           >
             <span
-              class="c13"
+              class="c12"
             >
               <span
-                class="c14"
+                class="c13"
               />
               <span
-                class="c15"
+                class="c14"
               >
                 0.01
               </span>
             </span>
             <div
-              class="c16"
+              class="c15"
             >
               <span
-                class="c13"
+                class="c12"
               >
                 <span
-                  class="c17"
+                  class="c16"
                 />
                 <span
-                  class="c15"
+                  class="c14"
                 >
                   ---
                 </span>
@@ -29832,31 +29598,31 @@ Object {
               class="c5"
             >
               <div
-                class="c12"
+                class="c11"
               >
                 <span
-                  class="c13"
+                  class="c12"
                 >
                   <span
-                    class="c14"
+                    class="c13"
                   />
                   <span
-                    class="c15"
+                    class="c14"
                   >
                      - 
                   </span>
                 </span>
                 <div
-                  class="c16"
+                  class="c15"
                 >
                   <span
-                    class="c13"
+                    class="c12"
                   >
                     <span
-                      class="c17"
+                      class="c16"
                     />
                     <span
-                      class="c15"
+                      class="c14"
                     >
                        - 
                     </span>
@@ -29868,16 +29634,16 @@ Object {
               class="c6"
             >
               <div
-                class="c12"
+                class="c11"
               >
                 <span
-                  class="c13"
+                  class="c12"
                 >
                   <span
-                    class="c14"
+                    class="c13"
                   />
                   <span
-                    class="c15"
+                    class="c14"
                   >
                      - 
                   </span>
@@ -29890,13 +29656,13 @@ Object {
             class=""
           >
             <div
-              class="c18"
+              class="c17"
             >
               <div
-                class="c19"
+                class="c18"
               >
                 <button
-                  class="c20 c21"
+                  class="c19 c20"
                 >
                   <svg
                     name="Withdraw"
@@ -29912,7 +29678,7 @@ Object {
                   
                 </button>
                 <button
-                  class="c20 c22"
+                  class="c19 c21"
                   id="EditLockButton_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                   title="Edit"
                 >
@@ -29931,13 +29697,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c23"
+                    class="c22"
                   >
                     Edit
                   </small>
                 </button>
                 <button
-                  class="c20 c22"
+                  class="c19 c21"
                   id="LockEmbeddCode_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                   title="Embed"
                 >
@@ -29953,7 +29719,7 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c23"
+                    class="c22"
                   >
                     Embed
                   </small>
@@ -29961,7 +29727,7 @@ Object {
               </div>
             </div>
             <div
-              class="c24"
+              class="c23"
             />
           </div>
         </div>
@@ -30019,12 +29785,6 @@ Object {
             Balance
           </div>
         </div>
-        <button
-          class="sc-ifAKCX sc-EHOje eNCBwO"
-          id="CreateLockButton"
-        >
-          Create Lock
-        </button>
       </div>
       <div
         class="mlglvd-0 jpUcBv"
@@ -30492,7 +30252,7 @@ Object {
   display: inline-block;
 }
 
-.c24 {
+.c25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -30502,7 +30262,7 @@ Object {
   flex-direction: column;
 }
 
-.c25 {
+.c26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -30513,22 +30273,22 @@ Object {
   padding-bottom: 0.5em;
 }
 
-.c26 {
+.c27 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c26:before {
+.c27:before {
   content: '三';
 }
 
-.c27 {
+.c28 {
   white-space: nowrap;
   text-transform: uppercase;
 }
 
-.c36 {
+.c37 {
   display: grid;
   row-gap: 16px;
   -webkit-column-gap: 32px;
@@ -30545,57 +30305,35 @@ Object {
   padding-bottom: 40px;
 }
 
-.c37 {
+.c38 {
   width: 72px;
 }
 
-.c38 {
+.c39 {
   display: grid;
   grid-gap: 16px;
 }
 
-.c38 > h1 {
+.c39 > h1 {
   font-weight: bold;
   color: var(--grey);
   margin: 0px;
   padding: 0px;
 }
 
-.c38 > p {
+.c39 > p {
   margin: 0px;
   padding: 0px;
   font-size: 16px;
   color: var(--dimgrey);
 }
 
-.c35 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  padding: 10px;
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  height: 48px;
-}
-
-.c35 :hover {
-  background-color: var(--activegreen);
-}
-
-.c28 {
+.c30 {
   display: grid;
   grid-gap: 32px;
 }
 
-.c29 {
+.c31 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   padding-left: 8px;
@@ -30609,7 +30347,7 @@ Object {
   align-items: center;
 }
 
-.c30 {
+.c32 {
   font-family: 'IBM Plex Sans';
   font-size: 13px;
   font-weight: bold;
@@ -30623,7 +30361,7 @@ Object {
   color: var(--grey);
 }
 
-.c31 {
+.c33 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -30638,7 +30376,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c32 {
+.c34 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -30817,7 +30555,7 @@ Object {
   width: 100%;
 }
 
-.c21 {
+.c22 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   font-weight: 500;
@@ -30826,7 +30564,7 @@ Object {
   text-transform: none;
 }
 
-.c18 {
+.c19 {
   font-family: 'IBM Plex Mono',monospace;
   display: grid;
   row-gap: 8px;
@@ -30835,7 +30573,7 @@ Object {
   grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
 }
 
-.c19 {
+.c20 {
   display: grid;
   height: 40px;
   grid-row: span 2;
@@ -30848,7 +30586,7 @@ Object {
   align-content: start;
 }
 
-.c20 {
+.c21 {
   font-weight: 100;
   text-transform: uppercase;
   -webkit-letter-spacing: 1px;
@@ -30858,7 +30596,7 @@ Object {
   font-size: 8px;
 }
 
-.c22 {
+.c23 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   width: 128px;
@@ -30867,30 +30605,41 @@ Object {
   word-break: break-all;
 }
 
-.c23 {
+.c24 {
   font-size: 16px;
   font-weight: 500;
   color: var(--darkgrey);
 }
 
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c33 {
-    display: none;
-  }
+.c29 {
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--darkgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  padding: 10px;
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+  height: 48px;
 }
 
-@media only screen and (min-width:736px) {
-  .c34 {
-    display: none;
-  }
+.c29 :hover {
+  background-color: var(--activegreen);
 }
 
-@media (max-width:500px) {
-  .c36 {
-    grid-template-columns: 1fr;
-    grid-auto-flow: row;
-    padding: 16px;
-  }
+.c18 {
+  display: grid;
+  grid-template-columns: 1fr 144px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -30899,8 +30648,22 @@ Object {
   }
 }
 
+@media only screen and (min-width:736px) {
+  .c36 {
+    display: none;
+  }
+}
+
+@media (max-width:500px) {
+  .c37 {
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+    padding: 16px;
+  }
+}
+
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c29 {
+  .c31 {
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
     -webkit-align-items: start;
@@ -30912,13 +30675,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c30 {
+  .c32 {
     grid-row: span 2;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c32 {
+  .c34 {
     grid-row: span 2;
   }
 }
@@ -30999,13 +30762,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c39 {
+  .c40 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c18 {
+  .c19 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
     grid-template-columns: 45px 145px repeat(2,80px);
@@ -31013,8 +30776,14 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c19 {
+  .c20 {
     height: 0px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c29 {
+    display: none;
   }
 }
 
@@ -31256,192 +31025,196 @@ Object {
               class="c17"
             />
           </header>
-          <section
-            class=""
+          <div
+            class="c18"
           >
-            <div
-              class="c18"
+            <section
+              class=""
             >
               <div
                 class="c19"
               >
                 <div
-                  class="paper"
-                  style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
+                  class="c20"
                 >
-                  <svg
-                    height="40"
-                    width="40"
-                    x="0"
-                    xmlns="http://www.w3.org/2000/svg"
-                    y="0"
+                  <div
+                    class="paper"
+                    style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
                   >
-                    <rect
-                      fill="#F5B400"
+                    <svg
                       height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
                       width="40"
                       x="0"
+                      xmlns="http://www.w3.org/2000/svg"
                       y="0"
-                    />
-                    <rect
-                      fill="#F92F01"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                    <rect
-                      fill="#FB186F"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                    <rect
-                      fill="#18A9F2"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                  </svg>
+                    >
+                      <rect
+                        fill="#F5B400"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                      <rect
+                        fill="#F92F01"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                      <rect
+                        fill="#FB186F"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                      <rect
+                        fill="#18A9F2"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                    </svg>
+                  </div>
                 </div>
-              </div>
-              <div
-                class="c20"
-              >
-                Address
-                <span
+                <div
                   class="c21"
-                  id="NetworkName"
                 >
-                  Winston
-                </span>
-              </div>
-              <div
-                class="c20"
-              >
-                Balance
-              </div>
-              <div
-                class="c19"
-              />
-              <div
-                class="c19"
-              />
-              <div
-                class="c19"
-              />
-              <div
-                class="c19"
-              />
-              <div
-                class="c19"
-              />
-              <div
-                class="c22"
-                id="UserAddress"
-              >
-                0x3ca206264762caf81a8f0a843bbb850987b41e16
-              </div>
-              <div
-                class="c23"
-                id="AccountBalance"
-              >
+                  Address
+                  <span
+                    class="c22"
+                    id="NetworkName"
+                  >
+                    Winston
+                  </span>
+                </div>
+                <div
+                  class="c21"
+                >
+                  Balance
+                </div>
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c23"
+                  id="UserAddress"
+                >
+                  0x3ca206264762caf81a8f0a843bbb850987b41e16
+                </div>
                 <div
                   class="c24"
+                  id="AccountBalance"
                 >
-                  <span
+                  <div
                     class="c25"
                   >
                     <span
                       class="c26"
-                    />
-                    <span
-                      class="c27"
                     >
-                       - 
+                      <span
+                        class="c27"
+                      />
+                      <span
+                        class="c28"
+                      >
+                        5.00
+                      </span>
                     </span>
-                  </span>
-                  
+                    
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+            <button
+              class="c29"
+              id="CreateLockButton"
+            >
+              Create Lock
+            </button>
+          </div>
           <section
-            class="c28"
+            class="c30"
           >
             <div
-              class="c29"
+              class="c31"
               id="LockHeaderRow"
             >
               <div
-                class="c30"
+                class="c32"
               >
                 Locks
               </div>
               <div
-                class="c31"
+                class="c33"
               >
                 Name / Address
               </div>
               <div
-                class="c31"
+                class="c33"
               >
                 Key Duration
               </div>
               <div
-                class="c32"
+                class="c34"
               >
                 Key Quantity
               </div>
               <div
-                class="c31"
+                class="c33"
               >
                 Price
               </div>
               <div
-                class="c31"
+                class="c33"
               >
                 <div
-                  class="c33"
+                  class="c35"
                 >
                   Balance
                 </div>
                 <div
-                  class="c34"
+                  class="c36"
                 >
                   Balance
                 </div>
               </div>
-              <button
-                class="c35"
-                id="CreateLockButton"
-              >
-                Create Lock
-              </button>
             </div>
             <section
-              class="c36"
+              class="c37"
             >
               <img
-                class="c37"
+                class="c38"
                 src="/static/images/illustrations/lock.svg"
               />
               <div
-                class="c38"
+                class="c39"
               >
                 <h1>
                   Create a lock to get started
@@ -31452,7 +31225,7 @@ Object {
           </section>
         </div>
         <div
-          class="c39"
+          class="c40"
         />
       </div>
     </div>
@@ -31695,130 +31468,140 @@ Object {
             class="sc-1glv5oz-5 bjHPyP"
           />
         </header>
-        <section
-          class="sc-gzVnrw ibZhkv"
+        <div
+          class="sc-VigVT jqbjAH"
         >
-          <div
-            class="sc-dnqmqq igZzXE"
+          <section
+            class="sc-ifAKCX cFlEyZ"
           >
             <div
-              class="sc-iwsKbI bWJBJz"
+              class="sc-bZQynM ePIBLw"
             >
               <div
-                class="paper"
-                style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
+                class="sc-gzVnrw gZXrCQ"
               >
-                <svg
-                  height="40"
-                  width="40"
-                  x="0"
-                  xmlns="http://www.w3.org/2000/svg"
-                  y="0"
+                <div
+                  class="paper"
+                  style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
                 >
-                  <rect
-                    fill="#F5B400"
+                  <svg
                     height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
                     width="40"
                     x="0"
+                    xmlns="http://www.w3.org/2000/svg"
                     y="0"
-                  />
-                  <rect
-                    fill="#F92F01"
-                    height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                  <rect
-                    fill="#FB186F"
-                    height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                  <rect
-                    fill="#18A9F2"
-                    height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div
-              class="sc-gZMcBi kEdgDY"
-            >
-              Address
-              <span
-                class="sc-htoDjs cOlBaJ"
-                id="NetworkName"
-              >
-                Winston
-              </span>
-            </div>
-            <div
-              class="sc-gZMcBi kEdgDY"
-            >
-              Balance
-            </div>
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-gqjmRU cdfsbH"
-              id="UserAddress"
-            >
-              0x3ca206264762caf81a8f0a843bbb850987b41e16
-            </div>
-            <div
-              class="sc-VigVT gzdgQt"
-              id="AccountBalance"
-            >
-              <div
-                class="buwkmd-0 bYclZI"
-              >
-                <span
-                  class="buwkmd-1 jZYwNd"
-                >
-                  <span
-                    class="buwkmd-2 buwkmd-3 cwENmW"
-                  />
-                  <span
-                    class="buwkmd-5 dKpFcq"
                   >
-                     - 
-                  </span>
+                    <rect
+                      fill="#F5B400"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#F92F01"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#FB186F"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#18A9F2"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="sc-htoDjs erHdrS"
+              >
+                Address
+                <span
+                  class="sc-EHOje ePRmVK"
+                  id="NetworkName"
+                >
+                  Winston
                 </span>
-                
+              </div>
+              <div
+                class="sc-htoDjs erHdrS"
+              >
+                Balance
+              </div>
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-dnqmqq iSoGqQ"
+                id="UserAddress"
+              >
+                0x3ca206264762caf81a8f0a843bbb850987b41e16
+              </div>
+              <div
+                class="sc-iwsKbI caSLHP"
+                id="AccountBalance"
+              >
+                <div
+                  class="buwkmd-0 bYclZI"
+                >
+                  <span
+                    class="buwkmd-1 jZYwNd"
+                  >
+                    <span
+                      class="buwkmd-2 buwkmd-3 cwENmW"
+                    />
+                    <span
+                      class="buwkmd-5 dKpFcq"
+                    >
+                      5.00
+                    </span>
+                  </span>
+                  
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+          <button
+            class="sc-gZMcBi sc-gqjmRU dHaPpi"
+            id="CreateLockButton"
+          >
+            Create Lock
+          </button>
+        </div>
         <section
           class="sc-1olgoav-1 lotZQF"
         >
@@ -31865,12 +31648,6 @@ Object {
                 Balance
               </div>
             </div>
-            <button
-              class="sc-ifAKCX sc-EHOje eNCBwO"
-              id="CreateLockButton"
-            >
-              Create Lock
-            </button>
           </div>
           <section
             class="sc-1g6piw8-0 jXGMmL"
@@ -32084,167 +31861,6 @@ Object {
   display: inline-block;
 }
 
-.c24 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c25 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c26 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c26:before {
-  content: '三';
-}
-
-.c27 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c36 {
-  display: grid;
-  row-gap: 16px;
-  -webkit-column-gap: 32px;
-  column-gap: 32px;
-  border: solid 1px var(--lightgrey);
-  grid-template-columns: 72px;
-  grid-auto-flow: column;
-  border-radius: 4px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 32px;
-  padding-bottom: 40px;
-}
-
-.c37 {
-  width: 72px;
-}
-
-.c38 {
-  display: grid;
-  grid-gap: 16px;
-}
-
-.c38 > h1 {
-  font-weight: bold;
-  color: var(--grey);
-  margin: 0px;
-  padding: 0px;
-}
-
-.c38 > p {
-  margin: 0px;
-  padding: 0px;
-  font-size: 16px;
-  color: var(--dimgrey);
-}
-
-.c35 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  padding: 10px;
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  height: 48px;
-}
-
-.c35 :hover {
-  background-color: var(--activegreen);
-}
-
-.c28 {
-  display: grid;
-  grid-gap: 32px;
-}
-
-.c29 {
-  font-family: 'IBM Plex Mono','Courier New',Serif;
-  font-weight: 200;
-  padding-left: 8px;
-  font-size: 14px;
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c30 {
-  font-family: 'IBM Plex Sans';
-  font-size: 13px;
-  font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  -webkit-letter-spacing: normal;
-  -moz-letter-spacing: normal;
-  -ms-letter-spacing: normal;
-  letter-spacing: normal;
-  color: var(--grey);
-}
-
-.c31 {
-  font-family: 'IBM Plex Mono';
-  font-size: 8px;
-  font-weight: thin;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  -webkit-letter-spacing: 1px;
-  -moz-letter-spacing: 1px;
-  -ms-letter-spacing: 1px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--darkgrey);
-}
-
-.c32 {
-  font-family: 'IBM Plex Mono';
-  font-size: 8px;
-  font-weight: thin;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  -webkit-letter-spacing: 1px;
-  -moz-letter-spacing: 1px;
-  -ms-letter-spacing: 1px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--darkgrey);
-}
-
 .c2 {
   background-color: var(--brand);
   height: 56px;
@@ -32409,112 +32025,6 @@ Object {
   width: 100%;
 }
 
-.c21 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--red);
-  margin-left: 1em;
-  text-transform: none;
-}
-
-.c18 {
-  font-family: 'IBM Plex Mono',monospace;
-  display: grid;
-  row-gap: 8px;
-  -webkit-column-gap: 16px;
-  column-gap: 16px;
-  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
-}
-
-.c19 {
-  display: grid;
-  height: 40px;
-  grid-row: span 2;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-  font-size: 24px;
-  -webkit-align-content: start;
-  -ms-flex-line-pack: start;
-  align-content: start;
-}
-
-.c20 {
-  font-weight: 100;
-  text-transform: uppercase;
-  -webkit-letter-spacing: 1px;
-  -moz-letter-spacing: 1px;
-  -ms-letter-spacing: 1px;
-  letter-spacing: 1px;
-  font-size: 8px;
-}
-
-.c22 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  width: 128px;
-  font-weight: 300;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-
-.c23 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--darkgrey);
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c33 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c34 {
-    display: none;
-  }
-}
-
-@media (max-width:500px) {
-  .c36 {
-    grid-template-columns: 1fr;
-    grid-auto-flow: row;
-    padding: 16px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c35 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c29 {
-    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
-    grid-auto-flow: column;
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
-    grid-gap: 4px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c30 {
-    grid-row: span 2;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c32 {
-    grid-row: span 2;
-  }
-}
-
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c4 {
     grid-template-columns: [first] 1fr [second] 48px;
@@ -32591,22 +32101,8 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c39 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
   .c18 {
-    -webkit-column-gap: 2px;
-    column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2,80px);
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c19 {
-    height: 0px;
+    display: none;
   }
 }
 
@@ -32848,203 +32344,9 @@ Object {
               class="c17"
             />
           </header>
-          <section
-            class=""
-          >
-            <div
-              class="c18"
-            >
-              <div
-                class="c19"
-              >
-                <div
-                  class="paper"
-                  style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
-                >
-                  <svg
-                    height="40"
-                    width="40"
-                    x="0"
-                    xmlns="http://www.w3.org/2000/svg"
-                    y="0"
-                  >
-                    <rect
-                      fill="#F5B400"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                    <rect
-                      fill="#F92F01"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                    <rect
-                      fill="#FB186F"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                    <rect
-                      fill="#18A9F2"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                  </svg>
-                </div>
-              </div>
-              <div
-                class="c20"
-              >
-                Address
-                <span
-                  class="c21"
-                  id="NetworkName"
-                >
-                  Winston
-                </span>
-              </div>
-              <div
-                class="c20"
-              >
-                Balance
-              </div>
-              <div
-                class="c19"
-              />
-              <div
-                class="c19"
-              />
-              <div
-                class="c19"
-              />
-              <div
-                class="c19"
-              />
-              <div
-                class="c19"
-              />
-              <div
-                class="c22"
-                id="UserAddress"
-              >
-                0x3ca206264762caf81a8f0a843bbb850987b41e16
-              </div>
-              <div
-                class="c23"
-                id="AccountBalance"
-              >
-                <div
-                  class="c24"
-                >
-                  <span
-                    class="c25"
-                  >
-                    <span
-                      class="c26"
-                    />
-                    <span
-                      class="c27"
-                    >
-                       - 
-                    </span>
-                  </span>
-                  
-                </div>
-              </div>
-            </div>
-          </section>
-          <section
-            class="c28"
-          >
-            <div
-              class="c29"
-              id="LockHeaderRow"
-            >
-              <div
-                class="c30"
-              >
-                Locks
-              </div>
-              <div
-                class="c31"
-              >
-                Name / Address
-              </div>
-              <div
-                class="c31"
-              >
-                Key Duration
-              </div>
-              <div
-                class="c32"
-              >
-                Key Quantity
-              </div>
-              <div
-                class="c31"
-              >
-                Price
-              </div>
-              <div
-                class="c31"
-              >
-                <div
-                  class="c33"
-                >
-                  Balance
-                </div>
-                <div
-                  class="c34"
-                >
-                  Balance
-                </div>
-              </div>
-              <button
-                class="c35"
-                id="CreateLockButton"
-              >
-                Create Lock
-              </button>
-            </div>
-            <section
-              class="c36"
-            >
-              <img
-                class="c37"
-                src="/static/images/illustrations/lock.svg"
-              />
-              <div
-                class="c38"
-              >
-                <h1>
-                  Create a lock to get started
-                </h1>
-                You have not created any locks yet. Create your first lock in seconds by clicking on the ‘Create Lock’ button.
-              </div>
-            </section>
-          </section>
         </div>
         <div
-          class="c39"
+          class="c18"
         />
       </div>
     </div>
@@ -33287,200 +32589,6 @@ Object {
             class="sc-1glv5oz-5 bjHPyP"
           />
         </header>
-        <section
-          class="sc-gzVnrw ibZhkv"
-        >
-          <div
-            class="sc-dnqmqq igZzXE"
-          >
-            <div
-              class="sc-iwsKbI bWJBJz"
-            >
-              <div
-                class="paper"
-                style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
-              >
-                <svg
-                  height="40"
-                  width="40"
-                  x="0"
-                  xmlns="http://www.w3.org/2000/svg"
-                  y="0"
-                >
-                  <rect
-                    fill="#F5B400"
-                    height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                  <rect
-                    fill="#F92F01"
-                    height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                  <rect
-                    fill="#FB186F"
-                    height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                  <rect
-                    fill="#18A9F2"
-                    height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div
-              class="sc-gZMcBi kEdgDY"
-            >
-              Address
-              <span
-                class="sc-htoDjs cOlBaJ"
-                id="NetworkName"
-              >
-                Winston
-              </span>
-            </div>
-            <div
-              class="sc-gZMcBi kEdgDY"
-            >
-              Balance
-            </div>
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-gqjmRU cdfsbH"
-              id="UserAddress"
-            >
-              0x3ca206264762caf81a8f0a843bbb850987b41e16
-            </div>
-            <div
-              class="sc-VigVT gzdgQt"
-              id="AccountBalance"
-            >
-              <div
-                class="buwkmd-0 bYclZI"
-              >
-                <span
-                  class="buwkmd-1 jZYwNd"
-                >
-                  <span
-                    class="buwkmd-2 buwkmd-3 cwENmW"
-                  />
-                  <span
-                    class="buwkmd-5 dKpFcq"
-                  >
-                     - 
-                  </span>
-                </span>
-                
-              </div>
-            </div>
-          </div>
-        </section>
-        <section
-          class="sc-1olgoav-1 lotZQF"
-        >
-          <div
-            class="sc-1olgoav-2 cWUOhu"
-            id="LockHeaderRow"
-          >
-            <div
-              class="sc-1olgoav-3 gFgVul"
-            >
-              Locks
-            </div>
-            <div
-              class="sc-1olgoav-4 hEEWiT"
-            >
-              Name / Address
-            </div>
-            <div
-              class="sc-1olgoav-4 hEEWiT"
-            >
-              Key Duration
-            </div>
-            <div
-              class="sc-1olgoav-4 sc-1olgoav-5 liuyaW"
-            >
-              Key Quantity
-            </div>
-            <div
-              class="sc-1olgoav-4 hEEWiT"
-            >
-              Price
-            </div>
-            <div
-              class="sc-1olgoav-4 hEEWiT"
-            >
-              <div
-                class="sc-bdVaJa beefPf"
-              >
-                Balance
-              </div>
-              <div
-                class="sc-bwzfXH fezIEM"
-              >
-                Balance
-              </div>
-            </div>
-            <button
-              class="sc-ifAKCX sc-EHOje eNCBwO"
-              id="CreateLockButton"
-            >
-              Create Lock
-            </button>
-          </div>
-          <section
-            class="sc-1g6piw8-0 jXGMmL"
-          >
-            <img
-              class="sc-1g6piw8-1 fcKGMu"
-              src="/static/images/illustrations/lock.svg"
-            />
-            <div
-              class="sc-1g6piw8-2 evbCld"
-            >
-              <h1>
-                Create a lock to get started
-              </h1>
-              You have not created any locks yet. Create your first lock in seconds by clicking on the ‘Create Lock’ button.
-            </div>
-          </section>
-        </section>
       </div>
       <div
         class="hm3mhg-2 dBxAQT"
@@ -33537,7 +32645,7 @@ exports[`Storyshots DashboardContent the dashboard 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c47 {
+    .c48 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -33549,21 +32657,21 @@ Object {
   line-height: 15px;
 }
 
-.c47 > svg {
+.c48 > svg {
   fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c47:hover {
+.c48:hover {
   background-color: white;
 }
 
-.c47:hover > svg {
+.c48:hover > svg {
   fill: var(--lightgrey);
 }
 
-.c47:focus {
+.c48:focus {
   outline: none;
 }
 
@@ -33706,7 +32814,7 @@ Object {
   display: inline-block;
 }
 
-.c42 {
+.c43 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -33723,7 +32831,7 @@ Object {
   border-radius: 0 4px 4px 0;
 }
 
-.c43 {
+.c44 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -33735,7 +32843,7 @@ Object {
   align-self: end;
 }
 
-.c44 {
+.c45 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -33748,19 +32856,19 @@ Object {
   margin-bottom: 15px;
 }
 
-.c45 {
+.c46 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c46 {
+.c47 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(3,24px);
 }
 
-.c48 {
+.c49 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -33770,7 +32878,7 @@ Object {
   padding-right: 24px;
 }
 
-.c24 {
+.c25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -33780,7 +32888,7 @@ Object {
   flex-direction: column;
 }
 
-.c25 {
+.c26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -33791,38 +32899,38 @@ Object {
   padding-bottom: 0.5em;
 }
 
-.c26 {
+.c27 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c26:before {
+.c27:before {
   content: '三';
 }
 
-.c41 {
+.c42 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c41:before {
+.c42:before {
   content: '$';
 }
 
-.c27 {
+.c28 {
   white-space: nowrap;
   text-transform: uppercase;
 }
 
-.c40 {
+.c41 {
   font-size: 10px;
   color: var(--darkgrey);
   margin-top: 5px;
 }
 
-.c36 {
+.c37 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   min-height: 48px;
@@ -33842,28 +32950,28 @@ Object {
   cursor: pointer;
 }
 
-.c36 > * {
+.c37 > * {
   padding-top: 16px;
 }
 
-.c36:hover {
+.c37:hover {
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
   -webkit-transition: box-shadow 100ms ease;
   transition: box-shadow 100ms ease;
 }
 
-.c37 {
+.c38 {
   grid-row: span 2;
 }
 
-.c38 {
+.c39 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c39 {
+.c40 {
   color: var(--grey);
   font-weight: 200;
   white-space: nowrap;
@@ -33872,34 +32980,12 @@ Object {
   text-overflow: ellipsis;
 }
 
-.c35 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  padding: 10px;
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  height: 48px;
-}
-
-.c35 :hover {
-  background-color: var(--activegreen);
-}
-
-.c28 {
+.c30 {
   display: grid;
   grid-gap: 32px;
 }
 
-.c29 {
+.c31 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   padding-left: 8px;
@@ -33913,7 +32999,7 @@ Object {
   align-items: center;
 }
 
-.c30 {
+.c32 {
   font-family: 'IBM Plex Sans';
   font-size: 13px;
   font-weight: bold;
@@ -33927,7 +33013,7 @@ Object {
   color: var(--grey);
 }
 
-.c31 {
+.c33 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -33942,7 +33028,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c32 {
+.c34 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -34121,7 +33207,7 @@ Object {
   width: 100%;
 }
 
-.c21 {
+.c22 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   font-weight: 500;
@@ -34130,7 +33216,7 @@ Object {
   text-transform: none;
 }
 
-.c18 {
+.c19 {
   font-family: 'IBM Plex Mono',monospace;
   display: grid;
   row-gap: 8px;
@@ -34139,7 +33225,7 @@ Object {
   grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
 }
 
-.c19 {
+.c20 {
   display: grid;
   height: 40px;
   grid-row: span 2;
@@ -34152,7 +33238,7 @@ Object {
   align-content: start;
 }
 
-.c20 {
+.c21 {
   font-weight: 100;
   text-transform: uppercase;
   -webkit-letter-spacing: 1px;
@@ -34162,7 +33248,7 @@ Object {
   font-size: 8px;
 }
 
-.c22 {
+.c23 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   width: 128px;
@@ -34171,50 +33257,41 @@ Object {
   word-break: break-all;
 }
 
-.c23 {
+.c24 {
   font-size: 16px;
   font-weight: 500;
   color: var(--darkgrey);
 }
 
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c33 {
-    display: none;
-  }
+.c29 {
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--darkgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  padding: 10px;
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+  height: 48px;
 }
 
-@media only screen and (min-width:736px) {
-  .c34 {
-    display: none;
-  }
+.c29 :hover {
+  background-color: var(--activegreen);
 }
 
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c45 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c36 {
-    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
-    grid-template-rows: 84px;
-    grid-column-gap: 16px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c36 {
-    grid-column-gap: 4px;
-    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
-    grid-auto-flow: column;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c38 {
-    grid-column: span 2;
-  }
+.c18 {
+  display: grid;
+  grid-template-columns: 1fr 144px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -34223,8 +33300,42 @@ Object {
   }
 }
 
+@media only screen and (min-width:736px) {
+  .c36 {
+    display: none;
+  }
+}
+
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c29 {
+  .c46 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c37 {
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c37 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c39 {
+    grid-column: span 2;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c31 {
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
     -webkit-align-items: start;
@@ -34236,13 +33347,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c30 {
+  .c32 {
     grid-row: span 2;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c32 {
+  .c34 {
     grid-row: span 2;
   }
 }
@@ -34323,13 +33434,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c49 {
+  .c50 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c18 {
+  .c19 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
     grid-template-columns: 45px 145px repeat(2,80px);
@@ -34337,8 +33448,14 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c19 {
+  .c20 {
     height: 0px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c29 {
+    display: none;
   }
 }
 
@@ -34580,189 +33697,193 @@ Object {
               class="c17"
             />
           </header>
-          <section
-            class=""
+          <div
+            class="c18"
           >
-            <div
-              class="c18"
+            <section
+              class=""
             >
               <div
                 class="c19"
               >
                 <div
-                  class="paper"
-                  style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
+                  class="c20"
                 >
-                  <svg
-                    height="40"
-                    width="40"
-                    x="0"
-                    xmlns="http://www.w3.org/2000/svg"
-                    y="0"
+                  <div
+                    class="paper"
+                    style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
                   >
-                    <rect
-                      fill="#F5B400"
+                    <svg
                       height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
                       width="40"
                       x="0"
+                      xmlns="http://www.w3.org/2000/svg"
                       y="0"
-                    />
-                    <rect
-                      fill="#F92F01"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                    <rect
-                      fill="#FB186F"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                    <rect
-                      fill="#18A9F2"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                  </svg>
+                    >
+                      <rect
+                        fill="#F5B400"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                      <rect
+                        fill="#F92F01"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                      <rect
+                        fill="#FB186F"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                      <rect
+                        fill="#18A9F2"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                    </svg>
+                  </div>
                 </div>
-              </div>
-              <div
-                class="c20"
-              >
-                Address
-                <span
+                <div
                   class="c21"
-                  id="NetworkName"
                 >
-                  Winston
-                </span>
-              </div>
-              <div
-                class="c20"
-              >
-                Balance
-              </div>
-              <div
-                class="c19"
-              />
-              <div
-                class="c19"
-              />
-              <div
-                class="c19"
-              />
-              <div
-                class="c19"
-              />
-              <div
-                class="c19"
-              />
-              <div
-                class="c22"
-                id="UserAddress"
-              >
-                0x3ca206264762caf81a8f0a843bbb850987b41e16
-              </div>
-              <div
-                class="c23"
-                id="AccountBalance"
-              >
+                  Address
+                  <span
+                    class="c22"
+                    id="NetworkName"
+                  >
+                    Winston
+                  </span>
+                </div>
+                <div
+                  class="c21"
+                >
+                  Balance
+                </div>
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c23"
+                  id="UserAddress"
+                >
+                  0x3ca206264762caf81a8f0a843bbb850987b41e16
+                </div>
                 <div
                   class="c24"
+                  id="AccountBalance"
                 >
-                  <span
+                  <div
                     class="c25"
                   >
                     <span
                       class="c26"
-                    />
-                    <span
-                      class="c27"
                     >
-                       - 
+                      <span
+                        class="c27"
+                      />
+                      <span
+                        class="c28"
+                      >
+                        5.00
+                      </span>
                     </span>
-                  </span>
-                  
+                    
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+            <button
+              class="c29"
+              id="CreateLockButton"
+            >
+              Create Lock
+            </button>
+          </div>
           <section
-            class="c28"
+            class="c30"
           >
             <div
-              class="c29"
+              class="c31"
               id="LockHeaderRow"
             >
               <div
-                class="c30"
+                class="c32"
               >
                 Locks
               </div>
               <div
-                class="c31"
+                class="c33"
               >
                 Name / Address
               </div>
               <div
-                class="c31"
+                class="c33"
               >
                 Key Duration
               </div>
               <div
-                class="c32"
+                class="c34"
               >
                 Key Quantity
               </div>
               <div
-                class="c31"
+                class="c33"
               >
                 Price
               </div>
               <div
-                class="c31"
+                class="c33"
               >
                 <div
-                  class="c33"
+                  class="c35"
                 >
                   Balance
                 </div>
                 <div
-                  class="c34"
+                  class="c36"
                 >
                   Balance
                 </div>
               </div>
-              <button
-                class="c35"
-                id="CreateLockButton"
-              >
-                Create Lock
-              </button>
             </div>
             <div
-              class="c36"
+              class="c37"
               id="LockRow_0x9abcdef0"
             >
               <div
-                class="c37"
+                class="c38"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -34838,11 +33959,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="c38"
+                class="c39"
               >
                 Infinite Lock
                 <div
-                  class="c39"
+                  class="c40"
                 >
                   0x9abcdef0
                 </div>
@@ -34861,31 +33982,31 @@ Object {
                 10/0
               </div>
               <div
-                class="c24"
+                class="c25"
               >
                 <span
-                  class="c25"
+                  class="c26"
                 >
                   <span
-                    class="c26"
+                    class="c27"
                   />
                   <span
-                    class="c27"
+                    class="c28"
                   >
                     0.027
                   </span>
                 </span>
                 <div
-                  class="c40"
+                  class="c41"
                 >
                   <span
-                    class="c25"
+                    class="c26"
                   >
                     <span
-                      class="c41"
+                      class="c42"
                     />
                     <span
-                      class="c27"
+                      class="c28"
                     >
                       5.29
                     </span>
@@ -34896,34 +34017,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c33"
+                  class="c35"
                 >
                   <div
-                    class="c24"
+                    class="c25"
                   >
                     <span
-                      class="c25"
+                      class="c26"
                     >
                       <span
-                        class="c26"
+                        class="c27"
                       />
                       <span
-                        class="c27"
+                        class="c28"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c40"
+                      class="c41"
                     >
                       <span
-                        class="c25"
+                        class="c26"
                       >
                         <span
-                          class="c41"
+                          class="c42"
                         />
                         <span
-                          class="c27"
+                          class="c28"
                         >
                            - 
                         </span>
@@ -34932,19 +34053,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c34"
+                  class="c36"
                 >
                   <div
-                    class="c24"
+                    class="c25"
                   >
                     <span
-                      class="c25"
+                      class="c26"
                     >
                       <span
-                        class="c26"
+                        class="c27"
                       />
                       <span
-                        class="c27"
+                        class="c28"
                       >
                          - 
                       </span>
@@ -34954,15 +34075,15 @@ Object {
                 </div>
               </div>
               <div
-                class="c42"
+                class="c43"
               >
                 <div
-                  class="c43"
+                  class="c44"
                 >
                   Confirming
                 </div>
                 <div
-                  class="c44"
+                  class="c45"
                 >
                   2
                    / 
@@ -34971,11 +34092,11 @@ Object {
               </div>
             </div>
             <div
-              class="c36"
+              class="c37"
               id="LockRow_0x56781234a"
             >
               <div
-                class="c37"
+                class="c38"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -35051,11 +34172,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="c38"
+                class="c39"
               >
                 New Lock
                 <div
-                  class="c39"
+                  class="c40"
                 >
                   0x56781234a
                 </div>
@@ -35074,31 +34195,31 @@ Object {
                 32/800
               </div>
               <div
-                class="c24"
+                class="c25"
               >
                 <span
-                  class="c25"
+                  class="c26"
                 >
                   <span
-                    class="c26"
+                    class="c27"
                   />
                   <span
-                    class="c27"
+                    class="c28"
                   >
                     0.01
                   </span>
                 </span>
                 <div
-                  class="c40"
+                  class="c41"
                 >
                   <span
-                    class="c25"
+                    class="c26"
                   >
                     <span
-                      class="c41"
+                      class="c42"
                     />
                     <span
-                      class="c27"
+                      class="c28"
                     >
                       1.96
                     </span>
@@ -35109,34 +34230,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c33"
+                  class="c35"
                 >
                   <div
-                    class="c24"
+                    class="c25"
                   >
                     <span
-                      class="c25"
+                      class="c26"
                     >
                       <span
-                        class="c26"
+                        class="c27"
                       />
                       <span
-                        class="c27"
+                        class="c28"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c40"
+                      class="c41"
                     >
                       <span
-                        class="c25"
+                        class="c26"
                       >
                         <span
-                          class="c41"
+                          class="c42"
                         />
                         <span
-                          class="c27"
+                          class="c28"
                         >
                            - 
                         </span>
@@ -35145,19 +34266,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c34"
+                  class="c36"
                 >
                   <div
-                    class="c24"
+                    class="c25"
                   >
                     <span
-                      class="c25"
+                      class="c26"
                     >
                       <span
-                        class="c26"
+                        class="c27"
                       />
                       <span
-                        class="c27"
+                        class="c28"
                       >
                          - 
                       </span>
@@ -35167,15 +34288,15 @@ Object {
                 </div>
               </div>
               <div
-                class="c42"
+                class="c43"
               >
                 <div
-                  class="c43"
+                  class="c44"
                 >
                   Confirming
                 </div>
                 <div
-                  class="c44"
+                  class="c45"
                 >
                   4
                    / 
@@ -35184,11 +34305,11 @@ Object {
               </div>
             </div>
             <div
-              class="c36"
+              class="c37"
               id="LockRow_0x12345678a"
             >
               <div
-                class="c37"
+                class="c38"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -35264,11 +34385,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="c38"
+                class="c39"
               >
                 My Blog
                 <div
-                  class="c39"
+                  class="c40"
                 >
                   0x12345678a
                 </div>
@@ -35287,31 +34408,31 @@ Object {
                 3/240
               </div>
               <div
-                class="c24"
+                class="c25"
               >
                 <span
-                  class="c25"
+                  class="c26"
                 >
                   <span
-                    class="c26"
+                    class="c27"
                   />
                   <span
-                    class="c27"
+                    class="c28"
                   >
                     0.027
                   </span>
                 </span>
                 <div
-                  class="c40"
+                  class="c41"
                 >
                   <span
-                    class="c25"
+                    class="c26"
                   >
                     <span
-                      class="c41"
+                      class="c42"
                     />
                     <span
-                      class="c27"
+                      class="c28"
                     >
                       5.29
                     </span>
@@ -35322,34 +34443,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c33"
+                  class="c35"
                 >
                   <div
-                    class="c24"
+                    class="c25"
                   >
                     <span
-                      class="c25"
+                      class="c26"
                     >
                       <span
-                        class="c26"
+                        class="c27"
                       />
                       <span
-                        class="c27"
+                        class="c28"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c40"
+                      class="c41"
                     >
                       <span
-                        class="c25"
+                        class="c26"
                       >
                         <span
-                          class="c41"
+                          class="c42"
                         />
                         <span
-                          class="c27"
+                          class="c28"
                         >
                            - 
                         </span>
@@ -35358,19 +34479,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c34"
+                  class="c36"
                 >
                   <div
-                    class="c24"
+                    class="c25"
                   >
                     <span
-                      class="c25"
+                      class="c26"
                     >
                       <span
-                        class="c26"
+                        class="c27"
                       />
                       <span
-                        class="c27"
+                        class="c28"
                       >
                          - 
                       </span>
@@ -35383,13 +34504,13 @@ Object {
                 class=""
               >
                 <div
-                  class="c45"
+                  class="c46"
                 >
                   <div
-                    class="c46"
+                    class="c47"
                   >
                     <button
-                      class="c9 c47"
+                      class="c9 c48"
                     >
                       <svg
                         name="Withdraw"
@@ -35454,14 +34575,14 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c48"
+                  class="c49"
                 />
               </div>
             </div>
           </section>
         </div>
         <div
-          class="c49"
+          class="c50"
         />
       </div>
     </div>
@@ -35704,130 +34825,140 @@ Object {
             class="sc-1glv5oz-5 bjHPyP"
           />
         </header>
-        <section
-          class="sc-gzVnrw ibZhkv"
+        <div
+          class="sc-VigVT jqbjAH"
         >
-          <div
-            class="sc-dnqmqq igZzXE"
+          <section
+            class="sc-ifAKCX cFlEyZ"
           >
             <div
-              class="sc-iwsKbI bWJBJz"
+              class="sc-bZQynM ePIBLw"
             >
               <div
-                class="paper"
-                style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
+                class="sc-gzVnrw gZXrCQ"
               >
-                <svg
-                  height="40"
-                  width="40"
-                  x="0"
-                  xmlns="http://www.w3.org/2000/svg"
-                  y="0"
+                <div
+                  class="paper"
+                  style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
                 >
-                  <rect
-                    fill="#F5B400"
+                  <svg
                     height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
                     width="40"
                     x="0"
+                    xmlns="http://www.w3.org/2000/svg"
                     y="0"
-                  />
-                  <rect
-                    fill="#F92F01"
-                    height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                  <rect
-                    fill="#FB186F"
-                    height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                  <rect
-                    fill="#18A9F2"
-                    height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div
-              class="sc-gZMcBi kEdgDY"
-            >
-              Address
-              <span
-                class="sc-htoDjs cOlBaJ"
-                id="NetworkName"
-              >
-                Winston
-              </span>
-            </div>
-            <div
-              class="sc-gZMcBi kEdgDY"
-            >
-              Balance
-            </div>
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-gqjmRU cdfsbH"
-              id="UserAddress"
-            >
-              0x3ca206264762caf81a8f0a843bbb850987b41e16
-            </div>
-            <div
-              class="sc-VigVT gzdgQt"
-              id="AccountBalance"
-            >
-              <div
-                class="buwkmd-0 bYclZI"
-              >
-                <span
-                  class="buwkmd-1 jZYwNd"
-                >
-                  <span
-                    class="buwkmd-2 buwkmd-3 cwENmW"
-                  />
-                  <span
-                    class="buwkmd-5 dKpFcq"
                   >
-                     - 
-                  </span>
+                    <rect
+                      fill="#F5B400"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#F92F01"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#FB186F"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#18A9F2"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="sc-htoDjs erHdrS"
+              >
+                Address
+                <span
+                  class="sc-EHOje ePRmVK"
+                  id="NetworkName"
+                >
+                  Winston
                 </span>
-                
+              </div>
+              <div
+                class="sc-htoDjs erHdrS"
+              >
+                Balance
+              </div>
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-dnqmqq iSoGqQ"
+                id="UserAddress"
+              >
+                0x3ca206264762caf81a8f0a843bbb850987b41e16
+              </div>
+              <div
+                class="sc-iwsKbI caSLHP"
+                id="AccountBalance"
+              >
+                <div
+                  class="buwkmd-0 bYclZI"
+                >
+                  <span
+                    class="buwkmd-1 jZYwNd"
+                  >
+                    <span
+                      class="buwkmd-2 buwkmd-3 cwENmW"
+                    />
+                    <span
+                      class="buwkmd-5 dKpFcq"
+                    >
+                      5.00
+                    </span>
+                  </span>
+                  
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+          <button
+            class="sc-gZMcBi sc-gqjmRU dHaPpi"
+            id="CreateLockButton"
+          >
+            Create Lock
+          </button>
+        </div>
         <section
           class="sc-1olgoav-1 lotZQF"
         >
@@ -35874,12 +35005,6 @@ Object {
                 Balance
               </div>
             </div>
-            <button
-              class="sc-ifAKCX sc-EHOje eNCBwO"
-              id="CreateLockButton"
-            >
-              Create Lock
-            </button>
           </div>
           <div
             class="mlglvd-0 jpUcBv"
@@ -36639,7 +35764,7 @@ exports[`Storyshots DashboardContent the dashboard, waiting for wallet 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c50 {
+    .c51 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -36651,21 +35776,21 @@ Object {
   line-height: 15px;
 }
 
-.c50 > svg {
+.c51 > svg {
   fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c50:hover {
+.c51:hover {
   background-color: white;
 }
 
-.c50:hover > svg {
+.c51:hover > svg {
   fill: var(--lightgrey);
 }
 
-.c50:focus {
+.c51:focus {
   outline: none;
 }
 
@@ -36808,7 +35933,7 @@ Object {
   display: inline-block;
 }
 
-.c45 {
+.c46 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -36825,7 +35950,7 @@ Object {
   border-radius: 0 4px 4px 0;
 }
 
-.c46 {
+.c47 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -36837,7 +35962,7 @@ Object {
   align-self: end;
 }
 
-.c47 {
+.c48 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -36850,19 +35975,19 @@ Object {
   margin-bottom: 15px;
 }
 
-.c48 {
+.c49 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c49 {
+.c50 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(3,24px);
 }
 
-.c51 {
+.c52 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -36872,7 +35997,7 @@ Object {
   padding-right: 24px;
 }
 
-.c27 {
+.c28 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -36882,7 +36007,7 @@ Object {
   flex-direction: column;
 }
 
-.c28 {
+.c29 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -36893,38 +36018,38 @@ Object {
   padding-bottom: 0.5em;
 }
 
-.c29 {
+.c30 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c29:before {
+.c30:before {
   content: '三';
 }
 
-.c44 {
+.c45 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c44:before {
+.c45:before {
   content: '$';
 }
 
-.c30 {
+.c31 {
   white-space: nowrap;
   text-transform: uppercase;
 }
 
-.c43 {
+.c44 {
   font-size: 10px;
   color: var(--darkgrey);
   margin-top: 5px;
 }
 
-.c39 {
+.c40 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   min-height: 48px;
@@ -36944,28 +36069,28 @@ Object {
   cursor: pointer;
 }
 
-.c39 > * {
+.c40 > * {
   padding-top: 16px;
 }
 
-.c39:hover {
+.c40:hover {
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
   -webkit-transition: box-shadow 100ms ease;
   transition: box-shadow 100ms ease;
 }
 
-.c40 {
+.c41 {
   grid-row: span 2;
 }
 
-.c41 {
+.c42 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c42 {
+.c43 {
   color: var(--grey);
   font-weight: 200;
   white-space: nowrap;
@@ -36974,34 +36099,12 @@ Object {
   text-overflow: ellipsis;
 }
 
-.c38 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  padding: 10px;
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  height: 48px;
-}
-
-.c38 :hover {
-  background-color: var(--activegreen);
-}
-
-.c31 {
+.c33 {
   display: grid;
   grid-gap: 32px;
 }
 
-.c32 {
+.c34 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   padding-left: 8px;
@@ -37015,7 +36118,7 @@ Object {
   align-items: center;
 }
 
-.c33 {
+.c35 {
   font-family: 'IBM Plex Sans';
   font-size: 13px;
   font-weight: bold;
@@ -37029,7 +36132,7 @@ Object {
   color: var(--grey);
 }
 
-.c34 {
+.c36 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -37044,7 +36147,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c35 {
+.c37 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -37223,7 +36326,7 @@ Object {
   width: 100%;
 }
 
-.c24 {
+.c25 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   font-weight: 500;
@@ -37232,7 +36335,7 @@ Object {
   text-transform: none;
 }
 
-.c21 {
+.c22 {
   font-family: 'IBM Plex Mono',monospace;
   display: grid;
   row-gap: 8px;
@@ -37241,7 +36344,7 @@ Object {
   grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
 }
 
-.c22 {
+.c23 {
   display: grid;
   height: 40px;
   grid-row: span 2;
@@ -37254,7 +36357,7 @@ Object {
   align-content: start;
 }
 
-.c23 {
+.c24 {
   font-weight: 100;
   text-transform: uppercase;
   -webkit-letter-spacing: 1px;
@@ -37264,7 +36367,7 @@ Object {
   font-size: 8px;
 }
 
-.c25 {
+.c26 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   width: 128px;
@@ -37273,10 +36376,41 @@ Object {
   word-break: break-all;
 }
 
-.c26 {
+.c27 {
   font-size: 16px;
   font-weight: 500;
   color: var(--darkgrey);
+}
+
+.c32 {
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--darkgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  padding: 10px;
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+  height: 48px;
+}
+
+.c32 :hover {
+  background-color: var(--activegreen);
+}
+
+.c21 {
+  display: grid;
+  grid-template-columns: 1fr 144px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .c2 {
@@ -37343,25 +36477,25 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c36 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c37 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c48 {
+  .c38 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
   .c39 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c49 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c40 {
     grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
     grid-template-rows: 84px;
     grid-column-gap: 16px;
@@ -37369,7 +36503,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c39 {
+  .c40 {
     grid-column-gap: 4px;
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
@@ -37377,19 +36511,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c41 {
+  .c42 {
     grid-column: span 2;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c38 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c32 {
+  .c34 {
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
     -webkit-align-items: start;
@@ -37401,13 +36529,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c33 {
+  .c35 {
     grid-row: span 2;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c35 {
+  .c37 {
     grid-row: span 2;
   }
 }
@@ -37488,13 +36616,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c52 {
+  .c53 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c21 {
+  .c22 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
     grid-template-columns: 45px 145px repeat(2,80px);
@@ -37502,8 +36630,14 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c22 {
+  .c23 {
     height: 0px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c32 {
+    display: none;
   }
 }
 
@@ -37761,189 +36895,193 @@ Object {
               class="c20"
             />
           </header>
-          <section
-            class=""
+          <div
+            class="c21"
           >
-            <div
-              class="c21"
+            <section
+              class=""
             >
               <div
                 class="c22"
               >
                 <div
-                  class="paper"
-                  style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
+                  class="c23"
                 >
-                  <svg
-                    height="40"
-                    width="40"
-                    x="0"
-                    xmlns="http://www.w3.org/2000/svg"
-                    y="0"
+                  <div
+                    class="paper"
+                    style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
                   >
-                    <rect
-                      fill="#F5B400"
+                    <svg
                       height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
                       width="40"
                       x="0"
+                      xmlns="http://www.w3.org/2000/svg"
                       y="0"
-                    />
-                    <rect
-                      fill="#F92F01"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                    <rect
-                      fill="#FB186F"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                    <rect
-                      fill="#18A9F2"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                  </svg>
+                    >
+                      <rect
+                        fill="#F5B400"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                      <rect
+                        fill="#F92F01"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                      <rect
+                        fill="#FB186F"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                      <rect
+                        fill="#18A9F2"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                    </svg>
+                  </div>
                 </div>
-              </div>
-              <div
-                class="c23"
-              >
-                Address
-                <span
+                <div
                   class="c24"
-                  id="NetworkName"
                 >
-                  Winston
-                </span>
-              </div>
-              <div
-                class="c23"
-              >
-                Balance
-              </div>
-              <div
-                class="c22"
-              />
-              <div
-                class="c22"
-              />
-              <div
-                class="c22"
-              />
-              <div
-                class="c22"
-              />
-              <div
-                class="c22"
-              />
-              <div
-                class="c25"
-                id="UserAddress"
-              >
-                0x3ca206264762caf81a8f0a843bbb850987b41e16
-              </div>
-              <div
-                class="c26"
-                id="AccountBalance"
-              >
+                  Address
+                  <span
+                    class="c25"
+                    id="NetworkName"
+                  >
+                    Winston
+                  </span>
+                </div>
+                <div
+                  class="c24"
+                >
+                  Balance
+                </div>
+                <div
+                  class="c23"
+                />
+                <div
+                  class="c23"
+                />
+                <div
+                  class="c23"
+                />
+                <div
+                  class="c23"
+                />
+                <div
+                  class="c23"
+                />
+                <div
+                  class="c26"
+                  id="UserAddress"
+                >
+                  0x3ca206264762caf81a8f0a843bbb850987b41e16
+                </div>
                 <div
                   class="c27"
+                  id="AccountBalance"
                 >
-                  <span
+                  <div
                     class="c28"
                   >
                     <span
                       class="c29"
-                    />
-                    <span
-                      class="c30"
                     >
-                       - 
+                      <span
+                        class="c30"
+                      />
+                      <span
+                        class="c31"
+                      >
+                        5.00
+                      </span>
                     </span>
-                  </span>
-                  
+                    
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+            <button
+              class="c32"
+              id="CreateLockButton"
+            >
+              Create Lock
+            </button>
+          </div>
           <section
-            class="c31"
+            class="c33"
           >
             <div
-              class="c32"
+              class="c34"
               id="LockHeaderRow"
             >
               <div
-                class="c33"
+                class="c35"
               >
                 Locks
               </div>
               <div
-                class="c34"
+                class="c36"
               >
                 Name / Address
               </div>
               <div
-                class="c34"
+                class="c36"
               >
                 Key Duration
               </div>
               <div
-                class="c35"
+                class="c37"
               >
                 Key Quantity
               </div>
               <div
-                class="c34"
+                class="c36"
               >
                 Price
               </div>
               <div
-                class="c34"
+                class="c36"
               >
                 <div
-                  class="c36"
+                  class="c38"
                 >
                   Balance
                 </div>
                 <div
-                  class="c37"
+                  class="c39"
                 >
                   Balance
                 </div>
               </div>
-              <button
-                class="c38"
-                id="CreateLockButton"
-              >
-                Create Lock
-              </button>
             </div>
             <div
-              class="c39"
+              class="c40"
               id="LockRow_0x9abcdef0"
             >
               <div
-                class="c40"
+                class="c41"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -38019,11 +37157,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="c41"
+                class="c42"
               >
                 Infinite Lock
                 <div
-                  class="c42"
+                  class="c43"
                 >
                   0x9abcdef0
                 </div>
@@ -38042,31 +37180,31 @@ Object {
                 10/0
               </div>
               <div
-                class="c27"
+                class="c28"
               >
                 <span
-                  class="c28"
+                  class="c29"
                 >
                   <span
-                    class="c29"
+                    class="c30"
                   />
                   <span
-                    class="c30"
+                    class="c31"
                   >
                     0.027
                   </span>
                 </span>
                 <div
-                  class="c43"
+                  class="c44"
                 >
                   <span
-                    class="c28"
+                    class="c29"
                   >
                     <span
-                      class="c44"
+                      class="c45"
                     />
                     <span
-                      class="c30"
+                      class="c31"
                     >
                       5.29
                     </span>
@@ -38077,34 +37215,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c36"
+                  class="c38"
                 >
                   <div
-                    class="c27"
+                    class="c28"
                   >
                     <span
-                      class="c28"
+                      class="c29"
                     >
                       <span
-                        class="c29"
+                        class="c30"
                       />
                       <span
-                        class="c30"
+                        class="c31"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c43"
+                      class="c44"
                     >
                       <span
-                        class="c28"
+                        class="c29"
                       >
                         <span
-                          class="c44"
+                          class="c45"
                         />
                         <span
-                          class="c30"
+                          class="c31"
                         >
                            - 
                         </span>
@@ -38113,19 +37251,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c37"
+                  class="c39"
                 >
                   <div
-                    class="c27"
+                    class="c28"
                   >
                     <span
-                      class="c28"
+                      class="c29"
                     >
                       <span
-                        class="c29"
+                        class="c30"
                       />
                       <span
-                        class="c30"
+                        class="c31"
                       >
                          - 
                       </span>
@@ -38135,15 +37273,15 @@ Object {
                 </div>
               </div>
               <div
-                class="c45"
+                class="c46"
               >
                 <div
-                  class="c46"
+                  class="c47"
                 >
                   Confirming
                 </div>
                 <div
-                  class="c47"
+                  class="c48"
                 >
                   2
                    / 
@@ -38152,11 +37290,11 @@ Object {
               </div>
             </div>
             <div
-              class="c39"
+              class="c40"
               id="LockRow_0x56781234a"
             >
               <div
-                class="c40"
+                class="c41"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -38232,11 +37370,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="c41"
+                class="c42"
               >
                 New Lock
                 <div
-                  class="c42"
+                  class="c43"
                 >
                   0x56781234a
                 </div>
@@ -38255,31 +37393,31 @@ Object {
                 32/800
               </div>
               <div
-                class="c27"
+                class="c28"
               >
                 <span
-                  class="c28"
+                  class="c29"
                 >
                   <span
-                    class="c29"
+                    class="c30"
                   />
                   <span
-                    class="c30"
+                    class="c31"
                   >
                     0.01
                   </span>
                 </span>
                 <div
-                  class="c43"
+                  class="c44"
                 >
                   <span
-                    class="c28"
+                    class="c29"
                   >
                     <span
-                      class="c44"
+                      class="c45"
                     />
                     <span
-                      class="c30"
+                      class="c31"
                     >
                       1.96
                     </span>
@@ -38290,34 +37428,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c36"
+                  class="c38"
                 >
                   <div
-                    class="c27"
+                    class="c28"
                   >
                     <span
-                      class="c28"
+                      class="c29"
                     >
                       <span
-                        class="c29"
+                        class="c30"
                       />
                       <span
-                        class="c30"
+                        class="c31"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c43"
+                      class="c44"
                     >
                       <span
-                        class="c28"
+                        class="c29"
                       >
                         <span
-                          class="c44"
+                          class="c45"
                         />
                         <span
-                          class="c30"
+                          class="c31"
                         >
                            - 
                         </span>
@@ -38326,19 +37464,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c37"
+                  class="c39"
                 >
                   <div
-                    class="c27"
+                    class="c28"
                   >
                     <span
-                      class="c28"
+                      class="c29"
                     >
                       <span
-                        class="c29"
+                        class="c30"
                       />
                       <span
-                        class="c30"
+                        class="c31"
                       >
                          - 
                       </span>
@@ -38348,15 +37486,15 @@ Object {
                 </div>
               </div>
               <div
-                class="c45"
+                class="c46"
               >
                 <div
-                  class="c46"
+                  class="c47"
                 >
                   Confirming
                 </div>
                 <div
-                  class="c47"
+                  class="c48"
                 >
                   4
                    / 
@@ -38365,11 +37503,11 @@ Object {
               </div>
             </div>
             <div
-              class="c39"
+              class="c40"
               id="LockRow_0x12345678a"
             >
               <div
-                class="c40"
+                class="c41"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -38445,11 +37583,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="c41"
+                class="c42"
               >
                 My Blog
                 <div
-                  class="c42"
+                  class="c43"
                 >
                   0x12345678a
                 </div>
@@ -38468,31 +37606,31 @@ Object {
                 3/240
               </div>
               <div
-                class="c27"
+                class="c28"
               >
                 <span
-                  class="c28"
+                  class="c29"
                 >
                   <span
-                    class="c29"
+                    class="c30"
                   />
                   <span
-                    class="c30"
+                    class="c31"
                   >
                     0.027
                   </span>
                 </span>
                 <div
-                  class="c43"
+                  class="c44"
                 >
                   <span
-                    class="c28"
+                    class="c29"
                   >
                     <span
-                      class="c44"
+                      class="c45"
                     />
                     <span
-                      class="c30"
+                      class="c31"
                     >
                       5.29
                     </span>
@@ -38503,34 +37641,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c36"
+                  class="c38"
                 >
                   <div
-                    class="c27"
+                    class="c28"
                   >
                     <span
-                      class="c28"
+                      class="c29"
                     >
                       <span
-                        class="c29"
+                        class="c30"
                       />
                       <span
-                        class="c30"
+                        class="c31"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c43"
+                      class="c44"
                     >
                       <span
-                        class="c28"
+                        class="c29"
                       >
                         <span
-                          class="c44"
+                          class="c45"
                         />
                         <span
-                          class="c30"
+                          class="c31"
                         >
                            - 
                         </span>
@@ -38539,19 +37677,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c37"
+                  class="c39"
                 >
                   <div
-                    class="c27"
+                    class="c28"
                   >
                     <span
-                      class="c28"
+                      class="c29"
                     >
                       <span
-                        class="c29"
+                        class="c30"
                       />
                       <span
-                        class="c30"
+                        class="c31"
                       >
                          - 
                       </span>
@@ -38564,13 +37702,13 @@ Object {
                 class=""
               >
                 <div
-                  class="c48"
+                  class="c49"
                 >
                   <div
-                    class="c49"
+                    class="c50"
                   >
                     <button
-                      class="c12 c50"
+                      class="c12 c51"
                     >
                       <svg
                         name="Withdraw"
@@ -38635,14 +37773,14 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c51"
+                  class="c52"
                 />
               </div>
             </div>
           </section>
         </div>
         <div
-          class="c52"
+          class="c53"
         />
       </div>
     </div>
@@ -38901,130 +38039,140 @@ Object {
             class="sc-1glv5oz-5 bjHPyP"
           />
         </header>
-        <section
-          class="sc-gzVnrw ibZhkv"
+        <div
+          class="sc-VigVT jqbjAH"
         >
-          <div
-            class="sc-dnqmqq igZzXE"
+          <section
+            class="sc-ifAKCX cFlEyZ"
           >
             <div
-              class="sc-iwsKbI bWJBJz"
+              class="sc-bZQynM ePIBLw"
             >
               <div
-                class="paper"
-                style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
+                class="sc-gzVnrw gZXrCQ"
               >
-                <svg
-                  height="40"
-                  width="40"
-                  x="0"
-                  xmlns="http://www.w3.org/2000/svg"
-                  y="0"
+                <div
+                  class="paper"
+                  style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
                 >
-                  <rect
-                    fill="#F5B400"
+                  <svg
                     height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
                     width="40"
                     x="0"
+                    xmlns="http://www.w3.org/2000/svg"
                     y="0"
-                  />
-                  <rect
-                    fill="#F92F01"
-                    height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                  <rect
-                    fill="#FB186F"
-                    height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                  <rect
-                    fill="#18A9F2"
-                    height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div
-              class="sc-gZMcBi kEdgDY"
-            >
-              Address
-              <span
-                class="sc-htoDjs cOlBaJ"
-                id="NetworkName"
-              >
-                Winston
-              </span>
-            </div>
-            <div
-              class="sc-gZMcBi kEdgDY"
-            >
-              Balance
-            </div>
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-gqjmRU cdfsbH"
-              id="UserAddress"
-            >
-              0x3ca206264762caf81a8f0a843bbb850987b41e16
-            </div>
-            <div
-              class="sc-VigVT gzdgQt"
-              id="AccountBalance"
-            >
-              <div
-                class="buwkmd-0 bYclZI"
-              >
-                <span
-                  class="buwkmd-1 jZYwNd"
-                >
-                  <span
-                    class="buwkmd-2 buwkmd-3 cwENmW"
-                  />
-                  <span
-                    class="buwkmd-5 dKpFcq"
                   >
-                     - 
-                  </span>
+                    <rect
+                      fill="#F5B400"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#F92F01"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#FB186F"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#18A9F2"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="sc-htoDjs erHdrS"
+              >
+                Address
+                <span
+                  class="sc-EHOje ePRmVK"
+                  id="NetworkName"
+                >
+                  Winston
                 </span>
-                
+              </div>
+              <div
+                class="sc-htoDjs erHdrS"
+              >
+                Balance
+              </div>
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-dnqmqq iSoGqQ"
+                id="UserAddress"
+              >
+                0x3ca206264762caf81a8f0a843bbb850987b41e16
+              </div>
+              <div
+                class="sc-iwsKbI caSLHP"
+                id="AccountBalance"
+              >
+                <div
+                  class="buwkmd-0 bYclZI"
+                >
+                  <span
+                    class="buwkmd-1 jZYwNd"
+                  >
+                    <span
+                      class="buwkmd-2 buwkmd-3 cwENmW"
+                    />
+                    <span
+                      class="buwkmd-5 dKpFcq"
+                    >
+                      5.00
+                    </span>
+                  </span>
+                  
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+          <button
+            class="sc-gZMcBi sc-gqjmRU dHaPpi"
+            id="CreateLockButton"
+          >
+            Create Lock
+          </button>
+        </div>
         <section
           class="sc-1olgoav-1 lotZQF"
         >
@@ -39071,12 +38219,6 @@ Object {
                 Balance
               </div>
             </div>
-            <button
-              class="sc-ifAKCX sc-EHOje eNCBwO"
-              id="CreateLockButton"
-            >
-              Create Lock
-            </button>
           </div>
           <div
             class="mlglvd-0 jpUcBv"
@@ -44051,7 +43193,7 @@ Object {
         href="/dashboard"
       >
         <button
-          class="sc-ifAKCX sc-9upljg-1 cKpQTs"
+          class="sc-gZMcBi sc-9upljg-1 cKpQTs"
         >
           I Agree
         </button>
@@ -44178,7 +43320,7 @@ Object {
       class="sc-9upljg-3 kjuFdI"
     >
       <button
-        class="sc-ifAKCX sc-9upljg-0 cTMzWy"
+        class="sc-gZMcBi sc-9upljg-0 cTMzWy"
       >
         Go to Your Dashboard
       </button>
@@ -45808,13 +44950,13 @@ Object {
           />
         </header>
         <section
-          class="sc-gzVnrw ibZhkv"
+          class="sc-ifAKCX cFlEyZ"
         >
           <div
-            class="sc-dnqmqq igZzXE"
+            class="sc-bZQynM ePIBLw"
           >
             <div
-              class="sc-iwsKbI bWJBJz"
+              class="sc-gzVnrw gZXrCQ"
             >
               <div
                 class="paper"
@@ -45871,44 +45013,44 @@ Object {
               </div>
             </div>
             <div
-              class="sc-gZMcBi kEdgDY"
+              class="sc-htoDjs erHdrS"
             >
               Address
               <span
-                class="sc-htoDjs cOlBaJ"
+                class="sc-EHOje ePRmVK"
                 id="NetworkName"
               >
                 Winston
               </span>
             </div>
             <div
-              class="sc-gZMcBi kEdgDY"
+              class="sc-htoDjs erHdrS"
             >
               Balance
             </div>
             <div
-              class="sc-iwsKbI bWJBJz"
+              class="sc-gzVnrw gZXrCQ"
             />
             <div
-              class="sc-iwsKbI bWJBJz"
+              class="sc-gzVnrw gZXrCQ"
             />
             <div
-              class="sc-iwsKbI bWJBJz"
+              class="sc-gzVnrw gZXrCQ"
             />
             <div
-              class="sc-iwsKbI bWJBJz"
+              class="sc-gzVnrw gZXrCQ"
             />
             <div
-              class="sc-iwsKbI bWJBJz"
+              class="sc-gzVnrw gZXrCQ"
             />
             <div
-              class="sc-gqjmRU cdfsbH"
+              class="sc-dnqmqq iSoGqQ"
               id="UserAddress"
             >
               0x3ca206264762caf81a8f0a843bbb850987b41e16
             </div>
             <div
-              class="sc-VigVT gzdgQt"
+              class="sc-iwsKbI caSLHP"
               id="AccountBalance"
             >
               <div
@@ -56439,7 +55581,7 @@ Object {
   display: inline-block;
 }
 
-.c24 {
+.c25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -56449,7 +55591,7 @@ Object {
   flex-direction: column;
 }
 
-.c25 {
+.c26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -56460,17 +55602,17 @@ Object {
   padding-bottom: 0.5em;
 }
 
-.c26 {
+.c27 {
   width: 1.3em;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.c26:before {
+.c27:before {
   content: '三';
 }
 
-.c27 {
+.c28 {
   white-space: nowrap;
   text-transform: uppercase;
 }
@@ -56639,7 +55781,7 @@ Object {
   width: 100%;
 }
 
-.c21 {
+.c22 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   font-weight: 500;
@@ -56648,7 +55790,7 @@ Object {
   text-transform: none;
 }
 
-.c18 {
+.c19 {
   font-family: 'IBM Plex Mono',monospace;
   display: grid;
   row-gap: 8px;
@@ -56657,7 +55799,7 @@ Object {
   grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
 }
 
-.c19 {
+.c20 {
   display: grid;
   height: 40px;
   grid-row: span 2;
@@ -56670,7 +55812,7 @@ Object {
   align-content: start;
 }
 
-.c20 {
+.c21 {
   font-weight: 100;
   text-transform: uppercase;
   -webkit-letter-spacing: 1px;
@@ -56680,7 +55822,7 @@ Object {
   font-size: 8px;
 }
 
-.c22 {
+.c23 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   width: 128px;
@@ -56689,20 +55831,51 @@ Object {
   word-break: break-all;
 }
 
-.c23 {
+.c24 {
   font-size: 16px;
   font-weight: 500;
   color: var(--darkgrey);
 }
 
-.c28 {
+.c29 {
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--darkgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  padding: 10px;
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+  height: 48px;
+}
+
+.c29 :hover {
+  background-color: var(--activegreen);
+}
+
+.c18 {
+  display: grid;
+  grid-template-columns: 1fr 144px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c30 {
   display: grid;
   grid-template-columns: 125px 2fr 1fr;
   grid-auto-rows: 32px;
   grid-column-gap: 20px;
 }
 
-.c29 {
+.c31 {
   font-size: 10px;
   font-weight: normal;
   text-transform: uppercase;
@@ -56710,7 +55883,7 @@ Object {
   white-space: nowrap;
 }
 
-.c30 {
+.c32 {
   font-size: 14px;
   line-height: 14px;
   color: var(--darkgrey);
@@ -56718,13 +55891,13 @@ Object {
   font-family: 'IBM Plex Mono',Courier,monospace;
 }
 
-.c31 {
+.c33 {
   font-size: 14px;
   font-weight: 300;
   font-family: 'IBM Plex Mono',Courier,monospace;
 }
 
-.c32 {
+.c34 {
   font-size: 14px;
   line-height: 14px;
   color: var(--darkgrey);
@@ -56734,7 +55907,7 @@ Object {
   white-space: nowrap;
 }
 
-.c33 {
+.c35 {
   font-size: 14px;
   line-height: 14px;
   color: var(--darkgrey);
@@ -56820,13 +55993,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c34 {
+  .c36 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c18 {
+  .c19 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
     grid-template-columns: 45px 145px repeat(2,80px);
@@ -56834,8 +56007,14 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c19 {
+  .c20 {
     height: 0px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c29 {
+    display: none;
   }
 }
 
@@ -57077,198 +56256,208 @@ Object {
               class="c17"
             />
           </header>
-          <section
-            class=""
+          <div
+            class="c18"
           >
-            <div
-              class="c18"
+            <section
+              class=""
             >
               <div
                 class="c19"
               >
                 <div
-                  class="paper"
-                  style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
+                  class="c20"
                 >
-                  <svg
-                    height="40"
-                    width="40"
-                    x="0"
-                    xmlns="http://www.w3.org/2000/svg"
-                    y="0"
+                  <div
+                    class="paper"
+                    style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
                   >
-                    <rect
-                      fill="#F5B400"
+                    <svg
                       height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
                       width="40"
                       x="0"
+                      xmlns="http://www.w3.org/2000/svg"
                       y="0"
-                    />
-                    <rect
-                      fill="#F92F01"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                    <rect
-                      fill="#FB186F"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                    <rect
-                      fill="#18A9F2"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                  </svg>
+                    >
+                      <rect
+                        fill="#F5B400"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                      <rect
+                        fill="#F92F01"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                      <rect
+                        fill="#FB186F"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                      <rect
+                        fill="#18A9F2"
+                        height="40"
+                        rx="0"
+                        ry="0"
+                        transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
+                        width="40"
+                        x="0"
+                        y="0"
+                      />
+                    </svg>
+                  </div>
                 </div>
-              </div>
-              <div
-                class="c20"
-              >
-                Address
-                <span
+                <div
                   class="c21"
-                  id="NetworkName"
                 >
-                  Winston
-                </span>
-              </div>
-              <div
-                class="c20"
-              >
-                Balance
-              </div>
-              <div
-                class="c19"
-              />
-              <div
-                class="c19"
-              />
-              <div
-                class="c19"
-              />
-              <div
-                class="c19"
-              />
-              <div
-                class="c19"
-              />
-              <div
-                class="c22"
-                id="UserAddress"
-              >
-                0x3ca206264762caf81a8f0a843bbb850987b41e16
-              </div>
-              <div
-                class="c23"
-                id="AccountBalance"
-              >
+                  Address
+                  <span
+                    class="c22"
+                    id="NetworkName"
+                  >
+                    Winston
+                  </span>
+                </div>
+                <div
+                  class="c21"
+                >
+                  Balance
+                </div>
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c20"
+                />
+                <div
+                  class="c23"
+                  id="UserAddress"
+                >
+                  0x3ca206264762caf81a8f0a843bbb850987b41e16
+                </div>
                 <div
                   class="c24"
+                  id="AccountBalance"
                 >
-                  <span
+                  <div
                     class="c25"
                   >
                     <span
                       class="c26"
-                    />
-                    <span
-                      class="c27"
                     >
-                       - 
+                      <span
+                        class="c27"
+                      />
+                      <span
+                        class="c28"
+                      >
+                         - 
+                      </span>
                     </span>
-                  </span>
-                  
+                    
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+            <button
+              class="c29"
+              id="CreateLockButton"
+            >
+              Create Lock
+            </button>
+          </div>
           <div
-            class="c28"
+            class="c30"
           >
             <div
-              class="c29"
+              class="c31"
             >
               Block Number
             </div>
             <div
-              class="c29"
+              class="c31"
             >
               Lock Name/Address
             </div>
             <div
-              class="c29"
+              class="c31"
             >
               Type
             </div>
             <div
-              class="c30"
+              class="c32"
             >
               3
             </div>
             <a
-              class="c31"
+              class="c33"
               href=""
               target="_blank"
             >
               0xc43efE2C7116CB94d563b5A9D68F260CCc44256F
             </a>
             <div
-              class="c32"
+              class="c34"
               type="Lock Creation"
             >
               Lock Creation
             </div>
             <div
-              class="c30"
+              class="c32"
             >
               2
             </div>
             <a
-              class="c31"
+              class="c33"
               href=""
               target="_blank"
             >
               0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
             </a>
             <div
-              class="c33"
+              class="c35"
               type="Update Key Price"
             >
               Update Key Price
             </div>
             <div
-              class="c30"
+              class="c32"
             >
               1
             </div>
             <a
-              class="c31"
+              class="c33"
               href=""
               target="_blank"
             >
               0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
             </a>
             <div
-              class="c32"
+              class="c34"
               type="Lock Creation"
             >
               Lock Creation
@@ -57276,7 +56465,7 @@ Object {
           </div>
         </div>
         <div
-          class="c34"
+          class="c36"
         />
       </div>
     </div>
@@ -57519,130 +56708,140 @@ Object {
             class="sc-1glv5oz-5 bjHPyP"
           />
         </header>
-        <section
-          class="sc-gzVnrw ibZhkv"
+        <div
+          class="sc-VigVT jqbjAH"
         >
-          <div
-            class="sc-dnqmqq igZzXE"
+          <section
+            class="sc-ifAKCX cFlEyZ"
           >
             <div
-              class="sc-iwsKbI bWJBJz"
+              class="sc-bZQynM ePIBLw"
             >
               <div
-                class="paper"
-                style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
+                class="sc-gzVnrw gZXrCQ"
               >
-                <svg
-                  height="40"
-                  width="40"
-                  x="0"
-                  xmlns="http://www.w3.org/2000/svg"
-                  y="0"
+                <div
+                  class="paper"
+                  style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
                 >
-                  <rect
-                    fill="#F5B400"
+                  <svg
                     height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
                     width="40"
                     x="0"
+                    xmlns="http://www.w3.org/2000/svg"
                     y="0"
-                  />
-                  <rect
-                    fill="#F92F01"
-                    height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                  <rect
-                    fill="#FB186F"
-                    height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                  <rect
-                    fill="#18A9F2"
-                    height="40"
-                    rx="0"
-                    ry="0"
-                    transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
-                    width="40"
-                    x="0"
-                    y="0"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div
-              class="sc-gZMcBi kEdgDY"
-            >
-              Address
-              <span
-                class="sc-htoDjs cOlBaJ"
-                id="NetworkName"
-              >
-                Winston
-              </span>
-            </div>
-            <div
-              class="sc-gZMcBi kEdgDY"
-            >
-              Balance
-            </div>
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-iwsKbI bWJBJz"
-            />
-            <div
-              class="sc-gqjmRU cdfsbH"
-              id="UserAddress"
-            >
-              0x3ca206264762caf81a8f0a843bbb850987b41e16
-            </div>
-            <div
-              class="sc-VigVT gzdgQt"
-              id="AccountBalance"
-            >
-              <div
-                class="buwkmd-0 bYclZI"
-              >
-                <span
-                  class="buwkmd-1 jZYwNd"
-                >
-                  <span
-                    class="buwkmd-2 buwkmd-3 cwENmW"
-                  />
-                  <span
-                    class="buwkmd-5 dKpFcq"
                   >
-                     - 
-                  </span>
+                    <rect
+                      fill="#F5B400"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#F92F01"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#FB186F"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#18A9F2"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="sc-htoDjs erHdrS"
+              >
+                Address
+                <span
+                  class="sc-EHOje ePRmVK"
+                  id="NetworkName"
+                >
+                  Winston
                 </span>
-                
+              </div>
+              <div
+                class="sc-htoDjs erHdrS"
+              >
+                Balance
+              </div>
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-gzVnrw gZXrCQ"
+              />
+              <div
+                class="sc-dnqmqq iSoGqQ"
+                id="UserAddress"
+              >
+                0x3ca206264762caf81a8f0a843bbb850987b41e16
+              </div>
+              <div
+                class="sc-iwsKbI caSLHP"
+                id="AccountBalance"
+              >
+                <div
+                  class="buwkmd-0 bYclZI"
+                >
+                  <span
+                    class="buwkmd-1 jZYwNd"
+                  >
+                    <span
+                      class="buwkmd-2 buwkmd-3 cwENmW"
+                    />
+                    <span
+                      class="buwkmd-5 dKpFcq"
+                    >
+                       - 
+                    </span>
+                  </span>
+                  
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+          <button
+            class="sc-gZMcBi sc-gqjmRU dHaPpi"
+            id="CreateLockButton"
+          >
+            Create Lock
+          </button>
+        </div>
         <div
           class="sc-jTzLTM emFApi"
         >

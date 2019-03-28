@@ -10,9 +10,24 @@ import DeveloperOverlay from '../developer/DeveloperOverlay'
 import BrowserOnly from '../helpers/BrowserOnly'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { pageTitle } from '../../constants'
+import {
+  CreateLockButton,
+  AccountWrapper,
+} from '../interface/buttons/ActionButton'
+import { showForm, hideForm } from '../../actions/lockFormVisibility'
 
 // TODO : move lockFeed extraction in CreatorLocks since it's just being passed down there
-export const DashboardContent = ({ account, network, lockFeed }) => {
+export const DashboardContent = ({
+  account,
+  network,
+  lockFeed,
+  formIsVisible,
+  showForm,
+  hideForm,
+}) => {
+  const toggleForm = () => {
+    formIsVisible ? hideForm() : showForm()
+  }
   return (
     <GlobalErrorConsumer>
       <Layout title="Creator Dashboard">
@@ -21,7 +36,12 @@ export const DashboardContent = ({ account, network, lockFeed }) => {
         </Head>
         {account && (
           <BrowserOnly>
-            <Account network={network} account={account} />
+            <AccountWrapper>
+              <Account network={network} account={account} />
+              <CreateLockButton id="CreateLockButton" onClick={toggleForm}>
+                Create Lock
+              </CreateLockButton>
+            </AccountWrapper>
             <CreatorLocks lockFeed={lockFeed} />
             <DeveloperOverlay />
           </BrowserOnly>
@@ -35,6 +55,9 @@ DashboardContent.propTypes = {
   account: UnlockPropTypes.account,
   network: UnlockPropTypes.network.isRequired,
   lockFeed: PropTypes.arrayOf(UnlockPropTypes.lock),
+  formIsVisible: PropTypes.bool.isRequired,
+  showForm: PropTypes.func.isRequired,
+  hideForm: PropTypes.func.isRequired,
 }
 
 DashboardContent.defaultProps = {
@@ -42,28 +65,43 @@ DashboardContent.defaultProps = {
   account: null,
 }
 
-export const mapStateToProps = state => {
+export const mapStateToProps = ({
+  transactions,
+  locks,
+  account,
+  network,
+  lockFormStatus: { visible },
+}) => {
   // We want to display newer locks first, so sort the locks by blockNumber in descending order
   const locksComparator = (a, b) => {
     // Newly created locks may not have a transaction associated just yet
     // -- those always go right to the top
-    if (!state.transactions[a.transaction]) {
+    if (!transactions[a.transaction]) {
       return -1
     }
-    if (!state.transactions[b.transaction]) {
+    if (!transactions[b.transaction]) {
       return 1
     }
     return (
-      state.transactions[b.transaction].blockNumber -
-      state.transactions[a.transaction].blockNumber
+      transactions[b.transaction].blockNumber -
+      transactions[a.transaction].blockNumber
     )
   }
-  const lockFeed = Object.values(state.locks).sort(locksComparator)
+  const lockFeed = Object.values(locks).sort(locksComparator)
   return {
-    account: state.account,
-    network: state.network,
+    account: account,
+    network: network,
     lockFeed,
+    formIsVisible: visible,
   }
 }
 
-export default connect(mapStateToProps)(DashboardContent)
+const mapDispatchToProps = dispatch => ({
+  showForm: () => dispatch(showForm()),
+  hideForm: () => dispatch(hideForm()),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DashboardContent)
