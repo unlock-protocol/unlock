@@ -10,7 +10,7 @@
     "dev": "tsc-watch --onSuccess 'node build/server.js' --onFailure 'echo Beep! Compilation Failed'",
     "pretest": "NODE_ENV=test sequelize db:migrate",
     "test": "jest --forceExit",
-    "lint": "eslint .",
+    "lint": "eslint --ext .ts,.js,.tsx src/",
     "db:migrate": "sequelize db:migrate",
     "ci": "npm run lint && npm test",
     "build": "tsc",
@@ -21,18 +21,21 @@
   "lint-staged": {
     "linters": {
       "*.{js,ts,tsx}": [
-        "eslint"
+        "eslint --fix",
+        "git add"
       ]
     }
   },
   "author": "Unlock Inc",
   "license": "ISC",
   "dependencies": {
-    "@types/express": "^4.16.1",
-    "@types/jest": "^24.0.11",
-    "@types/node": "^11.11.3",
     "@types/eth-sig-util": "^2.1.0",
     "@types/ethereumjs-util": "^5.2.0",
+    "@types/express": "^4.16.1",
+    "@types/express-serve-static-core": "^4.16.2",
+    "@types/jest": "^24.0.11",
+    "@types/node": "^11.11.3",
+    "@typescript-eslint/eslint-plugin": "^1.5.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "cross-env": "^5.2.0",

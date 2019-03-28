@@ -3,7 +3,7 @@ import randomWords from 'random-words'
 
 export class DecoyUser {
   recoveryPhrase(): String {
-      return randomWords(5).join(' ')
+    return randomWords(5).join(' ')
   }
 
   async encryptedPrivateKey() {
@@ -13,3 +13,5 @@ export class DecoyUser {
     )
   }
 }
+
+export default DecoyUser

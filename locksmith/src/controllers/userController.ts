@@ -1,9 +1,13 @@
-import UserOperations = require('../operations/userOperations')
-import { Request, Response } from 'express-serve-static-core'
+import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import { DecoyUser } from '../utils/decoyUser'
 
+import UserOperations = require('../operations/userOperations')
+
 namespace UserController {
-  export async function createUser(req: Request, res: Response): Promise<any> {
+  export const createUser = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
     let user = req.body.user
 
     try {
@@ -23,10 +27,10 @@ namespace UserController {
     }
   }
 
-  export async function retrieveEncryptedPrivatekey(
+  export const retrieveEncryptedPrivatekey = async (
     req: Request,
     res: Response
-  ): Promise<any> {
+  ): Promise<any> => {
     let emailAddress = req.params.emailAddress
     let result = await UserOperations.getUserPrivateKeyByEmailAddress(
       emailAddress
@@ -43,10 +47,10 @@ namespace UserController {
     }
   }
 
-  export async function retrieveRecoveryPhrase(
+  export const retrieveRecoveryPhrase = async (
     req: Request,
     res: Response
-  ): Promise<any> {
+  ): Promise<any> => {
     let emailAddress = req.params.emailAddress
     let result = await UserOperations.getUserRecoveryPhraseByEmailAddress(
       emailAddress
