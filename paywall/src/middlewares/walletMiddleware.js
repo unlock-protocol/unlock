@@ -114,7 +114,10 @@ export default function walletMiddleware({ getState, dispatch }) {
 
   return function(next) {
     // Connect to the current provider
-    // We connect once the middleware has been initialized, using setTimout (warning: fragile?)
+    // We connect once the middleware has been initialized, using setTimout
+    // The redux event loop is synchronous, so using setTimeout guarantees
+    // that connect will only be called after all of the other middleware have
+    // been initialized
     setTimeout(() => {
       walletService.connect(getState().provider)
     })
