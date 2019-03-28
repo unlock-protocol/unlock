@@ -10,7 +10,7 @@ export default function useLocksmith(api, defaultValue, active = true) {
   const window = useWindow()
   const { locksmithHost } = useConfig()
   const [result, setResult] = useState(defaultValue)
-  const [reSend, reSendQuery] = useReducer(state => state + 1, 0) // christ rebasing is stew ped
+  const [reSend, reSendQuery] = useReducer(state => state + 1, 0)
 
   const fetch = window.fetch
   // remove double / if there are any
