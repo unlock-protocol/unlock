@@ -9,5 +9,5 @@ fi
 
 # Archive artifacts
 cd 'build'
-zip ${archive} -r . ../package.json ../package-lock.json --exclude=*node_modules*
+zip ${archive} -r . ../package.json ../package-lock.json ../.npmrc ../.ebextensions --exclude=*node_modules*
 cd '..'
