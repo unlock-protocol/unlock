@@ -28300,44 +28300,194 @@ exports[`Storyshots CreatorLocks no lock, showForm 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c7 {
-  display: grid;
-  row-gap: 16px;
-  -webkit-column-gap: 32px;
-  column-gap: 32px;
-  border: solid 1px var(--lightgrey);
-  grid-template-columns: 72px;
-  grid-auto-flow: column;
+    .c13 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c13:before {
+  content: '三';
+}
+
+.c11 {
+  color: var(--link);
+  font-size: 11px;
+  width: 100%;
+  padding: 5px;
+}
+
+.c7 {
+  font-family: 'IBM Plex Mono','Courier New',Serif;
+  font-weight: 200;
+  min-height: 48px;
+  padding-left: 8px;
+  color: var(--slate);
+  font-size: 14px;
+  box-shadow: 0 0 40px 0 rgba(0,0,0,0.08);
+  -webkit-transition: box-shadow 100ms ease;
+  transition: box-shadow 100ms ease;
   border-radius: 4px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 32px;
-  padding-bottom: 40px;
+  display: grid;
+  grid-row-gap: 0;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  cursor: pointer;
+  -webkit-animation: 400ms ease slideIn;
+  animation: 400ms ease slideIn;
+}
+
+.c7 > * {
+  padding-top: 16px;
+}
+
+.c7:hover {
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  -webkit-transition: box-shadow 100ms ease;
+  transition: box-shadow 100ms ease;
+}
+
+.c7 input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.c7 input::-webkit-outer-spin-button,
+.c7 input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.c7 input {
+  background: var(--lightgrey);
+  border: 1px solid var(--lightgrey);
+  border-radius: 4px;
+  height: 26px;
+  padding: 0 8px;
+  font-family: 'IBM Plex Mono',sans serif;
+  font-size: 14px;
+  font-weight: 200;
+}
+
+.c7 input:focus {
+  outline: none;
+  border: 1px solid var(--grey);
+  -webkit-transition: border 100ms ease;
+  transition: border 100ms ease;
+}
+
+.c7 input[data-valid='false'] {
+  border: 1px solid var(--red);
+}
+
+.c7 input:disabled {
+  color: var(--silver);
+}
+
+.c7 100% {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.c14 {
+  -webkit-align-self: stretch;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  display: grid;
+  text-transform: capitalize;
+  background-color: var(--lightgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: 200;
+  color: var(--grey);
+  border-radius: 0 4px 4px 0;
+  padding-bottom: 15px;
 }
 
 .c8 {
-  width: 72px;
+  color: var(--link);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.c9 {
-  display: grid;
-  grid-gap: 16px;
+.c8 input[type='text'],
+.c8 input[type='number'] {
+  min-width: 70px;
+  width: 80%;
 }
 
-.c9 > h1 {
-  font-weight: bold;
-  color: var(--grey);
-  margin: 0px;
-  padding: 0px;
+.c9 input[type='text'],
+.c9 input[type='number'] {
+  min-width: 30px;
+  width: 50%;
+  text-align: right;
 }
 
-.c9 > p {
-  margin: 0px;
-  padding: 0px;
-  font-size: 16px;
-  color: var(--dimgrey);
+.c10 input[type='text'],
+.c10 input[type='number'] {
+  min-width: 30px;
+  width: 80%;
+  text-align: right;
+}
+
+.c12 {
+  white-space: nowrap;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.c12 input[type='text'],
+.c12 input[type='number'] {
+  min-width: 30px;
+  width: 77%;
+  padding-right: 0;
+}
+
+.c15 {
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+  background: none;
+  color: inherit;
+  border: none;
+  outline: inherit;
+  padding: 0;
+}
+
+.c15:hover {
+  color: #333;
+  -webkit-transition: color 100ms ease;
+  transition: color 100ms ease;
+}
+
+.c16 {
+  cursor: pointer;
+  font: inherit;
+  font-size: 10px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  background: none;
+  color: inherit;
+  border: none;
+  outline: inherit;
+  padding: 0;
+}
+
+.c16:hover {
+  color: #333;
+  -webkit-transition: color 100ms ease;
+  transition: color 100ms ease;
 }
 
 .c0 {
@@ -28415,11 +28565,25 @@ Object {
   }
 }
 
-@media (max-width:500px) {
+@media only screen and (min-width:736px) {
   .c7 {
-    grid-template-columns: 1fr;
-    grid-auto-flow: row;
-    padding: 16px;
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c7 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c8 {
+    grid-column: span 2;
   }
 }
 
@@ -28499,22 +28663,158 @@ Object {
             </div>
           </div>
         </div>
-        <section
+        <div
           class="c7"
         >
-          <img
+          <svg
+            viewBox="0 0 216 216"
+            width="100%"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <defs>
+              <circle
+                cx="108"
+                cy="108"
+                id="a"
+                r="108"
+              />
+              <circle
+                cx="108"
+                cy="108"
+                id="c"
+                r="60.75"
+              />
+            </defs>
+            <g>
+              <mask
+                fill="#fff"
+                id="b"
+              >
+                <use
+                  xlink:href="#a"
+                />
+              </mask>
+              <g
+                transform="rotate(0, 108, 108)"
+              >
+                <circle
+                  cx="195.75"
+                  cy="114.75"
+                  fill="#8c8c8c"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="33.75"
+                  cy="162"
+                  fill="#e8e8e8"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="121.5"
+                  cy="0"
+                  fill="#c3c3c3"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+              </g>
+              <mask
+                fill="#fff"
+                id="d"
+              >
+                <use
+                  xlink:href="#c"
+                />
+              </mask>
+              <use
+                fill="#FFF"
+                xlink:href="#c"
+              />
+              <path
+                d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                fill="#8c8c8c"
+                mask="url(#d)"
+              />
+            </g>
+          </svg>
+          <div
             class="c8"
-            src="/static/images/illustrations/lock.svg"
-          />
+          >
+            <input
+              data-valid="true"
+              name="name"
+              required=""
+              type="text"
+              value="New Lock"
+            />
+          </div>
           <div
             class="c9"
           >
-            <h1>
-              Create a lock to get started
-            </h1>
-            You have not created any locks yet. Create your first lock in seconds by clicking on the ‘Create Lock’ button.
+            <input
+              data-valid="true"
+              inputmode="numeric"
+              name="expirationDuration"
+              required=""
+              step="1"
+              type="number"
+              value="30"
+            />
+             
+            days
           </div>
-        </section>
+          <div
+            class="c10"
+          >
+            <input
+              data-valid="true"
+              name="maxNumberOfKeys"
+              required=""
+              type="text"
+              value="10"
+            />
+            <div
+              class="c11"
+            >
+              Unlimited
+            </div>
+          </div>
+          <span
+            class="c12"
+          >
+            <span
+              class="c13"
+            />
+            <input
+              data-valid="true"
+              id="KeyPriceEditField_undefined"
+              inputmode="numeric"
+              name="keyPrice"
+              required=""
+              step="0.00001"
+              type="number"
+              value="0.01"
+            />
+          </span>
+          <div>
+            -
+          </div>
+          <div
+            class="c14"
+          >
+            <button
+              class="c15"
+            >
+              Submit
+            </button>
+            <button
+              class="c16"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
       </section>
     </div>
   </body>,
@@ -28570,22 +28870,158 @@ Object {
           </div>
         </div>
       </div>
-      <section
-        class="sc-1g6piw8-0 jXGMmL"
+      <div
+        class="mlglvd-0 sc-1u8ov25-1 hyBsBZ"
       >
-        <img
-          class="sc-1g6piw8-1 fcKGMu"
-          src="/static/images/illustrations/lock.svg"
-        />
-        <div
-          class="sc-1g6piw8-2 evbCld"
+        <svg
+          viewBox="0 0 216 216"
+          width="100%"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
         >
-          <h1>
-            Create a lock to get started
-          </h1>
-          You have not created any locks yet. Create your first lock in seconds by clicking on the ‘Create Lock’ button.
+          <defs>
+            <circle
+              cx="108"
+              cy="108"
+              id="a"
+              r="108"
+            />
+            <circle
+              cx="108"
+              cy="108"
+              id="c"
+              r="60.75"
+            />
+          </defs>
+          <g>
+            <mask
+              fill="#fff"
+              id="b"
+            >
+              <use
+                xlink:href="#a"
+              />
+            </mask>
+            <g
+              transform="rotate(0, 108, 108)"
+            >
+              <circle
+                cx="195.75"
+                cy="114.75"
+                fill="#8c8c8c"
+                mask="url(#b)"
+                r="114.75"
+              />
+              <circle
+                cx="33.75"
+                cy="162"
+                fill="#e8e8e8"
+                mask="url(#b)"
+                r="114.75"
+              />
+              <circle
+                cx="121.5"
+                cy="0"
+                fill="#c3c3c3"
+                mask="url(#b)"
+                r="114.75"
+              />
+            </g>
+            <mask
+              fill="#fff"
+              id="d"
+            >
+              <use
+                xlink:href="#c"
+              />
+            </mask>
+            <use
+              fill="#FFF"
+              xlink:href="#c"
+            />
+            <path
+              d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+              fill="#8c8c8c"
+              mask="url(#d)"
+            />
+          </g>
+        </svg>
+        <div
+          class="mlglvd-4 sc-1u8ov25-3 kHCPXz"
+        >
+          <input
+            data-valid="true"
+            name="name"
+            required=""
+            type="text"
+            value="New Lock"
+          />
         </div>
-      </section>
+        <div
+          class="mlglvd-6 sc-1u8ov25-4 bBCopM"
+        >
+          <input
+            data-valid="true"
+            inputmode="numeric"
+            name="expirationDuration"
+            required=""
+            step="1"
+            type="number"
+            value="30"
+          />
+           
+          days
+        </div>
+        <div
+          class="mlglvd-7 sc-1u8ov25-5 foqKED"
+        >
+          <input
+            data-valid="true"
+            name="maxNumberOfKeys"
+            required=""
+            type="text"
+            value="10"
+          />
+          <div
+            class="mlglvd-1 sc-1u8ov25-0 eiQcmf"
+          >
+            Unlimited
+          </div>
+        </div>
+        <span
+          class="buwkmd-5 sc-1u8ov25-6 louuyM"
+        >
+          <span
+            class="buwkmd-2 buwkmd-3 cwENmW"
+          />
+          <input
+            data-valid="true"
+            id="KeyPriceEditField_undefined"
+            inputmode="numeric"
+            name="keyPrice"
+            required=""
+            step="0.00001"
+            type="number"
+            value="0.01"
+          />
+        </span>
+        <div>
+          -
+        </div>
+        <div
+          class="aicx7v-0 sc-1u8ov25-2 dpNRpO"
+        >
+          <button
+            class="sc-1u8ov25-7 jSpMeN"
+          >
+            Submit
+          </button>
+          <button
+            class="sc-1u8ov25-7 gScjsJ"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
     </section>
   </div>,
   "debug": [Function],
