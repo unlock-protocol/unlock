@@ -13,7 +13,7 @@
     "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint .",
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/components/interface/svg/template.js --no-dimensions -d src/components/interface/svg/ src/static/images/svg/",
-    "build-paywall": "cross-env NODE_ENV=production rollup -c rollup.paywall.config.js -o ./src/static/paywall.min.js",
+    "build-paywall": "cross-env NODE_ENV=production rollup -c rollup.paywall.config.js",
     "storybook": "start-storybook -p 9002 -c .storybook -s .",
     "ci": "npm run lint && npm test"
   },
