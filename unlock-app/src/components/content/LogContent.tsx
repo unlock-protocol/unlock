@@ -8,7 +8,9 @@ import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import CreatorLog from '../creator/CreatorLog'
 import { pageTitle } from '../../constants'
 import withConfig from '../../utils/withConfig'
+/* eslint-disable no-unused-vars */
 import * as UnlockTypes from '../../unlock'
+/* eslint-enable no-unused-vars */
 
 interface Props {
   account: UnlockTypes.Account
