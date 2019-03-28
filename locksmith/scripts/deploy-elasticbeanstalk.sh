@@ -12,7 +12,7 @@ IS_FORKED_PR=$3
 COMMIT_MESSAGE=$4
 
 readonly BUILD="locksmith-${BUILD_ID}"
-readonly ARTIFACT_LOCATION="./builds/${BUILD}.zip"
+readonly ARTIFACT_LOCATION="$(pwd)/locksmith/builds/${BUILD}.zip"
 readonly S3_BUCKET="unlock-locksmith"
 readonly AWS_REGION="us-east-1"
 readonly APPLICATION="locksmith"
@@ -23,7 +23,7 @@ function package_application()
     local application=${1}
     local artifact_location=${2}
     
-    mkdir builds
+    mkdir -p builds
     pushd ./${application}
     npm install
     npm run dist ${artifact_location} 
