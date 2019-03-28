@@ -38,8 +38,8 @@ describe('CreatorLog', () => {
   })
 
   it('should show the lock address, which is a link containing the href', () => {
-    const { queryByText, container } = wrapper
     expect.assertions(2)
+    const { queryByText, container } = wrapper
     expect(queryByText('0x456')).not.toBeNull()
     const link = container.querySelector('a')
     if (link) {
