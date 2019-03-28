@@ -25,16 +25,20 @@ sizes.nodesktop = {
   min: sizes.phone.min,
 }
 
-const Media: { [key: string]: any } = Object.keys(sizes).reduce((acc: { [key: string]: any }, label) => {
-  acc[label] = (arg: any, ...args: any[]) => css`
-    @media only screen and (min-width: ${sizes[label].min}px) ${sizes[label].max
-        ? `and (max-width: ${sizes[label].max}px)`
-        : ''} {
-      ${css(arg, ...args)};
-    }
-  `
-  return acc
-}, {})
+const Media: { [key: string]: any } = Object.keys(sizes).reduce(
+  (acc: { [key: string]: any }, label) => {
+    acc[label] = (arg: any, ...args: any[]) => css`
+      @media only screen and (min-width: ${sizes[label].min}px) ${sizes[label]
+          .max
+          ? `and (max-width: ${sizes[label].max}px)`
+          : ''} {
+        ${css(arg, ...args)};
+      }
+    `
+    return acc
+  },
+  {}
+)
 
 export const NoPhone = styled.div`
   ${Media.phone`

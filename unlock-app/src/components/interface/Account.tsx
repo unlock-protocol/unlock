@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Jazzicon from 'react-jazzicon'
 
-import * as UnlockTypes from '../../unlock'
+import * as UnlockTypes from '../../unlock' // eslint-disable-line no-unused-vars
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
 
 import Media from '../../theme/media'
@@ -15,8 +15,8 @@ interface Props {
 
 export function Account({ account, network }: Props) {
   const networkName = ETHEREUM_NETWORKS_NAMES[network.name]
-                    ? ETHEREUM_NETWORKS_NAMES[network.name][0]
-                    : 'Unknown Network'
+    ? ETHEREUM_NETWORKS_NAMES[network.name][0]
+    : 'Unknown Network'
   // Using https://github.com/MetaMask/metamask-extension/blob/develop/ui/lib/icon-factory.js#L60 to make sure jazzicons are consistent between Metamask and unlock.
   const iconSeed = parseInt(account.address.slice(2, 10), 16)
 
