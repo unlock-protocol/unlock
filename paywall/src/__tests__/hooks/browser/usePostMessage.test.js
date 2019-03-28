@@ -118,13 +118,7 @@ describe('usePostMessage hook', () => {
 
     rtl.act(() => {
       postMessage('hi')
-    })
-
-    rtl.act(() => {
       postMessage('hi')
-    })
-
-    rtl.act(() => {
       postMessage('bye')
     })
     expect(fakeWindow.parent.postMessage).toHaveBeenCalledTimes(2)
