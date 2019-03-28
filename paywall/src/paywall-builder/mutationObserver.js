@@ -9,5 +9,7 @@ export default function listenForNewLocks(callback, fail, head) {
   if (existingLock) {
     return callback(existingLock)
   }
+
+  // if we reach here, there were no locks found on the page, so we call the fail callback
   fail()
 }

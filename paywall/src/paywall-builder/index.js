@@ -7,6 +7,7 @@ window.onload = () => {
   addBlocker(document, blocker)
   listenForNewLocks(
     lock => buildPaywall(window, document, lock, blocker),
+    // our fail callback removes the blocker, since the paywall is useless without a lock to display
     () => removeBlocker(blocker),
     document.head
   )
