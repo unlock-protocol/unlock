@@ -9,7 +9,7 @@ describe('paywall builder integration', () => {
   let addBlocker
   beforeEach(() => {
     listenForNewLocks = jest
-      .spyOn(mutations, 'listenForNewLocks')
+      .spyOn(mutations, 'default')
       .mockImplementation(() => 'listen')
     buildPaywall = jest
       .spyOn(buildManager, 'default')
@@ -31,7 +31,7 @@ describe('paywall builder integration', () => {
     require('../../paywall-builder')
     window.onload()
 
-    expect(listenForNewLocks.mock.calls[0][1]).toBe(document.head)
+    expect(listenForNewLocks.mock.calls[0][2]).toBe(document.head)
 
     const paywall = listenForNewLocks.mock.calls[0][0]
     expect(paywall).toBeInstanceOf(Function)
