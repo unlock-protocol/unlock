@@ -1,7 +1,8 @@
+import signatureValidationMiddleware from './middlewares/signatureValidationMiddleware'
+
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const express = require('express')
-const signatureValidationMiddleware = require('./middlewares/signatureValidationMiddleware')
 
 const app = express()
 const router = express.Router()
