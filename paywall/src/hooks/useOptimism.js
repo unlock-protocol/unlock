@@ -4,11 +4,11 @@ import useLocksmith from './useLocksmith'
 import { OPTIMISM_POLLING_INTERVAL } from '../constants'
 
 export default function useOptimism(transaction) {
-  const API = transaction ? `/transaction/${transaction.hash}/odds` : ''
+  const apiEndPoint = transaction ? `/transaction/${transaction.hash}/odds` : ''
   const hash = transaction ? transaction.hash : false
   const status = transaction ? transaction.status : 'inactive'
-  const [locksmithOptimism, resendQuery] = useLocksmith(
-    API,
+  const [locksmithOptimism, reSendQuery] = useLocksmith(
+    apiEndPoint,
     {
       willSucceed: 0,
     },
@@ -28,7 +28,7 @@ export default function useOptimism(transaction) {
   )
   const timeout = useRef()
   const reQuery = () => {
-    resendQuery()
+    reSendQuery()
     setTimeout(reQuery, OPTIMISM_POLLING_INTERVAL)
   }
   const endPolling = () => {

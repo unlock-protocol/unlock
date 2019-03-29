@@ -20,6 +20,7 @@ describe('useOptimism hook', () => {
   const fetchResponse = {
     json: () => fakeResponse,
   }
+
   function MakeOptimism() {
     const result = useOptimism(transaction)
 
