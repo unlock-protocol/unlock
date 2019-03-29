@@ -15,12 +15,14 @@ describe('useLocksmith hook', () => {
   let fakeWindow
   let fakeResponse
   let finishFetch
+  let triggerNewFetch
   const fetchResponse = {
     json: () => fakeResponse,
   }
 
   function MockLocksmither({ api = '/hi' }) {
-    const result = useLocksmith(api)
+    const [result, reQuery] = useLocksmith(api)
+    triggerNewFetch = reQuery
 
     return <div>{JSON.stringify(result)}</div>
   }
@@ -90,5 +92,29 @@ describe('useLocksmith hook', () => {
     })
 
     expect(wrapper.getByText(JSON.stringify(fakeResponse))).not.toBeNull()
+  })
+
+  it('triggers a new fetch if refetch is called', () => {
+    expect.assertions(1)
+
+    rtl.act(() => {
+      rtl.render(
+        <WindowProvider value={fakeWindow}>
+          <ConfigProvider value={config}>
+            <MockLocksmither />
+          </ConfigProvider>
+        </WindowProvider>
+      )
+    })
+
+    rtl.act(() => {
+      finishFetch(fetchResponse)
+    })
+
+    rtl.act(() => {
+      triggerNewFetch()
+    })
+
+    expect(fakeWindow.fetch).toHaveBeenCalledTimes(2)
   })
 })
