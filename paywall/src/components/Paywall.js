@@ -20,6 +20,7 @@ import useWindow from '../hooks/browser/useWindow'
 
 // TODO: mobile formatting for unlocked and optimistic unlocking views
 export function Paywall({ locks, locked, redirect, account }) {
+  // TODO: use the useOptimism hook here instead of hard-coding it
   const optimism = { current: 1, past: 0 }
   const window = useWindow()
   const scrollPosition = useListenForPostMessage({
