@@ -60,6 +60,20 @@ jobs:
           paths:
             - "unlock-integration.tar"
 
+  unlock-protocol-com-tests:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - *images-caches
+      - *cached-checkout
+      - run:
+          name: Load Unlock Image
+          command: docker load -i  "../caches/unlock.tar"
+      - run:
+          name: Creator Dashboard tests
+          command: scripts/tests.sh unlock-protocol-com
+
   unlock-app-tests:
     machine: true
     environment:
@@ -193,6 +207,26 @@ jobs:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" unlock-app netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
+  deploy-unlock-protocol-com-netlify:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - *images-caches
+      - *cached-checkout
+      - run:
+          name: Set ENV_TARGET
+          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
+      - run:
+          name: Set IS_FORKED_PR
+          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
+      - run:
+          name: Load Unlock Image
+          command: docker load -i  "../caches/unlock.tar"
+      - run:
+          name: Deploy to Netlify
+          command: scripts/deploy.sh "$ENV_TARGET" unlock-protocol-com netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
+
   deploy-paywall-netlify:
     machine: true
     environment:
@@ -296,6 +330,9 @@ workflows:
       - build-unlock-integration:
           requires:
             - checkout-and-cache
+      - unlock-protocol-com-tests:
+          requires:
+            - build-unlock
       - unlock-app-tests:
           requires:
             - build-unlock
@@ -321,24 +358,21 @@ workflows:
       - deploy-unlock-app-netlify:
           requires:
             - unlock-app-tests
-            - smart-contracts-tests
-            - locksmith-tests
-            - paywall-tests
-            - wedlocks-tests
             - integration-tests
       - deploy-paywall-netlify:
           requires:
-            - unlock-app-tests
-            - smart-contracts-tests
-            - locksmith-tests
             - paywall-tests
-            - wedlocks-tests
+            - integration-tests
+      - deploy-unlock-protocol-com-netlify:
+          requires:
+            - unlock-protocol-com-tests
             - integration-tests
       - promote-unlock-image:
           filters:
             branches:
               only: master
           requires:
+            - unlock-protocol-com-tests
             - unlock-app-tests
             - smart-contracts-tests
             - locksmith-tests
@@ -350,6 +384,7 @@ workflows:
             branches:
               only: master
           requires:
+            - unlock-protocol-com-tests
             - unlock-app-tests
             - smart-contracts-tests
             - locksmith-tests
@@ -361,6 +396,7 @@ workflows:
             branches:
               only: master
           requires:
+            - unlock-protocol-com-tests
             - unlock-app-tests
             - smart-contracts-tests
             - locksmith-tests
@@ -372,6 +408,7 @@ workflows:
             branches:
               only: master
           requires:
+            - unlock-protocol-com-tests
             - unlock-app-tests
             - smart-contracts-tests
             - locksmith-tests
