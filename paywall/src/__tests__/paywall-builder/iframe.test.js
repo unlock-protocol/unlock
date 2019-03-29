@@ -67,9 +67,10 @@ describe('iframe', () => {
   })
 
   it('show', () => {
-    expect.assertions(2)
+    expect.assertions(3)
     const iframe = {
       style: {},
+      setAttribute: jest.fn(),
     }
     const document = {
       body: {
@@ -86,6 +87,11 @@ describe('iframe', () => {
     expect(document.body.style).toEqual({
       overflow: 'hidden',
     })
+
+    expect(iframe.setAttribute).toHaveBeenCalledWith(
+      'style',
+      iframeStyles.join('; ')
+    )
   })
 
   it('hide', () => {

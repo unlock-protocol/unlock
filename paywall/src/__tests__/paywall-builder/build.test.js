@@ -82,6 +82,7 @@ describe('buildPaywall', () => {
         },
         style: {},
         remove: jest.fn(),
+        setAttribute: jest.fn(),
       }
 
       mockAdd = jest.spyOn(iframeManager, 'add')
