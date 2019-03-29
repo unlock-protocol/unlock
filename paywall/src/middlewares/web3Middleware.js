@@ -16,6 +16,8 @@ import Web3Service from '../services/web3Service'
 import { lockRoute } from '../utils/routes'
 
 import configure from '../config'
+import { SET_PROVIDER } from '../actions/provider'
+import { SET_NETWORK } from '../actions/network'
 
 const {
   readOnlyProvider,
@@ -112,6 +114,15 @@ export default function web3Middleware({ getState, dispatch }) {
       }
 
       next(action)
+
+      if (action.type === SET_PROVIDER || action.type === SET_NETWORK) {
+        // for both of these actions, the lock state is invalid, and must be refreshed.
+        // Location was changed, get the matching lock
+        const { lockAddress } = lockRoute(getState().router.location.pathname)
+        if (lockAddress) {
+          web3Service.getLock(lockAddress)
+        }
+      }
 
       // note: this needs to be after the reducer has seen it, because refreshAccountBalance
       // triggers 'account.update' which dispatches UPDATE_ACCOUNT. The reducer assumes that
