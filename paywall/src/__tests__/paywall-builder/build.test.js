@@ -5,12 +5,9 @@ import {
   POST_MESSAGE_LOCKED,
   POST_MESSAGE_UNLOCKED,
   POST_MESSAGE_REDIRECT,
+  POST_MESSAGE_GET_OPTIMISTIC,
+  POST_MESSAGE_GET_PESSIMISTIC,
 } from '../../paywall-builder/constants'
-
-global.window = {} // this is fun...
-global.MutationObserver = function() {
-  this.observe = () => {}
-}
 
 const fakeLockAddress = 'lockaddress'
 
@@ -345,6 +342,40 @@ describe('buildPaywall', () => {
         expect(mockHide).toHaveBeenCalledWith(iframe, document)
         expect(mockHide).toHaveBeenCalledTimes(1)
         expect(mockShow).toHaveBeenCalledTimes(1)
+      })
+
+      it('calls hide on optimistic event', () => {
+        expect.assertions(1)
+
+        callbacks.message({
+          data: POST_MESSAGE_LOCKED,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
+        callbacks.message({
+          data: POST_MESSAGE_GET_OPTIMISTIC,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
+
+        expect(mockHide).toHaveBeenLastCalledWith(iframe, document, false)
+      })
+
+      it('calls show on pessimistic event', () => {
+        expect.assertions(1)
+
+        callbacks.message({
+          data: POST_MESSAGE_LOCKED,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
+        callbacks.message({
+          data: POST_MESSAGE_GET_PESSIMISTIC,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
+
+        expect(mockShow).toHaveBeenLastCalledWith(iframe, document)
       })
 
       it('bails out on error in redirect event', () => {
