@@ -2,7 +2,9 @@ import recoveryKeyConfirmEmail from '../../templates/recoveryKeyConfirmEmail'
 
 describe('recoveryKeyConfirmEmail', () => {
   it('should have the right subject', () => {
-    expect(recoveryKeyConfirmEmail.subject()).toBe('Please confirm your account recovery')
+    expect(recoveryKeyConfirmEmail.subject()).toBe(
+      'Please confirm your account recovery'
+    )
   })
 
   it('should have the right text', () => {
