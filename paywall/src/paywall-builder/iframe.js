@@ -29,11 +29,12 @@ export function add(document, iframe) {
 
 export function show(iframe, document) {
   document.body.style.overflow = 'hidden'
+  iframe.setAttribute('style', iframeStyles.join('; '))
   iframe.style.display = 'block'
   iframe.style['z-index'] = '2147483647'
 }
 
-export function hide(iframe, document) {
+export function hide(iframe, document, unlocked = true) {
   const width = '134px'
   const height = '160px'
   const collapsedMargin = '-104px'
@@ -45,10 +46,12 @@ export function hide(iframe, document) {
   iframe.style.backgroundImage = 'none'
   iframe.style.marginRight = 0
 
-  setTimeout(() => {
-    open = false
-    iframe.style.marginRight = collapsedMargin
-  }, SHOW_FLAG_FOR)
+  if (unlocked) {
+    setTimeout(() => {
+      open = false
+      iframe.style.marginRight = collapsedMargin
+    }, SHOW_FLAG_FOR)
+  }
 
   // so that there's no scroll when it goes off the edge
   iframe.style.overflow = 'hidden'
@@ -63,14 +66,16 @@ export function hide(iframe, document) {
   iframe.style.right = '0'
   iframe.style.bottom = '105px'
 
-  // Animation
-  iframe.style.transition = 'margin-right 0.4s ease-in'
+  if (unlocked) {
+    // Animation
+    iframe.style.transition = 'margin-right 0.4s ease-in'
 
-  iframe.addEventListener('mouseenter', () => {
-    iframe.style.marginRight = '0'
-  })
-  iframe.addEventListener('mouseleave', () => {
-    if (open) return
-    iframe.style.marginRight = collapsedMargin
-  })
+    iframe.addEventListener('mouseenter', () => {
+      iframe.style.marginRight = '0'
+    })
+    iframe.addEventListener('mouseleave', () => {
+      if (open) return
+      iframe.style.marginRight = collapsedMargin
+    })
+  }
 }
