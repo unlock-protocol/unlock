@@ -45,18 +45,20 @@ export function ConfirmingFlag({
 
 ConfirmingFlag.propTypes = {
   config: UnlockPropTypes.configuration.isRequired,
-  transaction: UnlockPropTypes.transaction.isRequired,
+  transaction: UnlockPropTypes.transaction,
 }
 
-export const mapStateToProps = (state, { lock }) => {
-  const account = state.account
+ConfirmingFlag.defaultProps = {
+  transaction: null,
+}
 
+export const mapStateToProps = ({ account, keys, transactions }, { lock }) => {
   // If there is no account (probably not loaded yet), we do not want to create a key
   if (!account) {
     return {}
   }
 
-  let lockKey = Object.values(state.keys).find(
+  let lockKey = Object.values(keys).find(
     key => key.lock === lock.address && key.owner === account.address
   )
   let transaction = null
@@ -70,7 +72,7 @@ export const mapStateToProps = (state, { lock }) => {
 
   // Let's select the transaction corresponding to this key purchase, if it exists
   // This transaction is of type KEY_PURCHASE
-  transaction = Object.values(state.transactions).find(
+  transaction = Object.values(transactions).find(
     transaction =>
       transaction.type === TRANSACTION_TYPES.KEY_PURCHASE &&
       transaction.key === lockKey.id
