@@ -107,7 +107,7 @@ Here is some markdown
 
     jest.mock('../../../blog/blog.index', () => {
       return {
-        default: '<arbitrary-tag>Hello, I am not JSON</arbitrary-tag>'
+        default: '<arbitrary-tag>Hello, I am not JSON</arbitrary-tag>',
       }
     })
     let posts = await loadBlogIndexFile(10)

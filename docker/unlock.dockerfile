@@ -50,6 +50,13 @@ COPY --chown=node locksmith/package.json /home/unlock/locksmith/.
 WORKDIR /home/unlock/locksmith
 RUN npm ci --production
 
+# Dependencies for unlock-protocol.com
+RUN mkdir /home/unlock/unlock-protocol.com
+COPY --chown=node unlock-protocol.com/package-lock.json /home/unlock/unlock-protocol.com/.
+COPY --chown=node unlock-protocol.com/package.json /home/unlock/unlock-protocol.com/.
+WORKDIR /home/unlock/unlock-protocol.com
+RUN npm ci --production
+
 # Dependencies for Unlock app
 RUN mkdir /home/unlock/unlock-app
 COPY --chown=node unlock-app/package-lock.json /home/unlock/unlock-app/.
@@ -87,6 +94,11 @@ RUN npm run build
 # Build locksmith
 WORKDIR /home/unlock/locksmith
 COPY --chown=node locksmith/ /home/unlock/locksmith/.
+RUN npm run build
+
+# Build unlock-protocol.com
+WORKDIR /home/unlock/unlock-protocol.com
+COPY --chown=node unlock-protocol.com/ /home/unlock/unlock-protocol.com/.
 RUN npm run build
 
 # Build Unlock app
