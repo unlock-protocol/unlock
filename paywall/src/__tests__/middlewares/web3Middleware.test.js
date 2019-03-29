@@ -10,6 +10,8 @@ import {
   NEW_TRANSACTION,
 } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
+import { SET_PROVIDER, setProvider } from '../../actions/provider'
+import { SET_NETWORK, setNetwork } from '../../actions/network'
 
 /**
  * Fake state
@@ -304,6 +306,23 @@ describe('Lock middleware', () => {
         '0x345'
       )
     })
+
+    it.each([[SET_PROVIDER, setProvider], [SET_NETWORK, setNetwork]])(
+      'should refresh the lock if %s is called',
+      async (key, action) => {
+        expect.assertions(1)
+        mockWeb3Service.getLock = jest.fn()
+
+        const lock = '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9'
+        state.router.location.pathname = `/${lock}/`
+
+        const { invoke } = create()
+
+        invoke(action('hi'))
+
+        expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock)
+      }
+    )
   })
 
   it("should handle LOCATION_CHANGE if a lock is passed by calling web3Service's getLock", () => {
