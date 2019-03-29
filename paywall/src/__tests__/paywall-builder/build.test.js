@@ -1,8 +1,7 @@
-import buildPaywall, { redirect, scrollLoop } from '../../paywall-builder/build'
+import buildPaywall, { redirect } from '../../paywall-builder/build'
 import * as script from '../../paywall-builder/script'
 import * as iframeManager from '../../paywall-builder/iframe'
 import {
-  POST_MESSAGE_SCROLL_POSITION,
   POST_MESSAGE_LOCKED,
   POST_MESSAGE_UNLOCKED,
   POST_MESSAGE_REDIRECT,
@@ -372,135 +371,6 @@ describe('buildPaywall', () => {
         })
 
         expect(window.location.href).toBe('/url/lockaddress/href')
-      })
-    })
-    describe('scrollLoop', () => {
-      let iframe
-      beforeEach(() => {
-        mockScript = jest.spyOn(script, 'findPaywallUrl')
-        mockIframe = jest.spyOn(iframeManager, 'getIframe')
-        postMessage = jest.fn()
-        iframe = {
-          contentWindow: {
-            postMessage,
-          },
-          style: {},
-        }
-
-        mockAdd = jest.spyOn(iframeManager, 'add')
-        mockScript.mockImplementation(() => '/url')
-        mockIframe.mockImplementation(() => iframe)
-        mockAdd.mockImplementation(() => {})
-        window = {
-          addEventListener(type, listener) {
-            eventListener = listener
-          },
-          requestAnimationFrame: jest.fn(),
-          location: {
-            hash: '',
-          },
-          innerHeight: 266,
-          pageYOffset: 0, // change to "scroll"
-          origin: 'origin/',
-          URL: () => {
-            return {
-              origin: 'origin',
-            }
-          },
-        }
-        blocker = {
-          remove() {},
-        }
-      })
-
-      it('does not send scroll if the window is fully scrolled', () => {
-        expect.assertions(1)
-
-        buildPaywall(window, document, fakeLockAddress, blocker)
-        lockThatPage(iframe)
-        iframe.contentWindow.postMessage.mockClear()
-
-        document.documentElement.scrollHeight = window.innerHeight
-        scrollLoop(window, document, iframe, 'origin')
-
-        expect(iframe.contentWindow.postMessage).not.toHaveBeenCalled()
-      })
-
-      it('sends a scroll position if the window is scrolled', () => {
-        expect.assertions(1)
-
-        buildPaywall(window, document, fakeLockAddress, blocker)
-        lockThatPage(iframe)
-        iframe.contentWindow.postMessage.mockClear()
-
-        scrollLoop(window, document, iframe, 'origin')
-
-        expect(iframe.contentWindow.postMessage).toHaveBeenCalledWith(
-          {
-            type: POST_MESSAGE_SCROLL_POSITION,
-            payload: 140.97744360902254,
-          },
-          'origin'
-        )
-      })
-
-      it('sends a weighted scroll position', () => {
-        expect.assertions(2)
-
-        buildPaywall(window, document, fakeLockAddress, blocker)
-        lockThatPage(iframe)
-        iframe.contentWindow.postMessage.mockClear()
-
-        scrollLoop(window, document, iframe, 'origin')
-        scrollThatPage(window) // scroll down 20 pixels
-        scrollLoop(window, document, iframe, 'origin')
-
-        expect(iframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
-          1,
-          {
-            type: POST_MESSAGE_SCROLL_POSITION,
-            payload: 140.97744360902254,
-          },
-          'origin'
-        )
-
-        expect(iframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
-          2,
-          {
-            type: POST_MESSAGE_SCROLL_POSITION,
-            payload: 141.06824126644298,
-          },
-          'origin'
-        )
-      })
-
-      it('requests a new animation frame for the next scroll check', () => {
-        expect.assertions(1)
-
-        buildPaywall(window, document, fakeLockAddress, blocker)
-        lockThatPage(iframe)
-
-        scrollLoop(window, document, iframe, 'origin')
-
-        expect(window.requestAnimationFrame).toHaveBeenCalled()
-      })
-
-      it('calls scrollLoop in the requestAnimationFrame callback', () => {
-        expect.assertions(2)
-
-        buildPaywall(window, document, fakeLockAddress, blocker)
-        lockThatPage(iframe)
-        iframe.contentWindow.postMessage.mockClear()
-
-        scrollLoop(window, document, iframe, 'origin')
-
-        expect(window.requestAnimationFrame).toHaveBeenCalled()
-        const scrollCb = window.requestAnimationFrame.mock.calls[0][0]
-
-        scrollThatPage(window)
-        scrollCb()
-
-        expect(iframe.contentWindow.postMessage).toHaveBeenCalledTimes(2)
       })
     })
   })
