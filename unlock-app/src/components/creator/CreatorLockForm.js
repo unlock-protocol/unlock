@@ -220,8 +220,6 @@ export class CreatorLockForm extends React.Component {
     this.setState(state => {
       const { valid, errors } = this.sendErrorsToRedux(state)
       if (!valid.formValid) return { valid, errors }
-      const { hideAction } = this.props
-      if (hideAction) hideAction()
       return this.saveLock(state, valid, errors)
     })
   }
