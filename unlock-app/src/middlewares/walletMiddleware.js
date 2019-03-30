@@ -28,6 +28,7 @@ import {
 import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 import configure from '../config'
 import { TransactionType } from '../unlock'
+import { hideForm } from '../actions/lockFormVisibility'
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
@@ -94,7 +95,9 @@ export default function walletMiddleware({ getState, dispatch }) {
   })
 
   walletService.on('lock.updated', (address, update) => {
+    // This is a new lock!
     dispatch(updateLock(address, update))
+    dispatch(hideForm()) // Close the form
   })
 
   walletService.on('error', (error, transactionHash) => {
