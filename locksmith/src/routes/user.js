@@ -12,5 +12,6 @@ router.get(
   '/:emailAddress/recoveryphrase',
   userController.retrieveRecoveryPhrase
 )
+router.put('/:emailAddress', userController.updateUser)
 
 module.exports = router

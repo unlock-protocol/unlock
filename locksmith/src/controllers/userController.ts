@@ -1,6 +1,7 @@
 import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import { DecoyUser } from '../utils/decoyUser'
 
+import RecoveryPhrase = require('../utils/recoveryPhrase')
 import UserOperations = require('../operations/userOperations')
 
 namespace UserController {
@@ -16,7 +17,7 @@ namespace UserController {
           emailAddress: user.emailAddress,
           publicKey: user.publicKey,
           passwordEncryptedPrivateKey: user.passwordEncryptedPrivateKey,
-          recoveryPhrase: user.recoveryPhrase,
+          recoveryPhrase: RecoveryPhrase.generate(),
         })
 
         let status = creationStatus ? 200 : 400
@@ -61,6 +62,27 @@ namespace UserController {
     } else {
       let recoveryPhrase = new DecoyUser().recoveryPhrase()
       return res.json({ recoveryPhrase: recoveryPhrase })
+    }
+  }
+
+  export const updateUser = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    let emailAddress = req.params.emailAddress
+    let user = req.body.user
+
+    try {
+      let result = await UserOperations.updateEmail(
+        emailAddress,
+        user.emailAddress
+      )
+      if (result[0] == 0) {
+        return res.sendStatus(400)
+      }
+      return res.sendStatus(202)
+    } catch (error) {
+      return res.sendStatus(400)
     }
   }
 }
