@@ -1,9 +1,12 @@
 import { UserCreationInput } from '../types' // eslint-disable-line no-unused-vars
+import * as Normalizer from '../utils/normalizer' // eslint-disable-line no-unused-vars
 
-const ethJsUtil = require('ethereumjs-util')
 const models = require('../models')
 
 const { User, UserReference } = models
+import Sequelize = require('sequelize')
+
+const Op = Sequelize.Op
 
 namespace UserOperations {
   export const createUser = async (
@@ -11,9 +14,9 @@ namespace UserOperations {
   ): Promise<Boolean> => {
     let userReference = await UserReference.create(
       {
-        emailAddress: input.emailAddress.toLowerCase(),
+        emailAddress: Normalizer.emailAddress(input.emailAddress),
         User: {
-          publicKey: ethJsUtil.toChecksumAddress(input.publicKey),
+          publicKey: Normalizer.ethereumAddress(input.publicKey),
           recoveryPhrase: input.recoveryPhrase,
           passwordEncryptedPrivateKey: input.passwordEncryptedPrivateKey,
         },
@@ -31,10 +34,10 @@ namespace UserOperations {
   }
 
   export const getUserPrivateKeyByEmailAddress = async (
-    emailAddress: String
-  ): Promise<String | null> => {
+    emailAddress: string
+  ): Promise<string | null> => {
     let user = await UserReference.findOne({
-      where: { emailAddress: emailAddress.toLowerCase() },
+      where: { emailAddress: Normalizer.emailAddress(emailAddress) },
       include: [{ model: User, attributes: ['passwordEncryptedPrivateKey'] }],
     })
 
@@ -46,10 +49,10 @@ namespace UserOperations {
   }
 
   export const getUserRecoveryPhraseByEmailAddress = async (
-    emailAddress: String
-  ): Promise<String | null> => {
+    emailAddress: string
+  ): Promise<string | null> => {
     let user = await UserReference.findOne({
-      where: { emailAddress: emailAddress.toLowerCase() },
+      where: { emailAddress: Normalizer.emailAddress(emailAddress) },
       include: [{ model: User, attributes: ['recoveryPhrase'] }],
     })
 
@@ -58,6 +61,22 @@ namespace UserOperations {
     } else {
       return null
     }
+  }
+
+  export const updateEmail = async (
+    existingEmailAddress: string,
+    updatedEmailAddress: string
+  ) => {
+    return await UserReference.update(
+      { emailAddress: Normalizer.emailAddress(updatedEmailAddress) },
+      {
+        where: {
+          emailAddress: {
+            [Op.eq]: Normalizer.emailAddress(existingEmailAddress),
+          },
+        },
+      }
+    )
   }
 }
 
