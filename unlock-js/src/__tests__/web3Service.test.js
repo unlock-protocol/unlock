@@ -408,10 +408,10 @@ describe('Web3Service', () => {
         const fakeParams = {
           _keyPrice: '100000000000000000',
           _expirationDuration: '123',
-          _maxNumberOfKeys: '-1',
+          _maxNumberOfKeys: '-1'
         }
         const fakeHash = '0x12345'
-  
+
         const lockUpdater = new Promise(resolve => {
           resolveLockUpdater = resolve
         })
@@ -419,7 +419,7 @@ describe('Web3Service', () => {
           resolveTransactionUpdater = resolve
         })
         web3Service.generateLockAddress = () => Promise.resolve(fakeLockAddress)
-  
+
         web3Service.once('lock.updated', (lockAddress, params) => {
           expect(lockAddress).toBe(fakeLockAddress)
           expect(params).toEqual({
@@ -429,19 +429,19 @@ describe('Web3Service', () => {
             keyPrice: '0.1',
             maxNumberOfKeys: -1,
             outstandingKeys: 0,
-            balance: '0',
+            balance: '0'
           })
           resolveLockUpdater()
         })
-  
+
         web3Service.once('transaction.updated', (transactionHash, params) => {
           expect(transactionHash).toBe(fakeHash)
           expect(params).toEqual({
-            lock: fakeLockAddress,
+            lock: fakeLockAddress
           })
           resolveTransactionUpdater()
         })
-  
+
         web3Service.inputsHandlers.createLock(
           fakeHash,
           web3Service.unlockAddress,
@@ -449,43 +449,43 @@ describe('Web3Service', () => {
         )
         await Promise.all([lockUpdater, transactionUpdater])
       })
-  
+
       it('purchaseFor', async () => {
         expect.assertions(4)
         let resolveKeySaver
         let resolveTransactionUpdater
         const owner = '0x9876'
         const fakeParams = {
-          _recipient: owner,
+          _recipient: owner
         }
         const fakeContractAddress = '0xabc'
         const fakeHash = '0x12345'
-  
+
         const keySaver = new Promise(resolve => {
           resolveKeySaver = resolve
         })
         const transactionUpdater = new Promise(resolve => {
           resolveTransactionUpdater = resolve
         })
-  
+
         web3Service.once('transaction.updated', (transactionHash, params) => {
           expect(transactionHash).toBe(fakeHash)
           expect(params).toEqual({
             key: keyId(fakeContractAddress, owner),
-            lock: fakeContractAddress,
+            lock: fakeContractAddress
           })
           resolveTransactionUpdater()
         })
-  
+
         web3Service.once('key.saved', (id, params) => {
           expect(id).toBe(keyId(fakeContractAddress, owner))
           expect(params).toEqual({
             owner,
-            lock: fakeContractAddress,
+            lock: fakeContractAddress
           })
           resolveKeySaver()
         })
-  
+
         web3Service.inputsHandlers.purchaseFor(
           fakeHash,
           fakeContractAddress,
@@ -917,6 +917,12 @@ describe('Web3Service', () => {
   })
 
   describe('getTransactionType', () => {
+    it('should return null if there is no matching method', () => {
+      expect.assertions(1)
+      const data = 'notarealmethod'
+      expect(web3Service.getTransactionType(Unlock, data)).toBe(null)
+    })
+
     it('should return the right transaction type on lock creation', () => {
       expect.assertions(1)
       const unlock = new web3Service.web3.eth.Contract(Unlock.abi, '')
