@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/core": "7.3.4",
+    "@babel/core": "7.4.0",
     "@storybook/addon-actions": "^4.1.13",
     "@storybook/addon-knobs": "^4.1.13",
     "@storybook/addon-storyshots": "^4.1.13",
@@ -19,7 +19,7 @@
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "^1.1.1",
     "axios": "^0.18.0",
-    "babel-loader": "^8.0.4",
+    "babel-loader": "^8.0.5",
     "babel-plugin-require-context-hook": "^1.0.0",
     "babel-plugin-styled-components": "1.10.0",
     "color-scheme": "^1.0.1",
