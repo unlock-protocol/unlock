@@ -61,7 +61,7 @@ describe('User Controller', () => {
     })
 
     describe('when there is an attempt to associate an email address with an existing public key', () => {
-      it('will respond as if tghe user was created', async () => {
+      it('will respond as if the user was created', async () => {
         expect.assertions(1)
         let response = await request(app)
           .post('/users')
