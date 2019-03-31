@@ -70,6 +70,7 @@ describe('Signature Validation Middleware', () => {
         })
       })
     })
+
     describe('a signature for Lock metadata', () => {
       it('moves the request to the application', done => {
         expect.assertions(1)

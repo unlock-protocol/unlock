@@ -61,6 +61,14 @@ namespace SignatureValidationMiddleware {
     }
   }
 
+  /**
+   *  Generates a function that will validate the validity of a signature
+   * based on the structure provide by the passed configuration object.
+   *
+   * @param {SignatureValidationConfiguration} configuration - A configuration object providing
+   * details about the structure of the signed message.
+   */
+
   export const generateProcessor = (
     configuration: SignatureValidationConfiguration
   ): Function => {
