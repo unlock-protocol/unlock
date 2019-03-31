@@ -28,7 +28,7 @@
     "@types/node": "^10.12.24",
     "@types/react": "^16.8.2",
     "@types/react-dom": "^16.8.0",
-    "@unlock-protocol/unlock-js": "0.0.3",
+    "@unlock-protocol/unlock-js": "0.0.4",
     "@zeit/next-source-maps": "0.0.3",
     "axios": "^0.18.0",
     "babel-plugin-require-context-hook": "^1.0.0",
