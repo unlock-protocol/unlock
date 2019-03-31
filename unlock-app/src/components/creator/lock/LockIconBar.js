@@ -32,7 +32,7 @@ export function LockIconBar({
   // TODO: move that logic to mapStateToProps
   for (let i = 0; i < blockingTransactions.length; i++) {
     const blockingTransaction = blockingTransactions[i]
-    if (blockingTransaction.status === 'submitted') {
+    if (['pending', 'submitted'].includes(blockingTransaction.status)) {
       return <CreatorLockStatus lock={lock} status="Submitted" />
     } else if (
       blockingTransaction.status === 'mined' &&
