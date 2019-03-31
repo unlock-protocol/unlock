@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import * as UnlockTypes from '../../unlock'
+import * as UnlockTypes from '../../unlockTypes'
 
 interface Props {
   transactionFeed: UnlockTypes.Transaction[]

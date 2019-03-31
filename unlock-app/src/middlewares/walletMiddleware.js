@@ -27,7 +27,7 @@ import {
 } from '../errors'
 import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 import configure from '../config'
-import { TransactionType } from '../unlock'
+import { TransactionType } from '../unlockTypes'
 import { hideForm } from '../actions/lockFormVisibility'
 
 // This middleware listen to redux events and invokes the walletService API.
