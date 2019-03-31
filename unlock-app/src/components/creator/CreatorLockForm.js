@@ -167,10 +167,9 @@ export class CreatorLockForm extends React.Component {
   }
 
   saveLock() {
-    const { account, createLock } = this.props
+    const { account, saveLock } = this.props
     const newLock = formValuesToLock(this.state)
-    // TODO: createLock is not a great name, because it is actually also being used to update an existing lock
-    createLock({
+    saveLock({
       ...newLock,
       owner: account.address,
     })
@@ -314,7 +313,7 @@ export class CreatorLockForm extends React.Component {
 CreatorLockForm.propTypes = {
   account: UnlockPropTypes.account.isRequired,
   hideAction: PropTypes.func.isRequired,
-  createLock: PropTypes.func.isRequired,
+  saveLock: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   resetError: PropTypes.func.isRequired,
   lock: UnlockPropTypes.lock,
