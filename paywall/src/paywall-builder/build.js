@@ -61,6 +61,7 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
           }
           if (event.data === POST_MESSAGE_GET_OPTIMISTIC && locked) {
             disableScrollPolling()
+
             hide(iframe, document, false)
           }
           if (event.data === POST_MESSAGE_GET_PESSIMISTIC && locked) {
@@ -72,6 +73,7 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
           if (event.data === POST_MESSAGE_UNLOCKED && locked) {
             locked = false
             disableScrollPolling()
+
             hide(iframe, document)
             blocker.remove()
           }
