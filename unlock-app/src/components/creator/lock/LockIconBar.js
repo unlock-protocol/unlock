@@ -18,16 +18,17 @@ export function LockIconBar({
   lock,
   priceUpdateTransaction,
   toggleCode,
-  transaction,
+  lockCreationTransaction,
   withdrawalTransaction,
   config,
   edit,
 }) {
   // These 2 transactions, if not mined or confirmed will trigger the display of CreatorLockStatus
   // instead of the regular iconBar
-  const blockingTransactions = [transaction, priceUpdateTransaction].filter(
-    t => !!t
-  )
+  const blockingTransactions = [
+    lockCreationTransaction,
+    priceUpdateTransaction,
+  ].filter(t => !!t)
 
   // TODO: move that logic to mapStateToProps
   for (let i = 0; i < blockingTransactions.length; i++) {
@@ -93,14 +94,14 @@ LockIconBar.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   toggleCode: PropTypes.func.isRequired,
   edit: PropTypes.func, // this will be required when we wire it up, no-op for now
-  transaction: UnlockPropTypes.transaction,
+  lockCreationTransaction: UnlockPropTypes.transaction,
   withdrawalTransaction: UnlockPropTypes.transaction,
   priceUpdateTransaction: UnlockPropTypes.transaction,
   config: UnlockPropTypes.configuration.isRequired,
 }
 
 LockIconBar.defaultProps = {
-  transaction: null,
+  lockCreationTransaction: null,
   priceUpdateTransaction: null,
   withdrawalTransaction: null,
   edit: () => {},
@@ -129,11 +130,10 @@ const mapStateToProps = ({ transactions }, { lock }) => {
     }
   })
 
-  // TODO change that to lockCreationTransaction
-  const transaction = transactions[lock.transaction]
+  const lockCreationTransaction = transactions[lock.transaction]
 
   return {
-    transaction,
+    lockCreationTransaction,
     withdrawalTransaction,
     priceUpdateTransaction,
   }
