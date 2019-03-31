@@ -12,10 +12,22 @@ var lockRouter = require('./routes/lock')
 var blockRouter = require('./routes/block')
 var userRouter = require('./routes/user')
 
+let lockSignatureConfiguration = {
+  name: 'lock',
+  required: ['name', 'owner', 'address'],
+  signee: 'owner',
+}
+
 app.use(cors())
 app.use(bodyParser.json())
-app.put(/^\/lock\/\S+/i, signatureValidationMiddleware)
-app.post(/^\/lock$/i, signatureValidationMiddleware)
+app.put(
+  /^\/lock\/\S+/i,
+  signatureValidationMiddleware.generateProcessor(lockSignatureConfiguration)
+)
+app.post(
+  /^\/lock$/i,
+  signatureValidationMiddleware.generateProcessor(lockSignatureConfiguration)
+)
 app.use('/', router)
 app.use('/', transactionRouter)
 app.use('/', lockRouter)

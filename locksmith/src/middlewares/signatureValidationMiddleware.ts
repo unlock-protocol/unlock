@@ -1,7 +1,8 @@
 import sigUtil from 'eth-sig-util'
-import ethJsUtil from 'ethereumjs-util'
 import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import Base64 from '../utils/base64'
+import Normalizer from '../utils/normalizer'
+import { SignatureValidationConfiguration } from '../types' // eslint-disable-line no-unused-vars
 
 namespace SignatureValidationMiddleware {
   const extractToken = (req: Request): String | null => {
@@ -15,56 +16,86 @@ namespace SignatureValidationMiddleware {
     }
   }
 
-  const validatePayload = (payload: any, signee: string): Boolean => {
-    if (payload.lock) {
-      return (
-        ethJsUtil.toChecksumAddress(payload.lock.owner) ===
-        ethJsUtil.toChecksumAddress(signee)
-      )
-    } else {
-      return false
-    }
-  }
-  const validatePayloadContent = (payload: any): Boolean => {
-    if (payload.lock) {
-      if (payload.lock.name && payload.lock.owner && payload.lock.address) {
-        return true
-      }
-    }
-    return false
+  const validateSignee = (payload: any, signee: string): Boolean => {
+    return (
+      Normalizer.ethereumAddress(payload) === Normalizer.ethereumAddress(signee)
+    )
   }
 
-  export const process = (req: any, res: Response, next: any) => {
-    var signature = extractToken(req)
+  const validatePayloadContent = (
+    payload: any,
+    configuration: SignatureValidationConfiguration
+  ): Boolean => {
+    let result = configuration.required.every(element => {
+      return !(payload[element] == null)
+    })
 
-    if (signature === null) {
-      res.sendStatus(401)
-      return
-    }
+    return result
+  }
 
-    let decodedSignature = Base64.decode(signature)
-
+  const handleSignaturePresent = (
+    body: any,
+    signature: string,
+    configuration: SignatureValidationConfiguration
+  ) => {
     try {
       let signee = sigUtil.recoverTypedSignature({
-        data: req.body,
-        sig: decodedSignature,
+        data: body,
+        sig: signature,
       })
 
+      let potentialSignee: string =
+        body.message[configuration.name][configuration.signee]
+
       if (
-        req.body.message &&
-        validatePayload(req.body.message, signee) &&
-        validatePayloadContent(req.body.message)
+        body.message &&
+        validateSignee(potentialSignee, signee) &&
+        validatePayloadContent(body.message[configuration.name], configuration)
       ) {
-        req.owner = ethJsUtil.toChecksumAddress(signee)
-        next()
+        return Normalizer.ethereumAddress(signee)
       } else {
-        res.sendStatus(401)
-        return
+        return null
       }
     } catch (e) {
-      res.sendStatus(401)
+      return null
+    }
+  }
+
+  /**
+   *  Generates a function that will validate the validity of a signature
+   * based on the structure provide by the passed configuration object.
+   *
+   * @param {SignatureValidationConfiguration} configuration - A configuration object providing
+   * details about the structure of the signed message.
+   */
+
+  export const generateProcessor = (
+    configuration: SignatureValidationConfiguration
+  ): Function => {
+    return (req: any, res: Response, next: any) => {
+      var signature = extractToken(req)
+
+      if (signature === null) {
+        res.sendStatus(401)
+        return
+      } else {
+        let decodedSignature = Base64.decode(signature)
+        let owner = handleSignaturePresent(
+          req.body,
+          decodedSignature,
+          configuration
+        )
+
+        if (owner) {
+          req.owner = owner
+          next()
+        } else {
+          res.sendStatus(401)
+          return
+        }
+      }
     }
   }
 }
 
-export default SignatureValidationMiddleware.process
+export default SignatureValidationMiddleware
