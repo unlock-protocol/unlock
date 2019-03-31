@@ -13,6 +13,7 @@ describe('LockIconBar', () => {
   let withdrawalTransaction
   let store
   let toggleCode
+
   beforeEach(() => {
     config = configure()
 
