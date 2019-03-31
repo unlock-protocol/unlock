@@ -95,14 +95,14 @@ describe('CreatorLockForm', () => {
   function makeLockForm(
     lock = {},
     {
-      createLock = jest.fn(),
+      saveLock = jest.fn(),
       hideAction = jest.fn(),
       setError = jest.fn(),
       resetError = jest.fn(),
     } = {}
   ) {
     actions = {
-      createLock,
+      saveLock,
       hideAction,
       setError,
       resetError,
@@ -110,7 +110,7 @@ describe('CreatorLockForm', () => {
     const ret = rtl.render(
       <CreatorLockForm
         account={{ address: 'hi' }}
-        createLock={createLock}
+        saveLock={saveLock}
         hideAction={hideAction}
         setError={setError}
         resetError={resetError}
@@ -355,7 +355,7 @@ describe('CreatorLockForm', () => {
       const submit = wrapper.getByText('Submit')
       expect(submit).not.toBeNull()
       rtl.fireEvent.click(submit)
-      expect(actions.createLock).toHaveBeenCalledWith(
+      expect(actions.saveLock).toHaveBeenCalledWith(
         expect.objectContaining({
           expirationDuration: 2592000,
           keyPrice: '0.01',
@@ -379,26 +379,26 @@ describe('CreatorLockForm', () => {
   describe('saving', () => {
     it('should skip saving locks when the price is not changed', () => {
       expect.assertions(2)
-      const createLock = jest.fn()
+      const saveLock = jest.fn()
       const lock = {
         keyPrice: '999',
         address: '0x123',
       }
-      const wrapper = makeLockForm({ createLock, lock })
+      const wrapper = makeLockForm({ saveLock, lock })
       const submit = wrapper.getByText('Submit')
       expect(submit).not.toBeNull()
       rtl.fireEvent.click(submit)
-      expect(createLock).not.toHaveBeenCalled()
+      expect(saveLock).not.toHaveBeenCalled()
     })
 
     it('should save the lock when the price has been updated', () => {
       expect.assertions(2)
-      const createLock = jest.fn()
+      const saveLock = jest.fn()
       const lock = {
         keyPrice: '999',
         address: '0x123',
       }
-      const wrapper = makeLockForm(lock, { createLock })
+      const wrapper = makeLockForm(lock, { saveLock })
 
       // Change the keyPrice
       const input = wrapper.getByValue('999')
@@ -411,7 +411,7 @@ describe('CreatorLockForm', () => {
       const submit = wrapper.getByText('Submit')
       expect(submit).not.toBeNull()
       rtl.fireEvent.click(submit)
-      expect(createLock).toHaveBeenCalledWith(
+      expect(saveLock).toHaveBeenCalledWith(
         expect.objectContaining({
           address: '0x123',
           keyPrice: '1000',
@@ -421,13 +421,13 @@ describe('CreatorLockForm', () => {
 
     it('should save a new lock', () => {
       expect.assertions(2)
-      const createLock = jest.fn()
-      const wrapper = makeLockForm({} /* lock */, { createLock })
+      const saveLock = jest.fn()
+      const wrapper = makeLockForm({} /* lock */, { saveLock })
 
       const submit = wrapper.getByText('Submit')
       expect(submit).not.toBeNull()
       rtl.fireEvent.click(submit)
-      expect(createLock).toHaveBeenCalledWith(
+      expect(saveLock).toHaveBeenCalledWith(
         expect.objectContaining({
           keyPrice: '0.01',
           maxNumberOfKeys: 10,

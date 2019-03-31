@@ -31,11 +31,7 @@ export const CreatorLocks = props => {
       </LockHeaderRow>
       <Errors />
       {formIsVisible && (
-        <CreatorLockForm
-          hideAction={hideForm}
-          createLock={createLock}
-          pending
-        />
+        <CreatorLockForm hideAction={hideForm} saveLock={createLock} pending />
       )}
       {lockFeed.length > 0 &&
         lockFeed.map(lock => {

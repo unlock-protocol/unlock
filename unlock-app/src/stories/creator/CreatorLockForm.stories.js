@@ -20,7 +20,7 @@ storiesOf('CreatorLockForm', module)
     const lock = {}
     return (
       <CreatorLockForm
-        createLock={action('createLock')}
+        saveLock={action('saveLock')}
         hideAction={action('hide')}
         setError={action('setError')}
         lock={lock}
@@ -40,7 +40,7 @@ storiesOf('CreatorLockForm', module)
     return (
       <CreatorLockForm
         lock={lock}
-        createLock={action('createLock')}
+        saveLock={action('saveLock')}
         hideAction={action('hide')}
         setError={action('setError')}
       />
