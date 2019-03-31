@@ -15,7 +15,7 @@ import {
   FAILED_TO_UPDATE_KEY_PRICE,
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } from '../../errors'
-import { TransactionType } from '../../unlock'
+import { TransactionType } from '../../unlockTypes'
 
 jest.mock('../../utils/promises')
 
