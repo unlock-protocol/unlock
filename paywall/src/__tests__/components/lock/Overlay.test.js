@@ -514,4 +514,126 @@ describe('Overlay', () => {
       )
     })
   })
+
+  describe('message displayed to user (pessimistic unlocking', () => {
+    const lock = {
+      name: 'Monthly',
+      address: '0xdeadbeef',
+      keyPrice: '100000',
+      expirationDuration: 123456789,
+    }
+    let state
+    beforeEach(() => {
+      state = {
+        account: {
+          address: 'account',
+        },
+        keys: {
+          key: {
+            lock: '0xdeadbeef',
+            owner: 'account',
+            id: 'key',
+          },
+        },
+        transactions: {
+          transaction: {
+            key: 'key',
+            confirmations: 4,
+            type: TRANSACTION_TYPES.KEY_PURCHASE,
+          },
+        },
+      }
+    })
+
+    it('should show limit message when purchase has not started', () => {
+      expect.assertions(2)
+
+      const store = createUnlockStore()
+      const wrapper = rtl.render(
+        <Provider store={store}>
+          <ConfigProvider
+            value={{ requiredConfirmations: 12, isInIframe: true }}
+          >
+            <ErrorProvider value={{ error: null, errorMetadata: {} }}>
+              <Overlay
+                scrollPosition={0}
+                hideModal={() => {}}
+                showModal={() => {}}
+                smallBody={() => {}}
+                bigBody={() => {}}
+                optimism={{ current: 0, past: 0 }}
+                locks={[lock]}
+              />
+            </ErrorProvider>
+          </ConfigProvider>
+        </Provider>
+      )
+
+      expect(wrapper.queryByText('100000.00 Eth')).not.toBeNull()
+      expect(
+        wrapper.getByText(
+          'You have reached your limit of free articles. Please purchase access'
+        )
+      ).not.toBeNull()
+    })
+
+    it('should show pending message while transaction is confirming', () => {
+      expect.assertions(2)
+
+      const store = createUnlockStore(state)
+      const wrapper = rtl.render(
+        <Provider store={store}>
+          <ConfigProvider
+            value={{ requiredConfirmations: 12, isInIframe: true }}
+          >
+            <ErrorProvider value={{ error: null, errorMetadata: {} }}>
+              <Overlay
+                scrollPosition={0}
+                hideModal={() => {}}
+                showModal={() => {}}
+                smallBody={() => {}}
+                bigBody={() => {}}
+                optimism={{ current: 0, past: 0 }}
+                locks={[lock]}
+              />
+            </ErrorProvider>
+          </ConfigProvider>
+        </Provider>
+      )
+
+      expect(wrapper.queryByText('100000.00 Eth')).not.toBeNull()
+      expect(wrapper.getByText('Purchase pending...')).not.toBeNull()
+    })
+
+    it('should show confirmed message when transaction is confirmed', () => {
+      expect.assertions(2)
+
+      state.transactions.transaction.confirmations = 123
+      const store = createUnlockStore(state)
+      const wrapper = rtl.render(
+        <Provider store={store}>
+          <ConfigProvider
+            value={{ requiredConfirmations: 12, isInIframe: true }}
+          >
+            <ErrorProvider value={{ error: null, errorMetadata: {} }}>
+              <Overlay
+                scrollPosition={0}
+                hideModal={() => {}}
+                showModal={() => {}}
+                smallBody={() => {}}
+                bigBody={() => {}}
+                optimism={{ current: 0, past: 0 }}
+                locks={[lock]}
+              />
+            </ErrorProvider>
+          </ConfigProvider>
+        </Provider>
+      )
+
+      expect(wrapper.queryByText('100000.00 Eth')).not.toBeNull()
+      expect(
+        wrapper.getByText('Purchase confirmed, content unlocked!')
+      ).not.toBeNull()
+    })
+  })
 })

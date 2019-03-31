@@ -61,6 +61,17 @@ export const Overlay = ({
   smallBody,
   bigBody,
 }) => {
+  let message
+  if (transaction) {
+    if (transaction.confirmations < requiredConfirmations) {
+      message = 'Purchase pending...'
+    } else {
+      message = 'Purchase confirmed, content unlocked!'
+    }
+  } else {
+    message =
+      'You have reached your limit of free articles. Please purchase access'
+  }
   const { postMessage } = usePostMessage()
   useEffect(() => {
     if (optimism.current && transaction) {
@@ -81,11 +92,7 @@ export const Overlay = ({
   return (
     <FullPage>
       <Banner scrollPosition={scrollPosition} data-testid="paywall-banner">
-        <Headline id="Paywall_Headline">
-          {transaction && optimism.current === 0 && optimism.past === 1
-            ? 'Content unlock is still pending'
-            : 'You have reached your limit of free articles. Please purchase access'}
-        </Headline>
+        <Headline id="Paywall_Headline">{message}</Headline>
         <Locks>
           <GlobalErrorConsumer displayError={displayError(!isInIframe)}>
             {locks.map(lock => (
