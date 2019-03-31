@@ -23,6 +23,12 @@ export function LockIconBar({
   config,
   edit,
 }) {
+  // If the lockCreationTransaction does not exist, let's assume the lock is "pending", otherwise we
+  // would have its lockCreationTransaction.
+  if (!lockCreationTransaction) {
+    return <CreatorLockStatus lock={lock} status="Submitted" />
+  }
+
   // These 2 transactions, if not mined or confirmed will trigger the display of CreatorLockStatus
   // instead of the regular iconBar
   const blockingTransactions = [
