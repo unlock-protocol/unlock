@@ -79,7 +79,7 @@ export class CreatorLock extends React.Component {
         <CreatorLockForm
           lock={lock}
           hideAction={() => this.setState({ editing: false })}
-          createLock={newLock => updateLock(newLock)}
+          saveLock={newLock => updateLock(newLock)}
         />
       )
     }
