@@ -67,9 +67,10 @@ describe('iframe', () => {
   })
 
   it('show', () => {
-    expect.assertions(2)
+    expect.assertions(3)
     const iframe = {
       style: {},
+      setAttribute: jest.fn(),
     }
     const document = {
       body: {
@@ -86,42 +87,96 @@ describe('iframe', () => {
     expect(document.body.style).toEqual({
       overflow: 'hidden',
     })
+
+    expect(iframe.setAttribute).toHaveBeenCalledWith(
+      'style',
+      iframeStyles.join('; ')
+    )
   })
 
-  it('hide', () => {
-    expect.assertions(2)
-    const iframe = {
-      style: {},
-      contentDocument: {
-        body: {
-          style: {},
-        },
-      },
-      addEventListener: () => {},
-    }
-    const document = {
-      body: {
-        style: { overflow: 'hidden' },
-      },
-    }
-    hide(iframe, document)
+  describe('hide', () => {
+    it('unlocked', () => {
+      expect.assertions(4)
 
-    expect(iframe.style).toEqual({
-      backgroundColor: 'transparent',
-      backgroundImage: 'none',
-      overflow: 'hidden',
-      width: '134px',
-      height: '160px',
-      marginRight: 0,
-      left: null,
-      top: null,
-      right: '0',
-      bottom: '105px',
-      transition: 'margin-right 0.4s ease-in',
+      jest.useFakeTimers()
+      const iframe = {
+        addEventListener: jest.fn(),
+        style: {},
+        contentDocument: {
+          body: {
+            style: {},
+          },
+        },
+      }
+      const document = {
+        body: {
+          style: { overflow: 'hidden' },
+        },
+      }
+      hide(iframe, document)
+
+      expect(iframe.style).toEqual({
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        overflow: 'hidden',
+        width: '134px',
+        height: '160px',
+        marginRight: 0,
+        left: null,
+        top: null,
+        right: '0',
+        bottom: '105px',
+        transition: 'margin-right 0.4s ease-in',
+      })
+
+      expect(document.body.style).toEqual({
+        overflow: '',
+      })
+
+      expect(setTimeout).toHaveBeenCalled()
+
+      expect(iframe.addEventListener).toHaveBeenCalledTimes(2)
     })
 
-    expect(document.body.style).toEqual({
-      overflow: '',
+    it('optimistic unlocking', () => {
+      expect.assertions(4)
+
+      jest.useFakeTimers()
+      const iframe = {
+        addEventListener: jest.fn(),
+        style: {},
+        contentDocument: {
+          body: {
+            style: {},
+          },
+        },
+      }
+      const document = {
+        body: {
+          style: { overflow: 'hidden' },
+        },
+      }
+      hide(iframe, document, false)
+
+      expect(iframe.style).toEqual({
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        overflow: 'hidden',
+        width: '134px',
+        height: '160px',
+        marginRight: 0,
+        left: null,
+        top: null,
+        right: '0',
+        bottom: '105px',
+      })
+
+      expect(document.body.style).toEqual({
+        overflow: '',
+      })
+      expect(setTimeout).not.toHaveBeenCalled()
+
+      expect(iframe.addEventListener).not.toHaveBeenCalled()
     })
   })
 })
