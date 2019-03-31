@@ -3,7 +3,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Log from '../../pages/log'
 import createUnlockStore from '../../createUnlockStore'
-import { TransactionType } from '../../unlock'
+import { TransactionType } from '../../unlockTypes'
 import { ConfigContext } from '../../utils/withConfig'
 
 const account = {

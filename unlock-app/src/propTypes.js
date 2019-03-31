@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { TransactionType } from './unlock'
+import { TransactionType } from './unlockTypes'
 
 export const address = PropTypes.string
 

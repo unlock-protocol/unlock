@@ -1,7 +1,7 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
 import CreatorLog from '../../../components/creator/CreatorLog'
-import * as UnlockTypes from '../../../unlock'
+import * as UnlockTypes from '../../../unlockTypes'
 
 const transactionFeed: UnlockTypes.Transaction[] = [
   {

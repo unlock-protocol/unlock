@@ -8,7 +8,7 @@ import UnlockPropTypes from '../../../propTypes'
 import CreatorLockStatus from './CreatorLockStatus'
 import Media from '../../../theme/media'
 import withConfig from '../../../utils/withConfig'
-import { TransactionType } from '../../../unlock'
+import { TransactionType } from '../../../unlockTypes'
 
 import configure from '../../../config'
 

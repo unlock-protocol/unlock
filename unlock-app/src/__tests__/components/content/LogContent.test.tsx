@@ -5,7 +5,7 @@ import {
   LogContent,
   mapStateToProps,
 } from '../../../components/content/LogContent'
-import * as UnlockTypes from '../../../unlock'
+import * as UnlockTypes from '../../../unlockTypes'
 import createUnlockStore from '../../../createUnlockStore'
 
 jest.mock('next/router', () => {})
