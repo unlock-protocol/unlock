@@ -18,7 +18,10 @@ import {
 import { isPositiveNumber } from '../utils/validators'
 import useWindow from '../hooks/browser/useWindow'
 
+// TODO: mobile formatting for unlocked and optimistic unlocking views
 export function Paywall({ locks, locked, redirect, account }) {
+  // TODO: use the useOptimism hook here instead of hard-coding it
+  const optimism = { current: 1, past: 0 }
   const window = useWindow()
   const scrollPosition = useListenForPostMessage({
     type: 'scrollPosition',
@@ -26,6 +29,22 @@ export function Paywall({ locks, locked, redirect, account }) {
     validator: isPositiveNumber,
   })
   const { postMessage } = usePostMessage()
+  const height = '160px'
+  const smallBody = body => {
+    body.style.margin = '0'
+    body.style.height = height
+    body.style.display = 'flex'
+    body.style.flexDirection = 'column'
+    body.style.justifyContent = 'center'
+    body.style.overflow = 'hidden'
+  }
+  const bigBody = body => {
+    body.style.margin = '0'
+    body.style.height = '100vh'
+    body.style.width = '100vw'
+    body.style.display = 'fixed'
+    body.style.overflow = 'initial'
+  }
   useEffect(() => {
     if (locked) {
       postMessage(POST_MESSAGE_LOCKED)
@@ -35,14 +54,7 @@ export function Paywall({ locks, locked, redirect, account }) {
         const withAccount = account ? '#' + account : ''
         window.location.href = redirect + withAccount
       }
-      const height = '160px'
-      const body = window.document.body
-      body.style.margin = '0'
-      body.style.height = window.innerWidth >= 768 ? height : 0
-      body.style.display = window.innerWidth >= 768 ? 'flex' : 'none'
-      body.style.flexDirection = 'column'
-      body.style.justifyContent = 'center'
-      body.style.overflow = 'hidden'
+      smallBody(window.document.body)
     }
   }, [locked])
 
@@ -53,8 +65,11 @@ export function Paywall({ locks, locked, redirect, account }) {
           scrollPosition={scrollPosition}
           locks={locks}
           redirect={redirect}
+          optimism={optimism}
+          smallBody={() => smallBody(window.document.body)}
+          bigBody={() => bigBody(window.document.body)}
         />
-        <DeveloperOverlay />
+        {optimism.current ? null : <DeveloperOverlay />}
       </ShowWhenLocked>
       <ShowWhenUnlocked locked={locked}>
         <UnlockedFlag />

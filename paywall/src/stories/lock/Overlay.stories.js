@@ -36,7 +36,8 @@ const store = createUnlockStore({
 const render = (
   locks,
   errors = { error: false, errorMetadata: {} },
-  thisConfig = config
+  thisConfig = config,
+  optimism = { current: 0, past: 0 }
 ) => (
   <section>
     <h1>HTML Ipsum Presents</h1>
@@ -87,7 +88,10 @@ const render = (
             locks={locks}
             hideModal={() => {}}
             showModal={() => {}}
+            smallBody={() => {}}
+            bigBody={() => {}}
             openInNewWindow={false}
+            optimism={optimism}
           />
         </ErrorProvider>
       </WindowProvider>
