@@ -14,7 +14,7 @@ const transactions = {
   '0x12345678': {
     hash: '0x12345678',
     confirmations: 12,
-    status: 'mined',
+    status: UnlockTypes.TransactionStatus.MINED,
     lock: '0x12345678a',
     blockNumber: 1,
     type: UnlockTypes.TransactionType.LOCK_CREATION,
@@ -23,7 +23,7 @@ const transactions = {
   '0x56781234': {
     hash: '0x56781234',
     confirmations: 4,
-    status: 'mined',
+    status: UnlockTypes.TransactionStatus.MINED,
     lock: '0x56781234a',
     blockNumber: 2,
     type: UnlockTypes.TransactionType.LOCK_CREATION,
@@ -32,7 +32,7 @@ const transactions = {
   '0x9abcdef0': {
     hash: '0x9abcdef0',
     confirmations: 2,
-    status: 'mined',
+    status: UnlockTypes.TransactionStatus.MINED,
     lock: '0x9abcdef0a',
     blockNumber: 3,
     type: UnlockTypes.TransactionType.LOCK_CREATION,
