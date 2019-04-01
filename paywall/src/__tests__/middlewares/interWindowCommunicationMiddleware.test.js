@@ -307,7 +307,8 @@ describe('interWindowCommunicationMiddleware', () => {
                   account: null,
                   router: {
                     location: {
-                      pathname: `/paywall/${lock}#${account}`,
+                      pathname: `/paywall/${lock}`,
+                      hash: `#${account}`,
                     },
                   },
                 }
