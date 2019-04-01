@@ -68,19 +68,24 @@ export default function walletMiddleware({ getState, dispatch }) {
     }
   })
 
-  walletService.on('transaction.new', (transactionHash, from, to, input) => {
-    // At this point we know that a wallet was found, because a new transaction
-    // cannot be created without it
-    dispatch(gotWallet())
-    dispatch(
-      newTransaction({
-        hash: transactionHash,
-        to,
-        from,
-        input,
-      })
-    )
-  })
+  walletService.on(
+    'transaction.new',
+    (transactionHash, from, to, input, type, status) => {
+      // At this point we know that a wallet was found, because a new transaction
+      // cannot be created without it
+      dispatch(gotWallet())
+      dispatch(
+        newTransaction({
+          hash: transactionHash,
+          to,
+          from,
+          input,
+          type,
+          status,
+        })
+      )
+    }
+  )
 
   // A transaction has started, now we need to signal that we're waiting for
   // interaction with the wallet
