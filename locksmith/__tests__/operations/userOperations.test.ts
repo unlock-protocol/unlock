@@ -1,6 +1,7 @@
 import UserOperations from '../../src/operations/userOperations'
 
 const models = require('../../src/models')
+
 let User: any = models.User
 let UserReference: any = models.UserReference
 
@@ -20,14 +21,14 @@ describe('User creation', () => {
 
       await UserOperations.createUser(userCreationDetails)
       expect(UserReference.create).toHaveBeenCalledWith(
-        {
+        expect.objectContaining({
           User: {
             passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
             publicKey: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
-            recoveryPhrase: 'recoveryPhrase',
+            recoveryPhrase: expect.any(String),
           },
           emailAddress: 'user@example.com',
-        },
+        }),
         { include: User }
       )
     })

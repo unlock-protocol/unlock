@@ -28,6 +28,22 @@ app.post(
   /^\/lock$/i,
   signatureValidationMiddleware.generateProcessor(lockSignatureConfiguration)
 )
+app.post(
+  /^\/users$/i,
+  signatureValidationMiddleware.generateProcessor({
+    name: 'user',
+    required: ['emailAddress', 'publicKey', 'passwordEncryptedPrivateKey'],
+    signee: 'publicKey',
+  })
+)
+app.put(
+  /^\/users$/i,
+  signatureValidationMiddleware.generateProcessor({
+    name: 'user',
+    required: ['emailAddress', 'publicKey'],
+    signee: 'publicKey',
+  })
+)
 app.use('/', router)
 app.use('/', transactionRouter)
 app.use('/', lockRouter)

@@ -1,5 +1,7 @@
 import { UserCreationInput } from '../types' // eslint-disable-line no-unused-vars
-import * as Normalizer from '../utils/normalizer' // eslint-disable-line no-unused-vars
+import * as Normalizer from '../utils/normalizer'
+// eslint-disable-line no-unused-vars
+import RecoveryPhrase = require('../utils/recoveryPhrase')
 
 const models = require('../models')
 
@@ -17,7 +19,7 @@ namespace UserOperations {
         emailAddress: Normalizer.emailAddress(input.emailAddress),
         User: {
           publicKey: Normalizer.ethereumAddress(input.publicKey),
-          recoveryPhrase: input.recoveryPhrase,
+          recoveryPhrase: RecoveryPhrase.generate(),
           passwordEncryptedPrivateKey: input.passwordEncryptedPrivateKey,
         },
       },
