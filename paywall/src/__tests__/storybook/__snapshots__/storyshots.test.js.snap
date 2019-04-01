@@ -11329,6 +11329,3058 @@ Object {
 }
 `;
 
+exports[`Storyshots Overlay/Optimistic Unlocking beginning purchase (pessimistic) 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c13 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c13 > svg {
+  fill: white;
+}
+
+.c4 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 1;
+}
+
+.c5 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 4px 4px 0px 0px;
+  padding: 0px;
+  color: var(--grey);
+}
+
+.c8 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c9 {
+  white-space: nowrap;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c10 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  color: var(--dimgrey);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 0px;
+}
+
+.c7 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-family: 'Roboto',sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  color: var(--darkgrey);
+  background-color: var(--white);
+  justify-self: right;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  grid-row: 2;
+  grid-column: 1;
+  width: 120px;
+  height: 80px;
+  margin-right: -33px;
+}
+
+.c12 > * {
+  justify-self: left;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  margin-left: -14px;
+}
+
+.c12 > p {
+  margin-left: auto;
+  margin-right: auto;
+  width: 63px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-self: center;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  font-size: 12px;
+  color: var(--darkgrey);
+}
+
+.c11 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--link);
+  color: var(--white);
+  margin-top: 13px;
+}
+
+.c6 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 0px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--link);
+}
+
+.c0 {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient( rgba(255,255,255,0) 18%,rgba(255,255,255,0) 29%,var(--offwhite) 48% );
+}
+
+.c1 {
+  position: fixed;
+  display: grid;
+  min-height: 375px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--offwhite);
+  justify-items: center;
+  padding: 32px;
+  padding-bottom: 100px;
+  grid-gap: 24px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c2 {
+  font-size: 20px;
+  font-family: 'Roboto',sans-serif;
+  font-weight: bold;
+  color: var(--slate);
+  text-align: center;
+}
+
+.c3 {
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 32px;
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+  grid-row: 2;
+  grid-column: 1;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c12 {
+    display: none;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section>
+        <h1>
+          HTML Ipsum Presents
+        </h1>
+        <p>
+          <strong>
+            Pellentesque habitant morbi tristique
+          </strong>
+           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+          <em>
+            Aenean ultricies mi vitae est.
+          </em>
+           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+          <code>
+            commodo vitae
+          </code>
+          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+          <a
+            href="."
+          >
+            Donec non enim
+          </a>
+           in turpis pulvinar facilisis. Ut felis.
+        </p>
+        <h2>
+          Header Level 2
+        </h2>
+        <ol>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ol>
+        <blockquote>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+          </p>
+        </blockquote>
+        <h3>
+          Header Level 3
+        </h3>
+        <ul>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ul>
+        <div
+          class="c0"
+        >
+          <div
+            class="c1"
+            data-testid="paywall-banner"
+            style="height: 0%;"
+          >
+            <h1
+              class="c2"
+              id="Paywall_Headline"
+            >
+              Purchase pending...
+            </h1>
+            <ul
+              class="c3"
+            >
+              <li
+                class="c4"
+              >
+                <header
+                  class="c5"
+                >
+                  One Month
+                </header>
+                <div
+                  class="c6"
+                >
+                  <div
+                    class="c7"
+                  >
+                    <div
+                      class="c8"
+                    >
+                      0.12
+                       ETH
+                    </div>
+                    <div
+                      class="c9"
+                    >
+                      $
+                      24.11
+                    </div>
+                  </div>
+                  <div
+                    class="c10"
+                  >
+                    Waiting for mining confirmation.
+                  </div>
+                  <footer
+                    class="c11"
+                  >
+                    Payment Sent
+                  </footer>
+                </div>
+              </li>
+            </ul>
+            <footer
+              class="c12"
+            >
+              <div
+                class="c13"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+              <p>
+                Powered by Unlock
+              </p>
+            </footer>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section>
+      <h1>
+        HTML Ipsum Presents
+      </h1>
+      <p>
+        <strong>
+          Pellentesque habitant morbi tristique
+        </strong>
+         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        <em>
+          Aenean ultricies mi vitae est.
+        </em>
+         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>
+          commodo vitae
+        </code>
+        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+        <a
+          href="."
+        >
+          Donec non enim
+        </a>
+         in turpis pulvinar facilisis. Ut felis.
+      </p>
+      <h2>
+        Header Level 2
+      </h2>
+      <ol>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ol>
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+      <h3>
+        Header Level 3
+      </h3>
+      <ul>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ul>
+      <div
+        class="sc-7wmxqm-0 fANVjX"
+      >
+        <div
+          class="sc-7wmxqm-1 kmwBAR"
+          data-testid="paywall-banner"
+          style="height: 0%;"
+        >
+          <h1
+            class="sc-7wmxqm-2 iEBMAT"
+            id="Paywall_Headline"
+          >
+            Purchase pending...
+          </h1>
+          <ul
+            class="sc-7wmxqm-3 jZRqqJ"
+          >
+            <li
+              class="sc-1549ebs-0 NDRQz"
+            >
+              <header
+                class="sc-1549ebs-1 cWinrG"
+              >
+                One Month
+              </header>
+              <div
+                class="sc-1549ebs-3 mmuk7x-1 fuDijf"
+              >
+                <div
+                  class="sc-1549ebs-6 hGyOOg"
+                >
+                  <div
+                    class="sc-1549ebs-4 cXGnbO"
+                  >
+                    0.12
+                     ETH
+                  </div>
+                  <div
+                    class="sc-1549ebs-4 kUlrFA"
+                  >
+                    $
+                    24.11
+                  </div>
+                </div>
+                <div
+                  class="sc-1549ebs-5 eUmWhY"
+                >
+                  Waiting for mining confirmation.
+                </div>
+                <footer
+                  class="sc-1549ebs-2 mmuk7x-0 dqyjiJ"
+                >
+                  Payment Sent
+                </footer>
+              </div>
+            </li>
+          </ul>
+          <footer
+            class="sc-1549ebs-8 ckuUyi"
+          >
+            <div
+              class="sth0f3-0 kwQJpX"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+            <p>
+              Powered by Unlock
+            </p>
+          </footer>
+        </div>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Overlay/Optimistic Unlocking beginning purchase 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c2 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c2 > svg {
+  fill: white;
+}
+
+.c0 {
+  height: 80px;
+  width: 120px;
+  float: right;
+  box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
+  background: var(--white);
+  margin: auto;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.c1 {
+  position: absolute;
+  top: 26px;
+  left: -14px;
+  height: 28px;
+  width: 28px;
+}
+
+.c4 {
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+}
+
+.c5 {
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+  position: absolute;
+  background: var(--yellow);
+  width: 0px;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 74px;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-left: 14px;
+  font-size: 12px;
+}
+
+.c3 > p {
+  text-align: center;
+  margin-bottom: 3px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section>
+        <h1>
+          HTML Ipsum Presents
+        </h1>
+        <p>
+          <strong>
+            Pellentesque habitant morbi tristique
+          </strong>
+           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+          <em>
+            Aenean ultricies mi vitae est.
+          </em>
+           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+          <code>
+            commodo vitae
+          </code>
+          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+          <a
+            href="."
+          >
+            Donec non enim
+          </a>
+           in turpis pulvinar facilisis. Ut felis.
+        </p>
+        <h2>
+          Header Level 2
+        </h2>
+        <ol>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ol>
+        <blockquote>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+          </p>
+        </blockquote>
+        <h3>
+          Header Level 3
+        </h3>
+        <ul>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ul>
+        <div
+          class="c0"
+        >
+          <div
+            class="c1"
+          >
+            <div
+              class="c2"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </div>
+          <div
+            class="c3"
+          >
+            <p>
+              Confirming Purchase
+            </p>
+            <div
+              class="c4"
+            >
+              <div
+                class="c5"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section>
+      <h1>
+        HTML Ipsum Presents
+      </h1>
+      <p>
+        <strong>
+          Pellentesque habitant morbi tristique
+        </strong>
+         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        <em>
+          Aenean ultricies mi vitae est.
+        </em>
+         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>
+          commodo vitae
+        </code>
+        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+        <a
+          href="."
+        >
+          Donec non enim
+        </a>
+         in turpis pulvinar facilisis. Ut felis.
+      </p>
+      <h2>
+        Header Level 2
+      </h2>
+      <ol>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ol>
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+      <h3>
+        Header Level 3
+      </h3>
+      <ul>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ul>
+      <div
+        class="j1ncz7-0 bZCHNZ"
+      >
+        <div
+          class="j1ncz7-1 kvurOe"
+        >
+          <div
+            class="sth0f3-0 kwQJpX"
+          >
+            <svg
+              viewBox="0 0 56 56"
+            >
+              <title />
+              <path
+                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          class="j1ncz7-4 fgRiVp"
+        >
+          <p>
+            Confirming Purchase
+          </p>
+          <div
+            class="j1ncz7-2 UUghW"
+          >
+            <div
+              class="j1ncz7-2 j1ncz7-3 cmFhKm"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Overlay/Optimistic Unlocking confirmed (pessimistic) 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c21 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c21 > svg {
+  fill: white;
+}
+
+.c12 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 50px;
+}
+
+.c12 > svg {
+  fill: var(--grey);
+  height: 50px;
+  width: 50px;
+}
+
+.c12:hover {
+  background-color: var(--green);
+}
+
+.c12:hover > svg {
+  fill: white;
+}
+
+.c11:hover .c22 {
+  display: inline-block;
+}
+
+.c23 .c11 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c23 .c11:nth-child(1) {
+  pointer-events: none;
+}
+
+.c23 .c11:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c23 .c11 > svg {
+  fill: var(--grey);
+}
+
+.c23 .c11:hover > svg {
+  fill: var(--grey);
+}
+
+.c24 .c11 {
+  margin: 24px;
+}
+
+.c24 .c11 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c4 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 1;
+}
+
+.c5 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 4px 4px 0px 0px;
+  padding: 0px;
+  color: var(--grey);
+}
+
+.c8 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c9 {
+  white-space: nowrap;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c7 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c20 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-family: 'Roboto',sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  color: var(--darkgrey);
+  background-color: var(--white);
+  justify-self: right;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  grid-row: 2;
+  grid-column: 1;
+  width: 120px;
+  height: 80px;
+  margin-right: -33px;
+}
+
+.c20 > * {
+  justify-self: left;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  margin-left: -14px;
+}
+
+.c20 > p {
+  margin-left: auto;
+  margin-right: auto;
+  width: 63px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-self: center;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  font-size: 12px;
+  color: var(--darkgrey);
+}
+
+.c19 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+  display: none;
+}
+
+.c17 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+}
+
+.c15 {
+  display: none;
+}
+
+.c10 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c10:hover .c14 {
+  display: block;
+}
+
+.c10:hover .c13 {
+  display: none;
+}
+
+.c10:hover ~ .c18 {
+  display: grid;
+}
+
+.c10:hover ~ .c16 {
+  display: none;
+}
+
+.c6 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 0px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--green);
+}
+
+.c0 {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient( rgba(255,255,255,0) 18%,rgba(255,255,255,0) 29%,var(--offwhite) 48% );
+}
+
+.c1 {
+  position: fixed;
+  display: grid;
+  min-height: 375px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--offwhite);
+  justify-items: center;
+  padding: 32px;
+  padding-bottom: 100px;
+  grid-gap: 24px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c2 {
+  font-size: 20px;
+  font-family: 'Roboto',sans-serif;
+  font-weight: bold;
+  color: var(--slate);
+  text-align: center;
+}
+
+.c3 {
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 32px;
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+  grid-row: 2;
+  grid-column: 1;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c20 {
+    display: none;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section>
+        <h1>
+          HTML Ipsum Presents
+        </h1>
+        <p>
+          <strong>
+            Pellentesque habitant morbi tristique
+          </strong>
+           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+          <em>
+            Aenean ultricies mi vitae est.
+          </em>
+           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+          <code>
+            commodo vitae
+          </code>
+          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+          <a
+            href="."
+          >
+            Donec non enim
+          </a>
+           in turpis pulvinar facilisis. Ut felis.
+        </p>
+        <h2>
+          Header Level 2
+        </h2>
+        <ol>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ol>
+        <blockquote>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+          </p>
+        </blockquote>
+        <h3>
+          Header Level 3
+        </h3>
+        <ul>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ul>
+        <div
+          class="c0"
+        >
+          <div
+            class="c1"
+            data-testid="paywall-banner"
+            style="height: 0%;"
+          >
+            <h1
+              class="c2"
+              id="Paywall_Headline"
+            >
+              Purchase confirmed, content unlocked!
+            </h1>
+            <ul
+              class="c3"
+            >
+              <li
+                class="c4"
+              >
+                <header
+                  class="c5"
+                >
+                  One Month
+                </header>
+                <div
+                  class="c6"
+                >
+                  <div
+                    class="c7"
+                  >
+                    <div
+                      class="c8"
+                    >
+                      0.12
+                       ETH
+                    </div>
+                    <div
+                      class="c9"
+                    >
+                      $
+                      24.11
+                    </div>
+                  </div>
+                  <a
+                    class="c10 c11 c12"
+                  >
+                    <svg
+                      class="c13 "
+                      viewBox="0 0 24 24"
+                    >
+                      <title />
+                      <path
+                        clip-rule="evenodd"
+                        d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                    <svg
+                      class="c14 c15"
+                      viewBox="0 0 24 24"
+                    >
+                      <title />
+                      <path
+                        clip-rule="evenodd"
+                        d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                    
+                  </a>
+                  <footer
+                    class="c16 c17"
+                  >
+                    Payment Confirmed
+                  </footer>
+                  <footer
+                    class="c18 c19"
+                  >
+                    Go to Content
+                  </footer>
+                </div>
+              </li>
+            </ul>
+            <footer
+              class="c20"
+            >
+              <div
+                class="c21"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+              <p>
+                Powered by Unlock
+              </p>
+            </footer>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section>
+      <h1>
+        HTML Ipsum Presents
+      </h1>
+      <p>
+        <strong>
+          Pellentesque habitant morbi tristique
+        </strong>
+         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        <em>
+          Aenean ultricies mi vitae est.
+        </em>
+         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>
+          commodo vitae
+        </code>
+        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+        <a
+          href="."
+        >
+          Donec non enim
+        </a>
+         in turpis pulvinar facilisis. Ut felis.
+      </p>
+      <h2>
+        Header Level 2
+      </h2>
+      <ol>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ol>
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+      <h3>
+        Header Level 3
+      </h3>
+      <ul>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ul>
+      <div
+        class="sc-7wmxqm-0 fANVjX"
+      >
+        <div
+          class="sc-7wmxqm-1 kmwBAR"
+          data-testid="paywall-banner"
+          style="height: 0%;"
+        >
+          <h1
+            class="sc-7wmxqm-2 iEBMAT"
+            id="Paywall_Headline"
+          >
+            Purchase confirmed, content unlocked!
+          </h1>
+          <ul
+            class="sc-7wmxqm-3 jZRqqJ"
+          >
+            <li
+              class="sc-1549ebs-0 NDRQz"
+            >
+              <header
+                class="sc-1549ebs-1 cWinrG"
+              >
+                One Month
+              </header>
+              <div
+                class="sc-1549ebs-3 ynhyps-0 DtZSS"
+              >
+                <div
+                  class="sc-1549ebs-6 hGyOOg"
+                >
+                  <div
+                    class="sc-1549ebs-4 cXGnbO"
+                  >
+                    0.12
+                     ETH
+                  </div>
+                  <div
+                    class="sc-1549ebs-4 kUlrFA"
+                  >
+                    $
+                    24.11
+                  </div>
+                </div>
+                <a
+                  class="sc-1hzn3pu-2 ffRwyB is925m-0 kmZaWo"
+                >
+                  <svg
+                    class="sc-1hzn3pu-0 dozNUb"
+                    viewBox="0 0 24 24"
+                  >
+                    <title />
+                    <path
+                      clip-rule="evenodd"
+                      d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                  <svg
+                    class="sc-1hzn3pu-1 gckVYZ"
+                    viewBox="0 0 24 24"
+                  >
+                    <title />
+                    <path
+                      clip-rule="evenodd"
+                      d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                  
+                </a>
+                <footer
+                  class="sc-1549ebs-2 ik5149-0 ik5149-2 epNQgy"
+                >
+                  Payment Confirmed
+                </footer>
+                <footer
+                  class="sc-1549ebs-2 ik5149-0 ik5149-1 ocNib"
+                >
+                  Go to Content
+                </footer>
+              </div>
+            </li>
+          </ul>
+          <footer
+            class="sc-1549ebs-8 ckuUyi"
+          >
+            <div
+              class="sth0f3-0 kwQJpX"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+            <p>
+              Powered by Unlock
+            </p>
+          </footer>
+        </div>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Overlay/Optimistic Unlocking confirmed 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c2 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c2 > svg {
+  fill: white;
+}
+
+.c6 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c6 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c6:hover {
+  background-color: var(--green);
+}
+
+.c6:hover > svg {
+  fill: white;
+}
+
+.c5:hover .c10 {
+  display: inline-block;
+}
+
+.c11 .c5 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c11 .c5:nth-child(1) {
+  pointer-events: none;
+}
+
+.c11 .c5:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c11 .c5 > svg {
+  fill: var(--grey);
+}
+
+.c11 .c5:hover > svg {
+  fill: var(--grey);
+}
+
+.c12 .c5 {
+  margin: 24px;
+}
+
+.c12 .c5 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c9 {
+  display: none;
+}
+
+.c4 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c4:hover .c8 {
+  display: block;
+}
+
+.c4:hover .c7 {
+  display: none;
+}
+
+.c4:hover ~ .c13 {
+  display: grid;
+}
+
+.c4:hover ~ .c14 {
+  display: none;
+}
+
+.c0 {
+  height: 80px;
+  width: 120px;
+  float: right;
+  box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
+  background: var(--white);
+  margin: auto;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.c1 {
+  position: absolute;
+  top: 26px;
+  left: -14px;
+  height: 28px;
+  width: 28px;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 74px;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-left: 14px;
+  font-size: 12px;
+}
+
+.c3 > p {
+  text-align: center;
+  margin-bottom: 3px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section>
+        <h1>
+          HTML Ipsum Presents
+        </h1>
+        <p>
+          <strong>
+            Pellentesque habitant morbi tristique
+          </strong>
+           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+          <em>
+            Aenean ultricies mi vitae est.
+          </em>
+           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+          <code>
+            commodo vitae
+          </code>
+          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+          <a
+            href="."
+          >
+            Donec non enim
+          </a>
+           in turpis pulvinar facilisis. Ut felis.
+        </p>
+        <h2>
+          Header Level 2
+        </h2>
+        <ol>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ol>
+        <blockquote>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+          </p>
+        </blockquote>
+        <h3>
+          Header Level 3
+        </h3>
+        <ul>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ul>
+        <div
+          class="c0"
+        >
+          <div
+            class="c1"
+          >
+            <div
+              class="c2"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </div>
+          <div
+            class="c3"
+          >
+            <p>
+              Purchase Confirmed
+            </p>
+            <a
+              class="c4 c5 c6"
+              height="24px"
+              width="24px"
+            >
+              <svg
+                class="c7 "
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <svg
+                class="c8 c9"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section>
+      <h1>
+        HTML Ipsum Presents
+      </h1>
+      <p>
+        <strong>
+          Pellentesque habitant morbi tristique
+        </strong>
+         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        <em>
+          Aenean ultricies mi vitae est.
+        </em>
+         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>
+          commodo vitae
+        </code>
+        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+        <a
+          href="."
+        >
+          Donec non enim
+        </a>
+         in turpis pulvinar facilisis. Ut felis.
+      </p>
+      <h2>
+        Header Level 2
+      </h2>
+      <ol>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ol>
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+      <h3>
+        Header Level 3
+      </h3>
+      <ul>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ul>
+      <div
+        class="j1ncz7-0 bZCHNZ"
+      >
+        <div
+          class="j1ncz7-1 kvurOe"
+        >
+          <div
+            class="sth0f3-0 kwQJpX"
+          >
+            <svg
+              viewBox="0 0 56 56"
+            >
+              <title />
+              <path
+                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          class="j1ncz7-4 fgRiVp"
+        >
+          <p>
+            Purchase Confirmed
+          </p>
+          <a
+            class="sc-1hzn3pu-2 ffRwyB is925m-0 kuCWTv"
+            height="24px"
+            width="24px"
+          >
+            <svg
+              class="sc-1hzn3pu-0 dozNUb"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <svg
+              class="sc-1hzn3pu-1 gckVYZ"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Overlay/Optimistic Unlocking some confirmations (pessimistic) 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c13 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c13 > svg {
+  fill: white;
+}
+
+.c4 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 1;
+}
+
+.c5 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 4px 4px 0px 0px;
+  padding: 0px;
+  color: var(--grey);
+}
+
+.c8 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c9 {
+  white-space: nowrap;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c10 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  color: var(--dimgrey);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 0px;
+}
+
+.c7 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-family: 'Roboto',sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  color: var(--darkgrey);
+  background-color: var(--white);
+  justify-self: right;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  grid-row: 2;
+  grid-column: 1;
+  width: 120px;
+  height: 80px;
+  margin-right: -33px;
+}
+
+.c12 > * {
+  justify-self: left;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  margin-left: -14px;
+}
+
+.c12 > p {
+  margin-left: auto;
+  margin-right: auto;
+  width: 63px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-self: center;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  font-size: 12px;
+  color: var(--darkgrey);
+}
+
+.c6 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 0px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--yellow);
+}
+
+.c11 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--yellow);
+  color: var(--white);
+  margin-top: 13px;
+}
+
+.c0 {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient( rgba(255,255,255,0) 18%,rgba(255,255,255,0) 29%,var(--offwhite) 48% );
+}
+
+.c1 {
+  position: fixed;
+  display: grid;
+  min-height: 375px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--offwhite);
+  justify-items: center;
+  padding: 32px;
+  padding-bottom: 100px;
+  grid-gap: 24px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c2 {
+  font-size: 20px;
+  font-family: 'Roboto',sans-serif;
+  font-weight: bold;
+  color: var(--slate);
+  text-align: center;
+}
+
+.c3 {
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 32px;
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+  grid-row: 2;
+  grid-column: 1;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c12 {
+    display: none;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section>
+        <h1>
+          HTML Ipsum Presents
+        </h1>
+        <p>
+          <strong>
+            Pellentesque habitant morbi tristique
+          </strong>
+           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+          <em>
+            Aenean ultricies mi vitae est.
+          </em>
+           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+          <code>
+            commodo vitae
+          </code>
+          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+          <a
+            href="."
+          >
+            Donec non enim
+          </a>
+           in turpis pulvinar facilisis. Ut felis.
+        </p>
+        <h2>
+          Header Level 2
+        </h2>
+        <ol>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ol>
+        <blockquote>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+          </p>
+        </blockquote>
+        <h3>
+          Header Level 3
+        </h3>
+        <ul>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ul>
+        <div
+          class="c0"
+        >
+          <div
+            class="c1"
+            data-testid="paywall-banner"
+            style="height: 0%;"
+          >
+            <h1
+              class="c2"
+              id="Paywall_Headline"
+            >
+              Purchase pending...
+            </h1>
+            <ul
+              class="c3"
+            >
+              <li
+                class="c4"
+                id="Confirming_0x1234567890123456789012345678901234567890"
+              >
+                <header
+                  class="c5"
+                >
+                  One Month
+                </header>
+                <div
+                  class="c6"
+                >
+                  <div
+                    class="c7"
+                  >
+                    <div
+                      class="c8"
+                    >
+                      0.12
+                       ETH
+                    </div>
+                    <div
+                      class="c9"
+                    >
+                      $
+                      24.11
+                    </div>
+                  </div>
+                  <div
+                    class="c10"
+                  >
+                    Waiting for confirmations
+                    <br />
+                    5
+                    /
+                    12
+                  </div>
+                  <footer
+                    class="c11"
+                  >
+                    Payment Pending
+                  </footer>
+                </div>
+              </li>
+            </ul>
+            <footer
+              class="c12"
+            >
+              <div
+                class="c13"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+              <p>
+                Powered by Unlock
+              </p>
+            </footer>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section>
+      <h1>
+        HTML Ipsum Presents
+      </h1>
+      <p>
+        <strong>
+          Pellentesque habitant morbi tristique
+        </strong>
+         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        <em>
+          Aenean ultricies mi vitae est.
+        </em>
+         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>
+          commodo vitae
+        </code>
+        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+        <a
+          href="."
+        >
+          Donec non enim
+        </a>
+         in turpis pulvinar facilisis. Ut felis.
+      </p>
+      <h2>
+        Header Level 2
+      </h2>
+      <ol>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ol>
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+      <h3>
+        Header Level 3
+      </h3>
+      <ul>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ul>
+      <div
+        class="sc-7wmxqm-0 fANVjX"
+      >
+        <div
+          class="sc-7wmxqm-1 kmwBAR"
+          data-testid="paywall-banner"
+          style="height: 0%;"
+        >
+          <h1
+            class="sc-7wmxqm-2 iEBMAT"
+            id="Paywall_Headline"
+          >
+            Purchase pending...
+          </h1>
+          <ul
+            class="sc-7wmxqm-3 jZRqqJ"
+          >
+            <li
+              class="sc-1549ebs-0 NDRQz"
+              id="Confirming_0x1234567890123456789012345678901234567890"
+            >
+              <header
+                class="sc-1549ebs-1 cWinrG"
+              >
+                One Month
+              </header>
+              <div
+                class="sc-1549ebs-3 bn9s5o-0 kTTKZX"
+              >
+                <div
+                  class="sc-1549ebs-6 hGyOOg"
+                >
+                  <div
+                    class="sc-1549ebs-4 cXGnbO"
+                  >
+                    0.12
+                     ETH
+                  </div>
+                  <div
+                    class="sc-1549ebs-4 kUlrFA"
+                  >
+                    $
+                    24.11
+                  </div>
+                </div>
+                <div
+                  class="sc-1549ebs-5 eUmWhY"
+                >
+                  Waiting for confirmations
+                  <br />
+                  5
+                  /
+                  12
+                </div>
+                <footer
+                  class="sc-1549ebs-2 bn9s5o-1 eKTLUD"
+                >
+                  Payment Pending
+                </footer>
+              </div>
+            </li>
+          </ul>
+          <footer
+            class="sc-1549ebs-8 ckuUyi"
+          >
+            <div
+              class="sth0f3-0 kwQJpX"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+            <p>
+              Powered by Unlock
+            </p>
+          </footer>
+        </div>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Overlay/Optimistic Unlocking some confirmations 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c2 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c2 > svg {
+  fill: white;
+}
+
+.c0 {
+  height: 80px;
+  width: 120px;
+  float: right;
+  box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
+  background: var(--white);
+  margin: auto;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.c1 {
+  position: absolute;
+  top: 26px;
+  left: -14px;
+  height: 28px;
+  width: 28px;
+}
+
+.c4 {
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+}
+
+.c5 {
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+  position: absolute;
+  background: var(--yellow);
+  width: 30px;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 74px;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-left: 14px;
+  font-size: 12px;
+}
+
+.c3 > p {
+  text-align: center;
+  margin-bottom: 3px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section>
+        <h1>
+          HTML Ipsum Presents
+        </h1>
+        <p>
+          <strong>
+            Pellentesque habitant morbi tristique
+          </strong>
+           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+          <em>
+            Aenean ultricies mi vitae est.
+          </em>
+           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+          <code>
+            commodo vitae
+          </code>
+          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+          <a
+            href="."
+          >
+            Donec non enim
+          </a>
+           in turpis pulvinar facilisis. Ut felis.
+        </p>
+        <h2>
+          Header Level 2
+        </h2>
+        <ol>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ol>
+        <blockquote>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+          </p>
+        </blockquote>
+        <h3>
+          Header Level 3
+        </h3>
+        <ul>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ul>
+        <div
+          class="c0"
+        >
+          <div
+            class="c1"
+          >
+            <div
+              class="c2"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </div>
+          <div
+            class="c3"
+          >
+            <p>
+              Confirming Purchase
+            </p>
+            <div
+              class="c4"
+            >
+              <div
+                class="c5"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section>
+      <h1>
+        HTML Ipsum Presents
+      </h1>
+      <p>
+        <strong>
+          Pellentesque habitant morbi tristique
+        </strong>
+         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        <em>
+          Aenean ultricies mi vitae est.
+        </em>
+         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>
+          commodo vitae
+        </code>
+        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+        <a
+          href="."
+        >
+          Donec non enim
+        </a>
+         in turpis pulvinar facilisis. Ut felis.
+      </p>
+      <h2>
+        Header Level 2
+      </h2>
+      <ol>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ol>
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+      <h3>
+        Header Level 3
+      </h3>
+      <ul>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ul>
+      <div
+        class="j1ncz7-0 bZCHNZ"
+      >
+        <div
+          class="j1ncz7-1 kvurOe"
+        >
+          <div
+            class="sth0f3-0 kwQJpX"
+          >
+            <svg
+              viewBox="0 0 56 56"
+            >
+              <title />
+              <path
+                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          class="j1ncz7-4 fgRiVp"
+        >
+          <p>
+            Confirming Purchase
+          </p>
+          <div
+            class="j1ncz7-2 UUghW"
+          >
+            <div
+              class="j1ncz7-2 j1ncz7-3 cWufuf"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Paywall app page Paywall 1`] = `
 Object {
   "asFragment": [Function],
