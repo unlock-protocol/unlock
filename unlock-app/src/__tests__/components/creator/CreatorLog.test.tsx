@@ -5,7 +5,7 @@ import * as UnlockTypes from '../../../unlockTypes'
 
 const transactionFeed: UnlockTypes.Transaction[] = [
   {
-    status: 'mined',
+    status: UnlockTypes.TransactionStatus.MINED,
     confirmations: 3,
     hash: '0x123',
     name: 'empty',
