@@ -196,7 +196,17 @@ describe('Wallet middleware', () => {
     const from = '0xjulien'
     const to = '0xunlock'
     const input = 'input'
-    mockWalletService.emit('transaction.new', transaction.hash, from, to, input)
+    const type = TransactionType.LOCK_CREATION
+    const status = 'submitted'
+    mockWalletService.emit(
+      'transaction.new',
+      transaction.hash,
+      from,
+      to,
+      input,
+      type,
+      status
+    )
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({ type: GOT_WALLET })
     )
@@ -208,6 +218,8 @@ describe('Wallet middleware', () => {
           to,
           from,
           input,
+          type,
+          status,
         }),
       })
     )

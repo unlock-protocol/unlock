@@ -154,7 +154,16 @@ export default class WalletService extends EventEmitter {
     return web3TransactionPromise
       .once('transactionHash', hash => {
         callback(null, hash)
-        this.emit('transaction.new', hash, from, to, data)
+        // TODO: consider an object instead of all the fields independently.
+        this.emit(
+          'transaction.new',
+          hash,
+          from,
+          to,
+          data,
+          transactionType,
+          'submitted'
+        )
       })
       .on('error', error => {
         callback(error)
