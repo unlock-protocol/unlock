@@ -14,12 +14,13 @@ namespace UserOperations {
   export const createUser = async (
     input: UserCreationInput
   ): Promise<Boolean> => {
+    let recoveryPhrase = RecoveryPhrase.generate()
     let userReference = await UserReference.create(
       {
         emailAddress: Normalizer.emailAddress(input.emailAddress),
         User: {
           publicKey: Normalizer.ethereumAddress(input.publicKey),
-          recoveryPhrase: RecoveryPhrase.generate(),
+          recoveryPhrase: recoveryPhrase,
           passwordEncryptedPrivateKey: input.passwordEncryptedPrivateKey,
         },
       },
