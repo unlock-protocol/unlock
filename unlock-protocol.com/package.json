@@ -32,7 +32,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-showdown": "^1.6.0",
-    "react-test-renderer": "^16.8.3",
+    "react-test-renderer": "^16.8.6",
     "react-testing-library": "^6.0.3",
     "rss": "^1.2.2",
     "run-script-os": "^1.0.5",
