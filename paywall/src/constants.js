@@ -36,11 +36,17 @@ export const TRANSACTION_TYPES = {
 
 // used in defining the helpers for LOCK_PATH_NAME_REGEXP and ACCOUNT_REGEXP
 const accountRegex = '0x[a-fA-F0-9]{40}'
+const transactionRegex = '0x[a-fA-F0-9]{64}'
 
 /**
  * Matches any valid ethereum account address
  */
-export const ACCOUNT_REGEXP = new RegExp(accountRegex)
+export const ACCOUNT_REGEXP = new RegExp(accountRegex + '$')
+
+/**
+ * Matches any valid ethereum transaction hash
+ */
+export const TRANSACTION_REGEXP = new RegExp(transactionRegex + '$')
 
 // private helpers for the LOCK_PATH_NAME_REGEXP
 const prefix = '[a-z0-9]+'
