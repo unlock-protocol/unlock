@@ -1,7 +1,5 @@
 const url = require('../helpers/url').main
 
-jest.setTimeout(30000)
-
 describe.skip('The Unlock Paywall', () => {
   const testLockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
 

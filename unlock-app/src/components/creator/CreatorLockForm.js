@@ -239,10 +239,10 @@ export class CreatorLockForm extends React.Component {
       unlimitedKeys,
       valid,
     } = this.state
-
+    const lockAddress = lock ? lock.address : ''
     // NOTE: maxNumberOfKeys must be a text input in order to support the infinity symbol
     return (
-      <FormLockRow>
+      <FormLockRow className="lockForm" data-address={lockAddress}>
         <Icon />
         <FormLockName>
           <input
@@ -294,7 +294,6 @@ export class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             defaultValue={keyPrice}
             data-valid={valid.keyPrice}
-            id={`KeyPriceEditField_${lock.address}`}
             required
           />
         </FormBalanceWithUnit>

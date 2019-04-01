@@ -4053,7 +4053,6 @@ Object {
       <a
         class="c0 c1"
         href="http://localhost:3001/demo/0xabc"
-        id="PreviewButton_0xabc"
         title="Preview"
       >
         <svg
@@ -4089,7 +4088,6 @@ Object {
     <a
       class="sc-850ddk-0 eZjxtV"
       href="http://localhost:3001/demo/0xabc"
-      id="PreviewButton_0xabc"
       title="Preview"
     >
       <svg
@@ -15525,8 +15523,8 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0"
-        id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+        class="lock c0"
+        data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <div
           class="c1"
@@ -15616,7 +15614,6 @@ Object {
         </div>
         <div
           class=""
-          id="LockDuration_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <span>
             2 days
@@ -15745,8 +15742,8 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 jpUcBv"
-      id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+      class="lock mlglvd-0 jpUcBv"
+      data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
     >
       <div
         class="mlglvd-2 hfdYVl"
@@ -15836,7 +15833,6 @@ Object {
       </div>
       <div
         class="mlglvd-6 hNoahq"
-        id="LockDuration_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <span>
           2 days
@@ -16273,8 +16269,8 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0"
-        id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+        class="lock c0"
+        data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <div
           class="c1"
@@ -16364,7 +16360,6 @@ Object {
         </div>
         <div
           class=""
-          id="LockDuration_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <span>
             2 days
@@ -16495,7 +16490,6 @@ Object {
               </button>
               <button
                 class="c14 c16"
-                id="EditLockButton_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                 title="Edit"
               >
                 <svg
@@ -16520,7 +16514,6 @@ Object {
               </button>
               <button
                 class="c14 c16"
-                id="LockEmbeddCode_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                 title="Embed"
               >
                 <svg
@@ -16555,8 +16548,8 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 jpUcBv"
-      id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+      class="lock mlglvd-0 jpUcBv"
+      data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
     >
       <div
         class="mlglvd-2 hfdYVl"
@@ -16646,7 +16639,6 @@ Object {
       </div>
       <div
         class="mlglvd-6 hNoahq"
-        id="LockDuration_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <span>
           2 days
@@ -16777,7 +16769,6 @@ Object {
             </button>
             <button
               class="sc-850ddk-0 eZjxtV"
-              id="EditLockButton_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
               title="Edit"
             >
               <svg
@@ -16802,7 +16793,6 @@ Object {
             </button>
             <button
               class="sc-850ddk-0 eZjxtV"
-              id="LockEmbeddCode_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
               title="Embed"
             >
               <svg
@@ -17080,8 +17070,8 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0"
-        id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+        class="lock c0"
+        data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <div
           class="c1"
@@ -17171,7 +17161,6 @@ Object {
         </div>
         <div
           class=""
-          id="LockDuration_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <span>
             2 days
@@ -17296,8 +17285,8 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 jpUcBv"
-      id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+      class="lock mlglvd-0 jpUcBv"
+      data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
     >
       <div
         class="mlglvd-2 hfdYVl"
@@ -17387,7 +17376,6 @@ Object {
       </div>
       <div
         class="mlglvd-6 hNoahq"
-        id="LockDuration_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <span>
           2 days
@@ -17755,8 +17743,8 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0"
-        id="LockRow_0x127c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+        class="lock c0"
+        data-address="0x127c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <div
           class="c1"
@@ -17846,7 +17834,6 @@ Object {
         </div>
         <div
           class=""
-          id="LockDuration_0x127c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <span>
             2 days
@@ -17971,8 +17958,8 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 jpUcBv"
-      id="LockRow_0x127c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+      class="lock mlglvd-0 jpUcBv"
+      data-address="0x127c74abc0c4d48d1bdad5dcb26153fc8780f83e"
     >
       <div
         class="mlglvd-2 hfdYVl"
@@ -18062,7 +18049,6 @@ Object {
       </div>
       <div
         class="mlglvd-6 hNoahq"
-        id="LockDuration_0x127c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <span>
           2 days
@@ -18495,8 +18481,8 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0"
-        id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+        class="lock c0"
+        data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <div
           class="c1"
@@ -18586,7 +18572,6 @@ Object {
         </div>
         <div
           class=""
-          id="LockDuration_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <span>
             2 days
@@ -18717,7 +18702,6 @@ Object {
               </button>
               <button
                 class="c14 c16"
-                id="EditLockButton_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                 title="Edit"
               >
                 <svg
@@ -18742,7 +18726,6 @@ Object {
               </button>
               <button
                 class="c14 c16"
-                id="LockEmbeddCode_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                 title="Embed"
               >
                 <svg
@@ -18777,8 +18760,8 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 jpUcBv"
-      id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+      class="lock mlglvd-0 jpUcBv"
+      data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
     >
       <div
         class="mlglvd-2 hfdYVl"
@@ -18868,7 +18851,6 @@ Object {
       </div>
       <div
         class="mlglvd-6 hNoahq"
-        id="LockDuration_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <span>
           2 days
@@ -18999,7 +18981,6 @@ Object {
             </button>
             <button
               class="sc-850ddk-0 eZjxtV"
-              id="EditLockButton_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
               title="Edit"
             >
               <svg
@@ -19024,7 +19005,6 @@ Object {
             </button>
             <button
               class="sc-850ddk-0 eZjxtV"
-              id="LockEmbeddCode_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
               title="Embed"
             >
               <svg
@@ -19367,8 +19347,8 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0"
-        id="LockRow_0xbbbbbbbbbbbbbbbbbbbbbbbbbb73289473298"
+        class="lock c0"
+        data-address="0xbbbbbbbbbbbbbbbbbbbbbbbbbb73289473298"
       >
         <div
           class="c1"
@@ -19458,7 +19438,6 @@ Object {
         </div>
         <div
           class=""
-          id="LockDuration_0xbbbbbbbbbbbbbbbbbbbbbbbbbb73289473298"
         >
           <span>
             2 days
@@ -19589,7 +19568,6 @@ Object {
               </button>
               <button
                 class="c14 c16"
-                id="EditLockButton_0xbbbbbbbbbbbbbbbbbbbbbbbbbb73289473298"
                 title="Edit"
               >
                 <svg
@@ -19614,7 +19592,6 @@ Object {
               </button>
               <button
                 class="c14 c16"
-                id="LockEmbeddCode_0xbbbbbbbbbbbbbbbbbbbbbbbbbb73289473298"
                 title="Embed"
               >
                 <svg
@@ -19649,8 +19626,8 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 jpUcBv"
-      id="LockRow_0xbbbbbbbbbbbbbbbbbbbbbbbbbb73289473298"
+      class="lock mlglvd-0 jpUcBv"
+      data-address="0xbbbbbbbbbbbbbbbbbbbbbbbbbb73289473298"
     >
       <div
         class="mlglvd-2 hfdYVl"
@@ -19740,7 +19717,6 @@ Object {
       </div>
       <div
         class="mlglvd-6 hNoahq"
-        id="LockDuration_0xbbbbbbbbbbbbbbbbbbbbbbbbbb73289473298"
       >
         <span>
           2 days
@@ -19871,7 +19847,6 @@ Object {
             </button>
             <button
               class="sc-850ddk-0 eZjxtV"
-              id="EditLockButton_0xbbbbbbbbbbbbbbbbbbbbbbbbbb73289473298"
               title="Edit"
             >
               <svg
@@ -19896,7 +19871,6 @@ Object {
             </button>
             <button
               class="sc-850ddk-0 eZjxtV"
-              id="LockEmbeddCode_0xbbbbbbbbbbbbbbbbbbbbbbbbbb73289473298"
               title="Embed"
             >
               <svg
@@ -20239,8 +20213,8 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0"
-        id="LockRow_0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298"
+        class="lock c0"
+        data-address="0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298"
       >
         <div
           class="c1"
@@ -20330,7 +20304,6 @@ Object {
         </div>
         <div
           class=""
-          id="LockDuration_0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298"
         >
           <span>
             2 days
@@ -20461,7 +20434,6 @@ Object {
               </button>
               <button
                 class="c14 c16"
-                id="EditLockButton_0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298"
                 title="Edit"
               >
                 <svg
@@ -20486,7 +20458,6 @@ Object {
               </button>
               <button
                 class="c14 c16"
-                id="LockEmbeddCode_0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298"
                 title="Embed"
               >
                 <svg
@@ -20521,8 +20492,8 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 jpUcBv"
-      id="LockRow_0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298"
+      class="lock mlglvd-0 jpUcBv"
+      data-address="0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298"
     >
       <div
         class="mlglvd-2 hfdYVl"
@@ -20612,7 +20583,6 @@ Object {
       </div>
       <div
         class="mlglvd-6 hNoahq"
-        id="LockDuration_0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298"
       >
         <span>
           2 days
@@ -20743,7 +20713,6 @@ Object {
             </button>
             <button
               class="sc-850ddk-0 eZjxtV"
-              id="EditLockButton_0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298"
               title="Edit"
             >
               <svg
@@ -20768,7 +20737,6 @@ Object {
             </button>
             <button
               class="sc-850ddk-0 eZjxtV"
-              id="LockEmbeddCode_0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298"
               title="Embed"
             >
               <svg
@@ -21080,7 +21048,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0"
+        class="lockForm c0"
       >
         <svg
           viewBox="0 0 216 216"
@@ -21204,7 +21172,6 @@ Object {
           />
           <input
             data-valid="true"
-            id="KeyPriceEditField_undefined"
             inputmode="numeric"
             name="keyPrice"
             required=""
@@ -21239,7 +21206,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 hyBsBZ"
+      class="mlglvd-0 lockForm sc-1u8ov25-1 hyBsBZ"
     >
       <svg
         viewBox="0 0 216 216"
@@ -21363,7 +21330,6 @@ Object {
         />
         <input
           data-valid="true"
-          id="KeyPriceEditField_undefined"
           inputmode="numeric"
           name="keyPrice"
           required=""
@@ -21668,7 +21634,8 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0"
+        class="lockForm c0"
+        data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <svg
           viewBox="0 0 216 216"
@@ -21786,7 +21753,6 @@ Object {
           />
           <input
             data-valid="true"
-            id="KeyPriceEditField_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
             inputmode="numeric"
             name="keyPrice"
             required=""
@@ -21821,7 +21787,8 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 hyBsBZ"
+      class="mlglvd-0 lockForm sc-1u8ov25-1 hyBsBZ"
+      data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
     >
       <svg
         viewBox="0 0 216 216"
@@ -21939,7 +21906,6 @@ Object {
         />
         <input
           data-valid="true"
-          id="KeyPriceEditField_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
           inputmode="numeric"
           name="keyPrice"
           required=""
@@ -22251,7 +22217,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0"
+        class="lockForm c0"
       >
         <svg
           viewBox="0 0 216 216"
@@ -22375,7 +22341,6 @@ Object {
           />
           <input
             data-valid="true"
-            id="KeyPriceEditField_undefined"
             inputmode="numeric"
             name="keyPrice"
             required=""
@@ -22410,7 +22375,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 hyBsBZ"
+      class="mlglvd-0 lockForm sc-1u8ov25-1 hyBsBZ"
     >
       <svg
         viewBox="0 0 216 216"
@@ -22534,7 +22499,6 @@ Object {
         />
         <input
           data-valid="true"
-          id="KeyPriceEditField_undefined"
           inputmode="numeric"
           name="keyPrice"
           required=""
@@ -22846,7 +22810,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0"
+        class="lockForm c0"
       >
         <svg
           viewBox="0 0 216 216"
@@ -22970,7 +22934,6 @@ Object {
           />
           <input
             data-valid="false"
-            id="KeyPriceEditField_undefined"
             inputmode="numeric"
             name="keyPrice"
             required=""
@@ -23005,7 +22968,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 hyBsBZ"
+      class="mlglvd-0 lockForm sc-1u8ov25-1 hyBsBZ"
     >
       <svg
         viewBox="0 0 216 216"
@@ -23129,7 +23092,6 @@ Object {
         />
         <input
           data-valid="false"
-          id="KeyPriceEditField_undefined"
           inputmode="numeric"
           name="keyPrice"
           required=""
@@ -23441,7 +23403,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0"
+        class="lockForm c0"
       >
         <svg
           viewBox="0 0 216 216"
@@ -23565,7 +23527,6 @@ Object {
           />
           <input
             data-valid="true"
-            id="KeyPriceEditField_undefined"
             inputmode="numeric"
             name="keyPrice"
             required=""
@@ -23600,7 +23561,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 hyBsBZ"
+      class="mlglvd-0 lockForm sc-1u8ov25-1 hyBsBZ"
     >
       <svg
         viewBox="0 0 216 216"
@@ -23724,7 +23685,6 @@ Object {
         />
         <input
           data-valid="true"
-          id="KeyPriceEditField_undefined"
           inputmode="numeric"
           name="keyPrice"
           required=""
@@ -24036,7 +23996,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0"
+        class="lockForm c0"
       >
         <svg
           viewBox="0 0 216 216"
@@ -24160,7 +24120,6 @@ Object {
           />
           <input
             data-valid="true"
-            id="KeyPriceEditField_undefined"
             inputmode="numeric"
             name="keyPrice"
             required=""
@@ -24195,7 +24154,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 sc-1u8ov25-1 hyBsBZ"
+      class="mlglvd-0 lockForm sc-1u8ov25-1 hyBsBZ"
     >
       <svg
         viewBox="0 0 216 216"
@@ -24319,7 +24278,6 @@ Object {
         />
         <input
           data-valid="true"
-          id="KeyPriceEditField_undefined"
           inputmode="numeric"
           name="keyPrice"
           required=""
@@ -24698,7 +24656,6 @@ Object {
       >
         <div
           class="c1"
-          id="LockHeaderRow"
         >
           <div
             class="c2"
@@ -24741,8 +24698,8 @@ Object {
           </div>
         </div>
         <div
-          class="c7"
-          id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+          class="lock c7"
+          data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <div
             class="c8"
@@ -24832,7 +24789,6 @@ Object {
           </div>
           <div
             class=""
-            id="LockDuration_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
           >
             <span>
               2 days
@@ -24950,8 +24906,8 @@ Object {
           </div>
         </div>
         <div
-          class="c7"
-          id="LockRow_0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
+          class="lock c7"
+          data-address="0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
         >
           <div
             class="c8"
@@ -25041,7 +24997,6 @@ Object {
           </div>
           <div
             class=""
-            id="LockDuration_0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
           >
             <span>
               365 days
@@ -25162,6 +25117,7 @@ Object {
           class="c20"
         >
           <svg
+            alt="loading"
             viewBox="0 0 32 32"
           >
             <title>
@@ -25325,7 +25281,6 @@ Object {
     >
       <div
         class="sc-1olgoav-2 cWUOhu"
-        id="LockHeaderRow"
       >
         <div
           class="sc-1olgoav-3 gFgVul"
@@ -25368,8 +25323,8 @@ Object {
         </div>
       </div>
       <div
-        class="mlglvd-0 jpUcBv"
-        id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+        class="lock mlglvd-0 jpUcBv"
+        data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <div
           class="mlglvd-2 hfdYVl"
@@ -25459,7 +25414,6 @@ Object {
         </div>
         <div
           class="mlglvd-6 hNoahq"
-          id="LockDuration_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <span>
             2 days
@@ -25577,8 +25531,8 @@ Object {
         </div>
       </div>
       <div
-        class="mlglvd-0 jpUcBv"
-        id="LockRow_0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
+        class="lock mlglvd-0 jpUcBv"
+        data-address="0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
       >
         <div
           class="mlglvd-2 hfdYVl"
@@ -25668,7 +25622,6 @@ Object {
         </div>
         <div
           class="mlglvd-6 hNoahq"
-          id="LockDuration_0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
         >
           <span>
             365 days
@@ -25789,6 +25742,7 @@ Object {
         class="sc-1olgoav-0 brRaoP"
       >
         <svg
+          alt="loading"
           viewBox="0 0 32 32"
         >
           <title>
@@ -26126,7 +26080,6 @@ Object {
       >
         <div
           class="c1"
-          id="LockHeaderRow"
         >
           <div
             class="c2"
@@ -26172,6 +26125,7 @@ Object {
           class="c7"
         >
           <svg
+            alt="loading"
             viewBox="0 0 32 32"
           >
             <title>
@@ -26335,7 +26289,6 @@ Object {
     >
       <div
         class="sc-1olgoav-2 cWUOhu"
-        id="LockHeaderRow"
       >
         <div
           class="sc-1olgoav-3 gFgVul"
@@ -26381,6 +26334,7 @@ Object {
         class="sc-1olgoav-0 brRaoP"
       >
         <svg
+          alt="loading"
           viewBox="0 0 32 32"
         >
           <title>
@@ -26874,7 +26828,6 @@ Object {
       >
         <div
           class="c1"
-          id="LockHeaderRow"
         >
           <div
             class="c2"
@@ -26917,8 +26870,8 @@ Object {
           </div>
         </div>
         <div
-          class="c7"
-          id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+          class="lock c7"
+          data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <div
             class="c8"
@@ -27008,7 +26961,6 @@ Object {
           </div>
           <div
             class=""
-            id="LockDuration_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
           >
             <span>
               2 days
@@ -27126,8 +27078,8 @@ Object {
           </div>
         </div>
         <div
-          class="c7"
-          id="LockRow_0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
+          class="lock c7"
+          data-address="0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
         >
           <div
             class="c8"
@@ -27217,7 +27169,6 @@ Object {
           </div>
           <div
             class=""
-            id="LockDuration_0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
           >
             <span>
               365 days
@@ -27347,7 +27298,6 @@ Object {
     >
       <div
         class="sc-1olgoav-2 cWUOhu"
-        id="LockHeaderRow"
       >
         <div
           class="sc-1olgoav-3 gFgVul"
@@ -27390,8 +27340,8 @@ Object {
         </div>
       </div>
       <div
-        class="mlglvd-0 jpUcBv"
-        id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+        class="lock mlglvd-0 jpUcBv"
+        data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <div
           class="mlglvd-2 hfdYVl"
@@ -27481,7 +27431,6 @@ Object {
         </div>
         <div
           class="mlglvd-6 hNoahq"
-          id="LockDuration_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <span>
             2 days
@@ -27599,8 +27548,8 @@ Object {
         </div>
       </div>
       <div
-        class="mlglvd-0 jpUcBv"
-        id="LockRow_0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
+        class="lock mlglvd-0 jpUcBv"
+        data-address="0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
       >
         <div
           class="mlglvd-2 hfdYVl"
@@ -27690,7 +27639,6 @@ Object {
         </div>
         <div
           class="mlglvd-6 hNoahq"
-          id="LockDuration_0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
         >
           <span>
             365 days
@@ -28032,7 +27980,6 @@ Object {
       >
         <div
           class="c1"
-          id="LockHeaderRow"
         >
           <div
             class="c2"
@@ -28103,7 +28050,6 @@ Object {
     >
       <div
         class="sc-1olgoav-2 cWUOhu"
-        id="LockHeaderRow"
       >
         <div
           class="sc-1olgoav-3 gFgVul"
@@ -28550,7 +28496,6 @@ Object {
       >
         <div
           class="c1"
-          id="LockHeaderRow"
         >
           <div
             class="c2"
@@ -28593,7 +28538,7 @@ Object {
           </div>
         </div>
         <div
-          class="c7"
+          class="lockForm c7"
         >
           <svg
             viewBox="0 0 216 216"
@@ -28717,7 +28662,6 @@ Object {
             />
             <input
               data-valid="true"
-              id="KeyPriceEditField_undefined"
               inputmode="numeric"
               name="keyPrice"
               required=""
@@ -28757,7 +28701,6 @@ Object {
     >
       <div
         class="sc-1olgoav-2 cWUOhu"
-        id="LockHeaderRow"
       >
         <div
           class="sc-1olgoav-3 gFgVul"
@@ -28800,7 +28743,7 @@ Object {
         </div>
       </div>
       <div
-        class="mlglvd-0 sc-1u8ov25-1 hyBsBZ"
+        class="mlglvd-0 lockForm sc-1u8ov25-1 hyBsBZ"
       >
         <svg
           viewBox="0 0 216 216"
@@ -28924,7 +28867,6 @@ Object {
           />
           <input
             data-valid="true"
-            id="KeyPriceEditField_undefined"
             inputmode="numeric"
             name="keyPrice"
             required=""
@@ -29294,7 +29236,6 @@ Object {
       >
         <div
           class="c1"
-          id="LockHeaderRow"
         >
           <div
             class="c2"
@@ -29337,8 +29278,8 @@ Object {
           </div>
         </div>
         <div
-          class="c7"
-          id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+          class="lock c7"
+          data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <div
             class="c8"
@@ -29428,7 +29369,6 @@ Object {
           </div>
           <div
             class=""
-            id="LockDuration_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
           >
             <span>
               2 days
@@ -29558,7 +29498,6 @@ Object {
     >
       <div
         class="sc-1olgoav-2 cWUOhu"
-        id="LockHeaderRow"
       >
         <div
           class="sc-1olgoav-3 gFgVul"
@@ -29601,8 +29540,8 @@ Object {
         </div>
       </div>
       <div
-        class="mlglvd-0 jpUcBv"
-        id="LockRow_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+        class="lock mlglvd-0 jpUcBv"
+        data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <div
           class="mlglvd-2 hfdYVl"
@@ -29692,7 +29631,6 @@ Object {
         </div>
         <div
           class="mlglvd-6 hNoahq"
-          id="LockDuration_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <span>
             2 days
@@ -30928,7 +30866,6 @@ Object {
           >
             <div
               class="c31"
-              id="LockHeaderRow"
             >
               <div
                 class="c32"
@@ -31371,7 +31308,6 @@ Object {
         >
           <div
             class="sc-1olgoav-2 cWUOhu"
-            id="LockHeaderRow"
           >
             <div
               class="sc-1olgoav-3 gFgVul"
@@ -33632,7 +33568,6 @@ Object {
           >
             <div
               class="c31"
-              id="LockHeaderRow"
             >
               <div
                 class="c32"
@@ -33675,8 +33610,8 @@ Object {
               </div>
             </div>
             <div
-              class="c37"
-              id="LockRow_0x9abcdef0"
+              class="lock c37"
+              data-address="0x9abcdef0"
             >
               <div
                 class="c38"
@@ -33766,7 +33701,6 @@ Object {
               </div>
               <div
                 class=""
-                id="LockDuration_0x9abcdef0"
               >
                 <span>
                   2 days
@@ -33888,8 +33822,8 @@ Object {
               </div>
             </div>
             <div
-              class="c37"
-              id="LockRow_0x56781234a"
+              class="lock c37"
+              data-address="0x56781234a"
             >
               <div
                 class="c38"
@@ -33979,7 +33913,6 @@ Object {
               </div>
               <div
                 class=""
-                id="LockDuration_0x56781234a"
               >
                 <span>
                   1 day
@@ -34101,8 +34034,8 @@ Object {
               </div>
             </div>
             <div
-              class="c37"
-              id="LockRow_0x12345678a"
+              class="lock c37"
+              data-address="0x12345678a"
             >
               <div
                 class="c38"
@@ -34192,7 +34125,6 @@ Object {
               </div>
               <div
                 class=""
-                id="LockDuration_0x12345678a"
               >
                 <span>
                   2 days
@@ -34323,7 +34255,6 @@ Object {
                     </button>
                     <button
                       class="c9 c12"
-                      id="EditLockButton_0x12345678a"
                       title="Edit"
                     >
                       <svg
@@ -34348,7 +34279,6 @@ Object {
                     </button>
                     <button
                       class="c9 c12"
-                      id="LockEmbeddCode_0x12345678a"
                       title="Embed"
                     >
                       <svg
@@ -34760,7 +34690,6 @@ Object {
         >
           <div
             class="sc-1olgoav-2 cWUOhu"
-            id="LockHeaderRow"
           >
             <div
               class="sc-1olgoav-3 gFgVul"
@@ -34803,8 +34732,8 @@ Object {
             </div>
           </div>
           <div
-            class="mlglvd-0 jpUcBv"
-            id="LockRow_0x9abcdef0"
+            class="lock mlglvd-0 jpUcBv"
+            data-address="0x9abcdef0"
           >
             <div
               class="mlglvd-2 hfdYVl"
@@ -34894,7 +34823,6 @@ Object {
             </div>
             <div
               class="mlglvd-6 hNoahq"
-              id="LockDuration_0x9abcdef0"
             >
               <span>
                 2 days
@@ -35016,8 +34944,8 @@ Object {
             </div>
           </div>
           <div
-            class="mlglvd-0 jpUcBv"
-            id="LockRow_0x56781234a"
+            class="lock mlglvd-0 jpUcBv"
+            data-address="0x56781234a"
           >
             <div
               class="mlglvd-2 hfdYVl"
@@ -35107,7 +35035,6 @@ Object {
             </div>
             <div
               class="mlglvd-6 hNoahq"
-              id="LockDuration_0x56781234a"
             >
               <span>
                 1 day
@@ -35229,8 +35156,8 @@ Object {
             </div>
           </div>
           <div
-            class="mlglvd-0 jpUcBv"
-            id="LockRow_0x12345678a"
+            class="lock mlglvd-0 jpUcBv"
+            data-address="0x12345678a"
           >
             <div
               class="mlglvd-2 hfdYVl"
@@ -35320,7 +35247,6 @@ Object {
             </div>
             <div
               class="mlglvd-6 hNoahq"
-              id="LockDuration_0x12345678a"
             >
               <span>
                 2 days
@@ -35451,7 +35377,6 @@ Object {
                   </button>
                   <button
                     class="sc-850ddk-0 eZjxtV"
-                    id="EditLockButton_0x12345678a"
                     title="Edit"
                   >
                     <svg
@@ -35476,7 +35401,6 @@ Object {
                   </button>
                   <button
                     class="sc-850ddk-0 eZjxtV"
-                    id="LockEmbeddCode_0x12345678a"
                     title="Embed"
                   >
                     <svg
@@ -36846,7 +36770,6 @@ Object {
           >
             <div
               class="c34"
-              id="LockHeaderRow"
             >
               <div
                 class="c35"
@@ -36889,8 +36812,8 @@ Object {
               </div>
             </div>
             <div
-              class="c40"
-              id="LockRow_0x9abcdef0"
+              class="lock c40"
+              data-address="0x9abcdef0"
             >
               <div
                 class="c41"
@@ -36980,7 +36903,6 @@ Object {
               </div>
               <div
                 class=""
-                id="LockDuration_0x9abcdef0"
               >
                 <span>
                   2 days
@@ -37102,8 +37024,8 @@ Object {
               </div>
             </div>
             <div
-              class="c40"
-              id="LockRow_0x56781234a"
+              class="lock c40"
+              data-address="0x56781234a"
             >
               <div
                 class="c41"
@@ -37193,7 +37115,6 @@ Object {
               </div>
               <div
                 class=""
-                id="LockDuration_0x56781234a"
               >
                 <span>
                   1 day
@@ -37315,8 +37236,8 @@ Object {
               </div>
             </div>
             <div
-              class="c40"
-              id="LockRow_0x12345678a"
+              class="lock c40"
+              data-address="0x12345678a"
             >
               <div
                 class="c41"
@@ -37406,7 +37327,6 @@ Object {
               </div>
               <div
                 class=""
-                id="LockDuration_0x12345678a"
               >
                 <span>
                   2 days
@@ -37537,7 +37457,6 @@ Object {
                     </button>
                     <button
                       class="c12 c15"
-                      id="EditLockButton_0x12345678a"
                       title="Edit"
                     >
                       <svg
@@ -37562,7 +37481,6 @@ Object {
                     </button>
                     <button
                       class="c12 c15"
-                      id="LockEmbeddCode_0x12345678a"
                       title="Embed"
                     >
                       <svg
@@ -37990,7 +37908,6 @@ Object {
         >
           <div
             class="sc-1olgoav-2 cWUOhu"
-            id="LockHeaderRow"
           >
             <div
               class="sc-1olgoav-3 gFgVul"
@@ -38033,8 +37950,8 @@ Object {
             </div>
           </div>
           <div
-            class="mlglvd-0 jpUcBv"
-            id="LockRow_0x9abcdef0"
+            class="lock mlglvd-0 jpUcBv"
+            data-address="0x9abcdef0"
           >
             <div
               class="mlglvd-2 hfdYVl"
@@ -38124,7 +38041,6 @@ Object {
             </div>
             <div
               class="mlglvd-6 hNoahq"
-              id="LockDuration_0x9abcdef0"
             >
               <span>
                 2 days
@@ -38246,8 +38162,8 @@ Object {
             </div>
           </div>
           <div
-            class="mlglvd-0 jpUcBv"
-            id="LockRow_0x56781234a"
+            class="lock mlglvd-0 jpUcBv"
+            data-address="0x56781234a"
           >
             <div
               class="mlglvd-2 hfdYVl"
@@ -38337,7 +38253,6 @@ Object {
             </div>
             <div
               class="mlglvd-6 hNoahq"
-              id="LockDuration_0x56781234a"
             >
               <span>
                 1 day
@@ -38459,8 +38374,8 @@ Object {
             </div>
           </div>
           <div
-            class="mlglvd-0 jpUcBv"
-            id="LockRow_0x12345678a"
+            class="lock mlglvd-0 jpUcBv"
+            data-address="0x12345678a"
           >
             <div
               class="mlglvd-2 hfdYVl"
@@ -38550,7 +38465,6 @@ Object {
             </div>
             <div
               class="mlglvd-6 hNoahq"
-              id="LockDuration_0x12345678a"
             >
               <span>
                 2 days
@@ -38681,7 +38595,6 @@ Object {
                   </button>
                   <button
                     class="sc-850ddk-0 eZjxtV"
-                    id="EditLockButton_0x12345678a"
                     title="Edit"
                   >
                     <svg
@@ -38706,7 +38619,6 @@ Object {
                   </button>
                   <button
                     class="sc-850ddk-0 eZjxtV"
-                    id="LockEmbeddCode_0x12345678a"
                     title="Embed"
                   >
                     <svg
@@ -51244,7 +51156,6 @@ Object {
           <a
             class="c4 c5"
             href="http://localhost/demo/0xa62142888aba8370742be823c1782d17a0389da1"
-            id="PreviewButton_0xa62142888aba8370742be823c1782d17a0389da1"
             target="_blank"
             title="Preview"
           >
@@ -51324,7 +51235,6 @@ Object {
         <a
           class="sc-850ddk-0 eZjxtV"
           href="http://localhost/demo/0xa62142888aba8370742be823c1782d17a0389da1"
-          id="PreviewButton_0xa62142888aba8370742be823c1782d17a0389da1"
           target="_blank"
           title="Preview"
         >
@@ -51600,7 +51510,6 @@ Object {
             </button>
             <button
               class="c2 c4"
-              id="EditLockButton_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
               title="Edit"
             >
               <svg
@@ -51625,7 +51534,6 @@ Object {
             </button>
             <button
               class="c2 c4"
-              id="LockEmbeddCode_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
               title="Embed"
             >
               <svg
@@ -51685,7 +51593,6 @@ Object {
           </button>
           <button
             class="sc-850ddk-0 eZjxtV"
-            id="EditLockButton_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
             title="Edit"
           >
             <svg
@@ -51710,7 +51617,6 @@ Object {
           </button>
           <button
             class="sc-850ddk-0 eZjxtV"
-            id="LockEmbeddCode_0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
             title="Embed"
           >
             <svg

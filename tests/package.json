@@ -4,7 +4,7 @@
   "description": "Integration tests for Unlock",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles --runInBand --bail",
+    "test": "jest --runInBand --bail",
     "lint": "eslint .",
     "ci": "npm run lint && npm test"
   },
@@ -12,7 +12,7 @@
     "globalSetup": "./helpers/setup.js",
     "globalTeardown": "./helpers/teardown.js",
     "testEnvironment": "./helpers/environment.js",
-    "setupTestFrameworkScriptFile": "expect-puppeteer"
+    "setupTestFrameworkScriptFile": "./jest.setup.js"
   },
   "author": "Unlock Inc",
   "lint-staged": {

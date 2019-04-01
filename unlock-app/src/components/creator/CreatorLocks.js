@@ -18,7 +18,7 @@ export const CreatorLocks = props => {
   const { createLock, lockFeed, loading, formIsVisible, hideForm } = props
   return (
     <Locks>
-      <LockHeaderRow id="LockHeaderRow">
+      <LockHeaderRow>
         <LockHeader>Locks</LockHeader>
         <LockMinorHeader>Name / Address</LockMinorHeader>
         <LockMinorHeader>Key Duration</LockMinorHeader>
@@ -49,7 +49,7 @@ export const CreatorLocks = props => {
       )}
       {loading && (
         <LoadingWrapper>
-          <Svg.Loading title="loading" />
+          <Svg.Loading title="loading" alt="loading" />
         </LoadingWrapper>
       )}
     </Locks>
