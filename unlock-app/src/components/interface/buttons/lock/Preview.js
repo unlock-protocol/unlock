@@ -11,7 +11,6 @@ const Preview = ({ lock, config, ...props }) => (
     href={`${config.paywallUrl}/demo/${lock.address}`}
     label="Preview"
     {...props}
-    id={`PreviewButton_${lock.address}`}
   >
     <Svg.Preview name="Preview Lock" />
   </Button>
