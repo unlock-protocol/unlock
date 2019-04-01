@@ -1,4 +1,8 @@
-import { LOCK_PATH_NAME_REGEXP, ACCOUNT_REGEXP } from '../constants'
+import {
+  LOCK_PATH_NAME_REGEXP,
+  ACCOUNT_REGEXP,
+  TRANSACTION_REGEXP,
+} from '../constants'
 
 if (!global.URL) {
   // polyfill for server
@@ -28,19 +32,24 @@ export const lockRoute = path => {
       prefix: null,
       redirect: null,
       account: null,
+      transaction: null,
       origin: null,
     }
   }
 
   let account = url.hash && url.hash.substring(1)
+  let transaction = url.hash && url.hash.substring(1)
   const matchAccount = account.match(ACCOUNT_REGEXP)
-  account = matchAccount && matchAccount[0]
+  const matchTransaction = account.match(TRANSACTION_REGEXP)
+  account = matchAccount ? matchAccount[0] : null
+  transaction = matchTransaction ? matchTransaction[0] : null
 
   return {
     lockAddress: match[2] || null,
     prefix: match[1] || null,
     redirect: (match[3] && decodeURIComponent(match[3])) || null,
     account,
+    transaction,
     origin: url.searchParams.has('origin')
       ? url.searchParams.get('origin')
       : null,
