@@ -2,6 +2,7 @@ const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
+
 const unlockContract = artifacts.require('../Unlock.sol')
 const getUnlockProxy = require('../helpers/proxy')
 
@@ -77,11 +78,6 @@ contract('Lock / owners', accounts => {
       assert.equal(totalSupply.toFixed(), 4)
     })
 
-    it('should have the right number of keys', async () => {
-      const totalSupply = new BigNumber(await lock.totalSupply.call())
-      assert.equal(totalSupply.toFixed(), 4)
-    })
-
     it('should have the right number of owners', async () => {
       const _numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
       assert.equal(_numberOfOwners.toFixed(), numberOfOwners.plus(1))
@@ -106,11 +102,6 @@ contract('Lock / owners', accounts => {
       await lock.transferFrom(accounts[2], accounts[3], ID, {
         from: accounts[2],
       })
-    })
-
-    it('should have the right number of keys', async () => {
-      const totalSupply = new BigNumber(await lock.totalSupply.call())
-      assert.equal(totalSupply.toFixed(), 4)
     })
 
     it('should have the right number of keys', async () => {
