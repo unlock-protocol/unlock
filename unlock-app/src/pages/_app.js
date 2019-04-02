@@ -28,7 +28,7 @@ function getOrCreateStore(initialState, path) {
   ]
 
   if (config.services.storage) {
-    middlewares.push(storageMiddleware)
+    middlewares.push(storageMiddleware(config))
   }
 
   // Always make a new store if server, otherwise state is shared between requests
