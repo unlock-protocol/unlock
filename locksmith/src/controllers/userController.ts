@@ -1,7 +1,6 @@
 import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import { DecoyUser } from '../utils/decoyUser'
 
-import RecoveryPhrase = require('../utils/recoveryPhrase')
 import UserOperations = require('../operations/userOperations')
 
 namespace UserController {
@@ -9,7 +8,7 @@ namespace UserController {
     req: Request,
     res: Response
   ): Promise<any> => {
-    let user = req.body.user
+    let user = req.body.message.user
 
     try {
       if (user) {
@@ -17,7 +16,6 @@ namespace UserController {
           emailAddress: user.emailAddress,
           publicKey: user.publicKey,
           passwordEncryptedPrivateKey: user.passwordEncryptedPrivateKey,
-          recoveryPhrase: RecoveryPhrase.generate(),
         })
 
         let status = creationStatus ? 200 : 400
@@ -70,7 +68,7 @@ namespace UserController {
     res: Response
   ): Promise<any> => {
     let emailAddress = req.params.emailAddress
-    let user = req.body.user
+    let user = req.body.message.user
 
     try {
       let result = await UserOperations.updateEmail(

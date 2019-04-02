@@ -2,7 +2,6 @@ export interface UserCreationInput {
   emailAddress: string
   publicKey: string
   passwordEncryptedPrivateKey: string
-  recoveryPhrase: string
 }
 
 export interface Lock {
