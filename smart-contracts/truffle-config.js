@@ -1,4 +1,4 @@
-const Web3 = require('web3')
+// const Web3 = require('web3')
 // See <http://truffleframework.com/docs/advanced/configuration>
 // to customize your Truffle configuration!
 
@@ -7,10 +7,10 @@ require('babel-register')
 require('babel-polyfill')
 const HDWalletProvider = require('truffle-hdwallet-provider')
 
-const rinkebyHost = process.env.RINKEBY_HOST
-const rinkebyHostUsername = process.env.RINKEBY_HOST_USERNAME
-const rinkebyHostPassword = process.env.RINKEBY_HOST_PASSWORD
-const rinkebyProviderUrl = `https://${rinkebyHostUsername}:${rinkebyHostPassword}@${rinkebyHost}/`
+// const rinkebyHost = process.env.RINKEBY_HOST
+// const rinkebyHostUsername = process.env.RINKEBY_HOST_USERNAME
+// const rinkebyHostPassword = process.env.RINKEBY_HOST_PASSWORD
+// const rinkebyProviderUrl = `https://${rinkebyHostUsername}:${rinkebyHostPassword}@${rinkebyHost}/`
 
 /**
  * Used for main net deployments
@@ -38,7 +38,7 @@ module.exports = {
       network_id: '*', // Match any network id
     },
     rinkeby: {
-      provider: new Web3.providers.HttpProvider(rinkebyProviderUrl),
+      // provider: new Web3.providers.HttpProvider(rinkebyProviderUrl),
       network_id: '4', // Network Id for Rinkeby
     },
     mainnet: {

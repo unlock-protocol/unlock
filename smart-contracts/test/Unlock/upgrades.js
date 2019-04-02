@@ -3,12 +3,14 @@ const Web3Utils = require('web3-utils')
 const { TestHelper } = require('zos')
 const BigNumber = require('bignumber.js')
 const { ZWeb3, Contracts } = require('zos-lib')
+
 ZWeb3.initialize(web3.currentProvider)
 // Path is relative to `build/contracts/` directory
 const UnlockV0 = Contracts.getFromLocal(
   '../../node_modules/unlock-abi-0/Unlock'
 )
 const PublicLockV0 = require('public-lock-abi-0/abi_V0')
+
 const UnlockV1 = Contracts.getFromLocal('Unlock')
 const PublicLockV1 = Contracts.getFromLocal('PublicLock')
 
