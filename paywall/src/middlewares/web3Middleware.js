@@ -1,6 +1,8 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
 import { LOCATION_CHANGE } from 'connected-react-router'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+
 import { ADD_LOCK, UPDATE_LOCK, addLock, updateLock } from '../actions/lock'
 import { updateKey, addKey } from '../actions/key'
 import { updateAccount, SET_ACCOUNT } from '../actions/accounts'
@@ -12,7 +14,6 @@ import {
   NEW_TRANSACTION,
 } from '../actions/transaction'
 
-import Web3Service from '../services/web3Service'
 import { lockRoute } from '../utils/routes'
 
 import configure from '../config'
