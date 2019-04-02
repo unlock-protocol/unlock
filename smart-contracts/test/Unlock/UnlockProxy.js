@@ -1,7 +1,9 @@
 const Zos = require('zos')
+const { ZWeb3, Contracts } = require('zos-lib')
+
 const TestHelper = Zos.TestHelper
 const shared = require('./behaviors/shared')
-const { ZWeb3, Contracts } = require('zos-lib')
+
 ZWeb3.initialize(web3.currentProvider)
 const Unlock = Contracts.getFromLocal('Unlock')
 

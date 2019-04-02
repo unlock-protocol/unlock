@@ -1,12 +1,14 @@
+const Web3Abi = require('web3-eth-abi')
 const shouldFail = require('../helpers/shouldFail')
+
 const unlockContract = artifacts.require('../Unlock.sol')
 const getUnlockProxy = require('../helpers/proxy')
-const Web3Abi = require('web3-eth-abi')
+
 const abi = new Web3Abi.AbiCoder()
 
 let unlock
 
-contract('Unlock / noFallback', accounts => {
+contract('Unlock / noFallback', () => {
   before(async () => {
     unlock = await getUnlockProxy(unlockContract)
   })

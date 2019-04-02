@@ -1,6 +1,7 @@
 const Web3Utils = require('web3-utils')
 const Units = require('ethereumjs-units')
 const shouldFail = require('../../helpers/shouldFail')
+
 const PublicLock = artifacts.require('../../PublicLock.sol')
 
 exports.shouldCreateLock = function(accounts) {

@@ -1,8 +1,10 @@
+const Web3Abi = require('web3-eth-abi')
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
+
 const unlockContract = artifacts.require('../Unlock.sol')
 const getUnlockProxy = require('../helpers/proxy')
-const Web3Abi = require('web3-eth-abi')
+
 const abi = new Web3Abi.AbiCoder()
 
 let lock, unlock, locks

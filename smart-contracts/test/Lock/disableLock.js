@@ -3,6 +3,7 @@ const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
+
 const unlockContract = artifacts.require('../Unlock.sol')
 const getUnlockProxy = require('../helpers/proxy')
 

@@ -1,5 +1,6 @@
 // Load zos scripts and truffle wrapper function
 const { scripts, ConfigVariablesInitializer } = require('zos')
+
 const { add, push } = scripts
 
 async function zosDeploy(options) {

@@ -1,4 +1,5 @@
 const Zos = require('zos')
+
 const { ZosPackageFile } = Zos.files
 const packageFile = new ZosPackageFile()
 

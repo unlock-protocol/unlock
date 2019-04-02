@@ -2,6 +2,7 @@ const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 const deployLocks = require('../test/helpers/deployLocks')
+
 const Unlock = artifacts.require('Unlock.sol')
 
 let unlock, lock
@@ -45,6 +46,7 @@ contract('Reports', accounts => {
     )
     const transferFrom = new BigNumber(tx.receipt.gasUsed)
 
+    // eslint-disable-next-line no-console
     console.log(`Gas Usage
   createLock: ${createLock.toFormat()}
   purchaseFor: ${purchaseFor.toFormat()}
