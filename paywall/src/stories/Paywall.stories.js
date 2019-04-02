@@ -112,6 +112,11 @@ storiesOf('Paywall', module)
     <ConfigContext.Provider value={config}>
       <WindowContext.Provider
         value={{
+          fetch: () => ({
+            // dummy to prevent errors on CI
+            // this is the expected shape of returns from locksmith for optimism
+            json: Promise.resolve({ willSucceed: 0 }),
+          }),
           document: { body: { style: {} } },
           location: { pathname: '/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e' },
         }}
