@@ -74,7 +74,7 @@ const create = () => {
   }
   const next = jest.fn()
 
-  const handler = walletMiddleware(store)
+  const handler = walletMiddleware(mockConfig)(store)
 
   const invoke = action => handler(next)(action)
 

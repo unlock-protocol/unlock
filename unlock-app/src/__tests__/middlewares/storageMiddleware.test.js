@@ -11,6 +11,7 @@ import { SET_ACCOUNT } from '../../actions/accounts'
 import { SIGNED_DATA } from '../../actions/signature'
 import UnlockLock from '../../structured_data/unlockLock'
 import { startLoading, doneLoading } from '../../actions/loading'
+import configure from '../../config'
 
 /**
  * This is a "fake" middleware caller
@@ -23,12 +24,13 @@ let lock
 let network
 
 const create = () => {
+  const config = configure()
   const store = {
     getState: jest.fn(() => state),
     dispatch: jest.fn(() => true),
   }
   const next = jest.fn()
-  const handler = storageMiddleware(store)
+  const handler = storageMiddleware(config)(store)
   const invoke = action => handler(next)(action)
   return { next, invoke, store }
 }
