@@ -19,7 +19,8 @@
   "lint-staged": {
     "linters": {
       ".{js,ts,tsx}": [
-        "eslint"
+        "eslint --fix",
+        "git add"
       ]
     }
   },
@@ -28,7 +29,7 @@
     "build": "webpack",
     "dev": "nodemon src/server.js --exec babel-node",
     "test": "jest",
-    "lint": "eslint .",
+    "lint": "eslint --ext .ts,.js src/",
     "ci": "npm run lint && npm test",
     "deploy-netlify": "./scripts/deploy-netlify.sh"
   },

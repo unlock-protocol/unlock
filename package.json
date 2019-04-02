@@ -38,7 +38,6 @@
     "husky": "^1.2.0"
   },
   "scripts": {
-    "lint": "eslint .",
     "link-parent-bin": "link-parent-bin -c . -s true",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-ganache": "ganache-cli -i 1984 --mnemonic 'hello unlock save the web'",
