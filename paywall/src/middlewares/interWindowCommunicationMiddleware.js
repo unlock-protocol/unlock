@@ -1,24 +1,10 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
-import { OPEN_MODAL_IN_NEW_WINDOW, HIDE_MODAL } from '../actions/modal'
-import { UPDATE_KEY } from '../actions/key'
+import { UPDATE_KEY, ADD_KEY } from '../actions/key'
 import { inIframe } from '../config'
 import { lockRoute } from '../utils/routes'
 import { setAccount } from '../actions/accounts'
 import localStorageAvailable from '../utils/localStorage'
-import { POST_MESSAGE_REDIRECT } from '../paywall-builder/constants'
-
-function redirectToContentFromPaywall(window, getState) {
-  const {
-    router,
-    account: { address },
-  } = getState()
-
-  const { redirect } = lockRoute(router.location.pathname)
-  if (redirect) {
-    window.location.href = redirect + '#' + address
-  }
-}
 
 // store is unused in this middleware, it is only for listening for actions
 // and converting them into postMessage
@@ -27,11 +13,12 @@ const interWindowCommunicationMiddleware = window => ({
   dispatch,
 }) => {
   let accountChecked = false
-  const parent = window.parent
   const isInIframe = inIframe(window)
   return next => {
     return action => {
-      const { router, account, modals } = getState()
+      const { router, account } = getState()
+      // TODO: remove the checking for account in
+      // the URL hash as soon as the paywall stops sending it
       if (isInIframe && !accountChecked) {
         accountChecked = true
         // if we are in the paywall on an iframe, account is not defined
@@ -69,38 +56,37 @@ const interWindowCommunicationMiddleware = window => ({
           }
         }
       }
-      const { lockAddress, prefix } = lockRoute(router.location.pathname)
-      if (prefix !== 'paywall') return next(action)
-      if (isInIframe) {
-        if (action.type === OPEN_MODAL_IN_NEW_WINDOW) {
-          parent.postMessage(POST_MESSAGE_REDIRECT, parent.origin)
-        }
-      } else {
-        if (action.type === HIDE_MODAL) {
-          // if the user clicks the button to go to content,
-          // we redirect back to the content, appending as a hash
-          // the user account. This is not sent to the server.
-          // then, the paywall.min.js script detects the hash
-          // and forwards it to the paywall in the iframe.
-          // the code at the top of this file handles that case
-          redirectToContentFromPaywall(window, getState)
-        }
-        if (action.type === UPDATE_KEY) {
-          const {
-            update: { lock, expiration, owner },
-          } = action
-          if (
-            account &&
-            !modals[lockAddress] &&
-            owner === account.address &&
-            lock === lockAddress &&
-            expiration > new Date().getTime() / 1000
-          ) {
-            redirectToContentFromPaywall(window, getState)
-          }
-        }
-      }
+
       next(action)
+
+      // this needs to be after the reducer is called
+      if (
+        (isInIframe && action.type === UPDATE_KEY) ||
+        (action.type === ADD_KEY && !account)
+      ) {
+        const { transactions, keys } = getState()
+        const { lockAddress, transaction } = lockRoute(
+          router.location.pathname + router.location.hash
+        )
+        // sanity check: was transaction passed in the hash?
+        if (!transaction) return
+        const ourTransaction = transactions[transaction]
+        // has the transaction been retrieved yet? if not, bail out
+        if (!ourTransaction) return
+        // sanity check: is this transaction for our lock?
+        if (lockAddress !== ourTransaction.lock) return
+        // sanity check: is this key for our transaction?
+        if (action.id !== ourTransaction.key) return
+
+        // at this point, we know the transaction exists, is for our lock, and
+        // because our account has not been set, we should save the account
+        // in localStorage
+        const { owner } = keys[action.id]
+        if (localStorageAvailable(window)) {
+          window.localStorage.setItem('__unlock__account__', owner)
+        }
+        dispatch(setAccount({ address: owner }))
+      }
     }
   }
 }
