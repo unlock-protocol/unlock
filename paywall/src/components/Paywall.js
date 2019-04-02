@@ -121,12 +121,16 @@ export const mapStateToProps = ({
     }
   })
 
-  const lock = locksFromUri.length ? locksFromUri[0] : { address: 0 }
+  const lock = locksFromUri.length ? locksFromUri[0] : null
 
   let transaction = null
 
   const lockKey = Object.values(keys).find(
-    key => account && key.lock === lock.address && key.owner === account.address
+    key =>
+      account &&
+      lock &&
+      key.lock === lock.address &&
+      key.owner === account.address
   )
 
   // Let's select the transaction corresponding to this key purchase, if it exists
