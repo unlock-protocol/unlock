@@ -8,8 +8,8 @@ import withConfig from '../../../../utils/withConfig'
 import UnlockPropTypes from '../../../../propTypes'
 
 export class HomepageButton extends React.Component {
-  constructor(props, context) {
-    super(props, context)
+  constructor(props) {
+    super(props)
     const { acceptedTerms } = this.props
     this.state = {
       acceptedTerms: acceptedTerms,

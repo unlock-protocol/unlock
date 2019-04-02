@@ -20,10 +20,11 @@ const config = configure({
 })
 
 storiesOf('Content pages', module)
-  .addDecorator(getStory => (
-    <ConfigProvider value={config}>{getStory()}</ConfigProvider>
-  ))
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('the Home page', () => {
-    return <Home />
+    return (
+      <ConfigProvider value={config}>
+        <Home />
+      </ConfigProvider>
+    )
   })

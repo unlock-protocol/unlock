@@ -7,7 +7,7 @@ const config = configure()
 
 storiesOf('HomepageButton', module)
   .add('Default state', () => {
-    return <HomepageButton />
+    return <HomepageButton config={config} />
   })
   .add('Accepted terms', () => {
     return <HomepageButton config={config} acceptedTerms />
