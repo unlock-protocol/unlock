@@ -1,6 +1,10 @@
 import UserOperations from '../../src/operations/userOperations'
+import RecoveryPhrase from '../../src/utils/recoveryPhrase'
+
+jest.mock('../../src/utils/recoveryPhrase', () => ({}))
 
 const models = require('../../src/models')
+
 let User: any = models.User
 let UserReference: any = models.UserReference
 
@@ -17,17 +21,18 @@ describe('User creation', () => {
     it('should normalize the public key/address & email address', async () => {
       expect.assertions(1)
       UserReference.create = jest.fn(() => {})
+      RecoveryPhrase.generate = jest.fn(() => 'generated phrase')
 
       await UserOperations.createUser(userCreationDetails)
       expect(UserReference.create).toHaveBeenCalledWith(
-        {
+        expect.objectContaining({
           User: {
             passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
             publicKey: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
-            recoveryPhrase: 'recoveryPhrase',
+            recoveryPhrase: 'generated phrase',
           },
           emailAddress: 'user@example.com',
-        },
+        }),
         { include: User }
       )
     })
