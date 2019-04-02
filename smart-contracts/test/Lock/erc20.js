@@ -1,17 +1,20 @@
 const BigNumber = require('bignumber.js')
 const unlockContract = artifacts.require('Unlock.sol')
 const TestErc20Token = artifacts.require('TestErc20Token.sol')
+const TestNoop = artifacts.require('TestNoop.sol')
 const getUnlockProxy = require('../helpers/proxy')
 const shouldFail = require('../helpers/shouldFail')
 const deployLocks = require('../helpers/deployLocks')
 const LockApi = require('../helpers/lockApi')
 
 contract('Lock / erc20', accounts => {
-  let token, lock, lockApi
+  let unlock, token, lock, lockApi
 
   before(async () => {
     token = await TestErc20Token.new()
-    const unlock = await getUnlockProxy(unlockContract)
+    // Mint some tokens so that the totalSupply is greater than 0
+    await token.mint(accounts[0], 1)
+    unlock = await getUnlockProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0], token.address)
     lock = locks['FIRST']
     lockApi = new LockApi(lock)
@@ -119,9 +122,17 @@ contract('Lock / erc20', accounts => {
     })
   })
 
-  describe('when creating a lock with an invalid ERC20', () => {
-    // TODO: testing this requires using web3 instead of truffle methods
-    // (truffle fails with `no code at address`)
+  describe('should fail to create a lock when', () => {
+    it('when creating a lock for a contract which is not an ERC20', async () => {
+      await shouldFail(
+        deployLocks(unlock, accounts[0], (await TestNoop.new()).address)
+      )
+    })
+
+    describe('when creating a lock with an invalid ERC20', () => {
+      // TODO: testing this requires using web3 instead of truffle methods
+      // (truffle fails with `no code at address`)
+    })
   })
 
   describe('when the ERC20 is paused', () => {

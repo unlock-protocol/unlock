@@ -19,6 +19,10 @@ contract MixinFunds
     address _tokenAddress
   ) public
   {
+    require(
+      _tokenAddress == address(0) || IERC20(_tokenAddress).totalSupply() > 0,
+      'INVALID_TOKEN'
+    );
     tokenAddress = _tokenAddress;
   }
 
@@ -27,7 +31,7 @@ contract MixinFunds
    *
    * With ETH, this means the function originally called was `payable` and the
    * transaction included at least the amount requested.
-   * 
+   *
    * Security: be wary of re-entrancy when calling this function.
    */
   function _chargeAtLeast(
@@ -50,7 +54,7 @@ contract MixinFunds
 
   /**
    * Transfers funds from the contract to the account provided.
-   * 
+   *
    * Security: be wary of re-entrancy when calling this function.
    */
   function _transfer(
