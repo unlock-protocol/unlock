@@ -1,5 +1,7 @@
 import { UserCreationInput } from '../types' // eslint-disable-line no-unused-vars
-import * as Normalizer from '../utils/normalizer' // eslint-disable-line no-unused-vars
+import * as Normalizer from '../utils/normalizer'
+// eslint-disable-line no-unused-vars
+import RecoveryPhrase = require('../utils/recoveryPhrase')
 
 const models = require('../models')
 
@@ -12,12 +14,13 @@ namespace UserOperations {
   export const createUser = async (
     input: UserCreationInput
   ): Promise<Boolean> => {
+    let recoveryPhrase = RecoveryPhrase.generate()
     let userReference = await UserReference.create(
       {
         emailAddress: Normalizer.emailAddress(input.emailAddress),
         User: {
           publicKey: Normalizer.ethereumAddress(input.publicKey),
-          recoveryPhrase: input.recoveryPhrase,
+          recoveryPhrase: recoveryPhrase,
           passwordEncryptedPrivateKey: input.passwordEncryptedPrivateKey,
         },
       },
