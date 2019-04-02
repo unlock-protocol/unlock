@@ -10,6 +10,8 @@ module.exports = {
     beforeEach: true,
     web3: true,
     assert: true,
+    after: true,
+    afterEach: true,
   },
   rules: {
     'prettier/prettier': 'error',
