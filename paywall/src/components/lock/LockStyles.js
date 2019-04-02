@@ -117,6 +117,9 @@ export const Colophon = styled.footer`
     align-self: center;
     margin-left: -14px;
   }
+  & a {
+    color: var(--red);
+  }
   & > p {
     margin-left: auto;
     margin-right: auto;

@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react'
 import StaticDemo from '../../components/interface/StaticDemo'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
+import { WindowContext } from '../../hooks/browser/useWindow'
 
 const myLock = {
   address: '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e',
@@ -48,7 +49,20 @@ const config = {
 storiesOf('StaticDemo', module)
   .addDecorator(getStory => (
     <ConfigContext.Provider value={config}>
-      <Provider store={store}>{getStory()}</Provider>
+      <WindowContext.Provider
+        value={{
+          document: { body: { style: {} } },
+          location: { pathname: '/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e' },
+          matchMedia: global.window
+            ? window.matchMedia.bind(window)
+            : () => ({
+                addListener: () => {},
+                removeListener: () => {},
+              }),
+        }}
+      >
+        <Provider store={store}>{getStory()}</Provider>
+      </WindowContext.Provider>
     </ConfigContext.Provider>
   ))
   .add('the demo', () => {

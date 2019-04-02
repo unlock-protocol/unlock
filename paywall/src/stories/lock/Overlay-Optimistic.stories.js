@@ -7,6 +7,7 @@ import { GlobalErrorContext } from '../../utils/GlobalErrorProvider'
 import { ConfigContext } from '../../utils/withConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
 import { TRANSACTION_TYPES } from '../../constants'
+import FakeIframe from '../../utils/FakeIframe'
 
 const ErrorProvider = GlobalErrorContext.Provider
 const ConfigProvider = ConfigContext.Provider
@@ -20,6 +21,12 @@ const fakeWindow = {
     hash: '',
   },
   document: { body: { style: {} } },
+  matchMedia: global.window
+    ? window.matchMedia.bind(window)
+    : () => ({
+        addListener: () => {},
+        removeListener: () => {},
+      }),
 }
 
 const config = {
@@ -129,16 +136,18 @@ const render = (
       <ConfigProvider value={thisConfig}>
         <WindowProvider value={fakeWindow}>
           <ErrorProvider value={errors}>
-            <Overlay
-              scrollPosition={0}
-              locks={locks}
-              hideModal={() => {}}
-              showModal={() => {}}
-              smallBody={() => {}}
-              bigBody={() => {}}
-              openInNewWindow={false}
-              optimism={optimism}
-            />
+            <FakeIframe hide={false}>
+              <Overlay
+                scrollPosition={0}
+                locks={locks}
+                hideModal={() => {}}
+                showModal={() => {}}
+                smallBody={() => {}}
+                bigBody={() => {}}
+                openInNewWindow={false}
+                optimism={optimism}
+              />
+            </FakeIframe>
           </ErrorProvider>
         </WindowProvider>
       </ConfigProvider>

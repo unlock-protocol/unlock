@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Media from '../../theme/media'
 
 export const OptimisticFlag = styled.div`
   height: 80px;
@@ -12,6 +13,11 @@ export const OptimisticFlag = styled.div`
   align-items: center;
 
   position: relative;
+
+  ${Media.phone`
+    justify-self: center;
+    box-shadow: 14px 0px 40px rgba(0, 0, 0, 0.14);
+  `}
 `
 
 export const OptimisticLogo = styled.div`
