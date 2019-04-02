@@ -89,6 +89,7 @@ beforeEach(() => {
     router: {
       location: {
         pathname: '/dashboard',
+        hash: '',
       },
     },
     account,
@@ -332,7 +333,7 @@ describe('Lock middleware', () => {
     const { next, invoke } = create()
     const action = {
       type: LOCATION_CHANGE,
-      payload: { location: { pathname: `/${lock.address}` } },
+      payload: { location: { pathname: `/${lock.address}` }, hash: '' },
     }
     mockWeb3Service.getLock = jest.fn()
     invoke(action)
@@ -340,16 +341,50 @@ describe('Lock middleware', () => {
     expect(next).toHaveBeenCalledWith(action)
   })
 
-  it("should handle LOCATION_CHANGE and not call web3Service's getLock if not on a paywall page", () => {
+  it("should handle LOCATION_CHANGE if a transaction is passed by calling web3Service's getTransaction", () => {
+    expect.assertions(2)
+    const { next, invoke } = create()
+    // transaction hashes are 64 digits long
+    const transaction =
+      '0x1234567890123456789012345678901234567890123456789012345678901234'
+    const action = {
+      type: LOCATION_CHANGE,
+      payload: {
+        location: { pathname: `/${lock.address}`, hash: `#${transaction}` },
+      },
+    }
+    mockWeb3Service.getTransaction = jest.fn()
+    mockWeb3Service.getLock = jest.fn()
+    invoke(action)
+    expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(transaction)
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it("should handle LOCATION_CHANGE and not call web3Service's getLock if no lock is passed", () => {
     expect.assertions(2)
     const { next, invoke } = create()
     const action = {
       type: LOCATION_CHANGE,
-      payload: { location: { pathname: '/static/paywall.min.js' } },
+      payload: { location: { pathname: '/static/paywall.min.js', hash: '' } },
     }
     mockWeb3Service.getLock = jest.fn()
+    mockWeb3Service.getTransaction = jest.fn()
     invoke(action)
     expect(mockWeb3Service.getLock).not.toHaveBeenCalled()
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it("should handle LOCATION_CHANGE and not call web3Service's getTransaction if no transaction is passed", () => {
+    expect.assertions(2)
+    const { next, invoke } = create()
+    const action = {
+      type: LOCATION_CHANGE,
+      payload: { location: { pathname: '/static/paywall.min.js', hash: '' } },
+    }
+    mockWeb3Service.getLock = jest.fn()
+    mockWeb3Service.getTransaction = jest.fn()
+    invoke(action)
+    expect(mockWeb3Service.getTransaction).not.toHaveBeenCalled()
     expect(next).toHaveBeenCalledWith(action)
   })
 
