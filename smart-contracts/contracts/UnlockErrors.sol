@@ -19,6 +19,9 @@ contract UnlockErrors {
   // The specified address is not valid (i.e. must not be 0).
   string public constant INVALID_ADDRESS = 'INVALID_ADDRESS';
 
+  // The address provided does not appear to represent a valid ERC20 token.
+  string public constant INVALID_TOKEN = 'INVALID_TOKEN';
+
   // The specified rate is not valid, the denominator must be greater than 0.
   // To set the rate to 0, set the numerator to 0 and the denominator to 1.
   string public constant INVALID_RATE = 'INVALID_RATE';
