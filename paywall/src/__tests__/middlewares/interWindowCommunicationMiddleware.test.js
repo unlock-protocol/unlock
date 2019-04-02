@@ -1,302 +1,196 @@
-import { openNewWindowModal, hideModal } from '../../actions/modal'
 import { setAccount } from '../../actions/accounts'
 import interWindowCommunicationMiddleware from '../../middlewares/interWindowCommunicationMiddleware'
-import { updateKey } from '../../actions/key'
-import { POST_MESSAGE_REDIRECT } from '../../paywall-builder/constants'
+import { updateKey, addKey } from '../../actions/key'
 
 jest.mock('../../utils/localStorage')
 
 describe('interWindowCommunicationMiddleware', () => {
   const lock = '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54'
   const account = '0xaaaaa25a3e7Fb15263D0DD455B8aAfc08503bb54'
+  const transaction =
+    '0x1234567890123456789012345678901234567890123456789012345678901234'
 
   describe('middleware functionality', () => {
-    describe('not in an iframe, running at /paywall in main window', () => {
-      it('does not respond to OPEN_MODAL_IN_NEW_WINDOW', () => {
-        expect.assertions(2)
-        const store = {
-          getState() {
-            return {
-              router: {
-                location: {
-                  pathname:
-                    '/paywall/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere',
-                },
-              },
-              account: {},
-              modals: {},
-            }
-          },
-        }
-
-        const next = jest.fn()
-
-        const action = openNewWindowModal()
-
-        const window = {
-          parent: {
-            contentWindow: {
-              postMessage: jest.fn(),
-              origin: 'origin',
-            },
-          },
-        }
-        window.self = window
-        window.top = window
-
-        const middleware = interWindowCommunicationMiddleware(window)
-
-        middleware(store)(next)(action)
-
-        expect(next).toHaveBeenCalledWith(action)
-        expect(window.parent.contentWindow.postMessage).not.toHaveBeenCalled()
-      })
-      it('responds to HIDE_MODAL and redirects if present in the route url', () => {
-        expect.assertions(2)
-        const store = {
-          getState() {
-            return {
-              account: {
-                address: 'address',
-              },
-              router: {
-                location: {
-                  pathname:
-                    '/paywall/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere',
-                },
-              },
-            }
-          },
-        }
-
-        const next = jest.fn()
-
-        const action = hideModal()
-
-        const window = {
-          location: {
-            href: 'href',
-          },
-        }
-        window.self = window
-        window.top = window
-
-        const middleware = interWindowCommunicationMiddleware(window)
-
-        middleware(store)(next)(action)
-
-        expect(next).toHaveBeenCalledWith(action)
-        expect(window.location.href).toBe('http://hithere#address')
-      })
-      it('ignores HIDE_MODAL if redirect is not present in the route url', () => {
-        expect.assertions(2)
-        const store = {
-          getState() {
-            return {
-              account: {
-                address: '',
-              },
-              router: {
-                location: {
-                  pathname:
-                    '/paywall/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
-                },
-              },
-            }
-          },
-        }
-
-        const next = jest.fn()
-
-        const action = hideModal()
-
-        const window = {
-          location: {
-            href: 'href',
-          },
-          addEventListener() {},
-        }
-        window.self = window
-        window.top = window
-
-        const middleware = interWindowCommunicationMiddleware(window)
-
-        middleware(store)(next)(action)
-
-        expect(next).toHaveBeenCalledWith(action)
-        expect(window.location.href).toBe('href')
-      })
-      it('responds to UPDATE_KEY when not showing the modal, and redirects if present in the route url', () => {
-        expect.assertions(2)
-
-        const key = {
-          id: `${lock}-${account}`,
-          lock,
-          owner: account,
-          expiration: new Date().getTime() / 1000 + 10000,
-          data: null,
-        }
-
-        const store = {
-          getState() {
-            return {
-              account: {
-                address: account,
-              },
-              router: {
-                location: {
-                  pathname: `/paywall/${lock}/http%3a%2f%2fhithere`,
-                },
-              },
-              keys: {
-                [key.id]: key,
-              },
-              modals: {},
-            }
-          },
-        }
-
-        const next = jest.fn()
-
-        const action = updateKey(key.id, key)
-
-        const window = {
-          location: {
-            href: 'href',
-          },
-        }
-        window.self = window
-        window.top = window
-
-        const middleware = interWindowCommunicationMiddleware(window)
-
-        middleware(store)(next)(action)
-
-        expect(next).toHaveBeenCalledWith(action)
-        expect(window.location.href).toBe(`http://hithere#${account}`)
-      })
-      it('ignores UPDATE_KEY if redirect is not present in the route url', () => {
-        expect.assertions(2)
-        const store = {
-          getState() {
-            return {
-              account: {
-                address: '',
-              },
-              router: {
-                location: {
-                  pathname:
-                    '/paywall/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
-                },
-              },
-            }
-          },
-        }
-
-        const next = jest.fn()
-
-        const action = hideModal()
-
-        const window = {
-          location: {
-            href: 'href',
-          },
-          addEventListener() {},
-        }
-        window.self = window
-        window.top = window
-
-        const middleware = interWindowCommunicationMiddleware(window)
-
-        middleware(store)(next)(action)
-
-        expect(next).toHaveBeenCalledWith(action)
-        expect(window.location.href).toBe('href')
-      })
-    })
     describe("running in the iframe inside the publisher's content window", () => {
-      it('does respond to OPEN_MODAL_IN_NEW_WINDOW if in an iframe', () => {
-        expect.assertions(2)
-        const next = jest.fn()
-
-        const action = openNewWindowModal()
-
-        const store = {
+      describe('no account present', () => {
+        let state
+        let store = {
           getState() {
-            return {
-              account: {
-                address: '0xabc',
-              },
-              router: {
-                location: {
-                  pathname:
-                    '/paywall/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere',
-                },
-              },
-            }
+            return state
           },
           dispatch: jest.fn(),
         }
-
-        const window = {
-          parent: {
-            postMessage: jest.fn(),
-            origin: 'origin',
-          },
-          addEventListener() {},
-        }
-        window.self = window
-        window.top = 'not window'
-
-        const middleware = interWindowCommunicationMiddleware(window)
-
-        middleware(store)(next)(action)
-
-        expect(next).toHaveBeenCalledWith(action)
-        expect(window.parent.postMessage).toHaveBeenCalledWith(
-          POST_MESSAGE_REDIRECT,
-          'origin'
-        )
-      })
-      it('ignores HIDE_MODAL', () => {
-        expect.assertions(2)
-        const store = {
-          getState() {
-            return {
-              account: {
-                address: '0xabc',
+        let window
+        beforeEach(() => {
+          state = {
+            account: null,
+            router: {
+              location: {
+                pathname: `/${lock}`,
+                hash: '',
               },
+            },
+          }
+          store.dispatch = jest.fn()
+          window = {
+            localStorage: {
+              setItem: jest.fn(),
+              getItem: jest.fn(() => null),
+            },
+          }
+          window.self = window
+          window.top = {}
+        })
+
+        describe('a transaction is passed in the URL hash', () => {
+          beforeEach(() => {
+            state = {
+              account: null,
               router: {
                 location: {
-                  pathname:
-                    '/paywall/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere',
+                  pathname: `/${lock}`,
+                  hash: `#${transaction}`,
+                },
+              },
+              transactions: {
+                [transaction]: {
+                  hash: transaction,
+                  key: 'key',
+                  lock: lock,
+                },
+              },
+              keys: {
+                key: {
+                  id: 'key',
+                  lock,
+                  owner: account,
                 },
               },
             }
-          },
-        }
+          })
 
-        const next = jest.fn()
+          it('UPDATE_KEY action', () => {
+            expect.assertions(2)
+            const middleware = interWindowCommunicationMiddleware(window)
+            middleware(store)(() => {})(updateKey('key', { owner: account }))
 
-        const action = hideModal()
+            expect(window.localStorage.setItem).toHaveBeenCalledWith(
+              '__unlock__account__',
+              account
+            )
+            expect(store.dispatch).toHaveBeenCalledWith(
+              expect.objectContaining(setAccount({ address: account }))
+            )
+          })
 
-        const window = {
-          location: {
-            href: 'href',
-          },
-          addEventListener() {},
-        }
-        window.self = window
-        window.top = {}
+          it('ADD_KEY action', () => {
+            expect.assertions(2)
+            const middleware = interWindowCommunicationMiddleware(window)
+            middleware(store)(() => {})(addKey('key', { owner: account }))
 
-        const middleware = interWindowCommunicationMiddleware(window)
+            expect(window.localStorage.setItem).toHaveBeenCalledWith(
+              '__unlock__account__',
+              account
+            )
+            expect(store.dispatch).toHaveBeenCalledWith(
+              expect.objectContaining(setAccount({ address: account }))
+            )
+          })
 
-        middleware(store)(next)(action)
+          describe('sanity checking', () => {
+            it.each([
+              [
+                'transaction is not set',
+                {
+                  transactions: {},
+                },
+              ],
+              [
+                'transaction lock does not match',
+                {
+                  transactions: {
+                    [transaction]: {
+                      lock: 'oops',
+                      key: 'key',
+                      hash: transaction,
+                    },
+                  },
+                },
+              ],
+              [
+                'transaction key does not match the action',
+                {
+                  transactions: {
+                    [transaction]: {
+                      lock,
+                      key: 'oops',
+                      hash: transaction,
+                    },
+                  },
+                },
+              ],
+            ])('%s', (description, transactions) => {
+              expect.assertions(2)
 
-        expect(next).toHaveBeenCalledWith(action)
-        expect(window.location.href).toBe('href')
-      })
-      describe('no account present', () => {
+              state = {
+                ...state,
+                transactions,
+              }
+              const middleware = interWindowCommunicationMiddleware(window)
+              middleware(store)(() => {})(addKey('key', { owner: account }))
+
+              expect(window.localStorage.setItem).not.toHaveBeenCalled()
+              expect(store.dispatch).not.toHaveBeenCalled()
+            })
+          })
+        })
+
+        describe('a transaction is not passed in the URL hash', () => {
+          beforeEach(() => {
+            state = {
+              account: null,
+              router: {
+                location: {
+                  pathname: `/${lock}`,
+                  hash: '',
+                },
+              },
+              transactions: {
+                [transaction]: {
+                  hash: transaction,
+                  key: 'key',
+                  lock: lock,
+                },
+              },
+              keys: {
+                key: {
+                  id: 'key',
+                  lock,
+                  owner: account,
+                },
+              },
+            }
+          })
+
+          it('UPDATE_KEY action', () => {
+            expect.assertions(2)
+            const middleware = interWindowCommunicationMiddleware(window)
+            middleware(store)(() => {})(updateKey('key', { owner: account }))
+
+            expect(window.localStorage.setItem).not.toHaveBeenCalled()
+            expect(store.dispatch).not.toHaveBeenCalled()
+          })
+
+          it('ADD_KEY action', () => {
+            expect.assertions(2)
+            const middleware = interWindowCommunicationMiddleware(window)
+            middleware(store)(() => {})(addKey('key', { owner: account }))
+
+            expect(window.localStorage.setItem).not.toHaveBeenCalled()
+            expect(store.dispatch).not.toHaveBeenCalled()
+          })
+        })
+
         describe('if account passed in URL hash', () => {
           let store
           let window
@@ -307,7 +201,7 @@ describe('interWindowCommunicationMiddleware', () => {
                   account: null,
                   router: {
                     location: {
-                      pathname: `/paywall/${lock}`,
+                      pathname: `/${lock}`,
                       hash: `#${account}`,
                     },
                   },
@@ -355,7 +249,7 @@ describe('interWindowCommunicationMiddleware', () => {
                 account: null,
                 router: {
                   location: {
-                    pathname: `/paywall/${lock}`,
+                    pathname: `/${lock}`,
                   },
                 },
               }
