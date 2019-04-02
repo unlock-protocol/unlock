@@ -64,9 +64,11 @@ class MockWebService extends EventEmitter {
 
 let mockWeb3Service = new MockWebService()
 
-jest.mock('../../services/web3Service', () => {
-  return function() {
-    return mockWeb3Service
+jest.mock('@unlock-protocol/unlock-js', () => {
+  return {
+    Web3Service: function() {
+      return mockWeb3Service
+    },
   }
 })
 
