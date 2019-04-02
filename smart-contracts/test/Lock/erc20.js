@@ -1,4 +1,5 @@
 const BigNumber = require('bignumber.js')
+
 const unlockContract = artifacts.require('Unlock.sol')
 const TestErc20Token = artifacts.require('TestErc20Token.sol')
 const TestNoop = artifacts.require('TestNoop.sol')

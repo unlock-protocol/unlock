@@ -1,6 +1,7 @@
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
+
 const unlockContract = artifacts.require('../Unlock.sol')
 const getUnlockProxy = require('../helpers/proxy')
 const WalletService = require('../helpers/walletServiceMock.js')
@@ -25,7 +26,7 @@ contract('Unlock / gas', accounts => {
     createLockGas = new BigNumber(tx.receipt.gasUsed)
   })
 
-  it(`gas used to createLock is less than wallet service limit`, async () => {
+  it('gas used to createLock is less than wallet service limit', async () => {
     if (!process.env.TEST_COVERAGE) {
       assert(createLockGas.lte(WalletService.gasAmountConstants().createLock))
     }
