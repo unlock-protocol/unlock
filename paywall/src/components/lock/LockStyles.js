@@ -131,6 +131,29 @@ export const Colophon = styled.footer`
     color: var(--darkgrey);
   }
   ${Media.phone`
-    display: none;
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    background-color: transparent;
+    height: 30px;
+    width: 100%;
+    margin-right: 0;
+
+    grid-row: 3;
+
+    & > p {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-self: center;
+      justify-self: center;
+      color: var(--slate);
+      & > a {
+        color: var(--red);
+      }
+    }
+    & > div {
+      display: none;
+    }
   `}
 `

@@ -10,7 +10,9 @@ export function LockedFlag() {
   return (
     <Colophon>
       <RoundedLogo size="28px" />
-      <p>Powered by Unlock</p>
+      <p>
+        Powered by&nbsp;<a href="https://paywall.unlock-protocol.com">Unlock</a>
+      </p>
     </Colophon>
   )
 }
@@ -46,5 +48,25 @@ const Flag = styled(Colophon)`
 
   ${Media.phone`
     display: flex;
-`}
+    background-color: var(--white);
+    grid-row: 2;
+    grid-column: 1;
+    width: 120px;
+    height: 80px;
+    margin-right: -33px;
+    flex-direction: row;
+    float: none;
+    margin-right: auto;
+    margin-left: auto;
+  
+    & > div {
+      display: block;
+    }
+    & > p {
+      width: 63px;
+      display: block;
+      grid-row: 2;
+    }
+    opacity: 1;
+  `}
 `

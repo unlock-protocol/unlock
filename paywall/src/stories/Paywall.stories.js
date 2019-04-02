@@ -1,11 +1,11 @@
 import { Provider } from 'react-redux'
-import React, { useRef } from 'react'
+import React, { useRef, useEffect, useReducer } from 'react'
 import PropTypes from 'prop-types'
 import { storiesOf } from '@storybook/react'
 import Paywall from '../components/Paywall'
 import createUnlockStore from '../createUnlockStore'
 import { ConfigContext } from '../utils/withConfig'
-import { WindowContext } from '../hooks/browser/useWindow'
+import useWindow, { WindowContext } from '../hooks/browser/useWindow'
 
 const lock = {
   address: '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e',
@@ -82,21 +82,48 @@ const config = {
 
 function FakeItTillYouMakeIt({ children }) {
   const divit = useRef()
+  const [{ styles, enter, leave }, dispatch] = useReducer(
+    (state, isPhone) => {
+      if (isPhone) {
+        return {
+          styles: {
+            position: 'fixed',
+            bottom: 0,
+            width: '100vw',
+            height: '80px',
+          },
+          enter: () => {},
+          leave: () => {},
+        }
+      }
+      return {
+        styles: {
+          position: 'fixed',
+          right: 0,
+          bottom: '105px',
+          width: '134px',
+          height: '160px',
+          marginRight: '-104px',
+          transition: 'margin-right 0.4s ease-in',
+        },
+        enter: () => (divit.current.style.marginRight = 0),
+        leave: () => (divit.current.style.marginRight = '-104px'),
+      }
+    },
+    { styles: {}, enter() {}, leave() {} }
+  )
+  const window = useWindow()
+  const resizeListener = mql => {
+    dispatch(mql.matches)
+  }
+  useEffect(() => {
+    const queryList = window.matchMedia('(max-width: 736px)')
+    queryList.addListener(resizeListener)
+    resizeListener(queryList)
+    return () => queryList.removeListener(resizeListener)
+  }, [])
   return (
-    <div
-      ref={divit}
-      style={{
-        position: 'absolute',
-        right: 0,
-        bottom: '105px',
-        width: '134px',
-        height: '160px',
-        marginRight: '-104px',
-        transition: 'margin-right 0.4s ease-in',
-      }}
-      onMouseEnter={() => (divit.current.style.marginRight = 0)}
-      onMouseLeave={() => (divit.current.style.marginRight = '-104px')}
-    >
+    <div ref={divit} style={styles} onMouseEnter={enter} onMouseLeave={leave}>
       {children}
     </div>
   )
@@ -114,6 +141,12 @@ storiesOf('Paywall', module)
         value={{
           document: { body: { style: {} } },
           location: { pathname: '/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e' },
+          matchMedia: global.window
+            ? window.matchMedia.bind(window)
+            : () => ({
+                addListener: () => {},
+                removeListener: () => {},
+              }),
         }}
       >
         <FakeItTillYouMakeIt>{getStory()}</FakeItTillYouMakeIt>
