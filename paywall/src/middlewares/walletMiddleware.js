@@ -1,11 +1,5 @@
 /* eslint promise/prefer-await-to-then: 0 */
-import {
-  CREATE_LOCK,
-  WITHDRAW_FROM_LOCK,
-  deleteLock,
-  UPDATE_LOCK_KEY_PRICE,
-  updateLock,
-} from '../actions/lock'
+import { updateLock } from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
 import { setAccount } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
@@ -17,11 +11,10 @@ import {
   gotWallet,
   dismissWalletCheck,
 } from '../actions/walletStatus'
-import { TRANSACTION_TYPES, POLLING_INTERVAL } from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
+import { POLLING_INTERVAL } from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
 
 import WalletService from '../services/walletService'
 import { FATAL_NO_USER_ACCOUNT, FATAL_NON_DEPLOYED_CONTRACT } from '../errors'
-import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 import configure from '../config'
 
 // This middleware listen to redux events and invokes the walletService API.
@@ -92,18 +85,10 @@ export default function walletMiddleware({ getState, dispatch }) {
     dispatch(updateLock(address, update))
   })
 
-  walletService.on('error', (error, transactionHash) => {
+  walletService.on('error', error => {
     // If we didn't successfully interact with the wallet, we need to clear the
     // overlay
     dispatch(dismissWalletCheck())
-    const transaction = getState().transactions[transactionHash]
-    if (transaction && transaction.type === TRANSACTION_TYPES.LOCK_CREATION) {
-      // delete the lock
-      dispatch(deleteLock(transaction.lock))
-      return dispatch(
-        setError('Failed to create lock. Did you decline the transaction?')
-      )
-    }
     dispatch(setError(error.message))
   })
 
@@ -129,15 +114,17 @@ export default function walletMiddleware({ getState, dispatch }) {
 
   return function(next) {
     // Connect to the current provider
-    walletService.connect(getState().provider)
+    // We connect once the middleware has been initialized, using setTimout
+    // The redux event loop is synchronous, so using setTimeout guarantees
+    // that connect will only be called after all of the other middleware have
+    // been initialized
+    setTimeout(() => {
+      walletService.connect(getState().provider)
+    })
 
     return function(action) {
       if (action.type === SET_PROVIDER) {
         walletService.connect(action.provider)
-      } else if (action.type === CREATE_LOCK && action.lock.address) {
-        ensureReadyBefore(() => {
-          walletService.createLock(action.lock, getState().account.address)
-        })
       } else if (action.type === PURCHASE_KEY) {
         ensureReadyBefore(() => {
           const account = getState().account
@@ -153,32 +140,6 @@ export default function walletMiddleware({ getState, dispatch }) {
             action.key.data
           )
         })
-      } else if (action.type === WITHDRAW_FROM_LOCK) {
-        ensureReadyBefore(() => {
-          const account = getState().account
-          walletService.withdrawFromLock(action.lock.address, account.address)
-        })
-      } else if (action.type === UPDATE_LOCK_KEY_PRICE) {
-        ensureReadyBefore(() => {
-          const account = getState().account
-          walletService.updateKeyPrice(
-            action.address,
-            account.address,
-            action.price
-          )
-        })
-      } else if (action.type === SIGN_DATA) {
-        const account = getState().account
-        walletService.signData(
-          account.address,
-          action.data,
-          (error, signature) => {
-            if (error) {
-              dispatch(signatureError(error))
-            }
-            dispatch(signedData(action.data, signature))
-          }
-        )
       }
 
       next(action)

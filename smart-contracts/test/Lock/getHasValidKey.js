@@ -24,7 +24,7 @@ contract('Lock / getHasValidKey', accounts => {
   describe('after purchase', () => {
     before(async () => {
       await lock.purchaseFor(account, {
-        value: Units.convert('0.01', 'eth', 'wei')
+        value: Units.convert('0.01', 'eth', 'wei'),
       })
     })
 

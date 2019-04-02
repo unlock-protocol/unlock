@@ -4,6 +4,10 @@ import { Provider } from 'react-redux'
 import Buttons from '../../components/interface/buttons/lock'
 
 import createUnlockStore from '../../createUnlockStore'
+import { ConfigContext } from '../../utils/withConfig'
+import configure from '../../config'
+
+const config = configure()
 
 const store = createUnlockStore({})
 
@@ -44,7 +48,12 @@ storiesOf('Buttons/Lock Buttons', module)
     const lock = {
       address: '0xabc',
     }
-    return <Buttons.Preview lock={lock} />
+    const ConfigProvider = ConfigContext.Provider
+    return (
+      <ConfigProvider value={config}>
+        <Buttons.Preview lock={lock} />
+      </ConfigProvider>
+    )
   })
   .add('Upload', () => {
     return <Buttons.Upload />

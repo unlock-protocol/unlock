@@ -1,8 +1,7 @@
-import buildPaywall, { redirect, scrollLoop } from '../../paywall-builder/build'
+import buildPaywall, { redirect } from '../../paywall-builder/build'
 import * as script from '../../paywall-builder/script'
 import * as iframeManager from '../../paywall-builder/iframe'
 import {
-  POST_MESSAGE_SCROLL_POSITION,
   POST_MESSAGE_LOCKED,
   POST_MESSAGE_UNLOCKED,
   POST_MESSAGE_REDIRECT,
@@ -18,12 +17,17 @@ const fakeLockAddress = 'lockaddress'
 describe('buildPaywall', () => {
   let document
   let eventListener
+  let mockIframeImpl
   function scrollThatPage(window) {
     window.pageYOffset += 20
   }
 
-  function lockThatPage() {
-    eventListener({ data: POST_MESSAGE_LOCKED })
+  function lockThatPage(iframe = mockIframeImpl) {
+    eventListener({
+      data: POST_MESSAGE_LOCKED,
+      origin: 'origin',
+      source: iframe.contentWindow,
+    })
   }
 
   beforeEach(() => {
@@ -61,7 +65,6 @@ describe('buildPaywall', () => {
   describe('sets up the iframe on load', () => {
     let mockScript
     let mockIframe
-    let mockIframeImpl
     let mockAdd
     let window
     let postMessage
@@ -75,6 +78,7 @@ describe('buildPaywall', () => {
       mockIframeImpl = {
         contentWindow: {
           postMessage,
+          origin: 'origin',
         },
         style: {},
         remove: jest.fn(),
@@ -216,6 +220,7 @@ describe('buildPaywall', () => {
         iframe = {
           contentWindow: {
             postMessage,
+            origin: 'origin',
           },
           style: {},
           remove: jest.fn(),
@@ -231,7 +236,11 @@ describe('buildPaywall', () => {
           throw new Error('thrown')
         })
         expect(() => {
-          callbacks.message({ data: POST_MESSAGE_LOCKED })
+          callbacks.message({
+            data: POST_MESSAGE_LOCKED,
+            origin: 'origin',
+            source: iframe.contentWindow,
+          })
         }).toThrow()
         expect(iframe.remove).toHaveBeenCalled()
         expect(blocker.remove).toHaveBeenCalled()
@@ -239,7 +248,11 @@ describe('buildPaywall', () => {
 
       it('triggers show on locked event', () => {
         expect.assertions(2)
-        callbacks.message({ data: POST_MESSAGE_LOCKED })
+        callbacks.message({
+          data: POST_MESSAGE_LOCKED,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
 
         expect(mockShow).toHaveBeenCalledWith(iframe, document)
         expect(mockHide).not.toHaveBeenCalled()
@@ -247,7 +260,11 @@ describe('buildPaywall', () => {
 
       it('closes the blocker on locked event', () => {
         expect.assertions(1)
-        callbacks.message({ data: POST_MESSAGE_LOCKED })
+        callbacks.message({
+          data: POST_MESSAGE_LOCKED,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
 
         expect(blocker.remove).toHaveBeenCalled()
       })
@@ -258,8 +275,16 @@ describe('buildPaywall', () => {
           throw new Error('thrown')
         })
         expect(() => {
-          callbacks.message({ data: POST_MESSAGE_LOCKED })
-          callbacks.message({ data: POST_MESSAGE_UNLOCKED })
+          callbacks.message({
+            data: POST_MESSAGE_LOCKED,
+            origin: 'origin',
+            source: iframe.contentWindow,
+          })
+          callbacks.message({
+            data: POST_MESSAGE_UNLOCKED,
+            origin: 'origin',
+            source: iframe.contentWindow,
+          })
         }).toThrow()
         expect(iframe.remove).toHaveBeenCalled()
         expect(blocker.remove).toHaveBeenCalled()
@@ -267,16 +292,32 @@ describe('buildPaywall', () => {
 
       it('closes the blocker on unlocked event', () => {
         expect.assertions(1)
-        callbacks.message({ data: POST_MESSAGE_LOCKED })
-        callbacks.message({ data: POST_MESSAGE_UNLOCKED })
+        callbacks.message({
+          data: POST_MESSAGE_LOCKED,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
+        callbacks.message({
+          data: POST_MESSAGE_UNLOCKED,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
 
         expect(blocker.remove).toHaveBeenCalledTimes(2)
       })
 
       it('does not trigger show on locked event if already unlocked', () => {
         expect.assertions(2)
-        callbacks.message({ data: POST_MESSAGE_LOCKED })
-        callbacks.message({ data: POST_MESSAGE_LOCKED })
+        callbacks.message({
+          data: POST_MESSAGE_LOCKED,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
+        callbacks.message({
+          data: POST_MESSAGE_LOCKED,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
 
         expect(mockShow).toHaveBeenCalledTimes(1)
         expect(mockHide).not.toHaveBeenCalled()
@@ -284,9 +325,21 @@ describe('buildPaywall', () => {
 
       it('triggers hide on unlock event', () => {
         expect.assertions(3)
-        callbacks.message({ data: POST_MESSAGE_LOCKED })
-        callbacks.message({ data: POST_MESSAGE_UNLOCKED })
-        callbacks.message({ data: POST_MESSAGE_UNLOCKED })
+        callbacks.message({
+          data: POST_MESSAGE_LOCKED,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
+        callbacks.message({
+          data: POST_MESSAGE_UNLOCKED,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
+        callbacks.message({
+          data: POST_MESSAGE_UNLOCKED,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
 
         expect(mockHide).toHaveBeenCalledWith(iframe, document)
         expect(mockHide).toHaveBeenCalledTimes(1)
@@ -299,7 +352,11 @@ describe('buildPaywall', () => {
           throw new Error('thrown')
         }
         expect(() => {
-          callbacks.message({ data: POST_MESSAGE_REDIRECT })
+          callbacks.message({
+            data: POST_MESSAGE_REDIRECT,
+            origin: 'origin',
+            source: iframe.contentWindow,
+          })
         }).toThrow()
         expect(iframe.remove).toHaveBeenCalled()
         expect(blocker.remove).toHaveBeenCalled()
@@ -307,138 +364,13 @@ describe('buildPaywall', () => {
 
       it('calls redirect on redirect event', () => {
         expect.assertions(1)
-        callbacks.message({ data: POST_MESSAGE_REDIRECT })
+        callbacks.message({
+          data: POST_MESSAGE_REDIRECT,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
 
         expect(window.location.href).toBe('/url/lockaddress/href')
-      })
-    })
-    describe('scrollLoop', () => {
-      let iframe
-      beforeEach(() => {
-        mockScript = jest.spyOn(script, 'findPaywallUrl')
-        mockIframe = jest.spyOn(iframeManager, 'getIframe')
-        postMessage = jest.fn()
-        iframe = {
-          contentWindow: {
-            postMessage,
-          },
-          style: {},
-        }
-
-        mockAdd = jest.spyOn(iframeManager, 'add')
-        mockScript.mockImplementation(() => '/url')
-        mockIframe.mockImplementation(() => iframe)
-        mockAdd.mockImplementation(() => {})
-        window = {
-          addEventListener(type, listener) {
-            eventListener = listener
-          },
-          requestAnimationFrame: jest.fn(),
-          location: {
-            hash: '',
-          },
-          innerHeight: 266,
-          pageYOffset: 0, // change to "scroll"
-          origin: 'origin/',
-          URL: () => {
-            return {
-              origin: 'origin',
-            }
-          },
-        }
-        blocker = {
-          remove() {},
-        }
-      })
-
-      it('does not send scroll if the window is fully scrolled', () => {
-        expect.assertions(1)
-
-        buildPaywall(window, document, fakeLockAddress, blocker)
-        lockThatPage()
-        iframe.contentWindow.postMessage.mockClear()
-
-        document.documentElement.scrollHeight = window.innerHeight
-        scrollLoop(window, document, iframe, 'origin')
-
-        expect(iframe.contentWindow.postMessage).not.toHaveBeenCalled()
-      })
-
-      it('sends a scroll position if the window is scrolled', () => {
-        expect.assertions(1)
-
-        buildPaywall(window, document, fakeLockAddress, blocker)
-        lockThatPage()
-        iframe.contentWindow.postMessage.mockClear()
-
-        scrollLoop(window, document, iframe, 'origin')
-
-        expect(iframe.contentWindow.postMessage).toHaveBeenCalledWith(
-          {
-            type: POST_MESSAGE_SCROLL_POSITION,
-            payload: 140.97744360902254,
-          },
-          'origin'
-        )
-      })
-
-      it('sends a weighted scroll position', () => {
-        expect.assertions(2)
-
-        buildPaywall(window, document, fakeLockAddress, blocker)
-        lockThatPage()
-        iframe.contentWindow.postMessage.mockClear()
-
-        scrollLoop(window, document, iframe, 'origin')
-        scrollThatPage(window) // scroll down 20 pixels
-        scrollLoop(window, document, iframe, 'origin')
-
-        expect(iframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
-          1,
-          {
-            type: POST_MESSAGE_SCROLL_POSITION,
-            payload: 140.97744360902254,
-          },
-          'origin'
-        )
-
-        expect(iframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
-          2,
-          {
-            type: POST_MESSAGE_SCROLL_POSITION,
-            payload: 141.06824126644298,
-          },
-          'origin'
-        )
-      })
-
-      it('requests a new animation frame for the next scroll check', () => {
-        expect.assertions(1)
-
-        buildPaywall(window, document, fakeLockAddress, blocker)
-        lockThatPage()
-
-        scrollLoop(window, document, iframe, 'origin')
-
-        expect(window.requestAnimationFrame).toHaveBeenCalled()
-      })
-
-      it('calls scrollLoop in the requestAnimationFrame callback', () => {
-        expect.assertions(2)
-
-        buildPaywall(window, document, fakeLockAddress, blocker)
-        lockThatPage()
-        iframe.contentWindow.postMessage.mockClear()
-
-        scrollLoop(window, document, iframe, 'origin')
-
-        expect(window.requestAnimationFrame).toHaveBeenCalled()
-        const scrollCb = window.requestAnimationFrame.mock.calls[0][0]
-
-        scrollThatPage(window)
-        scrollCb()
-
-        expect(iframe.contentWindow.postMessage).toHaveBeenCalledTimes(2)
       })
     })
   })

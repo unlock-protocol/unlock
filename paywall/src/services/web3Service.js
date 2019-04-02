@@ -14,10 +14,10 @@ export const Constants = {
 }
 
 export const TransactionType = {
-  LOCK_CREATION: 'LOCK_CREATION',
-  KEY_PURCHASE: 'KEY_PURCHASE',
-  WITHDRAWAL: 'WITHDRAWAL',
-  UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE',
+  LOCK_CREATION: 'Lock Creation',
+  KEY_PURCHASE: 'Key Purchase',
+  WITHDRAWAL: 'Withdrawal',
+  UPDATE_KEY_PRICE: 'Update Key Price',
 }
 
 /**
@@ -111,6 +111,17 @@ export default class Web3Service extends EventEmitter {
           maxNumberOfKeys: +params._maxNumberOfKeys,
           outstandingKeys: 0,
           balance: '0', // Must be expressed in Eth!
+        })
+      },
+      purchaseFor: async (transactionHash, contractAddress, params) => {
+        const owner = params._recipient
+        this.emit('transaction.updated', transactionHash, {
+          key: keyId(contractAddress, owner),
+          lock: contractAddress,
+        })
+        return this.emit('key.saved', keyId(contractAddress, owner), {
+          lock: contractAddress,
+          owner,
         })
       },
     }

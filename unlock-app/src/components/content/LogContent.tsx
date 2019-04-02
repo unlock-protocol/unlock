@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
+import Link from 'next/link'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import BrowserOnly from '../helpers/BrowserOnly'
@@ -8,16 +9,31 @@ import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import CreatorLog from '../creator/CreatorLog'
 import { pageTitle } from '../../constants'
 import withConfig from '../../utils/withConfig'
+/* eslint-disable no-unused-vars */
 import * as UnlockTypes from '../../unlock'
+/* eslint-enable no-unused-vars */
+
+import {
+  CreateLockButton,
+  AccountWrapper,
+} from '../interface/buttons/ActionButton'
+import { showForm } from '../../actions/lockFormVisibility'
 
 interface Props {
   account: UnlockTypes.Account
   network: UnlockTypes.Network
   transactionFeed: UnlockTypes.Transaction[]
   explorerLinks: { [key: string]: string }
+  showForm?: () => any
 }
 
-export const LogContent = ({ account, network, transactionFeed, explorerLinks }: Props) => {
+export const LogContent = ({
+  account,
+  network,
+  transactionFeed,
+  explorerLinks,
+  showForm,
+}: Props) => {
   return (
     <GlobalErrorConsumer>
       <Layout title="Creator Log">
@@ -26,8 +42,18 @@ export const LogContent = ({ account, network, transactionFeed, explorerLinks }:
         </Head>
         {account && (
           <BrowserOnly>
-            <Account network={network} account={account} />
-            <CreatorLog transactionFeed={transactionFeed} explorerLinks={explorerLinks} />
+            <AccountWrapper>
+              <Account network={network} account={account} />
+              <Link href="/dashboard">
+                <CreateLockButton onClick={showForm} id="CreateLockButton">
+                  Create Lock
+                </CreateLockButton>
+              </Link>
+            </AccountWrapper>
+            <CreatorLog
+              transactionFeed={transactionFeed}
+              explorerLinks={explorerLinks}
+            />
           </BrowserOnly>
         )}
       </Layout>
@@ -53,9 +79,9 @@ export const mapStateToProps = (
     (a, b) => b.blockNumber - a.blockNumber
   )
 
-  const explorerLinks: {[key: string] : string} = {}
+  const explorerLinks: { [key: string]: string } = {}
 
-  transactionFeed.forEach((tx) => {
+  transactionFeed.forEach(tx => {
     explorerLinks[tx.hash] = chainExplorerUrlBuilders.etherScan(tx.lock)
   })
 
@@ -67,4 +93,13 @@ export const mapStateToProps = (
   }
 }
 
-export default withConfig(connect(mapStateToProps)(LogContent))
+const mapDispatchToProps = (dispatch: any) => ({
+  showForm: () => dispatch(showForm()),
+})
+
+export default withConfig(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(LogContent)
+)

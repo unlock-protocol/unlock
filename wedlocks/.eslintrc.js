@@ -1,28 +1,34 @@
 module.exports = {
-  extends: ['standard', 'airbnb', 'eslint:recommended'],
+  extends: [
+    'standard',
+    'airbnb',
+    'eslint:recommended',
+    'plugin:prettier/recommended',
+  ],
   env: {
     es6: true,
     node: true,
     browser: true,
-    jest: true
+    jest: true,
   },
   plugins: ['jest', 'promise', 'import'],
   parser: 'babel-eslint',
   settings: {
     'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx']
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
     'import/resolver': {
       // use <root>/tsconfig.json
-      typescript: {}
-    }
+      typescript: {},
+    },
   },
   rules: {
+    'prettier/prettier': 'error',
     'linebreak-style': ['error', 'unix'],
     quotes: [
       'error',
       'single',
-      { avoidEscape: true, allowTemplateLiterals: false }
+      { avoidEscape: true, allowTemplateLiterals: false },
     ],
     'brace-style': 0,
     'react/forbid-prop-types': 2,
@@ -33,6 +39,6 @@ module.exports = {
     'standard/object-curly-even-spacing': 0,
     'standard/array-bracket-even-spacing': 0,
     'promise/prefer-await-to-then': 'warn',
-    'eol-last': ['error']
-  }
+    'eol-last': ['error'],
+  },
 }

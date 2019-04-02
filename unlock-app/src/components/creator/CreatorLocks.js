@@ -10,90 +10,94 @@ import CreatorLockForm from './CreatorLockForm'
 import Errors from '../interface/Errors'
 import Media, { NoPhone, Phone } from '../../theme/media'
 import { createLock } from '../../actions/lock'
+import { hideForm } from '../../actions/lockFormVisibility'
 import { DefaultError } from './FatalError'
+import Svg from '../interface/svg'
 
-export class CreatorLocks extends React.Component {
-  constructor(props, context) {
-    super(props, context)
-    const { showForm } = this.props
-    this.state = {
-      showDashboardForm: !!showForm,
-    }
-    this.toggleForm = this.toggleForm.bind(this)
-  }
-
-  toggleForm() {
-    this.setState(previousState => ({
-      showDashboardForm: !previousState.showDashboardForm,
-    }))
-  }
-
-  render() {
-    const { createLock, lockFeed } = this.props
-    const { showDashboardForm } = this.state
-
-    return (
-      <Locks>
-        <LockHeaderRow id="LockHeaderRow">
-          <LockHeader>Locks</LockHeader>
-          <LockMinorHeader>Name / Address</LockMinorHeader>
-          <LockMinorHeader>Key Duration</LockMinorHeader>
-          <Quantity>Key Quantity</Quantity>
-          <LockMinorHeader>Price</LockMinorHeader>
-          <LockMinorHeader>
-            <NoPhone>Balance</NoPhone>
-            <Phone>Balance</Phone>
-          </LockMinorHeader>
-          <CreateButton onClick={this.toggleForm} id="CreateLockButton">
-            Create Lock
-          </CreateButton>
-        </LockHeaderRow>
-        <Errors />
-        {showDashboardForm && (
-          <CreatorLockForm
-            hideAction={this.toggleForm}
-            createLock={createLock}
-            pending
-          />
-        )}
-        {lockFeed.length > 0 &&
-          lockFeed.map(lock => {
-            return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
-          })}
-        {lockFeed.length === 0 && !showDashboardForm && (
-          <DefaultError
-            title="Create a lock to get started"
-            illustration="/static/images/illustrations/lock.svg"
-            critical={false}
-          >
-            If you have already created some locks, they should appear here
-            momentarily.
-          </DefaultError>
-        )}
-      </Locks>
-    )
-  }
+export const CreatorLocks = props => {
+  const { createLock, lockFeed, loading, formIsVisible, hideForm } = props
+  return (
+    <Locks>
+      <LockHeaderRow id="LockHeaderRow">
+        <LockHeader>Locks</LockHeader>
+        <LockMinorHeader>Name / Address</LockMinorHeader>
+        <LockMinorHeader>Key Duration</LockMinorHeader>
+        <Quantity>Key Quantity</Quantity>
+        <LockMinorHeader>Price</LockMinorHeader>
+        <LockMinorHeader>
+          <NoPhone>Balance</NoPhone>
+          <Phone>Balance</Phone>
+        </LockMinorHeader>
+      </LockHeaderRow>
+      <Errors />
+      {formIsVisible && (
+        <CreatorLockForm
+          hideAction={hideForm}
+          createLock={createLock}
+          pending
+        />
+      )}
+      {lockFeed.length > 0 &&
+        lockFeed.map(lock => {
+          return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
+        })}
+      {lockFeed.length === 0 && !loading && !formIsVisible && (
+        <DefaultError
+          title="Create a lock to get started"
+          illustration="/static/images/illustrations/lock.svg"
+          critical={false}
+        >
+          You have not created any locks yet. Create your first lock in seconds
+          by clicking on the &#8216;Create Lock&#8217; button.
+        </DefaultError>
+      )}
+      {loading && (
+        <LoadingWrapper>
+          <Svg.Loading title="loading" />
+        </LoadingWrapper>
+      )}
+    </Locks>
+  )
 }
 
 CreatorLocks.propTypes = {
   createLock: PropTypes.func.isRequired,
-  showForm: UnlockPropTypes.showDashboardForm,
+  formIsVisible: PropTypes.bool.isRequired,
   lockFeed: PropTypes.arrayOf(UnlockPropTypes.lock),
+  loading: PropTypes.bool,
+  hideForm: PropTypes.func.isRequired,
 }
 
 CreatorLocks.defaultProps = {
-  showForm: false,
+  loading: false,
   lockFeed: [],
 }
 
 const mapDispatchToProps = dispatch => ({
   createLock: lock => dispatch(createLock(lock)),
+  hideForm: () => dispatch(hideForm()),
 })
 
+export const mapStateToProps = ({ loading, lockFormStatus: { visible } }) => {
+  return {
+    loading: !!loading,
+    formIsVisible: visible,
+  }
+}
+
 export default connect(
-  undefined, // no mapStateToProps for CreatorLocks, we only use mapDispatchToProps
+  mapStateToProps,
   mapDispatchToProps
 )(CreatorLocks)
+
+const LoadingWrapper = styled.section`
+  display: grid;
+  justify-items: center;
+  svg {
+    fill: var(--lightgrey);
+    width: 60px;
+  }
+`
 
 const Locks = styled.section`
   display: grid;
@@ -143,29 +147,5 @@ const LockMinorHeader = styled.div`
 export const Quantity = styled(LockMinorHeader)`
   ${Media.phone`
     grid-row: span 2;
-  `};
-`
-
-export const ActionButton = styled.button`
-  background-color: ${props =>
-    props.disabled ? 'var(--grey)' : 'var(--green)'};
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans', sans-serif;
-  border-radius: 4px;
-  cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
-  outline: none;
-  transition: background-color 200ms ease;
-  & :hover {
-    background-color: var(--activegreen);
-  }
-`
-
-const CreateButton = styled(ActionButton)`
-  padding: 10px;
-  align-self: end;
-  ${Media.phone`
-    display: none;
   `};
 `

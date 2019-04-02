@@ -16,18 +16,13 @@ jobs:
           paths:
             - project
 
-  checkout-and-cache-stable-version:
+  promote:
     machine: true
     steps:
       - checkout
       - run:
-          name: "Travel back in time to 4 days ago"
-          command: scripts/get-git-history.sh
-      - run: 'git log -1 --pretty="%H: %cD - %s"'
-      - persist_to_workspace:
-          root: ".."
-          paths:
-            - project
+          name: "Open automated production pull request"
+          command: scripts/open-production-pull-request.sh
 
   build-unlock:
     machine: true
@@ -64,6 +59,20 @@ jobs:
           root: "../caches"
           paths:
             - "unlock-integration.tar"
+
+  unlock-protocol-com-tests:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - *images-caches
+      - *cached-checkout
+      - run:
+          name: Load Unlock Image
+          command: docker load -i  "../caches/unlock.tar"
+      - run:
+          name: Creator Dashboard tests
+          command: scripts/tests.sh unlock-protocol-com
 
   unlock-app-tests:
     machine: true
@@ -186,6 +195,9 @@ jobs:
       - *images-caches
       - *cached-checkout
       - run:
+          name: Set ENV_TARGET
+          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
+      - run:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
@@ -195,6 +207,26 @@ jobs:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" unlock-app netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
+  deploy-unlock-protocol-com-netlify:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - *images-caches
+      - *cached-checkout
+      - run:
+          name: Set ENV_TARGET
+          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
+      - run:
+          name: Set IS_FORKED_PR
+          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
+      - run:
+          name: Load Unlock Image
+          command: docker load -i  "../caches/unlock.tar"
+      - run:
+          name: Deploy to Netlify
+          command: scripts/deploy.sh "$ENV_TARGET" unlock-protocol-com netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
+
   deploy-paywall-netlify:
     machine: true
     environment:
@@ -202,6 +234,9 @@ jobs:
     steps:
       - *images-caches
       - *cached-checkout
+      - run:
+          name: Set ENV_TARGET
+          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
       - run:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
@@ -275,7 +310,7 @@ jobs:
 
 workflows:
   version: 2
-  deploy: # The deploy workflow will not re-run tests, just build an image with the "older" version and deploy it
+  promote: # The promote workflow will checkout an old version of master (4 days old) and rebase it onto the production branch
     triggers:
       - schedule:
           cron: "30 20 * * 2" # use cron syntax to set the schedule trigger on Teusday at 430pm ET (2030 UTC)
@@ -284,18 +319,7 @@ workflows:
               only:
                 - master
     jobs:
-      - checkout-and-cache-stable-version
-      - build-unlock:
-          requires:
-            - checkout-and-cache-stable-version
-      - deploy-unlock-app-netlify:
-          context: PRODUCTION # see config on CircleCI
-          requires:
-            - build-unlock
-      - deploy-paywall-netlify:
-          context: PRODUCTION # see config on CircleCI
-          requires:
-            - build-unlock
+      - promote
 
   build-test-and-deploy:
     jobs:
@@ -306,6 +330,9 @@ workflows:
       - build-unlock-integration:
           requires:
             - checkout-and-cache
+      - unlock-protocol-com-tests:
+          requires:
+            - build-unlock
       - unlock-app-tests:
           requires:
             - build-unlock
@@ -331,24 +358,21 @@ workflows:
       - deploy-unlock-app-netlify:
           requires:
             - unlock-app-tests
-            - smart-contracts-tests
-            - locksmith-tests
-            - paywall-tests
-            - wedlocks-tests
             - integration-tests
       - deploy-paywall-netlify:
           requires:
-            - unlock-app-tests
-            - smart-contracts-tests
-            - locksmith-tests
             - paywall-tests
-            - wedlocks-tests
+            - integration-tests
+      - deploy-unlock-protocol-com-netlify:
+          requires:
+            - unlock-protocol-com-tests
             - integration-tests
       - promote-unlock-image:
           filters:
             branches:
               only: master
           requires:
+            - unlock-protocol-com-tests
             - unlock-app-tests
             - smart-contracts-tests
             - locksmith-tests
@@ -360,6 +384,7 @@ workflows:
             branches:
               only: master
           requires:
+            - unlock-protocol-com-tests
             - unlock-app-tests
             - smart-contracts-tests
             - locksmith-tests
@@ -371,6 +396,7 @@ workflows:
             branches:
               only: master
           requires:
+            - unlock-protocol-com-tests
             - unlock-app-tests
             - smart-contracts-tests
             - locksmith-tests
@@ -382,6 +408,7 @@ workflows:
             branches:
               only: master
           requires:
+            - unlock-protocol-com-tests
             - unlock-app-tests
             - smart-contracts-tests
             - locksmith-tests

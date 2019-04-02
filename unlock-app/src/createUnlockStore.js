@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
+
 import {
   routerReducer,
   createRouterMiddleware,
@@ -14,6 +15,9 @@ import keysReducer, {
 import keysPagesReducer, {
   initialState as defaultKeysPages,
 } from './reducers/keysPagesReducer'
+import loadingReducer, {
+  initialState as defaultLoading,
+} from './reducers/loadingReducer'
 import locksReducer, {
   initialState as defaultLocks,
 } from './reducers/locksReducer'
@@ -41,6 +45,9 @@ import modalReducer, {
 import walletStatusReducer, {
   initialState as defaultWalletStatus,
 } from './reducers/walletStatusReducer'
+import lockFormVisibilityReducer, {
+  initialState as defaultLockFormVisibility,
+} from './reducers/lockFormVisibilityReducer'
 
 const config = configure()
 
@@ -54,6 +61,7 @@ export const createUnlockStore = (
     account: accountReducer,
     keys: keysReducer,
     keysForLockByPage: keysPagesReducer,
+    loading: loadingReducer,
     locks: locksReducer,
     modals: modalReducer,
     network: networkReducer,
@@ -62,6 +70,7 @@ export const createUnlockStore = (
     currency: currencyReducer,
     errors: errorsReducer,
     walletStatus: walletStatusReducer,
+    lockFormStatus: lockFormVisibilityReducer,
   }
 
   // Cleanup the defaultState to remove all null values so that we do not overwrite existing
@@ -78,6 +87,7 @@ export const createUnlockStore = (
       account: defaultAccount,
       keys: defaultKeys,
       keysForLockByPage: defaultKeysPages,
+      loading: defaultLoading,
       locks: defaultLocks,
       modals: defaultModals,
       network: defaultNetwork,
@@ -86,6 +96,7 @@ export const createUnlockStore = (
       currency: defaultCurrency,
       errors: defaultError,
       walletStatus: defaultWalletStatus,
+      lockFormStatus: defaultLockFormVisibility,
     },
     {
       provider: Object.keys(config.providers)[0],

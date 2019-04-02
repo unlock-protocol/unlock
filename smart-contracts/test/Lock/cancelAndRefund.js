@@ -23,7 +23,7 @@ contract('Lock / cancelAndRefund', accounts => {
     const purchases = keyOwners.map(account => {
       return lock.purchaseFor(account, {
         value: keyPrice.toFixed(),
-        from: account
+        from: account,
       })
     })
     await Promise.all(purchases)
@@ -31,8 +31,9 @@ contract('Lock / cancelAndRefund', accounts => {
   })
 
   it('should return the correct penalty', async () => {
-    const penalty = await lock.refundPenaltyDenominator.call()
-    assert.equal(penalty, 10) // default of 10%
+    const numerator = new BigNumber(await lock.refundPenaltyNumerator.call())
+    const denominator = await lock.refundPenaltyDenominator.call()
+    assert.equal(numerator.div(denominator).toFixed(), 0.1) // default of 10%
   })
 
   it('the amount of refund should be less than the original keyPrice when purchased normally', async () => {
@@ -68,7 +69,7 @@ contract('Lock / cancelAndRefund', accounts => {
         await lock.getCancelAndRefundValueFor.call(keyOwners[0])
       )
       txObj = await lock.cancelAndRefund({
-        from: keyOwners[0]
+        from: keyOwners[0],
       })
       withdrawalAmount = new BigNumber(
         await web3.eth.getBalance(lock.address)
@@ -121,31 +122,40 @@ contract('Lock / cancelAndRefund', accounts => {
     let tx
 
     before(async () => {
-      tx = await lock.updateRefundPenaltyDenominator(5) // 20%
+      tx = await lock.updateRefundPenalty(2, 10) // 20%
     })
 
     it('should trigger an event', async () => {
       const event = tx.logs.find(log => {
-        return log.event === 'RefundPenaltyDenominatorChanged'
+        return log.event === 'RefundPenaltyChanged'
       })
       assert.equal(
-        new BigNumber(event.args.oldPenaltyDenominator).toFixed(),
+        new BigNumber(event.args.oldRefundPenaltyNumerator).toFixed(),
+        1
+      )
+      assert.equal(
+        new BigNumber(event.args.oldRefundPenaltyDenominator).toFixed(),
         10
       )
       assert.equal(
+        new BigNumber(event.args.refundPenaltyNumerator).toFixed(),
+        2
+      )
+      assert.equal(
         new BigNumber(event.args.refundPenaltyDenominator).toFixed(),
-        5
+        10
       )
     })
 
     it('should return the correct penalty', async () => {
-      const penalty = await lock.refundPenaltyDenominator.call()
-      assert.equal(penalty, 5) // updated to 20%
+      const numerator = new BigNumber(await lock.refundPenaltyNumerator.call())
+      const denominator = await lock.refundPenaltyDenominator.call()
+      assert.equal(numerator.div(denominator).toFixed(), 0.2) // updated to 20%
     })
 
     it('should still allow refund', async () => {
       const txObj = await lock.cancelAndRefund({
-        from: keyOwners[2]
+        from: keyOwners[2],
       })
       const refund = new BigNumber(txObj.logs[0].args.refund)
       assert(refund.gt(0))
@@ -155,11 +165,11 @@ contract('Lock / cancelAndRefund', accounts => {
   describe('should fail when', () => {
     it('should fail if the Lock owner withdraws too much funds', async () => {
       await lock.withdraw({
-        from: lockOwner
+        from: lockOwner,
       })
       await shouldFail(
         lock.cancelAndRefund({
-          from: keyOwners[3]
+          from: keyOwners[3],
         }),
         ''
       )
@@ -167,11 +177,11 @@ contract('Lock / cancelAndRefund', accounts => {
 
     it('the key is expired', async () => {
       await lock.expireKeyFor(keyOwners[3], {
-        from: lockOwner
+        from: lockOwner,
       })
       await shouldFail(
         lock.cancelAndRefund({
-          from: keyOwners[3]
+          from: keyOwners[3],
         }),
         'KEY_NOT_VALID'
       )
@@ -180,10 +190,14 @@ contract('Lock / cancelAndRefund', accounts => {
     it('the owner does not have a key', async () => {
       await shouldFail(
         lock.cancelAndRefund({
-          from: accounts[7]
+          from: accounts[7],
         }),
         'KEY_NOT_VALID'
       )
+    })
+
+    it('attempt to set the denominator to 0', async () => {
+      await shouldFail(lock.updateRefundPenalty(1, 0), 'INVALID_RATE')
     })
   })
 })

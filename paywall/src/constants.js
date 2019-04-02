@@ -28,10 +28,10 @@ export const pageTitle = title => {
  * Transaction types
  */
 export const TRANSACTION_TYPES = {
-  LOCK_CREATION: 'LOCK_CREATION',
-  KEY_PURCHASE: 'KEY_PURCHASE',
-  WITHDRAWAL: 'WITHDRAWAL',
-  UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE',
+  LOCK_CREATION: 'Lock Creation',
+  KEY_PURCHASE: 'Key Purchase',
+  WITHDRAWAL: 'Withdrawal',
+  UPDATE_KEY_PRICE: 'Update Key Price',
 }
 
 // used in defining the helpers for LOCK_PATH_NAME_REGEXP and ACCOUNT_REGEXP
@@ -105,3 +105,5 @@ export const MAX_UINT =
 
 // the number of ms between checking for account changes in walletService
 export const POLLING_INTERVAL = 2000
+// the length of time to consider an optimistic key purchase to have become pessimistic
+export const OPTIMISM_POLLING_INTERVAL = 15000

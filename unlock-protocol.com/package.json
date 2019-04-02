@@ -1,0 +1,90 @@
+{
+  "name": "unlock-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@babel/core": "7.3.4",
+    "@storybook/addon-actions": "^4.1.13",
+    "@storybook/addon-knobs": "^4.1.13",
+    "@storybook/addon-storyshots": "^4.1.13",
+    "@storybook/addon-viewport": "^4.1.13",
+    "@storybook/addons": "^4.1.13",
+    "@storybook/react": "4.1.13",
+    "@types/jest": "^24.0.11",
+    "@types/next": "^8.0.3",
+    "@types/react": "^16.8.8",
+    "@types/storybook__react": "^4.0.1",
+    "@types/styled-components": "^4.1.12",
+    "@zeit/next-source-maps": "0.0.3",
+    "@zeit/next-typescript": "^1.1.1",
+    "babel-loader": "^8.0.4",
+    "babel-plugin-require-context-hook": "^1.0.0",
+    "babel-plugin-styled-components": "1.10.0",
+    "cross-env": "^5.2.0",
+    "fork-ts-checker-webpack-plugin": "^1.0.0",
+    "isomorphic-unfetch": "^3.0.0",
+    "jest-dom": "^3.1.0",
+    "jest-styled-components": "^6.3.1",
+    "next": "^8.0.3",
+    "path-match": "^1.2.4",
+    "prop-types": "^15.6.1",
+    "raw-loader": "^2.0.0",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "react-showdown": "^1.6.0",
+    "react-test-renderer": "16.8.3",
+    "react-testing-library": "^6.0.0",
+    "rss": "^1.2.2",
+    "run-script-os": "^1.0.5",
+    "storybook-chromatic": "^1.3.0",
+    "styled-components": "^4.1.3",
+    "terser": "^3.16.1",
+    "ts-jest": "^24.0.0",
+    "typescript": "^3.3.3333",
+    "yaml-front-matter": "^4.0.0"
+  },
+  "devDependencies": {
+    "@svgr/cli": "^4.1.0",
+    "nodemon": "^1.18.9"
+  },
+  "engines": {
+    "node": "=8.11.4"
+  },
+  "engineStrict": true,
+  "scripts": {
+    "predev": "npm run build-blog",
+    "dev": "nodemon src/server.js",
+    "build": "next build src",
+    "build-blog": "node scripts/build-blog.js",
+    "deploy": "next export src -o out",
+    "deploy-netlify": "./scripts/deploy-netlify.sh",
+    "start": "cross-env NODE_ENV=production node src/server.js",
+    "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
+    "lint": "eslint .",
+    "storybook": "start-storybook -p 9001 -c .storybook -s src",
+    "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/components/interface/svg/template.js --no-dimensions -d src/components/interface/svg/ src/static/images/svg/",
+    "ci": "npm run lint && npm test",
+    "tsc": "tsc"
+  },
+  "lint-staged": {
+    "linters": {
+      "*.{js,ts,tsx}": [
+        "eslint"
+      ]
+    },
+    "ignore": [
+      "*.js.snap"
+    ]
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src/server.js"
+    ]
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

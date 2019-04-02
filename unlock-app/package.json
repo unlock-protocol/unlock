@@ -8,7 +8,6 @@
     "@storybook/addon-knobs": "^4.1.13",
     "@storybook/addon-storyshots": "^4.1.13",
     "@storybook/addon-viewport": "^4.1.13",
-    "@storybook/addons": "^4.1.13",
     "@storybook/react": "4.1.13",
     "@types/jest": "^24.0.11",
     "@types/next": "^8.0.3",
@@ -16,6 +15,7 @@
     "@types/react-redux": "^7.0.3",
     "@types/storybook__react": "^4.0.1",
     "@types/styled-components": "^4.1.12",
+    "@unlock-protocol/unlock-js": "0.0.2",
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "^1.1.1",
     "axios": "^0.18.0",
@@ -26,12 +26,9 @@
     "connected-next-router": "^1.0.1",
     "cross-env": "^5.2.0",
     "email-validator": "^2.0.4",
-    "ethereumjs-util": "^6.0.0",
     "fork-ts-checker-webpack-plugin": "^1.0.0",
-    "history": "^4.7.2",
     "isomorphic-unfetch": "^3.0.0",
     "jest-dom": "^3.1.0",
-    "jest-fetch-mock": "^2.1.1",
     "jest-mock-axios": "^2.1.11",
     "jest-styled-components": "^6.3.1",
     "jsonwebtoken": "^8.4.0",
@@ -44,46 +41,33 @@
     "react-dom": "^16.8.3",
     "react-jazzicon": "^0.1.2",
     "react-redux": "^6.0.1",
-    "react-router-dom": "^4.2.2",
-    "react-router-redux": "^5.0.0-alpha.9",
-    "react-showdown": "^1.6.0",
     "react-test-renderer": "16.8.3",
     "react-testing-library": "^6.0.0",
     "redux": "^4.0.1",
-    "rollup": "^1.6.0",
-    "rollup-plugin-babel": "^4.3.2",
-    "rollup-plugin-terser": "^4.0.4",
     "rss": "^1.2.2",
     "run-script-os": "^1.0.5",
     "storybook-chromatic": "^1.3.0",
-    "storybook-react-router": "^1.0.2",
     "styled-components": "^4.1.3",
-    "terser": "^3.16.1",
     "ts-jest": "^24.0.0",
     "typescript": "^3.3.3333",
     "unlock-abi-0": "^1.0.1",
     "web3": "1.0.0-beta.37",
-    "web3-utils": "1.0.0-beta.37",
-    "yaml-front-matter": "^4.0.0"
+    "web3-utils": "1.0.0-beta.37"
   },
   "devDependencies": {
     "@svgr/cli": "^4.1.0",
     "depcheck": "^0.7.1",
     "nodemon": "^1.18.9",
-    "npm-check": "^5.9.0",
-    "react-router-test-context": "^0.1.0",
-    "web3-eth-abi": "1.0.0-beta.37"
+    "npm-check": "^5.9.0"
   },
   "engines": {
     "node": "=8.11.4"
   },
   "engineStrict": true,
   "scripts": {
-    "predev": "npm run start-ganache && npm run build-paywall && npm run build-blog && npm run deploy-unlock-contract",
+    "predev": "npm run start-ganache && npm run deploy-unlock-contract",
     "dev": "nodemon src/server.js",
-    "build": "npm run build-paywall && next build src",
-    "build-blog": "node scripts/build-blog.js",
-    "build-paywall": "cross-env NODE_ENV=production rollup -c rollup.paywall.config.js -o ./src/static/paywall.min.js",
+    "build": "next build src",
     "deploy": "next export src -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-unlock-contract": "node scripts/deploy-unlock.js",
@@ -92,28 +76,22 @@
     "start-ganache:darwin:freebsd:linux:sunos": "cd .. && (npm run start-ganache -- -b 3 &) ",
     "start-ganache:win32": "cd .. && (START /b npm run start-ganache -- -b 3 ) ",
     "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
-    "lint": "eslint .",
-    "reformat": "prettier-eslint \"src/**/*.js\" --write",
-    "fail-pending-changes": "../scripts/pending-changes.sh",
+    "lint": "eslint --ext .tsx,.ts,.js src/",
     "storybook": "start-storybook -p 9001 -c .storybook -s src",
     "chromatic": "chromatic test --exit-zero-on-changes",
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/components/interface/svg/template.js --no-dimensions -d src/components/interface/svg/ src/static/images/svg/",
-    "eslint-check": "eslint --print-config . | eslint-config-prettier-check",
-    "ci": "npm run lint && npm test && npm run reformat && npm run fail-pending-changes",
+    "ci": "npm run lint && npm test",
     "depcheck": "depcheck --parsers=\"*.js:react,*.js:es6\"",
     "npm-check": "npm-check -u",
     "tsc": "tsc"
   },
   "lint-staged": {
     "linters": {
-      "*.js": [
-        "prettier-eslint --write",
+      "*.{js,ts,tsx}": [
+        "eslint --fix",
         "git add"
       ]
-    },
-    "ignore": [
-      "*.js.snap"
-    ]
+    }
   },
   "nodemonConfig": {
     "watch": [

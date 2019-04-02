@@ -22,14 +22,14 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
     // first, let's purchase a brand new key that we can transfer
     await locks['FIRST'].purchaseFor(from, {
       value: Units.convert('0.01', 'eth', 'wei'),
-      from
+      from,
     })
     ID = await locks['FIRST'].getTokenIdFor.call(from)
   })
 
   it('should work if no data is passed in', async () => {
     await locks['FIRST'].safeTransferFrom(from, to, ID, {
-      from
+      from,
     })
     let ownerOf = await locks['FIRST'].ownerOf.call(ID)
     assert.equal(ownerOf, to)
@@ -38,11 +38,18 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
   it('should work if some data is passed in', async () => {
     await locks['FIRST'].purchaseFor(accounts[7], {
       value: Units.convert('0.01', 'eth', 'wei'),
-      from: accounts[7]
+      from: accounts[7],
     })
     ID = await locks['FIRST'].getTokenIdFor.call(accounts[7])
-    await locks['FIRST'].methods['safeTransferFrom(address,address,uint256,bytes)'](
-      accounts[7], accounts[6], ID, Web3Utils.toHex('Julien'), { from: accounts[7] }
+    const method = 'safeTransferFrom(address,address,uint256,bytes)'
+    await locks['FIRST'].methods[method](
+      accounts[7],
+      accounts[6],
+      ID,
+      Web3Utils.toHex('Julien'),
+      {
+        from: accounts[7],
+      }
     )
     let ownerOf = await locks['FIRST'].ownerOf.call(ID)
     assert.equal(ownerOf, accounts[6])
@@ -52,14 +59,14 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
   it('should fail if trying to transfer a key to a contract which does not implement onERC721Received', async () => {
     await locks['FIRST'].purchaseFor(accounts[5], {
       value: Units.convert('0.01', 'eth', 'wei'),
-      from: accounts[5]
+      from: accounts[5],
     })
     ID = await locks['FIRST'].getTokenIdFor.call(accounts[5])
     // A contract which does NOT implement onERC721Received:
     let nonCompliantContract = unlock.address
     await shouldFail(
       locks['FIRST'].safeTransferFrom(accounts[5], nonCompliantContract, ID, {
-        from: accounts[5]
+        from: accounts[5],
       }),
       'NO_FALLBACK'
     )

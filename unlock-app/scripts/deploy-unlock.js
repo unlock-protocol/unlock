@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
 
+// TODO: move into unlock-js
+
 const Web3 = require('web3')
 const Unlock = require('unlock-abi-0').Unlock
 const net = require('net')
@@ -18,14 +20,10 @@ const serverIsUp = (delay, maxAttempts) =>
   new Promise((resolve, reject) => {
     let attempts = 1
     const tryConnecting = () => {
-      const socket = net.connect(
-        port,
-        host,
-        () => {
-          resolve()
-          return socket.end() // clean-up
-        }
-      )
+      const socket = net.connect(port, host, () => {
+        resolve()
+        return socket.end() // clean-up
+      })
 
       socket.on('error', error => {
         if (error.code === 'ECONNREFUSED') {

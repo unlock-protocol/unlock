@@ -22,7 +22,7 @@ contract('Lock / grantKeys', accounts => {
     describe('can grant a key for a new user', () => {
       before(async () => {
         tx = await lock.grantKey(keyOwner, validExpirationTimestamp, {
-          from: lockOwner
+          from: lockOwner,
         })
       })
 
@@ -46,7 +46,7 @@ contract('Lock / grantKeys', accounts => {
 
       before(async () => {
         tx = await lock.grantKey(keyOwner, extendedExpiration, {
-          from: lockOwner
+          from: lockOwner,
         })
       })
 
@@ -70,7 +70,7 @@ contract('Lock / grantKeys', accounts => {
 
       before(async () => {
         tx = await lock.grantKeys(keyOwnerList, validExpirationTimestamp, {
-          from: lockOwner
+          from: lockOwner,
         })
       })
 
@@ -91,7 +91,7 @@ contract('Lock / grantKeys', accounts => {
       const keyOwnerList = [accounts[6], accounts[7]]
       const expirationDates = [
         validExpirationTimestamp,
-        validExpirationTimestamp + 42
+        validExpirationTimestamp + 42,
       ]
 
       before(async () => {
@@ -127,7 +127,7 @@ contract('Lock / grantKeys', accounts => {
     it('should fail to grant key to the 0 address', async () => {
       await shouldFail(
         lock.grantKey(Web3Utils.padLeft(0, 40), validExpirationTimestamp, {
-          from: lockOwner
+          from: lockOwner,
         }),
         'INVALID_ADDRESS'
       )
@@ -136,7 +136,7 @@ contract('Lock / grantKeys', accounts => {
     it('should fail to reduce the time remaining on a key', async () => {
       await shouldFail(
         lock.grantKey(keyOwner, validExpirationTimestamp - 1, {
-          from: lockOwner
+          from: lockOwner,
         }),
         'ALREADY_OWNS_KEY'
       )

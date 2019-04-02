@@ -11,6 +11,7 @@ import WalletCheckOverlay from '../../components/interface/FullScreenModals'
 
 const account = {
   address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
+  balance: '5',
 }
 const network = {
   name: 1984,
@@ -79,7 +80,11 @@ const currency = {
   USD: 195.99,
 }
 
-const store = createUnlockStore({
+const lockFormStatus = {
+  visible: false,
+}
+
+const state = {
   account,
   network,
   router,
@@ -89,7 +94,10 @@ const store = createUnlockStore({
   walletStatus: {
     waiting: false,
   },
-})
+  lockFormStatus,
+}
+
+const store = createUnlockStore(state)
 
 const waitingStore = createUnlockStore({
   account,
@@ -101,12 +109,14 @@ const waitingStore = createUnlockStore({
   walletStatus: {
     waiting: true,
   },
+  lockFormStatus,
 })
 
 const noUserStore = createUnlockStore({
   account: undefined,
   network,
   router,
+  lockFormStatus,
 })
 
 const ConfigProvider = ConfigContext.Provider
@@ -124,29 +134,31 @@ storiesOf('DashboardContent', module)
   .add('the dashboard', () => {
     // The overlay should not render here, because walletStatus:waiting is set
     // to false in the state
-    const lockFeed = mapStateToProps({ locks, transactions, account, network })
-      .lockFeed
+    const props = mapStateToProps(state)
     return (
       <Provider store={store}>
         <WalletCheckOverlay />
         <DashboardContent
           network={network}
           account={account}
-          lockFeed={lockFeed}
+          hideForm={() => {}}
+          showForm={() => {}}
+          {...props}
         />
       </Provider>
     )
   })
   .add('the dashboard, waiting for wallet', () => {
-    const lockFeed = mapStateToProps({ locks, transactions, account, network })
-      .lockFeed
+    const props = mapStateToProps(state)
     return (
       <Provider store={waitingStore}>
         <WalletCheckOverlay />
         <DashboardContent
           network={network}
           account={account}
-          lockFeed={lockFeed}
+          hideForm={() => {}}
+          showForm={() => {}}
+          {...props}
         />
       </Provider>
     )
@@ -154,14 +166,27 @@ storiesOf('DashboardContent', module)
   .add('dashboard, no user account', () => {
     return (
       <Provider store={noUserStore}>
-        <DashboardContent network={network} account={account} />
+        <DashboardContent
+          hideForm={() => {}}
+          showForm={() => {}}
+          network={network}
+          account={null}
+          formIsVisible={false}
+        />
       </Provider>
     )
   })
   .add('dashboard, no locks', () => {
     return (
       <Provider store={store}>
-        <DashboardContent network={network} account={account} lockFeed={[]} />
+        <DashboardContent
+          hideForm={() => {}}
+          showForm={() => {}}
+          network={network}
+          account={account}
+          lockFeed={[]}
+          formIsVisible={false}
+        />
       </Provider>
     )
   })

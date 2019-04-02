@@ -21,7 +21,7 @@ export const route = (args, callback) => {
       subject: template.subject(args.params),
       text: template.text(args.params),
       // optional extra arguments for SendRawEmail
-      html: null // TODO: support later
+      html: null, // TODO: support later
     },
     (err, info) => {
       return callback(err, info)
@@ -30,5 +30,5 @@ export const route = (args, callback) => {
 }
 
 export default {
-  route
+  route,
 }

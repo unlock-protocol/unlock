@@ -1,4 +1,4 @@
-stat build || mkdir build
+mkdir -p build && mkdir -p builds
 
 if [ -z "$1" ]
   then
@@ -8,4 +8,6 @@ if [ -z "$1" ]
 fi
 
 # Archive artifacts
-zip ${archive} -r build package.json package-lock.json
+cd 'build'
+zip ${archive} -r . ../package.json ../package-lock.json ../.npmrc ../.ebextensions --exclude=*node_modules*
+cd '..'

@@ -1,14 +1,7 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
 import { LOCATION_CHANGE } from 'connected-react-router'
-import {
-  ADD_LOCK,
-  CREATE_LOCK,
-  UPDATE_LOCK,
-  addLock,
-  updateLock,
-  createLock,
-} from '../actions/lock'
+import { ADD_LOCK, UPDATE_LOCK, addLock, updateLock } from '../actions/lock'
 import { updateKey, addKey } from '../actions/key'
 import { updateAccount, SET_ACCOUNT } from '../actions/accounts'
 import { setError } from '../actions/error'
@@ -18,16 +11,13 @@ import {
   ADD_TRANSACTION,
   NEW_TRANSACTION,
 } from '../actions/transaction'
-import { PGN_ITEMS_PER_PAGE } from '../constants'
 
 import Web3Service from '../services/web3Service'
-import {
-  SET_KEYS_ON_PAGE_FOR_LOCK,
-  setKeysOnPageForLock,
-} from '../actions/keysPages'
 import { lockRoute } from '../utils/routes'
 
 import configure from '../config'
+import { SET_PROVIDER } from '../actions/provider'
+import { SET_NETWORK } from '../actions/network'
 
 const {
   readOnlyProvider,
@@ -113,23 +103,8 @@ export default function web3Middleware({ getState, dispatch }) {
     dispatch(setError(error.message))
   })
 
-  web3Service.on('keys.page', (lock, page, keys) => {
-    dispatch(setKeysOnPageForLock(page, lock, keys))
-  })
-
   return function(next) {
     return function(action) {
-      // When the keys for a lock are loaded on the dashboard
-      if (action.type === SET_KEYS_ON_PAGE_FOR_LOCK) {
-        if (!action.keys) {
-          web3Service.getKeysForLockOnPage(
-            action.lock,
-            action.page,
-            PGN_ITEMS_PER_PAGE
-          )
-        }
-      }
-
       if (action.type === ADD_TRANSACTION) {
         web3Service.getTransaction(action.transaction.hash)
       }
@@ -138,14 +113,16 @@ export default function web3Middleware({ getState, dispatch }) {
         web3Service.getTransaction(action.transaction.hash, action.transaction)
       }
 
-      if (action.type === CREATE_LOCK && !action.lock.address) {
-        web3Service.generateLockAddress().then(address => {
-          action.lock.address = address
-          dispatch(createLock(action.lock))
-        })
-      }
-
       next(action)
+
+      if (action.type === SET_PROVIDER || action.type === SET_NETWORK) {
+        // for both of these actions, the lock state is invalid, and must be refreshed.
+        // Location was changed, get the matching lock
+        const { lockAddress } = lockRoute(getState().router.location.pathname)
+        if (lockAddress) {
+          web3Service.getLock(lockAddress)
+        }
+      }
 
       // note: this needs to be after the reducer has seen it, because refreshAccountBalance
       // triggers 'account.update' which dispatches UPDATE_ACCOUNT. The reducer assumes that

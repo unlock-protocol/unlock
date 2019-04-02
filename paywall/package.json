@@ -12,12 +12,10 @@
     "start": "cross-env NODE_ENV=production node src/server.js",
     "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint .",
-    "reformat": "prettier-eslint \"src/**/*.js\" --write",
-    "fail-pending-changes": "../scripts/pending-changes.sh",
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/components/interface/svg/template.js --no-dimensions -d src/components/interface/svg/ src/static/images/svg/",
-    "build-paywall": "cross-env NODE_ENV=production rollup -c rollup.paywall.config.js -o ./src/static/paywall.min.js",
+    "build-paywall": "cross-env NODE_ENV=production rollup -c rollup.paywall.config.js",
     "storybook": "start-storybook -p 9002 -c .storybook -s .",
-    "ci": "npm run lint && npm test && npm run reformat && npm run fail-pending-changes"
+    "ci": "npm run lint && npm test"
   },
   "dependencies": {
     "@babel/core": "^7.2.2",
@@ -30,6 +28,7 @@
     "@types/node": "^10.12.24",
     "@types/react": "^16.8.2",
     "@types/react-dom": "^16.8.0",
+    "@unlock-protocol/unlock-js": "0.0.3",
     "@zeit/next-source-maps": "0.0.3",
     "axios": "^0.18.0",
     "babel-plugin-require-context-hook": "^1.0.0",
@@ -72,14 +71,10 @@
   },
   "lint-staged": {
     "linters": {
-      "*.js": [
-        "prettier-eslint --write",
-        "git add"
+      "*.{js,ts,tsx}": [
+        "eslint"
       ]
-    },
-    "ignore": [
-      "*.js.snap"
-    ]
+    }
   },
   "nodemonConfig": {
     "watch": [

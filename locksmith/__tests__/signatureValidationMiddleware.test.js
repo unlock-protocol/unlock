@@ -1,5 +1,6 @@
+import signatureValidationMiddleware from '../src/middlewares/signatureValidationMiddleware'
+
 var httpMocks = require('node-mocks-http')
-var signatureValidationMiddleware = require('../src/middlewares/signatureValidationMiddleware')
 
 let request, response
 let validSignature =

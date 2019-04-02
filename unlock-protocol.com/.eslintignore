@@ -1,0 +1,6 @@
+/build
+/coverage
+/src/.next
+/out
+/.cache
+paywall.min.js
