@@ -46,21 +46,21 @@ const config = {
   providers: { HTTP: {}, Metamask: {} },
 }
 
+const fakeWindow = {
+  document: { body: { style: {} } },
+  location: { pathname: '/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e' },
+  matchMedia: global.window
+    ? window.matchMedia.bind(window)
+    : () => ({
+        addListener: () => {},
+        removeListener: () => {},
+      }),
+}
+
 storiesOf('StaticDemo', module)
   .addDecorator(getStory => (
     <ConfigContext.Provider value={config}>
-      <WindowContext.Provider
-        value={{
-          document: { body: { style: {} } },
-          location: { pathname: '/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e' },
-          matchMedia: global.window
-            ? window.matchMedia.bind(window)
-            : () => ({
-                addListener: () => {},
-                removeListener: () => {},
-              }),
-        }}
-      >
+      <WindowContext.Provider value={fakeWindow}>
         <Provider store={store}>{getStory()}</Provider>
       </WindowContext.Provider>
     </ConfigContext.Provider>
