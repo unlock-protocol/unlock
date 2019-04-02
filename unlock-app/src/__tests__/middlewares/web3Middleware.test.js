@@ -13,6 +13,7 @@ import { SET_ERROR } from '../../actions/error'
 import { SET_KEYS_ON_PAGE_FOR_LOCK } from '../../actions/keysPages'
 import { PGN_ITEMS_PER_PAGE, UNLIMITED_KEYS_COUNT } from '../../constants'
 import { START_LOADING, DONE_LOADING } from '../../actions/loading'
+import configure from '../../config'
 
 /**
  * Fake state
@@ -39,13 +40,14 @@ const network = {
  * Taken from https://redux.js.org/recipes/writing-tests#middleware
  */
 const create = () => {
+  const config = configure()
   const store = {
     getState: jest.fn(() => state),
     dispatch: jest.fn(() => true),
   }
   const next = jest.fn()
 
-  const handler = web3Middleware(store)
+  const handler = web3Middleware(config)(store)
 
   const invoke = action => handler(next)(action)
 

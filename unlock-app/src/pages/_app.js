@@ -22,13 +22,13 @@ const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
 function getOrCreateStore(initialState, path) {
   const middlewares = [
-    web3Middleware,
-    currencyConversionMiddleware,
-    walletMiddleware,
+    web3Middleware(config),
+    currencyConversionMiddleware(config),
+    walletMiddleware(config),
   ]
 
   if (config.services.storage) {
-    middlewares.push(storageMiddleware)
+    middlewares.push(storageMiddleware(config))
   }
 
   // Always make a new store if server, otherwise state is shared between requests
