@@ -2,10 +2,14 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { Provider } from 'react-redux'
 import LayoutButtons from '../../components/interface/buttons/layout'
+import { ConfigContext } from '../../utils/withConfig'
 
 import createUnlockStore from '../../createUnlockStore'
+import configure from '../../config'
 
 const store = createUnlockStore({})
+
+const config = configure()
 
 storiesOf('Buttons/Layout Buttons', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
@@ -13,7 +17,12 @@ storiesOf('Buttons/Layout Buttons', module)
     return <LayoutButtons.Github />
   })
   .add('About', () => {
-    return <LayoutButtons.About />
+    const ConfigProvider = ConfigContext.Provider
+    return (
+      <ConfigProvider value={config}>
+        <LayoutButtons.About />
+      </ConfigProvider>
+    )
   })
   .add('Bars', () => {
     return <LayoutButtons.Bars />
@@ -28,7 +37,12 @@ storiesOf('Buttons/Layout Buttons', module)
     return <LayoutButtons.Close as="button" size="16px" />
   })
   .add('Jobs', () => {
-    return <LayoutButtons.Jobs />
+    const ConfigProvider = ConfigContext.Provider
+    return (
+      <ConfigProvider value={config}>
+        <LayoutButtons.Jobs />
+      </ConfigProvider>
+    )
   })
   .add('Newsletter', () => {
     return <LayoutButtons.Newsletter />

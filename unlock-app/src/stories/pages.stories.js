@@ -3,12 +3,9 @@ import { storiesOf } from '@storybook/react'
 import { Provider } from 'react-redux'
 
 import Home from '../pages/home'
-import About from '../pages/about'
-import Jobs from '../pages/jobs'
-import Terms from '../pages/terms'
-import Privacy from '../pages/privacy'
 import createUnlockStore from '../createUnlockStore'
 import { ConfigContext } from '../utils/withConfig'
+import configure from '../config'
 
 const store = createUnlockStore({
   currency: {
@@ -18,9 +15,9 @@ const store = createUnlockStore({
 
 const ConfigProvider = ConfigContext.Provider
 
-const config = {
+const config = configure({
   env: 'production',
-}
+})
 
 storiesOf('Content pages', module)
   .addDecorator(getStory => (
@@ -29,16 +26,4 @@ storiesOf('Content pages', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('the Home page', () => {
     return <Home />
-  })
-  .add('the About page', () => {
-    return <About />
-  })
-  .add('the Jobs page', () => {
-    return <Jobs />
-  })
-  .add('the Terms of Service page', () => {
-    return <Terms />
-  })
-  .add('the Privacy Policy page', () => {
-    return <Privacy />
   })

@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react'
 import KeyChainContent from '../../components/content/KeyChainContent'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
+import configure from '../../config'
 
 const account = {
   address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
@@ -34,11 +35,11 @@ const noUserStore = createUnlockStore({
 
 const ConfigProvider = ConfigContext.Provider
 
-const config = {
+const config = configure({
   providers: [],
   env: 'production',
   requiredConfirmations: 12,
-}
+})
 
 storiesOf('KeyChainContent', module)
   .addDecorator(getStory => (
