@@ -1,4 +1,4 @@
-pragma solidity 0.5.6;
+pragma solidity 0.5.7;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import './MixinDisableAndDestroy.sol';
@@ -9,8 +9,8 @@ import './MixinFunds.sol';
 /**
  * @title Mixin for core lock data and functions.
  * @author HardlyDifficult
- * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply 
- * separates logically groupings of code to ease readability. 
+ * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
+ * separates logically groupings of code to ease readability.
  */
 contract MixinLockCore is
   Ownable,
@@ -26,7 +26,7 @@ contract MixinLockCore is
     address indexed _sender,
     uint _amount
   );
-  
+
   // Unlock Protocol address
   // TODO: should we make that private/internal?
   IUnlock public unlockProtocol;
@@ -48,7 +48,7 @@ contract MixinLockCore is
 
   // The version number for this lock contract,
   uint public publicLockVersion;
-  
+
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
     require(maxNumberOfKeys > numberOfKeysSold, 'LOCK_SOLD_OUT');
@@ -69,7 +69,7 @@ contract MixinLockCore is
     maxNumberOfKeys = _maxNumberOfKeys;
     publicLockVersion = _version;
   }
-  
+
   /**
    * @dev Called by owner to withdraw all funds from the lock.
    * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
