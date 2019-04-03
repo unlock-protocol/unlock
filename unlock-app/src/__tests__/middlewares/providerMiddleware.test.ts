@@ -1,10 +1,7 @@
 import providerMiddleware from '../../middlewares/providerMiddleware'
 import { SET_PROVIDER } from '../../actions/provider'
 import { setError } from '../../actions/error'
-import {
-  FATAL_MISSING_PROVIDER,
-  FATAL_NOT_ENABLED_IN_PROVIDER,
-} from '../../errors'
+import { FATAL_MISSING_PROVIDER } from '../../errors'
 
 const config = {
   providers: {
@@ -72,7 +69,7 @@ describe('provider middleware', () => {
     })
 
     it('should set an error and return if the call to enable fails', done => {
-      expect.assertions(3)
+      expect.assertions(2)
       config.providers['UNLOCK'].enable = jest.fn(() => {
         // eslint-disable-next-line promise/param-names
         return new Promise((_, reject) => {
@@ -83,9 +80,6 @@ describe('provider middleware', () => {
       const next = () => {
         expect(config.providers['UNLOCK'].enable).toHaveBeenCalled()
         expect(config.providers['NUNLOCK'].enable).not.toHaveBeenCalled()
-        expect(dispatch).toHaveBeenCalledWith(
-          setError(FATAL_NOT_ENABLED_IN_PROVIDER)
-        )
         done()
       }
 
