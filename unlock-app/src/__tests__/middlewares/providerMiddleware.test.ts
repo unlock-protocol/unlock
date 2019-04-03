@@ -1,7 +1,10 @@
 import providerMiddleware from '../../middlewares/providerMiddleware'
 import { SET_PROVIDER } from '../../actions/provider'
 import { setError } from '../../actions/error'
-import { FATAL_MISSING_PROVIDER } from '../../errors'
+import {
+  FATAL_MISSING_PROVIDER,
+  FATAL_NOT_ENABLED_IN_PROVIDER,
+} from '../../errors'
 
 const config = {
   providers: {
@@ -64,6 +67,24 @@ describe('provider middleware', () => {
       }
 
       providerMiddleware(config)({ getState, dispatch })(next)(erroneousAction)
+    })
+
+    it('should set an error and return if the call to enable fails', () => {
+      expect.assertions(3)
+
+      config.providers['UNLOCK'].enable = jest.fn(() => {
+        throw new Error('The front fell off.')
+      })
+
+      const next = () => {
+        expect(config.providers['UNLOCK'].enable).toHaveBeenCalled()
+        expect(config.providers['NUNLOCK'].enable).not.toHaveBeenCalled()
+        expect(dispatch).toHaveBeenCalledWith(
+          setError(FATAL_NOT_ENABLED_IN_PROVIDER)
+        )
+      }
+
+      providerMiddleware(config)({ getState, dispatch })(next)(unlockAction)
     })
 
     it('should do nothing if provider is the same as in state', done => {
