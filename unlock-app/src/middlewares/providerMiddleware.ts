@@ -31,8 +31,8 @@ const providerMiddleware = (config: any) => {
             if (provider) {
               initializeProvider(provider)
                 .then(() => dispatch(providerReady()))
-                // This awful hack makes it so that jest will recognize that dispatch is called
                 .catch(
+                  // This awful hack makes it so that jest will recognize that dispatch is called
                   () => (() => {})(),
                   dispatch(setError(FATAL_NOT_ENABLED_IN_PROVIDER))
                 )
