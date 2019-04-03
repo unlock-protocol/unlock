@@ -1,4 +1,4 @@
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.7;
 
 
 /**
@@ -7,12 +7,12 @@ pragma solidity ^0.5.6;
  *
  * This contract should not be used in production.
  */
-contract TestErc20Noop 
+contract TestErc20Noop
 {
   function transfer(
     address to,
     uint value
-  ) external 
+  ) external
     returns (bool)
   {
     return true;
@@ -30,7 +30,7 @@ contract TestErc20Noop
   function mint(
     address to,
     uint value
-  ) public 
+  ) public
     returns (bool)
   {
     return true;

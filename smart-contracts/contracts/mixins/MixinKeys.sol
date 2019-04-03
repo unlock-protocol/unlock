@@ -1,4 +1,4 @@
-pragma solidity 0.5.6;
+pragma solidity 0.5.7;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import './MixinLockCore.sol';
@@ -7,8 +7,8 @@ import './MixinLockCore.sol';
 /**
  * @title Mixin for managing `Key` data.
  * @author HardlyDifficult
- * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply 
- * separates logically groupings of code to ease readability. 
+ * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
+ * separates logically groupings of code to ease readability.
  */
 contract MixinKeys is
   Ownable,
@@ -28,7 +28,7 @@ contract MixinKeys is
   // TODO: could we use public here? (this could be confusing though because it getter will
   // return 0 values when missing a key)
   mapping (address => Key) private keyByOwner;
-   
+
   // Each tokenId can have at most exactly one owner at a time.
   // Returns 0 if the token does not exist
   // TODO: once we decouple tokenId from owner address (incl in js), then we can consider
@@ -179,12 +179,12 @@ contract MixinKeys is
   function isKeyOwner(
     uint _tokenId,
     address _owner
-  ) public view 
+  ) public view
     returns (bool)
   {
     return ownerByTokenId[_tokenId] == _owner;
   }
-  
+
   /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
   * @param _owner address of the user for whom we search the key

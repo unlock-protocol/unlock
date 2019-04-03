@@ -1,4 +1,4 @@
-pragma solidity 0.5.6;
+pragma solidity 0.5.7;
 
 /// @title ERC-721 Non-Fungible Token Standard
 /// @dev See https://eips.ethereum.org/EIPS/eip-721
@@ -101,5 +101,5 @@ interface IERC721 {
   function isApprovedForAll(address _owner, address _operator) external view returns (bool);
 
   /// @notice A descriptive name for a collection of NFTs in this contract
-  function name() external view returns (string memory _name); 
+  function name() external view returns (string memory _name);
 }

@@ -1,4 +1,4 @@
-pragma solidity 0.5.6;
+pragma solidity 0.5.7;
 
 import '../interfaces/IERC721.sol';
 import './MixinDisableAndDestroy.sol';
@@ -6,11 +6,11 @@ import './MixinKeys.sol';
 
 
 /**
- * @title Mixin for the Approval related functions needed to meet the ERC721 
+ * @title Mixin for the Approval related functions needed to meet the ERC721
  * standard.
  * @author HardlyDifficult
- * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply 
- * separates logically groupings of code to ease readability. 
+ * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
+ * separates logically groupings of code to ease readability.
  */
 contract MixinApproval is
   IERC721,
@@ -27,7 +27,7 @@ contract MixinApproval is
   mapping (uint => address) private approved;
 
   // Keeping track of approved operators for a Key owner.
-  // Since an owner can have up to 1 Key, this is similiar to above 
+  // Since an owner can have up to 1 Key, this is similiar to above
   // but the approval does not reset when a transfer occurs.
   mapping (address => mapping (address => bool)) private ownerToOperatorApproved;
 
@@ -103,10 +103,10 @@ contract MixinApproval is
    * @return bool whether the given operator is approved by the given owner
    */
   function isApprovedForAll(
-    address _owner, 
+    address _owner,
     address _operator
-  ) public view 
-    returns (bool) 
+  ) public view
+    returns (bool)
   {
     return ownerToOperatorApproved[_owner][_operator];
   }
