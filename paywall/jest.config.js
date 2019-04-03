@@ -10,6 +10,9 @@ module.exports = {
     '^.+\\.(js|jsx)$': 'babel-jest',
   },
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
+  moduleNameMapper: {
+    '\\.css$': '<rootDir>/src/__mocks__/styleMocks.js',
+  },
   collectCoverage: true,
   coverageThreshold: {
     global: {
