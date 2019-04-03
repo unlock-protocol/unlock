@@ -7,18 +7,7 @@ interface Action {
   [key: string]: any
 }
 
-async function initializeProvider(
-  providerName: string,
-  providers: { [key: string]: any },
-  dispatch: any
-) {
-  const provider = providers[providerName]
-  if (!provider) {
-    // Once Unlock Provider is in place, it should be highly unusual for this error to occur.
-    dispatch(setError(FATAL_MISSING_PROVIDER))
-    return
-  }
-
+async function initializeProvider(provider: { enable?: () => any }) {
   try {
     if (provider.enable) {
       // this exists for metamask and other modern dapp wallets and must be
@@ -39,7 +28,12 @@ const providerMiddleware = (config: any) => {
         if (action.type === SET_PROVIDER) {
           // Only initialize the provider if we haven't already done so.
           if (action.provider !== getState().provider) {
-            initializeProvider(action.provider, config.providers, dispatch)
+            const provider = config.providers[action.provider]
+            if (provider) {
+              initializeProvider(provider)
+            } else {
+              dispatch(setError(FATAL_MISSING_PROVIDER))
+            }
           }
           next(action)
         }
