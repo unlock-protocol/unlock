@@ -8,8 +8,6 @@ import { PublicLock, Unlock } from 'unlock-abi-0'
 import configure from '../../config'
 import WalletService from '../../services/walletService'
 import {
-  FATAL_NOT_ENABLED_IN_PROVIDER,
-  FATAL_MISSING_PROVIDER,
   FAILED_TO_CREATE_LOCK,
   FAILED_TO_PURCHASE_KEY,
   FAILED_TO_UPDATE_KEY_PRICE,
@@ -67,13 +65,11 @@ nock.emitter.on('no match', function(clientRequestObject, options, body) {
 
 let walletService
 let config
-let providers
 
 describe('WalletService', () => {
   beforeEach(() => {
     nock.cleanAll()
     config = configure()
-    providers = config.providers
     walletService = new WalletService(config)
   })
 
@@ -96,82 +92,6 @@ describe('WalletService', () => {
       walletService.on('network.changed', networkId => {
         expect(networkId).toEqual(netVersion)
         return done()
-      })
-
-      walletService.connect('HTTP')
-    })
-
-    it('should trigger an error if the provider is not set', done => {
-      expect.assertions(1)
-
-      walletService.on('error', error => {
-        expect(error.message).toEqual(FATAL_MISSING_PROVIDER)
-        return done()
-      })
-
-      walletService.connect('AnotherProvider')
-    })
-
-    it('should silently ignore requests to connect again to the same provider', done => {
-      expect.assertions(1)
-
-      walletService.once('error', error => {
-        expect(error.message).toBe(FATAL_MISSING_PROVIDER)
-
-        walletService.once('error', () => {
-          // This should not trigger
-          expect(false).toBe(true)
-        })
-
-        setTimeout(done, 1000) // wait 1 second
-
-        // connect again
-        walletService.connect('CLOUD')
-      })
-      walletService.connect('CLOUD')
-    })
-
-    it('should call enable on a provider that supplies it', done => {
-      expect.assertions(3)
-
-      expect(walletService.ready).toBe(false)
-      Unlock.networks = {}
-
-      const netVersion = Math.floor(Math.random() * 100000)
-      netVersionAndYield(netVersion)
-      Unlock.networks = {
-        [netVersion]: {
-          events: {},
-          links: {},
-          address: '0x3f313221a2af33fd8a430891291370632cb471bf',
-          transactionHash:
-            '0x8545541749873b42c96e1699c2e62f0f4062ca57f3398270423c1089232ef7dd',
-        },
-      }
-      const enable = (providers.HTTP.enable = jest.fn(() => Promise.resolve()))
-
-      expect(walletService.ready).toBe(false)
-      walletService.once('network.changed', () => {
-        expect(enable).toHaveBeenCalled()
-        done()
-      })
-
-      walletService.connect('HTTP')
-    })
-
-    it('should fail if a user rejects access', done => {
-      expect.assertions(4)
-
-      expect(walletService.ready).toBe(false)
-      Unlock.networks = {}
-
-      const enable = (providers.HTTP.enable = jest.fn(() => Promise.reject()))
-
-      expect(walletService.ready).toBe(false)
-      walletService.once('error', error => {
-        expect(enable).toHaveBeenCalled()
-        expect(error.message).toBe(FATAL_NOT_ENABLED_IN_PROVIDER)
-        done()
       })
 
       walletService.connect('HTTP')
