@@ -11,7 +11,10 @@ let sizes = {
     max: MAX_DEVICE_WIDTHS.TABLET,
   },
   phone: {
-    min: 0,
+    // this needs to be 135 because the paywall width in the iframe is 134px
+    // on desktop, so we need to make sure that we don't match that
+    // window width
+    min: 135,
     max: MAX_DEVICE_WIDTHS.PHONE,
   },
 }
