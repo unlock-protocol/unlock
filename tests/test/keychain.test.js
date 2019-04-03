@@ -6,6 +6,7 @@ describe('The Unlock Keychain', () => {
   })
 
   it('should load the key chain', async () => {
+    expect.assertions(1)
     await expect(page).toMatch('Key Chain')
   })
 })

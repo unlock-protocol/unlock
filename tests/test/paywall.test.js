@@ -15,12 +15,14 @@ describe.skip('The Unlock Paywall', () => {
   }, 10000)
 
   it('should remove the blocker', async () => {
+    expect.assertions(0)
     await page.waitForFunction(
       () => !document.querySelector('#_unlock_blocker')
     )
   })
 
   it('should display the lock after the blocker is gone', async () => {
+    expect.assertions(0)
     await page.waitForFunction(() => window.frames.length)
     const paywallIframe = page.mainFrame().childFrames()[0]
     await paywallIframe.waitForSelector(lockSelector('Lock'))
@@ -36,6 +38,7 @@ describe.skip('The Unlock Paywall', () => {
   })
 
   it('scrolling is disabled', async () => {
+    expect.assertions(1)
     // scroll the page prior to the paywall displaying
     await page.evaluate(() => {
       window.scrollBy(0, 200)
@@ -55,6 +58,7 @@ describe.skip('The Unlock Paywall', () => {
   })
 
   it('clicking the lock purchases a key', async () => {
+    expect.assertions(1)
     const paywallIframe = page.mainFrame().childFrames()[0]
     const paywallBody = await paywallIframe.$('body')
     await expect(paywallBody).toClick(lockSelector('PurchaseKey'))
@@ -70,6 +74,7 @@ describe.skip('The Unlock Paywall', () => {
   })
 
   it('after key purchase, unlocked flag appears', async () => {
+    expect.assertions(0)
     await page.reload()
     await page.waitForFunction(() => window.frames.length)
     const paywallIframe = page.mainFrame().childFrames()[0]
