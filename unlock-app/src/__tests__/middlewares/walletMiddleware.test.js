@@ -196,7 +196,7 @@ describe('Wallet middleware', () => {
     const from = '0xjulien'
     const to = '0xunlock'
     const input = 'input'
-    const type = TransactionType.LOCK_CREATION
+    const type = 'LOCK_CREATION'
     const status = 'submitted'
     mockWalletService.emit(
       'transaction.new',
@@ -218,7 +218,7 @@ describe('Wallet middleware', () => {
           to,
           from,
           input,
-          type,
+          type: 'Lock Creation',
           status,
         }),
       })

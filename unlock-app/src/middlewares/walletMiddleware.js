@@ -28,6 +28,7 @@ import {
 import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 import { TransactionType } from '../unlockTypes'
 import { hideForm } from '../actions/lockFormVisibility'
+import { transactionTypeMapping } from '../utils/types'
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
@@ -79,7 +80,7 @@ const walletMiddleware = config => {
             to,
             from,
             input,
-            type,
+            type: transactionTypeMapping(type),
             status,
           })
         )
