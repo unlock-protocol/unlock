@@ -46,8 +46,8 @@ const providerMiddleware = (config: any) => {
               dispatch(setError(FATAL_MISSING_PROVIDER))
             }
           }
-          next(action)
         }
+        next(action)
       }
     }
   }
