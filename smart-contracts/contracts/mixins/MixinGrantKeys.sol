@@ -1,4 +1,4 @@
-pragma solidity 0.5.6;
+pragma solidity 0.5.7;
 
 import '../interfaces/IERC721.sol';
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
@@ -49,7 +49,7 @@ contract MixinGrantKeys is
    */
   function grantKeys(
     address[] calldata _recipients,
-    uint[] calldata _expirationTimestamps    
+    uint[] calldata _expirationTimestamps
   ) external
     onlyOwner
   {
