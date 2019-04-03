@@ -1,15 +1,12 @@
 import providerMiddleware from '../../middlewares/providerMiddleware'
 import { SET_PROVIDER } from '../../actions/provider'
 import { setError } from '../../actions/error'
-import {
-  FATAL_MISSING_PROVIDER,
-  FATAL_NOT_ENABLED_IN_PROVIDER,
-} from '../../errors'
+import { FATAL_MISSING_PROVIDER } from '../../errors'
 
 const config = {
   providers: {
     UNLOCK: {
-      enable: jest.fn(),
+      enable: jest.fn(() => new Promise(resolve => resolve('lol'))),
       isUnlock: true,
     },
     NUNLOCK: {
@@ -41,7 +38,9 @@ let dispatch: () => any
 
 describe('provider middleware', () => {
   beforeEach(() => {
-    config.providers['UNLOCK'].enable = jest.fn()
+    config.providers['UNLOCK'].enable = jest.fn(
+      () => new Promise(resolve => resolve(true))
+    )
     config.providers['NUNLOCK'].enable = jest.fn()
     dispatch = jest.fn()
   })
@@ -69,19 +68,19 @@ describe('provider middleware', () => {
       providerMiddleware(config)({ getState, dispatch })(next)(erroneousAction)
     })
 
-    it('should set an error and return if the call to enable fails', () => {
-      expect.assertions(3)
-
+    it('should set an error and return if the call to enable fails', done => {
+      expect.assertions(2)
       config.providers['UNLOCK'].enable = jest.fn(() => {
-        throw new Error('The front fell off.')
+        // eslint-disable-next-line promise/param-names
+        return new Promise((_, reject) => {
+          reject('The front fell off.')
+        })
       })
 
       const next = () => {
         expect(config.providers['UNLOCK'].enable).toHaveBeenCalled()
         expect(config.providers['NUNLOCK'].enable).not.toHaveBeenCalled()
-        expect(dispatch).toHaveBeenCalledWith(
-          setError(FATAL_NOT_ENABLED_IN_PROVIDER)
-        )
+        done()
       }
 
       providerMiddleware(config)({ getState, dispatch })(next)(unlockAction)
