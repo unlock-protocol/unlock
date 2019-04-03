@@ -1,5 +1,3 @@
-import { SHOW_FLAG_FOR } from '../constants'
-
 export const iframeStyles = [
   'display:none',
   'position:fixed',
@@ -14,7 +12,7 @@ export const iframeStyles = [
 export function getIframe(document, src) {
   var s = document.createElement('iframe')
 
-  s.setAttribute('style', iframeStyles.join('; '))
+  s.className = 'unlock start'
   s.setAttribute('src', src)
   s.setAttribute('data-unlock', 'yes')
   return s
@@ -29,53 +27,10 @@ export function add(document, iframe) {
 
 export function show(iframe, document) {
   document.body.style.overflow = 'hidden'
-  iframe.setAttribute('style', iframeStyles.join('; '))
-  iframe.style.display = 'block'
-  iframe.style['z-index'] = '2147483647'
+  iframe.className = 'unlock start show'
 }
 
 export function hide(iframe, document, unlocked = true) {
-  const width = '134px'
-  const height = '160px'
-  const collapsedMargin = '-104px'
-  let open = true
-
-  // general settings
+  iframe.className = `unlock start show hide${unlocked ? '' : ' optimism'}`
   document.body.style.overflow = ''
-  iframe.style.backgroundColor = 'transparent'
-  iframe.style.backgroundImage = 'none'
-  iframe.style.marginRight = 0
-
-  if (unlocked) {
-    setTimeout(() => {
-      open = false
-      iframe.style.marginRight = collapsedMargin
-    }, SHOW_FLAG_FOR)
-  }
-
-  // so that there's no scroll when it goes off the edge
-  iframe.style.overflow = 'hidden'
-
-  // new dimensions
-  iframe.style.width = width
-  iframe.style.height = height
-
-  // positioning
-  iframe.style.left = null
-  iframe.style.top = null
-  iframe.style.right = '0'
-  iframe.style.bottom = '105px'
-
-  if (unlocked) {
-    // Animation
-    iframe.style.transition = 'margin-right 0.4s ease-in'
-
-    iframe.addEventListener('mouseenter', () => {
-      iframe.style.marginRight = '0'
-    })
-    iframe.addEventListener('mouseleave', () => {
-      if (open) return
-      iframe.style.marginRight = collapsedMargin
-    })
-  }
 }
