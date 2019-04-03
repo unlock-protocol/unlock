@@ -22,6 +22,7 @@ RUN SKIP_SERVICES=true npm ci --production
 
 # the eslint config inside test needs the root one
 COPY .eslintrc.js /home/unlock/.eslintrc.js
+COPY .prettierrc /home/unlock/.prettierrc
 
 # Let's now copy all the tests stuff from unlock/tests
 # And install things
