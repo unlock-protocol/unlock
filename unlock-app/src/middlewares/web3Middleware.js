@@ -19,6 +19,7 @@ import {
   SET_KEYS_ON_PAGE_FOR_LOCK,
   setKeysOnPageForLock,
 } from '../actions/keysPages'
+import { transactionTypeMapping } from '../utils/types'
 
 const { Web3Service } = UnlockJs
 
@@ -97,6 +98,10 @@ const web3Middleware = config => {
     })
 
     web3Service.on('transaction.updated', (transactionHash, update) => {
+      // Mapping the transaction type
+      if (update.type) {
+        update.type = transactionTypeMapping(update.type)
+      }
       dispatch(updateTransaction(transactionHash, update))
     })
 
