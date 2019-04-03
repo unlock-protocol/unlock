@@ -474,6 +474,12 @@ describe('WalletService', () => {
           expect(lockAddress).toBe(lock.address)
           expect(update).toEqual({
             transaction: hash,
+            balance: '0',
+            expirationDuration: lock.expirationDuration,
+            keyPrice: lock.keyPrice,
+            maxNumberOfKeys: lock.maxNumberOfKeys,
+            outstandingKeys: 0,
+            owner,
           })
           done()
         })
