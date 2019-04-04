@@ -55,6 +55,7 @@ export default class WalletService extends EventEmitter {
   async connect(provider) {
     // Reset the connection
     this.ready = false
+
     this.web3 = new Web3(provider)
 
     const networkId = await this.web3.eth.net.getId()
