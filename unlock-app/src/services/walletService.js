@@ -5,8 +5,6 @@ import { PublicLock, Unlock } from 'unlock-abi-0'
 
 import configure from '../config'
 import {
-  FATAL_MISSING_PROVIDER,
-  FATAL_NOT_ENABLED_IN_PROVIDER,
   FAILED_TO_CREATE_LOCK,
   FAILED_TO_PURCHASE_KEY,
   FAILED_TO_UPDATE_KEY_PRICE,
@@ -23,12 +21,10 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends EventEmitter {
-  constructor({ providers, unlockAddress } = configure()) {
+  constructor({ unlockAddress } = configure()) {
     super()
     this.unlockContractAddress = unlockAddress
-    this.providers = providers
     this.ready = false
-    this.providerName = null
     this.web3 = null
 
     this.on('ready', () => {
@@ -56,33 +52,9 @@ export default class WalletService extends EventEmitter {
    * @param {string} providerName
    * @return
    */
-  async connect(providerName) {
-    if (providerName && providerName === this.providerName) {
-      // If the provider is set and did not really change, no need to reset it
-      return
-    }
-
-    // Keep track of the provider
-    this.providerName = providerName
-    // And reset the connection
+  async connect(provider) {
+    // Reset the connection
     this.ready = false
-
-    const provider = this.providers[providerName]
-
-    // We fail: it appears that we are trying to connect but do not have a provider available...
-    if (!provider) {
-      return this.emit('error', new Error(FATAL_MISSING_PROVIDER))
-    }
-
-    try {
-      if (provider.enable) {
-        // this exists for metamask and other modern dapp wallets and must be called,
-        // see: https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
-        await provider.enable()
-      }
-    } catch (error) {
-      return this.emit('error', new Error(FATAL_NOT_ENABLED_IN_PROVIDER))
-    }
 
     this.web3 = new Web3(provider)
 

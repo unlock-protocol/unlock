@@ -41,7 +41,9 @@ describe('provider middleware', () => {
     config.providers['UNLOCK'].enable = jest.fn(
       () => new Promise(resolve => resolve(true))
     )
-    config.providers['NUNLOCK'].enable = jest.fn()
+    config.providers['NUNLOCK'].enable = jest.fn(
+      () => new Promise(resolve => resolve(true))
+    )
     dispatch = jest.fn()
   })
   describe('SET_PROVIDER', () => {

@@ -15,7 +15,7 @@ import {
 import { PURCHASE_KEY } from '../../actions/key'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
-import { SET_PROVIDER } from '../../actions/provider'
+import { PROVIDER_READY } from '../../actions/provider'
 import { NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
 import { POLLING_INTERVAL } from '../../constants'
@@ -61,7 +61,6 @@ const transaction = {
 const network = {
   name: 'test',
 }
-const provider = 'Toshi'
 
 /**
  * This is a "fake" middleware caller
@@ -411,13 +410,13 @@ describe('Wallet middleware', () => {
     })
   })
 
-  it('should handle SET_PROVIDER and re connect', () => {
+  it('should handle PROVIDER_READY and connect', () => {
     expect.assertions(2)
     const { next, invoke } = create()
-    const action = { type: SET_PROVIDER, provider }
+    const action = { type: PROVIDER_READY }
     mockWalletService.connect = jest.fn()
     invoke(action)
-    expect(mockWalletService.connect).toHaveBeenCalledWith(provider)
+    expect(mockWalletService.connect).toHaveBeenCalledWith(state.provider)
     expect(next).toHaveBeenCalledWith(action)
   })
 
