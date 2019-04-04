@@ -19,8 +19,8 @@ import { isPositiveNumber } from '../utils/validators'
 import useWindow from '../hooks/browser/useWindow'
 import useOptimism from '../hooks/useOptimism'
 import { TRANSACTION_TYPES } from '../constants'
+import './Paywall.css'
 
-// TODO: mobile formatting for unlocked and optimistic unlocking views
 export function Paywall({ locks, locked, redirect, account, transaction }) {
   // TODO: use the useOptimism hook here instead of hard-coding it
   const optimism = useOptimism(transaction)
@@ -31,21 +31,11 @@ export function Paywall({ locks, locked, redirect, account, transaction }) {
     validator: isPositiveNumber,
   })
   const { postMessage } = usePostMessage()
-  const height = '160px'
   const smallBody = body => {
-    body.style.margin = '0'
-    body.style.height = height
-    body.style.display = 'flex'
-    body.style.flexDirection = 'column'
-    body.style.justifyContent = 'center'
-    body.style.overflow = 'hidden'
+    body.className = 'small'
   }
   const bigBody = body => {
-    body.style.margin = '0'
-    body.style.height = '100vh'
-    body.style.width = '100vw'
-    body.style.display = 'fixed'
-    body.style.overflow = 'initial'
+    body.className = 'big'
   }
   useEffect(() => {
     if (locked) {
