@@ -16,6 +16,8 @@ const interWindowCommunicationMiddleware = window => ({
   const isInIframe = inIframe(window)
   return next => {
     return action => {
+      next(action)
+
       const { router, account } = getState()
       // TODO: remove the checking for account in
       // the URL hash as soon as the paywall stops sending it
@@ -57,12 +59,11 @@ const interWindowCommunicationMiddleware = window => ({
         }
       }
 
-      next(action)
-
       // this needs to be after the reducer is called
       if (
-        (isInIframe && action.type === UPDATE_KEY) ||
-        (action.type === ADD_KEY && !account)
+        isInIframe &&
+        (action.type === UPDATE_KEY || action.type === ADD_KEY) &&
+        !account
       ) {
         const { transactions, keys } = getState()
         const { lockAddress, transaction } = lockRoute(
