@@ -272,7 +272,7 @@ jobs:
       - *cached-checkout
       - run:
           name: Set IS_FORKED_PR
-          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
+          command: ./scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
           name: Installing deployment dependencies
           working_directory: /
@@ -283,7 +283,7 @@ jobs:
             sudo pip install awsebcli --upgrade
       - run:
           name: Deploy to to Beanstalk
-          command: locksmith/scripts/deploy-eb-docker.sh "$APPLICATION" "$ENVIRONMENT" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$NODE_ENV" "$IS_FORKED_PR"
+          command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh "$APPLICATION" "$ENVIRONMENT" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$NODE_ENV" "$IS_FORKED_PR"
 
   promote-unlock-image:
     machine: true
@@ -399,7 +399,7 @@ workflows:
       - deploy-locksmith-beanstalk:
           filters:
             branches:
-              only: master        
+              only: master
           requires:
             - unlock-protocol-com-tests
             - unlock-app-tests
