@@ -7,6 +7,7 @@ import {
 } from '../../actions/transaction'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
+import { SET_ACCOUNT } from '../../actions/accounts'
 
 describe('transaction reducer', () => {
   it('should return the initial state', () => {
@@ -51,6 +52,27 @@ describe('transaction reducer', () => {
           type: SET_NETWORK,
         }
       )
+    ).toBe(initialState)
+  })
+
+  // Upon changing account, we need to clear the existing transaction. The web3 middleware will
+  // re-populate them
+  it('should clear the transactions when receiving SET_ACCOUNT', () => {
+    expect.assertions(1)
+    const account = {}
+    const transaction = {
+      status: 'pending',
+      confirmations: 0,
+      hash: '0x123',
+    }
+    const state = {
+      [transaction.id]: transaction,
+    }
+    expect(
+      reducer(state, {
+        type: SET_ACCOUNT,
+        account,
+      })
     ).toBe(initialState)
   })
 
