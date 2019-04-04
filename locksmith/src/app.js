@@ -11,6 +11,7 @@ var transactionRouter = require('./routes/transaction')
 var lockRouter = require('./routes/lock')
 var blockRouter = require('./routes/block')
 var userRouter = require('./routes/user')
+var purchaseRouter = require('./routes/purchase')
 
 let lockSignatureConfiguration = {
   name: 'lock',
@@ -49,5 +50,6 @@ app.use('/', transactionRouter)
 app.use('/', lockRouter)
 app.use('/block', blockRouter)
 app.use('/users', userRouter)
+app.use('/purchase', purchaseRouter)
 
 module.exports = app
