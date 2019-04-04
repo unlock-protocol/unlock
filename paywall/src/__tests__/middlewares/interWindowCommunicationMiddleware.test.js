@@ -69,32 +69,57 @@ describe('interWindowCommunicationMiddleware', () => {
             }
           })
 
-          it('UPDATE_KEY action', () => {
-            expect.assertions(2)
-            const middleware = interWindowCommunicationMiddleware(window)
-            middleware(store)(() => {})(updateKey('key', { owner: account }))
+          describe('in the iframe', () => {
+            it('UPDATE_KEY action', () => {
+              expect.assertions(2)
+              const middleware = interWindowCommunicationMiddleware(window)
+              middleware(store)(() => {})(updateKey('key', { owner: account }))
 
-            expect(window.localStorage.setItem).toHaveBeenCalledWith(
-              '__unlock__account__',
-              account
-            )
-            expect(store.dispatch).toHaveBeenCalledWith(
-              expect.objectContaining(setAccount({ address: account }))
-            )
+              expect(window.localStorage.setItem).toHaveBeenCalledWith(
+                '__unlock__account__',
+                account
+              )
+              expect(store.dispatch).toHaveBeenCalledWith(
+                expect.objectContaining(setAccount({ address: account }))
+              )
+            })
+
+            it('ADD_KEY action', () => {
+              expect.assertions(2)
+              const middleware = interWindowCommunicationMiddleware(window)
+              middleware(store)(() => {})(addKey('key', { owner: account }))
+
+              expect(window.localStorage.setItem).toHaveBeenCalledWith(
+                '__unlock__account__',
+                account
+              )
+              expect(store.dispatch).toHaveBeenCalledWith(
+                expect.objectContaining(setAccount({ address: account }))
+              )
+            })
           })
+          describe('in the main page', () => {
+            beforeEach(() => {
+              window.self = window
+              window.top = window
+            })
+            it('UPDATE_KEY action', () => {
+              expect.assertions(2)
+              const middleware = interWindowCommunicationMiddleware(window)
+              middleware(store)(() => {})(updateKey('key', { owner: account }))
 
-          it('ADD_KEY action', () => {
-            expect.assertions(2)
-            const middleware = interWindowCommunicationMiddleware(window)
-            middleware(store)(() => {})(addKey('key', { owner: account }))
+              expect(window.localStorage.setItem).not.toHaveBeenCalled()
+              expect(store.dispatch).not.toHaveBeenCalled()
+            })
 
-            expect(window.localStorage.setItem).toHaveBeenCalledWith(
-              '__unlock__account__',
-              account
-            )
-            expect(store.dispatch).toHaveBeenCalledWith(
-              expect.objectContaining(setAccount({ address: account }))
-            )
+            it('ADD_KEY action', () => {
+              expect.assertions(2)
+              const middleware = interWindowCommunicationMiddleware(window)
+              middleware(store)(() => {})(addKey('key', { owner: account }))
+
+              expect(window.localStorage.setItem).not.toHaveBeenCalled()
+              expect(store.dispatch).not.toHaveBeenCalled()
+            })
           })
 
           describe('sanity checking', () => {
@@ -235,6 +260,27 @@ describe('interWindowCommunicationMiddleware', () => {
             expect(window.localStorage.setItem).toHaveBeenCalledWith(
               '__unlock__account__',
               account
+            )
+          })
+        })
+        describe('if account is in localStorage, and not passed in url', () => {
+          it('should not set account on SET_ACCOUNT action', () => {
+            expect.assertions(1)
+            const middleware = interWindowCommunicationMiddleware(window)
+            middleware(store)(() => {})(setAccount({ address: 'hi' }))
+
+            expect(store.dispatch).not.toHaveBeenCalled()
+          })
+          it('should set account on any other action', () => {
+            expect.assertions(1)
+            window.localStorage.getItem = () => account
+            const middleware = interWindowCommunicationMiddleware(window)
+            middleware(store)(() => {})({ type: 'hi' })
+
+            expect(store.dispatch).toHaveBeenCalledWith(
+              expect.objectContaining(
+                setAccount({ address: account, fromLocalStorage: true })
+              )
             )
           })
         })
