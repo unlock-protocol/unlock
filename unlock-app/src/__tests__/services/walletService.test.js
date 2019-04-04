@@ -6,16 +6,23 @@ import Web3Utils from 'web3-utils'
 import { PublicLock, Unlock } from 'unlock-abi-0'
 
 import configure from '../../config'
-import WalletService from '../../services/walletService'
-import {
+import WalletService, { Errors } from '../../services/walletService'
+
+const {
   FATAL_NOT_ENABLED_IN_PROVIDER,
   FATAL_MISSING_PROVIDER,
   FAILED_TO_CREATE_LOCK,
   FAILED_TO_PURCHASE_KEY,
   FAILED_TO_UPDATE_KEY_PRICE,
   FAILED_TO_WITHDRAW_FROM_LOCK,
-} from '../../errors'
-import { TransactionType } from '../../unlockTypes'
+} = Errors
+
+const TransactionType = {
+  LOCK_CREATION: 'LOCK_CREATION',
+  KEY_PURCHASE: 'KEY_PURCHASE',
+  WITHDRAWAL: 'WITHDRAWAL',
+  UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE',
+}
 
 jest.mock('../../utils/promises')
 

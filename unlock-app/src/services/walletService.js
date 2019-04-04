@@ -3,16 +3,21 @@ import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
 import { PublicLock, Unlock } from 'unlock-abi-0'
 
-import configure from '../config'
-import {
-  FATAL_MISSING_PROVIDER,
-  FATAL_NOT_ENABLED_IN_PROVIDER,
-  FAILED_TO_CREATE_LOCK,
-  FAILED_TO_PURCHASE_KEY,
-  FAILED_TO_UPDATE_KEY_PRICE,
-  FAILED_TO_WITHDRAW_FROM_LOCK,
-} from '../errors'
-import { TransactionType } from '../unlockTypes'
+export const Errors = {
+  FATAL_MISSING_PROVIDER: 'FATAL_MISSING_PROVIDER',
+  FATAL_NOT_ENABLED_IN_PROVIDER: 'FATAL_NOT_ENABLED_IN_PROVIDER',
+  FAILED_TO_CREATE_LOCK: 'FAILED_TO_CREATE_LOCK',
+  FAILED_TO_PURCHASE_KEY: 'FAILED_TO_PURCHASE_KEY',
+  FAILED_TO_UPDATE_KEY_PRICE: 'FAILED_TO_UPDATE_KEY_PRICE',
+  FAILED_TO_WITHDRAW_FROM_LOCK: 'FAILED_TO_WITHDRAW_FROM_LOCK',
+}
+
+export const TransactionType = {
+  LOCK_CREATION: 'LOCK_CREATION',
+  KEY_PURCHASE: 'KEY_PURCHASE',
+  WITHDRAWAL: 'WITHDRAWAL',
+  UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE',
+}
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
@@ -23,7 +28,7 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends EventEmitter {
-  constructor({ providers, unlockAddress } = configure()) {
+  constructor({ providers, unlockAddress }) {
     super()
     this.unlockContractAddress = unlockAddress
     this.providers = providers
@@ -71,7 +76,7 @@ export default class WalletService extends EventEmitter {
 
     // We fail: it appears that we are trying to connect but do not have a provider available...
     if (!provider) {
-      return this.emit('error', new Error(FATAL_MISSING_PROVIDER))
+      return this.emit('error', new Error(Errors.FATAL_MISSING_PROVIDER))
     }
 
     try {
@@ -81,7 +86,7 @@ export default class WalletService extends EventEmitter {
         await provider.enable()
       }
     } catch (error) {
-      return this.emit('error', new Error(FATAL_NOT_ENABLED_IN_PROVIDER))
+      return this.emit('error', new Error(Errors.FATAL_NOT_ENABLED_IN_PROVIDER))
     }
 
     this.web3 = new Web3(provider)
@@ -193,7 +198,10 @@ export default class WalletService extends EventEmitter {
       TransactionType.UPDATE_KEY_PRICE,
       error => {
         if (error) {
-          return this.emit('error', new Error(FAILED_TO_UPDATE_KEY_PRICE))
+          return this.emit(
+            'error',
+            new Error(Errors.FAILED_TO_UPDATE_KEY_PRICE)
+          )
         }
       }
     )
@@ -229,7 +237,7 @@ export default class WalletService extends EventEmitter {
       TransactionType.LOCK_CREATION,
       (error, hash) => {
         if (error) {
-          return this.emit('error', new Error(FAILED_TO_CREATE_LOCK))
+          return this.emit('error', new Error(Errors.FAILED_TO_CREATE_LOCK))
         }
         // Let's update the lock to reflect that it is linked to this
         // This is an exception because, until we are able to determine the lock address
@@ -277,7 +285,7 @@ export default class WalletService extends EventEmitter {
       TransactionType.KEY_PURCHASE,
       error => {
         if (error) {
-          return this.emit('error', new Error(FAILED_TO_PURCHASE_KEY))
+          return this.emit('error', new Error(Errors.FAILED_TO_PURCHASE_KEY))
         }
       }
     )
@@ -307,7 +315,7 @@ export default class WalletService extends EventEmitter {
       TransactionType.WITHDRAWAL,
       error => {
         if (error) {
-          this.emit('error', new Error(FAILED_TO_WITHDRAW_FROM_LOCK))
+          this.emit('error', new Error(Errors.FAILED_TO_WITHDRAW_FROM_LOCK))
           return callback(error)
         }
         return callback()
@@ -336,7 +344,10 @@ export default class WalletService extends EventEmitter {
       TransactionType.WITHDRAWAL,
       error => {
         if (error) {
-          return this.emit('error', new Error(FAILED_TO_WITHDRAW_FROM_LOCK))
+          return this.emit(
+            'error',
+            new Error(Errors.FAILED_TO_WITHDRAW_FROM_LOCK)
+          )
         }
       }
     )
