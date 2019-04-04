@@ -7,12 +7,11 @@ import {
 
 import { SET_PROVIDER } from '../actions/provider'
 import { SET_NETWORK } from '../actions/network'
-import { SET_ACCOUNT } from '../actions/accounts'
 
 export const initialState = {}
 
 const transactionsReducer = (transactions = initialState, action) => {
-  if ([SET_PROVIDER, SET_NETWORK, SET_ACCOUNT].indexOf(action.type) > -1) {
+  if ([SET_PROVIDER, SET_NETWORK].indexOf(action.type) > -1) {
     return initialState
   }
 
@@ -38,7 +37,6 @@ const transactionsReducer = (transactions = initialState, action) => {
       // 'Could not change the transaction hash' => Let's not change state
       return transactions
     }
-
     if (!transactions[action.hash]) {
       // 'Could not update missing transaction' => Let's not change state
       return transactions
@@ -46,7 +44,10 @@ const transactionsReducer = (transactions = initialState, action) => {
 
     return {
       ...transactions,
-      [action.hash]: Object.assign(transactions[action.hash], action.update),
+      [action.hash]: {
+        ...transactions[action.hash],
+        ...action.update,
+      },
     }
   }
 

@@ -7,7 +7,6 @@ import {
 } from '../../actions/transaction'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
-import { SET_ACCOUNT } from '../../actions/accounts'
 
 describe('transaction reducer', () => {
   it('should return the initial state', () => {
@@ -15,7 +14,7 @@ describe('transaction reducer', () => {
     expect(initialState).toEqual({})
   })
 
-  it('should return the initial state when receveing SET_PROVIDER', () => {
+  it('should return the initial state when receiving SET_PROVIDER', () => {
     expect.assertions(1)
     const transaction = {
       status: 'pending',
@@ -35,7 +34,7 @@ describe('transaction reducer', () => {
     ).toBe(initialState)
   })
 
-  it('should return the initial state when receveing SET_NETWORK', () => {
+  it('should return the initial state when receiving SET_NETWORK', () => {
     expect.assertions(1)
     const transaction = {
       status: 'pending',
@@ -52,27 +51,6 @@ describe('transaction reducer', () => {
           type: SET_NETWORK,
         }
       )
-    ).toBe(initialState)
-  })
-
-  // Upon changing account, we need to clear the existing transaction. The web3 middleware will
-  // re-populate them
-  it('should clear the transactions when receiving SET_ACCOUNT', () => {
-    expect.assertions(1)
-    const account = {}
-    const transaction = {
-      status: 'pending',
-      confirmations: 0,
-      hash: '0x123',
-    }
-    const state = {
-      [transaction.id]: transaction,
-    }
-    expect(
-      reducer(state, {
-        type: SET_ACCOUNT,
-        account,
-      })
     ).toBe(initialState)
   })
 
@@ -221,6 +199,29 @@ describe('transaction reducer', () => {
           hash: '0x123',
         },
       })
+    })
+
+    it('should not mutate state of existing transactions', () => {
+      expect.assertions(1)
+      const transaction = {
+        status: 'pending',
+        confirmations: 0,
+        hash: '0x123',
+      }
+
+      const state = {
+        [transaction.hash]: transaction,
+      }
+      const action = {
+        type: UPDATE_TRANSACTION,
+        hash: transaction.hash,
+        update: {
+          status: 'mined',
+          confirmations: 3,
+        },
+      }
+
+      expect(reducer(state, action)['0x123']).not.toBe(transaction)
     })
   })
 
