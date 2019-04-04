@@ -121,9 +121,7 @@ export const mapStateToProps = (state, { lock }) => {
   }
 }
 
-export default withConfig(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Lock)
-)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withConfig(Lock))

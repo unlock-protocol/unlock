@@ -83,4 +83,4 @@ export const mapStateToProps = ({ account, keys, transactions }, { lock }) => {
   }
 }
 
-export default withConfig(connect(mapStateToProps)(ConfirmingFlag))
+export default connect(mapStateToProps)(withConfig(ConfirmingFlag))
