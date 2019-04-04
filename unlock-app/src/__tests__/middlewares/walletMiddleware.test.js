@@ -416,7 +416,9 @@ describe('Wallet middleware', () => {
     const action = { type: PROVIDER_READY }
     mockWalletService.connect = jest.fn()
     invoke(action)
-    expect(mockWalletService.connect).toHaveBeenCalledWith(state.provider)
+    expect(mockWalletService.connect).toHaveBeenCalledWith(
+      mockConfig.providers[state.provider]
+    )
     expect(next).toHaveBeenCalledWith(action)
   })
 

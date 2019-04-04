@@ -157,7 +157,7 @@ const walletMiddleware = config => {
     return function(next) {
       return function(action) {
         if (action.type === PROVIDER_READY) {
-          walletService.connect(getState().provider)
+          walletService.connect(config.providers[getState().provider])
         } else if (action.type === CREATE_LOCK && action.lock.address) {
           ensureReadyBefore(() => {
             walletService.createLock(action.lock, getState().account.address)
