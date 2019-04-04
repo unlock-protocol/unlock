@@ -72,8 +72,9 @@ export default function web3Middleware({ getState, dispatch }) {
    * it might have been updated (balance, outstanding keys...)
    */
   web3Service.on('key.saved', (keyId, key) => {
+    const { account } = getState()
     web3Service.getLock(key.lock)
-    if (getState().account.address === key.owner) {
+    if (account && account.address === key.owner) {
       web3Service.refreshAccountBalance(getState().account)
     }
     web3Service.getKeyByLockForOwner(key.lock, key.owner)
@@ -116,10 +117,31 @@ export default function web3Middleware({ getState, dispatch }) {
 
       next(action)
 
+      const {
+        account,
+        router: {
+          location: { pathname, hash },
+        },
+        locks,
+      } = getState()
+      const { lockAddress, transaction } = lockRoute(pathname + hash)
+
+      if (
+        [SET_PROVIDER, SET_NETWORK, SET_ACCOUNT, LOCATION_CHANGE].includes(
+          action.type
+        )
+      ) {
+        if (transaction) {
+          dispatch(
+            addTransaction({
+              hash: transaction,
+            })
+          )
+        }
+      }
+
       if (action.type === SET_PROVIDER || action.type === SET_NETWORK) {
         // for both of these actions, the lock state is invalid, and must be refreshed.
-        // Location was changed, get the matching lock
-        const { lockAddress } = lockRoute(getState().router.location.pathname)
         if (lockAddress) {
           web3Service.getLock(lockAddress)
         }
@@ -127,47 +149,33 @@ export default function web3Middleware({ getState, dispatch }) {
 
       // note: this needs to be after the reducer has seen it, because refreshAccountBalance
       // triggers 'account.update' which dispatches UPDATE_ACCOUNT. The reducer assumes that
-      // ADD_ACCOUNT has reached it first, and throws an exception. Putting it after the
+      // SET_ACCOUNT has reached it first, and throws an exception. Putting it after the
       // reducer has a chance to populate state removes this race condition.
       if (action.type === SET_ACCOUNT) {
         // TODO: when the account has been updated we should reset web3Service and remove all listeners
         // So that pending API calls do not interract with our "new" state.
         web3Service.refreshAccountBalance(action.account)
 
-        const {
-          router: {
-            location: { pathname },
-          },
-        } = getState()
-
-        const { lockAddress } = lockRoute(pathname)
         if (lockAddress) {
           web3Service.getKeyByLockForOwner(lockAddress, action.account.address)
         }
       }
 
       if (action.type === ADD_LOCK || action.type == UPDATE_LOCK) {
-        const lock = getState().locks[action.address]
-        if (getState().account) {
-          web3Service.getKeyByLockForOwner(
-            lock.address,
-            getState().account.address
-          )
+        const lock = locks[action.address]
+        // this is quite different from the code on line 160, as it uses the lock from the action
+        // line 160 uses the lock from the current URL
+        if (account) {
+          web3Service.getKeyByLockForOwner(lock.address, account.address)
         }
       } else if (
         action.type === LOCATION_CHANGE &&
         action.payload.location &&
         action.payload.location.pathname
       ) {
-        // Location was changed, get the matching lock, if we are on a paywall page
-        const { lockAddress, transaction } = lockRoute(
-          action.payload.location.pathname + action.payload.location.hash
-        )
+        // Location was changed, get the matching lock
         if (lockAddress) {
           web3Service.getLock(lockAddress)
-        }
-        if (transaction) {
-          web3Service.getTransaction(transaction)
         }
       }
     }
