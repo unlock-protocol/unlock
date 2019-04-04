@@ -398,6 +398,26 @@ describe('Paywall', () => {
     })
   })
 
+  describe('on pending transaction', () => {
+    it('should redirect with transaction hash if requested', () => {
+      expect.assertions(1)
+
+      rtl.act(() => {
+        renderMockPaywall({
+          locked: true,
+          transaction: {
+            status: 'pending',
+            hash: 'hash',
+          },
+          redirect: 'http://example.com',
+          account: 'account',
+        })
+      })
+
+      expect(fakeWindow.location.href).toBe('http://example.com#hash')
+    })
+  })
+
   describe('on unlocking', () => {
     it('should redirect with account if requested', () => {
       expect.assertions(1)
