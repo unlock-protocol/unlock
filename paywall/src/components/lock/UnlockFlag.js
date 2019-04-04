@@ -10,7 +10,9 @@ export function LockedFlag() {
   return (
     <Colophon>
       <RoundedLogo size="28px" />
-      <p>Powered by Unlock</p>
+      <p>
+        Powered by&nbsp;<a href="https://paywall.unlock-protocol.com">Unlock</a>
+      </p>
     </Colophon>
   )
 }
@@ -26,7 +28,10 @@ export const UnlockedFlag = () => {
   return (
     <Flag id="UnlockFlag" hidden={hidden}>
       <RoundedLogo size="28px" />
-      <p>Subscribed with Unlock</p>
+      <p>
+        Subscribed with&nbsp;
+        <a href="https://paywall.unlock-protocol.com">Unlock</a>
+      </p>
     </Flag>
   )
 }
@@ -43,8 +48,34 @@ const Flag = styled(Colophon)`
     opacity: 1;
     transition: opacity 0.4s ease-in;
   }
+  & a {
+    color: var(--red);
+  }
 
   ${Media.phone`
     display: flex;
-`}
+    background-color: var(--white);
+    box-shadow: 14px 0px 40px rgba(0, 0, 0, 0.08);
+    grid-row: 2;
+    grid-column: 1;
+    width: 120px;
+    align-self: center;
+    justify-self: center;
+    height: 50px;
+    margin-right: -33px;
+    flex-direction: row;
+    float: none;
+    margin-right: auto;
+    margin-left: auto;
+  
+    & > div {
+      display: block;
+    }
+    & > p {
+      width: 63px;
+      display: block;
+      grid-row: 2;
+    }
+    opacity: 1;
+  `}
 `
