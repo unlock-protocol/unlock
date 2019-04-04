@@ -98,7 +98,13 @@ export default function walletMiddleware({ getState, dispatch }) {
    */
   walletService.on('network.changed', networkId => {
     // Set the new network, which should also clean up all reducers
-    dispatch(setNetwork(networkId))
+    const {
+      network: { name },
+    } = getState()
+    if (name !== networkId) {
+      // this resets a whole bunch of values, so only change it if it really changed
+      dispatch(setNetwork(networkId))
+    }
     // Check if the smart contract exists
     walletService.isUnlockContractDeployed((error, isDeployed) => {
       if (error) {
