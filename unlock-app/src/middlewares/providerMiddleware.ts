@@ -1,3 +1,4 @@
+import { setTimeout } from 'timers'
 import { SET_PROVIDER, providerReady } from '../actions/provider'
 import { setError } from '../actions/error'
 import {
@@ -10,11 +11,14 @@ interface Action {
   [key: string]: any
 }
 
-function initializeProvider(provider: { enable?: () => any }) {
+function initializeProvider(provider: { enable?: () => any }, dispatch: any) {
   // provider.enable exists for metamask and other modern dapp wallets and must be called, see:
   // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
   if (provider.enable) {
-    return provider.enable()
+    provider
+      .enable()
+      .then(() => dispatch(providerReady()))
+      .catch(() => dispatch(setError(FATAL_NOT_ENABLED_IN_PROVIDER)))
   }
   // Default case, provider doesn't have an enable method, so it must already be ready
   return Promise.resolve(true)
@@ -23,15 +27,19 @@ function initializeProvider(provider: { enable?: () => any }) {
 const providerMiddleware = (config: any) => {
   return ({ getState, dispatch }: { [key: string]: any }) => {
     return function(next: any) {
+      // Initialize provider based on the one grabbed in the state. Fragile?
+      setTimeout(() => {
+        const provider = config.providers[getState().provider]
+        initializeProvider(provider, dispatch)
+      }, 0)
+
       return function(action: Action) {
         if (action.type === SET_PROVIDER) {
           // Only initialize the provider if we haven't already done so.
           if (action.provider !== getState().provider) {
             const provider = config.providers[action.provider]
             if (provider) {
-              initializeProvider(provider)
-                .then(() => dispatch(providerReady()))
-                .catch(() => dispatch(setError(FATAL_NOT_ENABLED_IN_PROVIDER)))
+              initializeProvider(provider, dispatch)
             } else {
               dispatch(setError(FATAL_MISSING_PROVIDER))
             }
