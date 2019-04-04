@@ -155,12 +155,6 @@ const walletMiddleware = config => {
     })
 
     return function(next) {
-      // Connect to the current provider
-      // We connect once the middleware has been initialized, using setTimout (warning: fragile?)
-      setTimeout(() => {
-        walletService.connect(getState().provider)
-      })
-
       return function(action) {
         if (action.type === PROVIDER_READY) {
           walletService.connect(config.providers[getState().provider])
