@@ -95,6 +95,34 @@ describe('Overlay', () => {
         transaction: null,
       })
     })
+    it('should not crash if there are no matching keys yet for a transaction', () => {
+      expect.assertions(1)
+
+      const props = {
+        locks: [
+          {
+            address: '0x123',
+          },
+        ],
+      }
+      const state = {
+        account: {
+          address: 'account',
+        },
+        keys: {},
+        transactions: {
+          transaction: {
+            key: 'key',
+            type: TRANSACTION_TYPES.KEY_PURCHASE,
+          },
+        },
+      }
+
+      expect(mapStateToProps(state, props)).toEqual({
+        openInNewWindow: false,
+        transaction: null,
+      })
+    })
     it('should set openInNewWindow based on the value of account', () => {
       expect.assertions(3)
 
