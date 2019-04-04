@@ -8140,6 +8140,13 @@ Object {
   margin-bottom: 3px;
 }
 
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c0 {
+    justify-self: center;
+    box-shadow: 14px 0px 40px rgba(0,0,0,0.14);
+  }
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -8216,7 +8223,7 @@ Object {
       style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="j1ncz7-0 bZCHNZ"
+        class="j1ncz7-0 dlMPln"
       >
         <div
           class="j1ncz7-1 kvurOe"
@@ -8414,6 +8421,13 @@ Object {
   margin-bottom: 3px;
 }
 
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c0 {
+    justify-self: center;
+    box-shadow: 14px 0px 40px rgba(0,0,0,0.14);
+  }
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -8468,7 +8482,7 @@ Object {
       style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="j1ncz7-0 bZCHNZ"
+        class="j1ncz7-0 dlMPln"
       >
         <div
           class="j1ncz7-1 kvurOe"
@@ -8633,6 +8647,10 @@ Object {
   margin-left: -14px;
 }
 
+.c13 a {
+  color: var(--red);
+}
+
 .c13 > p {
   margin-left: auto;
   margin-right: auto;
@@ -8788,7 +8806,50 @@ Object {
 
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c13 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    justify-self: center;
+    background-color: transparent;
+    height: 30px;
+    width: 100%;
+    margin-right: 0;
+    grid-row: 3;
+  }
+
+  .c13 > p {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    justify-self: center;
+    color: var(--slate);
+  }
+
+  .c13 > p > a {
+    color: var(--red);
+  }
+
+  .c13 > div {
     display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c1 {
+    min-height: 390px;
   }
 }
 
@@ -8931,7 +8992,12 @@ Object {
                 </svg>
               </div>
               <p>
-                Powered by Unlock
+                Powered by 
+                <a
+                  href="https://paywall.unlock-protocol.com"
+                >
+                  Unlock
+                </a>
               </p>
             </footer>
           </div>
@@ -8999,7 +9065,7 @@ Object {
         class="sc-7wmxqm-0 fANVjX"
       >
         <div
-          class="sc-7wmxqm-1 kmwBAR"
+          class="sc-7wmxqm-1 kKQRcy"
           data-testid="paywall-banner"
           style="height: 0%;"
         >
@@ -9063,7 +9129,7 @@ Object {
             </li>
           </ul>
           <footer
-            class="sc-1549ebs-8 kzzwSl"
+            class="sc-1549ebs-8 bUvWcF"
           >
             <div
               class="sth0f3-0 kwQJpX"
@@ -9078,7 +9144,12 @@ Object {
               </svg>
             </div>
             <p>
-              Powered by Unlock
+              Powered by 
+              <a
+                href="https://paywall.unlock-protocol.com"
+              >
+                Unlock
+              </a>
             </p>
           </footer>
         </div>
@@ -9197,6 +9268,10 @@ Object {
   margin-left: -14px;
 }
 
+.c7 a {
+  color: var(--red);
+}
+
 .c7 > p {
   margin-left: auto;
   margin-right: auto;
@@ -9302,6 +9377,43 @@ Object {
 
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c7 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    justify-self: center;
+    background-color: transparent;
+    height: 30px;
+    width: 100%;
+    margin-right: 0;
+    grid-row: 3;
+  }
+
+  .c7 > p {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    justify-self: center;
+    color: var(--slate);
+  }
+
+  .c7 > p > a {
+    color: var(--red);
+  }
+
+  .c7 > div {
     display: none;
   }
 }
@@ -9311,6 +9423,12 @@ Object {
     grid-template-columns: 1fr;
     grid-auto-flow: row;
     padding: 16px;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c1 {
+    min-height: 390px;
   }
 }
 
@@ -9422,7 +9540,12 @@ Object {
                 </svg>
               </div>
               <p>
-                Powered by Unlock
+                Powered by 
+                <a
+                  href="https://paywall.unlock-protocol.com"
+                >
+                  Unlock
+                </a>
               </p>
             </footer>
           </div>
@@ -9490,7 +9613,7 @@ Object {
         class="sc-7wmxqm-0 fANVjX"
       >
         <div
-          class="sc-7wmxqm-1 kmwBAR"
+          class="sc-7wmxqm-1 kKQRcy"
           data-testid="paywall-banner"
           style="height: 0%;"
         >
@@ -9523,7 +9646,7 @@ Object {
             </section>
           </ul>
           <footer
-            class="sc-1549ebs-8 kzzwSl"
+            class="sc-1549ebs-8 bUvWcF"
           >
             <div
               class="sth0f3-0 kwQJpX"
@@ -9538,7 +9661,12 @@ Object {
               </svg>
             </div>
             <p>
-              Powered by Unlock
+              Powered by 
+              <a
+                href="https://paywall.unlock-protocol.com"
+              >
+                Unlock
+              </a>
             </p>
           </footer>
         </div>
@@ -9673,6 +9801,10 @@ Object {
   -ms-flex-item-align: center;
   align-self: center;
   margin-left: -14px;
+}
+
+.c13 a {
+  color: var(--red);
 }
 
 .c13 > p {
@@ -9830,7 +9962,50 @@ Object {
 
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c13 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    justify-self: center;
+    background-color: transparent;
+    height: 30px;
+    width: 100%;
+    margin-right: 0;
+    grid-row: 3;
+  }
+
+  .c13 > p {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    justify-self: center;
+    color: var(--slate);
+  }
+
+  .c13 > p > a {
+    color: var(--red);
+  }
+
+  .c13 > div {
     display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c1 {
+    min-height: 390px;
   }
 }
 
@@ -9973,7 +10148,12 @@ Object {
                 </svg>
               </div>
               <p>
-                Powered by Unlock
+                Powered by 
+                <a
+                  href="https://paywall.unlock-protocol.com"
+                >
+                  Unlock
+                </a>
               </p>
             </footer>
           </div>
@@ -10041,7 +10221,7 @@ Object {
         class="sc-7wmxqm-0 fANVjX"
       >
         <div
-          class="sc-7wmxqm-1 kmwBAR"
+          class="sc-7wmxqm-1 kKQRcy"
           data-testid="paywall-banner"
           style="height: 0%;"
         >
@@ -10105,7 +10285,7 @@ Object {
             </li>
           </ul>
           <footer
-            class="sc-1549ebs-8 kzzwSl"
+            class="sc-1549ebs-8 bUvWcF"
           >
             <div
               class="sth0f3-0 kwQJpX"
@@ -10120,7 +10300,12 @@ Object {
               </svg>
             </div>
             <p>
-              Powered by Unlock
+              Powered by 
+              <a
+                href="https://paywall.unlock-protocol.com"
+              >
+                Unlock
+              </a>
             </p>
           </footer>
         </div>
@@ -10239,6 +10424,10 @@ Object {
   margin-left: -14px;
 }
 
+.c7 a {
+  color: var(--red);
+}
+
 .c7 > p {
   margin-left: auto;
   margin-right: auto;
@@ -10344,6 +10533,43 @@ Object {
 
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c7 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    justify-self: center;
+    background-color: transparent;
+    height: 30px;
+    width: 100%;
+    margin-right: 0;
+    grid-row: 3;
+  }
+
+  .c7 > p {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    justify-self: center;
+    color: var(--slate);
+  }
+
+  .c7 > p > a {
+    color: var(--red);
+  }
+
+  .c7 > div {
     display: none;
   }
 }
@@ -10353,6 +10579,12 @@ Object {
     grid-template-columns: 1fr;
     grid-auto-flow: row;
     padding: 16px;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c1 {
+    min-height: 390px;
   }
 }
 
@@ -10464,7 +10696,12 @@ Object {
                 </svg>
               </div>
               <p>
-                Powered by Unlock
+                Powered by 
+                <a
+                  href="https://paywall.unlock-protocol.com"
+                >
+                  Unlock
+                </a>
               </p>
             </footer>
           </div>
@@ -10532,7 +10769,7 @@ Object {
         class="sc-7wmxqm-0 fANVjX"
       >
         <div
-          class="sc-7wmxqm-1 kmwBAR"
+          class="sc-7wmxqm-1 kKQRcy"
           data-testid="paywall-banner"
           style="height: 0%;"
         >
@@ -10565,7 +10802,7 @@ Object {
             </section>
           </ul>
           <footer
-            class="sc-1549ebs-8 kzzwSl"
+            class="sc-1549ebs-8 bUvWcF"
           >
             <div
               class="sth0f3-0 kwQJpX"
@@ -10580,7 +10817,12 @@ Object {
               </svg>
             </div>
             <p>
-              Powered by Unlock
+              Powered by 
+              <a
+                href="https://paywall.unlock-protocol.com"
+              >
+                Unlock
+              </a>
             </p>
           </footer>
         </div>
@@ -10715,6 +10957,10 @@ Object {
   -ms-flex-item-align: center;
   align-self: center;
   margin-left: -14px;
+}
+
+.c13 a {
+  color: var(--red);
 }
 
 .c13 > p {
@@ -10872,7 +11118,50 @@ Object {
 
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c13 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    justify-self: center;
+    background-color: transparent;
+    height: 30px;
+    width: 100%;
+    margin-right: 0;
+    grid-row: 3;
+  }
+
+  .c13 > p {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    justify-self: center;
+    color: var(--slate);
+  }
+
+  .c13 > p > a {
+    color: var(--red);
+  }
+
+  .c13 > div {
     display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c1 {
+    min-height: 390px;
   }
 }
 
@@ -11064,7 +11353,12 @@ Object {
                 </svg>
               </div>
               <p>
-                Powered by Unlock
+                Powered by 
+                <a
+                  href="https://paywall.unlock-protocol.com"
+                >
+                  Unlock
+                </a>
               </p>
             </footer>
           </div>
@@ -11132,7 +11426,7 @@ Object {
         class="sc-7wmxqm-0 fANVjX"
       >
         <div
-          class="sc-7wmxqm-1 kmwBAR"
+          class="sc-7wmxqm-1 kKQRcy"
           data-testid="paywall-banner"
           style="height: 0%;"
         >
@@ -11245,7 +11539,7 @@ Object {
             </li>
           </ul>
           <footer
-            class="sc-1549ebs-8 kzzwSl"
+            class="sc-1549ebs-8 bUvWcF"
           >
             <div
               class="sth0f3-0 kwQJpX"
@@ -11260,7 +11554,12 @@ Object {
               </svg>
             </div>
             <p>
-              Powered by Unlock
+              Powered by 
+              <a
+                href="https://paywall.unlock-protocol.com"
+              >
+                Unlock
+              </a>
             </p>
           </footer>
         </div>
@@ -11473,6 +11772,10 @@ Object {
   margin-left: -14px;
 }
 
+.c12 a {
+  color: var(--red);
+}
+
 .c12 > p {
   margin-left: auto;
   margin-right: auto;
@@ -11583,7 +11886,50 @@ Object {
 
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c12 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    justify-self: center;
+    background-color: transparent;
+    height: 30px;
+    width: 100%;
+    margin-right: 0;
+    grid-row: 3;
+  }
+
+  .c12 > p {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    justify-self: center;
+    color: var(--slate);
+  }
+
+  .c12 > p > a {
+    color: var(--red);
+  }
+
+  .c12 > div {
     display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c1 {
+    min-height: 390px;
   }
 }
 
@@ -11719,7 +12065,12 @@ Object {
                   </svg>
                 </div>
                 <p>
-                  Powered by Unlock
+                  Powered by 
+                  <a
+                    href="https://paywall.unlock-protocol.com"
+                  >
+                    Unlock
+                  </a>
                 </p>
               </footer>
             </div>
@@ -11791,7 +12142,7 @@ Object {
           class="sc-7wmxqm-0 fANVjX"
         >
           <div
-            class="sc-7wmxqm-1 kmwBAR"
+            class="sc-7wmxqm-1 kKQRcy"
             data-testid="paywall-banner"
             style="height: 0%;"
           >
@@ -11845,7 +12196,7 @@ Object {
               </li>
             </ul>
             <footer
-              class="sc-1549ebs-8 kzzwSl"
+              class="sc-1549ebs-8 bUvWcF"
             >
               <div
                 class="sth0f3-0 kwQJpX"
@@ -11860,7 +12211,12 @@ Object {
                 </svg>
               </div>
               <p>
-                Powered by Unlock
+                Powered by 
+                <a
+                  href="https://paywall.unlock-protocol.com"
+                >
+                  Unlock
+                </a>
               </p>
             </footer>
           </div>
@@ -12007,6 +12363,13 @@ Object {
 .c3 > p {
   text-align: center;
   margin-bottom: 3px;
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c0 {
+    justify-self: center;
+    box-shadow: 14px 0px 40px rgba(0,0,0,0.14);
+  }
 }
 
 <div>
@@ -12166,7 +12529,7 @@ Object {
         class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-0 bZCHNZ"
+          class="j1ncz7-0 dlMPln"
         >
           <div
             class="j1ncz7-1 kvurOe"
@@ -12463,6 +12826,10 @@ Object {
   margin-left: -14px;
 }
 
+.c20 a {
+  color: var(--red);
+}
+
 .c20 > p {
   margin-left: auto;
   margin-right: auto;
@@ -12625,7 +12992,50 @@ Object {
 
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c20 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    justify-self: center;
+    background-color: transparent;
+    height: 30px;
+    width: 100%;
+    margin-right: 0;
+    grid-row: 3;
+  }
+
+  .c20 > p {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    justify-self: center;
+    color: var(--slate);
+  }
+
+  .c20 > p > a {
+    color: var(--red);
+  }
+
+  .c20 > div {
     display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c1 {
+    min-height: 390px;
   }
 }
 
@@ -12788,7 +13198,12 @@ Object {
                   </svg>
                 </div>
                 <p>
-                  Powered by Unlock
+                  Powered by 
+                  <a
+                    href="https://paywall.unlock-protocol.com"
+                  >
+                    Unlock
+                  </a>
                 </p>
               </footer>
             </div>
@@ -12860,7 +13275,7 @@ Object {
           class="sc-7wmxqm-0 fANVjX"
         >
           <div
-            class="sc-7wmxqm-1 kmwBAR"
+            class="sc-7wmxqm-1 kKQRcy"
             data-testid="paywall-banner"
             style="height: 0%;"
           >
@@ -12941,7 +13356,7 @@ Object {
               </li>
             </ul>
             <footer
-              class="sc-1549ebs-8 kzzwSl"
+              class="sc-1549ebs-8 bUvWcF"
             >
               <div
                 class="sth0f3-0 kwQJpX"
@@ -12956,7 +13371,12 @@ Object {
                 </svg>
               </div>
               <p>
-                Powered by Unlock
+                Powered by 
+                <a
+                  href="https://paywall.unlock-protocol.com"
+                >
+                  Unlock
+                </a>
               </p>
             </footer>
           </div>
@@ -13185,6 +13605,13 @@ Object {
   margin-bottom: 3px;
 }
 
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c0 {
+    justify-self: center;
+    box-shadow: 14px 0px 40px rgba(0,0,0,0.14);
+  }
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -13364,7 +13791,7 @@ Object {
         class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-0 bZCHNZ"
+          class="j1ncz7-0 dlMPln"
         >
           <div
             class="j1ncz7-1 kvurOe"
@@ -13628,6 +14055,10 @@ Object {
   margin-left: -14px;
 }
 
+.c12 a {
+  color: var(--red);
+}
+
 .c12 > p {
   margin-left: auto;
   margin-right: auto;
@@ -13738,7 +14169,50 @@ Object {
 
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c12 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    justify-self: center;
+    background-color: transparent;
+    height: 30px;
+    width: 100%;
+    margin-right: 0;
+    grid-row: 3;
+  }
+
+  .c12 > p {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    justify-self: center;
+    color: var(--slate);
+  }
+
+  .c12 > p > a {
+    color: var(--red);
+  }
+
+  .c12 > div {
     display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c1 {
+    min-height: 390px;
   }
 }
 
@@ -13879,7 +14353,12 @@ Object {
                   </svg>
                 </div>
                 <p>
-                  Powered by Unlock
+                  Powered by 
+                  <a
+                    href="https://paywall.unlock-protocol.com"
+                  >
+                    Unlock
+                  </a>
                 </p>
               </footer>
             </div>
@@ -13951,7 +14430,7 @@ Object {
           class="sc-7wmxqm-0 fANVjX"
         >
           <div
-            class="sc-7wmxqm-1 kmwBAR"
+            class="sc-7wmxqm-1 kKQRcy"
             data-testid="paywall-banner"
             style="height: 0%;"
           >
@@ -14010,7 +14489,7 @@ Object {
               </li>
             </ul>
             <footer
-              class="sc-1549ebs-8 kzzwSl"
+              class="sc-1549ebs-8 bUvWcF"
             >
               <div
                 class="sth0f3-0 kwQJpX"
@@ -14025,7 +14504,12 @@ Object {
                 </svg>
               </div>
               <p>
-                Powered by Unlock
+                Powered by 
+                <a
+                  href="https://paywall.unlock-protocol.com"
+                >
+                  Unlock
+                </a>
               </p>
             </footer>
           </div>
@@ -14172,6 +14656,13 @@ Object {
 .c3 > p {
   text-align: center;
   margin-bottom: 3px;
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c0 {
+    justify-self: center;
+    box-shadow: 14px 0px 40px rgba(0,0,0,0.14);
+  }
 }
 
 <div>
@@ -14331,7 +14822,7 @@ Object {
         class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-0 bZCHNZ"
+          class="j1ncz7-0 dlMPln"
         >
           <div
             class="j1ncz7-1 kvurOe"
@@ -15280,6 +15771,10 @@ Object {
   margin-left: -14px;
 }
 
+.c0 a {
+  color: var(--red);
+}
+
 .c0 > p {
   margin-left: auto;
   margin-right: auto;
@@ -15302,8 +15797,49 @@ Object {
   transition: opacity 0.4s ease-in;
 }
 
+.c0 a {
+  color: var(--red);
+}
+
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    justify-self: center;
+    background-color: transparent;
+    height: 30px;
+    width: 100%;
+    margin-right: 0;
+    grid-row: 3;
+  }
+
+  .c0 > p {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    justify-self: center;
+    color: var(--slate);
+  }
+
+  .c0 > p > a {
+    color: var(--red);
+  }
+
+  .c0 > div {
     display: none;
   }
 }
@@ -15314,6 +15850,34 @@ Object {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+    background-color: var(--white);
+    box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
+    grid-row: 2;
+    grid-column: 1;
+    width: 120px;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    justify-self: center;
+    height: 50px;
+    margin-right: -33px;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    float: none;
+    margin-right: auto;
+    margin-left: auto;
+    opacity: 1;
+  }
+
+  .c0 > div {
+    display: block;
+  }
+
+  .c0 > p {
+    width: 63px;
+    display: block;
+    grid-row: 2;
   }
 }
 
@@ -15342,7 +15906,12 @@ Object {
             </svg>
           </div>
           <p>
-            Subscribed with Unlock
+            Subscribed with 
+            <a
+              href="https://paywall.unlock-protocol.com"
+            >
+              Unlock
+            </a>
           </p>
         </footer>
       </div>
@@ -15357,7 +15926,7 @@ Object {
       class="unlock start show hide"
     >
       <footer
-        class="sc-1549ebs-8 sc-15m75z9-0 nPhAm"
+        class="sc-1549ebs-8 sc-15m75z9-0 gZVMfW"
         id="UnlockFlag"
       >
         <div
@@ -15373,7 +15942,12 @@ Object {
           </svg>
         </div>
         <p>
-          Subscribed with Unlock
+          Subscribed with 
+          <a
+            href="https://paywall.unlock-protocol.com"
+          >
+            Unlock
+          </a>
         </p>
       </footer>
     </div>
@@ -17249,6 +17823,10 @@ Object {
   margin-left: -14px;
 }
 
+.c0 a {
+  color: var(--red);
+}
+
 .c0 > p {
   margin-left: auto;
   margin-right: auto;
@@ -17271,8 +17849,49 @@ Object {
   transition: opacity 0.4s ease-in;
 }
 
+.c0 a {
+  color: var(--red);
+}
+
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    justify-self: center;
+    background-color: transparent;
+    height: 30px;
+    width: 100%;
+    margin-right: 0;
+    grid-row: 3;
+  }
+
+  .c0 > p {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    justify-self: center;
+    color: var(--slate);
+  }
+
+  .c0 > p > a {
+    color: var(--red);
+  }
+
+  .c0 > div {
     display: none;
   }
 }
@@ -17283,6 +17902,34 @@ Object {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+    background-color: var(--white);
+    box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
+    grid-row: 2;
+    grid-column: 1;
+    width: 120px;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    justify-self: center;
+    height: 50px;
+    margin-right: -33px;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    float: none;
+    margin-right: auto;
+    margin-left: auto;
+    opacity: 1;
+  }
+
+  .c0 > div {
+    display: block;
+  }
+
+  .c0 > p {
+    width: 63px;
+    display: block;
+    grid-row: 2;
   }
 }
 
@@ -17308,7 +17955,12 @@ Object {
           </svg>
         </div>
         <p>
-          Subscribed with Unlock
+          Subscribed with 
+          <a
+            href="https://paywall.unlock-protocol.com"
+          >
+            Unlock
+          </a>
         </p>
       </footer>
     </div>
@@ -17319,7 +17971,7 @@ Object {
       rel="stylesheet"
     />
     <footer
-      class="sc-1549ebs-8 sc-15m75z9-0 nPhAm"
+      class="sc-1549ebs-8 sc-15m75z9-0 gZVMfW"
       id="UnlockFlag"
     >
       <div
@@ -17335,7 +17987,12 @@ Object {
         </svg>
       </div>
       <p>
-        Subscribed with Unlock
+        Subscribed with 
+        <a
+          href="https://paywall.unlock-protocol.com"
+        >
+          Unlock
+        </a>
       </p>
     </footer>
   </div>,
