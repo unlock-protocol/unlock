@@ -286,7 +286,7 @@ describe('Wallet middleware', () => {
         })
       })
 
-      it('should dispatch a SET_NETWORK action', () => {
+      it('should dispatch a SET_NETWORK action if the network has changed', () => {
         expect.assertions(1)
         const { store } = create()
         const networkId = 1984
@@ -301,6 +301,18 @@ describe('Wallet middleware', () => {
             network: networkId,
           })
         )
+      })
+
+      it('should not dispatch a SET_NETWORK action if the network has not changed', () => {
+        expect.assertions(1)
+        const { store } = create()
+        const networkId = 1984
+
+        state.network.name = 1984
+        mockWalletService.getAccount = jest.fn()
+        mockWalletService.isUnlockContractDeployed = jest.fn()
+        mockWalletService.emit('network.changed', networkId)
+        expect(store.dispatch).not.toHaveBeenCalled()
       })
     })
   })
