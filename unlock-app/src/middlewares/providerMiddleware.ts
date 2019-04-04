@@ -24,9 +24,10 @@ function initializeProvider(provider: { enable?: () => any }, dispatch: any) {
       .enable()
       .then(() => dispatch(providerReady()))
       .catch(() => dispatch(setError(FATAL_NOT_ENABLED_IN_PROVIDER)))
+  } else {
+    // Default case, provider doesn't have an enable method, so it must already be ready
+    dispatch(providerReady())
   }
-  // Default case, provider doesn't have an enable method, so it must already be ready
-  dispatch(providerReady())
 }
 
 const providerMiddleware = (config: any) => {
