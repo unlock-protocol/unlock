@@ -11644,81 +11644,85 @@ Object {
           </li>
         </ul>
         <div
-          class="c0"
+          class="unlock start show hide optimism"
         >
           <div
-            class="c1"
-            data-testid="paywall-banner"
-            style="height: 0%;"
+            class="c0"
           >
-            <h1
-              class="c2"
-              id="Paywall_Headline"
+            <div
+              class="c1"
+              data-testid="paywall-banner"
+              style="height: 0%;"
             >
-              Purchase pending...
-            </h1>
-            <ul
-              class="c3"
-            >
-              <li
-                class="c4"
+              <h1
+                class="c2"
+                id="Paywall_Headline"
               >
-                <header
-                  class="c5"
+                Purchase pending...
+              </h1>
+              <ul
+                class="c3"
+              >
+                <li
+                  class="c4"
                 >
-                  One Month
-                </header>
+                  <header
+                    class="c5"
+                  >
+                    One Month
+                  </header>
+                  <div
+                    class="c6"
+                  >
+                    <div
+                      class="c7"
+                    >
+                      <div
+                        class="c8"
+                      >
+                        0.12
+                         ETH
+                      </div>
+                      <div
+                        class="c9"
+                      >
+                        $
+                        24.11
+                      </div>
+                    </div>
+                    <div
+                      class="c10"
+                    >
+                      Waiting for mining confirmation.
+                    </div>
+                    <footer
+                      class="c11"
+                    >
+                      Payment Sent
+                    </footer>
+                  </div>
+                </li>
+              </ul>
+              <footer
+                class="c12"
+              >
                 <div
-                  class="c6"
+                  class="c13"
                 >
-                  <div
-                    class="c7"
+                  <svg
+                    viewBox="0 0 56 56"
                   >
-                    <div
-                      class="c8"
-                    >
-                      0.12
-                       ETH
-                    </div>
-                    <div
-                      class="c9"
-                    >
-                      $
-                      24.11
-                    </div>
-                  </div>
-                  <div
-                    class="c10"
-                  >
-                    Waiting for mining confirmation.
-                  </div>
-                  <footer
-                    class="c11"
-                  >
-                    Payment Sent
-                  </footer>
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
                 </div>
-              </li>
-            </ul>
-            <footer
-              class="c12"
-            >
-              <div
-                class="c13"
-              >
-                <svg
-                  viewBox="0 0 56 56"
-                >
-                  <title />
-                  <path
-                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                  />
-                </svg>
-              </div>
-              <p>
-                Powered by Unlock
-              </p>
-            </footer>
+                <p>
+                  Powered by Unlock
+                </p>
+              </footer>
+            </div>
           </div>
         </div>
       </section>
@@ -11781,81 +11785,85 @@ Object {
         </li>
       </ul>
       <div
-        class="sc-7wmxqm-0 fANVjX"
+        class="unlock start show hide optimism"
       >
         <div
-          class="sc-7wmxqm-1 kmwBAR"
-          data-testid="paywall-banner"
-          style="height: 0%;"
+          class="sc-7wmxqm-0 fANVjX"
         >
-          <h1
-            class="sc-7wmxqm-2 iEBMAT"
-            id="Paywall_Headline"
+          <div
+            class="sc-7wmxqm-1 kmwBAR"
+            data-testid="paywall-banner"
+            style="height: 0%;"
           >
-            Purchase pending...
-          </h1>
-          <ul
-            class="sc-7wmxqm-3 jZRqqJ"
-          >
-            <li
-              class="sc-1549ebs-0 NDRQz"
+            <h1
+              class="sc-7wmxqm-2 iEBMAT"
+              id="Paywall_Headline"
             >
-              <header
-                class="sc-1549ebs-1 cWinrG"
+              Purchase pending...
+            </h1>
+            <ul
+              class="sc-7wmxqm-3 jZRqqJ"
+            >
+              <li
+                class="sc-1549ebs-0 NDRQz"
               >
-                One Month
-              </header>
+                <header
+                  class="sc-1549ebs-1 cWinrG"
+                >
+                  One Month
+                </header>
+                <div
+                  class="sc-1549ebs-3 mmuk7x-1 fuDijf"
+                >
+                  <div
+                    class="sc-1549ebs-6 hGyOOg"
+                  >
+                    <div
+                      class="sc-1549ebs-4 cXGnbO"
+                    >
+                      0.12
+                       ETH
+                    </div>
+                    <div
+                      class="sc-1549ebs-4 kUlrFA"
+                    >
+                      $
+                      24.11
+                    </div>
+                  </div>
+                  <div
+                    class="sc-1549ebs-5 eUmWhY"
+                  >
+                    Waiting for mining confirmation.
+                  </div>
+                  <footer
+                    class="sc-1549ebs-2 mmuk7x-0 dqyjiJ"
+                  >
+                    Payment Sent
+                  </footer>
+                </div>
+              </li>
+            </ul>
+            <footer
+              class="sc-1549ebs-8 kzzwSl"
+            >
               <div
-                class="sc-1549ebs-3 mmuk7x-1 fuDijf"
+                class="sth0f3-0 kwQJpX"
               >
-                <div
-                  class="sc-1549ebs-6 hGyOOg"
+                <svg
+                  viewBox="0 0 56 56"
                 >
-                  <div
-                    class="sc-1549ebs-4 cXGnbO"
-                  >
-                    0.12
-                     ETH
-                  </div>
-                  <div
-                    class="sc-1549ebs-4 kUlrFA"
-                  >
-                    $
-                    24.11
-                  </div>
-                </div>
-                <div
-                  class="sc-1549ebs-5 eUmWhY"
-                >
-                  Waiting for mining confirmation.
-                </div>
-                <footer
-                  class="sc-1549ebs-2 mmuk7x-0 dqyjiJ"
-                >
-                  Payment Sent
-                </footer>
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
               </div>
-            </li>
-          </ul>
-          <footer
-            class="sc-1549ebs-8 kzzwSl"
-          >
-            <div
-              class="sth0f3-0 kwQJpX"
-            >
-              <svg
-                viewBox="0 0 56 56"
-              >
-                <title />
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
-            </div>
-            <p>
-              Powered by Unlock
-            </p>
-          </footer>
+              <p>
+                Powered by Unlock
+              </p>
+            </footer>
+          </div>
         </div>
       </div>
     </section>
@@ -12058,36 +12066,40 @@ Object {
           </li>
         </ul>
         <div
-          class="c0"
+          class="unlock start show hide optimism"
         >
           <div
-            class="c1"
+            class="c0"
           >
             <div
-              class="c2"
-            >
-              <svg
-                viewBox="0 0 56 56"
-              >
-                <title />
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
-            </div>
-          </div>
-          <div
-            class="c3"
-          >
-            <p>
-              Confirming Purchase
-            </p>
-            <div
-              class="c4"
+              class="c1"
             >
               <div
-                class="c5"
-              />
+                class="c2"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div
+              class="c3"
+            >
+              <p>
+                Confirming Purchase
+              </p>
+              <div
+                class="c4"
+              >
+                <div
+                  class="c5"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -12151,36 +12163,40 @@ Object {
         </li>
       </ul>
       <div
-        class="j1ncz7-0 bZCHNZ"
+        class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-1 kvurOe"
+          class="j1ncz7-0 bZCHNZ"
         >
           <div
-            class="sth0f3-0 kwQJpX"
-          >
-            <svg
-              viewBox="0 0 56 56"
-            >
-              <title />
-              <path
-                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-              />
-            </svg>
-          </div>
-        </div>
-        <div
-          class="j1ncz7-4 fgRiVp"
-        >
-          <p>
-            Confirming Purchase
-          </p>
-          <div
-            class="j1ncz7-2 UUghW"
+            class="j1ncz7-1 kvurOe"
           >
             <div
-              class="j1ncz7-2 j1ncz7-3 cmFhKm"
-            />
+              class="sth0f3-0 kwQJpX"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </div>
+          <div
+            class="j1ncz7-4 fgRiVp"
+          >
+            <p>
+              Confirming Purchase
+            </p>
+            <div
+              class="j1ncz7-2 UUghW"
+            >
+              <div
+                class="j1ncz7-2 j1ncz7-3 cmFhKm"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -12670,108 +12686,112 @@ Object {
           </li>
         </ul>
         <div
-          class="c0"
+          class="unlock start show hide optimism"
         >
           <div
-            class="c1"
-            data-testid="paywall-banner"
-            style="height: 0%;"
+            class="c0"
           >
-            <h1
-              class="c2"
-              id="Paywall_Headline"
+            <div
+              class="c1"
+              data-testid="paywall-banner"
+              style="height: 0%;"
             >
-              Purchase confirmed, content unlocked!
-            </h1>
-            <ul
-              class="c3"
-            >
-              <li
-                class="c4"
+              <h1
+                class="c2"
+                id="Paywall_Headline"
               >
-                <header
-                  class="c5"
+                Purchase confirmed, content unlocked!
+              </h1>
+              <ul
+                class="c3"
+              >
+                <li
+                  class="c4"
                 >
-                  One Month
-                </header>
-                <div
-                  class="c6"
-                >
+                  <header
+                    class="c5"
+                  >
+                    One Month
+                  </header>
                   <div
-                    class="c7"
+                    class="c6"
                   >
                     <div
-                      class="c8"
+                      class="c7"
                     >
-                      0.12
-                       ETH
+                      <div
+                        class="c8"
+                      >
+                        0.12
+                         ETH
+                      </div>
+                      <div
+                        class="c9"
+                      >
+                        $
+                        24.11
+                      </div>
                     </div>
-                    <div
-                      class="c9"
+                    <a
+                      class="c10 c11 c12"
                     >
-                      $
-                      24.11
-                    </div>
+                      <svg
+                        class="c13 "
+                        viewBox="0 0 24 24"
+                      >
+                        <title />
+                        <path
+                          clip-rule="evenodd"
+                          d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                      <svg
+                        class="c14 c15"
+                        viewBox="0 0 24 24"
+                      >
+                        <title />
+                        <path
+                          clip-rule="evenodd"
+                          d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                      
+                    </a>
+                    <footer
+                      class="c16 c17"
+                    >
+                      Payment Confirmed
+                    </footer>
+                    <footer
+                      class="c18 c19"
+                    >
+                      Go to Content
+                    </footer>
                   </div>
-                  <a
-                    class="c10 c11 c12"
-                  >
-                    <svg
-                      class="c13 "
-                      viewBox="0 0 24 24"
-                    >
-                      <title />
-                      <path
-                        clip-rule="evenodd"
-                        d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
-                        fill-rule="evenodd"
-                      />
-                    </svg>
-                    <svg
-                      class="c14 c15"
-                      viewBox="0 0 24 24"
-                    >
-                      <title />
-                      <path
-                        clip-rule="evenodd"
-                        d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
-                        fill-rule="evenodd"
-                      />
-                    </svg>
-                    
-                  </a>
-                  <footer
-                    class="c16 c17"
-                  >
-                    Payment Confirmed
-                  </footer>
-                  <footer
-                    class="c18 c19"
-                  >
-                    Go to Content
-                  </footer>
-                </div>
-              </li>
-            </ul>
-            <footer
-              class="c20"
-            >
-              <div
-                class="c21"
+                </li>
+              </ul>
+              <footer
+                class="c20"
               >
-                <svg
-                  viewBox="0 0 56 56"
+                <div
+                  class="c21"
                 >
-                  <title />
-                  <path
-                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                  />
-                </svg>
-              </div>
-              <p>
-                Powered by Unlock
-              </p>
-            </footer>
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+                <p>
+                  Powered by Unlock
+                </p>
+              </footer>
+            </div>
           </div>
         </div>
       </section>
@@ -12834,108 +12854,112 @@ Object {
         </li>
       </ul>
       <div
-        class="sc-7wmxqm-0 fANVjX"
+        class="unlock start show hide optimism"
       >
         <div
-          class="sc-7wmxqm-1 kmwBAR"
-          data-testid="paywall-banner"
-          style="height: 0%;"
+          class="sc-7wmxqm-0 fANVjX"
         >
-          <h1
-            class="sc-7wmxqm-2 iEBMAT"
-            id="Paywall_Headline"
+          <div
+            class="sc-7wmxqm-1 kmwBAR"
+            data-testid="paywall-banner"
+            style="height: 0%;"
           >
-            Purchase confirmed, content unlocked!
-          </h1>
-          <ul
-            class="sc-7wmxqm-3 jZRqqJ"
-          >
-            <li
-              class="sc-1549ebs-0 NDRQz"
+            <h1
+              class="sc-7wmxqm-2 iEBMAT"
+              id="Paywall_Headline"
             >
-              <header
-                class="sc-1549ebs-1 cWinrG"
+              Purchase confirmed, content unlocked!
+            </h1>
+            <ul
+              class="sc-7wmxqm-3 jZRqqJ"
+            >
+              <li
+                class="sc-1549ebs-0 NDRQz"
               >
-                One Month
-              </header>
-              <div
-                class="sc-1549ebs-3 ynhyps-0 DtZSS"
-              >
+                <header
+                  class="sc-1549ebs-1 cWinrG"
+                >
+                  One Month
+                </header>
                 <div
-                  class="sc-1549ebs-6 hGyOOg"
+                  class="sc-1549ebs-3 ynhyps-0 DtZSS"
                 >
                   <div
-                    class="sc-1549ebs-4 cXGnbO"
+                    class="sc-1549ebs-6 hGyOOg"
                   >
-                    0.12
-                     ETH
+                    <div
+                      class="sc-1549ebs-4 cXGnbO"
+                    >
+                      0.12
+                       ETH
+                    </div>
+                    <div
+                      class="sc-1549ebs-4 kUlrFA"
+                    >
+                      $
+                      24.11
+                    </div>
                   </div>
-                  <div
-                    class="sc-1549ebs-4 kUlrFA"
+                  <a
+                    class="sc-1hzn3pu-2 ffRwyB is925m-0 kmZaWo"
                   >
-                    $
-                    24.11
-                  </div>
+                    <svg
+                      class="sc-1hzn3pu-0 dozNUb"
+                      viewBox="0 0 24 24"
+                    >
+                      <title />
+                      <path
+                        clip-rule="evenodd"
+                        d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                    <svg
+                      class="sc-1hzn3pu-1 gckVYZ"
+                      viewBox="0 0 24 24"
+                    >
+                      <title />
+                      <path
+                        clip-rule="evenodd"
+                        d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                    
+                  </a>
+                  <footer
+                    class="sc-1549ebs-2 ik5149-0 ik5149-2 epNQgy"
+                  >
+                    Payment Confirmed
+                  </footer>
+                  <footer
+                    class="sc-1549ebs-2 ik5149-0 ik5149-1 ocNib"
+                  >
+                    Go to Content
+                  </footer>
                 </div>
-                <a
-                  class="sc-1hzn3pu-2 ffRwyB is925m-0 kmZaWo"
-                >
-                  <svg
-                    class="sc-1hzn3pu-0 dozNUb"
-                    viewBox="0 0 24 24"
-                  >
-                    <title />
-                    <path
-                      clip-rule="evenodd"
-                      d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
-                      fill-rule="evenodd"
-                    />
-                  </svg>
-                  <svg
-                    class="sc-1hzn3pu-1 gckVYZ"
-                    viewBox="0 0 24 24"
-                  >
-                    <title />
-                    <path
-                      clip-rule="evenodd"
-                      d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
-                      fill-rule="evenodd"
-                    />
-                  </svg>
-                  
-                </a>
-                <footer
-                  class="sc-1549ebs-2 ik5149-0 ik5149-2 epNQgy"
-                >
-                  Payment Confirmed
-                </footer>
-                <footer
-                  class="sc-1549ebs-2 ik5149-0 ik5149-1 ocNib"
-                >
-                  Go to Content
-                </footer>
-              </div>
-            </li>
-          </ul>
-          <footer
-            class="sc-1549ebs-8 kzzwSl"
-          >
-            <div
-              class="sth0f3-0 kwQJpX"
+              </li>
+            </ul>
+            <footer
+              class="sc-1549ebs-8 kzzwSl"
             >
-              <svg
-                viewBox="0 0 56 56"
+              <div
+                class="sth0f3-0 kwQJpX"
               >
-                <title />
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
-            </div>
-            <p>
-              Powered by Unlock
-            </p>
-          </footer>
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+              <p>
+                Powered by Unlock
+              </p>
+            </footer>
+          </div>
         </div>
       </div>
     </section>
@@ -13218,59 +13242,63 @@ Object {
           </li>
         </ul>
         <div
-          class="c0"
+          class="unlock start show hide optimism"
         >
           <div
-            class="c1"
+            class="c0"
           >
             <div
-              class="c2"
+              class="c1"
             >
-              <svg
-                viewBox="0 0 56 56"
+              <div
+                class="c2"
               >
-                <title />
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
             </div>
-          </div>
-          <div
-            class="c3"
-          >
-            <p>
-              Purchase Confirmed
-            </p>
-            <a
-              class="c4 c5 c6"
-              height="24px"
-              width="24px"
+            <div
+              class="c3"
             >
-              <svg
-                class="c7 "
-                viewBox="0 0 24 24"
+              <p>
+                Purchase Confirmed
+              </p>
+              <a
+                class="c4 c5 c6"
+                height="24px"
+                width="24px"
               >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <svg
-                class="c8 c9"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              
-            </a>
+                <svg
+                  class="c7 "
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <svg
+                  class="c8 c9"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -13333,59 +13361,63 @@ Object {
         </li>
       </ul>
       <div
-        class="j1ncz7-0 bZCHNZ"
+        class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-1 kvurOe"
+          class="j1ncz7-0 bZCHNZ"
         >
           <div
-            class="sth0f3-0 kwQJpX"
+            class="j1ncz7-1 kvurOe"
           >
-            <svg
-              viewBox="0 0 56 56"
+            <div
+              class="sth0f3-0 kwQJpX"
             >
-              <title />
-              <path
-                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-              />
-            </svg>
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
           </div>
-        </div>
-        <div
-          class="j1ncz7-4 fgRiVp"
-        >
-          <p>
-            Purchase Confirmed
-          </p>
-          <a
-            class="sc-1hzn3pu-2 ffRwyB is925m-0 kuCWTv"
-            height="24px"
-            width="24px"
+          <div
+            class="j1ncz7-4 fgRiVp"
           >
-            <svg
-              class="sc-1hzn3pu-0 dozNUb"
-              viewBox="0 0 24 24"
+            <p>
+              Purchase Confirmed
+            </p>
+            <a
+              class="sc-1hzn3pu-2 ffRwyB is925m-0 kuCWTv"
+              height="24px"
+              width="24px"
             >
-              <title />
-              <path
-                clip-rule="evenodd"
-                d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            <svg
-              class="sc-1hzn3pu-1 gckVYZ"
-              viewBox="0 0 24 24"
-            >
-              <title />
-              <path
-                clip-rule="evenodd"
-                d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            
-          </a>
+              <svg
+                class="sc-1hzn3pu-0 dozNUb"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <svg
+                class="sc-1hzn3pu-1 gckVYZ"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -13767,86 +13799,90 @@ Object {
           </li>
         </ul>
         <div
-          class="c0"
+          class="unlock start show hide optimism"
         >
           <div
-            class="c1"
-            data-testid="paywall-banner"
-            style="height: 0%;"
+            class="c0"
           >
-            <h1
-              class="c2"
-              id="Paywall_Headline"
+            <div
+              class="c1"
+              data-testid="paywall-banner"
+              style="height: 0%;"
             >
-              Purchase pending...
-            </h1>
-            <ul
-              class="c3"
-            >
-              <li
-                class="c4"
-                id="Confirming_0x1234567890123456789012345678901234567890"
+              <h1
+                class="c2"
+                id="Paywall_Headline"
               >
-                <header
-                  class="c5"
+                Purchase pending...
+              </h1>
+              <ul
+                class="c3"
+              >
+                <li
+                  class="c4"
+                  id="Confirming_0x1234567890123456789012345678901234567890"
                 >
-                  One Month
-                </header>
+                  <header
+                    class="c5"
+                  >
+                    One Month
+                  </header>
+                  <div
+                    class="c6"
+                  >
+                    <div
+                      class="c7"
+                    >
+                      <div
+                        class="c8"
+                      >
+                        0.12
+                         ETH
+                      </div>
+                      <div
+                        class="c9"
+                      >
+                        $
+                        24.11
+                      </div>
+                    </div>
+                    <div
+                      class="c10"
+                    >
+                      Waiting for confirmations
+                      <br />
+                      5
+                      /
+                      12
+                    </div>
+                    <footer
+                      class="c11"
+                    >
+                      Payment Pending
+                    </footer>
+                  </div>
+                </li>
+              </ul>
+              <footer
+                class="c12"
+              >
                 <div
-                  class="c6"
+                  class="c13"
                 >
-                  <div
-                    class="c7"
+                  <svg
+                    viewBox="0 0 56 56"
                   >
-                    <div
-                      class="c8"
-                    >
-                      0.12
-                       ETH
-                    </div>
-                    <div
-                      class="c9"
-                    >
-                      $
-                      24.11
-                    </div>
-                  </div>
-                  <div
-                    class="c10"
-                  >
-                    Waiting for confirmations
-                    <br />
-                    5
-                    /
-                    12
-                  </div>
-                  <footer
-                    class="c11"
-                  >
-                    Payment Pending
-                  </footer>
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
                 </div>
-              </li>
-            </ul>
-            <footer
-              class="c12"
-            >
-              <div
-                class="c13"
-              >
-                <svg
-                  viewBox="0 0 56 56"
-                >
-                  <title />
-                  <path
-                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                  />
-                </svg>
-              </div>
-              <p>
-                Powered by Unlock
-              </p>
-            </footer>
+                <p>
+                  Powered by Unlock
+                </p>
+              </footer>
+            </div>
           </div>
         </div>
       </section>
@@ -13909,86 +13945,90 @@ Object {
         </li>
       </ul>
       <div
-        class="sc-7wmxqm-0 fANVjX"
+        class="unlock start show hide optimism"
       >
         <div
-          class="sc-7wmxqm-1 kmwBAR"
-          data-testid="paywall-banner"
-          style="height: 0%;"
+          class="sc-7wmxqm-0 fANVjX"
         >
-          <h1
-            class="sc-7wmxqm-2 iEBMAT"
-            id="Paywall_Headline"
+          <div
+            class="sc-7wmxqm-1 kmwBAR"
+            data-testid="paywall-banner"
+            style="height: 0%;"
           >
-            Purchase pending...
-          </h1>
-          <ul
-            class="sc-7wmxqm-3 jZRqqJ"
-          >
-            <li
-              class="sc-1549ebs-0 NDRQz"
-              id="Confirming_0x1234567890123456789012345678901234567890"
+            <h1
+              class="sc-7wmxqm-2 iEBMAT"
+              id="Paywall_Headline"
             >
-              <header
-                class="sc-1549ebs-1 cWinrG"
+              Purchase pending...
+            </h1>
+            <ul
+              class="sc-7wmxqm-3 jZRqqJ"
+            >
+              <li
+                class="sc-1549ebs-0 NDRQz"
+                id="Confirming_0x1234567890123456789012345678901234567890"
               >
-                One Month
-              </header>
+                <header
+                  class="sc-1549ebs-1 cWinrG"
+                >
+                  One Month
+                </header>
+                <div
+                  class="sc-1549ebs-3 bn9s5o-0 kTTKZX"
+                >
+                  <div
+                    class="sc-1549ebs-6 hGyOOg"
+                  >
+                    <div
+                      class="sc-1549ebs-4 cXGnbO"
+                    >
+                      0.12
+                       ETH
+                    </div>
+                    <div
+                      class="sc-1549ebs-4 kUlrFA"
+                    >
+                      $
+                      24.11
+                    </div>
+                  </div>
+                  <div
+                    class="sc-1549ebs-5 eUmWhY"
+                  >
+                    Waiting for confirmations
+                    <br />
+                    5
+                    /
+                    12
+                  </div>
+                  <footer
+                    class="sc-1549ebs-2 bn9s5o-1 eKTLUD"
+                  >
+                    Payment Pending
+                  </footer>
+                </div>
+              </li>
+            </ul>
+            <footer
+              class="sc-1549ebs-8 kzzwSl"
+            >
               <div
-                class="sc-1549ebs-3 bn9s5o-0 kTTKZX"
+                class="sth0f3-0 kwQJpX"
               >
-                <div
-                  class="sc-1549ebs-6 hGyOOg"
+                <svg
+                  viewBox="0 0 56 56"
                 >
-                  <div
-                    class="sc-1549ebs-4 cXGnbO"
-                  >
-                    0.12
-                     ETH
-                  </div>
-                  <div
-                    class="sc-1549ebs-4 kUlrFA"
-                  >
-                    $
-                    24.11
-                  </div>
-                </div>
-                <div
-                  class="sc-1549ebs-5 eUmWhY"
-                >
-                  Waiting for confirmations
-                  <br />
-                  5
-                  /
-                  12
-                </div>
-                <footer
-                  class="sc-1549ebs-2 bn9s5o-1 eKTLUD"
-                >
-                  Payment Pending
-                </footer>
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
               </div>
-            </li>
-          </ul>
-          <footer
-            class="sc-1549ebs-8 kzzwSl"
-          >
-            <div
-              class="sth0f3-0 kwQJpX"
-            >
-              <svg
-                viewBox="0 0 56 56"
-              >
-                <title />
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
-            </div>
-            <p>
-              Powered by Unlock
-            </p>
-          </footer>
+              <p>
+                Powered by Unlock
+              </p>
+            </footer>
+          </div>
         </div>
       </div>
     </section>
@@ -14191,36 +14231,40 @@ Object {
           </li>
         </ul>
         <div
-          class="c0"
+          class="unlock start show hide optimism"
         >
           <div
-            class="c1"
+            class="c0"
           >
             <div
-              class="c2"
-            >
-              <svg
-                viewBox="0 0 56 56"
-              >
-                <title />
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
-            </div>
-          </div>
-          <div
-            class="c3"
-          >
-            <p>
-              Confirming Purchase
-            </p>
-            <div
-              class="c4"
+              class="c1"
             >
               <div
-                class="c5"
-              />
+                class="c2"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div
+              class="c3"
+            >
+              <p>
+                Confirming Purchase
+              </p>
+              <div
+                class="c4"
+              >
+                <div
+                  class="c5"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -14284,36 +14328,40 @@ Object {
         </li>
       </ul>
       <div
-        class="j1ncz7-0 bZCHNZ"
+        class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-1 kvurOe"
+          class="j1ncz7-0 bZCHNZ"
         >
           <div
-            class="sth0f3-0 kwQJpX"
-          >
-            <svg
-              viewBox="0 0 56 56"
-            >
-              <title />
-              <path
-                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-              />
-            </svg>
-          </div>
-        </div>
-        <div
-          class="j1ncz7-4 fgRiVp"
-        >
-          <p>
-            Confirming Purchase
-          </p>
-          <div
-            class="j1ncz7-2 UUghW"
+            class="j1ncz7-1 kvurOe"
           >
             <div
-              class="j1ncz7-2 j1ncz7-3 cWufuf"
-            />
+              class="sth0f3-0 kwQJpX"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </div>
+          <div
+            class="j1ncz7-4 fgRiVp"
+          >
+            <p>
+              Confirming Purchase
+            </p>
+            <div
+              class="j1ncz7-2 UUghW"
+            >
+              <div
+                class="j1ncz7-2 j1ncz7-3 cWufuf"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -15100,7 +15148,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        style="position: absolute; right: 0px; bottom: 105px; width: 134px; height: 160px; margin-right: -104px; transition: margin-right 0.4s ease-in;"
+        class="unlock start show hide"
       />
     </div>
   </body>,
@@ -15110,7 +15158,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      style="position: absolute; right: 0px; bottom: 105px; width: 134px; height: 160px; margin-right: -104px; transition: margin-right 0.4s ease-in;"
+      class="unlock start show hide"
     />
   </div>,
   "debug": [Function],
@@ -15275,7 +15323,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        style="position: absolute; right: 0px; bottom: 105px; width: 134px; height: 160px; margin-right: -104px; transition: margin-right 0.4s ease-in;"
+        class="unlock start show hide"
       >
         <footer
           class="c0"
@@ -15306,7 +15354,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      style="position: absolute; right: 0px; bottom: 105px; width: 134px; height: 160px; margin-right: -104px; transition: margin-right 0.4s ease-in;"
+      class="unlock start show hide"
     >
       <footer
         class="sc-1549ebs-8 sc-15m75z9-0 nPhAm"
