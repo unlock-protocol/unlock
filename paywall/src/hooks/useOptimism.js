@@ -10,7 +10,7 @@ export default function useOptimism(transaction) {
   const [locksmithOptimism, reSendQuery] = useLocksmith(
     apiEndPoint,
     {
-      willSucceed: 0,
+      willSucceed: 1,
     },
     transaction && transaction.status === 'pending'
   )
