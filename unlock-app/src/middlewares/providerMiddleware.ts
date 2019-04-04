@@ -12,6 +12,11 @@ interface Action {
 }
 
 function initializeProvider(provider: { enable?: () => any }, dispatch: any) {
+  if (!provider) {
+    dispatch(setError(FATAL_MISSING_PROVIDER))
+    return
+  }
+
   // provider.enable exists for metamask and other modern dapp wallets and must be called, see:
   // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
   if (provider.enable) {
@@ -38,11 +43,7 @@ const providerMiddleware = (config: any) => {
           // Only initialize the provider if we haven't already done so.
           if (action.provider !== getState().provider) {
             const provider = config.providers[action.provider]
-            if (provider) {
-              initializeProvider(provider, dispatch)
-            } else {
-              dispatch(setError(FATAL_MISSING_PROVIDER))
-            }
+            initializeProvider(provider, dispatch)
           }
         }
         next(action)
