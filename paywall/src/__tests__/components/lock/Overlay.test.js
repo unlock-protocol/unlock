@@ -284,8 +284,8 @@ describe('Overlay', () => {
         </Provider>
       )
 
-      expect(wrapper.queryByText('100000.00 Eth')).not.toBeNull()
-      expect(wrapper.queryByText('Powered by Unlock')).not.toBeNull()
+      expect(wrapper.getByText('100000.00 Eth')).not.toBeNull()
+      expect(wrapper.getByText('Powered by')).not.toBeNull()
       expect(
         wrapper.queryByText(
           'You have reached your limit of free articles. Please purchase access'
@@ -316,7 +316,7 @@ describe('Overlay', () => {
       )
 
       expect(wrapper.queryByText('100000.00 Eth')).toBeNull()
-      expect(wrapper.queryByText('Powered by Unlock')).not.toBeNull()
+      expect(wrapper.getByText('Powered by')).not.toBeNull()
       expect(
         wrapper.queryByText(
           'You have reached your limit of free articles. Please purchase access'
@@ -349,10 +349,10 @@ describe('Overlay', () => {
         </Provider>
       )
 
-      expect(wrapper.queryByText('100000.00 Eth')).not.toBeNull()
-      expect(wrapper.queryByText('Powered by Unlock')).not.toBeNull()
+      expect(wrapper.getByText('100000.00 Eth')).not.toBeNull()
+      expect(wrapper.getByText('Powered by')).not.toBeNull()
       expect(
-        wrapper.queryByText(
+        wrapper.getByText(
           'You have reached your limit of free articles. Please purchase access'
         )
       ).not.toBeNull()
