@@ -154,7 +154,7 @@ export const mapStateToProps = ({ account, transactions, keys }, { locks }) => {
   transaction = Object.values(transactions).find(
     transaction =>
       transaction.type === TRANSACTION_TYPES.KEY_PURCHASE &&
-      transaction.key === lockKey.id
+      transaction.key === (lockKey && lockKey.id)
   )
 
   return {
@@ -172,12 +172,10 @@ export const mapDispatchToProps = (dispatch, { locks }) => ({
   },
 })
 
-export default withConfig(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Overlay)
-)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withConfig(Overlay))
 
 const FullPage = styled.div`
   position: fixed; /* Sit on top of the page content */
