@@ -18,4 +18,7 @@ EXTRA_ARGS=$*
 # Run the tests
 COMMAND="npm run ci"
 
-docker-compose -f $DOCKER_COMPOSE_FILE run $EXTRA_ARGS integration-tests bash -c "$COMMAND"
+mkdir -p /tmp/screenshots
+chmod 0777 /tmp/screenshots
+
+docker-compose -f $DOCKER_COMPOSE_FILE run -v /tmp/screenshots:/screenshots $EXTRA_ARGS integration-tests bash -c "$COMMAND"
