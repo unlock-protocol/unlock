@@ -8,6 +8,7 @@ import {
   POST_MESSAGE_GET_PESSIMISTIC,
 } from './constants'
 import { disableScrollPolling, enableScrollPolling, scrollLoop } from './scroll'
+import { setupReadyListener } from './config'
 
 export function redirect(window, paywallUrl) {
   // we use window.encodeURIComponent here to make testing
@@ -37,6 +38,7 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
     const origin = new window.URL(paywallUrl).origin
 
     add(document, iframe)
+    setupReadyListener(window, iframe, origin)
 
     let locked = false
 
