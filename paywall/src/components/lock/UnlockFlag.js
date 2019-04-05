@@ -9,10 +9,9 @@ import { SHOW_FLAG_FOR } from '../../constants'
 export function LockedFlag() {
   return (
     <Colophon>
+      <p>Powered by</p>
       <RoundedLogo size="28px" />
-      <p>
-        Powered by&nbsp;<a href="https://paywall.unlock-protocol.com">Unlock</a>
-      </p>
+      <a href="/">Unlock</a>
     </Colophon>
   )
 }
@@ -30,7 +29,7 @@ export const UnlockedFlag = () => {
       <RoundedLogo size="28px" />
       <p>
         Subscribed with&nbsp;
-        <a href="https://paywall.unlock-protocol.com">Unlock</a>
+        <a href="/">Unlock</a>
       </p>
     </Flag>
   )

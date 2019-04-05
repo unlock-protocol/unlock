@@ -96,9 +96,9 @@ export const LockName = styled(LockDetail)`
 `
 
 export const Colophon = styled.footer`
-  display: flex;
-  flex-direction: row;
-  align-content: center;
+  display: grid;
+  grid-template-columns: 35px 1fr;
+  grid-template-rows: 1fr 1fr;
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
   font-size: 12px;
@@ -112,51 +112,67 @@ export const Colophon = styled.footer`
   height: 80px;
   margin-right: -33px;
 
-  & > * {
-    justify-self: left;
-    align-self: center;
-    margin-left: -14px;
-  }
-  & a {
+  & > a {
+    grid-column: 2;
+    grid-row: 2;
     color: var(--red);
+    align-self: start;
   }
   & > p {
-    margin-left: auto;
-    margin-right: auto;
-    width: 63px;
-    align-self: center;
-    justify-self: center;
+    grid-column: 2;
+    grid-row: 1;
+    color: var(--darkgrey);
+    align-self: end;
+    margin-bottom: 0;
+  }
+
+  & > p,
+  & > a {
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     line-height: normal;
     font-size: 12px;
-    color: var(--darkgrey);
+  }
+  & > div {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    margin-left: -14px;
+    align-self: center;
   }
   ${Media.phone`
-    display: flex;
-    flex-direction: column;
-    justify-self: center;
     background-color: transparent;
+    grid-template-columns: 1.2fr 18px 1fr;
+    grid-template-rows: 30px;
     height: 30px;
     width: 100%;
     margin-right: 0;
 
     grid-row: 3;
 
+    & > div {
+      grid-row: 1;
+      grid-column: 2;
+      margin-left: 0;
+      align-self: center;
+    }
+
     & > p {
       width: 100%;
-      display: flex;
-      justify-content: center;
-      align-self: center;
-      justify-self: center;
       color: var(--slate);
-      & > a {
-        color: var(--red);
-      }
+      grid-row: 1;
+      grid-column: 1;
+      text-align: right;
+      margin-top: 0;
+      align-self: center;
+      padding-right: 2px;
     }
-    & > div {
-      display: none;
+
+    & > a {
+      grid-row: 1;
+      grid-column: 3;
+      justify-self: start;
+      align-self: center;
     }
   `}
 `
