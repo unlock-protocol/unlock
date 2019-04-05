@@ -19,10 +19,10 @@ import { isPositiveNumber } from '../utils/validators'
 import useWindow from '../hooks/browser/useWindow'
 import useOptimism from '../hooks/useOptimism'
 import { TRANSACTION_TYPES } from '../constants'
+import withConfig from '../utils/withConfig'
 
 // TODO: mobile formatting for unlocked and optimistic unlocking views
 export function Paywall({ locks, locked, redirect, account, transaction }) {
-  // TODO: use the useOptimism hook here instead of hard-coding it
   const optimism = useOptimism(transaction)
   const window = useWindow()
   const scrollPosition = useListenForPostMessage({
@@ -59,6 +59,12 @@ export function Paywall({ locks, locked, redirect, account, transaction }) {
       smallBody(window.document.body)
     }
   }, [locked])
+  useEffect(() => {
+    if (!locked || !transaction) return
+    if (transaction.status === 'pending' && redirect) {
+      window.location.href = redirect + '#' + transaction.hash
+    }
+  }, [transaction, locked, redirect])
 
   return (
     <GlobalErrorProvider>
@@ -94,14 +100,10 @@ Paywall.defaultProps = {
   transaction: null,
 }
 
-export const mapStateToProps = ({
-  locks,
-  keys,
-  modals,
-  router,
-  account,
-  transactions,
-}) => {
+export const mapStateToProps = (
+  { locks, keys, modals, router, account, transactions },
+  { config: { requiredConfirmations } }
+) => {
   const { lockAddress, redirect } = lockRoute(router.location.pathname)
 
   const lockFromUri = Object.values(locks).find(
@@ -142,7 +144,22 @@ export const mapStateToProps = ({
   )
 
   const modalShown = !!modals[locksFromUri.map(l => l.address).join('-')]
-  const locked = validKeys.length === 0 || modalShown
+  let locked = false
+  if (modalShown) {
+    locked = true
+  }
+  if (!locked && !validKeys.length) {
+    locked = true
+  }
+  if (!locked && transaction) {
+    if (
+      !transaction.confirmations ||
+      transaction.confirmations < requiredConfirmations
+    ) {
+      locked = true
+    }
+  }
+
   return {
     locked,
     locks: locksFromUri,
@@ -152,4 +169,4 @@ export const mapStateToProps = ({
   }
 }
 
-export default connect(mapStateToProps)(Paywall)
+export default withConfig(connect(mapStateToProps)(Paywall))
