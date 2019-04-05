@@ -6,11 +6,11 @@ import { FATAL_MISSING_PROVIDER } from '../../errors'
 const config = {
   providers: {
     UNLOCK: {
-      enable: jest.fn(() => new Promise(resolve => resolve('lol'))),
+      enable: jest.fn(() => new Promise(resolve => resolve(true))),
       isUnlock: true,
     },
     NUNLOCK: {
-      enable: jest.fn(),
+      enable: jest.fn(() => new Promise(resolve => resolve(true))),
     },
   },
 }
@@ -41,7 +41,9 @@ describe('provider middleware', () => {
     config.providers['UNLOCK'].enable = jest.fn(
       () => new Promise(resolve => resolve(true))
     )
-    config.providers['NUNLOCK'].enable = jest.fn()
+    config.providers['NUNLOCK'].enable = jest.fn(
+      () => new Promise(resolve => resolve(true))
+    )
     dispatch = jest.fn()
   })
   describe('SET_PROVIDER', () => {
