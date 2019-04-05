@@ -221,6 +221,10 @@ const Headline = styled.h1`
   font-weight: bold;
   color: var(--slate);
   text-align: center;
+
+  ${Media.phone`
+    font-size: 13px;
+  `}
 `
 
 const Locks = styled.ul`
