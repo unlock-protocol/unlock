@@ -1,5 +1,6 @@
 import buildPaywall, { redirect } from '../../paywall-builder/build'
 import * as script from '../../paywall-builder/script'
+import * as config from '../../paywall-builder/config'
 import * as iframeManager from '../../paywall-builder/iframe'
 import {
   POST_MESSAGE_LOCKED,
@@ -8,6 +9,8 @@ import {
   POST_MESSAGE_GET_OPTIMISTIC,
   POST_MESSAGE_GET_PESSIMISTIC,
 } from '../../paywall-builder/constants'
+
+jest.mock('../../paywall-builder/config')
 
 const fakeLockAddress = 'lockaddress'
 
@@ -161,7 +164,7 @@ describe('buildPaywall', () => {
     })
 
     it('passes the correct origin to scrollLoop', () => {
-      expect.assertions(4)
+      expect.assertions(4) // 2 are in the addEventListener in the mock window (see beforeEach)
 
       scrollThatPage(window)
 
@@ -171,6 +174,18 @@ describe('buildPaywall', () => {
       // new URL().origin
       expect(postMessage).toHaveBeenCalled()
       expect(postMessage.mock.calls[0][1]).toBe('origin')
+    })
+
+    it('calls setupReadyListener', () => {
+      expect.assertions(3) // 2 are in the addEventListener in the mock window (see beforeEach)
+
+      buildPaywall(window, document, fakeLockAddress, blocker)
+
+      expect(config.setupReadyListener).toHaveBeenCalledWith(
+        window,
+        expect.objectContaining(mockIframeImpl),
+        'origin'
+      )
     })
 
     it('sets up the message event listeners', () => {
