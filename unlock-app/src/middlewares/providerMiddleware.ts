@@ -1,4 +1,3 @@
-import { setTimeout } from 'timers'
 import { SET_PROVIDER, providerReady } from '../actions/provider'
 import { setError } from '../actions/error'
 import {
