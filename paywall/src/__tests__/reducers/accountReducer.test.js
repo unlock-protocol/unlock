@@ -57,4 +57,17 @@ describe('account reducer', () => {
       balance: '1337',
     })
   })
+
+  it('should not mutate existing account state', () => {
+    expect.assertions(1)
+    const update = {
+      balance: '1337',
+    }
+    expect(
+      reducer(account, {
+        type: UPDATE_ACCOUNT,
+        update,
+      })
+    ).not.toBe(account)
+  })
 })
