@@ -25,7 +25,7 @@ export const UnlockedFlag = () => {
     return () => clearTimeout(timeout)
   }, [setHidden])
   return (
-    <Flag id="UnlockFlag" hidden={hidden}>
+    <Flag id="UnlockFlag" data-testid="unlocked" hidden={hidden}>
       <RoundedLogo />
       <p>Powered by</p>
       <a href="/">Unlock</a>

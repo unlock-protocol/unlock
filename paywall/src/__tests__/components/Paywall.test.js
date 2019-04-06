@@ -436,17 +436,17 @@ describe('Paywall', () => {
   describe('the unlocked flag', () => {
     it('should be present when the paywall is unlocked', () => {
       expect.assertions(1)
-      const { getByText } = renderMockPaywall({ locked: false })
+      const component = renderMockPaywall({ locked: false })
 
-      const flagText = getByText('Subscribed with')
+      const flagText = component.getByTestId('unlocked')
       expect(flagText).not.toBeNull()
     })
 
     it('should not be present when the paywall is locked', () => {
       expect.assertions(1)
-      const { queryByText } = renderMockPaywall({ locked: true })
+      const component = renderMockPaywall({ locked: true })
 
-      const flagText = queryByText('Subscribed with')
+      const flagText = component.queryByTestId('unlocked')
       expect(flagText).toBeNull()
     })
   })
