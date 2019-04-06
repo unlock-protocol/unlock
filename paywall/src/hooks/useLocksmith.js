@@ -8,13 +8,13 @@ import useConfig from './utils/useConfig'
 // It only re-fetches if the api path changes.
 export default function useLocksmith(api, defaultValue, active = true) {
   const window = useWindow()
-  const { locksmithHost } = useConfig()
+  const { locksmithUri } = useConfig()
   const [result, setResult] = useState(defaultValue)
   const [reSend, reSendQuery] = useReducer(state => state + 1, 0)
 
   const fetch = window.fetch
   // remove double / if there are any
-  const url = locksmithHost + ('/' + api).replace(/\/+/g, '/')
+  const url = locksmithUri + ('/' + api).replace(/\/+/g, '/')
 
   useEffect(() => {
     if (!active) return

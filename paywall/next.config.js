@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 const fs = require('fs')
 const { join } = require('path')
 const { promisify } = require('util')
@@ -6,18 +8,35 @@ const withCSS = require('@zeit/next-css')
 
 const copyFile = promisify(fs.copyFile)
 
+const requiredConfigVariables = {
+  unlockEnv: process.env.UNLOCK_ENV || 'dev',
+  readOnlyProvider: process.env.READ_ONLY_PROVIDER,
+  paywallUrl: process.env.PAYWALL_URL,
+  locksmithUri: process.env.LOCKSMITH_URI,
+}
+
+const optionalConfigVariables = {
+  httpProvider: process.env.HTTP_PROVIDER,
+}
+
+Object.keys(requiredConfigVariables).forEach(configVariableName => {
+  if (!requiredConfigVariables[configVariableName]) {
+    if (['dev', 'test'].indexOf(requiredConfigVariables.unlockEnv) > -1) {
+      return console.error(
+        `The configuration variable ${configVariableName} is falsy.`
+      )
+    }
+    throw new Error(
+      `The configuration variable ${configVariableName} is falsy.`
+    )
+  }
+})
+
 module.exports = withSourceMaps(
   withCSS({
     publicRuntimeConfig: {
-      unlockEnv: process.env.UNLOCK_ENV || 'dev',
-      httpProvider: process.env.HTTP_PROVIDER || '127.0.0.1',
-      readOnlyProvider: process.env.READ_ONLY_PROVIDER,
-      paywallUrl: process.env.PAYWALL_URL,
-      paywallScriptPath: process.env.PAYWALL_SCRIPT_PATH,
-      locksmithHost: process.env.LOCKSMITH_URI || 'http://127.0.0.1:8080',
-      unlockAddress:
-        process.env.UNLOCK_ADDRESS ||
-        '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93', // default for CI
+      ...optionalConfigVariables,
+      ...requiredConfigVariables,
     },
     webpack: config => {
       // Fixes npm packages that depend on `fs` module
