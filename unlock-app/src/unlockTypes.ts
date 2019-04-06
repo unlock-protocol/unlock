@@ -50,3 +50,7 @@ export interface Network {
 export interface ChainExplorerURLBuilders {
   [site: string]: (address: string) => string
 }
+
+export interface Loading {
+  loading: number
+}

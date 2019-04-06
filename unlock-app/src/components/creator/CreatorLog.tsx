@@ -1,14 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
 import * as UnlockTypes from '../../unlockTypes'
 import { DefaultError } from './FatalError'
 
 interface Props {
   transactionFeed: UnlockTypes.Transaction[]
   explorerLinks: { [key: string]: string }
+  loading: boolean
 }
 
-const CreatorLog = ({ transactionFeed, explorerLinks }: Props) => {
+const CreatorLog = ({ transactionFeed, explorerLinks, loading }: Props) => {
   return (
     <>
       <Grid>
@@ -28,7 +30,7 @@ const CreatorLog = ({ transactionFeed, explorerLinks }: Props) => {
             )
           })}
       </Grid>
-      {transactionFeed.length === 0 && (
+      {transactionFeed.length === 0 && !loading && (
         <DefaultError
           title="Your log is empty: No transactions yet."
           illustration="/static/images/illustrations/mug.svg"
@@ -41,7 +43,20 @@ const CreatorLog = ({ transactionFeed, explorerLinks }: Props) => {
   )
 }
 
-export default CreatorLog
+interface State {
+  loading: UnlockTypes.Loading
+}
+
+export const mapStateToProps = ({ loading }: State) => {
+  return {
+    loading: !!loading,
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(CreatorLog)
 
 const Grid = styled.div`
   display: grid;
