@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import * as UnlockTypes from '../../unlockTypes'
+import { DefaultError } from './FatalError'
 
 interface Props {
   transactionFeed: UnlockTypes.Transaction[]
@@ -9,22 +10,34 @@ interface Props {
 
 const CreatorLog = ({ transactionFeed, explorerLinks }: Props) => {
   return (
-    <Grid>
-      <HeaderItem>Block Number</HeaderItem>
-      <HeaderItem>Lock Name/Address</HeaderItem>
-      <HeaderItem>Type</HeaderItem>
-      {transactionFeed.map(tx => {
-        return (
-          <React.Fragment key={tx.hash}>
-            <BlockNumber>{tx.blockNumber}</BlockNumber>
-            <Address href={explorerLinks[tx.hash]} target="_blank">
-              {tx.lock}
-            </Address>
-            <Type type={tx.type}>{tx.type}</Type>
-          </React.Fragment>
-        )
-      })}
-    </Grid>
+    <>
+      <Grid>
+        <HeaderItem>Block Number</HeaderItem>
+        <HeaderItem>Lock Name/Address</HeaderItem>
+        <HeaderItem>Type</HeaderItem>
+        {transactionFeed.length > 0 &&
+          transactionFeed.map(tx => {
+            return (
+              <React.Fragment key={tx.hash}>
+                <BlockNumber>{tx.blockNumber}</BlockNumber>
+                <Address href={explorerLinks[tx.hash]} target="_blank">
+                  {tx.lock}
+                </Address>
+                <Type type={tx.type}>{tx.type}</Type>
+              </React.Fragment>
+            )
+          })}
+      </Grid>
+      {transactionFeed.length === 0 && (
+        <DefaultError
+          title="Your log is empty: No transactions yet."
+          illustration="/static/images/illustrations/mug.svg"
+          critical={false}
+        >
+          Check back after you&#8216;ve created a lock.
+        </DefaultError>
+      )}
+    </>
   )
 }
 
