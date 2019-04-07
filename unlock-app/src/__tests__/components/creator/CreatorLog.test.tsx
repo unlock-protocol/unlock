@@ -18,6 +18,8 @@ const transactionFeed: UnlockTypes.Transaction[] = [
   },
 ]
 
+const emptyTransactionFeed: UnlockTypes.Transaction[] = []
+
 const explorerLinks: { [key: string]: string } = {
   '0x123': 'http://www.this_is_my_href.com/',
 }
@@ -46,11 +48,13 @@ describe('CreatorLog', () => {
 
     // Custom define components for the purposes of this test only
     const store = createUnlockStore()
-    const emptyTransactionFeed: UnlockTypes.Transaction[] = []
 
     const wrapper = rtl.render(
       <Provider store={store}>
-        <CreatorLog transactionFeed={emptyTransactionFeed} explorerLinks={{}} />
+        <CreatorLog
+          transactionFeed={emptyTransactionFeed}
+          explorerLinks={explorerLinks}
+        />
       </Provider>
     )
     expect(
@@ -71,5 +75,24 @@ describe('CreatorLog', () => {
     if (link) {
       expect(link.href).toBe('http://www.this_is_my_href.com/')
     }
+  })
+
+  it('should show the loading icon when transactions are being loaded', () => {
+    expect.assertions(1)
+    const store = createUnlockStore({
+      loading: {
+        loading: true,
+      },
+    })
+
+    const wrapper = rtl.render(
+      <Provider store={store}>
+        <CreatorLog
+          transactionFeed={emptyTransactionFeed}
+          explorerLinks={explorerLinks}
+        />
+      </Provider>
+    )
+    expect(wrapper.getByText('loading')).not.toBeNull()
   })
 })

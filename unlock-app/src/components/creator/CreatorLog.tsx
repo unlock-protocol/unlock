@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import * as UnlockTypes from '../../unlockTypes'
 import { DefaultError } from './FatalError'
+import Loading from '../interface/Loading'
 
 interface Props {
   transactionFeed: UnlockTypes.Transaction[]
@@ -39,6 +40,7 @@ const CreatorLog = ({ transactionFeed, explorerLinks, loading }: Props) => {
           Check back after you&#8216;ve created a lock.
         </DefaultError>
       )}
+      {loading && <Loading />}
     </>
   )
 }
