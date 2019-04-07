@@ -82,15 +82,6 @@ export default connect(
   mapDispatchToProps
 )(CreatorLocks)
 
-// const LoadingWrapper = styled.section`
-//   display: grid;
-//   justify-items: center;
-//   svg {
-//     fill: var(--lightgrey);
-//     width: 60px;
-//   }
-// `
-
 const Locks = styled.section`
   display: grid;
   grid-gap: 32px;
