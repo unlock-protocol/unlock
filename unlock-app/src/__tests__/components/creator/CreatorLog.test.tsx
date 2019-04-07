@@ -1,6 +1,9 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
+import { Provider } from 'react-redux'
+
 import CreatorLog from '../../../components/creator/CreatorLog'
+import createUnlockStore from '../../../createUnlockStore'
 import * as UnlockTypes from '../../../unlockTypes'
 
 const transactionFeed: UnlockTypes.Transaction[] = [
@@ -24,12 +27,35 @@ let wrapper: rtl.RenderResult<typeof rtl.queries>
 afterEach(rtl.cleanup)
 describe('CreatorLog', () => {
   beforeEach(() => {
+    let store = createUnlockStore({
+      loading: 0,
+    })
+
     wrapper = rtl.render(
-      <CreatorLog
-        transactionFeed={transactionFeed}
-        explorerLinks={explorerLinks}
-      />
+      <Provider store={store}>
+        <CreatorLog
+          transactionFeed={transactionFeed}
+          explorerLinks={explorerLinks}
+        />
+      </Provider>
     )
+  })
+
+  it('should show a message indicating that no transactions have been logged when none have been executed', () => {
+    expect.assertions(1)
+
+    // Custom define components for the purposes of this test only
+    const store = createUnlockStore()
+    const emptyTransactionFeed: UnlockTypes.Transaction[] = []
+
+    const wrapper = rtl.render(
+      <Provider store={store}>
+        <CreatorLog transactionFeed={emptyTransactionFeed} explorerLinks={{}} />
+      </Provider>
+    )
+    expect(
+      wrapper.getByText('Your log is empty: No transactions yet.')
+    ).not.toBeNull()
   })
 
   it('should show the blockNumber of the transaction', () => {
