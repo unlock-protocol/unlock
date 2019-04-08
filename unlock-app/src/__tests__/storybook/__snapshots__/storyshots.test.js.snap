@@ -45722,6 +45722,32 @@ Object {
               class="c15"
             />
           </header>
+          <form>
+            <label
+              for="emailAddress"
+            >
+              Email address:
+              <input
+                name="emailAddress"
+                type="email"
+              />
+            </label>
+            <br />
+            <label
+              for="password"
+            >
+              Password:
+              <input
+                name="password"
+                type="password"
+              />
+            </label>
+            <br />
+            <input
+              type="submit"
+              value="Submit"
+            />
+          </form>
         </div>
         <div
           class="c16"
@@ -45922,6 +45948,32 @@ Object {
             class="sc-1glv5oz-5 bjHPyP"
           />
         </header>
+        <form>
+          <label
+            for="emailAddress"
+          >
+            Email address:
+            <input
+              name="emailAddress"
+              type="email"
+            />
+          </label>
+          <br />
+          <label
+            for="password"
+          >
+            Password:
+            <input
+              name="password"
+              type="password"
+            />
+          </label>
+          <br />
+          <input
+            type="submit"
+            value="Submit"
+          />
+        </form>
       </div>
       <div
         class="hm3mhg-2 dBxAQT"
