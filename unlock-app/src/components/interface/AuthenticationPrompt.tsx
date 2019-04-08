@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 
 export default class AuthenticationPrompt extends React.Component {
   constructor(props: any) {
@@ -25,27 +26,59 @@ export default class AuthenticationPrompt extends React.Component {
   }
 
   render = () => (
-    // TODO: This form needs an actual design.
     <form onSubmit={this.handleSubmit}>
-      <label htmlFor="emailAddress">
-        Email address:
-        <input
-          name="emailAddress"
-          type="email"
-          onChange={this.handleInputChange}
-        />
-      </label>
+      <Greeting>Please Log In to Continue</Greeting>
+      <Label htmlFor="emailAddress">Email address</Label>
+      <Input
+        name="emailAddress"
+        type="email"
+        placeholder="Email Address"
+        onChange={this.handleInputChange}
+      />
       <br />
-      <label htmlFor="password">
-        Password:
-        <input
-          name="password"
-          type="password"
-          onChange={this.handleInputChange}
-        />
-      </label>
+      <Label htmlFor="password">Password</Label>
+      <Input
+        name="password"
+        type="password"
+        placeholder="Password"
+        onChange={this.handleInputChange}
+      />
       <br />
-      <input type="submit" value="Submit" />
+      <SubmitButton type="submit" value="Submit" />
     </form>
   )
 }
+
+const Label = styled.label`
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+`
+
+const Input = styled.input`
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+`
+
+const Greeting = styled.div`
+  font-family: IBM Plex Serif, sans-serif;
+  font-size: 24px;
+`
+
+const SubmitButton = styled.input`
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  margin-top: 25px;
+  font-size: 16px;
+`
