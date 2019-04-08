@@ -16,7 +16,21 @@ function check_is_forked_pr()
     fi
 }
 
+function check_if_locksmith_changed()
+{
+    # latest commit
+    LATEST_COMMIT=$(git rev-parse HEAD)
+    # latest commit where path/to/folder1 was changed
+    LAST_LOCKSMITH_COMMIT=$(git log -1 --format=format:%H --full-diff ./locksmith)
+
+    if [ $LAST_LOCKSMITH_COMMIT != $LATEST_COMMIT ];then
+      echo "No changes to Locksmith, no need to deploy"
+      exit 0
+    fi
+}
+
 check_is_forked_pr
+check_if_locksmith_changed
 
 cd locksmith
 
