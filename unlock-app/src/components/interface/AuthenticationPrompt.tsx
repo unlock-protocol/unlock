@@ -18,8 +18,15 @@ export default class AuthenticationPrompt extends React.Component {
     })
   }
 
+  handleSubmit = (event: any) => {
+    // TODO: dispatch an event here to indicate that we have received credentials
+    // TODO: handle failure -> bad password and/or email. Communicate from storageService to here so we can prompt.
+    event.preventDefault()
+  }
+
   render = () => (
-    <form>
+    // TODO: This form needs an actual design.
+    <form onSubmit={this.handleSubmit}>
       <label htmlFor="emailAddress">
         Email address:
         <input
@@ -37,6 +44,8 @@ export default class AuthenticationPrompt extends React.Component {
           onChange={this.handleInputChange}
         />
       </label>
+      <br />
+      <input type="submit" value="Submit" />
     </form>
   )
 }
