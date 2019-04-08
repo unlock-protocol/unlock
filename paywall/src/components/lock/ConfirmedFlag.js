@@ -3,7 +3,12 @@ import PropTypes from 'prop-types'
 
 import { RoundedLogo } from '../interface/Logo'
 import ConfirmedKey from '../interface/buttons/overlay/ConfirmedKey'
-import { OptimisticFlag, OptimisticLogo, FlagContent } from './FlagStyles'
+import {
+  OptimisticFlag,
+  OptimisticLogo,
+  PoweredByUnlock,
+  ConfirmedKeyWrapper,
+} from './FlagStyles'
 
 export default function ConfirmedFlag({ dismiss }) {
   return (
@@ -11,10 +16,17 @@ export default function ConfirmedFlag({ dismiss }) {
       <OptimisticLogo>
         <RoundedLogo size="28px" />
       </OptimisticLogo>
-      <FlagContent>
-        <p>Purchase Confirmed</p>
+      <p>Purchase Confirmed</p>
+      <ConfirmedKeyWrapper>
         <ConfirmedKey height="24px" width="24px" hideModal={dismiss} />
-      </FlagContent>
+      </ConfirmedKeyWrapper>
+      <PoweredByUnlock>
+        <p>Powered by</p>
+        <OptimisticLogo>
+          <RoundedLogo />
+        </OptimisticLogo>
+        <a href="/">Unlock</a>
+      </PoweredByUnlock>
     </OptimisticFlag>
   )
 }

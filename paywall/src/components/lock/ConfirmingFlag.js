@@ -7,7 +7,7 @@ import {
   OptimisticLogo,
   ProgressBar,
   Progress,
-  FlagContent,
+  PoweredByUnlock,
 } from './FlagStyles'
 import { TRANSACTION_TYPES } from '../../constants'
 import withConfig from '../../utils/withConfig'
@@ -33,12 +33,17 @@ export function ConfirmingFlag({
   return (
     <OptimisticFlag>
       <OptimisticLogo>
-        <RoundedLogo size="28px" />
+        <RoundedLogo />
       </OptimisticLogo>
-      <FlagContent>
-        <p>{text}</p>
-        {Confirmations}
-      </FlagContent>
+      <p>{text}</p>
+      {Confirmations}
+      <PoweredByUnlock>
+        <p>Powered by</p>
+        <OptimisticLogo>
+          <RoundedLogo />
+        </OptimisticLogo>
+        <a href="/">Unlock</a>
+      </PoweredByUnlock>
     </OptimisticFlag>
   )
 }
