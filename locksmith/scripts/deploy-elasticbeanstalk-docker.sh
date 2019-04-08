@@ -9,8 +9,6 @@ is_forked_pr=$8
 build_id=$9
 message=$10
 
-
-
 function check_is_forked_pr()
 {
     if [ is_forked_pr = "true" ]; then
