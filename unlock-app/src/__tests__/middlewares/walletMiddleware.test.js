@@ -95,11 +95,11 @@ class MockWalletService extends EventEmitter {
 
 let mockWalletService = new MockWalletService()
 
-jest.mock('../../services/walletService', () => {
-  return function() {
+jest.mock('@unlock-protocol/unlock-js', () => ({
+  WalletService: function() {
     return mockWalletService
-  }
-})
+  },
+}))
 
 jest.useFakeTimers()
 
