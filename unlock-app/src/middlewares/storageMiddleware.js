@@ -1,11 +1,6 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
-import {
-  UPDATE_LOCK,
-  updateLock,
-  CREATE_LOCK,
-  UPDATE_LOCK_NAME,
-} from '../actions/lock'
+import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
 
@@ -71,18 +66,6 @@ const storageMiddleware = config => {
             .catch(error => {
               dispatch(storageError(error))
             })
-        }
-
-        // TODO: isolate the logic below so we can also make it happen on lock updates
-        if (action.type === CREATE_LOCK && action.lock.address) {
-          // Build the data to sign
-          let data = UnlockLock.build({
-            name: action.lock.name,
-            owner: action.lock.owner,
-            address: action.lock.address,
-          })
-          // Ask someone to sign it!
-          dispatch(signData(data))
         }
 
         if (action.type === UPDATE_LOCK_NAME) {
