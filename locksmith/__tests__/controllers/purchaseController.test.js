@@ -8,7 +8,7 @@ let privateKey = ethJsUtil.toBuffer(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
 
-function generateTypedData(message: any) {
+function generateTypedData(message) {
   return {
     types: {
       EIP712Domain: [
