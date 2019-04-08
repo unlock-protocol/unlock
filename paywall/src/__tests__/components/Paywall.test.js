@@ -373,28 +373,15 @@ describe('Paywall', () => {
         'http://example.com'
       )
     })
-    describe('updating body css', () => {
-      it.each([
-        // TODO: update mobile CSS
-        ['mobile', 412, { display: 'flex', height: '160px' }],
-        ['desktop', 1000, { display: 'flex', height: '160px' }],
-      ])('%s', (type, size, expected) => {
-        expect.assertions(1)
+    it('updating body css', () => {
+      expect.assertions(1)
 
-        fakeWindow.innerWidth = size
-        config.isInIframe = true
-        rtl.act(() => {
-          renderMockPaywall({ locked: false })
-        })
-
-        expect(fakeWindow.document.body.style).toEqual({
-          ...expected,
-          flexDirection: 'column',
-          justifyContent: 'center',
-          margin: '0',
-          overflow: 'hidden',
-        })
+      config.isInIframe = true
+      rtl.act(() => {
+        renderMockPaywall({ locked: false })
       })
+
+      expect(fakeWindow.document.body.className).toBe('small')
     })
   })
 
@@ -449,17 +436,17 @@ describe('Paywall', () => {
   describe('the unlocked flag', () => {
     it('should be present when the paywall is unlocked', () => {
       expect.assertions(1)
-      const { queryByText } = renderMockPaywall({ locked: false })
+      const component = renderMockPaywall({ locked: false })
 
-      const flagText = queryByText('Subscribed with Unlock')
+      const flagText = component.getByText('Subscribed with Unlock')
       expect(flagText).not.toBeNull()
     })
 
     it('should not be present when the paywall is locked', () => {
       expect.assertions(1)
-      const { queryByText } = renderMockPaywall({ locked: true })
+      const component = renderMockPaywall({ locked: true })
 
-      const flagText = queryByText('Subscribed with Unlock')
+      const flagText = component.queryByText('Subscribed with Unlock')
       expect(flagText).toBeNull()
     })
   })
