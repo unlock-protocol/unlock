@@ -70,7 +70,7 @@ describe('useLocksmith hook', () => {
       finishFetch(fetchResponse)
     })
 
-    expect(fakeWindow.fetch).toHaveBeenCalledWith(config.locksmithHost + '/hi')
+    expect(fakeWindow.fetch).toHaveBeenCalledWith(config.locksmithUri + '/hi')
   })
 
   it('returns the response', () => {
