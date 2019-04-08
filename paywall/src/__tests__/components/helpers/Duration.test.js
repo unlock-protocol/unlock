@@ -26,6 +26,6 @@ describe('Duration Component', () => {
   it('unless we want to round', () => {
     expect.assertions(1)
     const wrapper = rtl.render(<Duration seconds={seconds} round />)
-    expect(wrapper.queryByText('116 days')).not.toBe(null)
+    expect(wrapper.queryByText('115 days')).not.toBe(null)
   })
 })

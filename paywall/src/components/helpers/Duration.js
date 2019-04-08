@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {
   durationsAsTextFromSeconds,
-  secondsAsDays,
+  durationsAsArrayFromSeconds,
 } from '../../utils/durations'
 
 /**
@@ -13,11 +13,10 @@ export function Duration({ seconds, round }) {
   if (seconds === null) {
     return <span> - </span>
   }
-  const days = secondsAsDays(seconds)
-  const roundedSeconds = days * secondsInADay
-  return (
-    <span>{durationsAsTextFromSeconds(round ? roundedSeconds : seconds)}</span>
-  )
+  if (round) {
+    return <span>{durationsAsArrayFromSeconds(seconds)[0]}</span>
+  }
+  return <span>{durationsAsTextFromSeconds(seconds)}</span>
 }
 
 Duration.propTypes = {
@@ -31,5 +30,3 @@ Duration.defaultProps = {
 }
 
 export default Duration
-
-const secondsInADay = 86400
