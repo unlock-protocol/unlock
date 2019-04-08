@@ -33,15 +33,16 @@
   },
   "lint-staged": {
     "linters": {
-      "*.{js,ts,tsx}": [
-        "eslint"
+      "*.{js,ts}": [
+        "eslint --fix",
+        "git add"
       ]
     }
   },
   "scripts": {
     "remix": "remixd -s contracts --remix-ide https://remix.ethereum.org",
     "test": "cross-env NODE_ENV=test truffle test --network development",
-    "lint": "solium -d ./contracts/ && eslint .",
+    "lint": "solium -d ./contracts/ && eslint --ext .ts,.js test/",
     "dev": "npm run lint && npm run build && npm run test",
     "ci": "npm run lint && npm run test && npm run reports",
     "build": "truffle compile --all",

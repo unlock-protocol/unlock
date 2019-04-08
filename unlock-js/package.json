@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "lint": "eslint .",
+    "lint": "eslint --ext .tsx,.ts,.js src/",
     "build": "./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",
     "prepare": "npm run build"
   },
