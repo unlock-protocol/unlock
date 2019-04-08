@@ -21,7 +21,6 @@
     "babel-plugin-require-context-hook": "^1.0.0",
     "babel-plugin-styled-components": "1.10.0",
     "cross-env": "^5.2.0",
-    "eslint-plugin-react": "^7.12.4",
     "fork-ts-checker-webpack-plugin": "^1.0.0",
     "isomorphic-unfetch": "^3.0.0",
     "jest-dom": "^3.1.0",
@@ -61,7 +60,7 @@
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "start": "cross-env NODE_ENV=production node src/server.js",
     "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
-    "lint": "eslint .",
+    "lint": "eslint --ext .tsx,.ts,.js src/",
     "storybook": "start-storybook -p 9001 -c .storybook -s src",
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/components/interface/svg/template.js --no-dimensions -d src/components/interface/svg/ src/static/images/svg/",
     "ci": "npm run lint && npm test",
@@ -70,7 +69,8 @@
   "lint-staged": {
     "linters": {
       "*.{js,ts,tsx}": [
-        "eslint"
+        "eslint --fix",
+        "git add"
       ]
     },
     "ignore": [
