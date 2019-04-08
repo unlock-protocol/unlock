@@ -9,7 +9,8 @@ const rpc = method => ({
 describe('Unlock Provider', () => {
   let provider
   beforeEach(() => {
-    provider = new UnlockProvider({})
+    const send = jest.fn((_, cb) => cb(null, 'a response'))
+    provider = new UnlockProvider({ send })
   })
   it('should respond to eth_accounts with an empty array before being initialized', done => {
     expect.assertions(1)
@@ -25,6 +26,14 @@ describe('Unlock Provider', () => {
     provider.send(rpc('eth_accounts'), (_, data) => {
       expect(data.result).toHaveLength(1)
       expect(data.result[0]).toBe('0x12345678')
+      done()
+    })
+  })
+
+  it('should call the fallback provider for any method it does not implement', done => {
+    expect.assertions(1)
+    provider.send(rpc('not_a_real_method'), () => {
+      expect(provider.fallbackProvider.send).toHaveBeenCalled()
       done()
     })
   })
