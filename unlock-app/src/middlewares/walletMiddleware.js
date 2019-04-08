@@ -5,6 +5,7 @@ import {
   deleteLock,
   UPDATE_LOCK_KEY_PRICE,
   updateLock,
+  updateLockName,
 } from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
 import { setAccount } from '../actions/accounts'
@@ -100,7 +101,12 @@ const walletMiddleware = config => {
     })
 
     walletService.on('lock.updated', (address, update) => {
-      // This is a new lock!
+      // This lock is beeing saved to the chain (that is what the update is about)
+      // So we should be able to get its name from the redux store
+      const lock = getState().locks[address]
+      if (lock) {
+        dispatch(updateLockName(address, lock.name))
+      }
       dispatch(updateLock(address, update))
       dispatch(hideForm()) // Close the form
     })
