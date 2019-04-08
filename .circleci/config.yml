@@ -282,8 +282,11 @@ jobs:
             sudo pip install --upgrade setuptools
             sudo pip install awsebcli --upgrade
       - run:
+          name: Set GIT_COMMIT_DESC
+          command: echo 'export GIT_COMMIT_DESC=$(git log --format=%B -n 1 "$CIRCLE_SHA1")' >> $BASH_ENV
+      - run:
           name: Deploy to to Beanstalk
-          command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh "$APPLICATION" "$ENVIRONMENT" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$NODE_ENV" "$IS_FORKED_PR"
+          command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh "$APPLICATION" "$ENVIRONMENT" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$NODE_ENV" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$GIT_COMMIT_DESC"
 
   promote-unlock-image:
     machine: true
