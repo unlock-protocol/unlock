@@ -45448,6 +45448,40 @@ Object {
   width: 100%;
 }
 
+.c17 {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.c18 {
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.c16 {
+  font-family: IBM Plex Serif,sans-serif;
+  font-size: 24px;
+}
+
+.c19 {
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  margin-top: 25px;
+  font-size: 16px;
+}
+
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c4 {
     grid-template-columns: [first] 1fr [second] 48px;
@@ -45524,7 +45558,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c16 {
+  .c20 {
     display: none;
   }
 }
@@ -45723,34 +45757,46 @@ Object {
             />
           </header>
           <form>
+            <div
+              class="c16"
+            >
+              Please Log In to Continue
+            </div>
             <label
+              class="c17"
               for="emailAddress"
             >
-              Email address:
-              <input
-                name="emailAddress"
-                type="email"
-              />
+              Email address
             </label>
+            <input
+              class="c18"
+              name="emailAddress"
+              placeholder="Email Address"
+              type="email"
+            />
             <br />
             <label
+              class="c17"
               for="password"
             >
-              Password:
-              <input
-                name="password"
-                type="password"
-              />
+              Password
             </label>
+            <input
+              class="c18"
+              name="password"
+              placeholder="Password"
+              type="password"
+            />
             <br />
             <input
+              class="c19"
               type="submit"
               value="Submit"
             />
           </form>
         </div>
         <div
-          class="c16"
+          class="c20"
         />
       </div>
     </div>
@@ -45949,27 +45995,39 @@ Object {
           />
         </header>
         <form>
+          <div
+            class="sc-kpOJdX cfhpkt"
+          >
+            Please Log In to Continue
+          </div>
           <label
+            class="sc-kgoBCf ekHVMw"
             for="emailAddress"
           >
-            Email address:
-            <input
-              name="emailAddress"
-              type="email"
-            />
+            Email address
           </label>
+          <input
+            class="sc-kGXeez dzsfcf"
+            name="emailAddress"
+            placeholder="Email Address"
+            type="email"
+          />
           <br />
           <label
+            class="sc-kgoBCf ekHVMw"
             for="password"
           >
-            Password:
-            <input
-              name="password"
-              type="password"
-            />
+            Password
           </label>
+          <input
+            class="sc-kGXeez dzsfcf"
+            name="password"
+            placeholder="Password"
+            type="password"
+          />
           <br />
           <input
+            class="sc-dxgOiQ eRjgVl"
             type="submit"
             value="Submit"
           />
