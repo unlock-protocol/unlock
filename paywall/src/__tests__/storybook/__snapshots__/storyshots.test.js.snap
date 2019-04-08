@@ -8270,18 +8270,18 @@ exports[`Storyshots Optimistic Unlocking Flags the confirmed flag 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c2 {
+    .c3 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c2 > svg {
+.c3 > svg {
   fill: white;
 }
 
-.c6 {
+.c7 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -8293,25 +8293,25 @@ Object {
   line-height: 24px;
 }
 
-.c6 > svg {
+.c7 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c6:hover {
+.c7:hover {
   background-color: var(--green);
 }
 
-.c6:hover > svg {
+.c7:hover > svg {
   fill: white;
 }
 
-.c5:hover .c10 {
+.c6:hover .c12 {
   display: inline-block;
 }
 
-.c11 .c5 {
+.c13 .c6 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -8322,28 +8322,28 @@ Object {
   align-self: center;
 }
 
-.c11 .c5:nth-child(1) {
+.c13 .c6:nth-child(1) {
   pointer-events: none;
 }
 
-.c11 .c5:nth-child(2) {
+.c13 .c6:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c11 .c5 > svg {
+.c13 .c6 > svg {
   fill: var(--grey);
 }
 
-.c11 .c5:hover > svg {
+.c13 .c6:hover > svg {
   fill: var(--grey);
 }
 
-.c12 .c5 {
+.c14 .c6 {
   margin: 24px;
 }
 
-.c12 .c5 small {
+.c14 .c6 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -8352,30 +8352,38 @@ Object {
   text-align: center;
 }
 
-.c9 {
+.c10 {
   display: none;
 }
 
-.c4 {
+.c5 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c4:hover .c8 {
+.c5:hover .c9 {
   display: block;
 }
 
-.c4:hover .c7 {
+.c5:hover .c8 {
   display: none;
 }
 
-.c4:hover ~ .c13 {
+.c5:hover ~ .c15 {
   display: grid;
 }
 
-.c4:hover ~ .c14 {
+.c5:hover ~ .c16 {
   display: none;
+}
+
+.c2 {
+  grid-row: 1 / span 2;
+  margin-left: -14px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
 }
 
 .c0 {
@@ -8385,50 +8393,133 @@ Object {
   box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
   background: var(--white);
   margin: auto;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 25px 1fr;
+  grid-template-rows: 1fr 1fr;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  position: relative;
 }
 
-.c1 {
-  position: absolute;
-  top: 26px;
-  left: -14px;
-  height: 28px;
-  width: 28px;
+.c0 > p {
+  margin-bottom: 5px;
+  font-size: 12px;
+  text-align: center;
 }
 
-.c3 {
+.c0 > .c17,
+.c0 > .j1ncz7-1 {
+  margin-left: 10px;
+}
+
+.c11 {
+  display: none;
+}
+
+.c4 {
+  width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  width: 74px;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  margin-left: 14px;
-  font-size: 12px;
-}
-
-.c3 > p {
-  text-align: center;
-  margin-bottom: 3px;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c2 {
+  .c3 {
     height: 16px;
     width: 16px;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c0 {
+    font-size: 10px;
+    display: grid;
+    height: 43px;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-rows: 43px;
+    width: 100%;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+
+  .c0 > .c1 {
+    display: none;
+  }
+
+  .c0 > .c17,
+  .c0 > .j1ncz7-1 {
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c0 > p {
+    margin-bottom: inherit;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c11 {
+    font-size: 10px;
+    width: 170px;
+    display: grid;
+    grid-template-columns: 1fr 18px 1fr;
+    grid-template-rows: 1fr;
+    font-size: 12px;
+  }
+
+  .c11 > div {
+    grid-row: 1;
+    grid-column: 2;
+    margin-left: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c11 > p {
+    width: 100%;
+    color: var(--slate);
+    grid-row: 1;
+    grid-column: 1;
+    text-align: right;
+    margin: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    padding-right: 2px;
+  }
+
+  .c11 > a {
+    grid-row: 1;
+    grid-column: 3;
+    justify-self: start;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    color: var(--red);
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c4 {
+    -webkit-align-self: initial;
+    -ms-flex-item-align: initial;
+    align-self: initial;
   }
 }
 
@@ -8444,10 +8535,10 @@ Object {
           class="c0"
         >
           <div
-            class="c1"
+            class="c1 c2"
           >
             <div
-              class="c2"
+              class="c3"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -8459,19 +8550,19 @@ Object {
               </svg>
             </div>
           </div>
+          <p>
+            Purchase Confirmed
+          </p>
           <div
-            class="c3"
+            class="c4"
           >
-            <p>
-              Purchase Confirmed
-            </p>
             <a
-              class="c4 c5 c6"
+              class="c5 c6 c7"
               height="24px"
               width="24px"
             >
               <svg
-                class="c7 "
+                class="c8 "
                 viewBox="0 0 24 24"
               >
                 <title />
@@ -8482,7 +8573,7 @@ Object {
                 />
               </svg>
               <svg
-                class="c8 c9"
+                class="c9 c10"
                 viewBox="0 0 24 24"
               >
                 <title />
@@ -8493,6 +8584,34 @@ Object {
                 />
               </svg>
               
+            </a>
+          </div>
+          <div
+            class="c11"
+          >
+            <p>
+              Powered by
+            </p>
+            <div
+              class="c1 c2"
+            >
+              <div
+                class="c3"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <a
+              href="/"
+            >
+              Unlock
             </a>
           </div>
         </div>
@@ -8508,10 +8627,10 @@ Object {
       style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="j1ncz7-0 bZCHNZ"
+        class="j1ncz7-3 hFwFKo"
       >
         <div
-          class="j1ncz7-1 kvurOe"
+          class="j1ncz7-0 iFZnpo"
         >
           <div
             class="sth0f3-0 kgAUQA"
@@ -8526,12 +8645,12 @@ Object {
             </svg>
           </div>
         </div>
+        <p>
+          Purchase Confirmed
+        </p>
         <div
-          class="j1ncz7-4 fgRiVp"
+          class="j1ncz7-5 jcAvSH"
         >
-          <p>
-            Purchase Confirmed
-          </p>
           <a
             class="sc-1hzn3pu-2 ffRwyB is925m-0 kuCWTv"
             height="24px"
@@ -8560,6 +8679,34 @@ Object {
               />
             </svg>
             
+          </a>
+        </div>
+        <div
+          class="j1ncz7-4 fyCSrR"
+        >
+          <p>
+            Powered by
+          </p>
+          <div
+            class="j1ncz7-0 iFZnpo"
+          >
+            <div
+              class="sth0f3-0 kgAUQA"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </div>
+          <a
+            href="/"
+          >
+            Unlock
           </a>
         </div>
       </div>
@@ -8631,15 +8778,48 @@ exports[`Storyshots Optimistic Unlocking Flags the confirming flag 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c2 {
+    .c3 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c2 > svg {
+.c3 > svg {
   fill: white;
+}
+
+.c2 {
+  grid-row: 1 / span 2;
+  margin-left: -14px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c5 {
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+  grid-column: 2;
+}
+
+.c7 {
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+  grid-column: 2;
+  position: absolute;
+  background: var(--yellow);
+  width: 29px;
 }
 
 .c0 {
@@ -8649,67 +8829,107 @@ Object {
   box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
   background: var(--white);
   margin: auto;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 25px 1fr;
+  grid-template-rows: 1fr 1fr;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  position: relative;
 }
 
-.c1 {
-  position: absolute;
-  top: 26px;
-  left: -14px;
-  height: 28px;
-  width: 28px;
-}
-
-.c4 {
-  width: 74px;
-  height: 8px;
-  background: var(--lightgrey);
-  position: relative;
-}
-
-.c5 {
-  width: 74px;
-  height: 8px;
-  background: var(--lightgrey);
-  position: relative;
-  position: absolute;
-  background: var(--yellow);
-  width: 29px;
-}
-
-.c3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: 74px;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  margin-left: 14px;
+.c0 > p {
+  margin-bottom: 5px;
   font-size: 12px;
+  text-align: center;
 }
 
-.c3 > p {
-  text-align: center;
-  margin-bottom: 3px;
+.c0 > .c6,
+.c0 > .c4 {
+  margin-left: 10px;
+}
+
+.c8 {
+  display: none;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c2 {
+  .c3 {
     height: 16px;
     width: 16px;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c0 {
+    font-size: 10px;
+    display: grid;
+    height: 43px;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-rows: 43px;
+    width: 100%;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+
+  .c0 > .c1 {
+    display: none;
+  }
+
+  .c0 > .c6,
+  .c0 > .c4 {
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c0 > p {
+    margin-bottom: inherit;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c8 {
+    font-size: 10px;
+    width: 170px;
+    display: grid;
+    grid-template-columns: 1fr 18px 1fr;
+    grid-template-rows: 1fr;
+    font-size: 12px;
+  }
+
+  .c8 > div {
+    grid-row: 1;
+    grid-column: 2;
+    margin-left: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c8 > p {
+    width: 100%;
+    color: var(--slate);
+    grid-row: 1;
+    grid-column: 1;
+    text-align: right;
+    margin: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    padding-right: 2px;
+  }
+
+  .c8 > a {
+    grid-row: 1;
+    grid-column: 3;
+    justify-self: start;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    color: var(--red);
   }
 }
 
@@ -8725,10 +8945,10 @@ Object {
           class="c0"
         >
           <div
-            class="c1"
+            class="c1 c2"
           >
             <div
-              class="c2"
+              class="c3"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -8740,19 +8960,43 @@ Object {
               </svg>
             </div>
           </div>
+          <p>
+            Confirming Purchase
+          </p>
           <div
-            class="c3"
+            class="c4 c5"
+          >
+            <div
+              class="c4 c6 c7"
+            />
+          </div>
+          <div
+            class="c8"
           >
             <p>
-              Confirming Purchase
+              Powered by
             </p>
             <div
-              class="c4"
+              class="c1 c2"
             >
               <div
-                class="c5"
-              />
+                class="c3"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
             </div>
+            <a
+              href="/"
+            >
+              Unlock
+            </a>
           </div>
         </div>
       </div>
@@ -8767,10 +9011,10 @@ Object {
       style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="j1ncz7-0 bZCHNZ"
+        class="j1ncz7-3 hFwFKo"
       >
         <div
-          class="j1ncz7-1 kvurOe"
+          class="j1ncz7-0 iFZnpo"
         >
           <div
             class="sth0f3-0 kgAUQA"
@@ -8785,19 +9029,43 @@ Object {
             </svg>
           </div>
         </div>
+        <p>
+          Confirming Purchase
+        </p>
         <div
-          class="j1ncz7-4 fgRiVp"
+          class="j1ncz7-1 dJiygx"
+        >
+          <div
+            class="j1ncz7-1 j1ncz7-2 kbGZWY"
+          />
+        </div>
+        <div
+          class="j1ncz7-4 fyCSrR"
         >
           <p>
-            Confirming Purchase
+            Powered by
           </p>
           <div
-            class="j1ncz7-2 UUghW"
+            class="j1ncz7-0 iFZnpo"
           >
             <div
-              class="j1ncz7-2 j1ncz7-3 hrKbli"
-            />
+              class="sth0f3-0 kgAUQA"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
           </div>
+          <a
+            href="/"
+          >
+            Unlock
+          </a>
         </div>
       </div>
     </div>
@@ -12665,15 +12933,48 @@ exports[`Storyshots Overlay/Optimistic Unlocking beginning purchase 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c2 {
+    .c3 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c2 > svg {
+.c3 > svg {
   fill: white;
+}
+
+.c2 {
+  grid-row: 1 / span 2;
+  margin-left: -14px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c5 {
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+  grid-column: 2;
+}
+
+.c7 {
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+  grid-column: 2;
+  position: absolute;
+  background: var(--yellow);
+  width: 0px;
 }
 
 .c0 {
@@ -12683,67 +12984,107 @@ Object {
   box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
   background: var(--white);
   margin: auto;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 25px 1fr;
+  grid-template-rows: 1fr 1fr;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  position: relative;
 }
 
-.c1 {
-  position: absolute;
-  top: 26px;
-  left: -14px;
-  height: 28px;
-  width: 28px;
-}
-
-.c4 {
-  width: 74px;
-  height: 8px;
-  background: var(--lightgrey);
-  position: relative;
-}
-
-.c5 {
-  width: 74px;
-  height: 8px;
-  background: var(--lightgrey);
-  position: relative;
-  position: absolute;
-  background: var(--yellow);
-  width: 0px;
-}
-
-.c3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: 74px;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  margin-left: 14px;
+.c0 > p {
+  margin-bottom: 5px;
   font-size: 12px;
+  text-align: center;
 }
 
-.c3 > p {
-  text-align: center;
-  margin-bottom: 3px;
+.c0 > .c6,
+.c0 > .c4 {
+  margin-left: 10px;
+}
+
+.c8 {
+  display: none;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c2 {
+  .c3 {
     height: 16px;
     width: 16px;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c0 {
+    font-size: 10px;
+    display: grid;
+    height: 43px;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-rows: 43px;
+    width: 100%;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+
+  .c0 > .c1 {
+    display: none;
+  }
+
+  .c0 > .c6,
+  .c0 > .c4 {
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c0 > p {
+    margin-bottom: inherit;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c8 {
+    font-size: 10px;
+    width: 170px;
+    display: grid;
+    grid-template-columns: 1fr 18px 1fr;
+    grid-template-rows: 1fr;
+    font-size: 12px;
+  }
+
+  .c8 > div {
+    grid-row: 1;
+    grid-column: 2;
+    margin-left: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c8 > p {
+    width: 100%;
+    color: var(--slate);
+    grid-row: 1;
+    grid-column: 1;
+    text-align: right;
+    margin: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    padding-right: 2px;
+  }
+
+  .c8 > a {
+    grid-row: 1;
+    grid-column: 3;
+    justify-self: start;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    color: var(--red);
   }
 }
 
@@ -12810,10 +13151,10 @@ Object {
             class="c0"
           >
             <div
-              class="c1"
+              class="c1 c2"
             >
               <div
-                class="c2"
+                class="c3"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -12825,19 +13166,43 @@ Object {
                 </svg>
               </div>
             </div>
+            <p>
+              Confirming Purchase
+            </p>
             <div
-              class="c3"
+              class="c4 c5"
+            >
+              <div
+                class="c4 c6 c7"
+              />
+            </div>
+            <div
+              class="c8"
             >
               <p>
-                Confirming Purchase
+                Powered by
               </p>
               <div
-                class="c4"
+                class="c1 c2"
               >
                 <div
-                  class="c5"
-                />
+                  class="c3"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
               </div>
+              <a
+                href="/"
+              >
+                Unlock
+              </a>
             </div>
           </div>
         </div>
@@ -12904,10 +13269,10 @@ Object {
         class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-0 bZCHNZ"
+          class="j1ncz7-3 hFwFKo"
         >
           <div
-            class="j1ncz7-1 kvurOe"
+            class="j1ncz7-0 iFZnpo"
           >
             <div
               class="sth0f3-0 kgAUQA"
@@ -12922,19 +13287,43 @@ Object {
               </svg>
             </div>
           </div>
+          <p>
+            Confirming Purchase
+          </p>
           <div
-            class="j1ncz7-4 fgRiVp"
+            class="j1ncz7-1 dJiygx"
+          >
+            <div
+              class="j1ncz7-1 j1ncz7-2 iTYcIm"
+            />
+          </div>
+          <div
+            class="j1ncz7-4 fyCSrR"
           >
             <p>
-              Confirming Purchase
+              Powered by
             </p>
             <div
-              class="j1ncz7-2 UUghW"
+              class="j1ncz7-0 iFZnpo"
             >
               <div
-                class="j1ncz7-2 j1ncz7-3 cmFhKm"
-              />
+                class="sth0f3-0 kgAUQA"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
             </div>
+            <a
+              href="/"
+            >
+              Unlock
+            </a>
           </div>
         </div>
       </div>
@@ -13840,18 +14229,18 @@ exports[`Storyshots Overlay/Optimistic Unlocking confirmed 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c2 {
+    .c3 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c2 > svg {
+.c3 > svg {
   fill: white;
 }
 
-.c6 {
+.c7 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -13863,25 +14252,25 @@ Object {
   line-height: 24px;
 }
 
-.c6 > svg {
+.c7 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c6:hover {
+.c7:hover {
   background-color: var(--green);
 }
 
-.c6:hover > svg {
+.c7:hover > svg {
   fill: white;
 }
 
-.c5:hover .c10 {
+.c6:hover .c12 {
   display: inline-block;
 }
 
-.c11 .c5 {
+.c13 .c6 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -13892,28 +14281,28 @@ Object {
   align-self: center;
 }
 
-.c11 .c5:nth-child(1) {
+.c13 .c6:nth-child(1) {
   pointer-events: none;
 }
 
-.c11 .c5:nth-child(2) {
+.c13 .c6:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c11 .c5 > svg {
+.c13 .c6 > svg {
   fill: var(--grey);
 }
 
-.c11 .c5:hover > svg {
+.c13 .c6:hover > svg {
   fill: var(--grey);
 }
 
-.c12 .c5 {
+.c14 .c6 {
   margin: 24px;
 }
 
-.c12 .c5 small {
+.c14 .c6 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -13922,30 +14311,38 @@ Object {
   text-align: center;
 }
 
-.c9 {
+.c10 {
   display: none;
 }
 
-.c4 {
+.c5 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c4:hover .c8 {
+.c5:hover .c9 {
   display: block;
 }
 
-.c4:hover .c7 {
+.c5:hover .c8 {
   display: none;
 }
 
-.c4:hover ~ .c13 {
+.c5:hover ~ .c15 {
   display: grid;
 }
 
-.c4:hover ~ .c14 {
+.c5:hover ~ .c16 {
   display: none;
+}
+
+.c2 {
+  grid-row: 1 / span 2;
+  margin-left: -14px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
 }
 
 .c0 {
@@ -13955,50 +14352,133 @@ Object {
   box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
   background: var(--white);
   margin: auto;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 25px 1fr;
+  grid-template-rows: 1fr 1fr;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  position: relative;
 }
 
-.c1 {
-  position: absolute;
-  top: 26px;
-  left: -14px;
-  height: 28px;
-  width: 28px;
+.c0 > p {
+  margin-bottom: 5px;
+  font-size: 12px;
+  text-align: center;
 }
 
-.c3 {
+.c0 > .c17,
+.c0 > .j1ncz7-1 {
+  margin-left: 10px;
+}
+
+.c11 {
+  display: none;
+}
+
+.c4 {
+  width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  width: 74px;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  margin-left: 14px;
-  font-size: 12px;
-}
-
-.c3 > p {
-  text-align: center;
-  margin-bottom: 3px;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c2 {
+  .c3 {
     height: 16px;
     width: 16px;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c0 {
+    font-size: 10px;
+    display: grid;
+    height: 43px;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-rows: 43px;
+    width: 100%;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+
+  .c0 > .c1 {
+    display: none;
+  }
+
+  .c0 > .c17,
+  .c0 > .j1ncz7-1 {
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c0 > p {
+    margin-bottom: inherit;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c11 {
+    font-size: 10px;
+    width: 170px;
+    display: grid;
+    grid-template-columns: 1fr 18px 1fr;
+    grid-template-rows: 1fr;
+    font-size: 12px;
+  }
+
+  .c11 > div {
+    grid-row: 1;
+    grid-column: 2;
+    margin-left: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c11 > p {
+    width: 100%;
+    color: var(--slate);
+    grid-row: 1;
+    grid-column: 1;
+    text-align: right;
+    margin: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    padding-right: 2px;
+  }
+
+  .c11 > a {
+    grid-row: 1;
+    grid-column: 3;
+    justify-self: start;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    color: var(--red);
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c4 {
+    -webkit-align-self: initial;
+    -ms-flex-item-align: initial;
+    align-self: initial;
   }
 }
 
@@ -14065,10 +14545,10 @@ Object {
             class="c0"
           >
             <div
-              class="c1"
+              class="c1 c2"
             >
               <div
-                class="c2"
+                class="c3"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -14080,19 +14560,19 @@ Object {
                 </svg>
               </div>
             </div>
+            <p>
+              Purchase Confirmed
+            </p>
             <div
-              class="c3"
+              class="c4"
             >
-              <p>
-                Purchase Confirmed
-              </p>
               <a
-                class="c4 c5 c6"
+                class="c5 c6 c7"
                 height="24px"
                 width="24px"
               >
                 <svg
-                  class="c7 "
+                  class="c8 "
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -14103,7 +14583,7 @@ Object {
                   />
                 </svg>
                 <svg
-                  class="c8 c9"
+                  class="c9 c10"
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -14114,6 +14594,34 @@ Object {
                   />
                 </svg>
                 
+              </a>
+            </div>
+            <div
+              class="c11"
+            >
+              <p>
+                Powered by
+              </p>
+              <div
+                class="c1 c2"
+              >
+                <div
+                  class="c3"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <a
+                href="/"
+              >
+                Unlock
               </a>
             </div>
           </div>
@@ -14181,10 +14689,10 @@ Object {
         class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-0 bZCHNZ"
+          class="j1ncz7-3 hFwFKo"
         >
           <div
-            class="j1ncz7-1 kvurOe"
+            class="j1ncz7-0 iFZnpo"
           >
             <div
               class="sth0f3-0 kgAUQA"
@@ -14199,12 +14707,12 @@ Object {
               </svg>
             </div>
           </div>
+          <p>
+            Purchase Confirmed
+          </p>
           <div
-            class="j1ncz7-4 fgRiVp"
+            class="j1ncz7-5 jcAvSH"
           >
-            <p>
-              Purchase Confirmed
-            </p>
             <a
               class="sc-1hzn3pu-2 ffRwyB is925m-0 kuCWTv"
               height="24px"
@@ -14233,6 +14741,34 @@ Object {
                 />
               </svg>
               
+            </a>
+          </div>
+          <div
+            class="j1ncz7-4 fyCSrR"
+          >
+            <p>
+              Powered by
+            </p>
+            <div
+              class="j1ncz7-0 iFZnpo"
+            >
+              <div
+                class="sth0f3-0 kgAUQA"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <a
+              href="/"
+            >
+              Unlock
             </a>
           </div>
         </div>
@@ -14988,15 +15524,48 @@ exports[`Storyshots Overlay/Optimistic Unlocking some confirmations 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c2 {
+    .c3 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c2 > svg {
+.c3 > svg {
   fill: white;
+}
+
+.c2 {
+  grid-row: 1 / span 2;
+  margin-left: -14px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c5 {
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+  grid-column: 2;
+}
+
+.c7 {
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+  grid-column: 2;
+  position: absolute;
+  background: var(--yellow);
+  width: 30px;
 }
 
 .c0 {
@@ -15006,67 +15575,107 @@ Object {
   box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
   background: var(--white);
   margin: auto;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 25px 1fr;
+  grid-template-rows: 1fr 1fr;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  position: relative;
 }
 
-.c1 {
-  position: absolute;
-  top: 26px;
-  left: -14px;
-  height: 28px;
-  width: 28px;
-}
-
-.c4 {
-  width: 74px;
-  height: 8px;
-  background: var(--lightgrey);
-  position: relative;
-}
-
-.c5 {
-  width: 74px;
-  height: 8px;
-  background: var(--lightgrey);
-  position: relative;
-  position: absolute;
-  background: var(--yellow);
-  width: 30px;
-}
-
-.c3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: 74px;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  margin-left: 14px;
+.c0 > p {
+  margin-bottom: 5px;
   font-size: 12px;
+  text-align: center;
 }
 
-.c3 > p {
-  text-align: center;
-  margin-bottom: 3px;
+.c0 > .c6,
+.c0 > .c4 {
+  margin-left: 10px;
+}
+
+.c8 {
+  display: none;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c2 {
+  .c3 {
     height: 16px;
     width: 16px;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c0 {
+    font-size: 10px;
+    display: grid;
+    height: 43px;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-rows: 43px;
+    width: 100%;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+
+  .c0 > .c1 {
+    display: none;
+  }
+
+  .c0 > .c6,
+  .c0 > .c4 {
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c0 > p {
+    margin-bottom: inherit;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c8 {
+    font-size: 10px;
+    width: 170px;
+    display: grid;
+    grid-template-columns: 1fr 18px 1fr;
+    grid-template-rows: 1fr;
+    font-size: 12px;
+  }
+
+  .c8 > div {
+    grid-row: 1;
+    grid-column: 2;
+    margin-left: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c8 > p {
+    width: 100%;
+    color: var(--slate);
+    grid-row: 1;
+    grid-column: 1;
+    text-align: right;
+    margin: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    padding-right: 2px;
+  }
+
+  .c8 > a {
+    grid-row: 1;
+    grid-column: 3;
+    justify-self: start;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    color: var(--red);
   }
 }
 
@@ -15133,10 +15742,10 @@ Object {
             class="c0"
           >
             <div
-              class="c1"
+              class="c1 c2"
             >
               <div
-                class="c2"
+                class="c3"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -15148,19 +15757,43 @@ Object {
                 </svg>
               </div>
             </div>
+            <p>
+              Confirming Purchase
+            </p>
             <div
-              class="c3"
+              class="c4 c5"
+            >
+              <div
+                class="c4 c6 c7"
+              />
+            </div>
+            <div
+              class="c8"
             >
               <p>
-                Confirming Purchase
+                Powered by
               </p>
               <div
-                class="c4"
+                class="c1 c2"
               >
                 <div
-                  class="c5"
-                />
+                  class="c3"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
               </div>
+              <a
+                href="/"
+              >
+                Unlock
+              </a>
             </div>
           </div>
         </div>
@@ -15227,10 +15860,10 @@ Object {
         class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-0 bZCHNZ"
+          class="j1ncz7-3 hFwFKo"
         >
           <div
-            class="j1ncz7-1 kvurOe"
+            class="j1ncz7-0 iFZnpo"
           >
             <div
               class="sth0f3-0 kgAUQA"
@@ -15245,19 +15878,43 @@ Object {
               </svg>
             </div>
           </div>
+          <p>
+            Confirming Purchase
+          </p>
           <div
-            class="j1ncz7-4 fgRiVp"
+            class="j1ncz7-1 dJiygx"
+          >
+            <div
+              class="j1ncz7-1 j1ncz7-2 jzeoux"
+            />
+          </div>
+          <div
+            class="j1ncz7-4 fyCSrR"
           >
             <p>
-              Confirming Purchase
+              Powered by
             </p>
             <div
-              class="j1ncz7-2 UUghW"
+              class="j1ncz7-0 iFZnpo"
             >
               <div
-                class="j1ncz7-2 j1ncz7-3 cWufuf"
-              />
+                class="sth0f3-0 kgAUQA"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
             </div>
+            <a
+              href="/"
+            >
+              Unlock
+            </a>
           </div>
         </div>
       </div>
