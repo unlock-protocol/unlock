@@ -67,5 +67,30 @@ describe('Purchase Controller', () => {
         expect(response.statusCode).toBe(202)
       })
     })
+
+    describe('when the purchase request is past its expiry window', () => {
+      let message = {
+        purchaseRequest: {
+          recipient: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+          lock: '0xe4906CE8a8E861339F75611c129b9679EDAe7bBD',
+          expiry: 702764221,
+        },
+      }
+
+      let typedData = generateTypedData(message)
+
+      const sig = sigUtil.signTypedData(privateKey, {
+        data: typedData,
+      })
+      it('responds with a 412', async () => {
+        expect.assertions(1)
+        let response = await request(app)
+          .post('/purchase')
+          .set('Accept', /json/)
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .send(typedData)
+        expect(response.statusCode).toBe(412)
+      })
+    })
   })
 })
