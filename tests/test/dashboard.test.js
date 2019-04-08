@@ -91,7 +91,7 @@ describe('The Unlock Dashboard', () => {
       await expect(lockText).toMatch(`${expirationDuration} day`) // we use day as this could be singular!
       await expect(lockText).toMatch(`0/${maxNumberOfKeys}`)
       await expect(lockText).toMatch(keyPrice)
-      await expect(lockText).toMatch('Submitted')
+      await expect(lockText).toMatch(/Confirming|Submitted/) // The lock is either submitted or confirming (depending on when the mining happens in the tests)
     })
 
     // This test requires the test above
