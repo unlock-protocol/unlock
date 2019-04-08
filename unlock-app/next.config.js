@@ -10,23 +10,20 @@ const copyFile = promisify(fs.copyFile)
 // TODO renames these: URLs need to be URLs, hosts need to be hosts... etc
 let requiredConfigVariables = {
   unlockEnv: process.env.UNLOCK_ENV || 'dev',
-  httpProvider: process.env.HTTP_PROVIDER || '127.0.0.1',
   paywallUrl: process.env.PAYWALL_URL,
   paywallScriptUrl: process.env.PAYWALL_SCRIPT_URL,
   readOnlyProvider: process.env.READ_ONLY_PROVIDER,
-  locksmithHost: process.env.LOCKSMITH_URI || 'http://127.0.0.1:8080',
-  unlockAddress:
-    process.env.UNLOCK_ADDRESS || '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93', // default for CI
+  locksmithHost: process.env.LOCKSMITH_URI,
 }
 
-// If the URL is set in an env variable, use it - otherwise it'll be overridden in config.js
-if (process.env.UNLOCK_URL)
-  requiredConfigVariables.unlockUrl = process.env.UNLOCK_URL
+let optionalConfigVariables = {
+  httpProvider: process.env.HTTP_PROVIDER,
+}
 
+// If any env variable is missing, fail to run, except for dev which can set its own defaults
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
   if (!requiredConfigVariables[configVariableName]) {
-    if (requiredConfigVariables.unlockEnv === 'test') return
-    if (requiredConfigVariables.unlockEnv === 'dev') {
+    if (['dev', 'test'].indexOf(requiredConfigVariables.unlockEnv) > -1) {
       return console.error(
         `The configuration variable ${configVariableName} is falsy.`
       )
@@ -38,7 +35,10 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
 })
 
 module.exports = withTypescript({
-  publicRuntimeConfig: requiredConfigVariables,
+  publicRuntimeConfig: {
+    ...optionalConfigVariables,
+    ...requiredConfigVariables,
+  },
   webpack(config) {
     return config
   },
