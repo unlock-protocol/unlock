@@ -16,6 +16,6 @@ body.big {
 
 @media only screen and (min-width: 135px) and (max-width: 763px) {
   body.small {
-    height: 80px;
+    height: 43px;
   }
 }
