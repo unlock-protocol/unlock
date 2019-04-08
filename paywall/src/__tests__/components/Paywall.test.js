@@ -438,7 +438,7 @@ describe('Paywall', () => {
       expect.assertions(1)
       const component = renderMockPaywall({ locked: false })
 
-      const flagText = component.getByText('Subscribed with Unlock')
+      const flagText = component.getByTestId('unlocked')
       expect(flagText).not.toBeNull()
     })
 
@@ -446,7 +446,7 @@ describe('Paywall', () => {
       expect.assertions(1)
       const component = renderMockPaywall({ locked: true })
 
-      const flagText = component.queryByText('Subscribed with Unlock')
+      const flagText = component.queryByTestId('unlocked')
       expect(flagText).toBeNull()
     })
   })
