@@ -4,7 +4,6 @@ import {
   pageTitle,
   PAGE_DESCRIPTION,
   PAGE_DEFAULT_IMAGE,
-  CANONICAL_BASE_URL,
 } from '../../../constants'
 import OpenGraphTags from '../../../components/page/OpenGraphTags'
 
@@ -26,7 +25,7 @@ describe('OpenGraphTags', () => {
     ).toBe('website')
     expect(
       tags.container.querySelector("meta[property='og:url']").content
-    ).toBe(CANONICAL_BASE_URL + '/')
+    ).toBe('/')
   })
 
   it('should render open graph tags based on custom values', () => {
@@ -57,6 +56,6 @@ describe('OpenGraphTags', () => {
     ).toBe('website')
     expect(
       tags.container.querySelector("meta[property='og:url']").content
-    ).toBe(CANONICAL_BASE_URL + path)
+    ).toBe(path)
   })
 })

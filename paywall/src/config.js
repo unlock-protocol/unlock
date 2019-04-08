@@ -86,14 +86,14 @@ export default function configure(
   let services = {}
   let supportedProviders = []
   let blockTime = 8000 // in mseconds.
+  const httpProvider = runtimeConfig.httpProvider
   const readOnlyProviderUrl =
-    runtimeConfig.readOnlyProvider ||
-    `http://${runtimeConfig.httpProvider}:8545`
+    runtimeConfig.readOnlyProvider || `http://${httpProvider}:8545`
 
   if (env === 'test') {
     // In test, we fake the HTTP provider
     providers['HTTP'] = new Web3.providers.HttpProvider(
-      `http://${runtimeConfig.httpProvider}:8545`
+      `http://${httpProvider}:8545`
     )
     blockTime = 10 // in mseconds.
     supportedProviders = ['HTTP']
@@ -105,7 +105,7 @@ export default function configure(
     // In dev, we assume there is a running local ethereum node with unlocked accounts
     // listening to the HTTP endpoint. We can add more providers (Websockets...) if needed.
     providers['HTTP'] = new Web3.providers.HttpProvider(
-      `http://${runtimeConfig.httpProvider}:8545`
+      `http://${httpProvider}:8545`
     )
     services['storage'] = { host: 'http://127.0.0.1:8080' }
 
