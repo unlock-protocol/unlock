@@ -44,7 +44,7 @@ KeyChainContent.defaultProps = {
 
 export const mapStateToProps = state => {
   return {
-    account: null, //state.account,
+    account: state.account,
     network: state.network,
   }
 }
