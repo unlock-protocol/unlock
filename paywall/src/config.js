@@ -89,7 +89,6 @@ export default function configure(
   }
   let supportedProviders = []
   let blockTime = 8000 // in mseconds.
-  const httpProvider = runtimeConfig.httpProvider
   const readOnlyProviderUrl =
     runtimeConfig.readOnlyProvider || `http://${httpProvider}:8545`
 
