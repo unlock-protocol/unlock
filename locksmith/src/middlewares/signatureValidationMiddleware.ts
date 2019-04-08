@@ -1,11 +1,11 @@
 import sigUtil from 'eth-sig-util'
 import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
-import Base64 from '../utils/base64'
+import * as Base64 from '../utils/base64'
 import Normalizer from '../utils/normalizer'
 import { SignatureValidationConfiguration } from '../types' // eslint-disable-line no-unused-vars
 
 namespace SignatureValidationMiddleware {
-  const extractToken = (req: Request): String | null => {
+  const extractToken = (req: Request): string | null => {
     if (
       req.headers.authorization &&
       req.headers.authorization.split(' ')[0] === 'Bearer'
