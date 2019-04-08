@@ -71,19 +71,22 @@ export default function configure(
   // note: the choice of 127.0.0.1 instead of localhost is deliberate, as it will
   // allow us to test cross-origin requests from localhost/demo
   let paywallUrl = runtimeConfig.paywallUrl || 'http://127.0.0.1:3001'
-  const locksmithHost = runtimeConfig.locksmithHost
-  let paywallScriptPath =
-    runtimeConfig.paywallScriptPath || '/static/paywall.min.js'
+  const locksmithUri = runtimeConfig.locksmithUri || 'http://0.0.0.0:8080'
+  let paywallScriptPath = '/static/paywall.min.js'
+  const httpProvider = runtimeConfig.httpProvider || '127.0.0.1'
   let providers = {}
   let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
   let requiredNetworkId = 1984
   let requiredConfirmations = 12
   // Unlock address by default
-  // Smart contract deployments yield the same address on a "clean" node as long as long as the
-  // migration script runs in the same order.
-  let unlockAddress = runtimeConfig.unlockAddress
-  let services = {}
+  // Smart contract deployments yield the same address on a "clean" node as long as long as the migration script runs in the same order.
+  let unlockAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
+  let services = {
+    storage: {
+      host: locksmithUri,
+    },
+  }
   let supportedProviders = []
   let blockTime = 8000 // in mseconds.
   const httpProvider = runtimeConfig.httpProvider
@@ -97,7 +100,6 @@ export default function configure(
     )
     blockTime = 10 // in mseconds.
     supportedProviders = ['HTTP']
-    services['storage'] = { host: 'http://127.0.0.1:8080' }
     isRequiredNetwork = networkId => networkId === 1984
   }
 
@@ -107,7 +109,6 @@ export default function configure(
     providers['HTTP'] = new Web3.providers.HttpProvider(
       `http://${httpProvider}:8545`
     )
-    services['storage'] = { host: 'http://127.0.0.1:8080' }
 
     // If there is an existing web3 injected provider, we also add this one to the list of possible providers
     if (typeof environment.web3 !== 'undefined') {
@@ -136,14 +137,9 @@ export default function configure(
     isRequiredNetwork = networkId => networkId === 4
     requiredNetworkId = 4
     supportedProviders = ['Metamask', 'Opera']
-    services['storage'] = { host: runtimeConfig.locksmithHost }
 
     // Address for the Unlock smart contract
     unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
-
-    // Paywall URL for staging
-    paywallUrl =
-      runtimeConfig.paywallUrl || 'https://staging-paywall.unlock-protocol.com'
 
     // rinkeby block time is roughly same as main net
     blockTime = 8000
@@ -165,10 +161,6 @@ export default function configure(
     // Address for the Unlock smart contract
     unlockAddress = '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
 
-    // Paywall URL for production
-    paywallUrl =
-      runtimeConfig.paywallUrl || 'https://paywall.unlock-protocol.com'
-
     // See https://www.reddit.com/r/ethereum/comments/3c8v2i/what_is_the_expected_block_time/
     blockTime = 8000
   }
@@ -189,7 +181,7 @@ export default function configure(
     env,
     providers,
     isRequiredNetwork,
-    locksmithHost,
+    locksmithUri,
     readOnlyProvider,
     requiredNetworkId,
     requiredNetwork,
