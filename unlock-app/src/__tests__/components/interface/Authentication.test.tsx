@@ -1,10 +1,6 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
-import { Provider } from 'react-redux'
-import createUnlockStore from '../../../createUnlockStore'
 import { AuthenticationPrompt } from '../../../components/interface/AuthenticationPrompt'
-
-const store = createUnlockStore({})
 
 let wrapper: rtl.RenderResult<typeof rtl.queries>
 let gotCredentials: any
@@ -14,9 +10,7 @@ describe('Authentication Prompt', () => {
   beforeEach(() => {
     gotCredentials = jest.fn()
     wrapper = rtl.render(
-      <Provider store={store}>
-        <AuthenticationPrompt gotCredentials={gotCredentials} />
-      </Provider>
+      <AuthenticationPrompt gotCredentials={gotCredentials} />
     )
   })
 
