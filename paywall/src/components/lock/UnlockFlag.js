@@ -9,8 +9,9 @@ import { SHOW_FLAG_FOR } from '../../constants'
 export function LockedFlag() {
   return (
     <Colophon>
-      <RoundedLogo size="28px" />
-      <p>Powered by Unlock</p>
+      <p>Powered by</p>
+      <RoundedLogo />
+      <a href="/">Unlock</a>
     </Colophon>
   )
 }
@@ -24,9 +25,10 @@ export const UnlockedFlag = () => {
     return () => clearTimeout(timeout)
   }, [setHidden])
   return (
-    <Flag id="UnlockFlag" hidden={hidden}>
-      <RoundedLogo size="28px" />
-      <p>Subscribed with Unlock</p>
+    <Flag id="UnlockFlag" data-testid="unlocked" hidden={hidden}>
+      <RoundedLogo />
+      <p>Powered by</p>
+      <a href="/">Unlock</a>
     </Flag>
   )
 }
@@ -43,8 +45,17 @@ const Flag = styled(Colophon)`
     opacity: 1;
     transition: opacity 0.4s ease-in;
   }
+  & a {
+    color: var(--red);
+  }
 
   ${Media.phone`
-    display: flex;
-`}
+    background-color: var(--offwhite);
+    align-self: center;
+    justify-self: center;
+    height: 43px;
+    float: none;
+  
+    opacity: 1;
+  `}
 `
