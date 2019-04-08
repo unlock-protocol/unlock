@@ -35,7 +35,7 @@ function generateTypedData(message: any) {
 
 describe('Purchase Controller', () => {
   describe('purchase initiation', () => {
-    describe('when the purchase request is appropriately signed', () => {
+    describe("when the purchase hasn't been signed correctly", () => {
       it('returns a 401 status code', async () => {
         expect.assertions(1)
         let response = await request(app).post('/purchase')
@@ -43,7 +43,7 @@ describe('Purchase Controller', () => {
       })
     })
 
-    describe("when the purchase request hasn't been signed correctly", () => {
+    describe('when the purchase request is appropriately signed', () => {
       let message = {
         purchaseRequest: {
           recipient: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
