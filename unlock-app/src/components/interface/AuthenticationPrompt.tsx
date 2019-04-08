@@ -17,7 +17,7 @@ interface State {
   password: string
 }
 
-class AuthenticationPrompt extends React.Component<Props, State> {
+export class AuthenticationPrompt extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
