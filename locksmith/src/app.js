@@ -45,6 +45,16 @@ app.put(
     signee: 'publicKey',
   })
 )
+
+app.post(
+  /^\/purchase$/i,
+  signatureValidationMiddleware.generateProcessor({
+    name: 'purchaseRequest',
+    required: ['recipient', 'lock', 'expiry'],
+    signee: 'recipient',
+  })
+)
+
 app.use('/', router)
 app.use('/', transactionRouter)
 app.use('/', lockRouter)
