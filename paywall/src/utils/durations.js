@@ -41,14 +41,7 @@ export function durations(seconds, intervals) {
  * @param {number} seconds
  */
 export function durationsAsTextFromSeconds(seconds) {
-  const d = durations(seconds, {})
-  const asArrayOfValues = Object.keys(d).map(duration => {
-    if (d[duration] !== 1) {
-      // Singular should only be used when there is exactly 1; otherwise plural is needed
-      return `${d[duration]} ${duration}`
-    }
-    return `${d[duration]} ${duration.slice(0, -1)}` // remove the s!
-  })
+  const asArrayOfValues = durationsAsArrayFromSeconds(seconds)
   if (asArrayOfValues.length === 0) {
     return ''
   }
@@ -60,6 +53,22 @@ export function durationsAsTextFromSeconds(seconds) {
     ' and ' +
     asArrayOfValues.slice(-1)
   )
+}
+
+/**
+ * Given a number of seconds, returns the durations as an array (['10 days', '3 hours', '40 minutes'])
+ * @param {number} seconds
+ */
+export function durationsAsArrayFromSeconds(seconds) {
+  const d = durations(seconds, {})
+  const asArrayOfValues = Object.keys(d).map(duration => {
+    if (d[duration] !== 1) {
+      // Singular should only be used when there is exactly 1; otherwise plural is needed
+      return `${d[duration]} ${duration}`
+    }
+    return `${d[duration]} ${duration.slice(0, -1)}` // remove the s!
+  })
+  return asArrayOfValues
 }
 
 /**
