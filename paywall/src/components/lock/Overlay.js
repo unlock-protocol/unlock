@@ -12,6 +12,7 @@ import { mapErrorToComponent } from '../creator/FatalError'
 import { FATAL_NO_USER_ACCOUNT, FATAL_MISSING_PROVIDER } from '../../errors'
 import withConfig from '../../utils/withConfig'
 import usePostMessage from '../../hooks/browser/usePostMessage'
+import Media from '../../theme/media'
 
 import ConfirmedFlag from './ConfirmedFlag'
 import ConfirmingFlag from './ConfirmingFlag'
@@ -209,6 +210,9 @@ const Banner = styled.div.attrs(({ scrollPosition }) => ({
   padding-bottom: 100px;
   grid-gap: 24px;
   align-self: center;
+  ${Media.phone`
+    min-height: 390px;
+  `}
 `
 
 const Headline = styled.h1`
@@ -217,6 +221,10 @@ const Headline = styled.h1`
   font-weight: bold;
   color: var(--slate);
   text-align: center;
+
+  ${Media.phone`
+    font-size: 13px;
+  `}
 `
 
 const Locks = styled.ul`
