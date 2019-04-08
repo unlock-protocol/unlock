@@ -1,8 +1,24 @@
 import React from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+import { gotCredentials } from '../../actions/authentication'
 
-export default class AuthenticationPrompt extends React.Component {
-  constructor(props: any) {
+interface Credentials {
+  emailAddress: string
+  password: string
+}
+
+interface Props {
+  gotCredentials: (credentials: Credentials) => any
+}
+
+interface State {
+  emailAddress: string
+  password: string
+}
+
+class AuthenticationPrompt extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {
       emailAddress: '', // eslint-disable-line react/no-unused-state
@@ -14,14 +30,19 @@ export default class AuthenticationPrompt extends React.Component {
     const { target } = event
     const { value, name } = target
 
-    this.setState({
+    this.setState(prevState => ({
+      ...prevState,
       [name]: value,
-    })
+    }))
   }
 
   handleSubmit = (event: any) => {
-    // TODO: dispatch an event here to indicate that we have received credentials
+    // TODO: Add validation to this form (basic: just ensure that fields are not empty)
+    // TODO: Add loading indicator to cover time between submission and response from storageService
     // TODO: handle failure -> bad password and/or email. Communicate from storageService to here so we can prompt.
+    const { emailAddress, password } = this.state
+    const { gotCredentials } = this.props
+    gotCredentials({ emailAddress, password })
     event.preventDefault()
   }
 
@@ -49,6 +70,17 @@ export default class AuthenticationPrompt extends React.Component {
   )
 }
 
+const mapDispatchToProps = (dispatch: any) => ({
+  gotCredentials: (credentials: Credentials) =>
+    dispatch(gotCredentials(credentials)),
+})
+
+// Only use dispatch, not state
+export default connect(
+  null,
+  mapDispatchToProps
+)(AuthenticationPrompt)
+
 const Label = styled.label`
   display: block;
   text-transform: uppercase;
@@ -71,6 +103,7 @@ const Input = styled.input`
 const Greeting = styled.div`
   font-family: IBM Plex Serif, sans-serif;
   font-size: 24px;
+  color: var(--darkgrey);
 `
 
 const SubmitButton = styled.input`
@@ -81,4 +114,5 @@ const SubmitButton = styled.input`
   border-radius: 4px;
   margin-top: 25px;
   font-size: 16px;
+  cursor: pointer;
 `
