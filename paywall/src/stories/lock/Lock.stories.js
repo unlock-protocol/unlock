@@ -57,6 +57,27 @@ storiesOf('Lock', module)
       </WindowProvider>
     </ConfigProvider>
   ))
+  .add('with no key, for a short duration (check hover state too)', () => {
+    const shortLock = {
+      address: '0x123',
+      name: 'Monthly',
+      keyPrice: '0.23',
+      fiatPrice: 240.38,
+      expirationDuration: 5 * 60, // 5 minutes
+    }
+    return (
+      <Lock
+        lock={shortLock}
+        transaction={null}
+        lockKey={null}
+        purchaseKey={purchaseKey}
+        config={config}
+        hideModal={() => {}}
+        showModal={() => {}}
+        openInNewWindow={false}
+      />
+    )
+  })
   .add('with no key (check hover state too)', () => {
     return (
       <Lock
