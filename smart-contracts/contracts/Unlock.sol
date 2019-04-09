@@ -35,7 +35,12 @@ import './mixins/MixinNoFallback.sol';
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
-contract Unlock is MixinNoFallback, IUnlock, Initializable, Ownable {
+contract Unlock is
+  IUnlock,
+  MixinNoFallback,
+  Initializable,
+  Ownable
+{
 
   /**
    * The struct for a lock
