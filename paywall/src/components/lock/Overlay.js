@@ -93,7 +93,7 @@ export const Overlay = ({
   return (
     <FullPage>
       <Banner scrollPosition={scrollPosition} data-testid="paywall-banner">
-        <Headline id="Paywall_Headline">{message}</Headline>
+        <Headline>{message}</Headline>
         <Locks>
           <GlobalErrorConsumer displayError={displayError(!isInIframe)}>
             {locks.map(lock => (
@@ -215,7 +215,9 @@ const Banner = styled.div.attrs(({ scrollPosition }) => ({
   `}
 `
 
-const Headline = styled.h1`
+const Headline = styled.h1.attrs({
+  className: 'headline',
+})`
   font-size: 20px;
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
