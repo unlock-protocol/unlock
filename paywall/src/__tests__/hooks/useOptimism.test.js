@@ -5,6 +5,7 @@ import useOptimism from '../../hooks/useOptimism'
 import { WindowContext } from '../../hooks/browser/useWindow'
 import { ConfigContext } from '../../utils/withConfig'
 import configure from '../../config'
+import { fakeLocksmithFetch } from '../test-helpers/helpers'
 
 const WindowProvider = WindowContext.Provider
 const ConfigProvider = ConfigContext.Provider
@@ -17,9 +18,6 @@ describe('useOptimism hook', () => {
   let fakeWindow
   let finishFetch
   let fakeResponse
-  const fetchResponse = {
-    json: () => fakeResponse,
-  }
 
   function MakeOptimism() {
     const result = useOptimism(transaction)
@@ -41,18 +39,8 @@ describe('useOptimism hook', () => {
     fakeResponse = {
       willSucceed: 1,
     }
-    fakeWindow = {
-      fetch: jest.fn(() => {
-        return {
-          then: cb => {
-            finishFetch = cb
-            return {
-              catch: () => {},
-            }
-          },
-        }
-      }),
-    }
+    fakeWindow = {}
+    fakeLocksmithFetch(fakeWindow, resolve => (finishFetch = resolve))
     transaction = {
       hash: '0x123',
       status: 'pending',
@@ -65,7 +53,7 @@ describe('useOptimism hook', () => {
     let wrapper
     rtl.act(() => {
       wrapper = rtl.render(<MockOptimism />)
-      finishFetch(fetchResponse)
+      finishFetch(fakeResponse)
     })
 
     expect(
@@ -79,7 +67,7 @@ describe('useOptimism hook', () => {
     let wrapper
     rtl.act(() => {
       wrapper = rtl.render(<MockOptimism />)
-      finishFetch(fetchResponse)
+      finishFetch(fakeResponse)
       // ensure we are calling for the new fetcher
       finishFetch = () => {}
     })
@@ -101,7 +89,7 @@ describe('useOptimism hook', () => {
       // initially this was combined with the pending timer run above, but
       // finishFetch is not set until after leaving the rtl.act,
       // so it must be in its own block to pass
-      finishFetch(fetchResponse)
+      finishFetch(fakeResponse)
     })
     expect(fakeWindow.fetch).toHaveBeenCalledTimes(2)
 
@@ -128,7 +116,7 @@ describe('useOptimism hook', () => {
     let wrapper
     rtl.act(() => {
       wrapper = rtl.render(<MockOptimism />)
-      finishFetch(fetchResponse)
+      finishFetch(fakeResponse)
       // ensure we are calling for the new fetcher
       finishFetch = () => {}
     })
