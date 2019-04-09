@@ -15,19 +15,19 @@ export const NoKeyLock = ({
   tooExpensive,
 }) => (
   <Wrapper
+    lock={lock}
     disabled={disabled}
     onClick={() => {
       !disabled && purchaseKey(lockKey)
     }}
-    id={`PurchaseKey_${lock.address}`}
   >
     <LockHeader>{lock.name}</LockHeader>
     <BalanceProvider
       amount={lock.keyPrice}
       render={(ethPrice, fiatPrice) => (
         <div>
-          <Body disabled={disabled} id={`Lock_${lock.address}`}>
-            <EthPrice id={`EthPrice_${lock.address}`}>{ethPrice} Eth</EthPrice>
+          <Body disabled={disabled}>
+            <EthPrice>{ethPrice} Eth</EthPrice>
             <div>
               <FiatPrice>${fiatPrice}</FiatPrice>
               <Separator> | </Separator>
@@ -89,7 +89,9 @@ const Body = styled(LockBody)`
   }
 `
 
-const EthPrice = styled.div`
+const EthPrice = styled.div.attrs({
+  className: 'price',
+})`
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);

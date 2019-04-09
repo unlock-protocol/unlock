@@ -1,7 +1,10 @@
 import styled from 'styled-components'
 import Media from '../../theme/media'
 
-export const LockWrapper = styled.li`
+export const LockWrapper = styled.li.attrs(props => ({
+  className: 'lock',
+  'data-address': props.lock.address,
+}))`
   display: grid;
   justify-items: stretch;
   margin: 0px;

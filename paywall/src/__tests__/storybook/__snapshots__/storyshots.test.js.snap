@@ -5326,9 +5326,9 @@ Object {
         rel="stylesheet"
       />
       <li
-        class="c0"
+        class="lock c0"
+        data-address="0x123"
         disabled=""
-        id="PurchaseKey_0x123"
       >
         <header
           class="c1"
@@ -5339,11 +5339,9 @@ Object {
           <div
             class="c2"
             disabled=""
-            id="Lock_0x123"
           >
             <div
-              class="c3"
-              id="EthPrice_0x123"
+              class="price c3"
             >
               0.23
                Eth
@@ -5384,9 +5382,9 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1549ebs-0 sc-5sgq84-0 erANTa"
+      class="sc-1549ebs-0 sc-5sgq84-0 lock erANTa"
+      data-address="0x123"
       disabled=""
-      id="PurchaseKey_0x123"
     >
       <header
         class="sc-1549ebs-1 cWinrG"
@@ -5397,11 +5395,9 @@ Object {
         <div
           class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
           disabled=""
-          id="Lock_0x123"
         >
           <div
-            class="sc-5sgq84-3 bIZSQm"
-            id="EthPrice_0x123"
+            class="sc-5sgq84-3 price bIZSQm"
           >
             0.23
              Eth
@@ -5611,9 +5607,9 @@ Object {
         rel="stylesheet"
       />
       <li
-        class="c0"
+        class="lock c0"
+        data-address="0x123"
         disabled=""
-        id="PurchaseKey_0x123"
       >
         <header
           class="c1"
@@ -5624,11 +5620,9 @@ Object {
           <div
             class="c2"
             disabled=""
-            id="Lock_0x123"
           >
             <div
-              class="c3"
-              id="EthPrice_0x123"
+              class="price c3"
             >
               0.23
                Eth
@@ -5669,9 +5663,9 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1549ebs-0 sc-5sgq84-0 erANTa"
+      class="sc-1549ebs-0 sc-5sgq84-0 lock erANTa"
+      data-address="0x123"
       disabled=""
-      id="PurchaseKey_0x123"
     >
       <header
         class="sc-1549ebs-1 cWinrG"
@@ -5682,11 +5676,9 @@ Object {
         <div
           class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
           disabled=""
-          id="Lock_0x123"
         >
           <div
-            class="sc-5sgq84-3 bIZSQm"
-            id="EthPrice_0x123"
+            class="sc-5sgq84-3 price bIZSQm"
           >
             0.23
              Eth
@@ -5896,9 +5888,9 @@ Object {
         rel="stylesheet"
       />
       <li
-        class="c0"
+        class="lock c0"
+        data-address="0x123"
         disabled=""
-        id="PurchaseKey_0x123"
       >
         <header
           class="c1"
@@ -5909,11 +5901,9 @@ Object {
           <div
             class="c2"
             disabled=""
-            id="Lock_0x123"
           >
             <div
-              class="c3"
-              id="EthPrice_0x123"
+              class="price c3"
             >
               0.23
                Eth
@@ -5954,9 +5944,9 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1549ebs-0 sc-5sgq84-0 erANTa"
+      class="sc-1549ebs-0 sc-5sgq84-0 lock erANTa"
+      data-address="0x123"
       disabled=""
-      id="PurchaseKey_0x123"
     >
       <header
         class="sc-1549ebs-1 cWinrG"
@@ -5967,11 +5957,9 @@ Object {
         <div
           class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
           disabled=""
-          id="Lock_0x123"
         >
           <div
-            class="sc-5sgq84-3 bIZSQm"
-            id="EthPrice_0x123"
+            class="sc-5sgq84-3 price bIZSQm"
           >
             0.23
              Eth
@@ -6185,8 +6173,8 @@ Object {
         rel="stylesheet"
       />
       <li
-        class="c0"
-        id="PurchaseKey_0x123"
+        class="lock c0"
+        data-address="0x123"
       >
         <header
           class="c1"
@@ -6196,11 +6184,9 @@ Object {
         <div>
           <div
             class="c2"
-            id="Lock_0x123"
           >
             <div
-              class="c3"
-              id="EthPrice_0x123"
+              class="price c3"
             >
               0.23
                Eth
@@ -6241,8 +6227,8 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1549ebs-0 sc-5sgq84-0 bvdsPH"
-      id="PurchaseKey_0x123"
+      class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
+      data-address="0x123"
     >
       <header
         class="sc-1549ebs-1 cWinrG"
@@ -6252,11 +6238,9 @@ Object {
       <div>
         <div
           class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
-          id="Lock_0x123"
         >
           <div
-            class="sc-5sgq84-3 bIZSQm"
-            id="EthPrice_0x123"
+            class="sc-5sgq84-3 price bIZSQm"
           >
             0.23
              Eth
@@ -6501,8 +6485,8 @@ Object {
         rel="stylesheet"
       />
       <li
-        class="c0"
-        id="Confirming_0x123"
+        class="lock c0"
+        data-address="0x123"
       >
         <header
           class="c1"
@@ -6552,8 +6536,8 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1549ebs-0 NDRQz"
-      id="Confirming_0x123"
+      class="sc-1549ebs-0 lock NDRQz"
+      data-address="0x123"
     >
       <header
         class="sc-1549ebs-1 cWinrG"
@@ -6914,7 +6898,8 @@ Object {
         rel="stylesheet"
       />
       <li
-        class="c0"
+        class="lock c0"
+        data-address="0x123"
       >
         <header
           class="c1"
@@ -6987,7 +6972,8 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1549ebs-0 NDRQz"
+      class="sc-1549ebs-0 lock NDRQz"
+      data-address="0x123"
     >
       <header
         class="sc-1549ebs-1 cWinrG"
@@ -7264,7 +7250,8 @@ Object {
         rel="stylesheet"
       />
       <li
-        class="c0"
+        class="lock c0"
+        data-address="0x123"
       >
         <header
           class="c1"
@@ -7310,7 +7297,8 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1549ebs-0 NDRQz"
+      class="sc-1549ebs-0 lock NDRQz"
+      data-address="0x123"
     >
       <header
         class="sc-1549ebs-1 cWinrG"
@@ -7529,8 +7517,8 @@ Object {
         rel="stylesheet"
       />
       <li
-        class="c0"
-        id="PurchaseKey_0x123"
+        class="lock c0"
+        data-address="0x123"
       >
         <header
           class="c1"
@@ -7540,11 +7528,9 @@ Object {
         <div>
           <div
             class="c2"
-            id="Lock_0x123"
           >
             <div
-              class="c3"
-              id="EthPrice_0x123"
+              class="price c3"
             >
               0.23
                Eth
@@ -7585,8 +7571,8 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1549ebs-0 sc-5sgq84-0 bvdsPH"
-      id="PurchaseKey_0x123"
+      class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
+      data-address="0x123"
     >
       <header
         class="sc-1549ebs-1 cWinrG"
@@ -7596,11 +7582,9 @@ Object {
       <div>
         <div
           class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
-          id="Lock_0x123"
         >
           <div
-            class="sc-5sgq84-3 bIZSQm"
-            id="EthPrice_0x123"
+            class="sc-5sgq84-3 price bIZSQm"
           >
             0.23
              Eth
@@ -7814,8 +7798,8 @@ Object {
         rel="stylesheet"
       />
       <li
-        class="c0"
-        id="PurchaseKey_0x123"
+        class="lock c0"
+        data-address="0x123"
       >
         <header
           class="c1"
@@ -7825,11 +7809,9 @@ Object {
         <div>
           <div
             class="c2"
-            id="Lock_0x123"
           >
             <div
-              class="c3"
-              id="EthPrice_0x123"
+              class="price c3"
             >
               0.23
                Eth
@@ -7870,8 +7852,8 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1549ebs-0 sc-5sgq84-0 bvdsPH"
-      id="PurchaseKey_0x123"
+      class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
+      data-address="0x123"
     >
       <header
         class="sc-1549ebs-1 cWinrG"
@@ -7881,11 +7863,9 @@ Object {
       <div>
         <div
           class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
-          id="Lock_0x123"
         >
           <div
-            class="sc-5sgq84-3 bIZSQm"
-            id="EthPrice_0x123"
+            class="sc-5sgq84-3 price bIZSQm"
           >
             0.23
              Eth
@@ -8099,8 +8079,8 @@ Object {
         rel="stylesheet"
       />
       <li
-        class="c0"
-        id="PurchaseKey_0x123"
+        class="lock c0"
+        data-address="0x123"
       >
         <header
           class="c1"
@@ -8110,11 +8090,9 @@ Object {
         <div>
           <div
             class="c2"
-            id="Lock_0x123"
           >
             <div
-              class="c3"
-              id="EthPrice_0x123"
+              class="price c3"
             >
               0.23
                Eth
@@ -8155,8 +8133,8 @@ Object {
       rel="stylesheet"
     />
     <li
-      class="sc-1549ebs-0 sc-5sgq84-0 bvdsPH"
-      id="PurchaseKey_0x123"
+      class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
+      data-address="0x123"
     >
       <header
         class="sc-1549ebs-1 cWinrG"
@@ -8166,11 +8144,9 @@ Object {
       <div>
         <div
           class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
-          id="Lock_0x123"
         >
           <div
-            class="sc-5sgq84-3 bIZSQm"
-            id="EthPrice_0x123"
+            class="sc-5sgq84-3 price bIZSQm"
           >
             0.23
              Eth
@@ -9486,8 +9462,7 @@ Object {
             style="height: 0%;"
           >
             <h1
-              class="c2"
-              id="Paywall_Headline"
+              class="headline c2"
             >
               You have reached your limit of free articles. Please purchase access
             </h1>
@@ -9495,8 +9470,7 @@ Object {
               class="c3"
             >
               <li
-                class="c4"
-                id="PurchaseKey_undefined"
+                class="lock c4"
               >
                 <header
                   class="c5"
@@ -9506,11 +9480,9 @@ Object {
                 <div>
                   <div
                     class="c6"
-                    id="Lock_undefined"
                   >
                     <div
-                      class="c7"
-                      id="EthPrice_undefined"
+                      class="price c7"
                     >
                       0.12
                        Eth
@@ -9638,8 +9610,7 @@ Object {
           style="height: 0%;"
         >
           <h1
-            class="sc-7wmxqm-2 dotYyq"
-            id="Paywall_Headline"
+            class="sc-7wmxqm-2 headline dotYyq"
           >
             You have reached your limit of free articles. Please purchase access
           </h1>
@@ -9647,8 +9618,7 @@ Object {
             class="sc-7wmxqm-3 jZRqqJ"
           >
             <li
-              class="sc-1549ebs-0 sc-5sgq84-0 bvdsPH"
-              id="PurchaseKey_undefined"
+              class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
             >
               <header
                 class="sc-1549ebs-1 cWinrG"
@@ -9658,11 +9628,9 @@ Object {
               <div>
                 <div
                   class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
-                  id="Lock_undefined"
                 >
                   <div
-                    class="sc-5sgq84-3 bIZSQm"
-                    id="EthPrice_undefined"
+                    class="sc-5sgq84-3 price bIZSQm"
                   >
                     0.12
                      Eth
@@ -10080,8 +10048,7 @@ Object {
             style="height: 0%;"
           >
             <h1
-              class="c2"
-              id="Paywall_Headline"
+              class="headline c2"
             >
               You have reached your limit of free articles. Please purchase access
             </h1>
@@ -10201,8 +10168,7 @@ Object {
           style="height: 0%;"
         >
           <h1
-            class="sc-7wmxqm-2 dotYyq"
-            id="Paywall_Headline"
+            class="sc-7wmxqm-2 headline dotYyq"
           >
             You have reached your limit of free articles. Please purchase access
           </h1>
@@ -10672,8 +10638,7 @@ Object {
             style="height: 0%;"
           >
             <h1
-              class="c2"
-              id="Paywall_Headline"
+              class="headline c2"
             >
               You have reached your limit of free articles. Please purchase access
             </h1>
@@ -10681,8 +10646,7 @@ Object {
               class="c3"
             >
               <li
-                class="c4"
-                id="PurchaseKey_undefined"
+                class="lock c4"
               >
                 <header
                   class="c5"
@@ -10692,11 +10656,9 @@ Object {
                 <div>
                   <div
                     class="c6"
-                    id="Lock_undefined"
                   >
                     <div
-                      class="c7"
-                      id="EthPrice_undefined"
+                      class="price c7"
                     >
                       0.12
                        Eth
@@ -10824,8 +10786,7 @@ Object {
           style="height: 0%;"
         >
           <h1
-            class="sc-7wmxqm-2 dotYyq"
-            id="Paywall_Headline"
+            class="sc-7wmxqm-2 headline dotYyq"
           >
             You have reached your limit of free articles. Please purchase access
           </h1>
@@ -10833,8 +10794,7 @@ Object {
             class="sc-7wmxqm-3 jZRqqJ"
           >
             <li
-              class="sc-1549ebs-0 sc-5sgq84-0 bvdsPH"
-              id="PurchaseKey_undefined"
+              class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
             >
               <header
                 class="sc-1549ebs-1 cWinrG"
@@ -10844,11 +10804,9 @@ Object {
               <div>
                 <div
                   class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
-                  id="Lock_undefined"
                 >
                   <div
-                    class="sc-5sgq84-3 bIZSQm"
-                    id="EthPrice_undefined"
+                    class="sc-5sgq84-3 price bIZSQm"
                   >
                     0.12
                      Eth
@@ -11266,8 +11224,7 @@ Object {
             style="height: 0%;"
           >
             <h1
-              class="c2"
-              id="Paywall_Headline"
+              class="headline c2"
             >
               You have reached your limit of free articles. Please purchase access
             </h1>
@@ -11387,8 +11344,7 @@ Object {
           style="height: 0%;"
         >
           <h1
-            class="sc-7wmxqm-2 dotYyq"
-            id="Paywall_Headline"
+            class="sc-7wmxqm-2 headline dotYyq"
           >
             You have reached your limit of free articles. Please purchase access
           </h1>
@@ -11858,8 +11814,7 @@ Object {
             style="height: 0%;"
           >
             <h1
-              class="c2"
-              id="Paywall_Headline"
+              class="headline c2"
             >
               You have reached your limit of free articles. Please purchase access
             </h1>
@@ -11867,8 +11822,7 @@ Object {
               class="c3"
             >
               <li
-                class="c4"
-                id="PurchaseKey_undefined"
+                class="lock c4"
               >
                 <header
                   class="c5"
@@ -11878,11 +11832,9 @@ Object {
                 <div>
                   <div
                     class="c6"
-                    id="Lock_undefined"
                   >
                     <div
-                      class="c7"
-                      id="EthPrice_undefined"
+                      class="price c7"
                     >
                       0.01
                        Eth
@@ -11916,8 +11868,7 @@ Object {
                 </div>
               </li>
               <li
-                class="c4"
-                id="PurchaseKey_undefined"
+                class="lock c4"
               >
                 <header
                   class="c5"
@@ -11927,11 +11878,9 @@ Object {
                 <div>
                   <div
                     class="c6"
-                    id="Lock_undefined"
                   >
                     <div
-                      class="c7"
-                      id="EthPrice_undefined"
+                      class="price c7"
                     >
                       0.01
                        Eth
@@ -12059,8 +12008,7 @@ Object {
           style="height: 0%;"
         >
           <h1
-            class="sc-7wmxqm-2 dotYyq"
-            id="Paywall_Headline"
+            class="sc-7wmxqm-2 headline dotYyq"
           >
             You have reached your limit of free articles. Please purchase access
           </h1>
@@ -12068,8 +12016,7 @@ Object {
             class="sc-7wmxqm-3 jZRqqJ"
           >
             <li
-              class="sc-1549ebs-0 sc-5sgq84-0 bvdsPH"
-              id="PurchaseKey_undefined"
+              class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
             >
               <header
                 class="sc-1549ebs-1 cWinrG"
@@ -12079,11 +12026,9 @@ Object {
               <div>
                 <div
                   class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
-                  id="Lock_undefined"
                 >
                   <div
-                    class="sc-5sgq84-3 bIZSQm"
-                    id="EthPrice_undefined"
+                    class="sc-5sgq84-3 price bIZSQm"
                   >
                     0.01
                      Eth
@@ -12117,8 +12062,7 @@ Object {
               </div>
             </li>
             <li
-              class="sc-1549ebs-0 sc-5sgq84-0 bvdsPH"
-              id="PurchaseKey_undefined"
+              class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
             >
               <header
                 class="sc-1549ebs-1 cWinrG"
@@ -12128,11 +12072,9 @@ Object {
               <div>
                 <div
                   class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
-                  id="Lock_undefined"
                 >
                   <div
-                    class="sc-5sgq84-3 bIZSQm"
-                    id="EthPrice_undefined"
+                    class="sc-5sgq84-3 price bIZSQm"
                   >
                     0.01
                      Eth
@@ -12644,8 +12586,7 @@ Object {
               style="height: 0%;"
             >
               <h1
-                class="c2"
-                id="Paywall_Headline"
+                class="headline c2"
               >
                 Purchase pending...
               </h1>
@@ -12653,7 +12594,8 @@ Object {
                 class="c3"
               >
                 <li
-                  class="c4"
+                  class="lock c4"
+                  data-address="0x1234567890123456789012345678901234567890"
                 >
                   <header
                     class="c5"
@@ -12790,8 +12732,7 @@ Object {
             style="height: 0%;"
           >
             <h1
-              class="sc-7wmxqm-2 dotYyq"
-              id="Paywall_Headline"
+              class="sc-7wmxqm-2 headline dotYyq"
             >
               Purchase pending...
             </h1>
@@ -12799,7 +12740,8 @@ Object {
               class="sc-7wmxqm-3 jZRqqJ"
             >
               <li
-                class="sc-1549ebs-0 NDRQz"
+                class="sc-1549ebs-0 lock NDRQz"
+                data-address="0x1234567890123456789012345678901234567890"
               >
                 <header
                   class="sc-1549ebs-1 cWinrG"
@@ -13886,8 +13828,7 @@ Object {
               style="height: 0%;"
             >
               <h1
-                class="c2"
-                id="Paywall_Headline"
+                class="headline c2"
               >
                 Purchase confirmed, content unlocked!
               </h1>
@@ -13895,7 +13836,8 @@ Object {
                 class="c3"
               >
                 <li
-                  class="c4"
+                  class="lock c4"
+                  data-address="0x1234567890123456789012345678901234567890"
                 >
                   <header
                     class="c5"
@@ -14059,8 +14001,7 @@ Object {
             style="height: 0%;"
           >
             <h1
-              class="sc-7wmxqm-2 dotYyq"
-              id="Paywall_Headline"
+              class="sc-7wmxqm-2 headline dotYyq"
             >
               Purchase confirmed, content unlocked!
             </h1>
@@ -14068,7 +14009,8 @@ Object {
               class="sc-7wmxqm-3 jZRqqJ"
             >
               <li
-                class="sc-1549ebs-0 NDRQz"
+                class="sc-1549ebs-0 lock NDRQz"
+                data-address="0x1234567890123456789012345678901234567890"
               >
                 <header
                   class="sc-1549ebs-1 cWinrG"
@@ -15225,8 +15167,7 @@ Object {
               style="height: 0%;"
             >
               <h1
-                class="c2"
-                id="Paywall_Headline"
+                class="headline c2"
               >
                 Purchase pending...
               </h1>
@@ -15234,8 +15175,8 @@ Object {
                 class="c3"
               >
                 <li
-                  class="c4"
-                  id="Confirming_0x1234567890123456789012345678901234567890"
+                  class="lock c4"
+                  data-address="0x1234567890123456789012345678901234567890"
                 >
                   <header
                     class="c5"
@@ -15376,8 +15317,7 @@ Object {
             style="height: 0%;"
           >
             <h1
-              class="sc-7wmxqm-2 dotYyq"
-              id="Paywall_Headline"
+              class="sc-7wmxqm-2 headline dotYyq"
             >
               Purchase pending...
             </h1>
@@ -15385,8 +15325,8 @@ Object {
               class="sc-7wmxqm-3 jZRqqJ"
             >
               <li
-                class="sc-1549ebs-0 NDRQz"
-                id="Confirming_0x1234567890123456789012345678901234567890"
+                class="sc-1549ebs-0 lock NDRQz"
+                data-address="0x1234567890123456789012345678901234567890"
               >
                 <header
                   class="sc-1549ebs-1 cWinrG"
@@ -16937,9 +16877,8 @@ Object {
         class="unlock start show hide"
       >
         <footer
-          class="c0"
+          class="flag c0"
           data-testid="unlocked"
-          id="UnlockFlag"
         >
           <div
             class="c1"
@@ -16974,9 +16913,8 @@ Object {
       class="unlock start show hide"
     >
       <footer
-        class="sc-1549ebs-8 sc-15m75z9-0 kPoNoi"
+        class="sc-1549ebs-8 sc-15m75z9-0 flag dKuOlH"
         data-testid="unlocked"
-        id="UnlockFlag"
       >
         <div
           class="sth0f3-0 kgAUQA"
@@ -18973,9 +18911,8 @@ Object {
         rel="stylesheet"
       />
       <footer
-        class="c0"
+        class="flag c0"
         data-testid="unlocked"
-        id="UnlockFlag"
       >
         <div
           class="c1"
@@ -19006,9 +18943,8 @@ Object {
       rel="stylesheet"
     />
     <footer
-      class="sc-1549ebs-8 sc-15m75z9-0 kPoNoi"
+      class="sc-1549ebs-8 sc-15m75z9-0 flag dKuOlH"
       data-testid="unlocked"
-      id="UnlockFlag"
     >
       <div
         class="sth0f3-0 kgAUQA"
