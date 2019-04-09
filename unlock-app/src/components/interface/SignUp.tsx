@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { signupEmail } from '../../actions/signUp'
 
 interface Props {
-  toggleSignUp: () => void
   signupEmail: (email: string) => any
 }
 
@@ -83,13 +82,13 @@ export class SignUp extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (dispatch: any) => ({
+export const mapDispatchToProps = (dispatch: any) => ({
   signupEmail: (email: string) => dispatch(signupEmail(email)),
 })
 
 export default connect(
   null,
-  mapStateToProps
+  mapDispatchToProps
 )(SignUp)
 
 const Heading = styled.h1`

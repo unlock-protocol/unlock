@@ -45639,18 +45639,35 @@ Object {
   width: 100%;
 }
 
+.c16 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+}
+
 .c17 {
-  display: block;
-  text-transform: uppercase;
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 10px;
-  margin-bottom: 5px;
+  font-family: 'IBM Plex Serif',serif;
+  font-size: 32px;
+  line-height: 42px;
+  font-weight: 300;
 }
 
 .c18 {
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  font-size: 20px;
+}
+
+.c19 {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  grid-column-gap: 16px;
+  max-width: 600px;
+}
+
+.c20 {
   height: 60px;
-  width: 385px;
   border: none;
   background-color: var(--lightgrey);
   border-radius: 4px;
@@ -45658,19 +45675,11 @@ Object {
   font-size: 16px;
 }
 
-.c16 {
-  font-family: IBM Plex Serif,sans-serif;
-  font-size: 24px;
-  color: var(--darkgrey);
-}
-
-.c19 {
+.c21 {
   height: 60px;
-  width: 385px;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
-  margin-top: 25px;
   font-size: 16px;
   cursor: pointer;
 }
@@ -45751,7 +45760,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c20 {
+  .c22 {
     display: none;
   }
 }
@@ -45949,47 +45958,51 @@ Object {
               class="c15"
             />
           </header>
-          <form>
-            <div
+          <div>
+            <h1
               class="c16"
             >
-              Please Log In to Continue
-            </div>
-            <label
+              Pay For Content Seamlessly
+            </h1>
+            <h2
               class="c17"
-              for="emailAddress"
             >
-              Email address
-            </label>
-            <input
+              Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
+            </h2>
+            <p
               class="c18"
-              name="emailAddress"
-              placeholder="Email Address"
-              type="email"
-            />
-            <br />
-            <label
-              class="c17"
-              for="password"
             >
-              Password
-            </label>
-            <input
+              At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
+            </p>
+            <p
               class="c18"
-              name="password"
-              placeholder="Password"
-              type="password"
-            />
-            <br />
-            <input
+            >
+              If you want to know more about Unlock's decentralized payment protocol, check out our
+               
+              <span>
+                blog
+              </span>
+              .
+            </p>
+            <form
               class="c19"
-              type="submit"
-              value="Submit"
-            />
-          </form>
+            >
+              <input
+                class="c20"
+                name="emailAddress"
+                placeholder="Enter your email to get started"
+                type="email"
+              />
+              <input
+                class="c21"
+                type="submit"
+                value="Sign Up"
+              />
+            </form>
+          </div>
         </div>
         <div
-          class="c20"
+          class="c22"
         />
       </div>
     </div>
@@ -46187,44 +46200,48 @@ Object {
             class="sc-1glv5oz-5 bjHPyP"
           />
         </header>
-        <form>
-          <div
-            class="sc-kpOJdX iOuKVo"
+        <div>
+          <h1
+            class="sc-ckVGcZ geopyj"
           >
-            Please Log In to Continue
-          </div>
-          <label
-            class="sc-kgoBCf ekHVMw"
-            for="emailAddress"
+            Pay For Content Seamlessly
+          </h1>
+          <h2
+            class="sc-jKJlTe kjfdQE"
           >
-            Email address
-          </label>
-          <input
-            class="sc-kGXeez dzsfcf"
-            name="emailAddress"
-            placeholder="Email Address"
-            type="email"
-          />
-          <br />
-          <label
-            class="sc-kgoBCf ekHVMw"
-            for="password"
+            Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
+          </h2>
+          <p
+            class="sc-eNQAEJ fPwnen"
           >
-            Password
-          </label>
-          <input
-            class="sc-kGXeez dzsfcf"
-            name="password"
-            placeholder="Password"
-            type="password"
-          />
-          <br />
-          <input
-            class="sc-dxgOiQ ZLgEM"
-            type="submit"
-            value="Submit"
-          />
-        </form>
+            At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
+          </p>
+          <p
+            class="sc-eNQAEJ fPwnen"
+          >
+            If you want to know more about Unlock's decentralized payment protocol, check out our
+             
+            <span>
+              blog
+            </span>
+            .
+          </p>
+          <form
+            class="sc-hMqMXs kgKElE"
+          >
+            <input
+              class="sc-kEYyzF cdcapi"
+              name="emailAddress"
+              placeholder="Enter your email to get started"
+              type="email"
+            />
+            <input
+              class="sc-kkGfuU grSqOO"
+              type="submit"
+              value="Sign Up"
+            />
+          </form>
+        </div>
       </div>
       <div
         class="hm3mhg-2 dBxAQT"
