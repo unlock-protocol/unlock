@@ -8,6 +8,7 @@ import DeveloperOverlay from '../developer/DeveloperOverlay'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
+import AuthenticationPrompt from '../interface/AuthenticationPrompt'
 
 export const KeyChainContent = ({ account, network }) => {
   return (
@@ -20,6 +21,11 @@ export const KeyChainContent = ({ account, network }) => {
           <BrowserOnly>
             <Account network={network} account={account} />
             <DeveloperOverlay />
+          </BrowserOnly>
+        )}
+        {!account && (
+          <BrowserOnly>
+            <AuthenticationPrompt />
           </BrowserOnly>
         )}
       </Layout>

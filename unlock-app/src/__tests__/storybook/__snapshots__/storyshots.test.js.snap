@@ -866,6 +866,197 @@ Object {
 }
 `;
 
+exports[`Storyshots Authentication Prompt The Prompt 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.c2 {
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.c0 {
+  font-family: IBM Plex Serif,sans-serif;
+  font-size: 24px;
+  color: var(--darkgrey);
+}
+
+.c3 {
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  margin-top: 25px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <form>
+        <div
+          class="c0"
+        >
+          Please Log In to Continue
+        </div>
+        <label
+          class="c1"
+          for="emailAddress"
+        >
+          Email address
+        </label>
+        <input
+          class="c2"
+          name="emailAddress"
+          placeholder="Email Address"
+          type="email"
+        />
+        <br />
+        <label
+          class="c1"
+          for="password"
+        >
+          Password
+        </label>
+        <input
+          class="c2"
+          name="password"
+          placeholder="Password"
+          type="password"
+        />
+        <br />
+        <input
+          class="c3"
+          type="submit"
+          value="Submit"
+        />
+      </form>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <form>
+      <div
+        class="sc-kpOJdX iOuKVo"
+      >
+        Please Log In to Continue
+      </div>
+      <label
+        class="sc-kgoBCf ekHVMw"
+        for="emailAddress"
+      >
+        Email address
+      </label>
+      <input
+        class="sc-kGXeez dzsfcf"
+        name="emailAddress"
+        placeholder="Email Address"
+        type="email"
+      />
+      <br />
+      <label
+        class="sc-kgoBCf ekHVMw"
+        for="password"
+      >
+        Password
+      </label>
+      <input
+        class="sc-kGXeez dzsfcf"
+        name="password"
+        placeholder="Password"
+        type="password"
+      />
+      <br />
+      <input
+        class="sc-dxgOiQ ZLgEM"
+        type="submit"
+        value="Submit"
+      />
+    </form>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Buttons/Layout Buttons About 1`] = `
 Object {
   "asFragment": [Function],
@@ -45448,6 +45639,42 @@ Object {
   width: 100%;
 }
 
+.c17 {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.c18 {
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.c16 {
+  font-family: IBM Plex Serif,sans-serif;
+  font-size: 24px;
+  color: var(--darkgrey);
+}
+
+.c19 {
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  margin-top: 25px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c4 {
     grid-template-columns: [first] 1fr [second] 48px;
@@ -45524,7 +45751,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c16 {
+  .c20 {
     display: none;
   }
 }
@@ -45722,9 +45949,47 @@ Object {
               class="c15"
             />
           </header>
+          <form>
+            <div
+              class="c16"
+            >
+              Please Log In to Continue
+            </div>
+            <label
+              class="c17"
+              for="emailAddress"
+            >
+              Email address
+            </label>
+            <input
+              class="c18"
+              name="emailAddress"
+              placeholder="Email Address"
+              type="email"
+            />
+            <br />
+            <label
+              class="c17"
+              for="password"
+            >
+              Password
+            </label>
+            <input
+              class="c18"
+              name="password"
+              placeholder="Password"
+              type="password"
+            />
+            <br />
+            <input
+              class="c19"
+              type="submit"
+              value="Submit"
+            />
+          </form>
         </div>
         <div
-          class="c16"
+          class="c20"
         />
       </div>
     </div>
@@ -45922,6 +46187,44 @@ Object {
             class="sc-1glv5oz-5 bjHPyP"
           />
         </header>
+        <form>
+          <div
+            class="sc-kpOJdX iOuKVo"
+          >
+            Please Log In to Continue
+          </div>
+          <label
+            class="sc-kgoBCf ekHVMw"
+            for="emailAddress"
+          >
+            Email address
+          </label>
+          <input
+            class="sc-kGXeez dzsfcf"
+            name="emailAddress"
+            placeholder="Email Address"
+            type="email"
+          />
+          <br />
+          <label
+            class="sc-kgoBCf ekHVMw"
+            for="password"
+          >
+            Password
+          </label>
+          <input
+            class="sc-kGXeez dzsfcf"
+            name="password"
+            placeholder="Password"
+            type="password"
+          />
+          <br />
+          <input
+            class="sc-dxgOiQ ZLgEM"
+            type="submit"
+            value="Submit"
+          />
+        </form>
       </div>
       <div
         class="hm3mhg-2 dBxAQT"
