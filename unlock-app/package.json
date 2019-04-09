@@ -40,7 +40,7 @@
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.8.6",
     "react-jazzicon": "^0.1.2",
-    "react-redux": "^6.0.1",
+    "react-redux": "^7.0.0",
     "react-test-renderer": "^16.8.6",
     "react-testing-library": "^6.0.3",
     "redux": "^4.0.1",
