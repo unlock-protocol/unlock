@@ -11,25 +11,25 @@
   },
   "engineStrict": true,
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
-    "babel-register": "^6.26.0",
-    "bignumber.js": "^8.1.1",
-    "cross-env": "^5.2.0",
-    "ethereumjs-units": "^0.2.0",
-    "openzeppelin-eth": "^2.1.3",
-    "openzeppelin-solidity": "^2.1.3",
-    "public-lock-abi-0": "^1.0.0",
-    "solium": "^1.2.3",
-    "truffle": "^5.0.10",
-    "truffle-hdwallet-provider": "^1.0.5",
-    "unlock-abi-0": "^1.0.1",
-    "web3-eth-abi": "^1.0.0-beta.47",
-    "web3-utils": "^1.0.0-beta.37",
-    "zos": "^2.2.2",
-    "zos-lib": "^2.2.2"
+    "babel-polyfill": "6.26.0",
+    "babel-register": "6.26.0",
+    "bignumber.js": "8.1.1",
+    "cross-env": "5.2.0",
+    "ethereumjs-units": "0.2.0",
+    "openzeppelin-eth": "2.1.3",
+    "openzeppelin-solidity": "2.1.3",
+    "public-lock-abi-0": "1.0.0",
+    "solium": "1.2.3",
+    "truffle": "5.0.10",
+    "truffle-hdwallet-provider": "1.0.5",
+    "unlock-abi-0": "1.0.1",
+    "web3-eth-abi": "1.0.0-beta.47",
+    "web3-utils": "1.0.0-beta.37",
+    "zos": "2.2.2",
+    "zos-lib": "2.2.2"
   },
   "devDependencies": {
-    "remixd": "^0.1.8-alpha.6"
+    "remixd": "0.1.8-alpha.6"
   },
   "lint-staged": {
     "linters": {
