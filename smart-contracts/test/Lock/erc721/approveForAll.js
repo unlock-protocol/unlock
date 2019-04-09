@@ -12,6 +12,7 @@ contract('Lock / erc721 / approveForAll', accounts => {
     unlock = await getUnlockProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
+    await lock.updateTransferFee(0, 1) // disable the transfer fee for this test
   })
 
   let owner = accounts[1]

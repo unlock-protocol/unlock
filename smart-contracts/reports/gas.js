@@ -35,6 +35,7 @@ contract('Reports', accounts => {
       value: Units.convert('0.01', 'eth', 'wei'),
     })
     const purchaseFor = new BigNumber(tx.receipt.gasUsed)
+    const estimatedTransferFee = await lock.getTransferFee.call(accounts[2])
 
     tx = await lock.transferFrom(
       accounts[2],
@@ -42,6 +43,7 @@ contract('Reports', accounts => {
       await lock.getTokenIdFor.call(accounts[2]),
       {
         from: accounts[2],
+        value: estimatedTransferFee,
       }
     )
     const transferFrom = new BigNumber(tx.receipt.gasUsed)
