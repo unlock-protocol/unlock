@@ -19,7 +19,8 @@ export default function useLocksmith(api, defaultValue, active = true) {
   useEffect(() => {
     if (!active) return
     fetch(url)
-      .then(response => setResult(response.json()))
+      .then(response => response.json())
+      .then(result => setResult(result))
       .catch(error => console.error(error)) // eslint-disable-line no-console
   }, [api, reSend, active])
   return [result, reSendQuery]
