@@ -1,6 +1,7 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 const deployLocks = require('../helpers/deployLocks')
+
 const unlockContract = artifacts.require('../Unlock.sol')
 const getUnlockProxy = require('../helpers/proxy')
 const WalletService = require('../helpers/walletServiceMock.js')
@@ -14,7 +15,7 @@ contract('Lock / gas', accounts => {
     lock = locks['FIRST']
   })
 
-  it(`gas used to purchaseFor is less than wallet service limit`, async () => {
+  it('gas used to purchaseFor is less than wallet service limit', async () => {
     let tx = await lock.purchaseFor(accounts[0], {
       value: Units.convert('0.01', 'eth', 'wei'),
     })

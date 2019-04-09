@@ -6,8 +6,13 @@ import { Paywall, mapStateToProps } from '../../components/Paywall'
 import { ConfigContext } from '../../utils/withConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
 import { POST_MESSAGE_SCROLL_POSITION } from '../../paywall-builder/constants'
+import { TRANSACTION_TYPES } from '../../constants'
+import useOptimism from '../../hooks/useOptimism'
 
 jest.useFakeTimers()
+jest.mock('../../hooks/useOptimism', () => {
+  return jest.fn(() => ({ current: 1, past: 0 }))
+})
 
 const lock = { address: '0x4983D5ECDc5cc0E499c2D23BF4Ac32B982bAe53a' }
 const locks = {
@@ -29,6 +34,8 @@ const noRedirectRouter = {
   },
 }
 
+const account = { address: '0x1234567890123456789012345678901234567890' }
+
 let fakeWindow
 let config
 let futureDate = new Date()
@@ -37,13 +44,22 @@ futureDate = futureDate.getTime() / 1000
 
 const keys = {
   aKey: {
+    id: 'aKey',
     lock: lock.address,
+    owner: account.address,
     expiration: futureDate,
   },
 }
 const modals = []
+const transactions = {}
 
-const store = createUnlockStore({ locks, keys, modals, router })
+const store = createUnlockStore({
+  locks,
+  keys,
+  modals,
+  router,
+  transactions,
+})
 
 function renderMockPaywall(props = {}) {
   return rtl.render(
@@ -66,7 +82,7 @@ afterEach(() => {
 })
 describe('Paywall', () => {
   beforeEach(() => {
-    config = { providers: [], isInIframe: true }
+    config = { providers: [], isInIframe: true, requiredConfirmations: 12 }
     fakeWindow = {
       location: {
         pathname: `/${lock.address}`,
@@ -86,36 +102,129 @@ describe('Paywall', () => {
   describe('mapStateToProps', () => {
     it('should yield the lock which matches the address of the demo page', () => {
       expect.assertions(1)
-      const props = mapStateToProps({ locks, keys, modals, router })
+      const props = mapStateToProps(
+        {
+          locks,
+          keys,
+          modals,
+          router,
+          account,
+          transactions,
+        },
+        { config }
+      )
       expect(props.locks[0]).toBe(lock)
     })
 
     it('should be locked when no keys are available', () => {
       expect.assertions(1)
-      const props = mapStateToProps({ locks, keys: {}, modals, router })
+      const props = mapStateToProps(
+        {
+          locks,
+          keys: {},
+          modals,
+          router,
+          account,
+          transactions,
+        },
+        { config }
+      )
       expect(props.locked).toBe(true)
     })
 
-    it('should not be locked when there is a matching key', () => {
+    it('should be locked when there is a matching key and transaction is not confirmed yet', () => {
       expect.assertions(1)
-      const props = mapStateToProps({ locks, keys, modals, router })
+      const props = mapStateToProps(
+        {
+          locks,
+          keys,
+          modals,
+          router,
+          account,
+          transactions: {
+            transaction: {
+              id: 'transaction',
+              type: TRANSACTION_TYPES.KEY_PURCHASE,
+              key: 'aKey',
+              lock: lock.address,
+              confirmations: 3,
+            },
+          },
+        },
+        { config }
+      )
+      expect(props.locked).toBe(true)
+    })
+
+    it('should not be locked when there is a matching key and transaction is confirmed', () => {
+      expect.assertions(1)
+      const props = mapStateToProps(
+        {
+          locks,
+          keys,
+          modals,
+          router,
+          account,
+          transactions: {
+            transaction: {
+              id: 'transaction',
+              type: TRANSACTION_TYPES.KEY_PURCHASE,
+              key: 'aKey',
+              lock: lock.address,
+              confirmations: 13,
+            },
+          },
+        },
+        { config }
+      )
+      expect(props.locked).toBe(false)
+    })
+
+    it('should not be locked when there is a matching key and no transaction', () => {
+      expect.assertions(1)
+      const props = mapStateToProps(
+        {
+          locks,
+          keys,
+          modals,
+          router,
+          account,
+          transactions,
+        },
+        { config }
+      )
       expect(props.locked).toBe(false)
     })
 
     it('should pass redirect if present in the URI', () => {
       expect.assertions(1)
-      const props = mapStateToProps({ locks, keys, modals, router })
+      const props = mapStateToProps(
+        {
+          locks,
+          keys,
+          modals,
+          router,
+          account,
+          transactions: {},
+        },
+        { config }
+      )
       expect(props.redirect).toBe('http://example.com')
     })
 
     it('should not pass redirect if not present in the URI', () => {
       expect.assertions(1)
-      const props = mapStateToProps({
-        locks,
-        keys,
-        modals,
-        router: noRedirectRouter,
-      })
+      const props = mapStateToProps(
+        {
+          locks,
+          keys,
+          modals,
+          router: noRedirectRouter,
+          account,
+          transactions,
+        },
+        { config }
+      )
       expect(props.redirect).toBeFalsy()
     })
 
@@ -130,8 +239,81 @@ describe('Paywall', () => {
           pathname: `/paywall/${lock.address}/http%3A%2F%2Fexample.com`,
         },
       }
-      const props = mapStateToProps({ locks, router, keys, modals })
+      const props = mapStateToProps(
+        {
+          locks,
+          router,
+          keys,
+          modals,
+          account,
+          transactions,
+        },
+        { config }
+      )
       expect(props.redirect).toBe('http://example.com')
+    })
+
+    it('should return the transaction if applicable', () => {
+      expect.assertions(1)
+
+      const transaction = {
+        type: TRANSACTION_TYPES.KEY_PURCHASE,
+        status: 'pending',
+        hash: '0x777',
+        key: '0x123-0x456',
+      }
+      const newProps = mapStateToProps(
+        {
+          account: {
+            address: '0x123',
+          },
+          locks,
+          keys: {
+            '0x123-0x456': {
+              id: '0x123-0x456',
+              lock: lock.address,
+              owner: '0x123',
+              expiration: 0,
+              data: 'hello',
+            },
+          },
+          modals,
+          router,
+          transactions: {
+            '0x777': transaction,
+          },
+        },
+        { config }
+      )
+      expect(newProps.transaction).toEqual(transaction)
+    })
+  })
+
+  describe('uses optimism', () => {
+    beforeEach(() => {
+      config = { providers: [], isInIframe: true }
+      fakeWindow = {
+        location: {
+          pathname: `/${lock.address}`,
+          search: '?origin=http%3A%2F%2Fexample.com',
+          hash: '',
+        },
+        parent: { postMessage: jest.fn() },
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        document: {
+          body: {
+            style: {},
+          },
+        },
+      }
+    })
+
+    it('calls the useOptimism hook', () => {
+      expect.assertions(1)
+      renderMockPaywall({ locks: [lock] })
+
+      expect(useOptimism).toHaveBeenCalled()
     })
   })
 
@@ -193,7 +375,8 @@ describe('Paywall', () => {
     })
     describe('updating body css', () => {
       it.each([
-        ['mobile', 412, { display: 'none', height: 0 }],
+        // TODO: update mobile CSS
+        ['mobile', 412, { display: 'flex', height: '160px' }],
         ['desktop', 1000, { display: 'flex', height: '160px' }],
       ])('%s', (type, size, expected) => {
         expect.assertions(1)
@@ -212,6 +395,26 @@ describe('Paywall', () => {
           overflow: 'hidden',
         })
       })
+    })
+  })
+
+  describe('on pending transaction', () => {
+    it('should redirect with transaction hash if requested', () => {
+      expect.assertions(1)
+
+      rtl.act(() => {
+        renderMockPaywall({
+          locked: true,
+          transaction: {
+            status: 'pending',
+            hash: 'hash',
+          },
+          redirect: 'http://example.com',
+          account: 'account',
+        })
+      })
+
+      expect(fakeWindow.location.href).toBe('http://example.com#hash')
     })
   })
 

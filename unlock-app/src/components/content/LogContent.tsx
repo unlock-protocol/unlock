@@ -10,7 +10,7 @@ import CreatorLog from '../creator/CreatorLog'
 import { pageTitle } from '../../constants'
 import withConfig from '../../utils/withConfig'
 /* eslint-disable no-unused-vars */
-import * as UnlockTypes from '../../unlock'
+import * as UnlockTypes from '../../unlockTypes'
 /* eslint-enable no-unused-vars */
 
 import {

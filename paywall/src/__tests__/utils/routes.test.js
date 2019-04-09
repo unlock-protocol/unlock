@@ -6,6 +6,7 @@ describe('route utilities', () => {
     prefix: null,
     redirect: null,
     account: null,
+    transaction: null,
     origin: null,
   }
   describe('lockRoute', () => {
@@ -98,12 +99,54 @@ describe('route utilities', () => {
         origin: 'origin/',
       })
     })
+    it('should return the correct transaction parameter when it matches', () => {
+      expect.assertions(2)
+      expect(
+        lockRoute(
+          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere?origin=origin%2F#0xd22ddf19c1ef9631e6c150b9260f9a4f2f7d4105fabf41d114eef2f0f1ae58d3'
+        )
+      ).toEqual({
+        ...baseRoute,
+        lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
+        prefix: 'demo',
+        redirect: 'http://hithere',
+        transaction:
+          '0xd22ddf19c1ef9631e6c150b9260f9a4f2f7d4105fabf41d114eef2f0f1ae58d3',
+        origin: 'origin/',
+      })
+      expect(
+        lockRoute(
+          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
+        )
+      ).toEqual({
+        ...baseRoute,
+        lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
+        prefix: 'demo',
+        account: '0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54',
+        origin: 'origin/',
+      })
+    })
     it('should ignore malformed account parameter', () => {
       expect.assertions(1)
       expect(
         lockRoute(
           // address is too short
           '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb'
+        )
+      ).toEqual({
+        ...baseRoute,
+        lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
+        prefix: 'demo',
+        redirect: 'http://hithere',
+        origin: 'origin/',
+      })
+    })
+    it('should ignore malformed transaction parameter', () => {
+      expect.assertions(1)
+      expect(
+        lockRoute(
+          // address is too short
+          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere?origin=origin%2F#0xd22ddf19c1ef9631e6c150b9260f9a4f2f7d4105fabf41d114eef2f0f1ae58dz'
         )
       ).toEqual({
         ...baseRoute,

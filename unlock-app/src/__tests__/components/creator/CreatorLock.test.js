@@ -61,18 +61,16 @@ describe('CreatorLock', () => {
     expect.assertions(2)
     const config = configure()
 
-    const store = createUnlockStore()
+    const store = createUnlockStore({
+      transactions: {
+        transactionid: transaction,
+      },
+    })
 
     let wrapper = rtl.render(
       <ConfigProvider value={config}>
         <Provider store={store}>
-          <CreatorLock
-            lock={lock}
-            transaction={transaction}
-            updateKeyPrice={() => {}}
-            updateLockName={() => {}}
-            updateLock={() => {}}
-          />
+          <CreatorLock lock={lock} updateLock={() => {}} />
         </Provider>
       </ConfigProvider>
     )
@@ -100,19 +98,16 @@ describe('CreatorLock', () => {
     const config = configure()
 
     const store = createUnlockStore({
+      transactions: {
+        transactionid: transaction,
+      },
       account: {},
     })
 
     let wrapper = rtl.render(
       <ConfigProvider value={config}>
         <Provider store={store}>
-          <CreatorLock
-            lock={lock}
-            transaction={transaction}
-            updateKeyPrice={() => {}}
-            updateLockName={() => {}}
-            updateLock={() => {}}
-          />
+          <CreatorLock lock={lock} updateLock={() => {}} />
         </Provider>
       </ConfigProvider>
     )
@@ -139,13 +134,7 @@ describe('CreatorLock', () => {
     let wrapper = rtl.render(
       <ConfigProvider value={config}>
         <Provider store={store}>
-          <CreatorLock
-            lock={keylock}
-            transaction={transaction}
-            updateKeyPrice={() => {}}
-            updateLockName={() => {}}
-            updateLock={() => {}}
-          />
+          <CreatorLock lock={keylock} updateLock={() => {}} />
         </Provider>
       </ConfigProvider>
     )
@@ -169,13 +158,7 @@ describe('CreatorLock', () => {
     let wrapper = rtl.render(
       <ConfigProvider value={config}>
         <Provider store={store}>
-          <CreatorLock
-            lock={unlimitedlock}
-            transaction={transaction}
-            updateKeyPrice={() => {}}
-            updateLockName={() => {}}
-            updateLock={() => {}}
-          />
+          <CreatorLock lock={unlimitedlock} updateLock={() => {}} />
         </Provider>
       </ConfigProvider>
     )

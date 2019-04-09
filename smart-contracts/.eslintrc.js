@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['standard', 'plugin:prettier/recommended'],
+  extends: ['../.eslintrc.js'],
   plugins: ['mocha'],
   globals: {
     it: true,
@@ -10,10 +10,12 @@ module.exports = {
     beforeEach: true,
     web3: true,
     assert: true,
+    abi: true,
+    after: true,
+    afterEach: true,
   },
   rules: {
-    'prettier/prettier': 'error',
     'mocha/no-exclusive-tests': 'error',
-    'eol-last': ['error'],
+    'jest/prefer-expect-assertions': 0, // Smart contract tests are using mocha...
   },
 }

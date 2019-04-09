@@ -3,16 +3,21 @@ import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
 import { PublicLock, Unlock } from 'unlock-abi-0'
 
-import configure from '../config'
-import {
-  FATAL_MISSING_PROVIDER,
-  FATAL_NOT_ENABLED_IN_PROVIDER,
-  FAILED_TO_CREATE_LOCK,
-  FAILED_TO_PURCHASE_KEY,
-  FAILED_TO_UPDATE_KEY_PRICE,
-  FAILED_TO_WITHDRAW_FROM_LOCK,
-} from '../errors'
-import { TransactionType } from '../unlock'
+export const Errors = {
+  FATAL_MISSING_PROVIDER: 'FATAL_MISSING_PROVIDER',
+  FATAL_NOT_ENABLED_IN_PROVIDER: 'FATAL_NOT_ENABLED_IN_PROVIDER',
+  FAILED_TO_CREATE_LOCK: 'FAILED_TO_CREATE_LOCK',
+  FAILED_TO_PURCHASE_KEY: 'FAILED_TO_PURCHASE_KEY',
+  FAILED_TO_UPDATE_KEY_PRICE: 'FAILED_TO_UPDATE_KEY_PRICE',
+  FAILED_TO_WITHDRAW_FROM_LOCK: 'FAILED_TO_WITHDRAW_FROM_LOCK',
+}
+
+export const TransactionType = {
+  LOCK_CREATION: 'LOCK_CREATION',
+  KEY_PURCHASE: 'KEY_PURCHASE',
+  WITHDRAWAL: 'WITHDRAWAL',
+  UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE',
+}
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
@@ -23,12 +28,10 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends EventEmitter {
-  constructor({ providers, unlockAddress } = configure()) {
+  constructor({ unlockAddress }) {
     super()
     this.unlockContractAddress = unlockAddress
-    this.providers = providers
     this.ready = false
-    this.providerName = null
     this.web3 = null
 
     this.on('ready', () => {
@@ -56,33 +59,9 @@ export default class WalletService extends EventEmitter {
    * @param {string} providerName
    * @return
    */
-  async connect(providerName) {
-    if (providerName && providerName === this.providerName) {
-      // If the provider is set and did not really change, no need to reset it
-      return
-    }
-
-    // Keep track of the provider
-    this.providerName = providerName
-    // And reset the connection
+  async connect(provider) {
+    // Reset the connection
     this.ready = false
-
-    const provider = this.providers[providerName]
-
-    // We fail: it appears that we are trying to connect but do not have a provider available...
-    if (!provider) {
-      return this.emit('error', new Error(FATAL_MISSING_PROVIDER))
-    }
-
-    try {
-      if (provider.enable) {
-        // this exists for metamask and other modern dapp wallets and must be called,
-        // see: https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
-        await provider.enable()
-      }
-    } catch (error) {
-      return this.emit('error', new Error(FATAL_NOT_ENABLED_IN_PROVIDER))
-    }
 
     this.web3 = new Web3(provider)
 
@@ -154,7 +133,16 @@ export default class WalletService extends EventEmitter {
     return web3TransactionPromise
       .once('transactionHash', hash => {
         callback(null, hash)
-        this.emit('transaction.new', hash, from, to, data)
+        // TODO: consider an object instead of all the fields independently.
+        this.emit(
+          'transaction.new',
+          hash,
+          from,
+          to,
+          data,
+          transactionType,
+          'submitted'
+        )
       })
       .on('error', error => {
         callback(error)
@@ -184,7 +172,10 @@ export default class WalletService extends EventEmitter {
       TransactionType.UPDATE_KEY_PRICE,
       error => {
         if (error) {
-          return this.emit('error', new Error(FAILED_TO_UPDATE_KEY_PRICE))
+          return this.emit(
+            'error',
+            new Error(Errors.FAILED_TO_UPDATE_KEY_PRICE)
+          )
         }
       }
     )
@@ -220,12 +211,20 @@ export default class WalletService extends EventEmitter {
       TransactionType.LOCK_CREATION,
       (error, hash) => {
         if (error) {
-          return this.emit('error', new Error(FAILED_TO_CREATE_LOCK))
+          return this.emit('error', new Error(Errors.FAILED_TO_CREATE_LOCK))
         }
         // Let's update the lock to reflect that it is linked to this
         // This is an exception because, until we are able to determine the lock address
         // before the transaction is mined, we need to link the lock and transaction.
-        return this.emit('lock.updated', lock.address, { transaction: hash })
+        return this.emit('lock.updated', lock.address, {
+          expirationDuration: lock.expirationDuration,
+          keyPrice: lock.keyPrice, // Must be expressed in Eth!
+          maxNumberOfKeys: lock.maxNumberOfKeys,
+          owner: owner,
+          outstandingKeys: 0,
+          balance: '0',
+          transaction: hash,
+        })
       }
     )
   }
@@ -260,7 +259,7 @@ export default class WalletService extends EventEmitter {
       TransactionType.KEY_PURCHASE,
       error => {
         if (error) {
-          return this.emit('error', new Error(FAILED_TO_PURCHASE_KEY))
+          return this.emit('error', new Error(Errors.FAILED_TO_PURCHASE_KEY))
         }
       }
     )
@@ -290,7 +289,7 @@ export default class WalletService extends EventEmitter {
       TransactionType.WITHDRAWAL,
       error => {
         if (error) {
-          this.emit('error', new Error(FAILED_TO_WITHDRAW_FROM_LOCK))
+          this.emit('error', new Error(Errors.FAILED_TO_WITHDRAW_FROM_LOCK))
           return callback(error)
         }
         return callback()
@@ -319,7 +318,10 @@ export default class WalletService extends EventEmitter {
       TransactionType.WITHDRAWAL,
       error => {
         if (error) {
-          return this.emit('error', new Error(FAILED_TO_WITHDRAW_FROM_LOCK))
+          return this.emit(
+            'error',
+            new Error(Errors.FAILED_TO_WITHDRAW_FROM_LOCK)
+          )
         }
       }
     )

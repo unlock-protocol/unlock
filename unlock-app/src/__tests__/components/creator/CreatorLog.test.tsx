@@ -1,11 +1,11 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
 import CreatorLog from '../../../components/creator/CreatorLog'
-import * as UnlockTypes from '../../../unlock'
+import * as UnlockTypes from '../../../unlockTypes'
 
 const transactionFeed: UnlockTypes.Transaction[] = [
   {
-    status: 'mined',
+    status: UnlockTypes.TransactionStatus.MINED,
     confirmations: 3,
     hash: '0x123',
     name: 'empty',

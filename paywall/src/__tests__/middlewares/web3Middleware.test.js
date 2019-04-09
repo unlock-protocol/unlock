@@ -8,6 +8,7 @@ import {
   ADD_TRANSACTION,
   UPDATE_TRANSACTION,
   NEW_TRANSACTION,
+  addTransaction,
 } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
 import { SET_PROVIDER, setProvider } from '../../actions/provider'
@@ -64,9 +65,11 @@ class MockWebService extends EventEmitter {
 
 let mockWeb3Service = new MockWebService()
 
-jest.mock('../../services/web3Service', () => {
-  return function() {
-    return mockWeb3Service
+jest.mock('@unlock-protocol/unlock-js', () => {
+  return {
+    Web3Service: function() {
+      return mockWeb3Service
+    },
   }
 })
 
@@ -87,6 +90,7 @@ beforeEach(() => {
     router: {
       location: {
         pathname: '/dashboard',
+        hash: '',
       },
     },
     account,
@@ -209,6 +213,29 @@ describe('Lock middleware', () => {
         state.account
       )
     })
+
+    it('it should not refresh account balance if the account is not currently set', () => {
+      expect.assertions(3)
+      create()
+
+      const key = {
+        id: '0xabc',
+        lock: lock.address,
+        owner: state.account.address,
+      }
+      mockWeb3Service.getLock = jest.fn()
+      mockWeb3Service.refreshAccountBalance = jest.fn()
+      mockWeb3Service.getKeyByLockForOwner = jest.fn()
+
+      state.account = null
+      mockWeb3Service.emit('key.saved', '0xabc', key)
+      expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock.address)
+      expect(mockWeb3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
+        lock.address,
+        key.owner
+      )
+      expect(mockWeb3Service.refreshAccountBalance).not.toHaveBeenCalled()
+    })
   })
 
   describe('when handling the key.updated events triggered by the web3Service', () => {
@@ -307,6 +334,27 @@ describe('Lock middleware', () => {
       )
     })
 
+    it('for SET_ACCOUNT calls, should retrieve transaction if present in the URL', () => {
+      expect.assertions(1)
+      mockWeb3Service.refreshAccountBalance = jest.fn()
+      mockWeb3Service.getKeyByLockForOwner = jest.fn()
+
+      const transaction =
+        '0x1234567890123456789012345678901234567890123456789012345678901234'
+      state.router.location = {
+        pathname: `/${lock.address}`,
+        hash: `#${transaction}`,
+      }
+
+      const { invoke, store } = create()
+
+      invoke(setAccount({ address: 'hi' }))
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining(addTransaction({ hash: transaction }))
+      )
+    })
+
     it.each([[SET_PROVIDER, setProvider], [SET_NETWORK, setNetwork]])(
       'should refresh the lock if %s is called',
       async (key, action) => {
@@ -323,6 +371,29 @@ describe('Lock middleware', () => {
         expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock)
       }
     )
+
+    it.each([[SET_PROVIDER, setProvider], [SET_NETWORK, setNetwork]])(
+      'should dispatch ADD_TRANSACTION if %s is called and transaction is in the URL',
+      async (key, action) => {
+        expect.assertions(1)
+        mockWeb3Service.getLock = jest.fn()
+
+        const transaction =
+          '0x1234567890123456789012345678901234567890123456789012345678901234'
+        state.router.location = {
+          pathname: `/${lock.address}`,
+          hash: `#${transaction}`,
+        }
+
+        const { invoke, store } = create()
+
+        invoke(action('hi'))
+
+        expect(store.dispatch).toHaveBeenCalledWith(
+          expect.objectContaining(addTransaction({ hash: transaction }))
+        )
+      }
+    )
   })
 
   it("should handle LOCATION_CHANGE if a lock is passed by calling web3Service's getLock", () => {
@@ -330,24 +401,62 @@ describe('Lock middleware', () => {
     const { next, invoke } = create()
     const action = {
       type: LOCATION_CHANGE,
-      payload: { location: { pathname: `/${lock.address}` } },
+      payload: { location: { pathname: `/${lock.address}` }, hash: '' },
     }
+    state.router.location = action.payload.location
     mockWeb3Service.getLock = jest.fn()
     invoke(action)
     expect(mockWeb3Service.getLock).toHaveBeenCalled()
     expect(next).toHaveBeenCalledWith(action)
   })
 
-  it("should handle LOCATION_CHANGE and not call web3Service's getLock if not on a paywall page", () => {
+  it('should handle LOCATION_CHANGE if a transaction is passed by dispatching ADD_TRANSACTION', () => {
+    expect.assertions(2)
+    const { next, invoke, store } = create()
+    // transaction hashes are 64 digits long
+    const transaction =
+      '0x1234567890123456789012345678901234567890123456789012345678901234'
+    const action = {
+      type: LOCATION_CHANGE,
+      payload: {
+        location: { pathname: `/${lock.address}`, hash: `#${transaction}` },
+      },
+    }
+    state.router.location = action.payload.location
+    mockWeb3Service.getTransaction = jest.fn()
+    mockWeb3Service.getLock = jest.fn()
+    invoke(action)
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining(addTransaction({ hash: transaction }))
+    )
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it("should handle LOCATION_CHANGE and not call web3Service's getLock if no lock is passed", () => {
     expect.assertions(2)
     const { next, invoke } = create()
     const action = {
       type: LOCATION_CHANGE,
-      payload: { location: { pathname: '/static/paywall.min.js' } },
+      payload: { location: { pathname: '/static/paywall.min.js', hash: '' } },
     }
     mockWeb3Service.getLock = jest.fn()
+    mockWeb3Service.getTransaction = jest.fn()
     invoke(action)
     expect(mockWeb3Service.getLock).not.toHaveBeenCalled()
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it("should handle LOCATION_CHANGE and not call web3Service's getTransaction if no transaction is passed", () => {
+    expect.assertions(2)
+    const { next, invoke } = create()
+    const action = {
+      type: LOCATION_CHANGE,
+      payload: { location: { pathname: '/static/paywall.min.js', hash: '' } },
+    }
+    mockWeb3Service.getLock = jest.fn()
+    mockWeb3Service.getTransaction = jest.fn()
+    invoke(action)
+    expect(mockWeb3Service.getTransaction).not.toHaveBeenCalled()
     expect(next).toHaveBeenCalledWith(action)
   })
 

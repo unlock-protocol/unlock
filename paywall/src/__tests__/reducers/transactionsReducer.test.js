@@ -15,7 +15,7 @@ describe('transaction reducer', () => {
     expect(initialState).toEqual({})
   })
 
-  it('should return the initial state when receveing SET_PROVIDER', () => {
+  it('should return the initial state when receiving SET_PROVIDER', () => {
     expect.assertions(1)
     const transaction = {
       status: 'pending',
@@ -35,7 +35,7 @@ describe('transaction reducer', () => {
     ).toBe(initialState)
   })
 
-  it('should return the initial state when receveing SET_NETWORK', () => {
+  it('should return the initial state when receiving SET_NETWORK', () => {
     expect.assertions(1)
     const transaction = {
       status: 'pending',
@@ -221,6 +221,29 @@ describe('transaction reducer', () => {
           hash: '0x123',
         },
       })
+    })
+
+    it('should not mutate state of existing transactions', () => {
+      expect.assertions(1)
+      const transaction = {
+        status: 'pending',
+        confirmations: 0,
+        hash: '0x123',
+      }
+
+      const state = {
+        [transaction.hash]: transaction,
+      }
+      const action = {
+        type: UPDATE_TRANSACTION,
+        hash: transaction.hash,
+        update: {
+          status: 'mined',
+          confirmations: 3,
+        },
+      }
+
+      expect(reducer(state, action)['0x123']).not.toBe(transaction)
     })
   })
 

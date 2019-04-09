@@ -8,7 +8,7 @@ import UnlockPropTypes from '../../../propTypes'
 import CreatorLockStatus from './CreatorLockStatus'
 import Media from '../../../theme/media'
 import withConfig from '../../../utils/withConfig'
-import { TransactionType } from '../../../unlock'
+import { TransactionType } from '../../../unlockTypes'
 
 import configure from '../../../config'
 
@@ -18,21 +18,28 @@ export function LockIconBar({
   lock,
   priceUpdateTransaction,
   toggleCode,
-  transaction,
+  lockCreationTransaction,
   withdrawalTransaction,
   config,
   edit,
 }) {
+  // If the lockCreationTransaction does not exist, let's assume the lock is "pending", otherwise we
+  // would have its lockCreationTransaction.
+  if (!lockCreationTransaction) {
+    return <CreatorLockStatus lock={lock} status="Submitted" />
+  }
+
   // These 2 transactions, if not mined or confirmed will trigger the display of CreatorLockStatus
   // instead of the regular iconBar
-  const blockingTransactions = [transaction, priceUpdateTransaction].filter(
-    t => !!t
-  )
+  const blockingTransactions = [
+    lockCreationTransaction,
+    priceUpdateTransaction,
+  ].filter(t => !!t)
 
   // TODO: move that logic to mapStateToProps
   for (let i = 0; i < blockingTransactions.length; i++) {
     const blockingTransaction = blockingTransactions[i]
-    if (blockingTransaction.status === 'submitted') {
+    if (['pending', 'submitted'].includes(blockingTransaction.status)) {
       return <CreatorLockStatus lock={lock} status="Submitted" />
     } else if (
       blockingTransaction.status === 'mined' &&
@@ -57,17 +64,9 @@ export function LockIconBar({
             lock={lock}
             withdrawalTransaction={withdrawalTransaction}
           />
-          <Buttons.Edit
-            as="button"
-            action={() => edit(lock.address)}
-            id={`EditLockButton_${lock.address}`}
-          />
+          <Buttons.Edit as="button" action={() => edit(lock.address)} />
           {/* Reinstate when we're ready <Buttons.ExportLock /> */}
-          <Buttons.Code
-            action={toggleCode}
-            as="button"
-            id={`LockEmbeddCode_${lock.address}`}
-          />
+          <Buttons.Code as="button" action={toggleCode} />
         </IconBar>
       </IconBarContainer>
       <SubStatus>
@@ -93,14 +92,14 @@ LockIconBar.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   toggleCode: PropTypes.func.isRequired,
   edit: PropTypes.func, // this will be required when we wire it up, no-op for now
-  transaction: UnlockPropTypes.transaction,
+  lockCreationTransaction: UnlockPropTypes.transaction,
   withdrawalTransaction: UnlockPropTypes.transaction,
   priceUpdateTransaction: UnlockPropTypes.transaction,
   config: UnlockPropTypes.configuration.isRequired,
 }
 
 LockIconBar.defaultProps = {
-  transaction: null,
+  lockCreationTransaction: null,
   priceUpdateTransaction: null,
   withdrawalTransaction: null,
   edit: () => {},
@@ -129,11 +128,10 @@ const mapStateToProps = ({ transactions }, { lock }) => {
     }
   })
 
-  // TODO change that to lockCreationTransaction
-  const transaction = transactions[lock.transaction]
+  const lockCreationTransaction = transactions[lock.transaction]
 
   return {
-    transaction,
+    lockCreationTransaction,
     withdrawalTransaction,
     priceUpdateTransaction,
   }
