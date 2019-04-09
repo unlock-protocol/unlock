@@ -32,9 +32,9 @@ const Post = ({ publishDate, description, slug }) => (
 )
 
 Post.propTypes = {
-  date: PropTypes.instanceOf(Date).isRequired,
-  summary: PropTypes.string.isRequired,
-  link: PropTypes.string.isRequired,
+  publishDate: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  slug: PropTypes.string.isRequired,
 }
 
 const People = [
