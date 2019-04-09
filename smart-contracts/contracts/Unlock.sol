@@ -149,9 +149,9 @@ contract Unlock is MixinNoFallback, IUnlock, Initializable, Ownable {
     public
     onlyFromDeployedLock()
   {
-    // TODO: implement me
+    // TODO: implement me (discount tokens)
     grossNetworkProduct += _value;
-    return;
+    locks[msg.sender].totalSales += _value;
   }
 
   /**
