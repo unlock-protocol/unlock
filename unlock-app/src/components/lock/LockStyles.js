@@ -90,7 +90,9 @@ export const LockDetails = styled.div`
   align-content: center;
 `
 
-export const LockName = styled(LockDetail)`
+export const LockName = styled(LockDetail).attrs({
+  className: 'name',
+})`
   white-space: normal;
   font-size: 12px;
 `

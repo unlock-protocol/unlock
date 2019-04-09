@@ -48,7 +48,9 @@ export const DoubleHeightCell = styled.div`
 
 export const BalanceContainer = styled.div``
 
-export const LockName = styled.div`
+export const LockName = styled.div.attrs({
+  className: 'name',
+})`
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
@@ -58,7 +60,9 @@ export const LockName = styled.div`
 `};
 `
 
-export const LockAddress = styled.div`
+export const LockAddress = styled.div.attrs({
+  className: 'address',
+})`
   color: var(--grey);
   font-weight: 200;
   white-space: nowrap;
@@ -67,9 +71,13 @@ export const LockAddress = styled.div`
   text-overflow: ellipsis;
 `
 
-export const LockDuration = styled.div``
+export const LockDuration = styled.div.attrs({
+  className: 'duration',
+})``
 
-export const LockKeys = styled.div``
+export const LockKeys = styled.div.attrs({
+  className: 'keys',
+})``
 
 export const LockPanel = styled.div`
   grid-column: 1 / span 7;

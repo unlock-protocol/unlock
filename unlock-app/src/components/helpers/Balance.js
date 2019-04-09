@@ -49,7 +49,9 @@ export const BalanceWithConversion = styled.div`
   flex-direction: column;
 `
 
-export const Currency = styled.span`
+export const Currency = styled.span.attrs({
+  className: 'currency',
+})`
   display: flex;
   flex-direction: row;
   padding-bottom: 0.5em;
