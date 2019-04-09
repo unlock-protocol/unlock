@@ -15,11 +15,19 @@ module.exports = async function shouldFail(promise, expectedRevertReason) {
   } catch (error) {
     // Using `startsWith` as some error.message may include '-- Reason given: ${expectedRevertReason}.'
     if (!error.message.startsWith(expectedMessage)) {
-      throw new Error(
-        `shouldFail reason for revert does not match. Got "${
-          error.message
-        }"; expected "${expectedMessage}"`
-      )
+      // Check for an alternate message format
+      expectedMessage = 'exited with an error (status 0).'
+      if (expectedRevertReason) {
+        expectedMessage += ` Reason given: ${expectedRevertReason}.`
+      }
+
+      if (!error.message.includes(expectedMessage)) {
+        throw new Error(
+          `shouldFail reason for revert does not match. Got "${
+            error.message
+          }"; expected "${expectedMessage}"`
+        )
+      }
     }
     return
   }
