@@ -1,0 +1,4039 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Buttons/Layout Buttons About 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c2 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+        href="/about"
+        title="About"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            About
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        <small
+          class="c2"
+        >
+          About
+        </small>
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="itnfb0-0 fEoclp"
+      href="/about"
+      title="About"
+    >
+      <svg
+        viewBox="0 0 24 24"
+      >
+        <title>
+          About
+        </title>
+        <path
+          clip-rule="evenodd"
+          d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      <small
+        class="itnfb0-1 klPKPj"
+      >
+        About
+      </small>
+    </a>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Bars 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+      >
+        <svg
+          viewBox="0 0 56 42"
+        >
+          <title>
+            Bars
+          </title>
+          <path
+            d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+          />
+        </svg>
+        
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="itnfb0-0 fEoclp"
+    >
+      <svg
+        viewBox="0 0 56 42"
+      >
+        <title>
+          Bars
+        </title>
+        <path
+          d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+        />
+      </svg>
+      
+    </a>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons ChevronUp 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+      >
+        <svg
+          viewBox="0 0 58 32"
+        >
+          <title>
+            Chevron Up
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="itnfb0-0 fEoclp"
+    >
+      <svg
+        viewBox="0 0 58 32"
+      >
+        <title>
+          Chevron Up
+        </title>
+        <path
+          clip-rule="evenodd"
+          d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      
+    </a>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Close Large 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 100px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 100px;
+  width: 100px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <button
+        class="c0 c1"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </button>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <button
+      class="itnfb0-0 hyDYwd"
+    >
+      <svg
+        viewBox="0 0 24 24"
+      >
+        <title>
+          Close
+        </title>
+        <path
+          clip-rule="evenodd"
+          d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      
+    </button>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Close Small 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 16px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 16px;
+  width: 16px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <button
+        class="c0 c1"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </button>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <button
+      class="itnfb0-0 ehOqCP"
+    >
+      <svg
+        viewBox="0 0 24 24"
+      >
+        <title>
+          Close
+        </title>
+        <path
+          clip-rule="evenodd"
+          d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      
+    </button>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Github 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c2 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+        href="https://github.com/unlock-protocol/unlock"
+        title="Source Code"
+      >
+        <svg
+          name="Github"
+          viewBox="0 0 24 24"
+        >
+          <title />
+          <path
+            d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+          />
+        </svg>
+        <small
+          class="c2"
+        >
+          Source Code
+        </small>
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="itnfb0-0 fEoclp"
+      href="https://github.com/unlock-protocol/unlock"
+      title="Source Code"
+    >
+      <svg
+        name="Github"
+        viewBox="0 0 24 24"
+      >
+        <title />
+        <path
+          d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+        />
+      </svg>
+      <small
+        class="itnfb0-1 klPKPj"
+      >
+        Source Code
+      </small>
+    </a>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Jobs 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c2 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+        href="/jobs"
+        title="Join us"
+      >
+        <svg
+          name="Jobs"
+          viewBox="0 0 24 24"
+        >
+          <title />
+          <path
+            clip-rule="evenodd"
+            d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        <small
+          class="c2"
+        >
+          Join us
+        </small>
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="itnfb0-0 fEoclp"
+      href="/jobs"
+      title="Join us"
+    >
+      <svg
+        name="Jobs"
+        viewBox="0 0 24 24"
+      >
+        <title />
+        <path
+          clip-rule="evenodd"
+          d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      <small
+        class="itnfb0-1 klPKPj"
+      >
+        Join us
+      </small>
+    </a>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Newsletter 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c2 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+        href="/newsletter"
+        title="Newsletter"
+      >
+        <svg
+          name="Newsletter"
+          viewBox="0 0 24 24"
+        >
+          <title />
+          <path
+            clip-rule="evenodd"
+            d="M5.044 7.705A1 1 0 0 0 5 8v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8a.998.998 0 0 0-.044-.295.497.497 0 0 1-.171.206l-5.931 4.106a1.5 1.5 0 0 1-1.708 0l-5.93-4.106a.498.498 0 0 1-.172-.206zm13.25-.66A1 1 0 0 0 18 7H6a1 1 0 0 0-.295.044.503.503 0 0 1 .08.045l5.93 4.106a.5.5 0 0 0 .57 0l5.93-4.106a.502.502 0 0 1 .08-.045z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        <small
+          class="c2"
+        >
+          Newsletter
+        </small>
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="itnfb0-0 fEoclp"
+      href="/newsletter"
+      title="Newsletter"
+    >
+      <svg
+        name="Newsletter"
+        viewBox="0 0 24 24"
+      >
+        <title />
+        <path
+          clip-rule="evenodd"
+          d="M5.044 7.705A1 1 0 0 0 5 8v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8a.998.998 0 0 0-.044-.295.497.497 0 0 1-.171.206l-5.931 4.106a1.5 1.5 0 0 1-1.708 0l-5.93-4.106a.498.498 0 0 1-.172-.206zm13.25-.66A1 1 0 0 0 18 7H6a1 1 0 0 0-.295.044.503.503 0 0 1 .08.045l5.93 4.106a.5.5 0 0 0 .57 0l5.93-4.106a.502.502 0 0 1 .08-.045z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      <small
+        class="itnfb0-1 klPKPj"
+      >
+        Newsletter
+      </small>
+    </a>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Telegram 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c2 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+        href="https://t.me/unlockprotocol"
+        title="Telegram"
+      >
+        <svg
+          name="Telegram"
+          viewBox="0 0 24 24"
+        >
+          <title />
+          <path
+            clip-rule="evenodd"
+            d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        <small
+          class="c2"
+        >
+          Telegram
+        </small>
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="itnfb0-0 fEoclp"
+      href="https://t.me/unlockprotocol"
+      title="Telegram"
+    >
+      <svg
+        name="Telegram"
+        viewBox="0 0 24 24"
+      >
+        <title />
+        <path
+          clip-rule="evenodd"
+          d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      <small
+        class="itnfb0-1 klPKPj"
+      >
+        Telegram
+      </small>
+    </a>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Twitter 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c2 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+        href="/twitter"
+        title="Twitter"
+      >
+        <svg
+          name="Twitter"
+          viewBox="0 0 24 24"
+        >
+          <title />
+          <path
+            clip-rule="evenodd"
+            d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+            fill-rule="evenodd"
+          />
+        </svg>
+        <small
+          class="c2"
+        >
+          Twitter
+        </small>
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="itnfb0-0 fEoclp"
+      href="/twitter"
+      title="Twitter"
+    >
+      <svg
+        name="Twitter"
+        viewBox="0 0 24 24"
+      >
+        <title />
+        <path
+          clip-rule="evenodd"
+          d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+          fill-rule="evenodd"
+        />
+      </svg>
+      <small
+        class="itnfb0-1 klPKPj"
+      >
+        Twitter
+      </small>
+    </a>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots DeveloperOverlay the developer overlay (invisible outside development) 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots DeveloperOverlay the developer overlay (visible in development) 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c1 {
+  padding: 0 20px 10px 20px;
+  border-color: lightgrey;
+  border-left: 1px solid;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  border-radius: 0 0 20px 20px;
+  -webkit-transform: translateY(-21px);
+  -ms-transform: translateY(-21px);
+  transform: translateY(-21px);
+  -webkit-transition: -webkit-transform 0.5s,color 0.5s,background-color 0.5s;
+  -webkit-transition: transform 0.5s,color 0.5s,background-color 0.5s;
+  transition: transform 0.5s,color 0.5s,background-color 0.5s;
+  color: lightgrey;
+}
+
+.c1:hover {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  opacity: 100%;
+  color: white;
+  background-color: var(--green);
+  border-color: var(--green);
+  font-weight: bold;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <select
+            id="changeProvider"
+            name="changeProvider"
+          >
+            <option
+              value="HTTP"
+            >
+              HTTP
+            </option>
+            <option
+              value="Metamask"
+            >
+              Metamask
+            </option>
+          </select>
+          <div>
+            Choose Provider
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-1bh82g0-0 hBDlOX"
+    >
+      <div
+        class="sc-1bh82g0-1 lnjYXR"
+      >
+        <select
+          id="changeProvider"
+          name="changeProvider"
+        >
+          <option
+            value="HTTP"
+          >
+            HTTP
+          </option>
+          <option
+            value="Metamask"
+          >
+            Metamask
+          </option>
+        </select>
+        <div>
+          Choose Provider
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Home landing page Home page 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": .c7 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c7 > svg {
+  fill: white;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+}
+
+.c1 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  height: 24px;
+}
+
+.c2 {
+  color: var(--darkgrey);
+  display: grid;
+  row-gap: 24px;
+  width: 100%;
+}
+
+.c4 {
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 36px;
+  font-style: light;
+  line-height: 47px;
+  grid-column: 1 3;
+  color: var(--darkgrey);
+}
+
+.c5 {
+  font-family: IBM Plex Serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 42px;
+  grid-column: 1 / span 3;
+  color: var(--darkgrey);
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c7 {
+    height: 16px;
+    width: 16px;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c1 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c6 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c3 {
+    display: none;
+  }
+}
+
+<body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        />
+        <div
+          class="c2"
+        >
+          <div
+            class="c3"
+          >
+            Unlock Tickets
+          </div>
+          <section>
+            <h1
+              class="c4"
+            >
+              Unlock Tickets
+            </h1>
+            <h2
+              class="c5"
+            >
+              A simple way to sell tickets for an event.
+            </h2>
+          </section>
+          <div
+            class="c6"
+          >
+            <div
+              class="c7"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+            Powered by Unlock
+          </div>
+        </div>
+        <div
+          class="c8"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="b9ke0k-0 gBeXDM"
+    >
+      <div
+        class="b9ke0k-1 jDykuE"
+      />
+      <div
+        class="b9ke0k-5 fEooDh"
+      >
+        <div
+          class="b9ke0k-4 dCUPSd"
+        >
+          Unlock Tickets
+        </div>
+        <section>
+          <h1
+            class="sc-1y0aw8d-0 hYyEaL"
+          >
+            Unlock Tickets
+          </h1>
+          <h2
+            class="sc-1y0aw8d-1 glCXRs"
+          >
+            A simple way to sell tickets for an event.
+          </h2>
+        </section>
+        <div
+          class="b9ke0k-3 bsTvcR"
+        >
+          <div
+            class="oj0wpp-0 lguXZd"
+          >
+            <svg
+              viewBox="0 0 56 56"
+            >
+              <title />
+              <path
+                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+              />
+            </svg>
+          </div>
+          Powered by Unlock
+        </div>
+      </div>
+      <div
+        class="b9ke0k-2 khwivT"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Layout the layout with menu 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c5 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c5 > svg {
+  fill: white;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+}
+
+.c1 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  height: 24px;
+}
+
+.c2 {
+  color: var(--darkgrey);
+  display: grid;
+  row-gap: 24px;
+  width: 100%;
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c5 {
+    height: 16px;
+    width: 16px;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c1 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c6 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c4 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c3 {
+    display: none;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        />
+        <div
+          class="c2"
+        >
+          <div
+            class="c3"
+          >
+            Unlock Tickets
+          </div>
+          <div
+            class="c4"
+          >
+            <div
+              class="c5"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+            Powered by Unlock
+          </div>
+        </div>
+        <div
+          class="c6"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="b9ke0k-0 gBeXDM"
+    >
+      <div
+        class="b9ke0k-1 jDykuE"
+      />
+      <div
+        class="b9ke0k-5 fEooDh"
+      >
+        <div
+          class="b9ke0k-4 dCUPSd"
+        >
+          Unlock Tickets
+        </div>
+        <div
+          class="b9ke0k-3 bsTvcR"
+        >
+          <div
+            class="oj0wpp-0 lguXZd"
+          >
+            <svg
+              viewBox="0 0 56 56"
+            >
+              <title />
+              <path
+                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+              />
+            </svg>
+          </div>
+          Powered by Unlock
+        </div>
+      </div>
+      <div
+        class="b9ke0k-2 khwivT"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Layout the layout without menu 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c5 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c5 > svg {
+  fill: white;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+}
+
+.c1 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  height: 24px;
+}
+
+.c2 {
+  color: var(--darkgrey);
+  display: grid;
+  row-gap: 24px;
+  width: 100%;
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c5 {
+    height: 16px;
+    width: 16px;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c1 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c6 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c4 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c3 {
+    display: none;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        />
+        <div
+          class="c2"
+        >
+          <div
+            class="c3"
+          >
+            Unlock Tickets
+          </div>
+          <div
+            class="c4"
+          >
+            <div
+              class="c5"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+            Powered by Unlock
+          </div>
+        </div>
+        <div
+          class="c6"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="b9ke0k-0 gBeXDM"
+    >
+      <div
+        class="b9ke0k-1 jDykuE"
+      />
+      <div
+        class="b9ke0k-5 fEooDh"
+      >
+        <div
+          class="b9ke0k-4 dCUPSd"
+        >
+          Unlock Tickets
+        </div>
+        <div
+          class="b9ke0k-3 bsTvcR"
+        >
+          <div
+            class="oj0wpp-0 lguXZd"
+          >
+            <svg
+              viewBox="0 0 56 56"
+            >
+              <title />
+              <path
+                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+              />
+            </svg>
+          </div>
+          Powered by Unlock
+        </div>
+      </div>
+      <div
+        class="b9ke0k-2 khwivT"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots SVG Icons 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,200px);
+  grid-gap: 16px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  justify-itens: center;
+}
+
+.c0 svg {
+  max-width: 200px;
+}
+
+.c1 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c1:hover {
+  background-color: var(--offwhite);
+}
+
+.c1:hover:before {
+  content: 'About';
+  position: absolute;
+}
+
+.c2 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c2:hover {
+  background-color: var(--offwhite);
+}
+
+.c2:hover:before {
+  content: 'Arrow';
+  position: absolute;
+}
+
+.c3 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c3:hover {
+  background-color: var(--offwhite);
+}
+
+.c3:hover:before {
+  content: 'Checkmark';
+  position: absolute;
+}
+
+.c4 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c4:hover {
+  background-color: var(--offwhite);
+}
+
+.c4:hover:before {
+  content: 'Close';
+  position: absolute;
+}
+
+.c5 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c5:hover {
+  background-color: var(--offwhite);
+}
+
+.c5:hover:before {
+  content: 'Code';
+  position: absolute;
+}
+
+.c6 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c6:hover {
+  background-color: var(--offwhite);
+}
+
+.c6:hover:before {
+  content: 'Copy';
+  position: absolute;
+}
+
+.c7 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c7:hover {
+  background-color: var(--offwhite);
+}
+
+.c7:hover:before {
+  content: 'Download';
+  position: absolute;
+}
+
+.c8 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c8:hover {
+  background-color: var(--offwhite);
+}
+
+.c8:hover:before {
+  content: 'Edit';
+  position: absolute;
+}
+
+.c9 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c9:hover {
+  background-color: var(--offwhite);
+}
+
+.c9:hover:before {
+  content: 'Eth';
+  position: absolute;
+}
+
+.c10 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c10:hover {
+  background-color: var(--offwhite);
+}
+
+.c10:hover:before {
+  content: 'Etherscan';
+  position: absolute;
+}
+
+.c11 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c11:hover {
+  background-color: var(--offwhite);
+}
+
+.c11:hover:before {
+  content: 'EthSub';
+  position: absolute;
+}
+
+.c12 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c12:hover {
+  background-color: var(--offwhite);
+}
+
+.c12:hover:before {
+  content: 'Export';
+  position: absolute;
+}
+
+.c13 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c13:hover {
+  background-color: var(--offwhite);
+}
+
+.c13:hover:before {
+  content: 'Github';
+  position: absolute;
+}
+
+.c14 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c14:hover {
+  background-color: var(--offwhite);
+}
+
+.c14:hover:before {
+  content: 'Lemniscate';
+  position: absolute;
+}
+
+.c15 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c15:hover {
+  background-color: var(--offwhite);
+}
+
+.c15:hover:before {
+  content: 'LockClosed';
+  position: absolute;
+}
+
+.c16 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c16:hover {
+  background-color: var(--offwhite);
+}
+
+.c16:hover:before {
+  content: 'Log';
+  position: absolute;
+}
+
+.c17 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c17:hover {
+  background-color: var(--offwhite);
+}
+
+.c17:hover:before {
+  content: 'Preview';
+  position: absolute;
+}
+
+.c18 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c18:hover {
+  background-color: var(--offwhite);
+}
+
+.c18:hover:before {
+  content: 'Jobs';
+  position: absolute;
+}
+
+.c19 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c19:hover {
+  background-color: var(--offwhite);
+}
+
+.c19:hover:before {
+  content: 'Unlock';
+  position: absolute;
+}
+
+.c20 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c20:hover {
+  background-color: var(--offwhite);
+}
+
+.c20:hover:before {
+  content: 'UnlockWordMark';
+  position: absolute;
+}
+
+.c21 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c21:hover {
+  background-color: var(--offwhite);
+}
+
+.c21:hover:before {
+  content: 'Upload';
+  position: absolute;
+}
+
+.c22 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c22:hover {
+  background-color: var(--offwhite);
+}
+
+.c22:hover:before {
+  content: 'Withdraw';
+  position: absolute;
+}
+
+.c23 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c23:hover {
+  background-color: var(--offwhite);
+}
+
+.c23:hover:before {
+  content: 'Newsletter';
+  position: absolute;
+}
+
+.c24 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c24:hover {
+  background-color: var(--offwhite);
+}
+
+.c24:hover:before {
+  content: 'Telegram';
+  position: absolute;
+}
+
+.c25 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c25:hover {
+  background-color: var(--offwhite);
+}
+
+.c25:hover:before {
+  content: 'Twitter';
+  position: absolute;
+}
+
+.c26 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c26:hover {
+  background-color: var(--offwhite);
+}
+
+.c26:hover:before {
+  content: 'Bars';
+  position: absolute;
+}
+
+.c27 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c27:hover {
+  background-color: var(--offwhite);
+}
+
+.c27:hover:before {
+  content: 'ChevronUp';
+  position: absolute;
+}
+
+.c28 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c28:hover {
+  background-color: var(--offwhite);
+}
+
+.c28:hover:before {
+  content: 'KeyText';
+  position: absolute;
+}
+
+.c29 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c29:hover {
+  background-color: var(--offwhite);
+}
+
+.c29:hover:before {
+  content: 'Box';
+  position: absolute;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <h1>
+          All SVGs
+        </h1>
+        <div
+          class="c0"
+        >
+          <div
+            class="c1"
+            name="About"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c2"
+            name="Arrow"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c3"
+            name="Checkmark"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c4"
+            name="Close"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c5"
+            name="Code"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M9.697 17.808a.5.5 0 0 1-.27-.654l4.616-11.077a.5.5 0 1 1 .923.385l-4.615 11.076a.5.5 0 0 1-.654.27zm6.478-1.928a.5.5 0 0 1-.055-.705L18.841 12l-2.72-3.175a.5.5 0 1 1 .759-.65l3 3.5a.5.5 0 0 1 0 .65l-3 3.5a.5.5 0 0 1-.705.055zM7.88 8.825a.5.5 0 0 0-.76-.65l-3 3.5a.5.5 0 0 0 0 .65l3 3.5a.5.5 0 1 0 .76-.65L5.159 12l2.72-3.175z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c6"
+            name="Copy"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M10 6v1h4V6h-4zm5 4.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5zm0 2a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5zm0 2a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5zM8 17h8V7h-1v1H9V7H8v10zm2-12a1 1 0 0 0-1 1H8a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1a1 1 0 0 0-1-1h-4z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c7"
+            name="Download"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M16.706 14.294a2.28 2.28 0 0 1-1.412-.486v1.17c.428.202.907.316 1.412.316.897 0 1.711-.359 2.305-.941h.048v-.048A3.283 3.283 0 0 0 20 12c0-.898-.359-1.711-.941-2.305v-.048h-.048a3.301 3.301 0 0 0-.896-.625A5.177 5.177 0 0 0 7.958 7.77a3.765 3.765 0 1 0 .748 7.406V14.13a2.765 2.765 0 1 1-.798-5.362 1 1 0 0 0 1.013-.727 4.177 4.177 0 0 1 8.195 1.01 1 1 0 0 0 .571.874c.232.11.442.258.624.436l.017.016.017.018c.406.414.655.98.655 1.605s-.249 1.19-.655 1.605l-.017.018-.017.016c-.414.406-.98.655-1.605.655zm-5.086 6.031a.5.5 0 0 0 .76 0l2-2.333a.5.5 0 0 0-.76-.65l-1.12 1.306V11a.5.5 0 0 0-1 0v7.648l-1.12-1.307a.5.5 0 1 0-.76.651l2 2.333z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c8"
+            name="Edit"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                d="M7.853 13.843l-.498 3.828 3.706-1.435L9.5 15l-1.647-1.157z"
+              />
+              <path
+                clip-rule="evenodd"
+                d="M17.295 7.9c.178.562.131 1.192-.303 1.733l-5.541 6.916a.5.5 0 0 1-.21.153l-3.705 1.435a.5.5 0 0 1-.677-.53l.498-3.829a.5.5 0 0 1 .106-.248l5.628-7.023c.434-.542 1.038-.724 1.625-.673.569.05 1.128.316 1.576.675.448.36.83.847 1.003 1.392zm-3.424-.768c.191-.239.446-.329.757-.302.33.03.707.193 1.039.46.332.266.575.599.674.913.095.298.062.566-.129.805l-5.23 6.527-1.172-.927a.52.52 0 0 0-.023-.017l-1.211-.851 5.295-6.608zm-5.629 7.595l.959.674.864.684-2.106.816.283-2.174z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c9"
+            name="Eth"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M1 6V5h5v1H1zm-1 5v-1h7v1H0zM0 1V0h7v1H0z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c10"
+            name="Etherscan"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M5 6.5A1.5 1.5 0 0 1 6.5 5H9a.5.5 0 0 1 0 1H6.5a.5.5 0 0 0-.5.5v2.25a.5.5 0 0 1-1 0V6.5zm9.5-1A.5.5 0 0 1 15 5h2.5A1.5 1.5 0 0 1 19 6.5v2.25a.5.5 0 0 1-1 0V6.5a.5.5 0 0 0-.5-.5H15a.5.5 0 0 1-.5-.5zM8.5 8a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM12 9a1 1 0 1 1 2 0v6a1 1 0 1 1-2 0V9zm3.5-1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zm-10 6.75a.5.5 0 0 1 .5.5v2.25a.5.5 0 0 0 .5.5H9a.5.5 0 0 1 0 1H6.5A1.5 1.5 0 0 1 5 17.5v-2.25a.5.5 0 0 1 .5-.5zm13 0a.5.5 0 0 1 .5.5v2.25a1.5 1.5 0 0 1-1.5 1.5H15a.5.5 0 0 1 0-1h2.5a.5.5 0 0 0 .5-.5v-2.25a.5.5 0 0 1 .5-.5z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c11"
+            name="EthSub"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                d="M1 6V5h5v1H1zm-1 5v-1h7v1H0zM0 1V0h7v1H0z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c12"
+            name="Export"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M11.62 13.825a.5.5 0 0 0 .76 0l2-2.333a.5.5 0 0 0-.76-.65l-1.12 1.306V4.5a.5.5 0 0 0-1 0v7.648l-1.12-1.307a.5.5 0 1 0-.76.651l2 2.333zM7 14a.5.5 0 0 0-1 0v4.5a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5V14a.5.5 0 0 0-1 0v4H7v-4z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c13"
+            name="Github"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+              />
+            </svg>
+          </div>
+          <div
+            class="c14"
+            name="Lemniscate"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                d="M4.856 10.192c-1.13 0-2.016-.379-2.656-1.136-.629-.757-.944-1.819-.944-3.184 0-1.365.315-2.427.944-3.184.64-.757 1.526-1.136 2.656-1.136 1.131 0 2.011.379 2.64 1.136.64.757.96 1.819.96 3.184 0 1.365-.32 2.427-.96 3.184-.629.757-1.509 1.136-2.64 1.136zm0-.8c.811 0 1.451-.256 1.92-.768.47-.512.704-1.259.704-2.24V5.36c0-.981-.234-1.728-.704-2.24-.469-.512-1.109-.768-1.92-.768-.81 0-1.45.256-1.92.768-.469.512-.704 1.259-.704 2.24v1.024c0 .981.235 1.728.704 2.24.47.512 1.11.768 1.92.768z"
+              />
+              <path
+                d="M11.25 10.192c-1.13 0-2.016-.379-2.656-1.136-.63-.757-.944-1.819-.944-3.184 0-1.365.315-2.427.944-3.184.64-.757 1.526-1.136 2.656-1.136 1.13 0 2.01.379 2.64 1.136.64.757.96 1.819.96 3.184 0 1.365-.32 2.427-.96 3.184-.63.757-1.51 1.136-2.64 1.136zm0-.8c.81 0 1.45-.256 1.92-.768s.704-1.259.704-2.24V5.36c0-.981-.235-1.728-.704-2.24-.47-.512-1.11-.768-1.92-.768-.81 0-1.45.256-1.92.768s-.704 1.259-.704 2.24v1.024c0 .981.235 1.728.704 2.24.47.512 1.11.768 1.92.768z"
+              />
+            </svg>
+          </div>
+          <div
+            class="c15"
+            name="LockClosed"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c16"
+            name="Log"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M10.5 8a.5.5 0 0 1 0-1h6a.5.5 0 0 1 0 1h-6zm6.5 2.5a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h6a.5.5 0 0 1 .5.5zm-7 3a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 0-1h-6a.5.5 0 0 0-.5.5zm7 3a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h6a.5.5 0 0 1 .5.5zm-10-6a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0-.5.5zM7.5 8a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1h-1zM7 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0-.5.5zm2 3a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1 0-1h1a.5.5 0 0 1 .5.5z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c17"
+            name="Preview"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                d="M13.91 12c0 1.036-.856 1.875-1.91 1.875-1.054 0-1.91-.84-1.91-1.875 0-1.036.856-1.875 1.91-1.875 1.054 0 1.91.84 1.91 1.875z"
+              />
+              <path
+                clip-rule="evenodd"
+                d="M19.445 11.773L19 12l.445.227v.002l-.003.004-.006.013a3.808 3.808 0 0 1-.12.217 12.818 12.818 0 0 1-1.784 2.382C16.296 16.141 14.424 17.5 12 17.5s-4.296-1.36-5.532-2.655a12.827 12.827 0 0 1-1.784-2.382 7.57 7.57 0 0 1-.12-.217l-.006-.013-.002-.004-.001-.001L5 12l-.445-.227v-.002l.003-.004.006-.013a4.07 4.07 0 0 1 .12-.217 12.827 12.827 0 0 1 1.784-2.382C7.704 7.859 9.576 6.5 12 6.5s4.296 1.36 5.532 2.655a12.818 12.818 0 0 1 1.784 2.382 7.78 7.78 0 0 1 .12.217l.006.013.003.004v.002zm-13.56.734c-.135-.206-.24-.38-.314-.507a11.825 11.825 0 0 1 1.62-2.155C8.341 8.641 9.97 7.5 12 7.5s3.659 1.14 4.809 2.345A11.826 11.826 0 0 1 18.429 12a11.829 11.829 0 0 1-1.62 2.155C15.659 15.36 14.03 16.5 12 16.5s-3.659-1.14-4.809-2.345a11.827 11.827 0 0 1-1.306-1.648z"
+                fill-rule="evenodd"
+              />
+              <path
+                d="M19 12l.445-.227a.501.501 0 0 1 0 .454L19 12zM4.555 11.773L5 12l-.445.228a.503.503 0 0 1 0-.455z"
+              />
+            </svg>
+          </div>
+          <div
+            class="c18"
+            name="Jobs"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c19"
+            name="Unlock"
+          >
+            <svg
+              viewBox="0 0 56 56"
+            >
+              <title />
+              <path
+                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+              />
+            </svg>
+          </div>
+          <div
+            class="c20"
+            name="UnlockWordMark"
+          >
+            <svg
+              viewBox="0 0 1200 256"
+            >
+              <title />
+              <path
+                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+              />
+            </svg>
+          </div>
+          <div
+            class="c21"
+            name="Upload"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M12.38 3.175a.5.5 0 0 0-.76 0l-2 2.333a.5.5 0 0 0 .76.65l1.12-1.306V12.5a.5.5 0 0 0 1 0V4.852l1.12 1.307a.5.5 0 1 0 .76-.651l-2-2.333zM6.5 9a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0 0 1H17v7H7v-7h2.5a.5.5 0 0 0 0-1h-3z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c22"
+            name="Withdraw"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M12 4.5a6.5 6.5 0 0 0-3 12.268v1.108A7.502 7.502 0 0 1 12 3.5a7.5 7.5 0 0 1 3 14.376v-1.108A6.5 6.5 0 0 0 12 4.5zm-.485 9.599c-.48-.036-.885-.147-1.215-.333-.33-.186-.6-.423-.81-.711l.649-.621c.204.246.42.438.648.576.227.132.486.213.773.243v-2.061l-.207-.036a2.732 2.732 0 0 1-.764-.243 1.648 1.648 0 0 1-.514-.396 1.504 1.504 0 0 1-.287-.513 2.04 2.04 0 0 1-.09-.612c0-.51.159-.915.476-1.215.319-.306.766-.489 1.341-.549v-.927h.756v.927c.396.042.738.141 1.026.297.288.156.537.369.747.639l-.657.594a1.792 1.792 0 0 0-.504-.45 1.604 1.604 0 0 0-.656-.216V10.4l.242.036c.3.054.556.135.766.243.21.108.38.24.513.396.138.15.237.321.296.513.06.192.09.396.09.612 0 .516-.162.939-.486 1.269-.317.33-.777.531-1.377.603v.945h-.756v-.918zm-.864-4.734c0 .252.07.45.207.594.144.138.378.243.702.315v-1.8c-.606.072-.909.369-.909.891zm2.53 2.88c0-.27-.075-.474-.225-.612-.144-.144-.387-.249-.73-.315v1.926c.313-.048.55-.156.711-.324.163-.168.244-.393.244-.675zM12 22.5a.5.5 0 0 1-.38-.175l-2-2.333a.5.5 0 0 1 .76-.65l1.12 1.306V16.5a.5.5 0 0 1 1 0v4.148l1.12-1.307a.5.5 0 1 1 .76.651l-2 2.333a.5.5 0 0 1-.38.175z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c23"
+            name="Newsletter"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M5.044 7.705A1 1 0 0 0 5 8v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8a.998.998 0 0 0-.044-.295.497.497 0 0 1-.171.206l-5.931 4.106a1.5 1.5 0 0 1-1.708 0l-5.93-4.106a.498.498 0 0 1-.172-.206zm13.25-.66A1 1 0 0 0 18 7H6a1 1 0 0 0-.295.044.503.503 0 0 1 .08.045l5.93 4.106a.5.5 0 0 0 .57 0l5.93-4.106a.502.502 0 0 1 .08-.045z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c24"
+            name="Telegram"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c25"
+            name="Twitter"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c26"
+            name="Bars"
+          >
+            <svg
+              viewBox="0 0 56 42"
+            >
+              <title />
+              <path
+                d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+              />
+            </svg>
+          </div>
+          <div
+            class="c27"
+            name="ChevronUp"
+          >
+            <svg
+              viewBox="0 0 58 32"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c28"
+            name="KeyText"
+          >
+            <svg
+              fill="none"
+              viewBox="0 0 200 245"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M38.46 28.488a8.547 8.547 0 0 0-8.547 8.547v199.419A8.546 8.546 0 0 0 38.459 245h153.837a8.547 8.547 0 0 0 8.547-8.546V37.034a8.547 8.547 0 0 0-8.547-8.546H38.459zm17.26 60.758a5.698 5.698 0 0 0-5.698 5.698v3.71a5.698 5.698 0 0 0 5.697 5.698h119.316a5.698 5.698 0 0 0 5.698-5.698v-3.71a5.698 5.698 0 0 0-5.698-5.698H55.719zm-5.698-27.693A7.553 7.553 0 0 1 57.574 54H173.18a7.553 7.553 0 0 1 0 15.105H57.574a7.553 7.553 0 0 1-7.552-7.553zm7.552 62.939a7.552 7.552 0 1 0 0 15.105H173.18a7.553 7.553 0 1 0 0-15.105H57.574zm-7.552 78.045a7.552 7.552 0 0 1 7.552-7.552h70.36a7.553 7.553 0 1 1 0 15.105h-70.36a7.553 7.553 0 0 1-7.552-7.553zm7.552-42.799a7.552 7.552 0 1 0 0 15.105H173.18a7.553 7.553 0 1 0 0-15.105H57.574z"
+                fill="#A6A6A6"
+                fill-rule="evenodd"
+              />
+              <path
+                clip-rule="evenodd"
+                d="M42.02 84.04c23.208 0 42.02-18.813 42.02-42.02C84.04 18.813 65.228 0 42.02 0 18.813 0 0 18.813 0 42.02c0 23.208 18.813 42.02 42.02 42.02z"
+                fill="#ED6E82"
+                fill-rule="evenodd"
+              />
+              <path
+                d="M21.488 43.773A11.779 11.779 0 0 1 34.903 41.5L57.7 18.703l5.571 5.57-2.785 2.786 5.57 5.571-5.57 5.572-5.572-5.572-14.44 14.44a11.778 11.778 0 0 1-2.273 13.416 11.818 11.818 0 1 1-16.713-16.713zM32.63 54.915a3.946 3.946 0 0 0 0-5.571 3.946 3.946 0 0 0-5.571 0 3.946 3.946 0 0 0 0 5.571 3.946 3.946 0 0 0 5.57 0z"
+                fill="#fff"
+              />
+              <path
+                d="M52.129 35.416l5.571 5.571-5.571 5.571-5.571-5.57 5.57-5.572z"
+                fill="#fff"
+              />
+            </svg>
+          </div>
+          <div
+            class="c29"
+            name="Box"
+          >
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                d="M13 4.216v7.566L6.999 15 1 11.778l.004-7.562L7.002 1 13 4.216z"
+                fill="#fff"
+              />
+              <path
+                d="M13 4.216l-6.001 3.13M13 4.216L7.002 1 1.004 4.216m11.996 0v7.566L6.999 15m0 0L1 11.778l.004-7.562M7 15V7.346m-5.995-3.13L7 7.346"
+                stroke="#000"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <h1>
+        All SVGs
+      </h1>
+      <div
+        class="sc-1lqbjcr-0 iyBnoe"
+      >
+        <div
+          class="sc-1lqbjcr-1 oWuVw"
+          name="About"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 hWAziI"
+          name="Arrow"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 dCamdR"
+          name="Checkmark"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 kIpBFO"
+          name="Close"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 iIHBTZ"
+          name="Code"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M9.697 17.808a.5.5 0 0 1-.27-.654l4.616-11.077a.5.5 0 1 1 .923.385l-4.615 11.076a.5.5 0 0 1-.654.27zm6.478-1.928a.5.5 0 0 1-.055-.705L18.841 12l-2.72-3.175a.5.5 0 1 1 .759-.65l3 3.5a.5.5 0 0 1 0 .65l-3 3.5a.5.5 0 0 1-.705.055zM7.88 8.825a.5.5 0 0 0-.76-.65l-3 3.5a.5.5 0 0 0 0 .65l3 3.5a.5.5 0 1 0 .76-.65L5.159 12l2.72-3.175z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 iNfsxW"
+          name="Copy"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M10 6v1h4V6h-4zm5 4.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5zm0 2a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5zm0 2a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5zM8 17h8V7h-1v1H9V7H8v10zm2-12a1 1 0 0 0-1 1H8a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1a1 1 0 0 0-1-1h-4z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 gkLAfY"
+          name="Download"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M16.706 14.294a2.28 2.28 0 0 1-1.412-.486v1.17c.428.202.907.316 1.412.316.897 0 1.711-.359 2.305-.941h.048v-.048A3.283 3.283 0 0 0 20 12c0-.898-.359-1.711-.941-2.305v-.048h-.048a3.301 3.301 0 0 0-.896-.625A5.177 5.177 0 0 0 7.958 7.77a3.765 3.765 0 1 0 .748 7.406V14.13a2.765 2.765 0 1 1-.798-5.362 1 1 0 0 0 1.013-.727 4.177 4.177 0 0 1 8.195 1.01 1 1 0 0 0 .571.874c.232.11.442.258.624.436l.017.016.017.018c.406.414.655.98.655 1.605s-.249 1.19-.655 1.605l-.017.018-.017.016c-.414.406-.98.655-1.605.655zm-5.086 6.031a.5.5 0 0 0 .76 0l2-2.333a.5.5 0 0 0-.76-.65l-1.12 1.306V11a.5.5 0 0 0-1 0v7.648l-1.12-1.307a.5.5 0 1 0-.76.651l2 2.333z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 egWBtv"
+          name="Edit"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              d="M7.853 13.843l-.498 3.828 3.706-1.435L9.5 15l-1.647-1.157z"
+            />
+            <path
+              clip-rule="evenodd"
+              d="M17.295 7.9c.178.562.131 1.192-.303 1.733l-5.541 6.916a.5.5 0 0 1-.21.153l-3.705 1.435a.5.5 0 0 1-.677-.53l.498-3.829a.5.5 0 0 1 .106-.248l5.628-7.023c.434-.542 1.038-.724 1.625-.673.569.05 1.128.316 1.576.675.448.36.83.847 1.003 1.392zm-3.424-.768c.191-.239.446-.329.757-.302.33.03.707.193 1.039.46.332.266.575.599.674.913.095.298.062.566-.129.805l-5.23 6.527-1.172-.927a.52.52 0 0 0-.023-.017l-1.211-.851 5.295-6.608zm-5.629 7.595l.959.674.864.684-2.106.816.283-2.174z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 fQhRyV"
+          name="Eth"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M1 6V5h5v1H1zm-1 5v-1h7v1H0zM0 1V0h7v1H0z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 hRDvUD"
+          name="Etherscan"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M5 6.5A1.5 1.5 0 0 1 6.5 5H9a.5.5 0 0 1 0 1H6.5a.5.5 0 0 0-.5.5v2.25a.5.5 0 0 1-1 0V6.5zm9.5-1A.5.5 0 0 1 15 5h2.5A1.5 1.5 0 0 1 19 6.5v2.25a.5.5 0 0 1-1 0V6.5a.5.5 0 0 0-.5-.5H15a.5.5 0 0 1-.5-.5zM8.5 8a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM12 9a1 1 0 1 1 2 0v6a1 1 0 1 1-2 0V9zm3.5-1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zm-10 6.75a.5.5 0 0 1 .5.5v2.25a.5.5 0 0 0 .5.5H9a.5.5 0 0 1 0 1H6.5A1.5 1.5 0 0 1 5 17.5v-2.25a.5.5 0 0 1 .5-.5zm13 0a.5.5 0 0 1 .5.5v2.25a1.5 1.5 0 0 1-1.5 1.5H15a.5.5 0 0 1 0-1h2.5a.5.5 0 0 0 .5-.5v-2.25a.5.5 0 0 1 .5-.5z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 iHCJRI"
+          name="EthSub"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              d="M1 6V5h5v1H1zm-1 5v-1h7v1H0zM0 1V0h7v1H0z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 YxTpN"
+          name="Export"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M11.62 13.825a.5.5 0 0 0 .76 0l2-2.333a.5.5 0 0 0-.76-.65l-1.12 1.306V4.5a.5.5 0 0 0-1 0v7.648l-1.12-1.307a.5.5 0 1 0-.76.651l2 2.333zM7 14a.5.5 0 0 0-1 0v4.5a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5V14a.5.5 0 0 0-1 0v4H7v-4z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 hGovUj"
+          name="Github"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 fVJnfA"
+          name="Lemniscate"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              d="M4.856 10.192c-1.13 0-2.016-.379-2.656-1.136-.629-.757-.944-1.819-.944-3.184 0-1.365.315-2.427.944-3.184.64-.757 1.526-1.136 2.656-1.136 1.131 0 2.011.379 2.64 1.136.64.757.96 1.819.96 3.184 0 1.365-.32 2.427-.96 3.184-.629.757-1.509 1.136-2.64 1.136zm0-.8c.811 0 1.451-.256 1.92-.768.47-.512.704-1.259.704-2.24V5.36c0-.981-.234-1.728-.704-2.24-.469-.512-1.109-.768-1.92-.768-.81 0-1.45.256-1.92.768-.469.512-.704 1.259-.704 2.24v1.024c0 .981.235 1.728.704 2.24.47.512 1.11.768 1.92.768z"
+            />
+            <path
+              d="M11.25 10.192c-1.13 0-2.016-.379-2.656-1.136-.63-.757-.944-1.819-.944-3.184 0-1.365.315-2.427.944-3.184.64-.757 1.526-1.136 2.656-1.136 1.13 0 2.01.379 2.64 1.136.64.757.96 1.819.96 3.184 0 1.365-.32 2.427-.96 3.184-.63.757-1.51 1.136-2.64 1.136zm0-.8c.81 0 1.45-.256 1.92-.768s.704-1.259.704-2.24V5.36c0-.981-.235-1.728-.704-2.24-.47-.512-1.11-.768-1.92-.768-.81 0-1.45.256-1.92.768s-.704 1.259-.704 2.24v1.024c0 .981.235 1.728.704 2.24.47.512 1.11.768 1.92.768z"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 dmznAN"
+          name="LockClosed"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 ljXgeb"
+          name="Log"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M10.5 8a.5.5 0 0 1 0-1h6a.5.5 0 0 1 0 1h-6zm6.5 2.5a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h6a.5.5 0 0 1 .5.5zm-7 3a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 0-1h-6a.5.5 0 0 0-.5.5zm7 3a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h6a.5.5 0 0 1 .5.5zm-10-6a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0-.5.5zM7.5 8a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1h-1zM7 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0-.5.5zm2 3a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1 0-1h1a.5.5 0 0 1 .5.5z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 dElRLO"
+          name="Preview"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              d="M13.91 12c0 1.036-.856 1.875-1.91 1.875-1.054 0-1.91-.84-1.91-1.875 0-1.036.856-1.875 1.91-1.875 1.054 0 1.91.84 1.91 1.875z"
+            />
+            <path
+              clip-rule="evenodd"
+              d="M19.445 11.773L19 12l.445.227v.002l-.003.004-.006.013a3.808 3.808 0 0 1-.12.217 12.818 12.818 0 0 1-1.784 2.382C16.296 16.141 14.424 17.5 12 17.5s-4.296-1.36-5.532-2.655a12.827 12.827 0 0 1-1.784-2.382 7.57 7.57 0 0 1-.12-.217l-.006-.013-.002-.004-.001-.001L5 12l-.445-.227v-.002l.003-.004.006-.013a4.07 4.07 0 0 1 .12-.217 12.827 12.827 0 0 1 1.784-2.382C7.704 7.859 9.576 6.5 12 6.5s4.296 1.36 5.532 2.655a12.818 12.818 0 0 1 1.784 2.382 7.78 7.78 0 0 1 .12.217l.006.013.003.004v.002zm-13.56.734c-.135-.206-.24-.38-.314-.507a11.825 11.825 0 0 1 1.62-2.155C8.341 8.641 9.97 7.5 12 7.5s3.659 1.14 4.809 2.345A11.826 11.826 0 0 1 18.429 12a11.829 11.829 0 0 1-1.62 2.155C15.659 15.36 14.03 16.5 12 16.5s-3.659-1.14-4.809-2.345a11.827 11.827 0 0 1-1.306-1.648z"
+              fill-rule="evenodd"
+            />
+            <path
+              d="M19 12l.445-.227a.501.501 0 0 1 0 .454L19 12zM4.555 11.773L5 12l-.445.228a.503.503 0 0 1 0-.455z"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 fIYNtn"
+          name="Jobs"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 ffTxki"
+          name="Unlock"
+        >
+          <svg
+            viewBox="0 0 56 56"
+          >
+            <title />
+            <path
+              d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 gEMAAh"
+          name="UnlockWordMark"
+        >
+          <svg
+            viewBox="0 0 1200 256"
+          >
+            <title />
+            <path
+              d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 jyaJhm"
+          name="Upload"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M12.38 3.175a.5.5 0 0 0-.76 0l-2 2.333a.5.5 0 0 0 .76.65l1.12-1.306V12.5a.5.5 0 0 0 1 0V4.852l1.12 1.307a.5.5 0 1 0 .76-.651l-2-2.333zM6.5 9a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0 0 1H17v7H7v-7h2.5a.5.5 0 0 0 0-1h-3z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 jyreGP"
+          name="Withdraw"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M12 4.5a6.5 6.5 0 0 0-3 12.268v1.108A7.502 7.502 0 0 1 12 3.5a7.5 7.5 0 0 1 3 14.376v-1.108A6.5 6.5 0 0 0 12 4.5zm-.485 9.599c-.48-.036-.885-.147-1.215-.333-.33-.186-.6-.423-.81-.711l.649-.621c.204.246.42.438.648.576.227.132.486.213.773.243v-2.061l-.207-.036a2.732 2.732 0 0 1-.764-.243 1.648 1.648 0 0 1-.514-.396 1.504 1.504 0 0 1-.287-.513 2.04 2.04 0 0 1-.09-.612c0-.51.159-.915.476-1.215.319-.306.766-.489 1.341-.549v-.927h.756v.927c.396.042.738.141 1.026.297.288.156.537.369.747.639l-.657.594a1.792 1.792 0 0 0-.504-.45 1.604 1.604 0 0 0-.656-.216V10.4l.242.036c.3.054.556.135.766.243.21.108.38.24.513.396.138.15.237.321.296.513.06.192.09.396.09.612 0 .516-.162.939-.486 1.269-.317.33-.777.531-1.377.603v.945h-.756v-.918zm-.864-4.734c0 .252.07.45.207.594.144.138.378.243.702.315v-1.8c-.606.072-.909.369-.909.891zm2.53 2.88c0-.27-.075-.474-.225-.612-.144-.144-.387-.249-.73-.315v1.926c.313-.048.55-.156.711-.324.163-.168.244-.393.244-.675zM12 22.5a.5.5 0 0 1-.38-.175l-2-2.333a.5.5 0 0 1 .76-.65l1.12 1.306V16.5a.5.5 0 0 1 1 0v4.148l1.12-1.307a.5.5 0 1 1 .76.651l-2 2.333a.5.5 0 0 1-.38.175z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 ijzrmz"
+          name="Newsletter"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M5.044 7.705A1 1 0 0 0 5 8v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8a.998.998 0 0 0-.044-.295.497.497 0 0 1-.171.206l-5.931 4.106a1.5 1.5 0 0 1-1.708 0l-5.93-4.106a.498.498 0 0 1-.172-.206zm13.25-.66A1 1 0 0 0 18 7H6a1 1 0 0 0-.295.044.503.503 0 0 1 .08.045l5.93 4.106a.5.5 0 0 0 .57 0l5.93-4.106a.502.502 0 0 1 .08-.045z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 gUTats"
+          name="Telegram"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 OFA"
+          name="Twitter"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 gqBjvN"
+          name="Bars"
+        >
+          <svg
+            viewBox="0 0 56 42"
+          >
+            <title />
+            <path
+              d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 WuEMz"
+          name="ChevronUp"
+        >
+          <svg
+            viewBox="0 0 58 32"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 kykPbf"
+          name="KeyText"
+        >
+          <svg
+            fill="none"
+            viewBox="0 0 200 245"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M38.46 28.488a8.547 8.547 0 0 0-8.547 8.547v199.419A8.546 8.546 0 0 0 38.459 245h153.837a8.547 8.547 0 0 0 8.547-8.546V37.034a8.547 8.547 0 0 0-8.547-8.546H38.459zm17.26 60.758a5.698 5.698 0 0 0-5.698 5.698v3.71a5.698 5.698 0 0 0 5.697 5.698h119.316a5.698 5.698 0 0 0 5.698-5.698v-3.71a5.698 5.698 0 0 0-5.698-5.698H55.719zm-5.698-27.693A7.553 7.553 0 0 1 57.574 54H173.18a7.553 7.553 0 0 1 0 15.105H57.574a7.553 7.553 0 0 1-7.552-7.553zm7.552 62.939a7.552 7.552 0 1 0 0 15.105H173.18a7.553 7.553 0 1 0 0-15.105H57.574zm-7.552 78.045a7.552 7.552 0 0 1 7.552-7.552h70.36a7.553 7.553 0 1 1 0 15.105h-70.36a7.553 7.553 0 0 1-7.552-7.553zm7.552-42.799a7.552 7.552 0 1 0 0 15.105H173.18a7.553 7.553 0 1 0 0-15.105H57.574z"
+              fill="#A6A6A6"
+              fill-rule="evenodd"
+            />
+            <path
+              clip-rule="evenodd"
+              d="M42.02 84.04c23.208 0 42.02-18.813 42.02-42.02C84.04 18.813 65.228 0 42.02 0 18.813 0 0 18.813 0 42.02c0 23.208 18.813 42.02 42.02 42.02z"
+              fill="#ED6E82"
+              fill-rule="evenodd"
+            />
+            <path
+              d="M21.488 43.773A11.779 11.779 0 0 1 34.903 41.5L57.7 18.703l5.571 5.57-2.785 2.786 5.57 5.571-5.57 5.572-5.572-5.572-14.44 14.44a11.778 11.778 0 0 1-2.273 13.416 11.818 11.818 0 1 1-16.713-16.713zM32.63 54.915a3.946 3.946 0 0 0 0-5.571 3.946 3.946 0 0 0-5.571 0 3.946 3.946 0 0 0 0 5.571 3.946 3.946 0 0 0 5.57 0z"
+              fill="#fff"
+            />
+            <path
+              d="M52.129 35.416l5.571 5.571-5.571 5.571-5.571-5.57 5.57-5.572z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1lqbjcr-1 kpkXgP"
+          name="Box"
+        >
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              d="M13 4.216v7.566L6.999 15 1 11.778l.004-7.562L7.002 1 13 4.216z"
+              fill="#fff"
+            />
+            <path
+              d="M13 4.216l-6.001 3.13M13 4.216L7.002 1 1.004 4.216m11.996 0v7.566L6.999 15m0 0L1 11.778l.004-7.562M7 15V7.346m-5.995-3.13L7 7.346"
+              stroke="#000"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

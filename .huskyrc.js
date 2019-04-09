@@ -42,6 +42,7 @@ module.exports = {
       lintStaged("smart-contracts"),
       lintStaged("tests"),
       lintStaged("unlock-app"),
+      lintStaged("tickets"),
       lintStaged("wedlocks")
     ])
   }
