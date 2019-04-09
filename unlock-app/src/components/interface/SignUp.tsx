@@ -96,6 +96,7 @@ const Heading = styled.h1`
   font-size: 36px;
   line-height: 47px;
   font-weight: bold;
+  color: var(--darkgrey);
 `
 
 const SubHeading = styled.h2`
@@ -103,12 +104,14 @@ const SubHeading = styled.h2`
   font-size: 32px;
   line-height: 42px;
   font-weight: 300;
+  color: var(--darkgrey);
 `
 
 const Description = styled.p`
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
   font-size: 20px;
+  color: var(--darkgrey);
 `
 
 const Form = styled.form`
