@@ -1,6 +1,6 @@
 pragma solidity 0.5.7;
 
-import './ILockCore.sol';
+import '../PublicLock.sol';
 
 /**
  * @title The Unlock Interface
@@ -23,7 +23,7 @@ interface IUnlock {
   * @dev Create lock
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
   * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
-  * Return type `ILockCore` is the most specific interface from which all lock types inherit.
+  * Return type `PublicLock` which represents an address of a PublicLock.
   */
   function createLock(
     uint _expirationDuration,
@@ -32,7 +32,7 @@ interface IUnlock {
     uint _maxNumberOfKeys
   )
     external
-    returns (ILockCore lock);
+    returns (PublicLock lock);
 
     /**
    * This function keeps track of the added GDP, as well as grants of discount tokens

@@ -90,10 +90,10 @@ contract Unlock is MixinNoFallback, IUnlock, Initializable, Ownable {
     uint _maxNumberOfKeys
   )
     public
-    returns (ILockCore lock)
+    returns (PublicLock lock)
   {
     // create lock
-    ILockCore newLock = new PublicLock(
+    PublicLock newLock = new PublicLock(
       msg.sender,
       _expirationDuration,
       _tokenAddress,

@@ -1,7 +1,6 @@
 pragma solidity 0.5.7;
 
 import './interfaces/IERC721.sol';
-import './interfaces/ILockCore.sol';
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import 'openzeppelin-solidity/contracts/introspection/ERC165.sol';
 import 'openzeppelin-solidity/contracts/token/ERC721/ERC721Holder.sol';
@@ -30,7 +29,6 @@ contract PublicLock is
   MixinNoFallback,
   ERC721Holder,
   IERC721,
-  ILockCore,
   ERC165,
   Ownable,
   MixinFunds,
