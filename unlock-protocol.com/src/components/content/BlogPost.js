@@ -15,7 +15,7 @@ export const BlogPost = ({
     {subTitle && <SubTitle>{subTitle}</SubTitle>}
     <Byline>
       <AuthorName>{authorName}</AuthorName>
-      <PublishDate>{publishDate}</PublishDate>
+      <PublishDate>On {publishDate}</PublishDate>
     </Byline>
     <Body>
       <Markdown markup={body} />
@@ -53,20 +53,23 @@ const Title = styled.h1`
   font-size: 36px;
 `
 
-const Byline = styled.div`
+export const Byline = styled.div`
   font-family: 'IBM Plex Sans', Helvetica, sans-serif;
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  margin-top: 0;
+  display: grid;
+  grid-template-columns: 140px auto;
+  margin-top: 0px;
   margin-bottom: 35px;
 `
 
 const SubTitle = styled.h2`
   margin-top: 10px;
-  font-size: 18px;
-  font-weight: 400;
-  font-family: 'IBM Plex Sans', Helvetica, sans-serif;
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 42px;
   color: var(--dimgrey);
 `
 
@@ -98,7 +101,21 @@ const Body = styled.div`
 `
 
 export const AuthorName = styled.h3`
-  color: var(--brand);
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--link);
+  margin: 0;
+  padding: 0;
 `
 
-export const PublishDate = styled.div``
+export const PublishDate = styled.div`
+  font-family: 'IBM Plex Mono';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--grey);
+  margin: 0;
+  padding: 0;
+`

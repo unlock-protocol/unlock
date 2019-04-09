@@ -88,7 +88,7 @@ describe('Pages', () => {
 
   describe('Post', () => {
     it('should render title correctly', () => {
-      expect.assertions(3)
+      expect.assertions(2)
       const post = {
         title: 'Test post',
         slug: 'test1',
@@ -100,7 +100,6 @@ describe('Pages', () => {
       const page = rtl.render(<Post post={post} slug={slug} />)
 
       expect(pageTitle).toBeCalledWith(post.title)
-      expect(page.queryByText(post.publishDate)).not.toBeNull()
       expect(page.queryByText(post.__content)).not.toBeNull()
     })
   })
