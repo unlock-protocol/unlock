@@ -14,7 +14,7 @@ import { HoverFooter, NotHoverFooter } from './HoverFooters'
 import BalanceProvider from '../helpers/BalanceProvider'
 
 const ConfirmedKeyLock = ({ lock, hideModal }) => (
-  <LockWrapper>
+  <LockWrapper lock={lock}>
     <LockHeader>{lock.name}</LockHeader>
     <Body>
       <BalanceProvider
