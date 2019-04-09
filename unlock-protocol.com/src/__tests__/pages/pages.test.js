@@ -21,7 +21,7 @@ describe('Pages', () => {
   describe('About', () => {
     it('should render title correctly', () => {
       expect.assertions(1)
-      rtl.render(<About />)
+      rtl.render(<About posts={[]} />)
       expect(pageTitle).toBeCalledWith('About')
     })
   })
