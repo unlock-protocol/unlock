@@ -48,7 +48,7 @@ export class KeyChainContent extends React.Component {
           )}
           {!account && signUp && (
             <BrowserOnly>
-              <SignUp />
+              <SignUp toggleSignUp={this.toggleSignUp} />
             </BrowserOnly>
           )}
         </Layout>

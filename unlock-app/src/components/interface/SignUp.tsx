@@ -1,11 +1,111 @@
 import React from 'react'
+import styled from 'styled-components'
 
-const SignUp = () => {
-  return (
-    <div>
-      <h1>Pay For Content Seamlessly</h1>
-    </div>
-  )
+interface Props {
+  toggleSignUp: () => void
 }
+
+interface State {
+  emailAddress: string
+  submitted: boolean
+}
+
+export class SignUp extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+    this.state = {
+      emailAddress: '', // eslint-disable-line react/no-unused-state
+      submitted: false, // eslint-disable-line react/no-unused-state
+    }
+  }
+
+  handleSubmit = (event: any) => {
+    this.setState({
+      submitted: true, // eslint-disable-line react/no-unused-state
+    })
+    event.preventDefault()
+  }
+
+  handleInputChange = (event: any) => {
+    this.setState({
+      emailAddress: event.target.value, // eslint-disable-line react/no-unused-state
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <Heading>Pay For Content Seamlessly</Heading>
+        <SubHeading>
+          Unlock enables anyone to seamlessly buy and manage access to content
+          using blockchain technology.
+        </SubHeading>
+        <Description>
+          At Unlock, we believe that the more accessible paid content is, the
+          better it will be. To do that we&#39;re making it easy for readers
+          like you to seamlessly pay for and manage your content.
+        </Description>
+        <Description>
+          If you want to know more about Unlock&#39;s decentralized payment
+          protocol, check out our blog.
+        </Description>
+        <Form onSubmit={this.handleSubmit}>
+          <Input
+            name="emailAddress"
+            type="email"
+            placeholder="Enter your email to get started"
+            onChange={this.handleInputChange}
+          />
+          <SubmitButton type="submit" value="Sign Up" />
+        </Form>
+      </div>
+    )
+  }
+}
+
+const Heading = styled.h1`
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+`
+
+const SubHeading = styled.h2`
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 32px;
+  line-height: 42px;
+  font-weight: 300;
+`
+
+const Description = styled.p`
+  font-family: 'IBM Plex Serif', serif;
+  font-weight: 300;
+  font-size: 20px;
+`
+
+const Form = styled.form`
+  display: grid;
+  grid-template-columns: 70% 30%;
+  grid-column-gap: 16px;
+  max-width: 600px;
+`
+
+const Input = styled.input`
+  height: 60px;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+`
+
+const SubmitButton = styled.input`
+  height: 60px;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+`
 
 export default SignUp
