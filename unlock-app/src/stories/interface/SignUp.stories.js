@@ -3,8 +3,7 @@ import { storiesOf } from '@storybook/react'
 
 import { SignUp } from '../../components/interface/SignUp'
 
-// Just a mock
-const signupEmail = email => email
+const signupEmail = jest.fn()
 
 storiesOf('SignUp page', module).add('The SignUp Page', () => {
   return <SignUp signupEmail={signupEmail} />
