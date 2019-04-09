@@ -1,13 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
+import Link from 'next/link'
+import { connect } from 'react-redux'
+import { signupEmail } from '../../actions/signUp'
 
 interface Props {
   toggleSignUp: () => void
+  signupEmail: (email: string) => any
 }
 
 interface State {
   emailAddress: string
-  submitted: boolean
+  submitted: boolean // Used to handle intermediate state between submission and response
 }
 
 export class SignUp extends React.Component<Props, State> {
@@ -20,10 +24,13 @@ export class SignUp extends React.Component<Props, State> {
   }
 
   handleSubmit = (event: any) => {
+    event.preventDefault()
+    const { signupEmail } = this.props
+    const { emailAddress } = this.state
+    signupEmail(emailAddress)
     this.setState({
       submitted: true, // eslint-disable-line react/no-unused-state
     })
-    event.preventDefault()
   }
 
   handleInputChange = (event: any) => {
@@ -33,6 +40,7 @@ export class SignUp extends React.Component<Props, State> {
   }
 
   render() {
+    const { submitted } = this.state
     return (
       <div>
         <Heading>Pay For Content Seamlessly</Heading>
@@ -47,21 +55,42 @@ export class SignUp extends React.Component<Props, State> {
         </Description>
         <Description>
           If you want to know more about Unlock&#39;s decentralized payment
-          protocol, check out our blog.
+          protocol, check out our{' '}
+          <Link href="/blog">
+            <span>blog</span>
+          </Link>
+          .
         </Description>
-        <Form onSubmit={this.handleSubmit}>
-          <Input
-            name="emailAddress"
-            type="email"
-            placeholder="Enter your email to get started"
-            onChange={this.handleInputChange}
-          />
-          <SubmitButton type="submit" value="Sign Up" />
-        </Form>
+        {!submitted && (
+          <Form onSubmit={this.handleSubmit}>
+            <Input
+              name="emailAddress"
+              type="email"
+              placeholder="Enter your email to get started"
+              onChange={this.handleInputChange}
+            />
+            <SubmitButton type="submit" value="Sign Up" />
+          </Form>
+        )}
+        {submitted && (
+          <Confirmation>
+            <div>Please check your email</div>
+            <div>We need to confirm your email before proceeding.</div>
+          </Confirmation>
+        )}
       </div>
     )
   }
 }
+
+const mapStateToProps = (dispatch: any) => ({
+  signupEmail: (email: string) => dispatch(signupEmail(email)),
+})
+
+export default connect(
+  null,
+  mapStateToProps
+)(SignUp)
 
 const Heading = styled.h1`
   font-family: 'IBM Plex Sans', sans-serif;
@@ -108,4 +137,12 @@ const SubmitButton = styled.input`
   cursor: pointer;
 `
 
-export default SignUp
+const Confirmation = styled.div`
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  color: var(--slate);
+  & > div:first-child {
+    font-weight: bold;
+  }
+`
