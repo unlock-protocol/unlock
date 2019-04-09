@@ -11,9 +11,13 @@ interface Props {
   loading: boolean
 }
 
-const CreatorLog = ({ transactionFeed, explorerLinks, loading }: Props) => {
+export const CreatorLog = ({
+  transactionFeed,
+  explorerLinks,
+  loading,
+}: Props) => {
   return (
-    <>
+    <React.Fragment>
       <Grid>
         <HeaderItem>Block Number</HeaderItem>
         <HeaderItem>Lock Name/Address</HeaderItem>
@@ -41,7 +45,7 @@ const CreatorLog = ({ transactionFeed, explorerLinks, loading }: Props) => {
         </DefaultError>
       )}
       {loading && <Loading />}
-    </>
+    </React.Fragment>
   )
 }
 
