@@ -8,7 +8,7 @@ const locksmithPort = process.env.LOCKSMITH_PORT || 8080
 const paywallPort = process.env.PAYWALL_PORT || 3001
 const ci = process.env.CI
 
-const unlockHost = ci ? 'unlock' : '127.0.0.1'
+const unlockHost = ci ? 'unlock-app' : '127.0.0.1'
 const locksmithHost = ci ? 'locksmith' : '127.0.0.1'
 const paywallHost = ci ? 'paywall' : '127.0.0.1'
 
@@ -37,6 +37,7 @@ class UnlockEnvironment extends PuppeteerEnvironment {
       120 /* up to 2m */
     )
     this.global.page.setViewport({ width: 1024, height: 768 })
+    console.log('Ready!')
   }
 
   async teardown() {
