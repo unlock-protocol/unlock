@@ -1,11 +1,11 @@
 import { Provider } from 'react-redux'
-import React, { useRef } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Paywall from '../components/Paywall'
 import createUnlockStore from '../createUnlockStore'
 import { ConfigContext } from '../utils/withConfig'
 import { WindowContext } from '../hooks/browser/useWindow'
+import FakeIframe from '../utils/FakeIframe'
 
 const lock = {
   address: '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e',
@@ -80,43 +80,22 @@ const config = {
   },
 }
 
-function FakeItTillYouMakeIt({ children }) {
-  const divit = useRef()
-  return (
-    <div
-      ref={divit}
-      style={{
-        position: 'absolute',
-        right: 0,
-        bottom: '105px',
-        width: '134px',
-        height: '160px',
-        marginRight: '-104px',
-        transition: 'margin-right 0.4s ease-in',
-      }}
-      onMouseEnter={() => (divit.current.style.marginRight = 0)}
-      onMouseLeave={() => (divit.current.style.marginRight = '-104px')}
-    >
-      {children}
-    </div>
-  )
-}
-
-FakeItTillYouMakeIt.propTypes = {
-  children: PropTypes.node.isRequired,
+const fakeWindow = {
+  fetch: () => ({
+    // dummy to prevent errors on CI
+    // this is the expected shape of returns from locksmith for optimism
+    json: Promise.resolve({ willSucceed: 0 }),
+  }),
+  document: { body: { style: {} } },
+  location: { pathname: '/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e' },
 }
 
 storiesOf('Paywall', module)
   // pass in a fake window object, to avoid modifying the real body and munging storyshots
   .addDecorator(getStory => (
     <ConfigContext.Provider value={config}>
-      <WindowContext.Provider
-        value={{
-          document: { body: { style: {} } },
-          location: { pathname: '/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e' },
-        }}
-      >
-        <FakeItTillYouMakeIt>{getStory()}</FakeItTillYouMakeIt>
+      <WindowContext.Provider value={fakeWindow}>
+        <FakeIframe hide>{getStory()}</FakeIframe>
       </WindowContext.Provider>
     </ConfigContext.Provider>
   ))

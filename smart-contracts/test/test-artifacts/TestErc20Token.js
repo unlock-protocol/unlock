@@ -1,4 +1,5 @@
 const BigNumber = require('bignumber.js')
+
 const TestErc20Token = artifacts.require('TestErc20Token.sol')
 
 let token

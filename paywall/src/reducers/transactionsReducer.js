@@ -38,7 +38,6 @@ const transactionsReducer = (transactions = initialState, action) => {
       // 'Could not change the transaction hash' => Let's not change state
       return transactions
     }
-
     if (!transactions[action.hash]) {
       // 'Could not update missing transaction' => Let's not change state
       return transactions
@@ -46,7 +45,10 @@ const transactionsReducer = (transactions = initialState, action) => {
 
     return {
       ...transactions,
-      [action.hash]: Object.assign(transactions[action.hash], action.update),
+      [action.hash]: {
+        ...transactions[action.hash],
+        ...action.update,
+      },
     }
   }
 

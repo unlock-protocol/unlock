@@ -9,10 +9,11 @@ import createUnlockStore from '../../../../createUnlockStore'
 describe('LockIconBar', () => {
   let config
   let lock
-  let transaction
+  let lockCreationTransaction
   let withdrawalTransaction
   let store
   let toggleCode
+
   beforeEach(() => {
     config = configure()
 
@@ -23,9 +24,9 @@ describe('LockIconBar', () => {
       maxNumberOfKeys: 240,
       outstandingKeys: 3,
       address: '0xbc7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
-      transaction: 'deployedid',
+      lockCreationTransaction: 'deployedid',
     }
-    transaction = {
+    lockCreationTransaction = {
       status: 'mined',
       confirmations: 24,
     }
@@ -45,7 +46,7 @@ describe('LockIconBar', () => {
       <Provider store={store}>
         <LockIconBar
           lock={lock}
-          transaction={transaction}
+          lockCreationTransaction={lockCreationTransaction}
           withdrawalTransaction={withdrawalTransaction}
           toggleCode={toggleCode}
           config={config}
@@ -66,7 +67,7 @@ describe('LockIconBar', () => {
       <Provider store={store}>
         <LockIconBar
           lock={lock}
-          transaction={transaction}
+          lockCreationTransaction={lockCreationTransaction}
           withdrawalTransaction={withdrawalTransaction}
           toggleCode={toggleCode}
           config={config}
@@ -96,7 +97,7 @@ describe('LockIconBar', () => {
       <Provider store={store}>
         <LockIconBar
           lock={lock}
-          transaction={transaction}
+          lockCreationTransaction={lockCreationTransaction}
           withdrawalTransaction={withdrawalTransaction}
           toggleCode={toggleCode}
           config={config}

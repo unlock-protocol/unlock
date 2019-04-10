@@ -15,11 +15,11 @@ import {
 import { PURCHASE_KEY } from '../../actions/key'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
-import { SET_PROVIDER } from '../../actions/provider'
+import { PROVIDER_READY } from '../../actions/provider'
 import { NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
 import { POLLING_INTERVAL } from '../../constants'
-import { TransactionType } from '../../unlock'
+import { TransactionType } from '../../unlockTypes'
 import {
   FATAL_NO_USER_ACCOUNT,
   FATAL_NON_DEPLOYED_CONTRACT,
@@ -30,6 +30,7 @@ import {
   SIGNED_DATA,
   SIGNATURE_ERROR,
 } from '../../actions/signature'
+import { HIDE_FORM } from '../../actions/lockFormVisibility'
 
 let mockConfig
 
@@ -60,7 +61,6 @@ const transaction = {
 const network = {
   name: 'test',
 }
-const provider = 'Toshi'
 
 /**
  * This is a "fake" middleware caller
@@ -73,7 +73,7 @@ const create = () => {
   }
   const next = jest.fn()
 
-  const handler = walletMiddleware(store)
+  const handler = walletMiddleware(mockConfig)(store)
 
   const invoke = action => handler(next)(action)
 
@@ -156,6 +156,7 @@ describe('Wallet middleware', () => {
       POLLING_INTERVAL
     )
   })
+
   it('on the server, it should not handle account.changed events triggered by the walletService', () => {
     expect.assertions(2)
     setTimeout.mockClear()
@@ -194,7 +195,17 @@ describe('Wallet middleware', () => {
     const from = '0xjulien'
     const to = '0xunlock'
     const input = 'input'
-    mockWalletService.emit('transaction.new', transaction.hash, from, to, input)
+    const type = 'LOCK_CREATION'
+    const status = 'submitted'
+    mockWalletService.emit(
+      'transaction.new',
+      transaction.hash,
+      from,
+      to,
+      input,
+      type,
+      status
+    )
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({ type: GOT_WALLET })
     )
@@ -206,6 +217,8 @@ describe('Wallet middleware', () => {
           to,
           from,
           input,
+          type: 'Lock Creation',
+          status,
         }),
       })
     )
@@ -221,7 +234,7 @@ describe('Wallet middleware', () => {
   })
 
   it('it should handle lock.updated events triggered by the walletService', () => {
-    expect.assertions(1)
+    expect.assertions(2)
     const { store } = create()
     const update = {
       transaction: '0x123',
@@ -232,6 +245,11 @@ describe('Wallet middleware', () => {
         type: UPDATE_LOCK,
         address: lock.address,
         update,
+      })
+    )
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: HIDE_FORM,
       })
     )
   })
@@ -392,13 +410,15 @@ describe('Wallet middleware', () => {
     })
   })
 
-  it('should handle SET_PROVIDER and re connect', () => {
+  it('should handle PROVIDER_READY and connect', () => {
     expect.assertions(2)
     const { next, invoke } = create()
-    const action = { type: SET_PROVIDER, provider }
+    const action = { type: PROVIDER_READY }
     mockWalletService.connect = jest.fn()
     invoke(action)
-    expect(mockWalletService.connect).toHaveBeenCalledWith(provider)
+    expect(mockWalletService.connect).toHaveBeenCalledWith(
+      mockConfig.providers[state.provider]
+    )
     expect(next).toHaveBeenCalledWith(action)
   })
 

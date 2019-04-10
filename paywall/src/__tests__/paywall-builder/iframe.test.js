@@ -1,10 +1,4 @@
-import {
-  getIframe,
-  iframeStyles,
-  add,
-  show,
-  hide,
-} from '../../paywall-builder/iframe'
+import { getIframe, add, show, hide } from '../../paywall-builder/iframe'
 
 describe('iframe', () => {
   it('add appends the iframe to document.body', () => {
@@ -20,15 +14,11 @@ describe('iframe', () => {
 
     expect(getIframe(document, 'hi')).toBe(el)
 
-    expect(el.setAttribute).toHaveBeenCalledTimes(3)
+    expect(el.setAttribute).toHaveBeenCalledTimes(2)
 
-    expect(el.setAttribute).toHaveBeenNthCalledWith(
-      1,
-      'style',
-      iframeStyles.join('; ')
-    )
-    expect(el.setAttribute).toHaveBeenNthCalledWith(2, 'src', 'hi')
-    expect(el.setAttribute).toHaveBeenNthCalledWith(3, 'data-unlock', 'yes')
+    expect(el.className).toBe('unlock start')
+    expect(el.setAttribute).toHaveBeenNthCalledWith(1, 'src', 'hi')
+    expect(el.setAttribute).toHaveBeenNthCalledWith(2, 'data-unlock', 'yes')
   })
 
   describe('add', () => {
@@ -68,9 +58,7 @@ describe('iframe', () => {
 
   it('show', () => {
     expect.assertions(2)
-    const iframe = {
-      style: {},
-    }
+    const iframe = {}
     const document = {
       body: {
         style: {},
@@ -78,50 +66,48 @@ describe('iframe', () => {
     }
 
     show(iframe, document)
-    expect(iframe.style).toEqual({
-      display: 'block',
-      'z-index': '2147483647',
-    })
+    expect(iframe.className).toBe('unlock start show')
 
     expect(document.body.style).toEqual({
       overflow: 'hidden',
     })
   })
 
-  it('hide', () => {
-    expect.assertions(2)
-    const iframe = {
-      style: {},
-      contentDocument: {
-        body: {
-          style: {},
-        },
-      },
-      addEventListener: () => {},
-    }
-    const document = {
-      body: {
-        style: { overflow: 'hidden' },
-      },
-    }
-    hide(iframe, document)
+  describe('hide', () => {
+    it('unlocked', () => {
+      expect.assertions(2)
 
-    expect(iframe.style).toEqual({
-      backgroundColor: 'transparent',
-      backgroundImage: 'none',
-      overflow: 'hidden',
-      width: '134px',
-      height: '160px',
-      marginRight: 0,
-      left: null,
-      top: null,
-      right: '0',
-      bottom: '105px',
-      transition: 'margin-right 0.4s ease-in',
+      jest.useFakeTimers()
+      const iframe = {}
+      const document = {
+        body: {
+          style: { overflow: 'hidden' },
+        },
+      }
+      hide(iframe, document)
+
+      expect(iframe.className).toBe('unlock start show hide')
+      expect(document.body.style).toEqual({
+        overflow: '',
+      })
     })
 
-    expect(document.body.style).toEqual({
-      overflow: '',
+    it('optimistic unlocking', () => {
+      expect.assertions(2)
+
+      jest.useFakeTimers()
+      const iframe = {}
+      const document = {
+        body: {
+          style: { overflow: 'hidden' },
+        },
+      }
+      hide(iframe, document, false)
+
+      expect(iframe.className).toBe('unlock start show hide optimism')
+      expect(document.body.style).toEqual({
+        overflow: '',
+      })
     })
   })
 })

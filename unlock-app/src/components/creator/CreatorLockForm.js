@@ -167,10 +167,9 @@ export class CreatorLockForm extends React.Component {
   }
 
   saveLock() {
-    const { account, createLock } = this.props
+    const { account, saveLock } = this.props
     const newLock = formValuesToLock(this.state)
-    // TODO: createLock is not a great name, because it is actually also being used to update an existing lock
-    createLock({
+    saveLock({
       ...newLock,
       owner: account.address,
     })
@@ -220,8 +219,6 @@ export class CreatorLockForm extends React.Component {
     this.setState(state => {
       const { valid, errors } = this.sendErrorsToRedux(state)
       if (!valid.formValid) return { valid, errors }
-      const { hideAction } = this.props
-      if (hideAction) hideAction()
       return this.saveLock(state, valid, errors)
     })
   }
@@ -242,10 +239,10 @@ export class CreatorLockForm extends React.Component {
       unlimitedKeys,
       valid,
     } = this.state
-
+    const lockAddress = lock ? lock.address : ''
     // NOTE: maxNumberOfKeys must be a text input in order to support the infinity symbol
     return (
-      <FormLockRow>
+      <FormLockRow className="lockForm" data-address={lockAddress}>
         <Icon />
         <FormLockName>
           <input
@@ -297,7 +294,6 @@ export class CreatorLockForm extends React.Component {
             onChange={this.handleChange}
             defaultValue={keyPrice}
             data-valid={valid.keyPrice}
-            id={`KeyPriceEditField_${lock.address}`}
             required
           />
         </FormBalanceWithUnit>
@@ -316,7 +312,7 @@ export class CreatorLockForm extends React.Component {
 CreatorLockForm.propTypes = {
   account: UnlockPropTypes.account.isRequired,
   hideAction: PropTypes.func.isRequired,
-  createLock: PropTypes.func.isRequired,
+  saveLock: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   resetError: PropTypes.func.isRequired,
   lock: UnlockPropTypes.lock,

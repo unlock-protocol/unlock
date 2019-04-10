@@ -4,8 +4,11 @@ import {
   POST_MESSAGE_LOCKED,
   POST_MESSAGE_UNLOCKED,
   POST_MESSAGE_REDIRECT,
+  POST_MESSAGE_GET_OPTIMISTIC,
+  POST_MESSAGE_GET_PESSIMISTIC,
 } from './constants'
 import { disableScrollPolling, enableScrollPolling, scrollLoop } from './scroll'
+import { setupReadyListener } from './config'
 
 export function redirect(window, paywallUrl) {
   // we use window.encodeURIComponent here to make testing
@@ -35,6 +38,7 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
     const origin = new window.URL(paywallUrl).origin
 
     add(document, iframe)
+    setupReadyListener(window, iframe, origin)
 
     let locked = false
 
@@ -57,9 +61,21 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
             show(iframe, document)
             blocker.remove()
           }
+          if (event.data === POST_MESSAGE_GET_OPTIMISTIC && locked) {
+            disableScrollPolling()
+
+            hide(iframe, document, false)
+          }
+          if (event.data === POST_MESSAGE_GET_PESSIMISTIC && locked) {
+            enableScrollPolling()
+
+            scrollLoop(window, document, iframe, origin)
+            show(iframe, document)
+          }
           if (event.data === POST_MESSAGE_UNLOCKED && locked) {
             locked = false
             disableScrollPolling()
+
             hide(iframe, document)
             blocker.remove()
           }

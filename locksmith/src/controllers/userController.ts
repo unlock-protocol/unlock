@@ -8,7 +8,7 @@ namespace UserController {
     req: Request,
     res: Response
   ): Promise<any> => {
-    let user = req.body.user
+    let user = req.body.message.user
 
     try {
       if (user) {
@@ -16,7 +16,6 @@ namespace UserController {
           emailAddress: user.emailAddress,
           publicKey: user.publicKey,
           passwordEncryptedPrivateKey: user.passwordEncryptedPrivateKey,
-          recoveryPhrase: user.recoveryPhrase,
         })
 
         let status = creationStatus ? 200 : 400
@@ -61,6 +60,27 @@ namespace UserController {
     } else {
       let recoveryPhrase = new DecoyUser().recoveryPhrase()
       return res.json({ recoveryPhrase: recoveryPhrase })
+    }
+  }
+
+  export const updateUser = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    let emailAddress = req.params.emailAddress
+    let user = req.body.message.user
+
+    try {
+      let result = await UserOperations.updateEmail(
+        emailAddress,
+        user.emailAddress
+      )
+      if (result[0] == 0) {
+        return res.sendStatus(400)
+      }
+      return res.sendStatus(202)
+    } catch (error) {
+      return res.sendStatus(400)
     }
   }
 }

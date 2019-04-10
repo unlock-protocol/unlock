@@ -18,7 +18,7 @@ export const CreatorLocks = props => {
   const { createLock, lockFeed, loading, formIsVisible, hideForm } = props
   return (
     <Locks>
-      <LockHeaderRow id="LockHeaderRow">
+      <LockHeaderRow>
         <LockHeader>Locks</LockHeader>
         <LockMinorHeader>Name / Address</LockMinorHeader>
         <LockMinorHeader>Key Duration</LockMinorHeader>
@@ -31,11 +31,7 @@ export const CreatorLocks = props => {
       </LockHeaderRow>
       <Errors />
       {formIsVisible && (
-        <CreatorLockForm
-          hideAction={hideForm}
-          createLock={createLock}
-          pending
-        />
+        <CreatorLockForm hideAction={hideForm} saveLock={createLock} pending />
       )}
       {lockFeed.length > 0 &&
         lockFeed.map(lock => {
@@ -53,7 +49,7 @@ export const CreatorLocks = props => {
       )}
       {loading && (
         <LoadingWrapper>
-          <Svg.Loading title="loading" />
+          <Svg.Loading title="loading" alt="loading" />
         </LoadingWrapper>
       )}
     </Locks>

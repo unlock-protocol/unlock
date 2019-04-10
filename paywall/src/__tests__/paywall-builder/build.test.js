@@ -1,16 +1,16 @@
 import buildPaywall, { redirect } from '../../paywall-builder/build'
 import * as script from '../../paywall-builder/script'
+import * as config from '../../paywall-builder/config'
 import * as iframeManager from '../../paywall-builder/iframe'
 import {
   POST_MESSAGE_LOCKED,
   POST_MESSAGE_UNLOCKED,
   POST_MESSAGE_REDIRECT,
+  POST_MESSAGE_GET_OPTIMISTIC,
+  POST_MESSAGE_GET_PESSIMISTIC,
 } from '../../paywall-builder/constants'
 
-global.window = {} // this is fun...
-global.MutationObserver = function() {
-  this.observe = () => {}
-}
+jest.mock('../../paywall-builder/config')
 
 const fakeLockAddress = 'lockaddress'
 
@@ -82,6 +82,7 @@ describe('buildPaywall', () => {
         },
         style: {},
         remove: jest.fn(),
+        setAttribute: jest.fn(),
       }
 
       mockAdd = jest.spyOn(iframeManager, 'add')
@@ -163,7 +164,7 @@ describe('buildPaywall', () => {
     })
 
     it('passes the correct origin to scrollLoop', () => {
-      expect.assertions(4)
+      expect.assertions(4) // 2 are in the addEventListener in the mock window (see beforeEach)
 
       scrollThatPage(window)
 
@@ -173,6 +174,18 @@ describe('buildPaywall', () => {
       // new URL().origin
       expect(postMessage).toHaveBeenCalled()
       expect(postMessage.mock.calls[0][1]).toBe('origin')
+    })
+
+    it('calls setupReadyListener', () => {
+      expect.assertions(3) // 2 are in the addEventListener in the mock window (see beforeEach)
+
+      buildPaywall(window, document, fakeLockAddress, blocker)
+
+      expect(config.setupReadyListener).toHaveBeenCalledWith(
+        window,
+        expect.objectContaining(mockIframeImpl),
+        'origin'
+      )
     })
 
     it('sets up the message event listeners', () => {
@@ -344,6 +357,40 @@ describe('buildPaywall', () => {
         expect(mockHide).toHaveBeenCalledWith(iframe, document)
         expect(mockHide).toHaveBeenCalledTimes(1)
         expect(mockShow).toHaveBeenCalledTimes(1)
+      })
+
+      it('calls hide on optimistic event', () => {
+        expect.assertions(1)
+
+        callbacks.message({
+          data: POST_MESSAGE_LOCKED,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
+        callbacks.message({
+          data: POST_MESSAGE_GET_OPTIMISTIC,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
+
+        expect(mockHide).toHaveBeenLastCalledWith(iframe, document, false)
+      })
+
+      it('calls show on pessimistic event', () => {
+        expect.assertions(1)
+
+        callbacks.message({
+          data: POST_MESSAGE_LOCKED,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
+        callbacks.message({
+          data: POST_MESSAGE_GET_PESSIMISTIC,
+          origin: 'origin',
+          source: iframe.contentWindow,
+        })
+
+        expect(mockShow).toHaveBeenLastCalledWith(iframe, document)
       })
 
       it('bails out on error in redirect event', () => {

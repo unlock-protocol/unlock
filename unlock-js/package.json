@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,6 @@
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
     "@babel/preset-env": "^7.4.2",
-    "babel-jest": "^23.6.0",
-    "eslint": "^5.15.3"
+    "babel-jest": "^23.6.0"
   }
 }

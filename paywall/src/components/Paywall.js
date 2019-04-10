@@ -17,8 +17,13 @@ import {
 } from '../paywall-builder/constants'
 import { isPositiveNumber } from '../utils/validators'
 import useWindow from '../hooks/browser/useWindow'
+import useOptimism from '../hooks/useOptimism'
+import { TRANSACTION_TYPES } from '../constants'
+import withConfig from '../utils/withConfig'
 
-export function Paywall({ locks, locked, redirect, account }) {
+// TODO: mobile formatting for unlocked and optimistic unlocking views
+export function Paywall({ locks, locked, redirect, account, transaction }) {
+  const optimism = useOptimism(transaction)
   const window = useWindow()
   const scrollPosition = useListenForPostMessage({
     type: 'scrollPosition',
@@ -26,6 +31,22 @@ export function Paywall({ locks, locked, redirect, account }) {
     validator: isPositiveNumber,
   })
   const { postMessage } = usePostMessage()
+  const height = '160px'
+  const smallBody = body => {
+    body.style.margin = '0'
+    body.style.height = height
+    body.style.display = 'flex'
+    body.style.flexDirection = 'column'
+    body.style.justifyContent = 'center'
+    body.style.overflow = 'hidden'
+  }
+  const bigBody = body => {
+    body.style.margin = '0'
+    body.style.height = '100vh'
+    body.style.width = '100vw'
+    body.style.display = 'fixed'
+    body.style.overflow = 'initial'
+  }
   useEffect(() => {
     if (locked) {
       postMessage(POST_MESSAGE_LOCKED)
@@ -35,16 +56,15 @@ export function Paywall({ locks, locked, redirect, account }) {
         const withAccount = account ? '#' + account : ''
         window.location.href = redirect + withAccount
       }
-      const height = '160px'
-      const body = window.document.body
-      body.style.margin = '0'
-      body.style.height = window.innerWidth >= 768 ? height : 0
-      body.style.display = window.innerWidth >= 768 ? 'flex' : 'none'
-      body.style.flexDirection = 'column'
-      body.style.justifyContent = 'center'
-      body.style.overflow = 'hidden'
+      smallBody(window.document.body)
     }
   }, [locked])
+  useEffect(() => {
+    if (!locked || !transaction) return
+    if (transaction.status === 'pending' && redirect) {
+      window.location.href = redirect + '#' + transaction.hash
+    }
+  }, [transaction, locked, redirect])
 
   return (
     <GlobalErrorProvider>
@@ -53,8 +73,11 @@ export function Paywall({ locks, locked, redirect, account }) {
           scrollPosition={scrollPosition}
           locks={locks}
           redirect={redirect}
+          optimism={optimism}
+          smallBody={() => smallBody(window.document.body)}
+          bigBody={() => bigBody(window.document.body)}
         />
-        <DeveloperOverlay />
+        {optimism.current ? null : <DeveloperOverlay />}
       </ShowWhenLocked>
       <ShowWhenUnlocked locked={locked}>
         <UnlockedFlag />
@@ -67,15 +90,20 @@ Paywall.propTypes = {
   locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
   locked: PropTypes.bool.isRequired,
   redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  transaction: UnlockPropTypes.transaction,
   account: PropTypes.string,
 }
 
 Paywall.defaultProps = {
   redirect: false,
   account: null,
+  transaction: null,
 }
 
-export const mapStateToProps = ({ locks, keys, modals, router, account }) => {
+export const mapStateToProps = (
+  { locks, keys, modals, router, account, transactions },
+  { config: { requiredConfirmations } }
+) => {
   const { lockAddress, redirect } = lockRoute(router.location.pathname)
 
   const lockFromUri = Object.values(locks).find(
@@ -95,14 +123,50 @@ export const mapStateToProps = ({ locks, keys, modals, router, account }) => {
     }
   })
 
+  const lock = locksFromUri.length ? locksFromUri[0] : null
+
+  let transaction = null
+
+  const lockKey = Object.values(keys).find(
+    key =>
+      account &&
+      lock &&
+      key.lock === lock.address &&
+      key.owner === account.address
+  )
+
+  // Let's select the transaction corresponding to this key purchase, if it exists
+  // This transaction is of type KEY_PURCHASE
+  transaction = Object.values(transactions).find(
+    transaction =>
+      transaction.type === TRANSACTION_TYPES.KEY_PURCHASE &&
+      transaction.key === (lockKey && lockKey.id)
+  )
+
   const modalShown = !!modals[locksFromUri.map(l => l.address).join('-')]
-  const locked = validKeys.length === 0 || modalShown
+  let locked = false
+  if (modalShown) {
+    locked = true
+  }
+  if (!locked && !validKeys.length) {
+    locked = true
+  }
+  if (!locked && transaction) {
+    if (
+      !transaction.confirmations ||
+      transaction.confirmations < requiredConfirmations
+    ) {
+      locked = true
+    }
+  }
+
   return {
     locked,
     locks: locksFromUri,
     redirect,
+    transaction,
     account: account && account.address,
   }
 }
 
-export default connect(mapStateToProps)(Paywall)
+export default withConfig(connect(mapStateToProps)(Paywall))

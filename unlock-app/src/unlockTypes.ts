@@ -12,8 +12,16 @@ export enum TransactionType {
 }
 /* eslint-enable no-unused-vars */
 
+/* eslint-disable no-unused-vars */
+export enum TransactionStatus {
+  SUBMITTED = 'submitted',
+  PENDING = 'pending',
+  MINED = 'mined',
+}
+/* eslint-enable no-unused-vars */
+
 export interface Transaction {
-  status: string
+  status: TransactionStatus
   confirmations: number
   hash: string
   lock: string
