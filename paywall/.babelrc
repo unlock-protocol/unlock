@@ -1,9 +1,7 @@
 {
   "env": {
     "development": {
-      "presets": [
-        "next/babel"
-      ],
+      "presets": ["next/babel", "@zeit/next-typescript/babel"],
       "plugins": [
         [
           "styled-components",
@@ -16,9 +14,7 @@
       ]
     },
     "production": {
-      "presets": [
-        "next/babel"
-      ],
+      "presets": ["next/babel", "@zeit/next-typescript/babel"],
       "plugins": [
         [
           "styled-components",
@@ -38,7 +34,8 @@
             "preset-env": {
               "modules": "commonjs"
             }
-          }
+          },
+          "@zeit/next-typescript/babel"
         ]
       ],
       "plugins": [
@@ -50,9 +47,7 @@
             "preprocess": false
           }
         ],
-        [
-          "require-context-hook",
-        ]
+        ["require-context-hook"]
       ]
     }
   }
