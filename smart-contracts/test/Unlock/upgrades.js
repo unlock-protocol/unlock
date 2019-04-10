@@ -128,7 +128,11 @@ contract('Unlock / upgrades', accounts => {
 
       it('lock data should persist state between upgrades', async function() {
         const resultsAfter = await unlock.methods.locks(lockV0._address).call()
-        assert.equal(JSON.stringify(resultsAfter), JSON.stringify(v0LockData))
+        assert.equal(resultsAfter.deployed, v0LockData.deployed)
+        assert.equal(
+          resultsAfter.yieldedDiscountTokens,
+          v0LockData.yieldedDiscountTokens
+        )
       })
     })
 
