@@ -16,8 +16,11 @@ import {
 import { POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
 import { transactionTypeMapping } from '../utils/types' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
 
-import { FATAL_NO_USER_ACCOUNT, FATAL_NON_DEPLOYED_CONTRACT } from '../errors'
-import configure from '../config'
+import {
+  FATAL_NO_USER_ACCOUNT,
+  FATAL_NON_DEPLOYED_CONTRACT,
+  FATAL_WRONG_NETWORK,
+} from '../errors'
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
