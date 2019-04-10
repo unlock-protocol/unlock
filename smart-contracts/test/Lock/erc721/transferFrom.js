@@ -5,7 +5,7 @@ const BigNumber = require('bignumber.js')
 const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
 
-const unlockContract = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('Unlock.sol')
 const getUnlockProxy = require('../../helpers/proxy')
 
 let unlock, locks
@@ -14,6 +14,8 @@ contract('Lock / erc721 / transferFrom', accounts => {
   before(async () => {
     unlock = await getUnlockProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
+    await locks['FIRST'].updateTransferFee(0, 1) // disable the transfer fee for this test
+    await locks['SINGLE KEY'].updateTransferFee(0, 1) // disable the transfer fee for this test
   })
 
   const from = accounts[1]

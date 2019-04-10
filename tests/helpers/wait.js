@@ -28,8 +28,15 @@ const untilIsGone = async selector =>
  */
 const forLoadingDone = async () => untilIsGone('svg[alt="loading"]')
 
+const forIframe = async () => {
+  return page.waitForFunction(() => {
+    return window.frames.length
+  })
+}
+
 module.exports = {
   untilIsFalse,
   untilIsGone,
   forLoadingDone,
+  forIframe,
 }
