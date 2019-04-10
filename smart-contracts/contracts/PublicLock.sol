@@ -26,21 +26,21 @@ import './mixins/MixinTransfer.sol';
  * https://eips.ethereum.org/EIPS/eip-721
  */
 contract PublicLock is
-  MixinNoFallback,
-  ERC721Holder,
   IERC721,
+  MixinNoFallback,
   ERC165,
   Ownable,
+  ERC721Holder,
+  MixinLockMetadata,
   MixinFunds,
   MixinDisableAndDestroy,
   MixinLockCore,
   MixinKeys,
   MixinGrantKeys,
-  MixinApproval,
-  MixinLockMetadata,
-  MixinRefunds,
   MixinPurchase,
-  MixinTransfer
+  MixinApproval,
+  MixinTransfer,
+  MixinRefunds
 {
   constructor(
     address _owner,
