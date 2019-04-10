@@ -106,10 +106,12 @@ describe('handler', () => {
     const body = {
       hello: 'world',
     }
-    const error = 'Could not send email'
+    const error = {
+      error: 'Could not send email',
+    }
     route.mockImplementationOnce((_body, _callback) => {
       expect(_body).toEqual(body)
-      return _callback('Could not send email')
+      return _callback(error)
     })
 
     handler(
@@ -123,7 +125,7 @@ describe('handler', () => {
       {},
       (_error, response) => {
         expect(response.statusCode).toBe(400)
-        expect(response.body).toBe(error)
+        expect(response.body).toBe(JSON.stringify(error))
         done()
       }
     )
