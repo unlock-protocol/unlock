@@ -18,11 +18,13 @@ git reset --soft $LATEST_PRODUCTION
 
 echo "Committing diff"
 COMMIT_MESSAGE="Automated deploy between $LATEST_PRODUCTION and $STABLE_MASTER"
-git commit -m $COMMIT_MESSAGE -a --no-verify
+git commit -m "$COMMIT_MESSAGE" -a --no-verify
 
 echo "Push new production branch"
-git push origin $BRANCH
+git push origin $BRANCH --no-verify
 
 echo "Open pull request"
 PR_TITLE="Production Automated Deploy $BRANCH"
 curl --fail -u $GITHUB_API_USER:$GITHUB_API_TOKEN -H "Content-Type:application/json" -X POST -d "{\"title\":\"$PR_TITLE\",\"base\":\"production\",\"head\":\"$BRANCH\"}" https://api.github.com/repos/unlock-protocol/unlock/pulls
+
+
