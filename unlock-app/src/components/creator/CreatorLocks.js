@@ -12,7 +12,7 @@ import Media, { NoPhone, Phone } from '../../theme/media'
 import { createLock } from '../../actions/lock'
 import { hideForm } from '../../actions/lockFormVisibility'
 import { DefaultError } from './FatalError'
-import Svg from '../interface/svg'
+import Loading from '../interface/Loading'
 
 export const CreatorLocks = props => {
   const { createLock, lockFeed, loading, formIsVisible, hideForm } = props
@@ -47,11 +47,7 @@ export const CreatorLocks = props => {
           by clicking on the &#8216;Create Lock&#8217; button.
         </DefaultError>
       )}
-      {loading && (
-        <LoadingWrapper>
-          <Svg.Loading title="loading" alt="loading" />
-        </LoadingWrapper>
-      )}
+      {loading && <Loading />}
     </Locks>
   )
 }
@@ -85,15 +81,6 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(CreatorLocks)
-
-const LoadingWrapper = styled.section`
-  display: grid;
-  justify-items: center;
-  svg {
-    fill: var(--lightgrey);
-    width: 60px;
-  }
-`
 
 const Locks = styled.section`
   display: grid;
