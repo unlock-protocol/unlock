@@ -4,6 +4,10 @@ const sigUtil = require('eth-sig-util')
 const app = require('../../src/app')
 const Base64 = require('../../src/utils/base64')
 
+const models = require('../../src/models')
+
+let AuthorizedLock = models.AuthorizedLock
+
 let privateKey = ethJsUtil.toBuffer(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
@@ -34,6 +38,16 @@ function generateTypedData(message) {
 }
 
 describe('Purchase Controller', () => {
+  beforeAll(async () => {
+    await AuthorizedLock.create({
+      address: '0xe4906CE8a8E861339F75611c129b9679EDAe7bBD',
+    })
+  })
+
+  afterAll(async () => {
+    await AuthorizedLock.truncate()
+  })
+
   describe('purchase initiation', () => {
     describe("when the purchase hasn't been signed correctly", () => {
       it('returns a 401 status code', async () => {
@@ -90,6 +104,30 @@ describe('Purchase Controller', () => {
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
           .send(typedData)
         expect(response.statusCode).toBe(412)
+      })
+    })
+
+    describe('when the Lock has been authorized for participation in the purchasing program', () => {
+      let message = {
+        purchaseRequest: {
+          recipient: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+          lock: '0xF4906CE8a8E861339F75611c129b9679EDAe7bBD',
+          expiry: 16733658026,
+        },
+      }
+
+      let typedData = generateTypedData(message)
+      const sig = sigUtil.signTypedData(privateKey, {
+        data: typedData,
+      })
+      it('rejects the purchase', async () => {
+        expect.assertions(1)
+        let response = await request(app)
+          .post('/purchase')
+          .set('Accept', /json/)
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .send(typedData)
+        expect(response.statusCode).toBe(451)
       })
     })
   })
