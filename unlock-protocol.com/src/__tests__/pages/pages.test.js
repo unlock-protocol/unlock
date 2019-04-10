@@ -24,6 +24,24 @@ describe('Pages', () => {
       rtl.render(<About posts={[]} />)
       expect(pageTitle).toBeCalledWith('About')
     })
+
+    it('should render posts correctly', () => {
+      expect.assertions(3)
+      const posts = [
+        {
+          title: 'Sample post',
+          description: 'Description',
+          authorName: 'Author name',
+          publishDate: 'Publish date',
+          image: '/foo/image.jpg',
+        },
+      ]
+
+      const page = rtl.render(<About posts={posts} />)
+      expect(pageTitle).toBeCalledWith('About')
+      expect(page.queryByText('Description')).not.toBeNull()
+      expect(page.queryByText('Publish date')).not.toBeNull()
+    })
   })
 
   describe('Home', () => {
