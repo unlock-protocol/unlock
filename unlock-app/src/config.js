@@ -102,6 +102,9 @@ export default function configure(
     services['storage'] = {
       host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
     }
+    services['wedlocks'] = {
+      host: runtimeConfig.wedlocksHost || 'http://127.0.0.1:1337',
+    }
     isRequiredNetwork = networkId => networkId === 1984
   }
 
@@ -113,6 +116,9 @@ export default function configure(
     )
     services['storage'] = {
       host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
+    }
+    services['wedlocks'] = {
+      host: runtimeConfig.wedlocksHost || 'http://127.0.0.1:1337',
     }
 
     // If there is an existing web3 injected provider, we also add this one to the list of possible providers
@@ -146,6 +152,7 @@ export default function configure(
     paywallUrl = 'https://'
     supportedProviders = ['Metamask', 'Opera']
     services['storage'] = { host: runtimeConfig.locksmithHost }
+    services['wedlocks'] = { host: runtimeConfig.wedlocksHost }
     paywallUrl = runtimeConfig.paywallUrl
     paywallScriptUrl = runtimeConfig.paywallScriptUrl
 
@@ -171,6 +178,7 @@ export default function configure(
 
     supportedProviders = ['Metamask', 'Opera']
     services['storage'] = { host: runtimeConfig.locksmithHost }
+    services['wedlocks'] = { host: runtimeConfig.wedlocksHost }
     paywallUrl = runtimeConfig.paywallUrl
     paywallScriptUrl = runtimeConfig.paywallScriptUrl
 

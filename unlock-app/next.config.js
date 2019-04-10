@@ -14,6 +14,7 @@ let requiredConfigVariables = {
   paywallScriptUrl: process.env.PAYWALL_SCRIPT_URL,
   readOnlyProvider: process.env.READ_ONLY_PROVIDER,
   locksmithHost: process.env.LOCKSMITH_URI,
+  wedlocksHost: process.env.WEDLOCKS_URI,
 }
 
 let optionalConfigVariables = {
