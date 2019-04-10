@@ -958,38 +958,38 @@ Object {
     />
     <form>
       <div
-        class="sc-kpOJdX iOuKVo"
+        class="sc-dxgOiQ deyNVN"
       >
         Please Log In to Continue
       </div>
       <label
-        class="sc-kgoBCf ekHVMw"
+        class="sc-kGXeez hLrnfF"
         for="emailAddress"
       >
         Email address
       </label>
       <input
-        class="sc-kGXeez dzsfcf"
+        class="sc-kpOJdX eHUklm"
         name="emailAddress"
         placeholder="Email Address"
         type="email"
       />
       <br />
       <label
-        class="sc-kgoBCf ekHVMw"
+        class="sc-kGXeez hLrnfF"
         for="password"
       >
         Password
       </label>
       <input
-        class="sc-kGXeez dzsfcf"
+        class="sc-kpOJdX eHUklm"
         name="password"
         placeholder="Password"
         type="password"
       />
       <br />
       <input
-        class="sc-dxgOiQ ZLgEM"
+        class="sc-ckVGcZ eBIvUi"
         type="submit"
         value="Submit"
       />
@@ -46205,22 +46205,22 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-ckVGcZ gfHOOi"
+            class="sc-jKJlTe gvqxGr"
           >
             Pay For Content Seamlessly
           </h1>
           <h2
-            class="sc-jKJlTe jwgeFW"
+            class="sc-eNQAEJ csxlHT"
           >
             Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
           </h2>
           <p
-            class="sc-eNQAEJ jEYLiz"
+            class="sc-hMqMXs jhndXf"
           >
             At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
           </p>
           <p
-            class="sc-eNQAEJ jEYLiz"
+            class="sc-hMqMXs jhndXf"
           >
             If you want to know more about Unlock's decentralized payment protocol, check out our
              
@@ -46230,16 +46230,16 @@ Object {
             .
           </p>
           <form
-            class="sc-hMqMXs kgKElE"
+            class="sc-kEYyzF iGpiif"
           >
             <input
-              class="sc-kEYyzF cdcapi"
+              class="sc-kkGfuU hSGtuJ"
               name="emailAddress"
               placeholder="Enter your email to get started"
               type="email"
             />
             <input
-              class="sc-kkGfuU grSqOO"
+              class="sc-iAyFgw tHkZv"
               type="submit"
               value="Sign Up"
             />
@@ -56895,22 +56895,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-ckVGcZ gfHOOi"
+        class="sc-jKJlTe gvqxGr"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-jKJlTe jwgeFW"
+        class="sc-eNQAEJ csxlHT"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-eNQAEJ jEYLiz"
+        class="sc-hMqMXs jhndXf"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-eNQAEJ jEYLiz"
+        class="sc-hMqMXs jhndXf"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out our
          
@@ -56920,16 +56920,16 @@ Object {
         .
       </p>
       <form
-        class="sc-hMqMXs kgKElE"
+        class="sc-kEYyzF iGpiif"
       >
         <input
-          class="sc-kEYyzF cdcapi"
+          class="sc-kkGfuU hSGtuJ"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-kkGfuU grSqOO"
+          class="sc-iAyFgw tHkZv"
           type="submit"
           value="Sign Up"
         />
