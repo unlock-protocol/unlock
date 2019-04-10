@@ -9,28 +9,46 @@ import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
 import AuthenticationPrompt from '../interface/AuthenticationPrompt'
+import SignUp from '../interface/SignUp'
 
-export const KeyChainContent = ({ account, network }) => {
-  return (
-    <GlobalErrorConsumer>
-      <Layout title="Key Chain">
-        <Head>
-          <title>{pageTitle('Key Chain')}</title>
-        </Head>
-        {account && (
-          <BrowserOnly>
-            <Account network={network} account={account} />
-            <DeveloperOverlay />
-          </BrowserOnly>
-        )}
-        {!account && (
-          <BrowserOnly>
-            <AuthenticationPrompt />
-          </BrowserOnly>
-        )}
-      </Layout>
-    </GlobalErrorConsumer>
-  )
+export class KeyChainContent extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      signUp: true,
+    }
+  }
+
+  render() {
+    const { account, network } = this.props
+    const { signUp } = this.state
+
+    return (
+      <GlobalErrorConsumer>
+        <Layout title="Key Chain">
+          <Head>
+            <title>{pageTitle('Key Chain')}</title>
+          </Head>
+          {account && (
+            <BrowserOnly>
+              <Account network={network} account={account} />
+              <DeveloperOverlay />
+            </BrowserOnly>
+          )}
+          {!account && !signUp && (
+            <BrowserOnly>
+              <AuthenticationPrompt />
+            </BrowserOnly>
+          )}
+          {!account && signUp && (
+            <BrowserOnly>
+              <SignUp /* toggleSignUp={this.toggleSignUp} */ />
+            </BrowserOnly>
+          )}
+        </Layout>
+      </GlobalErrorConsumer>
+    )
+  }
 }
 
 KeyChainContent.propTypes = {
