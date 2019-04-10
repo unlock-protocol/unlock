@@ -9,7 +9,7 @@ zos.dev-*.json
 
 # Artifacts
 unlock-app/src/artifacts/
-smart-contracts/build/contracts/*.json
+smart-contracts/build/
 builds/
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
