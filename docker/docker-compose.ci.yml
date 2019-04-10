@@ -21,24 +21,18 @@ services:
       POSTGRES_PASSWORD: '${DB_PASSWORD}'
       POSTGRES_DB: '${DB_NAME}'
   unlock-contract-deployer: # Used for integration tests to deploy the smart contract
-    image: unlock
-    user: node
-    working_dir: /home/unlock/unlock-app
+    image: unlock-app
     environment:
       CI: '${CI}'
       HTTP_PROVIDER: '${HTTP_PROVIDER}'
     depends_on:
       - ganache-integration
   smart-contracts:
-    image: unlock
-    user: node
+    image: smart-contracts
     depends_on:
       - ganache
-    working_dir: /home/unlock/smart-contracts
   unlock-app:
-    image: unlock
-    user: node
-    working_dir: /home/unlock/unlock-app
+    image: unlock-app
     ports:
       - 3000:3000
     expose:
@@ -53,9 +47,7 @@ services:
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
     command: ['npm', 'run', 'start']
   unlock-protocol-com:
-    image: unlock
-    user: node
-    working_dir: /home/unlock/unlock-protocol.com
+    image: unlock-protocol-com
     ports:
       - 3002:3002
     expose:
@@ -66,9 +58,7 @@ services:
       DASHBOARD_URL: '${DASHBOARD_URL}'
     command: ['npm', 'run', 'start']
   paywall:
-    image: unlock
-    user: node
-    working_dir: /home/unlock/paywall
+    image: paywall
     ports:
       - 3001:3001
     expose:
@@ -83,12 +73,13 @@ services:
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
     command: ['npm', 'run', 'start']
   wedlocks:
-    image: unlock
-    user: node
-    working_dir: /home/unlock/wedlocks
+    image: wedlocks
+    environment:
+      CI: '${CI}'
+      UNLOCK_ENV: '${UNLOCK_ENV}'
+      SMTP_HOST: '${SMTP_HOST}'
   integration-tests:
-    image: unlock-integration
-    user: node
+    image: integration-tests
     environment:
       CI: '${CI}'
       UNLOCK_PORT: '${UNLOCK_PORT}'
@@ -102,17 +93,14 @@ services:
       - paywall
       - locksmith
       - unlock-protocol-com
-    working_dir: /home/unlock/tests
   locksmith:
+    image: locksmith
     environment:
       DB_USERNAME: '${DB_USERNAME}'
       DB_PASSWORD: '${DB_PASSWORD}'
       DB_NAME: '${DB_NAME}'
       DB_HOSTNAME: '${DB_HOSTNAME}'
       NODE_ENV: 'production' # TODO: verify if this is right?
-    image: unlock
-    user: node
-    working_dir: /home/unlock/locksmith
     command: sh -c './scripts/wait-for.sh db:5432 -- npm run db:migrate && npm start'
     expose:
       - 8080

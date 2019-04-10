@@ -1,21 +1,6 @@
 version: 2
-cached-checkout: &cached-checkout
-  attach_workspace:
-    at: '..'
-images-caches: &images-caches
-  attach_workspace:
-    at: ../caches
 
 jobs:
-  checkout-and-cache:
-    machine: true
-    steps:
-      - checkout
-      - persist_to_workspace:
-          root: '..'
-          paths:
-            - project
-
   promote:
     machine: true
     steps:
@@ -24,54 +9,17 @@ jobs:
           name: 'Open automated production pull request'
           command: scripts/open-production-pull-request.sh
 
-  build-unlock:
-    machine: true
-    environment:
-      DOCKER_REPOSITORY: unlockprotocol
-    steps:
-      - run: mkdir -p ../caches
-      - *cached-checkout
-      - run:
-          name: Build Unlock Image
-          command: scripts/build-image.sh unlock
-      - run:
-          name: Cache image locally
-          command: docker save -o "../caches/unlock.tar" unlock
-      - persist_to_workspace:
-          root: '../caches'
-          paths:
-            - 'unlock.tar'
-
-  build-unlock-integration:
-    machine: true
-    environment:
-      DOCKER_REPOSITORY: unlockprotocol
-    steps:
-      - run: mkdir -p ../caches
-      - *cached-checkout
-      - run:
-          name: Build Unlock Integration Image
-          command: scripts/build-image.sh unlock-integration
-      - run:
-          name: Cache image locally
-          command: docker save -o "../caches/unlock-integration.tar" unlock-integration
-      - persist_to_workspace:
-          root: '../caches'
-          paths:
-            - 'unlock-integration.tar'
-
   unlock-protocol-com-tests:
     machine: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - *images-caches
-      - *cached-checkout
+      - checkout
       - run:
-          name: Load Unlock Image
-          command: docker load -i  "../caches/unlock.tar"
+          name: Build unlock-protocol-com Image
+          command: scripts/build-image.sh unlock-protocol-com
       - run:
-          name: Creator Dashboard tests
+          name: unlock-protocol-com tests
           command: scripts/tests.sh unlock-protocol-com
 
   unlock-app-tests:
@@ -79,13 +27,12 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - *images-caches
-      - *cached-checkout
+      - checkout
       - run:
-          name: Load Unlock Image
-          command: docker load -i  "../caches/unlock.tar"
+          name: Build unlock-app Image
+          command: scripts/build-image.sh unlock-app
       - run:
-          name: Creator Dashboard tests
+          name: unlock-app tests
           command: scripts/tests.sh unlock-app
 
   unlock-app-chromatic:
@@ -93,11 +40,10 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - *images-caches
-      - *cached-checkout
+      - checkout
       - run:
-          name: Load Unlock Image
-          command: docker load -i  "../caches/unlock.tar"
+          name: Build unlock-app Image
+          command: scripts/build-image.sh unlock-app
       - run:
           name: Creator Dashboard stories
           command: scripts/storybook.sh unlock-app "$CIRCLE_BRANCH"
@@ -109,11 +55,10 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - *images-caches
-      - *cached-checkout
+      - checkout
       - run:
-          name: Load Unlock Image
-          command: docker load -i  "../caches/unlock.tar"
+          name: Build smart-contracts Image
+          command: scripts/build-image.sh smart-contracts
       - run:
           name: Smart Contract Tests
           command: scripts/tests.sh smart-contracts
@@ -127,11 +72,10 @@ jobs:
       DB_NAME: locksmith_test
       DB_HOSTNAME: db
     steps:
-      - *images-caches
-      - *cached-checkout
+      - checkout
       - run:
-          name: Load Unlock Image
-          command: docker load -i  "../caches/unlock.tar"
+          name: Build Locksmith Image
+          command: scripts/build-image.sh locksmith
       - run:
           name: Locksmith Tests
           command: scripts/tests.sh locksmith
@@ -141,11 +85,10 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - *images-caches
-      - *cached-checkout
+      - checkout
       - run:
-          name: Load Unlock Image
-          command: docker load -i  "../caches/unlock.tar"
+          name: Build paywall Image
+          command: scripts/build-image.sh paywall
       - run:
           name: Paywall Tests
           command: scripts/tests.sh paywall
@@ -155,11 +98,10 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - *images-caches
-      - *cached-checkout
+      - checkout
       - run:
-          name: Load Unlock Image
-          command: docker load -i  "../caches/unlock.tar"
+          name: Build wedlocks Image
+          command: scripts/build-image.sh wedlocks
       - run:
           name: Wedlocks Tests
           command: scripts/tests.sh wedlocks
@@ -169,14 +111,10 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - *images-caches
-      - *cached-checkout
+      - checkout
       - run:
-          name: Load Unlock Image
-          command: docker load -i  "../caches/unlock.tar"
-      - run:
-          name: Load Unlock Integration Image
-          command: docker load -i "../caches/unlock-integration.tar"
+          name: Build Images
+          command: ./scripts/docker-compose-build.sh
       - run:
           name: Integration Tests
           command: scripts/integration-tests.sh
@@ -192,8 +130,8 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - *images-caches
-      - *cached-checkout
+      # - *images-caches
+      - checkout
       - run:
           name: Set ENV_TARGET
           command: scripts/circleci/set-env-target.sh >> $BASH_ENV
@@ -201,8 +139,8 @@ jobs:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
-          name: Load Unlock Image
-          command: docker load -i  "../caches/unlock.tar"
+          name: Build unlock-app Image
+          command: scripts/build-image.sh unlock-app
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" unlock-app netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
@@ -212,8 +150,7 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - *images-caches
-      - *cached-checkout
+      - checkout
       - run:
           name: Set ENV_TARGET
           command: scripts/circleci/set-env-target.sh >> $BASH_ENV
@@ -221,8 +158,8 @@ jobs:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
-          name: Load Unlock Image
-          command: docker load -i  "../caches/unlock.tar"
+          name: Build unlock-protocol-com Image
+          command: scripts/build-image.sh unlock-protocol-com
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" unlock-protocol-com netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
@@ -232,8 +169,7 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - *images-caches
-      - *cached-checkout
+      - checkout
       - run:
           name: Set ENV_TARGET
           command: scripts/circleci/set-env-target.sh >> $BASH_ENV
@@ -241,8 +177,8 @@ jobs:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
-          name: Load Unlock Image
-          command: docker load -i "../caches/unlock.tar"
+          name: Build paywall Image
+          command: scripts/build-image.sh paywall
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" paywall netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
@@ -252,14 +188,13 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - *images-caches
-      - *cached-checkout
+      - checkout
       - run:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
-          name: Load Unlock Image
-          command: docker load -i "../caches/unlock.tar"
+          name: Build wedlocks Image
+          command: scripts/build-image.sh wedlocks
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" wedlocks netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
@@ -269,7 +204,7 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - *cached-checkout
+      - checkout
       - run:
           name: Set IS_FORKED_PR
           command: ./scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
@@ -288,33 +223,18 @@ jobs:
           name: Deploy to to Beanstalk
           command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh "$APPLICATION" "$ENVIRONMENT" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$NODE_ENV" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$GIT_COMMIT_DESC"
 
-  promote-unlock-image:
+  promote-unlock-images:
     machine: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      - *images-caches
-      - *cached-checkout
+      - checkout
       - run:
-          name: Load Unlock Image
-          command: docker load -i  "../caches/unlock.tar"
+          name: Build Images
+          command: ./scripts/docker-compose-build.sh
       - run:
-          name: Push Unlock Image as master
-          command: scripts/push-image.sh unlock master
-
-  promote-unlock-integration-image:
-    machine: true
-    environment:
-      DOCKER_REPOSITORY: unlockprotocol
-    steps:
-      - *images-caches
-      - *cached-checkout
-      - run:
-          name: Load Unlock Integration Image
-          command: docker load -i  "../caches/unlock-integration.tar"
-      - run:
-          name: Push Unlock Integration Image as master
-          command: scripts/push-image.sh unlock-integration master
+          name: Push Images
+          command: scripts/push-all-image.sh
 
 workflows:
   version: 2
@@ -331,95 +251,47 @@ workflows:
 
   build-test-and-deploy:
     jobs:
-      - checkout-and-cache
-      - build-unlock:
-          requires:
-            - checkout-and-cache
-      - build-unlock-integration:
-          requires:
-            - checkout-and-cache
-      - unlock-protocol-com-tests:
-          requires:
-            - build-unlock
-      - unlock-app-tests:
-          requires:
-            - build-unlock
+      - locksmith-tests
+      - paywall-tests
+      - smart-contracts-tests
+      - unlock-protocol-com-tests
+      - wedlocks-tests
+      - unlock-app-tests
       - unlock-app-chromatic:
           requires:
-            - build-unlock
-      - smart-contracts-tests:
-          requires:
-            - build-unlock
-      - locksmith-tests:
-          requires:
-            - build-unlock
-      - paywall-tests:
-          requires:
-            - build-unlock
-      - wedlocks-tests:
-          requires:
-            - build-unlock
+            - unlock-app-tests
       - integration-tests:
           requires:
-            - build-unlock
-            - build-unlock-integration
+            - smart-contracts-tests
+            - unlock-protocol-com-tests
+            - unlock-app-tests
+            - locksmith-tests
+            - paywall-tests
+            - wedlocks-tests
       - deploy-unlock-app-netlify:
           requires:
-            - unlock-app-tests
             - integration-tests
       - deploy-paywall-netlify:
           requires:
-            - paywall-tests
             - integration-tests
       - deploy-unlock-protocol-com-netlify:
           requires:
-            - unlock-protocol-com-tests
             - integration-tests
-      - promote-unlock-image:
+      - promote-unlock-images:
           filters:
             branches:
               only: master
           requires:
-            - unlock-protocol-com-tests
-            - unlock-app-tests
-            - smart-contracts-tests
-            - locksmith-tests
-            - paywall-tests
-            - wedlocks-tests
-            - integration-tests
-      - promote-unlock-integration-image:
-          filters:
-            branches:
-              only: master
-          requires:
-            - unlock-protocol-com-tests
-            - unlock-app-tests
-            - smart-contracts-tests
-            - locksmith-tests
-            - paywall-tests
-            - wedlocks-tests
             - integration-tests
       - deploy-locksmith-beanstalk:
           filters:
             branches:
               only: master
           requires:
-            - unlock-protocol-com-tests
-            - unlock-app-tests
-            - smart-contracts-tests
-            - locksmith-tests
-            - paywall-tests
-            - wedlocks-tests
             - integration-tests
       - deploy-wedlocks-netlify:
           filters:
             branches:
               only: master
           requires:
-            - unlock-protocol-com-tests
-            - unlock-app-tests
-            - smart-contracts-tests
-            - locksmith-tests
-            - paywall-tests
-            - wedlocks-tests
             - integration-tests
