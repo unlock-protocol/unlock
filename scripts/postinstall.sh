@@ -6,14 +6,16 @@
 
 if [ "$SKIP_SERVICES" != "true" ]; then
 
-  SERVICES=( paywall smart-contracts unlock-app locksmith tests tickets wedlocks )
+  SERVICES=( paywall smart-contracts unlock-app locksmith tests tickets wedlocks unlock-js )
 
   for i in "${SERVICES[@]}"
   do
     cd $i
-    npm ci # We run npm ci by default.
+    npm ci # We run npm ci by default. &
     cd .. # back to root
   done
+
+  wait
 
   # Copy the parent binaries into the sub projects
   npm run link-parent-bin
