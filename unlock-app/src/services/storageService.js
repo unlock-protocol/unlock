@@ -97,4 +97,89 @@ export default class StorageService {
       return Promise.reject(error)
     }
   }
+
+  /**
+   * Creates a user. In the case of failure a rejected promise is returned to the caller.
+   *
+   * @param {*} userDetails
+   * @returns {Promise<*>}
+   */
+  async createUser(user) {
+    try {
+      return await axios.post(`${this.host}/users/`, user, {})
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  /**
+   * Updates a user, using their email address as key. In the case of failure a rejected promise
+   * is returned to the caller.
+   *
+   * @param {*} email
+   * @param {*} user
+   * @param {*} token
+   * @returns {Promise<*>}
+   */
+  async updateUser(email, user, token) {
+    const opts = {}
+    if (token) {
+      opts.headers = this.genAuthorizationHeader(token)
+    }
+    try {
+      return await axios.put(
+        `${this.host}/users/${encodeURIComponent(email)}`,
+        user,
+        opts
+      )
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  /**
+   * Given a user's email address, retrieves their private key. In the case of failure a rejected promise
+   * is returned to the caller.
+   * @param {*} emailAddress
+   * @param {*} token
+   * @returns {Promise<*>}
+   */
+  async getUserPrivateKey(emailAddress, token) {
+    const opts = {}
+    if (token) {
+      opts.headers = this.genAuthorizationHeader(token)
+    }
+    try {
+      return await axios.get(
+        `${this.host}/users/${encodeURIComponent(emailAddress)}/privatekey`,
+        null,
+        opts
+      )
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  /**
+   * Given a user's email address, retrieves their recovery phrase. In the case of failure a rejected promise
+   * is returned to the caller.
+   * @param {*} emailAddress
+   * @param {*} token
+   * @returns {Promise<*>}
+   */
+  async getUserRecoveryPhrase(emailAddress, token) {
+    const opts = {}
+    if (token) {
+      opts.headers = this.genAuthorizationHeader(token)
+    }
+    try {
+      return await axios.get(
+        `${this.host}/users/${encodeURIComponent(emailAddress)}/recoveryphrase`,
+        null,
+        opts
+      )
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 }
