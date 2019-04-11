@@ -1,11 +1,7 @@
 /* eslint no-console: 0 */
 
-const fs = require('fs')
-const { join } = require('path')
-const { promisify } = require('util')
 const withTypescript = require('@zeit/next-typescript')
-
-const copyFile = promisify(fs.copyFile)
+const { exportPaths } = require('./src/utils/exportStatic')
 
 // TODO renames these: URLs need to be URLs, hosts need to be hosts... etc
 let requiredConfigVariables = {
@@ -43,35 +39,5 @@ module.exports = withTypescript({
   webpack(config) {
     return config
   },
-  exportPathMap: async (defaultPathMap, { dev, dir, outDir }) => {
-    // Export robots.txt and humans.txt in non-dev environments
-    if (!dev && outDir) {
-      await copyFile(
-        join(dir, 'static', 'robots.txt'),
-        join(outDir, 'robots.txt')
-      )
-      await copyFile(
-        join(dir, 'static', 'humans.txt'),
-        join(outDir, 'humans.txt')
-      )
-
-      // Export _redirects which is used by netlify for URL rewrites
-      await copyFile(
-        join(dir, 'static', '_redirects'),
-        join(outDir, '_redirects')
-      )
-    }
-
-    // Our statically-defined pages to export
-    return {
-      '/': { page: '/home' },
-      '/about': { page: '/about' },
-      '/jobs': { page: '/jobs' },
-      '/dashboard': { page: '/dashboard' },
-      '/keychain': { page: '/keyChain' },
-      '/terms': { page: '/terms' },
-      '/privacy': { page: '/privacy' },
-      '/log': { page: '/log' },
-    }
-  },
+  exportPathMap: exportPaths,
 })
