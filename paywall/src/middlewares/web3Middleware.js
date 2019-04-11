@@ -16,20 +16,19 @@ import {
 
 import { lockRoute } from '../utils/routes'
 
-import configure from '../config'
 import { SET_PROVIDER } from '../actions/provider'
 import { SET_NETWORK } from '../actions/network'
 
-const {
-  readOnlyProvider,
-  unlockAddress,
-  blockTime,
-  requiredConfirmations,
-} = configure()
-
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
-export default function web3Middleware({ getState, dispatch }) {
+const web3Middleware = config => ({ getState, dispatch }) => {
+  const {
+    readOnlyProvider,
+    unlockAddress,
+    blockTime,
+    requiredConfirmations,
+  } = config
+
   const web3Service = new Web3Service({
     readOnlyProvider,
     unlockAddress,
@@ -181,3 +180,5 @@ export default function web3Middleware({ getState, dispatch }) {
     }
   }
 }
+
+export default web3Middleware
