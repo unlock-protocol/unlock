@@ -10,7 +10,9 @@ const requiredVariables = ['SMTP_HOST', 'SMTP_USERNAME', 'SMTP_PASSWORD']
 requiredVariables.forEach(envVar => {
   if (!process.env[envVar]) {
     console.error(`Environment variable ${envVar} is required.`)
-    process.exit(1)
+    if (['dev', 'test'].indexOf(process.env.UNLOCK_ENV) > -1) {
+      process.exit(1)
+    }
   }
 })
 
