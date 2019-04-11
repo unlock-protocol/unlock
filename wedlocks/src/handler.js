@@ -3,16 +3,19 @@
 import { route } from './route'
 
 const headers = {
-  'Access-Control-Allow-Origin': "*",
-  'Access-Control-Allow-Headers': "Content-Type"
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
 }
 
 export const handler = (event, context, responseCallback) => {
   const callback = (err, response) => {
-    return responseCallback(err, { ...response, headers: {
-      ...headers,
-      ...response.headers,
-    }})
+    return responseCallback(err, {
+      ...response,
+      headers: {
+        ...headers,
+        ...response.headers,
+      },
+    })
   }
   if (event.httpMethod != 'POST') {
     return callback(null, {
