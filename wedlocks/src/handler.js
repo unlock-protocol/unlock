@@ -32,7 +32,7 @@ export const handler = (event, context, callback) => {
       if (error) {
         return callback(null, {
           statusCode: 400,
-          body: error,
+          body: JSON.stringify(error),
         })
       }
       return callback(null, {
