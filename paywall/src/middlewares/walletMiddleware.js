@@ -1,27 +1,31 @@
 /* eslint promise/prefer-await-to-then: 0 */
+import { WalletService } from '@unlock-protocol/unlock-js'
+
 import { updateLock } from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
 import { setAccount } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
-import { SET_PROVIDER } from '../actions/provider'
+import { PROVIDER_READY } from '../actions/provider'
 import { newTransaction } from '../actions/transaction'
 import {
   waitForWallet,
   gotWallet,
   dismissWalletCheck,
 } from '../actions/walletStatus'
-import { POLLING_INTERVAL } from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
+import { POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
+import { transactionTypeMapping } from '../utils/types' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
 
-import WalletService from '../services/walletService'
-import { FATAL_NO_USER_ACCOUNT, FATAL_NON_DEPLOYED_CONTRACT } from '../errors'
-import configure from '../config'
+import {
+  FATAL_NO_USER_ACCOUNT,
+  FATAL_NON_DEPLOYED_CONTRACT,
+  FATAL_WRONG_NETWORK,
+} from '../errors'
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
 
-export default function walletMiddleware({ getState, dispatch }) {
-  const config = configure()
+const walletMiddleware = config => ({ getState, dispatch }) => {
   const walletService = new WalletService(config)
 
   /**
@@ -55,19 +59,24 @@ export default function walletMiddleware({ getState, dispatch }) {
     }
   })
 
-  walletService.on('transaction.new', (transactionHash, from, to, input) => {
-    // At this point we know that a wallet was found, because a new transaction
-    // cannot be created without it
-    dispatch(gotWallet())
-    dispatch(
-      newTransaction({
-        hash: transactionHash,
-        to,
-        from,
-        input,
-      })
-    )
-  })
+  walletService.on(
+    'transaction.new',
+    (transactionHash, from, to, input, type, status) => {
+      // At this point we know that a wallet was found, because a new transaction
+      // cannot be created without it
+      dispatch(gotWallet())
+      dispatch(
+        newTransaction({
+          hash: transactionHash,
+          to,
+          from,
+          input,
+          type: transactionTypeMapping(type),
+          status,
+        })
+      )
+    }
+  )
 
   // A transaction has started, now we need to signal that we're waiting for
   // interaction with the wallet
@@ -105,6 +114,19 @@ export default function walletMiddleware({ getState, dispatch }) {
       // this resets a whole bunch of values, so only change it if it really changed
       dispatch(setNetwork(networkId))
     }
+
+    // Let's check if we're on the right network
+    if (config.isRequiredNetwork && !config.isRequiredNetwork(networkId)) {
+      const currentNetwork = ETHEREUM_NETWORKS_NAMES[networkId]
+        ? ETHEREUM_NETWORKS_NAMES[networkId][0]
+        : 'Unknown Network'
+      return dispatch(
+        setError(FATAL_WRONG_NETWORK, {
+          currentNetwork: currentNetwork,
+          requiredNetworkId: config.requiredNetworkId,
+        })
+      )
+    }
     // Check if the smart contract exists
     walletService.isUnlockContractDeployed((error, isDeployed) => {
       if (error) {
@@ -119,18 +141,9 @@ export default function walletMiddleware({ getState, dispatch }) {
   })
 
   return function(next) {
-    // Connect to the current provider
-    // We connect once the middleware has been initialized, using setTimout
-    // The redux event loop is synchronous, so using setTimeout guarantees
-    // that connect will only be called after all of the other middleware have
-    // been initialized
-    setTimeout(() => {
-      walletService.connect(getState().provider)
-    })
-
     return function(action) {
-      if (action.type === SET_PROVIDER) {
-        walletService.connect(action.provider)
+      if (action.type === PROVIDER_READY) {
+        walletService.connect(config.providers[getState().provider])
       } else if (action.type === PURCHASE_KEY) {
         ensureReadyBefore(() => {
           const account = getState().account
@@ -152,3 +165,5 @@ export default function walletMiddleware({ getState, dispatch }) {
     }
   }
 }
+
+export default walletMiddleware
