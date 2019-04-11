@@ -3,8 +3,8 @@
 const fs = require('fs')
 const { join } = require('path')
 const { promisify } = require('util')
-const withSourceMaps = require('@zeit/next-source-maps')
 const withCSS = require('@zeit/next-css')
+const withTypescript = require('@zeit/next-typescript')
 
 const copyFile = promisify(fs.copyFile)
 
@@ -32,7 +32,7 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
   }
 })
 
-module.exports = withSourceMaps(
+module.exports = withTypescript(
   withCSS({
     publicRuntimeConfig: {
       ...optionalConfigVariables,
