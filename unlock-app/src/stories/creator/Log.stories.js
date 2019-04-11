@@ -5,6 +5,7 @@ import Log from '../../pages/log'
 import createUnlockStore from '../../createUnlockStore'
 import { TransactionType } from '../../unlockTypes'
 import { ConfigContext } from '../../utils/withConfig'
+import configure from '../../config'
 
 const account = {
   address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
@@ -60,12 +61,11 @@ const store = createUnlockStore({
 })
 
 const ConfigProvider = ConfigContext.Provider
-
-const config = {
+const config = configure({
   chainExplorerUrlBuilders: {
     etherScan: () => '',
   },
-}
+})
 
 storiesOf('Transaction Log', module)
   .addDecorator(getStory => (

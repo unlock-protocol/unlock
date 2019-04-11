@@ -85,8 +85,8 @@ export class Header extends React.PureComponent {
             ))}
         </AppButtons>
         <DesktopButtons>
-          {navigationButtons.map(NavButton => (
-            <NavButton key={NavButton} />
+          {navigationButtons.map((NavButton, index) => (
+            <NavButton key={index.toString()} />
           ))}
         </DesktopButtons>
         <MobileToggle visibilityToggle={!!menu} onClick={this.toggleMenu}>

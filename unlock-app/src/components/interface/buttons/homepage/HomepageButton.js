@@ -4,10 +4,12 @@ import PropTypes from 'prop-types'
 import Link from 'next/link'
 
 import { ActionButton } from '../ActionButton'
+import withConfig from '../../../../utils/withConfig'
+import UnlockPropTypes from '../../../../propTypes'
 
 export class HomepageButton extends React.Component {
-  constructor(props, context) {
-    super(props, context)
+  constructor(props) {
+    super(props)
     const { acceptedTerms } = this.props
     this.state = {
       acceptedTerms: acceptedTerms,
@@ -23,6 +25,7 @@ export class HomepageButton extends React.Component {
 
   render() {
     const { acceptedTerms } = this.state
+    const { config } = this.props
 
     return (
       <React.Fragment>
@@ -41,11 +44,11 @@ export class HomepageButton extends React.Component {
           <TermsBox>
             <div>
               To access the dashboard you need to agree to our&nbsp;
-              <Link href="/terms">
+              <Link href={config.unlockStaticUrl + '/terms'}>
                 <a>Terms of Service</a>
               </Link>
               &nbsp; and&nbsp;
-              <Link href="/privacy">
+              <Link href={config.unlockStaticUrl + '/privacy'}>
                 <a>Privacy Policy</a>
               </Link>
             </div>
@@ -105,10 +108,11 @@ const ButtonLabel = styled.small`
 
 HomepageButton.propTypes = {
   acceptedTerms: PropTypes.bool,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 HomepageButton.defaultProps = {
   acceptedTerms: false,
 }
 
-export default HomepageButton
+export default withConfig(HomepageButton)

@@ -16,6 +16,7 @@ export PAYWALL_SCRIPT_URL='http://paywall:3001/static/paywall.min.js'
 export UNLOCK_HOST='unlock-app'
 export DASHBOARD_URL='http://unlock-app:3000'
 export READ_ONLY_PROVIDER='http://ganache-integration:8545'
+export UNLOCK_STATIC_URL='http://unlock-protocol-com:3002'
 
 # First this script will deploy from an instance of unlock:latest
 REPO_ROOT=`dirname "$0"`/..

@@ -41,12 +41,8 @@ describe('exportStatic', () => {
 
     expect(paths).toEqual({
       '/': { page: '/home' },
-      '/about': { page: '/about' },
-      '/jobs': { page: '/jobs' },
       '/dashboard': { page: '/dashboard' },
       '/keychain': { page: '/keyChain' },
-      '/terms': { page: '/terms' },
-      '/privacy': { page: '/privacy' },
       '/log': { page: '/log' },
     })
   })
