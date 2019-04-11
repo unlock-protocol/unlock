@@ -11,7 +11,7 @@ describe('TwitterTags', () => {
   it('should render twitter tags based on default values', () => {
     expect.assertions(3)
     const tags = rtl.render(
-      <TwitterTags title={null} description={null} image={null}/>
+      <TwitterTags title={null} description={null} image={null} />
     )
     expect(
       tags.container.querySelector("meta[name='twitter:title']").content
@@ -30,7 +30,7 @@ describe('TwitterTags', () => {
     let description = 'I am the very model of a model view controller'
     let image = '/some/image.png'
     const tags = rtl.render(
-      <TwitterTags title={title} description={description} image={image}/>
+      <TwitterTags title={title} description={description} image={image} />
     )
     expect(
       tags.container.querySelector("meta[name='twitter:title']").content
