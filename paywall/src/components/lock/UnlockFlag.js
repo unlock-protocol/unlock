@@ -1,10 +1,14 @@
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 
 import { Colophon } from './LockStyles'
 import { RoundedLogo } from '../interface/Logo'
 import Media from '../../theme/media'
 import { SHOW_FLAG_FOR } from '../../constants'
+import { lockRoute } from '../../utils/routes'
+import { expirationAsDate } from '../../utils/durations'
 
 export function LockedFlag() {
   return (
@@ -16,7 +20,7 @@ export function LockedFlag() {
   )
 }
 
-export const UnlockedFlag = () => {
+export const UnlockedFlag = ({ expiration }) => {
   const [hidden, setHidden] = useState(false)
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -32,7 +36,7 @@ export const UnlockedFlag = () => {
         </span>
         <div>
           <span>Valid until</span>
-          <span>April 5, 2019.</span>
+          <span>{expiration}.</span>
         </div>
       </aside>
       <RoundedLogo />
@@ -41,6 +45,40 @@ export const UnlockedFlag = () => {
     </Flag>
   )
 }
+
+UnlockedFlag.propTypes = {
+  expiration: PropTypes.string.isRequired,
+}
+
+export const mapStateToProps = ({ locks, keys, router, account }) => {
+  const { lockAddress } = lockRoute(router.location.pathname)
+
+  const lockFromUri = Object.values(locks).find(
+    lock => lock.address === lockAddress
+  )
+
+  let validKeys = []
+  const locksFromUri = lockFromUri ? [lockFromUri] : []
+  locksFromUri.forEach(lock => {
+    for (let k of Object.values(keys)) {
+      if (
+        k.lock === lock.address &&
+        account &&
+        k.owner === account.address &&
+        k.expiration > new Date().getTime() / 1000
+      ) {
+        validKeys.push(k)
+      }
+    }
+  })
+
+  const key = validKeys[0]
+
+  const expiration = expirationAsDate(key.expiration)
+  return { expiration }
+}
+
+export default connect(mapStateToProps)(UnlockedFlag)
 
 const Flag = styled(Colophon).attrs({
   className: 'flag',
@@ -120,7 +158,7 @@ const Flag = styled(Colophon).attrs({
       background-color: var(--offwhite);
       align-self: center;
       justify-self: center;
-      height: 59px;
+      height: 60px;
       float: none;
 
       & > p {
