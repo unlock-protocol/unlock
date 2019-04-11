@@ -26,12 +26,12 @@
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-react-hooks": "^1.6.0",
     "eslint-plugin-standard": "^4.0.0",
-    "jest": "^24.5.0",
+    "jest": "^24.7.1",
     "link-parent-bin": "^1.0.0",
     "lint-staged": "^8.1.5",
     "netlify-cli": "^2.6.0",
     "prettier": "^1.16.4",
-    "typescript": "^3.3.3333"
+    "typescript": "3.4.3"
   },
   "devDependencies": {
     "ganache-cli": "^6.4.1",
