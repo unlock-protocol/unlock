@@ -7,7 +7,7 @@ import { Headline, SubTitle, ThreeColumns, Column } from '../Components'
 import { pageTitle } from '../../constants'
 import { TwitterTags } from '../page/TwitterTags'
 import { OpenGraphTags } from '../page/OpenGraphTags'
-import { HomepageButton } from '../interface/buttons/homepage/HomepageButton'
+import HomepageButton from '../interface/buttons/homepage/HomepageButton'
 import withConfig from '../../utils/withConfig'
 
 export const HomeContent = () => (
