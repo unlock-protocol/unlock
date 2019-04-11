@@ -94,10 +94,12 @@ describe('handler', () => {
       },
       {},
       (error, response) => {
-        expect(response.headers).toEqual(expect.objectContaining({
-          'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Allow-Origin': '*',
-        }))
+        expect(response.headers).toEqual(
+          expect.objectContaining({
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': '*',
+          })
+        )
         expect(response.statusCode).toBe(200)
         expect(response.body).toBe(JSON.stringify(responseBody))
         done()
