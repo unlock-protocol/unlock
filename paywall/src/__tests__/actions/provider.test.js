@@ -1,4 +1,9 @@
-import { setProvider, SET_PROVIDER } from '../../actions/provider'
+import {
+  setProvider,
+  SET_PROVIDER,
+  PROVIDER_READY,
+  providerReady,
+} from '../../actions/provider'
 
 describe('provider actions', () => {
   it('should create an action to set the provider', () => {
@@ -9,5 +14,14 @@ describe('provider actions', () => {
       provider,
     }
     expect(setProvider(provider)).toEqual(expectedAction)
+  })
+
+  it('should create an action to signal the provider is ready', () => {
+    expect.assertions(1)
+    const expectedAction = {
+      type: PROVIDER_READY,
+    }
+
+    expect(providerReady()).toEqual(expectedAction)
   })
 })
