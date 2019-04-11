@@ -4,7 +4,14 @@
       "packages": [
         "package.json",
         "smart-contracts/package.json",
-        "unlock-app/package.json"
+        "unlock-app/package.json",
+        "locksmith/package.json",
+        "paywall/package.json",
+        "tests/package.json",
+        "tickets/package.json",
+        "unlock-js/package.json",
+        "unlock-protocol.com/package.json",
+        "wedlocks/package.json"
       ]
     }
   }
