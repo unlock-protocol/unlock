@@ -61,8 +61,6 @@ const config = {
     etherScan: (address: string) =>
       `https://blockchain.party/address/${address}/`,
   },
-  unlockUrl: 'https://foo',
-  unlockStaticUrl: 'https://foo',
 }
 
 describe('Transaction Log', () => {
