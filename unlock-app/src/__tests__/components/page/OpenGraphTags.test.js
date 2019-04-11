@@ -10,7 +10,14 @@ import OpenGraphTags from '../../../components/page/OpenGraphTags'
 describe('OpenGraphTags', () => {
   it('should render open graph tags based on default values', () => {
     expect.assertions(5)
-    const tags = rtl.render(<OpenGraphTags />)
+    const tags = rtl.render(
+      <OpenGraphTags
+        title={null}
+        description={null}
+        image={null}
+        canonicalPath={null}
+      />
+    )
     expect(
       tags.container.querySelector("meta[property='og:title']").content
     ).toBe(pageTitle())
