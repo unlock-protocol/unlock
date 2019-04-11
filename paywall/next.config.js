@@ -3,7 +3,6 @@
 const fs = require('fs')
 const { join } = require('path')
 const { promisify } = require('util')
-const withSourceMaps = require('@zeit/next-source-maps')
 const withCSS = require('@zeit/next-css')
 const withTypescript = require('@zeit/next-typescript')
 
@@ -34,46 +33,44 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
 })
 
 module.exports = withTypescript(
-  withSourceMaps(
-    withCSS({
-      publicRuntimeConfig: {
-        ...optionalConfigVariables,
-        ...requiredConfigVariables,
-      },
-      webpack: config => {
-        // Fixes npm packages that depend on `fs` module
-        config.node = {
-          fs: 'empty',
-        }
+  withCSS({
+    publicRuntimeConfig: {
+      ...optionalConfigVariables,
+      ...requiredConfigVariables,
+    },
+    webpack: config => {
+      // Fixes npm packages that depend on `fs` module
+      config.node = {
+        fs: 'empty',
+      }
 
-        return config
-      },
-      exportPathMap: async (defaultPathMap, { dev, dir, outDir }) => {
-        // Export robots.txt and humans.txt in non-dev environments
-        if (!dev && outDir) {
-          await copyFile(
-            join(dir, 'static', 'robots.txt'),
-            join(outDir, 'robots.txt')
-          )
+      return config
+    },
+    exportPathMap: async (defaultPathMap, { dev, dir, outDir }) => {
+      // Export robots.txt and humans.txt in non-dev environments
+      if (!dev && outDir) {
+        await copyFile(
+          join(dir, 'static', 'robots.txt'),
+          join(outDir, 'robots.txt')
+        )
 
-          await copyFile(
-            join(dir, 'static', 'humans.txt'),
-            join(outDir, 'humans.txt')
-          )
+        await copyFile(
+          join(dir, 'static', 'humans.txt'),
+          join(outDir, 'humans.txt')
+        )
 
-          // Export _redirects which is used by netlify for URL rewrites
-          await copyFile(
-            join(dir, 'static', '_redirects'),
-            join(outDir, '_redirects')
-          )
-        }
+        // Export _redirects which is used by netlify for URL rewrites
+        await copyFile(
+          join(dir, 'static', '_redirects'),
+          join(outDir, '_redirects')
+        )
+      }
 
-        return {
-          '/': { page: '/home' },
-          '/paywall': { page: '/paywall' },
-          '/demo': { page: '/demo' },
-        }
-      },
-    })
-  )
+      return {
+        '/': { page: '/home' },
+        '/paywall': { page: '/paywall' },
+        '/demo': { page: '/demo' },
+      }
+    },
+  })
 )
