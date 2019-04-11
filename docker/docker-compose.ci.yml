@@ -71,6 +71,7 @@ services:
       LOCKSMITH_URI: '${LOCKSMITH_URI}'
       PAYWALL_URL: '${PAYWALL_URL}'
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
+      UNLOCK_STATIC_URL: "${UNLOCK_STATIC_URL}"
     command: ['npm', 'run', 'start']
   wedlocks:
     image: wedlocks
@@ -87,6 +88,7 @@ services:
       PAYWALL_PORT: '${PAYWALL_PORT}'
       UNLOCK_HOST: '${UNLOCK_HOST}'
       PAYWALL_URL: '${PAYWALL_URL}'
+      UNLOCK_STATIC_URL: "${UNLOCK_STATIC_URL}"
     depends_on:
       - ganache-integration
       - unlock-app

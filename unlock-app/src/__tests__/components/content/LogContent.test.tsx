@@ -7,6 +7,7 @@ import {
 } from '../../../components/content/LogContent'
 import * as UnlockTypes from '../../../unlockTypes'
 import createUnlockStore from '../../../createUnlockStore'
+import { ConfigContext } from '../../../utils/withConfig'
 
 jest.mock('next/router', () => {})
 
@@ -96,16 +97,19 @@ describe('Transaction Log', () => {
         transactionFeed,
         explorerLinks,
       } = mapStateToProps(state, { config })
+      const ConfigProvider = ConfigContext.Provider
 
       const wrapper = rtl.render(
         <Provider store={createUnlockStore(state)}>
-          <LogContent
-            account={account}
-            network={network}
-            transactionFeed={transactionFeed}
-            explorerLinks={explorerLinks}
-            showForm={showForm}
-          />
+          <ConfigProvider value={config}>
+            <LogContent
+              account={account}
+              network={network}
+              transactionFeed={transactionFeed}
+              explorerLinks={explorerLinks}
+              showForm={showForm}
+            />
+          </ConfigProvider>
         </Provider>
       )
 

@@ -3,12 +3,8 @@ import { Provider } from 'react-redux'
 import * as rtl from 'react-testing-library'
 
 import Home from '../../pages/home'
-import Jobs from '../../pages/jobs'
-import About from '../../pages/about'
 import Log from '../../pages/log'
 import DashboardContent from '../../components/content/DashboardContent'
-import Privacy from '../../pages/privacy'
-import Terms from '../../pages/terms'
 
 import { pageTitle, ETHEREUM_NETWORKS_NAMES } from '../../constants'
 import createUnlockStore from '../../createUnlockStore'
@@ -47,20 +43,6 @@ describe('Pages', () => {
     jest.clearAllMocks()
   })
 
-  describe('About', () => {
-    it('should render title correctly', () => {
-      expect.assertions(1)
-      rtl.render(
-        <ConfigProvider value={config}>
-          <Provider store={store}>
-            <About />
-          </Provider>
-        </ConfigProvider>
-      )
-      expect(pageTitle).toBeCalledWith('About')
-    })
-  })
-
   describe('Dashboard', () => {
     it('should render title correctly', () => {
       expect.assertions(1)
@@ -97,20 +79,6 @@ describe('Pages', () => {
     })
   })
 
-  describe('Jobs', () => {
-    it('should render title correctly', () => {
-      expect.assertions(1)
-      rtl.render(
-        <ConfigProvider value={config}>
-          <Provider store={store}>
-            <Jobs />
-          </Provider>
-        </ConfigProvider>
-      )
-      expect(pageTitle).toBeCalledWith('Work at Unlock')
-    })
-  })
-
   describe('Log', () => {
     it('should render title correctly', () => {
       expect.assertions(1)
@@ -122,34 +90,6 @@ describe('Pages', () => {
         </ConfigProvider>
       )
       expect(pageTitle).toBeCalledWith('Log')
-    })
-  })
-
-  describe('Privacy', () => {
-    it('should render title correctly', () => {
-      expect.assertions(1)
-      rtl.render(
-        <ConfigProvider value={config}>
-          <Provider store={store}>
-            <Privacy account={account} />
-          </Provider>
-        </ConfigProvider>
-      )
-      expect(pageTitle).toBeCalledWith('Privacy Policy')
-    })
-  })
-
-  describe('Terms', () => {
-    it('should render title correctly', () => {
-      expect.assertions(1)
-      rtl.render(
-        <ConfigProvider value={config}>
-          <Provider store={store}>
-            <Terms account={account} />
-          </Provider>
-        </ConfigProvider>
-      )
-      expect(pageTitle).toBeCalledWith('Terms of Service')
     })
   })
 })

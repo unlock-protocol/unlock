@@ -2,10 +2,21 @@ import React from 'react'
 import Svg from '../../svg'
 import LayoutButton from '../LayoutButton'
 
-const About = props => (
-  <LayoutButton href="/about" label="About" {...props}>
+import withConfig from '../../../../utils/withConfig'
+import UnlockPropTypes from '../../../../propTypes'
+
+const About = ({ config, ...props }) => (
+  <LayoutButton
+    href={config.unlockStaticUrl + '/about'}
+    label="About"
+    {...props}
+  >
     <Svg.About title="About" />
   </LayoutButton>
 )
 
-export default About
+About.propTypes = {
+  config: UnlockPropTypes.configuration.isRequired,
+}
+
+export default withConfig(About)

@@ -11,6 +11,7 @@ let requiredConfigVariables = {
   readOnlyProvider: process.env.READ_ONLY_PROVIDER,
   locksmithHost: process.env.LOCKSMITH_URI,
   wedlocksUri: process.env.WEDLOCKS_URI,
+  unlockStaticUrl: process.env.UNLOCK_STATIC_URL,
 }
 
 let optionalConfigVariables = {

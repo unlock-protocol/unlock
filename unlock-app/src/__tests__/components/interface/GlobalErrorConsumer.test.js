@@ -9,6 +9,7 @@ import {
 } from '../../../components/interface/GlobalErrorConsumer'
 import { FATAL_MISSING_PROVIDER } from '../../../errors'
 import { createUnlockStore } from '../../../createUnlockStore'
+import { ConfigContext } from '../../../utils/withConfig'
 
 const store = createUnlockStore({
   router: {
@@ -19,13 +20,20 @@ const store = createUnlockStore({
   },
 })
 
+const config = {
+  unlockStaticUrl: 'https://foo/bar',
+}
+
 describe('GlobalErrorConsumer', () => {
   describe('displayError', () => {
     it('displays the error if initialized', () => {
       expect.assertions(2)
+      const ConfigProvider = ConfigContext.Provider
       const wrapper = rtl.render(
         <Provider store={store}>
-          {displayError(FATAL_MISSING_PROVIDER, {}, <div>children</div>)}
+          <ConfigProvider value={config}>
+            {displayError(FATAL_MISSING_PROVIDER, {}, <div>children</div>)}
+          </ConfigProvider>
         </Provider>
       )
       expect(wrapper.queryByText('Wallet missing')).not.toBeNull()
@@ -34,9 +42,12 @@ describe('GlobalErrorConsumer', () => {
 
     it('displays the children if no error is initialized', () => {
       expect.assertions(1)
+      const ConfigProvider = ConfigContext.Provider
       const wrapper = rtl.render(
         <Provider store={store}>
-          {displayError(false, {}, <div>children</div>)}
+          <ConfigProvider value={config}>
+            {displayError(false, {}, <div>children</div>)}
+          </ConfigProvider>
         </Provider>
       )
       expect(wrapper.queryByText('children')).not.toBeNull()
