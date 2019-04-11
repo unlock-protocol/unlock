@@ -40,5 +40,6 @@ WORKDIR /home/unlock/
 COPY --chown=node ./scripts /home/unlock/scripts
 
 # Copy the parent binaries from the root into the children
-WORKDIR /home/unlock/
 RUN npm run link-parent-bin
+
+WORKDIR /home/unlock/tests

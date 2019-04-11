@@ -3,3 +3,7 @@
 
 **/src/.next
 **/src/out
+
+node_modules/
+
+.vscode
