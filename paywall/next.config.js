@@ -44,34 +44,33 @@ module.exports = withTypescript(
         fs: 'empty',
       }
 
-        return config
-      },
-      exportPathMap: async (defaultPathMap, { dev, dir, outDir }) => {
-        // Export robots.txt and humans.txt in non-dev environments
-        if (!dev && outDir) {
-          await copyFile(
-            join(dir, 'static', 'robots.txt'),
-            join(outDir, 'robots.txt')
-          )
+      return config
+    },
+    exportPathMap: async (defaultPathMap, { dev, dir, outDir }) => {
+      // Export robots.txt and humans.txt in non-dev environments
+      if (!dev && outDir) {
+        await copyFile(
+          join(dir, 'static', 'robots.txt'),
+          join(outDir, 'robots.txt')
+        )
 
-          await copyFile(
-            join(dir, 'static', 'humans.txt'),
-            join(outDir, 'humans.txt')
-          )
+        await copyFile(
+          join(dir, 'static', 'humans.txt'),
+          join(outDir, 'humans.txt')
+        )
 
-          // Export _redirects which is used by netlify for URL rewrites
-          await copyFile(
-            join(dir, 'static', '_redirects'),
-            join(outDir, '_redirects')
-          )
-        }
+        // Export _redirects which is used by netlify for URL rewrites
+        await copyFile(
+          join(dir, 'static', '_redirects'),
+          join(outDir, '_redirects')
+        )
+      }
 
-        return {
-          '/': { page: '/home' },
-          '/paywall': { page: '/paywall' },
-          '/demo': { page: '/demo' },
-        }
-      },
-    })
-  )
+      return {
+        '/': { page: '/home' },
+        '/paywall': { page: '/paywall' },
+        '/demo': { page: '/demo' },
+      }
+    },
+  })
 )
