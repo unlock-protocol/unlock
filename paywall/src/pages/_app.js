@@ -17,6 +17,7 @@ import currencyConversionMiddleware from '../middlewares/currencyConversionMiddl
 import walletMiddleware from '../middlewares/walletMiddleware'
 import interWindowCommunicationMiddleware from '../middlewares/interWindowCommunicationMiddleware'
 import { WindowContext } from '../hooks/browser/useWindow'
+import storageMiddleware from '../middlewares/storageMiddleware'
 
 const config = configure()
 
@@ -28,6 +29,7 @@ function getOrCreateStore(initialState, history) {
     web3Middleware,
     currencyConversionMiddleware,
     walletMiddleware,
+    storageMiddleware(config),
   ]
 
   // Always make a new store if server, otherwise state is shared between requests
