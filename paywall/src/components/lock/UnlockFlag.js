@@ -108,23 +108,42 @@ const Flag = styled(Colophon).attrs({
     background-color: var(--offwhite);
     align-self: center;
     justify-self: center;
-    height: 43px;
+    height: 80px;
     float: none;
-
+    &:hover {
+      grid-template-columns: 1fr 1fr;
+      width: 100vw;
+      opacity: 1;
+    }
+  
     opacity: 1;
     & > div {
       grid-column: 2;
     }
+    &:hover a {
+      grid-column: 2;
+    }
+    &:hover > aside {
+      background-color: var(--offwhite);
+    }
     &:hover > div {
+      grid-column: 2;
       border: none;
-      border-radius: none;
+      border-radius: 0;
       width: 12px;
       height: 12px;
       margin-left: 0;
     }
+    &:hover > p {
+      grid-column: 2;
+    }
     & > aside {
       grid-column: 1;
+      grid-row: 1;
       opacity: 1;
     }
-      `}
+    & > aside > b {
+      display: block;
+    }
+        `}
 `
