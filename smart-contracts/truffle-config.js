@@ -62,4 +62,5 @@ module.exports = {
   mocha: {
     useColors: true,
   },
+  plugins: ['truffle-security'],
 }
