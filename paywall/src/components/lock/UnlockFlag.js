@@ -27,9 +27,13 @@ export const UnlockedFlag = () => {
   return (
     <Flag data-testid="unlocked" hidden={hidden}>
       <aside>
-        <b>You&apos;re subscribed</b>
-        <span>Valid until</span>
-        <span>April 5, 2019.</span>
+        <span>
+          <b>You&apos;re subscribed</b>
+        </span>
+        <div>
+          <span>Valid until</span>
+          <span>April 5, 2019.</span>
+        </div>
       </aside>
       <RoundedLogo />
       <p>Powered by</p>
@@ -90,60 +94,82 @@ const Flag = styled(Colophon).attrs({
     opacity: 1;
   }
 
-  & > aside > span {
-    width: 98px;
-    margin-left: 14px;
+  & > aside {
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     font-size: 12px;
     line-height: normal;
   }
-  & > aside > b {
+  & > aside > span > b {
     display: none;
+  }
+  & > aside > div {
+    display: flex;
+    flex-direction: column;
+    width: 98px;
+    margin-left: 14px;
   }
 
   ${Media.phone`
-    grid-template-columns: 1fr 1fr;
-    background-color: var(--offwhite);
-    align-self: center;
-    justify-self: center;
-    height: 80px;
-    float: none;
-    &:hover {
-      grid-template-columns: 1fr 1fr;
+    &, &:hover {
+      grid-template-columns: 1fr 0.6fr 20px 0.4fr;
+      grid-template-rows: 30px 30px;
       width: 100vw;
       opacity: 1;
-    }
-  
-    opacity: 1;
-    & > div {
-      grid-column: 2;
-    }
-    &:hover a {
-      grid-column: 2;
-    }
-    &:hover > aside {
       background-color: var(--offwhite);
+      align-self: center;
+      justify-self: center;
+      height: 59px;
+      float: none;
+
+      & > p {
+        grid-column: 2;
+      }
+      & > div {
+        grid-column: 3;
+      }
+      & > a {
+        grid-column: 4;
+      }
+      & > aside {
+        grid-row: 1 / span 2;
+      }
+      & > p, & > div, & > a {
+        grid-row: 2;
+        align-self: start;
+      }
+  
+      & > div {
+        height: 16px;
+        width: 16px;
+        border: none;
+        margin-left: 0;
+      }
+      & > aside {
+        display: grid;
+        padding: 0;
+        margin: 0;
+        grid-row: 1 / span 2;
+        height: 100%;
+        width: 100%;
+        background-color: var(--offwhite);
+        width: 100%;
+        opacity: 1;
+        & > span > b {
+          margin-left: 14px;
+          display: block;
+        }
+        & > div {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          width: auto;
+          & > span {
+            padding-right: 3px;
+          }
+        }
+      }
     }
-    &:hover > div {
-      grid-column: 2;
-      border: none;
-      border-radius: 0;
-      width: 12px;
-      height: 12px;
-      margin-left: 0;
-    }
-    &:hover > p {
-      grid-column: 2;
-    }
-    & > aside {
-      grid-column: 1;
-      grid-row: 1;
-      opacity: 1;
-    }
-    & > aside > b {
-      display: block;
-    }
-        `}
+  `}
 `
