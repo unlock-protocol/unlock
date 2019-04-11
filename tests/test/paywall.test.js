@@ -82,4 +82,3 @@ describe('The Unlock Paywall', () => {
     })
   })
 })
-// arg
