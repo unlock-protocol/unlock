@@ -72,6 +72,19 @@ services:
       PAYWALL_URL: '${PAYWALL_URL}'
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
     command: ['npm', 'run', 'start']
+  tickets:
+    image: tickets
+    ports:
+      - 3003:3003
+    expose:
+      - 3003
+    environment:
+      CI: '${CI}'
+      UNLOCK_ENV: '${UNLOCK_ENV}'
+      HTTP_PROVIDER: '${HTTP_PROVIDER}'
+      READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
+      LOCKSMITH_URI: '${LOCKSMITH_URI}'
+    command: ['npm', 'run', 'start']
   wedlocks:
     image: wedlocks
     environment:
