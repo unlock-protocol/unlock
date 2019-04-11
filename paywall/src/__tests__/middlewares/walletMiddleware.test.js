@@ -8,7 +8,7 @@ import {
 import { PURCHASE_KEY } from '../../actions/key'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
-import { SET_PROVIDER } from '../../actions/provider'
+import { PROVIDER_READY } from '../../actions/provider'
 import { NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
 import { POLLING_INTERVAL } from '../../constants'
@@ -19,8 +19,6 @@ import {
 import { UPDATE_LOCK } from '../../actions/lock'
 
 let mockConfig
-
-jest.mock('../../config', () => () => mockConfig)
 
 /**
  * Fake state
@@ -47,7 +45,6 @@ const transaction = {
 const network = {
   name: 'test',
 }
-const provider = 'Toshi'
 
 /**
  * This is a "fake" middleware caller
@@ -60,7 +57,7 @@ const create = () => {
   }
   const next = jest.fn()
 
-  const handler = walletMiddleware(store)
+  const handler = walletMiddleware(mockConfig)(store)
 
   const invoke = action => handler(next)(action)
 
@@ -81,11 +78,11 @@ class MockWalletService extends EventEmitter {
 
 let mockWalletService = new MockWalletService()
 
-jest.mock('../../services/walletService', () => {
-  return function() {
+jest.mock('@unlock-protocol/unlock-js', () => ({
+  WalletService: function() {
     return mockWalletService
-  }
-})
+  },
+}))
 
 jest.useFakeTimers()
 
@@ -331,13 +328,15 @@ describe('Wallet middleware', () => {
     })
   })
 
-  it('should handle SET_PROVIDER and re connect', () => {
+  it('should handle PROVIDER_READY and connect', () => {
     expect.assertions(2)
     const { next, invoke } = create()
-    const action = { type: SET_PROVIDER, provider }
+    const action = { type: PROVIDER_READY }
     mockWalletService.connect = jest.fn()
     invoke(action)
-    expect(mockWalletService.connect).toHaveBeenCalledWith(provider)
+    expect(mockWalletService.connect).toHaveBeenCalledWith(
+      mockConfig.providers[state.provider]
+    )
     expect(next).toHaveBeenCalledWith(action)
   })
 

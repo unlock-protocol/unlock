@@ -13,6 +13,9 @@ import {
 import { SET_ERROR } from '../../actions/error'
 import { SET_PROVIDER, setProvider } from '../../actions/provider'
 import { SET_NETWORK, setNetwork } from '../../actions/network'
+import configure from '../../config'
+
+const config = configure()
 
 /**
  * Fake state
@@ -45,7 +48,7 @@ const create = () => {
   }
   const next = jest.fn()
 
-  const handler = web3Middleware(store)
+  const handler = web3Middleware(config)(store)
 
   const invoke = action => handler(next)(action)
 
@@ -104,7 +107,7 @@ beforeEach(() => {
   }
 })
 
-describe('Lock middleware', () => {
+describe('Web3 middleware', () => {
   it('should handle account.updated events triggered by the web3Service', () => {
     expect.assertions(1)
     const { store } = create()
