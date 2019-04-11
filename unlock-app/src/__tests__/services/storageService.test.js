@@ -7,6 +7,10 @@ describe('StorageService', () => {
   const serviceHost = 'http://127.0.0.1:8080'
   const storageService = new StorageService(serviceHost)
 
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   describe('lockLookUp', () => {
     describe('when the requested lock exists', () => {
       it('returns the details', async () => {
@@ -158,6 +162,196 @@ describe('StorageService', () => {
         transactionHash,
         sender: senderAddress,
         recipient: recipientAddress,
+      })
+    })
+  })
+
+  describe('Create user', () => {
+    describe('When a user can be created', () => {
+      it('returns a successful promise', async () => {
+        expect.assertions(1)
+        const user = {
+          emailAddress: 'hello@unlock-protocol.com',
+          publicKey: 'foo',
+          privateKey: 'bar',
+        }
+        axios.post.mockReturnValue({})
+        await storageService.createUser(user)
+
+        expect(axios.post).toHaveBeenCalledWith(
+          `${serviceHost}/users/`,
+          user,
+          {}
+        )
+      })
+    })
+
+    describe('When a user cannot be created', () => {
+      it('returns a rejected promise', async () => {
+        expect.assertions(2)
+        const user = {
+          emailAddress: 'hello@unlock-protocol.com',
+          publicKey: 'foo',
+          privateKey: 'bar',
+        }
+        axios.post.mockRejectedValue('Hark! An Error')
+        try {
+          await storageService.createUser(user)
+        } catch (error) {
+          expect(error).toEqual('Hark! An Error')
+        }
+
+        expect(axios.post).toHaveBeenCalledWith(
+          `${serviceHost}/users/`,
+          user,
+          {}
+        )
+      })
+    })
+  })
+
+  describe('Update user', () => {
+    describe('When a user can be updated', () => {
+      it('returns a successful promise', async () => {
+        expect.assertions(1)
+        axios.put.mockReturnValue()
+        const user = {
+          emailAddress: 'goodbye@unlock-protocol.com',
+          publicKey: 'foo',
+          privateKey: 'bar',
+        }
+
+        await storageService.updateUser('hello@unlock-protocol.com', user, null)
+
+        expect(axios.put).toHaveBeenCalledWith(
+          `${serviceHost}/users/${encodeURIComponent(
+            'hello@unlock-protocol.com'
+          )}`,
+          user,
+          {}
+        )
+      })
+    })
+
+    describe('When a user cannot be updated', () => {
+      it('returns a rejected promise', async () => {
+        expect.assertions(2)
+        axios.put.mockRejectedValue('Egads! An Error')
+        const user = {
+          emailAddress: 'goodbye@unlock-protocol.com',
+          publicKey: 'foo',
+          privateKey: 'bar',
+        }
+
+        try {
+          await storageService.updateUser(
+            'hello@unlock-protocol.com',
+            user,
+            null
+          )
+        } catch (error) {
+          expect(error).toEqual('Egads! An Error')
+        }
+
+        expect(axios.put).toHaveBeenCalledWith(
+          `${serviceHost}/users/${encodeURIComponent(
+            'hello@unlock-protocol.com'
+          )}`,
+          user,
+          {}
+        )
+      })
+    })
+  })
+
+  describe('Retrieve a private key for a user', () => {
+    describe('When a private key can be retrieved', () => {
+      it('returns a successful promise', async () => {
+        expect.assertions(1)
+        axios.get.mockReturnValue({})
+
+        await storageService.getUserPrivateKey(
+          'hello@unlock-protocol.com',
+          null
+        )
+
+        expect(axios.get).toHaveBeenCalledWith(
+          `${serviceHost}/users/${encodeURIComponent(
+            'hello@unlock-protocol.com'
+          )}/privatekey`,
+          null,
+          {}
+        )
+      })
+    })
+
+    describe('When a private key cannot be retrieved', () => {
+      it('returns a rejected promise', async () => {
+        expect.assertions(2)
+        axios.get.mockRejectedValue('Great Snakes! An Error')
+
+        try {
+          await storageService.getUserPrivateKey(
+            'hello@unlock-protocol.com',
+            null
+          )
+        } catch (error) {
+          expect(error).toEqual('Great Snakes! An Error')
+        }
+
+        expect(axios.get).toHaveBeenCalledWith(
+          `${serviceHost}/users/${encodeURIComponent(
+            'hello@unlock-protocol.com'
+          )}/privatekey`,
+          null,
+          {}
+        )
+      })
+    })
+  })
+
+  describe('Retrieve a user recovery phrase', () => {
+    describe('When a recovery phrase can be retrieved', () => {
+      it('returns a successful promise', async () => {
+        expect.assertions(1)
+        axios.get.mockReturnValue({})
+
+        await storageService.getUserRecoveryPhrase(
+          'hello@unlock-protocol.com',
+          null
+        )
+
+        expect(axios.get).toHaveBeenCalledWith(
+          `${serviceHost}/users/${encodeURIComponent(
+            'hello@unlock-protocol.com'
+          )}/recoveryphrase`,
+          null,
+          {}
+        )
+      })
+    })
+
+    describe('When a recovery phrase cannot be retrieved', () => {
+      it('returns a rejected promise', async () => {
+        expect.assertions(2)
+        axios.get.mockRejectedValue('Zounds! An Error')
+
+        try {
+          await storageService.getUserRecoveryPhrase(
+            'hello@unlock-protocol.com',
+            null
+          )
+        } catch (error) {
+          expect(error).toEqual('Zounds! An Error')
+        }
+
+        expect(axios.get).toHaveBeenCalledWith(
+          `${serviceHost}/users/${encodeURIComponent(
+            'hello@unlock-protocol.com'
+          )}/recoveryphrase`,
+          null,
+          {}
+        )
       })
     })
   })
