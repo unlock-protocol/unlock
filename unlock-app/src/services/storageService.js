@@ -101,7 +101,7 @@ export default class StorageService {
   /**
    * Creates a user. In the case of failure a rejected promise is returned to the caller.
    *
-   * @param {*} userDetails
+   * @param {*} user
    * @returns {Promise<*>}
    */
   async createUser(user) {
