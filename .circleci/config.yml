@@ -241,7 +241,7 @@ workflows:
   promote: # The promote workflow will checkout an old version of master (4 days old) and rebase it onto the production branch
     triggers:
       - schedule:
-          cron: '30 20 * * 2' # use cron syntax to set the schedule trigger on Teusday at 430pm ET (2030 UTC)
+          cron: '30 20 * * 1-4' # use cron syntax to set the scheduled trigger on week days at 230pm ET (1830 UTC).
           filters:
             branches:
               only:
