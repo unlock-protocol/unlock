@@ -28,7 +28,7 @@ docker-compose -f $DOCKER_COMPOSE_FILE down
 
 # re-build the images. This will use local docker cache
 docker build -t unlock -f "$REPO_ROOT/docker/unlock.dockerfile" $REPO_ROOT
-docker build -t unlock-integration -f "$REPO_ROOT/docker/unlock-integration.dockerfile" $REPO_ROOT
+docker build -t unlock-integration -f "$REPO_ROOT/docker/integration-tests.dockerfile" $REPO_ROOT
 
 # Run the tests
 $REPO_ROOT/scripts/integration-tests.sh $EXTRA_ARGS
