@@ -12,7 +12,8 @@
         "unlock-js/package.json",
         "unlock-protocol.com/package.json",
         "wedlocks/package.json"
-      ]
+      ],
+      "ignore": ["web3", "web3-utils", "web3-eth-abi"]
     }
   }
 }
