@@ -93,6 +93,19 @@ jobs:
           name: Paywall Tests
           command: scripts/tests.sh paywall
 
+  tickets-tests:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          name: Build tickets Image
+          command: scripts/build-image.sh tickets
+      - run:
+          name: Paywall Tests
+          command: scripts/tests.sh tickets
+
   wedlocks-tests:
     machine: true
     environment:
@@ -253,6 +266,7 @@ workflows:
     jobs:
       - locksmith-tests
       - paywall-tests
+      - tickets-tests
       - smart-contracts-tests
       - unlock-protocol-com-tests
       - wedlocks-tests
@@ -268,6 +282,7 @@ workflows:
             - locksmith-tests
             - paywall-tests
             - wedlocks-tests
+            - tickets-tests
       - deploy-unlock-app-netlify:
           requires:
             - integration-tests
