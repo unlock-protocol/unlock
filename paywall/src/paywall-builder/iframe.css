@@ -31,6 +31,7 @@
 }
 .unlock.hide:hover {
   margin-right: 0px;
+  width: 256px;
 }
 @keyframes slideout {
   0% {
@@ -45,15 +46,17 @@
 }
 @media only screen and (max-width: 763px) {
   .unlock.hide {
+    margin-right: 0;
     display: flex;
     bottom: 0;
     width: 100vw;
-    height: 43px;
+    height: 60px;
     animation: none;
     transition: none;
     margin-right: 0;
   }
   .unlock.hide:hover {
     margin-right: 0;
+    width: 100vw;
   }
 }

@@ -14,7 +14,10 @@ body.big {
   overflow: initial;
 }
 
-@media only screen and (min-width: 135px) and (max-width: 763px) {
+/* the paywall body is 256px wide when minimized, this next min-width matches that case */
+/* otherwise we will display the mobile view on desktop! */
+/* if you change this, also change the value in src/themes/media.js */
+@media only screen and (min-width: 257px) and (max-width: 763px) {
   body.small {
     height: 43px;
   }

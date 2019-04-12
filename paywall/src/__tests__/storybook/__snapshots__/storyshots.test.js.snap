@@ -2554,7 +2554,7 @@ Object {
   text-align: center;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     display: grid;
     grid-gap: 0;
@@ -2562,7 +2562,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
@@ -2570,13 +2570,13 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c5 {
     display: none;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c9 {
     display: grid;
   }
@@ -2588,7 +2588,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c11 {
     display: grid;
   }
@@ -2771,10 +2771,10 @@ Object {
       rel="stylesheet"
     />
     <header
-      class="rk37o-0 jeTcda"
+      class="rk37o-0 dKBEKk"
     >
       <h1
-        class="sc-12d5f0e-1 kaZiPl"
+        class="sc-12d5f0e-1 dbLMFP"
       >
         <a
           class="sc-12d5f0e-0 eUFnmt"
@@ -2798,7 +2798,7 @@ Object {
         </span>
       </h1>
       <div
-        class="rk37o-1 beQuN"
+        class="rk37o-1 fEJBJl"
       >
         <a
           class="is925m-0 lnZuor"
@@ -2889,7 +2889,7 @@ Object {
         </a>
       </div>
       <div
-        class="rk37o-2 cJcwtM"
+        class="rk37o-2 kcihew"
       >
         <a
           class="is925m-0 eoIchi"
@@ -2925,7 +2925,7 @@ Object {
         </a>
       </div>
       <div
-        class="rk37o-3 ieLfxF"
+        class="rk37o-3 bXXmSQ"
       />
     </header>
   </div>,
@@ -3034,7 +3034,7 @@ Object {
   height: 70px;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     display: grid;
     grid-gap: 0;
@@ -3042,7 +3042,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
@@ -3091,10 +3091,10 @@ Object {
       rel="stylesheet"
     />
     <header
-      class="sc-4839jp-0 whSfn"
+      class="sc-4839jp-0 wcypv"
     >
       <h1
-        class="sc-12d5f0e-1 kaZiPl"
+        class="sc-12d5f0e-1 dbLMFP"
       >
         <a
           class="sc-12d5f0e-0 eUFnmt"
@@ -3212,7 +3212,7 @@ Object {
   font-weight: 300;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     display: grid;
     grid-gap: 0;
@@ -3257,7 +3257,7 @@ Object {
       rel="stylesheet"
     />
     <h1
-      class="sc-12d5f0e-1 kaZiPl"
+      class="sc-12d5f0e-1 dbLMFP"
     >
       <a
         class="sc-12d5f0e-0 eUFnmt"
@@ -3498,7 +3498,7 @@ Object {
   line-height: normal;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c4 {
     display: grid;
     grid-gap: 0;
@@ -3506,7 +3506,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c3 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
@@ -3514,7 +3514,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     display: -webkit-box;
     display: -webkit-flex;
@@ -3525,19 +3525,19 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     display: none;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c18 {
     display: none;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c10 {
     display: -webkit-box;
     display: -webkit-flex;
@@ -3549,7 +3549,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c11 {
     margin-top: initial;
     float: unset;
@@ -3742,19 +3742,19 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="gmrrpf-0 bqRRWt"
+      class="gmrrpf-0 fEcaZF"
     >
       <div
-        class="gmrrpf-1 ehxNBd"
+        class="gmrrpf-1 hmwxTc"
       />
       <div
         class="gmrrpf-3 fbxfDW"
       >
         <header
-          class="sc-4839jp-0 whSfn"
+          class="sc-4839jp-0 wcypv"
         >
           <h1
-            class="sc-12d5f0e-1 kaZiPl"
+            class="sc-12d5f0e-1 dbLMFP"
           >
             <a
               class="sc-12d5f0e-0 eUFnmt"
@@ -3791,10 +3791,10 @@ Object {
           </h2>
         </section>
         <div
-          class="sc-1m7p3zh-2 dtufzk"
+          class="sc-1m7p3zh-2 gRtcRQ"
         >
           <svg
-            class="sc-1m7p3zh-3 KjRtb"
+            class="sc-1m7p3zh-3 gazKnV"
             fill="none"
             height="245px"
             width="200px"
@@ -3907,7 +3907,7 @@ Object {
         </footer>
       </div>
       <div
-        class="gmrrpf-2 dfTyJq"
+        class="gmrrpf-2 bketKF"
       />
     </div>
   </div>,
@@ -4215,7 +4215,7 @@ Object {
   width: 100%;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c4 {
     display: grid;
     grid-gap: 0;
@@ -4223,7 +4223,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c3 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
@@ -4231,13 +4231,13 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c8 {
     display: none;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c12 {
     display: grid;
   }
@@ -4249,7 +4249,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c14 {
     display: grid;
   }
@@ -4261,7 +4261,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     display: -webkit-box;
     display: -webkit-flex;
@@ -4272,13 +4272,13 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     display: none;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c17 {
     display: none;
   }
@@ -4478,19 +4478,19 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="gmrrpf-0 bqRRWt"
+      class="gmrrpf-0 fEcaZF"
     >
       <div
-        class="gmrrpf-1 ehxNBd"
+        class="gmrrpf-1 hmwxTc"
       />
       <div
         class="gmrrpf-3 fbxfDW"
       >
         <header
-          class="rk37o-0 jeTcda"
+          class="rk37o-0 dKBEKk"
         >
           <h1
-            class="sc-12d5f0e-1 kaZiPl"
+            class="sc-12d5f0e-1 dbLMFP"
           >
             <a
               class="sc-12d5f0e-0 eUFnmt"
@@ -4514,7 +4514,7 @@ Object {
             </span>
           </h1>
           <div
-            class="rk37o-1 beQuN"
+            class="rk37o-1 fEJBJl"
           >
             <a
               class="is925m-0 lnZuor"
@@ -4605,7 +4605,7 @@ Object {
             </a>
           </div>
           <div
-            class="rk37o-2 cJcwtM"
+            class="rk37o-2 kcihew"
           >
             <a
               class="is925m-0 eoIchi"
@@ -4641,7 +4641,7 @@ Object {
             </a>
           </div>
           <div
-            class="rk37o-3 ieLfxF"
+            class="rk37o-3 bXXmSQ"
           />
         </header>
         <footer
@@ -4655,7 +4655,7 @@ Object {
         </footer>
       </div>
       <div
-        class="gmrrpf-2 dfTyJq"
+        class="gmrrpf-2 bketKF"
       />
     </div>
   </div>,
@@ -4806,7 +4806,7 @@ Object {
   width: 100%;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c4 {
     display: grid;
     grid-gap: 0;
@@ -4814,7 +4814,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c3 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
@@ -4822,7 +4822,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     display: -webkit-box;
     display: -webkit-flex;
@@ -4833,13 +4833,13 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     display: none;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c10 {
     display: none;
   }
@@ -4909,19 +4909,19 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="gmrrpf-0 bqRRWt"
+      class="gmrrpf-0 fEcaZF"
     >
       <div
-        class="gmrrpf-1 ehxNBd"
+        class="gmrrpf-1 hmwxTc"
       />
       <div
         class="gmrrpf-3 fbxfDW"
       >
         <header
-          class="sc-4839jp-0 whSfn"
+          class="sc-4839jp-0 wcypv"
         >
           <h1
-            class="sc-12d5f0e-1 kaZiPl"
+            class="sc-12d5f0e-1 dbLMFP"
           >
             <a
               class="sc-12d5f0e-0 eUFnmt"
@@ -4956,7 +4956,7 @@ Object {
         </footer>
       </div>
       <div
-        class="gmrrpf-2 dfTyJq"
+        class="gmrrpf-2 bketKF"
       />
     </div>
   </div>,
@@ -5065,7 +5065,7 @@ Object {
   height: 70px;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     display: grid;
     grid-gap: 0;
@@ -5073,7 +5073,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
@@ -5122,10 +5122,10 @@ Object {
       rel="stylesheet"
     />
     <header
-      class="sc-4839jp-0 whSfn"
+      class="sc-4839jp-0 wcypv"
     >
       <h1
-        class="sc-12d5f0e-1 kaZiPl"
+        class="sc-12d5f0e-1 dbLMFP"
       >
         <a
           class="sc-12d5f0e-0 eUFnmt"
@@ -8411,14 +8411,14 @@ Object {
   align-self: start;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c3 {
     height: 16px;
     width: 16px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     font-size: 10px;
     display: grid;
@@ -8448,7 +8448,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c11 {
     font-size: 10px;
     width: 170px;
@@ -8491,7 +8491,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c4 {
     -webkit-align-self: initial;
     -ms-flex-item-align: initial;
@@ -8603,13 +8603,13 @@ Object {
       style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="j1ncz7-3 hFwFKo"
+        class="j1ncz7-3 gvuvoY"
       >
         <div
           class="j1ncz7-0 iFZnpo"
         >
           <div
-            class="sth0f3-0 kgAUQA"
+            class="sth0f3-0 khsUlM"
           >
             <svg
               viewBox="0 0 56 56"
@@ -8625,7 +8625,7 @@ Object {
           Purchase Confirmed
         </p>
         <div
-          class="j1ncz7-5 jcAvSH"
+          class="j1ncz7-5 jatnEK"
         >
           <a
             class="sc-1hzn3pu-2 ffRwyB is925m-0 kuCWTv"
@@ -8658,7 +8658,7 @@ Object {
           </a>
         </div>
         <div
-          class="j1ncz7-4 fyCSrR"
+          class="j1ncz7-4 jOavbS"
         >
           <p>
             Powered by
@@ -8667,7 +8667,7 @@ Object {
             class="j1ncz7-0 iFZnpo"
           >
             <div
-              class="sth0f3-0 kgAUQA"
+              class="sth0f3-0 khsUlM"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -8829,14 +8829,14 @@ Object {
   display: none;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c3 {
     height: 16px;
     width: 16px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     font-size: 10px;
     display: grid;
@@ -8866,7 +8866,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c8 {
     font-size: 10px;
     width: 170px;
@@ -8987,13 +8987,13 @@ Object {
       style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="j1ncz7-3 hFwFKo"
+        class="j1ncz7-3 gvuvoY"
       >
         <div
           class="j1ncz7-0 iFZnpo"
         >
           <div
-            class="sth0f3-0 kgAUQA"
+            class="sth0f3-0 khsUlM"
           >
             <svg
               viewBox="0 0 56 56"
@@ -9016,7 +9016,7 @@ Object {
           />
         </div>
         <div
-          class="j1ncz7-4 fyCSrR"
+          class="j1ncz7-4 jOavbS"
         >
           <p>
             Powered by
@@ -9025,7 +9025,7 @@ Object {
             class="j1ncz7-0 iFZnpo"
           >
             <div
-              class="sth0f3-0 kgAUQA"
+              class="sth0f3-0 khsUlM"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -9335,14 +9335,14 @@ Object {
   grid-column: 1;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c14 {
     height: 16px;
     width: 16px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c13 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
@@ -9385,13 +9385,13 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     min-height: 390px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c2 {
     font-size: 13px;
   }
@@ -9605,12 +9605,12 @@ Object {
         class="sc-7wmxqm-0 fANVjX"
       >
         <div
-          class="sc-7wmxqm-1 kKQRcy"
+          class="sc-7wmxqm-1 dFGbOn"
           data-testid="paywall-banner"
           style="height: 0%;"
         >
           <h1
-            class="sc-7wmxqm-2 headline dotYyq"
+            class="sc-7wmxqm-2 headline cIzhrH"
           >
             You have reached your limit of free articles. Please purchase access
           </h1>
@@ -9665,13 +9665,13 @@ Object {
             </li>
           </ul>
           <footer
-            class="sc-1549ebs-8 DBDuf"
+            class="sc-1549ebs-8 hhmezU"
           >
             <p>
               Powered by
             </p>
             <div
-              class="sth0f3-0 kgAUQA"
+              class="sth0f3-0 khsUlM"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -9913,14 +9913,14 @@ Object {
   grid-column: 1;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c8 {
     height: 16px;
     width: 16px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c7 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
@@ -9971,13 +9971,13 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     min-height: 390px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c2 {
     font-size: 13px;
   }
@@ -10163,12 +10163,12 @@ Object {
         class="sc-7wmxqm-0 fANVjX"
       >
         <div
-          class="sc-7wmxqm-1 kKQRcy"
+          class="sc-7wmxqm-1 dFGbOn"
           data-testid="paywall-banner"
           style="height: 0%;"
         >
           <h1
-            class="sc-7wmxqm-2 headline dotYyq"
+            class="sc-7wmxqm-2 headline cIzhrH"
           >
             You have reached your limit of free articles. Please purchase access
           </h1>
@@ -10195,13 +10195,13 @@ Object {
             </section>
           </ul>
           <footer
-            class="sc-1549ebs-8 DBDuf"
+            class="sc-1549ebs-8 hhmezU"
           >
             <p>
               Powered by
             </p>
             <div
-              class="sth0f3-0 kgAUQA"
+              class="sth0f3-0 khsUlM"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -10511,14 +10511,14 @@ Object {
   grid-column: 1;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c14 {
     height: 16px;
     width: 16px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c13 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
@@ -10561,13 +10561,13 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     min-height: 390px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c2 {
     font-size: 13px;
   }
@@ -10781,12 +10781,12 @@ Object {
         class="sc-7wmxqm-0 fANVjX"
       >
         <div
-          class="sc-7wmxqm-1 kKQRcy"
+          class="sc-7wmxqm-1 dFGbOn"
           data-testid="paywall-banner"
           style="height: 0%;"
         >
           <h1
-            class="sc-7wmxqm-2 headline dotYyq"
+            class="sc-7wmxqm-2 headline cIzhrH"
           >
             You have reached your limit of free articles. Please purchase access
           </h1>
@@ -10841,13 +10841,13 @@ Object {
             </li>
           </ul>
           <footer
-            class="sc-1549ebs-8 DBDuf"
+            class="sc-1549ebs-8 hhmezU"
           >
             <p>
               Powered by
             </p>
             <div
-              class="sth0f3-0 kgAUQA"
+              class="sth0f3-0 khsUlM"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -11089,14 +11089,14 @@ Object {
   grid-column: 1;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c8 {
     height: 16px;
     width: 16px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c7 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
@@ -11147,13 +11147,13 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     min-height: 390px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c2 {
     font-size: 13px;
   }
@@ -11339,12 +11339,12 @@ Object {
         class="sc-7wmxqm-0 fANVjX"
       >
         <div
-          class="sc-7wmxqm-1 kKQRcy"
+          class="sc-7wmxqm-1 dFGbOn"
           data-testid="paywall-banner"
           style="height: 0%;"
         >
           <h1
-            class="sc-7wmxqm-2 headline dotYyq"
+            class="sc-7wmxqm-2 headline cIzhrH"
           >
             You have reached your limit of free articles. Please purchase access
           </h1>
@@ -11371,13 +11371,13 @@ Object {
             </section>
           </ul>
           <footer
-            class="sc-1549ebs-8 DBDuf"
+            class="sc-1549ebs-8 hhmezU"
           >
             <p>
               Powered by
             </p>
             <div
-              class="sth0f3-0 kgAUQA"
+              class="sth0f3-0 khsUlM"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -11687,14 +11687,14 @@ Object {
   grid-column: 1;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c14 {
     height: 16px;
     width: 16px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c13 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
@@ -11737,13 +11737,13 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     min-height: 390px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c2 {
     font-size: 13px;
   }
@@ -12003,12 +12003,12 @@ Object {
         class="sc-7wmxqm-0 fANVjX"
       >
         <div
-          class="sc-7wmxqm-1 kKQRcy"
+          class="sc-7wmxqm-1 dFGbOn"
           data-testid="paywall-banner"
           style="height: 0%;"
         >
           <h1
-            class="sc-7wmxqm-2 headline dotYyq"
+            class="sc-7wmxqm-2 headline cIzhrH"
           >
             You have reached your limit of free articles. Please purchase access
           </h1>
@@ -12109,13 +12109,13 @@ Object {
             </li>
           </ul>
           <footer
-            class="sc-1549ebs-8 DBDuf"
+            class="sc-1549ebs-8 hhmezU"
           >
             <p>
               Powered by
             </p>
             <div
-              class="sth0f3-0 kgAUQA"
+              class="sth0f3-0 khsUlM"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -12456,14 +12456,14 @@ Object {
   grid-column: 1;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c13 {
     height: 16px;
     width: 16px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c12 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
@@ -12506,13 +12506,13 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     min-height: 390px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c2 {
     font-size: 13px;
   }
@@ -12727,12 +12727,12 @@ Object {
           class="sc-7wmxqm-0 fANVjX"
         >
           <div
-            class="sc-7wmxqm-1 kKQRcy"
+            class="sc-7wmxqm-1 dFGbOn"
             data-testid="paywall-banner"
             style="height: 0%;"
           >
             <h1
-              class="sc-7wmxqm-2 headline dotYyq"
+              class="sc-7wmxqm-2 headline cIzhrH"
             >
               Purchase pending...
             </h1>
@@ -12781,13 +12781,13 @@ Object {
               </li>
             </ul>
             <footer
-              class="sc-1549ebs-8 DBDuf"
+              class="sc-1549ebs-8 hhmezU"
             >
               <p>
                 Powered by
               </p>
               <div
-                class="sth0f3-0 kgAUQA"
+                class="sth0f3-0 khsUlM"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -12950,14 +12950,14 @@ Object {
   display: none;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c3 {
     height: 16px;
     width: 16px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     font-size: 10px;
     display: grid;
@@ -12987,7 +12987,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c8 {
     font-size: 10px;
     width: 170px;
@@ -13211,13 +13211,13 @@ Object {
         class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-3 hFwFKo"
+          class="j1ncz7-3 gvuvoY"
         >
           <div
             class="j1ncz7-0 iFZnpo"
           >
             <div
-              class="sth0f3-0 kgAUQA"
+              class="sth0f3-0 khsUlM"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -13240,7 +13240,7 @@ Object {
             />
           </div>
           <div
-            class="j1ncz7-4 fyCSrR"
+            class="j1ncz7-4 jOavbS"
           >
             <p>
               Powered by
@@ -13249,7 +13249,7 @@ Object {
               class="j1ncz7-0 iFZnpo"
             >
               <div
-                class="sth0f3-0 kgAUQA"
+                class="sth0f3-0 khsUlM"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -13698,14 +13698,14 @@ Object {
   grid-column: 1;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c21 {
     height: 16px;
     width: 16px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c20 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
@@ -13748,13 +13748,13 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     min-height: 390px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c2 {
     font-size: 13px;
   }
@@ -13996,12 +13996,12 @@ Object {
           class="sc-7wmxqm-0 fANVjX"
         >
           <div
-            class="sc-7wmxqm-1 kKQRcy"
+            class="sc-7wmxqm-1 dFGbOn"
             data-testid="paywall-banner"
             style="height: 0%;"
           >
             <h1
-              class="sc-7wmxqm-2 headline dotYyq"
+              class="sc-7wmxqm-2 headline cIzhrH"
             >
               Purchase confirmed, content unlocked!
             </h1>
@@ -14077,13 +14077,13 @@ Object {
               </li>
             </ul>
             <footer
-              class="sc-1549ebs-8 DBDuf"
+              class="sc-1549ebs-8 hhmezU"
             >
               <p>
                 Powered by
               </p>
               <div
-                class="sth0f3-0 kgAUQA"
+                class="sth0f3-0 khsUlM"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -14336,14 +14336,14 @@ Object {
   align-self: start;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c3 {
     height: 16px;
     width: 16px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     font-size: 10px;
     display: grid;
@@ -14373,7 +14373,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c11 {
     font-size: 10px;
     width: 170px;
@@ -14416,7 +14416,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c4 {
     -webkit-align-self: initial;
     -ms-flex-item-align: initial;
@@ -14631,13 +14631,13 @@ Object {
         class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-3 hFwFKo"
+          class="j1ncz7-3 gvuvoY"
         >
           <div
             class="j1ncz7-0 iFZnpo"
           >
             <div
-              class="sth0f3-0 kgAUQA"
+              class="sth0f3-0 khsUlM"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -14653,7 +14653,7 @@ Object {
             Purchase Confirmed
           </p>
           <div
-            class="j1ncz7-5 jcAvSH"
+            class="j1ncz7-5 jatnEK"
           >
             <a
               class="sc-1hzn3pu-2 ffRwyB is925m-0 kuCWTv"
@@ -14686,7 +14686,7 @@ Object {
             </a>
           </div>
           <div
-            class="j1ncz7-4 fyCSrR"
+            class="j1ncz7-4 jOavbS"
           >
             <p>
               Powered by
@@ -14695,7 +14695,7 @@ Object {
               class="j1ncz7-0 iFZnpo"
             >
               <div
-                class="sth0f3-0 kgAUQA"
+                class="sth0f3-0 khsUlM"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -15037,14 +15037,14 @@ Object {
   grid-column: 1;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c13 {
     height: 16px;
     width: 16px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c12 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
@@ -15087,13 +15087,13 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     min-height: 390px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c2 {
     font-size: 13px;
   }
@@ -15312,12 +15312,12 @@ Object {
           class="sc-7wmxqm-0 fANVjX"
         >
           <div
-            class="sc-7wmxqm-1 kKQRcy"
+            class="sc-7wmxqm-1 dFGbOn"
             data-testid="paywall-banner"
             style="height: 0%;"
           >
             <h1
-              class="sc-7wmxqm-2 headline dotYyq"
+              class="sc-7wmxqm-2 headline cIzhrH"
             >
               Purchase pending...
             </h1>
@@ -15370,13 +15370,13 @@ Object {
               </li>
             </ul>
             <footer
-              class="sc-1549ebs-8 DBDuf"
+              class="sc-1549ebs-8 hhmezU"
             >
               <p>
                 Powered by
               </p>
               <div
-                class="sth0f3-0 kgAUQA"
+                class="sth0f3-0 khsUlM"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -15539,14 +15539,14 @@ Object {
   display: none;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c3 {
     height: 16px;
     width: 16px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     font-size: 10px;
     display: grid;
@@ -15576,7 +15576,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c8 {
     font-size: 10px;
     width: 170px;
@@ -15800,13 +15800,13 @@ Object {
         class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-3 hFwFKo"
+          class="j1ncz7-3 gvuvoY"
         >
           <div
             class="j1ncz7-0 iFZnpo"
           >
             <div
-              class="sth0f3-0 kgAUQA"
+              class="sth0f3-0 khsUlM"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -15829,7 +15829,7 @@ Object {
             />
           </div>
           <div
-            class="j1ncz7-4 fyCSrR"
+            class="j1ncz7-4 jOavbS"
           >
             <p>
               Powered by
@@ -15838,7 +15838,7 @@ Object {
               class="j1ncz7-0 iFZnpo"
             >
               <div
-                class="sth0f3-0 kgAUQA"
+                class="sth0f3-0 khsUlM"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -16157,7 +16157,7 @@ Object {
   line-height: normal;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c4 {
     display: grid;
     grid-gap: 0;
@@ -16165,7 +16165,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c3 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
@@ -16173,7 +16173,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     display: -webkit-box;
     display: -webkit-flex;
@@ -16184,19 +16184,19 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     display: none;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c18 {
     display: none;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c10 {
     display: -webkit-box;
     display: -webkit-flex;
@@ -16208,7 +16208,7 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c11 {
     margin-top: initial;
     float: unset;
@@ -16400,19 +16400,19 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="gmrrpf-0 bqRRWt"
+      class="gmrrpf-0 fEcaZF"
     >
       <div
-        class="gmrrpf-1 ehxNBd"
+        class="gmrrpf-1 hmwxTc"
       />
       <div
         class="gmrrpf-3 fbxfDW"
       >
         <header
-          class="sc-4839jp-0 whSfn"
+          class="sc-4839jp-0 wcypv"
         >
           <h1
-            class="sc-12d5f0e-1 kaZiPl"
+            class="sc-12d5f0e-1 dbLMFP"
           >
             <a
               class="sc-12d5f0e-0 eUFnmt"
@@ -16449,10 +16449,10 @@ Object {
           </h2>
         </section>
         <div
-          class="sc-1m7p3zh-2 dtufzk"
+          class="sc-1m7p3zh-2 gRtcRQ"
         >
           <svg
-            class="sc-1m7p3zh-3 KjRtb"
+            class="sc-1m7p3zh-3 gazKnV"
             fill="none"
             height="245px"
             width="200px"
@@ -16565,7 +16565,7 @@ Object {
         </footer>
       </div>
       <div
-        class="gmrrpf-2 dfTyJq"
+        class="gmrrpf-2 bketKF"
       />
     </div>
   </div>,
@@ -16750,6 +16750,8 @@ Object {
   height: 80px;
   margin-right: -33px;
   float: right;
+  grid-template-columns: 35px 1fr;
+  width: 120px;
   box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
   background: var(--white);
   margin-right: 0;
@@ -16796,23 +16798,94 @@ Object {
 }
 
 .c0:hover {
+  grid-template-columns: 136px 35px 1fr;
+  width: 256px;
   opacity: 1;
   -webkit-transition: opacity 0.4s ease-in;
   transition: opacity 0.4s ease-in;
+}
+
+.c0:hover a {
+  grid-column: 3;
 }
 
 .c0 a {
   color: var(--red);
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+.c0:hover > p {
+  grid-column: 3;
+}
+
+.c0:hover > div {
+  width: 40px;
+  height: 40px;
+  margin-left: -20px;
+  grid-column: 2;
+  z-index: 2;
+  border: 6px solid white;
+  border-radius: 50%;
+}
+
+.c0 > aside {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  width: 136px;
+  height: 80px;
+  opacity: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c0:hover > aside {
+  background-color: var(--lightgrey);
+  opacity: 1;
+}
+
+.c0 > aside {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: normal;
+}
+
+.c0 > aside > span > b {
+  display: none;
+}
+
+.c0 > aside > div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 98px;
+  margin-left: 14px;
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     height: 16px;
     width: 16px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
@@ -16855,16 +16928,97 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c0 {
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0,
+  .c0:hover {
+    grid-template-columns: 1fr 0.6fr 20px 0.4fr;
+    grid-template-rows: 30px 30px;
+    width: 100vw;
+    opacity: 1;
     background-color: var(--offwhite);
     -webkit-align-self: center;
     -ms-flex-item-align: center;
     align-self: center;
     justify-self: center;
-    height: 43px;
+    height: 60px;
     float: none;
+  }
+
+  .c0 > p,
+  .c0:hover > p {
+    grid-column: 2;
+  }
+
+  .c0 > div,
+  .c0:hover > div {
+    grid-column: 3;
+  }
+
+  .c0 > a,
+  .c0:hover > a {
+    grid-column: 4;
+  }
+
+  .c0 > aside,
+  .c0:hover > aside {
+    grid-row: 1 / span 2;
+  }
+
+  .c0 > p,
+  .c0:hover > p,
+  .c0 > div,
+  .c0:hover > div,
+  .c0 > a,
+  .c0:hover > a {
+    grid-row: 2;
+    -webkit-align-self: start;
+    -ms-flex-item-align: start;
+    align-self: start;
+  }
+
+  .c0 > div,
+  .c0:hover > div {
+    height: 16px;
+    width: 16px;
+    border: none;
+    margin-left: 0;
+  }
+
+  .c0 > aside,
+  .c0:hover > aside {
+    display: grid;
+    padding: 0;
+    margin: 0;
+    grid-row: 1 / span 2;
+    height: 100%;
+    width: 100%;
+    background-color: var(--offwhite);
+    width: 100%;
     opacity: 1;
+  }
+
+  .c0 > aside > span > b,
+  .c0:hover > aside > span > b {
+    margin-left: 14px;
+    display: block;
+  }
+
+  .c0 > aside > div,
+  .c0:hover > aside > div {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    width: auto;
+  }
+
+  .c0 > aside > div > span,
+  .c0:hover > aside > div > span {
+    padding-right: 3px;
   }
 }
 
@@ -16880,6 +17034,22 @@ Object {
           class="flag c0"
           data-testid="unlocked"
         >
+          <aside>
+            <span>
+              <b>
+                You're subscribed
+              </b>
+            </span>
+            <div>
+              <span>
+                Valid until
+              </span>
+              <span>
+                Dec 31, 3000
+                .
+              </span>
+            </div>
+          </aside>
           <div
             class="c1"
           >
@@ -16913,11 +17083,27 @@ Object {
       class="unlock start show hide"
     >
       <footer
-        class="sc-1549ebs-8 sc-15m75z9-0 flag dKuOlH"
+        class="sc-1549ebs-8 sc-15m75z9-0 flag ljxKJl"
         data-testid="unlocked"
       >
+        <aside>
+          <span>
+            <b>
+              You're subscribed
+            </b>
+          </span>
+          <div>
+            <span>
+              Valid until
+            </span>
+            <span>
+              Dec 31, 3000
+              .
+            </span>
+          </div>
+        </aside>
         <div
-          class="sth0f3-0 kgAUQA"
+          class="sth0f3-0 khsUlM"
         >
           <svg
             viewBox="0 0 56 56"
@@ -18552,7 +18738,7 @@ Object {
   background-color: #74ce63;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     grid-template-columns: 0px 1fr 0px;
   }
@@ -18634,7 +18820,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-6evtnq-0 cmIxkw"
+      class="sc-6evtnq-0 jpaQAb"
     >
       <div
         class="sc-6evtnq-1 dVssKo"
@@ -18787,6 +18973,8 @@ Object {
   height: 80px;
   margin-right: -33px;
   float: right;
+  grid-template-columns: 35px 1fr;
+  width: 120px;
   box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
   background: var(--white);
   margin-right: 0;
@@ -18833,23 +19021,94 @@ Object {
 }
 
 .c0:hover {
+  grid-template-columns: 136px 35px 1fr;
+  width: 256px;
   opacity: 1;
   -webkit-transition: opacity 0.4s ease-in;
   transition: opacity 0.4s ease-in;
+}
+
+.c0:hover a {
+  grid-column: 3;
 }
 
 .c0 a {
   color: var(--red);
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+.c0:hover > p {
+  grid-column: 3;
+}
+
+.c0:hover > div {
+  width: 40px;
+  height: 40px;
+  margin-left: -20px;
+  grid-column: 2;
+  z-index: 2;
+  border: 6px solid white;
+  border-radius: 50%;
+}
+
+.c0 > aside {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  width: 136px;
+  height: 80px;
+  opacity: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c0:hover > aside {
+  background-color: var(--lightgrey);
+  opacity: 1;
+}
+
+.c0 > aside {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: normal;
+}
+
+.c0 > aside > span > b {
+  display: none;
+}
+
+.c0 > aside > div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 98px;
+  margin-left: 14px;
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c1 {
     height: 16px;
     width: 16px;
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
@@ -18892,16 +19151,97 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c0 {
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0,
+  .c0:hover {
+    grid-template-columns: 1fr 0.6fr 20px 0.4fr;
+    grid-template-rows: 30px 30px;
+    width: 100vw;
+    opacity: 1;
     background-color: var(--offwhite);
     -webkit-align-self: center;
     -ms-flex-item-align: center;
     align-self: center;
     justify-self: center;
-    height: 43px;
+    height: 60px;
     float: none;
+  }
+
+  .c0 > p,
+  .c0:hover > p {
+    grid-column: 2;
+  }
+
+  .c0 > div,
+  .c0:hover > div {
+    grid-column: 3;
+  }
+
+  .c0 > a,
+  .c0:hover > a {
+    grid-column: 4;
+  }
+
+  .c0 > aside,
+  .c0:hover > aside {
+    grid-row: 1 / span 2;
+  }
+
+  .c0 > p,
+  .c0:hover > p,
+  .c0 > div,
+  .c0:hover > div,
+  .c0 > a,
+  .c0:hover > a {
+    grid-row: 2;
+    -webkit-align-self: start;
+    -ms-flex-item-align: start;
+    align-self: start;
+  }
+
+  .c0 > div,
+  .c0:hover > div {
+    height: 16px;
+    width: 16px;
+    border: none;
+    margin-left: 0;
+  }
+
+  .c0 > aside,
+  .c0:hover > aside {
+    display: grid;
+    padding: 0;
+    margin: 0;
+    grid-row: 1 / span 2;
+    height: 100%;
+    width: 100%;
+    background-color: var(--offwhite);
+    width: 100%;
     opacity: 1;
+  }
+
+  .c0 > aside > span > b,
+  .c0:hover > aside > span > b {
+    margin-left: 14px;
+    display: block;
+  }
+
+  .c0 > aside > div,
+  .c0:hover > aside > div {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    width: auto;
+  }
+
+  .c0 > aside > div > span,
+  .c0:hover > aside > div > span {
+    padding-right: 3px;
   }
 }
 
@@ -18914,6 +19254,22 @@ Object {
         class="flag c0"
         data-testid="unlocked"
       >
+        <aside>
+          <span>
+            <b>
+              You're subscribed
+            </b>
+          </span>
+          <div>
+            <span>
+              Valid until
+            </span>
+            <span>
+              April 5, 2019
+              .
+            </span>
+          </div>
+        </aside>
         <div
           class="c1"
         >
@@ -18943,11 +19299,27 @@ Object {
       rel="stylesheet"
     />
     <footer
-      class="sc-1549ebs-8 sc-15m75z9-0 flag dKuOlH"
+      class="sc-1549ebs-8 sc-15m75z9-0 flag ljxKJl"
       data-testid="unlocked"
     >
+      <aside>
+        <span>
+          <b>
+            You're subscribed
+          </b>
+        </span>
+        <div>
+          <span>
+            Valid until
+          </span>
+          <span>
+            April 5, 2019
+            .
+          </span>
+        </div>
+      </aside>
       <div
-        class="sth0f3-0 kgAUQA"
+        class="sth0f3-0 khsUlM"
       >
         <svg
           viewBox="0 0 56 56"

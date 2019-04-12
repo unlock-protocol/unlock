@@ -54,6 +54,7 @@ const modals = []
 const transactions = {}
 
 const store = createUnlockStore({
+  account,
   locks,
   keys,
   modals,
