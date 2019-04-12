@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
+import PropTypes from 'prop-types'
 import BrowserOnly from '../helpers/BrowserOnly'
 import UnlockPropTypes from '../../propTypes'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
@@ -10,6 +11,7 @@ import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
 import AuthenticationPrompt from '../interface/AuthenticationPrompt'
 import SignUp from '../interface/SignUp'
+import FinishSignup from '../interface/FinishSignup'
 
 export class KeyChainContent extends React.Component {
   constructor(props) {
@@ -20,8 +22,10 @@ export class KeyChainContent extends React.Component {
   }
 
   render() {
-    const { account, network } = this.props
+    const { account, network, router } = this.props
     const { signUp } = this.state
+    const { hash } = router.location
+    const emailAddress = hash.slice(1) // trim off leading '#'
 
     return (
       <GlobalErrorConsumer>
@@ -40,10 +44,13 @@ export class KeyChainContent extends React.Component {
               <AuthenticationPrompt />
             </BrowserOnly>
           )}
-          {!account && signUp && (
+          {!account && signUp && !hash && (
             <BrowserOnly>
               <SignUp /* toggleSignUp={this.toggleSignUp} */ />
             </BrowserOnly>
+          )}
+          {!account && signUp && emailAddress && (
+            <FinishSignup emailAddress={emailAddress} />
           )}
         </Layout>
       </GlobalErrorConsumer>
@@ -54,6 +61,7 @@ export class KeyChainContent extends React.Component {
 KeyChainContent.propTypes = {
   account: UnlockPropTypes.account,
   network: UnlockPropTypes.network.isRequired,
+  router: PropTypes.shape({}).isRequired,
 }
 
 KeyChainContent.defaultProps = {
@@ -64,6 +72,7 @@ export const mapStateToProps = state => {
   return {
     account: state.account,
     network: state.network,
+    router: state.router,
   }
 }
 
