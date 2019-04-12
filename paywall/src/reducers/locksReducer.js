@@ -1,9 +1,4 @@
-import {
-  ADD_LOCK,
-  DELETE_LOCK,
-  UPDATE_LOCK,
-  UPDATE_LOCK_KEY_PRICE,
-} from '../actions/lock'
+import { ADD_LOCK, DELETE_LOCK, UPDATE_LOCK } from '../actions/lock'
 import { DELETE_TRANSACTION } from '../actions/transaction'
 import { SET_PROVIDER } from '../actions/provider'
 import { SET_NETWORK } from '../actions/network'
@@ -51,16 +46,6 @@ const locksReducer = (state = initialState, action) => {
     return {
       ...state,
       [action.address]: { ...state[action.address], ...action.update },
-    }
-  }
-
-  if (action.type === UPDATE_LOCK_KEY_PRICE) {
-    return {
-      ...state,
-      [action.address]: {
-        ...state[action.address],
-        keyPrice: action.price,
-      },
     }
   }
 
