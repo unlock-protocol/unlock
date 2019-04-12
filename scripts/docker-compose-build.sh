@@ -11,14 +11,14 @@ ARGS="--cache-from $DOCKER_REPOSITORY/unlock-core:master"
 docker build -t unlock-core -f $REPO_ROOT/docker/unlock-core.dockerfile $ARGS $REPO_ROOT
 
 # First build all of the images
-$REPO_ROOT/scripts/build-image.sh unlock-app true &
-$REPO_ROOT/scripts/build-image.sh wedlocks true &
-$REPO_ROOT/scripts/build-image.sh smart-contracts true &
-$REPO_ROOT/scripts/build-image.sh paywall true &
-$REPO_ROOT/scripts/build-image.sh locksmith true &
-$REPO_ROOT/scripts/build-image.sh unlock-protocol-com true &
-$REPO_ROOT/scripts/build-image.sh integration-tests true &
+. $REPO_ROOT/scripts/build-image.sh unlock-app true &
+. $REPO_ROOT/scripts/build-image.sh wedlocks true &
+. $REPO_ROOT/scripts/build-image.sh smart-contracts true &
+. $REPO_ROOT/scripts/build-image.sh paywall true &
+. $REPO_ROOT/scripts/build-image.sh locksmith true &
+. $REPO_ROOT/scripts/build-image.sh unlock-protocol-com true &
+. $REPO_ROOT/scripts/build-image.sh integration-tests true &
 wait
 
 # And then finish if anything else is needed
-docker-compose -f docker/docker-compose.ci.yml build
+docker-compose -f $REPO_ROOT/docker/docker-compose.ci.yml build
