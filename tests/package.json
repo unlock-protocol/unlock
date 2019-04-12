@@ -27,7 +27,7 @@
   "dependencies": {
     "expect-puppeteer": "^4.0.0",
     "fs-extra": "^7.0.0",
-    "jest": "^23.6.0",
+    "jest": "^24.7.1",
     "jest-environment-puppeteer": "^4.0.0",
     "jest-puppeteer": "^4.0.0",
     "prettier": "^1.16.4",
