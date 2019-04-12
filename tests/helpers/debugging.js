@@ -74,7 +74,7 @@ module.exports = {
     const runTest = async () => {
       try {
         // await will do nothing for non-async code, and make async tests work
-        module.exports.debugPage(page, true, true)
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await
         await code()
         // if the code does not throw, we did not fail
       } catch (e) {
