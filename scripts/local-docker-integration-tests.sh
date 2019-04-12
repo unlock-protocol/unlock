@@ -11,25 +11,29 @@ REPO_ROOT=`dirname "$0"`/..
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
 EXTRA_ARGS=$*
 
-# environment variables passed in. Update as needed for testing
-export DB_USERNAME='username'
-export DB_PASSWORD='password'
-export DB_NAME='locksmith'
-export DB_HOSTNAME='db'
-export CI=true
-export HTTP_PROVIDER='ganache-integration'
-export LOCKSMITH_URI='http://locksmith:8080'
-export PAYWALL_URL='http://unlock:3001'
-export PAYWALL_SCRIPT_URL='http://unlock:3001/static/paywall.min.js'
-export UNLOCK_STATIC_URL='http://unlock-protocol-com:3002'
+# set the environment variables needed for integration testing
+eval "$($REPO_ROOT/scripts/set-integration-tests-env-variables.sh)"
 
 # if the integration test images are running, this ensures we remove any state
 # prior to attempting to run the tests. This line is critical!
 docker-compose -f $DOCKER_COMPOSE_FILE down
 
 # re-build the images. This will use local docker cache
-docker build -t unlock -f "$REPO_ROOT/docker/unlock.dockerfile" $REPO_ROOT
-docker build -t unlock-integration -f "$REPO_ROOT/docker/integration-tests.dockerfile" $REPO_ROOT
+# and because we source the script, it will inherit our environment variables
+# NOTE: we cannot using the build-image.sh script or docker-compose-build.sh scripts
+# they are designed for CI and never hit cache locally.
+
+docker build -t unlock-core -f $REPO_ROOT/docker/unlock-core.dockerfile $REPO_ROOT
+
+docker build -t unlock-app -f $REPO_ROOT/docker/unlock-app.dockerfile $REPO_ROOT &
+docker build -t wedlocks -f $REPO_ROOT/docker/wedlocks.dockerfile $REPO_ROOT &
+docker build -t smart-contracts -f $REPO_ROOT/docker/smart-contracts.dockerfile $REPO_ROOT &
+docker build -t paywall -f $REPO_ROOT/docker/paywall.dockerfile $REPO_ROOT &
+docker build -t locksmith -f $REPO_ROOT/docker/locksmith.dockerfile $REPO_ROOT &
+docker build -t unlock-protocol-com -f $REPO_ROOT/docker/unlock-protocol-com.dockerfile $REPO_ROOT &
+docker build -t integration-tests -f $REPO_ROOT/docker/integration-tests.dockerfile $REPO_ROOT &
+wait
+
 
 # Run the tests
 $REPO_ROOT/scripts/integration-tests.sh $EXTRA_ARGS
