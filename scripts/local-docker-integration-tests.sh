@@ -20,7 +20,20 @@ docker-compose -f $DOCKER_COMPOSE_FILE down
 
 # re-build the images. This will use local docker cache
 # and because we source the script, it will inherit our environment variables
-(. $REPO_ROOT/scripts/docker-compose-build.sh)
+# NOTE: we cannot using the build-image.sh script or docker-compose-build.sh scripts
+# they are designed for CI and never hit cache locally.
+
+docker build -t unlock-core -f $REPO_ROOT/docker/unlock-core.dockerfile $REPO_ROOT
+
+docker build -t unlock-app -f $REPO_ROOT/docker/unlock-app.dockerfile $REPO_ROOT &
+docker build -t wedlocks -f $REPO_ROOT/docker/wedlocks.dockerfile $REPO_ROOT &
+docker build -t smart-contracts -f $REPO_ROOT/docker/smart-contracts.dockerfile $REPO_ROOT &
+docker build -t paywall -f $REPO_ROOT/docker/paywall.dockerfile $REPO_ROOT &
+docker build -t locksmith -f $REPO_ROOT/docker/locksmith.dockerfile $REPO_ROOT &
+docker build -t unlock-protocol-com -f $REPO_ROOT/docker/unlock-protocol-com.dockerfile $REPO_ROOT &
+docker build -t integration-tests -f $REPO_ROOT/docker/integration-tests.dockerfile $REPO_ROOT &
+wait
+
 
 # Run the tests
 $REPO_ROOT/scripts/integration-tests.sh $EXTRA_ARGS
