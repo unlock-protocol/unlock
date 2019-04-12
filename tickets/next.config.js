@@ -67,6 +67,7 @@ module.exports = withTypescript(
 
       return {
         '/': { page: '/home' },
+        '/create': { page: '/create' },
       }
     },
   })
