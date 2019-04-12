@@ -71,7 +71,7 @@ services:
       LOCKSMITH_URI: '${LOCKSMITH_URI}'
       PAYWALL_URL: '${PAYWALL_URL}'
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
-      UNLOCK_STATIC_URL: "${UNLOCK_STATIC_URL}"
+      UNLOCK_STATIC_URL: '${UNLOCK_STATIC_URL}'
     command: ['npm', 'run', 'start']
   tickets:
     image: tickets
@@ -86,6 +86,10 @@ services:
       READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
       LOCKSMITH_URI: '${LOCKSMITH_URI}'
     command: ['npm', 'run', 'start']
+  unlock-js:
+    image: unlock-js
+    environment:
+      CI: '${CI}'
   wedlocks:
     image: wedlocks
     environment:
@@ -101,7 +105,7 @@ services:
       PAYWALL_PORT: '${PAYWALL_PORT}'
       UNLOCK_HOST: '${UNLOCK_HOST}'
       PAYWALL_URL: '${PAYWALL_URL}'
-      UNLOCK_STATIC_URL: "${UNLOCK_STATIC_URL}"
+      UNLOCK_STATIC_URL: '${UNLOCK_STATIC_URL}'
     depends_on:
       - ganache-integration
       - unlock-app

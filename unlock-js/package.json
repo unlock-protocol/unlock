@@ -7,7 +7,7 @@
     "test": "jest",
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "build": "./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",
-    "prepare": "npm run build"
+    "ci": "npm run lint && npm run test"
   },
   "author": "",
   "license": "MIT",
