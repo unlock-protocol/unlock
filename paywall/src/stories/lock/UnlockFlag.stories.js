@@ -9,5 +9,5 @@ const key = {
 }
 
 storiesOf('UnlockedFlag', module).add('the unlocked flag', () => {
-  return <UnlockedFlag keys={[key]} />
+  return <UnlockedFlag keys={[key]} expiration="April 5, 2019" />
 })
