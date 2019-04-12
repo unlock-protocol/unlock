@@ -21,4 +21,4 @@ docker build -t unlock-core -f $REPO_ROOT/docker/unlock-core.dockerfile $ARGS $R
 wait
 
 # And then finish if anything else is needed
-docker-compose -f docker/docker-compose.ci.yml build
+docker-compose -f $REPO_ROOT/docker/docker-compose.ci.yml build
