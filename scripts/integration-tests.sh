@@ -1,28 +1,12 @@
 #!/usr/bin/env bash
 
-# Here we set environment variables which will be used when running docker compose
-# We are setting them globally so that they are used by the whole "cluster"
-
-export CI=true
-export UNLOCK_ENV='test'
-export DB_USERNAME='locksmith_test'
-export DB_PASSWORD='password'
-export DB_NAME='locksmith_test'
-export DB_HOSTNAME='db'
-export HTTP_PROVIDER='ganache-integration'
-export LOCKSMITH_URI='http://locksmith:8080'
-export PAYWALL_URL='http://paywall:3001'
-export PAYWALL_SCRIPT_URL='http://paywall:3001/static/paywall.min.js'
-export UNLOCK_HOST='unlock-app'
-export DASHBOARD_URL='http://unlock-app:3000'
-export READ_ONLY_PROVIDER='http://ganache-integration:8545'
-export UNLOCK_STATIC_URL='http://unlock-protocol-com:3002'
-
 # First this script will deploy from an instance of unlock:latest
 REPO_ROOT=`dirname "$0"`/..
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
 EXTRA_ARGS=$*
 
+# set the environment variables needed for integration testing
+eval "$($REPO_ROOT/scripts/set-integration-tests-env-variables.sh)"
 
 mkdir -p /tmp/screenshots
 chmod 0777 /tmp/screenshots
