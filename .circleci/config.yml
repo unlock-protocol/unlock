@@ -50,6 +50,19 @@ jobs:
           environment:
             UNLOCK_APP_CHROMATIC_APP_CODE: swpc6wf70qp
 
+  unlock-js-tests:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          name: Build unlock-js Image
+          command: scripts/build-image.sh unlock-js
+      - run:
+          name: unlock-js tests
+          command: scripts/tests.sh unlock-js
+
   smart-contracts-tests:
     machine: true
     environment:
@@ -271,6 +284,7 @@ workflows:
       - unlock-protocol-com-tests
       - wedlocks-tests
       - unlock-app-tests
+      - unlock-js-tests
       - unlock-app-chromatic:
           requires:
             - unlock-app-tests
