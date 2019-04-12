@@ -8,13 +8,13 @@ import Web3Service, { TransactionType, keyId } from '../web3Service'
 
 const nodeAccounts = [
   '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
-  '0xaca94ef8bd5ffee41947b4585a84bda5a3d3da6e'
+  '0xaca94ef8bd5ffee41947b4585a84bda5a3d3da6e',
 ]
 
 const transaction = {
   status: 'mined',
   createdAt: new Date().getTime(),
-  hash: '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64'
+  hash: '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
 }
 
 const blockTime = 3
@@ -99,7 +99,7 @@ describe('Web3Service', () => {
       readOnlyProvider,
       unlockAddress,
       blockTime,
-      requiredConfirmations
+      requiredConfirmations,
     })
   })
 
@@ -148,10 +148,10 @@ describe('Web3Service', () => {
             topics: [
               '0x01017ed19df0c7f8acc436147b234b09664a9fb4797b4fa3fb9e599c2eb67be7',
               '0x000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-              '0x000000000000000000000000dc069c4d26510749bea2057c4db43ba8efe4d23a'
+              '0x000000000000000000000000dc069c4d26510749bea2057c4db43ba8efe4d23a',
             ],
-            type: 'mined'
-          }
+            type: 'mined',
+          },
         ])
       })
 
@@ -168,7 +168,7 @@ describe('Web3Service', () => {
           expect.objectContaining({
             filter: {},
             fromBlock: 0,
-            toBlock: 'latest'
+            toBlock: 'latest',
           }),
           expect.any(Function)
         )
@@ -200,7 +200,7 @@ describe('Web3Service', () => {
         expect.any(MockContract),
         'NewLock',
         {
-          lockOwner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
+          lockOwner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
         }
       )
     })
@@ -252,7 +252,7 @@ describe('Web3Service', () => {
       const defaults = {
         input:
           '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
-        to: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601'
+        to: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
       }
 
       web3Service.parseTransactionFromInput = jest.fn(
@@ -286,7 +286,7 @@ describe('Web3Service', () => {
       value: '0x0',
       gas: '0x16e360',
       gasPrice: '0x04a817c800',
-      input
+      input,
     }
 
     beforeEach(() => {
@@ -337,7 +337,7 @@ describe('Web3Service', () => {
           status: 'pending',
           type: 'TRANSACTION_TYPE',
           confirmations: 0,
-          blockNumber: Number.MAX_SAFE_INTEGER
+          blockNumber: Number.MAX_SAFE_INTEGER,
         })
         done()
       })
@@ -357,12 +357,12 @@ describe('Web3Service', () => {
       // Fake method
       const method = {
         signature: '0x2bc888bf',
-        name: 'myMethod'
+        name: 'myMethod',
       }
 
       // Fake abi
       const FakeContract = {
-        abi: [method]
+        abi: [method],
       }
 
       // fake params
@@ -408,7 +408,7 @@ describe('Web3Service', () => {
         const fakeParams = {
           _keyPrice: '100000000000000000',
           _expirationDuration: '123',
-          _maxNumberOfKeys: '-1'
+          _maxNumberOfKeys: '-1',
         }
         const fakeHash = '0x12345'
 
@@ -429,7 +429,7 @@ describe('Web3Service', () => {
             keyPrice: '0.1',
             maxNumberOfKeys: -1,
             outstandingKeys: 0,
-            balance: '0'
+            balance: '0',
           })
           resolveLockUpdater()
         })
@@ -437,7 +437,7 @@ describe('Web3Service', () => {
         web3Service.once('transaction.updated', (transactionHash, params) => {
           expect(transactionHash).toBe(fakeHash)
           expect(params).toEqual({
-            lock: fakeLockAddress
+            lock: fakeLockAddress,
           })
           resolveTransactionUpdater()
         })
@@ -456,7 +456,7 @@ describe('Web3Service', () => {
         let resolveTransactionUpdater
         const owner = '0x9876'
         const fakeParams = {
-          _recipient: owner
+          _recipient: owner,
         }
         const fakeContractAddress = '0xabc'
         const fakeHash = '0x12345'
@@ -472,7 +472,7 @@ describe('Web3Service', () => {
           expect(transactionHash).toBe(fakeHash)
           expect(params).toEqual({
             key: keyId(fakeContractAddress, owner),
-            lock: fakeContractAddress
+            lock: fakeContractAddress,
           })
           resolveTransactionUpdater()
         })
@@ -481,7 +481,7 @@ describe('Web3Service', () => {
           expect(id).toBe(keyId(fakeContractAddress, owner))
           expect(params).toEqual({
             owner,
-            lock: fakeContractAddress
+            lock: fakeContractAddress,
           })
           resolveKeySaver()
         })
@@ -508,7 +508,7 @@ describe('Web3Service', () => {
         expect.assertions(3)
 
         const defaultTransactionValues = {
-          to: 'julien'
+          to: 'julien',
         }
         web3Service._getSubmittedTransaction = jest.fn(
           (hash, number, defaults) => {
@@ -538,7 +538,7 @@ describe('Web3Service', () => {
           value: '0x0',
           gas: '0x16e360',
           gasPrice: '0x04a817c800',
-          input
+          input,
         })
       })
 
@@ -572,7 +572,7 @@ describe('Web3Service', () => {
           gas: '0x16e360',
           gasPrice: '0x04a817c800',
           input:
-            '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a'
+            '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
         })
         web3Service.web3.eth.getTransactionReceipt = jest.fn(
           () => new Promise(() => {})
@@ -623,7 +623,7 @@ describe('Web3Service', () => {
         gas: '0x16e360',
         gasPrice: '0x04a817c800',
         input:
-          '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a'
+          '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
       }
 
       beforeEach(() => {
@@ -642,7 +642,7 @@ describe('Web3Service', () => {
           gasUsed: '0x2ea84',
           cumulativeGasUsed: '0x3a525',
           logs: [],
-          status: '0x0'
+          status: '0x0',
         })
         web3Service.getTransactionType = jest.fn(() => 'TYPE')
 
@@ -671,7 +671,7 @@ describe('Web3Service', () => {
           gasUsed: '0x2ea84',
           cumulativeGasUsed: '0x3a525',
           logs: [],
-          status: '0x1'
+          status: '0x1',
         }
         ethGetTransactionReceipt(transaction.hash, transactionReceipt)
         const previousAddress = web3Service.unlockAddress
@@ -708,7 +708,7 @@ describe('Web3Service', () => {
           gasUsed: '0x2ea84',
           cumulativeGasUsed: '0x3a525',
           logs: [],
-          status: '0x1'
+          status: '0x1',
         }
         ethGetTransactionReceipt(transaction.hash, transactionReceipt)
 
@@ -789,7 +789,7 @@ describe('Web3Service', () => {
           maxNumberOfKeys: 10,
           owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
           outstandingKeys: 17,
-          asOf: 1337
+          asOf: 1337,
         })
         done()
       })
@@ -830,7 +830,7 @@ describe('Web3Service', () => {
       web3Service.on('lock.updated', (address, update) => {
         expect(address).toBe(lockAddress)
         expect(update).toMatchObject({
-          maxNumberOfKeys: -1
+          maxNumberOfKeys: -1,
         })
         done()
       })
@@ -962,7 +962,7 @@ describe('Web3Service', () => {
       const contractAddress = '0x456'
       const blockNumber = 1337
       const params = {
-        newLockAddress: ' 0x789'
+        newLockAddress: ' 0x789',
       }
       web3Service.getLock = jest.fn()
 
@@ -988,7 +988,7 @@ describe('Web3Service', () => {
       const contractAddress = '0x456'
       const blockNumber = 1337
       const params = {
-        newLockAddress: ' 0x789'
+        newLockAddress: ' 0x789',
       }
       web3Service.getLock = jest.fn()
 
@@ -1011,7 +1011,7 @@ describe('Web3Service', () => {
       const blockNumber = 1337
 
       const params = {
-        _to: '0x789'
+        _to: '0x789',
       }
 
       web3Service.once('key.saved', (keyId, key) => {
@@ -1037,7 +1037,7 @@ describe('Web3Service', () => {
       const blockNumber = 1337
 
       const params = {
-        _to: '0x789'
+        _to: '0x789',
       }
 
       web3Service.once('transaction.updated', (transactionHash, update) => {
@@ -1062,7 +1062,7 @@ describe('Web3Service', () => {
       const blockNumber = 1337
 
       const params = {
-        keyPrice: '10'
+        keyPrice: '10',
       }
 
       web3Service.once('lock.updated', (lockAddress, { keyPrice, asOf }) => {
@@ -1089,7 +1089,7 @@ describe('Web3Service', () => {
       const byPage = 5
       const keyHolder = [
         '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-        '0xC66Ef2E0D0eDCce723b3fdd4307db6c5F0Dda1b8'
+        '0xC66Ef2E0D0eDCce723b3fdd4307db6c5F0Dda1b8',
       ]
 
       web3Service._getKeyByLockForOwner = jest.fn(() => {
@@ -1183,7 +1183,7 @@ describe('Web3Service', () => {
         const params = {
           _expirationDuration: '7',
           _maxNumberOfKeys: '5',
-          _keyPrice: '5'
+          _keyPrice: '5',
         }
         web3Service.generateLockAddress = jest.fn()
         web3Service.on('lock.updated', (newLockAddress, update) => {
