@@ -13,7 +13,7 @@ export default function Layout({ children }) {
         {children}
         <Footer>
           <RoundedLogo />
-          Powered by Unlock
+          <p>Powered by Unlock</p>
         </Footer>
       </Content>
       <Right />
@@ -56,6 +56,13 @@ const Right = styled.div`
 `
 
 const Footer = styled.div`
+  position: fixed;
+  bottom: 0;
+  padding: 100px 0;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  align-items: center;
+  height: 50px;
   ${Media.phone`
     display: none;
   `};

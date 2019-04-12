@@ -1829,14 +1829,14 @@ Object {
 exports[`Storyshots Home landing page Home page 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c7 {
+  "baseElement": .c11 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c7 > svg {
+.c11 > svg {
   fill: white;
 }
 
@@ -1854,6 +1854,19 @@ Object {
   height: 24px;
 }
 
+.c10 {
+  position: fixed;
+  bottom: 0;
+  padding: 100px 0;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 50px;
+}
+
 .c2 {
   color: var(--darkgrey);
   display: grid;
@@ -1861,29 +1874,71 @@ Object {
   width: 100%;
 }
 
-.c4 {
-  font-family: IBM Plex Sans;
-  font-style: normal;
+.c8 {
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--white);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
   font-weight: bold;
-  font-size: 36px;
-  font-style: light;
-  line-height: 47px;
-  grid-column: 1 3;
-  color: var(--darkgrey);
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  padding: 10px;
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+  height: 72px;
+  width: 75%;
+}
+
+.c8:hover {
+  background-color: var(--activegreen);
 }
 
 .c5 {
+  display: grid;
+  grid-template-columns: 1fr 250px;
+  grid-gap: 60px;
+}
+
+.c6 p {
+  font-size: 20px;
+  font-weight: 100;
+}
+
+.c9 {
+  background-color: #e5e5e5;
+}
+
+.c4 {
+  margin-top: 200px;
+  margin-bottom: 20px;
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 50px;
+  font-style: light;
+  line-height: 47px;
+  grid-column: 1 3;
+  color: var(--brand);
+}
+
+.c7 {
   font-family: IBM Plex Serif;
   font-style: normal;
   font-weight: 300;
   font-size: 32px;
   line-height: 42px;
+  margin-top: 0;
   grid-column: 1 / span 3;
   color: var(--darkgrey);
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c7 {
+  .c11 {
     height: 16px;
     width: 16px;
   }
@@ -1907,13 +1962,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c8 {
+  .c12 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c6 {
+  .c10 {
     display: none;
   }
 }
@@ -1921,6 +1976,25 @@ Object {
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c3 {
     display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c8 {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c5 {
+    grid-gap: 0;
+    grid-template-columns: auto;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c4 {
+    margin-top: 20px;
   }
 }
 
@@ -1944,23 +2018,40 @@ Object {
           >
             Unlock Tickets
           </div>
-          <section>
-            <h1
-              class="c4"
-            >
-              Unlock Tickets
-            </h1>
-            <h2
-              class="c5"
-            >
-              A simple way to sell tickets for an event.
-            </h2>
-          </section>
-          <div
-            class="c6"
+          <h1
+            class="c4"
+          >
+            Unlock Tickets
+          </h1>
+          <section
+            class="c5"
           >
             <div
-              class="c7"
+              class="c6"
+            >
+              <h2
+                class="c7"
+              >
+                A simple way to sell tickets for an event.
+              </h2>
+              <p>
+                Tickets is built on top of Unlock, which is an easy to use access control protocol on the Ethereum blockchain.
+              </p>
+              <button
+                class="c8"
+              >
+                Create an event
+              </button>
+            </div>
+            <div
+              class="c9"
+            />
+          </section>
+          <div
+            class="c10"
+          >
+            <div
+              class="c11"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -1971,11 +2062,13 @@ Object {
                 />
               </svg>
             </div>
-            Powered by Unlock
+            <p>
+              Powered by Unlock
+            </p>
           </div>
         </div>
         <div
-          class="c8"
+          class="c12"
         />
       </div>
     </div>
@@ -1999,20 +2092,37 @@ Object {
         >
           Unlock Tickets
         </div>
-        <section>
-          <h1
-            class="sc-1y0aw8d-0 hYyEaL"
+        <h1
+          class="sc-1y0aw8d-4 iRmenr"
+        >
+          Unlock Tickets
+        </h1>
+        <section
+          class="sc-1y0aw8d-1 gQyDQs"
+        >
+          <div
+            class="sc-1y0aw8d-2 dAfZMy"
           >
-            Unlock Tickets
-          </h1>
-          <h2
-            class="sc-1y0aw8d-1 glCXRs"
-          >
-            A simple way to sell tickets for an event.
-          </h2>
+            <h2
+              class="sc-1y0aw8d-5 ckwBeq"
+            >
+              A simple way to sell tickets for an event.
+            </h2>
+            <p>
+              Tickets is built on top of Unlock, which is an easy to use access control protocol on the Ethereum blockchain.
+            </p>
+            <button
+              class="sc-1y0aw8d-0 grbKB"
+            >
+              Create an event
+            </button>
+          </div>
+          <div
+            class="sc-1y0aw8d-3 jAVvUg"
+          />
         </section>
         <div
-          class="b9ke0k-3 bsTvcR"
+          class="b9ke0k-3 iINGIB"
         >
           <div
             class="oj0wpp-0 lguXZd"
@@ -2026,7 +2136,9 @@ Object {
               />
             </svg>
           </div>
-          Powered by Unlock
+          <p>
+            Powered by Unlock
+          </p>
         </div>
       </div>
       <div
@@ -2125,6 +2237,19 @@ Object {
   height: 24px;
 }
 
+.c4 {
+  position: fixed;
+  bottom: 0;
+  padding: 100px 0;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 50px;
+}
+
 .c2 {
   color: var(--darkgrey);
   display: grid;
@@ -2208,7 +2333,9 @@ Object {
                 />
               </svg>
             </div>
-            Powered by Unlock
+            <p>
+              Powered by Unlock
+            </p>
           </div>
         </div>
         <div
@@ -2237,7 +2364,7 @@ Object {
           Unlock Tickets
         </div>
         <div
-          class="b9ke0k-3 bsTvcR"
+          class="b9ke0k-3 iINGIB"
         >
           <div
             class="oj0wpp-0 lguXZd"
@@ -2251,7 +2378,9 @@ Object {
               />
             </svg>
           </div>
-          Powered by Unlock
+          <p>
+            Powered by Unlock
+          </p>
         </div>
       </div>
       <div
@@ -2350,6 +2479,19 @@ Object {
   height: 24px;
 }
 
+.c4 {
+  position: fixed;
+  bottom: 0;
+  padding: 100px 0;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 50px;
+}
+
 .c2 {
   color: var(--darkgrey);
   display: grid;
@@ -2433,7 +2575,9 @@ Object {
                 />
               </svg>
             </div>
-            Powered by Unlock
+            <p>
+              Powered by Unlock
+            </p>
           </div>
         </div>
         <div
@@ -2462,7 +2606,7 @@ Object {
           Unlock Tickets
         </div>
         <div
-          class="b9ke0k-3 bsTvcR"
+          class="b9ke0k-3 iINGIB"
         >
           <div
             class="oj0wpp-0 lguXZd"
@@ -2476,7 +2620,9 @@ Object {
               />
             </svg>
           </div>
-          Powered by Unlock
+          <p>
+            Powered by Unlock
+          </p>
         </div>
       </div>
       <div
