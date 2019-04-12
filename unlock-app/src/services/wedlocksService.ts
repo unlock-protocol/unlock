@@ -28,7 +28,11 @@ export default class WedlocksService {
       params,
     }
 
-    return axios.post(this.uri, payload)
+    return axios.post(this.uri, payload, {
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
   }
 
   confirmEmail = (recipient: string) => {
