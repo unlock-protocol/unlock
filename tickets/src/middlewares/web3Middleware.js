@@ -3,6 +3,7 @@
 import UnlockJs from '@unlock-protocol/unlock-js'
 import { startLoading, doneLoading } from '../actions/loading'
 import { SET_ACCOUNT, updateAccount } from '../actions/accounts'
+import { updateLock, addLock } from '../actions/lock'
 import { addTransaction, updateTransaction } from '../actions/transaction'
 import { transactionTypeMapping } from '../utils/types'
 import { setError } from '../actions/error'
@@ -18,7 +19,7 @@ const web3Middleware = config => {
     blockTime,
     requiredConfirmations,
   } = config
-  return ({ dispatch }) => {
+  return ({ dispatch, getState }) => {
     const web3Service = new Web3Service({
       readOnlyProvider,
       unlockAddress,
@@ -50,6 +51,15 @@ const web3Middleware = config => {
       dispatch(updateTransaction(transactionHash, update))
     })
 
+    web3Service.on('lock.updated', (address, update) => {
+      const lock = getState().locks[address]
+      if (lock) {
+        dispatch(updateLock(address, update))
+      } else {
+        dispatch(addLock(address, update))
+      }
+    })
+
     return function(next) {
       return function(action) {
         next(action)
@@ -63,6 +73,7 @@ const web3Middleware = config => {
           // So that pending API calls do not interract with our "new" state.
           web3Service.refreshAccountBalance(action.account)
           dispatch(startLoading())
+          // TODO: only do that when on the page to create events because we do not need the list of locks for other users.
           web3Service
             .getPastLockCreationsTransactionsForUser(action.account.address)
             .then(lockCreations => {
