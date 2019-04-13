@@ -41,16 +41,6 @@ const web3Middleware = config => ({ getState, dispatch }) => {
   })
 
   /**
-   * When a lock was saved, we update it, as well as its transaction and
-   * refresh the balance of its owner and refresh its content
-   */
-  web3Service.on('lock.saved', (lock, address) => {
-    web3Service.refreshAccountBalance(getState().account)
-    web3Service.getLock(address)
-    web3Service.getPastLockTransactions(address) // This is costly and not useful for the paywall app...
-  })
-
-  /**
    * The Lock was changed.
    * Should we get the balance of the lock owner?
    */
