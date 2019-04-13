@@ -5,15 +5,15 @@ import Svg from '../../svg'
 import Button from '../Button'
 import { HoverFooter, NotHoverFooter } from '../../../lock/HoverFooters'
 
-const ConfirmedKey = ({ hideModal, ...props }) => (
+const ConfirmedKey = ({ hideModal, hover, ...props }) => (
   <ConfirmedKeyButton {...props} backgroundHoverColor="var(--green)">
-    <NotHover />
-    <Hover onClick={hideModal} />
+    {hover ? <Hover /> : <NotHover />}
   </ConfirmedKeyButton>
 )
 
 ConfirmedKey.propTypes = {
   hideModal: PropTypes.func.isRequired,
+  hover: PropTypes.bool.isRequired,
 }
 
 const NotHover = styled(Svg.Checkmark)``
