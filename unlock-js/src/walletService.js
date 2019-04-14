@@ -1,7 +1,7 @@
-import EventEmitter from 'events'
 import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
 import * as UnlockV0 from 'unlock-abi-0'
+import UnlockService from './unlockService'
 
 export const Errors = {
   FATAL_MISSING_PROVIDER: 'FATAL_MISSING_PROVIDER',
@@ -27,12 +27,10 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
  * hashes. Another service (which does not depend on the user;s wallet) will be in charge of
  * actually retrieving the data from the chain/smart contracts
  */
-export default class WalletService extends EventEmitter {
+export default class WalletService extends UnlockService {
   constructor({ unlockAddress }) {
-    super()
-    this.unlockContractAddress = unlockAddress
+    super({ unlockAddress })
     this.ready = false
-    this.web3 = null
 
     this.on('ready', () => {
       this.ready = true
@@ -40,10 +38,9 @@ export default class WalletService extends EventEmitter {
   }
 
   /**
-   * Expooses gas amount constants to be utilzed when sending relevant transactions
+   * Exposes gas amount constants to be utilzed when sending relevant transactions
    * for the platform.
    */
-
   static gasAmountConstants() {
     return {
       createLock: 3000000,
