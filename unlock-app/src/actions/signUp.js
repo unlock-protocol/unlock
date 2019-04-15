@@ -3,7 +3,6 @@ export const SIGNUP_PASSWORD = 'signup/GOT_PASSWORD'
 export const SIGNUP_CREDENTIALS = 'signup/GOT_CREDENTIALS'
 export const SIGNUP_FAILED = 'signup/FAILED'
 export const SIGNUP_SUCCEEDED = 'signup/SUCCESS'
-export const CREATE_USER = 'signup/CREATE_USER'
 
 export const signupEmail = emailAddress => ({
   type: SIGNUP_EMAIL,
@@ -30,9 +29,4 @@ export const signupFailed = reason => ({
 // TODO: Determine if this action requires a payload. Depends on exact way signup works.
 export const signupSucceeded = () => ({
   type: SIGNUP_SUCCEEDED,
-})
-
-export const createUser = user => ({
-  type: CREATE_USER,
-  user,
 })
