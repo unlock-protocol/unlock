@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 /* eslint-disable no-unused-vars */
-enum emailTemplate {
+export enum emailTemplate {
   signupConfirmation = 'confirmEmail',
 }
 /* eslint-enable no-unused-vars */
@@ -27,12 +27,13 @@ export default class WedlocksService {
       recipient,
       params,
     }
-
-    return axios.post(this.uri, payload, {
+    const result = axios.post(this.uri, payload, {
       headers: {
         'content-type': 'application/json',
       },
     })
+
+    return result
   }
 
   confirmEmail = (recipient: string) => {
