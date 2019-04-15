@@ -1,25 +1,7 @@
 import Web3 from 'web3'
-import Web3Utils from 'web3-utils'
-import * as UnlockV0 from 'unlock-abi-0'
 import UnlockService from './unlockService'
-
-export const Errors = {
-  FATAL_MISSING_PROVIDER: 'FATAL_MISSING_PROVIDER',
-  FATAL_NOT_ENABLED_IN_PROVIDER: 'FATAL_NOT_ENABLED_IN_PROVIDER',
-  FAILED_TO_CREATE_LOCK: 'FAILED_TO_CREATE_LOCK',
-  FAILED_TO_PURCHASE_KEY: 'FAILED_TO_PURCHASE_KEY',
-  FAILED_TO_UPDATE_KEY_PRICE: 'FAILED_TO_UPDATE_KEY_PRICE',
-  FAILED_TO_WITHDRAW_FROM_LOCK: 'FAILED_TO_WITHDRAW_FROM_LOCK',
-}
-
-export const TransactionType = {
-  LOCK_CREATION: 'LOCK_CREATION',
-  KEY_PURCHASE: 'KEY_PURCHASE',
-  WITHDRAWAL: 'WITHDRAWAL',
-  UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE',
-}
-
-export const keyId = (lock, owner) => [lock, owner].join('-')
+import v0 from './v0'
+import { GAS_AMOUNTS } from './constants'
 
 /**
  * This service interacts with the user's wallet.
@@ -42,13 +24,7 @@ export default class WalletService extends UnlockService {
    * for the platform.
    */
   static gasAmountConstants() {
-    return {
-      createLock: 3000000,
-      updateKeyPrice: 1000000,
-      purchaseKey: 1000000,
-      withdrawFromLock: 1000000,
-      partialWithdrawFromLock: 1000000,
-    }
+    return GAS_AMOUNTS
   }
 
   /**
@@ -152,32 +128,7 @@ export default class WalletService extends UnlockService {
    * @param {string} price : new price for the lock
    */
   updateKeyPrice(lock, account, price) {
-    const lockContract = new this.web3.eth.Contract(
-      UnlockV0.PublicLock.abi,
-      lock
-    )
-    const data = lockContract.methods
-      .updateKeyPrice(Web3Utils.toWei(price, 'ether'))
-      .encodeABI()
-
-    return this._sendTransaction(
-      {
-        to: lock,
-        from: account,
-        data,
-        gas: WalletService.gasAmountConstants().updateKeyPrice,
-        contract: UnlockV0.PublicLock,
-      },
-      TransactionType.UPDATE_KEY_PRICE,
-      error => {
-        if (error) {
-          return this.emit(
-            'error',
-            new Error(Errors.FAILED_TO_UPDATE_KEY_PRICE)
-          )
-        }
-      }
-    )
+    return v0.updateKeyPrice.bind(this)(lock, account, price)
   }
 
   /**
@@ -186,46 +137,7 @@ export default class WalletService extends UnlockService {
    * @param {PropTypes.address} owner
    */
   createLock(lock, owner) {
-    const unlock = new this.web3.eth.Contract(
-      UnlockV0.Unlock.abi,
-      this.unlockContractAddress
-    )
-
-    const data = unlock.methods
-      .createLock(
-        lock.expirationDuration,
-        Web3Utils.toWei(lock.keyPrice, 'ether'),
-        lock.maxNumberOfKeys
-      )
-      .encodeABI()
-
-    return this._sendTransaction(
-      {
-        to: this.unlockContractAddress,
-        from: owner,
-        data,
-        gas: WalletService.gasAmountConstants().createLock,
-        contract: UnlockV0.Unlock,
-      },
-      TransactionType.LOCK_CREATION,
-      (error, hash) => {
-        if (error) {
-          return this.emit('error', new Error(Errors.FAILED_TO_CREATE_LOCK))
-        }
-        // Let's update the lock to reflect that it is linked to this
-        // This is an exception because, until we are able to determine the lock address
-        // before the transaction is mined, we need to link the lock and transaction.
-        return this.emit('lock.updated', lock.address, {
-          expirationDuration: lock.expirationDuration,
-          keyPrice: lock.keyPrice, // Must be expressed in Eth!
-          maxNumberOfKeys: lock.maxNumberOfKeys,
-          owner: owner,
-          outstandingKeys: 0,
-          balance: '0',
-          transaction: hash,
-        })
-      }
-    )
+    return v0.createLock.bind(this)(lock, owner)
   }
 
   /**
@@ -239,32 +151,9 @@ export default class WalletService extends UnlockService {
    * @param {string} keyPrice
    * @param {string} data
    * @param {string} account
-\   */
+   */
   purchaseKey(lock, owner, keyPrice, account, data = '') {
-    const lockContract = new this.web3.eth.Contract(
-      UnlockV0.PublicLock.abi,
-      lock
-    )
-    const abi = lockContract.methods
-      .purchaseFor(owner, Web3Utils.utf8ToHex(data || ''))
-      .encodeABI()
-
-    return this._sendTransaction(
-      {
-        to: lock,
-        from: account,
-        data: abi,
-        gas: WalletService.gasAmountConstants().purchaseKey,
-        value: Web3Utils.toWei(keyPrice, 'ether'),
-        contract: UnlockV0.PublicLock,
-      },
-      TransactionType.KEY_PURCHASE,
-      error => {
-        if (error) {
-          return this.emit('error', new Error(Errors.FAILED_TO_PURCHASE_KEY))
-        }
-      }
-    )
+    return v0.purchaseKey.bind(this)(lock, owner, keyPrice, account, data)
   }
 
   /**
@@ -276,29 +165,11 @@ export default class WalletService extends UnlockService {
    * @param {Function} callback
    */
   partialWithdrawFromLock(lock, account, ethAmount, callback) {
-    const lockContract = new this.web3.eth.Contract(
-      UnlockV0.PublicLock.abi,
-      lock
-    )
-    const weiAmount = Web3Utils.toWei(ethAmount)
-    const data = lockContract.methods.partialWithdraw(weiAmount).encodeABI()
-
-    return this._sendTransaction(
-      {
-        to: lock,
-        from: account,
-        data,
-        gas: WalletService.gasAmountConstants().partialWithdrawFromLock,
-        contract: UnlockV0.PublicLock,
-      },
-      TransactionType.WITHDRAWAL,
-      error => {
-        if (error) {
-          this.emit('error', new Error(Errors.FAILED_TO_WITHDRAW_FROM_LOCK))
-          return callback(error)
-        }
-        return callback()
-      }
+    return v0.partialWithdrawFromLock.bind(this)(
+      lock,
+      account,
+      ethAmount,
+      callback
     )
   }
 
@@ -309,30 +180,7 @@ export default class WalletService extends UnlockService {
    * @param {Function} callback TODO: implement...
    */
   withdrawFromLock(lock, account) {
-    const lockContract = new this.web3.eth.Contract(
-      UnlockV0.PublicLock.abi,
-      lock
-    )
-    const data = lockContract.methods.withdraw().encodeABI()
-
-    return this._sendTransaction(
-      {
-        to: lock,
-        from: account,
-        data,
-        gas: WalletService.gasAmountConstants().withdrawFromLock,
-        contract: UnlockV0.PublicLock,
-      },
-      TransactionType.WITHDRAWAL,
-      error => {
-        if (error) {
-          return this.emit(
-            'error',
-            new Error(Errors.FAILED_TO_WITHDRAW_FROM_LOCK)
-          )
-        }
-      }
-    )
+    return v0.withdrawFromLock.bind(this)(lock, account)
   }
 
   /**

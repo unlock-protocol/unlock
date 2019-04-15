@@ -5,7 +5,11 @@ import nock from 'nock'
 import Web3Utils from 'web3-utils'
 import * as UnlockV0 from 'unlock-abi-0'
 
-import WalletService, { Errors } from '../walletService'
+import WalletService from '../walletService'
+import { GAS_AMOUNTS } from '../constants'
+import Errors from '../errors'
+
+import TransactionTypes from '../transactionTypes'
 
 const {
   FAILED_TO_CREATE_LOCK,
@@ -14,12 +18,6 @@ const {
   FAILED_TO_WITHDRAW_FROM_LOCK,
 } = Errors
 
-const TransactionType = {
-  LOCK_CREATION: 'LOCK_CREATION',
-  KEY_PURCHASE: 'KEY_PURCHASE',
-  WITHDRAWAL: 'WITHDRAWAL',
-  UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE',
-}
 const endpoint = 'http://127.0.0.1:8545'
 const nockScope = nock(endpoint, { encodedQueryParams: true })
 const provider = new Web3.providers.HttpProvider(endpoint)
@@ -380,10 +378,10 @@ describe('WalletService', () => {
             to: walletService.unlockContractAddress,
             from: owner,
             data,
-            gas: WalletService.gasAmountConstants().createLock,
+            gas: GAS_AMOUNTS.createLock,
             contract: UnlockV0.Unlock,
           },
-          TransactionType.LOCK_CREATION,
+          TransactionTypes.LOCK_CREATION,
           expect.any(Function)
         )
       })
@@ -475,11 +473,11 @@ describe('WalletService', () => {
             to: lock,
             from: account,
             data,
-            gas: WalletService.gasAmountConstants().purchaseKey,
+            gas: GAS_AMOUNTS.purchaseKey,
             contract: UnlockV0.PublicLock,
             value: '100000000000000000000000000', // Web3Utils.toWei(keyPrice, 'ether')
           },
-          TransactionType.KEY_PURCHASE,
+          TransactionTypes.KEY_PURCHASE,
           expect.any(Function)
         )
       })
@@ -541,10 +539,10 @@ describe('WalletService', () => {
             to: lock,
             from: account,
             data,
-            gas: WalletService.gasAmountConstants().updateKeyPrice,
+            gas: GAS_AMOUNTS.updateKeyPrice,
             contract: UnlockV0.PublicLock,
           },
-          TransactionType.UPDATE_KEY_PRICE,
+          TransactionTypes.UPDATE_KEY_PRICE,
           expect.any(Function)
         )
       })
@@ -685,10 +683,10 @@ describe('WalletService', () => {
             to: lock,
             from: account,
             data,
-            gas: WalletService.gasAmountConstants().partialWithdrawFromLock,
+            gas: GAS_AMOUNTS.partialWithdrawFromLock,
             contract: UnlockV0.PublicLock,
           },
-          TransactionType.WITHDRAWAL,
+          TransactionTypes.WITHDRAWAL,
           expect.any(Function)
         )
       })
@@ -763,10 +761,10 @@ describe('WalletService', () => {
             to: lock,
             from: account,
             data,
-            gas: WalletService.gasAmountConstants().withdrawFromLock,
+            gas: GAS_AMOUNTS.withdrawFromLock,
             contract: UnlockV0.PublicLock,
           },
-          TransactionType.WITHDRAWAL,
+          TransactionTypes.WITHDRAWAL,
           expect.any(Function)
         )
       })

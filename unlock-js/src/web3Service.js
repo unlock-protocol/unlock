@@ -3,21 +3,9 @@ import Web3Utils from 'web3-utils'
 import { bufferToHex, generateAddress } from 'ethereumjs-util'
 import * as UnlockV0 from 'unlock-abi-0'
 import UnlockService from './unlockService'
-
-export const keyId = (lock, owner) => [lock, owner].join('-')
-
-export const Constants = {
-  MAX_UINT:
-    '115792089237316195423570985008687907853269984665640564039457584007913129639935',
-  UNLIMITED_KEYS_COUNT: -1,
-}
-
-export const TransactionType = {
-  LOCK_CREATION: 'LOCK_CREATION',
-  KEY_PURCHASE: 'KEY_PURCHASE',
-  WITHDRAWAL: 'WITHDRAWAL',
-  UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE',
-}
+import { MAX_UINT, UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
+import TransactionTypes from './transactionTypes'
+import v0 from './v0'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -53,10 +41,10 @@ export default class Web3Service extends UnlockService {
       Transfer: (transactionHash, contractAddress, blockNumber, args) => {
         const owner = args._to
         this.emit('transaction.updated', transactionHash, {
-          key: keyId(contractAddress, owner),
+          key: KEY_ID(contractAddress, owner),
           lock: contractAddress,
         })
-        return this.emit('key.saved', keyId(contractAddress, owner), {
+        return this.emit('key.saved', KEY_ID(contractAddress, owner), {
           lock: contractAddress,
           owner,
         })
@@ -97,8 +85,8 @@ export default class Web3Service extends UnlockService {
           lock: newLockAddress,
         })
 
-        if (params._maxNumberOfKeys === Constants.MAX_UINT) {
-          params._maxNumberOfKeys = Constants.UNLIMITED_KEYS_COUNT
+        if (params._maxNumberOfKeys === MAX_UINT) {
+          params._maxNumberOfKeys = UNLIMITED_KEYS_COUNT
         }
 
         this.emit('lock.updated', newLockAddress, {
@@ -114,10 +102,10 @@ export default class Web3Service extends UnlockService {
       purchaseFor: async (transactionHash, contractAddress, params) => {
         const owner = params._recipient
         this.emit('transaction.updated', transactionHash, {
-          key: keyId(contractAddress, owner),
+          key: KEY_ID(contractAddress, owner),
           lock: contractAddress,
         })
-        return this.emit('key.saved', keyId(contractAddress, owner), {
+        return this.emit('key.saved', KEY_ID(contractAddress, owner), {
           lock: contractAddress,
           owner,
         })
@@ -165,25 +153,25 @@ export default class Web3Service extends UnlockService {
     }
 
     if (contract.contractName === 'Unlock' && method.name === 'createLock') {
-      return TransactionType.LOCK_CREATION
+      return TransactionTypes.LOCK_CREATION
     }
 
     if (
       contract.contractName === 'PublicLock' &&
       method.name === 'purchaseFor'
     ) {
-      return TransactionType.KEY_PURCHASE
+      return TransactionTypes.KEY_PURCHASE
     }
 
     if (contract.contractName === 'PublicLock' && method.name === 'withdraw') {
-      return TransactionType.WITHDRAWAL
+      return TransactionTypes.WITHDRAWAL
     }
 
     if (
       contract.contractName === 'PublicLock' &&
       method.name === 'updateKeyPrice'
     ) {
-      return TransactionType.UPDATE_KEY_PRICE
+      return TransactionTypes.UPDATE_KEY_PRICE
     }
 
     // Unknown transaction
@@ -219,13 +207,7 @@ export default class Web3Service extends UnlockService {
    * @param {*} address
    */
   getPastLockCreationsTransactionsForUser(address) {
-    const unlock = new this.web3.eth.Contract(
-      UnlockV0.Unlock.abi,
-      this.unlockContractAddress
-    )
-    return this._getPastTransactionsForContract(unlock, 'NewLock', {
-      lockOwner: address,
-    })
+    return v0.getPastLockCreationsTransactionsForUser.bind(this)(address)
   }
 
   /**
@@ -234,11 +216,7 @@ export default class Web3Service extends UnlockService {
    * @param {*} lockAddress
    */
   getPastLockTransactions(lockAddress) {
-    const lockContract = new this.web3.eth.Contract(
-      UnlockV0.PublicLock.abi,
-      lockAddress
-    )
-    return this._getPastTransactionsForContract(lockContract, 'allevents')
+    return v0.getPastLockTransactions.bind(this)(lockAddress)
   }
 
   /**
@@ -521,52 +499,7 @@ export default class Web3Service extends UnlockService {
    * @return Promise<Lock>
    */
   getLock(address) {
-    const contract = new this.web3.eth.Contract(
-      UnlockV0.PublicLock.abi,
-      address
-    )
-    const attributes = {
-      keyPrice: x => Web3Utils.fromWei(x, 'ether'),
-      expirationDuration: parseInt,
-      maxNumberOfKeys: value => {
-        if (value === Constants.MAX_UINT) {
-          return Constants.UNLIMITED_KEYS_COUNT
-        }
-        return parseInt(value)
-      },
-      owner: x => x,
-      outstandingKeys: parseInt,
-    }
-
-    const update = {}
-
-    const constantPromises = Object.keys(attributes).map(attribute => {
-      return contract.methods[attribute]()
-        .call()
-        .then(result => {
-          update[attribute] = attributes[attribute](result) // We cast the value
-        })
-    })
-
-    // Let's load its balance
-    constantPromises.push(
-      this.getAddressBalance(address).then(balance => {
-        update.balance = balance
-      })
-    )
-
-    // Let's load the current block to use to compare versions
-    constantPromises.push(
-      this.web3.eth.getBlockNumber().then(blockNumber => {
-        update.asOf = blockNumber
-      })
-    )
-
-    // Once all lock attributes have been fetched
-    return Promise.all(constantPromises).then(() => {
-      this.emit('lock.updated', address, update)
-      return update
-    })
+    return v0.getLock.bind(this)(address)
   }
 
   /**
@@ -575,20 +508,7 @@ export default class Web3Service extends UnlockService {
    * @param {PropTypes.string} owner
    */
   getKeyByLockForOwner(lock, owner) {
-    const lockContract = new this.web3.eth.Contract(
-      UnlockV0.PublicLock.abi,
-      lock
-    )
-    return this._getKeyByLockForOwner(lockContract, owner).then(
-      ([expiration, data]) => {
-        this.emit('key.updated', keyId(lock, owner), {
-          lock,
-          owner,
-          expiration,
-          data,
-        })
-      }
-    )
+    return v0.getKeyByLockForOwner.bind(this)(lock, owner)
   }
 
   /**
@@ -625,7 +545,7 @@ export default class Web3Service extends UnlockService {
     return this._getKeyByLockForOwner(lockContract, ownerAddress).then(
       ([expiration, data]) => {
         return {
-          id: keyId(lock, ownerAddress),
+          id: KEY_ID(lock, ownerAddress),
           lock,
           owner: ownerAddress,
           expiration,
@@ -682,24 +602,6 @@ export default class Web3Service extends UnlockService {
    * @param {PropTypes.integer}
    */
   getKeysForLockOnPage(lock, page, byPage) {
-    const lockContract = new this.web3.eth.Contract(
-      UnlockV0.PublicLock.abi,
-      lock
-    )
-
-    this._genKeyOwnersFromLockContract(lock, lockContract, page, byPage).then(
-      keyPromises => {
-        if (keyPromises.length == 0) {
-          this._genKeyOwnersFromLockContractIterative(
-            lock,
-            lockContract,
-            page,
-            byPage
-          ).then(keyPromises => this._emitKeyOwners(lock, page, keyPromises))
-        } else {
-          this._emitKeyOwners(lock, page, keyPromises)
-        }
-      }
-    )
+    v0.getKeysForLockOnPage.bind(this)(lock, page, byPage)
   }
 }
