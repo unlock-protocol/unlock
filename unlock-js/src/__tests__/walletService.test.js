@@ -11,11 +11,7 @@ import Errors from '../errors'
 
 import TransactionTypes from '../transactionTypes'
 
-const {
-  FAILED_TO_PURCHASE_KEY,
-  FAILED_TO_UPDATE_KEY_PRICE,
-  FAILED_TO_WITHDRAW_FROM_LOCK,
-} = Errors
+const { FAILED_TO_UPDATE_KEY_PRICE, FAILED_TO_WITHDRAW_FROM_LOCK } = Errors
 
 const endpoint = 'http://127.0.0.1:8545'
 const nockScope = nock(endpoint, { encodedQueryParams: true })
@@ -330,77 +326,6 @@ describe('WalletService', () => {
         )
 
         mockTransaction.emit('error', error)
-      })
-    })
-
-    describe('purchaseKey', () => {
-      let keyPrice
-      let lock
-      let owner
-      let account
-      let data
-
-      beforeEach(() => {
-        lock = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
-        owner = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
-        keyPrice = '100000000'
-        account = '0xdeadbeef'
-        data = 'key data'
-      })
-
-      it('should invoke sendTransaction with the right params', () => {
-        expect.assertions(5)
-        const data = '' // mock abi data for purchaseKey
-
-        walletService._sendTransaction = jest.fn()
-
-        const ContractClass = class {
-          constructor(abi, address) {
-            expect(abi).toBe(UnlockV0.PublicLock.abi)
-            expect(address).toBe(lock)
-            this.methods = {
-              purchaseFor: (customer, data) => {
-                expect(customer).toEqual(owner)
-                expect(data).toEqual('0x') // Web3Utils.utf8ToHex(data || '')
-                return this
-              },
-            }
-            this.encodeABI = jest.fn(() => data)
-          }
-        }
-
-        walletService.web3.eth.Contract = ContractClass
-
-        walletService.purchaseKey(lock, owner, keyPrice, account, data)
-
-        expect(walletService._sendTransaction).toHaveBeenCalledWith(
-          {
-            to: lock,
-            from: account,
-            data,
-            gas: GAS_AMOUNTS.purchaseKey,
-            contract: UnlockV0.PublicLock,
-            value: '100000000000000000000000000', // Web3Utils.toWei(keyPrice, 'ether')
-          },
-          TransactionTypes.KEY_PURCHASE,
-          expect.any(Function)
-        )
-      })
-
-      it('should emit an error if the transaction could not be sent', done => {
-        expect.assertions(1)
-        const error = {}
-
-        walletService._sendTransaction = jest.fn((args, type, cb) => {
-          return cb(error)
-        })
-
-        walletService.on('error', error => {
-          expect(error.message).toBe(FAILED_TO_PURCHASE_KEY)
-          done()
-        })
-
-        walletService.purchaseKey(lock, owner, keyPrice, account, data)
       })
     })
 
