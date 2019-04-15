@@ -3,7 +3,8 @@
 import Web3Utils from 'web3-utils'
 import Web3EthAbi from 'web3-eth-abi'
 import nock from 'nock'
-import { PublicLock, Unlock } from 'unlock-abi-0'
+import * as UnlockV0 from 'unlock-abi-0'
+
 import Web3Service, { TransactionType, keyId } from '../web3Service'
 
 const nodeAccounts = [
@@ -111,7 +112,7 @@ describe('Web3Service', () => {
       const lockAddress = '0x123'
       class MockContract {
         constructor(abi, address) {
-          expect(abi).toBe(PublicLock.abi)
+          expect(abi).toBe(UnlockV0.PublicLock.abi)
           expect(address).toEqual(lockAddress)
         }
       }
@@ -185,7 +186,7 @@ describe('Web3Service', () => {
 
       class MockContract {
         constructor(abi, address) {
-          expect(abi).toBe(Unlock.abi)
+          expect(abi).toBe(UnlockV0.Unlock.abi)
           expect(address).toEqual(web3Service.unlockAddress)
         }
       }
@@ -343,7 +344,7 @@ describe('Web3Service', () => {
       })
       web3Service.parseTransactionFromInput(
         transaction.hash,
-        Unlock,
+        UnlockV0.Unlock,
         input,
         web3Service.unlockAddress
       )
@@ -684,12 +685,12 @@ describe('Web3Service', () => {
           receipt
         ) => {
           expect(transactionHash).toEqual(transaction.hash)
-          expect(contract).toEqual(Unlock)
+          expect(contract).toEqual(UnlockV0.Unlock)
           expect(receipt.blockNumber).toEqual(344)
           expect(receipt.logs).toEqual([])
           web3Service.unlockAddress = previousAddress
           expect(web3Service.getTransactionType).toHaveBeenCalledWith(
-            Unlock,
+            UnlockV0.Unlock,
             blockTransaction.input
           )
           done()
@@ -720,11 +721,11 @@ describe('Web3Service', () => {
           receipt
         ) => {
           expect(transactionHash).toEqual(transaction.hash)
-          expect(contract).toEqual(PublicLock)
+          expect(contract).toEqual(UnlockV0.PublicLock)
           expect(receipt.blockNumber).toEqual(344)
           expect(receipt.logs).toEqual([])
           expect(web3Service.getTransactionType).toHaveBeenCalledWith(
-            PublicLock,
+            UnlockV0.PublicLock,
             blockTransaction.input
           )
           done()
@@ -854,7 +855,7 @@ describe('Web3Service', () => {
       )
 
       const lockContract = new web3Service.web3.eth.Contract(
-        PublicLock.abi,
+        UnlockV0.PublicLock.abi,
         lockAddress
       )
 
@@ -881,7 +882,7 @@ describe('Web3Service', () => {
       )
 
       const lockContract = new web3Service.web3.eth.Contract(
-        PublicLock.abi,
+        UnlockV0.PublicLock.abi,
         lockAddress
       )
 
@@ -920,36 +921,42 @@ describe('Web3Service', () => {
     it('should return null if there is no matching method', () => {
       expect.assertions(1)
       const data = 'notarealmethod'
-      expect(web3Service.getTransactionType(Unlock, data)).toBe(null)
+      expect(web3Service.getTransactionType(UnlockV0.Unlock, data)).toBe(null)
     })
 
     it('should return the right transaction type on lock creation', () => {
       expect.assertions(1)
-      const unlock = new web3Service.web3.eth.Contract(Unlock.abi, '')
+      const unlock = new web3Service.web3.eth.Contract(UnlockV0.Unlock.abi, '')
       const data = unlock.methods
         .createLock('1000', '1000000000', '1')
         .encodeABI()
-      expect(web3Service.getTransactionType(Unlock, data)).toBe(
+      expect(web3Service.getTransactionType(UnlockV0.Unlock, data)).toBe(
         TransactionType.LOCK_CREATION
       )
     })
 
     it('should return the right transaction type on key purchase', () => {
       expect.assertions(1)
-      const lock = new web3Service.web3.eth.Contract(PublicLock.abi, '')
+      const lock = new web3Service.web3.eth.Contract(
+        UnlockV0.PublicLock.abi,
+        ''
+      )
       const data = lock.methods
         .purchaseFor(nodeAccounts[0], Web3Utils.utf8ToHex(''))
         .encodeABI()
-      expect(web3Service.getTransactionType(PublicLock, data)).toBe(
+      expect(web3Service.getTransactionType(UnlockV0.PublicLock, data)).toBe(
         TransactionType.KEY_PURCHASE
       )
     })
 
     it('should return the right transaction type on withdrawals', () => {
       expect.assertions(1)
-      const lock = new web3Service.web3.eth.Contract(PublicLock.abi, '')
+      const lock = new web3Service.web3.eth.Contract(
+        UnlockV0.PublicLock.abi,
+        ''
+      )
       const data = lock.methods.withdraw().encodeABI()
-      expect(web3Service.getTransactionType(PublicLock, data)).toBe(
+      expect(web3Service.getTransactionType(UnlockV0.PublicLock, data)).toBe(
         TransactionType.WITHDRAWAL
       )
     })
