@@ -1,12 +1,12 @@
 import axios from 'axios'
-import WedlocksService, { emailTemplate } from '../../services/wedlocksService'
+import WedlockService, { emailTemplate } from '../../services/wedlockService'
 
 jest.mock('axios')
 
 let w
 describe('Wedlocks Service', () => {
   beforeEach(() => {
-    w = new WedlocksService('http://notareal.host')
+    w = new WedlockService('http://notareal.host')
   })
 
   it('should should request an email confirmation, with the right headers', async () => {

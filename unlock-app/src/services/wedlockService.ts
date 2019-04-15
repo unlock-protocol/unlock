@@ -10,7 +10,7 @@ type Params = {
   [key: string]: any
 }
 
-export default class WedlocksService {
+export default class WedlockService {
   private uri: string
 
   constructor(uri: string) {
