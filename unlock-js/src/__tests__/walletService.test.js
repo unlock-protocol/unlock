@@ -12,7 +12,6 @@ import Errors from '../errors'
 import TransactionTypes from '../transactionTypes'
 
 const {
-  FAILED_TO_CREATE_LOCK,
   FAILED_TO_PURCHASE_KEY,
   FAILED_TO_UPDATE_KEY_PRICE,
   FAILED_TO_WITHDRAW_FROM_LOCK,
@@ -331,101 +330,6 @@ describe('WalletService', () => {
         )
 
         mockTransaction.emit('error', error)
-      })
-    })
-
-    describe('createLock', () => {
-      let lock
-      let owner
-
-      beforeEach(() => {
-        lock = {
-          address: '0xadd',
-          expirationDuration: 86400, // 1 day
-          keyPrice: '0.1', // 0.1 Eth
-          maxNumberOfKeys: 100,
-        }
-        owner = '0xdeadfeed'
-      })
-
-      it('should invoke sendTransaction with the right params', () => {
-        expect.assertions(6)
-        const data = '' // mock abi data for createLock
-
-        walletService._sendTransaction = jest.fn()
-
-        const ContractClass = class {
-          constructor(abi, address) {
-            expect(abi).toBe(UnlockV0.Unlock.abi)
-            expect(address).toBe(walletService.unlockContractAddress)
-            this.methods = {
-              createLock: (duration, price, numberOfKeys) => {
-                expect(duration).toEqual(lock.expirationDuration)
-                expect(price).toEqual('100000000000000000') // Web3Utils.toWei(lock.keyPrice, 'ether')
-                expect(numberOfKeys).toEqual(100)
-                return this
-              },
-            }
-            this.encodeABI = jest.fn(() => data)
-          }
-        }
-
-        walletService.web3.eth.Contract = ContractClass
-
-        walletService.createLock(lock, owner)
-
-        expect(walletService._sendTransaction).toHaveBeenCalledWith(
-          {
-            to: walletService.unlockContractAddress,
-            from: owner,
-            data,
-            gas: GAS_AMOUNTS.createLock,
-            contract: UnlockV0.Unlock,
-          },
-          TransactionTypes.LOCK_CREATION,
-          expect.any(Function)
-        )
-      })
-
-      it('should emit lock.updated with the transaction', done => {
-        expect.assertions(2)
-        const hash = '0x1213'
-
-        walletService._sendTransaction = jest.fn((args, type, cb) => {
-          return cb(null, hash)
-        })
-
-        walletService.on('lock.updated', (lockAddress, update) => {
-          expect(lockAddress).toBe(lock.address)
-          expect(update).toEqual({
-            transaction: hash,
-            balance: '0',
-            expirationDuration: lock.expirationDuration,
-            keyPrice: lock.keyPrice,
-            maxNumberOfKeys: lock.maxNumberOfKeys,
-            outstandingKeys: 0,
-            owner,
-          })
-          done()
-        })
-
-        walletService.createLock(lock, owner)
-      })
-
-      it('should emit an error if the transaction could not be sent', done => {
-        expect.assertions(1)
-        const error = {}
-
-        walletService._sendTransaction = jest.fn((args, type, cb) => {
-          return cb(error)
-        })
-
-        walletService.on('error', error => {
-          expect(error.message).toBe(FAILED_TO_CREATE_LOCK)
-          done()
-        })
-
-        walletService.createLock(lock, owner)
       })
     })
 
