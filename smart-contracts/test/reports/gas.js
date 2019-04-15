@@ -1,13 +1,13 @@
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
-const deployLocks = require('../test/helpers/deployLocks')
+const deployLocks = require('../helpers/deployLocks')
 
 const Unlock = artifacts.require('Unlock.sol')
 
 let unlock, lock
 
-contract('Reports', accounts => {
+contract('reports / gas', accounts => {
   beforeEach(async () => {
     unlock = await Unlock.deployed()
     const locks = await deployLocks(unlock, accounts[0])

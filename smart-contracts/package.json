@@ -45,10 +45,9 @@
     "test": "cross-env NODE_ENV=test truffle test --network development",
     "lint": "solium -d ./contracts/ && eslint --ext .ts,.js test/",
     "dev": "npm run lint && npm run build && npm run test",
-    "ci": "npm run lint && npm run test && npm run reports",
+    "ci": "npm run lint && npm run test",
     "build": "truffle compile --all",
     "zos": "zos",
-    "reports": "truffle test ./reports/gas.js",
     "verify": "truffle run verify"
   },
   "author": "",
