@@ -31,7 +31,7 @@
     "raw-loader": "^2.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-redux": "^7.0.1",
+    "react-redux": "^7.0.2",
     "react-showdown": "^1.6.0",
     "react-test-renderer": "^16.8.6",
     "react-testing-library": "6.1.2",
