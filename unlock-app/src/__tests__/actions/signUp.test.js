@@ -57,4 +57,16 @@ describe('signup actions', () => {
 
     expect(s.signupSucceeded()).toEqual(expectedAction)
   })
+
+  it('should create an action indicating that a user account should be created', () => {
+    expect.assertions(1)
+    const user = {
+      name: 'This is mock data',
+    }
+    const expectedAction = {
+      type: s.CREATE_USER,
+      user,
+    }
+    expect(s.createUser(user)).toEqual(expectedAction)
+  })
 })
