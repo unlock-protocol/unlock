@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       location: DataTypes.STRING,
       date: DataTypes.DATE,
       logo: DataTypes.STRING,
+      owner: DataTypes.STRING,
     },
     {}
   )
