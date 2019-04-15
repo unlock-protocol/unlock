@@ -4,11 +4,7 @@ import {
   FATAL_MISSING_PROVIDER,
   FATAL_NOT_ENABLED_IN_PROVIDER,
 } from '../errors'
-
-interface Action {
-  type: string
-  [key: string]: any
-}
+import { Action } from '../unlockTypes' // eslint-disable-line no-unused-vars
 
 function initializeProvider(provider: { enable?: () => any }, dispatch: any) {
   if (!provider) {
