@@ -7,6 +7,7 @@ module.exports = {
     await queryInterface.addColumn(table, 'owner', {
       type: Sequelize.STRING,
       allowNull: false,
+      defaultValue: '',
     })
   },
 
