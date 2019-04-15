@@ -5,7 +5,9 @@ import Web3EthAbi from 'web3-eth-abi'
 import nock from 'nock'
 import * as UnlockV0 from 'unlock-abi-0'
 
-import Web3Service, { TransactionType, keyId } from '../web3Service'
+import Web3Service from '../web3Service'
+import { KEY_ID } from '../constants'
+import TransactionTypes from '../transactionTypes'
 
 const nodeAccounts = [
   '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
@@ -472,14 +474,14 @@ describe('Web3Service', () => {
         web3Service.once('transaction.updated', (transactionHash, params) => {
           expect(transactionHash).toBe(fakeHash)
           expect(params).toEqual({
-            key: keyId(fakeContractAddress, owner),
+            key: KEY_ID(fakeContractAddress, owner),
             lock: fakeContractAddress,
           })
           resolveTransactionUpdater()
         })
 
         web3Service.once('key.saved', (id, params) => {
-          expect(id).toBe(keyId(fakeContractAddress, owner))
+          expect(id).toBe(KEY_ID(fakeContractAddress, owner))
           expect(params).toEqual({
             owner,
             lock: fakeContractAddress,
@@ -931,7 +933,7 @@ describe('Web3Service', () => {
         .createLock('1000', '1000000000', '1')
         .encodeABI()
       expect(web3Service.getTransactionType(UnlockV0.Unlock, data)).toBe(
-        TransactionType.LOCK_CREATION
+        TransactionTypes.LOCK_CREATION
       )
     })
 
@@ -945,7 +947,7 @@ describe('Web3Service', () => {
         .purchaseFor(nodeAccounts[0], Web3Utils.utf8ToHex(''))
         .encodeABI()
       expect(web3Service.getTransactionType(UnlockV0.PublicLock, data)).toBe(
-        TransactionType.KEY_PURCHASE
+        TransactionTypes.KEY_PURCHASE
       )
     })
 
@@ -957,7 +959,7 @@ describe('Web3Service', () => {
       )
       const data = lock.methods.withdraw().encodeABI()
       expect(web3Service.getTransactionType(UnlockV0.PublicLock, data)).toBe(
-        TransactionType.WITHDRAWAL
+        TransactionTypes.WITHDRAWAL
       )
     })
   })
