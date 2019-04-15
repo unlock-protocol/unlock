@@ -9,14 +9,18 @@ import {
   LockDetails,
   LockDetail,
 } from './LockStyles'
-import ConfirmedKey from '../interface/buttons/overlay/ConfirmedKey'
+import ConfirmedKey, {
+  Checkmark,
+  Arrow,
+  ConfirmedKeyButton,
+} from '../interface/buttons/overlay/ConfirmedKey'
 import { HoverFooter, NotHoverFooter } from './HoverFooters'
 import BalanceProvider from '../helpers/BalanceProvider'
 
 const ConfirmedKeyLock = ({ lock, hideModal }) => (
   <LockWrapper lock={lock}>
     <LockHeader>{lock.name}</LockHeader>
-    <Body>
+    <Body onClick={() => hideModal()}>
       <BalanceProvider
         amount={lock.keyPrice}
         render={(ethPrice, fiatPrice) => (
@@ -28,7 +32,7 @@ const ConfirmedKeyLock = ({ lock, hideModal }) => (
           </React.Fragment>
         )}
       />
-      <ConfirmedKey hideModal={hideModal} size="50px" />
+      <ConfirmedKey size="50px" hideModal={hideModal} />
       <NotHoverFooter backgroundColor="var(--green)">
         Payment Confirmed
       </NotHoverFooter>
@@ -46,4 +50,31 @@ export default ConfirmedKeyLock
 
 const Body = styled(LockBody)`
   border: 1px solid var(--green);
+  cursor: pointer;
+  ${HoverFooter} {
+    display: none;
+  }
+  ${NotHoverFooter} {
+    display: grid;
+  }
+  &:hover {
+    ${ConfirmedKeyButton} {
+      background-color: var(--green);
+      & svg {
+        fill: var(--white);
+      }
+    }
+    ${Arrow} {
+      display: block;
+    }
+    ${Checkmark} {
+      display: none;
+    }
+    ${HoverFooter} {
+      display: grid;
+    }
+    ${NotHoverFooter} {
+      display: none;
+    }
+  }
 `

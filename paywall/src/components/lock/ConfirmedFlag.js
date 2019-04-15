@@ -1,8 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
 import { RoundedLogo } from '../interface/Logo'
-import ConfirmedKey from '../interface/buttons/overlay/ConfirmedKey'
+import ConfirmedKey, {
+  Checkmark,
+  Arrow,
+  ConfirmedKeyButton,
+} from '../interface/buttons/overlay/ConfirmedKey'
 import {
   OptimisticFlag,
   OptimisticLogo,
@@ -12,7 +17,7 @@ import {
 
 export default function ConfirmedFlag({ dismiss }) {
   return (
-    <OptimisticFlag>
+    <ClickableFlag onClick={() => dismiss()}>
       <OptimisticLogo>
         <RoundedLogo size="28px" />
       </OptimisticLogo>
@@ -27,10 +32,28 @@ export default function ConfirmedFlag({ dismiss }) {
         </OptimisticLogo>
         <a href="/">Unlock</a>
       </PoweredByUnlock>
-    </OptimisticFlag>
+    </ClickableFlag>
   )
 }
 
 ConfirmedFlag.propTypes = {
   dismiss: PropTypes.func.isRequired,
 }
+
+const ClickableFlag = styled(OptimisticFlag)`
+  &:hover {
+    cursor: pointer;
+    ${ConfirmedKeyButton} {
+      background-color: var(--green);
+      & svg {
+        fill: var(--white);
+      }
+    }
+    ${Arrow} {
+      display: block;
+    }
+    ${Checkmark} {
+      display: none;
+    }
+  }
+`
