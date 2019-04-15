@@ -3,7 +3,7 @@ import Web3 from 'web3'
 import EventEmitter from 'events'
 import nock from 'nock'
 import Web3Utils from 'web3-utils'
-import { PublicLock, Unlock } from 'unlock-abi-0'
+import * as UnlockV0 from 'unlock-abi-0'
 
 import WalletService, { Errors } from '../walletService'
 
@@ -86,7 +86,7 @@ describe('WalletService', () => {
       const netVersion = Math.floor(Math.random() * 100000)
       netVersionAndYield(netVersion)
 
-      Unlock.networks = {
+      UnlockV0.Unlock.networks = {
         [netVersion]: {
           events: {},
           links: {},
@@ -110,7 +110,7 @@ describe('WalletService', () => {
     beforeEach(done => {
       netVersionAndYield(netVersion)
 
-      Unlock.networks = {
+      UnlockV0.Unlock.networks = {
         [netVersion]: {
           events: {},
           links: {},
@@ -357,7 +357,7 @@ describe('WalletService', () => {
 
         const ContractClass = class {
           constructor(abi, address) {
-            expect(abi).toBe(Unlock.abi)
+            expect(abi).toBe(UnlockV0.Unlock.abi)
             expect(address).toBe(walletService.unlockContractAddress)
             this.methods = {
               createLock: (duration, price, numberOfKeys) => {
@@ -381,7 +381,7 @@ describe('WalletService', () => {
             from: owner,
             data,
             gas: WalletService.gasAmountConstants().createLock,
-            contract: Unlock,
+            contract: UnlockV0.Unlock,
           },
           TransactionType.LOCK_CREATION,
           expect.any(Function)
@@ -453,7 +453,7 @@ describe('WalletService', () => {
 
         const ContractClass = class {
           constructor(abi, address) {
-            expect(abi).toBe(PublicLock.abi)
+            expect(abi).toBe(UnlockV0.PublicLock.abi)
             expect(address).toBe(lock)
             this.methods = {
               purchaseFor: (customer, data) => {
@@ -476,7 +476,7 @@ describe('WalletService', () => {
             from: account,
             data,
             gas: WalletService.gasAmountConstants().purchaseKey,
-            contract: PublicLock,
+            contract: UnlockV0.PublicLock,
             value: '100000000000000000000000000', // Web3Utils.toWei(keyPrice, 'ether')
           },
           TransactionType.KEY_PURCHASE,
@@ -520,7 +520,7 @@ describe('WalletService', () => {
 
         const ContractClass = class {
           constructor(abi, address) {
-            expect(abi).toBe(PublicLock.abi)
+            expect(abi).toBe(UnlockV0.PublicLock.abi)
             expect(address).toBe(lock)
             this.methods = {
               updateKeyPrice: newPrice => {
@@ -542,7 +542,7 @@ describe('WalletService', () => {
             from: account,
             data,
             gas: WalletService.gasAmountConstants().updateKeyPrice,
-            contract: PublicLock,
+            contract: UnlockV0.PublicLock,
           },
           TransactionType.UPDATE_KEY_PRICE,
           expect.any(Function)
@@ -665,7 +665,7 @@ describe('WalletService', () => {
 
         const MockContractClass = class {
           constructor(abi, address) {
-            expect(abi).toBe(PublicLock.abi)
+            expect(abi).toBe(UnlockV0.PublicLock.abi)
             expect(address).toBe(lock)
             this.methods = {
               partialWithdraw: () => this,
@@ -686,7 +686,7 @@ describe('WalletService', () => {
             from: account,
             data,
             gas: WalletService.gasAmountConstants().partialWithdrawFromLock,
-            contract: PublicLock,
+            contract: UnlockV0.PublicLock,
           },
           TransactionType.WITHDRAWAL,
           expect.any(Function)
@@ -743,7 +743,7 @@ describe('WalletService', () => {
 
         const ContractClass = class {
           constructor(abi, address) {
-            expect(abi).toBe(PublicLock.abi)
+            expect(abi).toBe(UnlockV0.PublicLock.abi)
             expect(address).toBe(lock)
             this.methods = {
               withdraw: () => {
@@ -764,7 +764,7 @@ describe('WalletService', () => {
             from: account,
             data,
             gas: WalletService.gasAmountConstants().withdrawFromLock,
-            contract: PublicLock,
+            contract: UnlockV0.PublicLock,
           },
           TransactionType.WITHDRAWAL,
           expect.any(Function)

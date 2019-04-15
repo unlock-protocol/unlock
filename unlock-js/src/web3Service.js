@@ -2,7 +2,8 @@ import EventEmitter from 'events'
 import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
 import { bufferToHex, generateAddress } from 'ethereumjs-util'
-import { PublicLock, Unlock } from 'unlock-abi-0'
+// import * as UnlockV01 from 'unlock-abi-0-1'
+import * as UnlockV0 from 'unlock-abi-0'
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
@@ -220,7 +221,10 @@ export default class Web3Service extends EventEmitter {
    * @param {*} address
    */
   getPastLockCreationsTransactionsForUser(address) {
-    const unlock = new this.web3.eth.Contract(Unlock.abi, this.unlockAddress)
+    const unlock = new this.web3.eth.Contract(
+      UnlockV0.Unlock.abi,
+      this.unlockAddress
+    )
     return this._getPastTransactionsForContract(unlock, 'NewLock', {
       lockOwner: address,
     })
@@ -232,7 +236,10 @@ export default class Web3Service extends EventEmitter {
    * @param {*} lockAddress
    */
   getPastLockTransactions(lockAddress) {
-    const lockContract = new this.web3.eth.Contract(PublicLock.abi, lockAddress)
+    const lockContract = new this.web3.eth.Contract(
+      UnlockV0.PublicLock.abi,
+      lockAddress
+    )
     return this._getPastTransactionsForContract(lockContract, 'allevents')
   }
 
@@ -388,8 +395,8 @@ export default class Web3Service extends EventEmitter {
     if (defaults) {
       const contract =
         this.unlockAddress === Web3Utils.toChecksumAddress(defaults.to)
-          ? Unlock
-          : PublicLock
+          ? UnlockV0.Unlock
+          : UnlockV0.PublicLock
 
       return this.parseTransactionFromInput(
         transactionHash,
@@ -418,8 +425,8 @@ export default class Web3Service extends EventEmitter {
 
     const contract =
       this.unlockAddress === Web3Utils.toChecksumAddress(blockTransaction.to)
-        ? Unlock
-        : PublicLock
+        ? UnlockV0.Unlock
+        : UnlockV0.PublicLock
 
     return this.parseTransactionFromInput(
       blockTransaction.hash,
@@ -460,8 +467,8 @@ export default class Web3Service extends EventEmitter {
 
       const contract =
         this.unlockAddress === Web3Utils.toChecksumAddress(blockTransaction.to)
-          ? Unlock
-          : PublicLock
+          ? UnlockV0.Unlock
+          : UnlockV0.PublicLock
 
       const transactionType = this.getTransactionType(
         contract,
@@ -514,7 +521,10 @@ export default class Web3Service extends EventEmitter {
    * @return Promise<Lock>
    */
   getLock(address) {
-    const contract = new this.web3.eth.Contract(PublicLock.abi, address)
+    const contract = new this.web3.eth.Contract(
+      UnlockV0.PublicLock.abi,
+      address
+    )
     const attributes = {
       keyPrice: x => Web3Utils.fromWei(x, 'ether'),
       expirationDuration: parseInt,
@@ -565,7 +575,10 @@ export default class Web3Service extends EventEmitter {
    * @param {PropTypes.string} owner
    */
   getKeyByLockForOwner(lock, owner) {
-    const lockContract = new this.web3.eth.Contract(PublicLock.abi, lock)
+    const lockContract = new this.web3.eth.Contract(
+      UnlockV0.PublicLock.abi,
+      lock
+    )
     return this._getKeyByLockForOwner(lockContract, owner).then(
       ([expiration, data]) => {
         this.emit('key.updated', keyId(lock, owner), {
@@ -669,7 +682,10 @@ export default class Web3Service extends EventEmitter {
    * @param {PropTypes.integer}
    */
   getKeysForLockOnPage(lock, page, byPage) {
-    const lockContract = new this.web3.eth.Contract(PublicLock.abi, lock)
+    const lockContract = new this.web3.eth.Contract(
+      UnlockV0.PublicLock.abi,
+      lock
+    )
 
     this._genKeyOwnersFromLockContract(lock, lockContract, page, byPage).then(
       keyPromises => {

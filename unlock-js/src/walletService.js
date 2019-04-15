@@ -1,7 +1,7 @@
 import EventEmitter from 'events'
 import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
-import { PublicLock, Unlock } from 'unlock-abi-0'
+import * as UnlockV0 from 'unlock-abi-0'
 
 export const Errors = {
   FATAL_MISSING_PROVIDER: 'FATAL_MISSING_PROVIDER',
@@ -155,7 +155,10 @@ export default class WalletService extends EventEmitter {
    * @param {string} price : new price for the lock
    */
   updateKeyPrice(lock, account, price) {
-    const lockContract = new this.web3.eth.Contract(PublicLock.abi, lock)
+    const lockContract = new this.web3.eth.Contract(
+      UnlockV0.PublicLock.abi,
+      lock
+    )
     const data = lockContract.methods
       .updateKeyPrice(Web3Utils.toWei(price, 'ether'))
       .encodeABI()
@@ -166,7 +169,7 @@ export default class WalletService extends EventEmitter {
         from: account,
         data,
         gas: WalletService.gasAmountConstants().updateKeyPrice,
-        contract: PublicLock,
+        contract: UnlockV0.PublicLock,
       },
       TransactionType.UPDATE_KEY_PRICE,
       error => {
@@ -187,7 +190,7 @@ export default class WalletService extends EventEmitter {
    */
   createLock(lock, owner) {
     const unlock = new this.web3.eth.Contract(
-      Unlock.abi,
+      UnlockV0.Unlock.abi,
       this.unlockContractAddress
     )
 
@@ -205,7 +208,7 @@ export default class WalletService extends EventEmitter {
         from: owner,
         data,
         gas: WalletService.gasAmountConstants().createLock,
-        contract: Unlock,
+        contract: UnlockV0.Unlock,
       },
       TransactionType.LOCK_CREATION,
       (error, hash) => {
@@ -241,7 +244,10 @@ export default class WalletService extends EventEmitter {
    * @param {string} account
 \   */
   purchaseKey(lock, owner, keyPrice, account, data = '') {
-    const lockContract = new this.web3.eth.Contract(PublicLock.abi, lock)
+    const lockContract = new this.web3.eth.Contract(
+      UnlockV0.PublicLock.abi,
+      lock
+    )
     const abi = lockContract.methods
       .purchaseFor(owner, Web3Utils.utf8ToHex(data || ''))
       .encodeABI()
@@ -253,7 +259,7 @@ export default class WalletService extends EventEmitter {
         data: abi,
         gas: WalletService.gasAmountConstants().purchaseKey,
         value: Web3Utils.toWei(keyPrice, 'ether'),
-        contract: PublicLock,
+        contract: UnlockV0.PublicLock,
       },
       TransactionType.KEY_PURCHASE,
       error => {
@@ -273,7 +279,10 @@ export default class WalletService extends EventEmitter {
    * @param {Function} callback
    */
   partialWithdrawFromLock(lock, account, ethAmount, callback) {
-    const lockContract = new this.web3.eth.Contract(PublicLock.abi, lock)
+    const lockContract = new this.web3.eth.Contract(
+      UnlockV0.PublicLock.abi,
+      lock
+    )
     const weiAmount = Web3Utils.toWei(ethAmount)
     const data = lockContract.methods.partialWithdraw(weiAmount).encodeABI()
 
@@ -283,7 +292,7 @@ export default class WalletService extends EventEmitter {
         from: account,
         data,
         gas: WalletService.gasAmountConstants().partialWithdrawFromLock,
-        contract: PublicLock,
+        contract: UnlockV0.PublicLock,
       },
       TransactionType.WITHDRAWAL,
       error => {
@@ -303,7 +312,10 @@ export default class WalletService extends EventEmitter {
    * @param {Function} callback TODO: implement...
    */
   withdrawFromLock(lock, account) {
-    const lockContract = new this.web3.eth.Contract(PublicLock.abi, lock)
+    const lockContract = new this.web3.eth.Contract(
+      UnlockV0.PublicLock.abi,
+      lock
+    )
     const data = lockContract.methods.withdraw().encodeABI()
 
     return this._sendTransaction(
@@ -312,7 +324,7 @@ export default class WalletService extends EventEmitter {
         from: account,
         data,
         gas: WalletService.gasAmountConstants().withdrawFromLock,
-        contract: PublicLock,
+        contract: UnlockV0.PublicLock,
       },
       TransactionType.WITHDRAWAL,
       error => {
