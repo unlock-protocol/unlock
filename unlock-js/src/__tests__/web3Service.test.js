@@ -187,7 +187,7 @@ describe('Web3Service', () => {
       class MockContract {
         constructor(abi, address) {
           expect(abi).toBe(UnlockV0.Unlock.abi)
-          expect(address).toEqual(web3Service.unlockAddress)
+          expect(address).toEqual(web3Service.unlockContractAddress)
         }
       }
 
@@ -346,7 +346,7 @@ describe('Web3Service', () => {
         transaction.hash,
         UnlockV0.Unlock,
         input,
-        web3Service.unlockAddress
+        web3Service.unlockContractAddress
       )
     })
 
@@ -385,7 +385,7 @@ describe('Web3Service', () => {
           input
         )
         expect(transactionHash).toEqual(transaction.hash)
-        expect(contractAddress).toEqual(web3Service.unlockAddress)
+        expect(contractAddress).toEqual(web3Service.unlockContractAddress)
         expect(args).toEqual(params)
         // Clean up!
         web3Service.web3.eth.abi.decodeParameters = decodeParams
@@ -396,7 +396,7 @@ describe('Web3Service', () => {
         transaction.hash,
         FakeContract,
         `${method.signature}${input}`,
-        web3Service.unlockAddress
+        web3Service.unlockContractAddress
       )
     })
 
@@ -445,7 +445,7 @@ describe('Web3Service', () => {
 
         web3Service.inputsHandlers.createLock(
           fakeHash,
-          web3Service.unlockAddress,
+          web3Service.unlockContractAddress,
           fakeParams
         )
         await Promise.all([lockUpdater, transactionUpdater])
@@ -675,7 +675,7 @@ describe('Web3Service', () => {
           status: '0x1',
         }
         ethGetTransactionReceipt(transaction.hash, transactionReceipt)
-        const previousAddress = web3Service.unlockAddress
+        const previousAddress = web3Service.unlockContractAddress
 
         web3Service.getTransactionType = jest.fn(() => 'TYPE')
 
@@ -688,14 +688,14 @@ describe('Web3Service', () => {
           expect(contract).toEqual(UnlockV0.Unlock)
           expect(receipt.blockNumber).toEqual(344)
           expect(receipt.logs).toEqual([])
-          web3Service.unlockAddress = previousAddress
+          web3Service.unlockContractAddress = previousAddress
           expect(web3Service.getTransactionType).toHaveBeenCalledWith(
             UnlockV0.Unlock,
             blockTransaction.input
           )
           done()
         }
-        web3Service.unlockAddress = blockTransaction.to
+        web3Service.unlockContractAddress = blockTransaction.to
         web3Service.getTransaction(transaction.hash)
       })
 

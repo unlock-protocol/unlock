@@ -1,9 +1,8 @@
-import EventEmitter from 'events'
 import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
 import { bufferToHex, generateAddress } from 'ethereumjs-util'
-// import * as UnlockV01 from 'unlock-abi-0-1'
 import * as UnlockV0 from 'unlock-abi-0'
+import UnlockService from './unlockService'
 
 export const keyId = (lock, owner) => [lock, owner].join('-')
 
@@ -24,17 +23,16 @@ export const TransactionType = {
  * This service reads data from the RPC endpoint.
  * All transactions should be sent via the WalletService.
  */
-export default class Web3Service extends EventEmitter {
+export default class Web3Service extends UnlockService {
   constructor({
     readOnlyProvider,
     unlockAddress,
     blockTime,
     requiredConfirmations,
   }) {
-    super()
+    super({ unlockAddress })
 
     this.web3 = new Web3(readOnlyProvider)
-    this.unlockAddress = unlockAddress
     this.blockTime = blockTime
     this.requiredConfirmations = requiredConfirmations
 
@@ -132,10 +130,10 @@ export default class Web3Service extends EventEmitter {
    */
   async generateLockAddress() {
     let transactionCount = await this.web3.eth.getTransactionCount(
-      this.unlockAddress
+      this.unlockContractAddress
     )
     return Web3Utils.toChecksumAddress(
-      bufferToHex(generateAddress(this.unlockAddress, transactionCount))
+      bufferToHex(generateAddress(this.unlockContractAddress, transactionCount))
     )
   }
 
@@ -223,7 +221,7 @@ export default class Web3Service extends EventEmitter {
   getPastLockCreationsTransactionsForUser(address) {
     const unlock = new this.web3.eth.Contract(
       UnlockV0.Unlock.abi,
-      this.unlockAddress
+      this.unlockContractAddress
     )
     return this._getPastTransactionsForContract(unlock, 'NewLock', {
       lockOwner: address,
@@ -394,7 +392,7 @@ export default class Web3Service extends EventEmitter {
     // If we have default values for the transaction (passed by the walletService)
     if (defaults) {
       const contract =
-        this.unlockAddress === Web3Utils.toChecksumAddress(defaults.to)
+        this.unlockContractAddress === Web3Utils.toChecksumAddress(defaults.to)
           ? UnlockV0.Unlock
           : UnlockV0.PublicLock
 
@@ -424,7 +422,8 @@ export default class Web3Service extends EventEmitter {
     this._watchTransaction(blockTransaction.hash)
 
     const contract =
-      this.unlockAddress === Web3Utils.toChecksumAddress(blockTransaction.to)
+      this.unlockContractAddress ===
+      Web3Utils.toChecksumAddress(blockTransaction.to)
         ? UnlockV0.Unlock
         : UnlockV0.PublicLock
 
@@ -466,7 +465,8 @@ export default class Web3Service extends EventEmitter {
       // The transaction has been mined :
 
       const contract =
-        this.unlockAddress === Web3Utils.toChecksumAddress(blockTransaction.to)
+        this.unlockContractAddress ===
+        Web3Utils.toChecksumAddress(blockTransaction.to)
           ? UnlockV0.Unlock
           : UnlockV0.PublicLock
 
