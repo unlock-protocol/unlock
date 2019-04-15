@@ -42,9 +42,6 @@ if (mainnetProviderUrl) {
   mainnetMnemonic = require('./mnemonic.mainnet') // eslint-disable-line import/no-unresolved
 }
 
-// When running CI, we connect to the 'ganache' container
-const testHost = process.env.CI ? 'ganache' : '127.0.0.1'
-
 const mainnetProvider = function() {
   return new HDWalletProvider(
     mainnetMnemonic.seed,
@@ -73,8 +70,7 @@ module.exports = {
   networks: {
     development: {
       // used for local dev
-      host: testHost,
-      port: 8545,
+      provider: ganacheProvider,
       network_id: '*', // Match any network id
     },
     rinkeby: {
