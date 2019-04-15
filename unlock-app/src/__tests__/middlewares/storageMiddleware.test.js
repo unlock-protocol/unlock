@@ -7,6 +7,7 @@ import { SIGNED_DATA } from '../../actions/signature'
 import UnlockLock from '../../structured_data/unlockLock'
 import { startLoading, doneLoading } from '../../actions/loading'
 import configure from '../../config'
+import { SIGNUP_CREDENTIALS } from '../../actions/signUp'
 
 /**
  * This is a "fake" middleware caller
@@ -250,6 +251,26 @@ describe('Storage middleware', () => {
         data,
         type: 'signature/SIGN_DATA',
       })
+    })
+  })
+
+  describe('SIGNUP_CREDENTIALS', () => {
+    it('should create a user and then set the account', () => {
+      expect.assertions(1)
+      const emailAddress = 'tim@cern.ch'
+      const password = 'guest'
+      const { invoke } = create()
+
+      const action = {
+        type: SIGNUP_CREDENTIALS,
+        emailAddress,
+        password,
+      }
+
+      mockStorageService.createUser = jest.fn(() => Promise.resolve(true))
+
+      invoke(action)
+      expect(mockStorageService.createUser).toHaveBeenCalled()
     })
   })
 })
