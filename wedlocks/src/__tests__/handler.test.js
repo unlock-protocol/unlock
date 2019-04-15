@@ -17,7 +17,7 @@ describe('handler', () => {
       }
     )
   })
-  
+
   it('should render 405 if the method is not a POST', done => {
     expect.assertions(2)
     handler(

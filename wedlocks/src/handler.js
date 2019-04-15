@@ -23,7 +23,7 @@ export const handler = (event, context, responseCallback) => {
       statusCode: 204,
     })
   }
-  
+
   if (event.httpMethod != 'POST') {
     return callback(null, {
       statusCode: 405,
