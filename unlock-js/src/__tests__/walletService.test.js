@@ -2,7 +2,6 @@
 import Web3 from 'web3'
 import EventEmitter from 'events'
 import nock from 'nock'
-import Web3Utils from 'web3-utils'
 import * as UnlockV0 from 'unlock-abi-0'
 
 import WalletService from '../walletService'
@@ -11,7 +10,7 @@ import Errors from '../errors'
 
 import TransactionTypes from '../transactionTypes'
 
-const { FAILED_TO_UPDATE_KEY_PRICE, FAILED_TO_WITHDRAW_FROM_LOCK } = Errors
+const { FAILED_TO_WITHDRAW_FROM_LOCK } = Errors
 
 const endpoint = 'http://127.0.0.1:8545'
 const nockScope = nock(endpoint, { encodedQueryParams: true })
@@ -329,71 +328,6 @@ describe('WalletService', () => {
       })
     })
 
-    describe('updateKeyPrice', () => {
-      let lock
-      let account
-      let price
-
-      beforeEach(() => {
-        lock = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
-        account = '0xdeadbeef'
-        price = '100000000'
-      })
-
-      it('should invoke sendTransaction with the right params', () => {
-        expect.assertions(4)
-        const data = '' // mock abi data for purchaseKey
-
-        walletService._sendTransaction = jest.fn()
-
-        const ContractClass = class {
-          constructor(abi, address) {
-            expect(abi).toBe(UnlockV0.PublicLock.abi)
-            expect(address).toBe(lock)
-            this.methods = {
-              updateKeyPrice: newPrice => {
-                expect(newPrice).toEqual(Web3Utils.toWei(price, 'ether'))
-                return this
-              },
-            }
-            this.encodeABI = jest.fn(() => data)
-          }
-        }
-
-        walletService.web3.eth.Contract = ContractClass
-
-        walletService.updateKeyPrice(lock, account, price)
-
-        expect(walletService._sendTransaction).toHaveBeenCalledWith(
-          {
-            to: lock,
-            from: account,
-            data,
-            gas: GAS_AMOUNTS.updateKeyPrice,
-            contract: UnlockV0.PublicLock,
-          },
-          TransactionTypes.UPDATE_KEY_PRICE,
-          expect.any(Function)
-        )
-      })
-
-      it('should emit an error if the transaction could not be sent', done => {
-        expect.assertions(1)
-        const error = {}
-
-        walletService._sendTransaction = jest.fn((args, type, cb) => {
-          return cb(error)
-        })
-
-        walletService.on('error', error => {
-          expect(error.message).toBe(FAILED_TO_UPDATE_KEY_PRICE)
-          done()
-        })
-
-        walletService.updateKeyPrice(lock, account, price)
-      })
-    })
-
     describe('signData', () => {
       const account = '0x123'
       let data = 'please sign me'
@@ -471,148 +405,6 @@ describe('WalletService', () => {
           expect(error).toBe(signatureError)
           done()
         })
-      })
-    })
-
-    describe('partialWithdrawFromLock', () => {
-      let lock
-      let account
-
-      beforeEach(() => {
-        lock = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
-        account = '0xdeadbeef'
-      })
-
-      it('should invoke sendTransaction with the right params', done => {
-        expect.assertions(3)
-        const data = '' // mock abi data for partialWithdraw
-
-        walletService._sendTransaction = jest.fn(() => {
-          done()
-        })
-
-        const MockContractClass = class {
-          constructor(abi, address) {
-            expect(abi).toBe(UnlockV0.PublicLock.abi)
-            expect(address).toBe(lock)
-            this.methods = {
-              partialWithdraw: () => this,
-            }
-            this.encodeABI = jest.fn(() => data)
-          }
-        }
-
-        walletService.web3.eth.Contract = MockContractClass
-
-        walletService.partialWithdrawFromLock(lock, account, '3', () => {
-          done()
-        })
-
-        expect(walletService._sendTransaction).toHaveBeenCalledWith(
-          {
-            to: lock,
-            from: account,
-            data,
-            gas: GAS_AMOUNTS.partialWithdrawFromLock,
-            contract: UnlockV0.PublicLock,
-          },
-          TransactionTypes.WITHDRAWAL,
-          expect.any(Function)
-        )
-      })
-
-      it('should emit an error if the transaction cannot be sent', done => {
-        expect.assertions(1)
-        const error = {}
-
-        walletService._sendTransaction = jest.fn((args, type, cb) => {
-          return cb(error)
-        })
-
-        walletService.on('error', error => {
-          expect(error.message).toBe(FAILED_TO_WITHDRAW_FROM_LOCK)
-          done()
-        })
-
-        walletService.partialWithdrawFromLock(lock, account, '3', () => {})
-      })
-
-      it('should not emit an error when `error` is falsy', done => {
-        expect.assertions(1)
-        const error = undefined
-
-        walletService._sendTransaction = jest.fn((args, type, cb) => {
-          return cb(error)
-        })
-
-        walletService.emit = jest.fn()
-
-        walletService.partialWithdrawFromLock(lock, account, '3', () => {
-          expect(walletService.emit).not.toHaveBeenCalled()
-          done()
-        })
-      })
-    })
-
-    describe('withdrawFromLock', () => {
-      let lock
-      let account
-
-      beforeEach(() => {
-        lock = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
-        account = '0xdeadbeef'
-      })
-
-      it('should invoke sendTransaction with the right params', () => {
-        expect.assertions(3)
-        const data = '' // mock abi data for purchaseKey
-
-        walletService._sendTransaction = jest.fn()
-
-        const ContractClass = class {
-          constructor(abi, address) {
-            expect(abi).toBe(UnlockV0.PublicLock.abi)
-            expect(address).toBe(lock)
-            this.methods = {
-              withdraw: () => {
-                return this
-              },
-            }
-            this.encodeABI = jest.fn(() => data)
-          }
-        }
-
-        walletService.web3.eth.Contract = ContractClass
-
-        walletService.withdrawFromLock(lock, account)
-
-        expect(walletService._sendTransaction).toHaveBeenCalledWith(
-          {
-            to: lock,
-            from: account,
-            data,
-            gas: GAS_AMOUNTS.withdrawFromLock,
-            contract: UnlockV0.PublicLock,
-          },
-          TransactionTypes.WITHDRAWAL,
-          expect.any(Function)
-        )
-      })
-
-      it('should emit an error if the transaction could not be sent', done => {
-        expect.assertions(1)
-        const error = {}
-
-        walletService._sendTransaction = jest.fn((args, type, cb) => {
-          return cb(error)
-        })
-
-        walletService.on('error', error => {
-          expect(error.message).toBe(FAILED_TO_WITHDRAW_FROM_LOCK)
-          done()
-        })
-
-        walletService.withdrawFromLock(lock, account)
       })
     })
   })
