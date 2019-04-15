@@ -32,7 +32,7 @@ const ConfirmedKeyLock = ({ lock, hideModal }) => (
           </React.Fragment>
         )}
       />
-      <ConfirmedKey size="50px" />
+      <ConfirmedKey size="50px" hideModal={hideModal} />
       <NotHoverFooter backgroundColor="var(--green)">
         Payment Confirmed
       </NotHoverFooter>
