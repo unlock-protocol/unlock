@@ -1,10 +1,6 @@
 import axios from 'axios'
 import wedlocksMiddleware from '../../middlewares/wedlocksMiddleware'
-import {
-  SIGNUP_EMAIL,
-  SIGNUP_CREDENTIALS,
-  CREATE_USER,
-} from '../../actions/signUp'
+import { SIGNUP_EMAIL } from '../../actions/signUp'
 
 jest.mock('axios')
 
@@ -33,18 +29,5 @@ describe('Wedlocks Middleware', () => {
     })
 
     expect(axios.post).toHaveBeenCalled()
-  })
-
-  it('should dispatch a CREATE_USER after handling a SIGNUP_CREDENTIALS', () => {
-    expect.assertions(1)
-    wedlocksMiddleware(config)({ dispatch })(next)({
-      type: SIGNUP_CREDENTIALS,
-      emailAddress: 'tim@cern.ch',
-      password: 'guest',
-    })
-
-    expect(dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ type: CREATE_USER })
-    )
   })
 })
