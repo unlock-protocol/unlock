@@ -75,6 +75,9 @@ describe('WalletService', () => {
     walletService = new WalletService({
       unlockAddress,
     })
+    // Tests for v0!
+    walletService.opCodeForAddress[unlockAddress] =
+      UnlockV0.Unlock.deployedBytecode
   })
 
   describe('connect', () => {
@@ -343,8 +346,6 @@ describe('WalletService', () => {
           maxNumberOfKeys: 100,
         }
         owner = '0xdeadfeed'
-        walletService.unlockContractAddress =
-          '0x3ca206264762caf81a8f0a843bbb850987b41e16'
       })
 
       it('should invoke sendTransaction with the right params', () => {

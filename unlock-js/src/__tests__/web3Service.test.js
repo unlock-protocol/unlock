@@ -104,6 +104,9 @@ describe('Web3Service', () => {
       blockTime,
       requiredConfirmations,
     })
+    // Tests for v0!
+    web3Service.opCodeForAddress[unlockAddress] =
+      UnlockV0.Unlock.deployedBytecode
   })
 
   const lockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
