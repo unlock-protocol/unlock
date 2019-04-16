@@ -1,6 +1,6 @@
 import Web3 from 'web3'
-import * as UnlockV0 from 'unlock-abi-0'
-import withdrawFromLock from '../../v0/withdrawFromLock'
+import * as UnlockV01 from 'unlock-abi-0-1'
+import withdrawFromLock from '../../v01/withdrawFromLock'
 import Errors from '../../errors'
 import { GAS_AMOUNTS } from '../../constants'
 import TransactionTypes from '../../transactionTypes'
@@ -20,7 +20,7 @@ describe('v01', () => {
     nock.cleanAll()
     prepWalletService(
       unlockAddress,
-      UnlockV0.Unlock,
+      UnlockV01.Unlock,
       provider,
       nock,
       _walletService => {
@@ -49,7 +49,7 @@ describe('v01', () => {
 
       const ContractClass = class {
         constructor(abi, address) {
-          expect(abi).toBe(UnlockV0.PublicLock.abi)
+          expect(abi).toBe(UnlockV01.PublicLock.abi)
           expect(address).toBe(lock)
           this.methods = {
             withdraw: () => {
@@ -70,7 +70,7 @@ describe('v01', () => {
           from: account,
           data,
           gas: GAS_AMOUNTS.withdrawFromLock,
-          contract: UnlockV0.PublicLock,
+          contract: UnlockV01.PublicLock,
         },
         TransactionTypes.WITHDRAWAL,
         expect.any(Function)

@@ -1,6 +1,6 @@
 import Web3Utils from 'web3-utils'
 import Web3Service from '../../web3Service'
-import getLock from '../../v0/getLock'
+import getLock from '../../v01/getLock'
 import NockHelper from '../helpers/nockHelper'
 
 const endpoint = 'http://127.0.0.1:8545'
@@ -50,7 +50,7 @@ describe('v01', () => {
         '0x00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1'
       )
       nock.ethCallAndYield(
-        '0x47dc1085',
+        '0x18160ddd',
         lockAddress,
         '0x0000000000000000000000000000000000000000000000000000000000000011'
       )
@@ -97,7 +97,7 @@ describe('v01', () => {
         '0x00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1'
       )
       nock.ethCallAndYield(
-        '0x47dc1085',
+        '0x18160ddd',
         lockAddress,
         '0x0000000000000000000000000000000000000000000000000000000000000011'
       )

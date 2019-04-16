@@ -1,5 +1,5 @@
 import Web3Utils from 'web3-utils'
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 
 /**
  * The transaction is still pending: it has been sent to the network but not
@@ -16,8 +16,8 @@ export default function(transactionHash, blockNumber, defaults) {
   if (defaults) {
     const contract =
       this.unlockContractAddress === Web3Utils.toChecksumAddress(defaults.to)
-        ? UnlockV0.Unlock
-        : UnlockV0.PublicLock
+        ? UnlockV01.Unlock
+        : UnlockV01.PublicLock
 
     return this.parseTransactionFromInput(
       transactionHash,
