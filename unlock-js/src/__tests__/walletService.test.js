@@ -1,58 +1,13 @@
 /* eslint no-console: 0 */
 import Web3 from 'web3'
 import EventEmitter from 'events'
-import nock from 'nock'
-import * as UnlockV0 from 'unlock-abi-0'
+import NockHelper from './helpers/nockHelper'
 
 import WalletService from '../walletService'
 
 const endpoint = 'http://127.0.0.1:8545'
-const nockScope = nock(endpoint, { encodedQueryParams: true })
 const provider = new Web3.providers.HttpProvider(endpoint)
-
-let rpcRequestId = 0
-
-let debug = false // set to true to see more logging statements
-
-function logNock(...args) {
-  if (debug) {
-    console.log(...args)
-  }
-}
-
-// Generic call
-const jsonRpcRequest = (method, params, result, error) => {
-  rpcRequestId += 1
-  nockScope
-    .post('/', { jsonrpc: '2.0', id: rpcRequestId, method, params })
-    .reply(200, { id: rpcRequestId, jsonrpc: '2.0', result, error })
-    .log(logNock)
-}
-
-// net_version
-const netVersionAndYield = netVersion => {
-  return jsonRpcRequest('net_version', [], netVersion)
-}
-
-// eth_accounts
-const accountsAndYield = accounts => {
-  return jsonRpcRequest('eth_accounts', [], accounts)
-}
-
-// eth_getCode
-const ethGetCodeAndYield = (address, opCode) => {
-  return jsonRpcRequest(
-    'eth_getCode',
-    [address.toLowerCase(), 'latest'],
-    opCode
-  )
-}
-
-nock.emitter.on('no match', function(clientRequestObject, options, body) {
-  if (debug) {
-    console.log(`NO HTTP MOCK EXISTS FOR THAT REQUEST\n${body}`)
-  }
-})
+const nock = new NockHelper(endpoint, true /** debug */)
 
 let walletService
 
@@ -70,17 +25,8 @@ describe('WalletService', () => {
       expect.assertions(1)
 
       const netVersion = Math.floor(Math.random() * 100000)
-      netVersionAndYield(netVersion)
+      nock.netVersionAndYield(netVersion)
 
-      UnlockV0.Unlock.networks = {
-        [netVersion]: {
-          events: {},
-          links: {},
-          address: '0x3f313221a2af33fd8a430891291370632cb471bf',
-          transactionHash:
-            '0x8545541749873b42c96e1699c2e62f0f4062ca57f3398270423c1089232ef7dd',
-        },
-      }
       walletService.on('network.changed', networkId => {
         expect(networkId).toEqual(netVersion)
         return done()
@@ -94,17 +40,7 @@ describe('WalletService', () => {
     const netVersion = Math.floor(Math.random() * 100000)
 
     beforeEach(done => {
-      netVersionAndYield(netVersion)
-
-      UnlockV0.Unlock.networks = {
-        [netVersion]: {
-          events: {},
-          links: {},
-          address: '0x3f313221a2af33fd8a430891291370632cb471bf',
-          transactionHash:
-            '0x8545541749873b42c96e1699c2e62f0f4062ca57f3398270423c1089232ef7dd',
-        },
-      }
+      nock.netVersionAndYield(netVersion)
 
       walletService.on('network.changed', () => {
         done()
@@ -115,7 +51,7 @@ describe('WalletService', () => {
     describe('isUnlockContractDeployed', () => {
       it('should yield true if the opCode is not 0x', done => {
         expect.assertions(2)
-        ethGetCodeAndYield(unlockAddress, '0xdeadbeef')
+        nock.ethGetCodeAndYield(unlockAddress, '0xdeadbeef')
 
         walletService.isUnlockContractDeployed((error, isDeployed) => {
           expect(error).toBe(null)
@@ -126,7 +62,7 @@ describe('WalletService', () => {
 
       it('should yield false if the opCode is 0x', done => {
         expect.assertions(2)
-        ethGetCodeAndYield(unlockAddress, '0x')
+        nock.ethGetCodeAndYield(unlockAddress, '0x')
 
         walletService.isUnlockContractDeployed((error, isDeployed) => {
           expect(error).toBe(null)
@@ -157,7 +93,7 @@ describe('WalletService', () => {
             '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
           ]
 
-          accountsAndYield(unlockAccountsOnNode)
+          nock.accountsAndYield(unlockAccountsOnNode)
 
           walletService.once('ready', () => {
             expect(walletService.ready).toBe(true)
@@ -185,7 +121,7 @@ describe('WalletService', () => {
             })
           })
 
-          accountsAndYield([])
+          nock.accountsAndYield([])
 
           walletService.once('ready', () => {
             expect(walletService.ready).toBe(true)
@@ -204,7 +140,7 @@ describe('WalletService', () => {
         it('should fail and mark the walletService is not ready', async () => {
           expect.assertions(1)
           walletService.ready = true
-          accountsAndYield([])
+          nock.accountsAndYield([])
           await walletService.getAccount(false)
           expect(walletService.ready).toBe(false)
         })

@@ -7,6 +7,12 @@ export class NockHelper {
 
     this.debug = debug
     this._rpcRequestId = 0
+
+    nock.emitter.on('no match', function(clientRequestObject, options, body) {
+      if (debug) {
+        console.log(`NO HTTP MOCK EXISTS FOR THAT REQUEST\n${body}`)
+      }
+    })
   }
 
   logNock(...args) {
@@ -50,6 +56,40 @@ export class NockHelper {
   // eth_blockNumber
   ethBlockNumber(result) {
     return this._jsonRpcRequest('eth_blockNumber', [], result)
+  }
+
+  // eth_getTransactionByHash
+  ethGetTransactionByHash(hash, result) {
+    return this._jsonRpcRequest('eth_getTransactionByHash', [hash], result)
+  }
+
+  // eth_getTransactionReceipt
+  ethGetTransactionReceipt(hash, result) {
+    return this._jsonRpcRequest('eth_getTransactionReceipt', [hash], result)
+  }
+
+  // eth_call
+  ethCallAndFail(data, to, error) {
+    return this._jsonRpcRequest(
+      'eth_call',
+      [{ data, to }, 'latest'],
+      undefined,
+      error
+    )
+  }
+
+  // eth_accounts
+  accountsAndYield(accounts) {
+    return this._jsonRpcRequest('eth_accounts', [], accounts)
+  }
+
+  // eth_getCode
+  ethGetCodeAndYield(address, opCode) {
+    return this._jsonRpcRequest(
+      'eth_getCode',
+      [address.toLowerCase(), 'latest'],
+      opCode
+    )
   }
 }
 

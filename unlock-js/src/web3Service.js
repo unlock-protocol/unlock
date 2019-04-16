@@ -1,10 +1,8 @@
 import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
 import { bufferToHex, generateAddress } from 'ethereumjs-util'
-import * as UnlockV0 from 'unlock-abi-0'
 import UnlockService from './unlockService'
 import { MAX_UINT, UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
-import TransactionTypes from './transactionTypes'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -141,40 +139,9 @@ export default class Web3Service extends UnlockService {
    * @param {*} contract
    * @param {*} data
    */
-  getTransactionType(contract, data) {
-    const method = contract.abi.find(binaryInterface => {
-      return data.startsWith(binaryInterface.signature)
-    })
-
-    // If there is no matching method, return null
-    if (!method) {
-      return null
-    }
-
-    if (contract.contractName === 'Unlock' && method.name === 'createLock') {
-      return TransactionTypes.LOCK_CREATION
-    }
-
-    if (
-      contract.contractName === 'PublicLock' &&
-      method.name === 'purchaseFor'
-    ) {
-      return TransactionTypes.KEY_PURCHASE
-    }
-
-    if (contract.contractName === 'PublicLock' && method.name === 'withdraw') {
-      return TransactionTypes.WITHDRAWAL
-    }
-
-    if (
-      contract.contractName === 'PublicLock' &&
-      method.name === 'updateKeyPrice'
-    ) {
-      return TransactionTypes.UPDATE_KEY_PRICE
-    }
-
-    // Unknown transaction
-    return null
+  async getTransactionType(contract, data) {
+    const version = await this.unlockContractAbiVersion()
+    return version.getTransactionType.bind(this)(contract, data)
   }
 
   /**
@@ -312,35 +279,19 @@ export default class Web3Service extends UnlockService {
    * @param {*} input
    * @param {*} contractAddress
    */
-  parseTransactionFromInput(transactionHash, contract, input, contractAddress) {
-    const transactionType = this.getTransactionType(contract, input)
-
-    this.emit('transaction.updated', transactionHash, {
-      status: 'pending',
-      type: transactionType,
-      confirmations: 0,
-      blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
-    })
-
-    // Let's parse the transaction's input
-    const method = contract.abi.find(binaryInterface => {
-      return input.startsWith(binaryInterface.signature)
-    })
-
-    if (!method) {
-      // The invoked function is not part of the ABI... this is an unknown transaction
-      return
-    }
-
-    // The input actually includes the method signature, which should be removed
-    // for parsing of the actual input values.
-    input = input.replace(method.signature, '')
-    const params = this.web3.eth.abi.decodeParameters(method.inputs, input)
-    const handler = this.inputsHandlers[method.name]
-
-    if (handler) {
-      return handler(transactionHash, contractAddress, params)
-    }
+  async parseTransactionFromInput(
+    transactionHash,
+    contract,
+    input,
+    contractAddress
+  ) {
+    const version = await this.unlockContractAbiVersion()
+    return version.parseTransactionFromInput.bind(this)(
+      transactionHash,
+      contract,
+      input,
+      contractAddress
+    )
   }
 
   /**
@@ -356,38 +307,18 @@ export default class Web3Service extends UnlockService {
   /**
    * The transaction is still pending: it has been sent to the network but not
    * necessarily received by the node we're asking it (and not mined...)
-   * TODO: This presents a UI challenge because we currently do not show anything to the
-   * user that a transaction exists and is pending... (since we have nothing to link it to)
-   * Hopefully though this should be fairly short lived because the transaction should be propagated
-   * to all nodes fairly quickly
    * @param {*} transactionHash
    * @param {*} blockNumber
    * @param {object} defaults
    * @private
    */
-  _getSubmittedTransaction(transactionHash, blockNumber, defaults) {
-    this._watchTransaction(transactionHash)
-
-    // If we have default values for the transaction (passed by the walletService)
-    if (defaults) {
-      const contract =
-        this.unlockContractAddress === Web3Utils.toChecksumAddress(defaults.to)
-          ? UnlockV0.Unlock
-          : UnlockV0.PublicLock
-
-      return this.parseTransactionFromInput(
-        transactionHash,
-        contract,
-        defaults.input,
-        defaults.to
-      )
-    }
-
-    return this.emit('transaction.updated', transactionHash, {
-      status: 'submitted',
-      confirmations: 0,
-      blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
-    })
+  async _getSubmittedTransaction(transactionHash, blockNumber, defaults) {
+    const version = await this.unlockContractAbiVersion()
+    return version._getSubmittedTransaction.bind(this)(
+      transactionHash,
+      blockNumber,
+      defaults
+    )
   }
 
   /**
@@ -397,21 +328,9 @@ export default class Web3Service extends UnlockService {
    * @param {*} blockTransaction
    * @private
    */
-  _getPendingTransaction(blockTransaction) {
-    this._watchTransaction(blockTransaction.hash)
-
-    const contract =
-      this.unlockContractAddress ===
-      Web3Utils.toChecksumAddress(blockTransaction.to)
-        ? UnlockV0.Unlock
-        : UnlockV0.PublicLock
-
-    return this.parseTransactionFromInput(
-      blockTransaction.hash,
-      contract,
-      blockTransaction.input,
-      blockTransaction.to
-    )
+  async _getPendingTransaction(blockTransaction) {
+    const version = await this.unlockContractAbiVersion()
+    return version._getPendingTransaction.bind(this)(blockTransaction)
   }
 
   /**
@@ -420,78 +339,9 @@ export default class Web3Service extends UnlockService {
    * @param {string} transactionHash
    * @param {object} filter
    */
-  getTransaction(transactionHash, defaults) {
-    return Promise.all([
-      this.web3.eth.getBlockNumber(),
-      this.web3.eth.getTransaction(transactionHash),
-    ]).then(([blockNumber, blockTransaction]) => {
-      // If the block transaction is missing the transacion has been submitted but not
-      // received by all nodes
-      if (!blockTransaction) {
-        return this._getSubmittedTransaction(
-          transactionHash,
-          blockNumber,
-          defaults
-        )
-      }
-
-      // If the block number is missing the transaction has been received by the node
-      // but not mined yet
-      if (blockTransaction.blockNumber === null) {
-        return this._getPendingTransaction(blockTransaction)
-      }
-
-      // The transaction has been mined :
-
-      const contract =
-        this.unlockContractAddress ===
-        Web3Utils.toChecksumAddress(blockTransaction.to)
-          ? UnlockV0.Unlock
-          : UnlockV0.PublicLock
-
-      const transactionType = this.getTransactionType(
-        contract,
-        blockTransaction.input
-      )
-
-      // Let's watch for more confirmations if needed
-      if (
-        blockNumber - blockTransaction.blockNumber <
-        this.requiredConfirmations
-      ) {
-        this._watchTransaction(transactionHash)
-      }
-
-      // The transaction was mined, so we should have a receipt for it
-      this.emit('transaction.updated', transactionHash, {
-        status: 'mined',
-        type: transactionType,
-        confirmations: blockNumber - blockTransaction.blockNumber,
-        blockNumber: blockTransaction.blockNumber,
-      })
-
-      return this.web3.eth
-        .getTransactionReceipt(transactionHash)
-        .then(transactionReceipt => {
-          if (transactionReceipt) {
-            // NOTE: old version of web3.js (pre 1.0.0-beta.34) are not parsing 0x0 into a falsy value
-            if (
-              !transactionReceipt.status ||
-              transactionReceipt.status == '0x0'
-            ) {
-              return this.emit('transaction.updated', transactionHash, {
-                status: 'failed',
-              })
-            }
-
-            return this.parseTransactionLogsFromReceipt(
-              transactionHash,
-              contract,
-              transactionReceipt
-            )
-          }
-        })
-    })
+  async getTransaction(transactionHash, defaults) {
+    const version = await this.unlockContractAbiVersion()
+    return version.getTransaction.bind(this)(transactionHash, defaults)
   }
 
   /**
@@ -521,21 +371,9 @@ export default class Web3Service extends UnlockService {
    * @param {PropTypes.string} owner
    * @return Promise<>
    */
-  _getKeyByLockForOwner(lockContract, owner) {
-    return new Promise(resolve => {
-      const getKeyExpirationPromise = lockContract.methods
-        .keyExpirationTimestampFor(owner)
-        .call()
-      const getKeyDataPromise = lockContract.methods.keyDataFor(owner).call()
-
-      Promise.all([getKeyExpirationPromise, getKeyDataPromise])
-        .then(([expiration, data]) => {
-          return resolve([parseInt(expiration, 10), data])
-        })
-        .catch(() => {
-          return resolve([0, null])
-        })
-    })
+  async _getKeyByLockForOwner(lockContract, owner) {
+    const version = await this.unlockContractAbiVersion()
+    return version._getKeyByLockForOwner.bind(this)(lockContract, owner)
   }
 
   _emitKeyOwners(lock, page, keyPromises) {
