@@ -13,6 +13,7 @@ const readOnlyProvider = 'http://127.0.0.1:8545'
 const requiredConfirmations = 12
 const lockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
 const account = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
+
 describe('v0', () => {
   beforeEach(() => {
     nock.cleanAll()
