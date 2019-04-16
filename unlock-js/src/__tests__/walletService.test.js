@@ -5,6 +5,9 @@ import NockHelper from './helpers/nockHelper'
 
 import WalletService from '../walletService'
 
+import v0 from '../v0'
+import v01 from '../v01'
+
 const endpoint = 'http://127.0.0.1:8545'
 const provider = new Web3.providers.HttpProvider(endpoint)
 const nock = new NockHelper(endpoint, true /** debug */)
@@ -334,5 +337,45 @@ describe('WalletService', () => {
         })
       })
     })
+  })
+
+  describe('versions', () => {
+    const versionSpecificMethods = [
+      'updateKeyPrice',
+      'createLock',
+      'purchaseKey',
+      'partialWithdrawFromLock',
+      'withdrawFromLock',
+    ]
+
+    it.each(versionSpecificMethods)(
+      'should invoke the implementation of the corresponding version of %s',
+      async method => {
+        const args = []
+        const result = {}
+        const version = {
+          [method]: function(_args) {
+            // Needs to be a function because it is bound to walletService
+            expect(this).toBe(walletService)
+            expect(_args).toBe(...args)
+            return result
+          },
+        }
+        walletService.unlockContractAbiVersion = jest.fn(() => version)
+        const r = await walletService[method](...args)
+        expect(r).toBe(result)
+      }
+    )
+
+    // for each supported version, let's make sure it implements all methods
+    const supportedVersions = [v0, v01]
+    it.each(supportedVersions)(
+      'should implement all the required methods',
+      version => {
+        versionSpecificMethods.forEach(method => {
+          expect(version[method]).toBeInstanceOf(Function)
+        })
+      }
+    )
   })
 })

@@ -6,6 +6,9 @@ import NockHelper from './helpers/nockHelper'
 
 import Web3Service from '../web3Service'
 
+import v0 from '../v0'
+import v01 from '../v01'
+
 const blockTime = 3
 const readOnlyProvider = 'http://127.0.0.1:8545'
 const requiredConfirmations = 12
@@ -260,5 +263,51 @@ describe('Web3Service', () => {
         await web3Service.inputsHandlers.createLock('0x123', '0x456', params)
       })
     })
+  })
+
+  describe('versions', () => {
+    const versionSpecificMethods = [
+      '_getKeyByLockForOwner',
+      '_getPendingTransaction',
+      '_getSubmittedTransaction',
+      'getKeyByLockForOwner',
+      'getKeysForLockOnPage',
+      'getLock',
+      'getPastLockCreationsTransactionsForUser',
+      'getPastLockTransactions',
+      'getTransaction',
+      'getTransactionType',
+      'parseTransactionFromInput',
+    ]
+
+    it.each(versionSpecificMethods)(
+      'should invoke the implementation of the corresponding version of %s',
+      async method => {
+        const args = []
+        const result = {}
+        const version = {
+          [method]: function(_args) {
+            // Needs to be a function because it is bound to web3Service
+            expect(this).toBe(web3Service)
+            expect(_args).toBe(...args)
+            return result
+          },
+        }
+        web3Service.unlockContractAbiVersion = jest.fn(() => version)
+        const r = await web3Service[method](...args)
+        expect(r).toBe(result)
+      }
+    )
+
+    // for each supported version, let's make sure it implements all methods
+    const supportedVersions = [v0, v01]
+    it.each(supportedVersions)(
+      'should implement all the required methods',
+      version => {
+        versionSpecificMethods.forEach(method => {
+          expect(version[method]).toBeInstanceOf(Function)
+        })
+      }
+    )
   })
 })
