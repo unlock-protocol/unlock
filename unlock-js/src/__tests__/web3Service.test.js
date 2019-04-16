@@ -152,55 +152,6 @@ describe('Web3Service', () => {
       web3Service._getPastTransactionsForContract(contract, events, filter)
     })
   })
-  describe('_getPendingTransaction', () => {
-    const input =
-      '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a'
-
-    const blockTransaction = {
-      hash: transaction.hash,
-      nonce: '0x04',
-      blockHash: 'null',
-      blockNumber: null, // Not mined
-      from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
-      to: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
-      value: '0x0',
-      gas: '0x16e360',
-      gasPrice: '0x04a817c800',
-      input,
-    }
-
-    beforeEach(() => {
-      web3Service._watchTransaction = jest.fn()
-      web3Service.getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
-    })
-
-    it('should watch the transaction', done => {
-      expect.assertions(1)
-
-      web3Service.parseTransactionFromInput = jest.fn(() => {
-        expect(web3Service._watchTransaction).toHaveBeenCalledWith(
-          transaction.hash
-        )
-        done()
-      })
-
-      web3Service._getPendingTransaction(blockTransaction)
-    })
-
-    it('should invoke parseTransactionFromInput', done => {
-      expect.assertions(3)
-      web3Service.parseTransactionFromInput = jest.fn(
-        (transactionHash, contract, transactionInput, address) => {
-          expect(transactionHash).toEqual(transaction.hash)
-          expect(transactionInput).toEqual(input)
-          expect(address).toEqual('0xcfeb869f69431e42cdb54a4f4f105c19c080a601')
-          done()
-        }
-      )
-
-      web3Service._getPendingTransaction(blockTransaction)
-    })
-  })
 
   describe('parseTransactionFromInput', () => {
     beforeEach(() => {

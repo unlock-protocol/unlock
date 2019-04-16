@@ -362,7 +362,7 @@ export default class Web3Service extends UnlockService {
    * @private
    */
   async _getSubmittedTransaction(transactionHash, blockNumber, defaults) {
-    const version = await this._getSubmittedTransaction()
+    const version = await this.unlockContractAbiVersion()
     return version._getSubmittedTransaction.bind(this)(
       transactionHash,
       blockNumber,
@@ -377,21 +377,9 @@ export default class Web3Service extends UnlockService {
    * @param {*} blockTransaction
    * @private
    */
-  _getPendingTransaction(blockTransaction) {
-    this._watchTransaction(blockTransaction.hash)
-
-    const contract =
-      this.unlockContractAddress ===
-      Web3Utils.toChecksumAddress(blockTransaction.to)
-        ? UnlockV0.Unlock
-        : UnlockV0.PublicLock
-
-    return this.parseTransactionFromInput(
-      blockTransaction.hash,
-      contract,
-      blockTransaction.input,
-      blockTransaction.to
-    )
+  async _getPendingTransaction(blockTransaction) {
+    const version = await this.unlockContractAbiVersion()
+    return version._getPendingTransaction.bind(this)(blockTransaction)
   }
 
   /**
