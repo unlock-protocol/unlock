@@ -91,6 +91,15 @@ export const slug = PropTypes.string
 
 export const postFeed = PropTypes.array
 
+export const router = PropTypes.shape({
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    search: PropTypes.string,
+    hash: PropTypes.string,
+  }),
+  action: PropTypes.string,
+})
+
 export default {
   account,
   address,
