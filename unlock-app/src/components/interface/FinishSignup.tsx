@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { signupCredentials } from '../../actions/signUp'
 
-interface Credentials {
+export interface Credentials {
   emailAddress: string
   password: string
 }
@@ -53,19 +53,21 @@ export class FinishSignup extends React.Component<Props, State> {
           Create a password for your account: {emailAddress}.
         </Instructions>
         <form onSubmit={this.handleSubmit}>
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="passwordInput">Password</Label>
           <Input
             name="password"
             type="password"
+            id="passwordInput"
             placeholder="Password"
             onChange={this.handleInputChange}
           />
           <br />
-          <Label htmlFor="passwordConfirmation">Confirm Password</Label>
+          <Label htmlFor="passwordConfirmationInput">Confirm Password</Label>
           <Input
             name="passwordConfirmation"
             type="password"
-            placeholder="Password"
+            id="passwordConfirmationInput"
+            placeholder="Confirm Password"
             onChange={this.handleInputChange}
           />
           <br />
