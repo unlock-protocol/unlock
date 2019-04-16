@@ -1,6 +1,6 @@
 import Web3 from 'web3'
-import * as UnlockV0 from 'unlock-abi-0'
-import createLock from '../../v0/createLock'
+import * as UnlockV01 from 'unlock-abi-0-1'
+import createLock from '../../v01/createLock'
 import Errors from '../../errors'
 import { GAS_AMOUNTS } from '../../constants'
 import TransactionTypes from '../../transactionTypes'
@@ -20,7 +20,7 @@ describe('v01', () => {
     nock.cleanAll()
     prepWalletService(
       unlockAddress,
-      UnlockV0.Unlock,
+      UnlockV01.Unlock,
       provider,
       nock,
       _walletService => {
@@ -47,18 +47,21 @@ describe('v01', () => {
     })
 
     it('should invoke sendTransaction with the right params', () => {
-      expect.assertions(6)
+      expect.assertions(7)
       const data = '' // mock abi data for createLock
 
       walletService._sendTransaction = jest.fn()
 
       const ContractClass = class {
         constructor(abi, address) {
-          expect(abi).toBe(UnlockV0.Unlock.abi)
+          expect(abi).toBe(UnlockV01.Unlock.abi)
           expect(address).toBe(walletService.unlockContractAddress)
           this.methods = {
-            createLock: (duration, price, numberOfKeys) => {
+            createLock: (duration, tokenAddress, price, numberOfKeys) => {
               expect(duration).toEqual(lock.expirationDuration)
+              expect(tokenAddress).toEqual(
+                '0x0000000000000000000000000000000000000000'
+              ) // This is an Ethereum Lock
               expect(price).toEqual('100000000000000000') // Web3Utils.toWei(lock.keyPrice, 'ether')
               expect(numberOfKeys).toEqual(100)
               return this
@@ -78,7 +81,7 @@ describe('v01', () => {
           from: owner,
           data,
           gas: GAS_AMOUNTS.createLock,
-          contract: UnlockV0.Unlock,
+          contract: UnlockV01.Unlock,
         },
         TransactionTypes.LOCK_CREATION,
         expect.any(Function)

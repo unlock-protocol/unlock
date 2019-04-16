@@ -1,5 +1,5 @@
 import Web3Utils from 'web3-utils'
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 import { GAS_AMOUNTS } from '../constants'
 import TransactionTypes from '../transactionTypes'
 
@@ -10,13 +10,14 @@ import TransactionTypes from '../transactionTypes'
  */
 export default function(lock, owner) {
   const unlock = new this.web3.eth.Contract(
-    UnlockV0.Unlock.abi,
+    UnlockV01.Unlock.abi,
     this.unlockContractAddress
   )
 
   const data = unlock.methods
     .createLock(
       lock.expirationDuration,
+      Web3Utils.padLeft(0, 40), // Token address (ERC20 support). null is for Eth
       Web3Utils.toWei(lock.keyPrice, 'ether'),
       lock.maxNumberOfKeys
     )
@@ -28,7 +29,7 @@ export default function(lock, owner) {
       from: owner,
       data,
       gas: GAS_AMOUNTS.createLock,
-      contract: UnlockV0.Unlock,
+      contract: UnlockV01.Unlock,
     },
     TransactionTypes.LOCK_CREATION,
     (error, hash) => {

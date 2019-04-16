@@ -1,4 +1,4 @@
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 
 /**
  * This function is able to retrieve past transaction sent by a user to the Unlock smart contract
@@ -7,7 +7,7 @@ import * as UnlockV0 from 'unlock-abi-0'
  */
 export default function(address) {
   const unlock = new this.web3.eth.Contract(
-    UnlockV0.Unlock.abi,
+    UnlockV01.Unlock.abi,
     this.unlockContractAddress
   )
 

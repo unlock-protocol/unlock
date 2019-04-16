@@ -1,6 +1,6 @@
 import Web3EthAbi from 'web3-eth-abi'
 import Web3Service from '../../web3Service'
-import getKeysForLockOnPage from '../../v0/getKeysForLockOnPage'
+import getKeysForLockOnPage from '../../v01/getKeysForLockOnPage'
 import NockHelper from '../helpers/nockHelper'
 
 const endpoint = 'http://127.0.0.1:8545'

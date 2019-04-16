@@ -1,6 +1,6 @@
 import Web3Service from '../../web3Service'
 
-import getKeyByLockForOwner from '../../v0/getKeyByLockForOwner'
+import getKeyByLockForOwner from '../../v01/getKeyByLockForOwner'
 import NockHelper from '../helpers/nockHelper'
 
 const endpoint = 'http://127.0.0.1:8545'

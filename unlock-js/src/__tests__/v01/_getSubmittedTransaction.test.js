@@ -1,5 +1,5 @@
 import Web3Service from '../../web3Service'
-import _getSubmittedTransaction from '../../v0/_getSubmittedTransaction'
+import _getSubmittedTransaction from '../../v01/_getSubmittedTransaction'
 import NockHelper from '../helpers/nockHelper'
 
 const endpoint = 'http://127.0.0.1:8545'

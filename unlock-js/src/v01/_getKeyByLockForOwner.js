@@ -7,17 +7,14 @@
  */
 export default function(lockContract, owner) {
   return new Promise(resolve => {
-    const getKeyExpirationPromise = lockContract.methods
+    lockContract.methods
       .keyExpirationTimestampFor(owner)
       .call()
-    const getKeyDataPromise = lockContract.methods.keyDataFor(owner).call()
-
-    Promise.all([getKeyExpirationPromise, getKeyDataPromise])
-      .then(([expiration, data]) => {
-        return resolve([parseInt(expiration, 10), data])
+      .then(expiration => {
+        return resolve(parseInt(expiration, 10))
       })
       .catch(() => {
-        return resolve([0, null])
+        return resolve(0)
       })
   })
 }

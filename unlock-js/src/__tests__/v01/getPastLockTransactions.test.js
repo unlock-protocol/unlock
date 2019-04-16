@@ -1,7 +1,7 @@
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 import Web3Service from '../../web3Service'
 
-import getPastLockTransactions from '../../v0/getPastLockTransactions'
+import getPastLockTransactions from '../../v01/getPastLockTransactions'
 import NockHelper from '../helpers/nockHelper'
 
 const endpoint = 'http://127.0.0.1:8545'
@@ -33,7 +33,7 @@ describe('v01', () => {
       const lockAddress = '0x123'
       class MockContract {
         constructor(abi, address) {
-          expect(abi).toBe(UnlockV0.PublicLock.abi)
+          expect(abi).toBe(UnlockV01.PublicLock.abi)
           expect(address).toEqual(lockAddress)
         }
       }

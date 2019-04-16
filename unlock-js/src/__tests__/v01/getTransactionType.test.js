@@ -1,8 +1,8 @@
 import Web3Utils from 'web3-utils'
 
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 import Web3Service from '../../web3Service'
-import getTransactionType from '../../v0/getTransactionType'
+import getTransactionType from '../../v01/getTransactionType'
 import NockHelper from '../helpers/nockHelper'
 import TransactionTypes from '../../transactionTypes'
 
@@ -32,16 +32,17 @@ describe('v01', () => {
     it('should return null if there is no matching method', () => {
       expect.assertions(1)
       const data = 'notarealmethod'
-      expect(web3Service.getTransactionType(UnlockV0.Unlock, data)).toBe(null)
+      expect(web3Service.getTransactionType(UnlockV01.Unlock, data)).toBe(null)
     })
 
     it('should return the right transaction type on lock creation', () => {
       expect.assertions(1)
-      const unlock = new web3Service.web3.eth.Contract(UnlockV0.Unlock.abi, '')
+      const unlock = new web3Service.web3.eth.Contract(UnlockV01.Unlock.abi, '')
+      const currencyAddress = Web3Utils.padLeft(0, 40) // Token address (ERC20 support). null is for Eth
       const data = unlock.methods
-        .createLock('1000', '1000000000', '1')
+        .createLock('1000', currencyAddress, '1000000000', '1')
         .encodeABI()
-      expect(web3Service.getTransactionType(UnlockV0.Unlock, data)).toBe(
+      expect(web3Service.getTransactionType(UnlockV01.Unlock, data)).toBe(
         TransactionTypes.LOCK_CREATION
       )
     })
@@ -49,13 +50,11 @@ describe('v01', () => {
     it('should return the right transaction type on key purchase', () => {
       expect.assertions(1)
       const lock = new web3Service.web3.eth.Contract(
-        UnlockV0.PublicLock.abi,
+        UnlockV01.PublicLock.abi,
         ''
       )
-      const data = lock.methods
-        .purchaseFor(account, Web3Utils.utf8ToHex(''))
-        .encodeABI()
-      expect(web3Service.getTransactionType(UnlockV0.PublicLock, data)).toBe(
+      const data = lock.methods.purchaseFor(account).encodeABI()
+      expect(web3Service.getTransactionType(UnlockV01.PublicLock, data)).toBe(
         TransactionTypes.KEY_PURCHASE
       )
     })
@@ -63,11 +62,11 @@ describe('v01', () => {
     it('should return the right transaction type on withdrawals', () => {
       expect.assertions(1)
       const lock = new web3Service.web3.eth.Contract(
-        UnlockV0.PublicLock.abi,
+        UnlockV01.PublicLock.abi,
         ''
       )
       const data = lock.methods.withdraw().encodeABI()
-      expect(web3Service.getTransactionType(UnlockV0.PublicLock, data)).toBe(
+      expect(web3Service.getTransactionType(UnlockV01.PublicLock, data)).toBe(
         TransactionTypes.WITHDRAWAL
       )
     })
