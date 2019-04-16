@@ -9,6 +9,7 @@ import { MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
  */
 export default function(address) {
   const contract = new this.web3.eth.Contract(UnlockV01.PublicLock.abi, address)
+
   const attributes = {
     keyPrice: x => Web3Utils.fromWei(x, 'ether'),
     expirationDuration: parseInt,
@@ -19,7 +20,7 @@ export default function(address) {
       return parseInt(value)
     },
     owner: x => x,
-    outstandingKeys: parseInt,
+    totalSupply: parseInt,
   }
 
   const update = {}
@@ -48,6 +49,9 @@ export default function(address) {
 
   // Once all lock attributes have been fetched
   return Promise.all(constantPromises).then(() => {
+    // totalSupply was previously called outstandingKeys. In order to keep compatibility
+    // we also assign it. This behavior will eventually be deprecated
+    update.outstandingKeys = update.totalSupply
     this.emit('lock.updated', address, update)
     return update
   })

@@ -8,6 +8,9 @@ export class NockHelper {
     this.debug = debug
     this._rpcRequestId = 0
 
+    // In order to monitor traffic without intercepting it (so that mocks can be built). uncomment the lone below
+    // nock.recorder.rec()
+
     nock.emitter.on('no match', function(clientRequestObject, options, body) {
       if (debug) {
         console.log(`NO HTTP MOCK EXISTS FOR THAT REQUEST\n${body}`)
