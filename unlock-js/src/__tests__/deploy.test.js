@@ -134,7 +134,7 @@ describe('contract deployer', () => {
     const getAccounts = web3.eth.getAccounts
     web3.eth.getAccounts = jest.fn(() => getAccounts())
 
-    await deploy(host, port, 'unlock-abi-0', () => {}, web3)
+    await deploy(host, port, Unlock, () => {}, web3)
     expect(web3.eth.getAccounts).toHaveBeenCalled()
   })
 
@@ -142,7 +142,7 @@ describe('contract deployer', () => {
     expect.assertions(1)
     const deployed = jest.fn()
 
-    await deploy(host, port, 'unlock-abi-0', deployed)
+    await deploy(host, port, Unlock, deployed)
 
     expect(deployed.mock.calls[0][0].options.address).toBe(
       '0xBbBDeed4C0b861cb36f4Ce006A9c90bA2E43fDc2' // fancified by web3-utils
@@ -155,7 +155,7 @@ describe('contract deployer', () => {
     const sendTransaction = web3.eth.sendTransaction
     web3.eth.sendTransaction = jest.fn(t => sendTransaction(t))
 
-    await deploy(host, port, 'unlock-abi-0', () => {}, web3)
+    await deploy(host, port, Unlock, () => {}, web3)
     expect(web3.eth.sendTransaction).toHaveBeenLastCalledWith(
       expect.objectContaining({
         to: '0xbbbdeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
@@ -169,7 +169,7 @@ describe('contract deployer', () => {
   it('returns the result of the contract initialization transaction', async () => {
     expect.assertions(1)
 
-    const returnValue = await deploy(host, port, 'unlock-abi-0')
+    const returnValue = await deploy(host, port, Unlock)
 
     expect(returnValue).toEqual({
       blockHash:
