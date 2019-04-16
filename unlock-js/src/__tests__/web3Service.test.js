@@ -47,15 +47,6 @@ const getBalanceForAccountAndYieldBalance = (account, balance) => {
   )
 }
 
-// eth_call
-const ethCallAndYield = (data, to, result) => {
-  return jsonRpcRequest('eth_call', [{ data, to }, 'latest'], result)
-}
-
-const ethCallAndFail = (data, to, error) => {
-  return jsonRpcRequest('eth_call', [{ data, to }, 'latest'], undefined, error)
-}
-
 nock.emitter.on('no match', function(clientRequestObject, options, body) {
   if (debug) {
     console.log(`NO HTTP MOCK EXISTS FOR THAT REQUEST\n${body}`)
@@ -141,61 +132,6 @@ describe('Web3Service', () => {
 
       let addressBalance = await web3Service.getAddressBalance(address)
       expect(addressBalance).toEqual(Web3Utils.fromWei(inWei, 'ether'))
-    })
-  })
-
-  describe('_getKeyByLockForOwner', () => {
-    it('should update the data and expiration date', async () => {
-      expect.assertions(2)
-      ethCallAndYield(
-        '0xabdf82ce00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
-        lockAddress,
-        '0x000000000000000000000000000000000000000000000000000000005b58fa05'
-      )
-      ethCallAndYield(
-        '0xd44fa14a00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
-        lockAddress,
-        '0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000'
-      )
-
-      const lockContract = new web3Service.web3.eth.Contract(
-        UnlockV0.PublicLock.abi,
-        lockAddress
-      )
-
-      let [expiration, data] = await web3Service._getKeyByLockForOwner(
-        lockContract,
-        nodeAccounts[0]
-      )
-      expect(expiration).toBe(1532557829)
-      expect(data).toBe(null)
-    })
-
-    it('should handle missing key when the lock exists', async () => {
-      expect.assertions(2)
-
-      ethCallAndFail(
-        '0xabdf82ce00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
-        lockAddress,
-        { message: 'VM Exception while processing transaction: revert' }
-      )
-      ethCallAndFail(
-        '0xd44fa14a00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
-        lockAddress,
-        { message: 'VM Exception while processing transaction: revert' }
-      )
-
-      const lockContract = new web3Service.web3.eth.Contract(
-        UnlockV0.PublicLock.abi,
-        lockAddress
-      )
-
-      let [expiration, data] = await web3Service._getKeyByLockForOwner(
-        lockContract,
-        nodeAccounts[0]
-      )
-      expect(expiration).toBe(0)
-      expect(data).toBe(null)
     })
   })
 

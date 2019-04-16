@@ -7,6 +7,12 @@ export class NockHelper {
 
     this.debug = debug
     this._rpcRequestId = 0
+
+    nock.emitter.on('no match', function(clientRequestObject, options, body) {
+      if (debug) {
+        console.log(`NO HTTP MOCK EXISTS FOR THAT REQUEST\n${body}`)
+      }
+    })
   }
 
   logNock(...args) {
@@ -60,6 +66,16 @@ export class NockHelper {
   // eth_getTransactionReceipt
   ethGetTransactionReceipt(hash, result) {
     return this._jsonRpcRequest('eth_getTransactionReceipt', [hash], result)
+  }
+
+  // eth_call
+  ethCallAndFail(data, to, error) {
+    return this._jsonRpcRequest(
+      'eth_call',
+      [{ data, to }, 'latest'],
+      undefined,
+      error
+    )
   }
 }
 
