@@ -1,4 +1,4 @@
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 import Errors from '../errors'
 import TransactionTypes from '../transactionTypes'
 import { GAS_AMOUNTS } from '../constants'
@@ -10,7 +10,10 @@ import { GAS_AMOUNTS } from '../constants'
  * @param {Function} callback TODO: implement...
  */
 export default function(lock, account) {
-  const lockContract = new this.web3.eth.Contract(UnlockV0.PublicLock.abi, lock)
+  const lockContract = new this.web3.eth.Contract(
+    UnlockV01.PublicLock.abi,
+    lock
+  )
   const data = lockContract.methods.withdraw().encodeABI()
 
   return this._sendTransaction(
@@ -19,7 +22,7 @@ export default function(lock, account) {
       from: account,
       data,
       gas: GAS_AMOUNTS.withdrawFromLock,
-      contract: UnlockV0.PublicLock,
+      contract: UnlockV01.PublicLock,
     },
     TransactionTypes.WITHDRAWAL,
     error => {

@@ -1,5 +1,5 @@
 import Web3Utils from 'web3-utils'
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 
 /**
  * This refreshes a transaction by its hash.
@@ -33,8 +33,8 @@ export default function(transactionHash, defaults) {
     const contract =
       this.unlockContractAddress ===
       Web3Utils.toChecksumAddress(blockTransaction.to)
-        ? UnlockV0.Unlock
-        : UnlockV0.PublicLock
+        ? UnlockV01.Unlock
+        : UnlockV01.PublicLock
 
     const transactionType = this.getTransactionType(
       contract,

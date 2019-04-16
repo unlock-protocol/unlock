@@ -1,6 +1,6 @@
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 import Web3Service from '../../web3Service'
-import getTransaction from '../../v0/getTransaction'
+import getTransaction from '../../v01/getTransaction'
 import NockHelper from '../helpers/nockHelper'
 
 const endpoint = 'http://127.0.0.1:8545'
@@ -217,12 +217,12 @@ describe('v01', () => {
           receipt
         ) => {
           expect(transactionHash).toEqual(transaction.hash)
-          expect(contract).toEqual(UnlockV0.Unlock)
+          expect(contract).toEqual(UnlockV01.Unlock)
           expect(receipt.blockNumber).toEqual(344)
           expect(receipt.logs).toEqual([])
           web3Service.unlockContractAddress = previousAddress
           expect(web3Service.getTransactionType).toHaveBeenCalledWith(
-            UnlockV0.Unlock,
+            UnlockV01.Unlock,
             blockTransaction.input
           )
           done()
@@ -253,11 +253,11 @@ describe('v01', () => {
           receipt
         ) => {
           expect(transactionHash).toEqual(transaction.hash)
-          expect(contract).toEqual(UnlockV0.PublicLock)
+          expect(contract).toEqual(UnlockV01.PublicLock)
           expect(receipt.blockNumber).toEqual(344)
           expect(receipt.logs).toEqual([])
           expect(web3Service.getTransactionType).toHaveBeenCalledWith(
-            UnlockV0.PublicLock,
+            UnlockV01.PublicLock,
             blockTransaction.input
           )
           done()

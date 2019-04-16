@@ -1,5 +1,5 @@
 import Web3Utils from 'web3-utils'
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 
 /**
  * This means the transaction is not in a block yet (ie. not mined), but has been propagated
@@ -14,8 +14,8 @@ export default function(blockTransaction) {
   const contract =
     this.unlockContractAddress ===
     Web3Utils.toChecksumAddress(blockTransaction.to)
-      ? UnlockV0.Unlock
-      : UnlockV0.PublicLock
+      ? UnlockV01.Unlock
+      : UnlockV01.PublicLock
 
   return this.parseTransactionFromInput(
     blockTransaction.hash,
