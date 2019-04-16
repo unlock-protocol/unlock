@@ -2,8 +2,10 @@
 
 import nock from 'nock'
 import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 import UnlockService, { Errors } from '../unlockService'
 import v0 from '../v0'
+import v01 from '../v01'
 
 // This unlock address smart contract is fake
 const unlockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
@@ -32,6 +34,19 @@ describe('UnlockService', () => {
 
       expect(unlockService.web3.eth.getCode).toHaveBeenCalledWith(unlockAddress)
       expect(version).toEqual(v0)
+    })
+
+    it('should return UnlockV01 when the opCode matches', async () => {
+      expect.assertions(2)
+      unlockService.web3.eth = {
+        getCode: jest.fn(() => {
+          return Promise.resolve(UnlockV01.Unlock.deployedBytecode)
+        }),
+      }
+      const version = await unlockService.unlockContractAbiVersion()
+
+      expect(unlockService.web3.eth.getCode).toHaveBeenCalledWith(unlockAddress)
+      expect(version).toEqual(v01)
     })
 
     it('should throw NON_DEPLOYED_CONTRACT if the opCode is 0x', async () => {
