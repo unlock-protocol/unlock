@@ -98,9 +98,8 @@ const Heading = styled.h1`
 
 const Instructions = styled.p`
   font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 36px;
-  line-height: 47px;
-  font-weight: bold;
+  font-weight: 300;
+  font-size: 20px;
   color: var(--darkgrey);
 `
 
