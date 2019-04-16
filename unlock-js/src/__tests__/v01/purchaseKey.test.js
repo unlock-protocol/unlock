@@ -37,18 +37,16 @@ describe('v01', () => {
     let lock
     let owner
     let account
-    let data
 
     beforeEach(() => {
       lock = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
       owner = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
       keyPrice = '100000000'
       account = '0xdeadbeef'
-      data = 'key data'
     })
 
     it('should invoke sendTransaction with the right params', () => {
-      expect.assertions(5)
+      expect.assertions(4)
       const data = '' // mock abi data for purchaseKey
 
       walletService._sendTransaction = jest.fn()
@@ -58,9 +56,8 @@ describe('v01', () => {
           expect(abi).toBe(UnlockV01.PublicLock.abi)
           expect(address).toBe(lock)
           this.methods = {
-            purchaseFor: (customer, data) => {
+            purchaseFor: customer => {
               expect(customer).toEqual(owner)
-              expect(data).toEqual('0x') // Web3Utils.utf8ToHex(data || '')
               return this
             },
           }
@@ -70,7 +67,7 @@ describe('v01', () => {
 
       walletService.web3.eth.Contract = ContractClass
 
-      walletService.purchaseKey(lock, owner, keyPrice, account, data)
+      walletService.purchaseKey(lock, owner, keyPrice, account)
 
       expect(walletService._sendTransaction).toHaveBeenCalledWith(
         {
@@ -99,7 +96,7 @@ describe('v01', () => {
         done()
       })
 
-      walletService.purchaseKey(lock, owner, keyPrice, account, data)
+      walletService.purchaseKey(lock, owner, keyPrice, account)
     })
   })
 })

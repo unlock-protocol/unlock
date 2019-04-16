@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 import Web3Utils from 'web3-utils'
 import * as UnlockV01 from 'unlock-abi-0-1'
 import { GAS_AMOUNTS } from '../constants'
@@ -13,17 +15,18 @@ import TransactionTypes from '../transactionTypes'
  * @param {PropTypes.address} lock
  * @param {PropTypes.address} owner
  * @param {string} keyPrice
- * @param {string} data
  * @param {string} account
+ * @param {string} data // This field was previously available but has now been deprecated
  */
 export default function(lock, owner, keyPrice, account, data = '') {
+  if (data !== '') {
+    console.warn('The data field on purchaseFor has been deprecated.')
+  }
   const lockContract = new this.web3.eth.Contract(
     UnlockV01.PublicLock.abi,
     lock
   )
-  const abi = lockContract.methods
-    .purchaseFor(owner, Web3Utils.utf8ToHex(data || ''))
-    .encodeABI()
+  const abi = lockContract.methods.purchaseFor(owner).encodeABI()
 
   return this._sendTransaction(
     {
