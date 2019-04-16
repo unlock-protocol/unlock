@@ -1,12 +1,13 @@
 const Web3 = require('web3')
 
-export async function deploy(
+export default async function deploy(
   host,
   port,
   unlockVersion = 'unlock-abi-0',
   onNewContractInstance = () => {},
   web3 = new Web3(`http://${host}:${port}`)
 ) {
+  /* eslint-disable-next-line import/no-dynamic-require */
   const Unlock = require(unlockVersion).Unlock
   const unlock = new web3.eth.Contract(Unlock.abi)
 

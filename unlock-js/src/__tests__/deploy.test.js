@@ -1,8 +1,8 @@
 import nock from 'nock'
 import Web3 from 'web3'
-
-import { deploy } from '../deploy'
 import { Unlock } from 'unlock-abi-0'
+
+import deploy from '../deploy'
 
 const host = '127.0.0.1'
 const port = 8545
@@ -16,6 +16,7 @@ let debug = false // set to true to see more logging statements
 
 function logNock(...args) {
   if (debug) {
+    /* eslint-disable-next-line */
     console.log(...args)
   }
 }
@@ -27,20 +28,6 @@ const jsonRpcRequest = (method, params, result, error) => {
     .post('/', { jsonrpc: '2.0', id: rpcRequestId, method, params })
     .reply(200, { id: rpcRequestId, jsonrpc: '2.0', result, error })
     .log(logNock)
-}
-
-// eth_getBalance
-const getBalanceForAccountAndYieldBalance = (account, balance) => {
-  return jsonRpcRequest(
-    'eth_getBalance',
-    [account.toLowerCase(), 'latest'],
-    balance
-  )
-}
-
-// eth_call
-const ethCallAndYield = (data, to, result) => {
-  return jsonRpcRequest('eth_call', [{ data, to }, 'latest'], result)
 }
 
 // eth_accounts
@@ -90,12 +77,9 @@ const ethGetCodeAndYield = (address, tag) => {
   )
 }
 
-const ethCallAndFail = (data, to, error) => {
-  return jsonRpcRequest('eth_call', [{ data, to }, 'latest'], undefined, error)
-}
-
 nock.emitter.on('no match', function(clientRequestObject, options, body) {
   if (debug) {
+    /* eslint-disable-next-line */
     console.log(`NO HTTP MOCK EXISTS FOR THAT REQUEST\n${body}`)
   }
 })

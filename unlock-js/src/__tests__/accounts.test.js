@@ -1,4 +1,4 @@
-import { createAccountAndPasswordEncryptKey } from '../accounts'
+import createAccountAndPasswordEncryptKey from '../accounts'
 
 describe('web3 accounts creation', () => {
   it('should call web3.accounts.create', () => {
