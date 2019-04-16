@@ -1,7 +1,6 @@
 import Web3 from 'web3'
 import Web3Utils from 'web3-utils'
 import { bufferToHex, generateAddress } from 'ethereumjs-util'
-import * as UnlockV0 from 'unlock-abi-0'
 import UnlockService from './unlockService'
 import { MAX_UINT, UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
 import TransactionTypes from './transactionTypes'
@@ -312,35 +311,19 @@ export default class Web3Service extends UnlockService {
    * @param {*} input
    * @param {*} contractAddress
    */
-  parseTransactionFromInput(transactionHash, contract, input, contractAddress) {
-    const transactionType = this.getTransactionType(contract, input)
-
-    this.emit('transaction.updated', transactionHash, {
-      status: 'pending',
-      type: transactionType,
-      confirmations: 0,
-      blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
-    })
-
-    // Let's parse the transaction's input
-    const method = contract.abi.find(binaryInterface => {
-      return input.startsWith(binaryInterface.signature)
-    })
-
-    if (!method) {
-      // The invoked function is not part of the ABI... this is an unknown transaction
-      return
-    }
-
-    // The input actually includes the method signature, which should be removed
-    // for parsing of the actual input values.
-    input = input.replace(method.signature, '')
-    const params = this.web3.eth.abi.decodeParameters(method.inputs, input)
-    const handler = this.inputsHandlers[method.name]
-
-    if (handler) {
-      return handler(transactionHash, contractAddress, params)
-    }
+  async parseTransactionFromInput(
+    transactionHash,
+    contract,
+    input,
+    contractAddress
+  ) {
+    const version = await this.unlockContractAbiVersion()
+    return version.parseTransactionFromInput.bind(this)(
+      transactionHash,
+      contract,
+      input,
+      contractAddress
+    )
   }
 
   /**

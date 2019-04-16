@@ -2,7 +2,6 @@
 import Web3 from 'web3'
 import EventEmitter from 'events'
 import nock from 'nock'
-import * as UnlockV0 from 'unlock-abi-0'
 
 import WalletService from '../walletService'
 
@@ -72,15 +71,6 @@ describe('WalletService', () => {
       const netVersion = Math.floor(Math.random() * 100000)
       netVersionAndYield(netVersion)
 
-      UnlockV0.Unlock.networks = {
-        [netVersion]: {
-          events: {},
-          links: {},
-          address: '0x3f313221a2af33fd8a430891291370632cb471bf',
-          transactionHash:
-            '0x8545541749873b42c96e1699c2e62f0f4062ca57f3398270423c1089232ef7dd',
-        },
-      }
       walletService.on('network.changed', networkId => {
         expect(networkId).toEqual(netVersion)
         return done()
@@ -95,16 +85,6 @@ describe('WalletService', () => {
 
     beforeEach(done => {
       netVersionAndYield(netVersion)
-
-      UnlockV0.Unlock.networks = {
-        [netVersion]: {
-          events: {},
-          links: {},
-          address: '0x3f313221a2af33fd8a430891291370632cb471bf',
-          transactionHash:
-            '0x8545541749873b42c96e1699c2e62f0f4062ca57f3398270423c1089232ef7dd',
-        },
-      }
 
       walletService.on('network.changed', () => {
         done()
