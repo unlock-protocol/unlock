@@ -10,6 +10,19 @@ import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import DatePicker from '../interface/DatePicker'
 import BrowserOnly from '../helpers/BrowserOnly'
 import { pageTitle } from '../../constants'
+import UnlockPropTypes from '../../propTypes'
+import { addEvent } from '../../actions/ticket'
+
+export const formValuesToEvent = formValues => {
+  const { lockAddress, name, description, location, date } = formValues
+  return {
+    lockAddress,
+    name,
+    description,
+    location,
+    date,
+  }
+}
 
 export class CreateContent extends Component {
   constructor(props) {
@@ -31,6 +44,7 @@ export class CreateContent extends Component {
 
   onSubmit(e) {
     e.preventDefault()
+    this.saveEvent()
     return
   }
 
@@ -48,11 +62,22 @@ export class CreateContent extends Component {
   }
 
   dateChanged(date) {
+    date.setUTCHours(0, 0, 0, 0) // We don't need to store hours
     this.setState(state => {
       return {
         ...state,
         date,
       }
+    })
+  }
+
+  saveEvent() {
+    const { account, addEvent } = this.props
+    const newEvent = formValuesToEvent(this.state)
+    addEvent({
+      ...newEvent,
+      logo: '', // TODO add logo support
+      owner: account.address,
     })
   }
 
@@ -75,6 +100,7 @@ export class CreateContent extends Component {
                     <Label>Lock address</Label>
                     <Label>&nbsp;</Label>
                     <StyledSelect
+                      placeholder="Choose a lock"
                       className="select-container"
                       classNamePrefix="select-option"
                       options={locks.map(savedLock => ({
@@ -149,23 +175,35 @@ export class CreateContent extends Component {
 
 CreateContent.propTypes = {
   now: PropTypes.instanceOf(Date).isRequired,
+  account: UnlockPropTypes.account,
+  addEvent: PropTypes.func.isRequired,
   locks: PropTypes.arrayOf(PropTypes.string),
 }
 
 CreateContent.defaultProps = {
   locks: [],
+  account: null,
 }
 
-export const mapStateToProps = ({ locks }) => {
+export const mapStateToProps = ({ locks, account }) => {
   let selectLocks = []
   Object.values(locks).map(lock => selectLocks.push(lock.address))
+  let now = new Date()
   return {
     locks: selectLocks,
-    now: new Date(),
+    account,
+    now,
   }
 }
 
-export default connect(mapStateToProps)(CreateContent)
+export const mapDispatchToProps = dispatch => ({
+  addEvent: event => dispatch(addEvent(event)),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreateContent)
 
 const StyledSelect = styled(Select)`
   background-color: var(--offwhite);
