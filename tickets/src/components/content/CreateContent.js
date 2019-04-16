@@ -3,10 +3,13 @@ import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import Select from 'react-select'
+import Head from 'next/head'
 import Media from '../../theme/media'
 import Layout from '../interface/Layout'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import DatePicker from '../interface/DatePicker'
+import BrowserOnly from '../helpers/BrowserOnly'
+import { pageTitle } from '../../constants'
 
 export class CreateContent extends Component {
   constructor(props) {
@@ -14,7 +17,7 @@ export class CreateContent extends Component {
     const { now, locks } = props
 
     this.state = {
-      lock: locks[0],
+      lock: locks[0] || '',
       name: '',
       description: '',
       location: '',
@@ -34,10 +37,14 @@ export class CreateContent extends Component {
   onChange(field) {
     return event => {
       const value = event.target.value
-      this.setState(state => {
-        return { ...state, [field]: value }
-      })
+      this.changeField(field, value)
     }
+  }
+
+  changeField(field, value) {
+    this.setState(state => {
+      return { ...state, [field]: value }
+    })
   }
 
   dateChanged(date) {
@@ -51,60 +58,90 @@ export class CreateContent extends Component {
 
   render() {
     const { locks } = this.props
-    const { date } = this.state
+    const { date, name, description, location, lock } = this.state
+
     return (
       <GlobalErrorConsumer>
-        <Layout title="Paywall" forContent>
-          <form onSubmit={this.onSubmit}>
-            <Steps>
-              <Step>
-                <Title>Select your Lock</Title>
-                <Fieldset>
-                  <Label>Lock address</Label>
-                  <Label>&nbsp;</Label>
-                  <StyledSelect
-                    className="select-container"
-                    classNamePrefix="select-option"
-                    options={locks.map(lock => ({ value: lock, label: lock }))}
-                  />
-                  <Text>
-                    Don’t have a lock? <br />
-                    <Cta>Create a new lock on unlock-protocol.com</Cta>
-                  </Text>
-                </Fieldset>
-              </Step>
-              <Step>
-                <Title>Set Your Events Preferences</Title>
-                <Fieldset>
-                  <Label>Event Name</Label>
-                  <Label>About</Label>
-                  <Input
-                    placeholder="Give it a nice name"
-                    onChange={this.onChange('name')}
-                  />
-                  <TextArea
-                    placeholder="Your about text in 200 characters or less."
-                    onChange={this.onChange('description')}
-                  />
-                  <Label>Date</Label>
-                  <Label>Location</Label>
-                  <DatePicker date={date} onChange={this.dateChanged} />
-                  <Input onChange={this.onChange('location')} />
-                </Fieldset>
-              </Step>
-              <Step>
-                <Title>Share Your RSVP Page</Title>
-                <Fieldset>
-                  <SaveButton type="submit">Save Event</SaveButton>
-                  <Text>
-                    Your event link: <br />
-                    <Cta>https://tickets.unlock-protocol/rsvp/0xabc</Cta>
-                  </Text>
-                </Fieldset>
-              </Step>
-            </Steps>
-          </form>
-        </Layout>
+        <BrowserOnly>
+          <Layout title="Paywall" forContent>
+            <Head>
+              <title>{pageTitle('Create Ticket')}</title>
+            </Head>
+            <form onSubmit={this.onSubmit}>
+              <Steps>
+                <Step>
+                  <Title>Select your Lock</Title>
+                  <Fieldset>
+                    <Label>Lock address</Label>
+                    <Label>&nbsp;</Label>
+                    <StyledSelect
+                      className="select-container"
+                      classNamePrefix="select-option"
+                      options={locks.map(savedLock => ({
+                        value: savedLock,
+                        label: savedLock,
+                      }))}
+                      onChange={selectedOption => {
+                        if (selectedOption.value)
+                          this.changeField('lock', selectedOption.value)
+                      }}
+                    />
+                    <Text>
+                      Don’t have a lock? <br />
+                      <Cta href="https://unlock-protocol.com" target="_blank">
+                        Create a new lock on unlock-protocol.com
+                      </Cta>
+                    </Text>
+                  </Fieldset>
+                </Step>
+                <Step>
+                  <Title>Set Your Events Preferences</Title>
+                  <Fieldset>
+                    <Field>
+                      <Label>Event Name</Label>
+                      <Input
+                        placeholder="Give it a nice name"
+                        onChange={this.onChange('name')}
+                        value={name}
+                      />
+                    </Field>
+                    <Field>
+                      <Label>About</Label>
+                      <TextArea
+                        placeholder="Your about text in 200 characters or less."
+                        onChange={this.onChange('description')}
+                        value={description}
+                      />
+                    </Field>
+                    <Field>
+                      <Label>Date</Label>
+                      <DatePicker date={date} onChange={this.dateChanged} />
+                    </Field>
+                    <Field>
+                      <Label>Location</Label>
+                      <Input
+                        onChange={this.onChange('location')}
+                        value={location}
+                      />
+                    </Field>
+                  </Fieldset>
+                </Step>
+                <Step>
+                  <Title>Share Your RSVP Page</Title>
+                  <Fieldset>
+                    <SaveButton type="submit">Save Event</SaveButton>
+                    <Text>
+                      Your event link: <br />
+                      <Cta>
+                        {'https://tickets.unlock-protocol/rsvp/' + lock}
+                      </Cta>
+                    </Text>
+                  </Fieldset>
+                </Step>
+              </Steps>
+            </form>
+          </Layout>
+        </BrowserOnly>
       </GlobalErrorConsumer>
     )
   }
@@ -119,10 +156,12 @@ CreateContent.defaultProps = {
   locks: [],
 }
 
-const mapStateToProps = () => {
+export const mapStateToProps = ({ locks }) => {
+  let selectLocks = []
+  Object.values(locks).map(lock => selectLocks.push(lock.address))
   return {
+    locks: selectLocks,
     now: new Date(),
-    locks: ['0x123', '0x456', '0x789'],
   }
 }
 
@@ -190,12 +229,25 @@ const Step = styled.li`
   margin-bottom: 60px;
 `
 
-const Fieldset = styled.fieldset`
+const Fieldset = styled.div`
   padding: 0;
-  display: grid;
   border: none;
-  grid-gap: 30px;
-  grid-template-columns: repeat(2, 1fr);
+  ${Media.nophone`
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: top;
+  `}
+`
+
+const Field = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 25px auto;
+  align-items: top;
+  ${Media.phone`
+    margin-bottom: 15px;
+  `}
 `
 
 const Text = styled.label`
