@@ -51,6 +51,16 @@ export class NockHelper {
   ethBlockNumber(result) {
     return this._jsonRpcRequest('eth_blockNumber', [], result)
   }
+
+  // eth_getTransactionByHash
+  ethGetTransactionByHash(hash, result) {
+    return this._jsonRpcRequest('eth_getTransactionByHash', [hash], result)
+  }
+
+  // eth_getTransactionReceipt
+  ethGetTransactionReceipt(hash, result) {
+    return this._jsonRpcRequest('eth_getTransactionReceipt', [hash], result)
+  }
 }
 
 export default NockHelper
