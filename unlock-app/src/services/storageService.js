@@ -69,6 +69,7 @@ export default class StorageService {
   async storeLockDetails(lockDetails, token) {
     const opts = {}
     if (token) {
+      // TODO: Token is no longer necessary here. Update this function and callsites.
       opts.headers = this.genAuthorizationHeader(token)
     }
     try {
@@ -89,6 +90,7 @@ export default class StorageService {
   async updateLockDetails(address, update, token) {
     const opts = {}
     if (token) {
+      // TODO: Tokens aren't optional
       opts.headers = this.genAuthorizationHeader(token)
     }
     try {
@@ -104,9 +106,14 @@ export default class StorageService {
    * @param {*} user
    * @returns {Promise<*>}
    */
-  async createUser(user) {
+  async createUser(user, token) {
+    const opts = {}
+    if (token) {
+      // TODO: Tokens aren't optional
+      opts.headers = this.genAuthorizationHeader(token)
+    }
     try {
-      return await axios.post(`${this.host}/users/`, user, {})
+      return await axios.post(`${this.host}/users/`, user, opts)
     } catch (error) {
       return Promise.reject(error)
     }
@@ -124,6 +131,7 @@ export default class StorageService {
   async updateUser(email, user, token) {
     const opts = {}
     if (token) {
+      // TODO: tokens aren't optional
       opts.headers = this.genAuthorizationHeader(token)
     }
     try {
@@ -144,11 +152,8 @@ export default class StorageService {
    * @param {*} token
    * @returns {Promise<*>}
    */
-  async getUserPrivateKey(emailAddress, token) {
+  async getUserPrivateKey(emailAddress) {
     const opts = {}
-    if (token) {
-      opts.headers = this.genAuthorizationHeader(token)
-    }
     try {
       return await axios.get(
         `${this.host}/users/${encodeURIComponent(emailAddress)}/privatekey`,
@@ -167,11 +172,8 @@ export default class StorageService {
    * @param {*} token
    * @returns {Promise<*>}
    */
-  async getUserRecoveryPhrase(emailAddress, token) {
+  async getUserRecoveryPhrase(emailAddress) {
     const opts = {}
-    if (token) {
-      opts.headers = this.genAuthorizationHeader(token)
-    }
     try {
       return await axios.get(
         `${this.host}/users/${encodeURIComponent(emailAddress)}/recoveryphrase`,

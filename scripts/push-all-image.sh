@@ -9,7 +9,7 @@ IMAGE_TAG=master
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-IMAGES=( unlock-core paywall smart-contracts unlock-app locksmith integration-tests wedlocks unlock-protocol-com )
+IMAGES=( unlock-core paywall smart-contracts unlock-app locksmith integration-tests wedlocks unlock-protocol-com tickets unlock-js )
 
 for IMAGE_NAME in "${IMAGES[@]}"
 do
