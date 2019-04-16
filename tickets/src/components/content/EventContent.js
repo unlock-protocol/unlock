@@ -51,7 +51,7 @@ EventContent.propTypes = {
   name: PropTypes.string,
   description: PropTypes.string,
   location: PropTypes.string,
-  date: PropTypes.instanceOf(Date).isRequired,
+  date: PropTypes.instanceOf(Date),
   lock: UnlockPropTypes.lock.isRequired,
 }
 
@@ -59,6 +59,7 @@ EventContent.defaultProps = {
   name: 'Event',
   description: '',
   location: 'TBC',
+  date: new Date(),
 }
 
 export default EventContent
