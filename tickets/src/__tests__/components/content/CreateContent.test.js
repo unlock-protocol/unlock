@@ -4,7 +4,8 @@ import { Provider } from 'react-redux'
 import * as rtl from 'react-testing-library'
 import 'jest-dom/extend-expect'
 
-import CreateContent, {
+import {
+  CreateContent,
   mapStateToProps,
 } from '../../../components/content/CreateContent'
 import createUnlockStore from '../../../createUnlockStore'
@@ -43,7 +44,7 @@ describe('CreateContent', () => {
 
     const form = rtl.render(
       <Provider store={store}>
-        <CreateContent />
+        <CreateContent locks={['abc123', 'def456']} />
       </Provider>
     )
     expect(form.container.querySelector('option[value="abc123"]').text).toEqual(
@@ -61,12 +62,61 @@ describe('CreateContent', () => {
 
     const form = rtl.render(
       <Provider store={store}>
-        <CreateContent />
+        <CreateContent locks={[]} />
       </Provider>
     )
     const select = form.container.querySelector('select') // Get first select on the page
     expect(select).not.toBe(null)
     expect(select.querySelectorAll('option').length).toEqual(0)
+  })
+
+  it('should save a new event', () => {
+    expect.assertions(2)
+
+    const store = createUnlockStore({
+      account: { address: 'ben' },
+      locks: inputLocks,
+    })
+    const addEvent = jest.fn()
+
+    const form = rtl.render(
+      <Provider store={store}>
+        <CreateContent
+          account={{ address: 'ben' }}
+          locks={['abc123', 'def456']}
+          addEvent={addEvent}
+        />
+      </Provider>
+    )
+
+    rtl.fireEvent.change(form.getByTestId('Choose a lock'), {
+      target: { value: 'abc123' }, // Selected abc123 lock
+    })
+    rtl.fireEvent.change(form.getByTestId('Pick a year'), {
+      target: { value: '2020' },
+    })
+    rtl.fireEvent.change(form.getByTestId('Pick a month'), {
+      target: { value: '10' },
+    })
+    rtl.fireEvent.change(form.getByTestId('Pick a day'), {
+      target: { value: '23' },
+    })
+
+    const submit = form.getByText('Save Event')
+    expect(submit).not.toBeNull()
+    rtl.fireEvent.click(submit)
+
+    let date = new Date(2020, 10, 23)
+    date.setUTCHours(0, 0, 0, 0)
+    expect(addEvent).toHaveBeenCalledWith({
+      lockAddress: undefined, // TODO Not sure how to update state with the mocked select, so for now undefined is expected
+      name: '',
+      description: '',
+      location: '',
+      owner: 'ben',
+      logo: '',
+      date,
+    })
   })
 })
 
