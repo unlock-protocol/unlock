@@ -1,4 +1,10 @@
-import { mapStateToProps } from '../../../components/lock/UnlockFlag'
+import React from 'react'
+import * as rtl from 'react-testing-library'
+import {
+  mapStateToProps,
+  LockedFlag,
+  UnlockedFlag,
+} from '../../../components/lock/UnlockFlag'
 
 const lock = { address: '0x4983D5ECDc5cc0E499c2D23BF4Ac32B982bAe53a' }
 const locks = {
@@ -30,6 +36,21 @@ const keys = {
 }
 
 describe('UnlockFlag component', () => {
+  describe('LockedFlag', () => {
+    it('should open the link in a new tab', () => {
+      expect.assertions(1)
+      let wrapper = rtl.render(<LockedFlag />)
+      expect(wrapper.getByText('Unlock').target).toBe('_blank')
+    })
+  })
+
+  it('should open the link in a new tab', () => {
+    expect.assertions(1)
+    let wrapper = rtl.render(<UnlockedFlag expiration="Next Week" />)
+
+    expect(wrapper.getByText('Unlock').target).toBe('_blank')
+  })
+
   describe('mapStateToProps', () => {
     it('should return the expiration date of the key, formatted', () => {
       expect.assertions(1)
