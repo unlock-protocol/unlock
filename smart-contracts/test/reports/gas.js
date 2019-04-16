@@ -2,6 +2,7 @@ const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 const deployLocks = require('../helpers/deployLocks')
+const getUnlockProxy = require('../helpers/proxy')
 
 const Unlock = artifacts.require('Unlock.sol')
 
@@ -9,7 +10,7 @@ let unlock, lock
 
 contract('reports / gas', accounts => {
   beforeEach(async () => {
-    unlock = await Unlock.deployed()
+    unlock = await getUnlockProxy(Unlock)
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
 
