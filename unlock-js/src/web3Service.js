@@ -9,14 +9,14 @@ export const keyId = (lock, owner) => [lock, owner].join('-')
 export const Constants = {
   MAX_UINT:
     '115792089237316195423570985008687907853269984665640564039457584007913129639935',
-  UNLIMITED_KEYS_COUNT: -1
+  UNLIMITED_KEYS_COUNT: -1,
 }
 
 export const TransactionType = {
   LOCK_CREATION: 'LOCK_CREATION',
   KEY_PURCHASE: 'KEY_PURCHASE',
   WITHDRAWAL: 'WITHDRAWAL',
-  UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE'
+  UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE',
 }
 
 /**
@@ -28,7 +28,7 @@ export default class Web3Service extends EventEmitter {
     readOnlyProvider,
     unlockAddress,
     blockTime,
-    requiredConfirmations
+    requiredConfirmations,
   }) {
     super()
 
@@ -42,12 +42,12 @@ export default class Web3Service extends EventEmitter {
     this.eventsHandlers = {
       NewLock: (transactionHash, contractAddress, blockNumber, args) => {
         this.emit('transaction.updated', transactionHash, {
-          lock: args.newLockAddress
+          lock: args.newLockAddress,
         })
         this.emit('lock.updated', args.newLockAddress, {
           asOf: blockNumber,
           transaction: transactionHash,
-          address: args.newLockAddress
+          address: args.newLockAddress,
         })
         return this.getLock(args.newLockAddress)
       },
@@ -55,11 +55,11 @@ export default class Web3Service extends EventEmitter {
         const owner = args._to
         this.emit('transaction.updated', transactionHash, {
           key: keyId(contractAddress, owner),
-          lock: contractAddress
+          lock: contractAddress,
         })
         return this.emit('key.saved', keyId(contractAddress, owner), {
           lock: contractAddress,
-          owner
+          owner,
         })
       },
       PriceChanged: (
@@ -69,19 +69,19 @@ export default class Web3Service extends EventEmitter {
         { keyPrice }
       ) => {
         this.emit('transaction.updated', transactionHash, {
-          lock: contractAddress
+          lock: contractAddress,
         })
         return this.emit('lock.updated', contractAddress, {
           asOf: blockNumber,
-          keyPrice: Web3Utils.fromWei(keyPrice, 'ether')
+          keyPrice: Web3Utils.fromWei(keyPrice, 'ether'),
         })
       },
       Withdrawal: (transactionHash, contractAddress) => {
         // TODO: update the lock balance too!
         this.emit('transaction.updated', transactionHash, {
-          lock: contractAddress
+          lock: contractAddress,
         })
-      }
+      },
     }
 
     // Pending transactions may still update the state
@@ -95,7 +95,7 @@ export default class Web3Service extends EventEmitter {
         // exists.
         const newLockAddress = await this.generateLockAddress()
         this.emit('transaction.updated', transactionHash, {
-          lock: newLockAddress
+          lock: newLockAddress,
         })
 
         if (params._maxNumberOfKeys === Constants.MAX_UINT) {
@@ -109,20 +109,20 @@ export default class Web3Service extends EventEmitter {
           keyPrice: Web3Utils.fromWei(params._keyPrice, 'ether'), // Must be expressed in Eth!
           maxNumberOfKeys: +params._maxNumberOfKeys,
           outstandingKeys: 0,
-          balance: '0' // Must be expressed in Eth!
+          balance: '0', // Must be expressed in Eth!
         })
       },
       purchaseFor: async (transactionHash, contractAddress, params) => {
         const owner = params._recipient
         this.emit('transaction.updated', transactionHash, {
           key: keyId(contractAddress, owner),
-          lock: contractAddress
+          lock: contractAddress,
         })
         return this.emit('key.saved', keyId(contractAddress, owner), {
           lock: contractAddress,
-          owner
+          owner,
         })
-      }
+      },
     }
   }
 
@@ -145,7 +145,7 @@ export default class Web3Service extends EventEmitter {
   refreshAccountBalance(account) {
     return this.getAddressBalance(account.address).then(balance => {
       this.emit('account.updated', account, {
-        balance
+        balance,
       })
     })
   }
@@ -204,7 +204,7 @@ export default class Web3Service extends EventEmitter {
       {
         fromBlock: 0, // TODO start only when the smart contract was deployed?
         toBlock: 'latest',
-        filter
+        filter,
       },
       (error, events = []) => {
         events.forEach(event => {
@@ -222,7 +222,7 @@ export default class Web3Service extends EventEmitter {
   getPastLockCreationsTransactionsForUser(address) {
     const unlock = new this.web3.eth.Contract(Unlock.abi, this.unlockAddress)
     return this._getPastTransactionsForContract(unlock, 'NewLock', {
-      lockOwner: address
+      lockOwner: address,
     })
   }
 
@@ -335,7 +335,7 @@ export default class Web3Service extends EventEmitter {
       status: 'pending',
       type: transactionType,
       confirmations: 0,
-      blockNumber: Number.MAX_SAFE_INTEGER // Asign the largest block number for sorting purposes
+      blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
     })
 
     // Let's parse the transaction's input
@@ -402,7 +402,7 @@ export default class Web3Service extends EventEmitter {
     return this.emit('transaction.updated', transactionHash, {
       status: 'submitted',
       confirmations: 0,
-      blockNumber: Number.MAX_SAFE_INTEGER // Asign the largest block number for sorting purposes
+      blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
     })
   }
 
@@ -438,7 +438,7 @@ export default class Web3Service extends EventEmitter {
   getTransaction(transactionHash, defaults) {
     return Promise.all([
       this.web3.eth.getBlockNumber(),
-      this.web3.eth.getTransaction(transactionHash)
+      this.web3.eth.getTransaction(transactionHash),
     ]).then(([blockNumber, blockTransaction]) => {
       // If the block transaction is missing the transacion has been submitted but not
       // received by all nodes
@@ -481,7 +481,7 @@ export default class Web3Service extends EventEmitter {
         status: 'mined',
         type: transactionType,
         confirmations: blockNumber - blockTransaction.blockNumber,
-        blockNumber: blockTransaction.blockNumber
+        blockNumber: blockTransaction.blockNumber,
       })
 
       return this.web3.eth
@@ -494,7 +494,7 @@ export default class Web3Service extends EventEmitter {
               transactionReceipt.status == '0x0'
             ) {
               return this.emit('transaction.updated', transactionHash, {
-                status: 'failed'
+                status: 'failed',
               })
             }
 
@@ -525,7 +525,7 @@ export default class Web3Service extends EventEmitter {
         return parseInt(value)
       },
       owner: x => x,
-      outstandingKeys: parseInt
+      outstandingKeys: parseInt,
     }
 
     const update = {}
@@ -572,7 +572,7 @@ export default class Web3Service extends EventEmitter {
           lock,
           owner,
           expiration,
-          data
+          data,
         })
       }
     )
@@ -616,7 +616,7 @@ export default class Web3Service extends EventEmitter {
           lock,
           owner: ownerAddress,
           expiration,
-          data
+          data,
         }
       }
     )

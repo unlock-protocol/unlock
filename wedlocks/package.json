@@ -5,13 +5,13 @@
   "main": "src/server.js",
   "dependencies": {
     "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.3.4",
+    "@babel/core": "7.4.3",
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.3.4",
     "aws-sdk": "^2.423.0",
     "babel-loader": "^8.0.5",
     "netlify-cli": "^2.8.3",
-    "nodemailer": "^5.1.1",
+    "nodemailer": "^6.1.0",
     "nodemon": "^1.18.10",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0"
