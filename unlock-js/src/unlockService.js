@@ -1,8 +1,10 @@
 import EventEmitter from 'events'
 
 import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 
 import v0 from './v0'
+import v01 from './v01'
 
 export const Errors = {
   MISSING_WEB3: 'MISSING_WEB3',
@@ -48,6 +50,10 @@ export default class UnlockService extends EventEmitter {
 
     if (UnlockV0.Unlock.deployedBytecode === opCode) {
       return v0
+    }
+
+    if (UnlockV01.Unlock.deployedBytecode === opCode) {
+      return v01
     }
 
     throw new Error(Errors.UNKNOWN_CONTRACT)
