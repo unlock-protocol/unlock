@@ -28,57 +28,45 @@ describe('v01', () => {
   })
 
   describe('_getKeyByLockForOwner', () => {
-    it('should update the data and expiration date', async () => {
-      expect.assertions(2)
+    it('should update the expiration date', async () => {
+      expect.assertions(1)
       nock.ethCallAndYield(
         '0xabdf82ce00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
         lockAddress,
         '0x000000000000000000000000000000000000000000000000000000005b58fa05'
       )
-      nock.ethCallAndYield(
-        '0xd44fa14a00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
-        lockAddress,
-        '0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000'
-      )
 
       const lockContract = new web3Service.web3.eth.Contract(
         UnlockV01.PublicLock.abi,
         lockAddress
       )
 
-      let [expiration, data] = await web3Service._getKeyByLockForOwner(
+      let expiration = await web3Service._getKeyByLockForOwner(
         lockContract,
         account
       )
       expect(expiration).toBe(1532557829)
-      expect(data).toBe(null)
     })
 
     it('should handle missing key when the lock exists', async () => {
-      expect.assertions(2)
+      expect.assertions(1)
 
       nock.ethCallAndFail(
         '0xabdf82ce00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
         lockAddress,
         { message: 'VM Exception while processing transaction: revert' }
       )
-      nock.ethCallAndFail(
-        '0xd44fa14a00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
-        lockAddress,
-        { message: 'VM Exception while processing transaction: revert' }
-      )
 
       const lockContract = new web3Service.web3.eth.Contract(
         UnlockV01.PublicLock.abi,
         lockAddress
       )
 
-      let [expiration, data] = await web3Service._getKeyByLockForOwner(
+      let expiration = await web3Service._getKeyByLockForOwner(
         lockContract,
         account
       )
       expect(expiration).toBe(0)
-      expect(data).toBe(null)
     })
   })
 })
