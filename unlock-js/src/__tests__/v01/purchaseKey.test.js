@@ -1,6 +1,6 @@
 import Web3 from 'web3'
-import * as UnlockV0 from 'unlock-abi-0'
-import purchaseKey from '../../v0/purchaseKey'
+import * as UnlockV01 from 'unlock-abi-0-1'
+import purchaseKey from '../../v01/purchaseKey'
 import Errors from '../../errors'
 import { GAS_AMOUNTS } from '../../constants'
 import TransactionTypes from '../../transactionTypes'
@@ -20,7 +20,7 @@ describe('v01', () => {
     nock.cleanAll()
     prepWalletService(
       unlockAddress,
-      UnlockV0.Unlock,
+      UnlockV01.Unlock,
       provider,
       nock,
       _walletService => {
@@ -55,7 +55,7 @@ describe('v01', () => {
 
       const ContractClass = class {
         constructor(abi, address) {
-          expect(abi).toBe(UnlockV0.PublicLock.abi)
+          expect(abi).toBe(UnlockV01.PublicLock.abi)
           expect(address).toBe(lock)
           this.methods = {
             purchaseFor: (customer, data) => {
@@ -78,7 +78,7 @@ describe('v01', () => {
           from: account,
           data,
           gas: GAS_AMOUNTS.purchaseKey,
-          contract: UnlockV0.PublicLock,
+          contract: UnlockV01.PublicLock,
           value: '100000000000000000000000000', // Web3Utils.toWei(keyPrice, 'ether')
         },
         TransactionTypes.KEY_PURCHASE,

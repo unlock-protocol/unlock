@@ -1,4 +1,4 @@
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 
 /**
  * This loads and returns the keys for a lock per page
@@ -12,7 +12,10 @@ import * as UnlockV0 from 'unlock-abi-0'
  * @param {PropTypes.integer}
  */
 export default function(lock, page, byPage) {
-  const lockContract = new this.web3.eth.Contract(UnlockV0.PublicLock.abi, lock)
+  const lockContract = new this.web3.eth.Contract(
+    UnlockV01.PublicLock.abi,
+    lock
+  )
 
   this._genKeyOwnersFromLockContract(lock, lockContract, page, byPage).then(
     keyPromises => {

@@ -1,6 +1,6 @@
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 import Web3Service from '../../web3Service'
-import parseTransactionFromInput from '../../v0/parseTransactionFromInput'
+import parseTransactionFromInput from '../../v01/parseTransactionFromInput'
 import NockHelper from '../helpers/nockHelper'
 
 import { KEY_ID } from '../../constants'
@@ -55,7 +55,7 @@ describe('v01', () => {
       })
       web3Service.parseTransactionFromInput(
         transaction.hash,
-        UnlockV0.Unlock,
+        UnlockV01.Unlock,
         input,
         web3Service.unlockContractAddress
       )

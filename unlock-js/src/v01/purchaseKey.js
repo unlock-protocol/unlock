@@ -1,5 +1,5 @@
 import Web3Utils from 'web3-utils'
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 import { GAS_AMOUNTS } from '../constants'
 import Errors from '../errors'
 import TransactionTypes from '../transactionTypes'
@@ -17,7 +17,10 @@ import TransactionTypes from '../transactionTypes'
  * @param {string} account
  */
 export default function(lock, owner, keyPrice, account, data = '') {
-  const lockContract = new this.web3.eth.Contract(UnlockV0.PublicLock.abi, lock)
+  const lockContract = new this.web3.eth.Contract(
+    UnlockV01.PublicLock.abi,
+    lock
+  )
   const abi = lockContract.methods
     .purchaseFor(owner, Web3Utils.utf8ToHex(data || ''))
     .encodeABI()
@@ -29,7 +32,7 @@ export default function(lock, owner, keyPrice, account, data = '') {
       data: abi,
       gas: GAS_AMOUNTS.purchaseKey,
       value: Web3Utils.toWei(keyPrice, 'ether'),
-      contract: UnlockV0.PublicLock,
+      contract: UnlockV01.PublicLock,
     },
     TransactionTypes.KEY_PURCHASE,
     error => {

@@ -1,6 +1,6 @@
 import Web3Utils from 'web3-utils'
 import Web3Service from '../../web3Service'
-import getLock from '../../v0/getLock'
+import getLock from '../../v01/getLock'
 import NockHelper from '../helpers/nockHelper'
 
 const endpoint = 'http://127.0.0.1:8545'

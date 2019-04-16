@@ -1,6 +1,6 @@
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 import Web3Service from '../../web3Service'
-import _getKeyByLockForOwner from '../../v0/_getKeyByLockForOwner'
+import _getKeyByLockForOwner from '../../v01/_getKeyByLockForOwner'
 import NockHelper from '../helpers/nockHelper'
 
 const endpoint = 'http://127.0.0.1:8545'
@@ -42,7 +42,7 @@ describe('v01', () => {
       )
 
       const lockContract = new web3Service.web3.eth.Contract(
-        UnlockV0.PublicLock.abi,
+        UnlockV01.PublicLock.abi,
         lockAddress
       )
 
@@ -69,7 +69,7 @@ describe('v01', () => {
       )
 
       const lockContract = new web3Service.web3.eth.Contract(
-        UnlockV0.PublicLock.abi,
+        UnlockV01.PublicLock.abi,
         lockAddress
       )
 

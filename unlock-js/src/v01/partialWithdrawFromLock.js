@@ -1,5 +1,5 @@
 import Web3Utils from 'web3-utils'
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 import { GAS_AMOUNTS } from '../constants'
 import Errors from '../errors'
 import TransactionTypes from '../transactionTypes'
@@ -13,7 +13,10 @@ import TransactionTypes from '../transactionTypes'
  * @param {Function} callback
  */
 export default function(lock, account, ethAmount, callback) {
-  const lockContract = new this.web3.eth.Contract(UnlockV0.PublicLock.abi, lock)
+  const lockContract = new this.web3.eth.Contract(
+    UnlockV01.PublicLock.abi,
+    lock
+  )
   const weiAmount = Web3Utils.toWei(ethAmount)
   const data = lockContract.methods.partialWithdraw(weiAmount).encodeABI()
 
@@ -23,7 +26,7 @@ export default function(lock, account, ethAmount, callback) {
       from: account,
       data,
       gas: GAS_AMOUNTS.partialWithdrawFromLock,
-      contract: UnlockV0.PublicLock,
+      contract: UnlockV01.PublicLock,
     },
     TransactionTypes.WITHDRAWAL,
     error => {

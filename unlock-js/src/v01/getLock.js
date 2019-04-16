@@ -1,5 +1,5 @@
 import Web3Utils from 'web3-utils'
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV01 from 'unlock-abi-0-1'
 import { MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
 
 /**
@@ -8,7 +8,7 @@ import { MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
  * @return Promise<Lock>
  */
 export default function(address) {
-  const contract = new this.web3.eth.Contract(UnlockV0.PublicLock.abi, address)
+  const contract = new this.web3.eth.Contract(UnlockV01.PublicLock.abi, address)
   const attributes = {
     keyPrice: x => Web3Utils.fromWei(x, 'ether'),
     expirationDuration: parseInt,
