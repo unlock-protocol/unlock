@@ -1,11 +1,6 @@
 import Web3 from 'web3'
 import getConfig from 'next/config'
-import {
-  CANONICAL_BASE_DEV_URL,
-  CANONICAL_BASE_STAGING_URL,
-  CANONICAL_BASE_URL,
-  ETHEREUM_NETWORKS_NAMES,
-} from './constants'
+import { ETHEREUM_NETWORKS_NAMES } from './constants'
 
 // There is no standard way to detect the provider name...
 export function getCurrentProvider(environment) {
@@ -79,33 +74,38 @@ export default function configure(
   // Unlock address by default
   // Smart contract deployments yield the same address on a "clean" node as long as long as the
   // migration script runs in the same order.
-  let unlockAddress = runtimeConfig.unlockAddress
+  let unlockAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
   let services = {}
   let supportedProviders = []
   let paywallUrl = runtimeConfig.paywallUrl || 'http://localhost:3001'
   let paywallScriptUrl =
     runtimeConfig.paywallScriptUrl ||
     'http://localhost:3001/static/paywall.min.js'
+  let unlockStaticUrl = runtimeConfig.unlockStaticUrl || 'http://localhost:3002'
+  let httpProvider = runtimeConfig.httpProvider || '127.0.0.1'
   let blockTime = 8000 // in mseconds.
   let chainExplorerUrlBuilders = {
     etherScan: () => '',
   }
-  let unlockUrl = runtimeConfig.unlockUrl || CANONICAL_BASE_DEV_URL
 
   services['currencyPriceLookup'] =
     'https://api.coinbase.com/v2/prices/ETH-USD/buy'
   const readOnlyProviderUrl =
-    runtimeConfig.readOnlyProvider ||
-    `http://${runtimeConfig.httpProvider}:8545`
+    runtimeConfig.readOnlyProvider || `http://${httpProvider}:8545`
 
   if (env === 'test') {
     // In test, we fake the HTTP provider
     providers['HTTP'] = new Web3.providers.HttpProvider(
-      `http://${runtimeConfig.httpProvider}:8545`
+      `http://${httpProvider}:8545`
     )
     blockTime = 10 // in mseconds.
     supportedProviders = ['HTTP']
-    services['storage'] = { host: runtimeConfig.locksmithHost }
+    services['storage'] = {
+      host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
+    }
+    services['wedlocks'] = {
+      host: runtimeConfig.wedlocksUri || 'http://127.0.0.1:1337',
+    }
     isRequiredNetwork = networkId => networkId === 1984
   }
 
@@ -113,17 +113,20 @@ export default function configure(
     // In dev, we assume there is a running local ethereum node with unlocked accounts
     // listening to the HTTP endpoint. We can add more providers (Websockets...) if needed.
     providers['HTTP'] = new Web3.providers.HttpProvider(
-      `http://${runtimeConfig.httpProvider}:8545`
+      `http://${httpProvider}:8545`
     )
-    services['storage'] = { host: runtimeConfig.locksmithHost }
+    services['storage'] = {
+      host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
+    }
+    services['wedlocks'] = {
+      host: runtimeConfig.wedlocksUri || 'http://127.0.0.1:1337',
+    }
 
     // If there is an existing web3 injected provider, we also add this one to the list of possible providers
     if (typeof environment.web3 !== 'undefined') {
       providers[getCurrentProvider(environment)] =
         environment.web3.currentProvider
     }
-
-    if (!runtimeConfig.unlockUrl) unlockUrl = CANONICAL_BASE_DEV_URL
 
     supportedProviders = ['HTTP']
 
@@ -150,16 +153,9 @@ export default function configure(
     paywallUrl = 'https://'
     supportedProviders = ['Metamask', 'Opera']
     services['storage'] = { host: runtimeConfig.locksmithHost }
-    // note: for staging.unlock-protocol.com this is purely for decoration. If this value needs to be changed,
-    // please edit the UNLOCK_APP_NETLIFY_STAGING_PAYWALL_URL env variable on CircleCI
-    paywallUrl =
-      runtimeConfig.paywallUrl || 'https://staging-paywall.unlock-protocol.com'
-    // note: for staging.unlock-protocol.com this is purely for decoration. If this value needs to be changed,
-    // please edit the UNLOCK_APP_NETLIFY_STAGING_PAYWALL_SCRIPT_URL env variable on CircleCI
-    paywallScriptUrl =
-      runtimeConfig.paywallScriptUrl ||
-      'https://staging-paywall.unlock-protocol.com/static/paywall.min.js'
-    if (!runtimeConfig.unlockUrl) unlockUrl = CANONICAL_BASE_STAGING_URL
+    services['wedlocks'] = { host: runtimeConfig.wedlocksUri }
+    paywallUrl = runtimeConfig.paywallUrl
+    paywallScriptUrl = runtimeConfig.paywallScriptUrl
 
     // Address for the Unlock smart contract
     unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
@@ -183,16 +179,9 @@ export default function configure(
 
     supportedProviders = ['Metamask', 'Opera']
     services['storage'] = { host: runtimeConfig.locksmithHost }
-    // note: for unlock-protocol.com this is purely for decoration. If this value needs to be changed,
-    // please edit the UNLOCK_APP_NETLIFY_PROD_PAYWALL_URL env variable on CircleCI
-    paywallUrl =
-      runtimeConfig.paywallUrl || 'https://paywall.unlock-protocol.com/'
-    // note: for unlock-protocol.com this is purely for decoration. If this value needs to be changed,
-    // please edit the UNLOCK_APP_NETLIFY_PROD_PAYWALL_SCRIPT_URL env variable on CircleCI
-    paywallScriptUrl =
-      runtimeConfig.paywallScriptUrl ||
-      'https://paywall.unlock-protocol.com/static/paywall.min.js'
-    if (!runtimeConfig.unlockUrl) unlockUrl = CANONICAL_BASE_URL
+    services['wedlocks'] = { host: runtimeConfig.wedlocksUri }
+    paywallUrl = runtimeConfig.paywallUrl
+    paywallScriptUrl = runtimeConfig.paywallScriptUrl
 
     // Address for the Unlock smart contract
     unlockAddress = '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
@@ -226,7 +215,7 @@ export default function configure(
     paywallUrl,
     paywallScriptUrl,
     supportedProviders,
-    unlockUrl,
+    unlockStaticUrl,
     chainExplorerUrlBuilders,
   }
 }

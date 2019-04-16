@@ -8,8 +8,9 @@ module.exports = {
   ],
   transform: {
     '^.+\\.(js|jsx)$': 'babel-jest',
+    '^.+\\.(ts|tsx)$': 'ts-jest',
   },
-  transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
+  transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$'],
   moduleNameMapper: {
     '\\.css$': '<rootDir>/src/__mocks__/styleMocks.js',
   },

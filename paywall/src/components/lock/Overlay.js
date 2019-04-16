@@ -12,6 +12,7 @@ import { mapErrorToComponent } from '../creator/FatalError'
 import { FATAL_NO_USER_ACCOUNT, FATAL_MISSING_PROVIDER } from '../../errors'
 import withConfig from '../../utils/withConfig'
 import usePostMessage from '../../hooks/browser/usePostMessage'
+import Media from '../../theme/media'
 
 import ConfirmedFlag from './ConfirmedFlag'
 import ConfirmingFlag from './ConfirmingFlag'
@@ -92,7 +93,7 @@ export const Overlay = ({
   return (
     <FullPage>
       <Banner scrollPosition={scrollPosition} data-testid="paywall-banner">
-        <Headline id="Paywall_Headline">{message}</Headline>
+        <Headline>{message}</Headline>
         <Locks>
           <GlobalErrorConsumer displayError={displayError(!isInIframe)}>
             {locks.map(lock => (
@@ -209,14 +210,23 @@ const Banner = styled.div.attrs(({ scrollPosition }) => ({
   padding-bottom: 100px;
   grid-gap: 24px;
   align-self: center;
+  ${Media.phone`
+    min-height: 390px;
+  `}
 `
 
-const Headline = styled.h1`
+const Headline = styled.h1.attrs({
+  className: 'headline',
+})`
   font-size: 20px;
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
   color: var(--slate);
   text-align: center;
+
+  ${Media.phone`
+    font-size: 13px;
+  `}
 `
 
 const Locks = styled.ul`

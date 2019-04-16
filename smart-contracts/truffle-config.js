@@ -56,10 +56,12 @@ module.exports = {
           enabled: true,
           runs: 200,
         },
+        evmVersion: 'petersburg',
       },
     },
   },
   mocha: {
     useColors: true,
   },
+  plugins: ['truffle-security'],
 }

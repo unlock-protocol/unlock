@@ -191,7 +191,7 @@ Object {
   text-align: center;
 }
 
-.c19 {
+.c23 {
   margin-top: 24px;
   margin-bottom: 24px;
   display: grid;
@@ -204,7 +204,7 @@ Object {
   align-items: center;
 }
 
-.c20 {
+.c24 {
   justify-self: end;
   font-size: 12px;
   font-weight: 200;
@@ -233,8 +233,24 @@ Object {
   width: 100%;
 }
 
-.c17 {
-  color: var(--brand);
+.c21 {
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--link);
+  margin: 0;
+  padding: 0;
+}
+
+.c22 {
+  font-family: 'IBM Plex Mono';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--grey);
+  margin: 0;
+  padding: 0;
 }
 
 .c13 {
@@ -243,34 +259,55 @@ Object {
   max-with: 750px;
 }
 
-.c15 {
+.c18 {
   margin-bottom: 0;
 }
 
-.c15 a {
-  color: var(--darkgrey);
+.c18 a,
+.c18 a:visited {
+  color: var(--brand);
   font-weight: 700;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
-  font-size: 20px;
+  font-size: 36px;
 }
 
-.c16 {
+.c20 {
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  margin-top: 0;
+  display: grid;
+  grid-template-columns: 140px auto;
+  margin-top: 0px;
+  margin-bottom: 35px;
+  margin-top: 16px;
+  margin-bottom: 0;
 }
 
-.c18 {
+.c19 {
   color: var(--darkgrey);
   font-weight: 300;
   line-height: 28px;
   font-size: 16px;
+  font-family: 'IBM Plex Serif';
+}
+
+.c15 {
+  margin-bottom: 20px;
+  margin-bottom: 64px;
 }
 
 .c14 {
-  margin-bottom: 20px;
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 24px;
+  margin-bottom: 66px;
+  color: #59c245;
+  max-width: 424px;
+}
+
+.c17 {
+  max-width: 100%;
 }
 
 .c12 {
@@ -279,6 +316,12 @@ Object {
   font-weight: 700;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   font-size: 36px;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c16 {
+    display: none;
+  }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -337,8 +380,16 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c21 {
+  .c25 {
     display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c15 {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-gap: 32px;
   }
 }
 
@@ -516,106 +567,147 @@ Object {
             <div
               class="c14"
             >
-              <div
-                class="c15"
-              >
-                <a
-                  href="/blog/post3"
-                >
-                  Latest post
-                </a>
-              </div>
+              We’re building the new business model for the web that will empower creators and consumers.
+            </div>
+            <div
+              class="c15"
+            >
               <div
                 class="c16"
               >
-                <h3
+                <img
                   class="c17"
-                >
-                  Unlock team
-                </h3>
-                <div
-                  class=""
-                >
-                  Tuesday, March 5, 2019
-                </div>
+                />
               </div>
               <div
-                class="c18"
+                class=""
               >
-                
+                <div
+                  class="c18"
+                >
+                  <a
+                    href="/blog/post3"
+                  >
+                    Latest post
+                  </a>
+                </div>
+                <div
+                  class="c19"
+                >
+                  
 This post was published most recently. It is an important post about a great many things, all of which are vital. You
 should pay great attention.
+                </div>
+                <div
+                  class="c20"
+                >
+                  <h3
+                    class="c21"
+                  >
+                    Unlock team
+                  </h3>
+                  <div
+                    class="c22"
+                  >
+                    On 
+                    Tuesday, March 5, 2019
+                  </div>
+                </div>
               </div>
             </div>
             <div
-              class="c14"
+              class="c15"
             >
-              <div
-                class="c15"
-              >
-                <a
-                  href="/blog/post2"
-                >
-                  Another post from us!
-                </a>
-              </div>
               <div
                 class="c16"
               >
-                <h3
+                <img
                   class="c17"
-                >
-                  Julien Genestoux
-                </h3>
-                <div
-                  class=""
-                >
-                  Friday, March 1, 2019
-                </div>
+                />
               </div>
               <div
-                class="c18"
+                class=""
               >
-                
+                <div
+                  class="c18"
+                >
+                  <a
+                    href="/blog/post2"
+                  >
+                    Another post from us!
+                  </a>
+                </div>
+                <div
+                  class="c19"
+                >
+                  
 Short description.
+                </div>
+                <div
+                  class="c20"
+                >
+                  <h3
+                    class="c21"
+                  >
+                    Julien Genestoux
+                  </h3>
+                  <div
+                    class="c22"
+                  >
+                    On 
+                    Friday, March 1, 2019
+                  </div>
+                </div>
               </div>
             </div>
             <div
-              class="c14"
+              class="c15"
             >
-              <div
-                class="c15"
-              >
-                <a
-                  href="/blog/post1"
-                >
-                  This is our first post.
-                </a>
-              </div>
               <div
                 class="c16"
               >
-                <h3
+                <img
                   class="c17"
-                >
-                  Unlock team
-                </h3>
-                <div
-                  class=""
-                >
-                  Monday, August 20, 2018
-                </div>
+                />
               </div>
               <div
-                class="c18"
+                class=""
               >
-                
+                <div
+                  class="c18"
+                >
+                  <a
+                    href="/blog/post1"
+                  >
+                    This is our first post.
+                  </a>
+                </div>
+                <div
+                  class="c19"
+                >
+                  
 Look at us! We're posting on our very own blog! How exciting!
+                </div>
+                <div
+                  class="c20"
+                >
+                  <h3
+                    class="c21"
+                  >
+                    Unlock team
+                  </h3>
+                  <div
+                    class="c22"
+                  >
+                    On 
+                    Monday, August 20, 2018
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           <footer
-            class="c19"
+            class="c23"
           >
             <a
               class="c6 c7"
@@ -705,14 +797,14 @@ Look at us! We're posting on our very own blog! How exciting!
               </small>
             </a>
             <span
-              class="c20"
+              class="c24"
             >
               Made with passion in New York
             </span>
           </footer>
         </div>
         <div
-          class="c21"
+          class="c25"
         />
       </div>
     </div>
@@ -889,103 +981,144 @@ Look at us! We're posting on our very own blog! How exciting!
           class="fbx9r2-0 BJvfu"
         >
           <div
-            class="fbx9r2-4 bJIQes"
+            class="fbx9r2-5 haVkRr"
+          >
+            We’re building the new business model for the web that will empower creators and consumers.
+          </div>
+          <div
+            class="fbx9r2-4 eZjYUU"
           >
             <div
-              class="fbx9r2-1 fmHqJA"
+              class="sc-1w50r7k-0 fSpCqa"
             >
-              <a
-                href="/blog/post3"
-              >
-                Latest post
-              </a>
+              <img
+                class="fbx9r2-6 iXQDJr"
+              />
             </div>
             <div
-              class="fbx9r2-2 dIywgX"
+              class="fbx9r2-7 cxDicS"
             >
-              <h3
-                class="b1qsww-5 dadLRQ"
-              >
-                Unlock team
-              </h3>
               <div
-                class="b1qsww-6 hPjVGB"
+                class="fbx9r2-1 fOwtHK"
               >
-                Tuesday, March 5, 2019
+                <a
+                  href="/blog/post3"
+                >
+                  Latest post
+                </a>
               </div>
-            </div>
-            <div
-              class="fbx9r2-3 fvVqt"
-            >
-              
+              <div
+                class="fbx9r2-3 bmpzqL"
+              >
+                
 This post was published most recently. It is an important post about a great many things, all of which are vital. You
 should pay great attention.
+              </div>
+              <div
+                class="b1qsww-2 fbx9r2-2 ddbCV"
+              >
+                <h3
+                  class="b1qsww-5 bQMHlY"
+                >
+                  Unlock team
+                </h3>
+                <div
+                  class="b1qsww-6 cYadJQ"
+                >
+                  On 
+                  Tuesday, March 5, 2019
+                </div>
+              </div>
             </div>
           </div>
           <div
-            class="fbx9r2-4 bJIQes"
+            class="fbx9r2-4 eZjYUU"
           >
             <div
-              class="fbx9r2-1 fmHqJA"
+              class="sc-1w50r7k-0 fSpCqa"
             >
-              <a
-                href="/blog/post2"
-              >
-                Another post from us!
-              </a>
+              <img
+                class="fbx9r2-6 iXQDJr"
+              />
             </div>
             <div
-              class="fbx9r2-2 dIywgX"
+              class="fbx9r2-7 cxDicS"
             >
-              <h3
-                class="b1qsww-5 dadLRQ"
-              >
-                Julien Genestoux
-              </h3>
               <div
-                class="b1qsww-6 hPjVGB"
+                class="fbx9r2-1 fOwtHK"
               >
-                Friday, March 1, 2019
+                <a
+                  href="/blog/post2"
+                >
+                  Another post from us!
+                </a>
               </div>
-            </div>
-            <div
-              class="fbx9r2-3 fvVqt"
-            >
-              
+              <div
+                class="fbx9r2-3 bmpzqL"
+              >
+                
 Short description.
+              </div>
+              <div
+                class="b1qsww-2 fbx9r2-2 ddbCV"
+              >
+                <h3
+                  class="b1qsww-5 bQMHlY"
+                >
+                  Julien Genestoux
+                </h3>
+                <div
+                  class="b1qsww-6 cYadJQ"
+                >
+                  On 
+                  Friday, March 1, 2019
+                </div>
+              </div>
             </div>
           </div>
           <div
-            class="fbx9r2-4 bJIQes"
+            class="fbx9r2-4 eZjYUU"
           >
             <div
-              class="fbx9r2-1 fmHqJA"
+              class="sc-1w50r7k-0 fSpCqa"
             >
-              <a
-                href="/blog/post1"
-              >
-                This is our first post.
-              </a>
+              <img
+                class="fbx9r2-6 iXQDJr"
+              />
             </div>
             <div
-              class="fbx9r2-2 dIywgX"
+              class="fbx9r2-7 cxDicS"
             >
-              <h3
-                class="b1qsww-5 dadLRQ"
-              >
-                Unlock team
-              </h3>
               <div
-                class="b1qsww-6 hPjVGB"
+                class="fbx9r2-1 fOwtHK"
               >
-                Monday, August 20, 2018
+                <a
+                  href="/blog/post1"
+                >
+                  This is our first post.
+                </a>
               </div>
-            </div>
-            <div
-              class="fbx9r2-3 fvVqt"
-            >
-              
+              <div
+                class="fbx9r2-3 bmpzqL"
+              >
+                
 Look at us! We're posting on our very own blog! How exciting!
+              </div>
+              <div
+                class="b1qsww-2 fbx9r2-2 ddbCV"
+              >
+                <h3
+                  class="b1qsww-5 bQMHlY"
+                >
+                  Unlock team
+                </h3>
+                <div
+                  class="b1qsww-6 cYadJQ"
+                >
+                  On 
+                  Monday, August 20, 2018
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1343,7 +1476,7 @@ Object {
   text-align: center;
 }
 
-.c18 {
+.c19 {
   margin-top: 24px;
   margin-bottom: 24px;
   display: grid;
@@ -1356,7 +1489,7 @@ Object {
   align-items: center;
 }
 
-.c19 {
+.c20 {
   justify-self: end;
   font-size: 12px;
   font-weight: 200;
@@ -1405,34 +1538,37 @@ Object {
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  margin-top: 0;
+  display: grid;
+  grid-template-columns: 140px auto;
+  margin-top: 0px;
   margin-bottom: 35px;
 }
 
 .c14 {
   margin-top: 10px;
-  font-size: 18px;
-  font-weight: 400;
-  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 42px;
   color: var(--dimgrey);
 }
 
-.c17 {
+.c18 {
   color: var(--darkgrey);
   font-weight: 300;
   line-height: 28px;
   font-size: 16px;
 }
 
-.c17 strong {
+.c18 strong {
   font-weight: 800;
 }
 
-.c17 p {
+.c18 p {
   margin-top: 0;
 }
 
-.c17 h2 {
+.c18 h2 {
   font-weight: 800;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   margin-bottom: 0;
@@ -1440,12 +1576,28 @@ Object {
   font-size: 18px;
 }
 
-.c17 img {
+.c18 img {
   max-width: 100%;
 }
 
 .c16 {
-  color: var(--brand);
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--link);
+  margin: 0;
+  padding: 0;
+}
+
+.c17 {
+  font-family: 'IBM Plex Mono';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--grey);
+  margin: 0;
+  padding: 0;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -1504,7 +1656,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c20 {
+  .c21 {
     display: none;
   }
 }
@@ -1695,13 +1847,14 @@ Object {
                 Alice "Storybook" Bob
               </h3>
               <div
-                class=""
+                class="c17"
               >
+                On 
                 August 20, 2018
               </div>
             </div>
             <div
-              class="c17"
+              class="c18"
             >
               <div>
                 <p>
@@ -1771,7 +1924,7 @@ are intentionally not generated from this file date, in case we want to override
             </div>
           </div>
           <footer
-            class="c18"
+            class="c19"
           >
             <a
               class="c6 c7"
@@ -1861,14 +2014,14 @@ are intentionally not generated from this file date, in case we want to override
               </small>
             </a>
             <span
-              class="c19"
+              class="c20"
             >
               Made with passion in New York
             </span>
           </footer>
         </div>
         <div
-          class="c20"
+          class="c21"
         />
       </div>
     </div>
@@ -2045,21 +2198,22 @@ are intentionally not generated from this file date, in case we want to override
             Sample title
           </h1>
           <h2
-            class="b1qsww-3 jKKooL"
+            class="b1qsww-3 iemLUe"
           >
             Some advice from the field
           </h2>
           <div
-            class="b1qsww-2 kKmmMr"
+            class="b1qsww-2 cdMqQS"
           >
             <h3
-              class="b1qsww-5 dadLRQ"
+              class="b1qsww-5 bQMHlY"
             >
               Alice "Storybook" Bob
             </h3>
             <div
-              class="b1qsww-6 hPjVGB"
+              class="b1qsww-6 cYadJQ"
             >
+              On 
               August 20, 2018
             </div>
           </div>
@@ -2301,8 +2455,24 @@ exports[`Storyshots BlogIndex Blog index with multiple posts 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c4 {
-  color: var(--brand);
+    .c8 {
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--link);
+  margin: 0;
+  padding: 0;
+}
+
+.c9 {
+  font-family: 'IBM Plex Mono';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--grey);
+  margin: 0;
+  padding: 0;
 }
 
 .c0 {
@@ -2311,34 +2481,69 @@ Object {
   max-with: 750px;
 }
 
-.c2 {
+.c5 {
   margin-bottom: 0;
 }
 
-.c2 a {
-  color: var(--darkgrey);
+.c5 a,
+.c5 a:visited {
+  color: var(--brand);
   font-weight: 700;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
-  font-size: 20px;
+  font-size: 36px;
 }
 
-.c3 {
+.c7 {
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  margin-top: 0;
+  display: grid;
+  grid-template-columns: 140px auto;
+  margin-top: 0px;
+  margin-bottom: 35px;
+  margin-top: 16px;
+  margin-bottom: 0;
 }
 
-.c5 {
+.c6 {
   color: var(--darkgrey);
   font-weight: 300;
   line-height: 28px;
   font-size: 16px;
+  font-family: 'IBM Plex Serif';
+}
+
+.c2 {
+  margin-bottom: 20px;
+  margin-bottom: 64px;
 }
 
 .c1 {
-  margin-bottom: 20px;
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 24px;
+  margin-bottom: 66px;
+  color: #59c245;
+  max-width: 424px;
+}
+
+.c4 {
+  max-width: 100%;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c3 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c2 {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-gap: 32px;
+  }
 }
 
 <div>
@@ -2352,101 +2557,142 @@ Object {
         <div
           class="c1"
         >
-          <div
-            class="c2"
-          >
-            <a
-              href="/blog/post3"
-            >
-              Latest post
-            </a>
-          </div>
+          We’re building the new business model for the web that will empower creators and consumers.
+        </div>
+        <div
+          class="c2"
+        >
           <div
             class="c3"
           >
-            <h3
+            <img
               class="c4"
-            >
-              Unlock team
-            </h3>
-            <div
-              class=""
-            >
-              Tuesday, March 5, 2019
-            </div>
+            />
           </div>
           <div
-            class="c5"
+            class=""
           >
-            
+            <div
+              class="c5"
+            >
+              <a
+                href="/blog/post3"
+              >
+                Latest post
+              </a>
+            </div>
+            <div
+              class="c6"
+            >
+              
 This post was published most recently. It is an important post about a great many things, all of which are vital. You
 should pay great attention.
+            </div>
+            <div
+              class="c7"
+            >
+              <h3
+                class="c8"
+              >
+                Unlock team
+              </h3>
+              <div
+                class="c9"
+              >
+                On 
+                Tuesday, March 5, 2019
+              </div>
+            </div>
           </div>
         </div>
         <div
-          class="c1"
+          class="c2"
         >
-          <div
-            class="c2"
-          >
-            <a
-              href="/blog/post2"
-            >
-              Another post from us!
-            </a>
-          </div>
           <div
             class="c3"
           >
-            <h3
+            <img
               class="c4"
-            >
-              Julien Genestoux
-            </h3>
-            <div
-              class=""
-            >
-              Friday, March 1, 2019
-            </div>
+            />
           </div>
           <div
-            class="c5"
+            class=""
           >
-            
+            <div
+              class="c5"
+            >
+              <a
+                href="/blog/post2"
+              >
+                Another post from us!
+              </a>
+            </div>
+            <div
+              class="c6"
+            >
+              
 Short description.
+            </div>
+            <div
+              class="c7"
+            >
+              <h3
+                class="c8"
+              >
+                Julien Genestoux
+              </h3>
+              <div
+                class="c9"
+              >
+                On 
+                Friday, March 1, 2019
+              </div>
+            </div>
           </div>
         </div>
         <div
-          class="c1"
+          class="c2"
         >
-          <div
-            class="c2"
-          >
-            <a
-              href="/blog/post1"
-            >
-              This is our first post.
-            </a>
-          </div>
           <div
             class="c3"
           >
-            <h3
+            <img
               class="c4"
-            >
-              Unlock team
-            </h3>
-            <div
-              class=""
-            >
-              Monday, August 20, 2018
-            </div>
+            />
           </div>
           <div
-            class="c5"
+            class=""
           >
-            
+            <div
+              class="c5"
+            >
+              <a
+                href="/blog/post1"
+              >
+                This is our first post.
+              </a>
+            </div>
+            <div
+              class="c6"
+            >
+              
 Look at us! We're posting on our very own blog! How exciting!
+            </div>
+            <div
+              class="c7"
+            >
+              <h3
+                class="c8"
+              >
+                Unlock team
+              </h3>
+              <div
+                class="c9"
+              >
+                On 
+                Monday, August 20, 2018
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -2461,103 +2707,144 @@ Look at us! We're posting on our very own blog! How exciting!
       class="fbx9r2-0 BJvfu"
     >
       <div
-        class="fbx9r2-4 bJIQes"
+        class="fbx9r2-5 haVkRr"
+      >
+        We’re building the new business model for the web that will empower creators and consumers.
+      </div>
+      <div
+        class="fbx9r2-4 eZjYUU"
       >
         <div
-          class="fbx9r2-1 fmHqJA"
+          class="sc-1w50r7k-0 fSpCqa"
         >
-          <a
-            href="/blog/post3"
-          >
-            Latest post
-          </a>
+          <img
+            class="fbx9r2-6 iXQDJr"
+          />
         </div>
         <div
-          class="fbx9r2-2 dIywgX"
+          class="fbx9r2-7 cxDicS"
         >
-          <h3
-            class="b1qsww-5 dadLRQ"
-          >
-            Unlock team
-          </h3>
           <div
-            class="b1qsww-6 hPjVGB"
+            class="fbx9r2-1 fOwtHK"
           >
-            Tuesday, March 5, 2019
+            <a
+              href="/blog/post3"
+            >
+              Latest post
+            </a>
           </div>
-        </div>
-        <div
-          class="fbx9r2-3 fvVqt"
-        >
-          
+          <div
+            class="fbx9r2-3 bmpzqL"
+          >
+            
 This post was published most recently. It is an important post about a great many things, all of which are vital. You
 should pay great attention.
+          </div>
+          <div
+            class="b1qsww-2 fbx9r2-2 ddbCV"
+          >
+            <h3
+              class="b1qsww-5 bQMHlY"
+            >
+              Unlock team
+            </h3>
+            <div
+              class="b1qsww-6 cYadJQ"
+            >
+              On 
+              Tuesday, March 5, 2019
+            </div>
+          </div>
         </div>
       </div>
       <div
-        class="fbx9r2-4 bJIQes"
+        class="fbx9r2-4 eZjYUU"
       >
         <div
-          class="fbx9r2-1 fmHqJA"
+          class="sc-1w50r7k-0 fSpCqa"
         >
-          <a
-            href="/blog/post2"
-          >
-            Another post from us!
-          </a>
+          <img
+            class="fbx9r2-6 iXQDJr"
+          />
         </div>
         <div
-          class="fbx9r2-2 dIywgX"
+          class="fbx9r2-7 cxDicS"
         >
-          <h3
-            class="b1qsww-5 dadLRQ"
-          >
-            Julien Genestoux
-          </h3>
           <div
-            class="b1qsww-6 hPjVGB"
+            class="fbx9r2-1 fOwtHK"
           >
-            Friday, March 1, 2019
+            <a
+              href="/blog/post2"
+            >
+              Another post from us!
+            </a>
           </div>
-        </div>
-        <div
-          class="fbx9r2-3 fvVqt"
-        >
-          
+          <div
+            class="fbx9r2-3 bmpzqL"
+          >
+            
 Short description.
+          </div>
+          <div
+            class="b1qsww-2 fbx9r2-2 ddbCV"
+          >
+            <h3
+              class="b1qsww-5 bQMHlY"
+            >
+              Julien Genestoux
+            </h3>
+            <div
+              class="b1qsww-6 cYadJQ"
+            >
+              On 
+              Friday, March 1, 2019
+            </div>
+          </div>
         </div>
       </div>
       <div
-        class="fbx9r2-4 bJIQes"
+        class="fbx9r2-4 eZjYUU"
       >
         <div
-          class="fbx9r2-1 fmHqJA"
+          class="sc-1w50r7k-0 fSpCqa"
         >
-          <a
-            href="/blog/post1"
-          >
-            This is our first post.
-          </a>
+          <img
+            class="fbx9r2-6 iXQDJr"
+          />
         </div>
         <div
-          class="fbx9r2-2 dIywgX"
+          class="fbx9r2-7 cxDicS"
         >
-          <h3
-            class="b1qsww-5 dadLRQ"
-          >
-            Unlock team
-          </h3>
           <div
-            class="b1qsww-6 hPjVGB"
+            class="fbx9r2-1 fOwtHK"
           >
-            Monday, August 20, 2018
+            <a
+              href="/blog/post1"
+            >
+              This is our first post.
+            </a>
           </div>
-        </div>
-        <div
-          class="fbx9r2-3 fvVqt"
-        >
-          
+          <div
+            class="fbx9r2-3 bmpzqL"
+          >
+            
 Look at us! We're posting on our very own blog! How exciting!
+          </div>
+          <div
+            class="b1qsww-2 fbx9r2-2 ddbCV"
+          >
+            <h3
+              class="b1qsww-5 bQMHlY"
+            >
+              Unlock team
+            </h3>
+            <div
+              class="b1qsww-6 cYadJQ"
+            >
+              On 
+              Monday, August 20, 2018
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2634,6 +2921,15 @@ Object {
   max-with: 750px;
 }
 
+.c1 {
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 24px;
+  margin-bottom: 66px;
+  color: #59c245;
+  max-width: 424px;
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -2641,7 +2937,13 @@ Object {
       />
       <div
         class="c0"
-      />
+      >
+        <div
+          class="c1"
+        >
+          We’re building the new business model for the web that will empower creators and consumers.
+        </div>
+      </div>
     </div>
   </body>,
   "container": <div>
@@ -2651,7 +2953,13 @@ Object {
     />
     <div
       class="fbx9r2-0 BJvfu"
-    />
+    >
+      <div
+        class="fbx9r2-5 haVkRr"
+      >
+        We’re building the new business model for the web that will empower creators and consumers.
+      </div>
+    </div>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
@@ -2719,8 +3027,24 @@ exports[`Storyshots BlogIndex Blog index with one post 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c4 {
-  color: var(--brand);
+    .c8 {
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--link);
+  margin: 0;
+  padding: 0;
+}
+
+.c9 {
+  font-family: 'IBM Plex Mono';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--grey);
+  margin: 0;
+  padding: 0;
 }
 
 .c0 {
@@ -2729,34 +3053,69 @@ Object {
   max-with: 750px;
 }
 
-.c2 {
+.c5 {
   margin-bottom: 0;
 }
 
-.c2 a {
-  color: var(--darkgrey);
+.c5 a,
+.c5 a:visited {
+  color: var(--brand);
   font-weight: 700;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
-  font-size: 20px;
+  font-size: 36px;
 }
 
-.c3 {
+.c7 {
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  margin-top: 0;
+  display: grid;
+  grid-template-columns: 140px auto;
+  margin-top: 0px;
+  margin-bottom: 35px;
+  margin-top: 16px;
+  margin-bottom: 0;
 }
 
-.c5 {
+.c6 {
   color: var(--darkgrey);
   font-weight: 300;
   line-height: 28px;
   font-size: 16px;
+  font-family: 'IBM Plex Serif';
+}
+
+.c2 {
+  margin-bottom: 20px;
+  margin-bottom: 64px;
 }
 
 .c1 {
-  margin-bottom: 20px;
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 24px;
+  margin-bottom: 66px;
+  color: #59c245;
+  max-width: 424px;
+}
+
+.c4 {
+  max-width: 100%;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c3 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c2 {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-gap: 32px;
+  }
 }
 
 <div>
@@ -2770,35 +3129,52 @@ Object {
         <div
           class="c1"
         >
-          <div
-            class="c2"
-          >
-            <a
-              href="/blog/post3"
-            >
-              Latest post
-            </a>
-          </div>
+          We’re building the new business model for the web that will empower creators and consumers.
+        </div>
+        <div
+          class="c2"
+        >
           <div
             class="c3"
           >
-            <h3
+            <img
               class="c4"
-            >
-              Unlock team
-            </h3>
-            <div
-              class=""
-            >
-              Tuesday, March 5, 2019
-            </div>
+            />
           </div>
           <div
-            class="c5"
+            class=""
           >
-            
+            <div
+              class="c5"
+            >
+              <a
+                href="/blog/post3"
+              >
+                Latest post
+              </a>
+            </div>
+            <div
+              class="c6"
+            >
+              
 This post was published most recently. It is an important post about a great many things, all of which are vital. You
 should pay great attention.
+            </div>
+            <div
+              class="c7"
+            >
+              <h3
+                class="c8"
+              >
+                Unlock team
+              </h3>
+              <div
+                class="c9"
+              >
+                On 
+                Tuesday, March 5, 2019
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -2813,37 +3189,54 @@ should pay great attention.
       class="fbx9r2-0 BJvfu"
     >
       <div
-        class="fbx9r2-4 bJIQes"
+        class="fbx9r2-5 haVkRr"
+      >
+        We’re building the new business model for the web that will empower creators and consumers.
+      </div>
+      <div
+        class="fbx9r2-4 eZjYUU"
       >
         <div
-          class="fbx9r2-1 fmHqJA"
+          class="sc-1w50r7k-0 fSpCqa"
         >
-          <a
-            href="/blog/post3"
-          >
-            Latest post
-          </a>
+          <img
+            class="fbx9r2-6 iXQDJr"
+          />
         </div>
         <div
-          class="fbx9r2-2 dIywgX"
+          class="fbx9r2-7 cxDicS"
         >
-          <h3
-            class="b1qsww-5 dadLRQ"
-          >
-            Unlock team
-          </h3>
           <div
-            class="b1qsww-6 hPjVGB"
+            class="fbx9r2-1 fOwtHK"
           >
-            Tuesday, March 5, 2019
+            <a
+              href="/blog/post3"
+            >
+              Latest post
+            </a>
           </div>
-        </div>
-        <div
-          class="fbx9r2-3 fvVqt"
-        >
-          
+          <div
+            class="fbx9r2-3 bmpzqL"
+          >
+            
 This post was published most recently. It is an important post about a great many things, all of which are vital. You
 should pay great attention.
+          </div>
+          <div
+            class="b1qsww-2 fbx9r2-2 ddbCV"
+          >
+            <h3
+              class="b1qsww-5 bQMHlY"
+            >
+              Unlock team
+            </h3>
+            <div
+              class="b1qsww-6 cYadJQ"
+            >
+              On 
+              Tuesday, March 5, 2019
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2934,34 +3327,37 @@ Object {
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  margin-top: 0;
+  display: grid;
+  grid-template-columns: 140px auto;
+  margin-top: 0px;
   margin-bottom: 35px;
 }
 
 .c2 {
   margin-top: 10px;
-  font-size: 18px;
-  font-weight: 400;
-  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 42px;
   color: var(--dimgrey);
 }
 
-.c5 {
+.c6 {
   color: var(--darkgrey);
   font-weight: 300;
   line-height: 28px;
   font-size: 16px;
 }
 
-.c5 strong {
+.c6 strong {
   font-weight: 800;
 }
 
-.c5 p {
+.c6 p {
   margin-top: 0;
 }
 
-.c5 h2 {
+.c6 h2 {
   font-weight: 800;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   margin-bottom: 0;
@@ -2969,12 +3365,28 @@ Object {
   font-size: 18px;
 }
 
-.c5 img {
+.c6 img {
   max-width: 100%;
 }
 
 .c4 {
-  color: var(--brand);
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--link);
+  margin: 0;
+  padding: 0;
+}
+
+.c5 {
+  font-family: 'IBM Plex Mono';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--grey);
+  margin: 0;
+  padding: 0;
 }
 
 <div>
@@ -3004,13 +3416,14 @@ Object {
             Reginald Pianoforte
           </h3>
           <div
-            class=""
+            class="c5"
           >
+            On 
             August 20, 2018
           </div>
         </div>
         <div
-          class="c5"
+          class="c6"
         >
           <div>
             <p>
@@ -3209,21 +3622,22 @@ genuinely collaborative ecosystem, where many companies and services can operate
         Introduction to Unlock
       </h1>
       <h2
-        class="b1qsww-3 jKKooL"
+        class="b1qsww-3 iemLUe"
       >
         Unlock enables creators to monetize their work directly - without relying on a middleman.
       </h2>
       <div
-        class="b1qsww-2 kKmmMr"
+        class="b1qsww-2 cdMqQS"
       >
         <h3
-          class="b1qsww-5 dadLRQ"
+          class="b1qsww-5 bQMHlY"
         >
           Reginald Pianoforte
         </h3>
         <div
-          class="b1qsww-6 hPjVGB"
+          class="b1qsww-6 cYadJQ"
         >
+          On 
           August 20, 2018
         </div>
       </div>
@@ -3498,26 +3912,28 @@ Object {
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  margin-top: 0;
+  display: grid;
+  grid-template-columns: 140px auto;
+  margin-top: 0px;
   margin-bottom: 35px;
 }
 
-.c4 {
+.c5 {
   color: var(--darkgrey);
   font-weight: 300;
   line-height: 28px;
   font-size: 16px;
 }
 
-.c4 strong {
+.c5 strong {
   font-weight: 800;
 }
 
-.c4 p {
+.c5 p {
   margin-top: 0;
 }
 
-.c4 h2 {
+.c5 h2 {
   font-weight: 800;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   margin-bottom: 0;
@@ -3525,12 +3941,28 @@ Object {
   font-size: 18px;
 }
 
-.c4 img {
+.c5 img {
   max-width: 100%;
 }
 
 .c3 {
-  color: var(--brand);
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--link);
+  margin: 0;
+  padding: 0;
+}
+
+.c4 {
+  font-family: 'IBM Plex Mono';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--grey);
+  margin: 0;
+  padding: 0;
 }
 
 <div>
@@ -3556,13 +3988,14 @@ Object {
             Reginald Pianoforte
           </h3>
           <div
-            class=""
+            class="c4"
           >
+            On 
             August 20, 2018
           </div>
         </div>
         <div
-          class="c4"
+          class="c5"
         >
           <div>
             <p>
@@ -3762,16 +4195,17 @@ genuinely collaborative ecosystem, where many companies and services can operate
       </h1>
       
       <div
-        class="b1qsww-2 kKmmMr"
+        class="b1qsww-2 cdMqQS"
       >
         <h3
-          class="b1qsww-5 dadLRQ"
+          class="b1qsww-5 bQMHlY"
         >
           Reginald Pianoforte
         </h3>
         <div
-          class="b1qsww-6 hPjVGB"
+          class="b1qsww-6 cYadJQ"
         >
+          On 
           August 20, 2018
         </div>
       </div>
@@ -4046,26 +4480,28 @@ Object {
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  margin-top: 0;
+  display: grid;
+  grid-template-columns: 140px auto;
+  margin-top: 0px;
   margin-bottom: 35px;
 }
 
-.c4 {
+.c5 {
   color: var(--darkgrey);
   font-weight: 300;
   line-height: 28px;
   font-size: 16px;
 }
 
-.c4 strong {
+.c5 strong {
   font-weight: 800;
 }
 
-.c4 p {
+.c5 p {
   margin-top: 0;
 }
 
-.c4 h2 {
+.c5 h2 {
   font-weight: 800;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   margin-bottom: 0;
@@ -4073,12 +4509,28 @@ Object {
   font-size: 18px;
 }
 
-.c4 img {
+.c5 img {
   max-width: 100%;
 }
 
 .c3 {
-  color: var(--brand);
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--link);
+  margin: 0;
+  padding: 0;
+}
+
+.c4 {
+  font-family: 'IBM Plex Mono';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--grey);
+  margin: 0;
+  padding: 0;
 }
 
 <div>
@@ -4104,13 +4556,14 @@ Object {
             Unlock team
           </h3>
           <div
-            class=""
+            class="c4"
           >
+            On 
             August 20, 2018
           </div>
         </div>
         <div
-          class="c4"
+          class="c5"
         >
           <div>
             <p>
@@ -4310,16 +4763,17 @@ genuinely collaborative ecosystem, where many companies and services can operate
       </h1>
       
       <div
-        class="b1qsww-2 kKmmMr"
+        class="b1qsww-2 cdMqQS"
       >
         <h3
-          class="b1qsww-5 dadLRQ"
+          class="b1qsww-5 bQMHlY"
         >
           Unlock team
         </h3>
         <div
-          class="b1qsww-6 hPjVGB"
+          class="b1qsww-6 cYadJQ"
         >
+          On 
           August 20, 2018
         </div>
       </div>
@@ -4594,34 +5048,37 @@ Object {
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  margin-top: 0;
+  display: grid;
+  grid-template-columns: 140px auto;
+  margin-top: 0px;
   margin-bottom: 35px;
 }
 
 .c2 {
   margin-top: 10px;
-  font-size: 18px;
-  font-weight: 400;
-  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 42px;
   color: var(--dimgrey);
 }
 
-.c5 {
+.c6 {
   color: var(--darkgrey);
   font-weight: 300;
   line-height: 28px;
   font-size: 16px;
 }
 
-.c5 strong {
+.c6 strong {
   font-weight: 800;
 }
 
-.c5 p {
+.c6 p {
   margin-top: 0;
 }
 
-.c5 h2 {
+.c6 h2 {
   font-weight: 800;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   margin-bottom: 0;
@@ -4629,12 +5086,28 @@ Object {
   font-size: 18px;
 }
 
-.c5 img {
+.c6 img {
   max-width: 100%;
 }
 
 .c4 {
-  color: var(--brand);
+  font-family: 'IBM Plex Serif';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--link);
+  margin: 0;
+  padding: 0;
+}
+
+.c5 {
+  font-family: 'IBM Plex Mono';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--grey);
+  margin: 0;
+  padding: 0;
 }
 
 <div>
@@ -4664,13 +5137,14 @@ Object {
             Unlock team
           </h3>
           <div
-            class=""
+            class="c5"
           >
+            On 
             August 20, 2018
           </div>
         </div>
         <div
-          class="c5"
+          class="c6"
         >
           <div>
             <p>
@@ -4869,21 +5343,22 @@ genuinely collaborative ecosystem, where many companies and services can operate
         Introduction to Unlock
       </h1>
       <h2
-        class="b1qsww-3 jKKooL"
+        class="b1qsww-3 iemLUe"
       >
         Unlock enables creators to monetize their work directly - without relying on a middleman.
       </h2>
       <div
-        class="b1qsww-2 kKmmMr"
+        class="b1qsww-2 cdMqQS"
       >
         <h3
-          class="b1qsww-5 dadLRQ"
+          class="b1qsww-5 bQMHlY"
         >
           Unlock team
         </h3>
         <div
-          class="b1qsww-6 hPjVGB"
+          class="b1qsww-6 cYadJQ"
         >
+          On 
           August 20, 2018
         </div>
       </div>

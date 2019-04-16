@@ -1,0 +1,21 @@
+body.small {
+  margin: 0;
+  height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+body.big {
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+  display: fixed;
+  overflow: initial;
+}
+
+@media only screen and (min-width: 135px) and (max-width: 763px) {
+  body.small {
+    height: 43px;
+  }
+}

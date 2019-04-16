@@ -27,6 +27,14 @@ import { updateKeyPrice, updateLockName, updateLock } from '../../actions/lock'
 
 import { INFINITY } from '../../constants'
 
+const KeyPrice = ({ lock }) => (
+  <Balance className="price" amount={lock.keyPrice} />
+)
+
+KeyPrice.propTypes = {
+  lock: UnlockPropTypes.lock.isRequired,
+}
+
 const LockKeysNumbers = ({ lock }) => (
   <LockKeys>
     {lock.outstandingKeys !== null &&
@@ -103,7 +111,7 @@ export class CreatorLock extends React.Component {
           <Duration seconds={lock.expirationDuration} />
         </LockDuration>
         <LockKeysNumbers lock={lock} />
-        <Balance amount={lock.keyPrice} />
+        <KeyPrice lock={lock} />
         <BalanceContainer>
           <NoPhone>
             <Balance amount={lock.balance} />

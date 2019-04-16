@@ -3,6 +3,7 @@ pragma solidity 0.5.7;
 import './MixinDisableAndDestroy.sol';
 import './MixinApproval.sol';
 import './MixinKeys.sol';
+import './MixinFunds.sol';
 import './MixinLockCore.sol';
 import 'openzeppelin-solidity/contracts/utils/Address.sol';
 import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
@@ -17,6 +18,7 @@ import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
  */
 
 contract MixinTransfer is
+  MixinFunds,
   MixinLockCore,
   MixinKeys,
   MixinApproval
@@ -57,6 +59,7 @@ contract MixinTransfer is
     onlyKeyOwnerOrApproved(_tokenId)
   {
     require(_recipient != address(0), 'INVALID_ADDRESS');
+    _chargeAtLeast(getTransferFee(_from));
 
     Key storage fromKey = _getKeyFor(_from);
     Key storage toKey = _getKeyFor(_recipient);
@@ -159,6 +162,33 @@ contract MixinTransfer is
     );
     transferFeeNumerator = _transferFeeNumerator;
     transferFeeDenominator = _transferFeeDenominator;
+  }
+
+  /**
+   * Determines how much of a fee a key owner would need to pay in order to
+   * transfer the key to another account.  This is pro-rated so the fee goes down
+   * overtime.
+   * @param _owner The owner of the key check the transfer fee for.
+   */
+  function getTransferFee(
+    address _owner
+  )
+    public view
+    hasValidKey(_owner)
+    returns (uint)
+  {
+    Key storage key = _getKeyFor(_owner);
+    // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
+    uint timeRemaining = key.expirationTimestamp - block.timestamp;
+    uint fee;
+    if(timeRemaining >= expirationDuration) {
+      // Max the potential impact of this fee for keys with long durations remaining
+      fee = keyPrice;
+    } else {
+      // Math: using safeMul in case keyPrice or timeRemaining is very large
+      fee = keyPrice.mul(timeRemaining) / expirationDuration;
+    }
+    return fee.mul(transferFeeNumerator) / transferFeeDenominator;
   }
 
   /**

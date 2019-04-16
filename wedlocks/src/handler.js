@@ -2,7 +2,21 @@
 /* eslint import/prefer-default-export: 0 */
 import { route } from './route'
 
-export const handler = (event, context, callback) => {
+const headers = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+}
+
+export const handler = (event, context, responseCallback) => {
+  const callback = (err, response) => {
+    return responseCallback(err, {
+      ...response,
+      headers: {
+        ...headers,
+        ...response.headers,
+      },
+    })
+  }
   if (event.httpMethod != 'POST') {
     return callback(null, {
       statusCode: 405,
@@ -32,7 +46,7 @@ export const handler = (event, context, callback) => {
       if (error) {
         return callback(null, {
           statusCode: 400,
-          body: error,
+          body: JSON.stringify(error),
         })
       }
       return callback(null, {

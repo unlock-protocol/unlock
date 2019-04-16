@@ -49,3 +49,24 @@ export function expectError(cb, err) {
     window.removeEventListener('error', handleTopLevelError)
   }
 }
+
+export function fakeLocksmithFetch(window, setResolver) {
+  const fetchResponse = {
+    json: () => ({
+      then: cb => {
+        setResolver(cb)
+        return {
+          catch: () => {},
+        }
+      },
+    }),
+  }
+
+  window.fetch = jest.fn(() => {
+    return {
+      then: first => {
+        return first(fetchResponse)
+      },
+    }
+  })
+}

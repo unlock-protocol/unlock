@@ -1,0 +1,8 @@
+/build
+/dist
+/coverage
+/__tests__/utils/withConfig/__snapshots
+/src/.next
+/src/out
+/.cache
+paywall.min.js

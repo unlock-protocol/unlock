@@ -1,10 +1,5 @@
 import storageMiddleware from '../../middlewares/storageMiddleware'
-import {
-  UPDATE_LOCK,
-  updateLock,
-  CREATE_LOCK,
-  UPDATE_LOCK_NAME,
-} from '../../actions/lock'
+import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../../actions/lock'
 import { STORE_LOCK_NAME } from '../../actions/storage'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT } from '../../actions/accounts'
@@ -220,36 +215,6 @@ describe('Storage middleware', () => {
     })
   })
 
-  describe('handling CREATE_LOCK', () => {
-    it('should dispatch an action to sign message to change the name of a lock', () => {
-      expect.assertions(3)
-      const lock = {
-        address: '0x123',
-        name: 'my lock',
-        owner: '0xabc',
-      }
-      const data = {
-        message: {
-          lock: {},
-        },
-      }
-
-      UnlockLock.build = jest.fn(() => {
-        return data
-      })
-      const { next, invoke, store } = create()
-      const action = { type: CREATE_LOCK, lock }
-
-      invoke(action)
-      expect(UnlockLock.build).toHaveBeenCalledWith(lock)
-      expect(next).toHaveBeenCalledTimes(1)
-      expect(store.dispatch).toHaveBeenCalledWith({
-        data,
-        type: 'signature/SIGN_DATA',
-      })
-    })
-  })
-
   describe('UPDATE_LOCK_NAME', () => {
     it('should dispatch an action to sign message to update the name of a lock', () => {
       expect.assertions(3)
@@ -272,9 +237,14 @@ describe('Storage middleware', () => {
         address: lock.address,
         name: newName,
       }
-
+      UnlockLock.build = jest.fn(() => data)
       invoke(action)
-      expect(UnlockLock.build).toHaveBeenCalledWith(lock)
+      expect(UnlockLock.build).toHaveBeenCalledWith({
+        name: action.name,
+        owner: lock.owner,
+        address: lock.address,
+      })
+
       expect(next).toHaveBeenCalledTimes(1)
       expect(store.dispatch).toHaveBeenCalledWith({
         data,
