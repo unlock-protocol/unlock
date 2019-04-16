@@ -340,15 +340,35 @@ describe('WalletService', () => {
   })
 
   describe('versions', () => {
-    const versionSpecificMethods = [
+    const versionSpecificLockMethods = [
       'updateKeyPrice',
-      'createLock',
       'purchaseKey',
       'partialWithdrawFromLock',
       'withdrawFromLock',
     ]
 
-    it.each(versionSpecificMethods)(
+    it.each(versionSpecificLockMethods)(
+      'should invoke the implementation of the corresponding version of %s',
+      async method => {
+        const args = []
+        const result = {}
+        const version = {
+          [method]: function(_args) {
+            // Needs to be a function because it is bound to walletService
+            expect(this).toBe(walletService)
+            expect(_args).toBe(...args)
+            return result
+          },
+        }
+        walletService.lockContractAbiVersion = jest.fn(() => version)
+        const r = await walletService[method](...args)
+        expect(r).toBe(result)
+      }
+    )
+
+    const versionSpecificUnlockMethods = ['createLock']
+
+    it.each(versionSpecificUnlockMethods)(
       'should invoke the implementation of the corresponding version of %s',
       async method => {
         const args = []
@@ -372,7 +392,10 @@ describe('WalletService', () => {
     it.each(supportedVersions)(
       'should implement all the required methods',
       version => {
-        versionSpecificMethods.forEach(method => {
+        versionSpecificLockMethods.forEach(method => {
+          expect(version[method]).toBeInstanceOf(Function)
+        })
+        versionSpecificUnlockMethods.forEach(method => {
           expect(version[method]).toBeInstanceOf(Function)
         })
       }
