@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
@@ -16,7 +16,7 @@ export const EventContent = ({ name, description, location, date, lock }) => {
     date.getFullYear()
 
   return (
-    <>
+    <Fragment>
       <Title>{name}</Title>
       <DetailsFieldset>
         <Field>
@@ -35,7 +35,7 @@ export const EventContent = ({ name, description, location, date, lock }) => {
       </DetailsFieldset>
       <DetailsFieldset>
         <DetailsField>
-          <Date>{dateString}</Date>
+          <DisplayDate>{dateString}</DisplayDate>
           <Description>{description}</Description>
         </DetailsField>
         <Field>
@@ -43,7 +43,7 @@ export const EventContent = ({ name, description, location, date, lock }) => {
           <Description>{location}</Description>
         </Field>
       </DetailsFieldset>
-    </>
+    </Fragment>
   )
 }
 
@@ -122,7 +122,7 @@ const DetailsField = styled(Field)`
   grid-template-rows: 35px auto;
 `
 
-const Date = styled.div`
+const DisplayDate = styled.div`
   font-family: 'IBM Plex Sans', sans-serif;
   font-weight: 600;
   font-size: 24px;
