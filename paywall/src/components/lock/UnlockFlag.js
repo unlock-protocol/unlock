@@ -15,7 +15,9 @@ export function LockedFlag() {
     <Colophon>
       <p>Powered by</p>
       <RoundedLogo />
-      <a href="/">Unlock</a>
+      <a href="/" target="_blank">
+        Unlock
+      </a>
     </Colophon>
   )
 }
@@ -41,7 +43,9 @@ export const UnlockedFlag = ({ expiration }) => {
       </aside>
       <RoundedLogo />
       <p>Powered by</p>
-      <a href="/">Unlock</a>
+      <a href="/" target="_blank">
+        Unlock
+      </a>
     </Flag>
   )
 }
@@ -177,7 +181,7 @@ const Flag = styled(Colophon).attrs({
         grid-row: 2;
         align-self: start;
       }
-  
+
       & > div {
         height: 16px;
         width: 16px;
