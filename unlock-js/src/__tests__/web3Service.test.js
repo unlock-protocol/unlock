@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
 
 import Web3Utils from 'web3-utils'
-import Web3EthAbi from 'web3-eth-abi'
+
 import nock from 'nock'
 import * as UnlockV0 from 'unlock-abi-0'
 
@@ -78,12 +78,6 @@ const ethCallAndFail = (data, to, error) => {
   return jsonRpcRequest('eth_call', [{ data, to }, 'latest'], undefined, error)
 }
 
-const pad64 = data => {
-  return `${data.toString().padStart(64, '0')}`
-}
-
-const abiPaddedString = parameters => parameters.map(pad64).join('')
-
 nock.emitter.on('no match', function(clientRequestObject, options, body) {
   if (debug) {
     console.log(`NO HTTP MOCK EXISTS FOR THAT REQUEST\n${body}`)
@@ -107,29 +101,6 @@ describe('Web3Service', () => {
   })
 
   const lockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
-
-  describe('getPastLockTransactions', () => {
-    it('should getPastEvents for the Lock contract', () => {
-      expect.assertions(3)
-      const lockAddress = '0x123'
-      class MockContract {
-        constructor(abi, address) {
-          expect(abi).toBe(UnlockV0.PublicLock.abi)
-          expect(address).toEqual(lockAddress)
-        }
-      }
-
-      web3Service.web3.eth.Contract = MockContract
-
-      web3Service._getPastTransactionsForContract = jest.fn()
-
-      web3Service.getPastLockTransactions(lockAddress)
-      expect(web3Service._getPastTransactionsForContract).toHaveBeenCalledWith(
-        expect.any(MockContract),
-        'allevents'
-      )
-    })
-  })
 
   describe('_getPastTransactionsForContract', () => {
     it("should getPastEvents on the contract and emit 'transaction.new' for each event", done => {
@@ -179,33 +150,6 @@ describe('Web3Service', () => {
       })
 
       web3Service._getPastTransactionsForContract(contract, events, filter)
-    })
-  })
-
-  describe('getPastLockCreationsTransactionsForUser', () => {
-    it('should getPastEvents for the Unlock contract', () => {
-      expect.assertions(3)
-
-      class MockContract {
-        constructor(abi, address) {
-          expect(abi).toBe(UnlockV0.Unlock.abi)
-          expect(address).toEqual(web3Service.unlockContractAddress)
-        }
-      }
-
-      web3Service.web3.eth.Contract = MockContract
-
-      const userAddress = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
-      web3Service._getPastTransactionsForContract = jest.fn()
-
-      web3Service.getPastLockCreationsTransactionsForUser(userAddress)
-      expect(web3Service._getPastTransactionsForContract).toHaveBeenCalledWith(
-        expect.any(MockContract),
-        'NewLock',
-        {
-          lockOwner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-        }
-      )
     })
   })
 
@@ -751,97 +695,6 @@ describe('Web3Service', () => {
     })
   })
 
-  describe('getLock', () => {
-    it('should trigger an event when it has been loaded woth an updated balance', done => {
-      expect.assertions(2)
-
-      ethCallAndYield(
-        '0x10e56973',
-        lockAddress,
-        '0x000000000000000000000000000000000000000000000000002386f26fc10000'
-      )
-      ethCallAndYield(
-        '0x11a4c03a',
-        lockAddress,
-        '0x0000000000000000000000000000000000000000000000000000000000278d00'
-      )
-      ethCallAndYield(
-        '0x74b6c106',
-        lockAddress,
-        '0x000000000000000000000000000000000000000000000000000000000000000a'
-      )
-      ethCallAndYield(
-        '0x8da5cb5b',
-        lockAddress,
-        '0x00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1'
-      )
-      ethCallAndYield(
-        '0x47dc1085',
-        lockAddress,
-        '0x0000000000000000000000000000000000000000000000000000000000000011'
-      )
-      getBalanceForAccountAndYieldBalance(lockAddress, '0xdeadfeed')
-      ethBlockNumber(`0x${(1337).toString('16')}`)
-
-      web3Service.on('lock.updated', (address, update) => {
-        expect(address).toBe(lockAddress)
-        expect(update).toMatchObject({
-          balance: Web3Utils.fromWei('3735944941', 'ether'),
-          keyPrice: Web3Utils.fromWei('10000000000000000', 'ether'),
-          expirationDuration: 2592000,
-          maxNumberOfKeys: 10,
-          owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
-          outstandingKeys: 17,
-          asOf: 1337,
-        })
-        done()
-      })
-
-      return web3Service.getLock(lockAddress)
-    })
-
-    it('should successfully yield a lock with an unlimited number of keys', done => {
-      expect.assertions(2)
-      ethCallAndYield(
-        '0x10e56973',
-        lockAddress,
-        '0x000000000000000000000000000000000000000000000000002386f26fc10000'
-      )
-      ethCallAndYield(
-        '0x11a4c03a',
-        lockAddress,
-        '0x0000000000000000000000000000000000000000000000000000000000278d00'
-      )
-      ethCallAndYield(
-        '0x74b6c106',
-        lockAddress,
-        '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
-      )
-      ethCallAndYield(
-        '0x8da5cb5b',
-        lockAddress,
-        '0x00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1'
-      )
-      ethCallAndYield(
-        '0x47dc1085',
-        lockAddress,
-        '0x0000000000000000000000000000000000000000000000000000000000000011'
-      )
-      getBalanceForAccountAndYieldBalance(lockAddress, '0xdeadfeed')
-      ethBlockNumber(`0x${(1337).toString('16')}`)
-
-      web3Service.on('lock.updated', (address, update) => {
-        expect(address).toBe(lockAddress)
-        expect(update).toMatchObject({
-          maxNumberOfKeys: -1,
-        })
-        done()
-      })
-
-      return web3Service.getLock(lockAddress)
-    })
-  })
-
   describe('_getKeyByLockForOwner', () => {
     it('should update the data and expiration date', async () => {
       expect.assertions(2)
@@ -894,28 +747,6 @@ describe('Web3Service', () => {
       )
       expect(expiration).toBe(0)
       expect(data).toBe(null)
-    })
-  })
-
-  describe('getKeyByLockForOwner', () => {
-    it('should trigger an event with the key', done => {
-      expect.assertions(5)
-
-      web3Service._getKeyByLockForOwner = jest.fn(() => {
-        return new Promise(resolve => {
-          return resolve([100, 'hello'])
-        })
-      })
-
-      web3Service.on('key.updated', (keyId, update) => {
-        expect(keyId).toBe([lockAddress, nodeAccounts[0]].join('-'))
-        expect(update.expiration).toBe(100)
-        expect(update.data).toBe('hello')
-        expect(update.lock).toBe(lockAddress)
-        expect(update.owner).toBe(nodeAccounts[0])
-        done()
-      })
-      web3Service.getKeyByLockForOwner(lockAddress, nodeAccounts[0])
     })
   })
 
@@ -1088,80 +919,6 @@ describe('Web3Service', () => {
         'PriceChanged',
         params
       )
-    })
-  })
-
-  describe('getKeysForLockOnPage', () => {
-    it('should get as many owners as there are per page, starting at the right index', done => {
-      expect.assertions(9)
-      const onPage = 0
-      const byPage = 5
-      const keyHolder = [
-        '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-        '0xC66Ef2E0D0eDCce723b3fdd4307db6c5F0Dda1b8',
-      ]
-
-      web3Service._getKeyByLockForOwner = jest.fn(() => {
-        return new Promise(resolve => {
-          return resolve([100, 'hello'])
-        })
-      })
-
-      ethCallAndYield(
-        `0x10803b72${abiPaddedString([onPage, byPage])}`,
-        lockAddress,
-        Web3EthAbi.encodeParameter('uint256[]', keyHolder)
-      )
-
-      web3Service.getKeysForLockOnPage(lockAddress, onPage, byPage)
-
-      web3Service.on('keys.page', (lock, page, keys) => {
-        expect(lockAddress).toEqual(lock)
-        expect(page).toEqual(onPage)
-        expect(keys.length).toEqual(2)
-        expect(keys[0].id).toEqual(`${lockAddress}-${keyHolder[0]}`)
-        expect(keys[0].owner).toEqual(keyHolder[0])
-        expect(keys[0].lock).toEqual(lockAddress)
-        expect(keys[0].expiration).toEqual(100)
-        expect(keys[0].data).toEqual('hello')
-        expect(keys[1].owner).toEqual(keyHolder[1])
-        done()
-      })
-    })
-
-    describe('when the on contract method does not exist', () => {
-      it('should use the iterative method of providing keyholder', done => {
-        expect.assertions(3)
-        const onPage = 0
-        const byPage = 2
-
-        for (let i = 0; i < byPage; i++) {
-          const start = onPage * byPage + i
-          ethCallAndYield(
-            `0x025e7c27${start.toString(16).padStart(64, 0)}`,
-            lockAddress,
-            '0x'
-          )
-        }
-
-        jest
-          .spyOn(web3Service, '_genKeyOwnersFromLockContract')
-          .mockImplementation(() => {
-            return Promise.resolve([])
-          })
-        jest.spyOn(web3Service, '_genKeyOwnersFromLockContractIterative')
-
-        web3Service.getKeysForLockOnPage(lockAddress, onPage, byPage)
-
-        web3Service.on('keys.page', (lock, page) => {
-          expect(lockAddress).toEqual(lock)
-          expect(page).toEqual(onPage)
-          expect(
-            web3Service._genKeyOwnersFromLockContractIterative
-          ).toHaveBeenCalledTimes(1)
-          done()
-        })
-      })
     })
   })
 
