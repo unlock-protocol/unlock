@@ -4,6 +4,10 @@
 git config --replace-all remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
 git fetch >> /dev/null
 
+echo "Setting up git"
+git config --global user.email "ops@unlock-protocol.com"
+git config --global user.name "Unlock Deployer"
+
 echo "Checking master out 4 days ago"
 STABLE_MASTER=`git rev-list -1 --before={4.days.ago} master`
 git checkout $STABLE_MASTER
