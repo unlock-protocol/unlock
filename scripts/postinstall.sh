@@ -6,7 +6,7 @@
 
 if [ "$SKIP_SERVICES" != "true" ]; then
 
-  SERVICES=( paywall smart-contracts unlock-app locksmith tests wedlocks )
+  SERVICES=( paywall smart-contracts unlock-app locksmith tests tickets wedlocks )
 
   for i in "${SERVICES[@]}"
   do

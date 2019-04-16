@@ -35,7 +35,12 @@ import './mixins/MixinNoFallback.sol';
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
-contract Unlock is MixinNoFallback, IUnlock, Initializable, Ownable {
+contract Unlock is
+  IUnlock,
+  MixinNoFallback,
+  Initializable,
+  Ownable
+{
 
   /**
    * The struct for a lock
@@ -90,10 +95,10 @@ contract Unlock is MixinNoFallback, IUnlock, Initializable, Ownable {
     uint _maxNumberOfKeys
   )
     public
-    returns (ILockCore lock)
+    returns (PublicLock lock)
   {
     // create lock
-    ILockCore newLock = new PublicLock(
+    PublicLock newLock = new PublicLock(
       msg.sender,
       _expirationDuration,
       _tokenAddress,
@@ -149,9 +154,9 @@ contract Unlock is MixinNoFallback, IUnlock, Initializable, Ownable {
     public
     onlyFromDeployedLock()
   {
-    // TODO: implement me
+    // TODO: implement me (discount tokens)
     grossNetworkProduct += _value;
-    return;
+    locks[msg.sender].totalSales += _value;
   }
 
   /**

@@ -72,7 +72,7 @@ describe('handler', () => {
   })
 
   it('should route the request and yields its response', done => {
-    expect.assertions(3)
+    expect.assertions(4)
     const body = {
       hello: 'world',
     }
@@ -94,6 +94,12 @@ describe('handler', () => {
       },
       {},
       (error, response) => {
+        expect(response.headers).toEqual(
+          expect.objectContaining({
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': '*',
+          })
+        )
         expect(response.statusCode).toBe(200)
         expect(response.body).toBe(JSON.stringify(responseBody))
         done()
@@ -106,10 +112,12 @@ describe('handler', () => {
     const body = {
       hello: 'world',
     }
-    const error = 'Could not send email'
+    const error = {
+      error: 'Could not send email',
+    }
     route.mockImplementationOnce((_body, _callback) => {
       expect(_body).toEqual(body)
-      return _callback('Could not send email')
+      return _callback(error)
     })
 
     handler(
@@ -123,7 +131,7 @@ describe('handler', () => {
       {},
       (_error, response) => {
         expect(response.statusCode).toBe(400)
-        expect(response.body).toBe(error)
+        expect(response.body).toBe(JSON.stringify(error))
         done()
       }
     )

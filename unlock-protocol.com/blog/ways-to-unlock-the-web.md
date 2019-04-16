@@ -4,12 +4,13 @@ subTitle: We’re building an open protocol to allow anyone on the web to earn m
 authorName: Ben Werdmuller
 publishDate: March 20, 2019
 description: We’re building an open protocol to allow anyone on the web to earn money from their work. The possibilities are endless. Here are some of them.
+image: /static/images/blog/waystounlocktheweb/hero.jpg
 ---
 ![ocean scene](/static/images/blog/waystounlocktheweb/hero.jpg)
 
 Imagine if paying for content had been built into the web from day one.
 
-A few days ago, Julien Genestoux wrote []an introduction to Unlock](/blog/what-is-unlock): a decentralized, permission-less protocol that allows anyone to sell access to their work. It’s a great high-level introduction to our philosophy and approach. Hopefully, it also explains why Unlock is such a radical idea; something that has never been built on the web before. If you haven’t read it, [it’s a great place to start](/blog/what-is-unlock).
+A few days ago, Julien Genestoux wrote [an introduction to Unlock](/blog/what-is-unlock): a decentralized, permission-less protocol that allows anyone to sell access to their work. It’s a great high-level introduction to our philosophy and approach. Hopefully, it also explains why Unlock is such a radical idea; something that has never been built on the web before. If you haven’t read it, [it’s a great place to start](/blog/what-is-unlock).
 
 In this post, we’ll bring it down to earth. Now that we’ve explored the implications of an open protocol for payments — what can you do with Unlock?
 

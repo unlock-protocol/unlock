@@ -11,7 +11,10 @@ import { pageTitle } from '../../constants'
 import Blog from '../../pages/blog'
 import Post from '../../pages/post'
 
+import { prepareBlogProps, preparePostProps } from '../../utils/blogLoader'
+
 jest.mock('../../constants')
+jest.mock('../../utils/blogLoader')
 
 describe('Pages', () => {
   beforeEach(() => {
@@ -21,8 +24,33 @@ describe('Pages', () => {
   describe('About', () => {
     it('should render title correctly', () => {
       expect.assertions(1)
-      rtl.render(<About />)
+      rtl.render(<About posts={[]} />)
       expect(pageTitle).toBeCalledWith('About')
+    })
+
+    it('should render posts correctly', () => {
+      expect.assertions(3)
+      const posts = [
+        {
+          title: 'Sample post',
+          description: 'Description',
+          authorName: 'Author name',
+          publishDate: 'Publish date',
+          image: '/foo/image.jpg',
+        },
+      ]
+
+      const page = rtl.render(<About posts={posts} />)
+      expect(pageTitle).toBeCalledWith('About')
+      expect(page.queryByText('Description')).not.toBeNull()
+      expect(page.queryByText('Publish date')).not.toBeNull()
+    })
+
+    it('should load blog posts as initial props', async () => {
+      expect.assertions(1)
+
+      await About.getInitialProps()
+      expect(prepareBlogProps).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -65,6 +93,7 @@ describe('Pages', () => {
 
       expect(pageTitle).toBeCalledWith('Blog')
     })
+
     it('should render post preview correctly', () => {
       expect.assertions(3)
 
@@ -84,11 +113,18 @@ describe('Pages', () => {
       expect(page.queryByText(posts[0].authorName)).not.toBeNull()
       expect(page.queryByText(posts[0].description)).not.toBeNull()
     })
+
+    it('should load blog posts as initial props', async () => {
+      expect.assertions(1)
+
+      await Blog.getInitialProps()
+      expect(prepareBlogProps).toHaveBeenCalledTimes(1)
+    })
   })
 
   describe('Post', () => {
     it('should render title correctly', () => {
-      expect.assertions(3)
+      expect.assertions(2)
       const post = {
         title: 'Test post',
         slug: 'test1',
@@ -100,8 +136,14 @@ describe('Pages', () => {
       const page = rtl.render(<Post post={post} slug={slug} />)
 
       expect(pageTitle).toBeCalledWith(post.title)
-      expect(page.queryByText(post.publishDate)).not.toBeNull()
       expect(page.queryByText(post.__content)).not.toBeNull()
+    })
+
+    it('should load post details in initial props', async () => {
+      expect.assertions(1)
+
+      await Post.getInitialProps()
+      expect(preparePostProps).toHaveBeenCalledTimes(1)
     })
   })
 })

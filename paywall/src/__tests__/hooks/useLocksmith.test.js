@@ -6,6 +6,7 @@ import useLocksmith from '../../hooks/useLocksmith'
 import { WindowContext } from '../../hooks/browser/useWindow'
 import { ConfigContext } from '../../utils/withConfig'
 import configure from '../../config'
+import { fakeLocksmithFetch } from '../test-helpers/helpers'
 
 const WindowProvider = WindowContext.Provider
 const ConfigProvider = ConfigContext.Provider
@@ -16,9 +17,6 @@ describe('useLocksmith hook', () => {
   let fakeResponse
   let finishFetch
   let triggerNewFetch
-  const fetchResponse = {
-    json: () => fakeResponse,
-  }
 
   function MockLocksmither({ api = '/hi' }) {
     const [result, reQuery] = useLocksmith(api)
@@ -39,18 +37,8 @@ describe('useLocksmith hook', () => {
     fakeResponse = {
       thing: '1',
     }
-    fakeWindow = {
-      fetch: jest.fn(() => {
-        return {
-          then: cb => {
-            finishFetch = cb
-            return {
-              catch: () => {},
-            }
-          },
-        }
-      }),
-    }
+    fakeWindow = {}
+    fakeLocksmithFetch(fakeWindow, resolve => (finishFetch = resolve))
   })
 
   it('passes the correct URL to fetch', () => {
@@ -67,10 +55,10 @@ describe('useLocksmith hook', () => {
     })
 
     rtl.act(() => {
-      finishFetch(fetchResponse)
+      finishFetch(fakeResponse)
     })
 
-    expect(fakeWindow.fetch).toHaveBeenCalledWith(config.locksmithHost + '/hi')
+    expect(fakeWindow.fetch).toHaveBeenCalledWith(config.locksmithUri + '/hi')
   })
 
   it('returns the response', () => {
@@ -88,7 +76,7 @@ describe('useLocksmith hook', () => {
     })
 
     rtl.act(() => {
-      finishFetch(fetchResponse)
+      finishFetch(fakeResponse)
     })
 
     expect(wrapper.getByText(JSON.stringify(fakeResponse))).not.toBeNull()
@@ -108,7 +96,7 @@ describe('useLocksmith hook', () => {
     })
 
     rtl.act(() => {
-      finishFetch(fetchResponse)
+      finishFetch(fakeResponse)
     })
 
     rtl.act(() => {

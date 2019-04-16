@@ -1,10 +1,13 @@
 /* eslint promise/prefer-await-to-then: 0 */
+import UnlockJs from '@unlock-protocol/unlock-js'
+
 import {
   CREATE_LOCK,
   WITHDRAW_FROM_LOCK,
   deleteLock,
   UPDATE_LOCK_KEY_PRICE,
   updateLock,
+  updateLockName,
 } from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
 import { setAccount } from '../actions/accounts'
@@ -17,9 +20,8 @@ import {
   gotWallet,
   dismissWalletCheck,
 } from '../actions/walletStatus'
-import { POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
+import { POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants'
 
-import WalletService from '../services/walletService'
 import {
   FATAL_NO_USER_ACCOUNT,
   FATAL_WRONG_NETWORK,
@@ -28,7 +30,9 @@ import {
 import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 import { TransactionType } from '../unlockTypes'
 import { hideForm } from '../actions/lockFormVisibility'
-import { transactionTypeMapping } from '../utils/types'
+import { transactionTypeMapping } from '../utils/types' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
+
+const { WalletService } = UnlockJs
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
@@ -100,7 +104,12 @@ const walletMiddleware = config => {
     })
 
     walletService.on('lock.updated', (address, update) => {
-      // This is a new lock!
+      // This lock is beeing saved to the chain (that is what the update is about)
+      // So we should be able to get its name from the redux store
+      const lock = getState().locks[address]
+      if (lock) {
+        dispatch(updateLockName(address, lock.name))
+      }
       dispatch(updateLock(address, update))
       dispatch(hideForm()) // Close the form
     })

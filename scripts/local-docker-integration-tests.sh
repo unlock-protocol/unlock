@@ -21,6 +21,7 @@ export HTTP_PROVIDER='ganache-integration'
 export LOCKSMITH_URI='http://locksmith:8080'
 export PAYWALL_URL='http://unlock:3001'
 export PAYWALL_SCRIPT_URL='http://unlock:3001/static/paywall.min.js'
+export UNLOCK_STATIC_URL='http://unlock-protocol-com:3002'
 
 # if the integration test images are running, this ensures we remove any state
 # prior to attempting to run the tests. This line is critical!
@@ -28,7 +29,7 @@ docker-compose -f $DOCKER_COMPOSE_FILE down
 
 # re-build the images. This will use local docker cache
 docker build -t unlock -f "$REPO_ROOT/docker/unlock.dockerfile" $REPO_ROOT
-docker build -t unlock-integration -f "$REPO_ROOT/docker/unlock-integration.dockerfile" $REPO_ROOT
+docker build -t unlock-integration -f "$REPO_ROOT/docker/integration-tests.dockerfile" $REPO_ROOT
 
 # Run the tests
 $REPO_ROOT/scripts/integration-tests.sh $EXTRA_ARGS
