@@ -3,7 +3,6 @@ import Web3Utils from 'web3-utils'
 import { bufferToHex, generateAddress } from 'ethereumjs-util'
 import UnlockService from './unlockService'
 import { MAX_UINT, UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
-import TransactionTypes from './transactionTypes'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -140,40 +139,9 @@ export default class Web3Service extends UnlockService {
    * @param {*} contract
    * @param {*} data
    */
-  getTransactionType(contract, data) {
-    const method = contract.abi.find(binaryInterface => {
-      return data.startsWith(binaryInterface.signature)
-    })
-
-    // If there is no matching method, return null
-    if (!method) {
-      return null
-    }
-
-    if (contract.contractName === 'Unlock' && method.name === 'createLock') {
-      return TransactionTypes.LOCK_CREATION
-    }
-
-    if (
-      contract.contractName === 'PublicLock' &&
-      method.name === 'purchaseFor'
-    ) {
-      return TransactionTypes.KEY_PURCHASE
-    }
-
-    if (contract.contractName === 'PublicLock' && method.name === 'withdraw') {
-      return TransactionTypes.WITHDRAWAL
-    }
-
-    if (
-      contract.contractName === 'PublicLock' &&
-      method.name === 'updateKeyPrice'
-    ) {
-      return TransactionTypes.UPDATE_KEY_PRICE
-    }
-
-    // Unknown transaction
-    return null
+  async getTransactionType(contract, data) {
+    const version = await this.unlockContractAbiVersion()
+    return version.getTransactionType.bind(this)(contract, data)
   }
 
   /**

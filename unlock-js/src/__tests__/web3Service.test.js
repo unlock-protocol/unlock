@@ -2,58 +2,16 @@
 
 import Web3Utils from 'web3-utils'
 
-import nock from 'nock'
-import * as UnlockV0 from 'unlock-abi-0'
+import NockHelper from './helpers/nockHelper'
 
 import Web3Service from '../web3Service'
-import TransactionTypes from '../transactionTypes'
-
-const nodeAccounts = [
-  '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
-  '0xaca94ef8bd5ffee41947b4585a84bda5a3d3da6e',
-]
 
 const blockTime = 3
 const readOnlyProvider = 'http://127.0.0.1:8545'
 const requiredConfirmations = 12
 
-const nockScope = nock(readOnlyProvider, { encodedQueryParams: true })
+const nock = new NockHelper(readOnlyProvider, true /** debug */)
 
-let rpcRequestId = 0
-
-let debug = false // set to true to see more logging statements
-
-function logNock(...args) {
-  if (debug) {
-    console.log(...args)
-  }
-}
-
-// Generic call
-const jsonRpcRequest = (method, params, result, error) => {
-  rpcRequestId += 1
-  nockScope
-    .post('/', { jsonrpc: '2.0', id: rpcRequestId, method, params })
-    .reply(200, { id: rpcRequestId, jsonrpc: '2.0', result, error })
-    .log(logNock)
-}
-
-// eth_getBalance
-const getBalanceForAccountAndYieldBalance = (account, balance) => {
-  return jsonRpcRequest(
-    'eth_getBalance',
-    [account.toLowerCase(), 'latest'],
-    balance
-  )
-}
-
-nock.emitter.on('no match', function(clientRequestObject, options, body) {
-  if (debug) {
-    console.log(`NO HTTP MOCK EXISTS FOR THAT REQUEST\n${body}`)
-  }
-})
-
-// This unlock address smart contract is fake
 const unlockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
 
 let web3Service
@@ -68,8 +26,6 @@ describe('Web3Service', () => {
       requiredConfirmations,
     })
   })
-
-  const lockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
 
   describe('_getPastTransactionsForContract', () => {
     it("should getPastEvents on the contract and emit 'transaction.new' for each event", done => {
@@ -128,55 +84,10 @@ describe('Web3Service', () => {
       const balance = '0xdeadbeef'
       const inWei = Web3Utils.hexToNumberString(balance)
       const address = '0x1df62f291b2e969fb0849d99d9ce41e2f137006e'
-      getBalanceForAccountAndYieldBalance(address, '0xdeadbeef')
+      nock.getBalanceForAccountAndYieldBalance(address, '0xdeadbeef')
 
       let addressBalance = await web3Service.getAddressBalance(address)
       expect(addressBalance).toEqual(Web3Utils.fromWei(inWei, 'ether'))
-    })
-  })
-
-  describe('getTransactionType', () => {
-    it('should return null if there is no matching method', () => {
-      expect.assertions(1)
-      const data = 'notarealmethod'
-      expect(web3Service.getTransactionType(UnlockV0.Unlock, data)).toBe(null)
-    })
-
-    it('should return the right transaction type on lock creation', () => {
-      expect.assertions(1)
-      const unlock = new web3Service.web3.eth.Contract(UnlockV0.Unlock.abi, '')
-      const data = unlock.methods
-        .createLock('1000', '1000000000', '1')
-        .encodeABI()
-      expect(web3Service.getTransactionType(UnlockV0.Unlock, data)).toBe(
-        TransactionTypes.LOCK_CREATION
-      )
-    })
-
-    it('should return the right transaction type on key purchase', () => {
-      expect.assertions(1)
-      const lock = new web3Service.web3.eth.Contract(
-        UnlockV0.PublicLock.abi,
-        ''
-      )
-      const data = lock.methods
-        .purchaseFor(nodeAccounts[0], Web3Utils.utf8ToHex(''))
-        .encodeABI()
-      expect(web3Service.getTransactionType(UnlockV0.PublicLock, data)).toBe(
-        TransactionTypes.KEY_PURCHASE
-      )
-    })
-
-    it('should return the right transaction type on withdrawals', () => {
-      expect.assertions(1)
-      const lock = new web3Service.web3.eth.Contract(
-        UnlockV0.PublicLock.abi,
-        ''
-      )
-      const data = lock.methods.withdraw().encodeABI()
-      expect(web3Service.getTransactionType(UnlockV0.PublicLock, data)).toBe(
-        TransactionTypes.WITHDRAWAL
-      )
     })
   })
 
@@ -311,14 +222,17 @@ describe('Web3Service', () => {
     it('should set a timeout based on half the block time', () => {
       expect.assertions(1)
       jest.useFakeTimers()
+      web3Service.getTransaction = jest.fn()
       web3Service._watchTransaction('0x')
       expect(setTimeout).toHaveBeenCalledWith(
         expect.any(Function),
         blockTime / 2
       )
     })
+
     it('should trigger getTransaction when the timeout expires', () => {
       expect.assertions(1)
+      jest.useFakeTimers()
       web3Service.getTransaction = jest.fn()
       const transactionHash = '0x'
       web3Service._watchTransaction(transactionHash)

@@ -77,6 +77,20 @@ export class NockHelper {
       error
     )
   }
+
+  // eth_accounts
+  accountsAndYield(accounts) {
+    return this._jsonRpcRequest('eth_accounts', [], accounts)
+  }
+
+  // eth_getCode
+  ethGetCodeAndYield(address, opCode) {
+    return this._jsonRpcRequest(
+      'eth_getCode',
+      [address.toLowerCase(), 'latest'],
+      opCode
+    )
+  }
 }
 
 export default NockHelper
