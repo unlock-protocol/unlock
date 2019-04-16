@@ -127,7 +127,7 @@ export default class WalletService extends UnlockService {
    * @param {string} price : new price for the lock
    */
   async updateKeyPrice(lock, account, price) {
-    const version = await this.unlockContractAbiVersion()
+    const version = await this.lockContractAbiVersion()
     return version.updateKeyPrice.bind(this)(lock, account, price)
   }
 
@@ -154,7 +154,7 @@ export default class WalletService extends UnlockService {
    * @param {string} account
    */
   async purchaseKey(lock, owner, keyPrice, account, data = '') {
-    const version = await this.unlockContractAbiVersion()
+    const version = await this.lockContractAbiVersion()
     return version.purchaseKey.bind(this)(lock, owner, keyPrice, account, data)
   }
 
@@ -167,7 +167,7 @@ export default class WalletService extends UnlockService {
    * @param {Function} callback
    */
   async partialWithdrawFromLock(lock, account, ethAmount, callback) {
-    const version = await this.unlockContractAbiVersion()
+    const version = await this.lockContractAbiVersion()
     return version.partialWithdrawFromLock.bind(this)(
       lock,
       account,
@@ -183,7 +183,7 @@ export default class WalletService extends UnlockService {
    * @param {Function} callback TODO: implement...
    */
   async withdrawFromLock(lock, account) {
-    const version = await this.unlockContractAbiVersion()
+    const version = await this.lockContractAbiVersion()
     return version.withdrawFromLock.bind(this)(lock, account)
   }
 

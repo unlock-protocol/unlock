@@ -29,7 +29,6 @@ export default class UnlockService extends EventEmitter {
 
   /**
    * Returns the ABI for the Unlock contract deployed
-   * Another approach might be to look at the opCode
    * @param {*} address
    */
   async unlockContractAbiVersion() {
@@ -53,6 +52,37 @@ export default class UnlockService extends EventEmitter {
     }
 
     if (UnlockV01.Unlock.deployedBytecode === opCode) {
+      return v01
+    }
+
+    throw new Error(Errors.UNKNOWN_CONTRACT)
+  }
+
+  /**
+   * Returns the ABI for the Lock contract deployed at the provided address
+   * @param {*} address
+   */
+  async lockContractAbiVersion(address) {
+    if (!this.web3) {
+      throw new Error(Errors.MISSING_WEB3)
+    }
+
+    let opCode = this.opCodeForAddress[address]
+    if (!opCode) {
+      // This was not memo-ized
+      opCode = await this.web3.eth.getCode(address)
+      this.opCodeForAddress[address] = opCode
+    }
+
+    if (opCode === '0x') {
+      throw new Error(Errors.NON_DEPLOYED_CONTRACT)
+    }
+
+    if (UnlockV0.PublicLock.deployedBytecode === opCode) {
+      return v0
+    }
+
+    if (UnlockV01.PublicLock.deployedBytecode === opCode) {
       return v01
     }
 
