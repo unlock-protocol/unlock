@@ -1,8 +1,13 @@
 const Web3 = require('web3')
-const Unlock = require('unlock-abi-0').Unlock
 
-export async function deploy(host, port, onNewContractInstance = () => {}) {
-  const web3 = new Web3(`http://${host}:${port}`)
+export async function deploy(
+  host,
+  port,
+  unlockVersion = 'unlock-abi-0',
+  onNewContractInstance = () => {},
+  web3 = new Web3(`http://${host}:${port}`)
+) {
+  const Unlock = require(unlockVersion).Unlock
   const unlock = new web3.eth.Contract(Unlock.abi)
 
   const accounts = await web3.eth.getAccounts()
