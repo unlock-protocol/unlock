@@ -1,0 +1,83 @@
+/* eslint react/prop-types: 0 */
+import React from 'react'
+import { Provider } from 'react-redux'
+import * as rtl from 'react-testing-library'
+import 'jest-dom/extend-expect'
+
+import CreateContent, {
+  mapStateToProps,
+} from '../../../components/content/CreateContent'
+import createUnlockStore from '../../../createUnlockStore'
+
+const inputLocks = {
+  abc123: { address: 'abc123' },
+  def459: { address: 'def456' },
+}
+
+// Fake select to mock react-select
+jest.mock('react-select', () => ({ options, value, onChange, placeholder }) => {
+  function handleChange(event) {
+    const option = options.find(option => {
+      return option.value.toString() === event.currentTarget.value
+    })
+    onChange(option)
+  }
+  return (
+    <select data-testid={placeholder} value={value} onChange={handleChange}>
+      {' '}
+      {options.map(({ label, value }) => (
+        <option key={value} value={value}>
+          {' '}
+          {label}{' '}
+        </option>
+      ))}{' '}
+    </select>
+  )
+})
+
+describe('CreateContent', () => {
+  it('should populate the select box with given redux locks', () => {
+    expect.assertions(2)
+
+    const store = createUnlockStore({ locks: inputLocks })
+
+    const form = rtl.render(
+      <Provider store={store}>
+        <CreateContent />
+      </Provider>
+    )
+    expect(form.container.querySelector('option[value="abc123"]').text).toEqual(
+      'abc123'
+    )
+    expect(form.container.querySelector('option[value="def456"]').text).toEqual(
+      'def456'
+    )
+  })
+
+  it('should not populate pulldown if there are no locks', () => {
+    expect.assertions(2)
+
+    const store = createUnlockStore({ locks: {} })
+
+    const form = rtl.render(
+      <Provider store={store}>
+        <CreateContent />
+      </Provider>
+    )
+    const select = form.container.querySelector('select') // Get first select on the page
+    expect(select).not.toBe(null)
+    expect(select.querySelectorAll('option').length).toEqual(0)
+  })
+})
+
+describe('mapStateToProps', () => {
+  it('should return an array of locks when given a redux lock object', () => {
+    expect.assertions(4)
+    const props = mapStateToProps({ locks: inputLocks })
+
+    expect(props.locks.length).toEqual(2)
+    expect(props.locks[0]).toEqual('abc123')
+    expect(props.locks[1]).toEqual('def456')
+    expect(props.now).toBeInstanceOf(Date)
+  })
+})

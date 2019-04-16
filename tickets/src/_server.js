@@ -1,6 +1,7 @@
 /* eslint no-console: 0 */
 const { createServer } = require('http')
 const next = require('next')
+const { URL } = require('url')
 
 function _server(port, dev) {
   return new Promise((resolve, reject) => {
@@ -8,9 +9,15 @@ function _server(port, dev) {
 
     app.prepare().then(() => {
       let server = createServer((req, res) => {
+        const parsedUrl = new URL(req.url, `http://${req.headers.host}/`)
+        const { pathname, query } = parsedUrl
         console.info(`${req.method} ${req.url} > ${res.statusCode} `)
         try {
-          app.render(req, res, '/home', Object.assign({}))
+          if (pathname.match(/\/create/)) {
+            app.render(req, res, '/create', Object.assign({}, query))
+          } else {
+            app.render(req, res, '/home', Object.assign({}))
+          }
         } catch (error) {
           reject(error)
         }
