@@ -10,6 +10,7 @@ export default function(address) {
     UnlockV0.Unlock.abi,
     this.unlockContractAddress
   )
+
   return this._getPastTransactionsForContract(unlock, 'NewLock', {
     lockOwner: address,
   })

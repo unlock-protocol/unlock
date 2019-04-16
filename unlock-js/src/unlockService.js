@@ -1,7 +1,8 @@
 import EventEmitter from 'events'
 
 import * as UnlockV0 from 'unlock-abi-0'
-import * as UnlockV01 from 'unlock-abi-0-1'
+
+import v0 from './v0'
 
 export const Errors = {
   MISSING_WEB3: 'MISSING_WEB3',
@@ -18,9 +19,9 @@ export default class UnlockService extends EventEmitter {
     super()
     this.unlockContractAddress = unlockAddress
     this.web3 = null
-    /* Memoization for Abi versions per address */
-    this.versionForAddress = {
-      // '0x123': UnlockV0.PublicLock
+    /* Memoization for opCode per address */
+    this.opCodeForAddress = {
+      // '0x123': '0xopCode'
     }
   }
 
@@ -33,24 +34,22 @@ export default class UnlockService extends EventEmitter {
     if (!this.web3) {
       throw new Error(Errors.MISSING_WEB3)
     }
-    if (this.versionForAddress[this.unlockContractAddress]) {
-      // This was memoized!
-      return this.versionForAddress[this.unlockContractAddress]
-    }
 
-    const opCode = await this.web3.eth.getCode(this.unlockContractAddress)
+    let opCode = this.opCodeForAddress[this.unlockContractAddress]
+    if (!opCode) {
+      // This was no memo-ized
+      opCode = await this.web3.eth.getCode(this.unlockContractAddress)
+      this.opCodeForAddress[this.unlockContractAddress] = opCode
+    }
 
     if (opCode === '0x') {
       throw new Error(Errors.NON_DEPLOYED_CONTRACT)
     }
-    const versions = [UnlockV0, UnlockV01]
-    for (let i = 0; i < versions.length; i++) {
-      const version = versions[i]
-      if (version.Unlock.deployedBytecode === opCode) {
-        this.versionForAddress[this.unlockContractAddress] = UnlockV0
-        return version
-      }
+
+    if (UnlockV0.Unlock.deployedBytecode === opCode) {
+      return v0
     }
+
     throw new Error(Errors.UNKNOWN_CONTRACT)
   }
 }

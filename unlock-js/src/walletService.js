@@ -1,6 +1,5 @@
 import Web3 from 'web3'
 import UnlockService from './unlockService'
-import v0 from './v0'
 import { GAS_AMOUNTS } from './constants'
 
 /**
@@ -127,8 +126,9 @@ export default class WalletService extends UnlockService {
    * @param {PropTypes.address} account: account who owns the lock
    * @param {string} price : new price for the lock
    */
-  updateKeyPrice(lock, account, price) {
-    return v0.updateKeyPrice.bind(this)(lock, account, price)
+  async updateKeyPrice(lock, account, price) {
+    const version = await this.unlockContractAbiVersion()
+    return version.updateKeyPrice.bind(this)(lock, account, price)
   }
 
   /**
@@ -136,8 +136,9 @@ export default class WalletService extends UnlockService {
    * @param {PropTypes.lock} lock
    * @param {PropTypes.address} owner
    */
-  createLock(lock, owner) {
-    return v0.createLock.bind(this)(lock, owner)
+  async createLock(lock, owner) {
+    const version = await this.unlockContractAbiVersion()
+    return version.createLock.bind(this)(lock, owner)
   }
 
   /**
@@ -152,8 +153,9 @@ export default class WalletService extends UnlockService {
    * @param {string} data
    * @param {string} account
    */
-  purchaseKey(lock, owner, keyPrice, account, data = '') {
-    return v0.purchaseKey.bind(this)(lock, owner, keyPrice, account, data)
+  async purchaseKey(lock, owner, keyPrice, account, data = '') {
+    const version = await this.unlockContractAbiVersion()
+    return version.purchaseKey.bind(this)(lock, owner, keyPrice, account, data)
   }
 
   /**
@@ -164,8 +166,9 @@ export default class WalletService extends UnlockService {
    * @param {string} ethAmount
    * @param {Function} callback
    */
-  partialWithdrawFromLock(lock, account, ethAmount, callback) {
-    return v0.partialWithdrawFromLock.bind(this)(
+  async partialWithdrawFromLock(lock, account, ethAmount, callback) {
+    const version = await this.unlockContractAbiVersion()
+    return version.partialWithdrawFromLock.bind(this)(
       lock,
       account,
       ethAmount,
@@ -179,8 +182,9 @@ export default class WalletService extends UnlockService {
    * @param {PropTypes.address} account
    * @param {Function} callback TODO: implement...
    */
-  withdrawFromLock(lock, account) {
-    return v0.withdrawFromLock.bind(this)(lock, account)
+  async withdrawFromLock(lock, account) {
+    const version = await this.unlockContractAbiVersion()
+    return version.withdrawFromLock.bind(this)(lock, account)
   }
 
   /**

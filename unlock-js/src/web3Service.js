@@ -5,7 +5,6 @@ import * as UnlockV0 from 'unlock-abi-0'
 import UnlockService from './unlockService'
 import { MAX_UINT, UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
 import TransactionTypes from './transactionTypes'
-import v0 from './v0'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -206,8 +205,9 @@ export default class Web3Service extends UnlockService {
    * to create a new Lock.
    * @param {*} address
    */
-  getPastLockCreationsTransactionsForUser(address) {
-    return v0.getPastLockCreationsTransactionsForUser.bind(this)(address)
+  async getPastLockCreationsTransactionsForUser(address) {
+    const version = await this.unlockContractAbiVersion()
+    return version.getPastLockCreationsTransactionsForUser.bind(this)(address)
   }
 
   /**
@@ -215,8 +215,9 @@ export default class Web3Service extends UnlockService {
    * triggered events.
    * @param {*} lockAddress
    */
-  getPastLockTransactions(lockAddress) {
-    return v0.getPastLockTransactions.bind(this)(lockAddress)
+  async getPastLockTransactions(lockAddress) {
+    const version = await this.unlockContractAbiVersion()
+    return version.getPastLockTransactions.bind(this)(lockAddress)
   }
 
   /**
@@ -498,8 +499,9 @@ export default class Web3Service extends UnlockService {
    * We use the block version
    * @return Promise<Lock>
    */
-  getLock(address) {
-    return v0.getLock.bind(this)(address)
+  async getLock(address) {
+    const version = await this.unlockContractAbiVersion()
+    return version.getLock.bind(this)(address)
   }
 
   /**
@@ -507,8 +509,9 @@ export default class Web3Service extends UnlockService {
    * @param {PropTypes.string} lock
    * @param {PropTypes.string} owner
    */
-  getKeyByLockForOwner(lock, owner) {
-    return v0.getKeyByLockForOwner.bind(this)(lock, owner)
+  async getKeyByLockForOwner(lock, owner) {
+    const version = await this.unlockContractAbiVersion()
+    return version.getKeyByLockForOwner.bind(this)(lock, owner)
   }
 
   /**
@@ -601,7 +604,8 @@ export default class Web3Service extends UnlockService {
    * @param {PropTypes.integer}
    * @param {PropTypes.integer}
    */
-  getKeysForLockOnPage(lock, page, byPage) {
-    v0.getKeysForLockOnPage.bind(this)(lock, page, byPage)
+  async getKeysForLockOnPage(lock, page, byPage) {
+    const version = await this.unlockContractAbiVersion()
+    version.getKeysForLockOnPage.bind(this)(lock, page, byPage)
   }
 }
