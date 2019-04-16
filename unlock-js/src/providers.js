@@ -1,6 +1,7 @@
 import Web3 from 'web3'
 
 // There is no standard way to detect the provider name...
+// TODO: remove? this convenience function is unused
 export function getCurrentProvider(environment) {
   if (
     environment.ethereum &&
@@ -37,6 +38,7 @@ export function getCurrentProvider(environment) {
   return 'UnknownProvider'
 }
 
-export function getWeb3HTTPProvider(url) {
+export function getWeb3Provider(url) {
+  // TODO: use websocket provider
   return new Web3.providers.HttpProvider(url)
 }
