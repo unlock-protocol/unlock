@@ -444,6 +444,6 @@ export default class Web3Service extends UnlockService {
    */
   async getKeysForLockOnPage(lock, page, byPage) {
     const version = await this.unlockContractAbiVersion()
-    version.getKeysForLockOnPage.bind(this)(lock, page, byPage)
+    return version.getKeysForLockOnPage.bind(this)(lock, page, byPage)
   }
 }
