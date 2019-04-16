@@ -356,38 +356,18 @@ export default class Web3Service extends UnlockService {
   /**
    * The transaction is still pending: it has been sent to the network but not
    * necessarily received by the node we're asking it (and not mined...)
-   * TODO: This presents a UI challenge because we currently do not show anything to the
-   * user that a transaction exists and is pending... (since we have nothing to link it to)
-   * Hopefully though this should be fairly short lived because the transaction should be propagated
-   * to all nodes fairly quickly
    * @param {*} transactionHash
    * @param {*} blockNumber
    * @param {object} defaults
    * @private
    */
-  _getSubmittedTransaction(transactionHash, blockNumber, defaults) {
-    this._watchTransaction(transactionHash)
-
-    // If we have default values for the transaction (passed by the walletService)
-    if (defaults) {
-      const contract =
-        this.unlockContractAddress === Web3Utils.toChecksumAddress(defaults.to)
-          ? UnlockV0.Unlock
-          : UnlockV0.PublicLock
-
-      return this.parseTransactionFromInput(
-        transactionHash,
-        contract,
-        defaults.input,
-        defaults.to
-      )
-    }
-
-    return this.emit('transaction.updated', transactionHash, {
-      status: 'submitted',
-      confirmations: 0,
-      blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
-    })
+  async _getSubmittedTransaction(transactionHash, blockNumber, defaults) {
+    const version = await this._getSubmittedTransaction()
+    return version._getSubmittedTransaction.bind(this)(
+      transactionHash,
+      blockNumber,
+      defaults
+    )
   }
 
   /**
