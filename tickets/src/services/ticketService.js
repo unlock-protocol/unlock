@@ -7,24 +7,18 @@ export default class TicketService {
 
   /**
    * Saves a new event to locksmith
-   * @param {*} lockAddress
-   * @param {*} name
-   * @param {*} description
-   * @param {*} location
-   * @param {*} date
-   * @param {*} owner
-   * @param {*} logo
+   * @param {*} event
    * @returns {Promise<*>}
    */
-  async createEvent(
+  async createEvent({
     lockAddress,
     name,
     description,
     location,
     date,
     owner,
-    logo
-  ) {
+    logo,
+  }) {
     const payload = {
       lockAddress,
       name,

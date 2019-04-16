@@ -26,11 +26,7 @@ describe('TicketService', () => {
         axios.post.mockReturnValue({})
         await ticketService.createEvent(event)
 
-        expect(axios.post).toHaveBeenCalledWith(
-          `${serviceHost}/events/`,
-          event,
-          {}
-        )
+        expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/events/`, event)
       })
     })
     describe('when the event cannot be created', () => {
@@ -52,11 +48,7 @@ describe('TicketService', () => {
           expect(error).toEqual('Hark! An Error')
         }
 
-        expect(axios.post).toHaveBeenCalledWith(
-          `${serviceHost}/events/`,
-          event,
-          {}
-        )
+        expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/events/`, event)
       })
     })
   })
@@ -69,15 +61,13 @@ describe('TicketService', () => {
         await ticketService.getEvent(eventAddress)
 
         expect(axios.get).toHaveBeenCalledWith(
-          `${serviceHost}/events/${eventAddress}`,
-          null,
-          {}
+          `${serviceHost}/events/${eventAddress}`
         )
       })
     })
     describe('when an event cannot be retrieved', () => {
       it('returns a rejected promise', async () => {
-        expect.assertions(1)
+        expect.assertions(2)
         const eventAddress = 'abc123'
         axios.get.mockRejectedValue('Egads! An Error')
 
@@ -88,9 +78,7 @@ describe('TicketService', () => {
         }
 
         expect(axios.get).toHaveBeenCalledWith(
-          `${serviceHost}/events/${eventAddress}`,
-          null,
-          {}
+          `${serviceHost}/events/${eventAddress}`
         )
       })
     })
