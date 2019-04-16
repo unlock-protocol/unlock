@@ -1,3 +1,33 @@
+# Unlock application
+
+This sub-repository contains the Unlock dashboard application, used to create and administer locks.
+
+## Demo
+
+We recorded a screencast to show how Unlock works for a paywall. The dashboard components are represented by this
+application.
+
+[![Demo Unlock](https://img.youtube.com/vi/B1OVnU2Rw8A/0.jpg)](https://www.youtube.com/watch?v=B1OVnU2Rw8A)
+
+## Requirements
+
+This is a Node project that depends on React and [NextJS](https://nextjs.org/). You must have Node and npm installed 
+to run.
+
+In addition, this application uses [Ganache](https://truffleframework.com/ganache) in order to support blockchain testing
+during development.
+
+On the front-end, you should have a [web3](https://web3js.readthedocs.io/en/1.0/)-compatible wallet like 
+[Metamask](https://metamask.io/) installed in your browser, or be using a natively web3-compatible browser.
+
+## Getting Started
+
+ 1. Make sure you have installed required libraries by running `npm install`.
+ 2. To launch the application, run `npm run dev` at the command line while inside this sub-repository.
+
+The above steps will automatically run ganache in the background. However, you may wish to keep it consistently running
+between instances of the application. In this case, you can start it separately by running `npm run start-ganache`.
+
 ## Default accounts for testing (set up thru ganache-cli)
 
 # Available Accounts
@@ -43,13 +73,3 @@
 (8) 0xa272d59fbefc1eb1564b5a0f7c603f645965f02e3175f08d40e5486a5dcebd1c
 
 (9) 0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61
-
----
-
-This project uses [Next.js](https://github.com/zeit/next.js).
-
-### Getting started
-
-```
-npm run dev
-```
