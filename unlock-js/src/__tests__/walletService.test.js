@@ -5,12 +5,6 @@ import nock from 'nock'
 import * as UnlockV0 from 'unlock-abi-0'
 
 import WalletService from '../walletService'
-import { GAS_AMOUNTS } from '../constants'
-import Errors from '../errors'
-
-import TransactionTypes from '../transactionTypes'
-
-const { FAILED_TO_WITHDRAW_FROM_LOCK } = Errors
 
 const endpoint = 'http://127.0.0.1:8545'
 const nockScope = nock(endpoint, { encodedQueryParams: true })
@@ -69,9 +63,6 @@ describe('WalletService', () => {
     walletService = new WalletService({
       unlockAddress,
     })
-    // Tests for v0!
-    walletService.opCodeForAddress[unlockAddress] =
-      UnlockV0.Unlock.deployedBytecode
   })
 
   describe('connect', () => {

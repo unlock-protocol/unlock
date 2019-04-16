@@ -2,7 +2,6 @@
 
 import nock from 'nock'
 import * as UnlockV0 from 'unlock-abi-0'
-import * as UnlockV01 from 'unlock-abi-0-1'
 import UnlockService, { Errors } from '../unlockService'
 import v0 from '../v0'
 

@@ -32,6 +32,25 @@ export class NockHelper {
   netVersionAndYield(netVersion) {
     return this._jsonRpcRequest('net_version', [], netVersion)
   }
+
+  // eth_call
+  ethCallAndYield(data, to, result) {
+    return this._jsonRpcRequest('eth_call', [{ data, to }, 'latest'], result)
+  }
+
+  // eth_getBalance
+  getBalanceForAccountAndYieldBalance(account, balance) {
+    return this._jsonRpcRequest(
+      'eth_getBalance',
+      [account.toLowerCase(), 'latest'],
+      balance
+    )
+  }
+
+  // eth_blockNumber
+  ethBlockNumber(result) {
+    return this._jsonRpcRequest('eth_blockNumber', [], result)
+  }
 }
 
 export default NockHelper

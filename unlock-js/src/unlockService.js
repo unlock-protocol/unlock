@@ -1,7 +1,6 @@
 import EventEmitter from 'events'
 
 import * as UnlockV0 from 'unlock-abi-0'
-import * as UnlockV01 from 'unlock-abi-0-1'
 
 import v0 from './v0'
 
