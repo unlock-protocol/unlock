@@ -88,6 +88,43 @@ describe('v0', () => {
       })
     })
 
+    describe('when the transaction has been mined in the next block', () => {
+      beforeEach(() => {
+        nock.ethBlockNumber(`0x${(17).toString('16')}`)
+        nock.ethGetTransactionByHash(transaction.hash, {
+          hash:
+            '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
+          nonce: '0x04',
+          blockHash:
+            '0xdc7c95899e030f3104871a597866767ec296e948a24e99b12e0b251011d11c36',
+          blockNumber: `0x${(18).toString('16')}`,
+          transactionIndex: '0x0d',
+          from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+          to: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
+          value: '0x0',
+          gas: '0x16e360',
+          gasPrice: '0x04a817c800',
+          input:
+            '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
+        })
+        web3Service.web3.eth.getTransactionReceipt = jest.fn(
+          () => new Promise(() => {})
+        )
+        web3Service._watchTransaction = jest.fn()
+        web3Service.getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
+      })
+
+      it('should emit a transaction.updated event with 0 confirmations', done => {
+        expect.assertions(1)
+        web3Service.on('transaction.updated', (hash, update) => {
+          expect(update.confirmations).toEqual(0) // 0 > -1 [17-18]
+          done()
+        })
+
+        web3Service.getTransaction(transaction.hash)
+      })
+    })
+
     describe('when the transaction has been mined but not fully confirmed', () => {
       beforeEach(() => {
         nock.ethBlockNumber(`0x${(17).toString('16')}`)

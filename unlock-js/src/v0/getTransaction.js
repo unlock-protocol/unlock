@@ -53,7 +53,7 @@ export default function(transactionHash, defaults) {
     this.emit('transaction.updated', transactionHash, {
       status: 'mined',
       type: transactionType,
-      confirmations: blockNumber - blockTransaction.blockNumber,
+      confirmations: Math.max(blockNumber - blockTransaction.blockNumber, 0), // sometimes we get the block before getBlockNumber yields it.
       blockNumber: blockTransaction.blockNumber,
     })
 
