@@ -20,7 +20,7 @@ export const signAddress = address => ({
   address,
 })
 
-export const gotSignedAddress = signedAddress => ({
+export const gotSignedAddress = (address, signedAddress) => ({
   type: GOT_SIGNED_ADDRESS,
   signedAddress,
 })
