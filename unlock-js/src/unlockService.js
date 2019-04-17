@@ -29,6 +29,9 @@ export default class UnlockService extends EventEmitter {
 
   /**
    * Returns the ABI for the Unlock contract deployed
+   * This tests for several versions, and if none match, will look to see if the address
+   * is actually a proxy address. If it is, then, it will look for the implementation address, but
+   * to get it it needs to send a request from the 'admin' address (not signed).
    * @param {*} address
    */
   async unlockContractAbiVersion() {
@@ -36,26 +39,33 @@ export default class UnlockService extends EventEmitter {
       throw new Error(Errors.MISSING_WEB3)
     }
 
-    let opCode = this.opCodeForAddress[this.unlockContractAddress]
-    if (!opCode) {
-      // This was no memo-ized
-      opCode = await this.web3.eth.getCode(this.unlockContractAddress)
-      this.opCodeForAddress[this.unlockContractAddress] = opCode
+    let version = await this._contractAbiVersionFromAddress(
+      this.unlockContractAddress
+    )
+
+    if (version) {
+      return version
     }
 
-    if (opCode === '0x') {
-      throw new Error(Errors.NON_DEPLOYED_CONTRACT)
+    // Else: this must be a proxy: let's get the implementation
+    let implementation
+    try {
+      implementation = await this._getImplementationAddressFromProxy(
+        this.unlockContractAddress
+      )
+    } catch (error) {
+      // We could not get the implementation address which means this is not a proxy
+      throw new Error(Errors.UNKNOWN_CONTRACT)
     }
 
-    if (UnlockV0.Unlock.deployedBytecode === opCode) {
-      return v0
+    version = await this._contractAbiVersionFromAddress(implementation)
+
+    if (version) {
+      return version
     }
 
-    if (UnlockV01.Unlock.deployedBytecode === opCode) {
-      return v01
-    }
-
-    throw new Error(Errors.UNKNOWN_CONTRACT)
+    // throw new Error(Errors.UNKNOWN_CONTRACT)
+    return v0 // TODO: change this once we have certainty over the deployed contract
   }
 
   /**
@@ -86,6 +96,63 @@ export default class UnlockService extends EventEmitter {
       return v01
     }
 
-    throw new Error(Errors.UNKNOWN_CONTRACT)
+    // throw new Error(Errors.UNKNOWN_CONTRACT)
+    return v0 // TODO: we currently default to v0 because the deployed version may bot match the content of the npm module. Change this once we have certainty over the deployed contract.
+  }
+
+  /**
+   * Private method, which given an address will return the implementation behind it
+   * @param {*} address
+   */
+  async _getImplementationAddressFromProxy(address) {
+    const contract = new this.web3.eth.Contract(
+      [
+        {
+          constant: true,
+          inputs: [],
+          name: 'implementation',
+          outputs: [
+            {
+              name: '',
+              type: 'address',
+            },
+          ],
+          payable: false,
+          stateMutability: 'view',
+          type: 'function',
+        },
+      ],
+      address
+    )
+    return contract.methods.implementation().call({
+      from: '0x33ab07df7f09e793ddd1e9a25b079989a557119a',
+    })
+  }
+
+  /**
+   * returns the version based on the opCode at an address
+   * @param {*} address
+   */
+  async _contractAbiVersionFromAddress(address) {
+    let opCode = this.opCodeForAddress[address]
+    if (!opCode) {
+      // This was no memo-ized
+      opCode = await this.web3.eth.getCode(address)
+      this.opCodeForAddress[address] = opCode
+    }
+
+    if (opCode === '0x') {
+      throw new Error(Errors.NON_DEPLOYED_CONTRACT)
+    }
+
+    if (UnlockV0.Unlock.deployedBytecode === opCode) {
+      return v0
+    }
+
+    if (UnlockV01.Unlock.deployedBytecode === opCode) {
+      return v01
+    }
+
+    return
   }
 }
