@@ -13,7 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "ethereumjs-util": "^6.0.0",
-    "unlock-abi-0": "^1.0.2",
+    "unlock-abi-0": "^1.0.3",
     "unlock-abi-0-1": "^1.0.0",
     "web3": "1.0.0-beta.37",
     "web3-eth-abi": "1.0.0-beta.37",
