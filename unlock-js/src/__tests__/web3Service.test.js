@@ -266,21 +266,43 @@ describe('Web3Service', () => {
   })
 
   describe('versions', () => {
-    const versionSpecificMethods = [
+    const versionSpecificLockMethods = [
       '_getKeyByLockForOwner',
-      '_getPendingTransaction',
-      '_getSubmittedTransaction',
       'getKeyByLockForOwner',
       'getKeysForLockOnPage',
       'getLock',
       'getPastLockCreationsTransactionsForUser',
       'getPastLockTransactions',
+    ]
+
+    it.each(versionSpecificLockMethods)(
+      'should invoke the implementation of the corresponding version of %s',
+      async method => {
+        const args = []
+        const result = {}
+        const version = {
+          [method]: function(_args) {
+            // Needs to be a function because it is bound to web3Service
+            expect(this).toBe(web3Service)
+            expect(_args).toBe(...args)
+            return result
+          },
+        }
+        web3Service.lockContractAbiVersion = jest.fn(() => version)
+        const r = await web3Service[method](...args)
+        expect(r).toBe(result)
+      }
+    )
+
+    const versionSpecificUnlockMethods = [
+      '_getPendingTransaction',
+      '_getSubmittedTransaction',
       'getTransaction',
       'getTransactionType',
       'parseTransactionFromInput',
     ]
 
-    it.each(versionSpecificMethods)(
+    it.each(versionSpecificUnlockMethods)(
       'should invoke the implementation of the corresponding version of %s',
       async method => {
         const args = []
@@ -304,7 +326,10 @@ describe('Web3Service', () => {
     it.each(supportedVersions)(
       'should implement all the required methods',
       version => {
-        versionSpecificMethods.forEach(method => {
+        versionSpecificLockMethods.forEach(method => {
+          expect(version[method]).toBeInstanceOf(Function)
+        })
+        versionSpecificUnlockMethods.forEach(method => {
           expect(version[method]).toBeInstanceOf(Function)
         })
       }
