@@ -3,6 +3,7 @@ import EventEmitter from 'events'
 import web3Middleware from '../../middlewares/web3Middleware'
 import { UPDATE_ACCOUNT, setAccount } from '../../actions/accounts'
 import { ADD_TRANSACTION, UPDATE_TRANSACTION } from '../../actions/transaction'
+import { ADD_LOCK, UPDATE_LOCK } from '../../actions/lock'
 import { SET_ERROR } from '../../actions/error'
 import configure from '../../config'
 
@@ -97,6 +98,41 @@ beforeEach(() => {
 })
 
 describe('Web3 middleware', () => {
+  describe('lock.updated events triggered by the web3Service', () => {
+    it('should dispatch addLock if the lock does not exist yet', () => {
+      expect.assertions(1)
+      const { store } = create()
+      const address = '0x123'
+      const update = {
+        name: 'My Lock',
+      }
+      mockWeb3Service.emit('lock.updated', address, update)
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: ADD_LOCK,
+          address,
+          lock: update,
+        })
+      )
+    })
+
+    it('should dispatch updateLock if the lock does already exist', () => {
+      expect.assertions(1)
+      const { store } = create()
+      const update = {
+        name: 'My Lock',
+      }
+      mockWeb3Service.emit('lock.updated', lock.address, update)
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: UPDATE_LOCK,
+          address: lock.address,
+          update,
+        })
+      )
+    })
+  })
+
   it('should handle account.updated events triggered by the web3Service', () => {
     expect.assertions(1)
     const { store } = create()
