@@ -12,5 +12,13 @@ const ticketsReducer = (state = initialState, action) => {
 
   if (action.type === GOT_SIGNED_ADDRESS) {
     const { address, signedAddress } = action
+    return {
+      [address]: signedAddress,
+      ...state,
+    }
   }
+
+  return state
 }
+
+export default ticketsReducer
