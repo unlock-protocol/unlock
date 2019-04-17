@@ -45,12 +45,14 @@ describe('ticket actions', () => {
 
   it('should create an action emitting an address that has been signed', () => {
     expect.assertions(1)
+    const address = '0x12345678'
     const signedAddress = 'ENCRYPTED'
     const expectedAction = {
       type: GOT_SIGNED_ADDRESS,
+      address,
       signedAddress,
     }
 
-    expect(gotSignedAddress(signedAddress)).toEqual(expectedAction)
+    expect(gotSignedAddress(address, signedAddress)).toEqual(expectedAction)
   })
 })
