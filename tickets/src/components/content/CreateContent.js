@@ -267,7 +267,7 @@ const Step = styled.li`
   margin-bottom: 60px;
 `
 
-export const Fieldset = styled.div`
+const Fieldset = styled.div`
   padding: 0;
   border: none;
   ${Media.nophone`
@@ -278,7 +278,7 @@ export const Fieldset = styled.div`
   `}
 `
 
-export const Field = styled.div`
+const Field = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 25px auto;
@@ -292,7 +292,7 @@ const Text = styled.label`
   font-size: 13px;
   color: var(--darkgrey);
 `
-export const Label = Text
+const Label = Text
 
 const Cta = styled.a`
   clear: both;
