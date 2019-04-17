@@ -82,7 +82,7 @@ export class CreateContent extends Component {
   }
 
   render() {
-    const { locks } = this.props
+    const { locks, now } = this.props
     const { date, name, description, location, lock } = this.state
 
     return (
@@ -141,7 +141,11 @@ export class CreateContent extends Component {
                     </Field>
                     <Field>
                       <Label>Date</Label>
-                      <DatePicker date={date} onChange={this.dateChanged} />
+                      <DatePicker
+                        now={now}
+                        date={date}
+                        onChange={this.dateChanged}
+                      />
                     </Field>
                     <Field>
                       <Label>Location</Label>
@@ -185,14 +189,13 @@ CreateContent.defaultProps = {
   account: null,
 }
 
-export const mapStateToProps = ({ locks, account }) => {
+export const mapStateToProps = ({ locks, account }, { now }) => {
   let selectLocks = []
   Object.values(locks).map(lock => selectLocks.push(lock.address))
-  let now = new Date()
   return {
     locks: selectLocks,
     account,
-    now,
+    now: now || new Date(),
   }
 }
 
