@@ -6,6 +6,7 @@ import { PROVIDER_READY } from '../../actions/provider'
 import { SET_ERROR } from '../../actions/error'
 import { POLLING_INTERVAL } from '../../constants'
 import { FATAL_NON_DEPLOYED_CONTRACT, FATAL_WRONG_NETWORK } from '../../errors'
+import { SIGN_ADDRESS, gotSignedAddress } from '../../actions/ticket'
 
 let mockConfig
 
@@ -56,6 +57,7 @@ class MockWalletService extends EventEmitter {
     this.ready = true
   }
   connect() {}
+  signData() {}
 }
 
 let mockWalletService = new MockWalletService()
@@ -254,6 +256,33 @@ describe('Wallet middleware', () => {
     invoke(action)
     expect(mockWalletService.connect).toHaveBeenCalledWith(
       mockConfig.providers[state.provider]
+    )
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it('should handle SIGN_ADDRESS and emit a signed address', () => {
+    expect.assertions(3)
+    const {
+      next,
+      invoke,
+      store: { dispatch, getState },
+    } = create()
+    const address = '0x12345678'
+    const action = {
+      type: SIGN_ADDRESS,
+      address,
+    }
+    mockWalletService.signData = jest.fn((_, address, cb) =>
+      cb(null, `ENCRYPTED: ${address}`)
+    )
+    invoke(action)
+    expect(mockWalletService.signData).toHaveBeenCalledWith(
+      getState().account,
+      address,
+      expect.any(Function)
+    )
+    expect(dispatch).toHaveBeenCalledWith(
+      gotSignedAddress(`ENCRYPTED: ${address}`)
     )
     expect(next).toHaveBeenCalledWith(action)
   })
