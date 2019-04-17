@@ -36,4 +36,4 @@ If the algorithm determined this is a transaction that is unlikely to be confirm
 
 In a nutshell, Optimistic Unlocking makes the entire purchasing experience better by allowing instant unlocking while still maintaining a high degree of security. A much nicer user experience gives users more freedom and creators more conversion, all with minimal risk.
 
-That’s Optimistic Unlocking – and one step towards our bigger goal of removing barriers in the purchasing flow. We hope you find this mechanism just œas exciting and useful as we do and we’d love to hear from you – email us, or join the conversation on telegram.
+That’s Optimistic Unlocking – and one step towards our bigger goal of removing barriers in the purchasing flow. We hope you find this mechanism just as exciting and useful as we do and we’d love to hear from you – email us, or join the conversation on telegram.
