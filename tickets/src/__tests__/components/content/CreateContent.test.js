@@ -123,7 +123,7 @@ describe('CreateContent', () => {
 describe('mapStateToProps', () => {
   it('should return an array of locks when given a redux lock object', () => {
     expect.assertions(4)
-    const props = mapStateToProps({ locks: inputLocks })
+    const props = mapStateToProps({ locks: inputLocks }, { now: null })
 
     expect(props.locks.length).toEqual(2)
     expect(props.locks[0]).toEqual('abc123')

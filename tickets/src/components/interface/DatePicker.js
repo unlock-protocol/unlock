@@ -88,7 +88,7 @@ export default class DatePicker extends Component {
           className="select-container"
           classNamePrefix="select-option"
           options={months}
-          onChange={this.onChange('setMonth')}
+          onChange={this.onChange('setUTCMonth')}
           value={month}
         />
         <StyledSelect
@@ -96,7 +96,7 @@ export default class DatePicker extends Component {
           className="select-container"
           classNamePrefix="select-option"
           options={days}
-          onChange={this.onChange('setDate')}
+          onChange={this.onChange('setUTCDate')}
           value={day}
         />
         <StyledSelect
@@ -104,7 +104,7 @@ export default class DatePicker extends Component {
           className="select-container"
           classNamePrefix="select-option"
           options={years}
-          onChange={this.onChange('setYear')}
+          onChange={this.onChange('setUTCFullYear')}
           value={year}
         />
       </EventDate>
