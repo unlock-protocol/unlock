@@ -24,7 +24,7 @@ fi
 
 if [ -n "$SITE_ID" ] && [ -n "$AUTH_TOKEN" ]; then
   # Package
-  UNLOCK_ENV="$DEPLOY_ENV" npm run deploy;
+  UNLOCK_ENV=prod npm run deploy;
   # And ship!
   echo $MESSAGE
   netlify deploy -s $SITE_ID -a $AUTH_TOKEN --dir=$BUILD_PATH $PROD --message="$MESSAGE"
