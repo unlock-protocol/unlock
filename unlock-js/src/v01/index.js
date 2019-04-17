@@ -32,4 +32,5 @@ export default {
   purchaseKey,
   updateKeyPrice,
   withdrawFromLock,
+  version: 'v01',
 }
