@@ -53,6 +53,6 @@ describe('ticket actions', () => {
       signedAddress,
     }
 
-    expect(gotSignedAddress(signedAddress)).toEqual(expectedAction)
+    expect(gotSignedAddress(address, signedAddress)).toEqual(expectedAction)
   })
 })

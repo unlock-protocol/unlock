@@ -22,5 +22,6 @@ export const signAddress = address => ({
 
 export const gotSignedAddress = (address, signedAddress) => ({
   type: GOT_SIGNED_ADDRESS,
+  address,
   signedAddress,
 })
