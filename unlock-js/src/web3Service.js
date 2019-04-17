@@ -173,7 +173,7 @@ export default class Web3Service extends UnlockService {
    * @param {*} address
    */
   async getPastLockCreationsTransactionsForUser(address) {
-    const version = await this.unlockContractAbiVersion()
+    const version = await this.lockContractAbiVersion(address)
     return version.getPastLockCreationsTransactionsForUser.bind(this)(address)
   }
 
@@ -183,7 +183,7 @@ export default class Web3Service extends UnlockService {
    * @param {*} lockAddress
    */
   async getPastLockTransactions(lockAddress) {
-    const version = await this.unlockContractAbiVersion()
+    const version = await this.lockContractAbiVersion(lockAddress)
     return version.getPastLockTransactions.bind(this)(lockAddress)
   }
 
@@ -350,7 +350,7 @@ export default class Web3Service extends UnlockService {
    * @return Promise<Lock>
    */
   async getLock(address) {
-    const version = await this.unlockContractAbiVersion()
+    const version = await this.lockContractAbiVersion(address)
     return version.getLock.bind(this)(address)
   }
 
@@ -360,7 +360,7 @@ export default class Web3Service extends UnlockService {
    * @param {PropTypes.string} owner
    */
   async getKeyByLockForOwner(lock, owner) {
-    const version = await this.unlockContractAbiVersion()
+    const version = await this.lockContractAbiVersion(lock)
     return version.getKeyByLockForOwner.bind(this)(lock, owner)
   }
 
@@ -372,7 +372,7 @@ export default class Web3Service extends UnlockService {
    * @return Promise<>
    */
   async _getKeyByLockForOwner(lockContract, owner) {
-    const version = await this.unlockContractAbiVersion()
+    const version = await this.lockContractAbiVersion(lockContract)
     return version._getKeyByLockForOwner.bind(this)(lockContract, owner)
   }
 
@@ -443,7 +443,7 @@ export default class Web3Service extends UnlockService {
    * @param {PropTypes.integer}
    */
   async getKeysForLockOnPage(lock, page, byPage) {
-    const version = await this.unlockContractAbiVersion()
+    const version = await this.lockContractAbiVersion(lock)
     return version.getKeysForLockOnPage.bind(this)(lock, page, byPage)
   }
 }
