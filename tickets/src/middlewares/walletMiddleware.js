@@ -81,18 +81,15 @@ const walletMiddleware = config => {
 
         if (action.type === SIGN_ADDRESS) {
           const { account } = getState()
-          walletService.signData(
-            account,
-            action.address,
-            (error, signedAddress) => {
-              if (error) {
-                // TODO: Does this need to be handled in the error consumer?
-                dispatch(setError(FAILED_TO_SIGN_ADDRESS, error))
-              } else {
-                dispatch(gotSignedAddress(signedAddress))
-              }
+          const { address } = action
+          walletService.signData(account, address, (error, signedAddress) => {
+            if (error) {
+              // TODO: Does this need to be handled in the error consumer?
+              dispatch(setError(FAILED_TO_SIGN_ADDRESS, error))
+            } else {
+              dispatch(gotSignedAddress(address, signedAddress))
             }
-          )
+          })
         }
         next(action)
       }

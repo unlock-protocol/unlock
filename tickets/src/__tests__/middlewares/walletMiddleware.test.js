@@ -282,7 +282,7 @@ describe('Wallet middleware', () => {
       expect.any(Function)
     )
     expect(dispatch).toHaveBeenCalledWith(
-      gotSignedAddress(`ENCRYPTED: ${address}`)
+      gotSignedAddress(address, `ENCRYPTED: ${address}`)
     )
     expect(next).toHaveBeenCalledWith(action)
   })

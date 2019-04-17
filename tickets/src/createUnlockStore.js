@@ -30,6 +30,9 @@ import accountReducer, {
 import walletStatusReducer, {
   initialState as defaultWalletStatus,
 } from './reducers/walletStatusReducer'
+import ticketsReducer, {
+  initialState as defaultTicketAddresses,
+} from './reducers/ticketsReducer'
 
 const config = configure()
 
@@ -44,6 +47,7 @@ export const createUnlockStore = (defaultState = {}, middlewares = []) => {
     currency: currencyReducer,
     errors: errorsReducer,
     walletStatus: walletStatusReducer,
+    tickets: ticketsReducer,
   }
 
   // Cleanup the defaultState to remove all null values so that we do not overwrite existing
@@ -65,6 +69,7 @@ export const createUnlockStore = (defaultState = {}, middlewares = []) => {
       currency: defaultCurrency,
       errors: defaultError,
       walletStatus: defaultWalletStatus,
+      ticketAddresses: defaultTicketAddresses,
     },
     {
       provider: Object.keys(config.providers)[0],
