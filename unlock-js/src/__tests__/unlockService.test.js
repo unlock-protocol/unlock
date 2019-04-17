@@ -63,19 +63,130 @@ describe('UnlockService', () => {
       expect(unlockService.web3.eth.getCode).toHaveBeenCalledWith(unlockAddress)
     })
 
-    it('should throw UNKNOWN_CONTRACT if the opCode does not match any version', async () => {
-      expect.assertions(2)
-      unlockService.web3.eth = {
-        getCode: jest.fn(() => {
-          return Promise.resolve('0xabc')
-        }),
-      }
-      try {
-        await unlockService.unlockContractAbiVersion()
-      } catch (error) {
-        expect(error.message).toEqual(Errors.UNKNOWN_CONTRACT)
-      }
-      expect(unlockService.web3.eth.getCode).toHaveBeenCalledWith(unlockAddress)
+    describe('if the opCode does not match any version', () => {
+      it('should get the implementation address from the proxy contract and match v0', async () => {
+        expect.assertions(3)
+        const implementationAddress = '0x123'
+        unlockService.web3.eth = {
+          getCode: jest.fn(address => {
+            if (address == implementationAddress) {
+              return Promise.resolve(UnlockV0.Unlock.deployedBytecode)
+            } else {
+              // Proxy!
+              return Promise.resolve('0xabc')
+            }
+          }),
+        }
+        unlockService._getImplementationAddressFromProxy = jest.fn(() => {
+          return implementationAddress
+        })
+
+        const version = await unlockService.unlockContractAbiVersion()
+        expect(version).toEqual(v0)
+        expect(unlockService.web3.eth.getCode).toHaveBeenCalledWith(
+          unlockAddress
+        )
+        expect(
+          unlockService._getImplementationAddressFromProxy
+        ).toHaveBeenCalledWith(unlockAddress)
+      })
+
+      it('should get the implementation address from the proxy contract and match v01', async () => {
+        expect.assertions(3)
+        const implementationAddress = '0x123'
+        unlockService.web3.eth = {
+          getCode: jest.fn(address => {
+            if (address == implementationAddress) {
+              return Promise.resolve(UnlockV01.Unlock.deployedBytecode)
+            } else {
+              // Proxy!
+              return Promise.resolve('0xabc')
+            }
+          }),
+        }
+        unlockService._getImplementationAddressFromProxy = jest.fn(() => {
+          return implementationAddress
+        })
+
+        const version = await unlockService.unlockContractAbiVersion()
+        expect(version).toEqual(v01)
+        expect(unlockService.web3.eth.getCode).toHaveBeenCalledWith(
+          unlockAddress
+        )
+        expect(
+          unlockService._getImplementationAddressFromProxy
+        ).toHaveBeenCalledWith(unlockAddress)
+      })
+
+      it('should throw an error of the opCode is not a proxy', async () => {
+        expect.assertions(3)
+        unlockService._contractAbiVersionFromAddress = jest.fn(() => {
+          return
+        })
+        unlockService._getImplementationAddressFromProxy = jest.fn(() => {
+          throw new Error('not a proxy')
+        })
+        try {
+          await unlockService.unlockContractAbiVersion()
+        } catch (error) {
+          expect(error.message).toEqual(Errors.UNKNOWN_CONTRACT)
+        }
+        expect(
+          unlockService._contractAbiVersionFromAddress
+        ).toHaveBeenCalledWith(unlockAddress)
+        expect(
+          unlockService._getImplementationAddressFromProxy
+        ).toHaveBeenCalledWith(unlockAddress)
+      })
+
+      // TODO: this test should be removed and replaced by the next skipped test
+      it('should default to v0 if the version still could not be identified by the proxy', async () => {
+        expect.assertions(3)
+        const implementationAddress = '0x123'
+        const proxyOpCode = '0xabc'
+        const implementationOpCode = '0xdef'
+        unlockService.web3.eth = {
+          getCode: jest.fn(address => {
+            if (address == implementationAddress) {
+              return Promise.resolve(implementationOpCode)
+            } else {
+              // Proxy!
+              return Promise.resolve(proxyOpCode)
+            }
+          }),
+        }
+
+        unlockService._getImplementationAddressFromProxy = jest.fn(() => {
+          return implementationAddress
+        })
+
+        const version = await unlockService.unlockContractAbiVersion()
+        expect(version).toEqual(v0)
+        expect(unlockService.web3.eth.getCode).toHaveBeenCalledWith(
+          unlockAddress
+        )
+        expect(
+          unlockService._getImplementationAddressFromProxy
+        ).toHaveBeenCalledWith(unlockAddress)
+      })
+
+      // TODO: restore that when we have the default behavior in place
+      it.skip('should throw UNKNOWN_CONTRACT if the opCode does not match any version', async () => {
+        expect.assertions(2)
+        unlockService.web3.eth = {
+          getCode: jest.fn(() => {
+            return Promise.resolve('0xabc')
+          }),
+        }
+        try {
+          await unlockService.unlockContractAbiVersion()
+        } catch (error) {
+          expect(error.message).toEqual(Errors.UNKNOWN_CONTRACT)
+        }
+        expect(unlockService.web3.eth.getCode).toHaveBeenCalledWith(
+          unlockAddress
+        )
+      })
     })
 
     it('should memoize the result', async () => {
@@ -136,7 +247,21 @@ describe('UnlockService', () => {
       expect(unlockService.web3.eth.getCode).toHaveBeenCalledWith(address)
     })
 
-    it('should throw UNKNOWN_CONTRACT if the opCode does not match any version', async () => {
+    // This test should be removed in favor of the next one once we changed the behavior on default
+    it('should default to v0 if the opCode does not match any version', async () => {
+      expect.assertions(2)
+      unlockService.web3.eth = {
+        getCode: jest.fn(() => {
+          return Promise.resolve('0xabc')
+        }),
+      }
+      const address = '0xabc'
+      const version = await unlockService.lockContractAbiVersion(address)
+      expect(unlockService.web3.eth.getCode).toHaveBeenCalledWith(address)
+      expect(version).toEqual(v0)
+    })
+
+    it.skip('should throw UNKNOWN_CONTRACT if the opCode does not match any version', async () => {
       expect.assertions(2)
       unlockService.web3.eth = {
         getCode: jest.fn(() => {
