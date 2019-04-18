@@ -29,6 +29,7 @@ export class LogIn extends React.Component<Props, State> {
   }
 
   handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    // TODO: Validation for empty fields, etc?
     const { loginCredentials } = this.props
     const { emailAddress, password } = this.state
     e.preventDefault()
@@ -39,6 +40,15 @@ export class LogIn extends React.Component<Props, State> {
     this.setState({
       submitted: true, // eslint-disable-line react/no-unused-state
     })
+  }
+
+  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target
+
+    this.setState(prevState => ({
+      ...prevState,
+      [name]: value,
+    }))
   }
 
   handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -58,6 +68,7 @@ export class LogIn extends React.Component<Props, State> {
             id="emailInput"
             type="email"
             placeholder="Enter your email"
+            onChange={this.handleInputChange}
           />
           <br />
           <Label htmlFor="passwordInput">Password</Label>
@@ -66,6 +77,7 @@ export class LogIn extends React.Component<Props, State> {
             id="passwordInput"
             type="password"
             placeholder="Enter your password"
+            onChange={this.handleInputChange}
           />
           <br />
           <SubmitButton type="submit" value="Submit" />
