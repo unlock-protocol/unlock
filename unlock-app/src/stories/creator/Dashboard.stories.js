@@ -9,6 +9,7 @@ import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import WalletCheckOverlay from '../../components/interface/FullScreenModals'
 import configure from '../../config'
+import doNothing from '../../utils/doNothing'
 
 const account = {
   address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
@@ -142,8 +143,8 @@ storiesOf('DashboardContent', module)
         <DashboardContent
           network={network}
           account={account}
-          hideForm={() => {}}
-          showForm={() => {}}
+          hideForm={doNothing}
+          showForm={doNothing}
           {...props}
         />
       </Provider>
@@ -157,8 +158,8 @@ storiesOf('DashboardContent', module)
         <DashboardContent
           network={network}
           account={account}
-          hideForm={() => {}}
-          showForm={() => {}}
+          hideForm={doNothing}
+          showForm={doNothing}
           {...props}
         />
       </Provider>
@@ -168,8 +169,8 @@ storiesOf('DashboardContent', module)
     return (
       <Provider store={noUserStore}>
         <DashboardContent
-          hideForm={() => {}}
-          showForm={() => {}}
+          hideForm={doNothing}
+          showForm={doNothing}
           network={network}
           account={null}
           formIsVisible={false}
@@ -181,8 +182,8 @@ storiesOf('DashboardContent', module)
     return (
       <Provider store={store}>
         <DashboardContent
-          hideForm={() => {}}
-          showForm={() => {}}
+          hideForm={doNothing}
+          showForm={doNothing}
           network={network}
           account={account}
           lockFeed={[]}

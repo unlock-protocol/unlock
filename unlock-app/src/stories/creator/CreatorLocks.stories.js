@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react'
 import { CreatorLocks } from '../../components/creator/CreatorLocks'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
+import doNothing from '../../utils/doNothing'
 
 const lock = {
   name: 'First Lock',
@@ -38,7 +39,7 @@ const config = {}
 
 const ConfigProvider = ConfigContext.Provider
 
-const createLock = () => {}
+const createLock = doNothing
 
 storiesOf('CreatorLocks', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
@@ -50,7 +51,7 @@ storiesOf('CreatorLocks', module)
       <CreatorLocks
         createLock={createLock}
         lockFeed={[]}
-        hideForm={() => {}}
+        hideForm={doNothing}
         formIsVisible={false}
       />
     )
@@ -60,7 +61,7 @@ storiesOf('CreatorLocks', module)
       <CreatorLocks
         createLock={createLock}
         lockFeed={[]}
-        hideForm={() => {}}
+        hideForm={doNothing}
         formIsVisible
       />
     )
@@ -70,7 +71,7 @@ storiesOf('CreatorLocks', module)
       <CreatorLocks
         createLock={createLock}
         lockFeed={[lock]}
-        hideForm={() => {}}
+        hideForm={doNothing}
         formIsVisible={false}
       />
     )
@@ -80,7 +81,7 @@ storiesOf('CreatorLocks', module)
       <CreatorLocks
         createLock={createLock}
         lockFeed={[lock, anotherLock]}
-        hideForm={() => {}}
+        hideForm={doNothing}
         formIsVisible={false}
       />
     )
@@ -91,7 +92,7 @@ storiesOf('CreatorLocks', module)
         createLock={createLock}
         lockFeed={[lock, anotherLock]}
         formIsVisible={false}
-        hideForm={() => {}}
+        hideForm={doNothing}
         loading
       />
     )
@@ -102,7 +103,7 @@ storiesOf('CreatorLocks', module)
         createLock={createLock}
         lockFeed={[]}
         loading
-        hideForm={() => {}}
+        hideForm={doNothing}
         formIsVisible={false}
       />
     )

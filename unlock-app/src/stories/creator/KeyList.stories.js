@@ -1,6 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { KeyList } from '../../components/creator/lock/KeyList'
+import doNothing from '../../utils/doNothing'
 
 const sampleLocks = {
   '0': {
@@ -33,13 +34,11 @@ const sampleKeysForLock = (count, numberStr) => {
     })
 }
 
-const loadPage = () => {}
-
 storiesOf('KeyList', module)
   .add('0 keys', () => {
     return (
       <KeyList
-        loadPage={loadPage}
+        loadPage={doNothing}
         lock={sampleLocks['0']}
         keys={sampleKeysForLock(0, '0')}
         page={0}
@@ -49,7 +48,7 @@ storiesOf('KeyList', module)
   .add('10 keys', () => {
     return (
       <KeyList
-        loadPage={loadPage}
+        loadPage={doNothing}
         lock={sampleLocks['10']}
         keys={sampleKeysForLock(10, '10')}
         page={0}
@@ -59,7 +58,7 @@ storiesOf('KeyList', module)
   .add('50 keys on first page', () => {
     return (
       <KeyList
-        loadPage={loadPage}
+        loadPage={doNothing}
         lock={sampleLocks['10']}
         keys={sampleKeysForLock(10, '10')}
         page={0}
@@ -69,7 +68,7 @@ storiesOf('KeyList', module)
   .add('50 keys on next page', () => {
     return (
       <KeyList
-        loadPage={loadPage}
+        loadPage={doNothing}
         lock={sampleLocks['10']}
         keys={sampleKeysForLock(10, '10')}
         page={1}
@@ -79,7 +78,7 @@ storiesOf('KeyList', module)
   .add('50 keys on last page', () => {
     return (
       <KeyList
-        loadPage={loadPage}
+        loadPage={doNothing}
         lock={sampleLocks['10']}
         keys={sampleKeysForLock(10, '10')}
         page={5}
