@@ -1,7 +1,7 @@
 export const GAS_AMOUNTS = {
-  createLock: 3000000,
+  createLock: 3500000,
   updateKeyPrice: 1000000,
-  purchaseKey: 1000000,
+  purchaseKey: 300000,
   withdrawFromLock: 1000000,
   partialWithdrawFromLock: 1000000,
 }
