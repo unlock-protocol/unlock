@@ -31,7 +31,7 @@ export default class StorageService {
       `${this.host}/transactions?sender=${senderAddress}`
     )
     if (response.data && response.data.transactions) {
-      return response.data.transactions.map(t => t.transactionHash)
+      return response.data.transactions
     }
     return []
   }
