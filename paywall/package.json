@@ -29,6 +29,7 @@
     "@types/node": "^11.13.4",
     "@types/react": "16.8.13",
     "@types/react-dom": "^16.8.3",
+    "@types/react-redux": "^7.0.7",
     "@types/web3": "^1.0.18",
     "@unlock-protocol/unlock-js": "0.0.12",
     "@zeit/next-css": "^1.0.1",
