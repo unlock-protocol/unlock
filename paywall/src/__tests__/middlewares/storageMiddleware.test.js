@@ -93,7 +93,18 @@ describe('Storage middleware', () => {
       const action = { type: SET_ACCOUNT, account }
 
       mockStorageService.getTransactionsHashesSentBy = jest.fn(() => {
-        return Promise.resolve(['0xabc', '0xdef'])
+        return Promise.resolve([
+          {
+            transactionHash: '0xabc',
+            sender: 'hi',
+            recipient: 'there',
+          },
+          {
+            transactionHash: '0xdef',
+            sender: 'bye',
+            recipient: 'person',
+          },
+        ])
       })
       await invoke(action)
 
@@ -105,6 +116,8 @@ describe('Storage middleware', () => {
         1,
         addTransaction({
           hash: '0xabc',
+          from: 'hi',
+          to: 'there',
         })
       )
 
@@ -112,6 +125,8 @@ describe('Storage middleware', () => {
         2,
         addTransaction({
           hash: '0xdef',
+          from: 'bye',
+          to: 'person',
         })
       )
 
