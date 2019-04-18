@@ -22,10 +22,12 @@ const storageMiddleware = config => {
             .then(transactionHashes => {
               // Dispatch each transaction, but only trigger 1 re-render
               batch(() =>
-                transactionHashes.forEach(hash => {
+                transactionHashes.forEach(transaction => {
                   dispatch(
                     addTransaction({
-                      hash,
+                      hash: transaction.transactionHash,
+                      to: transaction.recipient,
+                      from: transaction.sender,
                     })
                   )
                 })
