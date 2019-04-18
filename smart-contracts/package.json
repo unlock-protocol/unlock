@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "remixd": "0.1.8",
-    "truffle-security": "1.3.4"
+    "truffle-security": "1.3.5"
   },
   "lint-staged": {
     "linters": {
