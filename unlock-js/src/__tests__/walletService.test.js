@@ -7,6 +7,7 @@ import WalletService from '../walletService'
 
 import v0 from '../v0'
 import v01 from '../v01'
+import v02 from '../v02'
 
 const endpoint = 'http://127.0.0.1:8545'
 const provider = new Web3.providers.HttpProvider(endpoint)
@@ -388,7 +389,7 @@ describe('WalletService', () => {
     )
 
     // for each supported version, let's make sure it implements all methods
-    const supportedVersions = [v0, v01]
+    const supportedVersions = [v0, v01, v02]
     it.each(supportedVersions)(
       'should implement all the required methods',
       version => {
