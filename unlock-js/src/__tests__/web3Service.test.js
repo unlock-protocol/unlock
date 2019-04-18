@@ -271,7 +271,6 @@ describe('Web3Service', () => {
       'getKeyByLockForOwner',
       'getKeysForLockOnPage',
       'getLock',
-      'getPastLockCreationsTransactionsForUser',
       'getPastLockTransactions',
     ]
 
@@ -297,6 +296,7 @@ describe('Web3Service', () => {
     const versionSpecificUnlockMethods = [
       '_getPendingTransaction',
       '_getSubmittedTransaction',
+      'getPastLockCreationsTransactionsForUser',
       'getTransaction',
       'getTransactionType',
       'parseTransactionFromInput',
