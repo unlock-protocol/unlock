@@ -2,7 +2,7 @@ export const LOGIN_CREDENTIALS = 'login/GOT_CREDENTIALS'
 export const LOGIN_SUCCEEDED = 'login/SUCCESS'
 export const LOGIN_FAILED = 'login/FAILED'
 
-interface Credentials {
+export interface Credentials {
   emailAddress: string
   password: string
 }
