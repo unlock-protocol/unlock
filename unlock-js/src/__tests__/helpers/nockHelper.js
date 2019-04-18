@@ -31,7 +31,7 @@ export class NockHelper {
   // Generic call
   _jsonRpcRequest(method, params, result, error) {
     this._rpcRequestId += 1
-    this.nockScope
+    return this.nockScope
       .post('/', { jsonrpc: '2.0', id: this._rpcRequestId, method, params })
       .reply(200, { id: this._rpcRequestId, jsonrpc: '2.0', result, error })
       .log(this.logNock)
