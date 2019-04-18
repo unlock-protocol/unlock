@@ -2,6 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { object, text, withKnobs } from '@storybook/addon-knobs'
 import { DeveloperOverlay } from '../../components/developer/DeveloperOverlay'
+import doNothing from '../../utils/doNothing'
 
 storiesOf('DeveloperOverlay', DeveloperOverlay)
   .addDecorator(withKnobs)
@@ -17,7 +18,7 @@ storiesOf('DeveloperOverlay', DeveloperOverlay)
       <DeveloperOverlay
         config={config}
         selected={selected}
-        setProvider={() => {}}
+        setProvider={doNothing}
       />
     )
   })
@@ -33,7 +34,7 @@ storiesOf('DeveloperOverlay', DeveloperOverlay)
       <DeveloperOverlay
         config={config}
         selected={selected}
-        setProvider={() => {}}
+        setProvider={doNothing}
       />
     )
   })
