@@ -3,7 +3,10 @@ import React, { FormEvent } from 'react'
 import styled from 'styled-components'
 //import { connect } from 'react-redux'
 
-interface Props {}
+interface Props {
+  toggleSignup: () => void
+}
+
 interface State {
   emailAddress: string
   password: string
@@ -26,26 +29,39 @@ export class LogIn extends React.Component<Props, State> {
     e.preventDefault()
   }
 
+  handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    const { toggleSignup } = this.props
+    e.preventDefault()
+    toggleSignup()
+  }
+
   render = () => {
     return (
       <div>
         <Heading>Log In to Your Account</Heading>
-        <Description>Don&#39;t have an account? Sign up here.</Description>
         <form onSubmit={this.handleSubmit}>
+          <Label htmlFor="emailInput">Email Address</Label>
           <Input
             name="emailAddress"
+            id="emailInput"
             type="email"
             placeholder="Enter your email"
           />
           <br />
+          <Label htmlFor="passwordInput">Password</Label>
           <Input
             name="password"
+            id="passwordInput"
             type="password"
             placeholder="Enter your password"
           />
           <br />
           <SubmitButton type="submit" value="Submit" />
         </form>
+        <Description>
+          Don&#39;t have an account?{' '}
+          <LinkButton onClick={this.handleClick}>Sign up here.</LinkButton>
+        </Description>
       </div>
     )
   }
@@ -86,5 +102,18 @@ const SubmitButton = styled.input`
   border-radius: 4px;
   margin-top: 25px;
   font-size: 16px;
+  cursor: pointer;
+`
+
+const Label = styled.label`
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+`
+
+const LinkButton = styled.a`
   cursor: pointer;
 `
