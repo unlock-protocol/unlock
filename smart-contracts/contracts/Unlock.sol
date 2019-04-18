@@ -41,6 +41,8 @@ contract Unlock is
   Initializable,
   Ownable
 {
+  // The version number of the current Unlock implementation on this network
+  uint public version = 1;
 
   /**
    * The struct for a lock
