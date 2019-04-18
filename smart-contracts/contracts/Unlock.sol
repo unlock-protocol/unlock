@@ -41,9 +41,6 @@ contract Unlock is
   Initializable,
   Ownable
 {
-  // The version number of the current Unlock implementation on this network
-  uint8 public unlockVersion = 2;
-
   /**
    * The struct for a lock
    * We use deployed to keep track of deployments.
@@ -178,5 +175,11 @@ contract Unlock is
     totalDiscountGranted += _discount;
     return;
   }
-
+  
+  // The version number of the current Unlock implementation on this network
+  function unlockVersion(
+  ) external pure
+  {
+    return 2;
+  }
 }
