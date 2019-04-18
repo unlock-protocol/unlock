@@ -2,6 +2,7 @@
 const { scripts, ConfigVariablesInitializer } = require('zos')
 
 const { add, push } = scripts
+const Unlock = artifacts.require('Unlock')
 
 async function zosDeploy(options) {
   // Register Unlock in the zos.json
@@ -25,5 +26,12 @@ module.exports = function deployUnlock(deployer, networkName, accounts) {
     const options = { network, txParams }
 
     await zosDeploy(options)
+
+    // eslint-disable-next-line no-console
+    console.log(
+      `Deployed bytes4(keccak256(Unlock.bytecode))==${this.web3.utils
+        .keccak256(Unlock.bytecode)
+        .substring(0, 10)}`
+    )
   })
 }
