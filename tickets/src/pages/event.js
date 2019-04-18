@@ -2,10 +2,8 @@ import React from 'react'
 
 import EventContent from '../components/content/EventContent'
 
-const Event = ({ event }) => {
-  return <EventContent lock={lock} />
+const Event = () => {
+  return <EventContent />
 }
-
-Event.getInitialProps = async context => {}
 
 export default Event
