@@ -1,10 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import React, { FormEvent } from 'react'
 import styled from 'styled-components'
-//import { connect } from 'react-redux'
+import { connect } from 'react-redux'
+// eslint-disable-next-line no-unused-vars
+import { loginCredentials, Credentials } from '../../actions/login'
 
 interface Props {
   toggleSignup: () => void
+  loginCredentials: (credentials: Credentials) => void
 }
 
 interface State {
@@ -26,7 +29,16 @@ export class LogIn extends React.Component<Props, State> {
   }
 
   handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const { loginCredentials } = this.props
+    const { emailAddress, password } = this.state
     e.preventDefault()
+    loginCredentials({
+      emailAddress,
+      password,
+    })
+    this.setState({
+      submitted: true, // eslint-disable-line react/no-unused-state
+    })
   }
 
   handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -67,7 +79,15 @@ export class LogIn extends React.Component<Props, State> {
   }
 }
 
-export default LogIn
+const mapDispatchToProps = (dispatch: any) => ({
+  loginCredentials: ({ emailAddress, password }: Credentials) =>
+    dispatch(loginCredentials({ emailAddress, password })),
+})
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(LogIn)
 
 const Heading = styled.h1`
   font-family: 'IBM Plex Sans', sans-serif;
