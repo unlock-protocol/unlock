@@ -173,7 +173,7 @@ export default class Web3Service extends UnlockService {
    * @param {*} address
    */
   async getPastLockCreationsTransactionsForUser(address) {
-    const version = await this.lockContractAbiVersion(address)
+    const version = await this.unlockContractAbiVersion()
     return version.getPastLockCreationsTransactionsForUser.bind(this)(address)
   }
 
