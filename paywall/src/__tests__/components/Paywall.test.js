@@ -229,7 +229,7 @@ describe('Paywall', () => {
     })
 
     it('should be locked and pull in the newest pending transaction with an expired key', () => {
-      expect.assertions(2)
+      expect.assertions(2) // christ
       const pendingTransaction = {
         id: 'pendingTransaction',
         type: TRANSACTION_TYPES.KEY_PURCHASE,
