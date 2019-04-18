@@ -20,7 +20,10 @@ describe('StorageService', () => {
         },
       })
       const hashes = await storageService.getTransactionsHashesSentBy(sender)
-      expect(hashes).toEqual(['0x123', '0x456'])
+      expect(hashes).toEqual([
+        { transactionHash: '0x123', sender: '0xabc', recipient: '0xcde' },
+        { transactionHash: '0x456', sender: '0xabc', recipient: '0xfgh' },
+      ])
       expect(axios.get).toHaveBeenCalledWith(
         `${serviceHost}/transactions?sender=${sender}`
       )
