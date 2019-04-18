@@ -4,15 +4,17 @@ import Web3Utils from 'web3-utils'
 
 import * as UnlockV0 from 'unlock-abi-0'
 import * as UnlockV01 from 'unlock-abi-0-1'
+import * as UnlockV02 from 'unlock-abi-0-2'
 import NockHelper from './helpers/nockHelper'
 
 import Web3Service from '../web3Service'
 import TransactionTypes from '../transactionTypes'
 import v0 from '../v0'
 import v01 from '../v01'
+import v02 from '../v02'
 import { KEY_ID } from '../constants'
 
-const supportedVersions = [v0, v01]
+const supportedVersions = [v0, v01, v02]
 
 const blockTime = 3
 const readOnlyProvider = 'http://127.0.0.1:8545'
@@ -468,6 +470,55 @@ describe('Web3Service', () => {
         ).toBe(TransactionTypes.WITHDRAWAL)
       })
     })
+
+    describe('v02', () => {
+      it('should return null if there is no matching method', () => {
+        expect.assertions(1)
+        const data = 'notarealmethod'
+        expect(web3Service._getTransactionType(UnlockV02.Unlock, data)).toBe(
+          null
+        )
+      })
+
+      it('should return the right transaction type on lock creation', () => {
+        expect.assertions(1)
+        const unlock = new web3Service.web3.eth.Contract(
+          UnlockV02.Unlock.abi,
+          ''
+        )
+        const currencyAddress = Web3Utils.padLeft(0, 40) // Token address (ERC20 support). null is for Eth
+        const data = unlock.methods
+          .createLock('1000', currencyAddress, '1000000000', '1')
+          .encodeABI()
+        expect(web3Service._getTransactionType(UnlockV02.Unlock, data)).toBe(
+          TransactionTypes.LOCK_CREATION
+        )
+      })
+
+      it('should return the right transaction type on key purchase', () => {
+        expect.assertions(1)
+        const lock = new web3Service.web3.eth.Contract(
+          UnlockV02.PublicLock.abi,
+          ''
+        )
+        const data = lock.methods.purchaseFor(account).encodeABI()
+        expect(
+          web3Service._getTransactionType(UnlockV02.PublicLock, data)
+        ).toBe(TransactionTypes.KEY_PURCHASE)
+      })
+
+      it('should return the right transaction type on withdrawals', () => {
+        expect.assertions(1)
+        const lock = new web3Service.web3.eth.Contract(
+          UnlockV02.PublicLock.abi,
+          ''
+        )
+        const data = lock.methods.withdraw().encodeABI()
+        expect(
+          web3Service._getTransactionType(UnlockV02.PublicLock, data)
+        ).toBe(TransactionTypes.WITHDRAWAL)
+      })
+    })
   })
 
   describe('getPastLockCreationsTransactionsForUser', () => {
@@ -509,6 +560,35 @@ describe('Web3Service', () => {
         class MockContract {
           constructor(abi, address) {
             expect(abi).toBe(UnlockV01.Unlock.abi)
+            expect(address).toEqual(web3Service.unlockContractAddress)
+          }
+        }
+        web3Service.web3.eth.Contract = MockContract
+
+        const userAddress = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
+        web3Service._getPastTransactionsForContract = jest.fn()
+
+        await web3Service.getPastLockCreationsTransactionsForUser(userAddress)
+        expect(web3Service.unlockContractAbiVersion).toHaveBeenCalled()
+
+        expect(
+          web3Service._getPastTransactionsForContract
+        ).toHaveBeenCalledWith(expect.any(MockContract), 'NewLock', {
+          lockOwner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+        })
+      })
+    })
+
+    describe('v02', () => {
+      it('should getPastEvents for the Unlock contract', async () => {
+        expect.assertions(4)
+        web3Service.unlockContractAbiVersion = jest.fn(() => {
+          return v02
+        })
+
+        class MockContract {
+          constructor(abi, address) {
+            expect(abi).toBe(UnlockV02.Unlock.abi)
             expect(address).toEqual(web3Service.unlockContractAddress)
           }
         }
@@ -572,6 +652,36 @@ describe('Web3Service', () => {
         class MockContract {
           constructor(abi, address) {
             expect(abi).toBe(UnlockV01.PublicLock.abi)
+            expect(address).toEqual(lockAddress)
+          }
+        }
+
+        web3Service.web3.eth.Contract = MockContract
+
+        web3Service._getPastTransactionsForContract = jest.fn()
+
+        await web3Service.getPastLockTransactions(lockAddress)
+        expect(
+          web3Service._getPastTransactionsForContract
+        ).toHaveBeenCalledWith(expect.any(MockContract), 'allevents')
+        expect(web3Service.lockContractAbiVersion).toHaveBeenCalledWith(
+          lockAddress
+        )
+      })
+    })
+
+    describe('v02', () => {
+      it('should getPastEvents for the Lock contract', async () => {
+        expect.assertions(4)
+        const lockAddress = '0x123'
+
+        web3Service.lockContractAbiVersion = jest.fn(() => {
+          return v02
+        })
+
+        class MockContract {
+          constructor(abi, address) {
+            expect(abi).toBe(UnlockV02.PublicLock.abi)
             expect(address).toEqual(lockAddress)
           }
         }
@@ -745,6 +855,81 @@ describe('Web3Service', () => {
         )
       })
     })
+
+    describe('v02', () => {
+      it('should emit transaction.updated with the transaction marked as pending', done => {
+        expect.assertions(2)
+        const input =
+          '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a'
+        web3Service.on('transaction.updated', (hash, update) => {
+          expect(hash).toEqual(transaction.hash)
+          expect(update).toEqual({
+            status: 'pending',
+            type: 'TRANSACTION_TYPE',
+            confirmations: 0,
+            blockNumber: Number.MAX_SAFE_INTEGER,
+          })
+          done()
+        })
+        web3Service._parseTransactionFromInput(
+          v02,
+          transaction.hash,
+          UnlockV02.Unlock,
+          input,
+          web3Service.unlockContractAddress
+        )
+      })
+
+      it('should call the handler if the transaction input can be parsed', done => {
+        expect.assertions(4)
+        const input =
+          '00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a'
+
+        // Fake method
+        const method = {
+          signature: '0x2bc888bf',
+          name: 'myMethod',
+        }
+
+        // Fake abi
+        const FakeContract = {
+          abi: [method],
+        }
+
+        // fake params
+        const params = {}
+        // keeping track of it so we can clean it up (web3 has a singleton class down below)
+        const decodeParams = web3Service.web3.eth.abi.decodeParameters
+        web3Service.web3.eth.abi.decodeParameters = jest.fn(() => {
+          return params
+        })
+
+        // Creating a fake handler
+        web3Service.inputsHandlers[method.name] = (
+          transactionHash,
+          contractAddress,
+          args
+        ) => {
+          expect(
+            web3Service.web3.eth.abi.decodeParameters
+          ).toHaveBeenCalledWith(method.inputs, input)
+          expect(transactionHash).toEqual(transaction.hash)
+          expect(contractAddress).toEqual(web3Service.unlockContractAddress)
+          expect(args).toEqual(params)
+          // Clean up!
+          web3Service.web3.eth.abi.decodeParameters = decodeParams
+          done()
+        }
+
+        web3Service._parseTransactionFromInput(
+          v02,
+          transaction.hash,
+          FakeContract,
+          `${method.signature}${input}`,
+          web3Service.unlockContractAddress
+        )
+      })
+    })
   })
 
   describe('_getSubmittedTransaction', () => {
@@ -891,6 +1076,78 @@ describe('Web3Service', () => {
         )
       })
     })
+
+    describe('v02', () => {
+      const blockNumber = 29
+      const defaults = null
+
+      beforeEach(() => {
+        web3Service._watchTransaction = jest.fn()
+      })
+
+      it('should watch the transaction', done => {
+        expect.assertions(1)
+        web3Service.on('transaction.updated', () => {
+          expect(web3Service._watchTransaction).toHaveBeenCalledWith(
+            transaction.hash
+          )
+          done()
+        })
+
+        web3Service._getSubmittedTransaction(
+          v02,
+          transaction.hash,
+          blockNumber,
+          defaults
+        )
+      })
+
+      it('should emit a transaction.updated event with the right values', done => {
+        expect.assertions(4)
+        web3Service.on('transaction.updated', (hash, update) => {
+          expect(hash).toBe(transaction.hash)
+          expect(update.status).toEqual('submitted')
+          expect(update.confirmations).toEqual(0)
+          expect(update.blockNumber).toEqual(Number.MAX_SAFE_INTEGER)
+          done()
+        })
+        web3Service._getSubmittedTransaction(
+          v02,
+          transaction.hash,
+          blockNumber,
+          defaults
+        )
+      })
+
+      it('should invoke parseTransactionFromInput if the defaults include an input value', done => {
+        expect.assertions(4)
+
+        const defaults = {
+          input:
+            '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
+          to: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
+        }
+
+        web3Service._parseTransactionFromInput = jest.fn(
+          (version, transactionHash, contract, transactionInput, address) => {
+            expect(version).toEqual(v02)
+            expect(transactionHash).toEqual(transaction.hash)
+            expect(transactionInput).toEqual(defaults.input)
+            expect(address).toEqual(
+              '0xcfeb869f69431e42cdb54a4f4f105c19c080a601'
+            )
+            done()
+          }
+        )
+
+        web3Service._getSubmittedTransaction(
+          v02,
+          transaction.hash,
+          blockNumber,
+          defaults
+        )
+      })
+    })
   })
 
   describe('_getPendingTransaction', () => {
@@ -997,6 +1254,59 @@ describe('Web3Service', () => {
         )
 
         web3Service._getPendingTransaction(v01, blockTransaction)
+      })
+    })
+
+    describe('v02', () => {
+      const input =
+        '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a'
+
+      const blockTransaction = {
+        hash: transaction.hash,
+        nonce: '0x04',
+        blockHash: 'null',
+        blockNumber: null, // Not mined
+        from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+        to: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
+        value: '0x0',
+        gas: '0x16e360',
+        gasPrice: '0x04a817c800',
+        input,
+      }
+
+      beforeEach(() => {
+        web3Service._watchTransaction = jest.fn()
+        web3Service._getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
+      })
+
+      it('should watch the transaction', done => {
+        expect.assertions(1)
+
+        web3Service._parseTransactionFromInput = jest.fn(() => {
+          expect(web3Service._watchTransaction).toHaveBeenCalledWith(
+            transaction.hash
+          )
+          done()
+        })
+
+        web3Service._getPendingTransaction(v02, blockTransaction)
+      })
+
+      it('should invoke parseTransactionFromInput', done => {
+        expect.assertions(4)
+        web3Service._parseTransactionFromInput = jest.fn(
+          (version, transactionHash, contract, transactionInput, address) => {
+            expect(version).toEqual(v02)
+            expect(transactionHash).toEqual(transaction.hash)
+            expect(transactionInput).toEqual(input)
+            expect(address).toEqual(
+              '0xcfeb869f69431e42cdb54a4f4f105c19c080a601'
+            )
+            done()
+          }
+        )
+
+        web3Service._getPendingTransaction(v02, blockTransaction)
       })
     })
   })
@@ -1321,6 +1631,326 @@ describe('Web3Service', () => {
         })
       })
     })
+
+    describe('v02', () => {
+      describe('when the transaction was submitted', () => {
+        beforeEach(() => {
+          nock.ethBlockNumber(`0x${(29).toString('16')}`)
+          nock.ethGetTransactionByHash(transaction.hash, null)
+          web3Service._watchTransaction = jest.fn()
+        })
+
+        it('should call _getSubmittedTransaction', async () => {
+          expect.assertions(2)
+
+          const defaultTransactionValues = {
+            to: unlockAddress,
+          }
+
+          web3Service.unlockContractAbiVersion = jest.fn(() =>
+            Promise.resolve(v02)
+          )
+
+          web3Service._getSubmittedTransaction = jest.fn(() =>
+            Promise.resolve()
+          )
+
+          await web3Service.getTransaction(
+            transaction.hash,
+            defaultTransactionValues
+          )
+          expect(web3Service._getSubmittedTransaction).toHaveBeenCalledWith(
+            v02,
+            transaction.hash,
+            29,
+            defaultTransactionValues
+          )
+          expect(web3Service.unlockContractAbiVersion).toHaveBeenCalledWith()
+        })
+      })
+
+      describe('when the transaction is pending/waiting to be mined', () => {
+        const input =
+          '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a'
+        const blockTransaction = {
+          hash: transaction.hash,
+          nonce: '0x04',
+          blockHash: 'null',
+          blockNumber: null, // Not mined
+          from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+          to: '0xCfEB869F69431e42cdB54A4F4f105C19C080A601',
+          value: '0x0',
+          gas: '0x16e360',
+          gasPrice: '0x04a817c800',
+          input,
+        }
+
+        beforeEach(() => {
+          nock.ethBlockNumber(`0x${(29).toString('16')}`)
+          nock.ethGetTransactionByHash(transaction.hash, blockTransaction)
+        })
+
+        it('should call _getPendingTransaction', async () => {
+          expect.assertions(2)
+
+          web3Service.lockContractAbiVersion = jest.fn(() => {
+            return Promise.resolve(v02)
+          })
+
+          web3Service._getPendingTransaction = jest.fn(() => Promise.resolve())
+
+          await web3Service.getTransaction(transaction.hash)
+          expect(web3Service._getPendingTransaction).toHaveBeenCalledWith(
+            v02,
+            expect.objectContaining({
+              hash: transaction.hash,
+              input,
+            })
+          )
+          expect(web3Service.lockContractAbiVersion).toHaveBeenCalledWith(
+            blockTransaction.to
+          )
+        })
+      })
+
+      describe('when the transaction has been mined in the next block', () => {
+        beforeEach(() => {
+          nock.ethBlockNumber(`0x${(17).toString('16')}`)
+          nock.ethGetTransactionByHash(transaction.hash, {
+            hash:
+              '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
+            nonce: '0x04',
+            blockHash:
+              '0xdc7c95899e030f3104871a597866767ec296e948a24e99b12e0b251011d11c36',
+            blockNumber: `0x${(18).toString('16')}`,
+            transactionIndex: '0x0d',
+            from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+            to: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
+            value: '0x0',
+            gas: '0x16e360',
+            gasPrice: '0x04a817c800',
+            input:
+              '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
+          })
+
+          web3Service.lockContractAbiVersion = jest.fn(() => {
+            return Promise.resolve(v02)
+          })
+
+          web3Service.web3.eth.getTransactionReceipt = jest.fn(
+            () => new Promise(() => {})
+          )
+          web3Service._watchTransaction = jest.fn()
+          web3Service._getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
+        })
+
+        it('should emit a transaction.updated event with 0 confirmations', async done => {
+          expect.assertions(1)
+          web3Service.on('transaction.updated', (hash, update) => {
+            expect(update.confirmations).toEqual(0) // 0 > -1 [17-18]
+            done()
+          })
+
+          await web3Service.getTransaction(transaction.hash)
+        })
+      })
+
+      describe('when the transaction has been mined but not fully confirmed', () => {
+        beforeEach(() => {
+          nock.ethBlockNumber(`0x${(17).toString('16')}`)
+          nock.ethGetTransactionByHash(transaction.hash, {
+            hash:
+              '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
+            nonce: '0x04',
+            blockHash:
+              '0xdc7c95899e030f3104871a597866767ec296e948a24e99b12e0b251011d11c36',
+            blockNumber: `0x${(14).toString('16')}`,
+            transactionIndex: '0x0d',
+            from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+            to: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
+            value: '0x0',
+            gas: '0x16e360',
+            gasPrice: '0x04a817c800',
+            input:
+              '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
+          })
+          web3Service.lockContractAbiVersion = jest.fn(() => {
+            return Promise.resolve(v02)
+          })
+
+          web3Service.web3.eth.getTransactionReceipt = jest.fn(
+            () => new Promise(() => {})
+          )
+          web3Service._watchTransaction = jest.fn()
+          web3Service._getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
+        })
+
+        it('should watch the transaction', async done => {
+          expect.assertions(1)
+          web3Service.on('transaction.updated', () => {
+            expect(web3Service._watchTransaction).toHaveBeenCalledWith(
+              transaction.hash
+            )
+            done()
+          })
+
+          await web3Service.getTransaction(transaction.hash)
+        })
+
+        it('should emit a transaction.updated event with the right values', async done => {
+          expect.assertions(5)
+          web3Service.on('transaction.updated', (hash, update) => {
+            expect(hash).toBe(transaction.hash)
+            expect(update.status).toEqual('mined')
+            expect(update.confirmations).toEqual(3) //17-14
+            expect(update.blockNumber).toEqual(14)
+            expect(update.type).toEqual('TRANSACTION_TYPE')
+            done()
+          })
+
+          await web3Service.getTransaction(transaction.hash)
+        })
+      })
+
+      describe('when the transaction was mined', () => {
+        const blockTransaction = {
+          hash:
+            '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
+          nonce: '0x04',
+          blockHash:
+            '0xdc7c95899e030f3104871a597866767ec296e948a24e99b12e0b251011d11c36',
+          blockNumber: `0x${(14).toString('16')}`,
+          transactionIndex: '0x00',
+          from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+          to: '0xCfEB869F69431e42cdB54A4F4f105C19C080A601',
+          value: '0x0',
+          gas: '0x16e360',
+          gasPrice: '0x04a817c800',
+          input:
+            '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
+        }
+
+        beforeEach(() => {
+          nock.ethBlockNumber(`0x${(29).toString('16')}`)
+          nock.ethGetTransactionByHash(transaction.hash, blockTransaction)
+          web3Service.lockContractAbiVersion = jest.fn(() => {
+            return Promise.resolve(v02)
+          })
+        })
+
+        it('should mark the transaction as failed if the transaction receipt status is false', async done => {
+          expect.assertions(6)
+          nock.ethGetTransactionReceipt(transaction.hash, {
+            transactionIndex: '0x3',
+            blockHash:
+              '0x01b3cd21ace224e17cc1d5a8af18c01a4e6c2c99b83b28a711f6ea76c31e62f9',
+            blockNumber: '0x158',
+            gasUsed: '0x2ea84',
+            cumulativeGasUsed: '0x3a525',
+            logs: [],
+            status: '0x0',
+          })
+          web3Service._getTransactionType = jest.fn(() => 'TYPE')
+
+          web3Service.once('transaction.updated', (transactionHash, update) => {
+            expect(transactionHash).toEqual(transaction.hash)
+            expect(update.confirmations).toEqual(15) //29-14
+            expect(update.type).toEqual('TYPE')
+            expect(update.blockNumber).toEqual(14)
+            web3Service.once(
+              'transaction.updated',
+              (transactionHash, update) => {
+                expect(transactionHash).toEqual(transaction.hash)
+                expect(update.status).toBe('failed')
+                done()
+              }
+            )
+          })
+
+          return await web3Service.getTransaction(transaction.hash)
+        })
+
+        it('should _parseTransactionLogsFromReceipt with the Unlock abi if the address is one of the Unlock contract', async done => {
+          expect.assertions(6)
+          const transactionReceipt = {
+            transactionIndex: '0x3',
+            blockHash:
+              '0x01b3cd21ace224e17cc1d5a8af18c01a4e6c2c99b83b28a711f6ea76c31e62f9',
+            blockNumber: '0x158',
+            gasUsed: '0x2ea84',
+            cumulativeGasUsed: '0x3a525',
+            logs: [],
+            status: '0x1',
+          }
+          nock.ethGetTransactionReceipt(transaction.hash, transactionReceipt)
+          const previousAddress = web3Service.unlockContractAddress
+
+          web3Service._getTransactionType = jest.fn(() => 'TYPE')
+
+          web3Service._parseTransactionLogsFromReceipt = (
+            version,
+            transactionHash,
+            contract,
+            receipt
+          ) => {
+            expect(version).toBe(version)
+            expect(transactionHash).toEqual(transaction.hash)
+            expect(contract).toEqual(UnlockV02.Unlock)
+            expect(receipt.blockNumber).toEqual(344)
+            expect(receipt.logs).toEqual([])
+            web3Service.unlockContractAddress = previousAddress
+            expect(web3Service._getTransactionType).toHaveBeenCalledWith(
+              UnlockV02.Unlock,
+              blockTransaction.input
+            )
+            done()
+          }
+          web3Service.unlockContractAddress = blockTransaction.to
+          web3Service.unlockContractAbiVersion = jest.fn(() => {
+            return Promise.resolve(v02)
+          })
+
+          await web3Service.getTransaction(transaction.hash)
+        })
+
+        it('should _parseTransactionLogsFromReceipt with the Lock abi otherwise', async done => {
+          expect.assertions(6)
+          const transactionReceipt = {
+            transactionIndex: '0x3',
+            blockHash:
+              '0x01b3cd21ace224e17cc1d5a8af18c01a4e6c2c99b83b28a711f6ea76c31e62f9',
+            blockNumber: '0x158',
+            gasUsed: '0x2ea84',
+            cumulativeGasUsed: '0x3a525',
+            logs: [],
+            status: '0x1',
+          }
+          nock.ethGetTransactionReceipt(transaction.hash, transactionReceipt)
+
+          web3Service._getTransactionType = jest.fn(() => 'TYPE')
+
+          web3Service._parseTransactionLogsFromReceipt = (
+            version,
+            transactionHash,
+            contract,
+            receipt
+          ) => {
+            expect(version).toBe(v02)
+            expect(transactionHash).toEqual(transaction.hash)
+            expect(contract).toEqual(UnlockV02.PublicLock)
+            expect(receipt.blockNumber).toEqual(344)
+            expect(receipt.logs).toEqual([])
+            expect(web3Service._getTransactionType).toHaveBeenCalledWith(
+              UnlockV02.PublicLock,
+              blockTransaction.input
+            )
+            done()
+          }
+
+          await web3Service.getTransaction(transaction.hash)
+        })
+      })
+    })
   })
 
   describe('getKeyByLockForOwner', () => {
@@ -1388,6 +2018,49 @@ describe('Web3Service', () => {
     })
 
     describe('v01', () => {
+      it('should update the expiration date', async () => {
+        expect.assertions(1)
+        nock.ethCallAndYield(
+          '0xabdf82ce00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+          lockAddress,
+          '0x000000000000000000000000000000000000000000000000000000005b58fa05'
+        )
+
+        const lockContract = new web3Service.web3.eth.Contract(
+          UnlockV01.PublicLock.abi,
+          lockAddress
+        )
+
+        let expiration = await web3Service._getKeyByLockForOwner(
+          lockContract,
+          account
+        )
+        expect(expiration).toBe(1532557829)
+      })
+
+      // For some reason this test fails when running with others...
+      it.skip('should handle missing key when the lock exists', async () => {
+        expect.assertions(1)
+        nock.ethCallAndFail(
+          '0xabdf82ce00000000000000000000000090f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+          lockAddress,
+          { message: 'VM Exception while processing transaction: revert' }
+        )
+
+        const lockContract = new web3Service.web3.eth.Contract(
+          UnlockV01.PublicLock.abi,
+          lockAddress
+        )
+
+        let expiration = await web3Service._getKeyByLockForOwner(
+          lockContract,
+          account
+        )
+        expect(expiration).toBe(0)
+      })
+    })
+
+    describe('v02', () => {
       it('should update the expiration date', async () => {
         expect.assertions(1)
         nock.ethCallAndYield(
