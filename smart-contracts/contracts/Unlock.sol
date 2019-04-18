@@ -42,7 +42,7 @@ contract Unlock is
   Ownable
 {
   // The version number of the current Unlock implementation on this network
-  uint public version = 1;
+  uint8 public unlockVersion = 2;
 
   /**
    * The struct for a lock
