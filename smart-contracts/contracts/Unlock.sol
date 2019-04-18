@@ -175,10 +175,11 @@ contract Unlock is
     totalDiscountGranted += _discount;
     return;
   }
-  
+
   // The version number of the current Unlock implementation on this network
   function unlockVersion(
   ) external pure
+    returns (uint8)
   {
     return 2;
   }
