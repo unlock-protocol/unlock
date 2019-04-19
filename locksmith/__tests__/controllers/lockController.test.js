@@ -189,17 +189,25 @@ describe('lockController', () => {
 
         expect(response.body.locks).toHaveLength(2)
 
-        expect(response.body.locks).toContainEqual({
-          name: 'a mighty fine lock',
-          address: 'jqfqod74',
-          owner: '0x423893453',
-        })
+        expect(response.body.locks).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              name: 'A random other lock',
+              address: 'jqfqod75',
+              owner: '0x423893453',
+            }),
+          ])
+        )
 
-        expect(response.body.locks).toContainEqual({
-          name: 'A random other lock',
-          address: 'jqfqod75',
-          owner: '0x423893453',
-        })
+        expect(response.body.locks).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              name: 'a mighty fine lock',
+              address: 'jqfqod74',
+              owner: '0x423893453',
+            }),
+          ])
+        )
       })
     })
 
