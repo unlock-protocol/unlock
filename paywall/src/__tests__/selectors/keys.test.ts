@@ -33,7 +33,7 @@ describe('keys selectors', () => {
       expect(keyStatus('hi', {}, 12)).toBe('none')
     })
 
-    it('returns "none" if the transaction status is falsy', () => {
+    it('returns "valid" if the transaction status is falsy and the key is not expired', () => {
       expect.assertions(1)
 
       transactions.one.status = TransactionStatus.NONE
@@ -43,7 +43,23 @@ describe('keys selectors', () => {
           {
             hi: {
               expiration: new Date().getTime() / 1000 + 10000,
-              transactions,
+            },
+          },
+          12
+        )
+      ).toBe('valid')
+    })
+
+    it('returns "none" if there are no transactions and the key is expired', () => {
+      expect.assertions(1)
+
+      transactions.one.status = TransactionStatus.NONE
+      expect(
+        keyStatus(
+          'hi',
+          {
+            hi: {
+              expiration: 0,
             },
           },
           12
