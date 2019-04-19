@@ -35,8 +35,6 @@ import { HIDE_FORM } from '../../actions/lockFormVisibility'
 
 let mockConfig
 
-jest.mock('../../config', () => () => mockConfig)
-
 /**
  * Fake state
  */
@@ -95,11 +93,15 @@ class MockWalletService extends EventEmitter {
 
 let mockWalletService = new MockWalletService()
 
-jest.mock('@unlock-protocol/unlock-js', () => ({
-  WalletService: function() {
-    return mockWalletService
-  },
-}))
+jest.mock('@unlock-protocol/unlock-js', () => {
+  const mockUnlock = require.requireActual('@unlock-protocol/unlock-js') // Original module
+  return {
+    ...mockUnlock,
+    WalletService: function() {
+      return mockWalletService
+    },
+  }
+})
 
 jest.useFakeTimers()
 
