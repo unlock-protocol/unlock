@@ -1,4 +1,3 @@
-// const Web3 = require('web3')
 // See <http://truffleframework.com/docs/advanced/configuration>
 // to customize your Truffle configuration!
 
@@ -7,25 +6,46 @@ require('babel-register')
 require('babel-polyfill')
 const HDWalletProvider = require('truffle-hdwallet-provider')
 
-// const rinkebyHost = process.env.RINKEBY_HOST
-// const rinkebyHostUsername = process.env.RINKEBY_HOST_USERNAME
-// const rinkebyHostPassword = process.env.RINKEBY_HOST_PASSWORD
-// const rinkebyProviderUrl = `https://${rinkebyHostUsername}:${rinkebyHostPassword}@${rinkebyHost}/`
+/**
+ * Used for rinkeby deployments
+ */
+const rinkebyProviderUrl = process.env.RINKEBY_PROVIDER_URL
+let rinkebyMnemonic = {
+  seed: '',
+  accountIndex: 0,
+}
+if (rinkebyProviderUrl) {
+  rinkebyMnemonic = require('./mnemonic.rinkeby')
+}
 
 /**
- * Used for main net deployments
- * TODO: consider using the same mechanism for Rinkeby
+ * Used for mainnet deployments
  */
-const mnemonic = require('./mnemonic')
+const mainnetProviderUrl = process.env.MAINNET_PROVIDER_URL
+let mainnetMnemonic = {
+  seed: '',
+  accountIndex: 0,
+}
+if (mainnetProviderUrl) {
+  mainnetMnemonic = require('./mnemonic.mainnet')
+}
 
 // When running CI, we connect to the 'ganache' container
 const testHost = process.env.CI ? 'ganache' : '127.0.0.1'
 
 const mainnetProvider = function() {
   return new HDWalletProvider(
-    mnemonic.seed,
-    process.env.MAIN_NET_NODE,
-    mnemonic.accountIndex
+    mainnetMnemonic.seed,
+    mainnetProviderUrl,
+    mainnetMnemonic.accountIndex
+  )
+}
+
+const rinkebyProvider = function() {
+  return new HDWalletProvider(
+    rinkebyMnemonic.seed,
+    rinkebyProviderUrl,
+    rinkebyMnemonic.accountIndex
   )
 }
 
@@ -38,8 +58,10 @@ module.exports = {
       network_id: '*', // Match any network id
     },
     rinkeby: {
-      // provider: new Web3.providers.HttpProvider(rinkebyProviderUrl),
+      provider: rinkebyProvider,
       network_id: '4', // Network Id for Rinkeby
+      gas: 5000000,
+      gasPrice: 35000000000,
     },
     mainnet: {
       provider: mainnetProvider,

@@ -1,3 +1,5 @@
 # Solidity coverage
 /scTopics
 /coverageEnv/
+
+mnemonic.*
