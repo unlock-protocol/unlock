@@ -6340,78 +6340,7 @@ exports[`Storyshots Lock with a mined key (which was not confirmed). 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c9 {
-  background-color: var(--lightgrey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 50px;
-  width: 50px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 50px;
-}
-
-.c9 > svg {
-  fill: var(--grey);
-  height: 50px;
-  width: 50px;
-}
-
-.c9:hover {
-  background-color: var(--green);
-}
-
-.c9:hover > svg {
-  fill: white;
-}
-
-.c8:hover .c17 {
-  display: inline-block;
-}
-
-.c18 .c8 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c18 .c8:nth-child(1) {
-  pointer-events: none;
-}
-
-.c18 .c8:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c18 .c8 > svg {
-  fill: var(--grey);
-}
-
-.c18 .c8:hover > svg {
-  fill: var(--grey);
-}
-
-.c19 .c8 {
-  margin: 24px;
-}
-
-.c19 .c8 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
-  text-align: center;
-}
-
-.c0 {
+    .c0 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -6472,6 +6401,22 @@ Object {
   align-self: center;
 }
 
+.c6 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  color: var(--dimgrey);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 0px;
+}
+
 .c3 {
   display: grid;
   font-size: 15px;
@@ -6487,71 +6432,6 @@ Object {
   -webkit-align-content: center;
   -ms-flex-line-pack: center;
   align-content: center;
-}
-
-.c12 {
-  display: none;
-}
-
-.c7 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c7:hover .c11 {
-  display: block;
-}
-
-.c7:hover .c10 {
-  display: none;
-}
-
-.c16 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 0px 0px 4px 4px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--green);
-  color: var(--white);
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  display: none;
-}
-
-.c14 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 0px 0px 4px 4px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--green);
-  color: var(--white);
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
 }
 
 .c2 {
@@ -6575,40 +6455,28 @@ Object {
   border: 1px solid transparent;
   border-radius: 4px;
   background-color: var(--white);
-  border: 1px solid var(--green);
-  cursor: pointer;
+  border: 1px solid var(--yellow);
 }
 
-.c2 .c15 {
-  display: none;
-}
-
-.c2 .c13 {
+.c7 {
   display: grid;
-}
-
-.c2:hover .c6 {
-  background-color: var(--green);
-}
-
-.c2:hover .c6 svg {
-  fill: var(--white);
-}
-
-.c2:hover .c11 {
-  display: block;
-}
-
-.c2:hover .c10 {
-  display: none;
-}
-
-.c2:hover .c15 {
-  display: grid;
-}
-
-.c2:hover .c13 {
-  display: none;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--yellow);
+  color: var(--white);
+  margin-top: 13px;
 }
 
 <div>
@@ -6644,42 +6512,19 @@ Object {
               45.08
             </div>
           </div>
-          <a
-            class="c6 c7 c8 c9"
+          <div
+            class="c6"
           >
-            <svg
-              class="c10 "
-              viewBox="0 0 24 24"
-            >
-              <title />
-              <path
-                clip-rule="evenodd"
-                d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            <svg
-              class="c11 c12"
-              viewBox="0 0 24 24"
-            >
-              <title />
-              <path
-                clip-rule="evenodd"
-                d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            
-          </a>
+            Waiting for confirmations
+            <br />
+            2
+            /
+            12
+          </div>
           <footer
-            class="c13 c14"
+            class="c7"
           >
-            Payment Confirmed
-          </footer>
-          <footer
-            class="c15 c16"
-          >
-            Go to Content
+            Payment Pending
           </footer>
         </div>
       </li>
@@ -6700,7 +6545,7 @@ Object {
         Monthly
       </header>
       <div
-        class="sc-1549ebs-3 ynhyps-0 dMttvX"
+        class="sc-1549ebs-3 bn9s5o-0 kTTKZX"
       >
         <div
           class="sc-1549ebs-6 hGyOOg"
@@ -6718,42 +6563,19 @@ Object {
             45.08
           </div>
         </div>
-        <a
-          class="sc-1hzn3pu-2 jZYYLs is925m-0 kmZaWo"
+        <div
+          class="sc-1549ebs-5 eUmWhY"
         >
-          <svg
-            class="sc-1hzn3pu-0 dozNUb"
-            viewBox="0 0 24 24"
-          >
-            <title />
-            <path
-              clip-rule="evenodd"
-              d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
-              fill-rule="evenodd"
-            />
-          </svg>
-          <svg
-            class="sc-1hzn3pu-1 gckVYZ"
-            viewBox="0 0 24 24"
-          >
-            <title />
-            <path
-              clip-rule="evenodd"
-              d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
-              fill-rule="evenodd"
-            />
-          </svg>
-          
-        </a>
+          Waiting for confirmations
+          <br />
+          2
+          /
+          12
+        </div>
         <footer
-          class="sc-1549ebs-2 ik5149-0 ik5149-2 epNQgy"
+          class="sc-1549ebs-2 bn9s5o-1 eKTLUD"
         >
-          Payment Confirmed
-        </footer>
-        <footer
-          class="sc-1549ebs-2 ik5149-0 ik5149-1 ocNib"
-        >
-          Go to Content
+          Payment Pending
         </footer>
       </div>
     </li>
