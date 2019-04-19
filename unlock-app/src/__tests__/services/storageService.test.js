@@ -126,19 +126,44 @@ describe('StorageService', () => {
   })
 
   describe('getTransactionsHashesSentBy', () => {
-    it('should expect a list of transactions hashes', async () => {
+    it('should expect a list of transactions', async () => {
       expect.assertions(2)
       const sender = '0x123'
       axios.get.mockReturnValue({
         data: {
           transactions: [
-            { transactionHash: '0x123', sender: '0xabc', recipient: '0xcde' },
-            { transactionHash: '0x456', sender: '0xabc', recipient: '0xfgh' },
+            {
+              transactionHash: '0x123',
+              sender: '0xabc',
+              recipient: '0xcde',
+              chain: 1984,
+            },
+            {
+              transactionHash: '0x456',
+              sender: '0xabc',
+              recipient: '0xfgh',
+              chain: 1984,
+            },
           ],
         },
       })
-      const hashes = await storageService.getTransactionsHashesSentBy(sender)
-      expect(hashes).toEqual(['0x123', '0x456'])
+      const transactions = await storageService.getTransactionsHashesSentBy(
+        sender
+      )
+      expect(transactions).toEqual([
+        {
+          hash: '0x123',
+          from: '0xabc',
+          to: '0xcde',
+          network: 1984,
+        },
+        {
+          hash: '0x456',
+          from: '0xabc',
+          to: '0xfgh',
+          network: 1984,
+        },
+      ])
       expect(axios.get).toHaveBeenCalledWith(
         `${serviceHost}/transactions?sender=${sender}`
       )

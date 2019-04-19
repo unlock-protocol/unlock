@@ -29,16 +29,13 @@ const storageMiddleware = config => {
           // When we set the account, we want to retrieve the list of transactions
           storageService
             .getTransactionsHashesSentBy(action.account.address)
-            .then(transactionHashes => {
+            .then(transactions => {
               dispatch(doneLoading())
               // Dispatch each lock. Greg probably wants to a batch action?
-              transactionHashes.forEach(hash => {
-                dispatch(
-                  addTransaction({
-                    network: null, // TODO: have storageService yield this!
-                    hash,
-                  })
-                )
+              transactions.forEach(transaction => {
+                if (transaction.network === getState().network.name) {
+                  dispatch(addTransaction(transaction))
+                }
               })
             })
             .catch(error => {
@@ -53,7 +50,8 @@ const storageMiddleware = config => {
             .storeTransaction(
               action.transaction.hash,
               action.transaction.from,
-              action.transaction.to
+              action.transaction.to,
+              getState().network.name
             )
             .catch(error => {
               dispatch(storageError(error))

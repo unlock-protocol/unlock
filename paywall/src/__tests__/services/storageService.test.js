@@ -8,21 +8,31 @@ describe('StorageService', () => {
   const storageService = new StorageService(serviceHost)
 
   describe('getTransactionsHashesSentBy', () => {
-    it('should expect a list of transactions hashes', async () => {
+    it('should expect a list of transactions', async () => {
       expect.assertions(2)
       const sender = '0x123'
       axios.get.mockReturnValue({
         data: {
           transactions: [
-            { transactionHash: '0x123', sender: '0xabc', recipient: '0xcde' },
-            { transactionHash: '0x456', sender: '0xabc', recipient: '0xfgh' },
+            {
+              transactionHash: '0x123',
+              sender: '0xabc',
+              recipient: '0xcde',
+              chain: 1984,
+            },
+            {
+              transactionHash: '0x456',
+              sender: '0xabc',
+              recipient: '0xfgh',
+              chain: 1984,
+            },
           ],
         },
       })
       const hashes = await storageService.getTransactionsHashesSentBy(sender)
       expect(hashes).toEqual([
-        { transactionHash: '0x123', sender: '0xabc', recipient: '0xcde' },
-        { transactionHash: '0x456', sender: '0xabc', recipient: '0xfgh' },
+        { hash: '0x123', from: '0xabc', to: '0xcde', network: 1984 },
+        { hash: '0x456', from: '0xabc', to: '0xfgh', network: 1984 },
       ])
       expect(axios.get).toHaveBeenCalledWith(
         `${serviceHost}/transactions?sender=${sender}`
@@ -36,17 +46,20 @@ describe('StorageService', () => {
       const transactionHash = ' 0xhash'
       const senderAddress = ' 0xsender'
       const recipientAddress = ' 0xrecipient'
+      const chain = 1984
       axios.post.mockReturnValue({})
 
       await storageService.storeTransaction(
         transactionHash,
         senderAddress,
-        recipientAddress
+        recipientAddress,
+        chain
       )
       expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/transaction`, {
         transactionHash,
         sender: senderAddress,
         recipient: recipientAddress,
+        chain,
       })
     })
   })

@@ -9,7 +9,7 @@ import { SET_ACCOUNT } from '../actions/accounts'
 
 const storageMiddleware = config => {
   const { services } = config
-  return ({ dispatch }) => {
+  return ({ dispatch, getState }) => {
     const storageService = new StorageService(services.storage.host)
 
     return next => {
@@ -19,18 +19,13 @@ const storageMiddleware = config => {
           // When we set the account, we want to retrieve the list of transactions
           storageService
             .getTransactionsHashesSentBy(action.account.address)
-            .then(transactionHashes => {
+            .then(transactions => {
               // Dispatch each transaction, but only trigger 1 re-render
               batch(() =>
-                transactionHashes.forEach(transaction => {
-                  dispatch(
-                    addTransaction({
-                      hash: transaction.transactionHash,
-                      to: transaction.recipient,
-                      from: transaction.sender,
-                      network: transaction.network,
-                    })
-                  )
+                transactions.forEach(transaction => {
+                  if (transaction.network === getState().network.name) {
+                    dispatch(addTransaction(transaction))
+                  }
                 })
               )
             })
@@ -45,7 +40,8 @@ const storageMiddleware = config => {
             .storeTransaction(
               action.transaction.hash,
               action.transaction.from,
-              action.transaction.to
+              action.transaction.to,
+              getState().network.name
             )
             .catch(error => {
               dispatch(storageError(error))
