@@ -81,6 +81,7 @@ function makeStore(state = {}) {
 
 const render = (
   locks,
+  keyStatus,
   errors = { error: false, errorMetadata: {} },
   thisConfig = config,
   optimism = { current: 0, past: 0 }
@@ -140,6 +141,7 @@ const render = (
                 bigBody={() => {}}
                 openInNewWindow={false}
                 optimism={optimism}
+                keyStatus={keyStatus}
               />
             </FakeIframe>
           </ErrorProvider>
@@ -152,7 +154,10 @@ const render = (
 storiesOf('Overlay/Optimistic Unlocking', module)
   .add('beginning purchase', () => {
     makeStore()
-    return render(locks, undefined, undefined, { current: 1, past: 0 })
+    return render(locks, 'pending', undefined, undefined, {
+      current: 1,
+      past: 0,
+    })
   })
   .add('some confirmations', () => {
     makeStore({
@@ -163,7 +168,10 @@ storiesOf('Overlay/Optimistic Unlocking', module)
         },
       },
     })
-    return render(locks, undefined, undefined, { current: 1, past: 0 })
+    return render(locks, 'confirming', undefined, undefined, {
+      current: 1,
+      past: 0,
+    })
   })
   .add('confirmed', () => {
     makeStore({
@@ -174,11 +182,17 @@ storiesOf('Overlay/Optimistic Unlocking', module)
         },
       },
     })
-    return render(locks, undefined, undefined, { current: 1, past: 0 })
+    return render(locks, 'confirmed', undefined, undefined, {
+      current: 1,
+      past: 0,
+    })
   })
   .add('beginning purchase (pessimistic)', () => {
     makeStore()
-    return render(locks, undefined, undefined, { current: 0, past: 1 })
+    return render(locks, 'pending', undefined, undefined, {
+      current: 0,
+      past: 1,
+    })
   })
   .add('some confirmations (pessimistic)', () => {
     makeStore({
@@ -190,7 +204,10 @@ storiesOf('Overlay/Optimistic Unlocking', module)
         },
       },
     })
-    return render(locks, undefined, undefined, { current: 0, past: 1 })
+    return render(locks, 'confirming', undefined, undefined, {
+      current: 0,
+      past: 1,
+    })
   })
   .add('confirmed (pessimistic)', () => {
     makeStore({
@@ -202,5 +219,8 @@ storiesOf('Overlay/Optimistic Unlocking', module)
         },
       },
     })
-    return render(locks, undefined, undefined, { current: 0, past: 1 })
+    return render(locks, 'confirmed', undefined, undefined, {
+      current: 0,
+      past: 1,
+    })
   })

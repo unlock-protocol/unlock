@@ -61,17 +61,25 @@ export const Overlay = ({
   optimism,
   smallBody,
   bigBody,
+  keyStatus,
 }) => {
   let message
-  if (transaction) {
-    if (transaction.confirmations < requiredConfirmations) {
+  switch (keyStatus) {
+    case 'confirming':
+    case 'pending':
       message = 'Purchase pending...'
-    } else {
+      break
+    case 'valid':
+    case 'confirmed':
       message = 'Purchase confirmed, content unlocked!'
-    }
-  } else {
-    message =
-      'You have reached your limit of free articles. Please purchase access'
+      break
+    case 'expired':
+      message =
+        'Your subscription has expired, please purchase a new key to continue'
+      break
+    default:
+      message =
+        'You have reached your limit of free articles. Please purchase access'
   }
   const { postMessage } = usePostMessage()
   useEffect(() => {
@@ -109,6 +117,7 @@ export const Overlay = ({
                 hideModal={hideModal}
                 showModal={showModal}
                 openInNewWindow={openInNewWindow}
+                keyStatus={keyStatus}
               />
             ))}
           </GlobalErrorConsumer>
@@ -133,6 +142,7 @@ Overlay.propTypes = {
     current: PropTypes.oneOf([0, 1]).isRequired,
     past: PropTypes.oneOf([0, 1]).isRequired,
   }).isRequired,
+  keyStatus: PropTypes.string.isRequired,
 }
 
 Overlay.defaultProps = {
