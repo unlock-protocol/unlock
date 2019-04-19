@@ -159,7 +159,10 @@ describe('Web3 middleware', () => {
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: ADD_TRANSACTION,
-        transaction,
+        transaction: {
+          hash: transaction.hash,
+          network: 'test',
+        },
       })
     )
   })
