@@ -228,6 +228,50 @@ describe('Paywall', () => {
       expect(props.locked).toBe(true)
     })
 
+    it('should be locked and pull in the newest pending transaction with an expired key', () => {
+      expect.assertions(2)
+      const pendingTransaction = {
+        id: 'pendingTransaction',
+        type: TRANSACTION_TYPES.KEY_PURCHASE,
+        key: 'aKey',
+        lock: lock.address,
+        confirmations: 13,
+        status: 'pending',
+        blockNumber: 500,
+      }
+      const transactions = {
+        transaction: {
+          id: 'transaction',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          key: 'aKey',
+          lock: lock.address,
+          confirmations: 13,
+          status: 'mined',
+          blockNumber: 1,
+        },
+        pendingTransaction,
+      }
+      const props = mapStateToProps(
+        {
+          locks,
+          keys: {
+            aKey: {
+              ...key,
+              expiration: 1234,
+              transactions,
+            },
+          },
+          modals,
+          router,
+          account,
+          transactions,
+        },
+        { config }
+      )
+      expect(props.locked).toBe(true)
+      expect(props.transaction).toBe(pendingTransaction)
+    })
+
     it('should pass redirect if present in the URI', () => {
       expect.assertions(1)
       const props = mapStateToProps(
