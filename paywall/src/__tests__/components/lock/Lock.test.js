@@ -132,6 +132,7 @@ describe('Lock', () => {
             hideModal={() => {}}
             showModal={() => {}}
             openInNewWindow={openInNewWindow}
+            keyStatus="none"
           />
         </Provider>
       )
