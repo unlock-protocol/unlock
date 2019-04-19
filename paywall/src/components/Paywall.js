@@ -21,12 +21,14 @@ import useOptimism from '../hooks/useOptimism'
 import withConfig from '../utils/withConfig'
 import './Paywall.css'
 import keyStatus from '../selectors/keys'
+import OptimisticOverlay from './lock/OptimisticOverlay'
 import { expirationAsDate } from '../utils/durations'
 
 export function Paywall({
   locks,
   locked,
   redirect,
+  config: { requiredConfirmations },
   account,
   transaction,
   keyStatus,
@@ -69,6 +71,13 @@ export function Paywall({
   return (
     <GlobalErrorProvider>
       <ShowWhenLocked locked={locked}>
+        <OptimisticOverlay
+          locks={locks}
+          optimism={optimism}
+          requiredConfirmations={requiredConfirmations}
+          keyStatus={keyStatus}
+          transaction={transaction}
+        />
         <Overlay
           scrollPosition={scrollPosition}
           locks={locks}
@@ -92,6 +101,7 @@ export function Paywall({
 Paywall.propTypes = {
   locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
   locked: PropTypes.bool.isRequired,
+  config: UnlockPropTypes.configuration.isRequired,
   redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   transaction: UnlockPropTypes.transaction,
   account: PropTypes.string,

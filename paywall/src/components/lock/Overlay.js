@@ -14,8 +14,6 @@ import withConfig from '../../utils/withConfig'
 import usePostMessage from '../../hooks/browser/usePostMessage'
 import Media from '../../theme/media'
 
-import ConfirmedFlag from './ConfirmedFlag'
-import ConfirmingFlag from './ConfirmingFlag'
 import {
   POST_MESSAGE_GET_OPTIMISTIC,
   POST_MESSAGE_GET_PESSIMISTIC,
@@ -55,7 +53,7 @@ export const Overlay = ({
   showModal,
   scrollPosition,
   openInNewWindow,
-  config: { isInIframe, requiredConfirmations },
+  config: { isInIframe },
   transaction,
   optimism,
   smallBody,
@@ -95,16 +93,7 @@ export const Overlay = ({
     }
   }, [optimism.current, keyStatus])
   if (optimism.current && !['expired', 'none'].includes(keyStatus)) {
-    if (keyStatus === 'confirmed' || keyStatus === 'valid') {
-      return <ConfirmedFlag dismiss={hideModal} />
-    }
-    return (
-      <ConfirmingFlag
-        transaction={transaction}
-        lock={locks[0]}
-        requiredConfirmations={requiredConfirmations}
-      />
-    )
+    return null
   }
   return (
     <FullPage>
