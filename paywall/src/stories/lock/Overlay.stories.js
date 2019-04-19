@@ -93,6 +93,12 @@ const render = (
             openInNewWindow={false}
             optimism={optimism}
             keyStatus="none"
+            lockKey={{
+              lock: locks[0].address,
+              owner: 'account',
+              expiration:
+                new Date('January 30, 3000, 00:00:00').getTime() / 1000,
+            }}
             account="account"
           />
         </ErrorProvider>

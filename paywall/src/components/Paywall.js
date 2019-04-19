@@ -29,7 +29,6 @@ export function Paywall({
   redirect,
   account,
   transaction,
-  requiredConfirmations,
   keyStatus,
   lockKey,
   expiration,
@@ -77,7 +76,6 @@ export function Paywall({
           optimism={optimism}
           smallBody={() => smallBody(window.document.body)}
           bigBody={() => bigBody(window.document.body)}
-          requiredConfirmations={requiredConfirmations}
           keyStatus={keyStatus}
           lockKey={lockKey}
           transaction={transaction}
@@ -97,7 +95,6 @@ Paywall.propTypes = {
   redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   transaction: UnlockPropTypes.transaction,
   account: PropTypes.string,
-  requiredConfirmations: PropTypes.number.isRequired,
   keyStatus: PropTypes.string.isRequired,
   lockKey: UnlockPropTypes.key.isRequired,
   expiration: PropTypes.string.isRequired,
@@ -157,7 +154,6 @@ export const mapStateToProps = (
     redirect,
     transaction,
     account: accountAddress,
-    requiredConfirmations,
     keyStatus: currentKeyStatus,
     lockKey,
     expiration,
