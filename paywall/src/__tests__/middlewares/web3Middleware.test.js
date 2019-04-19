@@ -294,7 +294,10 @@ describe('Web3 middleware', () => {
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: ADD_TRANSACTION,
-        transaction,
+        transaction: {
+          hash: transaction.hash,
+          network: 'test',
+        },
       })
     )
   })
@@ -380,7 +383,9 @@ describe('Web3 middleware', () => {
       invoke(setAccount({ address: 'hi' }))
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        expect.objectContaining(addTransaction({ hash: transaction }))
+        expect.objectContaining(
+          addTransaction({ hash: transaction, network: 'test' })
+        )
       )
     })
 
@@ -419,7 +424,9 @@ describe('Web3 middleware', () => {
         invoke(action('hi'))
 
         expect(store.dispatch).toHaveBeenCalledWith(
-          expect.objectContaining(addTransaction({ hash: transaction }))
+          expect.objectContaining(
+            addTransaction({ hash: transaction, network: 'test' })
+          )
         )
       }
     )
@@ -456,7 +463,9 @@ describe('Web3 middleware', () => {
     mockWeb3Service.getLock = jest.fn()
     invoke(action)
     expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining(addTransaction({ hash: transaction }))
+      expect.objectContaining(
+        addTransaction({ hash: transaction, network: 'test' })
+      )
     )
     expect(next).toHaveBeenCalledWith(action)
   })

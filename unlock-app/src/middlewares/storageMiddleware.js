@@ -35,6 +35,7 @@ const storageMiddleware = config => {
               transactionHashes.forEach(hash => {
                 dispatch(
                   addTransaction({
+                    network: null, // TODO: have storageService yield this!
                     hash,
                   })
                 )
