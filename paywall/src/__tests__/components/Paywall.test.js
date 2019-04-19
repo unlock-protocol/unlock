@@ -42,13 +42,14 @@ let futureDate = new Date()
 futureDate.setYear(futureDate.getFullYear() + 1)
 futureDate = futureDate.getTime() / 1000
 
+const key = {
+  id: 'aKey',
+  lock: lock.address,
+  owner: account.address,
+  expiration: futureDate,
+}
 const keys = {
-  aKey: {
-    id: 'aKey',
-    lock: lock.address,
-    owner: account.address,
-    expiration: futureDate,
-  },
+  aKey: key,
 }
 const modals = []
 const transactions = {}
@@ -135,22 +136,28 @@ describe('Paywall', () => {
 
     it('should be locked when there is a matching key and transaction is not confirmed yet', () => {
       expect.assertions(1)
+      const transactions = {
+        transaction: {
+          id: 'transaction',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          key: 'aKey',
+          lock: lock.address,
+          confirmations: 3,
+        },
+      }
       const props = mapStateToProps(
         {
           locks,
-          keys,
+          keys: {
+            aKey: {
+              ...key,
+              transactions,
+            },
+          },
           modals,
           router,
           account,
-          transactions: {
-            transaction: {
-              id: 'transaction',
-              type: TRANSACTION_TYPES.KEY_PURCHASE,
-              key: 'aKey',
-              lock: lock.address,
-              confirmations: 3,
-            },
-          },
+          transactions,
         },
         { config }
       )
@@ -159,34 +166,26 @@ describe('Paywall', () => {
 
     it('should not be locked when there is a matching key and transaction is confirmed', () => {
       expect.assertions(1)
+      const transactions = {
+        transaction: {
+          id: 'transaction',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          key: 'aKey',
+          lock: lock.address,
+          confirmations: 13,
+          status: 'mined',
+        },
+      }
       const props = mapStateToProps(
         {
           locks,
-          keys,
-          modals,
-          router,
-          account,
-          transactions: {
-            transaction: {
-              id: 'transaction',
-              type: TRANSACTION_TYPES.KEY_PURCHASE,
-              key: 'aKey',
-              lock: lock.address,
-              confirmations: 13,
+          keys: {
+            aKey: {
+              ...key,
+              transactions,
+              expiration: new Date().getTime() / 1000 + 10000,
             },
           },
-        },
-        { config }
-      )
-      expect(props.locked).toBe(false)
-    })
-
-    it('should not be locked when there is a matching key and no transaction', () => {
-      expect.assertions(1)
-      const props = mapStateToProps(
-        {
-          locks,
-          keys,
           modals,
           router,
           account,
@@ -195,6 +194,82 @@ describe('Paywall', () => {
         { config }
       )
       expect(props.locked).toBe(false)
+    })
+
+    it('should be locked when there is a matching expired key and fully confirmed transaction', () => {
+      expect.assertions(1)
+      const transactions = {
+        transaction: {
+          id: 'transaction',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          key: 'aKey',
+          lock: lock.address,
+          confirmations: 13,
+          status: 'mined',
+        },
+      }
+      const props = mapStateToProps(
+        {
+          locks,
+          keys: {
+            aKey: {
+              ...key,
+              expiration: 1234,
+              transactions,
+            },
+          },
+          modals,
+          router,
+          account,
+          transactions,
+        },
+        { config }
+      )
+      expect(props.locked).toBe(true)
+    })
+
+    it('should be locked and pull in the newest pending transaction with an expired key', () => {
+      expect.assertions(2)
+      const pendingTransaction = {
+        id: 'pendingTransaction',
+        type: TRANSACTION_TYPES.KEY_PURCHASE,
+        key: 'aKey',
+        lock: lock.address,
+        confirmations: 13,
+        status: 'pending',
+        blockNumber: 500,
+      }
+      const transactions = {
+        transaction: {
+          id: 'transaction',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          key: 'aKey',
+          lock: lock.address,
+          confirmations: 13,
+          status: 'mined',
+          blockNumber: 1,
+        },
+        pendingTransaction,
+      }
+      const props = mapStateToProps(
+        {
+          locks,
+          keys: {
+            aKey: {
+              ...key,
+              expiration: 1234,
+              transactions,
+            },
+          },
+          modals,
+          router,
+          account,
+          transactions,
+        },
+        { config }
+      )
+      expect(props.locked).toBe(true)
+      expect(props.transaction).toBe(pendingTransaction)
     })
 
     it('should pass redirect if present in the URI', () => {
@@ -263,6 +338,9 @@ describe('Paywall', () => {
         hash: '0x777',
         key: '0x123-0x456',
       }
+      const transactions = {
+        '0x777': transaction,
+      }
       const newProps = mapStateToProps(
         {
           account: {
@@ -276,13 +354,12 @@ describe('Paywall', () => {
               owner: '0x123',
               expiration: 0,
               data: 'hello',
+              transactions,
             },
           },
           modals,
           router,
-          transactions: {
-            '0x777': transaction,
-          },
+          transactions,
         },
         { config }
       )

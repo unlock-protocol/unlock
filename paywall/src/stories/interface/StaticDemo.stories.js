@@ -44,6 +44,7 @@ const store = createUnlockStore({
 const config = {
   env: 'dev',
   providers: { HTTP: {}, Metamask: {} },
+  requiredConfirmations: 12,
 }
 
 const fakeWindow = {

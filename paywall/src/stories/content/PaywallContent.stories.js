@@ -47,6 +47,7 @@ const config = {
   providers: {
     HTTP: [],
   },
+  requiredConfirmations: 12,
 }
 
 storiesOf('Paywall app page', module)

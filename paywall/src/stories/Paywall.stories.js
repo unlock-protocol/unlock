@@ -41,27 +41,33 @@ const lockedState = {
     USD: 195.99,
   },
 }
+const unlockedTransactions = {
+  '0x06094207a34b7f1c19b93d337d0c91c357d45ff8e584deb003e67b637db3d876': {
+    hash: '0x06094207a34b7f1c19b93d337d0c91c357d45ff8e584deb003e67b637db3d876',
+    type: 'KEY_PURCHASE',
+    lock: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
+    status: 'mined',
+    confirmations: 200,
+    key: '0xab7c74abc0c4d48d1bdad5dcb26153fc87eeeeee',
+    to: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
+    from: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+  },
+}
 const unlockedState = {
   ...lockedState,
   keys: {
-    '0xab7c74abc0c4d48d1bdad5dcb26153fc87eeeeee': {
+    '0xab7c74abc0c4d48d1bdad5dcb26153fc87eeeeee-0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2': {
+      id:
+        '0xab7c74abc0c4d48d1bdad5dcb26153fc87eeeeee-0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
       lock: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
       owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
       expiration: new Date('December 31, 3000 12:00:00').getTime() / 1000,
       transaction:
         '0x06094207a34b7f1c19b93d337d0c91c357d45ff8e584deb003e67b637db3d876',
+      transactions: unlockedTransactions,
     },
   },
-  transactions: {
-    '0x06094207a34b7f1c19b93d337d0c91c357d45ff8e584deb003e67b637db3d876': {
-      hash:
-        '0x06094207a34b7f1c19b93d337d0c91c357d45ff8e584deb003e67b637db3d876',
-      type: 'LOCK_CREATION',
-      lock: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
-      status: 'mined',
-      confirmations: 200,
-    },
-  },
+  transactions: unlockedTransactions,
   router: {
     location: {
       pathname: '/demo/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
@@ -78,6 +84,7 @@ const config = {
   providers: {
     HTTP: [],
   },
+  requiredConfirmations: 12,
 }
 
 const fakeWindow = {
