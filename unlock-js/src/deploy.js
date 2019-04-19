@@ -1,11 +1,11 @@
 const Web3 = require('web3')
+const gas = require('./constants').GAS_AMOUNTS
 
 export default async function deploy(
   host,
   port,
   Unlock,
   onNewContractInstance = () => {},
-  gas = 4000000,
   web3Object
 ) {
   const web3 = web3Object || new Web3(`http://${host}:${port}`)
@@ -18,7 +18,7 @@ export default async function deploy(
     })
     .send({
       from: accounts[0],
-      gas,
+      gas: gas.createLock,
     })
   onNewContractInstance(newContractInstance)
 

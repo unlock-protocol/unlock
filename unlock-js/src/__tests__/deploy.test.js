@@ -3,6 +3,7 @@ import Web3 from 'web3'
 import { Unlock } from 'unlock-abi-0'
 
 import deploy from '../deploy'
+import { GAS_AMOUNTS } from '../constants'
 
 const host = '127.0.0.1'
 const port = 8545
@@ -46,7 +47,7 @@ const sendTransactionAndYield = (
   result,
   data = Unlock.bytecode,
   to = false,
-  gas = '0x3d0900'
+  gas = '0x' + GAS_AMOUNTS.createLock.toString(16)
 ) => {
   return jsonRpcRequest(
     'eth_sendTransaction',
@@ -134,7 +135,7 @@ describe('contract deployer', () => {
     const getAccounts = web3.eth.getAccounts
     web3.eth.getAccounts = jest.fn(() => getAccounts())
 
-    await deploy(host, port, Unlock, () => {}, 4000000, web3)
+    await deploy(host, port, Unlock, () => {}, web3)
     expect(web3.eth.getAccounts).toHaveBeenCalled()
   })
 
@@ -142,7 +143,7 @@ describe('contract deployer', () => {
     expect.assertions(1)
     const deployed = jest.fn()
 
-    await deploy(host, port, Unlock, deployed, 4000000)
+    await deploy(host, port, Unlock, deployed)
 
     expect(deployed.mock.calls[0][0].options.address).toBe(
       '0xBbBDeed4C0b861cb36f4Ce006A9c90bA2E43fDc2' // fancified by web3-utils
@@ -153,15 +154,16 @@ describe('contract deployer', () => {
     expect.assertions(1)
     const web3 = new Web3(`http://${host}:${port}`)
     const sendTransaction = web3.eth.sendTransaction
+    const gasPrice = 1000000
     web3.eth.sendTransaction = jest.fn(t => sendTransaction(t))
 
-    await deploy(host, port, Unlock, () => {}, 4000000, web3)
+    await deploy(host, port, Unlock, () => {}, web3)
     expect(web3.eth.sendTransaction).toHaveBeenLastCalledWith(
       expect.objectContaining({
         to: '0xbbbdeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
         from: unlockAccountsOnNode[0],
         data: expect.any(String),
-        gas: '0xf4240',
+        gas: '0x' + gasPrice.toString(16),
       })
     )
   })
