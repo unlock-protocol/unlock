@@ -80,6 +80,7 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
+        requiredConfirmations={3}
       />
     )
   })
@@ -92,6 +93,7 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
+        requiredConfirmations={3}
       />
     )
   })
@@ -105,6 +107,7 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
+        requiredConfirmations={3}
       />
     )
   })
@@ -117,6 +120,7 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
+        requiredConfirmations={3}
       />
     )
   })
@@ -133,6 +137,7 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
+        requiredConfirmations={3}
       />
     )
   })
@@ -152,6 +157,7 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="submitted"
+        requiredConfirmations={3}
       />
     )
   })
@@ -172,6 +178,7 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="confirming"
+        requiredConfirmations={3}
       />
     )
   })
@@ -192,6 +199,7 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="valid"
+        requiredConfirmations={3}
       />
     )
   })
@@ -213,6 +221,7 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
+        requiredConfirmations={3}
       />
     )
   })
@@ -230,6 +239,7 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
+        requiredConfirmations={3}
       />
     )
   })
