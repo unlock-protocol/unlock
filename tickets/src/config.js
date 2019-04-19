@@ -1,43 +1,7 @@
-import Web3 from 'web3'
+import { getCurrentProvider, getWeb3Provider } from '@unlock-protocol/unlock-js'
+
 import getConfig from 'next/config'
 import { ETHEREUM_NETWORKS_NAMES } from './constants'
-
-// There is no standard way to detect the provider name...
-export function getCurrentProvider(environment) {
-  if (
-    environment.ethereum &&
-    environment.ethereum.constructor.name === 'Object'
-  )
-    return 'Opera'
-
-  if (environment.web3.currentProvider.isMetaMask) return 'Metamask'
-
-  if (environment.web3.currentProvider.isTrust) return 'Trust'
-
-  if (environment.web3.currentProvider.isToshi) return 'Coinbase Wallet'
-
-  if (environment.web3.currentProvider.isCipher) return 'Cipher'
-
-  if (environment.web3.currentProvider.constructor.name === 'EthereumProvider')
-    return 'Mist'
-
-  if (environment.web3.currentProvider.constructor.name === 'Web3FrameProvider')
-    return 'Parity'
-
-  if (
-    environment.web3.currentProvider.host &&
-    environment.web3.currentProvider.host.indexOf('infura') !== -1
-  )
-    return 'Infura'
-
-  if (
-    environment.web3.currentProvider.host &&
-    environment.web3.currentProvider.host.indexOf('localhost') !== -1
-  )
-    return 'localhost'
-
-  return 'UnknownProvider'
-}
 
 const nextConfig = getConfig() && getConfig().publicRuntimeConfig
 
@@ -80,9 +44,7 @@ export default function configure(
 
   if (env === 'test') {
     // In test, we fake the HTTP provider
-    providers['HTTP'] = new Web3.providers.HttpProvider(
-      `http://${httpProvider}:8545`
-    )
+    providers['HTTP'] = getWeb3Provider(`http://${httpProvider}:8545`)
     blockTime = 10 // in mseconds.
     supportedProviders = ['HTTP']
     isRequiredNetwork = networkId => networkId === 1984
@@ -91,9 +53,7 @@ export default function configure(
   if (env === 'dev') {
     // In dev, we assume there is a running local ethereum node with unlocked accounts
     // listening to the HTTP endpoint. We can add more providers (Websockets...) if needed.
-    providers['HTTP'] = new Web3.providers.HttpProvider(
-      `http://${httpProvider}:8545`
-    )
+    providers['HTTP'] = getWeb3Provider(`http://${httpProvider}:8545`)
 
     // If there is an existing web3 injected provider, we also add this one to the list of possible providers
     if (typeof environment.web3 !== 'undefined') {
@@ -156,7 +116,7 @@ export default function configure(
 
   let readOnlyProvider
   if (readOnlyProviderUrl) {
-    readOnlyProvider = new Web3.providers.HttpProvider(readOnlyProviderUrl)
+    readOnlyProvider = getWeb3Provider(readOnlyProviderUrl)
   }
 
   return {
