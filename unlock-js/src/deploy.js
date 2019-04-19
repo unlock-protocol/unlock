@@ -4,8 +4,8 @@ export default async function deploy(
   host,
   port,
   Unlock,
-  gas = 4000000,
   onNewContractInstance = () => {},
+  gas = 4000000,
   web3Object
 ) {
   const web3 = web3Object || new Web3(`http://${host}:${port}`)
