@@ -38,7 +38,7 @@
     "@types/sequelize": "^4.27.44",
     "@types/stripe": "^6.25.10",
     "@typescript-eslint/eslint-plugin": "^1.5.0",
-    "@unlock-protocol/unlock-js": "0.0.12",
+    "@unlock-protocol/unlock-js": "0.0.14",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "cross-env": "^5.2.0",

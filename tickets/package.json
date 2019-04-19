@@ -29,7 +29,7 @@
     "@types/react-redux": "7.0.7",
     "@types/storybook__react": "4.0.1",
     "@types/styled-components": "4.1.14",
-    "@unlock-protocol/unlock-js": "0.0.13",
+    "@unlock-protocol/unlock-js": "0.0.14",
     "@zeit/next-css": "1.0.1",
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "1.1.1",

@@ -17,7 +17,7 @@
     "@types/storybook__react": "^4.0.1",
     "@types/styled-components": "4.1.14",
     "@types/web3": "^1.0.18",
-    "@unlock-protocol/unlock-js": "0.0.13",
+    "@unlock-protocol/unlock-js": "0.0.14",
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "^1.1.1",
     "axios": "^0.18.0",
