@@ -47,7 +47,7 @@ const sendTransactionAndYield = (
   result,
   data = Unlock.bytecode,
   to = false,
-  gas = '0x' + GAS_AMOUNTS.createLock.toString(16)
+  gas = '0x' + GAS_AMOUNTS.deployContract.toString(16)
 ) => {
   return jsonRpcRequest(
     'eth_sendTransaction',

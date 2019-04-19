@@ -18,7 +18,7 @@ export default async function deploy(
     })
     .send({
       from: accounts[0],
-      gas: gas.createLock,
+      gas: gas.deployContract,
     })
   onNewContractInstance(newContractInstance)
 
