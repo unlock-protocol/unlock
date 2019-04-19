@@ -88,7 +88,13 @@ export const Overlay = ({
     if (transaction.confirmations >= requiredConfirmations) {
       return <ConfirmedFlag dismiss={hideModal} />
     }
-    return <ConfirmingFlag transaction={transaction} lock={locks[0]} />
+    return (
+      <ConfirmingFlag
+        transaction={transaction}
+        lock={locks[0]}
+        requiredConfirmations={requiredConfirmations}
+      />
+    )
   }
   return (
     <FullPage>

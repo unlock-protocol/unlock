@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { withKnobs, number } from '@storybook/addon-knobs'
-import { ConfirmingFlag } from '../../components/lock/ConfirmingFlag'
+import ConfirmingFlag from '../../components/lock/ConfirmingFlag'
 import ConfirmedFlag from '../../components/lock/ConfirmedFlag'
 
 storiesOf('Optimistic Unlocking Flags', module)
@@ -25,7 +25,7 @@ storiesOf('Optimistic Unlocking Flags', module)
   .add('the confirming flag', () => {
     return (
       <ConfirmingFlag
-        config={{ requiredConfirmations: 5 }}
+        requiredConfirmations={5}
         transaction={{ confirmations: number('confirmations', 2) }}
       />
     )

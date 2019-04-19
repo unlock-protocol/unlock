@@ -8472,7 +8472,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .gvuvoY > .c1 {
+  .jnNzBz > .c1 {
     display: none;
   }
 }
@@ -8532,9 +8532,9 @@ Object {
   .c0 {
     font-size: 10px;
     display: grid;
-    height: 43px;
+    height: 60px;
     grid-template-columns: 1.6fr 1fr 1fr;
-    grid-template-rows: 43px;
+    grid-template-rows: 60px;
     width: 100%;
     -webkit-align-items: center;
     -webkit-box-align: center;
@@ -8662,7 +8662,7 @@ Object {
       style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="j1ncz7-3 sc-1thcbar-0 nXpgx"
+        class="j1ncz7-3 sc-1thcbar-0 jPJKwm"
       >
         <div
           class="j1ncz7-0 iFZnpo"
@@ -8899,9 +8899,9 @@ Object {
   .c0 {
     font-size: 10px;
     display: grid;
-    height: 43px;
+    height: 60px;
     grid-template-columns: 1.6fr 1fr 1fr;
-    grid-template-rows: 43px;
+    grid-template-rows: 60px;
     width: 100%;
     -webkit-align-items: center;
     -webkit-box-align: center;
@@ -9046,7 +9046,7 @@ Object {
       style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="j1ncz7-3 gvuvoY"
+        class="j1ncz7-3 jnNzBz"
       >
         <div
           class="j1ncz7-0 iFZnpo"
@@ -13037,9 +13037,9 @@ Object {
   .c0 {
     font-size: 10px;
     display: grid;
-    height: 43px;
+    height: 60px;
     grid-template-columns: 1.6fr 1fr 1fr;
-    grid-template-rows: 43px;
+    grid-template-rows: 60px;
     width: 100%;
     -webkit-align-items: center;
     -webkit-box-align: center;
@@ -13300,7 +13300,7 @@ Object {
         class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-3 gvuvoY"
+          class="j1ncz7-3 jnNzBz"
         >
           <div
             class="j1ncz7-0 iFZnpo"
@@ -14504,7 +14504,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .gvuvoY > .c1 {
+  .jnNzBz > .c1 {
     display: none;
   }
 }
@@ -14564,9 +14564,9 @@ Object {
   .c0 {
     font-size: 10px;
     display: grid;
-    height: 43px;
+    height: 60px;
     grid-template-columns: 1.6fr 1fr 1fr;
-    grid-template-rows: 43px;
+    grid-template-rows: 60px;
     width: 100%;
     -webkit-align-items: center;
     -webkit-box-align: center;
@@ -14797,7 +14797,7 @@ Object {
         class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-3 sc-1thcbar-0 nXpgx"
+          class="j1ncz7-3 sc-1thcbar-0 jPJKwm"
         >
           <div
             class="j1ncz7-0 iFZnpo"
@@ -15723,9 +15723,9 @@ Object {
   .c0 {
     font-size: 10px;
     display: grid;
-    height: 43px;
+    height: 60px;
     grid-template-columns: 1.6fr 1fr 1fr;
-    grid-template-rows: 43px;
+    grid-template-rows: 60px;
     width: 100%;
     -webkit-align-items: center;
     -webkit-box-align: center;
@@ -15986,7 +15986,7 @@ Object {
         class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-3 gvuvoY"
+          class="j1ncz7-3 jnNzBz"
         >
           <div
             class="j1ncz7-0 iFZnpo"
