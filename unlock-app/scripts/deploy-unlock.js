@@ -3,7 +3,7 @@
 // TODO: move into unlock-js
 
 const Web3 = require('web3')
-const Unlock = require('unlock-abi-0-1').Unlock
+const Unlock = require('unlock-abi-0-2').Unlock
 const net = require('net')
 
 /*
