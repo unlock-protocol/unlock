@@ -52,6 +52,8 @@ const WindowProvider = WindowContext.Provider
 
 const storyConfig = {
   requiredConfirmations: 12,
+  isInIframe: false,
+  isServer: false,
 }
 
 storiesOf('Lock', module)
@@ -75,9 +77,10 @@ storiesOf('Lock', module)
         lock={shortLock}
         transaction={null}
         lockKey={null}
-        config={config}
         {...lockActions}
         openInNewWindow={false}
+        keyStatus="none"
+        requiredConfirmations={3}
       />
     )
   })
@@ -87,9 +90,10 @@ storiesOf('Lock', module)
         lock={lock}
         transaction={null}
         lockKey={null}
-        config={config}
         {...lockActions}
         openInNewWindow={false}
+        keyStatus="none"
+        requiredConfirmations={3}
       />
     )
   })
@@ -100,9 +104,10 @@ storiesOf('Lock', module)
         lock={lock}
         transaction={null}
         lockKey={null}
-        config={config}
         {...lockActions}
         openInNewWindow={false}
+        keyStatus="none"
+        requiredConfirmations={3}
       />
     )
   })
@@ -112,25 +117,27 @@ storiesOf('Lock', module)
         lock={soldOutLock}
         transaction={null}
         lockKey={null}
-        config={config}
         {...lockActions}
         openInNewWindow={false}
+        keyStatus="none"
+        requiredConfirmations={3}
       />
     )
   })
   .add('disabled - too expensive for current user', () => {
     const account = {
-      balance: lock.keyPrice,
+      balance: 0,
     }
     return (
       <Lock
         account={account}
-        lock={soldOutLock}
+        lock={lock}
         transaction={null}
         lockKey={null}
-        config={config}
         {...lockActions}
         openInNewWindow={false}
+        keyStatus="none"
+        requiredConfirmations={3}
       />
     )
   })
@@ -149,6 +156,8 @@ storiesOf('Lock', module)
         config={config}
         {...lockActions}
         openInNewWindow={false}
+        keyStatus="submitted"
+        requiredConfirmations={3}
       />
     )
   })
@@ -168,6 +177,8 @@ storiesOf('Lock', module)
         config={config}
         {...lockActions}
         openInNewWindow={false}
+        keyStatus="valid"
+        requiredConfirmations={3}
       />
     )
   })
@@ -187,6 +198,8 @@ storiesOf('Lock', module)
         config={config}
         {...lockActions}
         openInNewWindow={false}
+        keyStatus="valid"
+        requiredConfirmations={3}
       />
     )
   })
@@ -207,6 +220,8 @@ storiesOf('Lock', module)
         config={config}
         {...lockActions}
         openInNewWindow={false}
+        keyStatus="none"
+        requiredConfirmations={3}
       />
     )
   })
@@ -223,6 +238,8 @@ storiesOf('Lock', module)
         config={config}
         {...lockActions}
         openInNewWindow={false}
+        keyStatus="none"
+        requiredConfirmations={3}
       />
     )
   })
