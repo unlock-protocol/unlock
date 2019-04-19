@@ -126,7 +126,7 @@ storiesOf('Lock', module)
   })
   .add('disabled - too expensive for current user', () => {
     const account = {
-      balance: 0,
+      balance: '0',
     }
     return (
       <Lock

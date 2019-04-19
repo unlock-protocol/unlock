@@ -95,6 +95,7 @@ describe('Overlay', () => {
         transaction: null,
       })
     })
+
     it('should not crash if there are no matching keys yet for a transaction', () => {
       expect.assertions(1)
 
@@ -123,6 +124,7 @@ describe('Overlay', () => {
         transaction: null,
       })
     })
+
     it('should set openInNewWindow based on the value of account', () => {
       expect.assertions(3)
 
@@ -252,12 +254,20 @@ describe('Overlay', () => {
       expect(wrapper.getByText('Need account')).not.toBeNull()
     })
   })
+
   describe('error replacement', () => {
     const lock = {
+      id: 'lock',
       name: 'Monthly',
       address: '0xdeadbeef',
       keyPrice: '100000',
       expirationDuration: 123456789,
+    }
+    const lockKey = {
+      id: 'key',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 10000,
     }
     let store
     beforeEach(() => (store = createUnlockStore()))
@@ -278,6 +288,8 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
+                keyStatus="none"
+                lockKey={lockKey}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -309,6 +321,8 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
+                keyStatus="none"
+                lockKey={lockKey}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -343,6 +357,8 @@ describe('Overlay', () => {
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
                 openInNewWindow={false}
+                keyStatus="none"
+                lockKey={lockKey}
               />
             </ConfigProvider>
           </ErrorProvider>
@@ -365,6 +381,12 @@ describe('Overlay', () => {
       address: '0xdeadbeef',
       keyPrice: '100000',
       expirationDuration: 123456789,
+    }
+    const lockKey = {
+      id: 'key',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 10000,
     }
     let state
     beforeEach(() => {
@@ -407,6 +429,8 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 1, past: 0 }}
                 locks={[lock]}
+                keyStatus="confirming"
+                lockKey={lockKey}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -436,6 +460,8 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 1, past: 0 }}
                 locks={[lock]}
+                keyStatus="valid"
+                lockKey={lockKey}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -481,6 +507,8 @@ describe('Overlay', () => {
                     bigBody={() => {}}
                     optimism={{ current: 1, past: 0 }}
                     locks={[lock]}
+                    keyStatus="confirming"
+                    lockKey={lockKey}
                   />
                 </ErrorProvider>
               </ConfigProvider>
@@ -527,6 +555,8 @@ describe('Overlay', () => {
                     bigBody={bigBody}
                     optimism={{ current: 0, past: 0 }}
                     locks={[lock]}
+                    keyStatus="confirming"
+                    lockKey={lockKey}
                   />
                 </ErrorProvider>
               </ConfigProvider>
@@ -543,15 +573,29 @@ describe('Overlay', () => {
     })
   })
 
-  describe('message displayed to user (pessimistic unlocking', () => {
+  describe('message displayed to user (pessimistic unlocking)', () => {
     const lock = {
       name: 'Monthly',
       address: '0xdeadbeef',
       keyPrice: '100000',
       expirationDuration: 123456789,
     }
+    const lockKey = {
+      id: 'key',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 10000,
+    }
     let state
     beforeEach(() => {
+      const transactions = {
+        transaction: {
+          key: 'key',
+          status: 'mined',
+          confirmations: 4,
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+        },
+      }
       state = {
         account: {
           address: 'account',
@@ -561,15 +605,10 @@ describe('Overlay', () => {
             lock: '0xdeadbeef',
             owner: 'account',
             id: 'key',
+            transactions,
           },
         },
-        transactions: {
-          transaction: {
-            key: 'key',
-            confirmations: 4,
-            type: TRANSACTION_TYPES.KEY_PURCHASE,
-          },
-        },
+        transactions,
       }
     })
 
@@ -591,13 +630,15 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
+                keyStatus="none"
+                lockKey={lockKey}
               />
             </ErrorProvider>
           </ConfigProvider>
         </Provider>
       )
 
-      expect(wrapper.queryByText('100000.00 Eth')).not.toBeNull()
+      expect(wrapper.getByText('100000.00 Eth')).not.toBeNull()
       expect(
         wrapper.getByText(
           'You have reached your limit of free articles. Please purchase access'
@@ -623,13 +664,15 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
+                keyStatus="confirming"
+                lockKey={lockKey}
               />
             </ErrorProvider>
           </ConfigProvider>
         </Provider>
       )
 
-      expect(wrapper.queryByText('100000.00 Eth')).not.toBeNull()
+      expect(wrapper.getByText('100000.00 ETH')).not.toBeNull()
       expect(wrapper.getByText('Purchase pending...')).not.toBeNull()
     })
 
@@ -652,13 +695,15 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
+                keyStatus="valid"
+                lockKey={lockKey}
               />
             </ErrorProvider>
           </ConfigProvider>
         </Provider>
       )
 
-      expect(wrapper.queryByText('100000.00 Eth')).not.toBeNull()
+      expect(wrapper.getByText('100000.00 ETH')).not.toBeNull()
       expect(
         wrapper.getByText('Purchase confirmed, content unlocked!')
       ).not.toBeNull()

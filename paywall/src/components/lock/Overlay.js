@@ -61,21 +61,32 @@ export const Overlay = ({
   optimism,
   smallBody,
   bigBody,
+  keyStatus,
+  lockKey,
+  account,
 }) => {
   let message
-  if (transaction) {
-    if (transaction.confirmations < requiredConfirmations) {
+  switch (keyStatus) {
+    case 'confirming':
+    case 'submitted':
+    case 'pending':
       message = 'Purchase pending...'
-    } else {
+      break
+    case 'valid':
+    case 'confirmed':
       message = 'Purchase confirmed, content unlocked!'
-    }
-  } else {
-    message =
-      'You have reached your limit of free articles. Please purchase access'
+      break
+    case 'expired':
+      message =
+        'Your subscription has expired, please purchase a new key to continue'
+      break
+    default:
+      message =
+        'You have reached your limit of free articles. Please purchase access'
   }
   const { postMessage } = usePostMessage()
   useEffect(() => {
-    if (optimism.current && transaction) {
+    if (optimism.current && !['expired', 'none'].includes(keyStatus)) {
       postMessage(POST_MESSAGE_GET_OPTIMISTIC)
       smallBody()
     } else {
@@ -83,9 +94,9 @@ export const Overlay = ({
       postMessage(POST_MESSAGE_GET_PESSIMISTIC)
       bigBody()
     }
-  }, [optimism.current, transaction])
-  if (optimism.current && transaction) {
-    if (transaction.confirmations >= requiredConfirmations) {
+  }, [optimism.current, keyStatus])
+  if (optimism.current && !['expired', 'none'].includes(keyStatus)) {
+    if (keyStatus === 'confirmed' || keyStatus === 'valid') {
       return <ConfirmedFlag dismiss={hideModal} />
     }
     return (
@@ -109,6 +120,10 @@ export const Overlay = ({
                 hideModal={hideModal}
                 showModal={showModal}
                 openInNewWindow={openInNewWindow}
+                keyStatus={keyStatus}
+                transaction={transaction}
+                account={account}
+                lockKey={lockKey}
               />
             ))}
           </GlobalErrorConsumer>
@@ -120,6 +135,7 @@ export const Overlay = ({
 }
 
 Overlay.propTypes = {
+  account: UnlockPropTypes.account,
   locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
   hideModal: PropTypes.func.isRequired,
   showModal: PropTypes.func.isRequired,
@@ -133,10 +149,13 @@ Overlay.propTypes = {
     current: PropTypes.oneOf([0, 1]).isRequired,
     past: PropTypes.oneOf([0, 1]).isRequired,
   }).isRequired,
+  keyStatus: PropTypes.string.isRequired,
+  lockKey: UnlockPropTypes.key.isRequired,
 }
 
 Overlay.defaultProps = {
   transaction: null,
+  account: null,
 }
 export const mapStateToProps = ({ account, transactions, keys }, { locks }) => {
   const lock = locks.length ? locks[0] : {}
