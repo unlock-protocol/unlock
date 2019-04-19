@@ -194,8 +194,8 @@ storiesOf('Overlay/Optimistic Unlocking', module)
         ...transaction,
         confirmations: 5,
       },
-      undefined,
-      undefined,
+      undefined /* errors */,
+      undefined /* thisConfig */,
       {
         current: 1,
         past: 0,
@@ -218,8 +218,8 @@ storiesOf('Overlay/Optimistic Unlocking', module)
         ...transaction,
         confirmations: 12,
       },
-      undefined,
-      undefined,
+      undefined /* errors */,
+      undefined /* thisConfig */,
       {
         current: 1,
         past: 0,
@@ -228,10 +228,17 @@ storiesOf('Overlay/Optimistic Unlocking', module)
   })
   .add('beginning purchase (pessimistic)', () => {
     makeStore()
-    return render(locks, 'submitted', transaction, undefined, undefined, {
-      current: 0,
-      past: 1,
-    })
+    return render(
+      locks,
+      'submitted',
+      transaction,
+      undefined /* errors */,
+      undefined /* thisConfig */,
+      {
+        current: 0,
+        past: 1,
+      }
+    )
   })
   .add('some confirmations (pessimistic)', () => {
     makeStore({
@@ -251,8 +258,8 @@ storiesOf('Overlay/Optimistic Unlocking', module)
         status: 'mined',
         confirmations: 5,
       },
-      undefined,
-      undefined,
+      undefined /* errors */,
+      undefined /* thisConfig */,
       {
         current: 0,
         past: 1,
@@ -277,8 +284,8 @@ storiesOf('Overlay/Optimistic Unlocking', module)
         status: 'mined',
         confirmations: 12,
       },
-      undefined,
-      undefined,
+      undefined /* errors */,
+      undefined /* thisConfig */,
       {
         current: 0,
         past: 1,
