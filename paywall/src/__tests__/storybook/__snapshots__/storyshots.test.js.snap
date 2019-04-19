@@ -15066,15 +15066,29 @@ exports[`Storyshots Overlay/Optimistic Unlocking beginning purchase (pessimistic
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c14 {
+    .c13 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c14 > svg {
+.c13 > svg {
   fill: white;
+}
+
+.c4 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 1;
 }
 
 .c5 {
@@ -15095,7 +15109,69 @@ Object {
   color: var(--grey);
 }
 
-.c13 {
+.c8 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c9 {
+  white-space: nowrap;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c10 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  color: var(--dimgrey);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 0px;
+}
+
+.c7 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c12 {
   display: grid;
   grid-template-columns: 35px 1fr;
   grid-template-rows: 1fr 1fr;
@@ -15115,7 +15191,7 @@ Object {
   margin-right: -33px;
 }
 
-.c13 > a {
+.c12 > a {
   grid-column: 2;
   grid-row: 2;
   color: var(--red);
@@ -15124,7 +15200,7 @@ Object {
   align-self: start;
 }
 
-.c13 > p {
+.c12 > p {
   grid-column: 2;
   grid-row: 1;
   color: var(--darkgrey);
@@ -15134,8 +15210,8 @@ Object {
   margin-bottom: 0;
 }
 
-.c13 > p,
-.c13 > a {
+.c12 > p,
+.c12 > a {
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -15143,7 +15219,7 @@ Object {
   font-size: 12px;
 }
 
-.c13 > div {
+.c12 > div {
   grid-column: 1;
   grid-row: 1 / span 2;
   margin-left: -14px;
@@ -15152,22 +15228,7 @@ Object {
   align-self: center;
 }
 
-.c4 {
-  display: grid;
-  justify-items: stretch;
-  margin: 0px;
-  padding: 0px;
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  width: 200px;
-  height: 180px;
-  grid-gap: 0px;
-  background-clip: padding-box;
-  grid-template-rows: 40px 140px;
-  opacity: 1;
-  cursor: pointer;
-}
-
-.c12 {
+.c11 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -15183,8 +15244,9 @@ Object {
   border-radius: 0px 0px 4px 4px;
   padding: 0px;
   width: 200px;
-  background-color: var(--green);
+  background-color: var(--link);
   color: var(--white);
+  margin-top: 13px;
 }
 
 .c6 {
@@ -15208,38 +15270,7 @@ Object {
   border: 1px solid transparent;
   border-radius: 4px;
   background-color: var(--white);
-  padding-top: 13px;
-}
-
-.c6:hover {
-  border: 1px solid var(--activegreen);
-}
-
-.c6:hover .c11 {
-  background-color: var(--activegreen);
-}
-
-.c7 {
-  font-size: 30px;
-  text-transform: uppercase;
-  color: var(--slate);
-  font-weight: bold;
-}
-
-.c8 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c10 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c9 {
-  color: var(--lightgrey);
+  border: 1px solid var(--link);
 }
 
 .c0 {
@@ -15290,14 +15321,14 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c14 {
+  .c13 {
     height: 16px;
     width: 16px;
   }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c13 {
+  .c12 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
     grid-template-rows: 30px;
@@ -15307,7 +15338,7 @@ Object {
     grid-row: 3;
   }
 
-  .c13 > div {
+  .c12 > div {
     grid-row: 1;
     grid-column: 2;
     margin-left: 0;
@@ -15316,7 +15347,7 @@ Object {
     align-self: center;
   }
 
-  .c13 > p {
+  .c12 > p {
     width: 100%;
     color: var(--slate);
     grid-row: 1;
@@ -15329,7 +15360,7 @@ Object {
     padding-right: 2px;
   }
 
-  .c13 > a {
+  .c12 > a {
     grid-row: 1;
     grid-column: 3;
     justify-self: start;
@@ -15435,53 +15466,46 @@ Object {
                   >
                     One Month
                   </header>
-                  <div>
+                  <div
+                    class="c6"
+                  >
                     <div
-                      class="c6"
+                      class="c7"
                     >
                       <div
-                        class="price c7"
+                        class="c8"
                       >
                         0.12
-                         Eth
+                         ETH
                       </div>
-                      <div>
-                        <span
-                          class="c8"
-                        >
-                          $
-                          24.11
-                        </span>
-                        <span
-                          class="c9"
-                        >
-                           | 
-                        </span>
-                        <span
-                          class="c10"
-                        >
-                          <span>
-                            142 days
-                          </span>
-                        </span>
-                      </div>
-                      <footer
-                        class="c11 c12"
+                      <div
+                        class="c9"
                       >
-                        Purchase
-                      </footer>
+                        $
+                        24.11
+                      </div>
                     </div>
+                    <div
+                      class="c10"
+                    >
+                      Waiting for mining confirmation.
+                    </div>
+                    <footer
+                      class="c11"
+                    >
+                      Payment Sent
+                    </footer>
                   </div>
                 </li>
               </ul>
               <footer
-                class="c13"
+                class="c12"
               >
                 <p>
                   Powered by
                 </p>
                 <div
-                  class="c14"
+                  class="c13"
                 >
                   <svg
                     viewBox="0 0 56 56"
@@ -15581,7 +15605,7 @@ Object {
               class="sc-7wmxqm-3 jZRqqJ"
             >
               <li
-                class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
+                class="sc-1549ebs-0 lock NDRQz"
                 data-address="0x1234567890123456789012345678901234567890"
               >
                 <header
@@ -15589,42 +15613,35 @@ Object {
                 >
                   One Month
                 </header>
-                <div>
+                <div
+                  class="sc-1549ebs-3 mmuk7x-1 fuDijf"
+                >
                   <div
-                    class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+                    class="sc-1549ebs-6 hGyOOg"
                   >
                     <div
-                      class="sc-5sgq84-3 price bIZSQm"
+                      class="sc-1549ebs-4 cXGnbO"
                     >
                       0.12
-                       Eth
+                       ETH
                     </div>
-                    <div>
-                      <span
-                        class="sc-5sgq84-4 gAXKCT"
-                      >
-                        $
-                        24.11
-                      </span>
-                      <span
-                        class="sc-5sgq84-6 evsHkc"
-                      >
-                         | 
-                      </span>
-                      <span
-                        class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                      >
-                        <span>
-                          142 days
-                        </span>
-                      </span>
-                    </div>
-                    <footer
-                      class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+                    <div
+                      class="sc-1549ebs-4 kUlrFA"
                     >
-                      Purchase
-                    </footer>
+                      $
+                      24.11
+                    </div>
                   </div>
+                  <div
+                    class="sc-1549ebs-5 eUmWhY"
+                  >
+                    Waiting for mining confirmation.
+                  </div>
+                  <footer
+                    class="sc-1549ebs-2 mmuk7x-0 dqyjiJ"
+                  >
+                    Payment Sent
+                  </footer>
                 </div>
               </li>
             </ul>
@@ -16204,15 +16221,100 @@ exports[`Storyshots Overlay/Optimistic Unlocking confirmed (pessimistic) 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c14 {
+    .c22 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c14 > svg {
+.c22 > svg {
   fill: white;
+}
+
+.c13 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 50px;
+}
+
+.c13 > svg {
+  fill: var(--grey);
+  height: 50px;
+  width: 50px;
+}
+
+.c13:hover {
+  background-color: var(--green);
+}
+
+.c13:hover > svg {
+  fill: white;
+}
+
+.c12:hover .c23 {
+  display: inline-block;
+}
+
+.c24 .c12 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c24 .c12:nth-child(1) {
+  pointer-events: none;
+}
+
+.c24 .c12:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c24 .c12 > svg {
+  fill: var(--grey);
+}
+
+.c24 .c12:hover > svg {
+  fill: var(--grey);
+}
+
+.c25 .c12 {
+  margin: 24px;
+}
+
+.c25 .c12 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c4 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 1;
 }
 
 .c5 {
@@ -16233,7 +16335,53 @@ Object {
   color: var(--grey);
 }
 
-.c13 {
+.c8 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c9 {
+  white-space: nowrap;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c7 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c21 {
   display: grid;
   grid-template-columns: 35px 1fr;
   grid-template-rows: 1fr 1fr;
@@ -16253,7 +16401,7 @@ Object {
   margin-right: -33px;
 }
 
-.c13 > a {
+.c21 > a {
   grid-column: 2;
   grid-row: 2;
   color: var(--red);
@@ -16262,7 +16410,7 @@ Object {
   align-self: start;
 }
 
-.c13 > p {
+.c21 > p {
   grid-column: 2;
   grid-row: 1;
   color: var(--darkgrey);
@@ -16272,8 +16420,8 @@ Object {
   margin-bottom: 0;
 }
 
-.c13 > p,
-.c13 > a {
+.c21 > p,
+.c21 > a {
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -16281,7 +16429,7 @@ Object {
   font-size: 12px;
 }
 
-.c13 > div {
+.c21 > div {
   grid-column: 1;
   grid-row: 1 / span 2;
   margin-left: -14px;
@@ -16290,22 +16438,25 @@ Object {
   align-self: center;
 }
 
-.c4 {
-  display: grid;
-  justify-items: stretch;
-  margin: 0px;
-  padding: 0px;
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  width: 200px;
-  height: 180px;
-  grid-gap: 0px;
-  background-clip: padding-box;
-  grid-template-rows: 40px 140px;
-  opacity: 1;
-  cursor: pointer;
+.c16 {
+  display: none;
 }
 
-.c12 {
+.c11 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c11:hover .c15 {
+  display: block;
+}
+
+.c11:hover .c14 {
+  display: none;
+}
+
+.c20 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -16323,6 +16474,33 @@ Object {
   width: 200px;
   background-color: var(--green);
   color: var(--white);
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+  display: none;
+}
+
+.c18 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
 }
 
 .c6 {
@@ -16346,38 +16524,56 @@ Object {
   border: 1px solid transparent;
   border-radius: 4px;
   background-color: var(--white);
-  padding-top: 13px;
+  border: 1px solid var(--green);
+  cursor: pointer;
 }
 
-.c6:hover {
-  border: 1px solid var(--activegreen);
+.c6 .c19 {
+  display: none;
 }
 
-.c6:hover .c11 {
-  background-color: var(--activegreen);
+.c6 .c17 {
+  display: grid;
 }
 
-.c7 {
-  font-size: 30px;
-  text-transform: uppercase;
-  color: var(--slate);
-  font-weight: bold;
+.c6:hover .c10 {
+  background-color: var(--green);
 }
 
-.c8 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c6:hover .c10 svg {
+  fill: var(--white);
 }
 
-.c10 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c6:hover .c15 {
+  display: block;
 }
 
-.c9 {
-  color: var(--lightgrey);
+.c6:hover .c14 {
+  display: none;
+}
+
+.c6:hover .c19 {
+  display: grid;
+}
+
+.c6:hover .c17 {
+  display: none;
+}
+
+.c26:hover .c10 {
+  background-color: var(--green);
+}
+
+.c26:hover .c10 svg {
+  fill: var(--white);
+}
+
+.c26:hover .c15 {
+  display: block;
+}
+
+.c26:hover .c14 {
+  display: none;
 }
 
 .c0 {
@@ -16428,14 +16624,14 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c14 {
+  .c22 {
     height: 16px;
     width: 16px;
   }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c13 {
+  .c21 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
     grid-template-rows: 30px;
@@ -16445,7 +16641,7 @@ Object {
     grid-row: 3;
   }
 
-  .c13 > div {
+  .c21 > div {
     grid-row: 1;
     grid-column: 2;
     margin-left: 0;
@@ -16454,7 +16650,7 @@ Object {
     align-self: center;
   }
 
-  .c13 > p {
+  .c21 > p {
     width: 100%;
     color: var(--slate);
     grid-row: 1;
@@ -16467,7 +16663,7 @@ Object {
     padding-right: 2px;
   }
 
-  .c13 > a {
+  .c21 > a {
     grid-row: 1;
     grid-column: 3;
     justify-self: start;
@@ -16573,53 +16769,73 @@ Object {
                   >
                     One Month
                   </header>
-                  <div>
+                  <div
+                    class="c6"
+                  >
                     <div
-                      class="c6"
+                      class="c7"
                     >
                       <div
-                        class="price c7"
+                        class="c8"
                       >
                         0.12
-                         Eth
+                         ETH
                       </div>
-                      <div>
-                        <span
-                          class="c8"
-                        >
-                          $
-                          24.11
-                        </span>
-                        <span
-                          class="c9"
-                        >
-                           | 
-                        </span>
-                        <span
-                          class="c10"
-                        >
-                          <span>
-                            142 days
-                          </span>
-                        </span>
-                      </div>
-                      <footer
-                        class="c11 c12"
+                      <div
+                        class="c9"
                       >
-                        Purchase
-                      </footer>
+                        $
+                        24.11
+                      </div>
                     </div>
+                    <a
+                      class="c10 c11 c12 c13"
+                    >
+                      <svg
+                        class="c14 "
+                        viewBox="0 0 24 24"
+                      >
+                        <title />
+                        <path
+                          clip-rule="evenodd"
+                          d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                      <svg
+                        class="c15 c16"
+                        viewBox="0 0 24 24"
+                      >
+                        <title />
+                        <path
+                          clip-rule="evenodd"
+                          d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                      
+                    </a>
+                    <footer
+                      class="c17 c18"
+                    >
+                      Payment Confirmed
+                    </footer>
+                    <footer
+                      class="c19 c20"
+                    >
+                      Go to Content
+                    </footer>
                   </div>
                 </li>
               </ul>
               <footer
-                class="c13"
+                class="c21"
               >
                 <p>
                   Powered by
                 </p>
                 <div
-                  class="c14"
+                  class="c22"
                 >
                   <svg
                     viewBox="0 0 56 56"
@@ -16719,7 +16935,7 @@ Object {
               class="sc-7wmxqm-3 jZRqqJ"
             >
               <li
-                class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
+                class="sc-1549ebs-0 lock NDRQz"
                 data-address="0x1234567890123456789012345678901234567890"
               >
                 <header
@@ -16727,42 +16943,62 @@ Object {
                 >
                   One Month
                 </header>
-                <div>
+                <div
+                  class="sc-1549ebs-3 ynhyps-0 dMttvX"
+                >
                   <div
-                    class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+                    class="sc-1549ebs-6 hGyOOg"
                   >
                     <div
-                      class="sc-5sgq84-3 price bIZSQm"
+                      class="sc-1549ebs-4 cXGnbO"
                     >
                       0.12
-                       Eth
+                       ETH
                     </div>
-                    <div>
-                      <span
-                        class="sc-5sgq84-4 gAXKCT"
-                      >
-                        $
-                        24.11
-                      </span>
-                      <span
-                        class="sc-5sgq84-6 evsHkc"
-                      >
-                         | 
-                      </span>
-                      <span
-                        class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                      >
-                        <span>
-                          142 days
-                        </span>
-                      </span>
-                    </div>
-                    <footer
-                      class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+                    <div
+                      class="sc-1549ebs-4 kUlrFA"
                     >
-                      Purchase
-                    </footer>
+                      $
+                      24.11
+                    </div>
                   </div>
+                  <a
+                    class="sc-1hzn3pu-2 jZYYLs is925m-0 kmZaWo"
+                  >
+                    <svg
+                      class="sc-1hzn3pu-0 dozNUb"
+                      viewBox="0 0 24 24"
+                    >
+                      <title />
+                      <path
+                        clip-rule="evenodd"
+                        d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                    <svg
+                      class="sc-1hzn3pu-1 gckVYZ"
+                      viewBox="0 0 24 24"
+                    >
+                      <title />
+                      <path
+                        clip-rule="evenodd"
+                        d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                    
+                  </a>
+                  <footer
+                    class="sc-1549ebs-2 ik5149-0 ik5149-2 epNQgy"
+                  >
+                    Payment Confirmed
+                  </footer>
+                  <footer
+                    class="sc-1549ebs-2 ik5149-0 ik5149-1 ocNib"
+                  >
+                    Go to Content
+                  </footer>
                 </div>
               </li>
             </ul>
@@ -17508,15 +17744,29 @@ exports[`Storyshots Overlay/Optimistic Unlocking some confirmations (pessimistic
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c14 {
+    .c13 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c14 > svg {
+.c13 > svg {
   fill: white;
+}
+
+.c4 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 1;
 }
 
 .c5 {
@@ -17537,7 +17787,69 @@ Object {
   color: var(--grey);
 }
 
-.c13 {
+.c8 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c9 {
+  white-space: nowrap;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c10 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  color: var(--dimgrey);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 0px;
+}
+
+.c7 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c12 {
   display: grid;
   grid-template-columns: 35px 1fr;
   grid-template-rows: 1fr 1fr;
@@ -17557,7 +17869,7 @@ Object {
   margin-right: -33px;
 }
 
-.c13 > a {
+.c12 > a {
   grid-column: 2;
   grid-row: 2;
   color: var(--red);
@@ -17566,7 +17878,7 @@ Object {
   align-self: start;
 }
 
-.c13 > p {
+.c12 > p {
   grid-column: 2;
   grid-row: 1;
   color: var(--darkgrey);
@@ -17576,8 +17888,8 @@ Object {
   margin-bottom: 0;
 }
 
-.c13 > p,
-.c13 > a {
+.c12 > p,
+.c12 > a {
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -17585,48 +17897,13 @@ Object {
   font-size: 12px;
 }
 
-.c13 > div {
+.c12 > div {
   grid-column: 1;
   grid-row: 1 / span 2;
   margin-left: -14px;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
-}
-
-.c4 {
-  display: grid;
-  justify-items: stretch;
-  margin: 0px;
-  padding: 0px;
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  width: 200px;
-  height: 180px;
-  grid-gap: 0px;
-  background-clip: padding-box;
-  grid-template-rows: 40px 140px;
-  opacity: 1;
-  cursor: pointer;
-}
-
-.c12 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 0px 0px 4px 4px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--green);
-  color: var(--white);
 }
 
 .c6 {
@@ -17650,38 +17927,28 @@ Object {
   border: 1px solid transparent;
   border-radius: 4px;
   background-color: var(--white);
-  padding-top: 13px;
+  border: 1px solid var(--yellow);
 }
 
-.c6:hover {
-  border: 1px solid var(--activegreen);
-}
-
-.c6:hover .c11 {
-  background-color: var(--activegreen);
-}
-
-.c7 {
-  font-size: 30px;
-  text-transform: uppercase;
-  color: var(--slate);
-  font-weight: bold;
-}
-
-.c8 {
-  font-size: 20px;
+.c11 {
+  display: grid;
   font-weight: 300;
-  color: var(--grey);
-}
-
-.c10 {
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
   font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c9 {
-  color: var(--lightgrey);
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--yellow);
+  color: var(--white);
+  margin-top: 13px;
 }
 
 .c0 {
@@ -17732,14 +17999,14 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c14 {
+  .c13 {
     height: 16px;
     width: 16px;
   }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c13 {
+  .c12 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
     grid-template-rows: 30px;
@@ -17749,7 +18016,7 @@ Object {
     grid-row: 3;
   }
 
-  .c13 > div {
+  .c12 > div {
     grid-row: 1;
     grid-column: 2;
     margin-left: 0;
@@ -17758,7 +18025,7 @@ Object {
     align-self: center;
   }
 
-  .c13 > p {
+  .c12 > p {
     width: 100%;
     color: var(--slate);
     grid-row: 1;
@@ -17771,7 +18038,7 @@ Object {
     padding-right: 2px;
   }
 
-  .c13 > a {
+  .c12 > a {
     grid-row: 1;
     grid-column: 3;
     justify-self: start;
@@ -17877,53 +18144,50 @@ Object {
                   >
                     One Month
                   </header>
-                  <div>
+                  <div
+                    class="c6"
+                  >
                     <div
-                      class="c6"
+                      class="c7"
                     >
                       <div
-                        class="price c7"
+                        class="c8"
                       >
                         0.12
-                         Eth
+                         ETH
                       </div>
-                      <div>
-                        <span
-                          class="c8"
-                        >
-                          $
-                          24.11
-                        </span>
-                        <span
-                          class="c9"
-                        >
-                           | 
-                        </span>
-                        <span
-                          class="c10"
-                        >
-                          <span>
-                            142 days
-                          </span>
-                        </span>
-                      </div>
-                      <footer
-                        class="c11 c12"
+                      <div
+                        class="c9"
                       >
-                        Purchase
-                      </footer>
+                        $
+                        24.11
+                      </div>
                     </div>
+                    <div
+                      class="c10"
+                    >
+                      Waiting for confirmations
+                      <br />
+                      5
+                      /
+                      12
+                    </div>
+                    <footer
+                      class="c11"
+                    >
+                      Payment Pending
+                    </footer>
                   </div>
                 </li>
               </ul>
               <footer
-                class="c13"
+                class="c12"
               >
                 <p>
                   Powered by
                 </p>
                 <div
-                  class="c14"
+                  class="c13"
                 >
                   <svg
                     viewBox="0 0 56 56"
@@ -18023,7 +18287,7 @@ Object {
               class="sc-7wmxqm-3 jZRqqJ"
             >
               <li
-                class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
+                class="sc-1549ebs-0 lock NDRQz"
                 data-address="0x1234567890123456789012345678901234567890"
               >
                 <header
@@ -18031,42 +18295,39 @@ Object {
                 >
                   One Month
                 </header>
-                <div>
+                <div
+                  class="sc-1549ebs-3 bn9s5o-0 kTTKZX"
+                >
                   <div
-                    class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+                    class="sc-1549ebs-6 hGyOOg"
                   >
                     <div
-                      class="sc-5sgq84-3 price bIZSQm"
+                      class="sc-1549ebs-4 cXGnbO"
                     >
                       0.12
-                       Eth
+                       ETH
                     </div>
-                    <div>
-                      <span
-                        class="sc-5sgq84-4 gAXKCT"
-                      >
-                        $
-                        24.11
-                      </span>
-                      <span
-                        class="sc-5sgq84-6 evsHkc"
-                      >
-                         | 
-                      </span>
-                      <span
-                        class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                      >
-                        <span>
-                          142 days
-                        </span>
-                      </span>
-                    </div>
-                    <footer
-                      class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+                    <div
+                      class="sc-1549ebs-4 kUlrFA"
                     >
-                      Purchase
-                    </footer>
+                      $
+                      24.11
+                    </div>
                   </div>
+                  <div
+                    class="sc-1549ebs-5 eUmWhY"
+                  >
+                    Waiting for confirmations
+                    <br />
+                    5
+                    /
+                    12
+                  </div>
+                  <footer
+                    class="sc-1549ebs-2 bn9s5o-1 eKTLUD"
+                  >
+                    Payment Pending
+                  </footer>
                 </div>
               </li>
             </ul>
