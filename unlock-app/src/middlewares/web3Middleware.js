@@ -99,6 +99,7 @@ const web3Middleware = config => {
       dispatch(
         addTransaction({
           hash: transactionHash,
+          network: getState().network.name,
         })
       )
     })
@@ -126,9 +127,11 @@ const web3Middleware = config => {
 
         if (action.type === ADD_TRANSACTION) {
           dispatch(startLoading())
-          web3Service.getTransaction(action.transaction.hash).then(() => {
-            dispatch(doneLoading())
-          })
+          web3Service
+            .getTransaction(action.transaction.hash, action.transaction)
+            .then(() => {
+              dispatch(doneLoading())
+            })
         }
 
         if (action.type === NEW_TRANSACTION) {
@@ -163,7 +166,9 @@ const web3Middleware = config => {
             .then(lockCreations => {
               dispatch(doneLoading())
               lockCreations.forEach(lockCreation => {
-                web3Service.getTransaction(lockCreation.transactionHash)
+                web3Service.getTransaction(lockCreation.transactionHash, {
+                  network: getState().network.name,
+                })
               })
             })
         }

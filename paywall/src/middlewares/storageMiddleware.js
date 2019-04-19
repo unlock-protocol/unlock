@@ -28,6 +28,7 @@ const storageMiddleware = config => {
                       hash: transaction.transactionHash,
                       to: transaction.recipient,
                       from: transaction.sender,
+                      network: transaction.network,
                     })
                   )
                 })

@@ -280,7 +280,10 @@ describe('Lock middleware', () => {
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: ADD_TRANSACTION,
-        transaction,
+        transaction: {
+          hash: transaction.hash,
+          network: 'test',
+        },
       })
     )
   })
@@ -363,7 +366,8 @@ describe('Lock middleware', () => {
       await lockCreationTransaction
 
       expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
-        mockTx.transactionHash
+        mockTx.transactionHash,
+        { network: 'test' }
       )
       expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
     })
@@ -424,7 +428,8 @@ describe('Lock middleware', () => {
       })
     )
     expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
-      transaction.hash
+      transaction.hash,
+      transaction
     )
     await transactionPromise
     expect(store.dispatch).toHaveBeenCalledWith(

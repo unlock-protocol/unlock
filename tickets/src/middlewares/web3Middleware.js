@@ -39,6 +39,7 @@ const web3Middleware = config => {
       dispatch(
         addTransaction({
           hash: transactionHash,
+          network: getState().network.name,
         })
       )
     })

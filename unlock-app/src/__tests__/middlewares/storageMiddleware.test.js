@@ -118,6 +118,7 @@ describe('Storage middleware', () => {
       expect(store.dispatch).toHaveBeenNthCalledWith(
         3,
         addTransaction({
+          network: null,
           hash: '0xabc',
         })
       )
@@ -126,6 +127,7 @@ describe('Storage middleware', () => {
         4,
         addTransaction({
           hash: '0xdef',
+          network: null,
         })
       )
 
