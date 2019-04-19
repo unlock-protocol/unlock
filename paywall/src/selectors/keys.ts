@@ -2,7 +2,7 @@ import { Transaction, TransactionStatus } from '../unlockTypes'
 
 interface Key {
   expiration: number
-  transactions: {
+  transactions?: {
     [key: string]: Transaction
   }
 }
@@ -22,7 +22,13 @@ export default function keyStatus(
 ): KeyStatus | TransactionStatus {
   const key = keys[id]
 
-  if (!key || !key.transactions) {
+  if (!key) {
+    return KeyStatus.NONE
+  }
+  if (!key.transactions) {
+    if (key.expiration > new Date().getTime() / 1000) {
+      return KeyStatus.VALID
+    }
     return KeyStatus.NONE
   }
   const transactions = Object.values(key.transactions)
