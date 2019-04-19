@@ -66,10 +66,11 @@ describe('transactionController', () => {
             transactionHash: '0xsdbegjkbg,egf',
             sender: '0xSDgErGR',
             recipient: '0xSdaG433r',
+            chain: 42,
           })
 
         let record = await Transaction.findOne({
-          where: { sender: '0xSDgErGR', recipient: '0xSdaG433r' },
+          where: { sender: '0xSDgErGR', recipient: '0xSdaG433r', chain: 42 },
         })
         expect(record.sender).toBe('0xSDgErGR')
         expect(response.statusCode).toBe(202)

@@ -4,11 +4,14 @@ import { Table, Model, Column } from 'sequelize-typescript'
 // eslint-disable-next-line import/prefer-default-export
 export class Transaction extends Model<Transaction> {
   @Column
-  transactionHash!: string
+  public transactionHash!: string
 
   @Column
-  sender!: string
+  public sender!: string
 
   @Column
-  recipient!: string
+  public recipient!: string
+
+  @Column
+  public chain!: number
 }
