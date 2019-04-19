@@ -4,6 +4,7 @@ export default async function deploy(
   host,
   port,
   Unlock,
+  gas = 4000000,
   onNewContractInstance = () => {},
   web3Object
 ) {
@@ -17,7 +18,7 @@ export default async function deploy(
     })
     .send({
       from: accounts[0],
-      gas: 4000000,
+      gas,
     })
   onNewContractInstance(newContractInstance)
 
