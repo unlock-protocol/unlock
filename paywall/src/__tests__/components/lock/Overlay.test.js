@@ -329,8 +329,8 @@ describe('Overlay', () => {
       }
     })
 
-    it('shows confirming flag if optimism is high', () => {
-      expect.assertions(2)
+    it('shows nothing if optimism is high', () => {
+      expect.assertions(1)
 
       const store = createUnlockStore(state)
       const wrapper = rtl.render(
@@ -356,12 +356,11 @@ describe('Overlay', () => {
         </Provider>
       )
 
-      expect(wrapper.queryByText('100000.00 Eth')).toBeNull()
-      expect(wrapper.getByText('Confirming Purchase')).not.toBeNull()
+      expect(wrapper.queryByText('Confirming Purchase')).toBeNull()
     })
 
-    it('shows confirmed flag if optimism is high and confirmations are high enough', () => {
-      expect.assertions(2)
+    it('shows nothing if optimism is high and confirmations are high enough', () => {
+      expect.assertions(1)
 
       state.transactions.transaction.confirmations = 13
       const store = createUnlockStore(state)
@@ -388,8 +387,7 @@ describe('Overlay', () => {
         </Provider>
       )
 
-      expect(wrapper.queryByText('100000.00 Eth')).toBeNull()
-      expect(wrapper.getByText('Purchase Confirmed')).not.toBeNull()
+      expect(wrapper.queryByText('Purchase Confirmed')).toBeNull()
     })
 
     it('sends POST_MESSAGE_OPTIMISTIC and calls smallBody if confirming and optimistic', () => {
