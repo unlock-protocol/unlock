@@ -4,7 +4,7 @@ export const GAS_AMOUNTS = {
   purchaseKey: 300000,
   withdrawFromLock: 1000000,
   partialWithdrawFromLock: 1000000,
-  deployContract: 4500000,
+  deployContract: 6000000,
 }
 
 export const MAX_UINT =
