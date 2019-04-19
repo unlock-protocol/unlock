@@ -16,7 +16,6 @@ import Media from '../../theme/media'
 
 import ConfirmedFlag from './ConfirmedFlag'
 import ConfirmingFlag from './ConfirmingFlag'
-import { TRANSACTION_TYPES } from '../../constants'
 import {
   POST_MESSAGE_GET_OPTIMISTIC,
   POST_MESSAGE_GET_PESSIMISTIC,
@@ -62,10 +61,13 @@ export const Overlay = ({
   smallBody,
   bigBody,
   keyStatus,
+  lockKey,
+  account,
 }) => {
   let message
   switch (keyStatus) {
     case 'confirming':
+    case 'submitted':
     case 'pending':
       message = 'Purchase pending...'
       break
@@ -83,7 +85,7 @@ export const Overlay = ({
   }
   const { postMessage } = usePostMessage()
   useEffect(() => {
-    if (optimism.current && transaction) {
+    if (optimism.current && !['expired', 'none'].includes(keyStatus)) {
       postMessage(POST_MESSAGE_GET_OPTIMISTIC)
       smallBody()
     } else {
@@ -91,9 +93,9 @@ export const Overlay = ({
       postMessage(POST_MESSAGE_GET_PESSIMISTIC)
       bigBody()
     }
-  }, [optimism.current, transaction])
-  if (optimism.current && transaction) {
-    if (transaction.confirmations >= requiredConfirmations) {
+  }, [optimism.current, keyStatus])
+  if (optimism.current && !['expired', 'none'].includes(keyStatus)) {
+    if (keyStatus === 'confirmed' || keyStatus === 'valid') {
       return <ConfirmedFlag dismiss={hideModal} />
     }
     return (
@@ -118,6 +120,9 @@ export const Overlay = ({
                 showModal={showModal}
                 openInNewWindow={openInNewWindow}
                 keyStatus={keyStatus}
+                transaction={transaction}
+                account={account}
+                lockKey={lockKey}
               />
             ))}
           </GlobalErrorConsumer>
@@ -129,6 +134,7 @@ export const Overlay = ({
 }
 
 Overlay.propTypes = {
+  account: UnlockPropTypes.account,
   locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
   hideModal: PropTypes.func.isRequired,
   showModal: PropTypes.func.isRequired,
@@ -143,39 +149,15 @@ Overlay.propTypes = {
     past: PropTypes.oneOf([0, 1]).isRequired,
   }).isRequired,
   keyStatus: PropTypes.string.isRequired,
+  lockKey: UnlockPropTypes.key.isRequired,
 }
 
 Overlay.defaultProps = {
   transaction: null,
+  account: null,
 }
-export const mapStateToProps = ({ account, transactions, keys }, { locks }) => {
-  const lock = locks.length ? locks[0] : {}
-
-  // If there is no account (probably not loaded yet), we do not want to create a key
-  // similarly, if there is no lock
-  if (!account || !lock) {
-    return {
-      transaction: null,
-      openInNewWindow: !account || !!account.fromLocalStorage,
-    }
-  }
-
-  let transaction = null
-
-  const lockKey = Object.values(keys).find(
-    key => key.lock === lock.address && key.owner === account.address
-  )
-
-  // Let's select the transaction corresponding to this key purchase, if it exists
-  // This transaction is of type KEY_PURCHASE
-  transaction = Object.values(transactions).find(
-    transaction =>
-      transaction.type === TRANSACTION_TYPES.KEY_PURCHASE &&
-      transaction.key === (lockKey && lockKey.id)
-  )
-
+export const mapStateToProps = ({ account }) => {
   return {
-    transaction: transaction ? transaction : null,
     openInNewWindow: !account || !!account.fromLocalStorage,
   }
 }
