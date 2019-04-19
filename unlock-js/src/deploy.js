@@ -1,4 +1,5 @@
 const Web3 = require('web3')
+const gas = require('./constants').GAS_AMOUNTS
 
 export default async function deploy(
   host,
@@ -17,7 +18,7 @@ export default async function deploy(
     })
     .send({
       from: accounts[0],
-      gas: 4000000,
+      gas: gas.deployContract,
     })
   onNewContractInstance(newContractInstance)
 
