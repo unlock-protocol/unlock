@@ -254,12 +254,20 @@ describe('Overlay', () => {
       expect(wrapper.getByText('Need account')).not.toBeNull()
     })
   })
+
   describe('error replacement', () => {
     const lock = {
+      id: 'lock',
       name: 'Monthly',
       address: '0xdeadbeef',
       keyPrice: '100000',
       expirationDuration: 123456789,
+    }
+    const lockKey = {
+      id: 'key',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 10000,
     }
     let store
     beforeEach(() => (store = createUnlockStore()))
@@ -281,6 +289,7 @@ describe('Overlay', () => {
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
                 keyStatus="none"
+                lockKey={lockKey}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -313,6 +322,7 @@ describe('Overlay', () => {
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
                 keyStatus="none"
+                lockKey={lockKey}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -348,6 +358,7 @@ describe('Overlay', () => {
                 locks={[lock]}
                 openInNewWindow={false}
                 keyStatus="none"
+                lockKey={lockKey}
               />
             </ConfigProvider>
           </ErrorProvider>
@@ -370,6 +381,12 @@ describe('Overlay', () => {
       address: '0xdeadbeef',
       keyPrice: '100000',
       expirationDuration: 123456789,
+    }
+    const lockKey = {
+      id: 'key',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 10000,
     }
     let state
     beforeEach(() => {
@@ -413,6 +430,7 @@ describe('Overlay', () => {
                 optimism={{ current: 1, past: 0 }}
                 locks={[lock]}
                 keyStatus="confirming"
+                lockKey={lockKey}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -443,6 +461,7 @@ describe('Overlay', () => {
                 optimism={{ current: 1, past: 0 }}
                 locks={[lock]}
                 keyStatus="valid"
+                lockKey={lockKey}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -489,6 +508,7 @@ describe('Overlay', () => {
                     optimism={{ current: 1, past: 0 }}
                     locks={[lock]}
                     keyStatus="confirming"
+                    lockKey={lockKey}
                   />
                 </ErrorProvider>
               </ConfigProvider>
@@ -536,6 +556,7 @@ describe('Overlay', () => {
                     optimism={{ current: 0, past: 0 }}
                     locks={[lock]}
                     keyStatus="confirming"
+                    lockKey={lockKey}
                   />
                 </ErrorProvider>
               </ConfigProvider>
@@ -552,15 +573,29 @@ describe('Overlay', () => {
     })
   })
 
-  describe('message displayed to user (pessimistic unlocking', () => {
+  describe('message displayed to user (pessimistic unlocking)', () => {
     const lock = {
       name: 'Monthly',
       address: '0xdeadbeef',
       keyPrice: '100000',
       expirationDuration: 123456789,
     }
+    const lockKey = {
+      id: 'key',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 10000,
+    }
     let state
     beforeEach(() => {
+      const transactions = {
+        transaction: {
+          key: 'key',
+          status: 'mined',
+          confirmations: 4,
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+        },
+      }
       state = {
         account: {
           address: 'account',
@@ -570,15 +605,10 @@ describe('Overlay', () => {
             lock: '0xdeadbeef',
             owner: 'account',
             id: 'key',
+            transactions,
           },
         },
-        transactions: {
-          transaction: {
-            key: 'key',
-            confirmations: 4,
-            type: TRANSACTION_TYPES.KEY_PURCHASE,
-          },
-        },
+        transactions,
       }
     })
 
@@ -601,6 +631,7 @@ describe('Overlay', () => {
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
                 keyStatus="none"
+                lockKey={lockKey}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -634,6 +665,7 @@ describe('Overlay', () => {
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
                 keyStatus="confirming"
+                lockKey={lockKey}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -664,6 +696,7 @@ describe('Overlay', () => {
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
                 keyStatus="valid"
+                lockKey={lockKey}
               />
             </ErrorProvider>
           </ConfigProvider>

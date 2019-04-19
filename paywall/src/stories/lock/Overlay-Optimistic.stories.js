@@ -67,6 +67,15 @@ const defaultState = {
       id: '0x1234567890123456789012345678901234567890-0x456',
       lock: '0x1234567890123456789012345678901234567890',
       owner: '0x456',
+      transactions: {
+        transaction: {
+          id: 'transaction',
+          status: 'pending',
+          confirmations: 0,
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          key: '0x1234567890123456789012345678901234567890-0x456',
+        },
+      },
     },
   },
 }
@@ -142,6 +151,13 @@ const render = (
                 openInNewWindow={false}
                 optimism={optimism}
                 keyStatus={keyStatus}
+                lockKey={{
+                  lock: locks[0].address,
+                  owner: 'account',
+                  expiration:
+                    new Date('January 30, 3000, 00:00:00').getTime() / 1000,
+                }}
+                account="account"
               />
             </FakeIframe>
           </ErrorProvider>
@@ -189,7 +205,7 @@ storiesOf('Overlay/Optimistic Unlocking', module)
   })
   .add('beginning purchase (pessimistic)', () => {
     makeStore()
-    return render(locks, 'pending', undefined, undefined, {
+    return render(locks, 'submitted', undefined, undefined, {
       current: 0,
       past: 1,
     })
