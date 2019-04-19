@@ -68,7 +68,21 @@ function renderMockPaywall(props = {}) {
     <ConfigContext.Provider value={config}>
       <WindowContext.Provider value={fakeWindow}>
         <Provider store={store}>
-          <Paywall locks={[]} locked redirect={false} {...props} />
+          <Paywall
+            locks={[]}
+            locked
+            redirect={false}
+            transaction={null}
+            account={null}
+            requiredConfirmations={12}
+            keyStatus="none"
+            lockKey={{
+              lock: 'lock',
+              expiration: 12345,
+            }}
+            expiration=""
+            {...props}
+          />
         </Provider>
       </WindowContext.Provider>
     </ConfigContext.Provider>

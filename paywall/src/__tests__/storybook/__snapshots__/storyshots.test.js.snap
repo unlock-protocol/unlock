@@ -5931,7 +5931,7 @@ Object {
             <footer
               class="c7 c8"
             >
-              Sold Out
+              Insufficient funds
             </footer>
           </div>
         </div>
@@ -5987,7 +5987,7 @@ Object {
           <footer
             class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
           >
-            Sold Out
+            Insufficient funds
           </footer>
         </div>
       </div>

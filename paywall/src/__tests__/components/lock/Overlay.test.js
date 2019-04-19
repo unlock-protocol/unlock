@@ -95,6 +95,7 @@ describe('Overlay', () => {
         transaction: null,
       })
     })
+
     it('should not crash if there are no matching keys yet for a transaction', () => {
       expect.assertions(1)
 
@@ -123,6 +124,7 @@ describe('Overlay', () => {
         transaction: null,
       })
     })
+
     it('should set openInNewWindow based on the value of account', () => {
       expect.assertions(3)
 
@@ -278,6 +280,7 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
+                keyStatus="none"
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -309,6 +312,7 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
+                keyStatus="none"
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -343,6 +347,7 @@ describe('Overlay', () => {
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
                 openInNewWindow={false}
+                keyStatus="none"
               />
             </ConfigProvider>
           </ErrorProvider>
@@ -407,6 +412,7 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 1, past: 0 }}
                 locks={[lock]}
+                keyStatus="confirming"
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -436,6 +442,7 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 1, past: 0 }}
                 locks={[lock]}
+                keyStatus="valid"
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -481,6 +488,7 @@ describe('Overlay', () => {
                     bigBody={() => {}}
                     optimism={{ current: 1, past: 0 }}
                     locks={[lock]}
+                    keyStatus="confirming"
                   />
                 </ErrorProvider>
               </ConfigProvider>
@@ -527,6 +535,7 @@ describe('Overlay', () => {
                     bigBody={bigBody}
                     optimism={{ current: 0, past: 0 }}
                     locks={[lock]}
+                    keyStatus="confirming"
                   />
                 </ErrorProvider>
               </ConfigProvider>
@@ -591,13 +600,14 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
+                keyStatus="none"
               />
             </ErrorProvider>
           </ConfigProvider>
         </Provider>
       )
 
-      expect(wrapper.queryByText('100000.00 Eth')).not.toBeNull()
+      expect(wrapper.getByText('100000.00 Eth')).not.toBeNull()
       expect(
         wrapper.getByText(
           'You have reached your limit of free articles. Please purchase access'
@@ -623,13 +633,14 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
+                keyStatus="confirming"
               />
             </ErrorProvider>
           </ConfigProvider>
         </Provider>
       )
 
-      expect(wrapper.queryByText('100000.00 Eth')).not.toBeNull()
+      expect(wrapper.getByText('100000.00 ETH')).not.toBeNull()
       expect(wrapper.getByText('Purchase pending...')).not.toBeNull()
     })
 
@@ -652,13 +663,14 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
+                keyStatus="valid"
               />
             </ErrorProvider>
           </ConfigProvider>
         </Provider>
       )
 
-      expect(wrapper.queryByText('100000.00 Eth')).not.toBeNull()
+      expect(wrapper.getByText('100000.00 ETH')).not.toBeNull()
       expect(
         wrapper.getByText('Purchase confirmed, content unlocked!')
       ).not.toBeNull()
