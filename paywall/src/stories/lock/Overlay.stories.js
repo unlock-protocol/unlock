@@ -92,6 +92,8 @@ const render = (
             bigBody={() => {}}
             openInNewWindow={false}
             optimism={optimism}
+            keyStatus="none"
+            account="account"
           />
         </ErrorProvider>
       </WindowProvider>
