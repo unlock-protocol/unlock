@@ -2,9 +2,11 @@ import EventEmitter from 'events'
 
 import * as UnlockV0 from 'unlock-abi-0'
 import * as UnlockV01 from 'unlock-abi-0-1'
+import * as UnlockV02 from 'unlock-abi-0-2'
 
 import v0 from './v0'
 import v01 from './v01'
+import v02 from './v02'
 
 export const Errors = {
   MISSING_WEB3: 'MISSING_WEB3',
@@ -22,16 +24,17 @@ export default class UnlockService extends EventEmitter {
     this.unlockContractAddress = unlockAddress
     this.web3 = null
     /* Memoization for opCode per address */
+    // Used for Locks
     this.opCodeForAddress = {
       // '0x123': '0xopCode'
     }
+
+    // Used for Unlock
+    this.versionForAddress = {}
   }
 
   /**
-   * Returns the ABI for the Unlock contract deployed
-   * This tests for several versions, and if none match, will look to see if the address
-   * is actually a proxy address. If it is, then, it will look for the implementation address, but
-   * to get it it needs to send a request from the 'admin' address (not signed).
+   * Returns the implementation based on the deployed version
    * @param {*} address
    */
   async unlockContractAbiVersion() {
@@ -39,33 +42,19 @@ export default class UnlockService extends EventEmitter {
       throw new Error(Errors.MISSING_WEB3)
     }
 
-    let version = await this._contractAbiVersionFromAddress(
-      this.unlockContractAddress
-    )
-
-    if (version) {
-      return version
+    let version = this.versionForAddress[this.unlockContractAddress]
+    if (!version) {
+      // This was no memo-ized
+      version = await this._getVersionFromContract(this.unlockContractAddress)
+      this.versionForAddress[this.unlockContractAddress] = version
     }
 
-    // Else: this must be a proxy: let's get the implementation
-    let implementation
-    try {
-      implementation = await this._getImplementationAddressFromProxy(
-        this.unlockContractAddress
-      )
-    } catch (error) {
-      // We could not get the implementation address which means this is not a proxy
-      throw new Error(Errors.UNKNOWN_CONTRACT)
+    if (2 === version) {
+      return v02
     }
 
-    version = await this._contractAbiVersionFromAddress(implementation)
-
-    if (version) {
-      return version
-    }
-
-    // throw new Error(Errors.UNKNOWN_CONTRACT)
-    return v0 // TODO: change this once we have certainty over the deployed contract
+    // Defaults to v0
+    return v0
   }
 
   /**
@@ -96,25 +85,29 @@ export default class UnlockService extends EventEmitter {
       return v01
     }
 
+    if (UnlockV02.PublicLock.deployedBytecode === opCode) {
+      return v02
+    }
+
     // throw new Error(Errors.UNKNOWN_CONTRACT)
     return v0 // TODO: we currently default to v0 because the deployed version may bot match the content of the npm module. Change this once we have certainty over the deployed contract.
   }
 
   /**
-   * Private method, which given an address will return the implementation behind it
+   * Private method, which given an address will query the contract and return the corresponding method
    * @param {*} address
    */
-  async _getImplementationAddressFromProxy(address) {
+  async _getVersionFromContract(address) {
     const contract = new this.web3.eth.Contract(
       [
         {
           constant: true,
           inputs: [],
-          name: 'implementation',
+          name: 'unlockVersion',
           outputs: [
             {
               name: '',
-              type: 'address',
+              type: 'uint8',
             },
           ],
           payable: false,
@@ -124,35 +117,13 @@ export default class UnlockService extends EventEmitter {
       ],
       address
     )
-    return contract.methods.implementation().call({
-      from: '0x33ab07df7f09e793ddd1e9a25b079989a557119a',
-    })
-  }
-
-  /**
-   * returns the version based on the opCode at an address
-   * @param {*} address
-   */
-  async _contractAbiVersionFromAddress(address) {
-    let opCode = this.opCodeForAddress[address]
-    if (!opCode) {
-      // This was no memo-ized
-      opCode = await this.web3.eth.getCode(address)
-      this.opCodeForAddress[address] = opCode
+    let version = 0
+    try {
+      const contractVersion = await contract.methods.unlockVersion().call()
+      version = parseInt(contractVersion, 10) || 0
+    } catch (error) {
+      // This is an older version of Unlock which did not support unlockVersion
     }
-
-    if (opCode === '0x') {
-      throw new Error(Errors.NON_DEPLOYED_CONTRACT)
-    }
-
-    if (UnlockV0.Unlock.deployedBytecode === opCode) {
-      return v0
-    }
-
-    if (UnlockV01.Unlock.deployedBytecode === opCode) {
-      return v01
-    }
-
-    return
+    return version
   }
 }
