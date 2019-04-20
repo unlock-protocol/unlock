@@ -559,6 +559,14 @@ export default class Web3Service extends UnlockService {
       const expiration = await lockContract.methods
         .keyExpirationTimestampFor(owner)
         .call()
+      // Handling NO_SUCH_KEY
+      // TODO find a more robust approach (apparently the call above should throw, but it does not!)
+      if (
+        expiration ==
+        '3963877391197344453575983046348115674221700746820753546331534351508065746944'
+      ) {
+        return 0
+      }
       return parseInt(expiration, 10)
     } catch (error) {
       return 0
