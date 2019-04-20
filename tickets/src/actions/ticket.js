@@ -21,6 +21,11 @@ export const updateEvent = event => ({
   event,
 })
 
+export const updateEvent = event => ({
+  type: UPDATE_EVENT,
+  event,
+})
+
 export function ticketError(error) {
   return {
     type: TICKET_ERROR,
