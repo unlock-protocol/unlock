@@ -30,7 +30,6 @@
     "@types/react": "16.8.13",
     "@types/react-dom": "^16.8.3",
     "@types/react-redux": "^7.0.8",
-    "@types/web3": "^1.0.18",
     "@unlock-protocol/unlock-js": "0.0.16",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-source-maps": "0.0.3",
@@ -68,8 +67,7 @@
     "storybook-react-router": "^1.0.5",
     "styled-components": "^4.2.0",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.4.3",
-    "web3": "1.0.0-beta.37"
+    "typescript": "^3.4.3"
   },
   "devDependencies": {
     "@svgr/cli": "4.2.0",
