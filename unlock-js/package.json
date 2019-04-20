@@ -20,6 +20,14 @@
     "web3-eth-abi": "1.0.0-beta.37",
     "web3-utils": "1.0.0-beta.37"
   },
+  "lint-staged": {
+    "linters": {
+      "*.{js,ts}": [
+        "eslint --fix",
+        "git add"
+      ]
+    }
+  },
   "devDependencies": {
     "jest": "^24.1.0",
     "nock": "^10.0.5",
