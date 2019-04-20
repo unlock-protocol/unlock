@@ -1,11 +1,11 @@
 {
   "contracts": {
     "Unlock": {
-      "address": "0xd633E5eDaC82F4c287B9c9170D3AdeE717480166",
-      "constructorCode": "608060405234801561001057600080fd5b506142e4806100206000396000f3fe",
-      "bodyBytecodeHash": "f22587043e8b26c0abe4847880890dea5d14706d0160a88069ec052e338f73bb",
-      "localBytecodeHash": "43e8a6009988d8a9eda56a2c20701e3e2cf738ae4305890e7cc559a5eec4d5a4",
-      "deployedBytecodeHash": "43e8a6009988d8a9eda56a2c20701e3e2cf738ae4305890e7cc559a5eec4d5a4",
+      "address": "0xF6b469ccB081329cb1693cFC7307215e35AA3e72",
+      "constructorCode": "608060405234801561001057600080fd5b50614092806100206000396000f3fe",
+      "bodyBytecodeHash": "dd2947cdb893709bb31fafc97376ece7a08a7793851b5247d82f0d9ccbb654f7",
+      "localBytecodeHash": "4907809c7bf33d5889a4434b1a4a9c2505aec9a3eea891b14d06cd78cec862f9",
+      "deployedBytecodeHash": "4907809c7bf33d5889a4434b1a4a9c2505aec9a3eea891b14d06cd78cec862f9",
       "types": {
         "t_bool": {
           "id": "t_bool",
@@ -153,7 +153,7 @@
       {
         "address": "0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b",
         "version": "0.1.0",
-        "implementation": "0xd633E5eDaC82F4c287B9c9170D3AdeE717480166"
+        "implementation": "0xF6b469ccB081329cb1693cFC7307215e35AA3e72"
       }
     ]
   },
