@@ -3621,6 +3621,7 @@ Object {
               class="c11"
               fill="none"
               height="245px"
+              viewBox="0 0 201 245"
               width="200px"
             >
               <title />
@@ -3797,6 +3798,7 @@ Object {
             class="sc-1m7p3zh-3 gazKnV"
             fill="none"
             height="245px"
+            viewBox="0 0 201 245"
             width="200px"
           >
             <title />
@@ -15241,6 +15243,7 @@ Object {
               class="c11"
               fill="none"
               height="245px"
+              viewBox="0 0 201 245"
               width="200px"
             >
               <title />
@@ -15417,6 +15420,7 @@ Object {
             class="sc-1m7p3zh-3 gazKnV"
             fill="none"
             height="245px"
+            viewBox="0 0 201 245"
             width="200px"
           >
             <title />
@@ -16390,7 +16394,7 @@ Object {
 }
 
 .c14:hover:before {
-  content: 'Lemniscate';
+  content: 'Info';
   position: absolute;
 }
 
@@ -16406,7 +16410,7 @@ Object {
 }
 
 .c15:hover:before {
-  content: 'LockClosed';
+  content: 'Lemniscate';
   position: absolute;
 }
 
@@ -16422,7 +16426,7 @@ Object {
 }
 
 .c16:hover:before {
-  content: 'Log';
+  content: 'LockClosed';
   position: absolute;
 }
 
@@ -16438,7 +16442,7 @@ Object {
 }
 
 .c17:hover:before {
-  content: 'Preview';
+  content: 'Log';
   position: absolute;
 }
 
@@ -16454,7 +16458,7 @@ Object {
 }
 
 .c18:hover:before {
-  content: 'Jobs';
+  content: 'Preview';
   position: absolute;
 }
 
@@ -16470,7 +16474,7 @@ Object {
 }
 
 .c19:hover:before {
-  content: 'Unlock';
+  content: 'Jobs';
   position: absolute;
 }
 
@@ -16486,7 +16490,7 @@ Object {
 }
 
 .c20:hover:before {
-  content: 'UnlockWordMark';
+  content: 'Unlock';
   position: absolute;
 }
 
@@ -16502,7 +16506,7 @@ Object {
 }
 
 .c21:hover:before {
-  content: 'Upload';
+  content: 'UnlockWordMark';
   position: absolute;
 }
 
@@ -16518,7 +16522,7 @@ Object {
 }
 
 .c22:hover:before {
-  content: 'Withdraw';
+  content: 'Upload';
   position: absolute;
 }
 
@@ -16534,7 +16538,7 @@ Object {
 }
 
 .c23:hover:before {
-  content: 'Newsletter';
+  content: 'Withdraw';
   position: absolute;
 }
 
@@ -16550,7 +16554,7 @@ Object {
 }
 
 .c24:hover:before {
-  content: 'Telegram';
+  content: 'Newsletter';
   position: absolute;
 }
 
@@ -16566,7 +16570,7 @@ Object {
 }
 
 .c25:hover:before {
-  content: 'Twitter';
+  content: 'Telegram';
   position: absolute;
 }
 
@@ -16582,7 +16586,7 @@ Object {
 }
 
 .c26:hover:before {
-  content: 'Bars';
+  content: 'Twitter';
   position: absolute;
 }
 
@@ -16598,7 +16602,7 @@ Object {
 }
 
 .c27:hover:before {
-  content: 'ChevronUp';
+  content: 'Bars';
   position: absolute;
 }
 
@@ -16614,7 +16618,7 @@ Object {
 }
 
 .c28:hover:before {
-  content: 'KeyText';
+  content: 'ChevronUp';
   position: absolute;
 }
 
@@ -16630,6 +16634,22 @@ Object {
 }
 
 .c29:hover:before {
+  content: 'KeyText';
+  position: absolute;
+}
+
+.c30 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c30:hover {
+  background-color: var(--offwhite);
+}
+
+.c30:hover:before {
   content: 'Box';
   position: absolute;
 }
@@ -16843,6 +16863,29 @@ Object {
           </div>
           <div
             class="c14"
+            name="Info"
+          >
+            <svg
+              fill="none"
+              viewBox="0 0 16 16"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                fill="#A6A6A6"
+                fill-rule="evenodd"
+              />
+              <path
+                clip-rule="evenodd"
+                d="M8 5.6A.8.8 0 1 0 8 4a.8.8 0 0 0 0 1.6zM8 12a.667.667 0 0 0 .667-.667v-4a.667.667 0 0 0-1.334 0v4c0 .368.299.667.667.667z"
+                fill="#fff"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c15"
             name="Lemniscate"
           >
             <svg
@@ -16858,7 +16901,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c15"
+            class="c16"
             name="LockClosed"
           >
             <svg
@@ -16873,7 +16916,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c16"
+            class="c17"
             name="Log"
           >
             <svg
@@ -16888,7 +16931,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c17"
+            class="c18"
             name="Preview"
           >
             <svg
@@ -16909,7 +16952,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c18"
+            class="c19"
             name="Jobs"
           >
             <svg
@@ -16924,7 +16967,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c19"
+            class="c20"
             name="Unlock"
           >
             <svg
@@ -16937,7 +16980,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c20"
+            class="c21"
             name="UnlockWordMark"
           >
             <svg
@@ -16950,7 +16993,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c21"
+            class="c22"
             name="Upload"
           >
             <svg
@@ -16965,7 +17008,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c22"
+            class="c23"
             name="Withdraw"
           >
             <svg
@@ -16980,7 +17023,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c23"
+            class="c24"
             name="Newsletter"
           >
             <svg
@@ -16995,7 +17038,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c24"
+            class="c25"
             name="Telegram"
           >
             <svg
@@ -17010,7 +17053,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c25"
+            class="c26"
             name="Twitter"
           >
             <svg
@@ -17025,7 +17068,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c26"
+            class="c27"
             name="Bars"
           >
             <svg
@@ -17038,7 +17081,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c27"
+            class="c28"
             name="ChevronUp"
           >
             <svg
@@ -17053,7 +17096,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c28"
+            class="c29"
             name="KeyText"
           >
             <svg
@@ -17084,7 +17127,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c29"
+            class="c30"
             name="Box"
           >
             <svg
@@ -17312,6 +17355,29 @@ Object {
             <title />
             <path
               d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+            />
+          </svg>
+        </div>
+        <div
+          class="rta06c-1 czYywY"
+          name="Info"
+        >
+          <svg
+            fill="none"
+            viewBox="0 0 16 16"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+              fill="#A6A6A6"
+              fill-rule="evenodd"
+            />
+            <path
+              clip-rule="evenodd"
+              d="M8 5.6A.8.8 0 1 0 8 4a.8.8 0 0 0 0 1.6zM8 12a.667.667 0 0 0 .667-.667v-4a.667.667 0 0 0-1.334 0v4c0 .368.299.667.667.667z"
+              fill="#fff"
+              fill-rule="evenodd"
             />
           </svg>
         </div>
