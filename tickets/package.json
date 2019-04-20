@@ -58,6 +58,7 @@
   },
   "devDependencies": {
     "@svgr/cli": "4.2.0",
+    "dotenv": "^7.0.0",
     "nodemon": "1.18.11"
   },
   "lint-staged": {
