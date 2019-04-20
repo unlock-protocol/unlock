@@ -1,6 +1,6 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
-import Web3 from 'web3'
+import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
 import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
@@ -109,14 +109,12 @@ const storageMiddleware = config => {
         }
 
         if (action.type === SIGNUP_CREDENTIALS) {
-          const web3 = new Web3()
-          const { address, privateKey } = web3.eth.accounts.create()
           const { emailAddress, password } = action
 
-          const passwordEncryptedPrivateKey = web3.eth.accounts.encrypt(
-            privateKey,
-            password
-          )
+          const {
+            address,
+            passwordEncryptedPrivateKey,
+          } = createAccountAndPasswordEncryptKey(password)
 
           const user = UnlockUser.build({
             emailAddress,
