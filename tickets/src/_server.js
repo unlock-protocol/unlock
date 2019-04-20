@@ -18,7 +18,7 @@ function _server(port, dev) {
           if (pathname.match(/\/create/)) {
             app.render(req, res, '/create', Object.assign({}, query))
           } else if (pathname.match('/event')) {
-            const params = route('event/:lockAddress')(pathname)
+            const params = route('/event/:lockAddress')(pathname)
             app.render(req, res, '/event', Object.assign(params, query))
           } else {
             app.render(req, res, '/home', Object.assign({}))
