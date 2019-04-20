@@ -16,7 +16,6 @@
     "@types/react-redux": "7.0.8",
     "@types/storybook__react": "^4.0.1",
     "@types/styled-components": "4.1.14",
-    "@types/web3": "^1.0.18",
     "@unlock-protocol/unlock-js": "0.0.16",
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "^1.1.1",
@@ -53,9 +52,7 @@
     "ts-jest": "24.0.2",
     "typescript": "3.4.3",
     "unlock-abi-0-1": "^1.0.0",
-    "unlock-abi-0-2": "^1.0.0",
-    "web3": "1.0.0-beta.37",
-    "web3-utils": "1.0.0-beta.37"
+    "unlock-abi-0-2": "^1.0.0"
   },
   "devDependencies": {
     "@svgr/cli": "4.2.0",
