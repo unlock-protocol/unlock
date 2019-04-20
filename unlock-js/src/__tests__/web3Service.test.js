@@ -1953,27 +1953,7 @@ describe('Web3Service', () => {
     })
   })
 
-  describe('getKeyByLockForOwner', () => {
-    it('should trigger an event with the key', async () => {
-      expect.assertions(4)
-      web3Service.lockContractAbiVersion = jest.fn(() => Promise.resolve(v0))
-      web3Service._getKeyByLockForOwner = jest.fn(() => {
-        return new Promise(resolve => {
-          return resolve(100)
-        })
-      })
-
-      web3Service.on('key.updated', (keyId, update) => {
-        expect(keyId).toBe([lockAddress, account].join('-'))
-        expect(update.expiration).toBe(100)
-        expect(update.lock).toBe(lockAddress)
-        expect(update.owner).toBe(account)
-      })
-      await web3Service.getKeyByLockForOwner(lockAddress, account)
-    })
-  })
-
-  describe('_getKeyByLockForOwner', () => {
+  describe('_getKeyByLockForOwner', async () => {
     describe('v0', () => {
       it('should update the expiration date', async () => {
         expect.assertions(1)
@@ -2102,9 +2082,101 @@ describe('Web3Service', () => {
         expect(expiration).toBe(0)
       })
     })
+
+    it('should yield the expiration date for the user key on the lock', async () => {
+      expect.assertions(2)
+      const contract = {
+        methods: {
+          keyExpirationTimestampFor: jest.fn(() => {
+            return {
+              call: jest.fn(() => {
+                return Promise.resolve('123')
+              }),
+            }
+          }),
+        },
+      }
+      const account = '0xabc'
+      const expiration = await web3Service._getKeyByLockForOwner(
+        contract,
+        account
+      )
+      expect(expiration).toEqual(123)
+      expect(contract.methods.keyExpirationTimestampFor).toHaveBeenCalledWith(
+        account
+      )
+    })
+
+    it('should return 0 if the value returned by the contract is 3963877391197344453575983046348115674221700746820753546331534351508065746944', async () => {
+      expect.assertions(2)
+      const contract = {
+        methods: {
+          keyExpirationTimestampFor: jest.fn(() => {
+            return {
+              call: jest.fn(() => {
+                return Promise.resolve(
+                  '3963877391197344453575983046348115674221700746820753546331534351508065746944'
+                )
+              }),
+            }
+          }),
+        },
+      }
+      const account = '0xabc'
+      const expiration = await web3Service._getKeyByLockForOwner(
+        contract,
+        account
+      )
+      expect(expiration).toEqual(0)
+      expect(contract.methods.keyExpirationTimestampFor).toHaveBeenCalledWith(
+        account
+      )
+    })
+
+    it('should return 0 if there was an exception', async () => {
+      expect.assertions(2)
+      const contract = {
+        methods: {
+          keyExpirationTimestampFor: jest.fn(() => {
+            return {
+              call: jest.fn(() => {
+                return Promise.reject('Error')
+              }),
+            }
+          }),
+        },
+      }
+      const account = '0xabc'
+      const expiration = await web3Service._getKeyByLockForOwner(
+        contract,
+        account
+      )
+      expect(expiration).toEqual(0)
+      expect(contract.methods.keyExpirationTimestampFor).toHaveBeenCalledWith(
+        account
+      )
+    })
   })
 
-  // describe('getKeysForLockOnPage', () => {})
+  describe('getKeyByLockForOwner', () => {
+    it('should trigger an event with the key', async () => {
+      expect.assertions(4)
+      web3Service.lockContractAbiVersion = jest.fn(() => Promise.resolve(v0))
+      web3Service._getKeyByLockForOwner = jest.fn(() => {
+        return new Promise(resolve => {
+          return resolve(100)
+        })
+      })
+
+      web3Service.on('key.updated', (keyId, update) => {
+        expect(keyId).toBe([lockAddress, account].join('-'))
+        expect(update.expiration).toBe(100)
+        expect(update.lock).toBe(lockAddress)
+        expect(update.owner).toBe(account)
+      })
+      await web3Service.getKeyByLockForOwner(lockAddress, account)
+    })
+  })
 
   describe('versions', () => {
     const versionSpecificLockMethods = ['getLock']
