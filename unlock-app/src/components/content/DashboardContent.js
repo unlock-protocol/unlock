@@ -87,7 +87,16 @@ export const mapStateToProps = ({
       transactions[a.transaction].blockNumber
     )
   }
-  const lockFeed = Object.values(locks).sort(locksComparator)
+
+  // Only show the current account's locks
+  const locksFilter = lock => {
+    return lock.owner === account.address
+  }
+
+  const lockFeed = Object.values(locks)
+    .filter(locksFilter)
+    .sort(locksComparator)
+
   return {
     account: account,
     network: network,
