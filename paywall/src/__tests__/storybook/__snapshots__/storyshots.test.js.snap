@@ -8417,6 +8417,7 @@ Object {
   -webkit-align-self: start;
   -ms-flex-item-align: start;
   align-self: start;
+  grid-row: 2;
 }
 
 .c0 {
@@ -8428,22 +8429,28 @@ Object {
   margin: auto;
   display: grid;
   grid-template-columns: 25px 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  grid-template-columns: 25px 1fr 10px;
 }
 
 .c0 > p {
   margin-bottom: 5px;
   font-size: 12px;
-  text-align: center;
+  margin-left: 10px;
 }
 
 .c0 > .c17,
-.c0 > .j1ncz7-1 {
+.c0 > .j1ncz7-2 {
   margin-left: 10px;
+}
+
+.c0 > p {
+  text-align: center;
+  margin-left: 0;
 }
 
 .c0:hover {
@@ -8474,7 +8481,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .jnNzBz > .c1 {
+  .cSULAv > .c1 {
     display: none;
   }
 }
@@ -8527,6 +8534,8 @@ Object {
     -webkit-align-self: initial;
     -ms-flex-item-align: initial;
     align-self: initial;
+    grid-row: 1;
+    grid-column: 2;
   }
 }
 
@@ -8535,7 +8544,7 @@ Object {
     font-size: 10px;
     display: grid;
     height: 60px;
-    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-columns: 1.6fr 0.5fr 24px 1fr;
     grid-template-rows: 60px;
     width: 100%;
     -webkit-align-items: center;
@@ -8549,14 +8558,26 @@ Object {
   }
 
   .c0 > .c17,
-  .c0 > .j1ncz7-1 {
+  .c0 > .j1ncz7-2 {
     -webkit-align-self: center;
     -ms-flex-item-align: center;
     align-self: center;
   }
 
   .c0 > p {
-    margin-bottom: inherit;
+    margin: 0 0 2px;
+    text-align: right;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    grid-template-columns: 1fr 36px 1fr;
+  }
+
+  .c0 > p {
+    text-align: right;
+    margin-right: 16px;
   }
 }
 
@@ -8767,7 +8788,7 @@ Object {
         class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-3 sc-1thcbar-0 jPJKwm"
+          class="j1ncz7-4 sc-1thcbar-0 cJDIOS"
         >
           <div
             class="j1ncz7-0 iFZnpo"
@@ -8789,7 +8810,7 @@ Object {
             Purchase Confirmed
           </p>
           <div
-            class="j1ncz7-5 jatnEK"
+            class="j1ncz7-6 qoHvh"
           >
             <a
               class="sc-1hzn3pu-2 jZYYLs is925m-0 kuCWTv"
@@ -8822,7 +8843,7 @@ Object {
             </a>
           </div>
           <div
-            class="j1ncz7-4 jOavbS"
+            class="j1ncz7-5 iLIMNd"
           >
             <p>
               Powered by
@@ -9127,6 +9148,15 @@ Object {
   align-self: center;
 }
 
+.c8 {
+  grid-row: 3;
+  grid-column: 2;
+  margin-right: 11px;
+  width: 18px;
+  height: 18px;
+  justify-self: end;
+}
+
 .c5 {
   -webkit-align-self: start;
   -ms-flex-item-align: start;
@@ -9149,7 +9179,7 @@ Object {
   grid-column: 2;
   position: absolute;
   background: var(--yellow);
-  width: 0px;
+  width: 0%;
 }
 
 .c0 {
@@ -9161,7 +9191,7 @@ Object {
   margin: auto;
   display: grid;
   grid-template-columns: 25px 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -9171,7 +9201,7 @@ Object {
 .c0 > p {
   margin-bottom: 5px;
   font-size: 12px;
-  text-align: center;
+  margin-left: 10px;
 }
 
 .c0 > .c6,
@@ -9179,7 +9209,7 @@ Object {
   margin-left: 10px;
 }
 
-.c8 {
+.c9 {
   display: none;
 }
 
@@ -9191,11 +9221,40 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
+  .c8 {
+    grid-row: 1;
+    grid-column: 3;
+    margin-right: 0;
+    justify-self: middle;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c5 {
+    width: 80%;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c7 {
+    width: 80%;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c7 {
+    width: 0%;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     font-size: 10px;
     display: grid;
     height: 60px;
-    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-columns: 1.6fr 0.5fr 24px 1fr;
     grid-template-rows: 60px;
     width: 100%;
     -webkit-align-items: center;
@@ -9216,12 +9275,13 @@ Object {
   }
 
   .c0 > p {
-    margin-bottom: inherit;
+    margin: 0 0 2px;
+    text-align: right;
   }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c8 {
+  .c9 {
     font-size: 10px;
     width: 170px;
     display: grid;
@@ -9230,7 +9290,7 @@ Object {
     font-size: 12px;
   }
 
-  .c8 > div {
+  .c9 > div {
     grid-row: 1;
     grid-column: 2;
     margin-left: 0;
@@ -9239,7 +9299,7 @@ Object {
     align-self: center;
   }
 
-  .c8 > p {
+  .c9 > p {
     width: 100%;
     color: var(--slate);
     grid-row: 1;
@@ -9252,7 +9312,7 @@ Object {
     padding-right: 2px;
   }
 
-  .c8 > a {
+  .c9 > a {
     grid-row: 1;
     grid-column: 3;
     justify-self: start;
@@ -9351,8 +9411,32 @@ Object {
                 class="c4 c6 c7"
               />
             </div>
-            <div
+            <a
               class="c8"
+              href="https://github.com/unlock-protocol/unlock/wiki/Frequently-Asked-Questions#what-is-optimistic-unlocking"
+              target="_blank"
+            >
+              <svg
+                fill="none"
+                viewBox="0 0 16 16"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                  fill="#A6A6A6"
+                  fill-rule="evenodd"
+                />
+                <path
+                  clip-rule="evenodd"
+                  d="M8 5.6A.8.8 0 1 0 8 4a.8.8 0 0 0 0 1.6zM8 12a.667.667 0 0 0 .667-.667v-4a.667.667 0 0 0-1.334 0v4c0 .368.299.667.667.667z"
+                  fill="#fff"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </a>
+            <div
+              class="c9"
             >
               <p>
                 Powered by
@@ -9444,7 +9528,7 @@ Object {
         class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-3 jnNzBz"
+          class="j1ncz7-4 cSULAv"
         >
           <div
             class="j1ncz7-0 iFZnpo"
@@ -9466,14 +9550,38 @@ Object {
             Confirming Purchase
           </p>
           <div
-            class="j1ncz7-1 dJiygx"
+            class="j1ncz7-2 iacDWy"
           >
             <div
-              class="j1ncz7-1 j1ncz7-2 iTYcIm"
+              class="j1ncz7-2 j1ncz7-3 fQibSe"
             />
           </div>
+          <a
+            class="j1ncz7-1 dLfZpP"
+            href="https://github.com/unlock-protocol/unlock/wiki/Frequently-Asked-Questions#what-is-optimistic-unlocking"
+            target="_blank"
+          >
+            <svg
+              fill="none"
+              viewBox="0 0 16 16"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                fill="#A6A6A6"
+                fill-rule="evenodd"
+              />
+              <path
+                clip-rule="evenodd"
+                d="M8 5.6A.8.8 0 1 0 8 4a.8.8 0 0 0 0 1.6zM8 12a.667.667 0 0 0 .667-.667v-4a.667.667 0 0 0-1.334 0v4c0 .368.299.667.667.667z"
+                fill="#fff"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </a>
           <div
-            class="j1ncz7-4 jOavbS"
+            class="j1ncz7-5 iLIMNd"
           >
             <p>
               Powered by
@@ -9589,6 +9697,15 @@ Object {
   align-self: center;
 }
 
+.c8 {
+  grid-row: 3;
+  grid-column: 2;
+  margin-right: 11px;
+  width: 18px;
+  height: 18px;
+  justify-self: end;
+}
+
 .c5 {
   -webkit-align-self: start;
   -ms-flex-item-align: start;
@@ -9611,7 +9728,7 @@ Object {
   grid-column: 2;
   position: absolute;
   background: var(--yellow);
-  width: 37px;
+  width: 37%;
 }
 
 .c0 {
@@ -9623,7 +9740,7 @@ Object {
   margin: auto;
   display: grid;
   grid-template-columns: 25px 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -9633,7 +9750,7 @@ Object {
 .c0 > p {
   margin-bottom: 5px;
   font-size: 12px;
-  text-align: center;
+  margin-left: 10px;
 }
 
 .c0 > .c6,
@@ -9641,7 +9758,7 @@ Object {
   margin-left: 10px;
 }
 
-.c8 {
+.c9 {
   display: none;
 }
 
@@ -9653,11 +9770,40 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
+  .c8 {
+    grid-row: 1;
+    grid-column: 3;
+    margin-right: 0;
+    justify-self: middle;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c5 {
+    width: 80%;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c7 {
+    width: 80%;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c7 {
+    width: 40%;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     font-size: 10px;
     display: grid;
     height: 60px;
-    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-columns: 1.6fr 0.5fr 24px 1fr;
     grid-template-rows: 60px;
     width: 100%;
     -webkit-align-items: center;
@@ -9678,12 +9824,13 @@ Object {
   }
 
   .c0 > p {
-    margin-bottom: inherit;
+    margin: 0 0 2px;
+    text-align: right;
   }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c8 {
+  .c9 {
     font-size: 10px;
     width: 170px;
     display: grid;
@@ -9692,7 +9839,7 @@ Object {
     font-size: 12px;
   }
 
-  .c8 > div {
+  .c9 > div {
     grid-row: 1;
     grid-column: 2;
     margin-left: 0;
@@ -9701,7 +9848,7 @@ Object {
     align-self: center;
   }
 
-  .c8 > p {
+  .c9 > p {
     width: 100%;
     color: var(--slate);
     grid-row: 1;
@@ -9714,7 +9861,7 @@ Object {
     padding-right: 2px;
   }
 
-  .c8 > a {
+  .c9 > a {
     grid-row: 1;
     grid-column: 3;
     justify-self: start;
@@ -9813,8 +9960,32 @@ Object {
                 class="c4 c6 c7"
               />
             </div>
-            <div
+            <a
               class="c8"
+              href="https://github.com/unlock-protocol/unlock/wiki/Frequently-Asked-Questions#what-is-optimistic-unlocking"
+              target="_blank"
+            >
+              <svg
+                fill="none"
+                viewBox="0 0 16 16"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                  fill="#A6A6A6"
+                  fill-rule="evenodd"
+                />
+                <path
+                  clip-rule="evenodd"
+                  d="M8 5.6A.8.8 0 1 0 8 4a.8.8 0 0 0 0 1.6zM8 12a.667.667 0 0 0 .667-.667v-4a.667.667 0 0 0-1.334 0v4c0 .368.299.667.667.667z"
+                  fill="#fff"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </a>
+            <div
+              class="c9"
             >
               <p>
                 Powered by
@@ -9906,7 +10077,7 @@ Object {
         class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-3 jnNzBz"
+          class="j1ncz7-4 cSULAv"
         >
           <div
             class="j1ncz7-0 iFZnpo"
@@ -9928,14 +10099,38 @@ Object {
             Confirming Purchase
           </p>
           <div
-            class="j1ncz7-1 dJiygx"
+            class="j1ncz7-2 iacDWy"
           >
             <div
-              class="j1ncz7-1 j1ncz7-2 cONrEh"
+              class="j1ncz7-2 j1ncz7-3 gOJHmc"
             />
           </div>
+          <a
+            class="j1ncz7-1 dLfZpP"
+            href="https://github.com/unlock-protocol/unlock/wiki/Frequently-Asked-Questions#what-is-optimistic-unlocking"
+            target="_blank"
+          >
+            <svg
+              fill="none"
+              viewBox="0 0 16 16"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                fill="#A6A6A6"
+                fill-rule="evenodd"
+              />
+              <path
+                clip-rule="evenodd"
+                d="M8 5.6A.8.8 0 1 0 8 4a.8.8 0 0 0 0 1.6zM8 12a.667.667 0 0 0 .667-.667v-4a.667.667 0 0 0-1.334 0v4c0 .368.299.667.667.667z"
+                fill="#fff"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </a>
           <div
-            class="j1ncz7-4 jOavbS"
+            class="j1ncz7-5 iLIMNd"
           >
             <p>
               Powered by
@@ -10051,6 +10246,15 @@ Object {
   align-self: center;
 }
 
+.c8 {
+  grid-row: 3;
+  grid-column: 2;
+  margin-right: 11px;
+  width: 18px;
+  height: 18px;
+  justify-self: end;
+}
+
 .c5 {
   -webkit-align-self: start;
   -ms-flex-item-align: start;
@@ -10073,7 +10277,7 @@ Object {
   grid-column: 2;
   position: absolute;
   background: var(--yellow);
-  width: 0px;
+  width: 0%;
 }
 
 .c0 {
@@ -10085,7 +10289,7 @@ Object {
   margin: auto;
   display: grid;
   grid-template-columns: 25px 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -10095,7 +10299,7 @@ Object {
 .c0 > p {
   margin-bottom: 5px;
   font-size: 12px;
-  text-align: center;
+  margin-left: 10px;
 }
 
 .c0 > .c6,
@@ -10103,7 +10307,7 @@ Object {
   margin-left: 10px;
 }
 
-.c8 {
+.c9 {
   display: none;
 }
 
@@ -10115,11 +10319,40 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
+  .c8 {
+    grid-row: 1;
+    grid-column: 3;
+    margin-right: 0;
+    justify-self: middle;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c5 {
+    width: 80%;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c7 {
+    width: 80%;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c7 {
+    width: 0%;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     font-size: 10px;
     display: grid;
     height: 60px;
-    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-columns: 1.6fr 0.5fr 24px 1fr;
     grid-template-rows: 60px;
     width: 100%;
     -webkit-align-items: center;
@@ -10140,12 +10373,13 @@ Object {
   }
 
   .c0 > p {
-    margin-bottom: inherit;
+    margin: 0 0 2px;
+    text-align: right;
   }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c8 {
+  .c9 {
     font-size: 10px;
     width: 170px;
     display: grid;
@@ -10154,7 +10388,7 @@ Object {
     font-size: 12px;
   }
 
-  .c8 > div {
+  .c9 > div {
     grid-row: 1;
     grid-column: 2;
     margin-left: 0;
@@ -10163,7 +10397,7 @@ Object {
     align-self: center;
   }
 
-  .c8 > p {
+  .c9 > p {
     width: 100%;
     color: var(--slate);
     grid-row: 1;
@@ -10176,7 +10410,7 @@ Object {
     padding-right: 2px;
   }
 
-  .c8 > a {
+  .c9 > a {
     grid-row: 1;
     grid-column: 3;
     justify-self: start;
@@ -10275,8 +10509,32 @@ Object {
                 class="c4 c6 c7"
               />
             </div>
-            <div
+            <a
               class="c8"
+              href="https://github.com/unlock-protocol/unlock/wiki/Frequently-Asked-Questions#what-is-optimistic-unlocking"
+              target="_blank"
+            >
+              <svg
+                fill="none"
+                viewBox="0 0 16 16"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                  fill="#A6A6A6"
+                  fill-rule="evenodd"
+                />
+                <path
+                  clip-rule="evenodd"
+                  d="M8 5.6A.8.8 0 1 0 8 4a.8.8 0 0 0 0 1.6zM8 12a.667.667 0 0 0 .667-.667v-4a.667.667 0 0 0-1.334 0v4c0 .368.299.667.667.667z"
+                  fill="#fff"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </a>
+            <div
+              class="c9"
             >
               <p>
                 Powered by
@@ -10368,7 +10626,7 @@ Object {
         class="unlock start show hide optimism"
       >
         <div
-          class="j1ncz7-3 jnNzBz"
+          class="j1ncz7-4 cSULAv"
         >
           <div
             class="j1ncz7-0 iFZnpo"
@@ -10390,14 +10648,38 @@ Object {
             Confirming Purchase
           </p>
           <div
-            class="j1ncz7-1 dJiygx"
+            class="j1ncz7-2 iacDWy"
           >
             <div
-              class="j1ncz7-1 j1ncz7-2 iTYcIm"
+              class="j1ncz7-2 j1ncz7-3 fQibSe"
             />
           </div>
+          <a
+            class="j1ncz7-1 dLfZpP"
+            href="https://github.com/unlock-protocol/unlock/wiki/Frequently-Asked-Questions#what-is-optimistic-unlocking"
+            target="_blank"
+          >
+            <svg
+              fill="none"
+              viewBox="0 0 16 16"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                fill="#A6A6A6"
+                fill-rule="evenodd"
+              />
+              <path
+                clip-rule="evenodd"
+                d="M8 5.6A.8.8 0 1 0 8 4a.8.8 0 0 0 0 1.6zM8 12a.667.667 0 0 0 .667-.667v-4a.667.667 0 0 0-1.334 0v4c0 .368.299.667.667.667z"
+                fill="#fff"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </a>
           <div
-            class="j1ncz7-4 jOavbS"
+            class="j1ncz7-5 iLIMNd"
           >
             <p>
               Powered by
@@ -11016,6 +11298,7 @@ Object {
   -webkit-align-self: start;
   -ms-flex-item-align: start;
   align-self: start;
+  grid-row: 2;
 }
 
 .c0 {
@@ -11027,22 +11310,28 @@ Object {
   margin: auto;
   display: grid;
   grid-template-columns: 25px 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  grid-template-columns: 25px 1fr 10px;
 }
 
 .c0 > p {
   margin-bottom: 5px;
   font-size: 12px;
-  text-align: center;
+  margin-left: 10px;
 }
 
 .c0 > .c17,
-.c0 > .j1ncz7-1 {
+.c0 > .j1ncz7-2 {
   margin-left: 10px;
+}
+
+.c0 > p {
+  text-align: center;
+  margin-left: 0;
 }
 
 .c0:hover {
@@ -11073,7 +11362,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .jnNzBz > .c1 {
+  .cSULAv > .c1 {
     display: none;
   }
 }
@@ -11126,6 +11415,8 @@ Object {
     -webkit-align-self: initial;
     -ms-flex-item-align: initial;
     align-self: initial;
+    grid-row: 1;
+    grid-column: 2;
   }
 }
 
@@ -11134,7 +11425,7 @@ Object {
     font-size: 10px;
     display: grid;
     height: 60px;
-    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-columns: 1.6fr 0.5fr 24px 1fr;
     grid-template-rows: 60px;
     width: 100%;
     -webkit-align-items: center;
@@ -11148,14 +11439,26 @@ Object {
   }
 
   .c0 > .c17,
-  .c0 > .j1ncz7-1 {
+  .c0 > .j1ncz7-2 {
     -webkit-align-self: center;
     -ms-flex-item-align: center;
     align-self: center;
   }
 
   .c0 > p {
-    margin-bottom: inherit;
+    margin: 0 0 2px;
+    text-align: right;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    grid-template-columns: 1fr 36px 1fr;
+  }
+
+  .c0 > p {
+    text-align: right;
+    margin-right: 16px;
   }
 }
 
@@ -11263,7 +11566,7 @@ Object {
       style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="j1ncz7-3 sc-1thcbar-0 jPJKwm"
+        class="j1ncz7-4 sc-1thcbar-0 cJDIOS"
       >
         <div
           class="j1ncz7-0 iFZnpo"
@@ -11285,7 +11588,7 @@ Object {
           Purchase Confirmed
         </p>
         <div
-          class="j1ncz7-5 jatnEK"
+          class="j1ncz7-6 qoHvh"
         >
           <a
             class="sc-1hzn3pu-2 jZYYLs is925m-0 kuCWTv"
@@ -11318,7 +11621,7 @@ Object {
           </a>
         </div>
         <div
-          class="j1ncz7-4 jOavbS"
+          class="j1ncz7-5 iLIMNd"
         >
           <p>
             Powered by
@@ -11433,6 +11736,15 @@ Object {
   align-self: center;
 }
 
+.c8 {
+  grid-row: 3;
+  grid-column: 2;
+  margin-right: 11px;
+  width: 18px;
+  height: 18px;
+  justify-self: end;
+}
+
 .c5 {
   -webkit-align-self: start;
   -ms-flex-item-align: start;
@@ -11455,7 +11767,7 @@ Object {
   grid-column: 2;
   position: absolute;
   background: var(--yellow);
-  width: 29px;
+  width: 29%;
 }
 
 .c0 {
@@ -11467,7 +11779,7 @@ Object {
   margin: auto;
   display: grid;
   grid-template-columns: 25px 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -11477,7 +11789,7 @@ Object {
 .c0 > p {
   margin-bottom: 5px;
   font-size: 12px;
-  text-align: center;
+  margin-left: 10px;
 }
 
 .c0 > .c6,
@@ -11485,12 +11797,12 @@ Object {
   margin-left: 10px;
 }
 
-.c8 {
+.c9 {
   display: none;
 }
 
-.c9 > .c6,
-.c9 > .c4 {
+.c10 > .c6,
+.c10 > .c4 {
   margin-left: 10px;
 }
 
@@ -11502,11 +11814,40 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
+  .c8 {
+    grid-row: 1;
+    grid-column: 3;
+    margin-right: 0;
+    justify-self: middle;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c5 {
+    width: 80%;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c7 {
+    width: 80%;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c7 {
+    width: 32%;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     font-size: 10px;
     display: grid;
     height: 60px;
-    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-columns: 1.6fr 0.5fr 24px 1fr;
     grid-template-rows: 60px;
     width: 100%;
     -webkit-align-items: center;
@@ -11527,12 +11868,13 @@ Object {
   }
 
   .c0 > p {
-    margin-bottom: inherit;
+    margin: 0 0 2px;
+    text-align: right;
   }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c8 {
+  .c9 {
     font-size: 10px;
     width: 170px;
     display: grid;
@@ -11541,7 +11883,7 @@ Object {
     font-size: 12px;
   }
 
-  .c8 > div {
+  .c9 > div {
     grid-row: 1;
     grid-column: 2;
     margin-left: 0;
@@ -11550,7 +11892,7 @@ Object {
     align-self: center;
   }
 
-  .c8 > p {
+  .c9 > p {
     width: 100%;
     color: var(--slate);
     grid-row: 1;
@@ -11563,7 +11905,7 @@ Object {
     padding-right: 2px;
   }
 
-  .c8 > a {
+  .c9 > a {
     grid-row: 1;
     grid-column: 3;
     justify-self: start;
@@ -11575,12 +11917,12 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c9 > .c1 {
+  .c10 > .c1 {
     display: none;
   }
 
-  .c9 > .c6,
-  .c9 > .c4 {
+  .c10 > .c6,
+  .c10 > .c4 {
     -webkit-align-self: center;
     -ms-flex-item-align: center;
     align-self: center;
@@ -11624,8 +11966,32 @@ Object {
               class="c4 c6 c7"
             />
           </div>
-          <div
+          <a
             class="c8"
+            href="https://github.com/unlock-protocol/unlock/wiki/Frequently-Asked-Questions#what-is-optimistic-unlocking"
+            target="_blank"
+          >
+            <svg
+              fill="none"
+              viewBox="0 0 16 16"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                fill="#A6A6A6"
+                fill-rule="evenodd"
+              />
+              <path
+                clip-rule="evenodd"
+                d="M8 5.6A.8.8 0 1 0 8 4a.8.8 0 0 0 0 1.6zM8 12a.667.667 0 0 0 .667-.667v-4a.667.667 0 0 0-1.334 0v4c0 .368.299.667.667.667z"
+                fill="#fff"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </a>
+          <div
+            class="c9"
           >
             <p>
               Powered by
@@ -11665,7 +12031,7 @@ Object {
       style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="j1ncz7-3 jnNzBz"
+        class="j1ncz7-4 cSULAv"
       >
         <div
           class="j1ncz7-0 iFZnpo"
@@ -11687,14 +12053,38 @@ Object {
           Confirming Purchase
         </p>
         <div
-          class="j1ncz7-1 dJiygx"
+          class="j1ncz7-2 iacDWy"
         >
           <div
-            class="j1ncz7-1 j1ncz7-2 kbGZWY"
+            class="j1ncz7-2 j1ncz7-3 hAPYxD"
           />
         </div>
+        <a
+          class="j1ncz7-1 dLfZpP"
+          href="https://github.com/unlock-protocol/unlock/wiki/Frequently-Asked-Questions#what-is-optimistic-unlocking"
+          target="_blank"
+        >
+          <svg
+            fill="none"
+            viewBox="0 0 16 16"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+              fill="#A6A6A6"
+              fill-rule="evenodd"
+            />
+            <path
+              clip-rule="evenodd"
+              d="M8 5.6A.8.8 0 1 0 8 4a.8.8 0 0 0 0 1.6zM8 12a.667.667 0 0 0 .667-.667v-4a.667.667 0 0 0-1.334 0v4c0 .368.299.667.667.667z"
+              fill="#fff"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </a>
         <div
-          class="j1ncz7-4 jOavbS"
+          class="j1ncz7-5 iLIMNd"
         >
           <p>
             Powered by

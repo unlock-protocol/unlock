@@ -3,12 +3,14 @@ import PropTypes from 'prop-types'
 
 import UnlockPropTypes from '../../propTypes'
 import { RoundedLogo } from '../interface/Logo'
+import Svg from '../interface/svg'
 import {
   OptimisticFlag,
   OptimisticLogo,
   ProgressBar,
   Progress,
   PoweredByUnlock,
+  Info,
 } from './FlagStyles'
 
 export default function ConfirmingFlag({
@@ -35,6 +37,12 @@ export default function ConfirmingFlag({
       </OptimisticLogo>
       <p>{text}</p>
       {Confirmations}
+      <Info
+        href="https://github.com/unlock-protocol/unlock/wiki/Frequently-Asked-Questions#what-is-optimistic-unlocking"
+        target="_blank"
+      >
+        <Svg.Info />
+      </Info>
       <PoweredByUnlock>
         <p>Powered by</p>
         <OptimisticLogo>

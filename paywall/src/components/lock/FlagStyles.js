@@ -7,6 +7,24 @@ export const OptimisticLogo = styled.div`
   align-self: center;
 `
 
+export const Info = styled.a`
+  grid-row 3;
+  grid-column: 2;
+  margin-right: 11px;
+  width: 18px;
+  height: 18px;
+  justify-self: end;
+
+  ${Media.phone`
+    grid-row: 1;
+    grid-column: 3;
+    margin-right: 0;
+    justify-self: middle;
+    width: 16px;
+    height: 16px;
+  `}
+`
+
 export const ProgressBar = styled.div`
   align-self: start;
   width: 74px;
@@ -14,6 +32,10 @@ export const ProgressBar = styled.div`
   background: var(--lightgrey);
   position: relative;
   grid-column: 2;
+
+  ${Media.phone`
+    width: 80%;
+  `}
 `
 
 export const Progress = styled(ProgressBar)`
@@ -29,8 +51,17 @@ export const Progress = styled(ProgressBar)`
       Math.floor(confirmations * (74 / requiredConfirmations)),
       74
     )
-    return `${width}px`
+    return `${width}%`
   }};
+  ${Media.phone`
+    width: ${({ confirmations, requiredConfirmations }) => {
+      const width = Math.min(
+        Math.floor(confirmations * (80 / requiredConfirmations)),
+        80
+      )
+      return `${width}%`
+    }};
+  `}
 `
 
 export const OptimisticFlag = styled.div`
@@ -42,13 +73,13 @@ export const OptimisticFlag = styled.div`
   margin: auto;
   display: grid;
   grid-template-columns: 25px 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 0;
   align-items: center;
 
   & > p {
     margin-bottom: 5px;
     font-size: 12px;
-    text-align: center;
+    margin-left: 10px;
   }
 
   & > ${Progress}, & > ${ProgressBar} {
@@ -59,7 +90,7 @@ export const OptimisticFlag = styled.div`
     font-size: 10px;
     display: grid;
     height: 60px;
-    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-columns: 1.6fr 0.5fr 24px 1fr;
     grid-template-rows: 60px;
     width: 100%;
     align-items: center;
@@ -73,7 +104,8 @@ export const OptimisticFlag = styled.div`
     }
 
     & > p {
-      margin-bottom: inherit;
+      margin: 0 0 2px;
+      text-align: right;
     }
   `}
 `
@@ -124,7 +156,10 @@ export const ConfirmedKeyWrapper = styled.div`
   align-content: center;
   justify-content: center;
   align-self: start;
+  grid-row: 2;
   ${Media.phone`
     align-self: initial;
+    grid-row: 1;
+    grid-column: 2;
   `}
 `
