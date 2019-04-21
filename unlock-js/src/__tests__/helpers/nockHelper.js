@@ -157,6 +157,26 @@ export class NockHelper {
       error
     )
   }
+
+  // eth_gasPrice
+  ethGasPriceAndYield(price) {
+    return this._jsonRpcRequest('eth_gasPrice', [], price)
+  }
+
+  // eth_sendTransaction
+  ethSendTransactionAndYield(transaction, gasPrice, result, error) {
+    return this._jsonRpcRequest(
+      'eth_sendTransaction',
+      [
+        {
+          ...transaction,
+          gasPrice,
+        },
+      ],
+      result,
+      error
+    )
+  }
 }
 
 export default NockHelper
