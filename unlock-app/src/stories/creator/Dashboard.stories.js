@@ -49,6 +49,7 @@ const locks = {
     maxNumberOfKeys: 800,
     outstandingKeys: 32,
     transaction: '0x5678',
+    owner: account.address,
   },
   '0x12345678a': {
     address: '0x12345678a',
@@ -58,6 +59,7 @@ const locks = {
     maxNumberOfKeys: 240,
     outstandingKeys: 3,
     transaction: '0x1234',
+    owner: account.address,
   },
   '0x9abcdef0a': {
     address: '0x9abcdef0',
@@ -67,6 +69,7 @@ const locks = {
     maxNumberOfKeys: 0,
     outstandingKeys: 10,
     transaction: '0x89ab',
+    owner: account.address,
   },
 }
 
