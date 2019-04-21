@@ -372,6 +372,29 @@ describe('Web3Service', () => {
   })
 
   describe('_getTransactionType', () => {
+    it('should compute the method signature to compare it with the inputs', () => {
+      expect.assertions(1)
+      const data =
+        '0xf6e4641f00000000000000000000000033ab07df7f09e793ddd1e9a25b079989a557119a'
+      const Contract = {
+        contractName: 'PublicLock',
+        abi: [
+          {
+            constant: false,
+            inputs: [{ name: '_recipient', type: 'address' }],
+            name: 'purchaseFor',
+            outputs: [],
+            payable: true,
+            stateMutability: 'payable',
+            type: 'function',
+          },
+        ],
+      }
+      expect(web3Service._getTransactionType(Contract, data)).toBe(
+        'KEY_PURCHASE'
+      )
+    })
+
     describe('v0', () => {
       it('should return null if there is no matching method', () => {
         expect.assertions(1)
@@ -1953,7 +1976,7 @@ describe('Web3Service', () => {
     })
   })
 
-  describe('_getKeyByLockForOwner', async () => {
+  describe('_getKeyByLockForOwner', () => {
     describe('v0', () => {
       it('should update the expiration date', async () => {
         expect.assertions(1)

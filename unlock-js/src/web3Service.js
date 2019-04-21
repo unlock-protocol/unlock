@@ -142,7 +142,13 @@ export default class Web3Service extends UnlockService {
    */
   _getTransactionType(contract, data) {
     const method = contract.abi.find(binaryInterface => {
-      return data.startsWith(binaryInterface.signature)
+      if (binaryInterface.type !== 'function') {
+        return false
+      }
+      const signature = this.web3.eth.abi.encodeFunctionSignature(
+        binaryInterface
+      )
+      return data.startsWith(signature)
     })
 
     // If there is no matching method, return null
