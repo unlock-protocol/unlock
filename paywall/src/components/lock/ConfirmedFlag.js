@@ -14,6 +14,7 @@ import {
   PoweredByUnlock,
   ConfirmedKeyWrapper,
 } from './FlagStyles'
+import Media from '../../theme/media'
 
 export default function ConfirmedFlag({ dismiss }) {
   return (
@@ -41,6 +42,18 @@ ConfirmedFlag.propTypes = {
 }
 
 const ClickableFlag = styled(OptimisticFlag)`
+  grid-template-columns: 25px 1fr 10px;
+  & > p {
+    text-align: center;
+    margin-left: 0;
+  }
+  ${Media.phone`
+    grid-template-columns: 1fr 36px 1fr;
+    & > p {
+      text-align: right;
+      margin-right: 16px;
+    }
+  `}
   &:hover {
     cursor: pointer;
     ${ConfirmedKeyButton} {
