@@ -26,6 +26,7 @@
     "color-scheme": "^1.0.1",
     "connected-next-router": "^1.0.1",
     "cross-env": "^5.2.0",
+    "dotenv": "^7.0.0",
     "email-validator": "^2.0.4",
     "fork-ts-checker-webpack-plugin": "^1.0.0",
     "isomorphic-unfetch": "^3.0.0",
