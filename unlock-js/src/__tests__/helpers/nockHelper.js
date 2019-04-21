@@ -89,11 +89,32 @@ export class NockHelper {
   }
 
   // eth_getCode
-  ethGetCodeAndYield(address, opCode) {
+  ethGetCodeAndYield(address, opCode, error) {
     return this._jsonRpcRequest(
       'eth_getCode',
       [address.toLowerCase(), 'latest'],
-      opCode
+      opCode,
+      error
+    )
+  }
+
+  // eth_getGasPrice
+  ethGetGasPriceAndYield(price) {
+    return this._jsonRpcRequest('eth_gasPrice', [], price)
+  }
+
+  // eth_sendTransaction
+  ethSendTransactionAndYield(transaction, gasPrice, result, error) {
+    return this._jsonRpcRequest(
+      'eth_sendTransaction',
+      [
+        {
+          ...transaction,
+          gasPrice,
+        },
+      ],
+      result,
+      error
     )
   }
 }
