@@ -40,6 +40,7 @@ const locks = {
     maxNumberOfKeys: 800,
     outstandingKeys: 32,
     transaction: '0x5678',
+    owner: '0x12345678',
   },
   '0x12345678a': {
     address: '0x12345678a',
@@ -49,6 +50,7 @@ const locks = {
     maxNumberOfKeys: 240,
     outstandingKeys: 3,
     transaction: '0x1234',
+    owner: '0x12345678',
   },
   '0x9abcdef0a': {
     address: '0x9abcdef0',
@@ -58,8 +60,20 @@ const locks = {
     maxNumberOfKeys: 0,
     outstandingKeys: 10,
     transaction: '0x89ab',
+    owner: '0x12345678',
+  },
+  '0x9abcdef0b': {
+    address: '0x9abcdef0',
+    name: 'The Gamma Blog',
+    keyPrice: '27000000000000000',
+    expirationDuration: 172800,
+    maxNumberOfKeys: 0,
+    outstandingKeys: 10,
+    transaction: '0x89ab',
+    owner: '0x987654',
   },
 }
+
 const locksMinusATransaction = {
   '0x56781234a': {
     address: '0x56781234a',
@@ -68,6 +82,7 @@ const locksMinusATransaction = {
     expirationDuration: 86400,
     maxNumberOfKeys: 800,
     outstandingKeys: 32,
+    owner: '0x12345678',
   },
   '0x12345678a': {
     address: '0x12345678a',
@@ -77,6 +92,7 @@ const locksMinusATransaction = {
     maxNumberOfKeys: 240,
     outstandingKeys: 3,
     transaction: '0x1234',
+    owner: '0x12345678',
   },
   '0x9abcdef0a': {
     address: '0x9abcdef0',
@@ -86,6 +102,7 @@ const locksMinusATransaction = {
     maxNumberOfKeys: 0,
     outstandingKeys: 10,
     transaction: '0x89ab',
+    owner: '0x12345678',
   },
 }
 
@@ -107,6 +124,25 @@ const ConfigProvider = ConfigContext.Provider
 
 describe('DashboardContent', () => {
   describe('mapStateToProps', () => {
+    it('should filter locks for that owner', () => {
+      expect.assertions(5)
+      const state = {
+        account,
+        network,
+        locks,
+        transactions,
+        lockFormStatus,
+      }
+
+      const props = mapStateToProps(state)
+      const lockFeed = props.lockFeed
+      expect(Object.keys(locks)).toHaveLength(4)
+      expect(lockFeed).toHaveLength(3)
+      expect(lockFeed[0].owner).toEqual(account.address)
+      expect(lockFeed[1].owner).toEqual(account.address)
+      expect(lockFeed[2].owner).toEqual(account.address)
+    })
+
     it('should sort locks in descending order by blockNumber', () => {
       expect.assertions(4)
       const state = {
