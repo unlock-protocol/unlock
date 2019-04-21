@@ -28,7 +28,7 @@ const transaction = {
   createdAt: new Date().getTime(),
   hash: '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
 }
-const nock = new NockHelper(readOnlyProvider, true /** debug */)
+const nock = new NockHelper(readOnlyProvider, false /** debug */)
 let web3Service
 
 describe('Web3Service', () => {
@@ -1436,13 +1436,23 @@ describe('Web3Service', () => {
               '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
           })
 
+          nock.ethGetTransactionReceipt(transaction.hash, {
+            status: 1,
+            transactionHash: transaction.hash,
+            transactionIndex: '0x0d',
+            blockHash:
+              '0xdc7c95899e030f3104871a597866767ec296e948a24e99b12e0b251011d11c36',
+            blockNumber: `0x${(18).toString('16')}`,
+            contractAddress: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
+            gasUsed: '0x16e360',
+            cumulativeGasUsed: '0x16e360',
+            logs: [],
+          })
+
           web3Service.lockContractAbiVersion = jest.fn(() => {
             return Promise.resolve(v0)
           })
 
-          web3Service.web3.eth.getTransactionReceipt = jest.fn(
-            () => new Promise(() => {})
-          )
           web3Service._watchTransaction = jest.fn()
           web3Service._getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
         })
@@ -1481,9 +1491,18 @@ describe('Web3Service', () => {
             return Promise.resolve(v0)
           })
 
-          web3Service.web3.eth.getTransactionReceipt = jest.fn(
-            () => new Promise(() => {})
-          )
+          nock.ethGetTransactionReceipt(transaction.hash, {
+            status: 1,
+            transactionHash: transaction.hash,
+            transactionIndex: '0x0d',
+            blockHash:
+              '0xdc7c95899e030f3104871a597866767ec296e948a24e99b12e0b251011d11c36',
+            blockNumber: `0x${(14).toString('16')}`,
+            contractAddress: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
+            gasUsed: '0x16e360',
+            cumulativeGasUsed: '0x16e360',
+            logs: [],
+          })
           web3Service._watchTransaction = jest.fn()
           web3Service._getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
         })
@@ -1756,13 +1775,23 @@ describe('Web3Service', () => {
               '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
           })
 
+          nock.ethGetTransactionReceipt(transaction.hash, {
+            status: 1,
+            transactionHash: transaction.hash,
+            transactionIndex: '0x0d',
+            blockHash:
+              '0xdc7c95899e030f3104871a597866767ec296e948a24e99b12e0b251011d11c36',
+            blockNumber: `0x${(18).toString('16')}`,
+            contractAddress: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
+            gasUsed: '0x16e360',
+            cumulativeGasUsed: '0x16e360',
+            logs: [],
+          })
+
           web3Service.lockContractAbiVersion = jest.fn(() => {
             return Promise.resolve(v02)
           })
 
-          web3Service.web3.eth.getTransactionReceipt = jest.fn(
-            () => new Promise(() => {})
-          )
           web3Service._watchTransaction = jest.fn()
           web3Service._getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
         })
@@ -1797,13 +1826,23 @@ describe('Web3Service', () => {
             input:
               '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a',
           })
+
+          nock.ethGetTransactionReceipt(transaction.hash, {
+            status: 1,
+            transactionHash: transaction.hash,
+            transactionIndex: '0x0d',
+            blockHash:
+              '0xdc7c95899e030f3104871a597866767ec296e948a24e99b12e0b251011d11c36',
+            blockNumber: `0x${(18).toString('16')}`,
+            contractAddress: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
+            gasUsed: '0x16e360',
+            cumulativeGasUsed: '0x16e360',
+            logs: [],
+          })
+
           web3Service.lockContractAbiVersion = jest.fn(() => {
             return Promise.resolve(v02)
           })
-
-          web3Service.web3.eth.getTransactionReceipt = jest.fn(
-            () => new Promise(() => {})
-          )
           web3Service._watchTransaction = jest.fn()
           web3Service._getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
         })
