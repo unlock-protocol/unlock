@@ -12,4 +12,7 @@ export class UserReference extends Model<UserReference> {
 
   @Column
   publicKey!: string
+
+  @Column
+  stripe_customer_id!: string
 }
