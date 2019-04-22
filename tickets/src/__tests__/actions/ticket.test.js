@@ -1,6 +1,8 @@
 import {
   ADD_EVENT,
   addEvent,
+  UPDATE_EVENT,
+  updateEvent,
   TICKET_ERROR,
   ticketError,
   SIGN_ADDRESS,
@@ -10,14 +12,26 @@ import {
 } from '../../actions/ticket'
 
 describe('ticket actions', () => {
-  it('should create an event to add an action', () => {
+  it('should create an event to add a ticketed event', () => {
     expect.assertions(1)
     const event = {}
+    const token = {}
     const expectedAction = {
       type: ADD_EVENT,
       event,
+      token,
     }
-    expect(addEvent(event)).toEqual(expectedAction)
+    expect(addEvent(event, token)).toEqual(expectedAction)
+  })
+
+  it('should create an action to update a ticketed event', () => {
+    expect.assertions(1)
+    const event = {}
+    const expectedAction = {
+      type: UPDATE_EVENT,
+      event,
+    }
+    expect(updateEvent(event)).toEqual(expectedAction)
   })
 
   it('should create an action emitting a ticket error', () => {
