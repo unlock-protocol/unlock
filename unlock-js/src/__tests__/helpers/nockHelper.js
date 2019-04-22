@@ -8,11 +8,12 @@ export class NockHelper {
     this.debug = debug
     this._rpcRequestId = 0
     this._noMatches = []
+    this._pendingMocks = []
 
     // In order to monitor traffic without intercepting it (so that mocks can be built). uncomment the line below
     // nock.recorder.rec()
 
-    nock.emitter.on('no match', function(clientRequestObject, options, body) {
+    nock.emitter.on('no match', (clientRequestObject, options, body) => {
       this._noMatches.push(body)
       if (debug) {
         console.log(`NO HTTP MOCK EXISTS FOR THAT REQUEST\n${body}`)
@@ -24,7 +25,7 @@ export class NockHelper {
     this.cleanAll = this.cleanAll.bind(this)
   }
 
-  logNock(...args) {
+  logNock(args) {
     if (this.debug) {
       console.log(...args)
     }
@@ -32,25 +33,52 @@ export class NockHelper {
 
   cleanAll() {
     nock.cleanAll()
+    nock.restore()
+    nock.activate()
     this._noMatches = []
+    this._pendingMocks = []
   }
 
   ensureAllNocksUsed() {
     if (!nock.isDone()) {
+      const unused = Object.values(this.nockScope.keyedInterceptors).map(
+        interceptors =>
+          interceptors
+            .map(interceptor => {
+              return (
+                interceptor.interceptionCounter === 0 && {
+                  api: interceptor._requestBody,
+                  reply: interceptor.body,
+                }
+              )
+            })
+            .filter(a => a)
+      )
+      unused.sort((a, b) => {
+        return a.api.id < b.api.id ? -1 : 1
+      })
+      console.log('Unused nocks:')
+      unused.forEach(infos => {
+        infos.forEach(info => {
+          console.log('API call', info.api)
+          console.log('return', info.reply)
+        })
+      })
       throw new Error('Not all JSON-RPC call mocks were used!')
     }
     if (this._noMatches.length) {
-      throw new Error(`Some JSON-RPC calls did not match! ${this._noMatches}`)
+      throw new Error('Some JSON-RPC calls did not match!')
     }
   }
 
   // Generic call
   _jsonRpcRequest(method, params, result, error) {
     this._rpcRequestId += 1
+    const cb = (...args) => this.logNock(args)
     return this.nockScope
       .post('/', { jsonrpc: '2.0', id: this._rpcRequestId, method, params })
       .reply(200, { id: this._rpcRequestId, jsonrpc: '2.0', result, error })
-      .log(this.logNock)
+      .log(cb)
   }
 
   // net_version
