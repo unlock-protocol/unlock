@@ -17,7 +17,6 @@ export class PaymentProcessor {
    * @param token
    * @param emailAddress
    */
-
   async updateUserPaymentDetails(
     token: string,
     emailAddress: string
@@ -48,12 +47,11 @@ export class PaymentProcessor {
   }
 
   /**
-   *  Charges an appropriately configured user with purchasing details, with the an amount specified
+   *  Charges an appropriately configured user with purchasing details, with the amount specified
    *  in the purchase details
    * @param publicKey
    * @param purchaseDetails
    */
-
   async chargeUser(publicKey: string, purchaseDetails: any) {
     try {
       let normalizedPublicKey = Normalizer.ethereumAddress(publicKey)
