@@ -7,9 +7,7 @@ import UnlockPropTypes from '../../../propTypes'
 
 export const PayButton = ({ transaction, purchaseKey, config }) => {
   const { requiredConfirmations } = config
-  if (!transaction || !transaction.status) {
-    return <Pay onClick={purchaseKey}>Pay &amp; Register for This Event</Pay>
-  } else if (
+  if (
     transaction &&
     ['submitted', 'pending'].indexOf(transaction.status) > -1
   ) {
@@ -27,6 +25,8 @@ export const PayButton = ({ transaction, purchaseKey, config }) => {
     )
   } else if (transaction && transaction.status === 'mined') {
     return <PayInfo>Confirmed</PayInfo>
+  } else {
+    return <Pay onClick={purchaseKey}>Pay &amp; Register for This Event</Pay>
   }
 }
 
