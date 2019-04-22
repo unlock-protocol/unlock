@@ -1,6 +1,7 @@
 import App, { Container } from 'next/app'
 import React from 'react'
 import { Provider } from 'react-redux'
+import { createMemoryHistory, createBrowserHistory } from 'history'
 import configure from '../config'
 import { createUnlockStore } from '../createUnlockStore'
 
@@ -12,27 +13,33 @@ import currencyConversionMiddleware from '../middlewares/currencyConversionMiddl
 import providerMiddleware from '../middlewares/providerMiddleware'
 import walletMiddleware from '../middlewares/walletMiddleware'
 import web3Middleware from '../middlewares/web3Middleware'
+import ticketMiddleware from '../middlewares/ticketMiddleware'
 
 const config = configure()
 
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
-function getOrCreateStore(initialState) {
+function getOrCreateStore(initialState, history) {
   const middlewares = [
-    currencyConversionMiddleware(config),
     providerMiddleware(config),
-    walletMiddleware(config),
     web3Middleware(config),
+    currencyConversionMiddleware(config),
+    walletMiddleware(config),
+    ticketMiddleware(config),
   ]
 
   // Always make a new store if server, otherwise state is shared between requests
   if (config.isServer) {
-    return createUnlockStore(initialState, middlewares)
+    return createUnlockStore(initialState, history, middlewares)
   }
 
   // Create store if unavailable on the client and set it on the window object
   if (!window[__NEXT_REDUX_STORE__]) {
-    window[__NEXT_REDUX_STORE__] = createUnlockStore(initialState, middlewares)
+    window[__NEXT_REDUX_STORE__] = createUnlockStore(
+      initialState,
+      history,
+      middlewares
+    )
   }
   return window[__NEXT_REDUX_STORE__]
 }
@@ -83,7 +90,10 @@ The Unlock team
 
   render() {
     const { Component, pageProps, router } = this.props
-    const store = getOrCreateStore({})
+    const history = config.isServer
+      ? createMemoryHistory()
+      : createBrowserHistory()
+    const store = getOrCreateStore({}, history)
     return (
       <Container>
         <GlobalStyle />
