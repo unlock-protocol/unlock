@@ -26,12 +26,10 @@ export class EventContent extends Component {
     this.state = {
       event: event,
     }
-
-    this.loadEvent.bind(this)
   }
 
   componentDidUpdate() {
-    const { lock } = this.props
+    const { lock, loadEvent } = this.props
     const { event } = this.state
     if (lock.address && !event.lockAddress) loadEvent(lock.address)
   }
@@ -97,6 +95,7 @@ EventContent.propTypes = {
   lock: UnlockPropTypes.lock,
   transaction: UnlockPropTypes.transaction,
   purchaseKey: PropTypes.func.isRequired,
+  loadEvent: PropTypes.func.isRequired,
   lockKey: UnlockPropTypes.key,
   event: UnlockPropTypes.ticketedEvent,
   // Properties to add once we're showing the QR code:
@@ -113,6 +112,9 @@ EventContent.defaultProps = {
 export const mapDispatchToProps = dispatch => ({
   purchaseKey: key => {
     dispatch(purchaseKey(key))
+  },
+  loadEvent: address => {
+    dispatch(loadEvent(address))
   },
 })
 
