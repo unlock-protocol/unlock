@@ -4,8 +4,11 @@ import { Provider } from 'react-redux'
 import { EventContent } from '../../../components/content/EventContent'
 import { MONTH_NAMES } from '../../../constants'
 import createUnlockStore from '../../../createUnlockStore'
+import configure from '../../../config'
+import { ConfigContext } from '../../../utils/withConfig'
 
 const store = createUnlockStore({})
+const ConfigProvider = ConfigContext.Provider
 
 describe('EventContent', () => {
   it('should display an event when given appropriate properties', () => {
@@ -18,34 +21,38 @@ describe('EventContent', () => {
       address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
       transaction: 'deployedid',
     }
-
-    const date = new Date(2063, 10, 23)
-    const name = 'My Doctor Who party'
-    const description = `Unbelievably, it's been 100 years since it first came to our screens.
+    const event = {
+      date: new Date(2063, 10, 23),
+      name: 'My Doctor Who party',
+      description: `Unbelievably, it's been 100 years since it first came to our screens.
     
-Join us for an hour or two of fine entertainment.`
-    const location = 'Totters Lane, London'
+Join us for an hour or two of fine entertainment.`,
+      location: 'Totters Lane, London',
+    }
+    const config = configure({})
 
     const wrapper = rtl.render(
       <Provider store={store}>
-        <EventContent
-          date={date}
-          name={name}
-          description={description}
-          location={location}
-          lock={lock}
-        />
+        <ConfigProvider value={config}>
+          <EventContent
+            event={event}
+            lock={lock}
+            purchaseKey={() => {}}
+            loadEvent={() => {}}
+            transaction={null}
+          />
+        </ConfigProvider>
       </Provider>
     )
 
-    expect(wrapper.getByText(name)).not.toBeNull()
-    expect(wrapper.getByText(location)).not.toBeNull()
+    expect(wrapper.getByText(event.name)).not.toBeNull()
+    expect(wrapper.getByText(event.location)).not.toBeNull()
     const dateString =
-      MONTH_NAMES[date.getMonth()] +
+      MONTH_NAMES[event.date.getMonth()] +
       ' ' +
-      date.getDate() +
+      event.date.getDate() +
       ', ' +
-      date.getFullYear()
+      event.date.getFullYear()
     expect(wrapper.getByText(dateString)).not.toBeNull()
   })
 })

@@ -1,6 +1,8 @@
 import {
   ADD_EVENT,
   addEvent,
+  LOAD_EVENT,
+  loadEvent,
   UPDATE_EVENT,
   updateEvent,
   TICKET_ERROR,
@@ -22,6 +24,16 @@ describe('ticket actions', () => {
       token,
     }
     expect(addEvent(event, token)).toEqual(expectedAction)
+  })
+
+  it('should create an event to load a ticketed event', () => {
+    expect.assertions(1)
+    const address = '0x123'
+    const expectedAction = {
+      type: LOAD_EVENT,
+      address,
+    }
+    expect(loadEvent(address)).toEqual(expectedAction)
   })
 
   it('should create an action to update a ticketed event', () => {
