@@ -115,9 +115,10 @@ describe('WalletService', () => {
       describe('when the node has no unlocked account', () => {
         it('should create an account and emit the ready event', done => {
           expect.assertions(2)
-          const newAccount = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 
-          nock.accountsAndYield([newAccount])
+          // this test checks to make sure we create a new account if the node
+          // returns no accounts, and so the accountsAndYield call must return []
+          nock.accountsAndYield([])
 
           walletService.once('ready', () => {
             expect(walletService.ready).toBe(true)
@@ -125,7 +126,8 @@ describe('WalletService', () => {
           })
 
           walletService.on('account.changed', account => {
-            expect(account).toBe('0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1')
+            // ensure we get a valid account hash back
+            expect(account).toMatch(/^0x[a-fA-F0-9]{40}$/)
           })
 
           return walletService.getAccount(true)
@@ -160,6 +162,44 @@ describe('WalletService', () => {
           '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
       }
 
+      afterEach(() => {
+        nock.ensureAllNocksUsed()
+      })
+
+      it('should handle cases where the transaction is sent via a provider', async () => {
+        expect.assertions(0)
+
+        nock.ethGetGasPriceAndYield('0x123')
+        nock.ethSendTransactionAndYield(
+          { to, from, data, value: '0x0', gas },
+          '0x123',
+          transaction.hash
+        )
+        nock.ethGetTransactionReceipt(transaction.hash, {
+          status: 1,
+          transactionHash: transaction.hash,
+          transactionIndex: '0x0d',
+          blockHash:
+            '0xdc7c95899e030f3104871a597866767ec296e948a24e99b12e0b251011d11c36',
+          blockNumber: `0x${(18).toString('16')}`,
+          contractAddress: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
+          gasUsed: '0x16e360',
+          cumulativeGasUsed: '0x16e360',
+          logs: [],
+        })
+
+        await walletService._sendTransaction(
+          { to, from, data, value, gas, privateKey, contract },
+          'type',
+          () => {}
+        )
+
+        // in the place of assertions, we explicitly verify that all of the JSON-RPC
+        // calls were completed in the exact order specified above, and that all
+        // of them were called, and nothing else
+        nock.ensureAllNocksUsed()
+      })
+
       describe('success', () => {
         beforeEach(() => {
           nock.ethGetGasPriceAndYield('0x123')
@@ -180,16 +220,6 @@ describe('WalletService', () => {
             cumulativeGasUsed: '0x16e360',
             logs: [],
           })
-        })
-
-        it('should handle cases where the transaction is sent via a provider', async () => {
-          expect.assertions(0)
-
-          await walletService._sendTransaction(
-            { to, from, data, value, gas, privateKey, contract },
-            'type',
-            () => {}
-          )
         })
 
         it('should trigger the transaction.pending event', async () => {

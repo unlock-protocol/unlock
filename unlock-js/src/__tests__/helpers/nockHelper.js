@@ -7,17 +7,21 @@ export class NockHelper {
 
     this.debug = debug
     this._rpcRequestId = 0
+    this._noMatches = []
 
-    // In order to monitor traffic without intercepting it (so that mocks can be built). uncomment the lone below
+    // In order to monitor traffic without intercepting it (so that mocks can be built). uncomment the line below
     // nock.recorder.rec()
 
     nock.emitter.on('no match', function(clientRequestObject, options, body) {
+      this._noMatches.push(body)
       if (debug) {
         console.log(`NO HTTP MOCK EXISTS FOR THAT REQUEST\n${body}`)
       }
     })
     // without binding, "this.debug" in locNock will not refer to our NockHelper
     this.logNock = this.logNock.bind(this)
+    this.ensureAllNocksUsed = this.ensureAllNocksUsed.bind(this)
+    this.cleanAll = this.cleanAll.bind(this)
   }
 
   logNock(...args) {
@@ -28,6 +32,16 @@ export class NockHelper {
 
   cleanAll() {
     nock.cleanAll()
+    this._noMatches = []
+  }
+
+  ensureAllNocksUsed() {
+    if (!nock.isDone()) {
+      throw new Error('Not all JSON-RPC call mocks were used!')
+    }
+    if (this._noMatches.length) {
+      throw new Error(`Some JSON-RPC calls did not match! ${this._noMatches}`)
+    }
   }
 
   // Generic call
