@@ -5,8 +5,11 @@ import { startLoading, doneLoading } from '../actions/loading'
 import { SET_ACCOUNT, updateAccount } from '../actions/accounts'
 import { updateLock, addLock } from '../actions/lock'
 import { addTransaction, updateTransaction } from '../actions/transaction'
-import { transactionTypeMapping } from '../utils/types'
+import { SET_PROVIDER } from '../actions/provider'
+import { SET_NETWORK } from '../actions/network'
 import { setError } from '../actions/error'
+import { transactionTypeMapping } from '../utils/types'
+import { lockRoute } from '../utils/routes'
 
 const { Web3Service } = UnlockJs
 
@@ -83,6 +86,20 @@ const web3Middleware = config => {
                 web3Service.getTransaction(lockCreation.transactionHash)
               })
             })
+        }
+
+        const {
+          router: {
+            location: { pathname, hash },
+          },
+        } = getState()
+        const { lockAddress } = lockRoute(pathname + hash)
+
+        if (action.type === SET_PROVIDER || action.type === SET_NETWORK) {
+          // for both of these actions, the lock state is invalid, and must be refreshed.
+          if (lockAddress) {
+            web3Service.getLock(lockAddress)
+          }
         }
       }
     }
