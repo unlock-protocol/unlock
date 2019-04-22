@@ -109,7 +109,7 @@ describe('CreateContent', () => {
     let date = new Date(2020, 10, 23)
     date.setUTCHours(0, 0, 0, 0)
     expect(addEvent).toHaveBeenCalledWith({
-      lockAddress: undefined, // TODO Not sure how to update state with the mocked select, so for now undefined is expected
+      lockAddress: 'abc123',
       name: '',
       description: '',
       location: '',
