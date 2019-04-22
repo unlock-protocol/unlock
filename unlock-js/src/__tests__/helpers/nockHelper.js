@@ -138,26 +138,6 @@ export class NockHelper {
     )
   }
 
-  // eth_getGasPrice
-  ethGetGasPriceAndYield(price) {
-    return this._jsonRpcRequest('eth_gasPrice', [], price)
-  }
-
-  // eth_sendTransaction
-  ethSendTransactionAndYield(transaction, gasPrice, result, error) {
-    return this._jsonRpcRequest(
-      'eth_sendTransaction',
-      [
-        {
-          ...transaction,
-          gasPrice,
-        },
-      ],
-      result,
-      error
-    )
-  }
-
   // eth_gasPrice
   ethGasPriceAndYield(price) {
     return this._jsonRpcRequest('eth_gasPrice', [], price)
