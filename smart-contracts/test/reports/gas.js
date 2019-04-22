@@ -147,9 +147,11 @@ contract('reports / gas', accounts => {
     const grantKey = await getGasFor(lock.grantKey(accounts[8], 9999999999))
 
     const partialWithdrawEth = await getGasFor(lock.partialWithdraw(1))
-    const partialWithdrawErc20 = new BigNumber(0) //TODO await getGasFor(lockErc20.partialWithdraw(1))
+    const partialWithdrawErc20 = await getGasFor(
+      lockApi.partialWithdraw(1, accounts[0])
+    )
     const withdrawEth = await getGasFor(lock.withdraw())
-    const withdrawErc20 = new BigNumber(0) // TODO await getGasFor(lockErc20.withdraw())
+    const withdrawErc20 = await getGasFor(lockApi.withdraw(accounts[0]))
 
     const updateLockName = await getGasFor(lock.updateLockName('Unlock Blog'))
     // Put some more money back in
