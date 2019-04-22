@@ -14,10 +14,11 @@ function _server(port, dev) {
         const parsedUrl = new URL(req.url, `http://${req.headers.host}/`)
         const { pathname, query } = parsedUrl
         console.info(`${req.method} ${req.url} > ${res.statusCode} `)
+        const path = pathname.split('/')[1]
         try {
-          if (pathname.match(/\/create/)) {
+          if (path === 'create') {
             app.render(req, res, '/create', Object.assign({}, query))
-          } else if (pathname.match('/event')) {
+          } else if (path === 'event') {
             const params = route('/event/:lockAddress')(pathname)
             app.render(req, res, '/event', Object.assign(params, query))
           } else {
