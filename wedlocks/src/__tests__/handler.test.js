@@ -4,6 +4,20 @@ import { route } from '../route'
 jest.mock('../route')
 
 describe('handler', () => {
+  it('should render 204 if the method is OPTIONS', done => {
+    expect.assertions(1)
+    handler(
+      {
+        httpMethod: 'OPTIONS',
+      },
+      {},
+      (error, response) => {
+        expect(response.statusCode).toBe(204)
+        done()
+      }
+    )
+  })
+
   it('should render 405 if the method is not a POST', done => {
     expect.assertions(2)
     handler(
