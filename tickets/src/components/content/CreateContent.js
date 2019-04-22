@@ -9,6 +9,7 @@ import Layout from '../interface/Layout'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import DatePicker from '../interface/DatePicker'
 import BrowserOnly from '../helpers/BrowserOnly'
+import EventUrl from '../helpers/EventUrl'
 import { pageTitle } from '../../constants'
 import UnlockPropTypes from '../../propTypes'
 import { addEvent } from '../../actions/ticket'
@@ -163,7 +164,7 @@ export class CreateContent extends Component {
                     <Text>
                       Your event link: <br />
                       <Cta>
-                        {'https://tickets.unlock-protocol/event/' + lockAddress}
+                        <EventUrl address={lockAddress} />
                       </Cta>
                     </Text>
                   </Fieldset>
