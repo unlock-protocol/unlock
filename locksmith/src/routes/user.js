@@ -13,5 +13,9 @@ router.get(
   userController.retrieveRecoveryPhrase
 )
 router.put('/:emailAddress', userController.updateUser)
+router.put(
+  '/:emailAddress/payment_details',
+  userController.updatePaymentDetails
+)
 
 module.exports = router
