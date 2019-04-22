@@ -77,10 +77,10 @@ contract('reports / gas', accounts => {
     )
 
     // Turn on fees before the transfer tests
-    const updateTransferFee = await getGasFor(lock.updateTransferFee(1, 1))
-    const updateRefundPenalty = await getGasFor(lock.updateRefundPenalty(1, 1))
-    await lockErc20.updateTransferFee(1, 1)
-    await lockErc20.updateRefundPenalty(1, 1)
+    const updateTransferFee = await getGasFor(lock.updateTransferFee(1, 10))
+    const updateRefundPenalty = await getGasFor(lock.updateRefundPenalty(1, 10))
+    await lockErc20.updateTransferFee(1, 10)
+    await lockErc20.updateRefundPenalty(1, 10)
 
     const estimatedTransferFee = await lock.getTransferFee.call(accounts[2])
     const transferFromEth = await getGasFor(
@@ -129,8 +129,13 @@ contract('reports / gas', accounts => {
     //   )
     // )
 
-    const cancelAndRefundEth = await getGasFor(lock.cancelAndRefund())
-    const cancelAndRefundErc20 = await getGasFor(lockErc20.cancelAndRefund())
+    const cancelAndRefundEth = await getGasFor(
+      lock.cancelAndRefund({ from: accounts[7] })
+    )
+    const cancelAndRefundErc20 = new BigNumber(0) // todo
+    // await getGasFor(
+    //   lockErc20.cancelAndRefund({ from: accounts[7] })
+    // )
 
     const expireKeyFor = await getGasFor(lock.expireKeyFor(accounts[9]))
 
