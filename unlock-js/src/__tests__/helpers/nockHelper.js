@@ -16,6 +16,8 @@ export class NockHelper {
         console.log(`NO HTTP MOCK EXISTS FOR THAT REQUEST\n${body}`)
       }
     })
+    // without binding, "this.debug" in locNock will not refer to our NockHelper
+    this.logNock = this.logNock.bind(this)
   }
 
   logNock(...args) {
