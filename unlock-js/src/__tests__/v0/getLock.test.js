@@ -4,7 +4,7 @@ import getLock from '../../v0/getLock'
 import NockHelper from '../helpers/nockHelper'
 
 const endpoint = 'http://127.0.0.1:8545'
-const nock = new NockHelper(endpoint, true /** debug */)
+const nock = new NockHelper(endpoint, false /** debug */)
 let unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
 
 let web3Service
