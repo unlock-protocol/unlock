@@ -34,6 +34,42 @@ const serverIsUp = (host, port, delay, maxAttempts, callback) => {
   tryConnecting()
 }
 
+/**
+ * Evalutes if the environment is properly configured to correctly run the application. In a
+ * failure scenario the applicatioh will fail to run, and an appropriate errors will be displayed.
+ */
+
+const environmentEvaluation = () => {
+  let errors = []
+  let requiredEnvironmentVariables = [
+    'DB_USERNAME',
+    'DB_PASSWORD',
+    'DB_NAME',
+    'DB_HOSTNAME',
+    'DB_PORT',
+  ]
+
+  requiredEnvironmentVariables.forEach(environmentVariable => {
+    if (!process.env[environmentVariable]) {
+      errors.push(
+        `${environmentVariable} is required to operate in this context`
+      )
+    }
+  })
+
+  if (errors.length != 0) {
+    errors.forEach(error => {
+      console.error(error)
+    })
+    console.log('Halting execution.')
+    return process.exit(1)
+  }
+}
+
+if (env != 'development') {
+  environmentEvaluation()
+}
+
 if (!config.host || env === 'production') {
   return app.listen(port)
 }
