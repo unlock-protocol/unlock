@@ -5,31 +5,39 @@ export default class TicketService {
     this.host = host
   }
 
+  genAuthorizationHeader = token => {
+    return { Authorization: ` Bearer ${token}` }
+  }
+
   /**
    * Saves a new event to locksmith
    * @param {*} event
+   * @param {*} token
    * @returns {Promise<*>}
    */
-  async createEvent({
-    lockAddress,
-    name,
-    description,
-    location,
-    date,
-    owner,
-    logo,
-  }) {
+  async createEvent(
+    { lockAddress, name, description, location, date, owner, logo },
+    token
+  ) {
+    const opts = {}
+    if (token) {
+      opts.headers = this.genAuthorizationHeader(token)
+    }
     const payload = {
-      lockAddress,
-      name,
-      description,
-      location,
-      date,
-      owner,
-      logo,
+      message: {
+        event: {
+          lockAddress,
+          name,
+          description,
+          location,
+          date,
+          owner,
+          logo,
+        },
+      },
     }
     try {
-      return await axios.post(`${this.host}/events/`, payload)
+      return await axios.post(`${this.host}/events/`, payload, opts)
     } catch (error) {
       return Promise.reject(error)
     }
