@@ -38,6 +38,7 @@ Join us for an hour or two of fine entertainment.`,
             event={event}
             lock={lock}
             purchaseKey={() => {}}
+            loadEvent={() => {}}
             transaction={null}
           />
         </ConfigProvider>

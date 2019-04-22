@@ -28,11 +28,12 @@ Join us for an hour or two of fine entertainment.`,
   location: 'Totters Lane, London',
 }
 const config = configure({})
+const purchaseKey = () => {}
+const loadEvent = () => {}
 
 storiesOf('Event RSVP page', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Event RSVP page with unpurchased key', () => {
-    const purchaseKey = () => {}
     const transaction = null
 
     return (
@@ -42,13 +43,13 @@ storiesOf('Event RSVP page', module)
           lock={lock}
           config={config}
           purchaseKey={purchaseKey}
+          loadEvent={loadEvent}
           transaction={transaction}
         />
       </ConfigProvider>
     )
   })
   .add('Event RSVP page with submitted key', () => {
-    const purchaseKey = () => {}
     const transaction = {
       status: 'submitted',
     }
@@ -60,13 +61,13 @@ storiesOf('Event RSVP page', module)
           lock={lock}
           config={config}
           purchaseKey={purchaseKey}
+          loadEvent={loadEvent}
           transaction={transaction}
         />
       </ConfigProvider>
     )
   })
   .add('Event RSVP page with confirming key', () => {
-    const purchaseKey = () => {}
     const transaction = {
       status: 'mined',
       confirmations: 3,
@@ -79,13 +80,13 @@ storiesOf('Event RSVP page', module)
           lock={lock}
           config={config}
           purchaseKey={purchaseKey}
+          loadEvent={loadEvent}
           transaction={transaction}
         />
       </ConfigProvider>
     )
   })
   .add('Event RSVP page with confirmed key', () => {
-    const purchaseKey = () => {}
     const transaction = {
       status: 'mined',
       confirmations: 14,
@@ -98,6 +99,7 @@ storiesOf('Event RSVP page', module)
           lock={lock}
           config={config}
           purchaseKey={purchaseKey}
+          loadEvent={loadEvent}
           transaction={transaction}
         />
       </ConfigProvider>
