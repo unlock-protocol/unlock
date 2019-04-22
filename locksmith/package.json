@@ -10,7 +10,7 @@
     "dev": "tsc-watch --onSuccess 'node build/server.js' --onFailure 'echo Beep! Compilation Failed'",
     "pretest": "NODE_ENV=test sequelize db:migrate",
     "test": "jest --forceExit",
-    "lint": "eslint --ext .ts,.js src/",
+    "lint": "eslint --ext .ts,.js src/ __tests__/",
     "db:migrate": "sequelize db:migrate",
     "ci": "npm run lint && npm test",
     "build": "tsc",
