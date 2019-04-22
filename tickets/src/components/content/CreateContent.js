@@ -163,7 +163,8 @@ export class CreateContent extends Component {
                     <Text>
                       Your event link: <br />
                       <Cta>
-                        {'https://tickets.unlock-protocol/event/' + lockAddress}
+                        {'https://tickets.unlock-protocol.com/event/' +
+                          lockAddress}
                       </Cta>
                     </Text>
                   </Fieldset>
