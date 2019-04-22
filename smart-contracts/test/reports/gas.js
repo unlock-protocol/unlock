@@ -144,7 +144,7 @@ contract('reports / gas', accounts => {
     const grantKeys = await getGasFor(
       lock.grantKeys([accounts[5], accounts[6]], 9999999999)
     )
-    const grantKey = await getGasFor(lock.grantKey(accounts[7], 9999999999))
+    const grantKey = await getGasFor(lock.grantKey(accounts[8], 9999999999))
 
     const partialWithdrawEth = await getGasFor(lock.partialWithdraw(1))
     const partialWithdrawErc20 = new BigNumber(0) //TODO await getGasFor(lockErc20.partialWithdraw(1))
