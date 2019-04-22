@@ -8,13 +8,12 @@ import { Fieldset, Field, Label } from './CreateContent'
 import { MONTH_NAMES, pageTitle, TRANSACTION_TYPES } from '../../constants'
 import UnlockPropTypes from '../../propTypes'
 import BalanceProvider from '../helpers/BalanceProvider'
-import withConfig from '../../utils/withConfig'
 import { lockRoute } from '../../utils/routes'
-import TicketService from '../../services/ticketService'
 import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { purchaseKey } from '../../actions/key'
+import { loadEvent } from '../../actions/ticket'
 import PayButton from './purchase/PayButton'
 
 export class EventContent extends Component {
@@ -34,25 +33,7 @@ export class EventContent extends Component {
   componentDidUpdate() {
     const { lock } = this.props
     const { event } = this.state
-    if (lock.address && !event.lockAddress) this.loadEvent()
-  }
-
-  loadEvent() {
-    const { lock, config } = this.props
-    if (lock.address) {
-      const ticketService = new TicketService(config.services.storage.host)
-      ticketService.getEvent(lock.address).then(res => {
-        const { name, date, lockAddress, description, location } = res.data
-        const event = {
-          name,
-          date: new Date(date),
-          lockAddress,
-          description,
-          location,
-        }
-        this.setState({ event })
-      })
-    }
+    if (lock.address && !event.lockAddress) loadEvent(lock.address)
   }
 
   render() {
@@ -115,7 +96,6 @@ export class EventContent extends Component {
 EventContent.propTypes = {
   lock: UnlockPropTypes.lock,
   transaction: UnlockPropTypes.transaction,
-  config: UnlockPropTypes.configuration.isRequired,
   purchaseKey: PropTypes.func.isRequired,
   lockKey: UnlockPropTypes.key,
   event: UnlockPropTypes.ticketedEvent,
@@ -183,12 +163,10 @@ export const mapStateToProps = ({
   }
 }
 
-export default withConfig(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(EventContent)
-)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EventContent)
 
 const Title = styled.h1`
   font-family: 'IBM Plex Serif', serif;

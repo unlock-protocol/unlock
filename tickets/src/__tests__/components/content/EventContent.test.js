@@ -39,7 +39,6 @@ Join us for an hour or two of fine entertainment.`,
             lock={lock}
             purchaseKey={() => {}}
             transaction={null}
-            config={config}
           />
         </ConfigProvider>
       </Provider>
