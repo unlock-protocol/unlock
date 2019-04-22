@@ -94,17 +94,25 @@ contract('reports / gas', accounts => {
         }
       )
     )
-    const transferFromErc20 = new BigNumber(0) // TODO
-    // await getGasFor(
-    //   lockErc20.transferFrom(
-    //     accounts[2],
-    //     accounts[4],
-    //     await lockErc20.getTokenIdFor.call(accounts[2]),
-    //     {
-    //       from: accounts[2],
-    //     }
-    //   )
-    // )
+    const transferFromErc20 = await getGasFor(
+      lockApi.transferFrom(
+        accounts[2],
+        accounts[4],
+        (await lockErc20.getTokenIdFor.call(accounts[2])).toString(),
+        estimatedTransferFee,
+        accounts[2]
+      )
+    )
+
+    const safeTransferFromErc20 = await getGasFor(
+      lockApi.safeTransferFrom(
+        accounts[4],
+        accounts[2],
+        (await lockErc20.getTokenIdFor.call(accounts[2])).toString(),
+        estimatedTransferFee,
+        accounts[4]
+      )
+    )
     const safeTransferFromEth = await getGasFor(
       lock.safeTransferFrom(
         accounts[4],
@@ -116,26 +124,12 @@ contract('reports / gas', accounts => {
         }
       )
     )
-    const safeTransferFromErc20 = new BigNumber(0) // todo
-    // await getGasFor(
-    //   lockErc20.safeTransferFrom(
-    //     accounts[4],
-    //     accounts[2],
-    //     await lockErc20.getTokenIdFor.call(accounts[2]),
-    //     {
-    //       from: accounts[4],
-    //       value: estimatedTransferFee,
-    //     }
-    //   )
-    // )
-
     const cancelAndRefundEth = await getGasFor(
       lock.cancelAndRefund({ from: accounts[7] })
     )
-    const cancelAndRefundErc20 = new BigNumber(0) // todo
-    // await getGasFor(
-    //   lockErc20.cancelAndRefund({ from: accounts[7] })
-    // )
+    const cancelAndRefundErc20 = await getGasFor(
+      lockApi.cancelAndRefund(accounts[7])
+    )
 
     const expireKeyFor = await getGasFor(lock.expireKeyFor(accounts[9]))
 
@@ -150,10 +144,18 @@ contract('reports / gas', accounts => {
     const partialWithdrawErc20 = await getGasFor(
       lockApi.partialWithdraw(1, accounts[0])
     )
+
+    // Put some more money back in
+    await lock.purchaseFor(accounts[1], {
+      value: Units.convert('0.01', 'eth', 'wei'),
+    })
+    await lockApi.purchaseFor(accounts[1])
+
     const withdrawEth = await getGasFor(lock.withdraw())
     const withdrawErc20 = await getGasFor(lockApi.withdraw(accounts[0]))
 
     const updateLockName = await getGasFor(lock.updateLockName('Unlock Blog'))
+
     // Put some more money back in
     await lock.purchaseFor(accounts[0], {
       value: Units.convert('0.01', 'eth', 'wei'),
