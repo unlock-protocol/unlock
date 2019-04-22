@@ -14,6 +14,7 @@ import providerMiddleware from '../middlewares/providerMiddleware'
 import walletMiddleware from '../middlewares/walletMiddleware'
 import web3Middleware from '../middlewares/web3Middleware'
 import ticketMiddleware from '../middlewares/ticketMiddleware'
+import WalletCheckOverlay from '../components/interface/FullScreenModals'
 
 const config = configure()
 
@@ -98,6 +99,7 @@ The Unlock team
       <Container>
         <GlobalStyle />
         <Provider store={store}>
+          <WalletCheckOverlay />
           <ConfigProvider value={config}>
             <Component {...pageProps} router={router} />
           </ConfigProvider>
