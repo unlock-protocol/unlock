@@ -30,7 +30,7 @@ export class CreateContent extends Component {
     const { now, locks } = props
 
     this.state = {
-      lock: locks[0] || '',
+      lockAddress: locks[0] || '',
       name: '',
       description: '',
       location: '',
@@ -83,7 +83,7 @@ export class CreateContent extends Component {
 
   render() {
     const { locks, now } = this.props
-    const { date, name, description, location, lock } = this.state
+    const { date, name, description, location, lockAddress } = this.state
 
     return (
       <GlobalErrorConsumer>
@@ -109,7 +109,7 @@ export class CreateContent extends Component {
                       }))}
                       onChange={selectedOption => {
                         if (selectedOption.value)
-                          this.changeField('lock', selectedOption.value)
+                          this.changeField('lockAddress', selectedOption.value)
                       }}
                     />
                     <Text>
@@ -163,7 +163,7 @@ export class CreateContent extends Component {
                     <Text>
                       Your event link: <br />
                       <Cta>
-                        {'https://tickets.unlock-protocol/rsvp/' + lock}
+                        {'https://tickets.unlock-protocol/event/' + lockAddress}
                       </Cta>
                     </Text>
                   </Fieldset>
