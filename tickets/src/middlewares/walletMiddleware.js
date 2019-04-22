@@ -9,8 +9,10 @@ import {
   FATAL_WRONG_NETWORK,
   FATAL_NON_DEPLOYED_CONTRACT,
   FAILED_TO_SIGN_ADDRESS,
+  FATAL_NO_USER_ACCOUNT,
 } from '../errors'
 import { SIGN_ADDRESS, gotSignedAddress } from '../actions/ticket'
+import { PURCHASE_KEY } from '../actions/key'
 
 const { WalletService } = UnlockJs
 
@@ -20,6 +22,18 @@ const { WalletService } = UnlockJs
 const walletMiddleware = config => {
   return ({ getState, dispatch }) => {
     const walletService = new WalletService(config)
+
+    /**
+     * Helper function which ensures that the walletService is ready
+     * before calling it or dispatches an error
+     * @param {*} callback
+     */
+    const ensureReadyBefore = callback => {
+      if (!walletService.ready) {
+        return dispatch(setError(FATAL_NO_USER_ACCOUNT))
+      }
+      return callback()
+    }
 
     /**
      * When the network has changed, we need to ensure Unlock has been deployed there and
@@ -77,6 +91,23 @@ const walletMiddleware = config => {
         if (action.type === PROVIDER_READY) {
           const provider = config.providers[getState().provider]
           walletService.connect(provider)
+        }
+
+        if (action.type === PURCHASE_KEY) {
+          ensureReadyBefore(() => {
+            const account = getState().account
+            // find the lock to get its keyPrice
+            const lock = Object.values(getState().locks).find(
+              lock => lock.address === action.key.lock
+            )
+            walletService.purchaseKey(
+              action.key.lock,
+              action.key.owner,
+              lock.keyPrice,
+              account.address,
+              action.key.data
+            )
+          })
         }
 
         if (action.type === SIGN_ADDRESS) {

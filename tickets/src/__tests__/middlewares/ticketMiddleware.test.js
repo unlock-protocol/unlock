@@ -53,14 +53,14 @@ describe('Ticketing middleware', () => {
         owner: 'ben',
         logo: '',
       }
-      const action = { type: ADD_EVENT, event }
+      const action = { type: ADD_EVENT, event, token: null }
       mockTicketService.createEvent = jest.fn(() => {
         return Promise.resolve()
       })
 
       await invoke(action)
 
-      expect(mockTicketService.createEvent).toHaveBeenCalledWith(event)
+      expect(mockTicketService.createEvent).toHaveBeenCalledWith(event, null)
       expect(next).toHaveBeenCalledTimes(1)
     })
   })

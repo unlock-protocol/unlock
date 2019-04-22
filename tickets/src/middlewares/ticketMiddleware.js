@@ -12,7 +12,7 @@ const ticketMiddleware = config => {
       return action => {
         if (action.type == ADD_EVENT) {
           ticketService
-            .createEvent(action.event)
+            .createEvent(action.event, action.token)
             .catch(error => dispatch(ticketError(error)))
         }
         next(action)
