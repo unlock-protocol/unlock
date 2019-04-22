@@ -8,7 +8,6 @@ export class NockHelper {
     this.debug = debug
     this._rpcRequestId = 0
     this._noMatches = []
-    this._pendingMocks = []
 
     // In order to monitor traffic without intercepting it (so that mocks can be built). uncomment the line below
     // nock.recorder.rec()
@@ -36,7 +35,6 @@ export class NockHelper {
     nock.restore()
     nock.activate()
     this._noMatches = []
-    this._pendingMocks = []
   }
 
   ensureAllNocksUsed() {
