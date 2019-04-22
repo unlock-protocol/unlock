@@ -11,7 +11,7 @@ import v02 from '../v02'
 
 const endpoint = 'http://127.0.0.1:8545'
 const provider = new Web3.providers.HttpProvider(endpoint)
-const nock = new NockHelper(endpoint, true /** debug */)
+const nock = new NockHelper(endpoint, false /** debug */)
 
 let walletService
 

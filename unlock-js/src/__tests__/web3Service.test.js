@@ -28,7 +28,7 @@ const transaction = {
   createdAt: new Date().getTime(),
   hash: '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
 }
-const nock = new NockHelper(readOnlyProvider, true /** debug */)
+const nock = new NockHelper(readOnlyProvider, false /** debug */)
 let web3Service
 
 describe('Web3Service', () => {

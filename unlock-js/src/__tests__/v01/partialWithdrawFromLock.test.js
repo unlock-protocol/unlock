@@ -10,7 +10,7 @@ import { prepWalletService } from '../helpers/walletServiceHelper'
 const { FAILED_TO_WITHDRAW_FROM_LOCK } = Errors
 const endpoint = 'http://127.0.0.1:8545'
 const provider = new Web3.providers.HttpProvider(endpoint)
-const nock = new NockHelper(endpoint, true /** debug */)
+const nock = new NockHelper(endpoint, false /** debug */)
 let unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
 
 let walletService
