@@ -26,16 +26,21 @@ export const pageTitle = (title: string) => {
 
 // used in defining the helpers for LOCK_PATH_NAME_REGEXP and ACCOUNT_REGEXP
 const accountRegex = '0x[a-fA-F0-9]{40}'
+const transactionRegex = '0x[a-fA-F0-9]{64}'
 
 /**
  * Matches any valid ethereum account address
  */
-export const ACCOUNT_REGEXP = new RegExp(accountRegex)
+export const ACCOUNT_REGEXP = new RegExp(accountRegex + '$')
 
-// helpers for the LOCK_PATH_NAME_REGEXP
+/**
+ * Matches any valid ethereum transaction hash
+ */
+export const TRANSACTION_REGEXP = new RegExp(transactionRegex + '$')
+
+// private helpers for the LOCK_PATH_NAME_REGEXP
 const prefix = '[a-z0-9]+'
-const urlEncodedRedirectUrl = '[^#?]+'
-const userAccount = accountRegex
+const urlEncodedUrl = '[^#?]+'
 const lockAddress = accountRegex
 
 /**
@@ -51,10 +56,7 @@ const lockAddress = accountRegex
  * You should not use this directly, instead use the utils/routes.js lockRoute function
  */
 export const LOCK_PATH_NAME_REGEXP = new RegExp(
-  `/(${prefix})/(${lockAddress})` +
-    // either "/urlEncodedRedirectUrl/#account" or just "#account" and these are all optional
-    // note that "/#account" as in "/paywall/<lockaddress>/#<useraccount>" is also matched
-    `(?:/(${urlEncodedRedirectUrl}))?(?:/?#(${userAccount}))?`
+  `(?:/(${prefix}))?/(${lockAddress})(?:/(${urlEncodedUrl})/?)?`
 )
 
 export const PAGE_DESCRIPTION =
@@ -101,5 +103,12 @@ export const POLLING_INTERVAL = 2000
 
 export const CURRENCY_CONVERSION_MIDDLEWARE_RETRY_INTERVAL = 10000
 
-const transactionRegex = '0x[a-fA-F0-9]{64}'
-export const TRANSACTION_REGEXP = new RegExp(transactionRegex + '$')
+/**
+ * Transaction types
+ */
+export const TRANSACTION_TYPES = {
+  LOCK_CREATION: 'LOCK_CREATION',
+  KEY_PURCHASE: 'KEY_PURCHASE',
+  WITHDRAWAL: 'WITHDRAWAL',
+  UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE',
+}
