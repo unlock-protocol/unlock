@@ -3671,6 +3671,8 @@ Object {
   font-size: 30px;
   line-height: normal;
   color: var(--dimgrey);
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .c9 {
@@ -3699,6 +3701,8 @@ Object {
   padding: 0;
   border: none;
   margin-bottom: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .c13 {
@@ -3939,12 +3943,12 @@ Join us for an hour or two of fine entertainment.
           </span>
         </div>
         <h1
-          class="sc-1fq9sck-0 dTufOr"
+          class="sc-1fq9sck-0 esJxvf"
         >
           My Doctor Who party
         </h1>
         <div
-          class="sc-1xgodx9-5 sc-1fq9sck-4 hOPTgP"
+          class="sc-1xgodx9-5 sc-1fq9sck-4 eqlEGi"
         >
           <div
             class="sc-1xgodx9-6 jaVqxF"
@@ -3978,7 +3982,7 @@ Join us for an hour or two of fine entertainment.
           </div>
         </div>
         <div
-          class="sc-1xgodx9-5 sc-1fq9sck-4 hOPTgP"
+          class="sc-1xgodx9-5 sc-1fq9sck-4 eqlEGi"
         >
           <div
             class="sc-1xgodx9-6 sc-1fq9sck-5 aotRN"
@@ -4210,6 +4214,8 @@ Object {
   font-size: 30px;
   line-height: normal;
   color: var(--dimgrey);
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .c9 {
@@ -4238,6 +4244,8 @@ Object {
   padding: 0;
   border: none;
   margin-bottom: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .c13 {
@@ -4483,12 +4491,12 @@ Join us for an hour or two of fine entertainment.
           </span>
         </div>
         <h1
-          class="sc-1fq9sck-0 dTufOr"
+          class="sc-1fq9sck-0 esJxvf"
         >
           My Doctor Who party
         </h1>
         <div
-          class="sc-1xgodx9-5 sc-1fq9sck-4 hOPTgP"
+          class="sc-1xgodx9-5 sc-1fq9sck-4 eqlEGi"
         >
           <div
             class="sc-1xgodx9-6 jaVqxF"
@@ -4527,7 +4535,7 @@ Join us for an hour or two of fine entertainment.
           </div>
         </div>
         <div
-          class="sc-1xgodx9-5 sc-1fq9sck-4 hOPTgP"
+          class="sc-1xgodx9-5 sc-1fq9sck-4 eqlEGi"
         >
           <div
             class="sc-1xgodx9-6 sc-1fq9sck-5 aotRN"
@@ -4759,6 +4767,8 @@ Object {
   font-size: 30px;
   line-height: normal;
   color: var(--dimgrey);
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .c9 {
@@ -4787,6 +4797,8 @@ Object {
   padding: 0;
   border: none;
   margin-bottom: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .c13 {
@@ -5027,12 +5039,12 @@ Join us for an hour or two of fine entertainment.
           </span>
         </div>
         <h1
-          class="sc-1fq9sck-0 dTufOr"
+          class="sc-1fq9sck-0 esJxvf"
         >
           My Doctor Who party
         </h1>
         <div
-          class="sc-1xgodx9-5 sc-1fq9sck-4 hOPTgP"
+          class="sc-1xgodx9-5 sc-1fq9sck-4 eqlEGi"
         >
           <div
             class="sc-1xgodx9-6 jaVqxF"
@@ -5066,7 +5078,7 @@ Join us for an hour or two of fine entertainment.
           </div>
         </div>
         <div
-          class="sc-1xgodx9-5 sc-1fq9sck-4 hOPTgP"
+          class="sc-1xgodx9-5 sc-1fq9sck-4 eqlEGi"
         >
           <div
             class="sc-1xgodx9-6 sc-1fq9sck-5 aotRN"
@@ -5290,6 +5302,8 @@ Object {
   font-size: 30px;
   line-height: normal;
   color: var(--dimgrey);
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .c9 {
@@ -5318,6 +5332,8 @@ Object {
   padding: 0;
   border: none;
   margin-bottom: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .c13 {
@@ -5558,12 +5574,12 @@ Join us for an hour or two of fine entertainment.
           </span>
         </div>
         <h1
-          class="sc-1fq9sck-0 dTufOr"
+          class="sc-1fq9sck-0 esJxvf"
         >
           My Doctor Who party
         </h1>
         <div
-          class="sc-1xgodx9-5 sc-1fq9sck-4 hOPTgP"
+          class="sc-1xgodx9-5 sc-1fq9sck-4 eqlEGi"
         >
           <div
             class="sc-1xgodx9-6 jaVqxF"
@@ -5597,7 +5613,7 @@ Join us for an hour or two of fine entertainment.
           </div>
         </div>
         <div
-          class="sc-1xgodx9-5 sc-1fq9sck-4 hOPTgP"
+          class="sc-1xgodx9-5 sc-1fq9sck-4 eqlEGi"
         >
           <div
             class="sc-1xgodx9-6 sc-1fq9sck-5 aotRN"

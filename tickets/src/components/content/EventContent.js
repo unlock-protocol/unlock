@@ -72,7 +72,7 @@ export class EventContent extends Component {
     return (
       <GlobalErrorConsumer>
         <BrowserOnly>
-          <Layout title="Paywall" forContent>
+          <Layout forContent>
             <Head>
               <title>{pageTitle(name)}</title>
             </Head>
@@ -197,6 +197,8 @@ const Title = styled.h1`
   font-size: 30px;
   line-height: normal;
   color: var(--dimgrey);
+  padding-left: 20px;
+  padding-right: 20px;
 `
 
 const Price = styled.div`
@@ -223,6 +225,8 @@ const Fiat = styled.div`
 
 const DetailsFieldset = styled(Fieldset)`
   margin-bottom: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
 `
 
 const DetailsField = styled(Field)`
