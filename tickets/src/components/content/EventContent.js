@@ -20,23 +20,28 @@ export class EventContent extends Component {
   constructor(props) {
     super(props)
 
-    let { event } = this.props
-    if (!event) event = {}
-
     this.state = {
-      event: event,
+      loaded: false,
     }
+
+    this.setAsLoaded.bind(this)
   }
 
   componentDidUpdate() {
-    const { lock, loadEvent } = this.props
-    const { event } = this.state
-    if (lock.address && !event.lockAddress) loadEvent(lock.address)
+    const { lock, loadEvent, event } = this.props
+    const { loaded } = this.state
+    if (lock.address && !event.lockAddress && !loaded) {
+      loadEvent(lock.address)
+      this.setAsLoaded() // To prevent multiple loads
+    }
+  }
+
+  setAsLoaded() {
+    this.setState({ loaded: true })
   }
 
   render() {
-    const { lock, lockKey, purchaseKey, transaction } = this.props
-    const { event } = this.state
+    const { lock, lockKey, purchaseKey, transaction, event } = this.props
 
     if (!lock.address || !event.name) return null // Wait for the lock and event to load
 
@@ -124,6 +129,7 @@ export const mapStateToProps = ({
   keys,
   account,
   transactions,
+  tickets: { event },
 }) => {
   if (!account) {
     return {}
@@ -151,6 +157,18 @@ export const mapStateToProps = ({
     }
   }
 
+  let processedEvent
+  if (event) {
+    const { name, date, lockAddress, description, location } = event
+    processedEvent = {
+      name,
+      date: new Date(date),
+      lockAddress,
+      description,
+      location,
+    }
+  }
+
   let transaction = null
   transaction = Object.values(transactions).find(
     transaction =>
@@ -162,6 +180,7 @@ export const mapStateToProps = ({
     lock,
     lockKey,
     transaction,
+    event: processedEvent,
   }
 }
 
