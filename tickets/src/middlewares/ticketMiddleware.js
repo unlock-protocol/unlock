@@ -1,11 +1,16 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
 import TicketService from '../services/ticketService'
-import { ADD_EVENT, LOAD_EVENT, ticketError } from '../actions/ticket'
+import {
+  ADD_EVENT,
+  LOAD_EVENT,
+  updateEvent,
+  ticketError,
+} from '../actions/ticket'
 
 const ticketMiddleware = config => {
   const { services } = config
-  return ({ setState, dispatch }) => {
+  return ({ dispatch }) => {
     const ticketService = new TicketService(services.storage.host)
 
     return next => {
@@ -25,7 +30,7 @@ const ticketMiddleware = config => {
               description,
               location,
             }
-            setState({ event })
+            dispatch(updateEvent(event))
           })
         }
         next(action)
