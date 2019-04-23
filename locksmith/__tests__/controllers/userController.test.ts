@@ -272,7 +272,7 @@ describe('User Controller', () => {
       it('returns 202', async () => {
         expect.assertions(1)
         let response = await request(app)
-          .put('/users/user@example.com/payment_details')
+          .put('/users/user@example.com/paymentdetails')
           .set('Accept', /json/)
           .send({
             token: 'a_valid_token',
@@ -285,7 +285,7 @@ describe('User Controller', () => {
       it('returns 400', async () => {
         expect.assertions(1)
         let response = await request(app)
-          .put('/users/user@example.com/payment_details')
+          .put('/users/user@example.com/paymentdetails')
           .set('Accept', /json/)
           .send({
             token: 'an_invalid_token',
