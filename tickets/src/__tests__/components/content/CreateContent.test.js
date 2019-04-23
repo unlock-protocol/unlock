@@ -79,12 +79,15 @@ describe('CreateContent', () => {
     })
     const addEvent = jest.fn()
 
+    const now = new Date('2019-03-02T00:00:00.000') // March 2nd, 2019
+
     const form = rtl.render(
       <Provider store={store}>
         <CreateContent
           account={{ address: 'ben' }}
           locks={['abc123', 'def456']}
           addEvent={addEvent}
+          now={now}
         />
       </Provider>
     )
@@ -106,8 +109,7 @@ describe('CreateContent', () => {
     expect(submit).not.toBeNull()
     rtl.fireEvent.click(submit)
 
-    let date = new Date(2020, 10, 23)
-    date.setUTCHours(0, 0, 0, 0)
+    let date = new Date('2020-11-23T00:00:00.000')
     expect(addEvent).toHaveBeenCalledWith({
       lockAddress: 'abc123',
       name: '',
