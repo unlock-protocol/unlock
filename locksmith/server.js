@@ -46,7 +46,6 @@ const environmentEvaluation = () => {
     'DB_PASSWORD',
     'DB_NAME',
     'DB_HOSTNAME',
-    'DB_PORT',
   ]
 
   requiredEnvironmentVariables.forEach(environmentVariable => {
