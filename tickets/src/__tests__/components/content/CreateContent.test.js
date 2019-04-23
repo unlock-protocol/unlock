@@ -71,7 +71,7 @@ describe('CreateContent', () => {
   })
 
   it('should save a new event', () => {
-    expect.assertions(2)
+    expect.assertions(3)
 
     const store = createUnlockStore({
       account: { address: 'ben' },
@@ -108,7 +108,7 @@ describe('CreateContent', () => {
     const submit = form.getByText('Save Event')
     expect(submit).not.toBeNull()
     rtl.fireEvent.click(submit)
-
+    expect(form.getByText('Event Saved')).not.toBeNull()
     let date = new Date('2020-11-23T00:00:00.000')
     expect(addEvent).toHaveBeenCalledWith({
       lockAddress: 'abc123',

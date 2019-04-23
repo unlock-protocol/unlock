@@ -19,3 +19,6 @@ storiesOf('Create event landing page', module)
   .add('Create event page', () => {
     return <CreateContent now={now} />
   })
+  .add('Create event page, event submitted', () => {
+    return <CreateContent now={now} submitted />
+  })
