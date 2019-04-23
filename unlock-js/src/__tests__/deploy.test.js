@@ -122,6 +122,33 @@ describe('contract deployer', () => {
     })
   })
 
+  describe('failure is reported properly', () => {
+    it('throws on failure', async () => {
+      expect.assertions(1)
+      nock.accountsAndYield(unlockAccountsOnNode)
+      nock.ethGasPriceAndYield(gasPrice)
+
+      // contract deploy call
+      nock.ethSendTransactionAndYield(
+        {
+          from: unlockAccountsOnNode[0],
+          data: Unlock.bytecode,
+          gas: '0x' + GAS_AMOUNTS.deployContract.toString(16),
+        },
+        gasPrice,
+        transaction.hash,
+        new Error('ran out of gas, you miser')
+      )
+
+      try {
+        await deploy(host, port, Unlock)
+      } catch (e) {
+        // this is intentionally vague, since the actual error content will change with other frameworks
+        expect(e.message).toBeInstanceOf(Error)
+      }
+    })
+  })
+
   describe('callback', () => {
     let deployed
     beforeEach(async () => {
