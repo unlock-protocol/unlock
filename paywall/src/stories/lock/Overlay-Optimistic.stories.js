@@ -40,6 +40,13 @@ const locks = [
   },
 ]
 
+const transaction = {
+  id: 'transaction',
+  status: 'pending',
+  confirmations: 0,
+  type: TRANSACTION_TYPES.KEY_PURCHASE,
+  key: '0x1234567890123456789012345678901234567890-0x456',
+}
 const defaultState = {
   currency: {
     USD: 195.99,
@@ -54,19 +61,22 @@ const defaultState = {
     balance: '2',
   },
   transactions: {
-    transaction: {
-      id: 'transaction',
-      status: 'pending',
-      confirmations: 0,
-      type: TRANSACTION_TYPES.KEY_PURCHASE,
-      key: '0x1234567890123456789012345678901234567890-0x456',
-    },
+    transaction,
   },
   keys: {
     '0x1234567890123456789012345678901234567890-0x456': {
       id: '0x1234567890123456789012345678901234567890-0x456',
       lock: '0x1234567890123456789012345678901234567890',
       owner: '0x456',
+      transactions: {
+        transaction: {
+          id: 'transaction',
+          status: 'pending',
+          confirmations: 0,
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          key: '0x1234567890123456789012345678901234567890-0x456',
+        },
+      },
     },
   },
 }
@@ -81,6 +91,8 @@ function makeStore(state = {}) {
 
 const render = (
   locks,
+  keyStatus,
+  transaction,
   errors = { error: false, errorMetadata: {} },
   thisConfig = config,
   optimism = { current: 0, past: 0 }
@@ -140,6 +152,15 @@ const render = (
                 bigBody={() => {}}
                 openInNewWindow={false}
                 optimism={optimism}
+                keyStatus={keyStatus}
+                lockKey={{
+                  lock: locks[0].address,
+                  owner: 'account',
+                  expiration:
+                    new Date('January 30, 3000, 00:00:00').getTime() / 1000,
+                }}
+                transaction={transaction}
+                account="account"
               />
             </FakeIframe>
           </ErrorProvider>
@@ -152,7 +173,10 @@ const render = (
 storiesOf('Overlay/Optimistic Unlocking', module)
   .add('beginning purchase', () => {
     makeStore()
-    return render(locks, undefined, undefined, { current: 1, past: 0 })
+    return render(locks, 'pending', transaction, undefined, undefined, {
+      current: 1,
+      past: 0,
+    })
   })
   .add('some confirmations', () => {
     makeStore({
@@ -163,7 +187,20 @@ storiesOf('Overlay/Optimistic Unlocking', module)
         },
       },
     })
-    return render(locks, undefined, undefined, { current: 1, past: 0 })
+    return render(
+      locks,
+      'confirming',
+      {
+        ...transaction,
+        confirmations: 5,
+      },
+      undefined /* errors */,
+      undefined /* thisConfig */,
+      {
+        current: 1,
+        past: 0,
+      }
+    )
   })
   .add('confirmed', () => {
     makeStore({
@@ -174,11 +211,34 @@ storiesOf('Overlay/Optimistic Unlocking', module)
         },
       },
     })
-    return render(locks, undefined, undefined, { current: 1, past: 0 })
+    return render(
+      locks,
+      'confirmed',
+      {
+        ...transaction,
+        confirmations: 12,
+      },
+      undefined /* errors */,
+      undefined /* thisConfig */,
+      {
+        current: 1,
+        past: 0,
+      }
+    )
   })
   .add('beginning purchase (pessimistic)', () => {
     makeStore()
-    return render(locks, undefined, undefined, { current: 0, past: 1 })
+    return render(
+      locks,
+      'submitted',
+      transaction,
+      undefined /* errors */,
+      undefined /* thisConfig */,
+      {
+        current: 0,
+        past: 1,
+      }
+    )
   })
   .add('some confirmations (pessimistic)', () => {
     makeStore({
@@ -190,7 +250,21 @@ storiesOf('Overlay/Optimistic Unlocking', module)
         },
       },
     })
-    return render(locks, undefined, undefined, { current: 0, past: 1 })
+    return render(
+      locks,
+      'confirming',
+      {
+        ...transaction,
+        status: 'mined',
+        confirmations: 5,
+      },
+      undefined /* errors */,
+      undefined /* thisConfig */,
+      {
+        current: 0,
+        past: 1,
+      }
+    )
   })
   .add('confirmed (pessimistic)', () => {
     makeStore({
@@ -202,5 +276,19 @@ storiesOf('Overlay/Optimistic Unlocking', module)
         },
       },
     })
-    return render(locks, undefined, undefined, { current: 0, past: 1 })
+    return render(
+      locks,
+      'confirmed',
+      {
+        ...transaction,
+        status: 'mined',
+        confirmations: 12,
+      },
+      undefined /* errors */,
+      undefined /* thisConfig */,
+      {
+        current: 0,
+        past: 1,
+      }
+    )
   })
