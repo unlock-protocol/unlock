@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 import * as UnlockV0 from 'unlock-abi-0'
-import Web3Utils from 'web3-utils'
+import Web3Utils from '../../utils'
 import updateKeyPrice from '../../v0/updateKeyPrice'
 import Errors from '../../errors'
 import { GAS_AMOUNTS } from '../../constants'
