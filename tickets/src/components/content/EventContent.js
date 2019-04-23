@@ -84,10 +84,10 @@ export class EventContent extends Component {
                 <DisplayDate>{dateString}</DisplayDate>
                 <Description>{description}</Description>
               </DetailsField>
-              <Field>
+              <DetailsField>
                 <Label>Location</Label>
                 <Description>{location}</Description>
-              </Field>
+              </DetailsField>
             </DetailsFieldset>
           </Layout>
         </BrowserOnly>
@@ -230,6 +230,9 @@ const DetailsFieldset = styled(Fieldset)`
 
 const DetailsField = styled(Field)`
   grid-template-rows: 35px auto;
+  & > ${Label} {
+    align-self: center;
+  }
 `
 
 const DisplayDate = styled.div`
