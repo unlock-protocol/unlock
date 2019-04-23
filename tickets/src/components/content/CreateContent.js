@@ -63,7 +63,6 @@ export class CreateContent extends Component {
   }
 
   dateChanged(date) {
-    date.setUTCHours(0, 0, 0, 0) // We don't need to store hours
     this.setState(state => {
       return {
         ...state,

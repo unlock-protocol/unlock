@@ -69,12 +69,12 @@ describe('DatePicker', () => {
   it('should let the user pick a day and trigger onChange', () => {
     expect.assertions(1)
     const onChange = jest.fn()
-    const now = new Date('2019-03-02T00:00:00.000Z') // March 2nd, 2019
+    const now = new Date('2019-03-02T00:00:00.000') // March 2nd, 2019
     let wrapper = rtl.render(<DatePicker now={now} onChange={onChange} />)
     rtl.fireEvent.change(wrapper.getByTestId('Pick a day'), {
       target: { value: '3' }, // Changed to the 3rd
     })
-    expect(onChange).toHaveBeenCalledWith(new Date('2019-03-03T00:00:00.000Z'))
+    expect(onChange).toHaveBeenCalledWith(new Date('2019-03-03T00:00:00.000'))
   })
 
   describe('getDaysMonthsAndYearsForSelect', () => {
