@@ -36,6 +36,7 @@ export class CreateContent extends Component {
       description: '',
       location: '',
       date: now,
+      submitted: false,
     }
 
     this.onChange = this.onChange.bind(this)
@@ -46,6 +47,7 @@ export class CreateContent extends Component {
   onSubmit(e) {
     e.preventDefault()
     this.saveEvent()
+    this.setState(state => ({ ...state, submitted: true }))
     return
   }
 
