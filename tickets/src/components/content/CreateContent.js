@@ -163,7 +163,7 @@ export class CreateContent extends Component {
                     <SaveButton type="submit">Save Event</SaveButton>
                     <Text>
                       Your event link: <br />
-                      <Cta>
+                      <Cta href={lockAddress}>
                         <EventUrl address={lockAddress} />
                       </Cta>
                     </Text>
