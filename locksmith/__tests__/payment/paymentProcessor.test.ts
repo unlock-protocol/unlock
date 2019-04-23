@@ -75,7 +75,7 @@ describe('PaymentProcessor', () => {
         expect.assertions(1)
         let user = await paymentProcessor.updateUserPaymentDetails(
           'tok_visa',
-          'foo2@example.com'
+          '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
         )
 
         expect(user).toBe(true)
@@ -87,7 +87,7 @@ describe('PaymentProcessor', () => {
         expect.assertions(1)
         let user = await paymentProcessor.updateUserPaymentDetails(
           'tok_unknown',
-          'foo2@example.com'
+          '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
         )
 
         expect(user).toBe(false)
