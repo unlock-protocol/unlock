@@ -38,6 +38,9 @@ describe('tickets reducer', () => {
 
   it('should add an event to the state', () => {
     expect.assertions(1)
+    const event = {
+      name: 'I am a dummy event',
+    }
     expect(
       reducer(
         {},
