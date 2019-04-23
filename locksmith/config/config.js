@@ -5,7 +5,7 @@ module.exports = {
     dialect: 'sqlite',
     storage: 'development.sqlite3',
     operatorsAliases: false,
-    stripe_secret: process.env.STRIPE_SECRET,
+    stripeSecret: process.env.STRIPE_SECRET,
   },
   test: {
     username: process.env.DB_USERNAME,
@@ -16,7 +16,7 @@ module.exports = {
     logging: false,
     dialect: 'postgres',
     operatorsAliases: false,
-    stripe_secret: process.env.STRIPE_SECRET,
+    stripeSecret: process.env.STRIPE_SECRET,
   },
   production: {
     username: process.env.DB_USERNAME,
@@ -24,7 +24,7 @@ module.exports = {
     database: process.env.DB_NAME,
     port: process.env.DB_PORT || 5432,
     host: process.env.DB_HOSTNAME,
-    stripe_secret: process.env.STRIPE_SECRET,
+    stripeSecret: process.env.STRIPE_SECRET,
     dialect: 'postgres',
     operatorsAliases: false,
   },

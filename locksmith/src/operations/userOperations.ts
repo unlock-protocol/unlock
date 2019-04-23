@@ -89,7 +89,7 @@ namespace UserOperations {
     token: string,
     emailAddress: string
   ): Promise<boolean> => {
-    let paymentProcessor = new PaymentProcessor(config.stripe_secret)
+    let paymentProcessor = new PaymentProcessor(config.stripeSecret)
     return await paymentProcessor.updateUserPaymentDetails(token, emailAddress)
   }
 }
