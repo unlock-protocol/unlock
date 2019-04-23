@@ -3569,14 +3569,14 @@ exports[`Storyshots Event RSVP page Event RSVP page with confirmed key 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c17 {
+    .c18 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c17 > svg {
+.c18 > svg {
   fill: white;
 }
 
@@ -3595,7 +3595,7 @@ Object {
   height: 24px;
 }
 
-.c16 {
+.c17 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -3636,12 +3636,12 @@ Object {
   align-items: top;
 }
 
-.c8 {
+.c9 {
   font-size: 13px;
   color: var(--darkgrey);
 }
 
-.c12 {
+.c13 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -3662,11 +3662,11 @@ Object {
   background-color: var(--white);
 }
 
-.c12:hover {
+.c13:hover {
   background-color: var(--activegreen);
 }
 
-.c12:hover {
+.c13:hover {
   background-color: var(--white);
 }
 
@@ -3681,13 +3681,13 @@ Object {
   padding-right: 20px;
 }
 
-.c9 {
+.c10 {
   display: grid;
   grid-template-columns: repeat(2,1fr);
   grid-gap: 10px;
 }
 
-.c10 {
+.c11 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-weight: bold;
   font-size: 30px;
@@ -3695,7 +3695,7 @@ Object {
   color: var(--dimgrey);
 }
 
-.c11 {
+.c12 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 20px;
   line-height: 27px;
@@ -3711,7 +3711,7 @@ Object {
   padding-right: 20px;
 }
 
-.c13 {
+.c14 {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 25px auto;
@@ -3722,7 +3722,13 @@ Object {
   grid-template-rows: 35px auto;
 }
 
-.c14 {
+.c14 > .c8 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c15 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-weight: 600;
   font-size: 24px;
@@ -3730,13 +3736,13 @@ Object {
   color: var(--red);
 }
 
-.c15 {
+.c16 {
   font-size: 20px;
   font-family: 'IBM Plex Serif',serif;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c17 {
+  .c18 {
     height: 16px;
     width: 16px;
   }
@@ -3760,13 +3766,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c18 {
+  .c19 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c16 {
+  .c17 {
     display: none;
   }
 }
@@ -3796,7 +3802,7 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c13 {
+  .c14 {
     margin-bottom: 15px;
   }
 }
@@ -3837,21 +3843,21 @@ Object {
               class="c7"
             >
               <label
-                class="c8"
+                class="c8 c9"
               >
                 Ticket Price
               </label>
               <div
-                class="c9"
+                class="c10"
               >
                 <div
-                  class="c10"
+                  class="c11"
                 >
                   0.01
                    ETH
                 </div>
                 <div
-                  class="c11"
+                  class="c12"
                 >
                   $
                   ---
@@ -3859,7 +3865,7 @@ Object {
               </div>
             </div>
             <div
-              class="c12"
+              class="c13"
             >
               Confirmed
             </div>
@@ -3868,15 +3874,15 @@ Object {
             class="c6"
           >
             <div
-              class="c13"
+              class="c14"
             >
               <div
-                class="c14"
+                class="c15"
               >
                 Nov 23, 2063
               </div>
               <div
-                class="c15"
+                class="c16"
               >
                 Unbelievably, it's been 100 years since it first came to our screens.
     
@@ -3884,25 +3890,25 @@ Join us for an hour or two of fine entertainment.
               </div>
             </div>
             <div
-              class="c7"
+              class="c14"
             >
               <label
-                class="c8"
+                class="c8 c9"
               >
                 Location
               </label>
               <div
-                class="c15"
+                class="c16"
               >
                 Totters Lane, London
               </div>
             </div>
           </div>
           <div
-            class="c16"
+            class="c17"
           >
             <div
-              class="c17"
+              class="c18"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -3919,7 +3925,7 @@ Join us for an hour or two of fine entertainment.
           </div>
         </div>
         <div
-          class="c18"
+          class="c19"
         />
       </div>
     </div>
@@ -3991,7 +3997,7 @@ Join us for an hour or two of fine entertainment.
           class="sc-1xgodx9-5 sc-1fq9sck-4 eqlEGi"
         >
           <div
-            class="sc-1xgodx9-6 sc-1fq9sck-5 aotRN"
+            class="sc-1xgodx9-6 sc-1fq9sck-5 KqymM"
           >
             <div
               class="sc-1fq9sck-6 dsUaoU"
@@ -4007,7 +4013,7 @@ Join us for an hour or two of fine entertainment.
             </div>
           </div>
           <div
-            class="sc-1xgodx9-6 jaVqxF"
+            class="sc-1xgodx9-6 sc-1fq9sck-5 KqymM"
           >
             <label
               class="sc-1xgodx9-7 bIJDkN"
@@ -4112,14 +4118,14 @@ exports[`Storyshots Event RSVP page Event RSVP page with confirming key 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c17 {
+    .c18 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c17 > svg {
+.c18 > svg {
   fill: white;
 }
 
@@ -4138,7 +4144,7 @@ Object {
   height: 24px;
 }
 
-.c16 {
+.c17 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -4179,12 +4185,12 @@ Object {
   align-items: top;
 }
 
-.c8 {
+.c9 {
   font-size: 13px;
   color: var(--darkgrey);
 }
 
-.c12 {
+.c13 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -4205,11 +4211,11 @@ Object {
   background-color: var(--white);
 }
 
-.c12:hover {
+.c13:hover {
   background-color: var(--activegreen);
 }
 
-.c12:hover {
+.c13:hover {
   background-color: var(--white);
 }
 
@@ -4224,13 +4230,13 @@ Object {
   padding-right: 20px;
 }
 
-.c9 {
+.c10 {
   display: grid;
   grid-template-columns: repeat(2,1fr);
   grid-gap: 10px;
 }
 
-.c10 {
+.c11 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-weight: bold;
   font-size: 30px;
@@ -4238,7 +4244,7 @@ Object {
   color: var(--dimgrey);
 }
 
-.c11 {
+.c12 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 20px;
   line-height: 27px;
@@ -4254,7 +4260,7 @@ Object {
   padding-right: 20px;
 }
 
-.c13 {
+.c14 {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 25px auto;
@@ -4265,7 +4271,13 @@ Object {
   grid-template-rows: 35px auto;
 }
 
-.c14 {
+.c14 > .c8 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c15 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-weight: 600;
   font-size: 24px;
@@ -4273,13 +4285,13 @@ Object {
   color: var(--red);
 }
 
-.c15 {
+.c16 {
   font-size: 20px;
   font-family: 'IBM Plex Serif',serif;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c17 {
+  .c18 {
     height: 16px;
     width: 16px;
   }
@@ -4303,13 +4315,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c18 {
+  .c19 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c16 {
+  .c17 {
     display: none;
   }
 }
@@ -4339,7 +4351,7 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c13 {
+  .c14 {
     margin-bottom: 15px;
   }
 }
@@ -4380,21 +4392,21 @@ Object {
               class="c7"
             >
               <label
-                class="c8"
+                class="c8 c9"
               >
                 Ticket Price
               </label>
               <div
-                class="c9"
+                class="c10"
               >
                 <div
-                  class="c10"
+                  class="c11"
                 >
                   0.01
                    ETH
                 </div>
                 <div
-                  class="c11"
+                  class="c12"
                 >
                   $
                   ---
@@ -4402,7 +4414,7 @@ Object {
               </div>
             </div>
             <div
-              class="c12"
+              class="c13"
             >
               Confirming Payment (
               3
@@ -4416,15 +4428,15 @@ Object {
             class="c6"
           >
             <div
-              class="c13"
+              class="c14"
             >
               <div
-                class="c14"
+                class="c15"
               >
                 Nov 23, 2063
               </div>
               <div
-                class="c15"
+                class="c16"
               >
                 Unbelievably, it's been 100 years since it first came to our screens.
     
@@ -4432,25 +4444,25 @@ Join us for an hour or two of fine entertainment.
               </div>
             </div>
             <div
-              class="c7"
+              class="c14"
             >
               <label
-                class="c8"
+                class="c8 c9"
               >
                 Location
               </label>
               <div
-                class="c15"
+                class="c16"
               >
                 Totters Lane, London
               </div>
             </div>
           </div>
           <div
-            class="c16"
+            class="c17"
           >
             <div
-              class="c17"
+              class="c18"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -4467,7 +4479,7 @@ Join us for an hour or two of fine entertainment.
           </div>
         </div>
         <div
-          class="c18"
+          class="c19"
         />
       </div>
     </div>
@@ -4544,7 +4556,7 @@ Join us for an hour or two of fine entertainment.
           class="sc-1xgodx9-5 sc-1fq9sck-4 eqlEGi"
         >
           <div
-            class="sc-1xgodx9-6 sc-1fq9sck-5 aotRN"
+            class="sc-1xgodx9-6 sc-1fq9sck-5 KqymM"
           >
             <div
               class="sc-1fq9sck-6 dsUaoU"
@@ -4560,7 +4572,7 @@ Join us for an hour or two of fine entertainment.
             </div>
           </div>
           <div
-            class="sc-1xgodx9-6 jaVqxF"
+            class="sc-1xgodx9-6 sc-1fq9sck-5 KqymM"
           >
             <label
               class="sc-1xgodx9-7 bIJDkN"
@@ -4665,14 +4677,14 @@ exports[`Storyshots Event RSVP page Event RSVP page with submitted key 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c17 {
+    .c18 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c17 > svg {
+.c18 > svg {
   fill: white;
 }
 
@@ -4691,7 +4703,7 @@ Object {
   height: 24px;
 }
 
-.c16 {
+.c17 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -4732,12 +4744,12 @@ Object {
   align-items: top;
 }
 
-.c8 {
+.c9 {
   font-size: 13px;
   color: var(--darkgrey);
 }
 
-.c12 {
+.c13 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -4758,11 +4770,11 @@ Object {
   background-color: var(--white);
 }
 
-.c12:hover {
+.c13:hover {
   background-color: var(--activegreen);
 }
 
-.c12:hover {
+.c13:hover {
   background-color: var(--white);
 }
 
@@ -4777,13 +4789,13 @@ Object {
   padding-right: 20px;
 }
 
-.c9 {
+.c10 {
   display: grid;
   grid-template-columns: repeat(2,1fr);
   grid-gap: 10px;
 }
 
-.c10 {
+.c11 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-weight: bold;
   font-size: 30px;
@@ -4791,7 +4803,7 @@ Object {
   color: var(--dimgrey);
 }
 
-.c11 {
+.c12 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 20px;
   line-height: 27px;
@@ -4807,7 +4819,7 @@ Object {
   padding-right: 20px;
 }
 
-.c13 {
+.c14 {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 25px auto;
@@ -4818,7 +4830,13 @@ Object {
   grid-template-rows: 35px auto;
 }
 
-.c14 {
+.c14 > .c8 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c15 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-weight: 600;
   font-size: 24px;
@@ -4826,13 +4844,13 @@ Object {
   color: var(--red);
 }
 
-.c15 {
+.c16 {
   font-size: 20px;
   font-family: 'IBM Plex Serif',serif;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c17 {
+  .c18 {
     height: 16px;
     width: 16px;
   }
@@ -4856,13 +4874,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c18 {
+  .c19 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c16 {
+  .c17 {
     display: none;
   }
 }
@@ -4892,7 +4910,7 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c13 {
+  .c14 {
     margin-bottom: 15px;
   }
 }
@@ -4933,21 +4951,21 @@ Object {
               class="c7"
             >
               <label
-                class="c8"
+                class="c8 c9"
               >
                 Ticket Price
               </label>
               <div
-                class="c9"
+                class="c10"
               >
                 <div
-                  class="c10"
+                  class="c11"
                 >
                   0.01
                    ETH
                 </div>
                 <div
-                  class="c11"
+                  class="c12"
                 >
                   $
                   ---
@@ -4955,7 +4973,7 @@ Object {
               </div>
             </div>
             <div
-              class="c12"
+              class="c13"
             >
               Payment Sent ...
             </div>
@@ -4964,15 +4982,15 @@ Object {
             class="c6"
           >
             <div
-              class="c13"
+              class="c14"
             >
               <div
-                class="c14"
+                class="c15"
               >
                 Nov 23, 2063
               </div>
               <div
-                class="c15"
+                class="c16"
               >
                 Unbelievably, it's been 100 years since it first came to our screens.
     
@@ -4980,25 +4998,25 @@ Join us for an hour or two of fine entertainment.
               </div>
             </div>
             <div
-              class="c7"
+              class="c14"
             >
               <label
-                class="c8"
+                class="c8 c9"
               >
                 Location
               </label>
               <div
-                class="c15"
+                class="c16"
               >
                 Totters Lane, London
               </div>
             </div>
           </div>
           <div
-            class="c16"
+            class="c17"
           >
             <div
-              class="c17"
+              class="c18"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -5015,7 +5033,7 @@ Join us for an hour or two of fine entertainment.
           </div>
         </div>
         <div
-          class="c18"
+          class="c19"
         />
       </div>
     </div>
@@ -5087,7 +5105,7 @@ Join us for an hour or two of fine entertainment.
           class="sc-1xgodx9-5 sc-1fq9sck-4 eqlEGi"
         >
           <div
-            class="sc-1xgodx9-6 sc-1fq9sck-5 aotRN"
+            class="sc-1xgodx9-6 sc-1fq9sck-5 KqymM"
           >
             <div
               class="sc-1fq9sck-6 dsUaoU"
@@ -5103,7 +5121,7 @@ Join us for an hour or two of fine entertainment.
             </div>
           </div>
           <div
-            class="sc-1xgodx9-6 jaVqxF"
+            class="sc-1xgodx9-6 sc-1fq9sck-5 KqymM"
           >
             <label
               class="sc-1xgodx9-7 bIJDkN"
@@ -5208,14 +5226,14 @@ exports[`Storyshots Event RSVP page Event RSVP page with unpurchased key 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c17 {
+    .c18 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c17 > svg {
+.c18 > svg {
   fill: white;
 }
 
@@ -5234,7 +5252,7 @@ Object {
   height: 24px;
 }
 
-.c16 {
+.c17 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -5275,12 +5293,12 @@ Object {
   align-items: top;
 }
 
-.c8 {
+.c9 {
   font-size: 13px;
   color: var(--darkgrey);
 }
 
-.c12 {
+.c13 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -5297,7 +5315,7 @@ Object {
   padding-top: 20px;
 }
 
-.c12:hover {
+.c13:hover {
   background-color: var(--activegreen);
 }
 
@@ -5312,13 +5330,13 @@ Object {
   padding-right: 20px;
 }
 
-.c9 {
+.c10 {
   display: grid;
   grid-template-columns: repeat(2,1fr);
   grid-gap: 10px;
 }
 
-.c10 {
+.c11 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-weight: bold;
   font-size: 30px;
@@ -5326,7 +5344,7 @@ Object {
   color: var(--dimgrey);
 }
 
-.c11 {
+.c12 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 20px;
   line-height: 27px;
@@ -5342,7 +5360,7 @@ Object {
   padding-right: 20px;
 }
 
-.c13 {
+.c14 {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 25px auto;
@@ -5353,7 +5371,13 @@ Object {
   grid-template-rows: 35px auto;
 }
 
-.c14 {
+.c14 > .c8 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c15 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-weight: 600;
   font-size: 24px;
@@ -5361,13 +5385,13 @@ Object {
   color: var(--red);
 }
 
-.c15 {
+.c16 {
   font-size: 20px;
   font-family: 'IBM Plex Serif',serif;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c17 {
+  .c18 {
     height: 16px;
     width: 16px;
   }
@@ -5391,13 +5415,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c18 {
+  .c19 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c16 {
+  .c17 {
     display: none;
   }
 }
@@ -5427,7 +5451,7 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c13 {
+  .c14 {
     margin-bottom: 15px;
   }
 }
@@ -5468,21 +5492,21 @@ Object {
               class="c7"
             >
               <label
-                class="c8"
+                class="c8 c9"
               >
                 Ticket Price
               </label>
               <div
-                class="c9"
+                class="c10"
               >
                 <div
-                  class="c10"
+                  class="c11"
                 >
                   0.01
                    ETH
                 </div>
                 <div
-                  class="c11"
+                  class="c12"
                 >
                   $
                   ---
@@ -5490,7 +5514,7 @@ Object {
               </div>
             </div>
             <div
-              class="c12"
+              class="c13"
             >
               Pay & Register for This Event
             </div>
@@ -5499,15 +5523,15 @@ Object {
             class="c6"
           >
             <div
-              class="c13"
+              class="c14"
             >
               <div
-                class="c14"
+                class="c15"
               >
                 Nov 23, 2063
               </div>
               <div
-                class="c15"
+                class="c16"
               >
                 Unbelievably, it's been 100 years since it first came to our screens.
     
@@ -5515,25 +5539,25 @@ Join us for an hour or two of fine entertainment.
               </div>
             </div>
             <div
-              class="c7"
+              class="c14"
             >
               <label
-                class="c8"
+                class="c8 c9"
               >
                 Location
               </label>
               <div
-                class="c15"
+                class="c16"
               >
                 Totters Lane, London
               </div>
             </div>
           </div>
           <div
-            class="c16"
+            class="c17"
           >
             <div
-              class="c17"
+              class="c18"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -5550,7 +5574,7 @@ Join us for an hour or two of fine entertainment.
           </div>
         </div>
         <div
-          class="c18"
+          class="c19"
         />
       </div>
     </div>
@@ -5622,7 +5646,7 @@ Join us for an hour or two of fine entertainment.
           class="sc-1xgodx9-5 sc-1fq9sck-4 eqlEGi"
         >
           <div
-            class="sc-1xgodx9-6 sc-1fq9sck-5 aotRN"
+            class="sc-1xgodx9-6 sc-1fq9sck-5 KqymM"
           >
             <div
               class="sc-1fq9sck-6 dsUaoU"
@@ -5638,7 +5662,7 @@ Join us for an hour or two of fine entertainment.
             </div>
           </div>
           <div
-            class="sc-1xgodx9-6 jaVqxF"
+            class="sc-1xgodx9-6 sc-1fq9sck-5 KqymM"
           >
             <label
               class="sc-1xgodx9-7 bIJDkN"
