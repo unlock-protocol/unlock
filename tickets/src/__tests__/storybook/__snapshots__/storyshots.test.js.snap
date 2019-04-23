@@ -2260,6 +2260,7 @@ Object {
                     <br />
                     <a
                       class="c11"
+                      href="abc123"
                     >
                       <span>
                         https://tickets.unlock-protocol.com/event/
@@ -2711,6 +2712,7 @@ Object {
                   <br />
                   <a
                     class="sc-1xgodx9-8 lnYSDG"
+                    href="abc123"
                   >
                     <span>
                       https://tickets.unlock-protocol.com/event/

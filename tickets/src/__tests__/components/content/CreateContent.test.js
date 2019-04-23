@@ -118,6 +118,28 @@ describe('CreateContent', () => {
       date,
     })
   })
+
+  it('should have an href on the call to action', () => {
+    expect.assertions(1)
+    const store = createUnlockStore({
+      account: { address: 'ben' },
+      locks: inputLocks,
+    })
+    const addEvent = jest.fn()
+
+    const { container } = rtl.render(
+      <Provider store={store}>
+        <CreateContent
+          account={{ address: 'ben' }}
+          locks={['abc123', 'def456']}
+          addEvent={addEvent}
+        />
+      </Provider>
+    )
+
+    const theLink = container.querySelector('a')
+    expect(theLink).toHaveAttribute('href')
+  })
 })
 
 describe('mapStateToProps', () => {
