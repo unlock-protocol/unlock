@@ -3,6 +3,10 @@ import { User } from '../models/user'
 import { UserReference } from '../models/userReference'
 import * as Normalizer from '../utils/normalizer'
 
+const Sequelize = require('sequelize')
+
+const Op = Sequelize.Op
+
 export class PaymentProcessor {
   stripe: Stripe
 
@@ -19,13 +23,13 @@ export class PaymentProcessor {
    */
   async updateUserPaymentDetails(
     token: string,
-    emailAddress: string
+    publicKey: string
   ): Promise<boolean> {
-    let normalizedEmailAddress = Normalizer.emailAddress(emailAddress)
+    let normalizedEthereumAddress = Normalizer.ethereumAddress(publicKey)
 
     try {
       let user = await UserReference.findOne({
-        where: { emailAddress: normalizedEmailAddress },
+        where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
         include: [{ model: User, attributes: ['publicKey'] }],
       })
 
