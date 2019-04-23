@@ -15,3 +15,6 @@ builds/
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# dot env files
+.env.*.local
