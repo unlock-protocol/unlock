@@ -1,5 +1,5 @@
 import reducer, { initialState } from '../../reducers/ticketsReducer'
-import { GOT_SIGNED_ADDRESS } from '../../actions/ticket'
+import { GOT_SIGNED_ADDRESS, UPDATE_EVENT } from '../../actions/ticket'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
 import { SET_ACCOUNT } from '../../actions/accounts'
@@ -34,5 +34,21 @@ describe('tickets reducer', () => {
         }
       )
     ).toEqual({ [address]: signedAddress })
+  })
+
+  it('should add an event to the state', () => {
+    expect.assertions(1)
+    const event = {
+      name: 'I am a dummy event',
+    }
+    expect(
+      reducer(
+        {},
+        {
+          type: UPDATE_EVENT,
+          event,
+        }
+      )
+    ).toEqual({ event })
   })
 })
