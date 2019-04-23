@@ -1,4 +1,4 @@
-import Web3Utils from 'web3-utils'
+import Web3Utils from '../../utils'
 import Web3Service from '../../web3Service'
 import getLock from '../../v02/getLock'
 import NockHelper from '../helpers/nockHelper'

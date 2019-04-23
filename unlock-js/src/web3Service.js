@@ -1,6 +1,6 @@
 import Web3 from 'web3'
-import Web3Utils from 'web3-utils'
 import { bufferToHex, generateAddress } from 'ethereumjs-util'
+import Web3Utils from './utils'
 import TransactionTypes from './transactionTypes'
 import UnlockService from './unlockService'
 import { MAX_UINT, UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'

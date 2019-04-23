@@ -1,5 +1,5 @@
-import Web3Utils from 'web3-utils'
 import * as UnlockV0 from 'unlock-abi-0'
+import Web3Utils from '../utils'
 import { MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
 
 /**
