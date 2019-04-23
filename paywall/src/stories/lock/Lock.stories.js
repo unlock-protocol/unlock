@@ -1,5 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
+import { actions } from '@storybook/addon-actions'
 import { Provider } from 'react-redux'
 import { Lock } from '../../components/lock/Lock'
 import createUnlockStore from '../../createUnlockStore'
@@ -8,7 +9,11 @@ import { UNLIMITED_KEYS_COUNT } from '../../constants'
 import { WindowContext } from '../../hooks/browser/useWindow'
 
 // lock, account, keys, purchaseKey
-const purchaseKey = () => {}
+const lockActions = actions({
+  hideModal: 'hide',
+  purchaseKey: 'purchase',
+  showModal: 'show',
+})
 const config = {
   requiredConfirmations: 3,
   isInIframe: false,
@@ -47,6 +52,8 @@ const WindowProvider = WindowContext.Provider
 
 const storyConfig = {
   requiredConfirmations: 12,
+  isInIframe: false,
+  isServer: false,
 }
 
 storiesOf('Lock', module)
@@ -70,11 +77,9 @@ storiesOf('Lock', module)
         lock={shortLock}
         transaction={null}
         lockKey={null}
-        purchaseKey={purchaseKey}
-        config={config}
-        hideModal={() => {}}
-        showModal={() => {}}
+        {...lockActions}
         openInNewWindow={false}
+        keyStatus="none"
       />
     )
   })
@@ -84,11 +89,9 @@ storiesOf('Lock', module)
         lock={lock}
         transaction={null}
         lockKey={null}
-        purchaseKey={purchaseKey}
-        config={config}
-        hideModal={() => {}}
-        showModal={() => {}}
+        {...lockActions}
         openInNewWindow={false}
+        keyStatus="none"
       />
     )
   })
@@ -99,11 +102,9 @@ storiesOf('Lock', module)
         lock={lock}
         transaction={null}
         lockKey={null}
-        purchaseKey={purchaseKey}
-        config={config}
-        hideModal={() => {}}
-        showModal={() => {}}
+        {...lockActions}
         openInNewWindow={false}
+        keyStatus="none"
       />
     )
   })
@@ -113,29 +114,25 @@ storiesOf('Lock', module)
         lock={soldOutLock}
         transaction={null}
         lockKey={null}
-        purchaseKey={purchaseKey}
-        config={config}
-        hideModal={() => {}}
-        showModal={() => {}}
+        {...lockActions}
         openInNewWindow={false}
+        keyStatus="none"
       />
     )
   })
   .add('disabled - too expensive for current user', () => {
     const account = {
-      balance: lock.keyPrice,
+      balance: '0',
     }
     return (
       <Lock
         account={account}
-        lock={soldOutLock}
+        lock={lock}
         transaction={null}
         lockKey={null}
-        purchaseKey={purchaseKey}
-        config={config}
-        hideModal={() => {}}
-        showModal={() => {}}
+        {...lockActions}
         openInNewWindow={false}
+        keyStatus="none"
       />
     )
   })
@@ -151,11 +148,10 @@ storiesOf('Lock', module)
         lock={lock}
         transaction={t}
         lockKey={k}
-        purchaseKey={purchaseKey}
         config={config}
-        hideModal={() => {}}
-        showModal={() => {}}
+        {...lockActions}
         openInNewWindow={false}
+        keyStatus="submitted"
       />
     )
   })
@@ -172,11 +168,10 @@ storiesOf('Lock', module)
         lock={lock}
         transaction={t}
         lockKey={k}
-        purchaseKey={purchaseKey}
         config={config}
-        hideModal={() => {}}
-        showModal={() => {}}
+        {...lockActions}
         openInNewWindow={false}
+        keyStatus="confirming"
       />
     )
   })
@@ -193,11 +188,10 @@ storiesOf('Lock', module)
         lock={lock}
         transaction={t}
         lockKey={k}
-        purchaseKey={purchaseKey}
         config={config}
-        hideModal={() => {}}
-        showModal={() => {}}
+        {...lockActions}
         openInNewWindow={false}
+        keyStatus="valid"
       />
     )
   })
@@ -215,11 +209,10 @@ storiesOf('Lock', module)
         lock={lockWithBalance}
         transaction={null}
         lockKey={null}
-        purchaseKey={purchaseKey}
         config={config}
-        hideModal={() => {}}
-        showModal={() => {}}
+        {...lockActions}
         openInNewWindow={false}
+        keyStatus="none"
       />
     )
   })
@@ -233,11 +226,10 @@ storiesOf('Lock', module)
         lock={lockWithInfiniteNumberOfKeys}
         transaction={null}
         lockKey={null}
-        purchaseKey={purchaseKey}
         config={config}
-        hideModal={() => {}}
-        showModal={() => {}}
+        {...lockActions}
         openInNewWindow={false}
+        keyStatus="none"
       />
     )
   })

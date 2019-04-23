@@ -18,11 +18,21 @@ import {
 import { isPositiveNumber } from '../utils/validators'
 import useWindow from '../hooks/browser/useWindow'
 import useOptimism from '../hooks/useOptimism'
-import { TRANSACTION_TYPES } from '../constants'
 import withConfig from '../utils/withConfig'
 import './Paywall.css'
+import keyStatus from '../selectors/keys'
+import { expirationAsDate } from '../utils/durations'
 
-export function Paywall({ locks, locked, redirect, account, transaction }) {
+export function Paywall({
+  locks,
+  locked,
+  redirect,
+  account,
+  transaction,
+  keyStatus,
+  lockKey,
+  expiration,
+}) {
   const optimism = useOptimism(transaction)
   const window = useWindow()
   const scrollPosition = useListenForPostMessage({
@@ -66,11 +76,14 @@ export function Paywall({ locks, locked, redirect, account, transaction }) {
           optimism={optimism}
           smallBody={() => smallBody(window.document.body)}
           bigBody={() => bigBody(window.document.body)}
+          keyStatus={keyStatus}
+          lockKey={lockKey}
+          transaction={transaction}
         />
         {optimism.current ? null : <DeveloperOverlay />}
       </ShowWhenLocked>
       <ShowWhenUnlocked locked={locked}>
-        <UnlockedFlag />
+        <UnlockedFlag expiration={expiration} />
       </ShowWhenUnlocked>
     </GlobalErrorProvider>
   )
@@ -82,6 +95,9 @@ Paywall.propTypes = {
   redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   transaction: UnlockPropTypes.transaction,
   account: PropTypes.string,
+  keyStatus: PropTypes.string.isRequired,
+  lockKey: UnlockPropTypes.key.isRequired,
+  expiration: PropTypes.string.isRequired,
 }
 
 Paywall.defaultProps = {
@@ -91,71 +107,56 @@ Paywall.defaultProps = {
 }
 
 export const mapStateToProps = (
-  { locks, keys, modals, router, account, transactions },
+  { locks, keys, modals, router, account },
   { config: { requiredConfirmations } }
 ) => {
   const { lockAddress, redirect } = lockRoute(router.location.pathname)
-
-  const lockFromUri = Object.values(locks).find(
-    lock => lock.address === lockAddress
-  )
-
-  let validKeys = []
-  const locksFromUri = lockFromUri ? [lockFromUri] : []
-  locksFromUri.forEach(lock => {
-    for (let k of Object.values(keys)) {
-      if (
-        k.lock === lock.address &&
-        k.expiration > new Date().getTime() / 1000
-      ) {
-        validKeys.push(k)
-      }
-    }
-  })
-
-  const lock = locksFromUri.length ? locksFromUri[0] : null
-
+  const accountAddress = account && account.address
   let transaction = null
 
-  const lockKey = Object.values(keys).find(
-    key =>
-      account &&
-      lock &&
-      key.lock === lock.address &&
-      key.owner === account.address
+  const lock = Object.values(locks).find(
+    thisLock => thisLock.address === lockAddress
   )
 
-  // Let's select the transaction corresponding to this key purchase, if it exists
-  // This transaction is of type KEY_PURCHASE
-  transaction = Object.values(transactions).find(
-    transaction =>
-      transaction.type === TRANSACTION_TYPES.KEY_PURCHASE &&
-      transaction.key === (lockKey && lockKey.id)
+  let lockKey = Object.values(keys).find(
+    key => key.lock === lockAddress && key.owner === accountAddress
   )
 
-  const modalShown = !!modals[locksFromUri.map(l => l.address).join('-')]
-  let locked = false
-  if (modalShown) {
-    locked = true
-  }
-  if (!locked && !validKeys.length) {
-    locked = true
-  }
-  if (!locked && transaction) {
-    if (
-      !transaction.confirmations ||
-      transaction.confirmations < requiredConfirmations
-    ) {
-      locked = true
+  if (lockKey) {
+    const keyTransactions = lockKey.transactions
+      ? Object.values(lockKey.transactions)
+      : []
+    if (keyTransactions.length) {
+      keyTransactions.sort((a, b) => (a.blockNumber > b.blockNumber ? -1 : 1))
+      transaction = keyTransactions[0]
+    }
+  } else {
+    lockKey = {
+      id: `${lockAddress}-${accountAddress}`,
+      lock: lockAddress,
+      owner: accountAddress,
+      expired: 0,
+      data: null,
     }
   }
+
+  const currentKeyStatus = keyStatus(lockKey.id, keys, requiredConfirmations)
+
+  const locked =
+    !lockKey ||
+    !!modals[[lock || { address: '' }].map(l => l.address).join('-')] ||
+    currentKeyStatus !== 'valid'
+  const expiration = !lockKey ? '' : expirationAsDate(lockKey.expiration)
 
   return {
     locked,
-    locks: locksFromUri,
+    locks: lock ? [lock] : [],
     redirect,
     transaction,
-    account: account && account.address,
+    account: accountAddress,
+    keyStatus: currentKeyStatus,
+    lockKey,
+    expiration,
   }
 }
 

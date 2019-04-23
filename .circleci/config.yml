@@ -286,6 +286,9 @@ workflows:
       - unlock-app-tests
       - unlock-js-tests
       - unlock-app-chromatic:
+          filters:
+            branches:
+              ignore: production
           requires:
             - unlock-app-tests
       - integration-tests:

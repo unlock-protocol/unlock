@@ -106,6 +106,17 @@ contract('Lock / erc20', accounts => {
         const balance = new BigNumber(await token.balanceOf(keyOwner2))
         assert.equal(balance.toFixed(), balanceBefore.minus(keyPrice).toFixed())
       })
+
+      it('can transfer the key to another user', async () => {
+        await lock.transferFrom(
+          accounts[2],
+          accounts[4],
+          await lock.getTokenIdFor.call(accounts[2]),
+          {
+            from: accounts[2],
+          }
+        )
+      })
     })
 
     it('purchaseKey fails when the user does not have enough funds', async () => {

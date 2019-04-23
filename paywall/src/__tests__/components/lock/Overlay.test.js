@@ -44,85 +44,6 @@ describe('Overlay', () => {
   })
 
   describe('mapStateToProps', () => {
-    it('should set transaction', () => {
-      expect.assertions(2)
-
-      const props = {
-        locks: [
-          {
-            address: '0x123',
-          },
-        ],
-      }
-      const state = {
-        account: {
-          address: 'account',
-        },
-        keys: {
-          key: {
-            lock: '0x123',
-            owner: 'account',
-            id: 'key',
-          },
-        },
-        transactions: {
-          transaction: {
-            key: 'key',
-            type: TRANSACTION_TYPES.KEY_PURCHASE,
-          },
-        },
-      }
-      const state2 = {
-        account: {
-          address: 'account',
-        },
-        keys: {
-          key: {
-            lock: '0x123',
-            owner: 'account',
-            id: 'key',
-          },
-        },
-        transactions: {},
-      }
-
-      expect(mapStateToProps(state, props)).toEqual({
-        openInNewWindow: false,
-        transaction: state.transactions.transaction,
-      })
-      expect(mapStateToProps(state2, props)).toEqual({
-        openInNewWindow: false,
-        transaction: null,
-      })
-    })
-    it('should not crash if there are no matching keys yet for a transaction', () => {
-      expect.assertions(1)
-
-      const props = {
-        locks: [
-          {
-            address: '0x123',
-          },
-        ],
-      }
-      const state = {
-        account: {
-          address: 'account',
-        },
-        keys: {},
-        transactions: {
-          transaction: {
-            key: 'key',
-            type: TRANSACTION_TYPES.KEY_PURCHASE,
-          },
-        },
-      }
-
-      expect(mapStateToProps(state, props)).toEqual({
-        openInNewWindow: false,
-        transaction: null,
-      })
-    })
     it('should set openInNewWindow based on the value of account', () => {
       expect.assertions(3)
 
@@ -165,18 +86,15 @@ describe('Overlay', () => {
       }
 
       expect(mapStateToProps(state1, props)).toEqual({
-        transaction: null,
         openInNewWindow: true,
       })
 
       expect(mapStateToProps(state2, props)).toEqual({
         openInNewWindow: false,
-        transaction: null,
       })
 
       expect(mapStateToProps(state3, props)).toEqual({
         openInNewWindow: true,
-        transaction: null,
       })
     })
   })
@@ -252,12 +170,20 @@ describe('Overlay', () => {
       expect(wrapper.getByText('Need account')).not.toBeNull()
     })
   })
+
   describe('error replacement', () => {
     const lock = {
+      id: 'lock',
       name: 'Monthly',
       address: '0xdeadbeef',
       keyPrice: '100000',
       expirationDuration: 123456789,
+    }
+    const lockKey = {
+      id: 'key',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 10000,
     }
     let store
     beforeEach(() => (store = createUnlockStore()))
@@ -278,6 +204,8 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
+                keyStatus="none"
+                lockKey={lockKey}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -309,6 +237,8 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
+                keyStatus="none"
+                lockKey={lockKey}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -343,6 +273,8 @@ describe('Overlay', () => {
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
                 openInNewWindow={false}
+                keyStatus="none"
+                lockKey={lockKey}
               />
             </ConfigProvider>
           </ErrorProvider>
@@ -366,8 +298,20 @@ describe('Overlay', () => {
       keyPrice: '100000',
       expirationDuration: 123456789,
     }
+    const lockKey = {
+      id: 'key',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 10000,
+    }
     let state
+    let transaction
     beforeEach(() => {
+      transaction = {
+        key: 'key',
+        confirmations: 4,
+        type: TRANSACTION_TYPES.KEY_PURCHASE,
+      }
       state = {
         account: {
           address: 'account',
@@ -380,11 +324,7 @@ describe('Overlay', () => {
           },
         },
         transactions: {
-          transaction: {
-            key: 'key',
-            confirmations: 4,
-            type: TRANSACTION_TYPES.KEY_PURCHASE,
-          },
+          transaction,
         },
       }
     })
@@ -407,6 +347,9 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 1, past: 0 }}
                 locks={[lock]}
+                keyStatus="confirming"
+                lockKey={lockKey}
+                transaction={transaction}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -436,6 +379,9 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 1, past: 0 }}
                 locks={[lock]}
+                keyStatus="valid"
+                lockKey={lockKey}
+                transaction={transaction}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -481,6 +427,9 @@ describe('Overlay', () => {
                     bigBody={() => {}}
                     optimism={{ current: 1, past: 0 }}
                     locks={[lock]}
+                    keyStatus="confirming"
+                    lockKey={lockKey}
+                    transaction={transaction}
                   />
                 </ErrorProvider>
               </ConfigProvider>
@@ -527,6 +476,9 @@ describe('Overlay', () => {
                     bigBody={bigBody}
                     optimism={{ current: 0, past: 0 }}
                     locks={[lock]}
+                    keyStatus="confirming"
+                    lockKey={lockKey}
+                    transaction={transaction}
                   />
                 </ErrorProvider>
               </ConfigProvider>
@@ -543,15 +495,31 @@ describe('Overlay', () => {
     })
   })
 
-  describe('message displayed to user (pessimistic unlocking', () => {
+  describe('message displayed to user (pessimistic unlocking)', () => {
     const lock = {
       name: 'Monthly',
       address: '0xdeadbeef',
       keyPrice: '100000',
       expirationDuration: 123456789,
     }
+    const lockKey = {
+      id: 'key',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 10000,
+    }
     let state
+    let transaction
     beforeEach(() => {
+      transaction = {
+        key: 'key',
+        status: 'mined',
+        confirmations: 4,
+        type: TRANSACTION_TYPES.KEY_PURCHASE,
+      }
+      const transactions = {
+        transaction,
+      }
       state = {
         account: {
           address: 'account',
@@ -561,15 +529,10 @@ describe('Overlay', () => {
             lock: '0xdeadbeef',
             owner: 'account',
             id: 'key',
+            transactions,
           },
         },
-        transactions: {
-          transaction: {
-            key: 'key',
-            confirmations: 4,
-            type: TRANSACTION_TYPES.KEY_PURCHASE,
-          },
-        },
+        transactions,
       }
     })
 
@@ -591,13 +554,16 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
+                keyStatus="none"
+                lockKey={lockKey}
+                transaction={transaction}
               />
             </ErrorProvider>
           </ConfigProvider>
         </Provider>
       )
 
-      expect(wrapper.queryByText('100000.00 Eth')).not.toBeNull()
+      expect(wrapper.getByText('100000.00 Eth')).not.toBeNull()
       expect(
         wrapper.getByText(
           'You have reached your limit of free articles. Please purchase access'
@@ -623,13 +589,16 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
+                keyStatus="confirming"
+                lockKey={lockKey}
+                transaction={transaction}
               />
             </ErrorProvider>
           </ConfigProvider>
         </Provider>
       )
 
-      expect(wrapper.queryByText('100000.00 Eth')).not.toBeNull()
+      expect(wrapper.getByText('100000.00 ETH')).not.toBeNull()
       expect(wrapper.getByText('Purchase pending...')).not.toBeNull()
     })
 
@@ -652,13 +621,16 @@ describe('Overlay', () => {
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
+                keyStatus="valid"
+                lockKey={lockKey}
+                transaction={transaction}
               />
             </ErrorProvider>
           </ConfigProvider>
         </Provider>
       )
 
-      expect(wrapper.queryByText('100000.00 Eth')).not.toBeNull()
+      expect(wrapper.getByText('100000.00 ETH')).not.toBeNull()
       expect(
         wrapper.getByText('Purchase confirmed, content unlocked!')
       ).not.toBeNull()
