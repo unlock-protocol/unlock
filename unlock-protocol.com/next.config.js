@@ -1,5 +1,6 @@
 /* eslint no-console: 0 */
-
+const dotenv = require('dotenv')
+const path = require('path')
 const fs = require('fs')
 const { join, resolve } = require('path')
 const { promisify } = require('util')
@@ -7,6 +8,12 @@ const withTypescript = require('@zeit/next-typescript')
 const { addBlogPagesToPageObject } = require('./src/utils/blog')
 
 const copyFile = promisify(fs.copyFile)
+
+const unlockEnv = process.env.UNLOCK_ENV || 'dev'
+
+dotenv.config({
+  path: path.resolve(__dirname, '..', `.env.${unlockEnv}.local`),
+})
 
 let requiredConfigVariables = {
   unlockEnv: process.env.UNLOCK_ENV || 'dev',
