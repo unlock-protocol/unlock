@@ -23,28 +23,12 @@ export function LockIconBar({
   config,
   edit,
 }) {
-  // If the lockCreationTransaction does not exist, let's assume the lock is "pending", otherwise we
-  // would have its lockCreationTransaction.
-  if (!lockCreationTransaction) {
-    return <CreatorLockStatus lock={lock} status="Submitted" />
-  }
-
-  // These 2 transactions, if not mined or confirmed will trigger the display of CreatorLockStatus
-  // instead of the regular iconBar
-  const blockingTransactions = [
-    lockCreationTransaction,
-    priceUpdateTransaction,
-  ].filter(t => !!t)
-
-  // TODO: move that logic to mapStateToProps
-  for (let i = 0; i < blockingTransactions.length; i++) {
-    const blockingTransaction = blockingTransactions[i]
-    if (['pending', 'submitted'].includes(blockingTransaction.status)) {
+  // If there is any blocking transaction, we show the lock as either submitted or confirming
+  const blockingTransaction = lockCreationTransaction || priceUpdateTransaction
+  if (blockingTransaction) {
+    if (!blockingTransaction.confirmations) {
       return <CreatorLockStatus lock={lock} status="Submitted" />
-    } else if (
-      blockingTransaction.status === 'mined' &&
-      blockingTransaction.confirmations < config.requiredConfirmations
-    ) {
+    } else {
       return (
         <CreatorLockStatus
           lock={lock}
@@ -55,6 +39,7 @@ export function LockIconBar({
     }
   }
 
+  // Otherwise, we just show the lock icon bar
   return (
     <StatusBlock>
       <IconBarContainer>
@@ -70,19 +55,15 @@ export function LockIconBar({
         </IconBar>
       </IconBarContainer>
       <SubStatus>
-        {withdrawalTransaction &&
-          withdrawalTransaction.status === 'submitted' && (
-            <React.Fragment>Submitted to Network...</React.Fragment>
-          )}
-        {withdrawalTransaction &&
-          withdrawalTransaction.status === 'mined' &&
-          withdrawalTransaction.confirmations <
-            config.requiredConfirmations && (
-            <React.Fragment>
-              Confirming Withdrawal {withdrawalTransaction.confirmations}/
-              {config.requiredConfirmations}
-            </React.Fragment>
-          )}
+        {withdrawalTransaction && !withdrawalTransaction.confirmations && (
+          <React.Fragment>Submitted to Network...</React.Fragment>
+        )}
+        {withdrawalTransaction && withdrawalTransaction.confirmations && (
+          <React.Fragment>
+            Confirming Withdrawal {withdrawalTransaction.confirmations}/
+            {config.requiredConfirmations}
+          </React.Fragment>
+        )}
       </SubStatus>
     </StatusBlock>
   )
@@ -105,30 +86,43 @@ LockIconBar.defaultProps = {
   edit: () => {},
 }
 
-const mapStateToProps = ({ transactions }, { lock }) => {
-  let withdrawalTransaction = null
+export const mapStateToProps = ({ transactions }, { lock }) => {
+  // Get all pending transactions as they will impact how we display the lock
+  const lockTransactions = Object.values(transactions)
+    .filter(transaction => {
+      return (
+        [transaction.lock, transaction.to].indexOf(lock.address) > -1 &&
+        (!transaction.confirmations ||
+          transaction.confirmations < config.requiredConfirmations)
+      )
+    })
+    .sort((t, u) => {
+      // We sort in reverse block order so we can get the "latest" transaction first
+      if (!t.blockNumber) {
+        return 1
+      } else if (!u.blockNumber) {
+        return -1
+      } else if (t.blockNumber > u.blockNumber) {
+        return -1
+      } else {
+        return 1
+      }
+    })
 
-  Object.values(transactions).forEach(transaction => {
-    if (
-      transaction.type === TransactionType.WITHDRAWAL &&
-      transaction.lock === lock.address &&
-      transaction.confirmations < config.requiredConfirmations
-    )
-      withdrawalTransaction = transaction
+  // Get lock creation transaction
+  let lockCreationTransaction = lockTransactions.find(transaction => {
+    return transaction.type === TransactionType.LOCK_CREATION
   })
 
-  let priceUpdateTransaction = null
-  Object.values(transactions).forEach(transaction => {
-    if (
-      transaction.type === TransactionType.UPDATE_KEY_PRICE &&
-      transaction.lock === lock.address &&
-      transaction.confirmations < config.requiredConfirmations
-    ) {
-      priceUpdateTransaction = transaction
-    }
+  // Get latest lock withdrawal transacion
+  let withdrawalTransaction = lockTransactions.find(transaction => {
+    return transaction.type === TransactionType.WITHDRAWAL
   })
 
-  const lockCreationTransaction = transactions[lock.transaction]
+  // Get latest lock price update transacion
+  let priceUpdateTransaction = lockTransactions.find(transaction => {
+    return transaction.type === TransactionType.UPDATE_KEY_PRICE
+  })
 
   return {
     lockCreationTransaction,
