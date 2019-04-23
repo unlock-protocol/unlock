@@ -87,10 +87,10 @@ namespace UserOperations {
 
   export const updatePaymentDetails = async (
     token: string,
-    emailAddress: string
+    publicKey: string
   ): Promise<boolean> => {
     let paymentProcessor = new PaymentProcessor(config.stripeSecret)
-    return await paymentProcessor.updateUserPaymentDetails(token, emailAddress)
+    return await paymentProcessor.updateUserPaymentDetails(token, publicKey)
   }
 }
 
