@@ -7,13 +7,11 @@
         "unlock-app/package.json",
         "locksmith/package.json",
         "paywall/package.json",
-        "tests/package.json",
         "tickets/package.json",
         "unlock-js/package.json",
         "unlock-protocol.com/package.json",
         "wedlocks/package.json"
-      ],
-      "ignore": ["web3", "web3-utils", "web3-eth-abi"]
+      ]
     }
   }
 }
