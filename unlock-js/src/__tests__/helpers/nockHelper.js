@@ -111,8 +111,13 @@ export class NockHelper {
   }
 
   // eth_getTransactionReceipt
-  ethGetTransactionReceipt(hash, result) {
-    return this._jsonRpcRequest('eth_getTransactionReceipt', [hash], result)
+  ethGetTransactionReceipt(hash, result, error) {
+    return this._jsonRpcRequest(
+      'eth_getTransactionReceipt',
+      [hash],
+      result,
+      error
+    )
   }
 
   // eth_call

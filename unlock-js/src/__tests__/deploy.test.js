@@ -144,7 +144,47 @@ describe('contract deployer', () => {
         await deploy(host, port, Unlock)
       } catch (e) {
         // this is intentionally vague, since the actual error content will change with other frameworks
-        expect(e.message).toBeInstanceOf(Error)
+        expect(e).toBeInstanceOf(Error)
+      }
+    })
+
+    it('throws on yield of 0x in transactionReceipt', async () => {
+      expect.assertions(1)
+      nock.accountsAndYield(unlockAccountsOnNode)
+      nock.ethGasPriceAndYield(gasPrice)
+
+      // contract deploy call
+      nock.ethSendTransactionAndYield(
+        {
+          from: unlockAccountsOnNode[0],
+          data: Unlock.bytecode,
+          gas: '0x' + GAS_AMOUNTS.deployContract.toString(16),
+        },
+        gasPrice,
+        transaction.hash
+      )
+      nock.ethGetTransactionReceipt(
+        transaction.hash,
+        {
+          ...transactionReceipt,
+          status: '0x',
+        },
+        new Error('failed, ran out of gas?')
+      )
+      nock.ethGetTransactionReceipt(
+        transaction.hash,
+        {
+          ...transactionReceipt,
+          status: '0x',
+        },
+        new Error('failed, ran out of gas?')
+      )
+
+      try {
+        await deploy(host, port, Unlock)
+      } catch (e) {
+        // this is intentionally vague, since the actual error content will change with other frameworks
+        expect(e).toBeInstanceOf(Error)
       }
     })
   })
