@@ -78,8 +78,8 @@ export default class DatePicker extends Component {
       value: date.getMonth(),
       label: MONTH_NAMES[date.getMonth()],
     }
-    const day = { value: date.getDate(), label: date.getDate() }
-    const year = { value: date.getFullYear(), label: date.getFullYear() }
+    const day = { value: date.getUTCDate(), label: date.getUTCDate() }
+    const year = { value: date.getUTCFullYear(), label: date.getUTCFullYear() }
 
     return (
       <EventDate>
