@@ -68,6 +68,7 @@
   "scripts": {
     "predev": "npm run start-ganache && npm run deploy-unlock-contract",
     "dev": "nodemon src/server.js",
+    "nodemon": "nodemon",
     "build": "next build src",
     "deploy": "next export src -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
