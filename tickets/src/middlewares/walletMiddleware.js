@@ -13,7 +13,6 @@ import {
 } from '../errors'
 import { SIGN_ADDRESS, gotSignedAddress } from '../actions/ticket'
 import { PURCHASE_KEY } from '../actions/key'
-import { updateLock } from '../actions/lock'
 import {
   dismissWalletCheck,
   gotWallet,
@@ -114,10 +113,6 @@ const walletMiddleware = config => {
     // interaction with the wallet
     walletService.on('transaction.pending', () => {
       dispatch(waitForWallet())
-    })
-
-    walletService.on('lock.updated', (address, update) => {
-      dispatch(updateLock(address, update))
     })
 
     // The wallet check overlay may be manually dismissed. When that event is
