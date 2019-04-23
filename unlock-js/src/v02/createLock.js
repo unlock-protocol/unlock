@@ -1,5 +1,5 @@
-import Web3Utils from 'web3-utils'
 import * as UnlockV02 from 'unlock-abi-0-2'
+import Web3Utils from '../utils'
 import { GAS_AMOUNTS } from '../constants'
 import TransactionTypes from '../transactionTypes'
 

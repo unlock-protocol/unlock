@@ -1,12 +1,11 @@
 /* eslint no-console: 0 */
-
-import Web3Utils from 'web3-utils'
-
 import * as UnlockV0 from 'unlock-abi-0'
 import * as UnlockV01 from 'unlock-abi-0-1'
 import * as UnlockV02 from 'unlock-abi-0-2'
+
 import NockHelper from './helpers/nockHelper'
 
+import Web3Utils from '../utils'
 import Web3Service from '../web3Service'
 import TransactionTypes from '../transactionTypes'
 import v0 from '../v0'
