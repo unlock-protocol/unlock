@@ -13,6 +13,7 @@ import EventUrl from '../helpers/EventUrl'
 import { pageTitle } from '../../constants'
 import UnlockPropTypes from '../../propTypes'
 import { addEvent } from '../../actions/ticket'
+import CreateEventButton from './create/CreateEventButton'
 
 export const formValuesToEvent = formValues => {
   const { lockAddress, name, description, location, date } = formValues
@@ -28,7 +29,7 @@ export const formValuesToEvent = formValues => {
 export class CreateContent extends Component {
   constructor(props) {
     super(props)
-    const { now, locks } = props
+    const { now, locks, submitted } = props
 
     this.state = {
       lockAddress: locks[0] || '',
@@ -36,6 +37,7 @@ export class CreateContent extends Component {
       description: '',
       location: '',
       date: now,
+      submitted,
     }
 
     this.onChange = this.onChange.bind(this)
@@ -79,11 +81,19 @@ export class CreateContent extends Component {
       logo: '', // TODO add logo support
       owner: account.address,
     })
+    this.setState(state => ({ ...state, submitted: true }))
   }
 
   render() {
     const { locks, now } = this.props
-    const { date, name, description, location, lockAddress } = this.state
+    const {
+      date,
+      name,
+      description,
+      location,
+      lockAddress,
+      submitted,
+    } = this.state
 
     return (
       <GlobalErrorConsumer>
@@ -159,7 +169,7 @@ export class CreateContent extends Component {
                 <Step>
                   <Title>Share Your RSVP Page</Title>
                   <Fieldset>
-                    <SaveButton type="submit">Save Event</SaveButton>
+                    <CreateEventButton submitted={submitted} />
                     <Text>
                       Your event link: <br />
                       <Cta>
@@ -182,11 +192,13 @@ CreateContent.propTypes = {
   account: UnlockPropTypes.account,
   addEvent: PropTypes.func.isRequired,
   locks: PropTypes.arrayOf(PropTypes.string),
+  submitted: PropTypes.bool,
 }
 
 CreateContent.defaultProps = {
   locks: [],
   account: null,
+  submitted: false,
 }
 
 export const mapStateToProps = ({ locks, account }, { now }) => {
@@ -235,26 +247,6 @@ const Input = styled.input`
   padding: 10px;
   font-size: 16px;
   color: var(--darkgrey);
-`
-
-const SaveButton = styled.button`
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--white);
-  font-family: 'IBM Plex Sans', sans-serif;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
-  transition: background-color 200ms ease;
-  & :hover {
-    background-color: var(--activegreen);
-  }
-  height: 60px;
-  ${Media.phone`
-    width: 100%;
-  `};
 `
 
 const Steps = styled.ol`
