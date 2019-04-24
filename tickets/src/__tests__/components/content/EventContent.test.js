@@ -35,6 +35,8 @@ const lock = {
   transaction: 'deployedid',
 }
 
+const account = { address: 'foo' }
+
 describe('EventContent', () => {
   it('should display an event when given appropriate properties', () => {
     expect.assertions(3)
@@ -48,6 +50,7 @@ describe('EventContent', () => {
             purchaseKey={() => {}}
             loadEvent={() => {}}
             transaction={null}
+            account={account}
           />
         </ConfigProvider>
       </Provider>
@@ -74,7 +77,10 @@ describe('mapStateToProps', () => {
         locks: {
           abc123: { address: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9' },
         },
-        tickets: { event },
+        tickets: {
+          event,
+          '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9': 'foobar',
+        },
         keys: {
           '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9-foo': {
             lock: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
@@ -112,6 +118,9 @@ describe('mapStateToProps', () => {
     )
 
     const expectedProps = {
+      account: {
+        address: 'foo',
+      },
       event: {
         name: event.name,
         date: event.date,
@@ -143,6 +152,7 @@ describe('mapStateToProps', () => {
         status: 'mined',
       },
       keyStatus: KeyStatus.CONFIRMING,
+      signedEventAddress: 'foobar',
     }
 
     expect(props).toEqual(expectedProps)

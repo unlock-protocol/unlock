@@ -13,6 +13,7 @@ import {
   WAIT_FOR_WALLET,
 } from '../../actions/walletStatus'
 import { NEW_TRANSACTION } from '../../actions/transaction'
+import UnlockEventRSVP from '../../structured_data/unlockEventRSVP'
 
 let mockConfig
 
@@ -327,17 +328,22 @@ describe('Wallet middleware', () => {
       type: SIGN_ADDRESS,
       address,
     }
+
+    const data = UnlockEventRSVP.build({
+      publicKey: account.address,
+      eventAddress: address,
+    })
     mockWalletService.signData = jest.fn((_, address, cb) =>
-      cb(null, `ENCRYPTED: ${address}`)
+      cb(null, `ENCRYPTED: ${JSON.stringify(address)}`)
     )
     invoke(action)
     expect(mockWalletService.signData).toHaveBeenCalledWith(
-      getState().account,
-      address,
+      getState().account.address,
+      data,
       expect.any(Function)
     )
     expect(dispatch).toHaveBeenCalledWith(
-      gotSignedAddress(address, `ENCRYPTED: ${address}`)
+      gotSignedAddress(address, `ENCRYPTED: ${JSON.stringify(data)}`)
     )
     expect(next).toHaveBeenCalledWith(action)
   })
