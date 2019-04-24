@@ -7,26 +7,19 @@ set -e
 # It requires AUTH_TOKEN and SITE_ID to be set (see details on how to set them using deploy.sh)
 
 APP_PATH=$1
-DEPLOY_ENV=$2
+DEPLOY_ENV=$2 #ignored in this script since unlock-protocol.com is always deployed to production
 COMMIT=$3
 PUBLISH=$4
 BUILD_PATH="out/";
 
-if [ "$DEPLOY_ENV" = "staging" ]; then
-  if [ "$PUBLISH" = "true" ]; then
-    # This is a build on master, we deploy to staging as a published build
-    PROD="--prod";
-    MESSAGE="Deploying $COMMIT to staging. See logs below.";
-  else
-    # we deploy as a draft on staging
-    PROD="";
-    MESSAGE="Deploying $COMMIT to draft. See draft URL and logs below.";
-  fi
-fi
-
-if [ "$DEPLOY_ENV" = "prod" ]; then
+if [ "$PUBLISH" = "true" ]; then
+  # This is a build on master, we deploy to staging as a published build
   PROD="--prod";
-  MESSAGE="Deploying version $COMMIT to production";
+  MESSAGE="Deploying $COMMIT to production. See logs below.";
+else
+  # we deploy as a draft on staging
+  PROD="";
+  MESSAGE="Deploying $COMMIT to draft. See draft URL and logs below.";
 fi
 
 if [ -n "$SITE_ID" ] && [ -n "$AUTH_TOKEN" ]; then

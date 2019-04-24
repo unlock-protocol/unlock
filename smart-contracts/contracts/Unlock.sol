@@ -41,7 +41,6 @@ contract Unlock is
   Initializable,
   Ownable
 {
-
   /**
    * The struct for a lock
    * We use deployed to keep track of deployments.
@@ -177,4 +176,11 @@ contract Unlock is
     return;
   }
 
+  // The version number of the current Unlock implementation on this network
+  function unlockVersion(
+  ) external pure
+    returns (uint8)
+  {
+    return 2;
+  }
 }

@@ -1,16 +1,26 @@
 #!/usr/bin/env bash
 
+echo "Installing github hub"
+cd ..
+wget https://github.com/github/hub/releases/download/v2.11.2/hub-linux-amd64-2.11.2.tgz
+tar -xvf hub-linux-amd64-2.11.2.tgz
+
+
+cd project
+
 # This script gets the git history as by default CircleCI will only get the most recent commit.
+echo "Fetching git history"
 git config --replace-all remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
 git fetch >> /dev/null
 
-echo "Checking master out 4 days ago"
-STABLE_MASTER=`git rev-list -1 --before={4.days.ago} master`
-git checkout $STABLE_MASTER
+echo "Setting up git"
+git config --global user.email "ops@unlock-protocol.com"
+git config --global user.name "Unlock Deployer"
 
-echo "Creating new production branch"
+echo "Checking master out 4 days ago into new branch"
+STABLE_MASTER=`git rev-list -1 --before={4.days.ago} master`
 BRANCH="production-$(date +%Y%m%d-%H%M%S)"
-git checkout -b $BRANCH
+git checkout -b $BRANCH $STABLE_MASTER
 
 echo "Diffing versus latest production"
 LATEST_PRODUCTION=`git rev-parse origin/production`
@@ -24,7 +34,34 @@ echo "Push new production branch"
 git push origin $BRANCH --no-verify
 
 echo "Open pull request"
-PR_TITLE="Production Automated Deploy $BRANCH"
-curl --fail -u $GITHUB_API_USER:$GITHUB_API_TOKEN -H "Content-Type:application/json" -X POST -d "{\"title\":\"$PR_TITLE\",\"base\":\"production\",\"head\":\"$BRANCH\"}" https://api.github.com/repos/unlock-protocol/unlock/pulls
+MESSAGE="Production Automated Deploy $BRANCH
 
+This is a production deployment. Please treat with great caution!
+This deploys the code from master as of commit $STABLE_MASTER.
+
+Reviewing code for this Pull Request is not practical, however, you are asked to check wether the current staging environment is stable and could be released. For this, follow these steps:
+
+* [ ] Go to http://staging.unlock-protocol.com/ and ensure that the website loads fine.
+
+## Creator Dashboard
+* [ ] Click on the \"Go to your Dashboard\" button and ensure that the dashboard loads as expected
+* [ ] Create a new Lock (you will need some Rinkeby Eth) and wait for it to confirm with the right values
+* [ ] Update the price on this new lock or an older lock
+
+## Paywall
+* [ ] Go to https://www.ouvre-boite.com/members-staging/ and make sure the paywall is in place (no scrolling)
+* [ ] Purchase a key and ensure that the optimistic paywall lets you access the content (scrolling works)
+* [ ] Wait 5 minutes (the key should expire) and reload the page
+* [ ] Purchase another key
+
+Feel free to test the dashboard and paywal using a mobile browser.
+"
+
+DOW=$(date +%u)
+declare -a REVIEWERS
+REVIEWERS=( julien51 cnasc cellog akeem )
+
+GITHUB_TOKEN=$GITHUB_API_TOKEN ./../hub-linux-amd64-2.11.2/bin/hub pull-request -b production -h $BRANCH --message "$MESSAGE" -r ${REVIEWERS[$DOW-1]}
+
+git checkout master
 

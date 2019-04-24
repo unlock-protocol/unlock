@@ -54,3 +54,8 @@ export interface ChainExplorerURLBuilders {
 export interface Loading {
   loading: number
 }
+
+export interface Action {
+  type: string
+  [key: string]: any
+}

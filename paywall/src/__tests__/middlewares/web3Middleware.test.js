@@ -2,7 +2,7 @@ import EventEmitter from 'events'
 import { LOCATION_CHANGE } from 'connected-react-router'
 import web3Middleware from '../../middlewares/web3Middleware'
 import { ADD_LOCK, UPDATE_LOCK } from '../../actions/lock'
-import { UPDATE_KEY } from '../../actions/key'
+import { UPDATE_KEY, updateKey, addKey } from '../../actions/key'
 import { UPDATE_ACCOUNT, setAccount } from '../../actions/accounts'
 import {
   ADD_TRANSACTION,
@@ -14,6 +14,7 @@ import { SET_ERROR } from '../../actions/error'
 import { SET_PROVIDER, setProvider } from '../../actions/provider'
 import { SET_NETWORK, setNetwork } from '../../actions/network'
 import configure from '../../config'
+import { TRANSACTION_TYPES } from '../../constants'
 
 const config = configure()
 
@@ -23,6 +24,7 @@ const config = configure()
 let account = {
   address: '0xabc',
 }
+let key
 let lock = {
   address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
   keyPrice: '100',
@@ -30,7 +32,7 @@ let lock = {
 }
 let state = {}
 
-const transaction = {
+let transaction = {
   hash: '0xf21e9820af34282c8bebb3a191cf615076ca06026a144c9c28e9cb762585472e',
 }
 const network = {
@@ -89,6 +91,16 @@ beforeEach(() => {
     keyPrice: '100',
     owner: account.address,
   }
+  transaction = {
+    hash: '0xf21e9820af34282c8bebb3a191cf615076ca06026a144c9c28e9cb762585472e',
+  }
+  key = {
+    id: `${lock.address}-${account.address}`,
+    lock: lock.address,
+    owner: account.address,
+    expiration: 0,
+    data: null,
+  }
   state = {
     router: {
       location: {
@@ -103,7 +115,9 @@ beforeEach(() => {
       [lock.address]: lock,
     },
     transactions: {},
-    keys: {},
+    keys: {
+      [key.id]: key,
+    },
   }
 })
 
@@ -280,21 +294,36 @@ describe('Web3 middleware', () => {
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: ADD_TRANSACTION,
-        transaction,
+        transaction: {
+          hash: transaction.hash,
+          network: 'test',
+        },
       })
     )
   })
 
   it('it should handle transaction.updated events triggered by the web3Service', () => {
     expect.assertions(1)
+    state.transactions = {
+      [transaction.hash]: {
+        ...transaction,
+        bar: 'foo',
+      },
+    }
     const { store } = create()
-    const update = {}
+    const update = {
+      foo: 'bar',
+    }
     mockWeb3Service.emit('transaction.updated', transaction.hash, update)
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: UPDATE_TRANSACTION,
         hash: transaction.hash,
-        update,
+        update: {
+          ...transaction,
+          ...update,
+          bar: 'foo',
+        },
       })
     )
   })
@@ -354,7 +383,9 @@ describe('Web3 middleware', () => {
       invoke(setAccount({ address: 'hi' }))
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        expect.objectContaining(addTransaction({ hash: transaction }))
+        expect.objectContaining(
+          addTransaction({ hash: transaction, network: 'test' })
+        )
       )
     })
 
@@ -393,7 +424,9 @@ describe('Web3 middleware', () => {
         invoke(action('hi'))
 
         expect(store.dispatch).toHaveBeenCalledWith(
-          expect.objectContaining(addTransaction({ hash: transaction }))
+          expect.objectContaining(
+            addTransaction({ hash: transaction, network: 'test' })
+          )
         )
       }
     )
@@ -430,7 +463,9 @@ describe('Web3 middleware', () => {
     mockWeb3Service.getLock = jest.fn()
     invoke(action)
     expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining(addTransaction({ hash: transaction }))
+      expect.objectContaining(
+        addTransaction({ hash: transaction, network: 'test' })
+      )
     )
     expect(next).toHaveBeenCalledWith(action)
   })
@@ -507,8 +542,12 @@ describe('Web3 middleware', () => {
   })
 
   it('should handle NEW_TRANSACTION', () => {
-    expect.assertions(2)
-    const { next, invoke } = create()
+    expect.assertions(3)
+    const {
+      next,
+      invoke,
+      store: { dispatch },
+    } = create()
     const action = { type: NEW_TRANSACTION, transaction }
     mockWeb3Service.getTransaction = jest.fn()
 
@@ -517,6 +556,146 @@ describe('Web3 middleware', () => {
     expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
       transaction.hash,
       transaction
+    )
+    expect(dispatch).not.toHaveBeenCalled()
+  })
+
+  it('should dispatch key update on NEW_TRANSACTION if it is a key purchase of our lock from us', () => {
+    expect.assertions(3)
+    state.router = {
+      location: {
+        pathname: `/${lock.address}`,
+        hash: '',
+        search: '',
+      },
+    }
+    transaction = {
+      ...transaction,
+      to: lock.address,
+      from: account.address,
+      type: TRANSACTION_TYPES.KEY_PURCHASE,
+    }
+    state.transactions = {
+      [transaction.hash]: transaction,
+    }
+    const {
+      next,
+      invoke,
+      store: { dispatch },
+    } = create()
+    const action = { type: NEW_TRANSACTION, transaction }
+    mockWeb3Service.getTransaction = jest.fn()
+
+    invoke(action)
+    expect(next).toHaveBeenCalled()
+    expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
+      transaction.hash,
+      transaction
+    )
+    expect(dispatch).toHaveBeenCalledWith(
+      updateKey(
+        key.id,
+        expect.objectContaining({
+          ...key,
+          transactions: {
+            [transaction.hash]: transaction,
+          },
+        })
+      )
+    )
+  })
+
+  it('should dispatch key update on UPDATE_TRANSACTION if it is a key purchase of our lock from us and key exists', () => {
+    expect.assertions(2)
+    state.router = {
+      location: {
+        pathname: `/${lock.address}`,
+        hash: '',
+        search: '',
+      },
+    }
+    transaction = {
+      ...transaction,
+      to: lock.address,
+      from: account.address,
+      type: TRANSACTION_TYPES.KEY_PURCHASE,
+      key: key.id,
+      lock: lock.address,
+    }
+    key.expiration = 1234
+    state.transactions = {
+      [transaction.hash]: transaction,
+    }
+    const {
+      next,
+      invoke,
+      store: { dispatch },
+    } = create()
+    const action = {
+      type: UPDATE_TRANSACTION,
+      transaction,
+      hash: transaction.hash,
+    }
+
+    invoke(action)
+    expect(next).toHaveBeenCalled()
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining(
+        updateKey(key.id, {
+          ...key,
+          transactions: {
+            [transaction.hash]: transaction,
+          },
+        })
+      )
+    )
+  })
+
+  it('should dispatch add key on UPDATE_TRANSACTION if it is a key purchase of our lock from us and key does not exist', () => {
+    expect.assertions(2)
+    state.router = {
+      location: {
+        pathname: `/${lock.address}`,
+        hash: '',
+        search: '',
+      },
+    }
+    transaction = {
+      ...transaction,
+      to: lock.address,
+      from: account.address,
+      type: TRANSACTION_TYPES.KEY_PURCHASE,
+      key: key.id,
+      lock: lock.address,
+    }
+    key.expiration = 1234
+    state.keys = {}
+    state.transactions = {
+      [transaction.hash]: transaction,
+    }
+    const {
+      next,
+      invoke,
+      store: { dispatch },
+    } = create()
+    const action = {
+      type: UPDATE_TRANSACTION,
+      transaction,
+      hash: transaction.hash,
+    }
+
+    invoke(action)
+    expect(next).toHaveBeenCalled()
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining(
+        addKey(key.id, {
+          ...key,
+          expiration: 0,
+          transactions: {
+            [transaction.hash]: transaction,
+          },
+        })
+      )
     )
   })
 

@@ -73,6 +73,7 @@ const walletMiddleware = config => ({ getState, dispatch }) => {
           input,
           type: transactionTypeMapping(type),
           status,
+          network: getState().network.name,
         })
       )
     }
