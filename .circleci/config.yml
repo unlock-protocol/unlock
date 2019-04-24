@@ -116,7 +116,7 @@ jobs:
           name: Build tickets Image
           command: scripts/build-image.sh tickets
       - run:
-          name: Paywall Tests
+          name: Tickets Tests
           command: scripts/tests.sh tickets
 
   wedlocks-tests:
