@@ -40,7 +40,7 @@ export default function keyStatus(
       if (lastTransaction.confirmations < requiredConfirmations) {
         return KeyStatus.CONFIRMING
       }
-      if (key.expiration < new Date().getTime() / 1000) {
+      if (key.expiration < new Date().getTime() / 1000 && key.expiration > 0) {
         return KeyStatus.EXPIRED
       }
       return KeyStatus.VALID

@@ -13,7 +13,7 @@ import configure from '../../config'
 import { SET_PROVIDER, setProvider } from '../../actions/provider'
 import { SET_NETWORK, setNetwork } from '../../actions/network'
 import { TRANSACTION_TYPES } from '../../constants'
-import { ADD_KEY } from '../../actions/key'
+import { ADD_KEY, addKey, updateKey } from '../../actions/key'
 
 /**
  * Fake state
@@ -28,6 +28,7 @@ let lock = {
 }
 let state = {}
 
+let key
 let transaction = {
   hash: '0xf21e9820af34282c8bebb3a191cf615076ca06026a144c9c28e9cb762585472e',
 }
@@ -93,6 +94,16 @@ beforeEach(() => {
     keyPrice: '100',
     owner: account.address,
   }
+  transaction = {
+    hash: '0xf21e9820af34282c8bebb3a191cf615076ca06026a144c9c28e9cb762585472e',
+  }
+  key = {
+    id: `${lock.address}-${account.address}`,
+    lock: lock.address,
+    owner: account.address,
+    expiration: 0,
+    data: null,
+  }
   state = {
     router: {
       location: {
@@ -107,7 +118,9 @@ beforeEach(() => {
       [lock.address]: lock,
     },
     transactions: {},
-    keys: {},
+    keys: {
+      [key.id]: key,
+    },
   }
 })
 
@@ -303,6 +316,100 @@ describe('Web3 middleware', () => {
     expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
       transaction.hash,
       transaction
+    )
+  })
+
+  it('should dispatch key update on UPDATE_TRANSACTION if it is a key purchase of our lock from us and key exists', () => {
+    expect.assertions(2)
+    state.router = {
+      location: {
+        pathname: `/${lock.address}`,
+        hash: '',
+        search: '',
+      },
+    }
+    transaction = {
+      ...transaction,
+      to: lock.address,
+      from: account.address,
+      type: TRANSACTION_TYPES.KEY_PURCHASE,
+      key: key.id,
+      lock: lock.address,
+    }
+    key.expiration = 1234
+    state.transactions = {
+      [transaction.hash]: transaction,
+    }
+    const {
+      next,
+      invoke,
+      store: { dispatch },
+    } = create()
+    const action = {
+      type: UPDATE_TRANSACTION,
+      transaction,
+      hash: transaction.hash,
+    }
+
+    invoke(action)
+    expect(next).toHaveBeenCalled()
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining(
+        updateKey(key.id, {
+          ...key,
+          transactions: {
+            [transaction.hash]: transaction,
+          },
+        })
+      )
+    )
+  })
+
+  it('should dispatch add key on UPDATE_TRANSACTION if it is a key purchase of our lock from us and key does not exist', () => {
+    expect.assertions(2)
+    state.router = {
+      location: {
+        pathname: `/${lock.address}`,
+        hash: '',
+        search: '',
+      },
+    }
+    transaction = {
+      ...transaction,
+      to: lock.address,
+      from: account.address,
+      type: TRANSACTION_TYPES.KEY_PURCHASE,
+      key: key.id,
+      lock: lock.address,
+    }
+    key.expiration = 1234
+    state.keys = {}
+    state.transactions = {
+      [transaction.hash]: transaction,
+    }
+    const {
+      next,
+      invoke,
+      store: { dispatch },
+    } = create()
+    const action = {
+      type: UPDATE_TRANSACTION,
+      transaction,
+      hash: transaction.hash,
+    }
+
+    invoke(action)
+    expect(next).toHaveBeenCalled()
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining(
+        addKey(key.id, {
+          ...key,
+          expiration: 0,
+          transactions: {
+            [transaction.hash]: transaction,
+          },
+        })
+      )
     )
   })
 
