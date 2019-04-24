@@ -37,6 +37,7 @@
     "@types/node": "^11.13.4",
     "@types/sequelize": "^4.27.44",
     "@types/stripe": "^6.25.10",
+    "@types/supertest": "^2.0.7",
     "@typescript-eslint/eslint-plugin": "^1.5.0",
     "@unlock-protocol/unlock-js": "0.0.17",
     "body-parser": "^1.18.3",
