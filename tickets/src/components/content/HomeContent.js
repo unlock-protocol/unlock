@@ -59,6 +59,7 @@ const Grid = styled.section`
     grid-gap: 0;
     grid-template-columns: auto;
   `};
+  padding: 0 20px;
 `
 const Description = styled.div`
   p {
@@ -85,6 +86,7 @@ const Title = styled.h1`
   line-height: 47px;
   grid-column: 1 3;
   color: var(--brand);
+  padding: 0 20px;
 `
 
 const SubTitle = styled.h2`
