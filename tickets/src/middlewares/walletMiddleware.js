@@ -20,6 +20,7 @@ import {
 } from '../actions/walletStatus'
 import { newTransaction } from '../actions/transaction'
 import { transactionTypeMapping } from '../utils/types'
+import UnlockEventRSVP from '../structured_data/unlockEventRSVP'
 
 const { WalletService } = UnlockJs
 
@@ -151,14 +152,25 @@ const walletMiddleware = config => {
         if (action.type === SIGN_ADDRESS) {
           const { account } = getState()
           const { address } = action
-          walletService.signData(account, address, (error, signedAddress) => {
-            if (error) {
-              // TODO: Does this need to be handled in the error consumer?
-              dispatch(setError(FAILED_TO_SIGN_ADDRESS, error))
-            } else {
-              dispatch(gotSignedAddress(address, signedAddress))
-            }
+
+          // Because signData uses eth_signTypedData, we need to use structured data
+          const data = UnlockEventRSVP.build({
+            publicKey: account.address,
+            eventAddress: address,
           })
+
+          walletService.signData(
+            account.address,
+            data,
+            (error, signedAddress) => {
+              if (error) {
+                // TODO: Does this need to be handled in the error consumer?
+                dispatch(setError(FAILED_TO_SIGN_ADDRESS, error))
+              } else {
+                dispatch(gotSignedAddress(address, signedAddress))
+              }
+            }
+          )
         }
         next(action)
       }
