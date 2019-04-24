@@ -71,6 +71,7 @@ const Footer = styled.div`
   display: grid;
   grid-template-columns: 40px 1fr;
   align-items: center;
+  padding: 0 20px;
   ${Media.phone`
     display: none;
   `};
