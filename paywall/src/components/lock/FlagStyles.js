@@ -58,9 +58,9 @@ export const OptimisticFlag = styled.div`
   ${Media.phone`
     font-size: 10px;
     display: grid;
-    height: 43px;
+    height: 60px;
     grid-template-columns: 1.6fr 1fr 1fr;
-    grid-template-rows: 43px;
+    grid-template-rows: 60px;
     width: 100%;
     align-items: center;
 

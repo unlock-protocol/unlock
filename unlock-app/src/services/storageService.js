@@ -10,12 +10,14 @@ export default class StorageService {
    * @param {*} transactionHash
    * @param {*} senderAddress
    * @param {*} recipientAddress
+   * @param {*} chain
    */
-  storeTransaction(transactionHash, senderAddress, recipientAddress) {
+  storeTransaction(transactionHash, senderAddress, recipientAddress, chain) {
     const payload = {
       transactionHash,
       sender: senderAddress,
       recipient: recipientAddress,
+      chain,
     }
     return axios.post(`${this.host}/transaction`, payload)
   }
@@ -31,7 +33,12 @@ export default class StorageService {
       `${this.host}/transactions?sender=${senderAddress}`
     )
     if (response.data && response.data.transactions) {
-      return response.data.transactions.map(t => t.transactionHash)
+      return response.data.transactions.map(t => ({
+        hash: t.transactionHash,
+        network: t.chain,
+        to: t.recipient,
+        from: t.sender,
+      }))
     }
     return []
   }
