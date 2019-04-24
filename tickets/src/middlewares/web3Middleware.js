@@ -4,12 +4,17 @@ import UnlockJs from '@unlock-protocol/unlock-js'
 import { startLoading, doneLoading } from '../actions/loading'
 import { SET_ACCOUNT, updateAccount } from '../actions/accounts'
 import { updateLock, addLock } from '../actions/lock'
-import { addTransaction, updateTransaction } from '../actions/transaction'
+import {
+  addTransaction,
+  updateTransaction,
+  NEW_TRANSACTION,
+} from '../actions/transaction'
 import { SET_PROVIDER } from '../actions/provider'
 import { SET_NETWORK } from '../actions/network'
 import { setError } from '../actions/error'
 import { transactionTypeMapping } from '../utils/types'
 import { lockRoute } from '../utils/routes'
+import { addKey } from '../actions/key'
 
 const { Web3Service } = UnlockJs
 
@@ -28,6 +33,16 @@ const web3Middleware = config => {
       unlockAddress,
       blockTime,
       requiredConfirmations,
+    })
+
+    // When explicitly retrieved
+    web3Service.on('key.updated', (id, key) => {
+      dispatch(addKey(id, key))
+    })
+
+    // When transaction succeeds
+    web3Service.on('key.saved', (id, key) => {
+      dispatch(addKey(id, key))
     })
 
     web3Service.on('error', error => {
@@ -68,26 +83,6 @@ const web3Middleware = config => {
       return function(action) {
         next(action)
 
-        // note: this needs to be after the reducer has seen it, because refreshAccountBalance
-        // triggers 'account.update' which dispatches UPDATE_ACCOUNT. The reducer assumes that
-        // ADD_ACCOUNT has reached it first, and throws an exception. Putting it after the
-        // reducer has a chance to populate state removes this race condition.
-        if (action.type === SET_ACCOUNT) {
-          // TODO: when the account has been updated we should reset web3Service and remove all listeners
-          // So that pending API calls do not interract with our "new" state.
-          web3Service.refreshAccountBalance(action.account)
-          dispatch(startLoading())
-          // TODO: only do that when on the page to create events because we do not need the list of locks for other users.
-          web3Service
-            .getPastLockCreationsTransactionsForUser(action.account.address)
-            .then(lockCreations => {
-              dispatch(doneLoading())
-              lockCreations.forEach(lockCreation => {
-                web3Service.getTransaction(lockCreation.transactionHash)
-              })
-            })
-        }
-
         const {
           router: {
             location: { pathname, hash },
@@ -95,11 +90,49 @@ const web3Middleware = config => {
         } = getState()
         const { lockAddress } = lockRoute(pathname + hash)
 
+        // note: this needs to be after the reducer has seen it, because refreshAccountBalance
+        // triggers 'account.update' which dispatches UPDATE_ACCOUNT. The reducer assumes that
+        // ADD_ACCOUNT has reached it first, and throws an exception. Putting it after the
+        // reducer has a chance to populate state removes this race condition.
+        if (action.type === SET_ACCOUNT) {
+          // If there is no lock address
+          if (!lockAddress) {
+            // TODO: when the account has been updated we should reset web3Service and remove all listeners
+            // So that pending API calls do not interract with our "new" state.
+            web3Service.refreshAccountBalance(action.account)
+            dispatch(startLoading())
+            // TODO: only do that when on the page to create events because we do not need the list of locks for other users.
+            web3Service
+              .getPastLockCreationsTransactionsForUser(action.account.address)
+              .then(lockCreations => {
+                dispatch(doneLoading())
+                lockCreations.forEach(lockCreation => {
+                  web3Service.getTransaction(lockCreation.transactionHash)
+                })
+              })
+          }
+          // If there is a lock address, let's fetch the user's key
+          if (lockAddress) {
+            web3Service.getKeyByLockForOwner(
+              lockAddress,
+              action.account.address
+            )
+          }
+        }
+
         if (action.type === SET_PROVIDER || action.type === SET_NETWORK) {
           // for both of these actions, the lock state is invalid, and must be refreshed.
           if (lockAddress) {
             web3Service.getLock(lockAddress)
           }
+        }
+
+        // When a new transaction was created, retrieve it
+        if (action.type === NEW_TRANSACTION) {
+          web3Service.getTransaction(
+            action.transaction.hash,
+            action.transaction
+          )
         }
       }
     }
