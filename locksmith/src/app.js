@@ -11,11 +11,19 @@ var transactionRouter = require('./routes/transaction')
 var lockRouter = require('./routes/lock')
 var blockRouter = require('./routes/block')
 var userRouter = require('./routes/user')
+var eventRouter = require('./routes/event')
 var purchaseRouter = require('./routes/purchase')
+var priceRouter = require('./routes/price')
 
 let lockSignatureConfiguration = {
   name: 'lock',
   required: ['name', 'owner', 'address'],
+  signee: 'owner',
+}
+
+let eventConfiguration = {
+  name: 'event',
+  required: ['lockAddress', 'name', 'location', 'date', 'owner'],
   signee: 'owner',
 }
 
@@ -29,6 +37,12 @@ app.post(
   /^\/lock$/i,
   signatureValidationMiddleware.generateProcessor(lockSignatureConfiguration)
 )
+
+app.post(
+  /^\/events$/i,
+  signatureValidationMiddleware.generateProcessor(eventConfiguration)
+)
+
 app.post(
   /^\/users$/i,
   signatureValidationMiddleware.generateProcessor({
@@ -59,7 +73,9 @@ app.use('/', router)
 app.use('/', transactionRouter)
 app.use('/', lockRouter)
 app.use('/block', blockRouter)
+app.use('/events', eventRouter)
 app.use('/users', userRouter)
 app.use('/purchase', purchaseRouter)
+app.use('/price', priceRouter)
 
 module.exports = app

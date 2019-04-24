@@ -62,6 +62,40 @@ module.exports = function lockApi(lockContract) {
       })
     },
 
+    async transferFrom(from, recipient, tokenId, transferFee, sender = from) {
+      const call = web3.eth.abi.encodeFunctionCall(
+        lockContract.abi.find(e => e.name === 'transferFrom'),
+        [from, recipient, tokenId]
+      )
+      return web3.eth.sendTransaction({
+        to: lockContract.address,
+        data: call,
+        from: sender,
+        value: transferFee,
+        gas: walletService.gasAmountConstants().withdrawFromLock,
+      })
+    },
+
+    async safeTransferFrom(
+      from,
+      recipient,
+      tokenId,
+      transferFee,
+      sender = from
+    ) {
+      const call = web3.eth.abi.encodeFunctionCall(
+        lockContract.abi.find(e => e.name === 'safeTransferFrom'),
+        [from, recipient, tokenId]
+      )
+      return web3.eth.sendTransaction({
+        to: lockContract.address,
+        data: call,
+        from: sender,
+        value: transferFee,
+        gas: walletService.gasAmountConstants().withdrawFromLock,
+      })
+    },
+
     async withdraw(from) {
       const call = web3.eth.abi.encodeFunctionCall(
         lockContract.abi.find(e => e.name === 'withdraw'),

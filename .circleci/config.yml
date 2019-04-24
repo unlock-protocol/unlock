@@ -116,7 +116,7 @@ jobs:
           name: Build tickets Image
           command: scripts/build-image.sh tickets
       - run:
-          name: Paywall Tests
+          name: Tickets Tests
           command: scripts/tests.sh tickets
 
   wedlocks-tests:
@@ -209,6 +209,25 @@ jobs:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" paywall netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
+  deploy-tickets-netlify:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          name: Set ENV_TARGET
+          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
+      - run:
+          name: Set IS_FORKED_PR
+          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
+      - run:
+          name: Build tickets Image
+          command: scripts/build-image.sh tickets
+      - run:
+          name: Deploy to Netlify
+          command: scripts/deploy.sh "$ENV_TARGET" tickets netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
+
   deploy-wedlocks-netlify:
     machine: true
     environment:
@@ -286,6 +305,9 @@ workflows:
       - unlock-app-tests
       - unlock-js-tests
       - unlock-app-chromatic:
+          filters:
+            branches:
+              ignore: production
           requires:
             - unlock-app-tests
       - integration-tests:
@@ -301,6 +323,9 @@ workflows:
           requires:
             - integration-tests
       - deploy-paywall-netlify:
+          requires:
+            - integration-tests
+      - deploy-tickets-netlify:
           requires:
             - integration-tests
       - deploy-unlock-protocol-com-netlify:
