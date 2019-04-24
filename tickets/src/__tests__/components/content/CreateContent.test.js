@@ -10,6 +10,9 @@ import {
 } from '../../../components/content/CreateContent'
 import createUnlockStore from '../../../createUnlockStore'
 
+const config = {
+  unlockAppUrl: 'https://unlock-protocol.com',
+}
 const inputLocks = {
   abc123: { address: 'abc123' },
   def459: { address: 'def456' },
@@ -44,7 +47,7 @@ describe('CreateContent', () => {
 
     const form = rtl.render(
       <Provider store={store}>
-        <CreateContent locks={['abc123', 'def456']} />
+        <CreateContent config={config} locks={['abc123', 'def456']} />
       </Provider>
     )
     expect(form.container.querySelector('option[value="abc123"]').text).toEqual(
@@ -62,7 +65,7 @@ describe('CreateContent', () => {
 
     const form = rtl.render(
       <Provider store={store}>
-        <CreateContent locks={[]} />
+        <CreateContent config={config} locks={[]} />
       </Provider>
     )
     const select = form.container.querySelector('select') // Get first select on the page
@@ -84,6 +87,7 @@ describe('CreateContent', () => {
     const form = rtl.render(
       <Provider store={store}>
         <CreateContent
+          config={config}
           account={{ address: 'ben' }}
           locks={['abc123', 'def456']}
           addEvent={addEvent}

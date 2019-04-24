@@ -14,6 +14,7 @@ import { pageTitle } from '../../constants'
 import UnlockPropTypes from '../../propTypes'
 import { addEvent } from '../../actions/ticket'
 import CreateEventButton from './create/CreateEventButton'
+import withConfig from '../../utils/withConfig'
 
 export const formValuesToEvent = formValues => {
   const { lockAddress, name, description, location, date } = formValues
@@ -85,7 +86,7 @@ export class CreateContent extends Component {
   }
 
   render() {
-    const { locks, now } = this.props
+    const { locks, now, config } = this.props
     const {
       date,
       name,
@@ -124,7 +125,7 @@ export class CreateContent extends Component {
                     />
                     <Text>
                       Don’t have a lock? <br />
-                      <Cta href="https://unlock-protocol.com" target="_blank">
+                      <Cta href={config.unlockAppUrl} target="_blank">
                         Create a new lock on unlock-protocol.com
                       </Cta>
                     </Text>
@@ -170,12 +171,7 @@ export class CreateContent extends Component {
                   <Title>Share Your RSVP Page</Title>
                   <Fieldset>
                     <CreateEventButton submitted={submitted} />
-                    <Text>
-                      Your event link: <br />
-                      <Cta>
-                        <EventUrl address={lockAddress} />
-                      </Cta>
-                    </Text>
+                    {submitted && <EventUrl address={lockAddress} />}
                   </Fieldset>
                 </Step>
               </Steps>
@@ -193,6 +189,7 @@ CreateContent.propTypes = {
   addEvent: PropTypes.func.isRequired,
   locks: PropTypes.arrayOf(PropTypes.string),
   submitted: PropTypes.bool,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 CreateContent.defaultProps = {
@@ -215,10 +212,12 @@ export const mapDispatchToProps = dispatch => ({
   addEvent: event => dispatch(addEvent(event)),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CreateContent)
+export default withConfig(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(CreateContent)
+)
 
 const StyledSelect = styled(Select)`
   background-color: var(--offwhite);
