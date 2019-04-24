@@ -10,7 +10,7 @@ export const TicketCode = ({ signedAddress, publicKey, config }) => {
     return null // If we don't have a signed address or public key, we can't return a QR code
   } else {
     const validateUri =
-      config.unlockTicketsUrl + '/' + signedAddress + '/' + publicKey
+      config.unlockTicketsUrl + '/checkin/' + signedAddress + '/' + publicKey
     return <StyledQRCode value={validateUri} size={350} renderAs="svg" />
   }
 }
