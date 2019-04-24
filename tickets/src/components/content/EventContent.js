@@ -16,6 +16,9 @@ import { purchaseKey } from '../../actions/key'
 import { loadEvent } from '../../actions/ticket'
 import PayButton from './purchase/PayButton'
 import { NoPhone } from '../../theme/media'
+import { transactionTypeMapping } from '../../utils/types'
+import keyStatus from '../../selectors/keys'
+import withConfig from '../../utils/withConfig'
 
 export class EventContent extends Component {
   constructor(props) {
@@ -42,7 +45,14 @@ export class EventContent extends Component {
   }
 
   render() {
-    const { lock, lockKey, purchaseKey, transaction, event } = this.props
+    const {
+      lock,
+      lockKey,
+      purchaseKey,
+      transaction,
+      event,
+      keyStatus,
+    } = this.props
 
     if (!lock.address || !event.name) return null // Wait for the lock and event to load
 
@@ -65,6 +75,7 @@ export class EventContent extends Component {
             <PaymentFieldset>
               <PayButton
                 transaction={transaction}
+                keyStatus={keyStatus}
                 purchaseKey={() => purchaseKey(lockKey)}
               />
               <Field>
@@ -106,6 +117,7 @@ EventContent.propTypes = {
   loadEvent: PropTypes.func.isRequired,
   lockKey: UnlockPropTypes.key,
   event: UnlockPropTypes.ticketedEvent,
+  keyStatus: PropTypes.string,
   // Properties to add once we're showing the QR code:
   //locked: PropTypes.bool.isRequired,
 }
@@ -115,6 +127,7 @@ EventContent.defaultProps = {
   transaction: null,
   lockKey: null,
   event: {},
+  keyStatus: null,
 }
 
 export const mapDispatchToProps = dispatch => ({
@@ -126,14 +139,10 @@ export const mapDispatchToProps = dispatch => ({
   },
 })
 
-export const mapStateToProps = ({
-  router,
-  locks,
-  keys,
-  account,
-  transactions,
-  tickets: { event },
-}) => {
+export const mapStateToProps = (
+  { router, locks, keys, account, transactions, tickets: { event } },
+  { config: { requiredConfirmations } }
+) => {
   if (!account) {
     return {}
   }
@@ -175,22 +184,28 @@ export const mapStateToProps = ({
   let transaction = null
   transaction = Object.values(transactions).find(
     transaction =>
-      transaction.type === TRANSACTION_TYPES.KEY_PURCHASE &&
+      transaction.type ===
+        transactionTypeMapping(TRANSACTION_TYPES.KEY_PURCHASE) &&
       transaction.key === lockKey.id
   )
+
+  const currentKeyStatus = keyStatus(lockKey.id, keys, requiredConfirmations)
 
   return {
     lock,
     lockKey,
     transaction,
+    keyStatus: currentKeyStatus,
     event: processedEvent,
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventContent)
+export default withConfig(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(EventContent)
+)
 
 const Title = styled.h1`
   font-family: 'IBM Plex Serif', serif;
