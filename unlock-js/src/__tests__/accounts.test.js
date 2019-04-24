@@ -1,6 +1,6 @@
 import {
   createAccountAndPasswordEncryptKey,
-  getAddressFromPrivateKey,
+  getAccountFromPrivateKey,
 } from '../accounts'
 
 describe('account helpers', () => {
@@ -28,12 +28,20 @@ describe('account helpers', () => {
         passwordEncryptedPrivateKey,
       } = createAccountAndPasswordEncryptKey('guest')
 
-      const decryptedAddress = getAddressFromPrivateKey(
+      const decryptedAddress = getAccountFromPrivateKey(
         passwordEncryptedPrivateKey,
         'guest'
       )
 
-      expect(decryptedAddress).toBe(address)
+      expect(decryptedAddress).toEqual(
+        expect.objectContaining({
+          address: address,
+          privateKey: expect.any(String),
+          encrypt: expect.any(Function),
+          sign: expect.any(Function),
+          signTransaction: expect.any(Function),
+        })
+      )
     })
 
     it('should throw when an incorrect password is given for an account', () => {
@@ -43,7 +51,7 @@ describe('account helpers', () => {
       } = createAccountAndPasswordEncryptKey('guest')
 
       expect(() => {
-        getAddressFromPrivateKey(passwordEncryptedPrivateKey, 'ghost')
+        getAccountFromPrivateKey(passwordEncryptedPrivateKey, 'ghost')
       }).toThrow()
     })
   })
