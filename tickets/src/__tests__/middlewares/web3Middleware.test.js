@@ -59,11 +59,15 @@ class MockWebService extends EventEmitter {
 
 let mockWeb3Service = new MockWebService()
 
-jest.mock('@unlock-protocol/unlock-js', () => ({
-  Web3Service: function() {
-    return mockWeb3Service
-  },
-}))
+jest.mock('@unlock-protocol/unlock-js', () => {
+  const mockUnlock = require.requireActual('@unlock-protocol/unlock-js') // Original module
+  return {
+    ...mockUnlock,
+    Web3Service: function() {
+      return mockWeb3Service
+    },
+  }
+})
 
 UnlockJs.mockImplementation = MockWebService
 
@@ -159,7 +163,10 @@ describe('Web3 middleware', () => {
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: ADD_TRANSACTION,
-        transaction,
+        transaction: {
+          hash: transaction.hash,
+          network: 'test',
+        },
       })
     )
   })

@@ -39,7 +39,7 @@ describe('Storage middleware', () => {
       address: '0xabc',
     }
     network = {
-      name: 'test',
+      name: 1984,
     }
     lock = {
       address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
@@ -67,6 +67,7 @@ describe('Storage middleware', () => {
         hash: '0x123',
         to: 'unlock',
         from: 'julien',
+        network: 1984,
       }
       const action = { type: NEW_TRANSACTION, transaction }
 
@@ -77,7 +78,8 @@ describe('Storage middleware', () => {
       expect(mockStorageService.storeTransaction).toHaveBeenCalledWith(
         transaction.hash,
         transaction.from,
-        transaction.to
+        transaction.to,
+        transaction.network
       )
       expect(next).toHaveBeenCalledTimes(1)
     })
@@ -93,7 +95,20 @@ describe('Storage middleware', () => {
       const action = { type: SET_ACCOUNT, account }
 
       mockStorageService.getTransactionsHashesSentBy = jest.fn(() => {
-        return Promise.resolve(['0xabc', '0xdef'])
+        return Promise.resolve([
+          {
+            hash: '0xabc',
+            from: 'hi',
+            to: 'there',
+            network: 4,
+          },
+          {
+            hash: '0xdef',
+            from: 'bye',
+            to: 'person',
+            network: 1984,
+          },
+        ])
       })
       await invoke(action)
 
@@ -104,17 +119,14 @@ describe('Storage middleware', () => {
       expect(store.dispatch).toHaveBeenNthCalledWith(
         1,
         addTransaction({
-          hash: '0xabc',
-        })
-      )
-
-      expect(store.dispatch).toHaveBeenNthCalledWith(
-        2,
-        addTransaction({
           hash: '0xdef',
+          from: 'bye',
+          to: 'person',
+          network: 1984,
         })
       )
 
+      expect(store.dispatch).toHaveBeenCalledTimes(1)
       expect(next).toHaveBeenCalledTimes(1)
     })
   })

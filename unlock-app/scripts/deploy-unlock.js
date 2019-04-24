@@ -1,9 +1,7 @@
 /* eslint-disable no-console */
 
-// TODO: move into unlock-js
-
-const Web3 = require('web3')
-const Unlock = require('unlock-abi-0').Unlock
+const { deploy } = require('@unlock-protocol/unlock-js')
+const Unlock = require('unlock-abi-0-2').Unlock
 const net = require('net')
 
 /*
@@ -13,8 +11,6 @@ const net = require('net')
 
 const host = process.env.HTTP_PROVIDER || '127.0.0.1'
 const port = 8545
-const web3 = new Web3(`http://${host}:${port}`)
-const unlock = new web3.eth.Contract(Unlock.abi)
 
 const serverIsUp = (delay, maxAttempts) =>
   new Promise((resolve, reject) => {
@@ -39,35 +35,10 @@ const serverIsUp = (delay, maxAttempts) =>
     tryConnecting()
   })
 
-let accounts
 serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
   .then(() => {
-    // Get accounts
-    return web3.eth.getAccounts()
-  })
-  .then(_accounts => {
-    accounts = _accounts
-    // Deploy contract
-    return unlock
-      .deploy({
-        data: Unlock.bytecode,
-      })
-      .send({
-        from: accounts[0],
-        gas: 4000000,
-      })
-  })
-  .then(newContractInstance => {
-    // Echo the contract address
-    console.log(newContractInstance.options.address)
-
-    // Initialize
-    const data = unlock.methods.initialize(accounts[0]).encodeABI()
-    return web3.eth.sendTransaction({
-      to: newContractInstance.options.address,
-      from: accounts[0],
-      data,
-      gas: 1000000,
+    return deploy(host, port, Unlock, newContractInstance => {
+      console.log(newContractInstance.options.address)
     })
   })
   .catch(error => {

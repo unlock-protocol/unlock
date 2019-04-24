@@ -1,4 +1,3 @@
-import { connect } from 'react-redux'
 import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
@@ -7,15 +6,15 @@ import { Colophon } from './LockStyles'
 import { RoundedLogo } from '../interface/Logo'
 import Media from '../../theme/media'
 import { SHOW_FLAG_FOR } from '../../constants'
-import { lockRoute } from '../../utils/routes'
-import { expirationAsDate } from '../../utils/durations'
 
 export function LockedFlag() {
   return (
     <Colophon>
       <p>Powered by</p>
       <RoundedLogo />
-      <a href="/">Unlock</a>
+      <a href="/" target="_blank">
+        Unlock
+      </a>
     </Colophon>
   )
 }
@@ -41,7 +40,9 @@ export const UnlockedFlag = ({ expiration }) => {
       </aside>
       <RoundedLogo />
       <p>Powered by</p>
-      <a href="/">Unlock</a>
+      <a href="/" target="_blank">
+        Unlock
+      </a>
     </Flag>
   )
 }
@@ -50,35 +51,7 @@ UnlockedFlag.propTypes = {
   expiration: PropTypes.string.isRequired,
 }
 
-export const mapStateToProps = ({ locks, keys, router, account }) => {
-  const { lockAddress } = lockRoute(router.location.pathname)
-
-  const lockFromUri = Object.values(locks).find(
-    lock => lock.address === lockAddress
-  )
-
-  let validKeys = []
-  const locksFromUri = lockFromUri ? [lockFromUri] : []
-  locksFromUri.forEach(lock => {
-    for (let k of Object.values(keys)) {
-      if (
-        k.lock === lock.address &&
-        account &&
-        k.owner === account.address &&
-        k.expiration > new Date().getTime() / 1000
-      ) {
-        validKeys.push(k)
-      }
-    }
-  })
-
-  const key = validKeys[0]
-
-  const expiration = expirationAsDate(key.expiration)
-  return { expiration }
-}
-
-export default connect(mapStateToProps)(UnlockedFlag)
+export default UnlockedFlag
 
 const Flag = styled(Colophon).attrs({
   className: 'flag',
@@ -177,7 +150,7 @@ const Flag = styled(Colophon).attrs({
         grid-row: 2;
         align-self: start;
       }
-  
+
       & > div {
         height: 16px;
         width: 16px;

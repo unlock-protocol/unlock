@@ -5,7 +5,12 @@ import { PROVIDER_READY } from '../actions/provider'
 import { POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants'
 import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
-import { FATAL_WRONG_NETWORK, FATAL_NON_DEPLOYED_CONTRACT } from '../errors'
+import {
+  FATAL_WRONG_NETWORK,
+  FATAL_NON_DEPLOYED_CONTRACT,
+  FAILED_TO_SIGN_ADDRESS,
+} from '../errors'
+import { SIGN_ADDRESS, gotSignedAddress } from '../actions/ticket'
 
 const { WalletService } = UnlockJs
 
@@ -72,6 +77,19 @@ const walletMiddleware = config => {
         if (action.type === PROVIDER_READY) {
           const provider = config.providers[getState().provider]
           walletService.connect(provider)
+        }
+
+        if (action.type === SIGN_ADDRESS) {
+          const { account } = getState()
+          const { address } = action
+          walletService.signData(account, address, (error, signedAddress) => {
+            if (error) {
+              // TODO: Does this need to be handled in the error consumer?
+              dispatch(setError(FAILED_TO_SIGN_ADDRESS, error))
+            } else {
+              dispatch(gotSignedAddress(address, signedAddress))
+            }
+          })
         }
         next(action)
       }
