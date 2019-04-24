@@ -5,7 +5,12 @@ export const EventUrl = ({ address }) => {
   if (!address) {
     return <span>...</span>
   }
-  return <span>https://tickets.unlock-protocol.com/event/{address}</span>
+  const url = 'https://tickets.unlock-protocol.com/event/' + address
+  return (
+    <a href={url} target="_blank" rel="noopener noreferrer">
+      {url}
+    </a>
+  )
 }
 
 EventUrl.propTypes = {
