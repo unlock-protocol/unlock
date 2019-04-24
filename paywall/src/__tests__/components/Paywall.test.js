@@ -2,7 +2,7 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
 import createUnlockStore from '../../createUnlockStore'
-import { Paywall, mapStateToProps } from '../../components/Paywall'
+import Paywall, { mapStateToProps } from '../../components/Paywall'
 import { ConfigContext } from '../../utils/withConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
 import { POST_MESSAGE_SCROLL_POSITION } from '../../paywall-builder/constants'
@@ -42,32 +42,47 @@ let futureDate = new Date()
 futureDate.setYear(futureDate.getFullYear() + 1)
 futureDate = futureDate.getTime() / 1000
 
+const key = {
+  id: 'aKey',
+  lock: lock.address,
+  owner: account.address,
+  expiration: futureDate,
+}
 const keys = {
-  aKey: {
-    id: 'aKey',
-    lock: lock.address,
-    owner: account.address,
-    expiration: futureDate,
-  },
+  aKey: key,
 }
 const modals = []
 const transactions = {}
 
-const store = createUnlockStore({
+let state = {
   account,
   locks,
   keys,
   modals,
   router,
   transactions,
-})
+}
+let store = createUnlockStore(state)
 
 function renderMockPaywall(props = {}) {
   return rtl.render(
     <ConfigContext.Provider value={config}>
       <WindowContext.Provider value={fakeWindow}>
         <Provider store={store}>
-          <Paywall locks={[]} locked redirect={false} {...props} />
+          <Paywall
+            locks={[]}
+            locked
+            redirect={false}
+            transaction={null}
+            account={null}
+            keyStatus="none"
+            lockKey={{
+              lock: 'lock',
+              expiration: 12345,
+            }}
+            expiration=""
+            {...props}
+          />
         </Provider>
       </WindowContext.Provider>
     </ConfigContext.Provider>
@@ -83,6 +98,15 @@ afterEach(() => {
 })
 describe('Paywall', () => {
   beforeEach(() => {
+    state = {
+      account,
+      locks,
+      keys,
+      modals,
+      router,
+      transactions,
+    }
+    store = createUnlockStore(state)
     config = { providers: [], isInIframe: true, requiredConfirmations: 12 }
     fakeWindow = {
       location: {
@@ -135,22 +159,28 @@ describe('Paywall', () => {
 
     it('should be locked when there is a matching key and transaction is not confirmed yet', () => {
       expect.assertions(1)
+      const transactions = {
+        transaction: {
+          id: 'transaction',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          key: 'aKey',
+          lock: lock.address,
+          confirmations: 3,
+        },
+      }
       const props = mapStateToProps(
         {
           locks,
-          keys,
+          keys: {
+            aKey: {
+              ...key,
+              transactions,
+            },
+          },
           modals,
           router,
           account,
-          transactions: {
-            transaction: {
-              id: 'transaction',
-              type: TRANSACTION_TYPES.KEY_PURCHASE,
-              key: 'aKey',
-              lock: lock.address,
-              confirmations: 3,
-            },
-          },
+          transactions,
         },
         { config }
       )
@@ -159,34 +189,26 @@ describe('Paywall', () => {
 
     it('should not be locked when there is a matching key and transaction is confirmed', () => {
       expect.assertions(1)
+      const transactions = {
+        transaction: {
+          id: 'transaction',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          key: 'aKey',
+          lock: lock.address,
+          confirmations: 13,
+          status: 'mined',
+        },
+      }
       const props = mapStateToProps(
         {
           locks,
-          keys,
-          modals,
-          router,
-          account,
-          transactions: {
-            transaction: {
-              id: 'transaction',
-              type: TRANSACTION_TYPES.KEY_PURCHASE,
-              key: 'aKey',
-              lock: lock.address,
-              confirmations: 13,
+          keys: {
+            aKey: {
+              ...key,
+              transactions,
+              expiration: new Date().getTime() / 1000 + 10000,
             },
           },
-        },
-        { config }
-      )
-      expect(props.locked).toBe(false)
-    })
-
-    it('should not be locked when there is a matching key and no transaction', () => {
-      expect.assertions(1)
-      const props = mapStateToProps(
-        {
-          locks,
-          keys,
           modals,
           router,
           account,
@@ -195,6 +217,82 @@ describe('Paywall', () => {
         { config }
       )
       expect(props.locked).toBe(false)
+    })
+
+    it('should be locked when there is a matching expired key and fully confirmed transaction', () => {
+      expect.assertions(1)
+      const transactions = {
+        transaction: {
+          id: 'transaction',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          key: 'aKey',
+          lock: lock.address,
+          confirmations: 13,
+          status: 'mined',
+        },
+      }
+      const props = mapStateToProps(
+        {
+          locks,
+          keys: {
+            aKey: {
+              ...key,
+              expiration: 1234,
+              transactions,
+            },
+          },
+          modals,
+          router,
+          account,
+          transactions,
+        },
+        { config }
+      )
+      expect(props.locked).toBe(true)
+    })
+
+    it('should be locked and pull in the newest pending transaction with an expired key', () => {
+      expect.assertions(2)
+      const pendingTransaction = {
+        id: 'pendingTransaction',
+        type: TRANSACTION_TYPES.KEY_PURCHASE,
+        key: 'aKey',
+        lock: lock.address,
+        confirmations: 13,
+        status: 'pending',
+        blockNumber: 500,
+      }
+      const transactions = {
+        transaction: {
+          id: 'transaction',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          key: 'aKey',
+          lock: lock.address,
+          confirmations: 13,
+          status: 'mined',
+          blockNumber: 1,
+        },
+        pendingTransaction,
+      }
+      const props = mapStateToProps(
+        {
+          locks,
+          keys: {
+            aKey: {
+              ...key,
+              expiration: 1234,
+              transactions,
+            },
+          },
+          modals,
+          router,
+          account,
+          transactions,
+        },
+        { config }
+      )
+      expect(props.locked).toBe(true)
+      expect(props.transaction).toBe(pendingTransaction)
     })
 
     it('should pass redirect if present in the URI', () => {
@@ -263,6 +361,9 @@ describe('Paywall', () => {
         hash: '0x777',
         key: '0x123-0x456',
       }
+      const transactions = {
+        '0x777': transaction,
+      }
       const newProps = mapStateToProps(
         {
           account: {
@@ -276,13 +377,12 @@ describe('Paywall', () => {
               owner: '0x123',
               expiration: 0,
               data: 'hello',
+              transactions,
             },
           },
           modals,
           router,
-          transactions: {
-            '0x777': transaction,
-          },
+          transactions,
         },
         { config }
       )
@@ -321,9 +421,11 @@ describe('Paywall', () => {
   describe('listen for scroll position', () => {
     it('should accept a scroll position that is a real number', () => {
       expect.assertions(1)
+      key.expiration = 0
+      store = createUnlockStore(state)
       let component
       rtl.act(() => {
-        component = renderMockPaywall({ locks: [lock] })
+        component = renderMockPaywall({ locks: [lock] }, true)
       })
       const listener = getPostmessageEventListener()
 
@@ -340,7 +442,11 @@ describe('Paywall', () => {
     })
   })
 
-  describe('handleIframe', () => {
+  describe('handleIframe, locked', () => {
+    beforeEach(() => {
+      key.expiration = 0
+      store = createUnlockStore(state)
+    })
     it('should post "locked" when it is locked in iframe', () => {
       expect.assertions(1)
       config.isInIframe = true
@@ -362,11 +468,18 @@ describe('Paywall', () => {
 
       expect(fakeWindow.parent.postMessage).not.toHaveBeenCalled()
     })
+  })
+  describe('handleIframe, unlocked', () => {
+    beforeEach(() => {
+      key.expiration = futureDate
+      store = createUnlockStore(state)
+    })
+
     it('should post "unlocked" when it is unlocked in iframe', () => {
       expect.assertions(1)
       config.isInIframe = true
       rtl.act(() => {
-        renderMockPaywall({ locked: false })
+        renderMockPaywall()
       })
 
       expect(fakeWindow.parent.postMessage).toHaveBeenCalledWith(
@@ -387,26 +500,28 @@ describe('Paywall', () => {
   })
 
   describe('on pending transaction', () => {
+    beforeEach(() => {
+      store = createUnlockStore(state)
+    })
+
     it('should redirect with transaction hash if requested', () => {
       expect.assertions(1)
 
       rtl.act(() => {
-        renderMockPaywall({
-          locked: true,
-          transaction: {
-            status: 'pending',
-            hash: 'hash',
-          },
-          redirect: 'http://example.com',
-          account: 'account',
-        })
+        renderMockPaywall()
       })
 
-      expect(fakeWindow.location.href).toBe('http://example.com#hash')
+      expect(fakeWindow.location.href).toBe(
+        'http://example.com#' + account.address
+      )
     })
   })
 
   describe('on unlocking', () => {
+    beforeEach(() => {
+      store = createUnlockStore(state)
+    })
+
     it('should redirect with account if requested', () => {
       expect.assertions(1)
 
@@ -418,19 +533,9 @@ describe('Paywall', () => {
         })
       })
 
-      expect(fakeWindow.location.href).toBe('http://example.com#account')
-    })
-    it('should redirect without account if requested', () => {
-      expect.assertions(1)
-
-      rtl.act(() => {
-        renderMockPaywall({
-          locked: false,
-          redirect: 'http://example.com',
-        })
-      })
-
-      expect(fakeWindow.location.href).toBe('http://example.com')
+      expect(fakeWindow.location.href).toBe(
+        'http://example.com#' + account.address
+      )
     })
   })
 
@@ -445,6 +550,8 @@ describe('Paywall', () => {
 
     it('should not be present when the paywall is locked', () => {
       expect.assertions(1)
+      key.expiration = 0
+      store = createUnlockStore(state)
       const component = renderMockPaywall({ locked: true })
 
       const flagText = component.queryByTestId('unlocked')

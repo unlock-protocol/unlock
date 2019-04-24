@@ -15,3 +15,13 @@ export interface SignatureValidationConfiguration {
   required: string[]
   name: string
 }
+
+export interface EventCreation {
+  lockAddress: string
+  name: string
+  description: string
+  location: string
+  date: number
+  logo: string
+  owner: string
+}

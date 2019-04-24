@@ -5931,7 +5931,7 @@ Object {
             <footer
               class="c7 c8"
             >
-              Sold Out
+              Insufficient funds
             </footer>
           </div>
         </div>
@@ -5987,7 +5987,7 @@ Object {
           <footer
             class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
           >
-            Sold Out
+            Insufficient funds
           </footer>
         </div>
       </div>
@@ -6646,7 +6646,7 @@ exports[`Storyshots Lock with a mined key. 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c8 {
+    .c9 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -6658,25 +6658,25 @@ Object {
   line-height: 50px;
 }
 
-.c8 > svg {
+.c9 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c8:hover {
+.c9:hover {
   background-color: var(--green);
 }
 
-.c8:hover > svg {
+.c9:hover > svg {
   fill: white;
 }
 
-.c7:hover .c16 {
+.c8:hover .c17 {
   display: inline-block;
 }
 
-.c17 .c7 {
+.c18 .c8 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -6687,28 +6687,28 @@ Object {
   align-self: center;
 }
 
-.c17 .c7:nth-child(1) {
+.c18 .c8:nth-child(1) {
   pointer-events: none;
 }
 
-.c17 .c7:nth-child(2) {
+.c18 .c8:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c17 .c7 > svg {
+.c18 .c8 > svg {
   fill: var(--grey);
 }
 
-.c17 .c7:hover > svg {
+.c18 .c8:hover > svg {
   fill: var(--grey);
 }
 
-.c18 .c7 {
+.c19 .c8 {
   margin: 24px;
 }
 
-.c18 .c7 small {
+.c19 .c8 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -6795,77 +6795,69 @@ Object {
   align-content: center;
 }
 
-.c15 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 0px 0px 4px 4px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--green);
-  color: var(--white);
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
+.c12 {
   display: none;
 }
 
-.c13 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 0px 0px 4px 4px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--green);
-  color: var(--white);
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-}
-
-.c11 {
-  display: none;
-}
-
-.c6 {
+.c7 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c6:hover .c10 {
+.c7:hover .c11 {
   display: block;
 }
 
-.c6:hover .c9 {
+.c7:hover .c10 {
   display: none;
 }
 
-.c6:hover ~ .c14 {
+.c16 {
   display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+  display: none;
 }
 
-.c6:hover ~ .c12 {
-  display: none;
+.c14 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
 }
 
 .c2 {
@@ -6890,6 +6882,39 @@ Object {
   border-radius: 4px;
   background-color: var(--white);
   border: 1px solid var(--green);
+  cursor: pointer;
+}
+
+.c2 .c15 {
+  display: none;
+}
+
+.c2 .c13 {
+  display: grid;
+}
+
+.c2:hover .c6 {
+  background-color: var(--green);
+}
+
+.c2:hover .c6 svg {
+  fill: var(--white);
+}
+
+.c2:hover .c11 {
+  display: block;
+}
+
+.c2:hover .c10 {
+  display: none;
+}
+
+.c2:hover .c15 {
+  display: grid;
+}
+
+.c2:hover .c13 {
+  display: none;
 }
 
 <div>
@@ -6926,10 +6951,10 @@ Object {
             </div>
           </div>
           <a
-            class="c6 c7 c8"
+            class="c6 c7 c8 c9"
           >
             <svg
-              class="c9 "
+              class="c10 "
               viewBox="0 0 24 24"
             >
               <title />
@@ -6940,7 +6965,7 @@ Object {
               />
             </svg>
             <svg
-              class="c10 c11"
+              class="c11 c12"
               viewBox="0 0 24 24"
             >
               <title />
@@ -6953,12 +6978,12 @@ Object {
             
           </a>
           <footer
-            class="c12 c13"
+            class="c13 c14"
           >
             Payment Confirmed
           </footer>
           <footer
-            class="c14 c15"
+            class="c15 c16"
           >
             Go to Content
           </footer>
@@ -6981,7 +7006,7 @@ Object {
         Monthly
       </header>
       <div
-        class="sc-1549ebs-3 ynhyps-0 DtZSS"
+        class="sc-1549ebs-3 ynhyps-0 dMttvX"
       >
         <div
           class="sc-1549ebs-6 hGyOOg"
@@ -7000,7 +7025,7 @@ Object {
           </div>
         </div>
         <a
-          class="sc-1hzn3pu-2 ffRwyB is925m-0 kmZaWo"
+          class="sc-1hzn3pu-2 jZYYLs is925m-0 kmZaWo"
         >
           <svg
             class="sc-1hzn3pu-0 dozNUb"
@@ -8242,7 +8267,7 @@ Object {
 }
 `;
 
-exports[`Storyshots Optimistic Unlocking Flags the confirmed flag 1`] = `
+exports[`Storyshots Optimistic Overlay confirmed 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -8257,7 +8282,7 @@ Object {
   fill: white;
 }
 
-.c7 {
+.c8 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -8269,25 +8294,25 @@ Object {
   line-height: 24px;
 }
 
-.c7 > svg {
+.c8 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c7:hover {
+.c8:hover {
   background-color: var(--green);
 }
 
-.c7:hover > svg {
+.c8:hover > svg {
   fill: white;
 }
 
-.c6:hover .c12 {
+.c7:hover .c13 {
   display: inline-block;
 }
 
-.c13 .c6 {
+.c14 .c7 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -8298,28 +8323,28 @@ Object {
   align-self: center;
 }
 
-.c13 .c6:nth-child(1) {
+.c14 .c7:nth-child(1) {
   pointer-events: none;
 }
 
-.c13 .c6:nth-child(2) {
+.c14 .c7:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c13 .c6 > svg {
+.c14 .c7 > svg {
   fill: var(--grey);
 }
 
-.c13 .c6:hover > svg {
+.c14 .c7:hover > svg {
   fill: var(--grey);
 }
 
-.c14 .c6 {
+.c15 .c7 {
   margin: 24px;
 }
 
-.c14 .c6 small {
+.c15 .c7 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -8328,29 +8353,37 @@ Object {
   text-align: center;
 }
 
-.c10 {
+.c11 {
   display: none;
 }
 
-.c5 {
+.c6 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c5:hover .c9 {
+.c6:hover .c10 {
   display: block;
 }
 
-.c5:hover .c8 {
+.c6:hover .c9 {
   display: none;
 }
 
-.c5:hover ~ .c15 {
-  display: grid;
+.c16:hover .c5 {
+  background-color: var(--green);
 }
 
-.c5:hover ~ .c16 {
+.c16:hover .c5 svg {
+  fill: var(--white);
+}
+
+.c16:hover .c10 {
+  display: block;
+}
+
+.c16:hover .c9 {
   display: none;
 }
 
@@ -8360,6 +8393,28 @@ Object {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
+}
+
+.c12 {
+  display: none;
+}
+
+.c4 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
 }
 
 .c0 {
@@ -8389,26 +8444,24 @@ Object {
   margin-left: 10px;
 }
 
-.c11 {
-  display: none;
+.c0:hover {
+  cursor: pointer;
 }
 
-.c4 {
-  width: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
+.c0:hover .c5 {
+  background-color: var(--green);
+}
+
+.c0:hover .c5 svg {
+  fill: var(--white);
+}
+
+.c0:hover .c10 {
+  display: block;
+}
+
+.c0:hover .c9 {
+  display: none;
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -8419,12 +8472,69 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
+  .jnNzBz > .c1 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c12 {
+    font-size: 10px;
+    width: 170px;
+    display: grid;
+    grid-template-columns: 1fr 18px 1fr;
+    grid-template-rows: 1fr;
+    font-size: 12px;
+  }
+
+  .c12 > div {
+    grid-row: 1;
+    grid-column: 2;
+    margin-left: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c12 > p {
+    width: 100%;
+    color: var(--slate);
+    grid-row: 1;
+    grid-column: 1;
+    text-align: right;
+    margin: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    padding-right: 2px;
+  }
+
+  .c12 > a {
+    grid-row: 1;
+    grid-column: 3;
+    justify-self: start;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    color: var(--red);
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c4 {
+    -webkit-align-self: initial;
+    -ms-flex-item-align: initial;
+    align-self: initial;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c0 {
     font-size: 10px;
     display: grid;
-    height: 43px;
+    height: 60px;
     grid-template-columns: 1.6fr 1fr 1fr;
-    grid-template-rows: 43px;
+    grid-template-rows: 60px;
     width: 100%;
     -webkit-align-items: center;
     -webkit-box-align: center;
@@ -8448,8 +8558,668 @@ Object {
   }
 }
 
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section>
+        <h1>
+          HTML Ipsum Presents
+        </h1>
+        <p>
+          <strong>
+            Pellentesque habitant morbi tristique
+          </strong>
+           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+          <em>
+            Aenean ultricies mi vitae est.
+          </em>
+           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+          <code>
+            commodo vitae
+          </code>
+          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+          <a
+            href="."
+          >
+            Donec non enim
+          </a>
+           in turpis pulvinar facilisis. Ut felis.
+        </p>
+        <h2>
+          Header Level 2
+        </h2>
+        <ol>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ol>
+        <blockquote>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+          </p>
+        </blockquote>
+        <h3>
+          Header Level 3
+        </h3>
+        <ul>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ul>
+        <div
+          class="unlock start show hide optimism"
+        >
+          <div
+            class="c0"
+          >
+            <div
+              class="c1 c2"
+            >
+              <div
+                class="c3"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <p>
+              Purchase Confirmed
+            </p>
+            <div
+              class="c4"
+            >
+              <a
+                class="c5 c6 c7 c8"
+                height="24px"
+                width="24px"
+              >
+                <svg
+                  class="c9 "
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <svg
+                  class="c10 c11"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                
+              </a>
+            </div>
+            <div
+              class="c12"
+            >
+              <p>
+                Powered by
+              </p>
+              <div
+                class="c1 c2"
+              >
+                <div
+                  class="c3"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <a
+                href="/"
+              >
+                Unlock
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section>
+      <h1>
+        HTML Ipsum Presents
+      </h1>
+      <p>
+        <strong>
+          Pellentesque habitant morbi tristique
+        </strong>
+         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        <em>
+          Aenean ultricies mi vitae est.
+        </em>
+         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>
+          commodo vitae
+        </code>
+        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+        <a
+          href="."
+        >
+          Donec non enim
+        </a>
+         in turpis pulvinar facilisis. Ut felis.
+      </p>
+      <h2>
+        Header Level 2
+      </h2>
+      <ol>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ol>
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+      <h3>
+        Header Level 3
+      </h3>
+      <ul>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ul>
+      <div
+        class="unlock start show hide optimism"
+      >
+        <div
+          class="j1ncz7-3 sc-1thcbar-0 jPJKwm"
+        >
+          <div
+            class="j1ncz7-0 iFZnpo"
+          >
+            <div
+              class="sth0f3-0 khsUlM"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </div>
+          <p>
+            Purchase Confirmed
+          </p>
+          <div
+            class="j1ncz7-5 jatnEK"
+          >
+            <a
+              class="sc-1hzn3pu-2 jZYYLs is925m-0 kuCWTv"
+              height="24px"
+              width="24px"
+            >
+              <svg
+                class="sc-1hzn3pu-0 dozNUb"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <svg
+                class="sc-1hzn3pu-1 gckVYZ"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
+          </div>
+          <div
+            class="j1ncz7-4 jOavbS"
+          >
+            <p>
+              Powered by
+            </p>
+            <div
+              class="j1ncz7-0 iFZnpo"
+            >
+              <div
+                class="sth0f3-0 khsUlM"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <a
+              href="/"
+            >
+              Unlock
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Optimistic Overlay if pessimistic, displays nothing 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section>
+        <h1>
+          HTML Ipsum Presents
+        </h1>
+        <p>
+          <strong>
+            Pellentesque habitant morbi tristique
+          </strong>
+           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+          <em>
+            Aenean ultricies mi vitae est.
+          </em>
+           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+          <code>
+            commodo vitae
+          </code>
+          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+          <a
+            href="."
+          >
+            Donec non enim
+          </a>
+           in turpis pulvinar facilisis. Ut felis.
+        </p>
+        <h2>
+          Header Level 2
+        </h2>
+        <ol>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ol>
+        <blockquote>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+          </p>
+        </blockquote>
+        <h3>
+          Header Level 3
+        </h3>
+        <ul>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ul>
+        <div
+          class="unlock start show hide optimism"
+        />
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section>
+      <h1>
+        HTML Ipsum Presents
+      </h1>
+      <p>
+        <strong>
+          Pellentesque habitant morbi tristique
+        </strong>
+         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        <em>
+          Aenean ultricies mi vitae est.
+        </em>
+         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>
+          commodo vitae
+        </code>
+        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+        <a
+          href="."
+        >
+          Donec non enim
+        </a>
+         in turpis pulvinar facilisis. Ut felis.
+      </p>
+      <h2>
+        Header Level 2
+      </h2>
+      <ol>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ol>
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+      <h3>
+        Header Level 3
+      </h3>
+      <ul>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ul>
+      <div
+        class="unlock start show hide optimism"
+      />
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Optimistic Overlay pending purchase 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c3 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c3 > svg {
+  fill: white;
+}
+
+.c2 {
+  grid-row: 1 / span 2;
+  margin-left: -14px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c5 {
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+  grid-column: 2;
+}
+
+.c7 {
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+  grid-column: 2;
+  position: absolute;
+  background: var(--yellow);
+  width: 0px;
+}
+
+.c0 {
+  height: 80px;
+  width: 120px;
+  float: right;
+  box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
+  background: var(--white);
+  margin: auto;
+  display: grid;
+  grid-template-columns: 25px 1fr;
+  grid-template-rows: 1fr 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 > p {
+  margin-bottom: 5px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c0 > .c6,
+.c0 > .c4 {
+  margin-left: 10px;
+}
+
+.c8 {
+  display: none;
+}
+
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c11 {
+  .c3 {
+    height: 16px;
+    width: 16px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    font-size: 10px;
+    display: grid;
+    height: 60px;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-rows: 60px;
+    width: 100%;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+
+  .c0 > .c1 {
+    display: none;
+  }
+
+  .c0 > .c6,
+  .c0 > .c4 {
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c0 > p {
+    margin-bottom: inherit;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c8 {
     font-size: 10px;
     width: 170px;
     display: grid;
@@ -8458,7 +9228,7 @@ Object {
     font-size: 12px;
   }
 
-  .c11 > div {
+  .c8 > div {
     grid-row: 1;
     grid-column: 2;
     margin-left: 0;
@@ -8467,7 +9237,7 @@ Object {
     align-self: center;
   }
 
-  .c11 > p {
+  .c8 > p {
     width: 100%;
     color: var(--slate);
     grid-row: 1;
@@ -8480,7 +9250,1865 @@ Object {
     padding-right: 2px;
   }
 
-  .c11 > a {
+  .c8 > a {
+    grid-row: 1;
+    grid-column: 3;
+    justify-self: start;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    color: var(--red);
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section>
+        <h1>
+          HTML Ipsum Presents
+        </h1>
+        <p>
+          <strong>
+            Pellentesque habitant morbi tristique
+          </strong>
+           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+          <em>
+            Aenean ultricies mi vitae est.
+          </em>
+           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+          <code>
+            commodo vitae
+          </code>
+          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+          <a
+            href="."
+          >
+            Donec non enim
+          </a>
+           in turpis pulvinar facilisis. Ut felis.
+        </p>
+        <h2>
+          Header Level 2
+        </h2>
+        <ol>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ol>
+        <blockquote>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+          </p>
+        </blockquote>
+        <h3>
+          Header Level 3
+        </h3>
+        <ul>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ul>
+        <div
+          class="unlock start show hide optimism"
+        >
+          <div
+            class="c0"
+          >
+            <div
+              class="c1 c2"
+            >
+              <div
+                class="c3"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <p>
+              Confirming Purchase
+            </p>
+            <div
+              class="c4 c5"
+            >
+              <div
+                class="c4 c6 c7"
+              />
+            </div>
+            <div
+              class="c8"
+            >
+              <p>
+                Powered by
+              </p>
+              <div
+                class="c1 c2"
+              >
+                <div
+                  class="c3"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <a
+                href="/"
+              >
+                Unlock
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section>
+      <h1>
+        HTML Ipsum Presents
+      </h1>
+      <p>
+        <strong>
+          Pellentesque habitant morbi tristique
+        </strong>
+         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        <em>
+          Aenean ultricies mi vitae est.
+        </em>
+         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>
+          commodo vitae
+        </code>
+        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+        <a
+          href="."
+        >
+          Donec non enim
+        </a>
+         in turpis pulvinar facilisis. Ut felis.
+      </p>
+      <h2>
+        Header Level 2
+      </h2>
+      <ol>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ol>
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+      <h3>
+        Header Level 3
+      </h3>
+      <ul>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ul>
+      <div
+        class="unlock start show hide optimism"
+      >
+        <div
+          class="j1ncz7-3 jnNzBz"
+        >
+          <div
+            class="j1ncz7-0 iFZnpo"
+          >
+            <div
+              class="sth0f3-0 khsUlM"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </div>
+          <p>
+            Confirming Purchase
+          </p>
+          <div
+            class="j1ncz7-1 dJiygx"
+          >
+            <div
+              class="j1ncz7-1 j1ncz7-2 iTYcIm"
+            />
+          </div>
+          <div
+            class="j1ncz7-4 jOavbS"
+          >
+            <p>
+              Powered by
+            </p>
+            <div
+              class="j1ncz7-0 iFZnpo"
+            >
+              <div
+                class="sth0f3-0 khsUlM"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <a
+              href="/"
+            >
+              Unlock
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Optimistic Overlay some confirmations 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c3 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c3 > svg {
+  fill: white;
+}
+
+.c2 {
+  grid-row: 1 / span 2;
+  margin-left: -14px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c5 {
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+  grid-column: 2;
+}
+
+.c7 {
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+  grid-column: 2;
+  position: absolute;
+  background: var(--yellow);
+  width: 37px;
+}
+
+.c0 {
+  height: 80px;
+  width: 120px;
+  float: right;
+  box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
+  background: var(--white);
+  margin: auto;
+  display: grid;
+  grid-template-columns: 25px 1fr;
+  grid-template-rows: 1fr 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 > p {
+  margin-bottom: 5px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c0 > .c6,
+.c0 > .c4 {
+  margin-left: 10px;
+}
+
+.c8 {
+  display: none;
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c3 {
+    height: 16px;
+    width: 16px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    font-size: 10px;
+    display: grid;
+    height: 60px;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-rows: 60px;
+    width: 100%;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+
+  .c0 > .c1 {
+    display: none;
+  }
+
+  .c0 > .c6,
+  .c0 > .c4 {
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c0 > p {
+    margin-bottom: inherit;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c8 {
+    font-size: 10px;
+    width: 170px;
+    display: grid;
+    grid-template-columns: 1fr 18px 1fr;
+    grid-template-rows: 1fr;
+    font-size: 12px;
+  }
+
+  .c8 > div {
+    grid-row: 1;
+    grid-column: 2;
+    margin-left: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c8 > p {
+    width: 100%;
+    color: var(--slate);
+    grid-row: 1;
+    grid-column: 1;
+    text-align: right;
+    margin: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    padding-right: 2px;
+  }
+
+  .c8 > a {
+    grid-row: 1;
+    grid-column: 3;
+    justify-self: start;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    color: var(--red);
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section>
+        <h1>
+          HTML Ipsum Presents
+        </h1>
+        <p>
+          <strong>
+            Pellentesque habitant morbi tristique
+          </strong>
+           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+          <em>
+            Aenean ultricies mi vitae est.
+          </em>
+           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+          <code>
+            commodo vitae
+          </code>
+          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+          <a
+            href="."
+          >
+            Donec non enim
+          </a>
+           in turpis pulvinar facilisis. Ut felis.
+        </p>
+        <h2>
+          Header Level 2
+        </h2>
+        <ol>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ol>
+        <blockquote>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+          </p>
+        </blockquote>
+        <h3>
+          Header Level 3
+        </h3>
+        <ul>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ul>
+        <div
+          class="unlock start show hide optimism"
+        >
+          <div
+            class="c0"
+          >
+            <div
+              class="c1 c2"
+            >
+              <div
+                class="c3"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <p>
+              Confirming Purchase
+            </p>
+            <div
+              class="c4 c5"
+            >
+              <div
+                class="c4 c6 c7"
+              />
+            </div>
+            <div
+              class="c8"
+            >
+              <p>
+                Powered by
+              </p>
+              <div
+                class="c1 c2"
+              >
+                <div
+                  class="c3"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <a
+                href="/"
+              >
+                Unlock
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section>
+      <h1>
+        HTML Ipsum Presents
+      </h1>
+      <p>
+        <strong>
+          Pellentesque habitant morbi tristique
+        </strong>
+         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        <em>
+          Aenean ultricies mi vitae est.
+        </em>
+         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>
+          commodo vitae
+        </code>
+        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+        <a
+          href="."
+        >
+          Donec non enim
+        </a>
+         in turpis pulvinar facilisis. Ut felis.
+      </p>
+      <h2>
+        Header Level 2
+      </h2>
+      <ol>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ol>
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+      <h3>
+        Header Level 3
+      </h3>
+      <ul>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ul>
+      <div
+        class="unlock start show hide optimism"
+      >
+        <div
+          class="j1ncz7-3 jnNzBz"
+        >
+          <div
+            class="j1ncz7-0 iFZnpo"
+          >
+            <div
+              class="sth0f3-0 khsUlM"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </div>
+          <p>
+            Confirming Purchase
+          </p>
+          <div
+            class="j1ncz7-1 dJiygx"
+          >
+            <div
+              class="j1ncz7-1 j1ncz7-2 cONrEh"
+            />
+          </div>
+          <div
+            class="j1ncz7-4 jOavbS"
+          >
+            <p>
+              Powered by
+            </p>
+            <div
+              class="j1ncz7-0 iFZnpo"
+            >
+              <div
+                class="sth0f3-0 khsUlM"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <a
+              href="/"
+            >
+              Unlock
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Optimistic Overlay submitted purchase 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c3 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c3 > svg {
+  fill: white;
+}
+
+.c2 {
+  grid-row: 1 / span 2;
+  margin-left: -14px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c5 {
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+  grid-column: 2;
+}
+
+.c7 {
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  width: 74px;
+  height: 8px;
+  background: var(--lightgrey);
+  position: relative;
+  grid-column: 2;
+  position: absolute;
+  background: var(--yellow);
+  width: 0px;
+}
+
+.c0 {
+  height: 80px;
+  width: 120px;
+  float: right;
+  box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
+  background: var(--white);
+  margin: auto;
+  display: grid;
+  grid-template-columns: 25px 1fr;
+  grid-template-rows: 1fr 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 > p {
+  margin-bottom: 5px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c0 > .c6,
+.c0 > .c4 {
+  margin-left: 10px;
+}
+
+.c8 {
+  display: none;
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c3 {
+    height: 16px;
+    width: 16px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    font-size: 10px;
+    display: grid;
+    height: 60px;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-rows: 60px;
+    width: 100%;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+
+  .c0 > .c1 {
+    display: none;
+  }
+
+  .c0 > .c6,
+  .c0 > .c4 {
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c0 > p {
+    margin-bottom: inherit;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c8 {
+    font-size: 10px;
+    width: 170px;
+    display: grid;
+    grid-template-columns: 1fr 18px 1fr;
+    grid-template-rows: 1fr;
+    font-size: 12px;
+  }
+
+  .c8 > div {
+    grid-row: 1;
+    grid-column: 2;
+    margin-left: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c8 > p {
+    width: 100%;
+    color: var(--slate);
+    grid-row: 1;
+    grid-column: 1;
+    text-align: right;
+    margin: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    padding-right: 2px;
+  }
+
+  .c8 > a {
+    grid-row: 1;
+    grid-column: 3;
+    justify-self: start;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    color: var(--red);
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section>
+        <h1>
+          HTML Ipsum Presents
+        </h1>
+        <p>
+          <strong>
+            Pellentesque habitant morbi tristique
+          </strong>
+           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+          <em>
+            Aenean ultricies mi vitae est.
+          </em>
+           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+          <code>
+            commodo vitae
+          </code>
+          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+          <a
+            href="."
+          >
+            Donec non enim
+          </a>
+           in turpis pulvinar facilisis. Ut felis.
+        </p>
+        <h2>
+          Header Level 2
+        </h2>
+        <ol>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ol>
+        <blockquote>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+          </p>
+        </blockquote>
+        <h3>
+          Header Level 3
+        </h3>
+        <ul>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ul>
+        <div
+          class="unlock start show hide optimism"
+        >
+          <div
+            class="c0"
+          >
+            <div
+              class="c1 c2"
+            >
+              <div
+                class="c3"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <p>
+              Confirming Purchase
+            </p>
+            <div
+              class="c4 c5"
+            >
+              <div
+                class="c4 c6 c7"
+              />
+            </div>
+            <div
+              class="c8"
+            >
+              <p>
+                Powered by
+              </p>
+              <div
+                class="c1 c2"
+              >
+                <div
+                  class="c3"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <a
+                href="/"
+              >
+                Unlock
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section>
+      <h1>
+        HTML Ipsum Presents
+      </h1>
+      <p>
+        <strong>
+          Pellentesque habitant morbi tristique
+        </strong>
+         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        <em>
+          Aenean ultricies mi vitae est.
+        </em>
+         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>
+          commodo vitae
+        </code>
+        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+        <a
+          href="."
+        >
+          Donec non enim
+        </a>
+         in turpis pulvinar facilisis. Ut felis.
+      </p>
+      <h2>
+        Header Level 2
+      </h2>
+      <ol>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ol>
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+      <h3>
+        Header Level 3
+      </h3>
+      <ul>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ul>
+      <div
+        class="unlock start show hide optimism"
+      >
+        <div
+          class="j1ncz7-3 jnNzBz"
+        >
+          <div
+            class="j1ncz7-0 iFZnpo"
+          >
+            <div
+              class="sth0f3-0 khsUlM"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </div>
+          <p>
+            Confirming Purchase
+          </p>
+          <div
+            class="j1ncz7-1 dJiygx"
+          >
+            <div
+              class="j1ncz7-1 j1ncz7-2 iTYcIm"
+            />
+          </div>
+          <div
+            class="j1ncz7-4 jOavbS"
+          >
+            <p>
+              Powered by
+            </p>
+            <div
+              class="j1ncz7-0 iFZnpo"
+            >
+              <div
+                class="sth0f3-0 khsUlM"
+              >
+                <svg
+                  viewBox="0 0 56 56"
+                >
+                  <title />
+                  <path
+                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <a
+              href="/"
+            >
+              Unlock
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Optimistic Overlay while key is expired, displays nothing 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section>
+        <h1>
+          HTML Ipsum Presents
+        </h1>
+        <p>
+          <strong>
+            Pellentesque habitant morbi tristique
+          </strong>
+           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+          <em>
+            Aenean ultricies mi vitae est.
+          </em>
+           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+          <code>
+            commodo vitae
+          </code>
+          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+          <a
+            href="."
+          >
+            Donec non enim
+          </a>
+           in turpis pulvinar facilisis. Ut felis.
+        </p>
+        <h2>
+          Header Level 2
+        </h2>
+        <ol>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ol>
+        <blockquote>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+          </p>
+        </blockquote>
+        <h3>
+          Header Level 3
+        </h3>
+        <ul>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ul>
+        <div
+          class="unlock start show hide optimism"
+        />
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section>
+      <h1>
+        HTML Ipsum Presents
+      </h1>
+      <p>
+        <strong>
+          Pellentesque habitant morbi tristique
+        </strong>
+         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        <em>
+          Aenean ultricies mi vitae est.
+        </em>
+         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>
+          commodo vitae
+        </code>
+        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+        <a
+          href="."
+        >
+          Donec non enim
+        </a>
+         in turpis pulvinar facilisis. Ut felis.
+      </p>
+      <h2>
+        Header Level 2
+      </h2>
+      <ol>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ol>
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+      <h3>
+        Header Level 3
+      </h3>
+      <ul>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ul>
+      <div
+        class="unlock start show hide optimism"
+      />
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Optimistic Overlay while no key is purchased, displays nothing 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section>
+        <h1>
+          HTML Ipsum Presents
+        </h1>
+        <p>
+          <strong>
+            Pellentesque habitant morbi tristique
+          </strong>
+           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+          <em>
+            Aenean ultricies mi vitae est.
+          </em>
+           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+          <code>
+            commodo vitae
+          </code>
+          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+          <a
+            href="."
+          >
+            Donec non enim
+          </a>
+           in turpis pulvinar facilisis. Ut felis.
+        </p>
+        <h2>
+          Header Level 2
+        </h2>
+        <ol>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ol>
+        <blockquote>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+          </p>
+        </blockquote>
+        <h3>
+          Header Level 3
+        </h3>
+        <ul>
+          <li>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          </li>
+          <li>
+            Aliquam tincidunt mauris eu risus.
+          </li>
+        </ul>
+        <div
+          class="unlock start show hide optimism"
+        />
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section>
+      <h1>
+        HTML Ipsum Presents
+      </h1>
+      <p>
+        <strong>
+          Pellentesque habitant morbi tristique
+        </strong>
+         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        <em>
+          Aenean ultricies mi vitae est.
+        </em>
+         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>
+          commodo vitae
+        </code>
+        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+        <a
+          href="."
+        >
+          Donec non enim
+        </a>
+         in turpis pulvinar facilisis. Ut felis.
+      </p>
+      <h2>
+        Header Level 2
+      </h2>
+      <ol>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ol>
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+      <h3>
+        Header Level 3
+      </h3>
+      <ul>
+        <li>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </li>
+        <li>
+          Aliquam tincidunt mauris eu risus.
+        </li>
+      </ul>
+      <div
+        class="unlock start show hide optimism"
+      />
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Optimistic Unlocking Flags the confirmed flag 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c3 {
+  background-color: var(--brand);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+}
+
+.c3 > svg {
+  fill: white;
+}
+
+.c8 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c8 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c8:hover {
+  background-color: var(--green);
+}
+
+.c8:hover > svg {
+  fill: white;
+}
+
+.c7:hover .c13 {
+  display: inline-block;
+}
+
+.c14 .c7 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c14 .c7:nth-child(1) {
+  pointer-events: none;
+}
+
+.c14 .c7:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c14 .c7 > svg {
+  fill: var(--grey);
+}
+
+.c14 .c7:hover > svg {
+  fill: var(--grey);
+}
+
+.c15 .c7 {
+  margin: 24px;
+}
+
+.c15 .c7 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c11 {
+  display: none;
+}
+
+.c6 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c6:hover .c10 {
+  display: block;
+}
+
+.c6:hover .c9 {
+  display: none;
+}
+
+.c16:hover .c5 {
+  background-color: var(--green);
+}
+
+.c16:hover .c5 svg {
+  fill: var(--white);
+}
+
+.c16:hover .c10 {
+  display: block;
+}
+
+.c16:hover .c9 {
+  display: none;
+}
+
+.c2 {
+  grid-row: 1 / span 2;
+  margin-left: -14px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c12 {
+  display: none;
+}
+
+.c4 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c0 {
+  height: 80px;
+  width: 120px;
+  float: right;
+  box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
+  background: var(--white);
+  margin: auto;
+  display: grid;
+  grid-template-columns: 25px 1fr;
+  grid-template-rows: 1fr 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 > p {
+  margin-bottom: 5px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c0 > .c17,
+.c0 > .j1ncz7-1 {
+  margin-left: 10px;
+}
+
+.c0:hover {
+  cursor: pointer;
+}
+
+.c0:hover .c5 {
+  background-color: var(--green);
+}
+
+.c0:hover .c5 svg {
+  fill: var(--white);
+}
+
+.c0:hover .c10 {
+  display: block;
+}
+
+.c0:hover .c9 {
+  display: none;
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c3 {
+    height: 16px;
+    width: 16px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .jnNzBz > .c1 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c12 {
+    font-size: 10px;
+    width: 170px;
+    display: grid;
+    grid-template-columns: 1fr 18px 1fr;
+    grid-template-rows: 1fr;
+    font-size: 12px;
+  }
+
+  .c12 > div {
+    grid-row: 1;
+    grid-column: 2;
+    margin-left: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c12 > p {
+    width: 100%;
+    color: var(--slate);
+    grid-row: 1;
+    grid-column: 1;
+    text-align: right;
+    margin: 0;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    padding-right: 2px;
+  }
+
+  .c12 > a {
     grid-row: 1;
     grid-column: 3;
     justify-self: start;
@@ -8496,6 +11124,36 @@ Object {
     -webkit-align-self: initial;
     -ms-flex-item-align: initial;
     align-self: initial;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    font-size: 10px;
+    display: grid;
+    height: 60px;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-rows: 60px;
+    width: 100%;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+
+  .c0 > .c1 {
+    display: none;
+  }
+
+  .c0 > .c17,
+  .c0 > .j1ncz7-1 {
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+
+  .c0 > p {
+    margin-bottom: inherit;
   }
 }
 
@@ -8533,12 +11191,12 @@ Object {
             class="c4"
           >
             <a
-              class="c5 c6 c7"
+              class="c5 c6 c7 c8"
               height="24px"
               width="24px"
             >
               <svg
-                class="c8 "
+                class="c9 "
                 viewBox="0 0 24 24"
               >
                 <title />
@@ -8549,7 +11207,7 @@ Object {
                 />
               </svg>
               <svg
-                class="c9 c10"
+                class="c10 c11"
                 viewBox="0 0 24 24"
               >
                 <title />
@@ -8563,7 +11221,7 @@ Object {
             </a>
           </div>
           <div
-            class="c11"
+            class="c12"
           >
             <p>
               Powered by
@@ -8603,7 +11261,7 @@ Object {
       style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="j1ncz7-3 gvuvoY"
+        class="j1ncz7-3 sc-1thcbar-0 jPJKwm"
       >
         <div
           class="j1ncz7-0 iFZnpo"
@@ -8628,7 +11286,7 @@ Object {
           class="j1ncz7-5 jatnEK"
         >
           <a
-            class="sc-1hzn3pu-2 ffRwyB is925m-0 kuCWTv"
+            class="sc-1hzn3pu-2 jZYYLs is925m-0 kuCWTv"
             height="24px"
             width="24px"
           >
@@ -8829,6 +11487,11 @@ Object {
   display: none;
 }
 
+.c9 > .c6,
+.c9 > .c4 {
+  margin-left: 10px;
+}
+
 @media only screen and (min-width:257px) and (max-width:736px) {
   .c3 {
     height: 16px;
@@ -8840,9 +11503,9 @@ Object {
   .c0 {
     font-size: 10px;
     display: grid;
-    height: 43px;
+    height: 60px;
     grid-template-columns: 1.6fr 1fr 1fr;
-    grid-template-rows: 43px;
+    grid-template-rows: 60px;
     width: 100%;
     -webkit-align-items: center;
     -webkit-box-align: center;
@@ -8906,6 +11569,19 @@ Object {
     -ms-flex-item-align: center;
     align-self: center;
     color: var(--red);
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c9 > .c1 {
+    display: none;
+  }
+
+  .c9 > .c6,
+  .c9 > .c4 {
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
   }
 }
 
@@ -8987,7 +11663,7 @@ Object {
       style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="j1ncz7-3 gvuvoY"
+        class="j1ncz7-3 jnNzBz"
       >
         <div
           class="j1ncz7-0 iFZnpo"
@@ -9536,6 +12212,7 @@ Object {
               </div>
               <a
                 href="/"
+                target="_blank"
               >
                 Unlock
               </a>
@@ -9684,6 +12361,7 @@ Object {
             </div>
             <a
               href="/"
+              target="_blank"
             >
               Unlock
             </a>
@@ -10094,6 +12772,7 @@ Object {
               </div>
               <a
                 href="/"
+                target="_blank"
               >
                 Unlock
               </a>
@@ -10214,6 +12893,7 @@ Object {
             </div>
             <a
               href="/"
+              target="_blank"
             >
               Unlock
             </a>
@@ -10712,6 +13392,7 @@ Object {
               </div>
               <a
                 href="/"
+                target="_blank"
               >
                 Unlock
               </a>
@@ -10860,6 +13541,7 @@ Object {
             </div>
             <a
               href="/"
+              target="_blank"
             >
               Unlock
             </a>
@@ -11270,6 +13952,7 @@ Object {
               </div>
               <a
                 href="/"
+                target="_blank"
               >
                 Unlock
               </a>
@@ -11390,6 +14073,7 @@ Object {
             </div>
             <a
               href="/"
+              target="_blank"
             >
               Unlock
             </a>
@@ -11934,6 +14618,7 @@ Object {
               </div>
               <a
                 href="/"
+                target="_blank"
               >
                 Unlock
               </a>
@@ -12128,3734 +14813,11 @@ Object {
             </div>
             <a
               href="/"
+              target="_blank"
             >
               Unlock
             </a>
           </footer>
-        </div>
-      </div>
-    </section>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getAllByValue": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getBySelectText": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "getByValue": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryBySelectText": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "queryByValue": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots Overlay/Optimistic Unlocking beginning purchase (pessimistic) 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c13 {
-  background-color: var(--brand);
-  height: 28px;
-  width: 28px;
-  border-radius: 50%;
-}
-
-.c13 > svg {
-  fill: white;
-}
-
-.c4 {
-  display: grid;
-  justify-items: stretch;
-  margin: 0px;
-  padding: 0px;
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  width: 200px;
-  height: 180px;
-  grid-gap: 0px;
-  background-clip: padding-box;
-  grid-template-rows: 40px 140px;
-  opacity: 1;
-}
-
-.c5 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 4px 4px 0px 0px;
-  padding: 0px;
-  color: var(--grey);
-}
-
-.c8 {
-  white-space: nowrap;
-  font-weight: bold;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c9 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c10 {
-  display: grid;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  text-align: center;
-  color: var(--dimgrey);
-  font-size: 15px;
-  font-weight: 300;
-  padding: 0px;
-}
-
-.c7 {
-  display: grid;
-  font-size: 15px;
-  grid-auto-columns: min-content;
-  grid-auto-flow: column;
-  color: var(--grey);
-  font-weight: 300;
-  grid-gap: 4px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  justify-items: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-}
-
-.c12 {
-  display: grid;
-  grid-template-columns: 35px 1fr;
-  grid-template-rows: 1fr 1fr;
-  font-family: 'Roboto',sans-serif;
-  font-weight: 300;
-  font-size: 12px;
-  color: var(--darkgrey);
-  background-color: var(--white);
-  justify-self: right;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  grid-row: 2;
-  grid-column: 1;
-  width: 120px;
-  height: 80px;
-  margin-right: -33px;
-}
-
-.c12 > a {
-  grid-column: 2;
-  grid-row: 2;
-  color: var(--red);
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-}
-
-.c12 > p {
-  grid-column: 2;
-  grid-row: 1;
-  color: var(--darkgrey);
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  margin-bottom: 0;
-}
-
-.c12 > p,
-.c12 > a {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  line-height: normal;
-  font-size: 12px;
-}
-
-.c12 > div {
-  grid-column: 1;
-  grid-row: 1 / span 2;
-  margin-left: -14px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c11 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 0px 0px 4px 4px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--link);
-  color: var(--white);
-  margin-top: 13px;
-}
-
-.c6 {
-  display: grid;
-  height: 140px;
-  width: 200px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  justify-items: center;
-  text-align: center;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  padding: 0px;
-  grid-template-rows: 40px 30px;
-  grid-gap: 8px;
-  padding-top: 0px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  background-color: var(--white);
-  border: 1px solid var(--link);
-}
-
-.c0 {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient( rgba(255,255,255,0) 18%,rgba(255,255,255,0) 29%,var(--offwhite) 48% );
-}
-
-.c1 {
-  position: fixed;
-  display: grid;
-  min-height: 375px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--offwhite);
-  justify-items: center;
-  padding: 32px;
-  padding-bottom: 100px;
-  grid-gap: 24px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c2 {
-  font-size: 20px;
-  font-family: 'Roboto',sans-serif;
-  font-weight: bold;
-  color: var(--slate);
-  text-align: center;
-}
-
-.c3 {
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: 32px;
-  list-style: none;
-  margin: 0px;
-  padding: 0px;
-  grid-row: 2;
-  grid-column: 1;
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c13 {
-    height: 16px;
-    width: 16px;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c12 {
-    background-color: transparent;
-    grid-template-columns: 1.2fr 18px 1fr;
-    grid-template-rows: 30px;
-    height: 30px;
-    width: 100%;
-    margin-right: 0;
-    grid-row: 3;
-  }
-
-  .c12 > div {
-    grid-row: 1;
-    grid-column: 2;
-    margin-left: 0;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-  }
-
-  .c12 > p {
-    width: 100%;
-    color: var(--slate);
-    grid-row: 1;
-    grid-column: 1;
-    text-align: right;
-    margin-top: 0;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-    padding-right: 2px;
-  }
-
-  .c12 > a {
-    grid-row: 1;
-    grid-column: 3;
-    justify-self: start;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c1 {
-    min-height: 390px;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c2 {
-    font-size: 13px;
-  }
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <section>
-        <h1>
-          HTML Ipsum Presents
-        </h1>
-        <p>
-          <strong>
-            Pellentesque habitant morbi tristique
-          </strong>
-           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
-          <em>
-            Aenean ultricies mi vitae est.
-          </em>
-           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
-          <code>
-            commodo vitae
-          </code>
-          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
-          <a
-            href="."
-          >
-            Donec non enim
-          </a>
-           in turpis pulvinar facilisis. Ut felis.
-        </p>
-        <h2>
-          Header Level 2
-        </h2>
-        <ol>
-          <li>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-          </li>
-          <li>
-            Aliquam tincidunt mauris eu risus.
-          </li>
-        </ol>
-        <blockquote>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
-          </p>
-        </blockquote>
-        <h3>
-          Header Level 3
-        </h3>
-        <ul>
-          <li>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-          </li>
-          <li>
-            Aliquam tincidunt mauris eu risus.
-          </li>
-        </ul>
-        <div
-          class="unlock start show hide optimism"
-        >
-          <div
-            class="c0"
-          >
-            <div
-              class="c1"
-              data-testid="paywall-banner"
-              style="height: 0%;"
-            >
-              <h1
-                class="headline c2"
-              >
-                Purchase pending...
-              </h1>
-              <ul
-                class="c3"
-              >
-                <li
-                  class="lock c4"
-                  data-address="0x1234567890123456789012345678901234567890"
-                >
-                  <header
-                    class="c5"
-                  >
-                    One Month
-                  </header>
-                  <div
-                    class="c6"
-                  >
-                    <div
-                      class="c7"
-                    >
-                      <div
-                        class="c8"
-                      >
-                        0.12
-                         ETH
-                      </div>
-                      <div
-                        class="c9"
-                      >
-                        $
-                        24.11
-                      </div>
-                    </div>
-                    <div
-                      class="c10"
-                    >
-                      Waiting for mining confirmation.
-                    </div>
-                    <footer
-                      class="c11"
-                    >
-                      Payment Sent
-                    </footer>
-                  </div>
-                </li>
-              </ul>
-              <footer
-                class="c12"
-              >
-                <p>
-                  Powered by
-                </p>
-                <div
-                  class="c13"
-                >
-                  <svg
-                    viewBox="0 0 56 56"
-                  >
-                    <title />
-                    <path
-                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                    />
-                  </svg>
-                </div>
-                <a
-                  href="/"
-                >
-                  Unlock
-                </a>
-              </footer>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <section>
-      <h1>
-        HTML Ipsum Presents
-      </h1>
-      <p>
-        <strong>
-          Pellentesque habitant morbi tristique
-        </strong>
-         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
-        <em>
-          Aenean ultricies mi vitae est.
-        </em>
-         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
-        <code>
-          commodo vitae
-        </code>
-        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
-        <a
-          href="."
-        >
-          Donec non enim
-        </a>
-         in turpis pulvinar facilisis. Ut felis.
-      </p>
-      <h2>
-        Header Level 2
-      </h2>
-      <ol>
-        <li>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-        </li>
-        <li>
-          Aliquam tincidunt mauris eu risus.
-        </li>
-      </ol>
-      <blockquote>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
-        </p>
-      </blockquote>
-      <h3>
-        Header Level 3
-      </h3>
-      <ul>
-        <li>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-        </li>
-        <li>
-          Aliquam tincidunt mauris eu risus.
-        </li>
-      </ul>
-      <div
-        class="unlock start show hide optimism"
-      >
-        <div
-          class="sc-7wmxqm-0 fANVjX"
-        >
-          <div
-            class="sc-7wmxqm-1 dFGbOn"
-            data-testid="paywall-banner"
-            style="height: 0%;"
-          >
-            <h1
-              class="sc-7wmxqm-2 headline cIzhrH"
-            >
-              Purchase pending...
-            </h1>
-            <ul
-              class="sc-7wmxqm-3 jZRqqJ"
-            >
-              <li
-                class="sc-1549ebs-0 lock NDRQz"
-                data-address="0x1234567890123456789012345678901234567890"
-              >
-                <header
-                  class="sc-1549ebs-1 cWinrG"
-                >
-                  One Month
-                </header>
-                <div
-                  class="sc-1549ebs-3 mmuk7x-1 fuDijf"
-                >
-                  <div
-                    class="sc-1549ebs-6 hGyOOg"
-                  >
-                    <div
-                      class="sc-1549ebs-4 cXGnbO"
-                    >
-                      0.12
-                       ETH
-                    </div>
-                    <div
-                      class="sc-1549ebs-4 kUlrFA"
-                    >
-                      $
-                      24.11
-                    </div>
-                  </div>
-                  <div
-                    class="sc-1549ebs-5 eUmWhY"
-                  >
-                    Waiting for mining confirmation.
-                  </div>
-                  <footer
-                    class="sc-1549ebs-2 mmuk7x-0 dqyjiJ"
-                  >
-                    Payment Sent
-                  </footer>
-                </div>
-              </li>
-            </ul>
-            <footer
-              class="sc-1549ebs-8 hhmezU"
-            >
-              <p>
-                Powered by
-              </p>
-              <div
-                class="sth0f3-0 khsUlM"
-              >
-                <svg
-                  viewBox="0 0 56 56"
-                >
-                  <title />
-                  <path
-                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                  />
-                </svg>
-              </div>
-              <a
-                href="/"
-              >
-                Unlock
-              </a>
-            </footer>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getAllByValue": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getBySelectText": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "getByValue": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryBySelectText": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "queryByValue": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots Overlay/Optimistic Unlocking beginning purchase 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c3 {
-  background-color: var(--brand);
-  height: 28px;
-  width: 28px;
-  border-radius: 50%;
-}
-
-.c3 > svg {
-  fill: white;
-}
-
-.c2 {
-  grid-row: 1 / span 2;
-  margin-left: -14px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c5 {
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-  width: 74px;
-  height: 8px;
-  background: var(--lightgrey);
-  position: relative;
-  grid-column: 2;
-}
-
-.c7 {
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-  width: 74px;
-  height: 8px;
-  background: var(--lightgrey);
-  position: relative;
-  grid-column: 2;
-  position: absolute;
-  background: var(--yellow);
-  width: 0px;
-}
-
-.c0 {
-  height: 80px;
-  width: 120px;
-  float: right;
-  box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
-  background: var(--white);
-  margin: auto;
-  display: grid;
-  grid-template-columns: 25px 1fr;
-  grid-template-rows: 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c0 > p {
-  margin-bottom: 5px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.c0 > .c6,
-.c0 > .c4 {
-  margin-left: 10px;
-}
-
-.c8 {
-  display: none;
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c3 {
-    height: 16px;
-    width: 16px;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c0 {
-    font-size: 10px;
-    display: grid;
-    height: 43px;
-    grid-template-columns: 1.6fr 1fr 1fr;
-    grid-template-rows: 43px;
-    width: 100%;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-  }
-
-  .c0 > .c1 {
-    display: none;
-  }
-
-  .c0 > .c6,
-  .c0 > .c4 {
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-  }
-
-  .c0 > p {
-    margin-bottom: inherit;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c8 {
-    font-size: 10px;
-    width: 170px;
-    display: grid;
-    grid-template-columns: 1fr 18px 1fr;
-    grid-template-rows: 1fr;
-    font-size: 12px;
-  }
-
-  .c8 > div {
-    grid-row: 1;
-    grid-column: 2;
-    margin-left: 0;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-  }
-
-  .c8 > p {
-    width: 100%;
-    color: var(--slate);
-    grid-row: 1;
-    grid-column: 1;
-    text-align: right;
-    margin: 0;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-    padding-right: 2px;
-  }
-
-  .c8 > a {
-    grid-row: 1;
-    grid-column: 3;
-    justify-self: start;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-    color: var(--red);
-  }
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <section>
-        <h1>
-          HTML Ipsum Presents
-        </h1>
-        <p>
-          <strong>
-            Pellentesque habitant morbi tristique
-          </strong>
-           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
-          <em>
-            Aenean ultricies mi vitae est.
-          </em>
-           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
-          <code>
-            commodo vitae
-          </code>
-          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
-          <a
-            href="."
-          >
-            Donec non enim
-          </a>
-           in turpis pulvinar facilisis. Ut felis.
-        </p>
-        <h2>
-          Header Level 2
-        </h2>
-        <ol>
-          <li>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-          </li>
-          <li>
-            Aliquam tincidunt mauris eu risus.
-          </li>
-        </ol>
-        <blockquote>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
-          </p>
-        </blockquote>
-        <h3>
-          Header Level 3
-        </h3>
-        <ul>
-          <li>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-          </li>
-          <li>
-            Aliquam tincidunt mauris eu risus.
-          </li>
-        </ul>
-        <div
-          class="unlock start show hide optimism"
-        >
-          <div
-            class="c0"
-          >
-            <div
-              class="c1 c2"
-            >
-              <div
-                class="c3"
-              >
-                <svg
-                  viewBox="0 0 56 56"
-                >
-                  <title />
-                  <path
-                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                  />
-                </svg>
-              </div>
-            </div>
-            <p>
-              Confirming Purchase
-            </p>
-            <div
-              class="c4 c5"
-            >
-              <div
-                class="c4 c6 c7"
-              />
-            </div>
-            <div
-              class="c8"
-            >
-              <p>
-                Powered by
-              </p>
-              <div
-                class="c1 c2"
-              >
-                <div
-                  class="c3"
-                >
-                  <svg
-                    viewBox="0 0 56 56"
-                  >
-                    <title />
-                    <path
-                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                    />
-                  </svg>
-                </div>
-              </div>
-              <a
-                href="/"
-              >
-                Unlock
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <section>
-      <h1>
-        HTML Ipsum Presents
-      </h1>
-      <p>
-        <strong>
-          Pellentesque habitant morbi tristique
-        </strong>
-         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
-        <em>
-          Aenean ultricies mi vitae est.
-        </em>
-         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
-        <code>
-          commodo vitae
-        </code>
-        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
-        <a
-          href="."
-        >
-          Donec non enim
-        </a>
-         in turpis pulvinar facilisis. Ut felis.
-      </p>
-      <h2>
-        Header Level 2
-      </h2>
-      <ol>
-        <li>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-        </li>
-        <li>
-          Aliquam tincidunt mauris eu risus.
-        </li>
-      </ol>
-      <blockquote>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
-        </p>
-      </blockquote>
-      <h3>
-        Header Level 3
-      </h3>
-      <ul>
-        <li>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-        </li>
-        <li>
-          Aliquam tincidunt mauris eu risus.
-        </li>
-      </ul>
-      <div
-        class="unlock start show hide optimism"
-      >
-        <div
-          class="j1ncz7-3 gvuvoY"
-        >
-          <div
-            class="j1ncz7-0 iFZnpo"
-          >
-            <div
-              class="sth0f3-0 khsUlM"
-            >
-              <svg
-                viewBox="0 0 56 56"
-              >
-                <title />
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
-            </div>
-          </div>
-          <p>
-            Confirming Purchase
-          </p>
-          <div
-            class="j1ncz7-1 dJiygx"
-          >
-            <div
-              class="j1ncz7-1 j1ncz7-2 iTYcIm"
-            />
-          </div>
-          <div
-            class="j1ncz7-4 jOavbS"
-          >
-            <p>
-              Powered by
-            </p>
-            <div
-              class="j1ncz7-0 iFZnpo"
-            >
-              <div
-                class="sth0f3-0 khsUlM"
-              >
-                <svg
-                  viewBox="0 0 56 56"
-                >
-                  <title />
-                  <path
-                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                  />
-                </svg>
-              </div>
-            </div>
-            <a
-              href="/"
-            >
-              Unlock
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getAllByValue": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getBySelectText": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "getByValue": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryBySelectText": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "queryByValue": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots Overlay/Optimistic Unlocking confirmed (pessimistic) 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c21 {
-  background-color: var(--brand);
-  height: 28px;
-  width: 28px;
-  border-radius: 50%;
-}
-
-.c21 > svg {
-  fill: white;
-}
-
-.c12 {
-  background-color: var(--lightgrey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 50px;
-  width: 50px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 50px;
-}
-
-.c12 > svg {
-  fill: var(--grey);
-  height: 50px;
-  width: 50px;
-}
-
-.c12:hover {
-  background-color: var(--green);
-}
-
-.c12:hover > svg {
-  fill: white;
-}
-
-.c11:hover .c22 {
-  display: inline-block;
-}
-
-.c23 .c11 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c23 .c11:nth-child(1) {
-  pointer-events: none;
-}
-
-.c23 .c11:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c23 .c11 > svg {
-  fill: var(--grey);
-}
-
-.c23 .c11:hover > svg {
-  fill: var(--grey);
-}
-
-.c24 .c11 {
-  margin: 24px;
-}
-
-.c24 .c11 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
-  text-align: center;
-}
-
-.c4 {
-  display: grid;
-  justify-items: stretch;
-  margin: 0px;
-  padding: 0px;
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  width: 200px;
-  height: 180px;
-  grid-gap: 0px;
-  background-clip: padding-box;
-  grid-template-rows: 40px 140px;
-  opacity: 1;
-}
-
-.c5 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 4px 4px 0px 0px;
-  padding: 0px;
-  color: var(--grey);
-}
-
-.c8 {
-  white-space: nowrap;
-  font-weight: bold;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c9 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c7 {
-  display: grid;
-  font-size: 15px;
-  grid-auto-columns: min-content;
-  grid-auto-flow: column;
-  color: var(--grey);
-  font-weight: 300;
-  grid-gap: 4px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  justify-items: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-}
-
-.c20 {
-  display: grid;
-  grid-template-columns: 35px 1fr;
-  grid-template-rows: 1fr 1fr;
-  font-family: 'Roboto',sans-serif;
-  font-weight: 300;
-  font-size: 12px;
-  color: var(--darkgrey);
-  background-color: var(--white);
-  justify-self: right;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  grid-row: 2;
-  grid-column: 1;
-  width: 120px;
-  height: 80px;
-  margin-right: -33px;
-}
-
-.c20 > a {
-  grid-column: 2;
-  grid-row: 2;
-  color: var(--red);
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-}
-
-.c20 > p {
-  grid-column: 2;
-  grid-row: 1;
-  color: var(--darkgrey);
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  margin-bottom: 0;
-}
-
-.c20 > p,
-.c20 > a {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  line-height: normal;
-  font-size: 12px;
-}
-
-.c20 > div {
-  grid-column: 1;
-  grid-row: 1 / span 2;
-  margin-left: -14px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c19 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 0px 0px 4px 4px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--green);
-  color: var(--white);
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  display: none;
-}
-
-.c17 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 0px 0px 4px 4px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--green);
-  color: var(--white);
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-}
-
-.c15 {
-  display: none;
-}
-
-.c10 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c10:hover .c14 {
-  display: block;
-}
-
-.c10:hover .c13 {
-  display: none;
-}
-
-.c10:hover ~ .c18 {
-  display: grid;
-}
-
-.c10:hover ~ .c16 {
-  display: none;
-}
-
-.c6 {
-  display: grid;
-  height: 140px;
-  width: 200px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  justify-items: center;
-  text-align: center;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  padding: 0px;
-  grid-template-rows: 40px 30px;
-  grid-gap: 8px;
-  padding-top: 0px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  background-color: var(--white);
-  border: 1px solid var(--green);
-}
-
-.c0 {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient( rgba(255,255,255,0) 18%,rgba(255,255,255,0) 29%,var(--offwhite) 48% );
-}
-
-.c1 {
-  position: fixed;
-  display: grid;
-  min-height: 375px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--offwhite);
-  justify-items: center;
-  padding: 32px;
-  padding-bottom: 100px;
-  grid-gap: 24px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c2 {
-  font-size: 20px;
-  font-family: 'Roboto',sans-serif;
-  font-weight: bold;
-  color: var(--slate);
-  text-align: center;
-}
-
-.c3 {
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: 32px;
-  list-style: none;
-  margin: 0px;
-  padding: 0px;
-  grid-row: 2;
-  grid-column: 1;
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c21 {
-    height: 16px;
-    width: 16px;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c20 {
-    background-color: transparent;
-    grid-template-columns: 1.2fr 18px 1fr;
-    grid-template-rows: 30px;
-    height: 30px;
-    width: 100%;
-    margin-right: 0;
-    grid-row: 3;
-  }
-
-  .c20 > div {
-    grid-row: 1;
-    grid-column: 2;
-    margin-left: 0;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-  }
-
-  .c20 > p {
-    width: 100%;
-    color: var(--slate);
-    grid-row: 1;
-    grid-column: 1;
-    text-align: right;
-    margin-top: 0;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-    padding-right: 2px;
-  }
-
-  .c20 > a {
-    grid-row: 1;
-    grid-column: 3;
-    justify-self: start;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c1 {
-    min-height: 390px;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c2 {
-    font-size: 13px;
-  }
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <section>
-        <h1>
-          HTML Ipsum Presents
-        </h1>
-        <p>
-          <strong>
-            Pellentesque habitant morbi tristique
-          </strong>
-           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
-          <em>
-            Aenean ultricies mi vitae est.
-          </em>
-           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
-          <code>
-            commodo vitae
-          </code>
-          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
-          <a
-            href="."
-          >
-            Donec non enim
-          </a>
-           in turpis pulvinar facilisis. Ut felis.
-        </p>
-        <h2>
-          Header Level 2
-        </h2>
-        <ol>
-          <li>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-          </li>
-          <li>
-            Aliquam tincidunt mauris eu risus.
-          </li>
-        </ol>
-        <blockquote>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
-          </p>
-        </blockquote>
-        <h3>
-          Header Level 3
-        </h3>
-        <ul>
-          <li>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-          </li>
-          <li>
-            Aliquam tincidunt mauris eu risus.
-          </li>
-        </ul>
-        <div
-          class="unlock start show hide optimism"
-        >
-          <div
-            class="c0"
-          >
-            <div
-              class="c1"
-              data-testid="paywall-banner"
-              style="height: 0%;"
-            >
-              <h1
-                class="headline c2"
-              >
-                Purchase confirmed, content unlocked!
-              </h1>
-              <ul
-                class="c3"
-              >
-                <li
-                  class="lock c4"
-                  data-address="0x1234567890123456789012345678901234567890"
-                >
-                  <header
-                    class="c5"
-                  >
-                    One Month
-                  </header>
-                  <div
-                    class="c6"
-                  >
-                    <div
-                      class="c7"
-                    >
-                      <div
-                        class="c8"
-                      >
-                        0.12
-                         ETH
-                      </div>
-                      <div
-                        class="c9"
-                      >
-                        $
-                        24.11
-                      </div>
-                    </div>
-                    <a
-                      class="c10 c11 c12"
-                    >
-                      <svg
-                        class="c13 "
-                        viewBox="0 0 24 24"
-                      >
-                        <title />
-                        <path
-                          clip-rule="evenodd"
-                          d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
-                          fill-rule="evenodd"
-                        />
-                      </svg>
-                      <svg
-                        class="c14 c15"
-                        viewBox="0 0 24 24"
-                      >
-                        <title />
-                        <path
-                          clip-rule="evenodd"
-                          d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
-                          fill-rule="evenodd"
-                        />
-                      </svg>
-                      
-                    </a>
-                    <footer
-                      class="c16 c17"
-                    >
-                      Payment Confirmed
-                    </footer>
-                    <footer
-                      class="c18 c19"
-                    >
-                      Go to Content
-                    </footer>
-                  </div>
-                </li>
-              </ul>
-              <footer
-                class="c20"
-              >
-                <p>
-                  Powered by
-                </p>
-                <div
-                  class="c21"
-                >
-                  <svg
-                    viewBox="0 0 56 56"
-                  >
-                    <title />
-                    <path
-                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                    />
-                  </svg>
-                </div>
-                <a
-                  href="/"
-                >
-                  Unlock
-                </a>
-              </footer>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <section>
-      <h1>
-        HTML Ipsum Presents
-      </h1>
-      <p>
-        <strong>
-          Pellentesque habitant morbi tristique
-        </strong>
-         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
-        <em>
-          Aenean ultricies mi vitae est.
-        </em>
-         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
-        <code>
-          commodo vitae
-        </code>
-        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
-        <a
-          href="."
-        >
-          Donec non enim
-        </a>
-         in turpis pulvinar facilisis. Ut felis.
-      </p>
-      <h2>
-        Header Level 2
-      </h2>
-      <ol>
-        <li>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-        </li>
-        <li>
-          Aliquam tincidunt mauris eu risus.
-        </li>
-      </ol>
-      <blockquote>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
-        </p>
-      </blockquote>
-      <h3>
-        Header Level 3
-      </h3>
-      <ul>
-        <li>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-        </li>
-        <li>
-          Aliquam tincidunt mauris eu risus.
-        </li>
-      </ul>
-      <div
-        class="unlock start show hide optimism"
-      >
-        <div
-          class="sc-7wmxqm-0 fANVjX"
-        >
-          <div
-            class="sc-7wmxqm-1 dFGbOn"
-            data-testid="paywall-banner"
-            style="height: 0%;"
-          >
-            <h1
-              class="sc-7wmxqm-2 headline cIzhrH"
-            >
-              Purchase confirmed, content unlocked!
-            </h1>
-            <ul
-              class="sc-7wmxqm-3 jZRqqJ"
-            >
-              <li
-                class="sc-1549ebs-0 lock NDRQz"
-                data-address="0x1234567890123456789012345678901234567890"
-              >
-                <header
-                  class="sc-1549ebs-1 cWinrG"
-                >
-                  One Month
-                </header>
-                <div
-                  class="sc-1549ebs-3 ynhyps-0 DtZSS"
-                >
-                  <div
-                    class="sc-1549ebs-6 hGyOOg"
-                  >
-                    <div
-                      class="sc-1549ebs-4 cXGnbO"
-                    >
-                      0.12
-                       ETH
-                    </div>
-                    <div
-                      class="sc-1549ebs-4 kUlrFA"
-                    >
-                      $
-                      24.11
-                    </div>
-                  </div>
-                  <a
-                    class="sc-1hzn3pu-2 ffRwyB is925m-0 kmZaWo"
-                  >
-                    <svg
-                      class="sc-1hzn3pu-0 dozNUb"
-                      viewBox="0 0 24 24"
-                    >
-                      <title />
-                      <path
-                        clip-rule="evenodd"
-                        d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
-                        fill-rule="evenodd"
-                      />
-                    </svg>
-                    <svg
-                      class="sc-1hzn3pu-1 gckVYZ"
-                      viewBox="0 0 24 24"
-                    >
-                      <title />
-                      <path
-                        clip-rule="evenodd"
-                        d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
-                        fill-rule="evenodd"
-                      />
-                    </svg>
-                    
-                  </a>
-                  <footer
-                    class="sc-1549ebs-2 ik5149-0 ik5149-2 epNQgy"
-                  >
-                    Payment Confirmed
-                  </footer>
-                  <footer
-                    class="sc-1549ebs-2 ik5149-0 ik5149-1 ocNib"
-                  >
-                    Go to Content
-                  </footer>
-                </div>
-              </li>
-            </ul>
-            <footer
-              class="sc-1549ebs-8 hhmezU"
-            >
-              <p>
-                Powered by
-              </p>
-              <div
-                class="sth0f3-0 khsUlM"
-              >
-                <svg
-                  viewBox="0 0 56 56"
-                >
-                  <title />
-                  <path
-                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                  />
-                </svg>
-              </div>
-              <a
-                href="/"
-              >
-                Unlock
-              </a>
-            </footer>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getAllByValue": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getBySelectText": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "getByValue": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryBySelectText": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "queryByValue": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots Overlay/Optimistic Unlocking confirmed 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c3 {
-  background-color: var(--brand);
-  height: 28px;
-  width: 28px;
-  border-radius: 50%;
-}
-
-.c3 > svg {
-  fill: white;
-}
-
-.c7 {
-  background-color: var(--lightgrey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 24px;
-}
-
-.c7 > svg {
-  fill: var(--grey);
-  height: 24px;
-  width: 24px;
-}
-
-.c7:hover {
-  background-color: var(--green);
-}
-
-.c7:hover > svg {
-  fill: white;
-}
-
-.c6:hover .c12 {
-  display: inline-block;
-}
-
-.c13 .c6 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c13 .c6:nth-child(1) {
-  pointer-events: none;
-}
-
-.c13 .c6:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c13 .c6 > svg {
-  fill: var(--grey);
-}
-
-.c13 .c6:hover > svg {
-  fill: var(--grey);
-}
-
-.c14 .c6 {
-  margin: 24px;
-}
-
-.c14 .c6 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
-  text-align: center;
-}
-
-.c10 {
-  display: none;
-}
-
-.c5 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c5:hover .c9 {
-  display: block;
-}
-
-.c5:hover .c8 {
-  display: none;
-}
-
-.c5:hover ~ .c15 {
-  display: grid;
-}
-
-.c5:hover ~ .c16 {
-  display: none;
-}
-
-.c2 {
-  grid-row: 1 / span 2;
-  margin-left: -14px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c0 {
-  height: 80px;
-  width: 120px;
-  float: right;
-  box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
-  background: var(--white);
-  margin: auto;
-  display: grid;
-  grid-template-columns: 25px 1fr;
-  grid-template-rows: 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c0 > p {
-  margin-bottom: 5px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.c0 > .c17,
-.c0 > .j1ncz7-1 {
-  margin-left: 10px;
-}
-
-.c11 {
-  display: none;
-}
-
-.c4 {
-  width: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c3 {
-    height: 16px;
-    width: 16px;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c0 {
-    font-size: 10px;
-    display: grid;
-    height: 43px;
-    grid-template-columns: 1.6fr 1fr 1fr;
-    grid-template-rows: 43px;
-    width: 100%;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-  }
-
-  .c0 > .c1 {
-    display: none;
-  }
-
-  .c0 > .c17,
-  .c0 > .j1ncz7-1 {
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-  }
-
-  .c0 > p {
-    margin-bottom: inherit;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c11 {
-    font-size: 10px;
-    width: 170px;
-    display: grid;
-    grid-template-columns: 1fr 18px 1fr;
-    grid-template-rows: 1fr;
-    font-size: 12px;
-  }
-
-  .c11 > div {
-    grid-row: 1;
-    grid-column: 2;
-    margin-left: 0;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-  }
-
-  .c11 > p {
-    width: 100%;
-    color: var(--slate);
-    grid-row: 1;
-    grid-column: 1;
-    text-align: right;
-    margin: 0;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-    padding-right: 2px;
-  }
-
-  .c11 > a {
-    grid-row: 1;
-    grid-column: 3;
-    justify-self: start;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-    color: var(--red);
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c4 {
-    -webkit-align-self: initial;
-    -ms-flex-item-align: initial;
-    align-self: initial;
-  }
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <section>
-        <h1>
-          HTML Ipsum Presents
-        </h1>
-        <p>
-          <strong>
-            Pellentesque habitant morbi tristique
-          </strong>
-           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
-          <em>
-            Aenean ultricies mi vitae est.
-          </em>
-           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
-          <code>
-            commodo vitae
-          </code>
-          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
-          <a
-            href="."
-          >
-            Donec non enim
-          </a>
-           in turpis pulvinar facilisis. Ut felis.
-        </p>
-        <h2>
-          Header Level 2
-        </h2>
-        <ol>
-          <li>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-          </li>
-          <li>
-            Aliquam tincidunt mauris eu risus.
-          </li>
-        </ol>
-        <blockquote>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
-          </p>
-        </blockquote>
-        <h3>
-          Header Level 3
-        </h3>
-        <ul>
-          <li>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-          </li>
-          <li>
-            Aliquam tincidunt mauris eu risus.
-          </li>
-        </ul>
-        <div
-          class="unlock start show hide optimism"
-        >
-          <div
-            class="c0"
-          >
-            <div
-              class="c1 c2"
-            >
-              <div
-                class="c3"
-              >
-                <svg
-                  viewBox="0 0 56 56"
-                >
-                  <title />
-                  <path
-                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                  />
-                </svg>
-              </div>
-            </div>
-            <p>
-              Purchase Confirmed
-            </p>
-            <div
-              class="c4"
-            >
-              <a
-                class="c5 c6 c7"
-                height="24px"
-                width="24px"
-              >
-                <svg
-                  class="c8 "
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <svg
-                  class="c9 c10"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                
-              </a>
-            </div>
-            <div
-              class="c11"
-            >
-              <p>
-                Powered by
-              </p>
-              <div
-                class="c1 c2"
-              >
-                <div
-                  class="c3"
-                >
-                  <svg
-                    viewBox="0 0 56 56"
-                  >
-                    <title />
-                    <path
-                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                    />
-                  </svg>
-                </div>
-              </div>
-              <a
-                href="/"
-              >
-                Unlock
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <section>
-      <h1>
-        HTML Ipsum Presents
-      </h1>
-      <p>
-        <strong>
-          Pellentesque habitant morbi tristique
-        </strong>
-         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
-        <em>
-          Aenean ultricies mi vitae est.
-        </em>
-         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
-        <code>
-          commodo vitae
-        </code>
-        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
-        <a
-          href="."
-        >
-          Donec non enim
-        </a>
-         in turpis pulvinar facilisis. Ut felis.
-      </p>
-      <h2>
-        Header Level 2
-      </h2>
-      <ol>
-        <li>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-        </li>
-        <li>
-          Aliquam tincidunt mauris eu risus.
-        </li>
-      </ol>
-      <blockquote>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
-        </p>
-      </blockquote>
-      <h3>
-        Header Level 3
-      </h3>
-      <ul>
-        <li>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-        </li>
-        <li>
-          Aliquam tincidunt mauris eu risus.
-        </li>
-      </ul>
-      <div
-        class="unlock start show hide optimism"
-      >
-        <div
-          class="j1ncz7-3 gvuvoY"
-        >
-          <div
-            class="j1ncz7-0 iFZnpo"
-          >
-            <div
-              class="sth0f3-0 khsUlM"
-            >
-              <svg
-                viewBox="0 0 56 56"
-              >
-                <title />
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
-            </div>
-          </div>
-          <p>
-            Purchase Confirmed
-          </p>
-          <div
-            class="j1ncz7-5 jatnEK"
-          >
-            <a
-              class="sc-1hzn3pu-2 ffRwyB is925m-0 kuCWTv"
-              height="24px"
-              width="24px"
-            >
-              <svg
-                class="sc-1hzn3pu-0 dozNUb"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <svg
-                class="sc-1hzn3pu-1 gckVYZ"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              
-            </a>
-          </div>
-          <div
-            class="j1ncz7-4 jOavbS"
-          >
-            <p>
-              Powered by
-            </p>
-            <div
-              class="j1ncz7-0 iFZnpo"
-            >
-              <div
-                class="sth0f3-0 khsUlM"
-              >
-                <svg
-                  viewBox="0 0 56 56"
-                >
-                  <title />
-                  <path
-                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                  />
-                </svg>
-              </div>
-            </div>
-            <a
-              href="/"
-            >
-              Unlock
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getAllByValue": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getBySelectText": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "getByValue": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryBySelectText": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "queryByValue": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots Overlay/Optimistic Unlocking some confirmations (pessimistic) 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c13 {
-  background-color: var(--brand);
-  height: 28px;
-  width: 28px;
-  border-radius: 50%;
-}
-
-.c13 > svg {
-  fill: white;
-}
-
-.c4 {
-  display: grid;
-  justify-items: stretch;
-  margin: 0px;
-  padding: 0px;
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  width: 200px;
-  height: 180px;
-  grid-gap: 0px;
-  background-clip: padding-box;
-  grid-template-rows: 40px 140px;
-  opacity: 1;
-}
-
-.c5 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 4px 4px 0px 0px;
-  padding: 0px;
-  color: var(--grey);
-}
-
-.c8 {
-  white-space: nowrap;
-  font-weight: bold;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c9 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c10 {
-  display: grid;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  text-align: center;
-  color: var(--dimgrey);
-  font-size: 15px;
-  font-weight: 300;
-  padding: 0px;
-}
-
-.c7 {
-  display: grid;
-  font-size: 15px;
-  grid-auto-columns: min-content;
-  grid-auto-flow: column;
-  color: var(--grey);
-  font-weight: 300;
-  grid-gap: 4px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  justify-items: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-}
-
-.c12 {
-  display: grid;
-  grid-template-columns: 35px 1fr;
-  grid-template-rows: 1fr 1fr;
-  font-family: 'Roboto',sans-serif;
-  font-weight: 300;
-  font-size: 12px;
-  color: var(--darkgrey);
-  background-color: var(--white);
-  justify-self: right;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  grid-row: 2;
-  grid-column: 1;
-  width: 120px;
-  height: 80px;
-  margin-right: -33px;
-}
-
-.c12 > a {
-  grid-column: 2;
-  grid-row: 2;
-  color: var(--red);
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-}
-
-.c12 > p {
-  grid-column: 2;
-  grid-row: 1;
-  color: var(--darkgrey);
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  margin-bottom: 0;
-}
-
-.c12 > p,
-.c12 > a {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  line-height: normal;
-  font-size: 12px;
-}
-
-.c12 > div {
-  grid-column: 1;
-  grid-row: 1 / span 2;
-  margin-left: -14px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c6 {
-  display: grid;
-  height: 140px;
-  width: 200px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  justify-items: center;
-  text-align: center;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  padding: 0px;
-  grid-template-rows: 40px 30px;
-  grid-gap: 8px;
-  padding-top: 0px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  background-color: var(--white);
-  border: 1px solid var(--yellow);
-}
-
-.c11 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 0px 0px 4px 4px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--yellow);
-  color: var(--white);
-  margin-top: 13px;
-}
-
-.c0 {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient( rgba(255,255,255,0) 18%,rgba(255,255,255,0) 29%,var(--offwhite) 48% );
-}
-
-.c1 {
-  position: fixed;
-  display: grid;
-  min-height: 375px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--offwhite);
-  justify-items: center;
-  padding: 32px;
-  padding-bottom: 100px;
-  grid-gap: 24px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c2 {
-  font-size: 20px;
-  font-family: 'Roboto',sans-serif;
-  font-weight: bold;
-  color: var(--slate);
-  text-align: center;
-}
-
-.c3 {
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: 32px;
-  list-style: none;
-  margin: 0px;
-  padding: 0px;
-  grid-row: 2;
-  grid-column: 1;
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c13 {
-    height: 16px;
-    width: 16px;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c12 {
-    background-color: transparent;
-    grid-template-columns: 1.2fr 18px 1fr;
-    grid-template-rows: 30px;
-    height: 30px;
-    width: 100%;
-    margin-right: 0;
-    grid-row: 3;
-  }
-
-  .c12 > div {
-    grid-row: 1;
-    grid-column: 2;
-    margin-left: 0;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-  }
-
-  .c12 > p {
-    width: 100%;
-    color: var(--slate);
-    grid-row: 1;
-    grid-column: 1;
-    text-align: right;
-    margin-top: 0;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-    padding-right: 2px;
-  }
-
-  .c12 > a {
-    grid-row: 1;
-    grid-column: 3;
-    justify-self: start;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c1 {
-    min-height: 390px;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c2 {
-    font-size: 13px;
-  }
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <section>
-        <h1>
-          HTML Ipsum Presents
-        </h1>
-        <p>
-          <strong>
-            Pellentesque habitant morbi tristique
-          </strong>
-           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
-          <em>
-            Aenean ultricies mi vitae est.
-          </em>
-           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
-          <code>
-            commodo vitae
-          </code>
-          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
-          <a
-            href="."
-          >
-            Donec non enim
-          </a>
-           in turpis pulvinar facilisis. Ut felis.
-        </p>
-        <h2>
-          Header Level 2
-        </h2>
-        <ol>
-          <li>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-          </li>
-          <li>
-            Aliquam tincidunt mauris eu risus.
-          </li>
-        </ol>
-        <blockquote>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
-          </p>
-        </blockquote>
-        <h3>
-          Header Level 3
-        </h3>
-        <ul>
-          <li>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-          </li>
-          <li>
-            Aliquam tincidunt mauris eu risus.
-          </li>
-        </ul>
-        <div
-          class="unlock start show hide optimism"
-        >
-          <div
-            class="c0"
-          >
-            <div
-              class="c1"
-              data-testid="paywall-banner"
-              style="height: 0%;"
-            >
-              <h1
-                class="headline c2"
-              >
-                Purchase pending...
-              </h1>
-              <ul
-                class="c3"
-              >
-                <li
-                  class="lock c4"
-                  data-address="0x1234567890123456789012345678901234567890"
-                >
-                  <header
-                    class="c5"
-                  >
-                    One Month
-                  </header>
-                  <div
-                    class="c6"
-                  >
-                    <div
-                      class="c7"
-                    >
-                      <div
-                        class="c8"
-                      >
-                        0.12
-                         ETH
-                      </div>
-                      <div
-                        class="c9"
-                      >
-                        $
-                        24.11
-                      </div>
-                    </div>
-                    <div
-                      class="c10"
-                    >
-                      Waiting for confirmations
-                      <br />
-                      5
-                      /
-                      12
-                    </div>
-                    <footer
-                      class="c11"
-                    >
-                      Payment Pending
-                    </footer>
-                  </div>
-                </li>
-              </ul>
-              <footer
-                class="c12"
-              >
-                <p>
-                  Powered by
-                </p>
-                <div
-                  class="c13"
-                >
-                  <svg
-                    viewBox="0 0 56 56"
-                  >
-                    <title />
-                    <path
-                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                    />
-                  </svg>
-                </div>
-                <a
-                  href="/"
-                >
-                  Unlock
-                </a>
-              </footer>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <section>
-      <h1>
-        HTML Ipsum Presents
-      </h1>
-      <p>
-        <strong>
-          Pellentesque habitant morbi tristique
-        </strong>
-         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
-        <em>
-          Aenean ultricies mi vitae est.
-        </em>
-         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
-        <code>
-          commodo vitae
-        </code>
-        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
-        <a
-          href="."
-        >
-          Donec non enim
-        </a>
-         in turpis pulvinar facilisis. Ut felis.
-      </p>
-      <h2>
-        Header Level 2
-      </h2>
-      <ol>
-        <li>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-        </li>
-        <li>
-          Aliquam tincidunt mauris eu risus.
-        </li>
-      </ol>
-      <blockquote>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
-        </p>
-      </blockquote>
-      <h3>
-        Header Level 3
-      </h3>
-      <ul>
-        <li>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-        </li>
-        <li>
-          Aliquam tincidunt mauris eu risus.
-        </li>
-      </ul>
-      <div
-        class="unlock start show hide optimism"
-      >
-        <div
-          class="sc-7wmxqm-0 fANVjX"
-        >
-          <div
-            class="sc-7wmxqm-1 dFGbOn"
-            data-testid="paywall-banner"
-            style="height: 0%;"
-          >
-            <h1
-              class="sc-7wmxqm-2 headline cIzhrH"
-            >
-              Purchase pending...
-            </h1>
-            <ul
-              class="sc-7wmxqm-3 jZRqqJ"
-            >
-              <li
-                class="sc-1549ebs-0 lock NDRQz"
-                data-address="0x1234567890123456789012345678901234567890"
-              >
-                <header
-                  class="sc-1549ebs-1 cWinrG"
-                >
-                  One Month
-                </header>
-                <div
-                  class="sc-1549ebs-3 bn9s5o-0 kTTKZX"
-                >
-                  <div
-                    class="sc-1549ebs-6 hGyOOg"
-                  >
-                    <div
-                      class="sc-1549ebs-4 cXGnbO"
-                    >
-                      0.12
-                       ETH
-                    </div>
-                    <div
-                      class="sc-1549ebs-4 kUlrFA"
-                    >
-                      $
-                      24.11
-                    </div>
-                  </div>
-                  <div
-                    class="sc-1549ebs-5 eUmWhY"
-                  >
-                    Waiting for confirmations
-                    <br />
-                    5
-                    /
-                    12
-                  </div>
-                  <footer
-                    class="sc-1549ebs-2 bn9s5o-1 eKTLUD"
-                  >
-                    Payment Pending
-                  </footer>
-                </div>
-              </li>
-            </ul>
-            <footer
-              class="sc-1549ebs-8 hhmezU"
-            >
-              <p>
-                Powered by
-              </p>
-              <div
-                class="sth0f3-0 khsUlM"
-              >
-                <svg
-                  viewBox="0 0 56 56"
-                >
-                  <title />
-                  <path
-                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                  />
-                </svg>
-              </div>
-              <a
-                href="/"
-              >
-                Unlock
-              </a>
-            </footer>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getAllByValue": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getBySelectText": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "getByValue": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryBySelectText": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "queryByValue": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots Overlay/Optimistic Unlocking some confirmations 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c3 {
-  background-color: var(--brand);
-  height: 28px;
-  width: 28px;
-  border-radius: 50%;
-}
-
-.c3 > svg {
-  fill: white;
-}
-
-.c2 {
-  grid-row: 1 / span 2;
-  margin-left: -14px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c5 {
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-  width: 74px;
-  height: 8px;
-  background: var(--lightgrey);
-  position: relative;
-  grid-column: 2;
-}
-
-.c7 {
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-  width: 74px;
-  height: 8px;
-  background: var(--lightgrey);
-  position: relative;
-  grid-column: 2;
-  position: absolute;
-  background: var(--yellow);
-  width: 30px;
-}
-
-.c0 {
-  height: 80px;
-  width: 120px;
-  float: right;
-  box-shadow: 14px 0px 40px rgba(0,0,0,0.08);
-  background: var(--white);
-  margin: auto;
-  display: grid;
-  grid-template-columns: 25px 1fr;
-  grid-template-rows: 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c0 > p {
-  margin-bottom: 5px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.c0 > .c6,
-.c0 > .c4 {
-  margin-left: 10px;
-}
-
-.c8 {
-  display: none;
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c3 {
-    height: 16px;
-    width: 16px;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c0 {
-    font-size: 10px;
-    display: grid;
-    height: 43px;
-    grid-template-columns: 1.6fr 1fr 1fr;
-    grid-template-rows: 43px;
-    width: 100%;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-  }
-
-  .c0 > .c1 {
-    display: none;
-  }
-
-  .c0 > .c6,
-  .c0 > .c4 {
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-  }
-
-  .c0 > p {
-    margin-bottom: inherit;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c8 {
-    font-size: 10px;
-    width: 170px;
-    display: grid;
-    grid-template-columns: 1fr 18px 1fr;
-    grid-template-rows: 1fr;
-    font-size: 12px;
-  }
-
-  .c8 > div {
-    grid-row: 1;
-    grid-column: 2;
-    margin-left: 0;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-  }
-
-  .c8 > p {
-    width: 100%;
-    color: var(--slate);
-    grid-row: 1;
-    grid-column: 1;
-    text-align: right;
-    margin: 0;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-    padding-right: 2px;
-  }
-
-  .c8 > a {
-    grid-row: 1;
-    grid-column: 3;
-    justify-self: start;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-    color: var(--red);
-  }
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <section>
-        <h1>
-          HTML Ipsum Presents
-        </h1>
-        <p>
-          <strong>
-            Pellentesque habitant morbi tristique
-          </strong>
-           senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
-          <em>
-            Aenean ultricies mi vitae est.
-          </em>
-           Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
-          <code>
-            commodo vitae
-          </code>
-          , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
-          <a
-            href="."
-          >
-            Donec non enim
-          </a>
-           in turpis pulvinar facilisis. Ut felis.
-        </p>
-        <h2>
-          Header Level 2
-        </h2>
-        <ol>
-          <li>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-          </li>
-          <li>
-            Aliquam tincidunt mauris eu risus.
-          </li>
-        </ol>
-        <blockquote>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
-          </p>
-        </blockquote>
-        <h3>
-          Header Level 3
-        </h3>
-        <ul>
-          <li>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-          </li>
-          <li>
-            Aliquam tincidunt mauris eu risus.
-          </li>
-        </ul>
-        <div
-          class="unlock start show hide optimism"
-        >
-          <div
-            class="c0"
-          >
-            <div
-              class="c1 c2"
-            >
-              <div
-                class="c3"
-              >
-                <svg
-                  viewBox="0 0 56 56"
-                >
-                  <title />
-                  <path
-                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                  />
-                </svg>
-              </div>
-            </div>
-            <p>
-              Confirming Purchase
-            </p>
-            <div
-              class="c4 c5"
-            >
-              <div
-                class="c4 c6 c7"
-              />
-            </div>
-            <div
-              class="c8"
-            >
-              <p>
-                Powered by
-              </p>
-              <div
-                class="c1 c2"
-              >
-                <div
-                  class="c3"
-                >
-                  <svg
-                    viewBox="0 0 56 56"
-                  >
-                    <title />
-                    <path
-                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                    />
-                  </svg>
-                </div>
-              </div>
-              <a
-                href="/"
-              >
-                Unlock
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <section>
-      <h1>
-        HTML Ipsum Presents
-      </h1>
-      <p>
-        <strong>
-          Pellentesque habitant morbi tristique
-        </strong>
-         senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
-        <em>
-          Aenean ultricies mi vitae est.
-        </em>
-         Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
-        <code>
-          commodo vitae
-        </code>
-        , ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.
-        <a
-          href="."
-        >
-          Donec non enim
-        </a>
-         in turpis pulvinar facilisis. Ut felis.
-      </p>
-      <h2>
-        Header Level 2
-      </h2>
-      <ol>
-        <li>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-        </li>
-        <li>
-          Aliquam tincidunt mauris eu risus.
-        </li>
-      </ol>
-      <blockquote>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
-        </p>
-      </blockquote>
-      <h3>
-        Header Level 3
-      </h3>
-      <ul>
-        <li>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-        </li>
-        <li>
-          Aliquam tincidunt mauris eu risus.
-        </li>
-      </ul>
-      <div
-        class="unlock start show hide optimism"
-      >
-        <div
-          class="j1ncz7-3 gvuvoY"
-        >
-          <div
-            class="j1ncz7-0 iFZnpo"
-          >
-            <div
-              class="sth0f3-0 khsUlM"
-            >
-              <svg
-                viewBox="0 0 56 56"
-              >
-                <title />
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
-            </div>
-          </div>
-          <p>
-            Confirming Purchase
-          </p>
-          <div
-            class="j1ncz7-1 dJiygx"
-          >
-            <div
-              class="j1ncz7-1 j1ncz7-2 jzeoux"
-            />
-          </div>
-          <div
-            class="j1ncz7-4 jOavbS"
-          >
-            <p>
-              Powered by
-            </p>
-            <div
-              class="j1ncz7-0 iFZnpo"
-            >
-              <div
-                class="sth0f3-0 khsUlM"
-              >
-                <svg
-                  viewBox="0 0 56 56"
-                >
-                  <title />
-                  <path
-                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                  />
-                </svg>
-              </div>
-            </div>
-            <a
-              href="/"
-            >
-              Unlock
-            </a>
-          </div>
         </div>
       </div>
     </section>
@@ -17067,6 +16029,7 @@ Object {
           </p>
           <a
             href="/"
+            target="_blank"
           >
             Unlock
           </a>
@@ -17083,7 +16046,7 @@ Object {
       class="unlock start show hide"
     >
       <footer
-        class="sc-1549ebs-8 sc-15m75z9-0 flag ljxKJl"
+        class="sc-1549ebs-8 sc-15m75z9-0 flag cwbfwu"
         data-testid="unlocked"
       >
         <aside>
@@ -17119,6 +16082,7 @@ Object {
         </p>
         <a
           href="/"
+          target="_blank"
         >
           Unlock
         </a>
@@ -19287,6 +18251,7 @@ Object {
         </p>
         <a
           href="/"
+          target="_blank"
         >
           Unlock
         </a>
@@ -19299,7 +18264,7 @@ Object {
       rel="stylesheet"
     />
     <footer
-      class="sc-1549ebs-8 sc-15m75z9-0 flag ljxKJl"
+      class="sc-1549ebs-8 sc-15m75z9-0 flag cwbfwu"
       data-testid="unlocked"
     >
       <aside>
@@ -19335,6 +18300,7 @@ Object {
       </p>
       <a
         href="/"
+        target="_blank"
       >
         Unlock
       </a>

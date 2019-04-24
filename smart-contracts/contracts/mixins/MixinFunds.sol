@@ -38,17 +38,19 @@ contract MixinFunds
     uint _price
   ) internal
   {
-    if(tokenAddress == address(0)) {
-      require(msg.value >= _price, 'NOT_ENOUGH_FUNDS');
-    } else {
-      IERC20 token = IERC20(tokenAddress);
-      uint balanceBefore = token.balanceOf(address(this));
-      token.transferFrom(msg.sender, address(this), _price);
+    if(_price > 0) {
+      if(tokenAddress == address(0)) {
+        require(msg.value >= _price, 'NOT_ENOUGH_FUNDS');
+      } else {
+        IERC20 token = IERC20(tokenAddress);
+        uint balanceBefore = token.balanceOf(address(this));
+        token.transferFrom(msg.sender, address(this), _price);
 
-      // There are known bugs in popular ERC20 implements which means we cannot
-      // trust the return value of `transferFrom`.  This require statement ensures
-      // that a transfer occurred.
-      require(token.balanceOf(address(this)) > balanceBefore, 'TRANSFER_FAILED');
+        // There are known bugs in popular ERC20 implements which means we cannot
+        // trust the return value of `transferFrom`.  This require statement ensures
+        // that a transfer occurred.
+        require(token.balanceOf(address(this)) > balanceBefore, 'TRANSFER_FAILED');
+      }
     }
   }
 
@@ -62,17 +64,19 @@ contract MixinFunds
     uint _amount
   ) internal
   {
-    if(tokenAddress == address(0)) {
-      address(uint160(_to)).transfer(_amount);
-    } else {
-      IERC20 token = IERC20(tokenAddress);
-      uint balanceBefore = token.balanceOf(_to);
-      token.transfer(_to, _amount);
+    if(_amount > 0) {
+      if(tokenAddress == address(0)) {
+        address(uint160(_to)).transfer(_amount);
+      } else {
+        IERC20 token = IERC20(tokenAddress);
+        uint balanceBefore = token.balanceOf(_to);
+        token.transfer(_to, _amount);
 
-      // There are known bugs in popular ERC20 implements which means we cannot
-      // trust the return value of `transferFrom`.  This require statement ensures
-      // that a transfer occurred.
-      require(token.balanceOf(_to) > balanceBefore, 'TRANSFER_FAILED');
+        // There are known bugs in popular ERC20 implements which means we cannot
+        // trust the return value of `transferFrom`.  This require statement ensures
+        // that a transfer occurred.
+        require(token.balanceOf(_to) > balanceBefore, 'TRANSFER_FAILED');
+      }
     }
   }
 
