@@ -11,7 +11,6 @@ import BalanceProvider from '../helpers/BalanceProvider'
 import { lockRoute } from '../../utils/routes'
 import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
-import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { purchaseKey } from '../../actions/key'
 import { loadEvent, signAddress } from '../../actions/ticket'
 import PayButton from './purchase/PayButton'
@@ -92,52 +91,50 @@ export class EventContent extends Component {
       date.getFullYear()
 
     return (
-      <GlobalErrorConsumer>
-        <BrowserOnly>
-          <Layout forContent>
-            <Head>
-              <title>{pageTitle(name)}</title>
-            </Head>
-            <Title>{name}</Title>
-            <PaymentFieldset>
-              <PayButton
-                transaction={transaction}
-                keyStatus={keyStatus}
-                purchaseKey={() => purchaseKey(lockKey)}
+      <BrowserOnly>
+        <Layout forContent>
+          <Head>
+            <title>{pageTitle(name)}</title>
+          </Head>
+          <Title>{name}</Title>
+          <PaymentFieldset>
+            <PayButton
+              transaction={transaction}
+              keyStatus={keyStatus}
+              purchaseKey={() => purchaseKey(lockKey)}
+            />
+            <Field>
+              <NoPhone>
+                <Label>Ticket Price</Label>
+              </NoPhone>
+              <BalanceProvider
+                amount={lock.keyPrice}
+                render={(ethWithPresentation, convertedUSDValue) => (
+                  <Price>
+                    <Eth>{ethWithPresentation} ETH</Eth>
+                    <Fiat>${convertedUSDValue}</Fiat>
+                  </Price>
+                )}
               />
-              <Field>
-                <NoPhone>
-                  <Label>Ticket Price</Label>
-                </NoPhone>
-                <BalanceProvider
-                  amount={lock.keyPrice}
-                  render={(ethWithPresentation, convertedUSDValue) => (
-                    <Price>
-                      <Eth>{ethWithPresentation} ETH</Eth>
-                      <Fiat>${convertedUSDValue}</Fiat>
-                    </Price>
-                  )}
-                />
-              </Field>
-            </PaymentFieldset>
-            <DetailsFieldset>
-              <DetailsField>
-                <DisplayDate>{dateString}</DisplayDate>
-                <Description>{description}</Description>
-                <Location>{location}</Location>
-              </DetailsField>
-              <DetailsField>
-                <TicketCode
-                  publicKey={account.address}
-                  signedAddress={signedEventAddress}
-                  eventAddress={lock.address}
-                />
-              </DetailsField>
-            </DetailsFieldset>
-          </Layout>
-          <DeveloperOverlay />
-        </BrowserOnly>
-      </GlobalErrorConsumer>
+            </Field>
+          </PaymentFieldset>
+          <DetailsFieldset>
+            <DetailsField>
+              <DisplayDate>{dateString}</DisplayDate>
+              <Description>{description}</Description>
+              <Location>{location}</Location>
+            </DetailsField>
+            <DetailsField>
+              <TicketCode
+                publicKey={account.address}
+                signedAddress={signedEventAddress}
+                eventAddress={lock.address}
+              />
+            </DetailsField>
+          </DetailsFieldset>
+        </Layout>
+        <DeveloperOverlay />
+      </BrowserOnly>
     )
   }
 }
