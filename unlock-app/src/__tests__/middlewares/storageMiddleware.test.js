@@ -7,6 +7,7 @@ import { SIGNED_DATA } from '../../actions/signature'
 import UnlockLock from '../../structured_data/unlockLock'
 import { startLoading, doneLoading } from '../../actions/loading'
 import configure from '../../config'
+import { SIGNUP_CREDENTIALS } from '../../actions/signUp'
 
 /**
  * This is a "fake" middleware caller
@@ -46,7 +47,7 @@ describe('Storage middleware', () => {
       address: '0xabc',
     }
     network = {
-      name: 'test',
+      name: 1984,
     }
     lock = {
       address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
@@ -74,6 +75,7 @@ describe('Storage middleware', () => {
         hash: '0x123',
         to: 'unlock',
         from: 'julien',
+        network: 1984,
       }
       const action = { type: NEW_TRANSACTION, transaction }
 
@@ -84,15 +86,16 @@ describe('Storage middleware', () => {
       expect(mockStorageService.storeTransaction).toHaveBeenCalledWith(
         transaction.hash,
         transaction.from,
-        transaction.to
+        transaction.to,
+        transaction.network
       )
       expect(next).toHaveBeenCalledTimes(1)
     })
   })
 
   describe('handling SET_ACCOUNT', () => {
-    it('should retrieve the transactions for that user', async () => {
-      expect.assertions(7)
+    it('should retrieve the transactions for that user and only dispatch the ones which match the network', async () => {
+      expect.assertions(6)
       const { next, invoke, store } = create()
       const account = {
         address: '0x123',
@@ -100,7 +103,16 @@ describe('Storage middleware', () => {
       const action = { type: SET_ACCOUNT, account }
 
       mockStorageService.getTransactionsHashesSentBy = jest.fn(() => {
-        return Promise.resolve(['0xabc', '0xdef'])
+        return Promise.resolve([
+          {
+            hash: '0xabc',
+            network: 1,
+          },
+          {
+            hash: '0xdef',
+            network: 1984,
+          },
+        ])
       })
       await invoke(action)
 
@@ -117,14 +129,8 @@ describe('Storage middleware', () => {
       expect(store.dispatch).toHaveBeenNthCalledWith(
         3,
         addTransaction({
-          hash: '0xabc',
-        })
-      )
-
-      expect(store.dispatch).toHaveBeenNthCalledWith(
-        4,
-        addTransaction({
           hash: '0xdef',
+          network: 1984,
         })
       )
 
@@ -250,6 +256,26 @@ describe('Storage middleware', () => {
         data,
         type: 'signature/SIGN_DATA',
       })
+    })
+  })
+
+  describe('SIGNUP_CREDENTIALS', () => {
+    it('should create a user and then set the account', () => {
+      expect.assertions(1)
+      const emailAddress = 'tim@cern.ch'
+      const password = 'guest'
+      const { invoke } = create()
+
+      const action = {
+        type: SIGNUP_CREDENTIALS,
+        emailAddress,
+        password,
+      }
+
+      mockStorageService.createUser = jest.fn(() => Promise.resolve(true))
+
+      invoke(action)
+      expect(mockStorageService.createUser).toHaveBeenCalled()
     })
   })
 })

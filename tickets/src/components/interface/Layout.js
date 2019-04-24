@@ -1,15 +1,22 @@
+import Link from 'next/link'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import Media from '../../theme/media'
 import { RoundedLogo } from './Logo'
 
-export default function Layout({ children }) {
+export default function Layout({ noHeader, children }) {
   return (
     <Container>
       <Left />
       <Content>
-        <Header>Unlock Tickets</Header>
+        <Header>
+          {!noHeader && (
+            <Link href="/" passHref>
+              <HomeLink>Unlock Tickets</HomeLink>
+            </Link>
+          )}
+        </Header>
         {children}
         <Footer>
           <RoundedLogo />
@@ -23,14 +30,17 @@ export default function Layout({ children }) {
 
 Layout.propTypes = {
   children: PropTypes.node,
+  noHeader: PropTypes.bool,
 }
 
 Layout.defaultProps = {
   children: null,
+  noHeader: false,
 }
 
 const Container = styled.div`
   display: grid;
+  height: 100%;
   grid-template-columns: 1fr minmax(280px, 4fr) 1fr;
   ${Media.phone`
     display: flex;
@@ -56,22 +66,30 @@ const Right = styled.div`
 `
 
 const Footer = styled.div`
-  position: fixed;
+  position: relative;
   bottom: 0;
-  padding: 100px 0;
   display: grid;
   grid-template-columns: 40px 1fr;
   align-items: center;
-  height: 50px;
+  padding: 0 20px;
   ${Media.phone`
     display: none;
   `};
 `
 
 const Header = styled.div`
+  padding: 20px;
+  font-weight: bold;
+  font-size: 20px;
+  color: var(--brand);
   ${Media.phone`
     display: none;
   `};
+`
+
+const HomeLink = styled.span`
+  cursor: pointer;
+  color: var(--brand);
 `
 
 const Content = styled.div`
@@ -79,4 +97,5 @@ const Content = styled.div`
   display: grid;
   row-gap: 24px;
   width: 100%;
+  height: 100%;
 `

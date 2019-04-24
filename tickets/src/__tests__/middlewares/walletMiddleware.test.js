@@ -6,6 +6,14 @@ import { PROVIDER_READY } from '../../actions/provider'
 import { SET_ERROR } from '../../actions/error'
 import { POLLING_INTERVAL } from '../../constants'
 import { FATAL_NON_DEPLOYED_CONTRACT, FATAL_WRONG_NETWORK } from '../../errors'
+import { SIGN_ADDRESS, gotSignedAddress } from '../../actions/ticket'
+import {
+  DISMISS_CHECK,
+  GOT_WALLET,
+  WAIT_FOR_WALLET,
+} from '../../actions/walletStatus'
+import { NEW_TRANSACTION } from '../../actions/transaction'
+import UnlockEventRSVP from '../../structured_data/unlockEventRSVP'
 
 let mockConfig
 
@@ -26,6 +34,10 @@ let state = {}
 
 const network = {
   name: 'test',
+}
+
+const transaction = {
+  hash: '0xf21e9820af34282c8bebb3a191cf615076ca06026a144c9c28e9cb762585472e',
 }
 
 /**
@@ -56,15 +68,20 @@ class MockWalletService extends EventEmitter {
     this.ready = true
   }
   connect() {}
+  signData() {}
 }
 
 let mockWalletService = new MockWalletService()
 
-jest.mock('@unlock-protocol/unlock-js', () => ({
-  WalletService: function() {
-    return mockWalletService
-  },
-}))
+jest.mock('@unlock-protocol/unlock-js', () => {
+  const mockUnlock = require.requireActual('@unlock-protocol/unlock-js') // Original module
+  return {
+    ...mockUnlock,
+    WalletService: function() {
+      return mockWalletService
+    },
+  }
+})
 
 jest.useFakeTimers()
 
@@ -120,6 +137,47 @@ describe('Wallet middleware', () => {
     expect(setTimeout).toHaveBeenCalledWith(
       expect.any(Function),
       POLLING_INTERVAL
+    )
+  })
+
+  it('should handle transaction.pending events triggered by the walletService', () => {
+    expect.assertions(1)
+    const { store } = create()
+    mockWalletService.emit('transaction.pending')
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ type: WAIT_FOR_WALLET })
+    )
+  })
+
+  it('should handle transaction.new events triggered by the walletService', () => {
+    expect.assertions(2)
+    const { store } = create()
+    const from = '0xjulien'
+    const to = '0xunlock'
+    const input = 'input'
+    mockWalletService.emit('transaction.new', transaction.hash, from, to, input)
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ type: GOT_WALLET })
+    )
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: NEW_TRANSACTION,
+        transaction: expect.objectContaining({
+          hash: transaction.hash,
+          to,
+          from,
+          input,
+        }),
+      })
+    )
+  })
+
+  it('should handle overlay.dismissed events triggered by walletService', () => {
+    expect.assertions(1)
+    const { store } = create()
+    mockWalletService.emit('overlay.dismissed')
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ type: DISMISS_CHECK })
     )
   })
 
@@ -254,6 +312,38 @@ describe('Wallet middleware', () => {
     invoke(action)
     expect(mockWalletService.connect).toHaveBeenCalledWith(
       mockConfig.providers[state.provider]
+    )
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it('should handle SIGN_ADDRESS and emit a signed address', () => {
+    expect.assertions(3)
+    const {
+      next,
+      invoke,
+      store: { dispatch, getState },
+    } = create()
+    const address = '0x12345678'
+    const action = {
+      type: SIGN_ADDRESS,
+      address,
+    }
+
+    const data = UnlockEventRSVP.build({
+      publicKey: account.address,
+      eventAddress: address,
+    })
+    mockWalletService.signData = jest.fn((_, address, cb) =>
+      cb(null, `ENCRYPTED: ${JSON.stringify(address)}`)
+    )
+    invoke(action)
+    expect(mockWalletService.signData).toHaveBeenCalledWith(
+      getState().account.address,
+      data,
+      expect.any(Function)
+    )
+    expect(dispatch).toHaveBeenCalledWith(
+      gotSignedAddress(address, `ENCRYPTED: ${JSON.stringify(data)}`)
     )
     expect(next).toHaveBeenCalledWith(action)
   })

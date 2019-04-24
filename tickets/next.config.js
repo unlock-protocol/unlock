@@ -1,10 +1,17 @@
 /* eslint no-console: 0 */
-
+const dotenv = require('dotenv')
+const path = require('path')
 const fs = require('fs')
 const { join } = require('path')
 const { promisify } = require('util')
 const withTypescript = require('@zeit/next-typescript')
 const withCSS = require('@zeit/next-css')
+
+const unlockEnv = process.env.UNLOCK_ENV || 'dev'
+
+dotenv.config({
+  path: path.resolve(__dirname, '..', `.env.${unlockEnv}.local`),
+})
 
 const copyFile = promisify(fs.copyFile)
 
@@ -12,6 +19,7 @@ const requiredConfigVariables = {
   unlockEnv: process.env.UNLOCK_ENV || 'dev',
   readOnlyProvider: process.env.READ_ONLY_PROVIDER,
   locksmithUri: process.env.LOCKSMITH_URI,
+  unlockTicketsUrl: process.env.UNLOCK_TICKETS_URL,
 }
 
 const optionalConfigVariables = {
@@ -67,6 +75,8 @@ module.exports = withTypescript(
 
       return {
         '/': { page: '/home' },
+        '/create': { page: '/create' },
+        '/event': { page: '/event' },
       }
     },
   })

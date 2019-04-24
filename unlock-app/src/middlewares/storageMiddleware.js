@@ -1,5 +1,6 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
+import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
 import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
@@ -8,9 +9,12 @@ import StorageService from '../services/storageService'
 import { STORE_LOCK_NAME, storageError } from '../actions/storage'
 
 import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
-import { SET_ACCOUNT } from '../actions/accounts'
+import { SET_ACCOUNT, setAccount } from '../actions/accounts'
 import UnlockLock from '../structured_data/unlockLock'
 import { SIGNED_DATA, signData } from '../actions/signature'
+import { SIGNUP_CREDENTIALS } from '../actions/signUp'
+import UnlockUser from '../structured_data/unlockUser'
+import { setError } from '../actions/error'
 
 const storageMiddleware = config => {
   const { services } = config
@@ -25,15 +29,13 @@ const storageMiddleware = config => {
           // When we set the account, we want to retrieve the list of transactions
           storageService
             .getTransactionsHashesSentBy(action.account.address)
-            .then(transactionHashes => {
+            .then(transactions => {
               dispatch(doneLoading())
               // Dispatch each lock. Greg probably wants to a batch action?
-              transactionHashes.forEach(hash => {
-                dispatch(
-                  addTransaction({
-                    hash,
-                  })
-                )
+              transactions.forEach(transaction => {
+                if (transaction.network === getState().network.name) {
+                  dispatch(addTransaction(transaction))
+                }
               })
             })
             .catch(error => {
@@ -48,7 +50,8 @@ const storageMiddleware = config => {
             .storeTransaction(
               action.transaction.hash,
               action.transaction.from,
-              action.transaction.to
+              action.transaction.to,
+              getState().network.name
             )
             .catch(error => {
               dispatch(storageError(error))
@@ -103,6 +106,26 @@ const storageMiddleware = config => {
                 dispatch(storageError(error))
               })
           }
+        }
+
+        if (action.type === SIGNUP_CREDENTIALS) {
+          const { emailAddress, password } = action
+
+          const {
+            address,
+            passwordEncryptedPrivateKey,
+          } = createAccountAndPasswordEncryptKey(password)
+
+          const user = UnlockUser.build({
+            emailAddress,
+            publicKey: address,
+            passwordEncryptedPrivateKey,
+          })
+
+          storageService
+            .createUser(user) // TODO: Now what?
+            .then(() => dispatch(setAccount({ address })))
+            .catch(err => dispatch(setError(err)))
         }
 
         next(action)

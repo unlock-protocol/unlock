@@ -67,11 +67,15 @@ class MockWebService extends EventEmitter {
 
 let mockWeb3Service = new MockWebService()
 
-jest.mock('@unlock-protocol/unlock-js', () => ({
-  Web3Service: function() {
-    return mockWeb3Service
-  },
-}))
+jest.mock('@unlock-protocol/unlock-js', () => {
+  const mockUnlock = require.requireActual('@unlock-protocol/unlock-js') // Original module
+  return {
+    ...mockUnlock,
+    Web3Service: function() {
+      return mockWeb3Service
+    },
+  }
+})
 
 UnlockJs.mockImplementation = MockWebService
 
@@ -280,7 +284,10 @@ describe('Lock middleware', () => {
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: ADD_TRANSACTION,
-        transaction,
+        transaction: {
+          hash: transaction.hash,
+          network: 'test',
+        },
       })
     )
   })
@@ -363,7 +370,8 @@ describe('Lock middleware', () => {
       await lockCreationTransaction
 
       expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
-        mockTx.transactionHash
+        mockTx.transactionHash,
+        { network: 'test' }
       )
       expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
     })
@@ -424,7 +432,8 @@ describe('Lock middleware', () => {
       })
     )
     expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
-      transaction.hash
+      transaction.hash,
+      transaction
     )
     await transactionPromise
     expect(store.dispatch).toHaveBeenCalledWith(

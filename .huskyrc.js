@@ -10,7 +10,7 @@ const tasks = tasks => {
 const svg2Components = {
   command:
     'if [[ $(git diff --cached --name-only | grep -c "unlock-app/src/static/images/svg/.*.svg$") > 0 ]] ; then npm run svg-2-components && git add src/components/interface/svg/*.js; fi',
-  path: "unlock-app"
+  path: 'unlock-app',
 }
 
 // Run eslint on the files inside path for the last commit
@@ -18,7 +18,7 @@ const svg2Components = {
 const eslint = path => {
   return {
     command: `git diff --name-only --diff-filter=d $(git merge-base origin/master HEAD) | grep "^${path}.*js$" | sed 's/${path}\\///' | xargs eslint --fix`,
-    path: path
+    path: path,
   }
 }
 
@@ -27,23 +27,33 @@ const lintStaged = path => {
   return { command: `echo ${path} && lint-staged`, path: path }
 }
 
-// tasks are given a path
-module.exports = {
+const subDirs = [
+  'locksmith',
+  'paywall',
+  'smart-contracts',
+  'tests',
+  'unlock-app',
+  'tickets',
+  'paywall',
+  'unlock-js',
+  'unlock-protocol.com',
+]
+
+const prePushTasks = subDirs.map(dir => {
+  return eslint(dir)
+})
+
+const preCommitTasks = subDirs.map(dir => {
+  return lintStaged(dir)
+})
+
+preCommitTasks.push(svg2Components)
+
+const config = {
   hooks: {
-    "pre-push": tasks([
-      eslint("unlock-app"),
-      eslint("locksmith"),
-      eslint("paywall")
-    ]),
-    "pre-commit": tasks([
-      svg2Components,
-      lintStaged("locksmith"),
-      lintStaged("paywall"),
-      lintStaged("smart-contracts"),
-      lintStaged("tests"),
-      lintStaged("unlock-app"),
-      lintStaged("tickets"),
-      lintStaged("wedlocks")
-    ])
-  }
+    'pre-push': tasks(prePushTasks),
+    'pre-commit': tasks(preCommitTasks),
+  },
 }
+
+module.exports = config

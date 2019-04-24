@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import Link from 'next/link'
 import Media from '../../theme/media'
 import Layout from '../interface/Layout'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
@@ -7,7 +8,7 @@ import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 export default function HomeContent() {
   return (
     <GlobalErrorConsumer>
-      <Layout title="Paywall" forContent>
+      <Layout noHeader>
         <Title>Unlock Tickets</Title>
         <Grid>
           <Description>
@@ -16,7 +17,9 @@ export default function HomeContent() {
               Tickets is built on top of Unlock, which is an easy to use access
               control protocol on the Ethereum blockchain.
             </p>
-            <CreateButton>Create an event</CreateButton>
+            <Link href="/create">
+              <CreateButton>Create an event</CreateButton>
+            </Link>
           </Description>
           <Illustration />
         </Grid>
@@ -56,6 +59,7 @@ const Grid = styled.section`
     grid-gap: 0;
     grid-template-columns: auto;
   `};
+  padding: 0 20px;
 `
 const Description = styled.div`
   p {
@@ -82,6 +86,7 @@ const Title = styled.h1`
   line-height: 47px;
   grid-column: 1 3;
   color: var(--brand);
+  padding: 0 20px;
 `
 
 const SubTitle = styled.h2`

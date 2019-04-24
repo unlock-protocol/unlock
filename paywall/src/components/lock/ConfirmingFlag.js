@@ -1,21 +1,21 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 
+import UnlockPropTypes from '../../propTypes'
 import { RoundedLogo } from '../interface/Logo'
+import Svg from '../interface/svg'
 import {
   OptimisticFlag,
   OptimisticLogo,
   ProgressBar,
   Progress,
   PoweredByUnlock,
+  Info,
 } from './FlagStyles'
-import { TRANSACTION_TYPES } from '../../constants'
-import withConfig from '../../utils/withConfig'
-import UnlockPropTypes from '../../propTypes'
 
-export function ConfirmingFlag({
-  config: { requiredConfirmations },
-  transaction,
+export default function ConfirmingFlag({
+  requiredConfirmations,
+  transaction = null,
 }) {
   let text = 'Powered by Unlock'
   let Confirmations = null
@@ -37,6 +37,12 @@ export function ConfirmingFlag({
       </OptimisticLogo>
       <p>{text}</p>
       {Confirmations}
+      <Info
+        href="https://github.com/unlock-protocol/unlock/wiki/Frequently-Asked-Questions#what-is-optimistic-unlocking"
+        target="_blank"
+      >
+        <Svg.Info />
+      </Info>
       <PoweredByUnlock>
         <p>Powered by</p>
         <OptimisticLogo>
@@ -49,43 +55,10 @@ export function ConfirmingFlag({
 }
 
 ConfirmingFlag.propTypes = {
-  config: UnlockPropTypes.configuration.isRequired,
+  requiredConfirmations: PropTypes.number.isRequired,
   transaction: UnlockPropTypes.transaction,
 }
 
 ConfirmingFlag.defaultProps = {
   transaction: null,
 }
-
-export const mapStateToProps = ({ account, keys, transactions }, { lock }) => {
-  // If there is no account (probably not loaded yet), we do not want to create a key
-  if (!account) {
-    return {}
-  }
-
-  let lockKey = Object.values(keys).find(
-    key => key.lock === lock.address && key.owner === account.address
-  )
-  let transaction = null
-
-  if (!lockKey) {
-    lockKey = {
-      lock: lock.address,
-      owner: account.address,
-    }
-  }
-
-  // Let's select the transaction corresponding to this key purchase, if it exists
-  // This transaction is of type KEY_PURCHASE
-  transaction = Object.values(transactions).find(
-    transaction =>
-      transaction.type === TRANSACTION_TYPES.KEY_PURCHASE &&
-      transaction.key === lockKey.id
-  )
-
-  return {
-    transaction,
-  }
-}
-
-export default connect(mapStateToProps)(withConfig(ConfirmingFlag))

@@ -28,6 +28,7 @@ import Bars from './Bars'
 import ChevronUp from './ChevronUp'
 import KeyText from './KeyText'
 import Box from './Box'
+import Info from './Info'
 
 function wrapViewBox(WrappedComponent, viewBox) {
   const Wrapped = props => <WrappedComponent viewBox={viewBox} {...props} />
@@ -48,6 +49,7 @@ export default {
   EthSub: wrapViewBox(EthSub, '0 0 24 24'),
   Export: wrapViewBox(Export, '0 0 24 24'),
   Github: wrapViewBox(Github, '0 0 24 24'),
+  Info: wrapViewBox(Info, '0 0 16 16'),
   Lemniscate: wrapViewBox(Lemniscate, '0 0 24 24'),
   LockClosed: wrapViewBox(LockClosed, '0 0 24 24'),
   Log: wrapViewBox(Log, '0 0 24 24'),

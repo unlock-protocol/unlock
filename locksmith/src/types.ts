@@ -15,3 +15,20 @@ export interface SignatureValidationConfiguration {
   required: string[]
   name: string
 }
+
+export interface EventCreation {
+  lockAddress: string
+  name: string
+  description: string
+  location: string
+  date: number
+  logo: string
+  owner: string
+}
+
+export interface ItemizedKeyPrice {
+  keyPrice: number
+  gasFee: number
+  creditCardProcessing: number
+  unlockServiceFee: number
+}

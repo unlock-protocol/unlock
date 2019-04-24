@@ -1,4 +1,6 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
+import { connectRouter, routerMiddleware } from 'connected-react-router'
+import { createMemoryHistory } from 'history'
 
 import configure from './config'
 
@@ -30,11 +32,19 @@ import accountReducer, {
 import walletStatusReducer, {
   initialState as defaultWalletStatus,
 } from './reducers/walletStatusReducer'
+import ticketsReducer, {
+  initialState as defaultTicketAddresses,
+} from './reducers/ticketsReducer'
 
 const config = configure()
 
-export const createUnlockStore = (defaultState = {}, middlewares = []) => {
+export const createUnlockStore = (
+  defaultState = {},
+  history = createMemoryHistory(),
+  middlewares = []
+) => {
   const reducers = {
+    router: connectRouter(history),
     account: accountReducer,
     keys: keysReducer,
     locks: locksReducer,
@@ -44,6 +54,7 @@ export const createUnlockStore = (defaultState = {}, middlewares = []) => {
     currency: currencyReducer,
     errors: errorsReducer,
     walletStatus: walletStatusReducer,
+    tickets: ticketsReducer,
   }
 
   // Cleanup the defaultState to remove all null values so that we do not overwrite existing
@@ -65,12 +76,15 @@ export const createUnlockStore = (defaultState = {}, middlewares = []) => {
       currency: defaultCurrency,
       errors: defaultError,
       walletStatus: defaultWalletStatus,
+      tickets: defaultTicketAddresses,
     },
     {
       provider: Object.keys(config.providers)[0],
     },
     defaultState
   )
+
+  middlewares.push(routerMiddleware(history))
 
   const composeEnhancers =
     (global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
