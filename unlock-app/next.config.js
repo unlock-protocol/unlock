@@ -1,11 +1,18 @@
 /* eslint no-console: 0 */
-
 const withTypescript = require('@zeit/next-typescript')
+const dotenv = require('dotenv')
+const path = require('path')
 const { exportPaths } = require('./src/utils/exportStatic')
+
+const unlockEnv = process.env.UNLOCK_ENV || 'dev'
+
+dotenv.config({
+  path: path.resolve(__dirname, '..', `.env.${unlockEnv}.local`),
+})
 
 // TODO renames these: URLs need to be URLs, hosts need to be hosts... etc
 let requiredConfigVariables = {
-  unlockEnv: process.env.UNLOCK_ENV || 'dev',
+  unlockEnv,
   paywallUrl: process.env.PAYWALL_URL,
   paywallScriptUrl: process.env.PAYWALL_SCRIPT_URL,
   readOnlyProvider: process.env.READ_ONLY_PROVIDER,

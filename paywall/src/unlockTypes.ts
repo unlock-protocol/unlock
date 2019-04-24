@@ -17,6 +17,7 @@ export enum TransactionStatus {
   SUBMITTED = 'submitted',
   PENDING = 'pending',
   MINED = 'mined',
+  NONE = '', // for testing purposes
 }
 /* eslint-enable no-unused-vars */
 

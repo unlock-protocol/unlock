@@ -1,5 +1,5 @@
 module.exports = {
-  setupFiles: ['<rootDir>/.jest/register-context.js'],
+  setupFiles: ['<rootDir>/.jest/env.js', '<rootDir>/.jest/register-context.js'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testPathIgnorePatterns: [
     '<rootDir>/.next/',
@@ -15,7 +15,7 @@ module.exports = {
   coverageThreshold: {
     global: {
       branches: 77.45,
-      functions: 89.55,
+      functions: 86.55,
       lines: 90.31,
       statements: 89.48,
     },

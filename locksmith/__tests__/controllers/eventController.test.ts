@@ -1,0 +1,145 @@
+import * as sigUtil from 'eth-sig-util'
+import * as ethJsUtil from 'ethereumjs-util'
+
+const request = require('supertest')
+const app = require('../../src/app')
+const Base64 = require('../../src/utils/base64')
+const models = require('../../src/models')
+
+let Event = models.Event
+
+let message = {
+  event: {
+    lockAddress: '0x49158d35259e3264ad2a6abb300cda19294d125e',
+    name: 'A Test Event',
+    description: 'A fun event for everyone',
+    location: 'http://example.com/a_sample_location',
+    date: 1744487946000,
+    logo: 'http://example.com/a_logo',
+    owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+  },
+}
+
+let privateKey = ethJsUtil.toBuffer(
+  '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
+)
+
+function generateTypedData(message: any) {
+  return {
+    types: {
+      EIP712Domain: [
+        { name: 'name', type: 'string' },
+        { name: 'version', type: 'string' },
+        { name: 'chainId', type: 'uint256' },
+        { name: 'verifyingContract', type: 'address' },
+        { name: 'salt', type: 'bytes32' },
+      ],
+      Event: [
+        { name: 'lockAddress', type: 'address' },
+        { name: 'name', type: 'string' },
+        { name: 'description', type: 'string' },
+        { name: 'location', type: 'string' },
+        { name: 'date', type: 'uint64' },
+        { name: 'logo', type: 'string' },
+      ],
+    },
+    domain: {
+      name: 'Unlock',
+      version: '1',
+    },
+    primaryType: 'Event',
+    message: message,
+  }
+}
+
+beforeAll(async () => {
+  await Event.truncate()
+})
+
+describe('Event Controller', () => {
+  describe('event creation', () => {
+    describe('when unaccompanied by a valid signature', () => {
+      it('does not create an event and returns 401', async () => {
+        expect.assertions(2)
+        let typedData = generateTypedData(message)
+
+        let response = await request(app)
+          .post('/events')
+          .set('Accept', /json/)
+          .send(typedData)
+
+        expect(response.status).toBe(401)
+        expect(await Event.count()).toEqual(0)
+      })
+    })
+    describe('when the event could be created', () => {
+      it('creates the event and returns 200', async () => {
+        expect.assertions(1)
+        let typedData = generateTypedData(message)
+        const sig = sigUtil.signTypedData(privateKey, {
+          data: typedData,
+        })
+
+        let response = await request(app)
+          .post('/events')
+          .set('Accept', /json/)
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .send(typedData)
+
+        expect(response.status).toBe(200)
+      })
+    })
+
+    describe('when the event could not be created', () => {
+      it('returns a 409 status code', async () => {
+        expect.assertions(1)
+        let typedData = generateTypedData(message)
+        const sig = sigUtil.signTypedData(privateKey, {
+          data: typedData,
+        })
+
+        let response = await request(app)
+          .post('/events')
+          .set('Accept', /json/)
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .send(typedData)
+
+        expect(response.status).toBe(409)
+      })
+    })
+  })
+  describe('event request', () => {
+    describe('when the event exists', () => {
+      it('returns the event', async () => {
+        expect.assertions(2)
+        let response = await request(app).get(
+          '/events/0x49158d35259E3264Ad2a6aBb300cdA19294D125e'
+        )
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual(
+          expect.objectContaining({
+            createdAt: expect.any(String),
+            date: '2025-04-12T19:59:06.000Z',
+            description: 'A fun event for everyone',
+            id: expect.any(Number),
+            location: 'http://example.com/a_sample_location',
+            lockAddress: '0x49158d35259E3264Ad2a6aBb300cdA19294D125e',
+            logo: 'http://example.com/a_logo',
+            name: 'A Test Event',
+            updatedAt: expect.any(String),
+          })
+        )
+      })
+    })
+
+    describe('when the event does not exist', () => {
+      it('returns a 404 status code', async () => {
+        expect.assertions(1)
+        let response = await request(app).get(
+          '/events/0xAc442c26177a33B255E811Ea2736234bCB4bCf96'
+        )
+        expect(response.status).toBe(404)
+      })
+    })
+  })
+})

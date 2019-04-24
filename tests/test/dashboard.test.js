@@ -46,7 +46,7 @@ describe('The Unlock Dashboard', () => {
 
     // This test requires the test above to have been executed and pass
     it('should persist the lock', async () => {
-      expect.assertions(11)
+      expect.assertions(10)
       const name = `My lock ${Math.random()
         .toString(36)
         .substring(7)}`
@@ -76,6 +76,13 @@ describe('The Unlock Dashboard', () => {
       newLock = locks.find(lock => {
         return !existingLocks.includes(lock)
       })
+
+      await wait.untilIsTrue(address => {
+        return !!document
+          .querySelector(`[data-address="${address}"]`)
+          .innerText.match(/Confirming|Submitted/)
+      }, newLock)
+
       // Get the locks' innerText
       const lockText = await page.evaluate(address => {
         return document.querySelector(`[data-address="${address}"]`).innerText
@@ -84,7 +91,9 @@ describe('The Unlock Dashboard', () => {
       await expect(lockText).toMatch(`${expirationDuration} day`) // we use day as this could be singular!
       await expect(lockText).toMatch(`0/${maxNumberOfKeys}`)
       await expect(lockText).toMatch(keyPrice)
-      await expect(lockText).toMatch(/Confirming|Submitted/) // The lock is either submitted or confirming (depending on when the mining happens in the tests)
+      await page.waitForFunction(
+        () => !document.querySelector('#_unlock_blocker')
+      )
     })
 
     // This test requires the test above

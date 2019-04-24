@@ -9,6 +9,7 @@ import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import WalletCheckOverlay from '../../components/interface/FullScreenModals'
 import configure from '../../config'
+import doNothing from '../../utils/doNothing'
 
 const account = {
   address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
@@ -48,6 +49,7 @@ const locks = {
     maxNumberOfKeys: 800,
     outstandingKeys: 32,
     transaction: '0x5678',
+    owner: account.address,
   },
   '0x12345678a': {
     address: '0x12345678a',
@@ -57,6 +59,7 @@ const locks = {
     maxNumberOfKeys: 240,
     outstandingKeys: 3,
     transaction: '0x1234',
+    owner: account.address,
   },
   '0x9abcdef0a': {
     address: '0x9abcdef0',
@@ -66,6 +69,7 @@ const locks = {
     maxNumberOfKeys: 0,
     outstandingKeys: 10,
     transaction: '0x89ab',
+    owner: account.address,
   },
 }
 
@@ -142,8 +146,8 @@ storiesOf('DashboardContent', module)
         <DashboardContent
           network={network}
           account={account}
-          hideForm={() => {}}
-          showForm={() => {}}
+          hideForm={doNothing}
+          showForm={doNothing}
           {...props}
         />
       </Provider>
@@ -157,8 +161,8 @@ storiesOf('DashboardContent', module)
         <DashboardContent
           network={network}
           account={account}
-          hideForm={() => {}}
-          showForm={() => {}}
+          hideForm={doNothing}
+          showForm={doNothing}
           {...props}
         />
       </Provider>
@@ -168,8 +172,8 @@ storiesOf('DashboardContent', module)
     return (
       <Provider store={noUserStore}>
         <DashboardContent
-          hideForm={() => {}}
-          showForm={() => {}}
+          hideForm={doNothing}
+          showForm={doNothing}
           network={network}
           account={null}
           formIsVisible={false}
@@ -181,8 +185,8 @@ storiesOf('DashboardContent', module)
     return (
       <Provider store={store}>
         <DashboardContent
-          hideForm={() => {}}
-          showForm={() => {}}
+          hideForm={doNothing}
+          showForm={doNothing}
           network={network}
           account={account}
           lockFeed={[]}

@@ -1,14 +1,17 @@
-import PropTypes from 'prop-types'
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Svg from '../../svg'
 import Button from '../Button'
-import { HoverFooter, NotHoverFooter } from '../../../lock/HoverFooters'
 
 const ConfirmedKey = ({ hideModal, ...props }) => (
-  <ConfirmedKeyButton {...props} backgroundHoverColor="var(--green)">
-    <NotHover />
-    <Hover onClick={hideModal} />
+  <ConfirmedKeyButton
+    {...props}
+    backgroundHoverColor="var(--green)"
+    onClick={() => hideModal()}
+  >
+    <Checkmark />
+    <Arrow />
   </ConfirmedKeyButton>
 )
 
@@ -16,25 +19,19 @@ ConfirmedKey.propTypes = {
   hideModal: PropTypes.func.isRequired,
 }
 
-const NotHover = styled(Svg.Checkmark)``
+export const Checkmark = styled(Svg.Checkmark)``
 
-const Hover = styled(Svg.Arrow)`
+export const Arrow = styled(Svg.Arrow)`
   display: none;
 `
 
-const ConfirmedKeyButton = styled(Button)`
+export const ConfirmedKeyButton = styled(Button)`
   align-self: center;
   &:hover {
-    ${Hover} {
+    ${Arrow} {
       display: block;
     }
-    ${NotHover} {
-      display: none;
-    }
-    ~ ${HoverFooter} {
-      display: grid;
-    }
-    ~ ${NotHoverFooter} {
+    ${Checkmark} {
       display: none;
     }
   }

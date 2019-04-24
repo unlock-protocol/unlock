@@ -5,7 +5,22 @@ import { PROVIDER_READY } from '../actions/provider'
 import { POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants'
 import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
-import { FATAL_WRONG_NETWORK, FATAL_NON_DEPLOYED_CONTRACT } from '../errors'
+import {
+  FATAL_WRONG_NETWORK,
+  FATAL_NON_DEPLOYED_CONTRACT,
+  FAILED_TO_SIGN_ADDRESS,
+  FATAL_NO_USER_ACCOUNT,
+} from '../errors'
+import { SIGN_ADDRESS, gotSignedAddress } from '../actions/ticket'
+import { PURCHASE_KEY } from '../actions/key'
+import {
+  dismissWalletCheck,
+  gotWallet,
+  waitForWallet,
+} from '../actions/walletStatus'
+import { newTransaction } from '../actions/transaction'
+import { transactionTypeMapping } from '../utils/types'
+import UnlockEventRSVP from '../structured_data/unlockEventRSVP'
 
 const { WalletService } = UnlockJs
 
@@ -15,6 +30,18 @@ const { WalletService } = UnlockJs
 const walletMiddleware = config => {
   return ({ getState, dispatch }) => {
     const walletService = new WalletService(config)
+
+    /**
+     * Helper function which ensures that the walletService is ready
+     * before calling it or dispatches an error
+     * @param {*} callback
+     */
+    const ensureReadyBefore = callback => {
+      if (!walletService.ready) {
+        return dispatch(setError(FATAL_NO_USER_ACCOUNT))
+      }
+      return callback()
+    }
 
     /**
      * When the network has changed, we need to ensure Unlock has been deployed there and
@@ -63,6 +90,38 @@ const walletMiddleware = config => {
       }
     })
 
+    walletService.on(
+      'transaction.new',
+      (transactionHash, from, to, input, type, status) => {
+        // At this point we know that a wallet was found, because a new transaction
+        // cannot be created without it
+        dispatch(gotWallet())
+        dispatch(
+          newTransaction({
+            hash: transactionHash,
+            to,
+            from,
+            input,
+            type: transactionTypeMapping(type),
+            status,
+            network: getState().network.name,
+          })
+        )
+      }
+    )
+
+    // A transaction has started, now we need to signal that we're waiting for
+    // interaction with the wallet
+    walletService.on('transaction.pending', () => {
+      dispatch(waitForWallet())
+    })
+
+    // The wallet check overlay may be manually dismissed. When that event is
+    // signaled, clear the overlay.
+    walletService.on('overlay.dismissed', () => {
+      dispatch(dismissWalletCheck())
+    })
+
     walletService.on('error', error => {
       dispatch(setError(error.message))
     })
@@ -72,6 +131,46 @@ const walletMiddleware = config => {
         if (action.type === PROVIDER_READY) {
           const provider = config.providers[getState().provider]
           walletService.connect(provider)
+        }
+
+        if (action.type === PURCHASE_KEY) {
+          ensureReadyBefore(() => {
+            const account = getState().account
+            // find the lock to get its keyPrice
+            const lock = Object.values(getState().locks).find(
+              lock => lock.address === action.key.lock
+            )
+            walletService.purchaseKey(
+              action.key.lock,
+              action.key.owner,
+              lock.keyPrice,
+              account.address
+            )
+          })
+        }
+
+        if (action.type === SIGN_ADDRESS) {
+          const { account } = getState()
+          const { address } = action
+
+          // Because signData uses eth_signTypedData, we need to use structured data
+          const data = UnlockEventRSVP.build({
+            publicKey: account.address,
+            eventAddress: address,
+          })
+
+          walletService.signData(
+            account.address,
+            data,
+            (error, signedAddress) => {
+              if (error) {
+                // TODO: Does this need to be handled in the error consumer?
+                dispatch(setError(FAILED_TO_SIGN_ADDRESS, error))
+              } else {
+                dispatch(gotSignedAddress(address, signedAddress))
+              }
+            }
+          )
         }
         next(action)
       }
