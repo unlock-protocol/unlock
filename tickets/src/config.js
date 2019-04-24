@@ -24,7 +24,8 @@ export default function configure(
   const locksmithUri = runtimeConfig.locksmithUri || 'http://0.0.0.0:8080'
   const httpProvider = runtimeConfig.httpProvider || '127.0.0.1'
   const unlockTicketsUrl =
-    runtimeConfig.unlockTicketsUrl || 'http://localhost:3003'
+    runtimeConfig.unlockTicketsUrl || 'http://0.0.0.0:3003'
+  let unlockAppUrl = 'http://0.0.0.0:3000'
   let providers = {}
   let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
@@ -90,6 +91,8 @@ export default function configure(
 
     // rinkeby block time is roughly same as main net
     blockTime = 8000
+
+    unlockAppUrl = 'https://staging.unlock-protocol.com/'
   }
 
   if (env === 'prod') {
@@ -110,6 +113,8 @@ export default function configure(
 
     // See https://www.reddit.com/r/ethereum/comments/3c8v2i/what_is_the_expected_block_time/
     blockTime = 8000
+
+    unlockAppUrl = 'https://unlock-protocol.com/'
   }
 
   if (env === 'prod' || env === 'staging') {
@@ -136,5 +141,6 @@ export default function configure(
     unlockTicketsUrl,
     services,
     supportedProviders,
+    unlockAppUrl,
   }
 }
