@@ -13,6 +13,7 @@ import configure from '../../config'
 import { SET_PROVIDER, setProvider } from '../../actions/provider'
 import { SET_NETWORK, setNetwork } from '../../actions/network'
 import { TRANSACTION_TYPES } from '../../constants'
+import { ADD_KEY } from '../../actions/key'
 
 /**
  * Fake state
@@ -192,6 +193,54 @@ describe('Web3 middleware', () => {
         update,
       })
     )
+  })
+
+  describe('when handling the key.updated events triggered by the web3Service', () => {
+    it('it should dispatch updateKey', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      const keyId = 'keyId'
+      const key = {
+        id: keyId,
+        lock: lock.address,
+      }
+
+      state.keys = {
+        [keyId]: key,
+      }
+
+      mockWeb3Service.emit('key.updated', keyId, { data: 'hello' })
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: ADD_KEY,
+        id: key.id,
+        key: { data: 'hello' },
+      })
+    })
+  })
+
+  describe('when handling the key.saved events triggered by the web3Service', () => {
+    it('it should dispatch addKey', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      const keyId = 'keyId'
+      const key = {
+        id: keyId,
+        lock: lock.address,
+      }
+
+      state.keys = {
+        [keyId]: key,
+      }
+
+      mockWeb3Service.emit('key.updated', keyId, { data: 'hello' })
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: ADD_KEY,
+        id: key.id,
+        key: { data: 'hello' },
+      })
+    })
   })
 
   describe('error events triggered by the web3Service', () => {
