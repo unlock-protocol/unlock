@@ -10,9 +10,4 @@ describe('EventUrl helper component', () => {
       wrapper.queryByText('https://tickets.unlock-protocol.com/event/0x123')
     ).not.toBeNull()
   })
-  it('shows a placeholder when no address has been supplied', () => {
-    expect.assertions(1)
-    const wrapper = rtl.render(<EventUrl address={null} />)
-    expect(wrapper.queryByText('...')).not.toBeNull()
-  })
 })
