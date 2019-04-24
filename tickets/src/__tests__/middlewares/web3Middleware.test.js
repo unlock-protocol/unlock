@@ -2,12 +2,18 @@ import UnlockJs from '@unlock-protocol/unlock-js'
 import EventEmitter from 'events'
 import web3Middleware from '../../middlewares/web3Middleware'
 import { UPDATE_ACCOUNT, setAccount } from '../../actions/accounts'
-import { ADD_TRANSACTION, UPDATE_TRANSACTION } from '../../actions/transaction'
+import {
+  ADD_TRANSACTION,
+  UPDATE_TRANSACTION,
+  NEW_TRANSACTION,
+} from '../../actions/transaction'
 import { ADD_LOCK, UPDATE_LOCK } from '../../actions/lock'
 import { SET_ERROR } from '../../actions/error'
 import configure from '../../config'
 import { SET_PROVIDER, setProvider } from '../../actions/provider'
 import { SET_NETWORK, setNetwork } from '../../actions/network'
+import { TRANSACTION_TYPES } from '../../constants'
+import { ADD_KEY } from '../../actions/key'
 
 /**
  * Fake state
@@ -22,9 +28,10 @@ let lock = {
 }
 let state = {}
 
-const transaction = {
+let transaction = {
   hash: '0xf21e9820af34282c8bebb3a191cf615076ca06026a144c9c28e9cb762585472e',
 }
+
 const network = {
   name: 'test',
 }
@@ -188,6 +195,54 @@ describe('Web3 middleware', () => {
     )
   })
 
+  describe('when handling the key.updated events triggered by the web3Service', () => {
+    it('it should dispatch updateKey', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      const keyId = 'keyId'
+      const key = {
+        id: keyId,
+        lock: lock.address,
+      }
+
+      state.keys = {
+        [keyId]: key,
+      }
+
+      mockWeb3Service.emit('key.updated', keyId, { data: 'hello' })
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: ADD_KEY,
+        id: key.id,
+        key: { data: 'hello' },
+      })
+    })
+  })
+
+  describe('when handling the key.saved events triggered by the web3Service', () => {
+    it('it should dispatch addKey', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      const keyId = 'keyId'
+      const key = {
+        id: keyId,
+        lock: lock.address,
+      }
+
+      state.keys = {
+        [keyId]: key,
+      }
+
+      mockWeb3Service.emit('key.updated', keyId, { data: 'hello' })
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: ADD_KEY,
+        id: key.id,
+        key: { data: 'hello' },
+      })
+    })
+  })
+
   describe('error events triggered by the web3Service', () => {
     it('it should handle error events triggered by the web3Service', () => {
       expect.assertions(1)
@@ -200,6 +255,55 @@ describe('Web3 middleware', () => {
         })
       )
     })
+  })
+
+  it('should handle NEW_TRANSACTION', () => {
+    expect.assertions(3)
+    const {
+      next,
+      invoke,
+      store: { dispatch },
+    } = create()
+    const action = { type: NEW_TRANSACTION, transaction }
+    mockWeb3Service.getTransaction = jest.fn()
+
+    invoke(action)
+    expect(next).toHaveBeenCalled()
+    expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
+      transaction.hash,
+      transaction
+    )
+    expect(dispatch).not.toHaveBeenCalled()
+  })
+
+  it('should dispatch key update on NEW_TRANSACTION if it is a key purchase of our lock from us', () => {
+    expect.assertions(2)
+    state.router = {
+      location: {
+        pathname: `/${lock.address}`,
+        hash: '',
+        search: '',
+      },
+    }
+    transaction = {
+      ...transaction,
+      to: lock.address,
+      from: account.address,
+      type: TRANSACTION_TYPES.KEY_PURCHASE,
+    }
+    state.transactions = {
+      [transaction.hash]: transaction,
+    }
+    const { next, invoke } = create()
+    const action = { type: NEW_TRANSACTION, transaction }
+    mockWeb3Service.getTransaction = jest.fn()
+
+    invoke(action)
+    expect(next).toHaveBeenCalled()
+    expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
+      transaction.hash,
+      transaction
+    )
   })
 
   it('should handle SET_ACCOUNT by refreshing balance and retrieving historical unlock transactions', async () => {

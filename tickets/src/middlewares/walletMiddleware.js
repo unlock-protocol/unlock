@@ -13,6 +13,13 @@ import {
 } from '../errors'
 import { SIGN_ADDRESS, gotSignedAddress } from '../actions/ticket'
 import { PURCHASE_KEY } from '../actions/key'
+import {
+  dismissWalletCheck,
+  gotWallet,
+  waitForWallet,
+} from '../actions/walletStatus'
+import { newTransaction } from '../actions/transaction'
+import { transactionTypeMapping } from '../utils/types'
 
 const { WalletService } = UnlockJs
 
@@ -82,6 +89,38 @@ const walletMiddleware = config => {
       }
     })
 
+    walletService.on(
+      'transaction.new',
+      (transactionHash, from, to, input, type, status) => {
+        // At this point we know that a wallet was found, because a new transaction
+        // cannot be created without it
+        dispatch(gotWallet())
+        dispatch(
+          newTransaction({
+            hash: transactionHash,
+            to,
+            from,
+            input,
+            type: transactionTypeMapping(type),
+            status,
+            network: getState().network.name,
+          })
+        )
+      }
+    )
+
+    // A transaction has started, now we need to signal that we're waiting for
+    // interaction with the wallet
+    walletService.on('transaction.pending', () => {
+      dispatch(waitForWallet())
+    })
+
+    // The wallet check overlay may be manually dismissed. When that event is
+    // signaled, clear the overlay.
+    walletService.on('overlay.dismissed', () => {
+      dispatch(dismissWalletCheck())
+    })
+
     walletService.on('error', error => {
       dispatch(setError(error.message))
     })
@@ -104,8 +143,7 @@ const walletMiddleware = config => {
               action.key.lock,
               action.key.owner,
               lock.keyPrice,
-              account.address,
-              action.key.data
+              account.address
             )
           })
         }
