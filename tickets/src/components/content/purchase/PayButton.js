@@ -5,17 +5,19 @@ import PropTypes from 'prop-types'
 import withConfig from '../../../utils/withConfig'
 import UnlockPropTypes from '../../../propTypes'
 import Media from '../../../theme/media'
+import { KeyStatus } from '../../../selectors/keys'
 
-export const PayButton = ({ transaction, purchaseKey, config }) => {
+export const PayButton = ({ transaction, keyStatus, purchaseKey, config }) => {
   const { requiredConfirmations } = config
-  if (
-    transaction &&
-    ['submitted', 'pending'].indexOf(transaction.status) > -1
-  ) {
+  let transactionStatus
+  if (transaction && transaction.status) transactionStatus = transaction.status
+
+  if (['submitted', 'pending'].indexOf(transactionStatus) > -1) {
+    // Transaction has been submitted
     return <PayInfo>Payment Sent ...</PayInfo>
   } else if (
-    transaction &&
-    transaction.status === 'mined' &&
+    // Transaction is confirming
+    transactionStatus === 'mined' &&
     transaction.confirmations < requiredConfirmations
   ) {
     return (
@@ -24,9 +26,13 @@ export const PayButton = ({ transaction, purchaseKey, config }) => {
         {requiredConfirmations})
       </PayInfo>
     )
-  } else if (transaction && transaction.status === 'mined') {
+  } else if (keyStatus === KeyStatus.CONFIRMING) {
+    // Key is being confirmed but we don't have transaction
+    return <PayInfo>Confirming Payment</PayInfo>
+  } else if (transactionStatus === 'mined' || keyStatus === KeyStatus.VALID) {
     return <PayInfo>Confirmed</PayInfo>
   } else {
+    // No key or transaction
     return <Pay onClick={purchaseKey}>Pay &amp; Register for This Event</Pay>
   }
 }
@@ -35,10 +41,12 @@ PayButton.propTypes = {
   transaction: UnlockPropTypes.transaction,
   config: UnlockPropTypes.configuration.isRequired,
   purchaseKey: PropTypes.func.isRequired,
+  keyStatus: PropTypes.string,
 }
 
 PayButton.defaultProps = {
   transaction: null,
+  keyStatus: null,
 }
 
 export default withConfig(PayButton)

@@ -1,6 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { PayButton } from '../../components/content/purchase/PayButton'
+import { KeyStatus } from '../../selectors/keys'
 
 const config = {
   requiredConfirmations: 12,
@@ -37,6 +38,20 @@ storiesOf('PayButton', module)
     <PayButton
       transaction={confirmedTx}
       purchaseKey={purchaseKey}
+      config={config}
+    />
+  ))
+  .add('Confirming (key, no transaction)', () => (
+    <PayButton
+      purchaseKey={purchaseKey}
+      keyStatus={KeyStatus.CONFIRMING}
+      config={config}
+    />
+  ))
+  .add('Valid (key, no transaction)', () => (
+    <PayButton
+      purchaseKey={purchaseKey}
+      keyStatus={KeyStatus.VALID}
       config={config}
     />
   ))

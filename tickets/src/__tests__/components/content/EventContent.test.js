@@ -5,10 +5,12 @@ import {
   EventContent,
   mapStateToProps,
 } from '../../../components/content/EventContent'
-import { MONTH_NAMES } from '../../../constants'
+import { MONTH_NAMES, TRANSACTION_TYPES } from '../../../constants'
 import createUnlockStore from '../../../createUnlockStore'
 import configure from '../../../config'
 import { ConfigContext } from '../../../utils/withConfig'
+import { KeyStatus } from '../../../selectors/keys'
+import { transactionTypeMapping } from '../../../utils/types'
 
 const store = createUnlockStore({})
 const config = configure({})
@@ -66,22 +68,48 @@ describe('EventContent', () => {
 describe('mapStateToProps', () => {
   it('sets a value from initial state', () => {
     expect.hasAssertions()
-    const props = mapStateToProps({
-      locks: {
-        abc123: { address: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9' },
-      },
-      tickets: { event },
-      keys: {},
-      account: {
-        address: 'foo',
-      },
-      transactions: {},
-      router: {
-        location: {
-          pathname: '/event/0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
+    const keyDate = new Date('2038-01-17')
+    const props = mapStateToProps(
+      {
+        locks: {
+          abc123: { address: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9' },
+        },
+        tickets: { event },
+        keys: {
+          '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9-foo': {
+            lock: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
+            id: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9-foo',
+            owner: 'foo',
+            expiration: keyDate,
+            transactions: {
+              def234: {
+                type: transactionTypeMapping(TRANSACTION_TYPES.KEY_PURCHASE),
+                key: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9-foo',
+                confirmations: 3,
+                status: 'mined',
+              },
+            },
+          },
+        },
+        account: {
+          address: 'foo',
+        },
+        transactions: {
+          def234: {
+            type: transactionTypeMapping(TRANSACTION_TYPES.KEY_PURCHASE),
+            key: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9-foo',
+            confirmations: 3,
+            status: 'mined',
+          },
+        },
+        router: {
+          location: {
+            pathname: '/event/0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
+          },
         },
       },
-    })
+      { config }
+    )
 
     const expectedProps = {
       event: {
@@ -95,13 +123,26 @@ describe('mapStateToProps', () => {
         address: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
       },
       lockKey: {
-        data: null,
-        expired: 0,
+        expiration: keyDate,
         id: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9-foo',
         lock: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
         owner: 'foo',
+        transactions: {
+          def234: {
+            type: transactionTypeMapping(TRANSACTION_TYPES.KEY_PURCHASE),
+            key: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9-foo',
+            confirmations: 3,
+            status: 'mined',
+          },
+        },
       },
-      transaction: undefined,
+      transaction: {
+        type: transactionTypeMapping(TRANSACTION_TYPES.KEY_PURCHASE),
+        key: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9-foo',
+        confirmations: 3,
+        status: 'mined',
+      },
+      keyStatus: KeyStatus.CONFIRMING,
     }
 
     expect(props).toEqual(expectedProps)

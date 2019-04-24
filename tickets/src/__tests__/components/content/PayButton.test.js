@@ -3,6 +3,7 @@ import * as rtl from 'react-testing-library'
 
 import configure from '../../../config'
 import { PayButton } from '../../../components/content/purchase/PayButton'
+import { KeyStatus } from '../../../selectors/keys'
 
 const config = configure({})
 
@@ -42,7 +43,7 @@ describe('PayButton', () => {
     rtl.fireEvent.click(button)
     expect(purchaseKey).not.toHaveBeenCalled()
   })
-  it('should not trigger purchasekey when the button is clicked and the key is confirming', () => {
+  it('should not trigger purchasekey when the button is clicked and the key transaction is confirming', () => {
     expect.assertions(2)
     const purchaseKey = jest.fn()
     const transaction = {
@@ -61,7 +62,22 @@ describe('PayButton', () => {
     rtl.fireEvent.click(button)
     expect(purchaseKey).not.toHaveBeenCalled()
   })
-  it('should not trigger purchasekey when the button is clicked and the key is confirmed', () => {
+  it('should not trigger purchasekey when the button is clicked and the key is confirming', () => {
+    expect.assertions(2)
+    const purchaseKey = jest.fn()
+    const wrapper = rtl.render(
+      <PayButton
+        config={config}
+        keyStatus={KeyStatus.CONFIRMING}
+        purchaseKey={purchaseKey}
+      />
+    )
+    let button = wrapper.queryByText('Confirming Payment', { exact: false })
+    expect(button).not.toBeNull()
+    rtl.fireEvent.click(button)
+    expect(purchaseKey).not.toHaveBeenCalled()
+  })
+  it('should not trigger purchasekey when the button is clicked and the key transaction is confirmed', () => {
     expect.assertions(2)
     const purchaseKey = jest.fn()
     const transaction = {
@@ -72,6 +88,21 @@ describe('PayButton', () => {
       <PayButton
         config={config}
         transaction={transaction}
+        purchaseKey={purchaseKey}
+      />
+    )
+    let button = wrapper.getByText('Confirmed')
+    expect(button).not.toBeNull()
+    rtl.fireEvent.click(button)
+    expect(purchaseKey).not.toHaveBeenCalled()
+  })
+  it('should not trigger purchasekey when the button is clicked and the key is confirmed', () => {
+    expect.assertions(2)
+    const purchaseKey = jest.fn()
+    const wrapper = rtl.render(
+      <PayButton
+        config={config}
+        keyStatus={KeyStatus.VALID}
         purchaseKey={purchaseKey}
       />
     )
