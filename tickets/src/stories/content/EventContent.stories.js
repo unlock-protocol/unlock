@@ -30,7 +30,11 @@ Join us for an hour or two of fine entertainment.`,
 }
 const config = configure({})
 const purchaseKey = () => {}
-const loadEvent = () => {}
+const dummyFunc = () => {}
+
+const account = {
+  address: 'foo',
+}
 
 storiesOf('Event RSVP page', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
@@ -44,8 +48,10 @@ storiesOf('Event RSVP page', module)
           lock={lock}
           config={config}
           purchaseKey={purchaseKey}
-          loadEvent={loadEvent}
+          loadEvent={dummyFunc}
+          signAddress={dummyFunc}
           transaction={transaction}
+          account={account}
         />
       </ConfigProvider>
     )
@@ -62,8 +68,10 @@ storiesOf('Event RSVP page', module)
           lock={lock}
           config={config}
           purchaseKey={purchaseKey}
-          loadEvent={loadEvent}
+          loadEvent={dummyFunc}
+          signAddress={dummyFunc}
           transaction={transaction}
+          account={account}
         />
       </ConfigProvider>
     )
@@ -81,8 +89,10 @@ storiesOf('Event RSVP page', module)
           lock={lock}
           config={config}
           purchaseKey={purchaseKey}
-          loadEvent={loadEvent}
+          loadEvent={dummyFunc}
+          signAddress={dummyFunc}
           transaction={transaction}
+          account={account}
         />
       </ConfigProvider>
     )
@@ -100,8 +110,10 @@ storiesOf('Event RSVP page', module)
           lock={lock}
           config={config}
           purchaseKey={purchaseKey}
-          loadEvent={loadEvent}
+          loadEvent={dummyFunc}
+          signAddress={dummyFunc}
           transaction={transaction}
+          account={account}
         />
       </ConfigProvider>
     )
@@ -114,8 +126,10 @@ storiesOf('Event RSVP page', module)
           lock={lock}
           config={config}
           purchaseKey={purchaseKey}
-          loadEvent={loadEvent}
+          loadEvent={dummyFunc}
+          signAddress={dummyFunc}
           keyStatus={KeyStatus.CONFIRMING}
+          account={account}
         />
       </ConfigProvider>
     )
@@ -128,8 +142,27 @@ storiesOf('Event RSVP page', module)
           lock={lock}
           config={config}
           purchaseKey={purchaseKey}
-          loadEvent={loadEvent}
+          loadEvent={dummyFunc}
+          signAddress={dummyFunc}
           keyStatus={KeyStatus.VALID}
+          account={account}
+        />
+      </ConfigProvider>
+    )
+  })
+  .add('Event RSVP page with confirmed key and QR code', () => {
+    return (
+      <ConfigProvider value={config}>
+        <EventContent
+          event={event}
+          lock={lock}
+          config={config}
+          purchaseKey={purchaseKey}
+          loadEvent={dummyFunc}
+          signAddress={dummyFunc}
+          keyStatus={KeyStatus.VALID}
+          account={account}
+          signedEventAddress="foobar"
         />
       </ConfigProvider>
     )

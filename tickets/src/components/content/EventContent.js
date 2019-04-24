@@ -13,12 +13,14 @@ import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { purchaseKey } from '../../actions/key'
-import { loadEvent } from '../../actions/ticket'
+import { loadEvent, signAddress } from '../../actions/ticket'
 import PayButton from './purchase/PayButton'
 import { NoPhone } from '../../theme/media'
 import { transactionTypeMapping } from '../../utils/types'
-import keyStatus from '../../selectors/keys'
+import keyStatus, { KeyStatus } from '../../selectors/keys'
 import withConfig from '../../utils/withConfig'
+import DeveloperOverlay from '../developer/DeveloperOverlay'
+import TicketCode from './purchase/TicketCode'
 
 export class EventContent extends Component {
   constructor(props) {
@@ -26,22 +28,32 @@ export class EventContent extends Component {
 
     this.state = {
       loaded: false,
+      signed: false,
     }
 
     this.setAsLoaded.bind(this)
+    this.setAsSigned.bind(this)
   }
 
   componentDidUpdate() {
-    const { lock, loadEvent, event } = this.props
-    const { loaded } = this.state
+    const { lock, loadEvent, signAddress, event, keyStatus } = this.props
+    const { loaded, signed } = this.state
     if (lock.address && !event.lockAddress && !loaded) {
       loadEvent(lock.address)
       this.setAsLoaded() // To prevent multiple loads
+    }
+    if (keyStatus === KeyStatus.VALID && !signed) {
+      signAddress(lock.address)
+      this.setAsSigned()
     }
   }
 
   setAsLoaded() {
     this.setState({ loaded: true })
+  }
+
+  setAsSigned() {
+    this.setState({ signed: true })
   }
 
   render() {
@@ -52,6 +64,8 @@ export class EventContent extends Component {
       transaction,
       event,
       keyStatus,
+      account,
+      signedEventAddress,
     } = this.props
 
     if (!lock.address || !event.name) return null // Wait for the lock and event to load
@@ -100,10 +114,15 @@ export class EventContent extends Component {
                 <Location>{location}</Location>
               </DetailsField>
               <DetailsField>
-                <div />
+                <TicketCode
+                  publicKey={account.address}
+                  signedAddress={signedEventAddress}
+                  eventAddress={lock.address}
+                />
               </DetailsField>
             </DetailsFieldset>
           </Layout>
+          <DeveloperOverlay />
         </BrowserOnly>
       </GlobalErrorConsumer>
     )
@@ -115,9 +134,12 @@ EventContent.propTypes = {
   transaction: UnlockPropTypes.transaction,
   purchaseKey: PropTypes.func.isRequired,
   loadEvent: PropTypes.func.isRequired,
+  signAddress: PropTypes.func.isRequired,
   lockKey: UnlockPropTypes.key,
   event: UnlockPropTypes.ticketedEvent,
   keyStatus: PropTypes.string,
+  signedEventAddress: PropTypes.string,
+  account: UnlockPropTypes.account,
   // Properties to add once we're showing the QR code:
   //locked: PropTypes.bool.isRequired,
 }
@@ -128,6 +150,8 @@ EventContent.defaultProps = {
   lockKey: null,
   event: {},
   keyStatus: null,
+  signedEventAddress: null,
+  account: null,
 }
 
 export const mapDispatchToProps = dispatch => ({
@@ -137,15 +161,20 @@ export const mapDispatchToProps = dispatch => ({
   loadEvent: address => {
     dispatch(loadEvent(address))
   },
+  signAddress: address => {
+    dispatch(signAddress(address))
+  },
 })
 
 export const mapStateToProps = (
-  { router, locks, keys, account, transactions, tickets: { event } },
+  { router, locks, keys, account, transactions, tickets },
   { config: { requiredConfirmations } }
 ) => {
   if (!account) {
     return {}
   }
+
+  const event = tickets.event
 
   const { lockAddress } = lockRoute(router.location.pathname)
 
@@ -191,12 +220,19 @@ export const mapStateToProps = (
 
   const currentKeyStatus = keyStatus(lockKey.id, keys, requiredConfirmations)
 
+  let signedEventAddress
+  if (tickets[lockAddress]) {
+    signedEventAddress = tickets[lockAddress]
+  }
+
   return {
     lock,
     lockKey,
     transaction,
+    signedEventAddress,
     keyStatus: currentKeyStatus,
     event: processedEvent,
+    account,
   }
 }
 
