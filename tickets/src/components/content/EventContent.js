@@ -61,7 +61,11 @@ export class EventContent extends Component {
               <title>{pageTitle(name)}</title>
             </Head>
             <Title>{name}</Title>
-            <DetailsFieldset>
+            <PaymentFieldset>
+              <PayButton
+                transaction={transaction}
+                purchaseKey={() => purchaseKey(lockKey)}
+              />
               <Field>
                 <Label>Ticket Price</Label>
                 <BalanceProvider
@@ -74,19 +78,15 @@ export class EventContent extends Component {
                   )}
                 />
               </Field>
-              <PayButton
-                transaction={transaction}
-                purchaseKey={() => purchaseKey(lockKey)}
-              />
-            </DetailsFieldset>
+            </PaymentFieldset>
             <DetailsFieldset>
               <DetailsField>
                 <DisplayDate>{dateString}</DisplayDate>
                 <Description>{description}</Description>
+                <Location>{location}</Location>
               </DetailsField>
               <DetailsField>
-                <Label>Location</Label>
-                <Description>{location}</Description>
+                <div />
               </DetailsField>
             </DetailsFieldset>
           </Layout>
@@ -228,6 +228,11 @@ const DetailsFieldset = styled(Fieldset)`
   padding-right: 20px;
 `
 
+const PaymentFieldset = styled(Fieldset)`
+  padding-left: 20px;
+  padding-right: 20px;
+`
+
 const DetailsField = styled(Field)`
   grid-template-rows: 35px auto;
   & > ${Label} {
@@ -237,6 +242,7 @@ const DetailsField = styled(Field)`
 
 const DisplayDate = styled.div`
   font-family: 'IBM Plex Sans', sans-serif;
+  font-style: normal;
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
@@ -246,4 +252,11 @@ const DisplayDate = styled.div`
 const Description = styled.div`
   font-size: 20px;
   font-family: 'IBM Plex Serif', serif;
+`
+
+const Location = styled.div`
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  margin-top: 30px;
 `

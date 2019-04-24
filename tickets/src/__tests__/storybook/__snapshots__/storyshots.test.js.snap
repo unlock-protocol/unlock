@@ -5042,14 +5042,14 @@ exports[`Storyshots Event RSVP page Event RSVP page with confirmed key 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c18 {
+    .c20 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c18 > svg {
+.c20 > svg {
   fill: white;
 }
 
@@ -5068,7 +5068,7 @@ Object {
   height: 24px;
 }
 
-.c17 {
+.c19 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -5099,7 +5099,7 @@ Object {
   height: 100%;
 }
 
-.c7 {
+.c8 {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 25px auto;
@@ -5109,12 +5109,12 @@ Object {
   align-items: top;
 }
 
-.c9 {
+.c10 {
   font-size: 13px;
   color: var(--darkgrey);
 }
 
-.c13 {
+.c7 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -5135,11 +5135,11 @@ Object {
   background-color: var(--white);
 }
 
-.c13:hover {
+.c7:hover {
   background-color: var(--activegreen);
 }
 
-.c13:hover {
+.c7:hover {
   background-color: var(--white);
 }
 
@@ -5154,13 +5154,13 @@ Object {
   padding-right: 20px;
 }
 
-.c10 {
+.c11 {
   display: grid;
   grid-template-columns: repeat(2,1fr);
   grid-gap: 10px;
 }
 
-.c11 {
+.c12 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-weight: bold;
   font-size: 30px;
@@ -5168,7 +5168,7 @@ Object {
   color: var(--dimgrey);
 }
 
-.c12 {
+.c13 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 20px;
   line-height: 27px;
@@ -5176,7 +5176,7 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
+.c14 {
   padding: 0;
   border: none;
   margin-bottom: 30px;
@@ -5184,7 +5184,14 @@ Object {
   padding-right: 20px;
 }
 
-.c14 {
+.c6 {
+  padding: 0;
+  border: none;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.c15 {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 25px auto;
@@ -5195,27 +5202,35 @@ Object {
   grid-template-rows: 35px auto;
 }
 
-.c14 > .c8 {
+.c15 > .c9 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c15 {
+.c16 {
   font-family: 'IBM Plex Sans',sans-serif;
+  font-style: normal;
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
   color: var(--red);
 }
 
-.c16 {
+.c17 {
   font-size: 20px;
   font-family: 'IBM Plex Serif',serif;
 }
 
+.c18 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  margin-top: 30px;
+}
+
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c18 {
+  .c20 {
     height: 16px;
     width: 16px;
   }
@@ -5239,13 +5254,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c19 {
+  .c21 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c17 {
+  .c19 {
     display: none;
   }
 }
@@ -5257,8 +5272,20 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c7 {
+  .c8 {
     margin-bottom: 15px;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c14 {
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: repeat(2,1fr);
+    -webkit-align-items: top;
+    -webkit-box-align: top;
+    -ms-flex-align: top;
+    align-items: top;
   }
 }
 
@@ -5275,7 +5302,7 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c14 {
+  .c15 {
     margin-bottom: 15px;
   }
 }
@@ -5315,73 +5342,69 @@ Object {
             <div
               class="c7"
             >
+              Confirmed
+            </div>
+            <div
+              class="c8"
+            >
               <label
-                class="c8 c9"
+                class="c9 c10"
               >
                 Ticket Price
               </label>
               <div
-                class="c10"
+                class="c11"
               >
                 <div
-                  class="c11"
+                  class="c12"
                 >
                   0.01
                    ETH
                 </div>
                 <div
-                  class="c12"
+                  class="c13"
                 >
                   $
                   ---
                 </div>
               </div>
             </div>
-            <div
-              class="c13"
-            >
-              Confirmed
-            </div>
           </div>
           <div
-            class="c6"
+            class="c14"
           >
             <div
-              class="c14"
+              class="c15"
             >
               <div
-                class="c15"
+                class="c16"
               >
                 Nov 23, 2063
               </div>
               <div
-                class="c16"
+                class="c17"
               >
                 Unbelievably, it's been 100 years since it first came to our screens.
     
 Join us for an hour or two of fine entertainment.
               </div>
-            </div>
-            <div
-              class="c14"
-            >
-              <label
-                class="c8 c9"
-              >
-                Location
-              </label>
               <div
-                class="c16"
+                class="c18"
               >
                 Totters Lane, London
               </div>
             </div>
+            <div
+              class="c15"
+            >
+              <div />
+            </div>
           </div>
           <div
-            class="c17"
+            class="c19"
           >
             <div
-              class="c18"
+              class="c20"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -5398,7 +5421,7 @@ Join us for an hour or two of fine entertainment.
           </div>
         </div>
         <div
-          class="c19"
+          class="c21"
         />
       </div>
     </div>
@@ -5433,8 +5456,13 @@ Join us for an hour or two of fine entertainment.
           My Doctor Who party
         </h1>
         <div
-          class="sc-1xgodx9-4 sc-1fq9sck-4 eqlEGi"
+          class="sc-1xgodx9-4 sc-1fq9sck-5 eyUQpb"
         >
+          <div
+            class="sc-1uk9h2s-0 sc-1uk9h2s-1 gGiLaF"
+          >
+            Confirmed
+          </div>
           <div
             class="sc-1xgodx9-5 hKuMTX"
           >
@@ -5460,44 +5488,35 @@ Join us for an hour or two of fine entertainment.
               </div>
             </div>
           </div>
-          <div
-            class="sc-1uk9h2s-0 sc-1uk9h2s-1 gGiLaF"
-          >
-            Confirmed
-          </div>
         </div>
         <div
           class="sc-1xgodx9-4 sc-1fq9sck-4 eqlEGi"
         >
           <div
-            class="sc-1xgodx9-5 sc-1fq9sck-5 gLsgrt"
+            class="sc-1xgodx9-5 sc-1fq9sck-6 dDmCuX"
           >
             <div
-              class="sc-1fq9sck-6 dsUaoU"
+              class="sc-1fq9sck-7 hswCiG"
             >
               Nov 23, 2063
             </div>
             <div
-              class="sc-1fq9sck-7 hzNlUw"
+              class="sc-1fq9sck-8 clEMWd"
             >
               Unbelievably, it's been 100 years since it first came to our screens.
     
 Join us for an hour or two of fine entertainment.
             </div>
-          </div>
-          <div
-            class="sc-1xgodx9-5 sc-1fq9sck-5 gLsgrt"
-          >
-            <label
-              class="sc-1xgodx9-6 loqXYl"
-            >
-              Location
-            </label>
             <div
-              class="sc-1fq9sck-7 hzNlUw"
+              class="sc-1fq9sck-9 iJXTq"
             >
               Totters Lane, London
             </div>
+          </div>
+          <div
+            class="sc-1xgodx9-5 sc-1fq9sck-6 dDmCuX"
+          >
+            <div />
           </div>
         </div>
         <div
@@ -5591,14 +5610,14 @@ exports[`Storyshots Event RSVP page Event RSVP page with confirming key 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c18 {
+    .c20 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c18 > svg {
+.c20 > svg {
   fill: white;
 }
 
@@ -5617,7 +5636,7 @@ Object {
   height: 24px;
 }
 
-.c17 {
+.c19 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -5648,7 +5667,7 @@ Object {
   height: 100%;
 }
 
-.c7 {
+.c8 {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 25px auto;
@@ -5658,12 +5677,12 @@ Object {
   align-items: top;
 }
 
-.c9 {
+.c10 {
   font-size: 13px;
   color: var(--darkgrey);
 }
 
-.c13 {
+.c7 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -5684,11 +5703,11 @@ Object {
   background-color: var(--white);
 }
 
-.c13:hover {
+.c7:hover {
   background-color: var(--activegreen);
 }
 
-.c13:hover {
+.c7:hover {
   background-color: var(--white);
 }
 
@@ -5703,13 +5722,13 @@ Object {
   padding-right: 20px;
 }
 
-.c10 {
+.c11 {
   display: grid;
   grid-template-columns: repeat(2,1fr);
   grid-gap: 10px;
 }
 
-.c11 {
+.c12 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-weight: bold;
   font-size: 30px;
@@ -5717,7 +5736,7 @@ Object {
   color: var(--dimgrey);
 }
 
-.c12 {
+.c13 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 20px;
   line-height: 27px;
@@ -5725,7 +5744,7 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
+.c14 {
   padding: 0;
   border: none;
   margin-bottom: 30px;
@@ -5733,7 +5752,14 @@ Object {
   padding-right: 20px;
 }
 
-.c14 {
+.c6 {
+  padding: 0;
+  border: none;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.c15 {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 25px auto;
@@ -5744,27 +5770,35 @@ Object {
   grid-template-rows: 35px auto;
 }
 
-.c14 > .c8 {
+.c15 > .c9 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c15 {
+.c16 {
   font-family: 'IBM Plex Sans',sans-serif;
+  font-style: normal;
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
   color: var(--red);
 }
 
-.c16 {
+.c17 {
   font-size: 20px;
   font-family: 'IBM Plex Serif',serif;
 }
 
+.c18 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  margin-top: 30px;
+}
+
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c18 {
+  .c20 {
     height: 16px;
     width: 16px;
   }
@@ -5788,13 +5822,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c19 {
+  .c21 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c17 {
+  .c19 {
     display: none;
   }
 }
@@ -5806,8 +5840,20 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c7 {
+  .c8 {
     margin-bottom: 15px;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c14 {
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: repeat(2,1fr);
+    -webkit-align-items: top;
+    -webkit-box-align: top;
+    -ms-flex-align: top;
+    align-items: top;
   }
 }
 
@@ -5824,7 +5870,7 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c14 {
+  .c15 {
     margin-bottom: 15px;
   }
 }
@@ -5864,31 +5910,6 @@ Object {
             <div
               class="c7"
             >
-              <label
-                class="c8 c9"
-              >
-                Ticket Price
-              </label>
-              <div
-                class="c10"
-              >
-                <div
-                  class="c11"
-                >
-                  0.01
-                   ETH
-                </div>
-                <div
-                  class="c12"
-                >
-                  $
-                  ---
-                </div>
-              </div>
-            </div>
-            <div
-              class="c13"
-            >
               Confirming Payment (
               3
                /
@@ -5896,46 +5917,67 @@ Object {
               12
               )
             </div>
+            <div
+              class="c8"
+            >
+              <label
+                class="c9 c10"
+              >
+                Ticket Price
+              </label>
+              <div
+                class="c11"
+              >
+                <div
+                  class="c12"
+                >
+                  0.01
+                   ETH
+                </div>
+                <div
+                  class="c13"
+                >
+                  $
+                  ---
+                </div>
+              </div>
+            </div>
           </div>
           <div
-            class="c6"
+            class="c14"
           >
             <div
-              class="c14"
+              class="c15"
             >
               <div
-                class="c15"
+                class="c16"
               >
                 Nov 23, 2063
               </div>
               <div
-                class="c16"
+                class="c17"
               >
                 Unbelievably, it's been 100 years since it first came to our screens.
     
 Join us for an hour or two of fine entertainment.
               </div>
-            </div>
-            <div
-              class="c14"
-            >
-              <label
-                class="c8 c9"
-              >
-                Location
-              </label>
               <div
-                class="c16"
+                class="c18"
               >
                 Totters Lane, London
               </div>
             </div>
+            <div
+              class="c15"
+            >
+              <div />
+            </div>
           </div>
           <div
-            class="c17"
+            class="c19"
           >
             <div
-              class="c18"
+              class="c20"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -5952,7 +5994,7 @@ Join us for an hour or two of fine entertainment.
           </div>
         </div>
         <div
-          class="c19"
+          class="c21"
         />
       </div>
     </div>
@@ -5987,8 +6029,18 @@ Join us for an hour or two of fine entertainment.
           My Doctor Who party
         </h1>
         <div
-          class="sc-1xgodx9-4 sc-1fq9sck-4 eqlEGi"
+          class="sc-1xgodx9-4 sc-1fq9sck-5 eyUQpb"
         >
+          <div
+            class="sc-1uk9h2s-0 sc-1uk9h2s-1 gGiLaF"
+          >
+            Confirming Payment (
+            3
+             /
+             
+            12
+            )
+          </div>
           <div
             class="sc-1xgodx9-5 hKuMTX"
           >
@@ -6014,49 +6066,35 @@ Join us for an hour or two of fine entertainment.
               </div>
             </div>
           </div>
-          <div
-            class="sc-1uk9h2s-0 sc-1uk9h2s-1 gGiLaF"
-          >
-            Confirming Payment (
-            3
-             /
-             
-            12
-            )
-          </div>
         </div>
         <div
           class="sc-1xgodx9-4 sc-1fq9sck-4 eqlEGi"
         >
           <div
-            class="sc-1xgodx9-5 sc-1fq9sck-5 gLsgrt"
+            class="sc-1xgodx9-5 sc-1fq9sck-6 dDmCuX"
           >
             <div
-              class="sc-1fq9sck-6 dsUaoU"
+              class="sc-1fq9sck-7 hswCiG"
             >
               Nov 23, 2063
             </div>
             <div
-              class="sc-1fq9sck-7 hzNlUw"
+              class="sc-1fq9sck-8 clEMWd"
             >
               Unbelievably, it's been 100 years since it first came to our screens.
     
 Join us for an hour or two of fine entertainment.
             </div>
-          </div>
-          <div
-            class="sc-1xgodx9-5 sc-1fq9sck-5 gLsgrt"
-          >
-            <label
-              class="sc-1xgodx9-6 loqXYl"
-            >
-              Location
-            </label>
             <div
-              class="sc-1fq9sck-7 hzNlUw"
+              class="sc-1fq9sck-9 iJXTq"
             >
               Totters Lane, London
             </div>
+          </div>
+          <div
+            class="sc-1xgodx9-5 sc-1fq9sck-6 dDmCuX"
+          >
+            <div />
           </div>
         </div>
         <div
@@ -6150,14 +6188,14 @@ exports[`Storyshots Event RSVP page Event RSVP page with submitted key 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c18 {
+    .c20 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c18 > svg {
+.c20 > svg {
   fill: white;
 }
 
@@ -6176,7 +6214,7 @@ Object {
   height: 24px;
 }
 
-.c17 {
+.c19 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -6207,7 +6245,7 @@ Object {
   height: 100%;
 }
 
-.c7 {
+.c8 {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 25px auto;
@@ -6217,12 +6255,12 @@ Object {
   align-items: top;
 }
 
-.c9 {
+.c10 {
   font-size: 13px;
   color: var(--darkgrey);
 }
 
-.c13 {
+.c7 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -6243,11 +6281,11 @@ Object {
   background-color: var(--white);
 }
 
-.c13:hover {
+.c7:hover {
   background-color: var(--activegreen);
 }
 
-.c13:hover {
+.c7:hover {
   background-color: var(--white);
 }
 
@@ -6262,13 +6300,13 @@ Object {
   padding-right: 20px;
 }
 
-.c10 {
+.c11 {
   display: grid;
   grid-template-columns: repeat(2,1fr);
   grid-gap: 10px;
 }
 
-.c11 {
+.c12 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-weight: bold;
   font-size: 30px;
@@ -6276,7 +6314,7 @@ Object {
   color: var(--dimgrey);
 }
 
-.c12 {
+.c13 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 20px;
   line-height: 27px;
@@ -6284,7 +6322,7 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
+.c14 {
   padding: 0;
   border: none;
   margin-bottom: 30px;
@@ -6292,7 +6330,14 @@ Object {
   padding-right: 20px;
 }
 
-.c14 {
+.c6 {
+  padding: 0;
+  border: none;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.c15 {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 25px auto;
@@ -6303,27 +6348,35 @@ Object {
   grid-template-rows: 35px auto;
 }
 
-.c14 > .c8 {
+.c15 > .c9 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c15 {
+.c16 {
   font-family: 'IBM Plex Sans',sans-serif;
+  font-style: normal;
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
   color: var(--red);
 }
 
-.c16 {
+.c17 {
   font-size: 20px;
   font-family: 'IBM Plex Serif',serif;
 }
 
+.c18 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  margin-top: 30px;
+}
+
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c18 {
+  .c20 {
     height: 16px;
     width: 16px;
   }
@@ -6347,13 +6400,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c19 {
+  .c21 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c17 {
+  .c19 {
     display: none;
   }
 }
@@ -6365,8 +6418,20 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c7 {
+  .c8 {
     margin-bottom: 15px;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c14 {
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: repeat(2,1fr);
+    -webkit-align-items: top;
+    -webkit-box-align: top;
+    -ms-flex-align: top;
+    align-items: top;
   }
 }
 
@@ -6383,7 +6448,7 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c14 {
+  .c15 {
     margin-bottom: 15px;
   }
 }
@@ -6423,73 +6488,69 @@ Object {
             <div
               class="c7"
             >
+              Payment Sent ...
+            </div>
+            <div
+              class="c8"
+            >
               <label
-                class="c8 c9"
+                class="c9 c10"
               >
                 Ticket Price
               </label>
               <div
-                class="c10"
+                class="c11"
               >
                 <div
-                  class="c11"
+                  class="c12"
                 >
                   0.01
                    ETH
                 </div>
                 <div
-                  class="c12"
+                  class="c13"
                 >
                   $
                   ---
                 </div>
               </div>
             </div>
-            <div
-              class="c13"
-            >
-              Payment Sent ...
-            </div>
           </div>
           <div
-            class="c6"
+            class="c14"
           >
             <div
-              class="c14"
+              class="c15"
             >
               <div
-                class="c15"
+                class="c16"
               >
                 Nov 23, 2063
               </div>
               <div
-                class="c16"
+                class="c17"
               >
                 Unbelievably, it's been 100 years since it first came to our screens.
     
 Join us for an hour or two of fine entertainment.
               </div>
-            </div>
-            <div
-              class="c14"
-            >
-              <label
-                class="c8 c9"
-              >
-                Location
-              </label>
               <div
-                class="c16"
+                class="c18"
               >
                 Totters Lane, London
               </div>
             </div>
+            <div
+              class="c15"
+            >
+              <div />
+            </div>
           </div>
           <div
-            class="c17"
+            class="c19"
           >
             <div
-              class="c18"
+              class="c20"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -6506,7 +6567,7 @@ Join us for an hour or two of fine entertainment.
           </div>
         </div>
         <div
-          class="c19"
+          class="c21"
         />
       </div>
     </div>
@@ -6541,8 +6602,13 @@ Join us for an hour or two of fine entertainment.
           My Doctor Who party
         </h1>
         <div
-          class="sc-1xgodx9-4 sc-1fq9sck-4 eqlEGi"
+          class="sc-1xgodx9-4 sc-1fq9sck-5 eyUQpb"
         >
+          <div
+            class="sc-1uk9h2s-0 sc-1uk9h2s-1 gGiLaF"
+          >
+            Payment Sent ...
+          </div>
           <div
             class="sc-1xgodx9-5 hKuMTX"
           >
@@ -6568,44 +6634,35 @@ Join us for an hour or two of fine entertainment.
               </div>
             </div>
           </div>
-          <div
-            class="sc-1uk9h2s-0 sc-1uk9h2s-1 gGiLaF"
-          >
-            Payment Sent ...
-          </div>
         </div>
         <div
           class="sc-1xgodx9-4 sc-1fq9sck-4 eqlEGi"
         >
           <div
-            class="sc-1xgodx9-5 sc-1fq9sck-5 gLsgrt"
+            class="sc-1xgodx9-5 sc-1fq9sck-6 dDmCuX"
           >
             <div
-              class="sc-1fq9sck-6 dsUaoU"
+              class="sc-1fq9sck-7 hswCiG"
             >
               Nov 23, 2063
             </div>
             <div
-              class="sc-1fq9sck-7 hzNlUw"
+              class="sc-1fq9sck-8 clEMWd"
             >
               Unbelievably, it's been 100 years since it first came to our screens.
     
 Join us for an hour or two of fine entertainment.
             </div>
-          </div>
-          <div
-            class="sc-1xgodx9-5 sc-1fq9sck-5 gLsgrt"
-          >
-            <label
-              class="sc-1xgodx9-6 loqXYl"
-            >
-              Location
-            </label>
             <div
-              class="sc-1fq9sck-7 hzNlUw"
+              class="sc-1fq9sck-9 iJXTq"
             >
               Totters Lane, London
             </div>
+          </div>
+          <div
+            class="sc-1xgodx9-5 sc-1fq9sck-6 dDmCuX"
+          >
+            <div />
           </div>
         </div>
         <div
@@ -6699,14 +6756,14 @@ exports[`Storyshots Event RSVP page Event RSVP page with unpurchased key 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c18 {
+    .c20 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c18 > svg {
+.c20 > svg {
   fill: white;
 }
 
@@ -6725,7 +6782,7 @@ Object {
   height: 24px;
 }
 
-.c17 {
+.c19 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -6756,7 +6813,7 @@ Object {
   height: 100%;
 }
 
-.c7 {
+.c8 {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 25px auto;
@@ -6766,12 +6823,12 @@ Object {
   align-items: top;
 }
 
-.c9 {
+.c10 {
   font-size: 13px;
   color: var(--darkgrey);
 }
 
-.c13 {
+.c7 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -6788,7 +6845,7 @@ Object {
   padding-top: 20px;
 }
 
-.c13:hover {
+.c7:hover {
   background-color: var(--activegreen);
 }
 
@@ -6803,13 +6860,13 @@ Object {
   padding-right: 20px;
 }
 
-.c10 {
+.c11 {
   display: grid;
   grid-template-columns: repeat(2,1fr);
   grid-gap: 10px;
 }
 
-.c11 {
+.c12 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-weight: bold;
   font-size: 30px;
@@ -6817,7 +6874,7 @@ Object {
   color: var(--dimgrey);
 }
 
-.c12 {
+.c13 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 20px;
   line-height: 27px;
@@ -6825,7 +6882,7 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
+.c14 {
   padding: 0;
   border: none;
   margin-bottom: 30px;
@@ -6833,7 +6890,14 @@ Object {
   padding-right: 20px;
 }
 
-.c14 {
+.c6 {
+  padding: 0;
+  border: none;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.c15 {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 25px auto;
@@ -6844,27 +6908,35 @@ Object {
   grid-template-rows: 35px auto;
 }
 
-.c14 > .c8 {
+.c15 > .c9 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c15 {
+.c16 {
   font-family: 'IBM Plex Sans',sans-serif;
+  font-style: normal;
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
   color: var(--red);
 }
 
-.c16 {
+.c17 {
   font-size: 20px;
   font-family: 'IBM Plex Serif',serif;
 }
 
+.c18 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  margin-top: 30px;
+}
+
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c18 {
+  .c20 {
     height: 16px;
     width: 16px;
   }
@@ -6888,13 +6960,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c19 {
+  .c21 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c17 {
+  .c19 {
     display: none;
   }
 }
@@ -6906,8 +6978,20 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c7 {
+  .c8 {
     margin-bottom: 15px;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c14 {
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: repeat(2,1fr);
+    -webkit-align-items: top;
+    -webkit-box-align: top;
+    -ms-flex-align: top;
+    align-items: top;
   }
 }
 
@@ -6924,7 +7008,7 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c14 {
+  .c15 {
     margin-bottom: 15px;
   }
 }
@@ -6964,73 +7048,69 @@ Object {
             <div
               class="c7"
             >
+              Pay & Register for This Event
+            </div>
+            <div
+              class="c8"
+            >
               <label
-                class="c8 c9"
+                class="c9 c10"
               >
                 Ticket Price
               </label>
               <div
-                class="c10"
+                class="c11"
               >
                 <div
-                  class="c11"
+                  class="c12"
                 >
                   0.01
                    ETH
                 </div>
                 <div
-                  class="c12"
+                  class="c13"
                 >
                   $
                   ---
                 </div>
               </div>
             </div>
-            <div
-              class="c13"
-            >
-              Pay & Register for This Event
-            </div>
           </div>
           <div
-            class="c6"
+            class="c14"
           >
             <div
-              class="c14"
+              class="c15"
             >
               <div
-                class="c15"
+                class="c16"
               >
                 Nov 23, 2063
               </div>
               <div
-                class="c16"
+                class="c17"
               >
                 Unbelievably, it's been 100 years since it first came to our screens.
     
 Join us for an hour or two of fine entertainment.
               </div>
-            </div>
-            <div
-              class="c14"
-            >
-              <label
-                class="c8 c9"
-              >
-                Location
-              </label>
               <div
-                class="c16"
+                class="c18"
               >
                 Totters Lane, London
               </div>
             </div>
+            <div
+              class="c15"
+            >
+              <div />
+            </div>
           </div>
           <div
-            class="c17"
+            class="c19"
           >
             <div
-              class="c18"
+              class="c20"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -7047,7 +7127,7 @@ Join us for an hour or two of fine entertainment.
           </div>
         </div>
         <div
-          class="c19"
+          class="c21"
         />
       </div>
     </div>
@@ -7082,8 +7162,13 @@ Join us for an hour or two of fine entertainment.
           My Doctor Who party
         </h1>
         <div
-          class="sc-1xgodx9-4 sc-1fq9sck-4 eqlEGi"
+          class="sc-1xgodx9-4 sc-1fq9sck-5 eyUQpb"
         >
+          <div
+            class="sc-1uk9h2s-0 gCMaBA"
+          >
+            Pay & Register for This Event
+          </div>
           <div
             class="sc-1xgodx9-5 hKuMTX"
           >
@@ -7109,44 +7194,35 @@ Join us for an hour or two of fine entertainment.
               </div>
             </div>
           </div>
-          <div
-            class="sc-1uk9h2s-0 gCMaBA"
-          >
-            Pay & Register for This Event
-          </div>
         </div>
         <div
           class="sc-1xgodx9-4 sc-1fq9sck-4 eqlEGi"
         >
           <div
-            class="sc-1xgodx9-5 sc-1fq9sck-5 gLsgrt"
+            class="sc-1xgodx9-5 sc-1fq9sck-6 dDmCuX"
           >
             <div
-              class="sc-1fq9sck-6 dsUaoU"
+              class="sc-1fq9sck-7 hswCiG"
             >
               Nov 23, 2063
             </div>
             <div
-              class="sc-1fq9sck-7 hzNlUw"
+              class="sc-1fq9sck-8 clEMWd"
             >
               Unbelievably, it's been 100 years since it first came to our screens.
     
 Join us for an hour or two of fine entertainment.
             </div>
-          </div>
-          <div
-            class="sc-1xgodx9-5 sc-1fq9sck-5 gLsgrt"
-          >
-            <label
-              class="sc-1xgodx9-6 loqXYl"
-            >
-              Location
-            </label>
             <div
-              class="sc-1fq9sck-7 hzNlUw"
+              class="sc-1fq9sck-9 iJXTq"
             >
               Totters Lane, London
             </div>
+          </div>
+          <div
+            class="sc-1xgodx9-5 sc-1fq9sck-6 dDmCuX"
+          >
+            <div />
           </div>
         </div>
         <div
