@@ -19,6 +19,7 @@ const requiredConfigVariables = {
   unlockEnv: process.env.UNLOCK_ENV || 'dev',
   readOnlyProvider: process.env.READ_ONLY_PROVIDER,
   locksmithUri: process.env.LOCKSMITH_URI,
+  unlockTicketsUrl: process.env.UNLOCK_TICKETS_URL,
 }
 
 const optionalConfigVariables = {
