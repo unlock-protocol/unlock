@@ -1612,6 +1612,7 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding: 0 20px;
 }
 
 .c3 {
@@ -2723,7 +2724,7 @@ Object {
           </ol>
         </form>
         <div
-          class="b9ke0k-3 dhAsVa"
+          class="b9ke0k-3 cuDZYN"
         >
           <div
             class="oj0wpp-0 lguXZd"
@@ -2848,6 +2849,7 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding: 0 20px;
 }
 
 .c3 {
@@ -3961,7 +3963,7 @@ Object {
           </ol>
         </form>
         <div
-          class="b9ke0k-3 dhAsVa"
+          class="b9ke0k-3 cuDZYN"
         >
           <div
             class="oj0wpp-0 lguXZd"
@@ -5077,6 +5079,7 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding: 0 20px;
 }
 
 .c3 {
@@ -5536,7 +5539,7 @@ Join us for an hour or two of fine entertainment.
           />
         </div>
         <div
-          class="b9ke0k-3 dhAsVa"
+          class="b9ke0k-3 cuDZYN"
         >
           <div
             class="oj0wpp-0 lguXZd"
@@ -5661,6 +5664,7 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding: 0 20px;
 }
 
 .c3 {
@@ -6163,7 +6167,7 @@ Join us for an hour or two of fine entertainment.
           </div>
         </div>
         <div
-          class="b9ke0k-3 dhAsVa"
+          class="b9ke0k-3 cuDZYN"
         >
           <div
             class="oj0wpp-0 lguXZd"
@@ -6288,6 +6292,7 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding: 0 20px;
 }
 
 .c3 {
@@ -6747,7 +6752,7 @@ Join us for an hour or two of fine entertainment.
           />
         </div>
         <div
-          class="b9ke0k-3 dhAsVa"
+          class="b9ke0k-3 cuDZYN"
         >
           <div
             class="oj0wpp-0 lguXZd"
@@ -6872,6 +6877,7 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding: 0 20px;
 }
 
 .c3 {
@@ -7331,7 +7337,7 @@ Join us for an hour or two of fine entertainment.
           />
         </div>
         <div
-          class="b9ke0k-3 dhAsVa"
+          class="b9ke0k-3 cuDZYN"
         >
           <div
             class="oj0wpp-0 lguXZd"
@@ -7456,6 +7462,7 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding: 0 20px;
 }
 
 .c3 {
@@ -7925,7 +7932,7 @@ Join us for an hour or two of fine entertainment.
           />
         </div>
         <div
-          class="b9ke0k-3 dhAsVa"
+          class="b9ke0k-3 cuDZYN"
         >
           <div
             class="oj0wpp-0 lguXZd"
@@ -8050,6 +8057,7 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding: 0 20px;
 }
 
 .c3 {
@@ -8509,7 +8517,7 @@ Join us for an hour or two of fine entertainment.
           />
         </div>
         <div
-          class="b9ke0k-3 dhAsVa"
+          class="b9ke0k-3 cuDZYN"
         >
           <div
             class="oj0wpp-0 lguXZd"
@@ -8634,6 +8642,7 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding: 0 20px;
 }
 
 .c3 {
@@ -9085,7 +9094,7 @@ Join us for an hour or two of fine entertainment.
           />
         </div>
         <div
-          class="b9ke0k-3 dhAsVa"
+          class="b9ke0k-3 cuDZYN"
         >
           <div
             class="oj0wpp-0 lguXZd"
@@ -9382,6 +9391,7 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding: 0 20px;
 }
 
 .c3 {
@@ -9427,6 +9437,7 @@ Object {
   display: grid;
   grid-template-columns: 1fr 250px;
   grid-gap: 60px;
+  padding: 0 20px;
 }
 
 .c6 p {
@@ -9449,6 +9460,7 @@ Object {
   line-height: 47px;
   grid-column: 1 3;
   color: var(--brand);
+  padding: 0 20px;
 }
 
 .c7 {
@@ -9613,12 +9625,12 @@ Object {
           class="b9ke0k-4 kmengs"
         />
         <h1
-          class="sc-1y0aw8d-4 iRmenr"
+          class="sc-1y0aw8d-4 jZiAWX"
         >
           Unlock Tickets
         </h1>
         <section
-          class="sc-1y0aw8d-1 gQyDQs"
+          class="sc-1y0aw8d-1 kEGFII"
         >
           <div
             class="sc-1y0aw8d-2 dAfZMy"
@@ -9642,7 +9654,7 @@ Object {
           />
         </section>
         <div
-          class="b9ke0k-3 dhAsVa"
+          class="b9ke0k-3 cuDZYN"
         >
           <div
             class="oj0wpp-0 lguXZd"
@@ -9767,6 +9779,7 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding: 0 20px;
 }
 
 .c3 {
@@ -9906,7 +9919,7 @@ Object {
           </span>
         </div>
         <div
-          class="b9ke0k-3 dhAsVa"
+          class="b9ke0k-3 cuDZYN"
         >
           <div
             class="oj0wpp-0 lguXZd"
@@ -10031,6 +10044,7 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding: 0 20px;
 }
 
 .c3 {
@@ -10170,7 +10184,7 @@ Object {
           </span>
         </div>
         <div
-          class="b9ke0k-3 dhAsVa"
+          class="b9ke0k-3 cuDZYN"
         >
           <div
             class="oj0wpp-0 lguXZd"
