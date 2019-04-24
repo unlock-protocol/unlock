@@ -1,14 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
+import Head from 'next/head'
 import Media from '../../theme/media'
 import Layout from '../interface/Layout'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
+import { pageTitle } from '../../constants'
 
 export default function HomeContent() {
   return (
     <GlobalErrorConsumer>
       <Layout noHeader>
+        <Head>
+          <title>{pageTitle('Tickets')}</title>
+        </Head>
         <Title>Unlock Tickets</Title>
         <Grid>
           <Description>
