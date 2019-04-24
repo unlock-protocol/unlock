@@ -143,8 +143,7 @@ const walletMiddleware = config => {
               action.key.lock,
               action.key.owner,
               lock.keyPrice,
-              account.address,
-              action.key.data
+              account.address
             )
           })
         }
