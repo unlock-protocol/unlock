@@ -23,6 +23,8 @@ export default function configure(
 
   const locksmithUri = runtimeConfig.locksmithUri || 'http://0.0.0.0:8080'
   const httpProvider = runtimeConfig.httpProvider || '127.0.0.1'
+  const unlockTicketsUrl =
+    runtimeConfig.unlockTicketsUrl || 'http://localhost:3003'
   let providers = {}
   let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
@@ -131,6 +133,7 @@ export default function configure(
     requiredNetwork,
     requiredConfirmations,
     unlockAddress,
+    unlockTicketsUrl,
     services,
     supportedProviders,
   }
