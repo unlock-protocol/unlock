@@ -11890,3 +11890,357 @@ Object {
   "unmount": [Function],
 }
 `;
+
+exports[`Storyshots TicketCode Ticket code with no public key 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots TicketCode Ticket code with no signed address 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots TicketCode Ticket code with no signed address or public key 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots TicketCode Ticket code with signed address and public key 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  width: 350px;
+  height: 350px;
+  max-width: 100%;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <svg
+        class="c0"
+        height="350"
+        shape-rendering="crispEdges"
+        viewBox="0 0 33 33"
+        width="350"
+      >
+        <path
+          d="M0,0 h33v33H0z"
+          fill="#FFFFFF"
+        />
+        <path
+          d="M0 0h7v1H0zM8 0h2v1H8zM12 0h2v1H12zM18 0h1v1H18zM20 0h1v1H20zM22 0h1v1H22zM26,0 h7v1H26zM0 1h1v1H0zM6 1h1v1H6zM10 1h1v1H10zM13 1h2v1H13zM16 1h2v1H16zM19 1h4v1H19zM24 1h1v1H24zM26 1h1v1H26zM32,1 h1v1H32zM0 2h1v1H0zM2 2h3v1H2zM6 2h1v1H6zM9 2h5v1H9zM15 2h1v1H15zM20 2h2v1H20zM26 2h1v1H26zM28 2h3v1H28zM32,2 h1v1H32zM0 3h1v1H0zM2 3h3v1H2zM6 3h1v1H6zM9 3h2v1H9zM13 3h1v1H13zM15 3h3v1H15zM19 3h3v1H19zM26 3h1v1H26zM28 3h3v1H28zM32,3 h1v1H32zM0 4h1v1H0zM2 4h3v1H2zM6 4h1v1H6zM9 4h2v1H9zM12 4h1v1H12zM18 4h2v1H18zM21 4h1v1H21zM26 4h1v1H26zM28 4h3v1H28zM32,4 h1v1H32zM0 5h1v1H0zM6 5h1v1H6zM11 5h3v1H11zM17 5h2v1H17zM20 5h4v1H20zM26 5h1v1H26zM32,5 h1v1H32zM0 6h7v1H0zM8 6h1v1H8zM10 6h1v1H10zM12 6h1v1H12zM14 6h1v1H14zM16 6h1v1H16zM18 6h1v1H18zM20 6h1v1H20zM22 6h1v1H22zM24 6h1v1H24zM26,6 h7v1H26zM8 7h1v1H8zM10 7h6v1H10zM18 7h3v1H18zM22 7h2v1H22zM0 8h2v1H0zM3 8h2v1H3zM6 8h1v1H6zM9 8h2v1H9zM14 8h1v1H14zM16 8h2v1H16zM23 8h2v1H23zM26 8h1v1H26zM32,8 h1v1H32zM0 9h1v1H0zM3 9h1v1H3zM5 9h1v1H5zM7 9h1v1H7zM9 9h7v1H9zM19 9h1v1H19zM21 9h3v1H21zM28 9h1v1H28zM30 9h2v1H30zM0 10h1v1H0zM4 10h3v1H4zM10 10h2v1H10zM13 10h1v1H13zM15 10h3v1H15zM22 10h4v1H22zM28 10h1v1H28zM31,10 h2v1H31zM0 11h2v1H0zM3 11h2v1H3zM7 11h1v1H7zM9 11h4v1H9zM14 11h6v1H14zM24 11h1v1H24zM26 11h1v1H26zM28 11h3v1H28zM1 12h3v1H1zM6 12h1v1H6zM8 12h2v1H8zM11 12h1v1H11zM15 12h2v1H15zM20 12h1v1H20zM23 12h1v1H23zM26 12h1v1H26zM31,12 h2v1H31zM0 13h6v1H0zM8 13h1v1H8zM11 13h3v1H11zM15 13h2v1H15zM21 13h1v1H21zM23 13h1v1H23zM27 13h1v1H27zM3 14h7v1H3zM13 14h3v1H13zM19 14h3v1H19zM24 14h1v1H24zM27 14h2v1H27zM0 15h2v1H0zM3 15h3v1H3zM8 15h4v1H8zM14 15h2v1H14zM18 15h3v1H18zM22 15h1v1H22zM24 15h5v1H24zM30 15h1v1H30zM32,15 h1v1H32zM1 16h4v1H1zM6 16h1v1H6zM9 16h2v1H9zM12 16h2v1H12zM20 16h1v1H20zM23 16h1v1H23zM25 16h2v1H25zM28 16h2v1H28zM31,16 h2v1H31zM0 17h2v1H0zM3 17h3v1H3zM7 17h1v1H7zM9 17h2v1H9zM12 17h2v1H12zM15 17h1v1H15zM17 17h1v1H17zM19 17h4v1H19zM26 17h3v1H26zM31,17 h2v1H31zM0 18h1v1H0zM6 18h1v1H6zM10 18h2v1H10zM15 18h5v1H15zM23 18h1v1H23zM28 18h1v1H28zM32,18 h1v1H32zM0 19h3v1H0zM5 19h1v1H5zM9 19h1v1H9zM13 19h1v1H13zM16 19h1v1H16zM18 19h2v1H18zM25 19h1v1H25zM27 19h1v1H27zM30,19 h3v1H30zM0 20h1v1H0zM2 20h2v1H2zM6 20h1v1H6zM9 20h1v1H9zM11 20h2v1H11zM14 20h1v1H14zM16 20h2v1H16zM19 20h1v1H19zM23 20h2v1H23zM27 20h1v1H27zM0 21h1v1H0zM2 21h2v1H2zM8 21h4v1H8zM14 21h2v1H14zM19 21h1v1H19zM22 21h3v1H22zM27 21h3v1H27zM31 21h1v1H31zM0 22h1v1H0zM3 22h4v1H3zM10 22h2v1H10zM13 22h3v1H13zM18 22h1v1H18zM20 22h1v1H20zM23 22h1v1H23zM25 22h1v1H25zM28 22h1v1H28zM31,22 h2v1H31zM0 23h1v1H0zM7 23h1v1H7zM10 23h1v1H10zM14 23h2v1H14zM17 23h1v1H17zM24 23h1v1H24zM30 23h1v1H30zM0 24h4v1H0zM5 24h2v1H5zM12 24h1v1H12zM16 24h1v1H16zM18 24h1v1H18zM20 24h1v1H20zM24 24h5v1H24zM31 24h1v1H31zM8 25h2v1H8zM11 25h1v1H11zM14 25h4v1H14zM21 25h1v1H21zM24 25h1v1H24zM28 25h4v1H28zM0 26h7v1H0zM10 26h1v1H10zM14 26h2v1H14zM17 26h4v1H17zM23 26h2v1H23zM26 26h1v1H26zM28 26h1v1H28zM30 26h1v1H30zM0 27h1v1H0zM6 27h1v1H6zM9 27h1v1H9zM11 27h2v1H11zM18 27h3v1H18zM23 27h2v1H23zM28,27 h5v1H28zM0 28h1v1H0zM2 28h3v1H2zM6 28h1v1H6zM8 28h1v1H8zM10 28h4v1H10zM15 28h2v1H15zM18 28h1v1H18zM20 28h1v1H20zM22 28h8v1H22zM31 28h1v1H31zM0 29h1v1H0zM2 29h3v1H2zM6 29h1v1H6zM8 29h1v1H8zM13 29h1v1H13zM15 29h1v1H15zM18 29h5v1H18zM25 29h1v1H25zM29 29h1v1H29zM0 30h1v1H0zM2 30h3v1H2zM6 30h1v1H6zM11 30h3v1H11zM15 30h1v1H15zM19 30h1v1H19zM21 30h1v1H21zM23 30h3v1H23zM28 30h1v1H28zM30 30h1v1H30zM32,30 h1v1H32zM0 31h1v1H0zM6 31h1v1H6zM8 31h2v1H8zM11 31h1v1H11zM13 31h4v1H13zM22 31h1v1H22zM27,31 h6v1H27zM0 32h7v1H0zM8 32h1v1H8zM11 32h2v1H11zM16 32h3v1H16zM22 32h3v1H22zM26 32h3v1H26z"
+          fill="#000000"
+        />
+      </svg>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <svg
+      class="fpb09a-0 ldOuKK"
+      height="350"
+      shape-rendering="crispEdges"
+      viewBox="0 0 33 33"
+      width="350"
+    >
+      <path
+        d="M0,0 h33v33H0z"
+        fill="#FFFFFF"
+      />
+      <path
+        d="M0 0h7v1H0zM8 0h2v1H8zM12 0h2v1H12zM18 0h1v1H18zM20 0h1v1H20zM22 0h1v1H22zM26,0 h7v1H26zM0 1h1v1H0zM6 1h1v1H6zM10 1h1v1H10zM13 1h2v1H13zM16 1h2v1H16zM19 1h4v1H19zM24 1h1v1H24zM26 1h1v1H26zM32,1 h1v1H32zM0 2h1v1H0zM2 2h3v1H2zM6 2h1v1H6zM9 2h5v1H9zM15 2h1v1H15zM20 2h2v1H20zM26 2h1v1H26zM28 2h3v1H28zM32,2 h1v1H32zM0 3h1v1H0zM2 3h3v1H2zM6 3h1v1H6zM9 3h2v1H9zM13 3h1v1H13zM15 3h3v1H15zM19 3h3v1H19zM26 3h1v1H26zM28 3h3v1H28zM32,3 h1v1H32zM0 4h1v1H0zM2 4h3v1H2zM6 4h1v1H6zM9 4h2v1H9zM12 4h1v1H12zM18 4h2v1H18zM21 4h1v1H21zM26 4h1v1H26zM28 4h3v1H28zM32,4 h1v1H32zM0 5h1v1H0zM6 5h1v1H6zM11 5h3v1H11zM17 5h2v1H17zM20 5h4v1H20zM26 5h1v1H26zM32,5 h1v1H32zM0 6h7v1H0zM8 6h1v1H8zM10 6h1v1H10zM12 6h1v1H12zM14 6h1v1H14zM16 6h1v1H16zM18 6h1v1H18zM20 6h1v1H20zM22 6h1v1H22zM24 6h1v1H24zM26,6 h7v1H26zM8 7h1v1H8zM10 7h6v1H10zM18 7h3v1H18zM22 7h2v1H22zM0 8h2v1H0zM3 8h2v1H3zM6 8h1v1H6zM9 8h2v1H9zM14 8h1v1H14zM16 8h2v1H16zM23 8h2v1H23zM26 8h1v1H26zM32,8 h1v1H32zM0 9h1v1H0zM3 9h1v1H3zM5 9h1v1H5zM7 9h1v1H7zM9 9h7v1H9zM19 9h1v1H19zM21 9h3v1H21zM28 9h1v1H28zM30 9h2v1H30zM0 10h1v1H0zM4 10h3v1H4zM10 10h2v1H10zM13 10h1v1H13zM15 10h3v1H15zM22 10h4v1H22zM28 10h1v1H28zM31,10 h2v1H31zM0 11h2v1H0zM3 11h2v1H3zM7 11h1v1H7zM9 11h4v1H9zM14 11h6v1H14zM24 11h1v1H24zM26 11h1v1H26zM28 11h3v1H28zM1 12h3v1H1zM6 12h1v1H6zM8 12h2v1H8zM11 12h1v1H11zM15 12h2v1H15zM20 12h1v1H20zM23 12h1v1H23zM26 12h1v1H26zM31,12 h2v1H31zM0 13h6v1H0zM8 13h1v1H8zM11 13h3v1H11zM15 13h2v1H15zM21 13h1v1H21zM23 13h1v1H23zM27 13h1v1H27zM3 14h7v1H3zM13 14h3v1H13zM19 14h3v1H19zM24 14h1v1H24zM27 14h2v1H27zM0 15h2v1H0zM3 15h3v1H3zM8 15h4v1H8zM14 15h2v1H14zM18 15h3v1H18zM22 15h1v1H22zM24 15h5v1H24zM30 15h1v1H30zM32,15 h1v1H32zM1 16h4v1H1zM6 16h1v1H6zM9 16h2v1H9zM12 16h2v1H12zM20 16h1v1H20zM23 16h1v1H23zM25 16h2v1H25zM28 16h2v1H28zM31,16 h2v1H31zM0 17h2v1H0zM3 17h3v1H3zM7 17h1v1H7zM9 17h2v1H9zM12 17h2v1H12zM15 17h1v1H15zM17 17h1v1H17zM19 17h4v1H19zM26 17h3v1H26zM31,17 h2v1H31zM0 18h1v1H0zM6 18h1v1H6zM10 18h2v1H10zM15 18h5v1H15zM23 18h1v1H23zM28 18h1v1H28zM32,18 h1v1H32zM0 19h3v1H0zM5 19h1v1H5zM9 19h1v1H9zM13 19h1v1H13zM16 19h1v1H16zM18 19h2v1H18zM25 19h1v1H25zM27 19h1v1H27zM30,19 h3v1H30zM0 20h1v1H0zM2 20h2v1H2zM6 20h1v1H6zM9 20h1v1H9zM11 20h2v1H11zM14 20h1v1H14zM16 20h2v1H16zM19 20h1v1H19zM23 20h2v1H23zM27 20h1v1H27zM0 21h1v1H0zM2 21h2v1H2zM8 21h4v1H8zM14 21h2v1H14zM19 21h1v1H19zM22 21h3v1H22zM27 21h3v1H27zM31 21h1v1H31zM0 22h1v1H0zM3 22h4v1H3zM10 22h2v1H10zM13 22h3v1H13zM18 22h1v1H18zM20 22h1v1H20zM23 22h1v1H23zM25 22h1v1H25zM28 22h1v1H28zM31,22 h2v1H31zM0 23h1v1H0zM7 23h1v1H7zM10 23h1v1H10zM14 23h2v1H14zM17 23h1v1H17zM24 23h1v1H24zM30 23h1v1H30zM0 24h4v1H0zM5 24h2v1H5zM12 24h1v1H12zM16 24h1v1H16zM18 24h1v1H18zM20 24h1v1H20zM24 24h5v1H24zM31 24h1v1H31zM8 25h2v1H8zM11 25h1v1H11zM14 25h4v1H14zM21 25h1v1H21zM24 25h1v1H24zM28 25h4v1H28zM0 26h7v1H0zM10 26h1v1H10zM14 26h2v1H14zM17 26h4v1H17zM23 26h2v1H23zM26 26h1v1H26zM28 26h1v1H28zM30 26h1v1H30zM0 27h1v1H0zM6 27h1v1H6zM9 27h1v1H9zM11 27h2v1H11zM18 27h3v1H18zM23 27h2v1H23zM28,27 h5v1H28zM0 28h1v1H0zM2 28h3v1H2zM6 28h1v1H6zM8 28h1v1H8zM10 28h4v1H10zM15 28h2v1H15zM18 28h1v1H18zM20 28h1v1H20zM22 28h8v1H22zM31 28h1v1H31zM0 29h1v1H0zM2 29h3v1H2zM6 29h1v1H6zM8 29h1v1H8zM13 29h1v1H13zM15 29h1v1H15zM18 29h5v1H18zM25 29h1v1H25zM29 29h1v1H29zM0 30h1v1H0zM2 30h3v1H2zM6 30h1v1H6zM11 30h3v1H11zM15 30h1v1H15zM19 30h1v1H19zM21 30h1v1H21zM23 30h3v1H23zM28 30h1v1H28zM30 30h1v1H30zM32,30 h1v1H32zM0 31h1v1H0zM6 31h1v1H6zM8 31h2v1H8zM11 31h1v1H11zM13 31h4v1H13zM22 31h1v1H22zM27,31 h6v1H27zM0 32h7v1H0zM8 32h1v1H8zM11 32h2v1H11zM16 32h3v1H16zM22 32h3v1H22zM26 32h3v1H26z"
+        fill="#000000"
+      />
+    </svg>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
