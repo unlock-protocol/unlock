@@ -8,13 +8,14 @@ import {
   addTransaction,
   updateTransaction,
   NEW_TRANSACTION,
+  UPDATE_TRANSACTION,
 } from '../actions/transaction'
 import { SET_PROVIDER } from '../actions/provider'
 import { SET_NETWORK } from '../actions/network'
 import { setError } from '../actions/error'
 import { transactionTypeMapping } from '../utils/types'
 import { lockRoute } from '../utils/routes'
-import { addKey } from '../actions/key'
+import { addKey, updateKey } from '../actions/key'
 
 const { Web3Service } = UnlockJs
 
@@ -84,11 +85,13 @@ const web3Middleware = config => {
         next(action)
 
         const {
+          account,
           router: {
             location: { pathname, hash },
           },
         } = getState()
         const { lockAddress } = lockRoute(pathname + hash)
+        const accountAddress = account && account.address
 
         // note: this needs to be after the reducer has seen it, because refreshAccountBalance
         // triggers 'account.update' which dispatches UPDATE_ACCOUNT. The reducer assumes that
@@ -133,6 +136,44 @@ const web3Middleware = config => {
             action.transaction.hash,
             action.transaction
           )
+        }
+
+        const keyId = `${lockAddress}-${accountAddress}`
+        if (action.type === UPDATE_TRANSACTION) {
+          const existingTransaction = getState().transactions[action.hash]
+          if (
+            (existingTransaction.to === lockAddress &&
+              existingTransaction.from === accountAddress) ||
+            existingTransaction.key === keyId
+          ) {
+            // this is key purchase transaction from us to the lock!
+            const key = getState().keys[keyId]
+
+            if (key) {
+              dispatch(
+                updateKey(keyId, {
+                  ...key,
+                  transactions: {
+                    ...key.transactions,
+                    [action.hash]: existingTransaction,
+                  },
+                })
+              )
+            } else {
+              dispatch(
+                addKey(keyId, {
+                  lock: lockAddress,
+                  owner: accountAddress,
+                  expiration: 0,
+                  data: null,
+                  id: keyId,
+                  transactions: {
+                    [action.hash]: existingTransaction,
+                  },
+                })
+              )
+            }
+          }
         }
       }
     }
