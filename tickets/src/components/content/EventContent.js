@@ -15,6 +15,7 @@ import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { purchaseKey } from '../../actions/key'
 import { loadEvent } from '../../actions/ticket'
 import PayButton from './purchase/PayButton'
+import { NoPhone } from '../../theme/media'
 
 export class EventContent extends Component {
   constructor(props) {
@@ -67,7 +68,9 @@ export class EventContent extends Component {
                 purchaseKey={() => purchaseKey(lockKey)}
               />
               <Field>
-                <Label>Ticket Price</Label>
+                <NoPhone>
+                  <Label>Ticket Price</Label>
+                </NoPhone>
                 <BalanceProvider
                   amount={lock.keyPrice}
                   render={(ethWithPresentation, convertedUSDValue) => (

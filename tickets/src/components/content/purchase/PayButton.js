@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 import withConfig from '../../../utils/withConfig'
 import UnlockPropTypes from '../../../propTypes'
+import Media from '../../../theme/media'
 
 export const PayButton = ({ transaction, purchaseKey, config }) => {
   const { requiredConfirmations } = config
@@ -59,6 +60,9 @@ const Pay = styled.div`
   height: 60px;
   text-align: center;
   padding-top: 20px;
+  ${Media.phone`
+    margin-bottom: 20px;
+  `}
 `
 
 const PayInfo = styled(Pay)`
