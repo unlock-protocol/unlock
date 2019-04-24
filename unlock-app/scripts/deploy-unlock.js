@@ -3,7 +3,7 @@
 // TODO: move into unlock-js
 
 const Web3 = require('web3')
-const Unlock = require('unlock-abi-0').Unlock
+const Unlock = require('unlock-abi-0-2').Unlock
 const net = require('net')
 
 /*
@@ -54,7 +54,7 @@ serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
       })
       .send({
         from: accounts[0],
-        gas: 4000000,
+        gas: 5000000,
       })
   })
   .then(newContractInstance => {

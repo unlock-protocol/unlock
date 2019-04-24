@@ -39,8 +39,7 @@ contract MixinTransfer is
   // The fee relative to keyPrice to charge when transfering a Key to another account
   // (potentially on a 0x marketplace).
   // This is calculated as `keyPrice * transferFeeNumerator / transferFeeDenominator`.
-  // TODO: this value is currently ignored and no fee is charged yet!
-  uint public transferFeeNumerator = 5;
+  uint public transferFeeNumerator = 0;
   uint public transferFeeDenominator = 100;
 
   /**

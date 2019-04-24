@@ -12,6 +12,7 @@ import {
   updateTransaction,
   ADD_TRANSACTION,
   NEW_TRANSACTION,
+  UPDATE_TRANSACTION,
 } from '../actions/transaction'
 
 import { lockRoute } from '../utils/routes'
@@ -79,13 +80,20 @@ const web3Middleware = config => ({ getState, dispatch }) => {
   })
 
   web3Service.on('transaction.updated', (transactionHash, update) => {
-    dispatch(updateTransaction(transactionHash, update))
+    const transaction = getState().transactions[transactionHash]
+    dispatch(
+      updateTransaction(transactionHash, {
+        ...(transaction ? transaction : {}),
+        ...update,
+      })
+    )
   })
 
   web3Service.on('transaction.new', transactionHash => {
     dispatch(
       addTransaction({
         hash: transactionHash,
+        network: getState().network.name,
       })
     )
   })
@@ -114,7 +122,7 @@ const web3Middleware = config => ({ getState, dispatch }) => {
         locks,
       } = getState()
       const { lockAddress, transaction } = lockRoute(pathname + hash)
-
+      const accountAddress = account && account.address
       if (
         [SET_PROVIDER, SET_NETWORK, SET_ACCOUNT, LOCATION_CHANGE].includes(
           action.type
@@ -124,6 +132,7 @@ const web3Middleware = config => ({ getState, dispatch }) => {
           dispatch(
             addTransaction({
               hash: transaction,
+              network: getState().network.name,
             })
           )
         }
@@ -165,6 +174,65 @@ const web3Middleware = config => ({ getState, dispatch }) => {
         // Location was changed, get the matching lock
         if (lockAddress) {
           web3Service.getLock(lockAddress)
+        }
+      }
+
+      const keyId = `${lockAddress}-${accountAddress}`
+      if (action.type === NEW_TRANSACTION) {
+        // when the web3Service is retrieving transactions, only transactionHash is set
+        // this line checks to see if we are instead getting the transaction with all the stuff we need
+        if (
+          action.transaction.to === lockAddress &&
+          action.transaction.from === accountAddress
+        ) {
+          // this is key purchase transaction from us to the lock!
+          const key = getState().keys[keyId]
+
+          dispatch(
+            updateKey(keyId, {
+              ...key,
+              transactions: {
+                ...key.transactions,
+                [action.transaction.hash]: action.transaction,
+              },
+            })
+          )
+        }
+      }
+      if (action.type === UPDATE_TRANSACTION) {
+        const existingTransaction = getState().transactions[action.hash]
+        if (
+          (existingTransaction.to === lockAddress &&
+            existingTransaction.from === accountAddress) ||
+          existingTransaction.key === keyId
+        ) {
+          // this is key purchase transaction from us to the lock!
+          const key = getState().keys[keyId]
+
+          if (key) {
+            dispatch(
+              updateKey(keyId, {
+                ...key,
+                transactions: {
+                  ...key.transactions,
+                  [action.hash]: existingTransaction,
+                },
+              })
+            )
+          } else {
+            dispatch(
+              addKey(keyId, {
+                lock: lockAddress,
+                owner: accountAddress,
+                expiration: 0,
+                data: null,
+                id: keyId,
+                transactions: {
+                  [action.hash]: existingTransaction,
+                },
+              })
+            )
+          }
         }
       }
     }
