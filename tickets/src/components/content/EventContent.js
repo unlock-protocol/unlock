@@ -36,13 +36,26 @@ export class EventContent extends Component {
   }
 
   componentDidUpdate() {
-    const { lock, loadEvent, signAddress, event, keyStatus } = this.props
+    const {
+      lock,
+      loadEvent,
+      signAddress,
+      event,
+      keyStatus,
+      signedEventAddress,
+    } = this.props
     const { loaded, signed } = this.state
     if (lock.address && !event.lockAddress && !loaded) {
       loadEvent(lock.address)
       this.setAsLoaded() // To prevent multiple loads
     }
-    if (keyStatus === KeyStatus.VALID && !signed) {
+    if (signedEventAddress && !signed) {
+      this.setAsSigned()
+    } else if (
+      keyStatus === KeyStatus.VALID &&
+      !signed &&
+      !signedEventAddress
+    ) {
       signAddress(lock.address)
       this.setAsSigned()
     }
