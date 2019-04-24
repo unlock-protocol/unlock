@@ -4,12 +4,18 @@ import UnlockJs from '@unlock-protocol/unlock-js'
 import { startLoading, doneLoading } from '../actions/loading'
 import { SET_ACCOUNT, updateAccount } from '../actions/accounts'
 import { updateLock, addLock } from '../actions/lock'
-import { addTransaction, updateTransaction } from '../actions/transaction'
+import {
+  addTransaction,
+  updateTransaction,
+  NEW_TRANSACTION,
+  UPDATE_TRANSACTION,
+} from '../actions/transaction'
 import { SET_PROVIDER } from '../actions/provider'
 import { SET_NETWORK } from '../actions/network'
 import { setError } from '../actions/error'
 import { transactionTypeMapping } from '../utils/types'
 import { lockRoute } from '../utils/routes'
+import { addKey, updateKey } from '../actions/key'
 
 const { Web3Service } = UnlockJs
 
@@ -89,16 +95,77 @@ const web3Middleware = config => {
         }
 
         const {
+          account,
           router: {
             location: { pathname, hash },
           },
         } = getState()
         const { lockAddress } = lockRoute(pathname + hash)
+        const accountAddress = account && account.address
 
         if (action.type === SET_PROVIDER || action.type === SET_NETWORK) {
           // for both of these actions, the lock state is invalid, and must be refreshed.
           if (lockAddress) {
             web3Service.getLock(lockAddress)
+          }
+        }
+
+        const keyId = `${lockAddress}-${accountAddress}`
+        if (action.type === NEW_TRANSACTION) {
+          // when the web3Service is retrieving transactions, only transactionHash is set
+          // this line checks to see if we are instead getting the transaction with all the stuff we need
+          if (
+            action.transaction.to === lockAddress &&
+            action.transaction.from === accountAddress
+          ) {
+            // this is key purchase transaction from us to the lock!
+            const key = getState().keys[keyId]
+
+            dispatch(
+              updateKey(keyId, {
+                ...key,
+                transactions: {
+                  ...key.transactions,
+                  [action.transaction.hash]: action.transaction,
+                },
+              })
+            )
+          }
+        }
+        if (action.type === UPDATE_TRANSACTION) {
+          const existingTransaction = getState().transactions[action.hash]
+          if (
+            (existingTransaction.to === lockAddress &&
+              existingTransaction.from === accountAddress) ||
+            existingTransaction.key === keyId
+          ) {
+            // this is key purchase transaction from us to the lock!
+            const key = getState().keys[keyId]
+
+            if (key) {
+              dispatch(
+                updateKey(keyId, {
+                  ...key,
+                  transactions: {
+                    ...key.transactions,
+                    [action.hash]: existingTransaction,
+                  },
+                })
+              )
+            } else {
+              dispatch(
+                addKey(keyId, {
+                  lock: lockAddress,
+                  owner: accountAddress,
+                  expiration: 0,
+                  data: null,
+                  id: keyId,
+                  transactions: {
+                    [action.hash]: existingTransaction,
+                  },
+                })
+              )
+            }
           }
         }
       }
