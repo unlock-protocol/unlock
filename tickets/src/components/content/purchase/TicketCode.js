@@ -5,7 +5,12 @@ import QRCode from 'qrcode.react'
 import withConfig from '../../../utils/withConfig'
 import UnlockPropTypes from '../../../propTypes'
 
-export const TicketCode = ({ signedAddress, publicKey, eventAddress, config }) => {
+export const TicketCode = ({
+  signedAddress,
+  publicKey,
+  eventAddress,
+  config,
+}) => {
   if (!signedAddress || !publicKey) {
     return null // If we don't have a signed address or public key, we can't return a QR code
   } else {
