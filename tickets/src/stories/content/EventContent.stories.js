@@ -6,6 +6,7 @@ import { EventContent } from '../../components/content/EventContent'
 import createUnlockStore from '../../createUnlockStore'
 import configure from '../../config'
 import { ConfigContext } from '../../utils/withConfig'
+import { KeyStatus } from '../../selectors/keys'
 
 const store = createUnlockStore({})
 
@@ -67,7 +68,7 @@ storiesOf('Event RSVP page', module)
       </ConfigProvider>
     )
   })
-  .add('Event RSVP page with confirming key', () => {
+  .add('Event RSVP page with confirming key transaction', () => {
     const transaction = {
       status: 'mined',
       confirmations: 3,
@@ -86,7 +87,7 @@ storiesOf('Event RSVP page', module)
       </ConfigProvider>
     )
   })
-  .add('Event RSVP page with confirmed key', () => {
+  .add('Event RSVP page with confirmed key transaction', () => {
     const transaction = {
       status: 'mined',
       confirmations: 14,
@@ -101,6 +102,34 @@ storiesOf('Event RSVP page', module)
           purchaseKey={purchaseKey}
           loadEvent={loadEvent}
           transaction={transaction}
+        />
+      </ConfigProvider>
+    )
+  })
+  .add('Event RSVP page with confirming key', () => {
+    return (
+      <ConfigProvider value={config}>
+        <EventContent
+          event={event}
+          lock={lock}
+          config={config}
+          purchaseKey={purchaseKey}
+          loadEvent={loadEvent}
+          keyStatus={KeyStatus.CONFIRMING}
+        />
+      </ConfigProvider>
+    )
+  })
+  .add('Event RSVP page with confirmed key', () => {
+    return (
+      <ConfigProvider value={config}>
+        <EventContent
+          event={event}
+          lock={lock}
+          config={config}
+          purchaseKey={purchaseKey}
+          loadEvent={loadEvent}
+          keyStatus={KeyStatus.VALID}
         />
       </ConfigProvider>
     )
