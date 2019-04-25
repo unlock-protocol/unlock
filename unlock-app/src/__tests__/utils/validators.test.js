@@ -1,4 +1,5 @@
 import * as validators from '../../utils/validators'
+import { ONE_HUNDRED_YEARS_IN_DAYS } from '../../constants'
 
 describe('Form field validators', () => {
   it('isMissing', () => {
@@ -12,7 +13,7 @@ describe('Form field validators', () => {
     expect(validators.isNotEmpty(false)).toBeFalsy()
   })
   it('isPositiveInteger', () => {
-    expect.assertions(8)
+    expect.assertions(7)
     expect(validators.isPositiveInteger('1')).toBeTruthy()
     expect(
       validators.isPositiveInteger(
@@ -20,12 +21,23 @@ describe('Form field validators', () => {
       )
     ).toBeTruthy()
 
-    expect(validators.isPositiveInteger('0')).toBeTruthy()
     expect(validators.isPositiveInteger('-1')).toBeFalsy()
     expect(validators.isPositiveInteger('1.1')).toBeFalsy()
     expect(validators.isPositiveInteger('av')).toBeFalsy()
     expect(validators.isPositiveInteger(null)).toBeFalsy()
     expect(validators.isPositiveInteger(false)).toBeFalsy()
+  })
+  it('isLTE', () => {
+    expect.assertions(6)
+    const { isLTE } = validators
+    const isLTEOneHundredYearsInDays = isLTE(ONE_HUNDRED_YEARS_IN_DAYS)
+
+    expect(isLTEOneHundredYearsInDays('-5')).toBeTruthy()
+    expect(isLTEOneHundredYearsInDays('0')).toBeTruthy()
+    expect(isLTEOneHundredYearsInDays(null)).toBeFalsy()
+    expect(isLTEOneHundredYearsInDays(false)).toBeFalsy()
+    expect(isLTEOneHundredYearsInDays('36500')).toBeTruthy()
+    expect(isLTEOneHundredYearsInDays('36501')).toBeFalsy()
   })
   it('isPositiveNumber', () => {
     expect.assertions(7)
