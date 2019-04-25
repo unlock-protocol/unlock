@@ -16,6 +16,28 @@ namespace EventController {
     }
   }
 
+  export const save = async (req: Request, res: Response): Promise<any> => {
+    let event = req.body.message.event
+
+    try {
+      const databaseEvent = eventOperation.find(event.lockAddress)
+
+      if (!databaseEvent) {
+        await eventOperation.create(event)
+        return res.sendStatus(200)
+      }
+
+      if (databaseEvent.owner !== event.owner) {
+        return res.sendStatus(401)
+      }
+
+      await eventOperation.update(event)
+      return res.sendStatus(202)
+    } catch (e) {
+      return res.sendStatus(409)
+    }
+  }
+
   export const find = async (req: Request, res: Response): Promise<any> => {
     let lockAddress = req.params.lockAddress
     let event = await eventOperation.find(lockAddress)

@@ -108,6 +108,56 @@ describe('Event Controller', () => {
       })
     })
   })
+  describe('event save', () => {
+    describe('when unaccompanied by a valid signature', () => {
+      it('does not save an event and returns 401', async () => {
+        expect.assertions(2)
+        let typedData = generateTypedData(message)
+
+        let response = await request(app)
+          .put('/events/0x49158d35259E3264Ad2a6aBb300cdA19294D125e')
+          .set('Accept', /json/)
+          .send(typedData)
+
+        expect(response.status).toBe(401)
+        expect(await Event.count()).toEqual(0)
+      })
+    })
+    describe('when the event could be saved', () => {
+      it('creates the event and returns 200', async () => {
+        expect.assertions(1)
+        let typedData = generateTypedData(message)
+        const sig = sigUtil.signTypedData(privateKey, {
+          data: typedData,
+        })
+
+        let response = await request(app)
+          .put('/events/0x49158d35259E3264Ad2a6aBb300cdA19294D125e')
+          .set('Accept', /json/)
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .send(typedData)
+
+        expect(response.status).toBe(200)
+      })
+    })
+    describe('when the event could not be saved', () => {
+      it('returns a 409 status code', async () => {
+        expect.assertions(1)
+        let typedData = generateTypedData(message)
+        const sig = sigUtil.signTypedData(privateKey, {
+          data: typedData,
+        })
+
+        let response = await request(app)
+          .put('/events/0x49158d35259E3264Ad2a6aBb300cdA19294D125e')
+          .set('Accept', /json/)
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .send(typedData)
+
+        expect(response.status).toBe(409)
+      })
+    })
+  })
   describe('event request', () => {
     describe('when the event exists', () => {
       it('returns the event', async () => {

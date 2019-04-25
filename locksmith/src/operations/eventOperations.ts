@@ -2,6 +2,8 @@ import * as Sequelize from 'sequelize'
 import Normalizer from '../utils/normalizer'
 import { EventCreation } from '../types' // eslint-disable-line no-unused-vars
 
+const ethJsUtil = require('ethereumjs-util') // eslint-disable-line no-unused-vars
+
 const models = require('../models')
 
 const { Event } = models
@@ -12,6 +14,20 @@ namespace EventOperations {
     event.owner = Normalizer.ethereumAddress(event.owner)
     event.lockAddress = Normalizer.ethereumAddress(event.lockAddress)
     return Event.create(event)
+  }
+
+  export const update = async (event: EventCreation): Promise<any> => {
+    return await Event.update(event, {
+      where: {
+        address: {
+          [Op.eq]: ethJsUtil.toChecksumAddress(event.lockAddress),
+        },
+        owner: {
+          [Op.eq]: ethJsUtil.toChecksumAddress(event.owner),
+        },
+      },
+      raw: true,
+    })
   }
 
   export const find = async (lockAddress: string): Promise<any> => {
