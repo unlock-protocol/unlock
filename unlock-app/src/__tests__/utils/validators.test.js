@@ -26,6 +26,17 @@ describe('Form field validators', () => {
     expect(validators.isPositiveInteger(null)).toBeFalsy()
     expect(validators.isPositiveInteger(false)).toBeFalsy()
   })
+  it('isLessThanOneHundredYearsInDays', () => {
+    expect.assertions(6)
+    const { isLTEOneHundredYearsInDays } = validators
+
+    expect(isLTEOneHundredYearsInDays('-5')).toBeTruthy()
+    expect(isLTEOneHundredYearsInDays('0')).toBeTruthy()
+    expect(isLTEOneHundredYearsInDays(null)).toBeFalsy()
+    expect(isLTEOneHundredYearsInDays(false)).toBeFalsy()
+    expect(isLTEOneHundredYearsInDays('36500')).toBeTruthy()
+    expect(isLTEOneHundredYearsInDays('36501')).toBeFalsy()
+  })
   it('isPositiveNumber', () => {
     expect.assertions(7)
     expect(validators.isPositiveNumber('1.3')).toBeTruthy()
