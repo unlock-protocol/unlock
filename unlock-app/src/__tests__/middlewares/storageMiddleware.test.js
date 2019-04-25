@@ -8,6 +8,7 @@ import UnlockLock from '../../structured_data/unlockLock'
 import { startLoading, doneLoading } from '../../actions/loading'
 import configure from '../../config'
 import { SIGNUP_CREDENTIALS } from '../../actions/signUp'
+import { LOGIN_CREDENTIALS } from '../../actions/login'
 
 /**
  * This is a "fake" middleware caller
@@ -261,10 +262,10 @@ describe('Storage middleware', () => {
 
   describe('SIGNUP_CREDENTIALS', () => {
     it('should create a user and then set the account', () => {
-      expect.assertions(1)
+      expect.assertions(2)
       const emailAddress = 'tim@cern.ch'
       const password = 'guest'
-      const { invoke } = create()
+      const { next, invoke } = create()
 
       const action = {
         type: SIGNUP_CREDENTIALS,
@@ -276,6 +277,30 @@ describe('Storage middleware', () => {
 
       invoke(action)
       expect(mockStorageService.createUser).toHaveBeenCalled()
+      expect(next).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('LOGIN_CREDENTIALS', () => {
+    it('', () => {
+      expect.assertions(2)
+      const emailAddress = 'tim@cern.ch'
+      const password = 'guest'
+      const { next, invoke } = create()
+
+      const action = {
+        type: LOGIN_CREDENTIALS,
+        emailAddress,
+        password,
+      }
+
+      mockStorageService.getUserPrivateKey = jest.fn(() =>
+        Promise.resolve(true)
+      )
+
+      invoke(action)
+      expect(mockStorageService.getUserPrivateKey).toHaveBeenCalled()
+      expect(next).toHaveBeenCalledTimes(1)
     })
   })
 })
