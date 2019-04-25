@@ -1,6 +1,9 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
-import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
+import {
+  createAccountAndPasswordEncryptKey,
+  getAccountFromPrivateKey,
+} from '@unlock-protocol/unlock-js'
 import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
@@ -13,6 +16,11 @@ import { SET_ACCOUNT, setAccount } from '../actions/accounts'
 import UnlockLock from '../structured_data/unlockLock'
 import { SIGNED_DATA, signData } from '../actions/signature'
 import { SIGNUP_CREDENTIALS } from '../actions/signUp'
+import {
+  LOGIN_CREDENTIALS,
+  loginFailed,
+  loginSucceeded,
+} from '../actions/login'
 import UnlockUser from '../structured_data/unlockUser'
 import { setError } from '../actions/error'
 
@@ -126,6 +134,25 @@ const storageMiddleware = config => {
             .createUser(user) // TODO: Now what?
             .then(() => dispatch(setAccount({ address })))
             .catch(err => dispatch(setError(err)))
+        }
+
+        if (action.type === LOGIN_CREDENTIALS) {
+          const { emailAddress, password } = action
+          storageService
+            .getUserPrivateKey(emailAddress)
+            .then(key => {
+              try {
+                // TODO: store more than just the account address (encrypted key, etc.)
+                const account = getAccountFromPrivateKey(key, password)
+                if (account && account.address) {
+                  dispatch(loginSucceeded())
+                  dispatch(setAccount(account))
+                }
+              } catch (err) {
+                dispatch(loginFailed(err))
+              }
+            })
+            .catch(err => dispatch(loginFailed(err)))
         }
 
         next(action)
