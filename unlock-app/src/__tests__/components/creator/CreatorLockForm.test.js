@@ -13,7 +13,11 @@ import {
   FORM_KEY_PRICE_INVALID,
 } from '../../../errors'
 
-import { INFINITY, UNLIMITED_KEYS_COUNT } from '../../../constants'
+import {
+  INFINITY,
+  UNLIMITED_KEYS_COUNT,
+  ONE_HUNDRED_YEARS_IN_DAYS,
+} from '../../../constants'
 
 describe('lockToFormValues', () => {
   it('should return an object with the expirationDuration in the right unit', () => {
@@ -162,10 +166,25 @@ describe('CreatorLockForm', () => {
       expect(wrapper.getByValue('').dataset.valid).toBe('false')
     })
 
-    it('key expiration is a negative number', () => {
-      expect.assertions(1)
+    it('key expiration is not a positive whole number', () => {
+      expect.assertions(2)
       const wrapper = makeLockForm({ expirationDuration: -2 * secondsInADay })
       expect(wrapper.getByValue('-2').dataset.valid).toBe('false')
+
+      const { container } = makeLockForm({ expirationDuration: 0 })
+      expect(container.querySelector('.duration > input').dataset.valid).toBe(
+        'false'
+      )
+    })
+
+    it('key expiration is greater than 100 years', () => {
+      expect.assertions(1)
+      const { container } = makeLockForm({
+        expirationDuration: ONE_HUNDRED_YEARS_IN_DAYS + 1,
+      })
+      expect(container.querySelector('.duration > input').dataset.valid).toBe(
+        'false'
+      )
     })
 
     it('max number of keys is missing', () => {
