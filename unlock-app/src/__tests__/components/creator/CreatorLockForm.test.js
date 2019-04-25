@@ -16,7 +16,7 @@ import {
 import {
   INFINITY,
   UNLIMITED_KEYS_COUNT,
-  oneHundredYearsInDays,
+  ONE_HUNDRED_YEARS_IN_DAYS,
 } from '../../../constants'
 
 describe('lockToFormValues', () => {
@@ -180,7 +180,7 @@ describe('CreatorLockForm', () => {
     it('key expiration is greater than 100 years', () => {
       expect.assertions(1)
       const { container } = makeLockForm({
-        expirationDuration: oneHundredYearsInDays + secondsInADay,
+        expirationDuration: ONE_HUNDRED_YEARS_IN_DAYS + 1,
       })
       expect(container.querySelector('.duration > input').dataset.valid).toBe(
         'false'
