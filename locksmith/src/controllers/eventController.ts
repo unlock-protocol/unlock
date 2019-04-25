@@ -18,16 +18,13 @@ namespace EventController {
 
   export const save = async (req: Request, res: Response): Promise<any> => {
     let event = req.body.message.event
-
+    let lockAddress = req.params.lockAddress
     try {
-      const databaseEvent = eventOperation.find(event.lockAddress)
-
-      if (!databaseEvent) {
-        await eventOperation.create(event)
-        return res.sendStatus(200)
-      }
-
-      if (databaseEvent.owner !== event.owner) {
+      const databaseEvent = await eventOperation.find(lockAddress)
+      if (
+        databaseEvent.owner !== event.owner ||
+        databaseEvent.lockAddress != lockAddress
+      ) {
         return res.sendStatus(401)
       }
 
