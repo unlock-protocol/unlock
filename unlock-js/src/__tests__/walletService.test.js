@@ -1,5 +1,6 @@
 /* eslint no-console: 0 */
 import Web3 from 'web3'
+import EventEmitter from 'events'
 import NockHelper from './helpers/nockHelper'
 
 import WalletService from '../walletService'
@@ -10,7 +11,7 @@ import v02 from '../v02'
 
 const endpoint = 'http://127.0.0.1:8545'
 const provider = new Web3.providers.HttpProvider(endpoint)
-const nock = new NockHelper(endpoint, false /** debug */)
+const nock = new NockHelper(endpoint, true /** debug */)
 
 let walletService
 
@@ -77,10 +78,11 @@ describe('WalletService', () => {
       it('should yield an error if we could not retrieve the opCode', done => {
         expect.assertions(2)
         const err = new Error('getCode failed')
-
-        nock.ethGetCodeAndYield(unlockAddress, '0x', err)
+        walletService.web3.eth.getCode = jest.fn(() => {
+          throw err
+        })
         walletService.isUnlockContractDeployed((error, isDeployed) => {
-          expect(error).toBeInstanceOf(Error)
+          expect(error).toBe(err)
           expect(isDeployed).toBe(undefined)
           done()
         })
@@ -115,9 +117,14 @@ describe('WalletService', () => {
       describe('when the node has no unlocked account', () => {
         it('should create an account and emit the ready event', done => {
           expect.assertions(2)
+          const newAccount = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 
-          // this test checks to make sure we create a new account if the node
-          // returns no accounts, and so the accountsAndYield call must return []
+          walletService.web3.eth.accounts.create = jest.fn(() => {
+            return Promise.resolve({
+              address: newAccount,
+            })
+          })
+
           nock.accountsAndYield([])
 
           walletService.once('ready', () => {
@@ -126,8 +133,7 @@ describe('WalletService', () => {
           })
 
           walletService.on('account.changed', account => {
-            // ensure we get a valid account hash back
-            expect(account).toMatch(/^0x[a-fA-F0-9]{40}$/)
+            expect(account).toBe('0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1')
           })
 
           return walletService.getAccount(true)
@@ -146,155 +152,110 @@ describe('WalletService', () => {
     })
 
     describe('sendTransaction', () => {
-      const to = '0x0987654321098765432109876543210987654321'
-      const from = '0x1234567890123456789012345678901234567890'
+      const to = ''
+      const from = '0x'
       const data = ''
       const value = ''
-      const gas = '0x1234'
+      const gas = ''
       const privateKey = null
       const contract = {
         abi: [],
       }
-      const transaction = {
-        status: 'mined',
-        createdAt: new Date().getTime(),
-        hash:
-          '0x83f3e76db42dfd5ebba894e6ff462b3ae30b5f7bfb7a6fec3888e0ed88377f64',
-      }
+      const mockSendTransaction = jest.fn()
+      let mockTransaction
 
-      afterEach(() => {
-        nock.ensureAllNocksUsed()
+      beforeEach(() => {
+        mockTransaction = new EventEmitter()
+        mockSendTransaction.mockReturnValue(mockTransaction)
+        walletService.web3.eth.sendTransaction = mockSendTransaction
       })
 
-      it('should handle cases where the transaction is sent via a provider', async () => {
-        expect.assertions(0)
+      it('should handle cases where the transaction is sent via a provider', () => {
+        expect.assertions(1)
 
-        nock.ethGetGasPriceAndYield('0x123')
-        nock.ethSendTransactionAndYield(
-          { to, from, data, value: '0x0', gas },
-          '0x123',
-          transaction.hash
-        )
-        nock.ethGetTransactionReceipt(transaction.hash, {
-          status: 1,
-          transactionHash: transaction.hash,
-          transactionIndex: '0x0d',
-          blockHash:
-            '0xdc7c95899e030f3104871a597866767ec296e948a24e99b12e0b251011d11c36',
-          blockNumber: `0x${(18).toString('16')}`,
-          contractAddress: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
-          gasUsed: '0x16e360',
-          cumulativeGasUsed: '0x16e360',
-          logs: [],
-        })
-
-        await walletService._sendTransaction(
+        walletService._sendTransaction(
           { to, from, data, value, gas, privateKey, contract },
           'type',
           () => {}
         )
 
-        // in the place of assertions, we explicitly verify that all of the JSON-RPC
-        // calls were completed in the exact order specified above, and that all
-        // of them were called, and nothing else
-        nock.ensureAllNocksUsed()
-      })
-
-      describe('success', () => {
-        beforeEach(() => {
-          nock.ethGetGasPriceAndYield('0x123')
-          nock.ethSendTransactionAndYield(
-            { to, from, data, value: '0x0', gas },
-            '0x123',
-            transaction.hash
-          )
-          nock.ethGetTransactionReceipt(transaction.hash, {
-            status: 1,
-            transactionHash: transaction.hash,
-            transactionIndex: '0x0d',
-            blockHash:
-              '0xdc7c95899e030f3104871a597866767ec296e948a24e99b12e0b251011d11c36',
-            blockNumber: `0x${(18).toString('16')}`,
-            contractAddress: '0xcfeb869f69431e42cdb54a4f4f105c19c080a601',
-            gasUsed: '0x16e360',
-            cumulativeGasUsed: '0x16e360',
-            logs: [],
-          })
-        })
-
-        it('should trigger the transaction.pending event', async () => {
-          expect.assertions(1)
-          walletService.on('transaction.pending', type => {
-            expect(type).toBe('type')
-          })
-          await walletService._sendTransaction(
-            { to, from, data, value, gas, privateKey, contract },
-            'type',
-            () => {}
-          )
-        })
-
-        it('should trigger the transaction.new event', async () => {
-          expect.assertions(6)
-
-          walletService.on(
-            'transaction.new',
-            (hash, sender, recipient, input, type, status) => {
-              expect(hash).toEqual(transaction.hash)
-              expect(sender).toEqual(from)
-              expect(recipient).toEqual(to)
-              expect(input).toEqual(data)
-              expect(type).toEqual('type')
-              expect(status).toEqual('submitted')
-            }
-          )
-
-          await walletService._sendTransaction(
-            { to, from, data, value, gas, privateKey, contract },
-            'type',
-            () => {}
-          )
-        })
-
-        it('should callback with the hash', async () => {
-          expect.assertions(1)
-          await walletService._sendTransaction(
-            { to, from, data, value, gas, privateKey, contract },
-            'type',
-            (error, hash) => {
-              expect(hash).toEqual(transaction.hash)
-            }
-          )
+        expect(mockSendTransaction).toHaveBeenCalledWith({
+          data,
+          from,
+          value,
+          gas,
+          to,
         })
       })
 
-      describe('failure', () => {
-        const error = new Error('oops')
-        beforeEach(() => {
-          nock.ethGetGasPriceAndYield('0x123')
-          nock.ethSendTransactionAndYield(
-            { to, from, data, value: '0x0', gas },
-            '0x123',
-            transaction.hash,
-            error
-          )
+      it('should trigger the transaction.pending event', done => {
+        expect.assertions(1)
+        walletService.on('transaction.pending', type => {
+          expect(type).toBe('type')
+          done()
         })
+        walletService._sendTransaction(
+          { to, from, data, value, gas, privateKey, contract },
+          'type',
+          () => {}
+        )
+      })
 
-        it('should callback with error if there was any', async () => {
-          expect.assertions(2)
+      it('should trigger the transaction.new event', done => {
+        expect.assertions(6)
+        const transactionHash = '0x123'
 
-          try {
-            await walletService._sendTransaction(
-              { to, from, data, value, gas, privateKey, contract },
-              'type',
-              error => {
-                expect(error).toBe(error)
-              }
-            )
-          } catch (err) {
-            expect(err).toBeInstanceOf(Error)
+        walletService.on(
+          'transaction.new',
+          (hash, sender, recipient, input, type, status) => {
+            expect(hash).toEqual(transactionHash)
+            expect(sender).toEqual(from)
+            expect(recipient).toEqual(to)
+            expect(input).toEqual(data)
+            expect(type).toEqual('type')
+            expect(status).toEqual('submitted')
+            done()
           }
-        })
+        )
+
+        walletService._sendTransaction(
+          { to, from, data, value, gas, privateKey, contract },
+          'type',
+          () => {}
+        )
+
+        mockTransaction.emit('transactionHash', transactionHash)
+      })
+
+      it('should callback with the hash', done => {
+        expect.assertions(1)
+        const transactionHash = '0x123'
+        walletService._sendTransaction(
+          { to, from, data, value, gas, privateKey, contract },
+          'type',
+          (error, hash) => {
+            expect(hash).toEqual(transactionHash)
+            done()
+          }
+        )
+
+        mockTransaction.emit('transactionHash', transactionHash)
+      })
+
+      it('should callback with error if there was any', done => {
+        expect.assertions(1)
+        const error = {}
+
+        walletService._sendTransaction(
+          { to, from, data, value, gas, privateKey, contract },
+          'type',
+          error => {
+            expect(error).toBe(error)
+            done()
+          }
+        )
+
+        mockTransaction.emit('error', error)
       })
     })
 

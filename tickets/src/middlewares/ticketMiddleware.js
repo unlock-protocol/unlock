@@ -1,12 +1,7 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
 import TicketService from '../services/ticketService'
-import {
-  ADD_EVENT,
-  LOAD_EVENT,
-  updateEvent,
-  ticketError,
-} from '../actions/ticket'
+import { ADD_EVENT, ticketError } from '../actions/ticket'
 
 const ticketMiddleware = config => {
   const { services } = config
@@ -17,21 +12,8 @@ const ticketMiddleware = config => {
       return action => {
         if (action.type == ADD_EVENT) {
           ticketService
-            .createEvent(action.event, action.token)
+            .createEvent(action.event)
             .catch(error => dispatch(ticketError(error)))
-        }
-        if (action.type == LOAD_EVENT) {
-          ticketService.getEvent(action.address).then(res => {
-            const { name, date, lockAddress, description, location } = res.data
-            const event = {
-              name,
-              date: new Date(date),
-              lockAddress,
-              description,
-              location,
-            }
-            dispatch(updateEvent(event))
-          })
         }
         next(action)
       }

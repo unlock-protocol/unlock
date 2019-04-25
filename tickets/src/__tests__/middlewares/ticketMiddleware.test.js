@@ -1,5 +1,5 @@
 import ticketMiddleware from '../../middlewares/ticketMiddleware'
-import { ADD_EVENT, LOAD_EVENT } from '../../actions/ticket'
+import { ADD_EVENT } from '../../actions/ticket'
 import configure from '../../config'
 
 /**
@@ -53,29 +53,14 @@ describe('Ticketing middleware', () => {
         owner: 'ben',
         logo: '',
       }
-      const action = { type: ADD_EVENT, event, token: null }
+      const action = { type: ADD_EVENT, event }
       mockTicketService.createEvent = jest.fn(() => {
         return Promise.resolve()
       })
 
       await invoke(action)
 
-      expect(mockTicketService.createEvent).toHaveBeenCalledWith(event, null)
-      expect(next).toHaveBeenCalledTimes(1)
-    })
-  })
-
-  describe('handling LOAD_EVENT', () => {
-    it('should load an event from address', async () => {
-      expect.assertions(2)
-      const { next, invoke } = create()
-      const action = { type: LOAD_EVENT, address: '0x123' }
-      mockTicketService.getEvent = jest.fn(() => {
-        return Promise.resolve()
-      })
-
-      await invoke(action)
-      expect(mockTicketService.getEvent).toHaveBeenCalledWith('0x123')
+      expect(mockTicketService.createEvent).toHaveBeenCalledWith(event)
       expect(next).toHaveBeenCalledTimes(1)
     })
   })

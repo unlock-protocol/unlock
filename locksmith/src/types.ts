@@ -25,10 +25,3 @@ export interface EventCreation {
   logo: string
   owner: string
 }
-
-export interface ItemizedKeyPrice {
-  keyPrice: number
-  gasFee: number
-  creditCardProcessing: number
-  unlockServiceFee: number
-}

@@ -38,32 +38,36 @@ export default class DatePicker extends Component {
   onChange(method) {
     const { now } = this.props
     return selected => {
-      this.setState(state => {
-        let date = state.date
-        // Change the date based on the selected value
-        date[method](selected.value)
+      this.setState(
+        state => {
+          let date = state.date
+          // Change the date based on the selected value
+          date[method](selected.value)
 
-        // If the day is in the past, we default to today's date
-        if (date < now) {
-          date = new Date(now)
+          // If the day is in the past, we default to today's date
+          if (date < now) {
+            date = new Date(now)
+          }
+
+          const newState = {
+            ...state,
+            date,
+          }
+
+          // Get the new possible days, months and years
+          const dateState = getDaysMonthsAndYearsForSelect(
+            now,
+            newState.date.getFullYear(),
+            newState.date.getMonth() + 1
+          )
+          return Object.assign(newState, dateState)
+        },
+        () => {
+          const { date } = this.state
+          const { onChange } = this.props
+          onChange(date)
         }
-
-        const newState = {
-          ...state,
-          date,
-        }
-
-        const { onChange } = this.props
-        onChange(date)
-
-        // Get the new possible days, months and years
-        const dateState = getDaysMonthsAndYearsForSelect(
-          now,
-          newState.date.getFullYear(),
-          newState.date.getMonth() + 1
-        )
-        return Object.assign(newState, dateState)
-      })
+      )
     }
   }
 
@@ -84,7 +88,7 @@ export default class DatePicker extends Component {
           className="select-container"
           classNamePrefix="select-option"
           options={months}
-          onChange={this.onChange('setMonth')}
+          onChange={this.onChange('setUTCMonth')}
           value={month}
         />
         <StyledSelect
@@ -92,7 +96,7 @@ export default class DatePicker extends Component {
           className="select-container"
           classNamePrefix="select-option"
           options={days}
-          onChange={this.onChange('setDate')}
+          onChange={this.onChange('setUTCDate')}
           value={day}
         />
         <StyledSelect
@@ -100,7 +104,7 @@ export default class DatePicker extends Component {
           className="select-container"
           classNamePrefix="select-option"
           options={years}
-          onChange={this.onChange('setFullYear')}
+          onChange={this.onChange('setUTCFullYear')}
           value={year}
         />
       </EventDate>

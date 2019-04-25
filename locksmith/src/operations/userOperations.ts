@@ -1,11 +1,8 @@
 import { UserCreationInput } from '../types' // eslint-disable-line no-unused-vars
 import * as Normalizer from '../utils/normalizer'
-import { PaymentProcessor } from '../payment/paymentProcessor'
 // eslint-disable-line no-unused-vars
 import RecoveryPhrase = require('../utils/recoveryPhrase')
 
-const env = process.env.NODE_ENV || 'development'
-const config = require('../../config/config')[env]
 const models = require('../models')
 
 const { User, UserReference } = models
@@ -83,14 +80,6 @@ namespace UserOperations {
         },
       }
     )
-  }
-
-  export const updatePaymentDetails = async (
-    token: string,
-    publicKey: string
-  ): Promise<boolean> => {
-    let paymentProcessor = new PaymentProcessor(config.stripeSecret)
-    return await paymentProcessor.updateUserPaymentDetails(token, publicKey)
   }
 }
 

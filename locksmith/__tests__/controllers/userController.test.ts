@@ -253,45 +253,4 @@ describe('User Controller', () => {
       })
     })
   })
-
-  describe("updating a user's payment details", () => {
-    beforeAll(() => {
-      jest.unmock('../../src/operations/userOperations')
-
-      UserOperations.updatePaymentDetails = jest
-        .fn()
-        .mockReturnValueOnce(true)
-        .mockReturnValueOnce(false)
-    })
-
-    afterAll(() => {
-      jest.clearAllMocks()
-    })
-
-    describe("when able to update the user's payment details", () => {
-      it('returns 202', async () => {
-        expect.assertions(1)
-        let response = await request(app)
-          .put('/users/user@example.com/paymentdetails')
-          .set('Accept', /json/)
-          .send({
-            token: 'a_valid_token',
-          })
-
-        expect(response.statusCode).toBe(202)
-      })
-    })
-    describe("when unable to update the user's payment details", () => {
-      it('returns 400', async () => {
-        expect.assertions(1)
-        let response = await request(app)
-          .put('/users/user@example.com/paymentdetails')
-          .set('Accept', /json/)
-          .send({
-            token: 'an_invalid_token',
-          })
-        expect(response.statusCode).toBe(400)
-      })
-    })
-  })
 })

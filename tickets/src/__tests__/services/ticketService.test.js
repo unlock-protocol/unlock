@@ -26,17 +26,7 @@ describe('TicketService', () => {
         axios.post.mockReturnValue({})
         await ticketService.createEvent(event)
 
-        const payload = {
-          message: {
-            event,
-          },
-        }
-
-        expect(axios.post).toHaveBeenCalledWith(
-          `${serviceHost}/events/`,
-          payload,
-          {}
-        )
+        expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/events/`, event)
       })
     })
     describe('when the event cannot be created', () => {
@@ -58,17 +48,7 @@ describe('TicketService', () => {
           expect(error).toEqual('Hark! An Error')
         }
 
-        const payload = {
-          message: {
-            event,
-          },
-        }
-
-        expect(axios.post).toHaveBeenCalledWith(
-          `${serviceHost}/events/`,
-          payload,
-          {}
-        )
+        expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/events/`, event)
       })
     })
   })

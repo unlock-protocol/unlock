@@ -87,13 +87,6 @@ export const post = PropTypes.shape({
   __content: PropTypes.string,
 })
 
-export const ticketedEvent = PropTypes.shape({
-  name: PropTypes.string,
-  location: PropTypes.string,
-  date: PropTypes.instanceOf(Date),
-  description: PropTypes.string,
-})
-
 export const slug = PropTypes.string
 
 export const postFeed = PropTypes.array
@@ -126,5 +119,4 @@ export default {
   transactions,
   status,
   showDashboardForm,
-  ticketedEvent,
 }

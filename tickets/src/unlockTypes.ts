@@ -17,7 +17,6 @@ export enum TransactionStatus {
   SUBMITTED = 'submitted',
   PENDING = 'pending',
   MINED = 'mined',
-  NONE = '', // for testing purposes
 }
 /* eslint-enable no-unused-vars */
 
@@ -25,11 +24,11 @@ export interface Transaction {
   status: TransactionStatus
   confirmations: number
   hash: string
+  lock: string
+  name: string
   type: TransactionType
   blockNumber: number
 
-  lock?: string
-  name?: string
   key?: string // TODO: tighten up our types, hopefully we won't have too many
   // optional properties.
 }

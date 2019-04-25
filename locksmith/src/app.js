@@ -13,7 +13,6 @@ var blockRouter = require('./routes/block')
 var userRouter = require('./routes/user')
 var eventRouter = require('./routes/event')
 var purchaseRouter = require('./routes/purchase')
-var priceRouter = require('./routes/price')
 
 let lockSignatureConfiguration = {
   name: 'lock',
@@ -76,6 +75,5 @@ app.use('/block', blockRouter)
 app.use('/events', eventRouter)
 app.use('/users', userRouter)
 app.use('/purchase', purchaseRouter)
-app.use('/price', priceRouter)
 
 module.exports = app

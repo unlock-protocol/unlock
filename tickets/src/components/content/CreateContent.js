@@ -9,12 +9,9 @@ import Layout from '../interface/Layout'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import DatePicker from '../interface/DatePicker'
 import BrowserOnly from '../helpers/BrowserOnly'
-import EventUrl from '../helpers/EventUrl'
 import { pageTitle } from '../../constants'
 import UnlockPropTypes from '../../propTypes'
 import { addEvent } from '../../actions/ticket'
-import CreateEventButton from './create/CreateEventButton'
-import withConfig from '../../utils/withConfig'
 
 export const formValuesToEvent = formValues => {
   const { lockAddress, name, description, location, date } = formValues
@@ -30,15 +27,14 @@ export const formValuesToEvent = formValues => {
 export class CreateContent extends Component {
   constructor(props) {
     super(props)
-    const { now, locks, submitted } = props
+    const { now, locks } = props
 
     this.state = {
-      lockAddress: locks[0] || '',
+      lock: locks[0] || '',
       name: '',
       description: '',
       location: '',
       date: now,
-      submitted,
     }
 
     this.onChange = this.onChange.bind(this)
@@ -66,6 +62,7 @@ export class CreateContent extends Component {
   }
 
   dateChanged(date) {
+    date.setUTCHours(0, 0, 0, 0) // We don't need to store hours
     this.setState(state => {
       return {
         ...state,
@@ -82,19 +79,11 @@ export class CreateContent extends Component {
       logo: '', // TODO add logo support
       owner: account.address,
     })
-    this.setState(state => ({ ...state, submitted: true }))
   }
 
   render() {
-    const { locks, now, config } = this.props
-    const {
-      date,
-      name,
-      description,
-      location,
-      lockAddress,
-      submitted,
-    } = this.state
+    const { locks, now } = this.props
+    const { date, name, description, location, lock } = this.state
 
     return (
       <GlobalErrorConsumer>
@@ -120,12 +109,12 @@ export class CreateContent extends Component {
                       }))}
                       onChange={selectedOption => {
                         if (selectedOption.value)
-                          this.changeField('lockAddress', selectedOption.value)
+                          this.changeField('lock', selectedOption.value)
                       }}
                     />
                     <Text>
                       Don’t have a lock? <br />
-                      <Cta href={config.unlockAppUrl} target="_blank">
+                      <Cta href="https://unlock-protocol.com" target="_blank">
                         Create a new lock on unlock-protocol.com
                       </Cta>
                     </Text>
@@ -170,8 +159,13 @@ export class CreateContent extends Component {
                 <Step>
                   <Title>Share Your RSVP Page</Title>
                   <Fieldset>
-                    <CreateEventButton submitted={submitted} />
-                    {submitted && <EventUrl address={lockAddress} />}
+                    <SaveButton type="submit">Save Event</SaveButton>
+                    <Text>
+                      Your event link: <br />
+                      <Cta>
+                        {'https://tickets.unlock-protocol/rsvp/' + lock}
+                      </Cta>
+                    </Text>
                   </Fieldset>
                 </Step>
               </Steps>
@@ -188,14 +182,11 @@ CreateContent.propTypes = {
   account: UnlockPropTypes.account,
   addEvent: PropTypes.func.isRequired,
   locks: PropTypes.arrayOf(PropTypes.string),
-  submitted: PropTypes.bool,
-  config: UnlockPropTypes.configuration.isRequired,
 }
 
 CreateContent.defaultProps = {
   locks: [],
   account: null,
-  submitted: false,
 }
 
 export const mapStateToProps = ({ locks, account }, { now }) => {
@@ -212,12 +203,10 @@ export const mapDispatchToProps = dispatch => ({
   addEvent: event => dispatch(addEvent(event)),
 })
 
-export default withConfig(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(CreateContent)
-)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreateContent)
 
 const StyledSelect = styled(Select)`
   background-color: var(--offwhite);
@@ -246,6 +235,26 @@ const Input = styled.input`
   padding: 10px;
   font-size: 16px;
   color: var(--darkgrey);
+`
+
+const SaveButton = styled.button`
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--white);
+  font-family: 'IBM Plex Sans', sans-serif;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 200ms ease;
+  & :hover {
+    background-color: var(--activegreen);
+  }
+  height: 60px;
+  ${Media.phone`
+    width: 100%;
+  `};
 `
 
 const Steps = styled.ol`

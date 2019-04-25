@@ -83,22 +83,6 @@ namespace UserController {
       return res.sendStatus(400)
     }
   }
-
-  export const updatePaymentDetails = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
-    let emailAddress = req.params.emailAddress
-    let token = req.body.token
-
-    let result = await UserOperations.updatePaymentDetails(token, emailAddress)
-
-    if (result) {
-      return res.sendStatus(202)
-    } else {
-      return res.sendStatus(400)
-    }
-  }
 }
 
 export = UserController

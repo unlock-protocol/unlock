@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
 
+import Web3Utils from 'web3-utils'
 import * as UnlockV01 from 'unlock-abi-0-1'
-import Web3Utils from '../utils'
 import { GAS_AMOUNTS } from '../constants'
 import Errors from '../errors'
 import TransactionTypes from '../transactionTypes'

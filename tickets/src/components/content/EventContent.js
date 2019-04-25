@@ -1,257 +1,68 @@
-import React, { Component } from 'react'
+import React, { Fragment } from 'react'
 import styled from 'styled-components'
-import { connect } from 'react-redux'
-import Head from 'next/head'
 import PropTypes from 'prop-types'
 
 import { Fieldset, Field, Label } from './CreateContent'
-import { MONTH_NAMES, pageTitle, TRANSACTION_TYPES } from '../../constants'
+import { MONTH_NAMES } from '../../constants'
 import UnlockPropTypes from '../../propTypes'
 import BalanceProvider from '../helpers/BalanceProvider'
-import { lockRoute } from '../../utils/routes'
-import BrowserOnly from '../helpers/BrowserOnly'
-import Layout from '../interface/Layout'
-import { purchaseKey } from '../../actions/key'
-import { loadEvent, signAddress } from '../../actions/ticket'
-import PayButton from './purchase/PayButton'
-import { NoPhone } from '../../theme/media'
-import { transactionTypeMapping } from '../../utils/types'
-import keyStatus, { KeyStatus } from '../../selectors/keys'
-import withConfig from '../../utils/withConfig'
-import DeveloperOverlay from '../developer/DeveloperOverlay'
-import TicketCode from './purchase/TicketCode'
 
-export class EventContent extends Component {
-  constructor(props) {
-    super(props)
+export const EventContent = ({ name, description, location, date, lock }) => {
+  let dateString =
+    MONTH_NAMES[date.getMonth()] +
+    ' ' +
+    date.getDate() +
+    ', ' +
+    date.getFullYear()
 
-    this.state = {
-      loaded: false,
-      signed: false,
-    }
-
-    this.setAsLoaded.bind(this)
-    this.setAsSigned.bind(this)
-  }
-
-  componentDidUpdate() {
-    const {
-      lock,
-      loadEvent,
-      signAddress,
-      event,
-      keyStatus,
-      signedEventAddress,
-    } = this.props
-    const { loaded, signed } = this.state
-    if (lock.address && !event.lockAddress && !loaded) {
-      loadEvent(lock.address)
-      this.setAsLoaded() // To prevent multiple loads
-    }
-    if (signedEventAddress && !signed) {
-      this.setAsSigned()
-    } else if (
-      keyStatus === KeyStatus.VALID &&
-      !signed &&
-      !signedEventAddress
-    ) {
-      signAddress(lock.address)
-      this.setAsSigned()
-    }
-  }
-
-  setAsLoaded() {
-    this.setState({ loaded: true })
-  }
-
-  setAsSigned() {
-    this.setState({ signed: true })
-  }
-
-  render() {
-    const {
-      lock,
-      lockKey,
-      purchaseKey,
-      transaction,
-      event,
-      keyStatus,
-      account,
-      signedEventAddress,
-    } = this.props
-
-    if (!lock.address || !event.name) return null // Wait for the lock and event to load
-
-    const { name, description, location, date } = event
-    let dateString =
-      MONTH_NAMES[date.getMonth()] +
-      ' ' +
-      date.getDate() +
-      ', ' +
-      date.getFullYear()
-
-    return (
-      <BrowserOnly>
-        <Layout forContent>
-          <Head>
-            <title>{pageTitle(name)}</title>
-          </Head>
-          <Title>{name}</Title>
-          <PaymentFieldset>
-            <PayButton
-              transaction={transaction}
-              keyStatus={keyStatus}
-              purchaseKey={() => purchaseKey(lockKey)}
-            />
-            <Field>
-              <NoPhone>
-                <Label>Ticket Price</Label>
-              </NoPhone>
-              <BalanceProvider
-                amount={lock.keyPrice}
-                render={(ethWithPresentation, convertedUSDValue) => (
-                  <Price>
-                    <Eth>{ethWithPresentation} ETH</Eth>
-                    <Fiat>${convertedUSDValue}</Fiat>
-                  </Price>
-                )}
-              />
-            </Field>
-          </PaymentFieldset>
-          <DetailsFieldset>
-            <DetailsField>
-              <DisplayDate>{dateString}</DisplayDate>
-              <Description>{description}</Description>
-              <Location>{location}</Location>
-            </DetailsField>
-            <DetailsField>
-              <TicketCode
-                publicKey={account.address}
-                signedAddress={signedEventAddress}
-                eventAddress={lock.address}
-              />
-            </DetailsField>
-          </DetailsFieldset>
-        </Layout>
-        <DeveloperOverlay />
-      </BrowserOnly>
-    )
-  }
+  return (
+    <Fragment>
+      <Title>{name}</Title>
+      <DetailsFieldset>
+        <Field>
+          <Label>Ticket Price</Label>
+          <BalanceProvider
+            amount={lock.keyPrice}
+            render={(ethWithPresentation, convertedUSDValue) => (
+              <Price>
+                <Eth>{ethWithPresentation} ETH</Eth>
+                <Fiat>${convertedUSDValue}</Fiat>
+              </Price>
+            )}
+          />
+        </Field>
+        <PayButton>Pay &amp; Register for This Event</PayButton>
+      </DetailsFieldset>
+      <DetailsFieldset>
+        <DetailsField>
+          <DisplayDate>{dateString}</DisplayDate>
+          <Description>{description}</Description>
+        </DetailsField>
+        <Field>
+          <Label>Location</Label>
+          <Description>{location}</Description>
+        </Field>
+      </DetailsFieldset>
+    </Fragment>
+  )
 }
 
 EventContent.propTypes = {
-  lock: UnlockPropTypes.lock,
-  transaction: UnlockPropTypes.transaction,
-  purchaseKey: PropTypes.func.isRequired,
-  loadEvent: PropTypes.func.isRequired,
-  signAddress: PropTypes.func.isRequired,
-  lockKey: UnlockPropTypes.key,
-  event: UnlockPropTypes.ticketedEvent,
-  keyStatus: PropTypes.string,
-  signedEventAddress: PropTypes.string,
-  account: UnlockPropTypes.account,
-  // Properties to add once we're showing the QR code:
-  //locked: PropTypes.bool.isRequired,
+  name: PropTypes.string,
+  description: PropTypes.string,
+  location: PropTypes.string,
+  date: PropTypes.instanceOf(Date),
+  lock: UnlockPropTypes.lock.isRequired,
 }
 
 EventContent.defaultProps = {
-  lock: {},
-  transaction: null,
-  lockKey: null,
-  event: {},
-  keyStatus: null,
-  signedEventAddress: null,
-  account: null,
+  name: 'Event',
+  description: '',
+  location: 'TBC',
+  date: new Date(),
 }
 
-export const mapDispatchToProps = dispatch => ({
-  purchaseKey: key => {
-    dispatch(purchaseKey(key))
-  },
-  loadEvent: address => {
-    dispatch(loadEvent(address))
-  },
-  signAddress: address => {
-    dispatch(signAddress(address))
-  },
-})
-
-export const mapStateToProps = (
-  { router, locks, keys, account, transactions, tickets },
-  { config: { requiredConfirmations } }
-) => {
-  if (!account) {
-    return {}
-  }
-
-  const event = tickets.event
-
-  const { lockAddress } = lockRoute(router.location.pathname)
-
-  const lock = Object.values(locks).find(
-    thisLock => thisLock.address === lockAddress
-  )
-
-  const accountAddress = account && account.address
-
-  let lockKey = Object.values(keys).find(
-    key => key.lock === lockAddress && key.owner === accountAddress
-  )
-
-  if (!lockKey) {
-    lockKey = {
-      id: `${lockAddress}-${accountAddress}`,
-      lock: lockAddress,
-      owner: accountAddress,
-      expired: 0,
-      data: null,
-    }
-  }
-
-  let processedEvent
-  if (event) {
-    const { name, date, lockAddress, description, location } = event
-    processedEvent = {
-      name,
-      date: new Date(date),
-      lockAddress,
-      description,
-      location,
-    }
-  }
-
-  let transaction = null
-  transaction = Object.values(transactions).find(
-    transaction =>
-      transaction.type ===
-        transactionTypeMapping(TRANSACTION_TYPES.KEY_PURCHASE) &&
-      transaction.key === lockKey.id
-  )
-
-  const currentKeyStatus = keyStatus(lockKey.id, keys, requiredConfirmations)
-
-  let signedEventAddress
-  if (tickets[lockAddress]) {
-    signedEventAddress = tickets[lockAddress]
-  }
-
-  return {
-    lock,
-    lockKey,
-    transaction,
-    signedEventAddress,
-    keyStatus: currentKeyStatus,
-    event: processedEvent,
-    account,
-  }
-}
-
-export default withConfig(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(EventContent)
-)
+export default EventContent
 
 const Title = styled.h1`
   font-family: 'IBM Plex Serif', serif;
@@ -260,8 +71,6 @@ const Title = styled.h1`
   font-size: 30px;
   line-height: normal;
   color: var(--dimgrey);
-  padding-left: 20px;
-  padding-right: 20px;
 `
 
 const Price = styled.div`
@@ -286,27 +95,35 @@ const Fiat = styled.div`
   color: var(--grey);
 `
 
-const DetailsFieldset = styled(Fieldset)`
-  margin-bottom: 30px;
-  padding-left: 20px;
-  padding-right: 20px;
+const PayButton = styled.div`
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--white);
+  font-family: 'IBM Plex Sans', sans-serif;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 200ms ease;
+  & :hover {
+    background-color: var(--activegreen);
+  }
+  height: 60px;
+  text-align: center;
+  padding-top: 20px;
 `
 
-const PaymentFieldset = styled(Fieldset)`
-  padding-left: 20px;
-  padding-right: 20px;
+const DetailsFieldset = styled(Fieldset)`
+  margin-bottom: 30px;
 `
 
 const DetailsField = styled(Field)`
   grid-template-rows: 35px auto;
-  & > ${Label} {
-    align-self: center;
-  }
 `
 
 const DisplayDate = styled.div`
   font-family: 'IBM Plex Sans', sans-serif;
-  font-style: normal;
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
@@ -316,11 +133,4 @@ const DisplayDate = styled.div`
 const Description = styled.div`
   font-size: 20px;
   font-family: 'IBM Plex Serif', serif;
-`
-
-const Location = styled.div`
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 16px;
-  line-height: 20px;
-  margin-top: 30px;
 `

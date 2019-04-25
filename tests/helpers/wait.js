@@ -16,23 +16,6 @@ const untilIsFalse = async (statement, ...variables) =>
   })
 
 /**
- * Helper function which waits for something to be false
- */
-const untilIsTrue = async (statement, ...variables) =>
-  new Promise(resolve => {
-    const waitIfTrue = async () => {
-      const isTrue = await page.evaluate(statement, variables)
-      if (isTrue) {
-        return resolve()
-      }
-      return setTimeout(async () => {
-        return waitIfTrue()
-      }, 10)
-    }
-    waitIfTrue()
-  })
-
-/**
  * Helper function to ensure that a DOM element is gone.
  */
 const untilIsGone = async selector =>
@@ -53,7 +36,6 @@ const forIframe = async () => {
 
 module.exports = {
   untilIsFalse,
-  untilIsTrue,
   untilIsGone,
   forLoadingDone,
   forIframe,

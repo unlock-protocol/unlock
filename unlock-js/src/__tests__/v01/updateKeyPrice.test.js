@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 import * as UnlockV01 from 'unlock-abi-0-1'
-import Web3Utils from '../../utils'
+import Web3Utils from 'web3-utils'
 import updateKeyPrice from '../../v01/updateKeyPrice'
 import Errors from '../../errors'
 import { GAS_AMOUNTS } from '../../constants'
@@ -11,7 +11,7 @@ import { prepWalletService } from '../helpers/walletServiceHelper'
 const { FAILED_TO_UPDATE_KEY_PRICE } = Errors
 const endpoint = 'http://127.0.0.1:8545'
 const provider = new Web3.providers.HttpProvider(endpoint)
-const nock = new NockHelper(endpoint, false /** debug */)
+const nock = new NockHelper(endpoint, true /** debug */)
 let unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
 
 let walletService
