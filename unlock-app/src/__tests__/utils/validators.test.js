@@ -1,4 +1,5 @@
 import * as validators from '../../utils/validators'
+import { ONE_HUNDRED_YEARS_IN_DAYS } from '../../constants'
 
 describe('Form field validators', () => {
   it('isMissing', () => {
@@ -26,9 +27,10 @@ describe('Form field validators', () => {
     expect(validators.isPositiveInteger(null)).toBeFalsy()
     expect(validators.isPositiveInteger(false)).toBeFalsy()
   })
-  it('isLessThanOneHundredYearsInDays', () => {
+  it('isLTE', () => {
     expect.assertions(6)
-    const { isLTEOneHundredYearsInDays } = validators
+    const { isLTE } = validators
+    const isLTEOneHundredYearsInDays = isLTE(ONE_HUNDRED_YEARS_IN_DAYS)
 
     expect(isLTEOneHundredYearsInDays('-5')).toBeTruthy()
     expect(isLTEOneHundredYearsInDays('0')).toBeTruthy()

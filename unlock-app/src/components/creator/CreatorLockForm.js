@@ -25,10 +25,14 @@ import {
   isNotEmpty,
   isPositiveInteger,
   isPositiveNumber,
-  isLTEOneHundredYearsInDays,
+  isLTE,
 } from '../../utils/validators'
 
-import { INFINITY, UNLIMITED_KEYS_COUNT } from '../../constants'
+import {
+  INFINITY,
+  UNLIMITED_KEYS_COUNT,
+  ONE_HUNDRED_YEARS_IN_DAYS,
+} from '../../constants'
 
 /**
  * Converts the lock values into form values
@@ -151,7 +155,10 @@ export class CreatorLockForm extends React.Component {
         }
         break
       case 'expirationDuration':
-        if (!isPositiveInteger(value) || !isLTEOneHundredYearsInDays(value)) {
+        if (
+          !isPositiveInteger(value) ||
+          !isLTE(ONE_HUNDRED_YEARS_IN_DAYS)(value)
+        ) {
           return FORM_EXPIRATION_DURATION_INVALID
         }
         break

@@ -92,7 +92,7 @@ export const INFINITY = '∞'
 export const UNLIMITED_KEYS_COUNT = -1
 
 // oneHundredYearsInDays -- based on the calculation for max duration in smart contract.
-export const oneHundredYearsInDays = 100 * 365
+export const ONE_HUNDRED_YEARS_IN_DAYS = 100 * 365
 
 export const SHOW_FLAG_FOR = 2000 // milliseconds
 

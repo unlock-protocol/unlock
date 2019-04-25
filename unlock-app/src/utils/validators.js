@@ -1,5 +1,3 @@
-import { oneHundredYearsInDays } from '../constants'
-
 // tests whether a field's value was not entered by the user
 export const isNotEmpty = val => val || val === 0
 
@@ -9,9 +7,11 @@ export const isPositiveInteger = val => {
   return !isNaN(parsedInt) && val == parsedInt && +val > 0
 }
 
-export const isLTEOneHundredYearsInDays = val => {
-  const parsedInt = parseInt(val)
-  return parsedInt <= oneHundredYearsInDays
+export const isLTE = limit => {
+  return val => {
+    const parsedInt = parseInt(val)
+    return parsedInt <= limit
+  }
 }
 
 // tests whether a number is a non-negative real number (decimals allowed)
