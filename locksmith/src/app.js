@@ -44,7 +44,7 @@ app.post(
 )
 
 app.put(
-  /^\/events$/i,
+  /^\/events\/\S+$/i,
   signatureValidationMiddleware.generateProcessor(eventConfiguration)
 )
 

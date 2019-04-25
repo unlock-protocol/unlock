@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars, import/no-unresolved
 import { Request, Response } from 'express-serve-static-core'
+import Normalizer from '../utils/normalizer'
 
 const eventOperation = require('../operations/eventOperations')
 
@@ -22,8 +23,8 @@ namespace EventController {
     try {
       const databaseEvent = await eventOperation.find(lockAddress)
       if (
-        databaseEvent.owner !== event.owner ||
-        databaseEvent.lockAddress != lockAddress
+        databaseEvent.owner !== Normalizer.ethereumAddress(event.owner) ||
+        databaseEvent.lockAddress != Normalizer.ethereumAddress(lockAddress)
       ) {
         return res.sendStatus(401)
       }
@@ -37,8 +38,8 @@ namespace EventController {
 
   export const find = async (req: Request, res: Response): Promise<any> => {
     let lockAddress = req.params.lockAddress
-    let event = await eventOperation.find(lockAddress)
 
+    let event = await eventOperation.find(lockAddress)
     if (event) {
       return res.json(event.toJSON())
     } else {

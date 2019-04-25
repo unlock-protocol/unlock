@@ -17,9 +17,11 @@ namespace EventOperations {
   }
 
   export const update = async (event: EventCreation): Promise<any> => {
+    event.owner = Normalizer.ethereumAddress(event.owner)
+    event.lockAddress = Normalizer.ethereumAddress(event.lockAddress)
     return await Event.update(event, {
       where: {
-        address: {
+        lockAddress: {
           [Op.eq]: ethJsUtil.toChecksumAddress(event.lockAddress),
         },
         owner: {

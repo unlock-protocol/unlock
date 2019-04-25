@@ -136,7 +136,7 @@ describe('Event Controller', () => {
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
           .send(typedData)
 
-        expect(response.status).toBe(200)
+        expect(response.status).toBe(202)
       })
     })
   })

@@ -29,7 +29,7 @@ describe('EventOperations', () => {
         lockAddress: '0x49158d35259E3264Ad2a6aBb300cdA19294D125e',
         logo: 'http://example.com/a_logo',
         name: 'A Test Event',
-        owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+        owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
       })
     })
   })
@@ -46,15 +46,15 @@ describe('EventOperations', () => {
           lockAddress: '0x49158d35259E3264Ad2a6aBb300cdA19294D125e',
           logo: 'http://example.com/a_logo',
           name: 'A Test Event',
-          owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+          owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
         },
         {
           where: {
-            address: {
+            lockAddress: {
               [Op.eq]: '0x49158d35259E3264Ad2a6aBb300cdA19294D125e',
             },
             owner: {
-              [Op.eq]: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+              [Op.eq]: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
             },
           },
           raw: true,
