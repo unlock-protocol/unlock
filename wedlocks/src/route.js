@@ -7,6 +7,7 @@ import config from './config'
 //  template: templateName string
 //  recipient: email aderess string
 //  params: params for the template (as a hash)
+//  attachments: array of attachements as data-uri strings (nodemailer will handle them)
 // }
 export const route = (args, callback) => {
   const template = templates[args.template]
@@ -14,6 +15,7 @@ export const route = (args, callback) => {
   if (!template) {
     return callback(new Error('Missing template'))
   }
+
   nodemailer.createTransport(config).sendMail(
     {
       from: config.sender,
@@ -22,6 +24,7 @@ export const route = (args, callback) => {
       text: template.text(args.params),
       // optional extra arguments for SendRawEmail
       html: null, // TODO: support later
+      attachments: args.attachments,
     },
     (err, info) => {
       return callback(err, info)
