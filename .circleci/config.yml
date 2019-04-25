@@ -307,7 +307,7 @@ workflows:
       - unlock-app-chromatic:
           filters:
             branches:
-              ignore: production
+              ignore: /production.*/
           requires:
             - unlock-app-tests
       - integration-tests:
