@@ -3,7 +3,9 @@ pragma solidity 0.5.7;
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import '../interfaces/IERC721.sol';
 import '../UnlockUtils.sol';
-import 'MixinKeys.sol';
+import './MixinKeys.sol';
+import '../interfaces/IUnlock.sol';
+import './MixinLockCore.sol';
 
 
 /**
@@ -23,10 +25,8 @@ contract MixinLockMetadata is
   string private lockSymbol;
 
   /// A distinct Uniform Resource Identifier (URI) for a given asset.
+  /// This is meant for cases whaere the lock owner want to set their own URI rather than using the default.
   string private baseTokenURI;
-
-  /// temporary hardcoded URI for testing.
-  string public constant BASE_TOKEN_URI = 'https://locksmith.unlock-protocol.com/api/key/';
 
   /**
    * Allows the Lock owner to assign a descriptive name for this Lock.
@@ -96,8 +96,12 @@ contract MixinLockMetadata is
       isKey(_tokenId)
       returns (string)
     {
+      // refactor so that baseTokenURI defaults to global one in Unlock.sol unless lock owner sets their own.
+      // Move this stuff elsewhere...
+      IUnlock Unlock = IUnlock.at(MixinLockCore.unlockProtocol);
+      string globalBaseTokenURI = Unlock.BASE_TOKEN_URI;
       return UnlockUtils.strConcat(
-            BASE_TOKEN_URI, // TODO: Switch this to baseTokenURI when ready
+            globalBaseTokenURI, // TODO: Switch this to baseTokenURI when ready
             UnlockUtils.uint2str(_tokenId)
         );
     }
