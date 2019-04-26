@@ -68,6 +68,7 @@ describe('EventOperations', () => {
       Event.findOne = jest.fn(() => {})
       EventOperations.find('0x49158d35259e3264ad2a6abb300cda19294d125e')
       expect(Event.findOne).toHaveBeenCalledWith({
+        include: [{ all: true }],
         where: {
           lockAddress: {
             [Op.eq]: '0x49158d35259E3264Ad2a6aBb300cdA19294D125e',
