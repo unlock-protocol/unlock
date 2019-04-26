@@ -25,11 +25,14 @@ describe('route', () => {
         subject: jest.fn(() => 'subject'),
         text: jest.fn(() => 'text'),
       }
+
       const args = {
         template: 'template',
         params: { hello: 'world' },
         recipient: 'julien@unlock-protocol.com',
+        attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
       }
+
       const transporter = {
         sendMail: jest.fn((options, callback) => {
           expect(options).toEqual({
@@ -38,6 +41,7 @@ describe('route', () => {
             subject: 'subject',
             text: 'text',
             to: args.recipient,
+            attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
           })
           return callback()
         }),
