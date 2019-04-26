@@ -16,7 +16,10 @@ import './MixinLockCore.sol';
  */
 contract MixinLockMetadata is
   IERC721,
-  Ownable
+  Ownable,
+  MixinLockCore,
+  MixinKeys,
+  UnlockUtils
 {
   /// A descriptive name for a collection of NFTs in this contract
   string private lockName;
@@ -94,12 +97,13 @@ contract MixinLockMetadata is
     ) external
       view
       isKey(_tokenId)
-      returns (string)
+      returns (string memory)
     {
       // refactor so that baseTokenURI defaults to global one in Unlock.sol unless lock owner sets their own.
       // Move this stuff elsewhere...
-      IUnlock Unlock = IUnlock.at(MixinLockCore.unlockProtocol);
-      string globalBaseTokenURI = Unlock.BASE_TOKEN_URI;
+      address unlockAddress = MixinLockCore.unlockProtocol;
+      IUnlock unlock = IUnlock(unlockAddress);
+      string memory globalBaseTokenURI = unlock.getGlobalBaseURI;
       return UnlockUtils.strConcat(
             globalBaseTokenURI, // TODO: Switch this to baseTokenURI when ready
             UnlockUtils.uint2str(_tokenId)
