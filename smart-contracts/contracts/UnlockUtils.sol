@@ -7,11 +7,11 @@ pragma solidity 0.5.7;
 contract UnlockUtils {
 
   function strConcat(
-    string _a,
-    string _b
+    string memory _a,
+    string memory _b
   ) internal
     pure
-    returns (string)
+    returns (string memory)
   {
     bytes memory _ba = bytes(_a);
     bytes memory _bb = bytes(_b);
@@ -19,28 +19,39 @@ contract UnlockUtils {
     bytes memory bab = bytes(ab);
     uint k = 0;
     for (uint i = 0; i < _ba.length; i++) bab[k++] = _ba[i];
-    for (i = 0; i < _bb.length; i++) bab[k++] = _bb[i];
-    return string(babcde);
+    for (uint i = 0; i < _bb.length; i++) bab[k++] = _bb[i];
+    return string(bab);
   }
 
-    function strConcat(string _a, string _b) internal pure returns (string) {
-        return strConcat(_a, _b, "", "", "");
+    function strConcat(
+      string memory _a,
+      string memory _b
+    ) internal
+      pure
+      returns (string memory)
+    {
+      return strConcat(_a, _b, "", "", "");
     }
 
-    function uint2str(uint i) internal pure returns (string) {
-        if (i == 0) return "0";
-        uint j = i;
-        uint len;
-        while (j != 0){
-            len++;
-            j /= 10;
-        }
-        bytes memory bstr = new bytes(len);
-        uint k = len - 1;
-        while (i != 0){
-            bstr[k--] = byte(48 + i % 10);
-            i /= 10;
-        }
-        return string(bstr);
+    function uint2str(
+      uint i
+    ) internal
+      pure
+      returns (string memory)
+    {
+      if (i == 0) return "0";
+      uint j = i;
+      uint len;
+      while (j != 0){
+        len++;
+        j /= 10;
+      }
+      bytes memory bstr = new bytes(len);
+      uint k = len - 1;
+      while (i != 0){
+        bstr[k--] = byte(48 + i % 10);
+        i /= 10;
+      }
+      return string(bstr);
     }
 }
