@@ -120,7 +120,7 @@ describe('WalletService', () => {
           // returns no accounts, and so the accountsAndYield call must return []
           nock.accountsAndYield([])
 
-          walletService.getAccount(true)
+          walletService.getAccount()
           expect(walletService.ready).toBe(false)
         })
       })
