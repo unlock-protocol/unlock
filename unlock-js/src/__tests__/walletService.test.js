@@ -113,33 +113,14 @@ describe('WalletService', () => {
       })
 
       describe('when the node has no unlocked account', () => {
-        it('should create an account and emit the ready event', done => {
-          expect.assertions(2)
+        it('should leave the service in a non-ready state', () => {
+          expect.assertions(1)
 
           // this test checks to make sure we create a new account if the node
           // returns no accounts, and so the accountsAndYield call must return []
           nock.accountsAndYield([])
 
-          walletService.once('ready', () => {
-            expect(walletService.ready).toBe(true)
-            done()
-          })
-
-          walletService.on('account.changed', account => {
-            // ensure we get a valid account hash back
-            expect(account).toMatch(/^0x[a-fA-F0-9]{40}$/)
-          })
-
-          return walletService.getAccount(true)
-        })
-      })
-
-      describe('when the node has no unlocked account and when preventing from creating one', () => {
-        it('should fail and mark the walletService is not ready', async () => {
-          expect.assertions(1)
-          walletService.ready = true
-          nock.accountsAndYield([])
-          await walletService.getAccount(false)
+          walletService.getAccount(true)
           expect(walletService.ready).toBe(false)
         })
       })
