@@ -65,6 +65,10 @@ contract Unlock is
   // We keep track of deployed locks to ensure that callers are all deployed locks.
   mapping (address => LockBalances) public locks;
 
+  /// temporary hardcoded URI for testing lock metadata.
+  // TODO: switch this to a settable storage field
+  string public constant BASE_TOKEN_URI = 'https://locksmith.unlock-protocol.com/api/key/';
+
   // Events
   event NewLock(
     address indexed lockOwner,
