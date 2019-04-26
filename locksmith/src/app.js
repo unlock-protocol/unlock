@@ -43,6 +43,11 @@ app.post(
   signatureValidationMiddleware.generateProcessor(eventConfiguration)
 )
 
+app.put(
+  /^\/events\/\S+$/i,
+  signatureValidationMiddleware.generateProcessor(eventConfiguration)
+)
+
 app.post(
   /^\/users$/i,
   signatureValidationMiddleware.generateProcessor({
