@@ -187,4 +187,12 @@ contract Unlock is
   {
     return 2;
   }
+
+  // function to read the BASE_TOKEN_URI constant
+  function getGlobalBaseURI()
+    view
+    returns (string);
+  {
+    return BASE_TOKEN_URI;
+  }
 }
