@@ -4,6 +4,7 @@ import TicketService from '../services/ticketService'
 import {
   ADD_EVENT,
   LOAD_EVENT,
+  SAVE_EVENT,
   updateEvent,
   ticketError,
 } from '../actions/ticket'
@@ -32,6 +33,11 @@ const ticketMiddleware = config => {
             }
             dispatch(updateEvent(event))
           })
+        }
+        if (action.type == SAVE_EVENT) {
+          ticketService
+            .updateEvent(action.event, action.token)
+            .catch(error => dispatch(ticketError(error)))
         }
         next(action)
       }

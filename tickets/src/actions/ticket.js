@@ -1,5 +1,6 @@
 export const ADD_EVENT = 'ticket/ADD_EVENT'
 export const LOAD_EVENT = 'ticket/LOAD_EVENT'
+export const SAVE_EVENT = 'ticket/SAVE_EVENT'
 export const UPDATE_EVENT = 'ticket/UPDATE_EVENT'
 export const TICKET_ERROR = 'ticket/TICKET_ERROR'
 export const SIGN_ADDRESS = 'ticket/SIGN_ADDRESS'
@@ -19,6 +20,12 @@ export const loadEvent = address => ({
 export const updateEvent = event => ({
   type: UPDATE_EVENT,
   event,
+})
+
+export const saveEvent = (event, token) => ({
+  type: SAVE_EVENT,
+  event,
+  token,
 })
 
 export function ticketError(error) {

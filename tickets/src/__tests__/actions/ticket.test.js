@@ -3,6 +3,8 @@ import {
   addEvent,
   LOAD_EVENT,
   loadEvent,
+  SAVE_EVENT,
+  saveEvent,
   UPDATE_EVENT,
   updateEvent,
   TICKET_ERROR,
@@ -36,7 +38,7 @@ describe('ticket actions', () => {
     expect(loadEvent(address)).toEqual(expectedAction)
   })
 
-  it('should create an action to update a ticketed event', () => {
+  it('should create an action to update a ticketed event in the store', () => {
     expect.assertions(1)
     const event = {}
     const expectedAction = {
@@ -44,6 +46,18 @@ describe('ticket actions', () => {
       event,
     }
     expect(updateEvent(event)).toEqual(expectedAction)
+  })
+
+  it('should create an event to save a ticketed event', () => {
+    expect.assertions(1)
+    const event = {}
+    const token = {}
+    const expectedAction = {
+      type: SAVE_EVENT,
+      event,
+      token,
+    }
+    expect(saveEvent(event, token)).toEqual(expectedAction)
   })
 
   it('should create an action emitting a ticket error', () => {

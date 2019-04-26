@@ -1,5 +1,5 @@
 import ticketMiddleware from '../../middlewares/ticketMiddleware'
-import { ADD_EVENT, LOAD_EVENT } from '../../actions/ticket'
+import { ADD_EVENT, LOAD_EVENT, SAVE_EVENT } from '../../actions/ticket'
 import configure from '../../config'
 
 /**
@@ -76,6 +76,31 @@ describe('Ticketing middleware', () => {
 
       await invoke(action)
       expect(mockTicketService.getEvent).toHaveBeenCalledWith('0x123')
+      expect(next).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('handling SAVE_EVENT', () => {
+    it('should update the new event', async () => {
+      expect.assertions(2)
+      const { next, invoke } = create()
+      const event = {
+        lockAddress: '0x123',
+        name: 'My party',
+        description: '100th anniversary',
+        date: new Date(2063, 11, 23),
+        location: 'London',
+        owner: 'ben',
+        logo: '',
+      }
+      const action = { type: SAVE_EVENT, event, token: null }
+      mockTicketService.updateEvent = jest.fn(() => {
+        return Promise.resolve()
+      })
+
+      await invoke(action)
+
+      expect(mockTicketService.updateEvent).toHaveBeenCalledWith(event, null)
       expect(next).toHaveBeenCalledTimes(1)
     })
   })

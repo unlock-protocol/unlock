@@ -44,6 +44,44 @@ export default class TicketService {
   }
 
   /**
+   * Updates an event in locksmith
+   * @param {*} event
+   * @param {*} token
+   * @returns {Promise<*>}
+   */
+  async updateEvent(
+    { lockAddress, name, description, location, date, owner, logo },
+    token
+  ) {
+    const opts = {}
+    if (token) {
+      opts.headers = this.genAuthorizationHeader(token)
+    }
+    const payload = {
+      message: {
+        event: {
+          lockAddress,
+          name,
+          description,
+          location,
+          date,
+          owner,
+          logo,
+        },
+      },
+    }
+    try {
+      return await axios.put(
+        `${this.host}/events/${lockAddress}`,
+        payload,
+        opts
+      )
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  /**
    * Retrieves new event details from locksmith by its lock address
    * @param {*} lockAddress
    * @returns {Promise<*>}
