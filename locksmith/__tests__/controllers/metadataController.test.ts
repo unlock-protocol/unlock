@@ -11,7 +11,7 @@ describe('Metadata Controller', () => {
         .get('/api/key/anykey_for_now')
         .set('Accept', 'json')
 
-      expect(response.statusCode).toBe(200)
+      expect(response.status).toBe(200)
 
       expect(response.body).toEqual(
         expect.objectContaining({
