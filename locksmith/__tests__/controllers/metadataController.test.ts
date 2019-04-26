@@ -9,7 +9,7 @@ describe('Metadata Controller', () => {
 
       let response = await request(app)
         .get('/api/key/anykey_for_now')
-        .set('Accept', /json/)
+        .set('Accept', 'json')
 
       expect(response.statusCode).toBe(200)
 
