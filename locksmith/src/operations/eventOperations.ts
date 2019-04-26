@@ -2,8 +2,6 @@ import * as Sequelize from 'sequelize'
 import Normalizer from '../utils/normalizer'
 import { EventCreation } from '../types' // eslint-disable-line no-unused-vars
 
-const ethJsUtil = require('ethereumjs-util') // eslint-disable-line no-unused-vars
-
 const models = require('../models')
 
 const { Event } = models
@@ -22,10 +20,10 @@ namespace EventOperations {
     return await Event.update(event, {
       where: {
         lockAddress: {
-          [Op.eq]: ethJsUtil.toChecksumAddress(event.lockAddress),
+          [Op.eq]: Normalizer.ethereumAddress(event.lockAddress),
         },
         owner: {
-          [Op.eq]: ethJsUtil.toChecksumAddress(event.owner),
+          [Op.eq]: Normalizer.ethereumAddress(event.owner),
         },
       },
       raw: true,
