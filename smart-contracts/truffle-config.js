@@ -61,13 +61,13 @@ module.exports = {
       provider: rinkebyProvider,
       network_id: '4', // Network Id for Rinkeby
       gas: 5000000,
-      gasPrice: 35000000000,
+      gasPrice: 5000000000, // 5GWEI
     },
     mainnet: {
       provider: mainnetProvider,
       network_id: 1,
-      gas: 7000000,
-      gasPrice: 35000000000,
+      gas: 6000000,
+      gasPrice: 5000000000, // 5GWEI
     },
   },
   compilers: {
