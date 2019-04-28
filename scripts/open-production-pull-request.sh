@@ -1,24 +1,33 @@
 #!/usr/bin/env bash
 
-echo "Installing github hub"
-cd ..
-wget https://github.com/github/hub/releases/download/v2.11.2/hub-linux-amd64-2.11.2.tgz
-tar -xvf hub-linux-amd64-2.11.2.tgz
-
-
-cd project
-
 # This script gets the git history as by default CircleCI will only get the most recent commit.
 echo "Fetching git history"
 git config --replace-all remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
 git fetch >> /dev/null
+
+STABLE_MASTER=`git rev-list -1 --before={4.days.ago} master`
+LATEST_PRODUCTION=`git rev-parse origin/production`
+STABLE_MASTER_DATE=`git show -s --format=%ct $STABLE_MASTER`
+LATEST_PRODUCTION_DATE=`git show -s --format=%ct $LATEST_PRODUCTION`
+
+if [[ $((STABLE_MASTER_DATE)) < $((LATEST_PRODUCTION_DATE)) ]]
+then
+  echo "Latest production ($LATEST_PRODUCTION: $LATEST_PRODUCTION_DATE) is more recent than stable master ($STABLE_MASTER: $LATEST_PRODUCTION_DATE) : skipping deployment."
+  exit 0
+fi
+
+echo "Installing github hub"
+cd ..
+wget https://github.com/github/hub/releases/download/v2.11.2/hub-linux-amd64-2.11.2.tgz
+tar -xvf hub-linux-amd64-2.11.2.tgz
+cd project
+
 
 echo "Setting up git"
 git config --global user.email "ops@unlock-protocol.com"
 git config --global user.name "Unlock Deployer"
 
 echo "Checking master out 4 days ago into new branch"
-STABLE_MASTER=`git rev-list -1 --before={4.days.ago} master`
 BRANCH="production-$(date +%Y%m%d-%H%M%S)"
 git checkout -b $BRANCH $STABLE_MASTER
 
@@ -57,10 +66,11 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 Feel free to test the dashboard and paywal using a mobile browser.
 "
 
-DOW=$(date +%u)
+DOY=$(date +%j)
 declare -a REVIEWERS
-REVIEWERS=( julien51 cnasc cellog akeem )
+REVIEWERS=( julien51 cnasc cellog akeem benwerd )
+REVIEWER_INDEX=$(($DOY % ${#REVIEWERS[@]}))
 
-GITHUB_TOKEN=$GITHUB_API_TOKEN ./../hub-linux-amd64-2.11.2/bin/hub pull-request -b production -h $BRANCH --message "$MESSAGE" -r ${REVIEWERS[$DOW-1]}
+GITHUB_TOKEN=$GITHUB_API_TOKEN ./../hub-linux-amd64-2.11.2/bin/hub pull-request -b production -h $BRANCH --message "$MESSAGE" -r ${REVIEWERS[$REVIEWER_INDEX]}
 
 git checkout master
