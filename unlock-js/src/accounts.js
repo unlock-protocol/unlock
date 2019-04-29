@@ -21,10 +21,8 @@ export function createAccountAndPasswordEncryptKey(password) {
  * @param {string} password
  * @throws Throws an error if password does not decrypt private key.
  */
-export function getAddressFromPrivateKey(encryptedPrivateKey, password) {
+export function getAccountFromPrivateKey(encryptedPrivateKey, password) {
   const web3 = new Web3()
 
-  const { address } = web3.eth.accounts.decrypt(encryptedPrivateKey, password)
-
-  return address
+  return web3.eth.accounts.decrypt(encryptedPrivateKey, password)
 }

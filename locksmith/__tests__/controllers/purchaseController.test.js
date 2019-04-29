@@ -12,6 +12,16 @@ let privateKey = ethJsUtil.toBuffer(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
 
+let mockPaymentProcessor = {
+  chargeUser: jest.fn(),
+}
+
+jest.mock('../../src/payment/paymentProcessor', () => {
+  return jest.fn().mockImplementation(() => {
+    return mockPaymentProcessor
+  })
+})
+
 function generateTypedData(message) {
   return {
     types: {
@@ -72,12 +82,17 @@ describe('Purchase Controller', () => {
         data: typedData,
       })
       it('responds with a 202', async () => {
-        expect.assertions(1)
+        expect.assertions(2)
         let response = await request(app)
           .post('/purchase')
           .set('Accept', /json/)
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
           .send(typedData)
+
+        expect(mockPaymentProcessor.chargeUser).toBeCalledWith(
+          '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+          { price: 720 }
+        )
         expect(response.statusCode).toBe(202)
       })
     })
@@ -107,7 +122,7 @@ describe('Purchase Controller', () => {
       })
     })
 
-    describe('when the Lock has been authorized for participation in the purchasing program', () => {
+    describe('when the Lock has not been authorized for participation in the purchasing program', () => {
       let message = {
         purchaseRequest: {
           recipient: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
