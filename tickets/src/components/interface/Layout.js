@@ -41,7 +41,7 @@ Layout.defaultProps = {
 const Container = styled.div`
   display: grid;
   height: 100%;
-  grid-template-columns: 1fr minmax(280px, 4fr) 1fr;
+  grid-template-columns: 1fr minmax(500px, 10fr) 1fr;
   ${Media.phone`
     display: flex;
     padding-left: 6px;
