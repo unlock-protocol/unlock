@@ -119,7 +119,7 @@ DatePicker.defaultProps = {
 
 const EventDate = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, minmax(80px, 1fr));
+  grid-template-columns: repeat(3, minmax(60px, 1fr));
   grid-gap: 10px;
 `
 

@@ -99,7 +99,7 @@ export class CreateContent extends Component {
     return (
       <GlobalErrorConsumer>
         <BrowserOnly>
-          <Layout title="Paywall" forContent>
+          <Layout title="Tickets" forContent>
             <Head>
               <title>{pageTitle('Create Ticket')}</title>
             </Head>
@@ -250,6 +250,7 @@ const Input = styled.input`
 
 const Steps = styled.ol`
   margin-top: 30px;
+  padding-right: 20px;
   font-family: 'IBM Plex Sans';
   font-weight: 300;
   font-size: 24px;
@@ -257,17 +258,17 @@ const Steps = styled.ol`
 `
 
 const Step = styled.li`
-  padding-left: 10px;
   margin-bottom: 60px;
 `
 
 export const Fieldset = styled.div`
   padding: 0;
   border: none;
+
   ${Media.nophone`
     display: grid;
     grid-gap: 30px;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
     align-items: top;
   `}
 `

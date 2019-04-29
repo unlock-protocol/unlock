@@ -24,7 +24,7 @@ const event = {
   date: new Date(2063, 10, 23),
   name: 'My Doctor Who party',
   description: `Unbelievably, it's been 100 years since it first came to our screens.
-    
+
 Join us for an hour or two of fine entertainment.`,
   location: 'Totters Lane, London',
 }

@@ -14,6 +14,7 @@ describe('TicketCode', () => {
       <TicketCode
         signedAddress="this-is-a-signed-address"
         publicKey="12345"
+        lockAddress="0x1234"
         config={config}
       />
     )
