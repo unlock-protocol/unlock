@@ -67,7 +67,7 @@ contract Unlock is
 
   // global base token URI
   // Used by locks where the owner has not set a custom base URI.
-  string private globalTokenURI;
+  string private globalBaseTokenURI;
 
   // Events
   event NewLock(
@@ -84,6 +84,7 @@ contract Unlock is
   {
     // We must manually initialize Ownable.sol
     Ownable.initialize(_owner);
+    globalBaseTokenURI = 'https://locksmith.unlock-protocol.com/api/key/';
   }
 
   /**
@@ -192,14 +193,16 @@ contract Unlock is
   function getGlobalBaseTokenURI()
     public
     view
-    returns (string);
+    returns (string memory)
   {
     return globalBaseTokenURI;
   }
 
 
   // function to set the globalTokenURI field.
-  function setGlobalBaseTokenURI(string _URI)
+  function setGlobalBaseTokenURI(
+    string calldata _URI
+  )
     external
     onlyOwner
   {
