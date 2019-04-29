@@ -1,9 +1,10 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "index.js",
   "scripts": {
+    "prepublish": "npm run build",
     "test": "jest",
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "build": "./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",
