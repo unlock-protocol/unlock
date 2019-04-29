@@ -1,3 +1,5 @@
+import { Request } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
+
 export interface UserCreationInput {
   emailAddress: string
   publicKey: string
@@ -31,4 +33,8 @@ export interface ItemizedKeyPrice {
   gasFee: number
   creditCardProcessing: number
   unlockServiceFee: number
+}
+
+export interface SignedRequest extends Request {
+  owner: string
 }
