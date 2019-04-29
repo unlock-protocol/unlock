@@ -28,6 +28,12 @@ let eventConfiguration = {
   signee: 'owner',
 }
 
+let eventModificationConfiguration = {
+  name: 'eventModification',
+  required: ['lockAddress', 'owner'],
+  signee: 'owner',
+}
+
 app.use(cors())
 app.use(bodyParser.json())
 app.put(
@@ -42,6 +48,13 @@ app.post(
 app.post(
   /^\/events$/i,
   signatureValidationMiddleware.generateProcessor(eventConfiguration)
+)
+
+app.post(
+  /^\/events\/\S+\/links$/i,
+  signatureValidationMiddleware.generateProcessor(
+    eventModificationConfiguration
+  )
 )
 
 app.put(
