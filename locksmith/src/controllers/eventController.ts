@@ -62,7 +62,7 @@ namespace EventController {
     }
 
     try {
-      await eventOperation.addLink(lockAddress, eventLinks)
+      await eventOperation.addLinks(lockAddress, eventLinks)
       return res.sendStatus(202)
     } catch (e) {
       return res.sendStatus(409)

@@ -40,7 +40,7 @@ namespace EventOperations {
     })
   }
 
-  export const addLink = async (
+  export const addLinks = async (
     lockAddress: string,
     eventLinks: any
   ): Promise<any> => {
