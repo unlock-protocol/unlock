@@ -65,6 +65,10 @@ contract Unlock is
   // We keep track of deployed locks to ensure that callers are all deployed locks.
   mapping (address => LockBalances) public locks;
 
+  // global base token URI
+  // Used by locks where the owner has not set a custom base URI.
+  string private globalTokenURI;
+
   // Events
   event NewLock(
     address indexed lockOwner,
@@ -182,5 +186,23 @@ contract Unlock is
     returns (uint8)
   {
     return 2;
+  }
+
+  // function to read the globalTokenURI field.
+  function getGlobalBaseTokenURI()
+    public
+    view
+    returns (string);
+  {
+    return globalBaseTokenURI;
+  }
+
+
+  // function to set the globalTokenURI field.
+  function setGlobalBaseTokenURI(string _URI)
+    external
+    onlyOwner
+  {
+    globalBaseTokenURI = _URI;
   }
 }
