@@ -58,13 +58,21 @@ export class EventContent extends Component {
 
     if (!lock.address || !event.name) return null // Wait for the lock and event to load
 
-    const { name, description, location, date } = event
+    const { name, description, location, date, links, image } = event
     let dateString =
       MONTH_NAMES[date.getMonth()] +
       ' ' +
       date.getDate() +
       ', ' +
       date.getFullYear()
+
+    const externalLinks = (links || []).map(({ href, title }) => {
+      return (
+        <li key={href}>
+          <a href={href}>{title}</a>
+        </li>
+      )
+    })
 
     return (
       <GlobalErrorConsumer>
@@ -98,8 +106,14 @@ export class EventContent extends Component {
             <Row>
               <DetailsField>
                 <DisplayDate>{dateString}</DisplayDate>
-                <Description>{description}</Description>
+                <Description>
+                  {description.split('\n\n').map(line => {
+                    return <p key={line}>{line}</p>
+                  })}
+                </Description>
+                {image && <Image src={image} />}
                 <Location>{location}</Location>
+                <Links>{externalLinks}</Links>
               </DetailsField>
               <DetailsField>
                 {keyStatus === KeyStatus.VALID && (
@@ -151,8 +165,7 @@ export const mapStateToProps = (
   if (!account) {
     return {}
   }
-
-  const event = tickets.event
+  let event = tickets.event
 
   const { lockAddress } = lockRoute(router.location.pathname)
 
@@ -186,6 +199,25 @@ export const mapStateToProps = (
       description,
       location,
     }
+    // TEMPORARY: HARD CODE VALUES FOR NFT EVENT
+    if (lockAddress === '0x5865Ff2CBd045Ef1cfE19739df19E83B32b783b4') {
+      processedEvent.name = 'NFT Dev Meetup - NYC Blockchain Week 2019'
+      processedEvent.description = `The NFT Dev Meetup brought to you by Dapper Labs, OpenSea, SuperRare, QuantStamp and Unlock: please join us for an evening of lessons, insights and fun around non fungible tokens!
+
+        If you need any help (or Eth) to purchase your ticket, please get in touch with us on the Telegram group below.`
+      processedEvent.image =
+        'https://s3.amazonaws.com/assets.unlock-protocol.com/NFTEventLogos.png'
+      processedEvent.links = [
+        {
+          title: '💬 Telegram Group',
+          href: 'https://t.me/joinchat/GzMTuRZfLMHZ1n2EMmF0UQ',
+        },
+        {
+          title: 'ℹ️ Meetup Page',
+          href: 'TK',
+        },
+      ]
+    }
   }
 
   let transaction = null
@@ -216,7 +248,7 @@ export default withConfig(
 )
 
 const Row = styled.section`
-  padding: 0;
+  padding: 0px 20px;
   border: none;
 
   ${Media.nophone`
@@ -225,6 +257,22 @@ const Row = styled.section`
     grid-template-columns: repeat(2, minmax(250px, 1fr));
     align-items: top;
   `}
+`
+
+const Image = styled.img`
+  max-width: 100%;
+`
+
+const Links = styled.ul`
+  padding: 0px;
+
+  li {
+    display: inline-block;
+  }
+  li + li:before {
+    content: ' - ';
+    padding: 0 5px;
+  }
 `
 
 const Title = styled.h1`
@@ -270,7 +318,7 @@ const DisplayDate = styled.h2`
   margin-bottom: 2px;
 `
 
-const Description = styled.p`
+const Description = styled.div`
   font-size: 20px;
   font-family: 'IBM Plex Serif', serif;
 `
