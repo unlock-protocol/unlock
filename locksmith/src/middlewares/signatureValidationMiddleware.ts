@@ -71,7 +71,7 @@ namespace SignatureValidationMiddleware {
 
   export const generateProcessor = (
     configuration: SignatureValidationConfiguration
-  ): Function => {
+  ): any => {
     return (req: any, res: Response, next: any) => {
       var signature = extractToken(req)
 
