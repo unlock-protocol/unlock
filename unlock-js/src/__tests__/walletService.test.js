@@ -377,6 +377,26 @@ describe('WalletService', () => {
         })
       })
     })
+
+    describe('signDataPersonal', () => {
+      it('dispatches the request to personally sign the data to the corresponding web3 method', done => {
+        expect.assertions(1)
+        let data = 'data to be signed'
+        let account = '0xd4bb4b501ac12f35db35d60c845c8625b5f28fd1'
+
+        walletService.web3.eth.personal.sign = jest
+          .fn()
+          .mockReturnValueOnce('a signature')
+
+        walletService.signDataPersonal(account, data, () => {
+          expect(walletService.web3.eth.personal.sign).toBeCalledWith(
+            '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1',
+            account
+          )
+          done()
+        })
+      })
+    })
   })
 
   describe('versions', () => {
