@@ -75,6 +75,10 @@ contract Unlock is
     address indexed newLockAddress
   );
 
+  event UpdateTokenURI(
+    string tokenURI
+  );
+
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
   function initialize(
     address _owner
@@ -84,7 +88,6 @@ contract Unlock is
   {
     // We must manually initialize Ownable.sol
     Ownable.initialize(_owner);
-    globalBaseTokenURI = 'https://locksmith.unlock-protocol.com/api/key/';
   }
 
   /**
@@ -207,5 +210,6 @@ contract Unlock is
     onlyOwner
   {
     globalBaseTokenURI = _URI;
+    emit UpdateTokenURI(globalBaseTokenURI);
   }
 }
