@@ -6,6 +6,7 @@ import { Event } from './event'
 import { Lock } from './lock'
 import { Transaction } from './transaction'
 import { AuthorizedLock } from './authorizedLock'
+import { EventLink } from './eventLink'
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('../../config/config')[env]
@@ -20,6 +21,7 @@ sequelize.addModels([
   Block,
   Transaction,
   AuthorizedLock,
+  EventLink,
 ])
 
 User.removeAttribute('id')
@@ -34,3 +36,4 @@ export * from './event'
 export * from './lock'
 export * from './transaction'
 export * from './authorizedLock'
+export * from './eventLink'

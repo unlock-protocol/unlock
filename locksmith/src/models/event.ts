@@ -1,4 +1,5 @@
-import { Table, Model, Column, DataType } from 'sequelize-typescript'
+import { Table, Model, Column, DataType, HasMany } from 'sequelize-typescript'
+import { EventLink } from './eventLink' // eslint-disable-line import/no-cycle
 @Table({ tableName: 'Events', timestamps: true })
 // eslint-disable-next-line import/prefer-default-export
 export class Event extends Model<Event> {
@@ -22,4 +23,7 @@ export class Event extends Model<Event> {
 
   @Column
   owner!: string
+
+  @HasMany(() => EventLink)
+  eventLinks!: EventLink[]
 }
