@@ -34,7 +34,7 @@ contract UnlockUtils {
     pure
     returns(string memory)
   {
-    return strConcat(_a, _b, "", "", "");
+    return strConcat(_a, _b);
   }
 
   function uint2str(
