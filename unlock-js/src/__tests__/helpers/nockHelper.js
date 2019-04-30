@@ -109,8 +109,13 @@ export class NockHelper {
   }
 
   // eth_getTransactionReceipt
-  ethGetTransactionReceipt(hash, result) {
-    return this._jsonRpcRequest('eth_getTransactionReceipt', [hash], result)
+  ethGetTransactionReceipt(hash, result, error) {
+    return this._jsonRpcRequest(
+      'eth_getTransactionReceipt',
+      [hash],
+      result,
+      error
+    )
   }
 
   // eth_call
@@ -138,8 +143,8 @@ export class NockHelper {
     )
   }
 
-  // eth_getGasPrice
-  ethGetGasPriceAndYield(price) {
+  // eth_gasPrice
+  ethGasPriceAndYield(price) {
     return this._jsonRpcRequest('eth_gasPrice', [], price)
   }
 

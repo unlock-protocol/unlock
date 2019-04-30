@@ -169,7 +169,7 @@ describe('WalletService', () => {
       it('should handle cases where the transaction is sent via a provider', async () => {
         expect.assertions(0)
 
-        nock.ethGetGasPriceAndYield('0x123')
+        nock.ethGasPriceAndYield('0x123')
         nock.ethSendTransactionAndYield(
           { to, from, data, value: '0x0', gas },
           '0x123',
@@ -202,7 +202,7 @@ describe('WalletService', () => {
 
       describe('success', () => {
         beforeEach(() => {
-          nock.ethGetGasPriceAndYield('0x123')
+          nock.ethGasPriceAndYield('0x123')
           nock.ethSendTransactionAndYield(
             { to, from, data, value: '0x0', gas },
             '0x123',
@@ -271,7 +271,7 @@ describe('WalletService', () => {
       describe('failure', () => {
         const error = new Error('oops')
         beforeEach(() => {
-          nock.ethGetGasPriceAndYield('0x123')
+          nock.ethGasPriceAndYield('0x123')
           nock.ethSendTransactionAndYield(
             { to, from, data, value: '0x0', gas },
             '0x123',
