@@ -3,7 +3,7 @@
 import { UPDATE_KEY, ADD_KEY } from '../actions/key'
 import { inIframe } from '../config'
 import { lockRoute } from '../utils/routes'
-import { setAccount } from '../actions/accounts'
+import { setAccount, SET_ACCOUNT } from '../actions/accounts'
 import localStorageAvailable from '../utils/localStorage'
 
 // store is unused in this middleware, it is only for listening for actions
@@ -19,16 +19,35 @@ const interWindowCommunicationMiddleware = window => ({
       next(action)
 
       const { router, account } = getState()
+      const accountAddress = account && account.address
       // TODO: remove the checking for account in
       // the URL hash as soon as the paywall stops sending it
+      if (
+        action.type === SET_ACCOUNT &&
+        action.account &&
+        action.account.fromMainWindow
+      ) {
+        accountChecked = false
+      }
       if (isInIframe && !accountChecked) {
         accountChecked = true
-        // if we are in the paywall on an iframe, account is not defined
-        // for coinbase wallet or trust wallet, and probably others.
-        // this checks the hash for a valid account and if found,
-        // sets our account to this account. This triggers retrieval
-        // of keys for that account, allowing the paywall to function
-        if (!account) {
+        if (action.account && action.account.fromMainWindow) {
+          // we received an update of account from the main window, let's update localStorage
+          if (
+            action.account.address !== accountAddress &&
+            localStorageAvailable(window)
+          ) {
+            window.localStorage.setItem(
+              '__unlock__account__',
+              action.account.address
+            )
+          }
+          // if we are in the paywall on an iframe, account is not defined
+          // for coinbase wallet or trust wallet, and probably others.
+          // this checks the hash for a valid account and if found,
+          // sets our account to this account. This triggers retrieval
+          // of keys for that account, allowing the paywall to function
+        } else if (!account) {
           const { account: address } = lockRoute(
             // we need the hash in order to retrieve the account from the iframe URL
             router.location.pathname + router.location.hash
