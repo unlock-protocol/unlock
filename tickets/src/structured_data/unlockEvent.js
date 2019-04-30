@@ -1,0 +1,47 @@
+export default class UnlockEvent {
+  static build(input) {
+    let domain = [
+      { name: 'name', type: 'string' },
+      { name: 'version', type: 'string' },
+      { name: 'chainId', type: 'uint256' },
+      { name: 'verifyingContract', type: 'address' },
+      { name: 'salt', type: 'bytes32' },
+    ]
+
+    let event = [
+      { name: 'lockAddress', type: 'address' },
+      { name: 'owner', type: 'address' },
+      { name: 'name', type: 'string' },
+      { name: 'description', type: 'string' },
+      { name: 'location', type: 'string' },
+      { name: 'date', type: 'uint64' },
+      { name: 'logo', type: 'string' },
+    ]
+
+    let domainData = {
+      name: 'Unlock',
+      version: '1',
+    }
+
+    let message = {
+      event: {
+        lockAddress: input.lockAddress,
+        name: input.name,
+        description: input.description,
+        location: input.location,
+        date: input.date,
+        logo: input.logo,
+      },
+    }
+
+    return {
+      types: {
+        EIP712Domain: domain,
+        Event: event,
+      },
+      domain: domainData,
+      primaryType: 'Event',
+      message: message,
+    }
+  }
+}
