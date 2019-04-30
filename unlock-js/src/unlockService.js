@@ -1,9 +1,12 @@
 import EventEmitter from 'events'
-import { Contract } from 'ethers'
+import { Contract, errors } from 'ethers'
 
 import v0 from './v0'
 import v01 from './v01'
 import v02 from './v02'
+
+// mute warnings from overloaded smart contract methods (https://github.com/ethers-io/ethers.js/issues/499)
+errors.setLogLevel('error')
 
 export const Errors = {
   MISSING_WEB3: 'MISSING_WEB3',
@@ -255,7 +258,7 @@ export default class UnlockService extends EventEmitter {
     if (this.lockContracts[lockAddress]) {
       return this.lockContracts[lockAddress]
     }
-    const version = await this.lockContractAbiVersion(lockAddress)
+    const version = await this.ethers_lockContractAbiVersion(lockAddress)
     this.lockContracts[lockAddress] = this.getContract(
       lockAddress,
       version.PublicLock,

@@ -1,10 +1,12 @@
 /* eslint no-console: 0 */
 
 import Web3 from 'web3'
+import { utils } from 'ethers'
 
-import UnlockService from '../unlockService'
+import UnlockService, { Errors } from '../unlockService'
 import NockHelper from './helpers/nockHelper'
 import v0 from '../v0'
+import v01 from '../v01'
 import v02 from '../v02'
 
 const endpoint = 'http://127.0.0.1:8545'
@@ -24,6 +26,74 @@ describe('UnlockService', () => {
     unlockService.web3 = new Web3(provider)
   })
 
+  describe('errors', () => {
+    beforeEach(() => {
+      unlockService.web3 = null
+    })
+
+    it('unlockContractAbiVersion throws if web3 is not set', async () => {
+      expect.assertions(1)
+
+      try {
+        await unlockService.unlockContractAbiVersion()
+      } catch (e) {
+        expect(e.message).toBe(Errors.MISSING_WEB3)
+      }
+    })
+
+    it('lockContractAbiVersion throws if web3 is not set', async () => {
+      expect.assertions(1)
+
+      try {
+        await unlockService.lockContractAbiVersion(1)
+      } catch (e) {
+        expect(e.message).toBe(Errors.MISSING_WEB3)
+      }
+    })
+  })
+
+  describe('_getPublicLockVersionFromContract', () => {
+    it('calls publicLockVersion', async () => {
+      expect.assertions(1)
+      const metadata = new utils.Interface(v02.PublicLock.abi)
+      const coder = utils.defaultAbiCoder
+
+      nock.ethCallAndYield(
+        metadata.functions['publicLockVersion()'].encode([]),
+        unlockAddress,
+        coder.encode(['uint256'], [utils.bigNumberify(1)])
+      )
+
+      const result = await unlockService._getPublicLockVersionFromContract(
+        unlockAddress
+      )
+
+      // this test fails if the call does not occur
+      await nock.resolveWhenAllNocksUsed()
+      expect(result).toBe(1)
+    })
+  })
+
+  describe('_getVersionFromContract', () => {
+    it('calls publicLockVersion', async () => {
+      expect.assertions(1)
+      const metadata = new utils.Interface(v02.Unlock.abi)
+      const coder = utils.defaultAbiCoder
+
+      nock.ethCallAndYield(
+        metadata.functions['unlockVersion()'].encode([]),
+        unlockAddress,
+        coder.encode(['uint256'], [utils.bigNumberify(1)])
+      )
+
+      const result = await unlockService._getVersionFromContract(unlockAddress)
+
+      // this test fails if the call does not occur
+      await nock.resolveWhenAllNocksUsed()
+      expect(result).toBe(1)
+    })
+  })
+
   describe('unlockContractAbiVersion', () => {
     it('should return the v2 implementation when the opCode matches', async () => {
       expect.assertions(3)
@@ -37,6 +107,20 @@ describe('UnlockService', () => {
       )
       expect(version).toEqual(v02)
       expect(unlockService.versionForAddress[unlockAddress]).toEqual(2)
+    })
+
+    it('should return v01 if version is 1', async () => {
+      expect.assertions(3)
+      unlockService._getVersionFromContract = jest.fn(() => {
+        return Promise.resolve(1)
+      })
+      const version = await unlockService.unlockContractAbiVersion()
+
+      expect(unlockService._getVersionFromContract).toHaveBeenCalledWith(
+        unlockAddress
+      )
+      expect(version).toEqual(v01)
+      expect(unlockService.versionForAddress[unlockAddress]).toEqual(1)
     })
 
     it('should return v0 by default', async () => {
