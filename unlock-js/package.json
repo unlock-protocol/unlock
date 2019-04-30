@@ -4,7 +4,6 @@
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "index.js",
   "scripts": {
-    "prepublishOnly": "npm run build",
     "test": "jest",
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "build": "./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",
