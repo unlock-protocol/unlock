@@ -26,12 +26,12 @@ describe('UnlockService', () => {
   describe('ethers_unlockContractAbiVersion', () => {
     it('should return the v2 implementation when the opCode matches', async () => {
       expect.assertions(3)
-      unlockService.ethers_getVersionFromContract = jest.fn(() => {
+      unlockService._ethers_getVersionFromContract = jest.fn(() => {
         return Promise.resolve(2)
       })
       const version = await unlockService.ethers_unlockContractAbiVersion()
 
-      expect(unlockService.ethers_getVersionFromContract).toHaveBeenCalledWith(
+      expect(unlockService._ethers_getVersionFromContract).toHaveBeenCalledWith(
         unlockAddress
       )
       expect(version).toEqual(v02)
@@ -40,13 +40,13 @@ describe('UnlockService', () => {
 
     it('should return v0 by default', async () => {
       expect.assertions(3)
-      unlockService.ethers_getVersionFromContract = jest.fn(() => {
+      unlockService._ethers_getVersionFromContract = jest.fn(() => {
         return Promise.resolve(0)
       })
 
       const version = await unlockService.ethers_unlockContractAbiVersion()
 
-      expect(unlockService.ethers_getVersionFromContract).toHaveBeenCalledWith(
+      expect(unlockService._ethers_getVersionFromContract).toHaveBeenCalledWith(
         unlockAddress
       )
       expect(version).toEqual(v0)
@@ -55,10 +55,12 @@ describe('UnlockService', () => {
 
     it('should used the memoized the result', async () => {
       expect.assertions(2)
-      unlockService.ethers_getVersionFromContract = jest.fn(() => {})
+      unlockService._ethers_getVersionFromContract = jest.fn(() => {})
       unlockService.ethers_versionForAddress[unlockAddress] = 2
       const version = await unlockService.ethers_unlockContractAbiVersion()
-      expect(unlockService.ethers_getVersionFromContract).not.toHaveBeenCalled()
+      expect(
+        unlockService._ethers_getVersionFromContract
+      ).not.toHaveBeenCalled()
       expect(version).toEqual(v02)
     })
   })
@@ -66,7 +68,7 @@ describe('UnlockService', () => {
   describe('lockContractAbiVersion', () => {
     it('should return UnlockV0 when the version matches', async () => {
       expect.assertions(3)
-      unlockService.ethers_getPublicLockVersionFromContract = jest.fn(() => {
+      unlockService._ethers_getPublicLockVersionFromContract = jest.fn(() => {
         return Promise.resolve(0)
       })
 
@@ -74,7 +76,7 @@ describe('UnlockService', () => {
       const version = await unlockService.ethers_lockContractAbiVersion(address)
 
       expect(
-        unlockService.ethers_getPublicLockVersionFromContract
+        unlockService._ethers_getPublicLockVersionFromContract
       ).toHaveBeenCalledWith(address)
       expect(version).toEqual(v0)
       expect(unlockService.ethers_versionForAddress[address]).toEqual(0)
@@ -82,7 +84,7 @@ describe('UnlockService', () => {
 
     it('should return UnlockV01 when the version matches', async () => {
       expect.assertions(3)
-      unlockService.ethers_getPublicLockVersionFromContract = jest.fn(() => {
+      unlockService._ethers_getPublicLockVersionFromContract = jest.fn(() => {
         return Promise.resolve(1) // See code for explaination
       })
 
@@ -90,7 +92,7 @@ describe('UnlockService', () => {
       const version = await unlockService.ethers_lockContractAbiVersion(address)
 
       expect(
-        unlockService.ethers_getPublicLockVersionFromContract
+        unlockService._ethers_getPublicLockVersionFromContract
       ).toHaveBeenCalledWith(address)
       expect(version).toEqual(v02)
       expect(unlockService.ethers_versionForAddress[address]).toEqual(1)
@@ -98,14 +100,14 @@ describe('UnlockService', () => {
 
     it('should memoize the result', async () => {
       expect.assertions(3)
-      unlockService.ethers_getPublicLockVersionFromContract = jest.fn(() => {})
+      unlockService._ethers_getPublicLockVersionFromContract = jest.fn(() => {})
 
       const address = '0xabc'
       unlockService.ethers_versionForAddress[address] = 1
       const version = await unlockService.ethers_lockContractAbiVersion(address)
 
       expect(
-        unlockService.ethers_getPublicLockVersionFromContract
+        unlockService._ethers_getPublicLockVersionFromContract
       ).not.toHaveBeenCalled()
       expect(version).toEqual(v02)
       expect(unlockService.ethers_versionForAddress[address]).toEqual(1)

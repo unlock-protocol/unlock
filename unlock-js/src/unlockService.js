@@ -161,7 +161,7 @@ export default class UnlockService extends EventEmitter {
     let version = this.ethers_versionForAddress[this.unlockContractAddress]
     if (version === undefined) {
       // This was not memo-ized
-      version = await this.ethers_getVersionFromContract(
+      version = await this._ethers_getVersionFromContract(
         this.unlockContractAddress
       )
       this.ethers_versionForAddress[this.unlockContractAddress] = version
@@ -191,7 +191,7 @@ export default class UnlockService extends EventEmitter {
     let version = this.ethers_versionForAddress[address.toLowerCase()]
     if (version === undefined) {
       // This was not memo-ized
-      version = await this.ethers_getPublicLockVersionFromContract(address)
+      version = await this._ethers_getPublicLockVersionFromContract(address)
       this.ethers_versionForAddress[address.toLowerCase()] = version
     }
 
@@ -205,7 +205,7 @@ export default class UnlockService extends EventEmitter {
     return v0
   }
 
-  async ethers_getPublicLockVersionFromContract(address) {
+  async _ethers_getPublicLockVersionFromContract(address) {
     const contract = new Contract(
       address,
       ['function publicLockVersion() view returns (uint8)'],
@@ -225,7 +225,7 @@ export default class UnlockService extends EventEmitter {
    * Private method, which given an address will query the contract and return the corresponding method
    * @param {*} address
    */
-  async ethers_getVersionFromContract(address) {
+  async _ethers_getVersionFromContract(address) {
     const contract = new Contract(
       address,
       ['function unlockVersion() view returns (uint8)'],
