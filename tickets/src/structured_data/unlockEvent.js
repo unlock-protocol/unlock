@@ -26,6 +26,7 @@ export default class UnlockEvent {
     let message = {
       event: {
         lockAddress: input.lockAddress,
+        owner: input.owner,
         name: input.name,
         description: input.description,
         location: input.location,
