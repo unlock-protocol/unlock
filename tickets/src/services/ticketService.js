@@ -1,4 +1,5 @@
 import axios from 'axios'
+import UnlockEvent from '../structured_data/unlockEvent'
 
 export default class TicketService {
   constructor(host) {
@@ -23,19 +24,16 @@ export default class TicketService {
     if (token) {
       opts.headers = this.genAuthorizationHeader(token)
     }
-    const payload = {
-      message: {
-        event: {
-          lockAddress,
-          name,
-          description,
-          location,
-          date,
-          owner,
-          logo,
-        },
-      },
-    }
+    const payload = UnlockEvent.build({
+      lockAddress,
+      name,
+      description,
+      location,
+      date,
+      owner,
+      logo,
+    })
+
     try {
       return await axios.post(`${this.host}/events/`, payload, opts)
     } catch (error) {

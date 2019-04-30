@@ -21,6 +21,7 @@ import {
 import { newTransaction } from '../actions/transaction'
 import { transactionTypeMapping } from '../utils/types'
 import UnlockEventRSVP from '../structured_data/unlockEventRSVP'
+import { SIGN_DATA, signatureError, signedData } from '../actions/signature'
 
 const { WalletService } = UnlockJs
 
@@ -172,6 +173,21 @@ const walletMiddleware = config => {
             }
           )
         }
+
+        if (action.type === SIGN_DATA) {
+          const account = getState().account
+          walletService.signData(
+            account.address,
+            action.data,
+            (error, signature) => {
+              if (error) {
+                dispatch(signatureError(error))
+              }
+              dispatch(signedData(action.data, signature))
+            }
+          )
+        }
+
         next(action)
       }
     }
