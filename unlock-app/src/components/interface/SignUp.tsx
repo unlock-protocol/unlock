@@ -6,6 +6,7 @@ import { signupEmail } from '../../actions/signUp'
 
 interface Props {
   signupEmail: (email: string) => any
+  toggleSignup: () => void
 }
 
 interface State {
@@ -36,6 +37,12 @@ export class SignUp extends React.Component<Props, State> {
     this.setState({
       emailAddress: event.target.value, // eslint-disable-line react/no-unused-state
     })
+  }
+
+  handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    const { toggleSignup } = this.props
+    e.preventDefault()
+    toggleSignup()
   }
 
   render() {
@@ -69,6 +76,10 @@ export class SignUp extends React.Component<Props, State> {
               onChange={this.handleInputChange}
             />
             <SubmitButton type="submit" value="Sign Up" />
+            <Description>
+              Already have an account?{' '}
+              <LinkButton onClick={this.handleClick}>Log in here.</LinkButton>
+            </Description>
           </Form>
         )}
         {submitted && (
@@ -147,4 +158,8 @@ const Confirmation = styled.div`
   & > div:first-child {
     font-weight: bold;
   }
+`
+
+const LinkButton = styled.a`
+  cursor: pointer;
 `
