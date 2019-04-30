@@ -1,3 +1,5 @@
+import { ACCOUNT_REGEXP } from '../constants'
+
 // tests whether a field's value was not entered by the user
 export const isNotEmpty = val => val || val === 0
 
@@ -11,4 +13,8 @@ export const isPositiveInteger = val => {
 export const isPositiveNumber = val => {
   const parsedFloat = parseFloat(val)
   return !isNaN(parsedFloat) && +parsedFloat >= 0
+}
+
+export const isAccount = val => {
+  return val.match(ACCOUNT_REGEXP)
 }

@@ -11,6 +11,7 @@ describe('Form field validators', () => {
     expect(validators.isNotEmpty(null)).toBeFalsy()
     expect(validators.isNotEmpty(false)).toBeFalsy()
   })
+
   it('isPositiveInteger', () => {
     expect.assertions(8)
     expect(validators.isPositiveInteger('1')).toBeTruthy()
@@ -27,6 +28,7 @@ describe('Form field validators', () => {
     expect(validators.isPositiveInteger(null)).toBeFalsy()
     expect(validators.isPositiveInteger(false)).toBeFalsy()
   })
+
   it('isPositiveNumber', () => {
     expect.assertions(7)
     expect(validators.isPositiveNumber('1.3')).toBeTruthy()
@@ -37,5 +39,22 @@ describe('Form field validators', () => {
     expect(validators.isPositiveNumber('av')).toBeFalsy()
     expect(validators.isPositiveNumber(null)).toBeFalsy()
     expect(validators.isPositiveNumber(false)).toBeFalsy()
+  })
+
+  it('isAccount', () => {
+    expect.assertions(4)
+
+    expect(
+      validators.isAccount('0x12345678901234567890abcdef0123ABCDEF0123')
+    ).toBeTruthy()
+    expect(
+      validators.isAccount('00x12345678901234567890abcdef0123ABCDEF0123')
+    ).toBeFalsy()
+    expect(
+      validators.isAccount('0x12345678901234567890abcdef0123ABCDEF01234')
+    ).toBeFalsy()
+    expect(
+      validators.isAccount('0X12345678901234567890abcdef0123ABCDEF0123')
+    ).toBeFalsy()
   })
 })

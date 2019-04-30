@@ -41,12 +41,12 @@ const transactionRegex = '0x[a-fA-F0-9]{64}'
 /**
  * Matches any valid ethereum account address
  */
-export const ACCOUNT_REGEXP = new RegExp(accountRegex + '$')
+export const ACCOUNT_REGEXP = new RegExp('^' + accountRegex + '$')
 
 /**
  * Matches any valid ethereum transaction hash
  */
-export const TRANSACTION_REGEXP = new RegExp(transactionRegex + '$')
+export const TRANSACTION_REGEXP = new RegExp('^' + transactionRegex + '$')
 
 // private helpers for the LOCK_PATH_NAME_REGEXP
 const prefix = '[a-z0-9]+'
