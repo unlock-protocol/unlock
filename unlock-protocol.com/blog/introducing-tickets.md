@@ -29,6 +29,8 @@ like [Metamask](https://metamask.io) to purchase a ticket at a nominal price.
 Every Unlock transaction - whether for content, an event, software licenses, or anything else - works by selling a _key_ 
 to a _lock_ using Ethereum. Tickets are no different.
 
+![Unlock ticket creation screen](/static/images/blog/introducing-tickets/create-an-event.png)
+
 Once you've created a lock, you'll have access to a number of ways to use it: different applications that sit on top of
 the Unlock Protocol. The ticketed event application allows you to save a date, title, description, and location for the
 event. These aren't stored on the blockchain itself: instead, they create a database record that references the lock's 
