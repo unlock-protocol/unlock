@@ -131,7 +131,7 @@ Paywall.propTypes = {
   config: UnlockPropTypes.configuration.isRequired,
   redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   transaction: UnlockPropTypes.transaction,
-  account: PropTypes.string,
+  account: UnlockPropTypes.account,
   setAccount: PropTypes.func.isRequired,
   keyStatus: PropTypes.string.isRequired,
   lockKey: UnlockPropTypes.key.isRequired,
