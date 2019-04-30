@@ -4,13 +4,22 @@ var HDWalletProvider = require('truffle-hdwallet-provider')
 const { WalletService, Web3Service } = UnlockJs
 
 export default class Dispatcher {
-  constructor(unlockAddress, purchasingAddress, credentials, host) {
+  purchasingAddress: string
+  unlockAddress: string
+  provider: any
+
+  constructor(
+    unlockAddress: string,
+    purchasingAddress: string,
+    credentials: any,
+    host: string
+  ) {
     this.unlockAddress = unlockAddress
     this.purchasingAddress = purchasingAddress
     this.provider = new HDWalletProvider(credentials, host)
   }
 
-  retrieveLock(lockAddress) {
+  retrieveLock(lockAddress: string) {
     try {
       let w3s = new Web3Service({
         readOnlyProvider: this.provider,
@@ -23,7 +32,7 @@ export default class Dispatcher {
     }
   }
 
-  async purchase(lockAddress, recipient) {
+  async purchase(lockAddress: string, recipient: string) {
     let walletService = new WalletService({
       unlockAddress: this.unlockAddress,
     })
