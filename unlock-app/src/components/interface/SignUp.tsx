@@ -6,6 +6,7 @@ import { signupEmail } from '../../actions/signUp'
 
 interface Props {
   signupEmail: (email: string) => any
+  toggleSignup: () => void
 }
 
 interface State {
@@ -40,6 +41,7 @@ export class SignUp extends React.Component<Props, State> {
 
   render() {
     const { submitted } = this.state
+    const { toggleSignup } = this.props
     return (
       <div>
         <Heading>Pay For Content Seamlessly</Heading>
@@ -69,6 +71,10 @@ export class SignUp extends React.Component<Props, State> {
               onChange={this.handleInputChange}
             />
             <SubmitButton type="submit" value="Sign Up" />
+            <Description>
+              Already have an account?{' '}
+              <LinkButton onClick={toggleSignup}>Log in here.</LinkButton>
+            </Description>
           </Form>
         )}
         {submitted && (
@@ -147,4 +153,8 @@ const Confirmation = styled.div`
   & > div:first-child {
     font-weight: bold;
   }
+`
+
+const LinkButton = styled.a`
+  cursor: pointer;
 `

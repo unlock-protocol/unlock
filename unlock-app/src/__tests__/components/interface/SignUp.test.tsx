@@ -5,6 +5,7 @@ import {
   mapDispatchToProps,
 } from '../../../components/interface/SignUp'
 import { SIGNUP_EMAIL } from '../../../actions/signUp'
+import doNothing from '../../../utils/doNothing'
 
 let wrapper: rtl.RenderResult<typeof rtl.queries>
 let signupEmail: (email: string) => any
@@ -27,7 +28,9 @@ describe('Sign Up Page', () => {
 
   beforeEach(() => {
     signupEmail = jest.fn((email: string) => email)
-    wrapper = rtl.render(<SignUp signupEmail={signupEmail} />)
+    wrapper = rtl.render(
+      <SignUp signupEmail={signupEmail} toggleSignup={doNothing} />
+    )
   })
   it('should update the input field on change', () => {
     expect.assertions(1)
