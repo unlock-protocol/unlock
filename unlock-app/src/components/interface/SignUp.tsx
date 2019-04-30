@@ -39,9 +39,14 @@ export class SignUp extends React.Component<Props, State> {
     })
   }
 
+  handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    const { toggleSignup } = this.props
+    e.preventDefault()
+    toggleSignup()
+  }
+
   render() {
     const { submitted } = this.state
-    const { toggleSignup } = this.props
     return (
       <div>
         <Heading>Pay For Content Seamlessly</Heading>
@@ -73,7 +78,7 @@ export class SignUp extends React.Component<Props, State> {
             <SubmitButton type="submit" value="Sign Up" />
             <Description>
               Already have an account?{' '}
-              <LinkButton onClick={toggleSignup}>Log in here.</LinkButton>
+              <LinkButton onClick={this.handleClick}>Log in here.</LinkButton>
             </Description>
           </Form>
         )}

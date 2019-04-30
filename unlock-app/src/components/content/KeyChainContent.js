@@ -23,7 +23,7 @@ export class KeyChainContent extends React.Component {
     }
   }
 
-  toggleSignup() {
+  toggleSignup = () => {
     this.setState(prevState => ({
       ...prevState,
       signup: !prevState.signup,
@@ -55,7 +55,7 @@ export class KeyChainContent extends React.Component {
           )}
           {!account && signup && !emailAddress && (
             <BrowserOnly>
-              <SignUp />
+              <SignUp toggleSignup={this.toggleSignup} />
             </BrowserOnly>
           )}
           {!account && signup && emailAddress && (
