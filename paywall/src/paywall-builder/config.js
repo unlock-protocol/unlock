@@ -16,6 +16,24 @@ export function sendConfig(config, iframe, origin) {
   )
 }
 
+function getAccount(window, iframe, origin) {
+  const id = new Date().getTime()
+  window.ethereum.sendAsync(
+    {
+      method: 'eth_accounts',
+      params: [],
+      jsonrpc: '2.0',
+      id,
+    },
+    (error, result) => {
+      if (error) return
+      iframe.contentWindow.postMessage(
+        { type: POST_MESSAGE_ACCOUNT, payload: result.result[0] },
+        origin
+      )
+    }
+  )
+}
 // this listens for the "ready" message from the iframe
 export function setupReadyListener(window, iframe, origin) {
   window.addEventListener('message', event => {
@@ -31,24 +49,13 @@ export function setupReadyListener(window, iframe, origin) {
       // immediately before paywall.min.js is loaded
       sendConfig(window.unlockConfig, iframe, origin)
       if (window.ethereum) {
-        window.ethereum.enable().then(() => {
-          const id = new Date().getTime()
-          window.ethereum.sendAsync(
-            {
-              method: 'eth_accounts',
-              params: [],
-              jsonrpc: '2.0',
-              id,
-            },
-            (error, result) => {
-              if (error) return
-              iframe.contentWindow.postMessage(
-                { type: POST_MESSAGE_ACCOUNT, payload: result.result[0] },
-                origin
-              )
-            }
-          )
-        })
+        if (window.ethereum.enable) {
+          window.ethereum.enable().then(() => {
+            getAccount(window, iframe, origin)
+          })
+        } else {
+          getAccount(window, iframe, origin)
+        }
       }
     }
   })
