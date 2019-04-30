@@ -12,14 +12,14 @@ export default class Dispatcher {
     unlockAddress: string,
     purchasingAddress: string,
     credentials: any,
-    host: any
+    host: string
   ) {
     this.unlockAddress = unlockAddress
     this.purchasingAddress = purchasingAddress
     this.provider = new HDWalletProvider(credentials, host)
   }
 
-  retrieveLock(lockAddress: any) {
+  retrieveLock(lockAddress: string) {
     try {
       let w3s = new Web3Service({
         readOnlyProvider: this.provider,
