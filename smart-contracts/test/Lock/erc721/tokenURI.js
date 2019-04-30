@@ -6,7 +6,7 @@ const getUnlockProxy = require('../../helpers/proxy')
 
 let unlock //lock
 
-contract('Lock / erc721 / name', accounts => {
+contract('Lock / erc721 / tokenURI', accounts => {
   before(async () => {
     unlock = await getUnlockProxy(unlockContract)
     // const locks = await deployLocks(unlock, accounts[0])
@@ -15,10 +15,7 @@ contract('Lock / erc721 / name', accounts => {
 
   describe('the global tokenURI stored in Unlock', () => {
     it('should return the global base token URI', async () => {
-      assert.equal(
-        await unlock.getGlobalBaseTokenURI.call(),
-        'https://locksmith.unlock-protocol.com/api/key/'
-      )
+      assert.equal(await unlock.getGlobalBaseTokenURI.call(), '')
     })
 
     it('should allow the owner to set the global token URI', async () => {

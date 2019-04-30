@@ -75,9 +75,9 @@ contract Unlock is
     address indexed newLockAddress
   );
 
-  event UpdateTokenURI(
-    string tokenURI
-  );
+  // event NewTokenURI(
+  //   string tokenURI
+  // );
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
   function initialize(
@@ -210,6 +210,5 @@ contract Unlock is
     onlyOwner
   {
     globalBaseTokenURI = _URI;
-    emit UpdateTokenURI(globalBaseTokenURI);
   }
 }
