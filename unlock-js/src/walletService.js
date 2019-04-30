@@ -60,24 +60,17 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * Function which yields the address of the account on the provider or creates a key pair.
+   * Function which yields the address of the account on the provider
    */
-  async getAccount(createIfNone = false) {
+  async getAccount() {
     const accounts = await this.web3.eth.getAccounts()
-    let address
 
-    if (!accounts.length && !createIfNone) {
-      // We do not have an account and were not asked to create one!
-      // Not sure how that could happen?
+    if (!accounts.length) {
+      // We do not have an account, can't do anything until we have one.
       return (this.ready = false)
     }
 
-    if (accounts.length) {
-      address = accounts[0] // We have an account.
-    } else if (createIfNone) {
-      let newAccount = await this.web3.eth.accounts.create()
-      address = newAccount.address
-    }
+    let address = accounts[0]
 
     this.emit('account.changed', address)
     this.emit('ready')
