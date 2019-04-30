@@ -1,4 +1,8 @@
-import { POST_MESSAGE_READY, POST_MESSAGE_CONFIG } from './constants'
+import {
+  POST_MESSAGE_READY,
+  POST_MESSAGE_CONFIG,
+  POST_MESSAGE_ACCOUNT,
+} from './constants'
 
 export function sendConfig(config, iframe, origin) {
   const payload = config
@@ -26,6 +30,26 @@ export function setupReadyListener(window, iframe, origin) {
       // <script type="text/javascript">window.unlockConfig = {...}</script>
       // immediately before paywall.min.js is loaded
       sendConfig(window.unlockConfig, iframe, origin)
+      if (window.ethereum) {
+        window.ethereum.enable().then(() => {
+          const id = new Date().getTime()
+          window.ethereum.sendAsync(
+            {
+              method: 'eth_accounts',
+              params: [],
+              jsonrpc: '2.0',
+              id,
+            },
+            (error, result) => {
+              if (error) return
+              iframe.contentWindow.postMessage(
+                { type: POST_MESSAGE_ACCOUNT, payload: result.result[0] },
+                origin
+              )
+            }
+          )
+        })
+      }
     }
   })
 }
