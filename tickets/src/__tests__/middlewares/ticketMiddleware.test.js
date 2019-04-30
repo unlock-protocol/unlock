@@ -1,6 +1,8 @@
 import ticketMiddleware from '../../middlewares/ticketMiddleware'
-import { ADD_EVENT, LOAD_EVENT } from '../../actions/ticket'
+import { LOAD_EVENT } from '../../actions/ticket'
+import { SIGNED_DATA } from '../../actions/signature'
 import configure from '../../config'
+import UnlockEvent from '../../structured_data/unlockEvent'
 
 /**
  * This is a "fake" middleware caller
@@ -40,8 +42,8 @@ describe('Ticketing middleware', () => {
     mockTicketService = {}
   })
 
-  describe('handling ADD_EVENT', () => {
-    it('should store the new event', async () => {
+  describe('handling SIGNED_DATA for events', () => {
+    it('should save the event', async () => {
       expect.assertions(2)
       const { next, invoke } = create()
       const event = {
@@ -53,14 +55,21 @@ describe('Ticketing middleware', () => {
         owner: 'ben',
         logo: '',
       }
-      const action = { type: ADD_EVENT, event, token: null }
+      const structuredData = UnlockEvent.build(event)
+      const action = {
+        type: SIGNED_DATA,
+        data: structuredData,
+        signature: 'foo',
+      }
       mockTicketService.createEvent = jest.fn(() => {
         return Promise.resolve()
       })
-
       await invoke(action)
 
-      expect(mockTicketService.createEvent).toHaveBeenCalledWith(event, null)
+      expect(mockTicketService.createEvent).toHaveBeenCalledWith(
+        structuredData.message.event,
+        'foo'
+      )
       expect(next).toHaveBeenCalledTimes(1)
     })
   })

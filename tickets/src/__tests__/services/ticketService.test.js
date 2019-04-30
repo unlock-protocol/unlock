@@ -1,5 +1,6 @@
 import axios from 'axios'
 import TicketService from '../../services/ticketService'
+import UnlockEvent from '../../structured_data/unlockEvent'
 
 jest.mock('axios')
 
@@ -26,11 +27,7 @@ describe('TicketService', () => {
         axios.post.mockReturnValue({})
         await ticketService.createEvent(event)
 
-        const payload = {
-          message: {
-            event,
-          },
-        }
+        const payload = UnlockEvent.build(event)
 
         expect(axios.post).toHaveBeenCalledWith(
           `${serviceHost}/events/`,
@@ -58,11 +55,7 @@ describe('TicketService', () => {
           expect(error).toEqual('Hark! An Error')
         }
 
-        const payload = {
-          message: {
-            event,
-          },
-        }
+        const payload = UnlockEvent.build(event)
 
         expect(axios.post).toHaveBeenCalledWith(
           `${serviceHost}/events/`,
