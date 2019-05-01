@@ -1,3 +1,4 @@
+import { getAccountFromPrivateKey } from '@unlock-protocol/unlock-js'
 import storageMiddleware from '../../middlewares/storageMiddleware'
 import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../../actions/lock'
 import { STORE_LOCK_NAME } from '../../actions/storage'
@@ -41,6 +42,8 @@ jest.mock('../../services/storageService', () => {
 })
 
 jest.mock('../../structured_data/unlockLock.js')
+
+jest.mock(getAccountFromPrivateKey, () => true)
 
 describe('Storage middleware', () => {
   beforeEach(() => {
@@ -294,12 +297,19 @@ describe('Storage middleware', () => {
         password,
       }
 
-      mockStorageService.getUserPrivateKey = jest.fn(() =>
-        Promise.resolve(true)
-      )
+      mockStorageService.getUserPrivateKey = jest.fn(() => {
+        return Promise.resolve({
+          data: {
+            passwordEncryptedPrivateKey: 'Private Key reporting for duty',
+          },
+        })
+      })
 
       invoke(action)
-      expect(mockStorageService.getUserPrivateKey).toHaveBeenCalled()
+      expect(mockStorageService.getUserPrivateKey).toHaveBeenCalledWith(
+        emailAddress
+      )
+      expect()
       expect(next).toHaveBeenCalledTimes(1)
     })
   })
