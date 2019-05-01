@@ -16,6 +16,14 @@ export function sendConfig(config, iframe, origin) {
   )
 }
 
+function enable(window) {
+  return new Promise((resolve, reject) => {
+    if (!window.web3 || !window.web3.currentProvider) return reject()
+    if (!window.web3.currentProvider.enable) return resolve()
+    window.web3.currentProvider.enable().then(resolve)
+  })
+}
+
 function getAccount(window, iframe, origin) {
   const id = new Date().getTime()
   window.web3.currentProvider.send(
@@ -48,15 +56,9 @@ export function setupReadyListener(window, iframe, origin) {
       // <script type="text/javascript">window.unlockConfig = {...}</script>
       // immediately before paywall.min.js is loaded
       sendConfig(window.unlockConfig, iframe, origin)
-      if (window.web3 && window.web3.currentProvider) {
-        if (window.web3.currentProvider.enable) {
-          window.web3.currentProvider.enable().then(() => {
-            getAccount(window, iframe, origin)
-          })
-        } else {
-          getAccount(window, iframe, origin)
-        }
-      }
+      enable(window)
+        .then(() => getAccount(window, iframe, origin))
+        .catch(() => {}) // no web3, don't retrieve account
     }
   })
 }
