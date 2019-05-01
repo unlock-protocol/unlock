@@ -152,22 +152,17 @@ export default class UnlockService extends EventEmitter {
     return version
   }
 
-  /**
-   * Returns the implementation based on the deployed version
-   * @param {*} address
-   */
-  async ethers_unlockContractAbiVersion() {
+  async contractAbiVersion(address, versionRetrievalMethodName) {
     if (!this.provider) {
       throw new Error(Errors.MISSING_WEB3)
     }
 
-    let version = this.ethers_versionForAddress[this.unlockContractAddress]
+    const contractAddress = address.toLowerCase()
+    let version = this.ethers_versionForAddress[contractAddress]
     if (version === undefined) {
       // This was not memo-ized
-      version = await this._ethers_getVersionFromContract(
-        this.unlockContractAddress
-      )
-      this.ethers_versionForAddress[this.unlockContractAddress] = version
+      version = await this[versionRetrievalMethodName](contractAddress)
+      this.ethers_versionForAddress[contractAddress] = version
     }
 
     if (1 === version) {
@@ -181,31 +176,26 @@ export default class UnlockService extends EventEmitter {
     // Defaults to v0
     return v0
   }
+  /**
+   * Returns the implementation based on the deployed version
+   * @param {*} address
+   */
+  async ethers_unlockContractAbiVersion() {
+    return this.contractAbiVersion(
+      this.unlockContractAddress,
+      '_ethers_getVersionFromContract'
+    )
+  }
 
   /**
    * Returns the ABI for the Lock contract deployed at the provided address
    * @param {*} address
    */
   async ethers_lockContractAbiVersion(address) {
-    if (!this.provider) {
-      throw new Error(Errors.MISSING_WEB3)
-    }
-
-    let version = this.ethers_versionForAddress[address.toLowerCase()]
-    if (version === undefined) {
-      // This was not memo-ized
-      version = await this._ethers_getPublicLockVersionFromContract(address)
-      this.ethers_versionForAddress[address.toLowerCase()] = version
-    }
-
-    // NOTE: we (julien) F'ed up the deploy on the PublicLock and v02 still uses 1 for its version.
-    // The good news (luck) is that no contract was ever deployed as v01
-    if (1 === version) {
-      return v02
-    }
-
-    // Defaults to v0
-    return v0
+    return this.contractAbiVersion(
+      address,
+      '_ethers_getPublicLockVersionFromContract'
+    )
   }
 
   async _ethers_getPublicLockVersionFromContract(address) {
@@ -218,6 +208,15 @@ export default class UnlockService extends EventEmitter {
     try {
       const contractVersion = await contract.publicLockVersion()
       version = parseInt(contractVersion, 10) || 0
+      if (version === 0) {
+        // v01 returns 0 as publicLockVersion
+        const code = await this.provider.getCode(address)
+
+        // if the deployed bytecode is v01, we have a match
+        if (v01.PublicLock.deployedBytecode === code) {
+          return 1
+        }
+      }
     } catch (error) {
       // This is an older version of Unlock which did not support publicLockVersion
     }

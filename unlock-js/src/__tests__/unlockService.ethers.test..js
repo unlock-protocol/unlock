@@ -54,7 +54,51 @@ describe('UnlockService', () => {
   })
 
   describe('_ethers_getPublicLockVersionFromContract', () => {
-    it('calls publicLockVersion', async () => {
+    it('returns 0 for v0, which does not have publicLockVersion', async () => {
+      expect.assertions(1)
+      await nockBeforeEach()
+      const metadata = new ethers.utils.Interface(v02.PublicLock.abi)
+
+      nock.ethGetCodeAndYield(unlockAddress, v02.PublicLock.deployedBytecode)
+      nock.ethCallAndFail(
+        metadata.functions['publicLockVersion()'].encode([]),
+        ethers.utils.getAddress(unlockAddress),
+        { code: 404 }
+      )
+
+      const result = await unlockService._ethers_getPublicLockVersionFromContract(
+        unlockAddress
+      )
+
+      // this test fails if the call does not occur
+      await nock.resolveWhenAllNocksUsed()
+      expect(result).toBe(0)
+    })
+
+    it('returns 1 for contract version 1', async () => {
+      expect.assertions(1)
+      await nockBeforeEach()
+      const metadata = new ethers.utils.Interface(v01.PublicLock.abi)
+      const coder = ethers.utils.defaultAbiCoder
+
+      nock.ethGetCodeAndYield(unlockAddress, v01.PublicLock.deployedBytecode)
+      nock.ethCallAndYield(
+        metadata.functions['publicLockVersion()'].encode([]),
+        ethers.utils.getAddress(unlockAddress),
+        coder.encode(['uint256'], [ethers.utils.bigNumberify(0)])
+      )
+      nock.ethGetCodeAndYield(unlockAddress, v01.PublicLock.deployedBytecode)
+
+      const result = await unlockService._ethers_getPublicLockVersionFromContract(
+        unlockAddress
+      )
+
+      // this test fails if the call does not occur
+      await nock.resolveWhenAllNocksUsed()
+      expect(result).toBe(1)
+    })
+
+    it('returns 2 for contract version 2', async () => {
       expect.assertions(1)
       await nockBeforeEach()
       const metadata = new ethers.utils.Interface(v02.PublicLock.abi)
@@ -64,7 +108,7 @@ describe('UnlockService', () => {
       nock.ethCallAndYield(
         metadata.functions['publicLockVersion()'].encode([]),
         ethers.utils.getAddress(unlockAddress),
-        coder.encode(['uint256'], [ethers.utils.bigNumberify(1)])
+        coder.encode(['uint256'], [ethers.utils.bigNumberify(2)])
       )
 
       const result = await unlockService._ethers_getPublicLockVersionFromContract(
@@ -73,7 +117,7 @@ describe('UnlockService', () => {
 
       // this test fails if the call does not occur
       await nock.resolveWhenAllNocksUsed()
-      expect(result).toBe(1)
+      expect(result).toBe(2)
     })
   })
 
@@ -193,8 +237,25 @@ describe('UnlockService', () => {
       expect(
         unlockService._ethers_getPublicLockVersionFromContract
       ).toHaveBeenCalledWith(address)
-      expect(version).toEqual(v02)
+      expect(version).toEqual(v01)
       expect(unlockService.ethers_versionForAddress[address]).toEqual(1)
+    })
+
+    it('should return UnlockV02 when the version matches', async () => {
+      expect.assertions(3)
+      await nockBeforeEach()
+      unlockService._ethers_getPublicLockVersionFromContract = jest.fn(() => {
+        return Promise.resolve(2) // See code for explaination
+      })
+
+      const address = '0xabc'
+      const version = await unlockService.ethers_lockContractAbiVersion(address)
+
+      expect(
+        unlockService._ethers_getPublicLockVersionFromContract
+      ).toHaveBeenCalledWith(address)
+      expect(version).toEqual(v02)
+      expect(unlockService.ethers_versionForAddress[address]).toEqual(2)
     })
 
     it('should memoize the result', async () => {
@@ -203,14 +264,14 @@ describe('UnlockService', () => {
       unlockService._ethers_getPublicLockVersionFromContract = jest.fn(() => {})
 
       const address = '0xabc'
-      unlockService.ethers_versionForAddress[address] = 1
+      unlockService.ethers_versionForAddress[address] = 2
       const version = await unlockService.ethers_lockContractAbiVersion(address)
 
       expect(
         unlockService._ethers_getPublicLockVersionFromContract
       ).not.toHaveBeenCalled()
       expect(version).toEqual(v02)
-      expect(unlockService.ethers_versionForAddress[address]).toEqual(1)
+      expect(unlockService.ethers_versionForAddress[address]).toEqual(2)
     })
   })
 
