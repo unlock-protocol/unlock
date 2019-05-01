@@ -116,7 +116,7 @@ describe('paywall configuration inter-window communication', () => {
 
         window.ethereum = {
           enable: () => Promise.resolve(),
-          sendAsync: jest.fn(content => {
+          send: jest.fn(content => {
             expect(content).toEqual(
               expect.objectContaining({
                 method: 'eth_accounts',
@@ -145,7 +145,7 @@ describe('paywall configuration inter-window communication', () => {
 
         window.ethereum = {
           enable: () => Promise.resolve(),
-          sendAsync: (content, callbackFunc) => {
+          send: (content, callbackFunc) => {
             callbackFunc(true, false)
 
             expect(iframe.contentWindow.postMessage).not.toHaveBeenCalled()
@@ -170,7 +170,7 @@ describe('paywall configuration inter-window communication', () => {
 
         window.ethereum = {
           enable: () => Promise.resolve(),
-          sendAsync: (content, callbackFunc) => {
+          send: (content, callbackFunc) => {
             callbackFunc(null, { result: ['hi'] })
 
             expect(iframe.contentWindow.postMessage).toHaveBeenCalledWith(

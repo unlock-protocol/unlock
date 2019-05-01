@@ -18,7 +18,7 @@ export function sendConfig(config, iframe, origin) {
 
 function getAccount(window, iframe, origin) {
   const id = new Date().getTime()
-  window.ethereum.sendAsync(
+  window.ethereum.send(
     {
       method: 'eth_accounts',
       params: [],
