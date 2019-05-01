@@ -89,14 +89,12 @@ describe('paywall configuration inter-window communication', () => {
       it('should enable the ethereum provider', done => {
         expect.assertions(1)
 
-        window.web3 = {
-          currentProvider: {
-            enable: jest.fn(() => ({
-              then() {
-                done()
-              },
-            })),
-          },
+        window.ethereum = {
+          enable: jest.fn(() => ({
+            then() {
+              done()
+            },
+          })),
         }
 
         const event = {
@@ -110,23 +108,48 @@ describe('paywall configuration inter-window communication', () => {
 
         listener(event)
 
-        expect(window.web3.currentProvider.enable).toHaveBeenCalled()
+        expect(window.ethereum.enable).toHaveBeenCalled()
       })
 
+      it('should request accounts once enabled', done => {
+        expect.assertions(1)
+
+        window.ethereum = {
+          enable: () => Promise.resolve(),
+          sendAsync: jest.fn(content => {
+            expect(content).toEqual(
+              expect.objectContaining({
+                method: 'eth_accounts',
+                params: [],
+                jsonrpc: '2.0',
+                id: expect.any(Number),
+              })
+            )
+            done()
+          }),
+        }
+
+        const event = {
+          origin: 'origin',
+          source: iframe.contentWindow,
+          data: POST_MESSAGE_READY,
+        }
+        setupReadyListener(window, iframe, 'origin')
+
+        const listener = getListener()
+
+        listener(event)
+      })
       it('should not post anything on error', done => {
         expect.assertions(1)
 
-        window.web3 = {
-          eth: {
-            getAccounts(callbackFunc) {
-              callbackFunc(true, false)
+        window.ethereum = {
+          enable: () => Promise.resolve(),
+          sendAsync: (content, callbackFunc) => {
+            callbackFunc(true, false)
 
-              expect(iframe.contentWindow.postMessage).not.toHaveBeenCalled()
-              done()
-            },
-          },
-          currentProvider: {
-            enable: () => Promise.resolve(),
+            expect(iframe.contentWindow.postMessage).not.toHaveBeenCalled()
+            done()
           },
         }
 
@@ -145,23 +168,19 @@ describe('paywall configuration inter-window communication', () => {
       it('should post the first account retrieved to the parent window', done => {
         expect.assertions(1)
 
-        window.web3 = {
-          eth: {
-            getAccounts(callbackFunc) {
-              callbackFunc(null, { result: ['hi'] })
+        window.ethereum = {
+          enable: () => Promise.resolve(),
+          sendAsync: (content, callbackFunc) => {
+            callbackFunc(null, { result: ['hi'] })
 
-              expect(iframe.contentWindow.postMessage).toHaveBeenCalledWith(
-                expect.objectContaining({
-                  type: POST_MESSAGE_ACCOUNT,
-                  payload: 'hi',
-                }),
-                'origin'
-              )
-              done()
-            },
-          },
-          currentProvider: {
-            enable: () => Promise.resolve(),
+            expect(iframe.contentWindow.postMessage).toHaveBeenCalledWith(
+              expect.objectContaining({
+                type: POST_MESSAGE_ACCOUNT,
+                payload: 'hi',
+              }),
+              'origin'
+            )
+            done()
           },
         }
 

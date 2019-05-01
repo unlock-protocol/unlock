@@ -17,13 +17,22 @@ export function sendConfig(config, iframe, origin) {
 }
 
 function getAccount(window, iframe, origin) {
-  window.web3.eth.getAccounts((error, result) => {
-    if (error) return
-    iframe.contentWindow.postMessage(
-      { type: POST_MESSAGE_ACCOUNT, payload: result.result[0] },
-      origin
-    )
-  })
+  const id = new Date().getTime()
+  window.ethereum.sendAsync(
+    {
+      method: 'eth_accounts',
+      params: [],
+      jsonrpc: '2.0',
+      id,
+    },
+    (error, result) => {
+      if (error) return
+      iframe.contentWindow.postMessage(
+        { type: POST_MESSAGE_ACCOUNT, payload: result.result[0] },
+        origin
+      )
+    }
+  )
 }
 // this listens for the "ready" message from the iframe
 export function setupReadyListener(window, iframe, origin) {
@@ -39,9 +48,9 @@ export function setupReadyListener(window, iframe, origin) {
       // <script type="text/javascript">window.unlockConfig = {...}</script>
       // immediately before paywall.min.js is loaded
       sendConfig(window.unlockConfig, iframe, origin)
-      if (window.web3) {
-        if (window.web3.currentProvider && window.web3.currentProvider.enable) {
-          window.web3.currentProvider.enable().then(() => {
+      if (window.ethereum) {
+        if (window.ethereum.enable) {
+          window.ethereum.enable().then(() => {
             getAccount(window, iframe, origin)
           })
         } else {
