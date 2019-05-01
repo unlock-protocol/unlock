@@ -80,4 +80,82 @@ describe('WalletService (ethers)', () => {
       )
     })
   })
+
+  describe('once connected', () => {
+    describe('_handleMethodCall', () => {
+      const transaction = {
+        hash: 'hash',
+        from: 'from',
+        to: 'to',
+        data: 'data',
+      }
+
+      it('emits transaction.pending with transaction type', async () => {
+        expect.assertions(1)
+
+        await resetTestsAndConnect()
+        walletService.on('transaction.pending', transactionType => {
+          expect(transactionType).toBe('transactionType')
+        })
+
+        await walletService._handleMethodCall(
+          Promise.resolve(transaction),
+          'transactionType'
+        )
+      })
+
+      it('retrieves transaction hash from the method call', async () => {
+        expect.assertions(1)
+
+        await resetTestsAndConnect()
+        let myResolve
+        const myPromise = new Promise(resolve => {
+          myResolve = jest.fn(resolve)
+          myResolve(transaction)
+        })
+
+        await walletService._handleMethodCall(myPromise, 'transactionType')
+
+        expect(myResolve).toHaveBeenCalled()
+      })
+
+      it('emits transaction.new with the transaction information', async () => {
+        expect.assertions(6)
+
+        await resetTestsAndConnect()
+        walletService.on(
+          'transaction.new',
+          (hash, from, to, data, transactionType, status) => {
+            expect(hash).toBe(transaction.hash)
+            expect(from).toBe(transaction.from)
+            expect(to).toBe(transaction.to)
+            expect(data).toBe(transaction.data)
+            expect(transactionType).toBe('transactionType')
+            expect(status).toBe('submitted')
+          }
+        )
+
+        await walletService._handleMethodCall(
+          Promise.resolve(transaction),
+          'transactionType'
+        )
+      })
+
+      it('throws on failure', async () => {
+        expect.assertions(1)
+        await resetTestsAndConnect()
+
+        const oops = new Error('failed for some reason')
+
+        try {
+          await walletService._handleMethodCall(
+            Promise.reject(oops),
+            'transactionType'
+          )
+        } catch (e) {
+          expect(e).toBe(oops)
+        }
+      })
+    })
+  })
 })
