@@ -9,7 +9,7 @@ contract UnlockUtils {
   function strConcat(
     string memory _a,
     string memory _b
-  ) internal
+  ) public
     pure
     returns(string memory)
  {
@@ -29,7 +29,7 @@ contract UnlockUtils {
 
   function uint2str(
     uint _i
-  ) internal
+  ) public
     pure
     returns (string memory _uintAsString)
   {
