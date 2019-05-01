@@ -1,5 +1,6 @@
-var UnlockJs = require('@unlock-protocol/unlock-js')
-var HDWalletProvider = require('truffle-hdwallet-provider')
+import UnlockJs from '@unlock-protocol/unlock-js'
+
+const HDWalletProvider = require('truffle-hdwallet-provider')
 
 const { WalletService, Web3Service } = UnlockJs
 

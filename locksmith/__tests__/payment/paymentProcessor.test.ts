@@ -27,13 +27,21 @@ jest.mock('stripe', () => {
   })
 })
 
+let mockDispatcher = { purchase: jest.fn() }
+
+jest.mock('../../src/fulfillment/dispatcher', () => {
+  return jest.fn().mockImplementation(() => {
+    return mockDispatcher
+  })
+})
+
 describe('PaymentProcessor', () => {
   let paymentProcessor: PaymentProcessor
+
   beforeAll(async () => {
     paymentProcessor = new PaymentProcessor('sk_test_token')
 
     await User.truncate({ cascade: true })
-
     await UserReference.create(
       {
         emailAddress: Normalizer.emailAddress('foo2@example.com'),
@@ -102,9 +110,7 @@ describe('PaymentProcessor', () => {
         await expect(
           paymentProcessor.chargeUser(
             '0xef49773e0d59f607cea8c8be4ce87bd26fd8e208',
-            {
-              price: 3000,
-            }
+            '0xe4906CE8a8E861339F75611c129b9679EDAe7bBD'
           )
         ).rejects.toEqual(new Error('Customer lacks purchasing details'))
       })
@@ -115,9 +121,7 @@ describe('PaymentProcessor', () => {
             expect.assertions(1)
             let charge = await paymentProcessor.chargeUser(
               '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8',
-              {
-                price: 2000,
-              }
+              '0xe4906CE8a8E861339F75611c129b9679EDAe7bBD'
             )
             expect(charge).not.toBeNull()
           })
@@ -129,13 +133,64 @@ describe('PaymentProcessor', () => {
             await expect(
               paymentProcessor.chargeUser(
                 '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8',
-                {
-                  price: 2000,
-                }
+                '0xe4906CE8a8E861339F75611c129b9679EDAe7bBD'
               )
             ).rejects.toEqual('An error in purchase')
           })
         })
+      })
+    })
+  })
+
+  describe('price', () => {
+    it('returns the total price of the key purchase for the provided lock', () => {
+      expect.assertions(1)
+      expect(
+        paymentProcessor.price('0xe4906CE8a8E861339F75611c129b9679EDAe7bBD')
+      ).toEqual(720)
+    })
+  })
+
+  describe('initiatePurchase', () => {
+    beforeAll(() => {
+      paymentProcessor.chargeUser = jest
+        .fn()
+        .mockReturnValueOnce({})
+        .mockReturnValueOnce(null)
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
+    describe('when the user was successfully charged', () => {
+      it('dispatches the purchase', () => {
+        expect.assertions(1)
+        paymentProcessor.initiatePurchase(
+          'purchaser',
+          'lock',
+          'credentials',
+          'providerHost'
+        )
+
+        expect(mockDispatcher.purchase).toHaveBeenCalledWith(
+          'lock',
+          'purchaser'
+        )
+      })
+    })
+
+    describe('when the user was unsuccessfully charged', () => {
+      it('does not dispatch the purchase', () => {
+        expect.assertions(1)
+        paymentProcessor.initiatePurchase(
+          'purchaser',
+          'lock',
+          'credentials',
+          'providerHost'
+        )
+
+        expect(mockDispatcher.purchase).not.toHaveBeenCalled()
       })
     })
   })
