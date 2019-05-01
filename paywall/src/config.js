@@ -31,20 +31,7 @@ export default function configure(
   const isInIframe = inIframe(useWindow)
 
   const env = runtimeConfig.unlockEnv
-
-  // note: the choice of 127.0.0.1 instead of localhost is deliberate, as it will
-  // allow us to test cross-origin requests from localhost/demo
-  let paywallUrl
-  if (global.window && window.origin === 'http://localhost:3001') {
-    paywallUrl = 'http://127.0.0.1:3001'
-  } else if (global.window) {
-    paywallUrl = window.origin
-  } else {
-    // server-side, it doesn't matter what we render
-    paywallUrl = ''
-  }
   const locksmithUri = runtimeConfig.locksmithUri || 'http://0.0.0.0:8080'
-  let paywallScriptPath = '/static/paywall.min.js'
   const httpProvider = runtimeConfig.httpProvider || '127.0.0.1'
   let providers = {}
   let isRequiredNetwork = () => false
@@ -156,7 +143,5 @@ export default function configure(
     unlockAddress,
     services,
     supportedProviders,
-    paywallScriptPath,
-    paywallUrl,
   }
 }
