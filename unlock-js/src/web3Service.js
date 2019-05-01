@@ -1,4 +1,5 @@
 import Web3 from 'web3'
+import { providers as ethersProviders } from 'ethers'
 import { bufferToHex, generateAddress } from 'ethereumjs-util'
 import Web3Utils from './utils'
 import TransactionTypes from './transactionTypes'
@@ -15,10 +16,15 @@ export default class Web3Service extends UnlockService {
     unlockAddress,
     blockTime,
     requiredConfirmations,
+    useEthers,
   }) {
     super({ unlockAddress })
 
-    this.web3 = new Web3(readOnlyProvider)
+    if (useEthers) {
+      this.ethers_setup(readOnlyProvider)
+    } else {
+      this.web3 = new Web3(readOnlyProvider)
+    }
     this.blockTime = blockTime
     this.requiredConfirmations = requiredConfirmations
 
@@ -108,6 +114,19 @@ export default class Web3Service extends UnlockService {
           owner,
         })
       },
+    }
+  }
+
+  /**
+   * Temporary function that allows us to use ethers functionality
+   * without interfering with web3. This will be moved to the constructor when
+   * we remove web3
+   */
+  ethers_setup(readOnlyProvider) {
+    if (typeof readOnlyProvider === 'string') {
+      this.provider = new ethersProviders.JsonRpcProvider(readOnlyProvider)
+    } else if (readOnlyProvider.send) {
+      this.provider = new ethersProviders.Web3Provider(readOnlyProvider)
     }
   }
 
