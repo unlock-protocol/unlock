@@ -1,3 +1,5 @@
+import { constants } from 'ethers'
+
 export const GAS_AMOUNTS = {
   createLock: 3500000,
   updateKeyPrice: 1000000,
@@ -20,3 +22,5 @@ export default {
   GAS_AMOUNTS,
   KEY_ID,
 }
+
+export const ZERO = constants.AddressZero
