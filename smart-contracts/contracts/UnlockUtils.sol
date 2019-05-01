@@ -33,20 +33,22 @@ contract UnlockUtils {
     pure
     returns (string memory _uintAsString)
   {
+    // make a copy of the param to avoid security/no-assign-params error
+    uint c = _i;
     if (_i == 0) {
-        return "0";
+      return '0';
     }
     uint j = _i;
     uint len;
     while (j != 0) {
-        len++;
-        j /= 10;
+      len++;
+      j /= 10;
     }
     bytes memory bstr = new bytes(len);
     uint k = len - 1;
-    while (_i != 0) {
-        bstr[k--] = byte(uint8(48 + _i % 10));
-        _i /= 10;
+    while (c != 0) {
+      bstr[k--] = byte(uint8(48 + c % 10));
+      c /= 10;
     }
     return string(bstr);
   }
