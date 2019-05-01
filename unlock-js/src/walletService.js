@@ -1,4 +1,5 @@
 import Web3 from 'web3'
+import { providers as ethersProviders } from 'ethers'
 import UnlockService from './unlockService'
 import { GAS_AMOUNTS } from './constants'
 
@@ -10,7 +11,7 @@ import { GAS_AMOUNTS } from './constants'
  */
 export default class WalletService extends UnlockService {
   constructor({ unlockAddress }) {
-    super({ unlockAddress })
+    super({ unlockAddress, writable: true })
     this.ready = false
 
     this.on('ready', () => {
@@ -44,6 +45,28 @@ export default class WalletService extends UnlockService {
     }
   }
 
+  /**
+   * Temporary function that allows us to use ethers functionality
+   * without interfering with web3
+   */
+  async ethers_connect(provider) {
+    // Reset the connection
+    this.ready = false
+
+    if (typeof provider === 'string') {
+      this.provider = new ethersProviders.JsonRpcProvider(provider)
+      this.web3Provider = false
+    } else {
+      this.provider = new ethersProviders.Web3Provider(provider)
+      this.web3Provider = provider
+    }
+    const { chainId: networkId } = await this.provider.getNetwork()
+
+    if (this.networkId !== networkId) {
+      this.networkId = networkId
+      this.emit('network.changed', networkId)
+    }
+  }
   /**
    * Checks if the contract has been deployed at the address.
    * Invokes the callback with the result.
