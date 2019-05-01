@@ -7,4 +7,7 @@ module.exports = {
   hexlify: utils.hexlify,
   hexStripZeros: utils.hexStripZeros,
   bigNumberify: utils.bigNumberify,
+  hexToNumberString: num =>
+    utils.formatUnits(utils.bigNumberify(num), 'wei').replace('.0', ''),
+  fromWei: (num, units) => utils.formatUnits(utils.bigNumberify(num), units),
 }
