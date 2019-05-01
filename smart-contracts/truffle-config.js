@@ -15,7 +15,7 @@ let rinkebyMnemonic = {
   accountIndex: 0,
 }
 if (rinkebyProviderUrl) {
-  rinkebyMnemonic = require('./mnemonic.rinkeby')
+  rinkebyMnemonic = require('./mnemonic.rinkeby') // eslint-disable-line import/no-unresolved
 }
 
 /**
@@ -27,7 +27,7 @@ let mainnetMnemonic = {
   accountIndex: 0,
 }
 if (mainnetProviderUrl) {
-  mainnetMnemonic = require('./mnemonic.mainnet')
+  mainnetMnemonic = require('./mnemonic.mainnet') // eslint-disable-line import/no-unresolved
 }
 
 // When running CI, we connect to the 'ganache' container
