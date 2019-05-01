@@ -45,6 +45,7 @@ services:
       LOCKSMITH_URI: '${LOCKSMITH_URI}'
       PAYWALL_URL: '${PAYWALL_URL}'
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
+      UNLOCK_APP_URL: '${UNLOCK_APP_URL}'
     command: ['npm', 'run', 'start']
   unlock-protocol-com:
     image: unlock-protocol-com

@@ -46,6 +46,7 @@ export default function configure(
     runtimeConfig.paywallScriptUrl ||
     'http://localhost:3001/static/paywall.min.js'
   let unlockStaticUrl = runtimeConfig.unlockStaticUrl || 'http://localhost:3002'
+  let unlockAppUrl = runtimeConfig.unlockAppUrl || 'http://localhost:3000'
   let httpProvider = runtimeConfig.httpProvider || '127.0.0.1'
   let blockTime = 8000 // in mseconds.
   let chainExplorerUrlBuilders = {
@@ -116,6 +117,7 @@ export default function configure(
     services['wedlocks'] = { host: runtimeConfig.wedlocksUri }
     paywallUrl = runtimeConfig.paywallUrl
     paywallScriptUrl = runtimeConfig.paywallScriptUrl
+    unlockAppUrl = runtimeConfig.unlockAppUrl
 
     // Address for the Unlock smart contract
     unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
@@ -142,6 +144,7 @@ export default function configure(
     services['wedlocks'] = { host: runtimeConfig.wedlocksUri }
     paywallUrl = runtimeConfig.paywallUrl
     paywallScriptUrl = runtimeConfig.paywallScriptUrl
+    unlockAppUrl = runtimeConfig.unlockAppUrl
 
     // Address for the Unlock smart contract
     unlockAddress = '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
@@ -177,5 +180,6 @@ export default function configure(
     supportedProviders,
     unlockStaticUrl,
     chainExplorerUrlBuilders,
+    unlockAppUrl,
   }
 }
