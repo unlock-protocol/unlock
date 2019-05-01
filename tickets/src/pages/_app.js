@@ -13,7 +13,7 @@ import currencyConversionMiddleware from '../middlewares/currencyConversionMiddl
 import providerMiddleware from '../middlewares/providerMiddleware'
 import walletMiddleware from '../middlewares/walletMiddleware'
 import web3Middleware from '../middlewares/web3Middleware'
-import ticketMiddleware from '../middlewares/ticketMiddleware'
+import eventMiddleware from '../middlewares/eventMiddleware'
 import WalletCheckOverlay from '../components/interface/FullScreenModals'
 
 const config = configure()
@@ -26,7 +26,7 @@ function getOrCreateStore(initialState, history) {
     web3Middleware(config),
     currencyConversionMiddleware(config),
     walletMiddleware(config),
-    ticketMiddleware(config),
+    eventMiddleware(config),
   ]
 
   // Always make a new store if server, otherwise state is shared between requests

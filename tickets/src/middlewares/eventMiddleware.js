@@ -1,19 +1,19 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
-import TicketService from '../services/ticketService'
+import EventService from '../services/eventService'
 import {
   ADD_EVENT,
   LOAD_EVENT,
   updateEvent,
-  ticketError,
-} from '../actions/ticket'
+  eventError,
+} from '../actions/event'
 import { signData, SIGNED_DATA } from '../actions/signature'
 import UnlockEvent from '../structured_data/unlockEvent'
 
-const ticketMiddleware = config => {
+const eventMiddleware = config => {
   const { services } = config
   return ({ dispatch }) => {
-    const ticketService = new TicketService(services.storage.host)
+    const eventService = new EventService(services.storage.host)
 
     return next => {
       return action => {
@@ -47,14 +47,14 @@ const ticketMiddleware = config => {
           action.data.message &&
           action.data.message.event
         ) {
-          ticketService
+          eventService
             .saveEvent(action.data.message.event, action.signature)
-            .catch(error => dispatch(ticketError(error)))
+            .catch(error => dispatch(eventError(error)))
         }
 
         // Load an event from locksmith
         if (action.type === LOAD_EVENT) {
-          ticketService.getEvent(action.address).then(res => {
+          eventService.getEvent(action.address).then(res => {
             const { name, date, lockAddress, description, location } = res.data
             const event = {
               name,
@@ -72,4 +72,4 @@ const ticketMiddleware = config => {
   }
 }
 
-export default ticketMiddleware
+export default eventMiddleware
