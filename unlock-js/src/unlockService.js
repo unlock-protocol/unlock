@@ -257,26 +257,28 @@ export default class UnlockService extends EventEmitter {
   async getLockContract(lockAddress) {
     if (this.lockContracts[lockAddress]) {
       return this.lockContracts[lockAddress]
+    } else {
+      const version = await this.ethers_lockContractAbiVersion(lockAddress)
+      this.lockContracts[lockAddress] = this.getContract(
+        lockAddress,
+        version.PublicLock,
+        this.provider
+      )
+      return this.lockContracts[lockAddress]
     }
-    const version = await this.ethers_lockContractAbiVersion(lockAddress)
-    this.lockContracts[lockAddress] = this.getContract(
-      lockAddress,
-      version.PublicLock,
-      this.provider
-    )
-    return this.lockContracts[lockAddress]
   }
 
   async getUnlockContract() {
     if (this.unlockContract) {
       return this.unlockContract
+    } else {
+      const version = await this.ethers_unlockContractAbiVersion()
+      this.unlockContract = this.getContract(
+        this.unlockContractAddress,
+        version.Unlock,
+        this.provider
+      )
+      return this.unlockContract
     }
-    const version = await this.ethers_unlockContractAbiVersion()
-    this.unlockContract = this.getContract(
-      this.unlockContractAddress,
-      version.Unlock,
-      this.provider
-    )
-    return this.unlockContract
   }
 }
