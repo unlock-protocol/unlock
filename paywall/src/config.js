@@ -40,6 +40,7 @@ export default function configure(
   } else if (global.window) {
     paywallUrl = window.origin
   } else {
+    // server-side, it doesn't matter what we render
     paywallUrl = ''
   }
   const locksmithUri = runtimeConfig.locksmithUri || 'http://0.0.0.0:8080'
