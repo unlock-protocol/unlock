@@ -1,8 +1,7 @@
 import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
-import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
+import { SignedRequest, ethereumAddress } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved, import/named
 import AuthorizedLockOperations from '../operations/authorizedLockOperations'
 import PaymentProcessor from '../payment/paymentProcessor'
-import KeyPricer from '../utils/keyPricer'
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('../../config/config')[env]
@@ -13,28 +12,32 @@ namespace PurchaseController {
     req: SignedRequest,
     res: Response
   ): Promise<any> => {
-    let currentTime = Math.floor(Date.now() / 1000)
     const expiry = req.body.message.purchaseRequest.expiry
-    const lockAddress = req.body.message.purchaseRequest.lock
+    const lock = req.body.message.purchaseRequest.lock
 
-    if (expiry < currentTime) {
+    if (expired(expiry)) {
       return res.sendStatus(412)
-    }
-
-    if (!(await AuthorizedLockOperations.hasAuthorization(lockAddress))) {
+    } else if (!(await authorizedLock(lock))) {
       return res.sendStatus(451)
+    } else {
+      let paymentProcessor = new PaymentProcessor(config.stripeSecret)
+      paymentProcessor.initiatePurchase(
+        req.owner,
+        lock,
+        config.purchaserCredentails,
+        config.web3ProviderHost
+      )
+      return res.sendStatus(202)
     }
+  }
 
-    let keyPricer = new KeyPricer()
-    let itemizedPrice = keyPricer.generate(lockAddress)
-    let totalPrice = Object.values(itemizedPrice).reduce((a, b) => a + b)
+  const expired = (expiry: number): Boolean => {
+    let currentTime = Math.floor(Date.now() / 1000)
+    return expiry < currentTime
+  }
 
-    let paymentProcessor = new PaymentProcessor(config.stripeSecret)
-    paymentProcessor.chargeUser(req.owner, {
-      price: totalPrice,
-    })
-
-    return res.sendStatus(202)
+  const authorizedLock = (lock: ethereumAddress): Promise<Boolean> => {
+    return AuthorizedLockOperations.hasAuthorization(lock)
   }
 }
 
