@@ -1,12 +1,12 @@
 import axios from 'axios'
-import TicketService from '../../services/ticketService'
+import EventService from '../../services/eventService'
 import UnlockEvent from '../../structured_data/unlockEvent'
 
 jest.mock('axios')
 
-describe('TicketService', () => {
+describe('EventService', () => {
   const serviceHost = 'http://127.0.0.1:8080'
-  const ticketService = new TicketService(serviceHost)
+  const eventService = new EventService(serviceHost)
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -26,7 +26,7 @@ describe('TicketService', () => {
         }
         axios.get.mockReturnValue({ status: 404 })
         axios.post.mockReturnValue({})
-        await ticketService.saveEvent(event)
+        await eventService.saveEvent(event)
 
         const payload = UnlockEvent.build(event)
 
@@ -52,7 +52,7 @@ describe('TicketService', () => {
         axios.get.mockReturnValue({ status: 404 })
         axios.post.mockRejectedValue('Oh dear! An Error')
         try {
-          await ticketService.saveEvent(event)
+          await eventService.saveEvent(event)
         } catch (error) {
           expect(error).toEqual('Oh dear! An Error')
         }
@@ -80,7 +80,7 @@ describe('TicketService', () => {
         }
         axios.get.mockReturnValue({ status: 200 })
         axios.put.mockReturnValue({})
-        await ticketService.saveEvent(event)
+        await eventService.saveEvent(event)
 
         const payload = UnlockEvent.build(event)
 
@@ -106,7 +106,7 @@ describe('TicketService', () => {
         axios.get.mockReturnValue({ status: 200 })
         axios.put.mockRejectedValue('Crumbs! An Error')
         try {
-          await ticketService.saveEvent(event)
+          await eventService.saveEvent(event)
         } catch (error) {
           expect(error).toEqual('Crumbs! An Error')
         }
@@ -127,7 +127,7 @@ describe('TicketService', () => {
         expect.assertions(1)
         const eventAddress = 'abc123'
         axios.get.mockReturnValue({})
-        await ticketService.getEvent(eventAddress)
+        await eventService.getEvent(eventAddress)
 
         expect(axios.get).toHaveBeenCalledWith(
           `${serviceHost}/events/${eventAddress}`
@@ -141,7 +141,7 @@ describe('TicketService', () => {
         axios.get.mockRejectedValue('Egads! An Error')
 
         try {
-          await ticketService.getEvent(eventAddress)
+          await eventService.getEvent(eventAddress)
         } catch (error) {
           expect(error).toEqual('Egads! An Error')
         }
