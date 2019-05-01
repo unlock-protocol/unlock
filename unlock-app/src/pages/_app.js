@@ -16,6 +16,7 @@ import currencyConversionMiddleware from '../middlewares/currencyConversionMiddl
 import storageMiddleware from '../middlewares/storageMiddleware'
 import walletMiddleware from '../middlewares/walletMiddleware'
 import providerMiddleware from '../middlewares/providerMiddleware'
+import wedlocksMiddleware from '../middlewares/wedlocksMiddleware'
 
 const config = configure()
 
@@ -27,6 +28,7 @@ function getOrCreateStore(initialState, path) {
     web3Middleware(config),
     currencyConversionMiddleware(config),
     walletMiddleware(config),
+    wedlocksMiddleware(config),
   ]
 
   if (config.services.storage) {
