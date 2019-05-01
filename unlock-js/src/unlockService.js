@@ -152,6 +152,10 @@ export default class UnlockService extends EventEmitter {
     return version
   }
 
+  /**
+   * @param {string} address contract address
+   * @param {string} versionRetrievalMethodName the method to call to retrieve the contract version
+   */
   async contractAbiVersion(address, versionRetrievalMethodName) {
     if (!this.provider) {
       throw new Error(Errors.MISSING_WEB3)
@@ -179,10 +183,7 @@ export default class UnlockService extends EventEmitter {
     // Defaults to v0
     return v0
   }
-  /**
-   * Returns the implementation based on the deployed version
-   * @param {*} address
-   */
+
   async ethers_unlockContractAbiVersion() {
     return this.contractAbiVersion(
       this.unlockContractAddress,
@@ -201,6 +202,10 @@ export default class UnlockService extends EventEmitter {
     )
   }
 
+  /**
+   * Private method, which given an address will query the lock and return the version of the lock
+   * @param {*} address
+   */
   async _ethers_getPublicLockVersionFromContract(address) {
     const contract = new Contract(
       address,
@@ -227,7 +232,7 @@ export default class UnlockService extends EventEmitter {
   }
 
   /**
-   * Private method, which given an address will query the contract and return the corresponding method
+   * Private method, which given an address will query the unlock contract to get its version
    * @param {*} address
    */
   async _ethers_getVersionFromContract(address) {
