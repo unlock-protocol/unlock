@@ -61,12 +61,12 @@ describe('Ticketing middleware', () => {
         data: structuredData,
         signature: 'foo',
       }
-      mockTicketService.createEvent = jest.fn(() => {
+      mockTicketService.saveEvent = jest.fn(() => {
         return Promise.resolve()
       })
       await invoke(action)
 
-      expect(mockTicketService.createEvent).toHaveBeenCalledWith(
+      expect(mockTicketService.saveEvent).toHaveBeenCalledWith(
         structuredData.message.event,
         'foo'
       )
