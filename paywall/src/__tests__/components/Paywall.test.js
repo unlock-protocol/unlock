@@ -2,10 +2,14 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
 import createUnlockStore from '../../createUnlockStore'
+import { setAccount } from '../../actions/accounts'
 import Paywall, { mapStateToProps } from '../../components/Paywall'
 import { ConfigContext } from '../../utils/withConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
-import { POST_MESSAGE_SCROLL_POSITION } from '../../paywall-builder/constants'
+import {
+  POST_MESSAGE_SCROLL_POSITION,
+  POST_MESSAGE_ACCOUNT,
+} from '../../paywall-builder/constants'
 import { TRANSACTION_TYPES } from '../../constants'
 import useOptimism from '../../hooks/useOptimism'
 
@@ -89,8 +93,12 @@ function renderMockPaywall(props = {}) {
   )
 }
 
-function getPostmessageEventListener() {
+function getScrollPostmessageEventListener() {
   return fakeWindow.addEventListener.mock.calls[0][1]
+}
+
+function getAccountPostmessageEventListener() {
+  return fakeWindow.addEventListener.mock.calls[1][1]
 }
 
 afterEach(() => {
@@ -427,7 +435,7 @@ describe('Paywall', () => {
       rtl.act(() => {
         component = renderMockPaywall({ locks: [lock] }, true)
       })
-      const listener = getPostmessageEventListener()
+      const listener = getScrollPostmessageEventListener()
 
       rtl.act(() => {
         listener({
@@ -439,6 +447,70 @@ describe('Paywall', () => {
       })
 
       expect(component.getByTestId('paywall-banner').style.height).toBe('1.23%')
+    })
+  })
+
+  describe('listen for account', () => {
+    it('should accept account, and dispatch setAccount', () => {
+      expect.assertions(1)
+
+      const anotherAccount = '0x1234567890123456789012345678901234567890'
+      state.account = {
+        address: 'foobar',
+        fromLocalStorage: true,
+      }
+      store = createUnlockStore(state)
+      store.dispatch = jest.fn()
+      rtl.act(() => {
+        renderMockPaywall()
+      })
+      const listener = getAccountPostmessageEventListener()
+
+      rtl.act(() => {
+        listener({
+          origin: 'http://example.com',
+          source: fakeWindow.parent,
+          data: { type: POST_MESSAGE_ACCOUNT, payload: anotherAccount },
+        })
+        jest.runAllTimers()
+      })
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining(
+          setAccount({
+            address: anotherAccount,
+            fromLocalStorage: true,
+            fromMainWindow: true,
+          })
+        )
+      )
+    })
+
+    it('should ignore account if it is unchanged', () => {
+      expect.assertions(1)
+
+      const anotherAccount = '0x1234567890123456789012345678901234567890'
+      state.account = {
+        address: anotherAccount,
+        fromLocalStorage: true,
+      }
+      store = createUnlockStore(state)
+      store.dispatch = jest.fn()
+      rtl.act(() => {
+        renderMockPaywall()
+      })
+      const listener = getAccountPostmessageEventListener()
+
+      rtl.act(() => {
+        listener({
+          origin: 'http://example.com',
+          source: fakeWindow.parent,
+          data: { type: POST_MESSAGE_ACCOUNT, payload: anotherAccount },
+        })
+        jest.runAllTimers()
+      })
+
+      expect(store.dispatch).not.toHaveBeenCalled()
     })
   })
 
