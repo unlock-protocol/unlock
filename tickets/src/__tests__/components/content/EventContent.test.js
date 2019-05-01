@@ -77,8 +77,8 @@ describe('mapStateToProps', () => {
         locks: {
           abc123: { address: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9' },
         },
+        event,
         tickets: {
-          event,
           '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9': 'foobar',
         },
         keys: {

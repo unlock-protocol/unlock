@@ -33,8 +33,11 @@ import walletStatusReducer, {
   initialState as defaultWalletStatus,
 } from './reducers/walletStatusReducer'
 import ticketsReducer, {
-  initialState as defaultTicketAddresses,
+  initialState as defaultTicket,
 } from './reducers/ticketsReducer'
+import eventReducer, {
+  initialState as defaultEvent,
+} from './reducers/eventReducer'
 
 const config = configure()
 
@@ -55,6 +58,7 @@ export const createUnlockStore = (
     errors: errorsReducer,
     walletStatus: walletStatusReducer,
     tickets: ticketsReducer,
+    event: eventReducer,
   }
 
   // Cleanup the defaultState to remove all null values so that we do not overwrite existing
@@ -76,7 +80,8 @@ export const createUnlockStore = (
       currency: defaultCurrency,
       errors: defaultError,
       walletStatus: defaultWalletStatus,
-      tickets: defaultTicketAddresses,
+      tickets: defaultTicket,
+      event: defaultEvent,
     },
     {
       provider: Object.keys(config.providers)[0],

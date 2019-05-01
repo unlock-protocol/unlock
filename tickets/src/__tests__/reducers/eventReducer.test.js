@@ -1,13 +1,10 @@
-import reducer, { initialState } from '../../reducers/ticketsReducer'
-import { GOT_SIGNED_ADDRESS } from '../../actions/ticket'
+import reducer, { initialState } from '../../reducers/eventReducer'
+import { UPDATE_EVENT } from '../../actions/event'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
 import { SET_ACCOUNT } from '../../actions/accounts'
 
-describe('tickets reducer', () => {
-  const address = '0x12345678'
-  const signedAddress = 'ENCRYPTED'
-
+describe('events reducer', () => {
   it('should return the initial state', () => {
     expect.assertions(1)
     expect(reducer(undefined, {})).toEqual({})
@@ -19,20 +16,22 @@ describe('tickets reducer', () => {
     ['SET_ACCOUNT', SET_ACCOUNT],
   ])('should return the initial state when receiving %s', (name, type) => {
     expect.assertions(1)
-    expect(reducer({ address: signedAddress }, { type })).toBe(initialState)
+    expect(reducer({ name: 'the party' }, { type })).toBe(initialState)
   })
 
-  it('should add a signed address to the state', () => {
+  it('should add an event to the state', () => {
     expect.assertions(1)
+    const event = {
+      name: 'I am a dummy event',
+    }
     expect(
       reducer(
         {},
         {
-          type: GOT_SIGNED_ADDRESS,
-          address,
-          signedAddress,
+          type: UPDATE_EVENT,
+          event,
         }
       )
-    ).toEqual({ [address]: signedAddress })
+    ).toEqual(event)
   })
 })
