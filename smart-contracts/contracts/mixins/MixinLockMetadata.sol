@@ -2,6 +2,7 @@ pragma solidity 0.5.7;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import '../interfaces/IERC721.sol';
+import '../UnlockUtils.sol';
 
 
 /**
@@ -12,7 +13,8 @@ import '../interfaces/IERC721.sol';
  */
 contract MixinLockMetadata is
   IERC721,
-  Ownable
+  Ownable,
+  UnlockUtils
 {
   /// A descriptive name for a collection of NFTs in this contract
   string private lockName;
