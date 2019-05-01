@@ -13,11 +13,11 @@ import { lockRoute } from '../../utils/routes'
 import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
 import { purchaseKey } from '../../actions/key'
-import { loadEvent } from '../../actions/ticket'
+import { loadEvent } from '../../actions/event'
 import PayButton from './purchase/PayButton'
 import Media, { NoPhone } from '../../theme/media'
 import { transactionTypeMapping } from '../../utils/types'
-import keyStatus, { KeyStatus } from '../../selectors/keys'
+import keyStatus from '../../selectors/keys'
 import withConfig from '../../utils/withConfig'
 import DeveloperOverlay from '../developer/DeveloperOverlay'
 import Ticket from './purchase/Ticket'
@@ -116,9 +116,7 @@ export class EventContent extends Component {
                 <Links>{externalLinks}</Links>
               </DetailsField>
               <DetailsField>
-                {keyStatus === KeyStatus.VALID && (
-                  <Ticket account={account} lock={lock} />
-                )}
+                <Ticket account={account} lock={lock} keyStatus={keyStatus} />
               </DetailsField>
             </Row>
           </Layout>
@@ -159,13 +157,12 @@ export const mapDispatchToProps = dispatch => ({
 })
 
 export const mapStateToProps = (
-  { router, locks, keys, account, transactions, tickets },
+  { router, locks, keys, account, transactions, event },
   { config: { requiredConfirmations } }
 ) => {
   if (!account) {
     return {}
   }
-  let event = tickets.event
 
   const { lockAddress } = lockRoute(router.location.pathname)
 
@@ -189,25 +186,17 @@ export const mapStateToProps = (
     }
   }
 
-  let processedEvent
   if (event) {
-    const { name, date, lockAddress, description, location } = event
-    processedEvent = {
-      name,
-      date: new Date(date),
-      lockAddress,
-      description,
-      location,
-    }
+    event.date = new Date(event.date)
     // TEMPORARY: HARD CODE VALUES FOR NFT EVENT
     if (lockAddress === '0x5865Ff2CBd045Ef1cfE19739df19E83B32b783b4') {
-      processedEvent.name = 'NFT Dev Meetup - NYC Blockchain Week 2019'
-      processedEvent.description = `The NFT Dev Meetup brought to you by Dapper Labs, OpenSea, SuperRare, QuantStamp and Unlock: please join us for an evening of lessons, insights and fun around non fungible tokens!
+      event.name = 'NFT Dev Meetup - NYC Blockchain Week 2019'
+      event.description = `The NFT Dev Meetup brought to you by Dapper Labs, OpenSea, SuperRare, QuantStamp and Unlock: please join us for an evening of lessons, insights and fun around non fungible tokens!
 
         If you need any help (or Eth) to purchase your ticket, please get in touch with us on the Telegram group below.`
-      processedEvent.image =
+      event.image =
         'https://s3.amazonaws.com/assets.unlock-protocol.com/NFTEventLogos.png'
-      processedEvent.links = [
+      event.links = [
         {
           title: '💬 Telegram Group',
           href: 'https://t.me/joinchat/GzMTuRZfLMHZ1n2EMmF0UQ',
@@ -235,7 +224,7 @@ export const mapStateToProps = (
     lockKey,
     transaction,
     keyStatus: currentKeyStatus,
-    event: processedEvent,
+    event,
     account,
   }
 }

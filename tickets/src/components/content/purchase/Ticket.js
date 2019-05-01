@@ -6,6 +6,7 @@ import UnlockPropTypes from '../../../propTypes'
 import { signAddress } from '../../../actions/ticket'
 import Media from '../../../theme/media'
 
+import { KeyStatus } from '../../../selectors/keys'
 import TicketCode from './TicketCode'
 import withConfig from '../../../utils/withConfig'
 
@@ -21,14 +22,15 @@ export class Ticket extends Component {
   }
 
   componentDidUpdate() {
-    const { lock, signAddress, signedLockAddress } = this.props
-    const { signed } = this.state
-
-    if (signedLockAddress && !signed) {
-      this.setAsSigned()
-    } else if (!signed && !signedLockAddress) {
-      signAddress(lock.address)
-      this.setAsSigned()
+    const { lock, signAddress, signedLockAddress, keyStatus } = this.props
+    if (keyStatus === KeyStatus.VALID) {
+      const { signed } = this.state
+      if (signedLockAddress && !signed) {
+        this.setAsSigned()
+      } else if (!signed && !signedLockAddress) {
+        signAddress(lock.address)
+        this.setAsSigned()
+      }
     }
   }
 
@@ -37,13 +39,16 @@ export class Ticket extends Component {
   }
 
   render() {
-    const { account, lock, signedLockAddress } = this.props
+    const { account, lock, signedLockAddress, keyStatus } = this.props
+    if (keyStatus !== KeyStatus.VALID) {
+      return null
+    }
     return (
       <TicketInfo>
         <TicketCode
           publicKey={account.address}
           signedAddress={signedLockAddress}
-          eventAddress={lock.address}
+          lockAddress={lock.address}
         />
       </TicketInfo>
     )
@@ -66,6 +71,7 @@ export const mapStateToProps = ({ tickets }, props) => {
   return {
     signedLockAddress,
     account,
+    lock,
   }
 }
 
@@ -74,10 +80,12 @@ Ticket.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   signAddress: PropTypes.func.isRequired,
   signedLockAddress: PropTypes.string,
+  keyStatus: PropTypes.string,
 }
 
 Ticket.defaultProps = {
   signedLockAddress: null,
+  keyStatus: null,
 }
 
 export default withConfig(

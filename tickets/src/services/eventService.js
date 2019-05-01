@@ -1,7 +1,7 @@
 import axios from 'axios'
 import UnlockEvent from '../structured_data/unlockEvent'
 
-export default class TicketService {
+export default class EventService {
   constructor(host) {
     this.host = host
   }

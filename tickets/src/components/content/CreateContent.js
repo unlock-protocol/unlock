@@ -12,7 +12,7 @@ import BrowserOnly from '../helpers/BrowserOnly'
 import EventUrl from '../helpers/EventUrl'
 import { pageTitle } from '../../constants'
 import UnlockPropTypes from '../../propTypes'
-import { addEvent } from '../../actions/ticket'
+import { addEvent } from '../../actions/event'
 import CreateEventButton from './create/CreateEventButton'
 import withConfig from '../../utils/withConfig'
 
