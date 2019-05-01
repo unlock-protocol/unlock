@@ -115,6 +115,11 @@ describe('The Unlock Dashboard', () => {
             .querySelector(`[data-address="${address}"]`)
             .innerText.includes('Submitted')
         }, newLock)
+
+        // Get the next again now
+        lockText = await page.evaluate(address => {
+          return document.querySelector(`[data-address="${address}"]`).innerText
+        }, newLock)
       }
 
       // If the lock is submitted
