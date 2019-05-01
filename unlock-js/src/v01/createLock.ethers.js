@@ -1,5 +1,5 @@
 import ethersUtils from '../utils.ethers'
-import { GAS_AMOUNTS } from '../constants'
+import { GAS_AMOUNTS, ZERO } from '../constants'
 import TransactionTypes from '../transactionTypes'
 
 /**
@@ -15,7 +15,7 @@ export default async function(lock, owner) {
       'createLock(uint256,address,uint256,uint256)'
     ](
       lock.expirationDuration,
-      ethersUtils.ZERO, // ERC20 address, 0 is for eth
+      ZERO, // ERC20 address, 0 is for eth
       ethersUtils.toWei(lock.keyPrice, 'ether'),
       lock.maxNumberOfKeys,
       {
