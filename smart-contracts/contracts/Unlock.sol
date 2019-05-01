@@ -194,7 +194,7 @@ contract Unlock is
 
   // function to read the globalTokenURI field.
   function getGlobalBaseTokenURI()
-    public
+    external
     view
     returns (string memory)
   {
