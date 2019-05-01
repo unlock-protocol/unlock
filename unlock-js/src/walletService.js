@@ -101,6 +101,31 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * This function submits a web3 transaction and will trigger an event as soon as it receives its
+   * hash. We then use the web3Service to handle the ongoing transaction (watch for confirmation
+   * receipt... etc)
+   * @private
+   * @param {Promise} the result of calling a contract method (ethersjs contract)
+   * @param {string} the Unlock protocol transaction type
+   * @param {Function} a standard node callback that accepts the transaction hash
+   */
+  async _handleMethodCall(methodCall, transactionType) {
+    this.emit('transaction.pending', transactionType)
+    const transaction = await methodCall
+    this.emit(
+      'transaction.new',
+      transaction.hash,
+      transaction.from,
+      transaction.to,
+      transaction.data,
+      transactionType,
+      'submitted'
+    )
+    return transaction.hash
+    // errors fall through
+  }
+
+  /**
    * This function submits a web3Transaction and will trigger an event as soon as it receives its
    * hash. We then use the web3Service to handle the ongoing transaction (watch for conformation
    * receipt... etc)
