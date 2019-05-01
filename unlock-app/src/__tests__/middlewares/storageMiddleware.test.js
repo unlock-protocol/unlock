@@ -309,7 +309,10 @@ describe('Storage middleware', () => {
       expect(mockStorageService.getUserPrivateKey).toHaveBeenCalledWith(
         emailAddress
       )
-      expect()
+      expect(getAccountFromPrivateKey).toHaveBeenCalledWith(
+        'Private Key reporting for duty',
+        'guest'
+      )
       expect(next).toHaveBeenCalledTimes(1)
     })
   })
