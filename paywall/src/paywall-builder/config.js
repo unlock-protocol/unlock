@@ -18,7 +18,7 @@ export function sendConfig(config, iframe, origin) {
 
 function getAccount(window, iframe, origin) {
   const id = new Date().getTime()
-  window.ethereum.send(
+  window.web3.currentProvider.send(
     {
       method: 'eth_accounts',
       params: [],
@@ -48,9 +48,9 @@ export function setupReadyListener(window, iframe, origin) {
       // <script type="text/javascript">window.unlockConfig = {...}</script>
       // immediately before paywall.min.js is loaded
       sendConfig(window.unlockConfig, iframe, origin)
-      if (window.ethereum) {
-        if (window.ethereum.enable) {
-          window.ethereum.enable().then(() => {
+      if (window.web3 && window.web3.currentProvider) {
+        if (window.web3.currentProvider.enable) {
+          window.web3.currentProvider.enable().then(() => {
             getAccount(window, iframe, origin)
           })
         } else {
