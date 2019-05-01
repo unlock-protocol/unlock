@@ -16,9 +16,9 @@ contract('Lock / erc721 / unlockUtils', accounts => {
   describe('function uint2str', () => {
     let str1, str2
     it('should convert a uint to a string', async () => {
-      str1 = await lock.uint2str.call(0)
+      str1 = await lock.uint2Str.call(0)
       assert.equal(str1, '0')
-      str2 = await lock.uint2str.call(42)
+      str2 = await lock.uint2Str.call(42)
       assert.equal(str2, '42')
     })
   })
@@ -46,6 +46,15 @@ contract('Lock / erc721 / unlockUtils', accounts => {
         '3'
       )
       assert.equal(moreThan2Str, '123')
+    })
+  })
+
+  describe('function address2Str', () => {
+    let senderAddress
+    // currently returns the address as a string with all chars in lowercase
+    it('should convert an ethereum address to an ASCII string', async () => {
+      senderAddress = await lock.address2Str.call(accounts[0])
+      assert.equal(senderAddress, '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2')
     })
   })
 })
