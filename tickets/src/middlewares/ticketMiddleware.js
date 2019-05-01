@@ -48,7 +48,7 @@ const ticketMiddleware = config => {
           action.data.message.event
         ) {
           ticketService
-            .createEvent(action.data.message.event, action.signature)
+            .saveEvent(action.data.message.event, action.signature)
             .catch(error => dispatch(ticketError(error)))
         }
 
