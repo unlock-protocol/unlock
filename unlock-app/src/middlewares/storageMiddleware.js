@@ -140,7 +140,8 @@ const storageMiddleware = config => {
           const { emailAddress, password } = action
           storageService
             .getUserPrivateKey(emailAddress)
-            .then(key => {
+            .then(result => {
+              const key = result.data.passwordEncryptedPrivateKey
               try {
                 // TODO: store more than just the account address (encrypted key, etc.)
                 const account = getAccountFromPrivateKey(key, password)
