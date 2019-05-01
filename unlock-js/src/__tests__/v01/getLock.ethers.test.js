@@ -119,7 +119,7 @@ describe('v0', () => {
           expirationDuration: 2592000,
           maxNumberOfKeys: 10,
           owner,
-          totalSupply: 17,
+          outstandingKeys: 17,
           asOf: 1337,
         })
       })

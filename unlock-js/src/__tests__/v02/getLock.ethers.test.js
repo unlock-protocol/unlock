@@ -48,7 +48,7 @@ describe('v0', () => {
       nock.ethCallAndYield(
         fakeContract.functions['publicLockVersion()'].encode([]),
         checksumLockAddress,
-        resultEncoder.encode(['uint256'], [1])
+        resultEncoder.encode(['uint256'], [2])
       )
 
       // retrieve the bytecode and compare to v01
@@ -119,7 +119,7 @@ describe('v0', () => {
           expirationDuration: 2592000,
           maxNumberOfKeys: 10,
           owner,
-          totalSupply: 17,
+          outstandingKeys: 17,
           asOf: 1337,
         })
       })
