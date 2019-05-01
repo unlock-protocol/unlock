@@ -15,10 +15,12 @@ describe('Wedlocks Service', () => {
     const expectedPayload = {
       template: emailTemplate.signupConfirmation,
       recipient,
-      params: {},
+      params: {
+        confirmLink: 'https://mcdonalds.gov',
+      },
     }
     axios.post.mockReturnValue()
-    await w.confirmEmail(recipient)
+    await w.confirmEmail(recipient, 'https://mcdonalds.gov')
 
     expect(axios.post).toHaveBeenCalledWith(
       'http://notareal.host',

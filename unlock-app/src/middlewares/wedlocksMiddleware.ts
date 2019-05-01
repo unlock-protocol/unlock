@@ -9,9 +9,16 @@ const wedlocksMiddleware = (config: any) => {
   return (_: any) => {
     return (next: any) => {
       return (action: Action) => {
-        if (action.type === SIGNUP_EMAIL) {
+        // Check that window is defined before attempting to access it. It would
+        // be pretty bizarre if this event were to appear without window already
+        // existing, so it's safe to simply do nothing in that case.
+        if (action.type === SIGNUP_EMAIL && window && window.location) {
+          const { origin } = window.location
           // TODO: then and catch? I think we really only need to worry about errors.
-          wedlockService.confirmEmail(action.emailAddress)
+          wedlockService.confirmEmail(
+            action.emailAddress,
+            `${origin}/keychain#${action.emailAddress}`
+          )
         }
         next(action)
       }
