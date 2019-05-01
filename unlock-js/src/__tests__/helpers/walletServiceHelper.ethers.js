@@ -3,7 +3,7 @@ import * as UnlockV01 from 'unlock-abi-0-1'
 import * as UnlockV02 from 'unlock-abi-0-2'
 import { ethers } from 'ethers'
 
-import * as utils from '../../utils'
+import * as utils from '../../utils.ethers'
 import { GAS_AMOUNTS } from '../../constants'
 
 import WalletService from '../../walletService'
@@ -32,10 +32,10 @@ export const prepWalletService = async (
   switch (contract) {
     case UnlockV01.Unlock:
     case UnlockV01.PublicLock:
-    case UnlockV02.PublicLock: // 1 is 2
       unlockVersion =
         '0x0000000000000000000000000000000000000000000000000000000000000001'
       break
+    case UnlockV02.PublicLock:
     case UnlockV02.Unlock:
       unlockVersion =
         '0x0000000000000000000000000000000000000000000000000000000000000002'
