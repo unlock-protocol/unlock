@@ -1,4 +1,7 @@
-import { getAccountFromPrivateKey } from '@unlock-protocol/unlock-js'
+import {
+  createAccountAndPasswordEncryptKey,
+  getAccountFromPrivateKey,
+} from '@unlock-protocol/unlock-js'
 import storageMiddleware from '../../middlewares/storageMiddleware'
 import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../../actions/lock'
 import { STORE_LOCK_NAME } from '../../actions/storage'
@@ -10,6 +13,8 @@ import { startLoading, doneLoading } from '../../actions/loading'
 import configure from '../../config'
 import { SIGNUP_CREDENTIALS } from '../../actions/signUp'
 import { LOGIN_CREDENTIALS } from '../../actions/login'
+
+jest.mock('@unlock-protocol/unlock-js')
 
 /**
  * This is a "fake" middleware caller
@@ -42,8 +47,6 @@ jest.mock('../../services/storageService', () => {
 })
 
 jest.mock('../../structured_data/unlockLock.js')
-
-jest.mock(getAccountFromPrivateKey, () => true)
 
 describe('Storage middleware', () => {
   beforeEach(() => {
@@ -266,6 +269,10 @@ describe('Storage middleware', () => {
   describe('SIGNUP_CREDENTIALS', () => {
     it('should create a user and then set the account', () => {
       expect.assertions(2)
+      createAccountAndPasswordEncryptKey.mockReturnValue({
+        address: '',
+        passwordEncryptedPrivateKey: '',
+      })
       const emailAddress = 'tim@cern.ch'
       const password = 'guest'
       const { next, invoke } = create()
@@ -285,8 +292,8 @@ describe('Storage middleware', () => {
   })
 
   describe('LOGIN_CREDENTIALS', () => {
-    it('', () => {
-      expect.assertions(2)
+    it('Should call getAccountFromPrivateKey with correct data', async () => {
+      expect.assertions(3)
       const emailAddress = 'tim@cern.ch'
       const password = 'guest'
       const { next, invoke } = create()
@@ -305,7 +312,7 @@ describe('Storage middleware', () => {
         })
       })
 
-      invoke(action)
+      await invoke(action)
       expect(mockStorageService.getUserPrivateKey).toHaveBeenCalledWith(
         emailAddress
       )
