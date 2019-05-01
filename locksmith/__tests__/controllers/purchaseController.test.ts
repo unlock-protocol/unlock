@@ -1,12 +1,14 @@
-const request = require('supertest')
+import request from 'supertest'
+import sigUtil from 'eth-sig-util'
+
 const ethJsUtil = require('ethereumjs-util')
-const sigUtil = require('eth-sig-util')
 const app = require('../../src/app')
 const Base64 = require('../../src/utils/base64')
-
 const models = require('../../src/models')
 
 let AuthorizedLock = models.AuthorizedLock
+let participatingLock = '0xe4906CE8a8E861339F75611c129b9679EDAe7bBD'
+let nonParticipatingLock = '0xF4906CE8a8E861339F75611c129b9679EDAe7bBD'
 
 let privateKey = ethJsUtil.toBuffer(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
@@ -14,6 +16,7 @@ let privateKey = ethJsUtil.toBuffer(
 
 let mockPaymentProcessor = {
   chargeUser: jest.fn(),
+  initiatePurchase: jest.fn(),
 }
 
 jest.mock('../../src/payment/paymentProcessor', () => {
@@ -22,7 +25,7 @@ jest.mock('../../src/payment/paymentProcessor', () => {
   })
 })
 
-function generateTypedData(message) {
+function generateTypedData(message: any) {
   return {
     types: {
       EIP712Domain: [
@@ -50,7 +53,7 @@ function generateTypedData(message) {
 describe('Purchase Controller', () => {
   beforeAll(async () => {
     await AuthorizedLock.create({
-      address: '0xe4906CE8a8E861339F75611c129b9679EDAe7bBD',
+      address: participatingLock,
     })
   })
 
@@ -63,7 +66,7 @@ describe('Purchase Controller', () => {
       it('returns a 401 status code', async () => {
         expect.assertions(1)
         let response = await request(app).post('/purchase')
-        expect(response.statusCode).toBe(401)
+        expect(response.status).toBe(401)
       })
     })
 
@@ -71,7 +74,7 @@ describe('Purchase Controller', () => {
       let message = {
         purchaseRequest: {
           recipient: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-          lock: '0xe4906CE8a8E861339F75611c129b9679EDAe7bBD',
+          lock: participatingLock,
           expiry: 16733658026,
         },
       }
@@ -85,15 +88,17 @@ describe('Purchase Controller', () => {
         expect.assertions(2)
         let response = await request(app)
           .post('/purchase')
-          .set('Accept', /json/)
+          .set('Accept', 'json')
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
           .send(typedData)
 
-        expect(mockPaymentProcessor.chargeUser).toBeCalledWith(
+        expect(mockPaymentProcessor.initiatePurchase).toBeCalledWith(
           '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-          { price: 720 }
+          participatingLock,
+          undefined,
+          undefined
         )
-        expect(response.statusCode).toBe(202)
+        expect(response.status).toBe(202)
       })
     })
 
@@ -101,7 +106,7 @@ describe('Purchase Controller', () => {
       let message = {
         purchaseRequest: {
           recipient: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-          lock: '0xe4906CE8a8E861339F75611c129b9679EDAe7bBD',
+          lock: participatingLock,
           expiry: 702764221,
         },
       }
@@ -115,10 +120,10 @@ describe('Purchase Controller', () => {
         expect.assertions(1)
         let response = await request(app)
           .post('/purchase')
-          .set('Accept', /json/)
+          .set('Accept', 'json')
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
           .send(typedData)
-        expect(response.statusCode).toBe(412)
+        expect(response.status).toBe(412)
       })
     })
 
@@ -126,7 +131,7 @@ describe('Purchase Controller', () => {
       let message = {
         purchaseRequest: {
           recipient: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-          lock: '0xF4906CE8a8E861339F75611c129b9679EDAe7bBD',
+          lock: nonParticipatingLock,
           expiry: 16733658026,
         },
       }
@@ -139,10 +144,10 @@ describe('Purchase Controller', () => {
         expect.assertions(1)
         let response = await request(app)
           .post('/purchase')
-          .set('Accept', /json/)
+          .set('Accept', 'json')
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
           .send(typedData)
-        expect(response.statusCode).toBe(451)
+        expect(response.status).toBe(451)
       })
     })
   })
