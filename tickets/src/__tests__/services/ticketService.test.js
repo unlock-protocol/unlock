@@ -11,8 +11,8 @@ describe('TicketService', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
-  describe('createEvent', () => {
-    describe('when the event can be created', () => {
+  describe('saveEvent', () => {
+    describe('when an event does not exist and can be created', () => {
       it('returns a successful promise', async () => {
         expect.assertions(1)
         const event = {
@@ -24,8 +24,9 @@ describe('TicketService', () => {
           owner: '0x03',
           logo: '',
         }
+        axios.get.mockReturnValue({ status: 404 })
         axios.post.mockReturnValue({})
-        await ticketService.createEvent(event)
+        await ticketService.saveEvent(event)
 
         const payload = UnlockEvent.build(event)
 
@@ -36,7 +37,7 @@ describe('TicketService', () => {
         )
       })
     })
-    describe('when the event cannot be created', () => {
+    describe('when an event does not exist and cannot be created', () => {
       it('returns a rejected promise', async () => {
         expect.assertions(2)
         const event = {
@@ -48,17 +49,72 @@ describe('TicketService', () => {
           owner: '0x03',
           logo: '',
         }
-        axios.post.mockRejectedValue('Hark! An Error')
+        axios.get.mockReturnValue({ status: 404 })
+        axios.post.mockRejectedValue('Oh dear! An Error')
         try {
-          await ticketService.createEvent(event)
+          await ticketService.saveEvent(event)
         } catch (error) {
-          expect(error).toEqual('Hark! An Error')
+          expect(error).toEqual('Oh dear! An Error')
         }
 
         const payload = UnlockEvent.build(event)
 
         expect(axios.post).toHaveBeenCalledWith(
           `${serviceHost}/events/`,
+          payload,
+          {}
+        )
+      })
+    })
+    describe('when an event does exist and can be updated', () => {
+      it('returns a successful promise', async () => {
+        expect.assertions(1)
+        const event = {
+          lockAddress: 'abc123',
+          name: 'Sample event',
+          description: 'Fun times',
+          location: 'On the blockchain',
+          date: new Date().toString(),
+          owner: '0x03',
+          logo: '',
+        }
+        axios.get.mockReturnValue({ status: 200 })
+        axios.put.mockReturnValue({})
+        await ticketService.saveEvent(event)
+
+        const payload = UnlockEvent.build(event)
+
+        expect(axios.put).toHaveBeenCalledWith(
+          `${serviceHost}/events/${event.lockAddress}`,
+          payload,
+          {}
+        )
+      })
+    })
+    describe('when an event does exist and cannot be updated', () => {
+      it('returns a successful promise', async () => {
+        expect.assertions(2)
+        const event = {
+          lockAddress: 'abc123',
+          name: 'Sample event',
+          description: 'Fun times',
+          location: 'On the blockchain',
+          date: new Date().toString(),
+          owner: '0x03',
+          logo: '',
+        }
+        axios.get.mockReturnValue({ status: 200 })
+        axios.put.mockRejectedValue('Crumbs! An Error')
+        try {
+          await ticketService.saveEvent(event)
+        } catch (error) {
+          expect(error).toEqual('Crumbs! An Error')
+        }
+
+        const payload = UnlockEvent.build(event)
+
+        expect(axios.put).toHaveBeenCalledWith(
+          `${serviceHost}/events/${event.lockAddress}`,
           payload,
           {}
         )
