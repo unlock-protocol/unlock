@@ -157,6 +157,9 @@ export default class UnlockService extends EventEmitter {
       throw new Error(Errors.MISSING_WEB3)
     }
 
+    // ethereum has 2 kinds of addresses, this ensures we don't
+    // accidentally store the same contract twice
+    // see https://docs.ethers.io/ethers.js/html/notes.html#checksum-address
     const contractAddress = address.toLowerCase()
     let version = this.ethers_versionForAddress[contractAddress]
     if (version === undefined) {
