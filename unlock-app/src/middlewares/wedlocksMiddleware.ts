@@ -11,7 +11,7 @@ const wedlocksMiddleware = (config: any) => {
       return (action: Action) => {
         if (action.type === SIGNUP_EMAIL) {
           // TODO: then and catch? I think we really only need to worry about errors.
-          wedlockService.confirmEmail(action.emailAddress)
+          wedlockService.confirmEmail(action.emailAddress, '')
         }
         next(action)
       }
