@@ -11,12 +11,11 @@ export default class TicketService {
   }
 
   /**
-   * Saves a new event to locksmith
+   * Saves an event to locksmith - either creating a new event or updating an existing record.
    * @param {*} event
-   * @param {*} token
    * @returns {Promise<*>}
    */
-  async createEvent(
+  async saveEvent(
     { lockAddress, name, description, location, date, owner, logo },
     token
   ) {
@@ -34,10 +33,28 @@ export default class TicketService {
       logo,
     })
 
-    try {
-      return await axios.post(`${this.host}/events/`, payload, opts)
-    } catch (error) {
-      return Promise.reject(error)
+    // First check if the event exists
+    const res = await axios.get(`${this.host}/events/${lockAddress}`, {
+      validateStatus: false,
+    })
+    if (res.status === 200) {
+      try {
+        // If so, update the record
+        return await axios.put(
+          `${this.host}/events/${lockAddress}`,
+          payload,
+          opts
+        )
+      } catch (error) {
+        return Promise.reject(error)
+      }
+    } else {
+      try {
+        // Otherwise create it
+        await axios.post(`${this.host}/events/`, payload, opts)
+      } catch (error) {
+        return Promise.reject(error)
+      }
     }
   }
 
