@@ -84,11 +84,13 @@ describe('Web3Service', () => {
       await nockBeforeEach()
       const balance = '0xdeadbeef'
       const inWei = utils.hexToNumberString(balance)
+      const expectedBalance = utils.fromWei(inWei, 'ether')
       const address = '0x1df62f291b2e969fb0849d99d9ce41e2f137006e'
+
       nock.getBalanceForAccountAndYieldBalance(address, '0xdeadbeef')
 
       let addressBalance = await web3Service.ethers_getAddressBalance(address)
-      expect(addressBalance).toEqual(utils.fromWei(inWei, 'ether'))
+      expect(addressBalance).toEqual(expectedBalance)
     })
   })
 })
