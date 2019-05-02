@@ -9,5 +9,6 @@ module.exports = {
   bigNumberify: utils.bigNumberify,
   hexToNumberString: num =>
     utils.formatUnits(utils.bigNumberify(num), 'wei').replace('.0', ''),
-  fromWei: (num, units) => utils.formatUnits(utils.bigNumberify(num), units),
+  fromWei: (num, units) =>
+    utils.formatUnits(utils.bigNumberify(num), units).replace('.0', ''),
 }
