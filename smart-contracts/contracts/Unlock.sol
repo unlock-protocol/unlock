@@ -69,6 +69,10 @@ contract Unlock is
   // Used by locks where the owner has not set a custom base URI.
   string private globalBaseTokenURI;
 
+   // global base token symbol
+  // Used by locks where the owner has not set a custom symbol
+  string private globalTokenSymbol;
+
   // Events
   event NewLock(
     address indexed lockOwner,
@@ -77,6 +81,10 @@ contract Unlock is
 
   event NewTokenURI(
     string tokenURI
+  );
+
+  event NewTokenSymbol(
+    string tokenSymbol
   );
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
@@ -211,5 +219,25 @@ contract Unlock is
   {
     globalBaseTokenURI = _URI;
     emit NewTokenURI(_URI);
+  }
+
+  // function to read the globalTokenSymbol field.
+  function getGlobalTokenSymbol()
+    external
+    view
+    returns (string memory)
+  {
+    return globalTokenSymbol;
+  }
+
+  // function to set the globalTokenSymbol field.
+  function setGlobalTokenSymbol(
+    string calldata _symbol
+  )
+    external
+    onlyOwner
+  {
+    globalTokenSymbol = _symbol;
+    emit NewTokenSymbol(_symbol);
   }
 }
