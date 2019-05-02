@@ -3,7 +3,7 @@ import {
   getAccountFromPrivateKey,
 } from '../accounts'
 
-jest.setTimeout(10000)
+jest.setTimeout(15000)
 
 describe('account helpers', () => {
   describe('web3 accounts creation', () => {
