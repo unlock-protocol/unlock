@@ -486,6 +486,38 @@ describe('Paywall', () => {
       )
     })
 
+    it('should accept account, and dispatch setAccount if iframe has no account', () => {
+      expect.assertions(1)
+
+      const anotherAccount = '0x1234567890123456789012345678901234567890'
+      state.account = null
+      store = createUnlockStore(state)
+      store.dispatch = jest.fn()
+      rtl.act(() => {
+        renderMockPaywall()
+      })
+      const listener = getAccountPostmessageEventListener()
+
+      rtl.act(() => {
+        listener({
+          origin: 'http://example.com',
+          source: fakeWindow.parent,
+          data: { type: POST_MESSAGE_ACCOUNT, payload: anotherAccount },
+        })
+        jest.runAllTimers()
+      })
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining(
+          setAccount({
+            address: anotherAccount,
+            fromLocalStorage: true,
+            fromMainWindow: true,
+          })
+        )
+      )
+    })
+
     it('should ignore account if it is unchanged', () => {
       expect.assertions(1)
 
