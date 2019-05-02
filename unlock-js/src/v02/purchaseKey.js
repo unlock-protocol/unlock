@@ -33,7 +33,7 @@ export default function(lock, owner, keyPrice, account, data = '') {
       to: lock,
       from: account,
       data: abi,
-      gas: GAS_AMOUNTS.purchaseKey,
+      gas: GAS_AMOUNTS.purchaseFor,
       value: Web3Utils.toWei(keyPrice, 'ether'),
       contract: UnlockV02.PublicLock,
     },
