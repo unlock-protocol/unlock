@@ -381,11 +381,7 @@ describe('WalletService', () => {
   })
 
   describe('versions', () => {
-    const versionSpecificLockMethods = [
-      'updateKeyPrice',
-      'purchaseKey',
-      'withdrawFromLock',
-    ]
+    const versionSpecificLockMethods = ['updateKeyPrice', 'withdrawFromLock']
 
     it.each(versionSpecificLockMethods)(
       'should invoke the implementation of the corresponding version of %s',

@@ -75,4 +75,13 @@ describe('ethers utils', () => {
       '0x0000000000000000000000000000000000000000000000000000000000012345'
     )
   })
+
+  it('utf8ToHex', () => {
+    expect.assertions(2)
+
+    expect(ethersUtils.utf8ToHex('hi there')).toBe('0x6869207468657265')
+    expect(ethersUtils.utf8ToHex('I like turtles')).toBe(
+      '0x49206c696b6520747572746c6573'
+    )
+  })
 })
