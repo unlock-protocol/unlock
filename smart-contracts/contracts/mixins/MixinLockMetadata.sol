@@ -19,6 +19,13 @@ contract MixinLockMetadata is
   /// A descriptive name for a collection of NFTs in this contract
   string private lockName;
 
+  constructor(
+    string memory _lockName
+  ) internal
+  {
+    lockName = _lockName;
+  }
+
   /**
    * Allows the Lock owner to assign a descriptive name for this Lock.
    */

@@ -104,6 +104,7 @@ contract Unlock is
   * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
   */
   function createLock(
+    string memory _lockName,
     uint _expirationDuration,
     address _tokenAddress,
     uint _keyPrice,
@@ -115,6 +116,7 @@ contract Unlock is
     // create lock
     PublicLock newLock = new PublicLock(
       msg.sender,
+      _lockName,
       _expirationDuration,
       _tokenAddress,
       _keyPrice,

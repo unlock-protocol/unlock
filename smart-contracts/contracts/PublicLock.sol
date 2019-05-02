@@ -44,6 +44,7 @@ contract PublicLock is
 {
   constructor(
     address _owner,
+    string memory _lockName,
     uint _expirationDuration,
     address _tokenAddress,
     uint _keyPrice,
@@ -52,6 +53,7 @@ contract PublicLock is
     public
     MixinFunds(_tokenAddress)
     MixinLockCore(_expirationDuration, _keyPrice, _maxNumberOfKeys, 1)
+    MixinLockMetadata(_lockName)
   {
     // registering the interface for erc721 with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
