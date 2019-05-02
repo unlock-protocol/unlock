@@ -2,6 +2,7 @@ import Web3 from 'web3'
 import { providers as ethersProviders } from 'ethers'
 import { bufferToHex, generateAddress } from 'ethereumjs-util'
 import Web3Utils from './utils'
+import ethers_utils from './utils.ethers'
 import TransactionTypes from './transactionTypes'
 import UnlockService from './unlockService'
 import { MAX_UINT, UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
@@ -268,6 +269,20 @@ export default class Web3Service extends UnlockService {
       .catch(error => {
         this.emit('error', error)
       })
+  }
+
+  /**
+   * This retrieves the balance of an address (contract or account)
+   * and formats it to a string of ether.
+   * Returns a promise with the balance
+   */
+  async ethers_getAddressBalance(address) {
+    try {
+      const balance = await this.provider.getBalance(address)
+      return ethers_utils.fromWei(balance, 'ether')
+    } catch (error) {
+      this.emit('error', error)
+    }
   }
 
   /**
