@@ -31,16 +31,16 @@ export const prepWalletService = async (
   let unlockVersion
   switch (contract) {
     case UnlockV01.Unlock:
-    case UnlockV01.PublicLock:
       unlockVersion =
         '0x0000000000000000000000000000000000000000000000000000000000000001'
       break
-    case UnlockV02.PublicLock:
     case UnlockV02.Unlock:
+    case UnlockV02.PublicLock:
       unlockVersion =
         '0x0000000000000000000000000000000000000000000000000000000000000002'
       break
     default:
+    case UnlockV01.PublicLock: // version 0 is version 1 (oops)
     case UnlockV0.Unlock:
     case UnlockV0.PublicLock:
       unlockVersion =
@@ -60,8 +60,15 @@ export const prepWalletService = async (
     await walletService.getUnlockContract()
   } else {
     // is PublicLock
-    // this is "Contract.publicLockVersion()" with params [] (0x4220bd46)
+    // this is "Contract.publicLockVersion()" with params [] (0xd1bbd49c)
+
     nock.ethCallAndYield('0xd1bbd49c', checksumContractAddress, unlockVersion)
+    if (!unlockVersion) {
+      nock.ethGetCodeAndYield(contractAddress, contract.deployedBytecode)
+    }
+    if (unlockVersion < 2) {
+      nock.ethGetCodeAndYield(contractAddress, contract.deployedBytecode)
+    }
     await walletService.getLockContract(contractAddress)
   }
 
