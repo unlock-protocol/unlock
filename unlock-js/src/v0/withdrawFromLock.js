@@ -18,7 +18,7 @@ export default function(lock, account) {
       to: lock,
       from: account,
       data,
-      gas: GAS_AMOUNTS.withdrawFromLock,
+      gas: GAS_AMOUNTS.withdraw,
       contract: UnlockV0.PublicLock,
     },
     TransactionTypes.WITHDRAWAL,
