@@ -5,13 +5,13 @@ import {
 
 describe('account helpers', () => {
   describe('web3 accounts creation', () => {
-    it('should call web3.accounts.create', () => {
+    it('should call ethers.createRandom', async () => {
       expect.assertions(2)
 
       const {
         address,
         passwordEncryptedPrivateKey,
-      } = createAccountAndPasswordEncryptKey('hello')
+      } = await createAccountAndPasswordEncryptKey('hello')
 
       expect(address).toMatch(/^0x[a-fA-F0-9]{40}$/)
       expect(passwordEncryptedPrivateKey.address).toBe(
@@ -21,14 +21,14 @@ describe('account helpers', () => {
   })
 
   describe('web3 account decryption', () => {
-    it('should decrypt an account given the correct password', () => {
+    it('should decrypt an account given the correct password', async () => {
       expect.assertions(1)
       const {
         address,
         passwordEncryptedPrivateKey,
-      } = createAccountAndPasswordEncryptKey('guest')
+      } = await createAccountAndPasswordEncryptKey('guest')
 
-      const decryptedAddress = getAccountFromPrivateKey(
+      const decryptedAddress = await getAccountFromPrivateKey(
         passwordEncryptedPrivateKey,
         'guest'
       )
@@ -37,22 +37,24 @@ describe('account helpers', () => {
         expect.objectContaining({
           address: address,
           privateKey: expect.any(String),
-          encrypt: expect.any(Function),
-          sign: expect.any(Function),
-          signTransaction: expect.any(Function),
+          publicKey: expect.any(String),
+          signDigest: expect.any(Function),
+          computeSharedSecret: expect.any(Function),
         })
       )
     })
 
-    it('should throw when an incorrect password is given for an account', () => {
+    it('should throw when an incorrect password is given for an account', async () => {
       expect.assertions(1)
       const {
         passwordEncryptedPrivateKey,
-      } = createAccountAndPasswordEncryptKey('guest')
+      } = await createAccountAndPasswordEncryptKey('guest')
 
-      expect(() => {
-        getAccountFromPrivateKey(passwordEncryptedPrivateKey, 'ghost')
-      }).toThrow()
+      try {
+        await getAccountFromPrivateKey(passwordEncryptedPrivateKey, 'ghost')
+      } catch (e) {
+        expect(e).toBeInstanceOf(Error)
+      }
     })
   })
 })
