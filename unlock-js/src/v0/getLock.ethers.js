@@ -1,4 +1,4 @@
-import Web3Utils from '../utils.ethers'
+import utils from '../utils.ethers'
 import { UNLIMITED_KEYS_COUNT } from '../constants'
 
 /**
@@ -9,13 +9,13 @@ import { UNLIMITED_KEYS_COUNT } from '../constants'
 export default async function(address) {
   const contract = await this.getLockContract(address)
   const attributes = {
-    keyPrice: x => Web3Utils.fromWei(x, 'ether'),
+    keyPrice: x => utils.fromWei(x, 'ether'),
     expirationDuration: parseInt,
     maxNumberOfKeys: value => {
-      if (Web3Utils.isInfiniteKeys(value)) {
+      if (utils.isInfiniteKeys(value)) {
         return UNLIMITED_KEYS_COUNT
       }
-      return Web3Utils.toNumber(value)
+      return utils.toNumber(value)
     },
     owner: x => x,
     outstandingKeys: parseInt,
