@@ -384,7 +384,6 @@ describe('WalletService', () => {
     const versionSpecificLockMethods = [
       'updateKeyPrice',
       'purchaseKey',
-      'partialWithdrawFromLock',
       'withdrawFromLock',
     ]
 
