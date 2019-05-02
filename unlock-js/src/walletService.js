@@ -168,6 +168,17 @@ export default class WalletService extends UnlockService {
    * @param {string} price : new price for the lock
    */
   async updateKeyPrice(lock, account, price) {
+    const version = await this.lockContractAbiVersion(lock)
+    return version.updateKeyPrice.bind(this)(lock, account, price)
+  }
+
+  /**
+   *
+   * @param {PropTypes.address} lock : address of the lock for which we update the price
+   * @param {PropTypes.address} account: account who owns the lock
+   * @param {string} price : new price for the lock
+   */
+  async ethers_updateKeyPrice(lock, account, price) {
     const version = await this.ethers_lockContractAbiVersion(lock)
     return version.ethers_updateKeyPrice.bind(this)(lock, account, price)
   }
