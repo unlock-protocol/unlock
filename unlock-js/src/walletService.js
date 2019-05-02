@@ -275,6 +275,17 @@ export default class WalletService extends UnlockService {
    * @param {Function} callback TODO: implement...
    */
   async withdrawFromLock(lock, account) {
+    const version = await this.lockContractAbiVersion(lock)
+    return version.withdrawFromLock.bind(this)(lock, account)
+  }
+
+  /**
+   * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
+   * @param {PropTypes.address} lock
+   * @param {PropTypes.address} account
+   * @param {Function} callback TODO: implement...
+   */
+  async ethers_withdrawFromLock(lock, account) {
     const version = await this.ethers_lockContractAbiVersion(lock)
     return version.ethers_withdrawFromLock.bind(this)(lock, account)
   }
