@@ -162,11 +162,14 @@ export default class StorageService {
   async getUserPrivateKey(emailAddress) {
     const opts = {}
     try {
-      return await axios.get(
+      const response = await axios.get(
         `${this.host}/users/${encodeURIComponent(emailAddress)}/privatekey`,
         null,
         opts
       )
+      if (response.data && response.data.passwordEncryptedPrivateKey) {
+        return response.data.passwordEncryptedPrivateKey
+      }
     } catch (error) {
       return Promise.reject(error)
     }
