@@ -3,6 +3,8 @@ import {
   getAccountFromPrivateKey,
 } from '../accounts'
 
+jest.setTimeout(10000)
+
 describe('account helpers', () => {
   describe('web3 accounts creation', () => {
     it('should call ethers.createRandom', async () => {
@@ -42,10 +44,10 @@ describe('account helpers', () => {
           computeSharedSecret: expect.any(Function),
         })
       )
-    }, 10000)
+    })
 
     it('should throw when an incorrect password is given for an account', async () => {
-      expect.assertions(1)
+      expect.assertions(2)
       const {
         passwordEncryptedPrivateKey,
       } = await createAccountAndPasswordEncryptKey('guest')
@@ -54,7 +56,8 @@ describe('account helpers', () => {
         await getAccountFromPrivateKey(passwordEncryptedPrivateKey, 'ghost')
       } catch (e) {
         expect(e).toBeInstanceOf(Error)
+        expect(e.message).toBe('invalid password')
       }
     })
-  }, 10000)
+  })
 })
