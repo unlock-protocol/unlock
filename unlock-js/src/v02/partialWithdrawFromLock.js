@@ -25,7 +25,7 @@ export default function(lock, account, ethAmount, callback) {
       to: lock,
       from: account,
       data,
-      gas: GAS_AMOUNTS.partialWithdrawFromLock,
+      gas: GAS_AMOUNTS.partialWithdraw,
       contract: UnlockV02.PublicLock,
     },
     TransactionTypes.WITHDRAWAL,

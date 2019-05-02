@@ -77,7 +77,7 @@ describe('v0', () => {
           to: lock,
           from: account,
           data,
-          gas: GAS_AMOUNTS.purchaseKey,
+          gas: GAS_AMOUNTS.purchaseFor,
           contract: UnlockV0.PublicLock,
           value: '100000000000000000000000000', // Web3Utils.toWei(keyPrice, 'ether')
         },

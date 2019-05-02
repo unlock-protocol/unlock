@@ -73,7 +73,7 @@ describe('v01', () => {
           to: lock,
           from: account,
           data,
-          gas: GAS_AMOUNTS.partialWithdrawFromLock,
+          gas: GAS_AMOUNTS.partialWithdraw,
           contract: UnlockV01.PublicLock,
         },
         TransactionTypes.WITHDRAWAL,
