@@ -13,6 +13,7 @@ module.exports = function deployLocks(
       let createCall
       if (unlock.methods && unlock.methods.createLock) {
         createCall = unlock.methods.createLock(
+          Locks[name].lockName,
           Locks[name].expirationDuration.toFixed(),
           tokenAddress,
           Locks[name].keyPrice.toFixed(),
@@ -20,6 +21,7 @@ module.exports = function deployLocks(
         )
       } else {
         createCall = unlock.createLock(
+          Locks[name].lockName,
           Locks[name].expirationDuration.toFixed(),
           tokenAddress,
           Locks[name].keyPrice.toFixed(),
