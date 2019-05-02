@@ -5,6 +5,12 @@ import NockHelper from './helpers/nockHelper'
 import Web3Service from '../web3Service'
 import utils from '../utils.ethers'
 
+import v0 from '../v0'
+import v01 from '../v01'
+import v02 from '../v02'
+
+const supportedVersions = [v0, v01, v02]
+
 const blockTime = 3
 const readOnlyProvider = 'http://127.0.0.1:8545'
 const requiredConfirmations = 12
@@ -92,5 +98,38 @@ describe('Web3Service', () => {
       let addressBalance = await web3Service.ethers_getAddressBalance(address)
       expect(addressBalance).toEqual(expectedBalance)
     })
+  })
+
+  describe('versions', () => {
+    const versionSpecificLockMethods = ['getLock']
+
+    it.each(versionSpecificLockMethods)(
+      'should invoke the implementation of the corresponding version of %s',
+      async method => {
+        const args = []
+        const result = {}
+        const version = {
+          [`ethers_${method}`]: function(_args) {
+            // Needs to be a function because it is bound to web3Service
+            expect(this).toBe(web3Service)
+            expect(_args).toBe(...args)
+            return result
+          },
+        }
+        web3Service.ethers_lockContractAbiVersion = jest.fn(() => version)
+        const r = await web3Service[method](...args)
+        expect(r).toBe(result)
+      }
+    )
+
+    // for each supported version, let's make sure it implements all methods
+    it.each(supportedVersions)(
+      'should implement all the required methods',
+      version => {
+        versionSpecificLockMethods.forEach(method => {
+          expect(version[`ethers_${method}`]).toBeInstanceOf(Function)
+        })
+      }
+    )
   })
 })
