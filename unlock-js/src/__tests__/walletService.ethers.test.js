@@ -187,6 +187,7 @@ describe('WalletService (ethers)', () => {
     const versionSpecificLockMethods = [
       'partialWithdrawFromLock',
       'purchaseKey',
+      'updateKeyPrice',
     ]
 
     it.each(versionSpecificLockMethods)(
@@ -215,6 +216,9 @@ describe('WalletService (ethers)', () => {
       version => {
         versionSpecificUnlockMethods.forEach(method => {
           expect(version[method]).toBeInstanceOf(Function)
+          versionSpecificLockMethods.forEach(method => {
+            expect(version[`ethers_${method}`]).toBeInstanceOf(Function)
+          })
         })
         versionSpecificLockMethods.forEach(method => {
           expect(version[method]).toBeInstanceOf(Function)
