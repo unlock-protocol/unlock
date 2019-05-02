@@ -1,20 +1,43 @@
 #!/usr/bin/env bash
 
+set -e
+
 # This script gets the git history as by default CircleCI will only get the most recent commit.
 echo "Fetching git history"
 git config --replace-all remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
 git fetch >> /dev/null
 
+# get the timestamp of the latests commit to be deployed
 STABLE_MASTER=`git rev-list -1 --before={4.days.ago} master`
-LATEST_PRODUCTION=`git rev-parse origin/production`
-STABLE_MASTER_DATE=`git show -s --format=%ct $STABLE_MASTER`
-LATEST_PRODUCTION_DATE=`git show -s --format=%ct $LATEST_PRODUCTION`
+STABLE_MASTER_TIMESTAMP=`git show -s --format=%ct $STABLE_MASTER`
 
-if [[ $((STABLE_MASTER_DATE)) < $((LATEST_PRODUCTION_DATE)) ]]
+# Get the timestamp of the latest commit deployed
+# For this we need to parse the commit message of the latest production commit
+# IMPORTANT: all of our commits on production need to have the latest commit from master which they deploy
+# using the following format: commit:<SHA1>.
+# Automated deploys will not work if we are not able to get that commit.
+
+LATEST_PRODUCTION_COMMIT_MESSAGE=`git log -1 origin/production --pretty=%B`
+COMMIT_REGEX="commit:([0-9a-f]{40})"
+
+if [[ $LATEST_PRODUCTION_COMMIT_MESSAGE =~ $COMMIT_REGEX ]]
 then
-  echo "Latest production ($LATEST_PRODUCTION: $LATEST_PRODUCTION_DATE) is more recent than stable master ($STABLE_MASTER: $LATEST_PRODUCTION_DATE) : skipping deployment."
+  LATEST_COMMIT_ID_IN_PRODUCTION="${BASH_REMATCH[1]}"
+else
+  echo "Skipping automated deployment. Latest production does not include commit sha1 (this is to avoid deploying an older version of master)."
   exit 0
 fi
+
+LATEST_PRODUCTION_TIMESTAMP=`git show -s --format=%ct $LATEST_COMMIT_ID_IN_PRODUCTION`
+
+if [[ $((STABLE_MASTER_TIMESTAMP)) < $((LATEST_PRODUCTION_TIMESTAMP)) ]]
+then
+  STABLE_MASTER_DATE=`date -d @$STABLE_MASTER_TIMESTAMP`
+  LATEST_PRODUCTION_DATE=`date -d @$LATEST_PRODUCTION_TIMESTAMP`
+  echo "Latest production ($LATEST_PRODUCTION: $LATEST_PRODUCTION_DATE) is more recent than stable master ($STABLE_MASTER: $STABLE_MASTER_DATE) : skipping deployment."
+  exit 0
+fi
+
 
 echo "Installing github hub"
 cd ..
@@ -36,7 +59,7 @@ LATEST_PRODUCTION=`git rev-parse origin/production`
 git reset --soft $LATEST_PRODUCTION
 
 echo "Committing diff"
-COMMIT_MESSAGE="Automated deploy between $LATEST_PRODUCTION and $STABLE_MASTER"
+COMMIT_MESSAGE="Automated deploy as of commit:$STABLE_MASTER"
 git commit -m "$COMMIT_MESSAGE" -a --no-verify
 
 echo "Push new production branch"
