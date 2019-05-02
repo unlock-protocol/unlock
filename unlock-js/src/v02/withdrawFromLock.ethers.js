@@ -13,7 +13,7 @@ export default async function(lockAddress) {
   let transactionPromise
   try {
     transactionPromise = lockContract['withdraw()']({
-      gasLimit: GAS_AMOUNTS.updateKeyPrice, // overrides default value for transaction gas price
+      gasLimit: GAS_AMOUNTS.withdraw, // overrides default value for transaction gas price
     })
     const ret = await this._handleMethodCall(
       transactionPromise,
