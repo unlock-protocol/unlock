@@ -683,6 +683,24 @@ export default class Web3Service extends UnlockService {
 
   /**
    * Returns the key to the lock by the account.
+   * @param {PropTypes.string} lock
+   * @param {PropTypes.string} owner
+   */
+  async ethers_getKeyByLockForOwner(lock, owner) {
+    const lockContract = await this.getLockContract(lock)
+    return this._ethers_getKeyByLockForOwner(lockContract, owner).then(
+      expiration => {
+        this.emit('key.updated', KEY_ID(lock, owner), {
+          lock,
+          owner,
+          expiration,
+        })
+      }
+    )
+  }
+
+  /**
+   * Returns the key to the lock by the account.
    * @private
    * @param {PropTypes.string} lock
    * @param {PropTypes.string} owner
@@ -693,6 +711,30 @@ export default class Web3Service extends UnlockService {
       const expiration = await lockContract.methods
         .keyExpirationTimestampFor(owner)
         .call()
+      // Handling NO_SUCH_KEY
+      // TODO find a more robust approach (apparently the call above should throw, but it does not!)
+      if (
+        expiration ==
+        '3963877391197344453575983046348115674221700746820753546331534351508065746944'
+      ) {
+        return 0
+      }
+      return parseInt(expiration, 10)
+    } catch (error) {
+      return 0
+    }
+  }
+
+  /**
+   * Returns the key to the lock by the account.
+   * @private
+   * @param {PropTypes.string} lock
+   * @param {PropTypes.string} owner
+   * @return Promise<>
+   */
+  async _ethers_getKeyByLockForOwner(lockContract, owner) {
+    try {
+      const expiration = await lockContract.keyExpirationTimestampFor(owner)
       // Handling NO_SUCH_KEY
       // TODO find a more robust approach (apparently the call above should throw, but it does not!)
       if (

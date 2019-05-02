@@ -23,6 +23,7 @@ const blockTime = 3
 const readOnlyProvider = 'http://127.0.0.1:8545'
 const requiredConfirmations = 12
 const unlockAddress = '0xc43efE2C7116CB94d563b5A9D68F260CCc44256F'
+const lockAddress = '0x5ed6a5bb0fda25eac3b5d03fa875cb60a4639d8e'
 
 const nock = new NockHelper(
   readOnlyProvider,
@@ -334,6 +335,84 @@ describe('Web3Service', () => {
         })
       }
     )
+  })
+
+  describe('_getKeyByLockForOwner (non-version specific tests)', () => {
+    it('should yield the expiration date for the user key on the lock', async () => {
+      expect.assertions(2)
+      await nockBeforeEach()
+      const contract = {
+        keyExpirationTimestampFor: jest.fn(() => {
+          return Promise.resolve('123')
+        }),
+      }
+      const account = '0xabc'
+      const expiration = await web3Service._ethers_getKeyByLockForOwner(
+        contract,
+        account
+      )
+      expect(expiration).toEqual(123)
+      expect(contract.keyExpirationTimestampFor).toHaveBeenCalledWith(account)
+    })
+
+    it('should return 0 if the value returned by the contract is 3963877391197344453575983046348115674221700746820753546331534351508065746944', async () => {
+      expect.assertions(2)
+      await nockBeforeEach()
+      const contract = {
+        keyExpirationTimestampFor: jest.fn(() => {
+          return Promise.resolve(
+            '3963877391197344453575983046348115674221700746820753546331534351508065746944'
+          )
+        }),
+      }
+      const account = '0xabc'
+      const expiration = await web3Service._ethers_getKeyByLockForOwner(
+        contract,
+        account
+      )
+      expect(expiration).toEqual(0)
+      expect(contract.keyExpirationTimestampFor).toHaveBeenCalledWith(account)
+    })
+
+    it('should return 0 if there was an exception', async () => {
+      expect.assertions(2)
+      await nockBeforeEach()
+      const contract = {
+        keyExpirationTimestampFor: jest.fn(() => {
+          return Promise.reject('Error')
+        }),
+      }
+      const account = '0xabc'
+      const expiration = await web3Service._ethers_getKeyByLockForOwner(
+        contract,
+        account
+      )
+      expect(expiration).toEqual(0)
+      expect(contract.keyExpirationTimestampFor).toHaveBeenCalledWith(account)
+    })
+  })
+
+  describe('getKeyByLockForOwner', () => {
+    it('should trigger an event with the key', async () => {
+      expect.assertions(4)
+      await nockBeforeEach()
+      web3Service.ethers_lockContractAbiVersion = jest.fn(() =>
+        Promise.resolve(v0)
+      )
+      web3Service._ethers_getKeyByLockForOwner = jest.fn(() => {
+        return new Promise(resolve => {
+          return resolve(100)
+        })
+      })
+
+      web3Service.on('key.updated', (keyId, update) => {
+        expect(keyId).toBe([lockAddress, account].join('-'))
+        expect(update.expiration).toBe(100)
+        expect(update.lock).toBe(lockAddress)
+        expect(update.owner).toBe(account)
+      })
+      await web3Service.ethers_getKeyByLockForOwner(lockAddress, account)
+    })
   })
 
   describe('versions', () => {
