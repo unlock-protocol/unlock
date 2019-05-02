@@ -2,6 +2,10 @@ import { ethers } from 'ethers'
 import http from 'http'
 import NockHelper from './helpers/nockHelper'
 
+import v0 from '../v0'
+import v01 from '../v01'
+import v02 from '../v02'
+
 import WalletService from '../walletService'
 
 const endpoint = 'http://127.0.0.1:8545'
@@ -157,5 +161,39 @@ describe('WalletService (ethers)', () => {
         }
       })
     })
+  })
+
+  describe('versions', () => {
+    const versionSpecificUnlockMethods = ['createLock']
+
+    it.each(versionSpecificUnlockMethods)(
+      'should invoke the implementation of the corresponding version of %s',
+      async method => {
+        const args = []
+        const result = {}
+        const version = {
+          [`ethers_${method}`]: function(_args) {
+            // Needs to be a function because it is bound to walletService
+            expect(this).toBe(walletService)
+            expect(_args).toBe(...args)
+            return result
+          },
+        }
+        walletService.ethers_unlockContractAbiVersion = jest.fn(() => version)
+        const r = await walletService[method](...args)
+        expect(r).toBe(result)
+      }
+    )
+
+    // for each supported version, let's make sure it implements all methods
+    const supportedVersions = [v0, v01, v02]
+    it.each(supportedVersions)(
+      'should implement all the required methods',
+      version => {
+        versionSpecificUnlockMethods.forEach(method => {
+          expect(version[method]).toBeInstanceOf(Function)
+        })
+      }
+    )
   })
 })
