@@ -13,8 +13,6 @@ import v01 from '../v01'
 import v02 from '../v02'
 import { KEY_ID } from '../constants'
 
-const supportedVersions = [v0, v01, v02]
-
 const blockTime = 3
 const readOnlyProvider = 'http://127.0.0.1:8545'
 const requiredConfirmations = 12
@@ -2237,38 +2235,5 @@ describe('Web3Service', () => {
       })
       await web3Service.getKeyByLockForOwner(lockAddress, account)
     })
-  })
-
-  describe('versions', () => {
-    const versionSpecificLockMethods = ['getLock']
-
-    it.each(versionSpecificLockMethods)(
-      'should invoke the implementation of the corresponding version of %s',
-      async method => {
-        const args = []
-        const result = {}
-        const version = {
-          [method]: function(_args) {
-            // Needs to be a function because it is bound to web3Service
-            expect(this).toBe(web3Service)
-            expect(_args).toBe(...args)
-            return result
-          },
-        }
-        web3Service.lockContractAbiVersion = jest.fn(() => version)
-        const r = await web3Service[method](...args)
-        expect(r).toBe(result)
-      }
-    )
-
-    // for each supported version, let's make sure it implements all methods
-    it.each(supportedVersions)(
-      'should implement all the required methods',
-      version => {
-        versionSpecificLockMethods.forEach(method => {
-          expect(version[method]).toBeInstanceOf(Function)
-        })
-      }
-    )
   })
 })
