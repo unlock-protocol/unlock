@@ -230,8 +230,8 @@ export default class WalletService extends UnlockService {
    * @param {Function} callback TODO: implement...
    */
   async withdrawFromLock(lock, account) {
-    const version = await this.lockContractAbiVersion(lock)
-    return version.withdrawFromLock.bind(this)(lock, account)
+    const version = await this.ethers_lockContractAbiVersion(lock)
+    return version.ethers_withdrawFromLock.bind(this)(lock, account)
   }
 
   /**
