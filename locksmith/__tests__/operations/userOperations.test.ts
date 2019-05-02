@@ -1,9 +1,12 @@
 import UserOperations from '../../src/operations/userOperations'
 import RecoveryPhrase from '../../src/utils/recoveryPhrase'
 
-jest.mock('../../src/utils/recoveryPhrase', () => ({}))
+import Sequelize = require('sequelize')
 
+const Op = Sequelize.Op
 const models = require('../../src/models')
+
+jest.mock('../../src/utils/recoveryPhrase', () => ({}))
 
 let User: any = models.User
 let UserReference: any = models.UserReference
@@ -134,5 +137,29 @@ describe('Recovery Phrase Lookup', () => {
       )
       expect(result).toEqual(null)
     })
+  })
+})
+
+describe('Updating encrypted private key', () => {
+  it('attemtps to update the relevant records', async () => {
+    expect.assertions(1)
+    User.update = jest.fn(() => {})
+
+    await UserOperations.updatePasswordEncryptedPrivateKey(
+      '0x21cc9c438d9751a3225496f6fd1f1215c7bd5d83',
+      '{"data" : "encryptedPassword"}'
+    )
+    expect(User.update).toHaveBeenCalledWith(
+      {
+        passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
+      },
+      {
+        where: {
+          publicKey: {
+            [Op.eq]: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
+          },
+        },
+      }
+    )
   })
 })

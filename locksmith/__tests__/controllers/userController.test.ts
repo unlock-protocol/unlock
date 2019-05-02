@@ -254,6 +254,50 @@ describe('User Controller', () => {
     })
   })
 
+  describe("updating a user's password encrypted private key", () => {
+    let message = {
+      user: {
+        emailAddress: 'user@example.com',
+        publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+        passwordEncryptedPrivateKey: '{"data" : "New Encrypted Password"}',
+      },
+    }
+
+    let typedData = generateTypedData(message)
+    const sig = sigUtil.signTypedData(privateKey, {
+      data: typedData,
+    })
+
+    it('updates the password encrypted private key of the user', async () => {
+      expect.assertions(2)
+      let emailAddress = 'user@example.com'
+      let userCreationDetails = {
+        emailAddress: emailAddress,
+        publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+        passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
+      }
+
+      await UserOperations.createUser(userCreationDetails)
+
+      let response = await request(app)
+        .put(
+          '/users/0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2/passwordEncryptedPrivateKey'
+        )
+        .set('Accept', /json/)
+        .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+        .send(typedData)
+
+      let user = await User.findOne({
+        where: { publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2' },
+      })
+
+      expect(user.passwordEncryptedPrivateKey).toEqual(
+        '{"data" : "New Encrypted Password"}'
+      )
+      expect(response.status).toBe(202)
+    })
+  })
+
   describe("updating a user's payment details", () => {
     beforeAll(() => {
       jest.unmock('../../src/operations/userOperations')
