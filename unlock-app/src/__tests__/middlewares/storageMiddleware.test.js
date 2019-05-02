@@ -1,4 +1,3 @@
-import * as UnlockJS from '@unlock-protocol/unlock-js'
 import storageMiddleware from '../../middlewares/storageMiddleware'
 import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../../actions/lock'
 import { STORE_LOCK_NAME } from '../../actions/storage'
@@ -287,7 +286,7 @@ describe('Storage middleware', () => {
       expect.assertions(3)
       const emailAddress = 'tim@cern.ch'
       const password = 'guest'
-      const { next, invoke } = create()
+      const { next, invoke, store } = create()
 
       const action = {
         type: LOGIN_CREDENTIALS,
@@ -295,23 +294,50 @@ describe('Storage middleware', () => {
         password,
       }
 
+      const passwordEncryptedPrivateKey = {
+        version: 3,
+        id: 'd8fc1361-6822-43a4-a1e0-cedd0c9d1f0e',
+        address: 'c4bdbb1847e21669eb733f7cf0a4be2d1dfe928f',
+        crypto: {
+          ciphertext:
+            'b6d56963404f75be186742d65e4ed5ba9314f56f0c71f16778abb50ee960fd90',
+          cipherparams: { iv: 'b41d3b685b1b3ba6688dd5c03f094b15' },
+          cipher: 'aes-128-ctr',
+          kdf: 'scrypt',
+          kdfparams: {
+            dklen: 32,
+            salt:
+              '701d90b68edb8b57d9310337134968d6589770f48a64ecceacefa0554f3cc8c5',
+            n: 8192,
+            r: 8,
+            p: 1,
+          },
+          mac:
+            '8ba7775fa0edc9cf83473c36a77a668e55f570b56cb2f1465d7b2f37c91b8822',
+        },
+      }
+
+      const expectedAddress = '0xC4bdbB1847E21669EB733f7cf0A4Be2D1dfE928f'
+
       mockStorageService.getUserPrivateKey = jest.fn(() => {
         return Promise.resolve({
           data: {
-            passwordEncryptedPrivateKey: 'Private Key reporting for duty',
+            passwordEncryptedPrivateKey,
           },
         })
       })
-
-      const spy = jest.spyOn(UnlockJS, 'getAccountFromPrivateKey')
 
       await invoke(action)
       expect(mockStorageService.getUserPrivateKey).toHaveBeenCalledWith(
         emailAddress
       )
-      expect(spy).toHaveBeenCalledWith(
-        'Private Key reporting for duty',
-        'guest'
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: SET_ACCOUNT,
+          account: expect.objectContaining({
+            address: expectedAddress,
+          }),
+        })
       )
       expect(next).toHaveBeenCalledTimes(1)
     })
