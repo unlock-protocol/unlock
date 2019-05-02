@@ -178,6 +178,16 @@ export default class WalletService extends UnlockService {
    * @param {PropTypes.address} owner
    */
   async createLock(lock, owner) {
+    const version = await this.unlockContractAbiVersion()
+    return version.createLock.bind(this)(lock, owner)
+  }
+
+  /**
+   * Creates a lock on behalf of the user.
+   * @param {PropTypes.lock} lock
+   * @param {PropTypes.address} owner
+   */
+  async ethers_createLock(lock, owner) {
     const version = await this.ethers_unlockContractAbiVersion()
     return version.ethers_createLock.bind(this)(lock, owner)
   }
@@ -195,6 +205,23 @@ export default class WalletService extends UnlockService {
    * @param {string} account
    */
   async purchaseKey(lock, owner, keyPrice, account, data = '') {
+    const version = await this.lockContractAbiVersion(lock)
+    return version.purchaseKey.bind(this)(lock, owner, keyPrice, account, data)
+  }
+
+  /**
+   * Purchase a key to a lock by account.
+   * The key object is passed so we can kepe track of it from the application
+   * The lock object is required to get the price data
+   * We pass both the owner and the account because at some point, these may be different (someone
+   * purchases a key for someone else)
+   * @param {PropTypes.address} lock
+   * @param {PropTypes.address} owner
+   * @param {string} keyPrice
+   * @param {string} data
+   * @param {string} account
+   */
+  async ethers_purchaseKey(lock, owner, keyPrice, account, data = '') {
     const version = await this.ethers_lockContractAbiVersion(lock)
     return version.ethers_purchaseKey.bind(this)(
       lock,
@@ -214,6 +241,24 @@ export default class WalletService extends UnlockService {
    * @param {Function} callback
    */
   async partialWithdrawFromLock(lock, account, ethAmount, callback) {
+    const version = await this.lockContractAbiVersion(lock)
+    return version.partialWithdrawFromLock.bind(this)(
+      lock,
+      account,
+      ethAmount,
+      callback
+    )
+  }
+
+  /**
+   * Triggers a transaction to withdraw some funds from the lock and assign them
+   * to the owner.
+   * @param {PropTypes.address} lock
+   * @param {PropTypes.address} account
+   * @param {string} ethAmount
+   * @param {Function} callback
+   */
+  async ethers_partialWithdrawFromLock(lock, account, ethAmount, callback) {
     const version = await this.ethers_lockContractAbiVersion(lock)
     return version.ethers_partialWithdrawFromLock.bind(this)(
       lock,
