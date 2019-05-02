@@ -64,9 +64,9 @@ export function Paywall({
     body.className = 'big'
   }
   useEffect(() => {
-    if (fullAccount && fullAccount.fromLocalStorage) {
+    if (!fullAccount || fullAccount.fromLocalStorage) {
       if (mainWindowAccount) {
-        if (mainWindowAccount !== fullAccount.address) {
+        if (!fullAccount || mainWindowAccount !== fullAccount.address) {
           setAccount({
             address: mainWindowAccount,
             fromLocalStorage: true,
