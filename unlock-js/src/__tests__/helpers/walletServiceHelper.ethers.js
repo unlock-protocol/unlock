@@ -92,7 +92,12 @@ export const prepContract = ({
   return (...args) => {
     const encodedValue = value ? utils.toWei(value, 'ether') : 0
     const testParams = {
-      gas: utils.hexStripZeros(utils.hexlify(GAS_AMOUNTS[functionName])),
+      gas: utils.hexStripZeros(
+        utils.hexlify(
+          // handles partialWithDrawFromLock and withdrawFromLock
+          GAS_AMOUNTS[functionName] || GAS_AMOUNTS[`${functionName}FromLock`]
+        )
+      ),
       to: checksumContractAddress,
       data: unlockInterface.functions[`${functionName}(${signature})`].encode(
         args
