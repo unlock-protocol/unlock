@@ -292,13 +292,19 @@ describe('StorageService', () => {
   describe('Retrieve a private key for a user', () => {
     describe('When a private key can be retrieved', () => {
       it('returns a successful promise', async () => {
-        expect.assertions(1)
-        axios.get.mockReturnValue({})
+        expect.assertions(2)
+        axios.get.mockReturnValue({
+          data: {
+            passwordEncryptedPrivateKey: 'Private Key  reporting for duty',
+          },
+        })
 
-        await storageService.getUserPrivateKey(
+        const key = await storageService.getUserPrivateKey(
           'hello@unlock-protocol.com',
           null
         )
+
+        expect(key).toBe('Private Key  reporting for duty')
 
         expect(axios.get).toHaveBeenCalledWith(
           `${serviceHost}/users/${encodeURIComponent(
