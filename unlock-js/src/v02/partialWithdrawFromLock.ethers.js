@@ -17,7 +17,7 @@ export default async function(lockAddress, account, ethAmount, callback) {
   let transactionPromise
   try {
     transactionPromise = lockContract['partialWithdraw(uint256)'](weiAmount, {
-      gasLimit: GAS_AMOUNTS.partialWithdrawFromLock, // overrides default value for transaction gas price
+      gasLimit: GAS_AMOUNTS.partialWithdraw, // overrides default value for transaction gas price
     })
     const hash = await this._handleMethodCall(
       transactionPromise,
