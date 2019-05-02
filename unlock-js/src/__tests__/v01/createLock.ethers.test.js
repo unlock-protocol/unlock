@@ -1,7 +1,6 @@
 import { ethers } from 'ethers'
 import * as UnlockV01 from 'unlock-abi-0-1'
 import * as utils from '../../utils.ethers'
-import createLock from '../../v01/createLock.ethers'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
@@ -37,7 +36,6 @@ describe('v01 (ethers)', () => {
         nock,
         true // this is the Unlock contract, not PublicLock
       )
-      walletService.createLock = createLock.bind(walletService)
 
       const callMethodData = prepContract({
         contract: UnlockV01.Unlock,
