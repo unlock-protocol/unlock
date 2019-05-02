@@ -14,6 +14,7 @@ var userRouter = require('./routes/user')
 var eventRouter = require('./routes/event')
 var purchaseRouter = require('./routes/purchase')
 var priceRouter = require('./routes/price')
+var metadataRouter = require('./routes/metadata')
 
 let lockSignatureConfiguration = {
   name: 'lock',
@@ -40,6 +41,11 @@ app.post(
 
 app.post(
   /^\/events$/i,
+  signatureValidationMiddleware.generateProcessor(eventConfiguration)
+)
+
+app.put(
+  /^\/events\/\S+$/i,
   signatureValidationMiddleware.generateProcessor(eventConfiguration)
 )
 
@@ -77,5 +83,6 @@ app.use('/events', eventRouter)
 app.use('/users', userRouter)
 app.use('/purchase', purchaseRouter)
 app.use('/price', priceRouter)
+app.use('/api/key', metadataRouter)
 
 module.exports = app

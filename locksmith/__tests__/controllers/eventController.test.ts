@@ -20,6 +20,18 @@ let message = {
   },
 }
 
+let badOwnerMessage = {
+  event: {
+    lockAddress: '0x49158d35259e3264ad2a6abb300cda19294d125e',
+    name: 'A Test Event',
+    description: 'A fun event for everyone',
+    location: 'http://example.com/a_sample_location',
+    date: 1744487946000,
+    logo: 'http://example.com/a_logo',
+    owner: '0xbbbcdde4c0b861cb36f4ce006a9c90ba2e43abc9',
+  },
+}
+
 let privateKey = ethJsUtil.toBuffer(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
@@ -105,6 +117,55 @@ describe('Event Controller', () => {
           .send(typedData)
 
         expect(response.status).toBe(409)
+      })
+    })
+  })
+  describe('event update', () => {
+    describe('when unaccompanied by a valid signature', () => {
+      it('does not save an event and returns 401', async () => {
+        expect.assertions(1)
+        let typedData = generateTypedData(message)
+
+        let response = await request(app)
+          .put('/events/0x49158d35259E3264Ad2a6aBb300cdA19294D125e')
+          .set('Accept', /json/)
+          .send(typedData)
+
+        expect(response.status).toBe(401)
+      })
+    })
+    describe('when the event could be saved', () => {
+      it('updates the event and returns 200', async () => {
+        expect.assertions(1)
+        let typedData = generateTypedData(message)
+        const sig = sigUtil.signTypedData(privateKey, {
+          data: typedData,
+        })
+
+        let response = await request(app)
+          .put('/events/0x49158d35259E3264Ad2a6aBb300cdA19294D125e')
+          .set('Accept', /json/)
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .send(typedData)
+
+        expect(response.status).toBe(202)
+      })
+    })
+    describe('when there is an owner mismatch', () => {
+      it('does not save the event and returns 401', async () => {
+        expect.assertions(1)
+        let typedData = generateTypedData(badOwnerMessage)
+        const sig = sigUtil.signTypedData(privateKey, {
+          data: typedData,
+        })
+
+        let response = await request(app)
+          .put('/events/0x49158d35259E3264Ad2a6aBb300cdA19294D125e')
+          .set('Accept', /json/)
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .send(typedData)
+
+        expect(response.status).toBe(401)
       })
     })
   })
