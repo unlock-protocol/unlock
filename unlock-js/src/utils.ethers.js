@@ -10,7 +10,9 @@ module.exports = {
   hexToNumberString: num =>
     utils.formatUnits(utils.bigNumberify(num), 'wei').replace('.0', ''),
   toChecksumAddress: utils.getAddress,
-  fromWei: (num, units) => utils.formatUnits(utils.bigNumberify(num), units),
+  fromWei: (num, units) => {
+    return utils.formatUnits(utils.bigNumberify(num), units).replace('.0', '')
+  },
   isInfiniteKeys: value => {
     return utils.bigNumberify(value).eq(constants.MaxUint256)
   },
