@@ -52,6 +52,7 @@ describe('paywall configuration inter-window communication', () => {
     }
     beforeEach(() => {
       window = {
+        Promise: global.Promise,
         addEventListener: jest.fn(),
       }
       iframe = {
