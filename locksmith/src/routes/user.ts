@@ -4,8 +4,15 @@ import signatureValidationMiddleware from '../middlewares/signatureValidationMid
 let router = express.Router()
 let userController = require('../controllers/userController')
 
+let passwordEncryptedPrivateKeyPathRegex = new RegExp(
+  '^/users/S+/passwordEncryptedPrivateKey/?$',
+  'i'
+)
+let userCreationPathRegex = new RegExp('^/users/?$', 'i')
+let userUpdatePathRegex = new RegExp('^/users/?$', 'i')
+
 router.post(
-  /^\/users\/?$/i,
+  userCreationPathRegex,
   signatureValidationMiddleware.generateProcessor({
     name: 'user',
     required: ['emailAddress', 'publicKey', 'passwordEncryptedPrivateKey'],
@@ -13,10 +20,19 @@ router.post(
   })
 )
 router.put(
-  /^\/users\/?$/i,
+  userUpdatePathRegex,
   signatureValidationMiddleware.generateProcessor({
     name: 'user',
     required: ['emailAddress', 'publicKey'],
+    signee: 'publicKey',
+  })
+)
+
+router.put(
+  passwordEncryptedPrivateKeyPathRegex,
+  signatureValidationMiddleware.generateProcessor({
+    name: 'user',
+    required: ['publicKey', 'passwordEncryptedPrivateKey'],
     signee: 'publicKey',
   })
 )
@@ -32,5 +48,9 @@ router.get(
 )
 router.put('/:emailAddress', userController.updateUser)
 router.put('/:emailAddress/paymentdetails', userController.updatePaymentDetails)
+router.put(
+  '/:emailAddress/passwordEncryptedPrivateKey',
+  userController.updatePasswordEncryptedPrivateKey
+)
 
 module.exports = router
