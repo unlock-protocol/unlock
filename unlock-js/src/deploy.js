@@ -1,33 +1,31 @@
-const Web3 = require('web3')
+const ethers = require('ethers')
 const gas = require('./constants').GAS_AMOUNTS
 
 export default async function deploy(
   host,
   port,
   Unlock,
-  onNewContractInstance = () => {},
-  web3Object
+  onNewContractInstance = () => {}
 ) {
-  const web3 = web3Object || new Web3(`http://${host}:${port}`)
-  const unlock = new web3.eth.Contract(Unlock.abi)
+  const provider = new ethers.providers.JsonRpcProvider(
+    `http://${host}:${port}`
+  )
+  // Load the wallet to deploy the contract with
+  const wallet = provider.getSigner(0)
+  const factory = new ethers.ContractFactory(
+    Unlock.abi,
+    Unlock.bytecode,
+    wallet
+  )
+  const accounts = await provider.listAccounts()
+  const unlockContract = await factory.deploy({ gasLimit: gas.deployContract })
+  onNewContractInstance(unlockContract)
 
-  const accounts = await web3.eth.getAccounts()
-  const newContractInstance = await unlock
-    .deploy({
-      data: Unlock.bytecode,
-    })
-    .send({
-      from: accounts[0],
-      gas: gas.deployContract,
-    })
-  onNewContractInstance(newContractInstance)
+  await unlockContract.deployed()
 
+  const writableUnlockContract = unlockContract.connect(wallet)
   // Initialize
-  const data = unlock.methods.initialize(accounts[0]).encodeABI()
-  return web3.eth.sendTransaction({
-    to: newContractInstance.options.address,
-    from: accounts[0],
-    data,
-    gas: 1000000,
+  return writableUnlockContract.initialize(accounts[0], {
+    gasLimit: 1000000,
   })
 }
