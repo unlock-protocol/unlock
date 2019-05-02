@@ -368,7 +368,7 @@ describe('WalletService', () => {
         walletService.web3.eth.personal.sign = jest
           .fn()
           .mockReturnValueOnce('a signature')
-        // reabsing sucks
+
         walletService.signDataPersonal(account, data, () => {
           expect(walletService.web3.eth.personal.sign).toBeCalledWith(
             '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1',
