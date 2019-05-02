@@ -208,8 +208,8 @@ export default class WalletService extends UnlockService {
    * @param {Function} callback
    */
   async partialWithdrawFromLock(lock, account, ethAmount, callback) {
-    const version = await this.lockContractAbiVersion(lock)
-    return version.partialWithdrawFromLock.bind(this)(
+    const version = await this.ethers_lockContractAbiVersion(lock)
+    return version.ethers_partialWithdrawFromLock.bind(this)(
       lock,
       account,
       ethAmount,
