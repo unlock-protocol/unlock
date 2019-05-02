@@ -75,6 +75,7 @@ namespace UserController {
         emailAddress,
         user.emailAddress
       )
+
       if (result[0] == 0) {
         return res.sendStatus(400)
       }
@@ -94,6 +95,26 @@ namespace UserController {
     let result = await UserOperations.updatePaymentDetails(token, emailAddress)
 
     if (result) {
+      return res.sendStatus(202)
+    } else {
+      return res.sendStatus(400)
+    }
+  }
+
+  export const updatePasswordEncryptedPrivateKey = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    let user = req.body.message.user
+    let publicKey = user.publicKey
+    let passwordEncryptedPrivateKey = user.passwordEncryptedPrivateKey
+
+    let result = await UserOperations.updatePasswordEncryptedPrivateKey(
+      publicKey,
+      passwordEncryptedPrivateKey
+    )
+
+    if (result[0] != 0) {
       return res.sendStatus(202)
     } else {
       return res.sendStatus(400)
