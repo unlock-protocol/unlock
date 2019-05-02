@@ -23,4 +23,5 @@ module.exports = {
     const num = utils.hexlify(utils.bigNumberify(number))
     return utils.hexZeroPad(num, 32)
   },
+  utf8ToHex: str => utils.hexlify(str.length ? utils.toUtf8Bytes(str) : 0),
 }
