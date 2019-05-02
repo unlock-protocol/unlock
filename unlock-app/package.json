@@ -58,7 +58,7 @@
   "devDependencies": {
     "@svgr/cli": "4.2.0",
     "depcheck": "^0.7.1",
-    "nodemon": "1.18.11",
+    "nodemon": "1.19.0",
     "npm-check": "^5.9.0"
   },
   "engines": {
