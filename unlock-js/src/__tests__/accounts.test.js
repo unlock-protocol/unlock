@@ -42,7 +42,7 @@ describe('account helpers', () => {
           computeSharedSecret: expect.any(Function),
         })
       )
-    })
+    }, 10000)
 
     it('should throw when an incorrect password is given for an account', async () => {
       expect.assertions(1)
@@ -56,5 +56,5 @@ describe('account helpers', () => {
         expect(e).toBeInstanceOf(Error)
       }
     })
-  })
+  }, 10000)
 })
