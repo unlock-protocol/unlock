@@ -137,7 +137,7 @@ export default class Web3Service extends UnlockService {
           transaction: transactionHash,
           address: newLockAddress,
           expirationDuration: +params._expirationDuration,
-          keyPrice: Web3Utils.fromWei(params._keyPrice, 'ether'), // Must be expressed in Eth!
+          keyPrice: ethersUtils.fromWei(params._keyPrice, 'ether'), // Must be expressed in Eth!
           maxNumberOfKeys: +params._maxNumberOfKeys,
           outstandingKeys: 0,
           balance: '0', // Must be expressed in Eth!
@@ -190,7 +190,7 @@ export default class Web3Service extends UnlockService {
       this.unlockContractAddress
     )
 
-    return Web3Utils.getContractAddress({
+    return ethersUtils.getContractAddress({
       from: this.unlockContractAddress,
       nonce: transactionCount,
     })
