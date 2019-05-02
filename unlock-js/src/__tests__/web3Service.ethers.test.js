@@ -3,6 +3,7 @@ import http from 'http'
 
 import NockHelper from './helpers/nockHelper'
 import Web3Service from '../web3Service'
+import utils from '../utils.ethers'
 
 const blockTime = 3
 const readOnlyProvider = 'http://127.0.0.1:8545'
@@ -74,6 +75,22 @@ describe('Web3Service', () => {
         }, // a web3 provider must have sendAsync as a minimum
       })
       expect(web3Service.provider).toBeInstanceOf(ethers.providers.Web3Provider)
+    })
+  })
+
+  describe('getAddressBalance', () => {
+    it('should return the balance of the address', async () => {
+      expect.assertions(1)
+      await nockBeforeEach()
+      const balance = '0xdeadbeef'
+      const inWei = utils.hexToNumberString(balance)
+      const expectedBalance = utils.fromWei(inWei, 'ether')
+      const address = '0x1df62f291b2e969fb0849d99d9ce41e2f137006e'
+
+      nock.getBalanceForAccountAndYieldBalance(address, '0xdeadbeef')
+
+      let addressBalance = await web3Service.ethers_getAddressBalance(address)
+      expect(addressBalance).toEqual(expectedBalance)
     })
   })
 })
