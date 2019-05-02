@@ -19,13 +19,14 @@ export default async function deploy(
   )
   const accounts = await provider.listAccounts()
   const unlockContract = await factory.deploy({ gasLimit: gas.deployContract })
-  onNewContractInstance(unlockContract)
 
   await unlockContract.deployed()
 
   const writableUnlockContract = unlockContract.connect(wallet)
   // Initialize
-  return writableUnlockContract.initialize(accounts[0], {
+  const result = await writableUnlockContract.initialize(accounts[0], {
     gasLimit: 1000000,
   })
+  onNewContractInstance(unlockContract)
+  return result
 }
