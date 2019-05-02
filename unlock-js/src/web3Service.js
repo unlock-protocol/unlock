@@ -1,5 +1,8 @@
 import Web3 from 'web3'
-import { providers as ethersProviders } from 'ethers'
+import {
+  providers as ethersProviders,
+  utils as ethersMetadataHandling,
+} from 'ethers'
 import { bufferToHex, generateAddress } from 'ethereumjs-util'
 import Web3Utils from './utils'
 import ethers_utils from './utils.ethers'
@@ -116,6 +119,45 @@ export default class Web3Service extends UnlockService {
         })
       },
     }
+
+    this.ethers_inputsHandlers = {
+      createLock: async (transactionHash, contractAddress, params) => {
+        // The annoying part here is that we do not have the lock address...
+        // Since it is not an argument to the function.
+        // We will 'guess' it again using generateLockAddress
+        // knowing that this may create a race condition another lock creation pending transaction
+        // exists.
+        const newLockAddress = await this.ethers_generateLockAddress()
+        this.emit('transaction.updated', transactionHash, {
+          lock: newLockAddress,
+        })
+
+        if (params._maxNumberOfKeys === MAX_UINT) {
+          params._maxNumberOfKeys = UNLIMITED_KEYS_COUNT
+        }
+
+        this.emit('lock.updated', newLockAddress, {
+          transaction: transactionHash,
+          address: newLockAddress,
+          expirationDuration: +params._expirationDuration,
+          keyPrice: ethers_utils.fromWei(params._keyPrice, 'ether'), // Must be expressed in Eth!
+          maxNumberOfKeys: +params._maxNumberOfKeys,
+          outstandingKeys: 0,
+          balance: '0', // Must be expressed in Eth!
+        })
+      },
+      purchaseFor: async (transactionHash, contractAddress, params) => {
+        const owner = params._recipient
+        this.emit('transaction.updated', transactionHash, {
+          key: KEY_ID(contractAddress, owner),
+          lock: contractAddress,
+        })
+        return this.emit('key.saved', KEY_ID(contractAddress, owner), {
+          lock: contractAddress,
+          owner,
+        })
+      },
+    }
   }
 
   /**
@@ -141,6 +183,20 @@ export default class Web3Service extends UnlockService {
     return Web3Utils.toChecksumAddress(
       bufferToHex(generateAddress(this.unlockContractAddress, transactionCount))
     )
+  }
+
+  /**
+   * "Guesses" what the next Lock's address is going to be
+   */
+  async ethers_generateLockAddress() {
+    let transactionCount = await this.provider.getTransactionCount(
+      this.unlockContractAddress
+    )
+
+    return ethersMetadataHandling.getContractAddress({
+      from: this.unlockContractAddress,
+      nonce: transactionCount,
+    })
   }
 
   /**
@@ -200,6 +256,47 @@ export default class Web3Service extends UnlockService {
 
     // Unknown transaction
     return null
+  }
+
+  /**
+   * The method sets the transaction's type, based on the data being sent.
+   * @param {*} contract
+   * @param {*} data
+   */
+  _ethers_getTransactionType(contract, data) {
+    const metadata = new ethersMetadataHandling.Interface(contract.abi)
+    const transactionInfo = metadata.parseTransaction({ data })
+
+    // If there is no matching method, return null
+    if (!transactionInfo) {
+      return null
+    }
+
+    const method = transactionInfo.name
+
+    if (contract.contractName === 'Unlock') {
+      if (method === 'createLock') {
+        return TransactionTypes.LOCK_CREATION
+      }
+      // Unknown transaction
+      return null
+    }
+
+    if (contract.contractName !== 'PublicLock') {
+      // Unknown contract!
+      return null
+    }
+    switch (method) {
+      case 'purchaseFor':
+        return TransactionTypes.KEY_PURCHASE
+      case 'withdraw':
+        return TransactionTypes.WITHDRAWAL
+      case 'updateKeyPrice':
+        return TransactionTypes.UPDATE_KEY_PRICE
+      default:
+        // Unknown transaction
+        return null
+    }
   }
 
   /**
@@ -589,6 +686,24 @@ export default class Web3Service extends UnlockService {
 
   /**
    * Returns the key to the lock by the account.
+   * @param {PropTypes.string} lock
+   * @param {PropTypes.string} owner
+   */
+  async ethers_getKeyByLockForOwner(lock, owner) {
+    const lockContract = await this.getLockContract(lock)
+    return this._ethers_getKeyByLockForOwner(lockContract, owner).then(
+      expiration => {
+        this.emit('key.updated', KEY_ID(lock, owner), {
+          lock,
+          owner,
+          expiration,
+        })
+      }
+    )
+  }
+
+  /**
+   * Returns the key to the lock by the account.
    * @private
    * @param {PropTypes.string} lock
    * @param {PropTypes.string} owner
@@ -605,6 +720,30 @@ export default class Web3Service extends UnlockService {
         expiration ==
         '3963877391197344453575983046348115674221700746820753546331534351508065746944'
       ) {
+        return 0
+      }
+      return parseInt(expiration, 10)
+    } catch (error) {
+      return 0
+    }
+  }
+
+  /**
+   * Returns the key to the lock by the account.
+   * @private
+   * @param {PropTypes.string} lock
+   * @param {PropTypes.string} owner
+   * @return Promise<>
+   */
+  async _ethers_getKeyByLockForOwner(lockContract, owner) {
+    try {
+      const expiration = await lockContract.keyExpirationTimestampFor(owner)
+      if (
+        expiration ==
+        '3963877391197344453575983046348115674221700746820753546331534351508065746944'
+      ) {
+        // Handling NO_SUCH_KEY
+        // this portion is probably unnecessary, will need to test against the app to be sure
         return 0
       }
       return parseInt(expiration, 10)
