@@ -16,6 +16,24 @@ interface Props {
 interface State {
   password: string
   passwordConfirmation: string
+  errors: string[]
+}
+
+export const validatePassword = (
+  password: string,
+  passwordConfirmation: string
+) => {
+  let errors: string[] = []
+
+  if (password.length < 1) {
+    errors.push('Password must be at least one character long')
+  }
+
+  if (password !== passwordConfirmation) {
+    errors.push('Password and confirmation must match.')
+  }
+
+  return errors
 }
 
 export class FinishSignup extends React.Component<Props, State> {
@@ -24,28 +42,46 @@ export class FinishSignup extends React.Component<Props, State> {
     this.state = {
       password: '',
       passwordConfirmation: '',
+      errors: [],
     }
   }
 
   handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target
 
-    this.setState(prevState => ({
-      ...prevState,
-      [name]: value,
-    }))
+    this.setState(prevState => {
+      const newState = {
+        ...prevState,
+        [name]: value,
+      }
+      const { password, passwordConfirmation } = newState
+      const errors = validatePassword(password, passwordConfirmation)
+
+      return {
+        ...newState,
+        errors,
+      }
+    })
   }
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const { emailAddress, signupCredentials } = this.props
-    const { password } = this.state
-    // TODO: Actually validate this before submitting.
-    signupCredentials({ emailAddress, password })
+    const { password, passwordConfirmation } = this.state
+    const errors = validatePassword(password, passwordConfirmation)
+
+    // Last sanity check to make sure nobody messed with the DOM attr
+    const isValid = !errors.length
+    if (isValid) {
+      signupCredentials({ emailAddress, password })
+    }
   }
 
   render = () => {
     const { emailAddress } = this.props
+    const { errors } = this.state
+    const isValid = !errors.length
+
     return (
       <div>
         <Heading>Create Your Unlock Wallet</Heading>
@@ -71,14 +107,14 @@ export class FinishSignup extends React.Component<Props, State> {
             onChange={this.handleInputChange}
           />
           <br />
-          <SubmitButton type="submit" value="Submit" />
+          <SubmitButton type="submit" value="Submit" disabled={!isValid} />
         </form>
       </div>
     )
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
+export const mapDispatchToProps = (dispatch: any) => ({
   signupCredentials: (credentials: Credentials) =>
     dispatch(signupCredentials(credentials)),
 })
