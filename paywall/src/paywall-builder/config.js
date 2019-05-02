@@ -1,4 +1,8 @@
-import { POST_MESSAGE_READY, POST_MESSAGE_CONFIG } from './constants'
+import {
+  POST_MESSAGE_READY,
+  POST_MESSAGE_CONFIG,
+  POST_MESSAGE_ACCOUNT,
+} from './constants'
 
 export function sendConfig(config, iframe, origin) {
   const payload = config
@@ -12,6 +16,32 @@ export function sendConfig(config, iframe, origin) {
   )
 }
 
+function enable(window) {
+  return new window.Promise((resolve, reject) => {
+    if (!window.web3 || !window.web3.currentProvider) return reject()
+    if (!window.web3.currentProvider.enable) return resolve()
+    window.web3.currentProvider.enable().then(resolve)
+  })
+}
+
+function getAccount(window, iframe, origin) {
+  const id = new Date().getTime()
+  window.web3.currentProvider.send(
+    {
+      method: 'eth_accounts',
+      params: [],
+      jsonrpc: '2.0',
+      id,
+    },
+    (error, result) => {
+      if (error) return
+      iframe.contentWindow.postMessage(
+        { type: POST_MESSAGE_ACCOUNT, payload: result.result[0] },
+        origin
+      )
+    }
+  )
+}
 // this listens for the "ready" message from the iframe
 export function setupReadyListener(window, iframe, origin) {
   window.addEventListener('message', event => {
@@ -26,6 +56,9 @@ export function setupReadyListener(window, iframe, origin) {
       // <script type="text/javascript">window.unlockConfig = {...}</script>
       // immediately before paywall.min.js is loaded
       sendConfig(window.unlockConfig, iframe, origin)
+      enable(window)
+        .then(() => getAccount(window, iframe, origin))
+        .catch(() => {}) // no web3, don't retrieve account
     }
   })
 }
