@@ -184,7 +184,10 @@ describe('WalletService (ethers)', () => {
         expect(r).toBe(result)
       }
     )
-    const versionSpecificLockMethods = ['partialWithdrawFromLock']
+    const versionSpecificLockMethods = [
+      'partialWithdrawFromLock',
+      'purchaseKey',
+    ]
 
     it.each(versionSpecificLockMethods)(
       'should invoke the implementation of the corresponding version of %s',

@@ -195,8 +195,14 @@ export default class WalletService extends UnlockService {
    * @param {string} account
    */
   async purchaseKey(lock, owner, keyPrice, account, data = '') {
-    const version = await this.lockContractAbiVersion(lock)
-    return version.purchaseKey.bind(this)(lock, owner, keyPrice, account, data)
+    const version = await this.ethers_lockContractAbiVersion(lock)
+    return version.ethers_purchaseKey.bind(this)(
+      lock,
+      owner,
+      keyPrice,
+      account,
+      data
+    )
   }
 
   /**
