@@ -1,5 +1,8 @@
 import Web3 from 'web3'
-import { providers as ethersProviders, utils as ethersUtils } from 'ethers'
+import {
+  providers as ethersProviders,
+  utils as ethersMetadataHandling,
+} from 'ethers'
 import { bufferToHex, generateAddress } from 'ethereumjs-util'
 import Web3Utils from './utils'
 import ethers_utils from './utils.ethers'
@@ -137,7 +140,7 @@ export default class Web3Service extends UnlockService {
           transaction: transactionHash,
           address: newLockAddress,
           expirationDuration: +params._expirationDuration,
-          keyPrice: ethersUtils.fromWei(params._keyPrice, 'ether'), // Must be expressed in Eth!
+          keyPrice: ethers_utils.fromWei(params._keyPrice, 'ether'), // Must be expressed in Eth!
           maxNumberOfKeys: +params._maxNumberOfKeys,
           outstandingKeys: 0,
           balance: '0', // Must be expressed in Eth!
@@ -190,7 +193,7 @@ export default class Web3Service extends UnlockService {
       this.unlockContractAddress
     )
 
-    return ethersUtils.getContractAddress({
+    return ethersMetadataHandling.getContractAddress({
       from: this.unlockContractAddress,
       nonce: transactionCount,
     })
@@ -261,7 +264,7 @@ export default class Web3Service extends UnlockService {
    * @param {*} data
    */
   _ethers_getTransactionType(contract, data) {
-    const metadata = new ethersUtils.Interface(contract.abi)
+    const metadata = new ethersMetadataHandling.Interface(contract.abi)
     const transactionInfo = metadata.parseTransaction({ data })
 
     // If there is no matching method, return null
@@ -735,12 +738,12 @@ export default class Web3Service extends UnlockService {
   async _ethers_getKeyByLockForOwner(lockContract, owner) {
     try {
       const expiration = await lockContract.keyExpirationTimestampFor(owner)
-      // Handling NO_SUCH_KEY
-      // TODO find a more robust approach (apparently the call above should throw, but it does not!)
       if (
         expiration ==
         '3963877391197344453575983046348115674221700746820753546331534351508065746944'
       ) {
+        // Handling NO_SUCH_KEY
+        // this portion is probably unnecessary, will need to test against the app to be sure
         return 0
       }
       return parseInt(expiration, 10)
