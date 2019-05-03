@@ -1,5 +1,4 @@
 import * as UnlockV01 from 'unlock-abi-0-1'
-import purchaseKey from '../../v01/purchaseKey.ethers'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
@@ -31,7 +30,6 @@ describe('v01 (ethers)', () => {
         endpoint,
         nock
       )
-      walletService.purchaseKey = purchaseKey.bind(walletService)
 
       const callMethodData = prepContract({
         contract: UnlockV01.PublicLock,
@@ -65,7 +63,7 @@ describe('v01 (ethers)', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.purchaseKey(lockAddress, owner, keyPrice)
+      await walletService.ethers_purchaseKey(lockAddress, owner, keyPrice)
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -90,7 +88,7 @@ describe('v01 (ethers)', () => {
         expect(error.message).toBe(FAILED_TO_PURCHASE_KEY)
       })
 
-      await walletService.purchaseKey(lockAddress, owner, keyPrice)
+      await walletService.ethers_purchaseKey(lockAddress, owner, keyPrice)
       await nock.resolveWhenAllNocksUsed()
     })
   })

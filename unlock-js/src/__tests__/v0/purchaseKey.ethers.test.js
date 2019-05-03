@@ -1,6 +1,5 @@
 import * as UnlockV0 from 'unlock-abi-0'
 import * as utils from '../../utils.ethers'
-import purchaseKey from '../../v0/purchaseKey.ethers'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
@@ -34,7 +33,6 @@ describe('v0 (ethers)', () => {
         endpoint,
         nock
       )
-      walletService.purchaseKey = purchaseKey.bind(walletService)
 
       const callMethodData = prepContract({
         contract: UnlockV0.PublicLock,
@@ -68,7 +66,7 @@ describe('v0 (ethers)', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.purchaseKey(
+      await walletService.ethers_purchaseKey(
         lockAddress,
         owner,
         keyPrice,
@@ -99,7 +97,7 @@ describe('v0 (ethers)', () => {
         expect(error.message).toBe(FAILED_TO_PURCHASE_KEY)
       })
 
-      await walletService.purchaseKey(
+      await walletService.ethers_purchaseKey(
         lockAddress,
         owner,
         keyPrice,

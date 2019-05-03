@@ -180,10 +180,11 @@ describe('WalletService (ethers)', () => {
           },
         }
         walletService.ethers_unlockContractAbiVersion = jest.fn(() => version)
-        const r = await walletService[method](...args)
+        const r = await walletService[`ethers_${method}`](...args)
         expect(r).toBe(result)
       }
     )
+
     const versionSpecificLockMethods = [
       'partialWithdrawFromLock',
       'purchaseKey',
@@ -203,7 +204,7 @@ describe('WalletService (ethers)', () => {
           },
         }
         walletService.ethers_lockContractAbiVersion = jest.fn(() => version)
-        const r = await walletService[method](...args)
+        const r = await walletService[`ethers_${method}`](...args)
         expect(r).toBe(result)
       }
     )
@@ -214,10 +215,10 @@ describe('WalletService (ethers)', () => {
       'should implement all the required methods',
       version => {
         versionSpecificUnlockMethods.forEach(method => {
-          expect(version[method]).toBeInstanceOf(Function)
+          expect(version[`ethers_${method}`]).toBeInstanceOf(Function)
         })
         versionSpecificLockMethods.forEach(method => {
-          expect(version[method]).toBeInstanceOf(Function)
+          expect(version[`ethers_${method}`]).toBeInstanceOf(Function)
         })
       }
     )
