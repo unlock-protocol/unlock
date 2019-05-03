@@ -8,6 +8,7 @@ import ethers_partialWithdrawFromLock from './partialWithdrawFromLock.ethers'
 import purchaseKey from './purchaseKey'
 import ethers_purchaseKey from './purchaseKey.ethers'
 import updateKeyPrice from './updateKeyPrice'
+import ethers_updateKeyPrice from './updateKeyPrice.ethers'
 import withdrawFromLock from './withdrawFromLock'
 import ethers_withdrawFromLock from './withdrawFromLock.ethers'
 
@@ -21,6 +22,7 @@ export default {
   purchaseKey,
   ethers_purchaseKey,
   updateKeyPrice,
+  ethers_updateKeyPrice,
   withdrawFromLock,
   ethers_withdrawFromLock,
   version: 'v02',
