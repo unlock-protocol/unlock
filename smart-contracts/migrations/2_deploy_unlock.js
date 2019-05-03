@@ -22,7 +22,6 @@ module.exports = function deployUnlock(deployer, networkName, accounts) {
       network: networkName,
       from: proxyAdmin,
     })
-    txParams.gas = 5000000
     const options = { network, txParams }
 
     await zosDeploy(options)
