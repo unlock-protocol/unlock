@@ -8,12 +8,7 @@ import Web3Utils from './utils'
 import ethers_utils from './utils.ethers'
 import TransactionTypes from './transactionTypes'
 import UnlockService from './unlockService'
-import {
-  MAX_UINT,
-  UNLIMITED_KEYS_COUNT,
-  KEY_ID,
-  ETHERS_MAX_UINT,
-} from './constants'
+import { MAX_UINT, UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -184,9 +179,7 @@ export default class Web3Service extends UnlockService {
           lock: newLockAddress,
         })
 
-        if (
-          ethers_utils.bigNumberify(params._maxNumberOfKeys).eq(ETHERS_MAX_UINT)
-        ) {
+        if (ethers_utils.isInfiniteKeys(params._maxNumberOfKeys)) {
           params._maxNumberOfKeys = UNLIMITED_KEYS_COUNT
         }
 
@@ -1137,6 +1130,25 @@ export default class Web3Service extends UnlockService {
     )
   }
 
+  /**
+   * @private
+   * @param {*} lock
+   * @param {*} lockContract
+   * @param {*} ownerAddress
+   */
+  _ethers_packageKeyholderInfo(lock, lockContract, ownerAddress) {
+    return this._ethers_getKeyByLockForOwner(lockContract, ownerAddress).then(
+      expiration => {
+        return {
+          id: KEY_ID(lock, ownerAddress),
+          lock,
+          owner: ownerAddress,
+          expiration,
+        }
+      }
+    )
+  }
+
   _genKeyOwnersFromLockContractIterative(lock, lockContract, page, byPage) {
     const startIndex = page * byPage
     return new Promise(resolve => {
@@ -1146,6 +1158,33 @@ export default class Web3Service extends UnlockService {
           .call()
           .then(ownerAddress => {
             return this._packageKeyholderInfo(lock, lockContract, ownerAddress)
+          })
+          .catch(() => {
+            return null
+          })
+      })
+
+      resolve(keyPromises)
+    })
+  }
+
+  _ethers_genKeyOwnersFromLockContractIterative(
+    lock,
+    lockContract,
+    page,
+    byPage
+  ) {
+    const startIndex = page * byPage
+    return new Promise(resolve => {
+      let keyPromises = Array.from(Array(byPage).keys()).map(n => {
+        return lockContract.functions
+          .owners(n + startIndex)
+          .then(ownerAddress => {
+            return this._ethers_packageKeyholderInfo(
+              lock,
+              lockContract,
+              ownerAddress
+            )
           })
           .catch(() => {
             return null
@@ -1172,6 +1211,29 @@ export default class Web3Service extends UnlockService {
     })
   }
 
+  _ethers_genKeyOwnersFromLockContract(lock, lockContract, page, byPage) {
+    return new Promise((resolve, reject) => {
+      try {
+        lockContract.functions
+          .getOwnersByPage(page, byPage)
+          .then(ownerAddresses => {
+            const keyPromises = ownerAddresses.map(ownerAddress => {
+              return this._ethers_packageKeyholderInfo(
+                lock,
+                lockContract,
+                ownerAddress
+              )
+            })
+
+            resolve(keyPromises)
+          })
+          .catch(error => reject(error))
+      } catch (e) {
+        reject(e)
+      }
+    })
+  }
+
   /**
    * This loads and returns the keys for a lock per page
    * we fetch byPage number of keyOwners and dispatch for futher details.
@@ -1190,10 +1252,43 @@ export default class Web3Service extends UnlockService {
       lock
     )
 
-    this._genKeyOwnersFromLockContract(lock, lockContract, page, byPage).then(
-      keyPromises => {
+    this._ethers_genKeyOwnersFromLockContract(
+      lock,
+      lockContract,
+      page,
+      byPage
+    ).then(keyPromises => {
+      if (keyPromises.length == 0) {
+        this._genKeyOwnersFromLockContractIterative(
+          lock,
+          lockContract,
+          page,
+          byPage
+        ).then(keyPromises => this._emitKeyOwners(lock, page, keyPromises))
+      } else {
+        this._emitKeyOwners(lock, page, keyPromises)
+      }
+    })
+  }
+
+  /**
+   * This loads and returns the keys for a lock per page
+   * we fetch byPage number of keyOwners and dispatch for futher details.
+   *
+   * This method will attempt to retrieve keyholders directly from the smart contract, if this
+   * raises and exception the code will attempt to iteratively retrieve the keyholders.
+   * (Relevant to issue #1116)
+   * @param {PropTypes.string}
+   * @param {PropTypes.integer}
+   * @param {PropTypes.integer}
+   */
+  async ethers_getKeysForLockOnPage(lock, page, byPage) {
+    const lockContract = await this.getLockContract(lock)
+
+    this._ethers_genKeyOwnersFromLockContract(lock, lockContract, page, byPage)
+      .then(keyPromises => {
         if (keyPromises.length == 0) {
-          this._genKeyOwnersFromLockContractIterative(
+          this._ethers_genKeyOwnersFromLockContractIterative(
             lock,
             lockContract,
             page,
@@ -1202,7 +1297,14 @@ export default class Web3Service extends UnlockService {
         } else {
           this._emitKeyOwners(lock, page, keyPromises)
         }
-      }
-    )
+      })
+      .catch(() => {
+        this._ethers_genKeyOwnersFromLockContractIterative(
+          lock,
+          lockContract,
+          page,
+          byPage
+        ).then(keyPromises => this._emitKeyOwners(lock, page, keyPromises))
+      })
   }
 }
