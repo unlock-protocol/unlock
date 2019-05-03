@@ -15,6 +15,7 @@ contract('Unlock / gas', accounts => {
     unlock = await getUnlockProxy(unlockContract)
 
     let tx = await unlock.createLock(
+      'Gas Test Lock',
       60 * 60 * 24 * 30, // expirationDuration: 30 days
       Web3Utils.padLeft(0, 40),
       Units.convert(1, 'eth', 'wei'), // keyPrice: in wei

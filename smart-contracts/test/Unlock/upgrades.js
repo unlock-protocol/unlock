@@ -143,6 +143,7 @@ contract('Unlock / upgrades', accounts => {
         // Create a new Lock
         const lockTx = await unlock.methods
           .createLock(
+            'After-Upgrade Lock',
             60 * 60 * 24, // expirationDuration 1 day
             Web3Utils.padLeft(0, 40),
             keyPrice,

@@ -34,6 +34,7 @@ interface IUnlock {
   * Return type `PublicLock` which represents an address of a PublicLock.
   */
   function createLock(
+    string calldata _lockName,
     uint _expirationDuration,
     address _tokenAddress,
     uint _keyPrice,
