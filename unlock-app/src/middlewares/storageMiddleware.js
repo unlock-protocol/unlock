@@ -133,6 +133,7 @@ const storageMiddleware = config => {
           storageService
             .createUser(user) // TODO: Now what?
             .then(() => dispatch(setAccount({ address })))
+            // TODO: This isn't the right way to handle the error
             .catch(err => dispatch(setError(err)))
         }
 
