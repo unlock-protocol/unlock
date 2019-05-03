@@ -71,7 +71,7 @@ describe('v0 (ethers)', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.createLock(lock, owner)
+      await walletService.ethers_createLock(lock, owner)
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -104,7 +104,7 @@ describe('v0 (ethers)', () => {
         })
       })
 
-      await walletService.createLock(lock, owner)
+      await walletService.ethers_createLock(lock, owner)
       await nock.resolveWhenAllNocksUsed()
     })
 
@@ -119,7 +119,7 @@ describe('v0 (ethers)', () => {
         expect(error.message).toBe(FAILED_TO_CREATE_LOCK)
       })
 
-      await walletService.createLock(lock, owner)
+      await walletService.ethers_createLock(lock, owner)
       await nock.resolveWhenAllNocksUsed()
     })
   })

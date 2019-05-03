@@ -64,7 +64,7 @@ describe('v01 (ethers)', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.partialWithdrawFromLock(
+      await walletService.ethers_partialWithdrawFromLock(
         lock,
         account,
         amount,
@@ -95,7 +95,7 @@ describe('v01 (ethers)', () => {
         expect(error.message).toBe(FAILED_TO_WITHDRAW_FROM_LOCK)
       })
 
-      await walletService.partialWithdrawFromLock(
+      await walletService.ethers_partialWithdrawFromLock(
         lock,
         account,
         amount,
@@ -115,7 +115,7 @@ describe('v01 (ethers)', () => {
         Promise.resolve(transaction.hash)
       )
 
-      await walletService.partialWithdrawFromLock(
+      await walletService.ethers_partialWithdrawFromLock(
         lock,
         account,
         amount,

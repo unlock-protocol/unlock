@@ -432,7 +432,7 @@ describe('Web3Service', () => {
           },
         }
         web3Service.ethers_lockContractAbiVersion = jest.fn(() => version)
-        const r = await web3Service[method](...args)
+        const r = await web3Service[`ethers_${method}`](...args)
         expect(r).toBe(result)
       }
     )

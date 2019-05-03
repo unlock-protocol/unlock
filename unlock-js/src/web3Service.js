@@ -660,6 +660,16 @@ export default class Web3Service extends UnlockService {
    * @return Promise<Lock>
    */
   async getLock(address) {
+    const version = await this.lockContractAbiVersion(address)
+    return version.getLock.bind(this)(address)
+  }
+
+  /**
+   * Refresh the lock's data.
+   * We use the block version
+   * @return Promise<Lock>
+   */
+  async ethers_getLock(address) {
     const version = await this.ethers_lockContractAbiVersion(address)
     return version.ethers_getLock.bind(this)(address)
   }
