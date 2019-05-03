@@ -49,6 +49,18 @@ module.exports = function lockApi(lockContract) {
       })
     },
 
+    async destroyLock(from) {
+      const call = web3.eth.abi.encodeFunctionCall(
+        lockContract.abi.find(e => e.name === 'destroyLock'),
+        []
+      )
+      return web3.eth.sendTransaction({
+        to: lockContract.address,
+        data: call,
+        from,
+      })
+    },
+
     async partialWithdraw(amount, from) {
       const call = web3.eth.abi.encodeFunctionCall(
         lockContract.abi.find(e => e.name === 'partialWithdraw'),
