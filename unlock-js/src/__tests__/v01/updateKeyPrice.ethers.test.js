@@ -1,6 +1,5 @@
 import * as UnlockV01 from 'unlock-abi-0-1'
 import * as utils from '../../utils.ethers'
-import updateKeyPrice from '../../v01/updateKeyPrice.ethers'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
@@ -32,7 +31,6 @@ describe('v01 (ethers)', () => {
         endpoint,
         nock
       )
-      walletService.updateKeyPrice = updateKeyPrice.bind(walletService)
 
       const callMethodData = prepContract({
         contract: UnlockV01.PublicLock,
@@ -65,7 +63,7 @@ describe('v01 (ethers)', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.updateKeyPrice(lockAddress, account, price)
+      await walletService.ethers_updateKeyPrice(lockAddress, account, price)
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -90,7 +88,7 @@ describe('v01 (ethers)', () => {
         expect(error.message).toBe(FAILED_TO_UPDATE_KEY_PRICE)
       })
 
-      await walletService.updateKeyPrice(lockAddress, account, price)
+      await walletService.ethers_updateKeyPrice(lockAddress, account, price)
       await nock.resolveWhenAllNocksUsed()
     })
   })
