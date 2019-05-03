@@ -189,6 +189,7 @@ describe('WalletService (ethers)', () => {
       'partialWithdrawFromLock',
       'purchaseKey',
       'withdrawFromLock',
+      'updateKeyPrice',
     ]
 
     it.each(versionSpecificLockMethods)(
