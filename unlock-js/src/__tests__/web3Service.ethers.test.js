@@ -1459,6 +1459,265 @@ describe('Web3Service', () => {
         })
       })
     })
+
+    describe('_genKeyOwnersFromLockContractIterative', () => {
+      it('calls owners with the correct index', async () => {
+        expect.assertions(2)
+        await versionedNockBeforeEach()
+        const metadata = new ethers.utils.Interface(LockVersion.PublicLock.abi)
+        const encoder = ethers.utils.defaultAbiCoder
+
+        nock.ethGetCodeAndYield(
+          lockAddress,
+          LockVersion.PublicLock.deployedBytecode
+        )
+
+        nock.ethCallAndYield(
+          metadata.functions['owners(uint256)'].encode([2 * 2]),
+          ethers.utils.getAddress(lockAddress),
+          encoder.encode(['address'], [account])
+        )
+
+        nock.ethCallAndFail(
+          metadata.functions['owners(uint256)'].encode([2 * 2 + 1]),
+          ethers.utils.getAddress(lockAddress),
+          { code: 200, error: 'NO_OWNER' }
+        )
+
+        nock.ethCallAndYield(
+          metadata.functions['keyExpirationTimestampFor(address)'].encode([
+            account,
+          ]),
+          ethers.utils.getAddress(lockAddress),
+          encoder.encode(['uint256'], [ethers.utils.bigNumberify(12345)])
+        )
+
+        nock.ethCallAndFail(
+          metadata.functions['keyExpirationTimestampFor(address)'].encode([
+            ethers.constants.AddressZero,
+          ]),
+          ethers.utils.getAddress(lockAddress),
+          encoder.encode(
+            ['bytes'],
+            [ethers.utils.hexlify(ethers.utils.toUtf8Bytes('NO_SUCH_KEY'))]
+          )
+        )
+
+        const lockContract = await web3Service.getLockContract(lockAddress)
+
+        const keys = await web3Service._ethers_genKeyOwnersFromLockContractIterative(
+          lockAddress,
+          lockContract,
+          2 /* page */,
+          2 /* byPage */
+        )
+
+        expect(keys).toEqual([expect.any(Promise), expect.any(Promise)])
+        const resolved = await Promise.all(keys)
+        expect(resolved).toEqual([
+          {
+            expiration: 12345,
+            id: `${lockAddress}-${account}`,
+            lock: lockAddress,
+            owner: account,
+          },
+          null,
+        ])
+      })
+    })
+
+    describe('_genKeyOwnersFromLockContract', () => {
+      it('retrieves key owners via the API', async () => {
+        expect.assertions(2)
+        await versionedNockBeforeEach()
+        const metadata = new ethers.utils.Interface(LockVersion.PublicLock.abi)
+        const encoder = ethers.utils.defaultAbiCoder
+
+        nock.ethGetCodeAndYield(
+          lockAddress,
+          LockVersion.PublicLock.deployedBytecode
+        )
+
+        const lockContract = await web3Service.getLockContract(lockAddress)
+
+        nock.ethCallAndYield(
+          metadata.functions['getOwnersByPage(uint256,uint256)'].encode([2, 2]),
+          ethers.utils.getAddress(lockAddress),
+          encoder.encode(
+            [
+              metadata.functions['getOwnersByPage(uint256,uint256)'].outputs[0]
+                .type,
+            ],
+            [[account, unlockAddress]]
+          )
+        )
+
+        nock.ethCallAndYield(
+          metadata.functions['keyExpirationTimestampFor(address)'].encode([
+            account,
+          ]),
+          ethers.utils.getAddress(lockAddress),
+          encoder.encode(['uint256'], [ethers.utils.bigNumberify(12345)])
+        )
+
+        nock.ethCallAndFail(
+          metadata.functions['keyExpirationTimestampFor(address)'].encode([
+            unlockAddress,
+          ]),
+          ethers.utils.getAddress(lockAddress),
+          encoder.encode(
+            ['bytes'],
+            [ethers.utils.hexlify(ethers.utils.toUtf8Bytes('NO_SUCH_KEY'))]
+          )
+        )
+
+        const keys = await web3Service._ethers_genKeyOwnersFromLockContract(
+          lockAddress,
+          lockContract,
+          2 /* page */,
+          2 /* byPage */
+        )
+
+        expect(keys).toEqual([expect.any(Promise), expect.any(Promise)])
+        const resolved = await Promise.all(keys)
+        expect(resolved).toEqual([
+          {
+            expiration: 12345,
+            id: `${lockAddress}-${account}`,
+            lock: lockAddress,
+            owner: account,
+          },
+          {
+            expiration: 0,
+            id: `${lockAddress}-${unlockAddress}`,
+            lock: lockAddress,
+            owner: unlockAddress,
+          },
+        ])
+      })
+
+      it('throws on failure', async () => {
+        expect.assertions(1)
+        await versionedNockBeforeEach()
+        const metadata = new ethers.utils.Interface(LockVersion.PublicLock.abi)
+
+        nock.ethGetCodeAndYield(
+          lockAddress,
+          LockVersion.PublicLock.deployedBytecode
+        )
+
+        const lockContract = await web3Service.getLockContract(lockAddress)
+
+        nock.ethCallAndFail(
+          metadata.functions['getOwnersByPage(uint256,uint256)'].encode([2, 2]),
+          ethers.utils.getAddress(lockAddress),
+          { code: 200, message: 'NO_USER_KEYS' }
+        )
+
+        try {
+          await web3Service._ethers_genKeyOwnersFromLockContract(
+            lockAddress,
+            lockContract,
+            2 /* page */,
+            2 /* byPage */
+          )
+        } catch (e) {
+          expect(e).toBeInstanceOf(Error)
+        }
+      })
+    })
+
+    describe('getKeysForLockOnPage', () => {
+      let keyPromises
+      let iterativePromises
+
+      function testsSetup({ owners, iterative }) {
+        web3Service._ethers_genKeyOwnersFromLockContract = jest.fn(() => owners)
+        web3Service._ethers_genKeyOwnersFromLockContractIterative = jest.fn(
+          () => iterative
+        )
+      }
+
+      beforeEach(() => {
+        keyPromises = [Promise.resolve('normal'), Promise.resolve(null)]
+        iterativePromises = [
+          Promise.resolve('iterative'),
+          Promise.resolve(null),
+        ]
+      })
+
+      it('tries _genKeyOwnersFromLockContract first', async () => {
+        expect.assertions(3)
+
+        await versionedNockBeforeEach()
+        testsSetup({
+          owners: Promise.resolve(keyPromises),
+          iterative: Promise.resolve(iterativePromises),
+        })
+
+        web3Service.on('keys.page', (lock, page, keys) => {
+          expect(lock).toBe(lockAddress)
+          expect(page).toBe(3)
+          expect(keys).toEqual(['normal'])
+        })
+
+        await web3Service.ethers_getKeysForLockOnPage(lockAddress, 3, 2)
+      })
+
+      it('falls back to _genKeyOwnersFromLockContractIterative if keyPromises is empty', async () => {
+        expect.assertions(3)
+
+        await versionedNockBeforeEach()
+        testsSetup({
+          owners: Promise.resolve([]),
+          iterative: Promise.resolve(iterativePromises),
+        })
+
+        web3Service.on('keys.page', (lock, page, keys) => {
+          expect(lock).toBe(lockAddress)
+          expect(page).toBe(3)
+          expect(keys).toEqual(['iterative'])
+        })
+
+        await web3Service.ethers_getKeysForLockOnPage(lockAddress, 3, 2)
+      })
+
+      it('falls back to _genKeyOwnersFromLockContractIterative if _genKeyOwnersFromLockContract throws', async () => {
+        expect.assertions(3)
+
+        await versionedNockBeforeEach()
+        testsSetup({
+          owners: Promise.reject(new Error()),
+          iterative: Promise.resolve(iterativePromises),
+        })
+
+        web3Service.on('keys.page', (lock, page, keys) => {
+          expect(lock).toBe(lockAddress)
+          expect(page).toBe(3)
+          expect(keys).toEqual(['iterative'])
+        })
+
+        await web3Service.ethers_getKeysForLockOnPage(lockAddress, 3, 2)
+      })
+    })
+  })
+
+  describe('_emitKeyOwners', () => {
+    it('resolves the promises and emits keys.page', async done => {
+      expect.assertions(3)
+      await nockBeforeEach()
+
+      const keyPromises = [Promise.resolve(null), Promise.resolve('key')]
+
+      web3Service.on('keys.page', (lock, page, keys) => {
+        expect(lock).toBe(lockAddress)
+        expect(page).toBe(2)
+        expect(keys).toEqual(['key'])
+        done()
+      })
+
+      web3Service._emitKeyOwners(lockAddress, 2, keyPromises)
+    })
   })
 
   describe('versions', () => {
