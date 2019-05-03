@@ -17,7 +17,7 @@ let transactionResult
 let setupSuccess
 let setupFail
 
-describe('v0 (ethers)', () => {
+describe('v0', () => {
   describe('withdrawFromLock', () => {
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
     const account = '0xdeadbeef'
@@ -61,7 +61,7 @@ describe('v0 (ethers)', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.ethers_withdrawFromLock(lockAddress, account)
+      await walletService.withdrawFromLock(lockAddress, account)
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -85,7 +85,7 @@ describe('v0 (ethers)', () => {
       walletService.on('error', error => {
         expect(error.message).toBe(FAILED_TO_WITHDRAW_FROM_LOCK)
       })
-      await walletService.ethers_withdrawFromLock(lockAddress, account)
+      await walletService.withdrawFromLock(lockAddress, account)
       await nock.resolveWhenAllNocksUsed()
     })
   })

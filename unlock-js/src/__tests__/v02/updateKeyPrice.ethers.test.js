@@ -18,7 +18,7 @@ let transactionResult
 let setupSuccess
 let setupFail
 
-describe('v02 (ethers)', () => {
+describe('v02', () => {
   describe('updateKeyPrice', () => {
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
     const account = '0xdeadbeef'
@@ -63,7 +63,7 @@ describe('v02 (ethers)', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.ethers_updateKeyPrice(lockAddress, account, price)
+      await walletService.updateKeyPrice(lockAddress, account, price)
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -88,7 +88,7 @@ describe('v02 (ethers)', () => {
         expect(error.message).toBe(FAILED_TO_UPDATE_KEY_PRICE)
       })
 
-      await walletService.ethers_updateKeyPrice(lockAddress, account, price)
+      await walletService.updateKeyPrice(lockAddress, account, price)
       await nock.resolveWhenAllNocksUsed()
     })
   })
