@@ -40,7 +40,7 @@ module.exports = function deployUnlock(deployer, networkName, accounts) {
   PublicLock.bytecode: ${this.web3.utils
     .keccak256(PublicLock.bytecode)
     .substring(0, 10)}
-  PublicLock.bytecode: ${this.web3.utils
+  PublicLock.deployedBytecode: ${this.web3.utils
     .keccak256(PublicLock.deployedBytecode)
     .substring(0, 10)}`
     )
