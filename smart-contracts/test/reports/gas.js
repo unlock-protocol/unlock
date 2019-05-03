@@ -166,7 +166,7 @@ contract('reports / gas', accounts => {
     await lockErc20.disableLock()
 
     const destroyLockEth = await getGasFor(lock.destroyLock())
-    const destroyLockErc20 = await getGasFor(lockErc20.destroyLock())
+    const destroyLockErc20 = await getGasFor(lockApi.destroyLock(accounts[0]))
 
     const transferOwnership = await getGasFor(
       locks['SECOND'].transferOwnership(accounts[2])
