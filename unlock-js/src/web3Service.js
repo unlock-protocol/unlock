@@ -8,7 +8,12 @@ import Web3Utils from './utils'
 import ethers_utils from './utils.ethers'
 import TransactionTypes from './transactionTypes'
 import UnlockService from './unlockService'
-import { MAX_UINT, UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
+import {
+  MAX_UINT,
+  UNLIMITED_KEYS_COUNT,
+  KEY_ID,
+  ETHERS_MAX_UINT,
+} from './constants'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -79,6 +84,53 @@ export default class Web3Service extends UnlockService {
       },
     }
 
+    // Transactions create events which we use here to build the state.
+    // TODO we should ensure that the contracts triggering the events are the right ones
+    this.ethers_eventsHandlers = {
+      NewLock: (transactionHash, contractAddress, blockNumber, args) => {
+        this.emit('transaction.updated', transactionHash, {
+          lock: args.newLockAddress,
+        })
+        this.emit('lock.updated', args.newLockAddress, {
+          asOf: blockNumber,
+          transaction: transactionHash,
+          address: args.newLockAddress,
+        })
+        return this.ethers_getLock(args.newLockAddress)
+      },
+      Transfer: (transactionHash, contractAddress, blockNumber, args) => {
+        const owner = args._to
+        this.emit('transaction.updated', transactionHash, {
+          key: KEY_ID(contractAddress, owner),
+          lock: contractAddress,
+        })
+        return this.emit('key.saved', KEY_ID(contractAddress, owner), {
+          lock: contractAddress,
+          owner,
+        })
+      },
+      PriceChanged: (
+        transactionHash,
+        contractAddress,
+        blockNumber,
+        { keyPrice }
+      ) => {
+        this.emit('transaction.updated', transactionHash, {
+          lock: contractAddress,
+        })
+        return this.emit('lock.updated', contractAddress, {
+          asOf: blockNumber,
+          keyPrice: ethers_utils.fromWei(keyPrice, 'ether'),
+        })
+      },
+      Withdrawal: (transactionHash, contractAddress) => {
+        // TODO: update the lock balance too!
+        this.emit('transaction.updated', transactionHash, {
+          lock: contractAddress,
+        })
+      },
+    }
+
     // Pending transactions may still update the state
     // TODO we should ensure that the contracts invoking the methods are the right ones
     this.inputsHandlers = {
@@ -132,7 +184,9 @@ export default class Web3Service extends UnlockService {
           lock: newLockAddress,
         })
 
-        if (params._maxNumberOfKeys === MAX_UINT) {
+        if (
+          ethers_utils.bigNumberify(params._maxNumberOfKeys).eq(ETHERS_MAX_UINT)
+        ) {
           params._maxNumberOfKeys = UNLIMITED_KEYS_COUNT
         }
 
@@ -264,6 +318,12 @@ export default class Web3Service extends UnlockService {
    * @param {*} data
    */
   _ethers_getTransactionType(contract, data) {
+    const contractName = contract.contractName
+    if (!['PublicLock', 'Unlock'].includes(contractName)) {
+      // Unknown contract!
+      return null
+    }
+
     const metadata = new ethersMetadataHandling.Interface(contract.abi)
     const transactionInfo = metadata.parseTransaction({ data })
 
@@ -274,18 +334,12 @@ export default class Web3Service extends UnlockService {
 
     const method = transactionInfo.name
 
-    if (contract.contractName === 'Unlock') {
-      if (method === 'createLock') {
-        return TransactionTypes.LOCK_CREATION
-      }
-      // Unknown transaction
-      return null
+    if (contractName === 'Unlock') {
+      if (method !== 'createLock') return null
+      return TransactionTypes.LOCK_CREATION
     }
 
-    if (contract.contractName !== 'PublicLock') {
-      // Unknown contract!
-      return null
-    }
+    // if we reach here, the contract is PublicLock
     switch (method) {
       case 'purchaseFor':
         return TransactionTypes.KEY_PURCHASE
@@ -316,6 +370,18 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
+   * This function is able to retrieve past transaction sent by a user to the Unlock smart contract
+   * to create a new Lock.
+   * @param {*} address
+   */
+  async ethers_getPastLockCreationsTransactionsForUser(address) {
+    const unlock = await this.getUnlockContract()
+    // only retrieve NewLock events
+    const filter = unlock.filters.NewLock(address)
+    return this._ethers_getPastTransactionsForContract(filter)
+  }
+
+  /**
    * This function is able to retrieve the past transaction on a lock as long as these transactions
    * triggered events.
    * @param {*} lockAddress
@@ -327,6 +393,15 @@ export default class Web3Service extends UnlockService {
       lockAddress
     )
     return this._getPastTransactionsForContract(lockContract, 'allevents')
+  }
+
+  /**
+   * This function is able to retrieve the past transaction on a lock as long as these transactions
+   * triggered events.
+   * @param {*} lockAddress
+   */
+  async ethers_getPastLockTransactions(lockAddress) {
+    return this._ethers_getPastTransactionsForContract(lockAddress)
   }
 
   /**
@@ -350,6 +425,23 @@ export default class Web3Service extends UnlockService {
         })
       }
     )
+  }
+
+  /**
+   * This function retrieves past transactions from events on a given contract
+   * @param {*} filter
+   * @private
+   */
+  async _ethers_getPastTransactionsForContract(filter) {
+    const events = await this.provider.getLogs({
+      fromBlock: 0, // TODO start only when the smart contract was deployed?
+      toBlock: 'latest',
+      ...filter,
+    })
+    events.forEach(event => {
+      this.emit('transaction.new', event.transactionHash)
+    })
+    return events
   }
 
   /**
@@ -405,6 +497,28 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
+   * This function will trigger events based on smart contract events
+   * @private
+   * @param {string} transactionHash
+   * @param {string} contractAddress
+   * @param {string} blockNumber
+   * @param {string} name
+   * @param {object} params
+   */
+  ethers_emitContractEvent(
+    transactionHash,
+    contractAddress,
+    blockNumber,
+    name,
+    params
+  ) {
+    const handler = this.ethers_eventsHandlers[name]
+    if (handler) {
+      return handler(transactionHash, contractAddress, blockNumber, params)
+    }
+  }
+
+  /**
    * Given a transaction receipt and the abi for a contract, parses and trigger the
    * corresponding events
    * @private
@@ -454,6 +568,35 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
+   * Given a transaction receipt and the abi for a contract, parses and trigger the
+   * corresponding events
+   * @private
+   * @param {*} transactionHash
+   * @param {*} contract
+   * @param {*} transactionReceipt
+   */
+  _ethers_parseTransactionLogsFromReceipt(
+    transactionHash,
+    contract,
+    transactionReceipt
+  ) {
+    const metadata = new ethersMetadataHandling.Interface(contract.abi)
+
+    transactionReceipt.logs.forEach(log => {
+      // For each log, let's find which event it is
+      const logInfo = metadata.parseLog(log)
+
+      this.ethers_emitContractEvent(
+        transactionHash,
+        log.address,
+        transactionReceipt.blockNumber,
+        logInfo.name,
+        logInfo.values
+      )
+    })
+  }
+
+  /**
    * This is used to identify data which should be changed by a pending transaction
    * WEIRD: WE SHOULD NOT NEED TO GET THE VERSION SINCE WE HAVE THE CONTRACT!
    * @param {*} transactionHash
@@ -499,12 +642,65 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
+   * This is used to identify data which should be changed by a pending transaction
+   * with ethers, the version is unnecessary
+   * @param {*} transactionHash
+   * @param {*} contract
+   * @param {*} input
+   * @param {*} contractAddress
+   */
+  async _ethers_parseTransactionFromInput(
+    version,
+    transactionHash,
+    contract,
+    data,
+    contractAddress
+  ) {
+    const transactionType = this._ethers_getTransactionType(contract, data)
+
+    this.emit('transaction.updated', transactionHash, {
+      status: 'pending',
+      type: transactionType,
+      confirmations: 0,
+      blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
+    })
+
+    const metadata = new ethersMetadataHandling.Interface(contract.abi)
+
+    const transactionInfo = metadata.parseTransaction({ data })
+
+    if (!transactionInfo) {
+      // The invoked function is not part of the ABI... this is an unknown transaction
+      return
+    }
+    const handler = this.ethers_inputsHandlers[transactionInfo.name]
+    const functionInputs = metadata.functions[transactionInfo.name].inputs
+    const args = transactionInfo.args.reduce((args, arg, i) => {
+      return Object.assign(args, { [functionInputs[i].name]: arg })
+    }, {})
+
+    if (handler) {
+      return handler(transactionHash, contractAddress, args)
+    }
+  }
+
+  /**
    * This will set a timeout to get a transaction after half a block time happened
    * @param {string} transactionHash
    */
   _watchTransaction(transactionHash) {
     setTimeout(() => {
       this.getTransaction(transactionHash)
+    }, this.blockTime / 2)
+  }
+
+  /**
+   * This will set a timeout to get a transaction after half a block time happened
+   * @param {string} transactionHash
+   */
+  _ethers_watchTransaction(transactionHash) {
+    setTimeout(() => {
+      this.ethers_getTransaction(transactionHash)
     }, this.blockTime / 2)
   }
 
@@ -544,6 +740,48 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
+   * The transaction is still pending: it has been sent to the network but not
+   * necessarily received by the node we're asking it (and not mined...)
+   * @param {*} version
+   * @param {*} transactionHash
+   * @param {*} blockNumber
+   * @param {object} defaults
+   * @private
+   */
+  _ethers_getSubmittedTransaction(
+    version,
+    transactionHash,
+    blockNumber,
+    defaults
+  ) {
+    this._ethers_watchTransaction(transactionHash)
+
+    // If we have default values for the transaction (passed by the walletService)
+    if (defaults) {
+      // const contractAddress = Web3Utils.toChecksumAddress(to) // web3 does not format addresses properly
+      const contractAddress = defaults.to // ethers.js does format addresses in checksum format
+      const contract =
+        this.unlockContractAddress === contractAddress
+          ? version.Unlock
+          : version.PublicLock
+
+      return this._ethers_parseTransactionFromInput(
+        version,
+        transactionHash,
+        contract,
+        defaults.input,
+        defaults.to
+      )
+    }
+
+    return this.emit('transaction.updated', transactionHash, {
+      status: 'submitted',
+      confirmations: 0,
+      blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
+    })
+  }
+
+  /**
    * This means the transaction is not in a block yet (ie. not mined), but has been propagated
    * We do not know what the transacion is about though so we need to extract its info from
    * the input.
@@ -564,6 +802,32 @@ export default class Web3Service extends UnlockService {
       blockTransaction.hash,
       contract,
       blockTransaction.input,
+      blockTransaction.to
+    )
+  }
+
+  /**
+   * This means the transaction is not in a block yet (ie. not mined), but has been propagated
+   * We do not know what the transacion is about though so we need to extract its info from
+   * the input.
+   * @param {*} blockTransaction
+   * @private
+   */
+  _ethers_getPendingTransaction(version, blockTransaction) {
+    this._ethers_watchTransaction(blockTransaction.hash)
+
+    // const contractAddress = Web3Utils.toChecksumAddress(to) // web3 does not format addresses properly
+    const contractAddress = blockTransaction.to // ethers.js does format addresses in checksum format
+    const contract =
+      this.unlockContractAddress === contractAddress
+        ? version.Unlock
+        : version.PublicLock
+
+    return this._ethers_parseTransactionFromInput(
+      version,
+      blockTransaction.hash,
+      contract,
+      blockTransaction.data,
       blockTransaction.to
     )
   }
@@ -646,6 +910,92 @@ export default class Web3Service extends UnlockService {
         }
         return this._parseTransactionLogsFromReceipt(
           version,
+          transactionHash,
+          contract,
+          transactionReceipt
+        )
+      }
+    })
+  }
+
+  /**
+   * This refreshes a transaction by its hash.
+   * It will only process the transaction if the filter function returns true
+   * @param {string} transactionHash
+   * @param {object} filter
+   */
+  async ethers_getTransaction(transactionHash, defaults) {
+    return Promise.all([
+      this.provider.getBlockNumber(),
+      this.provider.getTransaction(transactionHash),
+    ]).then(async ([blockNumber, blockTransaction]) => {
+      // Let's find the type of contract before we can get its version
+      const to = blockTransaction ? blockTransaction.to : defaults.to
+      let version
+      // const contractAddress = Web3Utils.toChecksumAddress(to) // web3 does not format addresses properly
+      const contractAddress = to // ethers.js does format addresses in checksum format
+      if (this.unlockContractAddress === contractAddress) {
+        version = await this.ethers_unlockContractAbiVersion()
+      } else {
+        version = await this.ethers_lockContractAbiVersion(to)
+      }
+
+      // If the block transaction is missing the transacion has been submitted but not
+      // received by all nodes
+      if (!blockTransaction) {
+        return this._ethers_getSubmittedTransaction(
+          version,
+          transactionHash,
+          blockNumber,
+          defaults
+        )
+      }
+
+      // If the block number is missing the transaction has been received by the node
+      // but not mined yet
+      if (blockTransaction.blockNumber === null) {
+        return this._ethers_getPendingTransaction(version, blockTransaction)
+      }
+
+      // The transaction has been mined :
+
+      const contract =
+        this.unlockContractAddress === contractAddress
+          ? version.Unlock
+          : version.PublicLock
+
+      const transactionType = this._ethers_getTransactionType(
+        contract,
+        blockTransaction.data
+      )
+      // Let's watch for more confirmations if needed
+      if (
+        blockNumber - blockTransaction.blockNumber <
+        this.requiredConfirmations
+      ) {
+        this._ethers_watchTransaction(transactionHash)
+      }
+
+      // The transaction was mined, so we should have a receipt for it
+      this.emit('transaction.updated', transactionHash, {
+        status: 'mined',
+        type: transactionType,
+        confirmations: Math.max(blockNumber - blockTransaction.blockNumber, 0),
+        blockNumber: blockTransaction.blockNumber,
+      })
+
+      const transactionReceipt = await this.provider.getTransactionReceipt(
+        transactionHash
+      )
+
+      if (transactionReceipt) {
+        // NOTE: old version of web3.js (pre 1.0.0-beta.34) are not parsing 0x0 into a falsy value
+        if (!transactionReceipt.status || transactionReceipt.status == '0x0') {
+          return this.emit('transaction.updated', transactionHash, {
+            status: 'failed',
+          })
+        }
+        return this._ethers_parseTransactionLogsFromReceipt(
           transactionHash,
           contract,
           transactionReceipt
