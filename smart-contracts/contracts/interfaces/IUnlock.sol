@@ -16,6 +16,14 @@ interface IUnlock {
     address indexed newLockAddress
   );
 
+  event NewTokenURI(
+    string tokenURI
+  );
+
+  event NewTokenSymbol(
+    string tokenSymbol
+  );
+
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
   function initialize(address _owner) external;
 
@@ -72,4 +80,33 @@ interface IUnlock {
     external
     view
     returns (uint discount, uint tokens);
+
+  // Function to read the globalTokenURI field.
+  function getGlobalBaseTokenURI()
+    external
+    view
+    returns (string memory);
+
+  /** Function to set the globalTokenURI field.
+   *  Should throw if called by other than owner
+   */
+  function setGlobalBaseTokenURI(
+    string calldata _URI
+  )
+    external;
+
+  // Function to read the globalTokenSymbol field.
+  function getGlobalTokenSymbol()
+    external
+    view
+    returns (string memory);
+
+  /** Function to set the globalTokenSymbol field.
+   *  Should throw if called by other than owner.
+   */
+  function setGlobalTokenSymbol(
+    string calldata _symbol
+  )
+    external;
+
 }
