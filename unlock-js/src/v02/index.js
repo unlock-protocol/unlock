@@ -9,6 +9,7 @@ import purchaseKey from './purchaseKey'
 import ethers_purchaseKey from './purchaseKey.ethers'
 import updateKeyPrice from './updateKeyPrice'
 import withdrawFromLock from './withdrawFromLock'
+import ethers_withdrawFromLock from './withdrawFromLock.ethers'
 
 export default {
   ethers_createLock,
@@ -21,6 +22,7 @@ export default {
   ethers_purchaseKey,
   updateKeyPrice,
   withdrawFromLock,
+  ethers_withdrawFromLock,
   version: 'v02',
   Unlock,
   PublicLock,

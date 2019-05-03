@@ -188,6 +188,7 @@ describe('WalletService (ethers)', () => {
     const versionSpecificLockMethods = [
       'partialWithdrawFromLock',
       'purchaseKey',
+      'withdrawFromLock',
     ]
 
     it.each(versionSpecificLockMethods)(

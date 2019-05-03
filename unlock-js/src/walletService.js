@@ -280,6 +280,17 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
+   * @param {PropTypes.address} lock
+   * @param {PropTypes.address} account
+   * @param {Function} callback TODO: implement...
+   */
+  async ethers_withdrawFromLock(lock, account) {
+    const version = await this.ethers_lockContractAbiVersion(lock)
+    return version.ethers_withdrawFromLock.bind(this)(lock, account)
+  }
+
+  /**
    * Signs data for the given account.
    * We favor web3.eth.personal.sign which provides a better UI but is not implemented
    * everywhere. If it's failing we use web3.eth.sign
