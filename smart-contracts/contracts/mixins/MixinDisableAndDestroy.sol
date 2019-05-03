@@ -2,7 +2,7 @@ pragma solidity 0.5.7;
 
 import '../interfaces/IERC721.sol';
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
-
+import './MixinFunds.sol';
 
 /**
  * @title Mixin allowing the Lock owner to disable a Lock (preventing new purchases)
@@ -13,7 +13,8 @@ import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
  */
 contract MixinDisableAndDestroy is
   IERC721,
-  Ownable
+  Ownable,
+  MixinFunds
 {
   // Used to disable payable functions when deprecating an old lock
   bool public isAlive;
@@ -58,8 +59,13 @@ contract MixinDisableAndDestroy is
     onlyOwner
   {
     require(isAlive == false, 'DISABLE_FIRST');
+
     emit Destroy(address(this).balance, msg.sender);
+
+    // this will send any ETH or ERC20 held by the lock to the owner
+    _transfer(msg.sender, _getBalance(address(this)));
     selfdestruct(msg.sender);
+
     // Note we don't clean up the `locks` data in Unlock.sol as it should not be necessary
     // and leaves some data behind ('Unlock.LockBalances') which may be helpful.
   }
