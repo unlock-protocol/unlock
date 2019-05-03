@@ -101,49 +101,26 @@ describe('The Unlock Dashboard', () => {
       expect.assertions(1)
       // Given that we do not control the point at which the transaction
       // has been mined, we do not know its exact state (and we do not know the state of the lock
-      // as a consequence)
-      // We first need to check the actual state of the lock.
-      let lockText = await page.evaluate(address => {
-        return document.querySelector(`[data-address="${address}"]`).innerText
+      // as a consequence), but we know that it should eventually be in the 'Confirming' for a
+      // few blocks...
+      await wait.untilIsTrue(address => {
+        return document
+          .querySelector(`[data-address="${address}"]`)
+          .innerText.includes('Confirming')
       }, newLock)
 
-      // If it is not submitted or confirming, wait for it to be submitted
-      if (!lockText.includes('Submitted') && !lockText.includes('Confirming')) {
-        // Let's wait for the lock to become submitted
-        await wait.untilIsTrue(address => {
-          return document
-            .querySelector(`[data-address="${address}"]`)
-            .innerText.includes('Submitted')
-        }, newLock)
-
-        // Get the next again now
-        lockText = await page.evaluate(address => {
-          return document.querySelector(`[data-address="${address}"]`).innerText
-        }, newLock)
-      }
-
-      // If the lock is submitted
-      if (lockText.includes('Submitted')) {
-        // Let's wait for the lock to not be in that state anymore
-        await wait.untilIsFalse(address => {
-          return document
-            .querySelector(`[data-address="${address}"]`)
-            .innerText.includes('Submitted')
-        }, newLock)
-      }
-
-      // The lock should now be "confirming"
-      lockText = await page.evaluate(address => {
-        return document.querySelector(`[data-address="${address}"]`).innerText
-      }, newLock)
-
-      await expect(lockText).toMatch('Confirming')
-
+      // Once it starts to be confirmed, we wait for it to be fully confirmed
       await wait.untilIsFalse(address => {
         return document
           .querySelector(`[data-address="${address}"]`)
           .innerText.includes('Confirming')
       }, newLock)
+
+      const lockText = await page.evaluate(address => {
+        return document.querySelector(`[data-address="${address}"]`).innerText
+      }, newLock)
+
+      expect(lockText).not.toMatch('Confirming')
     })
   })
 
