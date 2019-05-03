@@ -52,10 +52,6 @@ describe('User Controller', () => {
     }
     let typedData = generateTypedData(message)
 
-    const sig = sigUtil.signTypedData(privateKey, {
-      data: typedData,
-    })
-
     describe('when a user matching the public key does not exist', () => {
       it('creates the appropriate records', async () => {
         expect.assertions(3)
@@ -63,7 +59,6 @@ describe('User Controller', () => {
         let response = await request(app)
           .post('/users')
           .set('Accept', /json/)
-          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
           .send(typedData)
         expect(response.statusCode).toBe(200)
         expect(
@@ -87,7 +82,6 @@ describe('User Controller', () => {
         let response = await request(app)
           .post('/users')
           .set('Accept', /json/)
-          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
           .send(typedData)
 
         expect(response.statusCode).toBe(200)
