@@ -1,6 +1,7 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
 import {
+  passwordErrors,
   mapDispatchToProps,
   validatePassword,
   FinishSignup,
@@ -76,12 +77,14 @@ describe('FinishSignup', () => {
   describe('validatePassword', () => {
     it('should not allow blank passwords', () => {
       expect.assertions(1)
-      expect(validatePassword('', '').isValid).toBeFalsy()
+      expect(validatePassword('', '')).toEqual([passwordErrors.EMPTY])
     })
 
     it('should not allow passwords that are different from their confirmations', () => {
       expect.assertions(1)
-      expect(validatePassword('guest', 'ghost').isValid).toBeFalsy()
+      expect(validatePassword('guest', 'ghost')).toEqual([
+        passwordErrors.NO_MATCH,
+      ])
     })
   })
 

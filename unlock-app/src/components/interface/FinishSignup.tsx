@@ -17,6 +17,12 @@ interface State {
   password: string
   passwordConfirmation: string
   errors: string[]
+  isValid: boolean
+}
+
+export const passwordErrors = {
+  EMPTY: 'Password must not be empty.',
+  NO_MATCH: 'Password and confirmation must match.',
 }
 
 export const validatePassword = (
@@ -26,11 +32,11 @@ export const validatePassword = (
   let errors: string[] = []
 
   if (password.length < 1) {
-    errors.push('Password must be at least one character long')
+    errors.push(passwordErrors.EMPTY)
   }
 
   if (password !== passwordConfirmation) {
-    errors.push('Password and confirmation must match.')
+    errors.push(passwordErrors.NO_MATCH)
   }
 
   return errors
@@ -43,6 +49,7 @@ export class FinishSignup extends React.Component<Props, State> {
       password: '',
       passwordConfirmation: '',
       errors: [],
+      isValid: false,
     }
   }
 
@@ -60,6 +67,7 @@ export class FinishSignup extends React.Component<Props, State> {
       return {
         ...newState,
         errors,
+        isValid: !errors.length,
       }
     })
   }
@@ -79,8 +87,7 @@ export class FinishSignup extends React.Component<Props, State> {
 
   render = () => {
     const { emailAddress } = this.props
-    const { errors } = this.state
-    const isValid = !errors.length
+    const { isValid, errors } = this.state
 
     return (
       <div>
@@ -106,6 +113,8 @@ export class FinishSignup extends React.Component<Props, State> {
             placeholder="Confirm Password"
             onChange={this.handleInputChange}
           />
+          <br />
+          <PasswordError>{errors.length ? errors[0] : ''}</PasswordError>
           <br />
           <SubmitButton type="submit" value="Submit" disabled={!isValid} />
         </form>
@@ -164,7 +173,16 @@ const SubmitButton = styled.input`
   border: none;
   background-color: var(--green);
   border-radius: 4px;
-  margin-top: 25px;
   font-size: 16px;
   cursor: pointer;
+  &[disabled] {
+    background-color: var(--grey);
+    cursor: not-allowed;
+    color: black;
+  }
+`
+
+const PasswordError = styled.span`
+  height: 30px;
+  line-height: 30px;
 `
