@@ -113,12 +113,8 @@ export default class StorageService {
    * @param {*} user
    * @returns {Promise<*>}
    */
-  async createUser(user, token) {
+  async createUser(user) {
     const opts = {}
-    if (token) {
-      // TODO: Tokens aren't optional
-      opts.headers = this.genAuthorizationHeader(token)
-    }
     try {
       return await axios.post(`${this.host}/users/`, user, opts)
     } catch (error) {
