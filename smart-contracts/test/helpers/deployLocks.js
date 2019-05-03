@@ -16,7 +16,8 @@ module.exports = function deployLocks(
           Locks[name].expirationDuration.toFixed(),
           tokenAddress,
           Locks[name].keyPrice.toFixed(),
-          Locks[name].maxNumberOfKeys.toFixed()
+          Locks[name].maxNumberOfKeys.toFixed(),
+          Locks[name].lockName
         )
       } else {
         createCall = unlock.createLock(
@@ -24,6 +25,7 @@ module.exports = function deployLocks(
           tokenAddress,
           Locks[name].keyPrice.toFixed(),
           Locks[name].maxNumberOfKeys.toFixed(),
+          Locks[name].lockName,
           { from }
         )
       }

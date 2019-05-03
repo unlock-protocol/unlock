@@ -37,7 +37,8 @@ interface IUnlock {
     uint _expirationDuration,
     address _tokenAddress,
     uint _keyPrice,
-    uint _maxNumberOfKeys
+    uint _maxNumberOfKeys,
+    string calldata _lockName
   )
     external
     returns (PublicLock lock);
