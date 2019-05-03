@@ -62,9 +62,9 @@ contract MixinDisableAndDestroy is
 
     emit Destroy(address(this).balance, msg.sender);
 
-    selfdestruct(msg.sender);
-    // this will send any ERC20 held by the lock to the owner
+    // this will send any ETH or ERC20 held by the lock to the owner
     _transfer(msg.sender, _getBalance(address(this)));
+    selfdestruct(msg.sender);
 
     // Note we don't clean up the `locks` data in Unlock.sol as it should not be necessary
     // and leaves some data behind ('Unlock.LockBalances') which may be helpful.
