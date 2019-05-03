@@ -24,4 +24,5 @@ module.exports = {
     return utils.hexZeroPad(num, 32)
   },
   utf8ToHex: str => utils.hexlify(str.length ? utils.toUtf8Bytes(str) : 0),
+  sha3: utils.keccak256,
 }
