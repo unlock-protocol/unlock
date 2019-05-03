@@ -8,12 +8,7 @@ import Web3Utils from './utils'
 import ethers_utils from './utils.ethers'
 import TransactionTypes from './transactionTypes'
 import UnlockService from './unlockService'
-import {
-  MAX_UINT,
-  UNLIMITED_KEYS_COUNT,
-  KEY_ID,
-  ETHERS_MAX_UINT,
-} from './constants'
+import { MAX_UINT, UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -184,9 +179,7 @@ export default class Web3Service extends UnlockService {
           lock: newLockAddress,
         })
 
-        if (
-          ethers_utils.bigNumberify(params._maxNumberOfKeys).eq(ETHERS_MAX_UINT)
-        ) {
+        if (ethers_utils.isInfiniteKeys(params._maxNumberOfKeys)) {
           params._maxNumberOfKeys = UNLIMITED_KEYS_COUNT
         }
 

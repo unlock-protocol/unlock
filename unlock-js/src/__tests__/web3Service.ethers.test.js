@@ -1459,29 +1459,6 @@ describe('Web3Service', () => {
         })
       })
     })
-  })
-
-  describe.each([
-    ['v0', UnlockV0, v0, 0],
-    //['v01', UnlockV01, v01, 1],
-    //['v02', UnlockV02, v02, 2],
-  ])('%s', (version, UnlockVersion, LockVersion, actualVersion) => {
-    async function versionedNockBeforeEach(endpoint = readOnlyProvider) {
-      nock.cleanAll()
-      nock.netVersionAndYield(1)
-      web3Service = new Web3Service({
-        readOnlyProvider: endpoint,
-        unlockAddress,
-        blockTime,
-        requiredConfirmations,
-        useEthers: true,
-      })
-      web3Service._ethers_getPublicLockVersionFromContract = jest.fn(
-        () => actualVersion
-      )
-      web3Service._ethers_getVersionFromContract = jest.fn(() => actualVersion)
-      return nock.resolveWhenAllNocksUsed()
-    }
 
     describe('_genKeyOwnersFromLockContractIterative', () => {
       it('calls owners with the correct index', async () => {
