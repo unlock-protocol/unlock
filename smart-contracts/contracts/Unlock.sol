@@ -107,7 +107,8 @@ contract Unlock is
     uint _expirationDuration,
     address _tokenAddress,
     uint _keyPrice,
-    uint _maxNumberOfKeys
+    uint _maxNumberOfKeys,
+    string memory _lockName
   )
     public
     returns (PublicLock lock)
@@ -118,7 +119,8 @@ contract Unlock is
       _expirationDuration,
       _tokenAddress,
       _keyPrice,
-      _maxNumberOfKeys
+      _maxNumberOfKeys,
+      _lockName
     );
 
     // Assign the new Lock
