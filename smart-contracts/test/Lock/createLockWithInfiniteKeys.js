@@ -18,11 +18,11 @@ contract('Lock / createLockWithInfiniteKeys', () => {
     let transaction
     before(async function() {
       transaction = await unlock.createLock(
-        'Infinite Keys Lock',
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         Web3Utils.padLeft(0, 40),
         Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
-        -1 // maxNumberOfKeys
+        -1, // maxNumberOfKeys
+        'Infinite Keys Lock'
       )
     })
 
@@ -45,11 +45,11 @@ contract('Lock / createLockWithInfiniteKeys', () => {
     let transaction
     before(async function() {
       transaction = await unlock.createLock(
-        'Zero-Key Lock',
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         Web3Utils.padLeft(0, 40),
         Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
-        0 // maxNumberOfKeys
+        0, // maxNumberOfKeys
+        'Zero-Key Lock'
       )
     })
 

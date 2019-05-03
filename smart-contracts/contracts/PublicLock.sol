@@ -44,11 +44,11 @@ contract PublicLock is
 {
   constructor(
     address _owner,
-    string memory _lockName,
     uint _expirationDuration,
     address _tokenAddress,
     uint _keyPrice,
-    uint _maxNumberOfKeys
+    uint _maxNumberOfKeys,
+    string memory _lockName
   )
     public
     MixinFunds(_tokenAddress)

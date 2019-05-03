@@ -13,19 +13,19 @@ module.exports = function deployLocks(
       let createCall
       if (unlock.methods && unlock.methods.createLock) {
         createCall = unlock.methods.createLock(
-          Locks[name].lockName,
-          Locks[name].expirationDuration.toFixed(),
-          tokenAddress,
-          Locks[name].keyPrice.toFixed(),
-          Locks[name].maxNumberOfKeys.toFixed()
-        )
-      } else {
-        createCall = unlock.createLock(
-          Locks[name].lockName,
           Locks[name].expirationDuration.toFixed(),
           tokenAddress,
           Locks[name].keyPrice.toFixed(),
           Locks[name].maxNumberOfKeys.toFixed(),
+          Locks[name].lockName
+        )
+      } else {
+        createCall = unlock.createLock(
+          Locks[name].expirationDuration.toFixed(),
+          tokenAddress,
+          Locks[name].keyPrice.toFixed(),
+          Locks[name].maxNumberOfKeys.toFixed(),
+          Locks[name].lockName,
           { from }
         )
       }
