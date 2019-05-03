@@ -136,11 +136,12 @@ export class NockHelper {
   }
 
   // eth_getBalance
-  getBalanceForAccountAndYieldBalance(account, balance) {
+  getBalanceForAccountAndYieldBalance(account, balance, error) {
     return this._jsonRpcRequest(
       'eth_getBalance',
       [account.toLowerCase(), 'latest'],
-      balance
+      balance,
+      error
     )
   }
 
@@ -211,6 +212,14 @@ export class NockHelper {
 
   personalSignAndYield(hash, account, result, error) {
     return this._jsonRpcRequest('personal_sign', [hash, account], result, error)
+  }
+
+  getTransactionCount(address, count) {
+    return this._jsonRpcRequest(
+      'eth_getTransactionCount',
+      [address, 'latest'],
+      count
+    )
   }
 }
 
