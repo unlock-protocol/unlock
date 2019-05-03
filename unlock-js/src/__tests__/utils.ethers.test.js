@@ -26,7 +26,7 @@ describe('ethers utils', () => {
   })
 
   it('fromWei', () => {
-    expect.assertions(2)
+    expect.assertions(3)
 
     expect(ethersUtils.fromWei('1000000000000000000000', 'ether')).toEqual(
       '1000'
@@ -35,6 +35,8 @@ describe('ethers utils', () => {
     expect(ethersUtils.fromWei('1000000000000000000000', 'gwei')).toEqual(
       '1000000000000'
     )
+
+    expect(ethersUtils.fromWei('100000000', 'ether')).toEqual('0.0000000001')
   })
 
   it('isInfiniteKeys', () => {
