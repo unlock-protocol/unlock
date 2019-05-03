@@ -8,17 +8,8 @@ let passwordEncryptedPrivateKeyPathRegex = new RegExp(
   '^/users/S+/passwordEncryptedPrivateKey/?$',
   'i'
 )
-let userCreationPathRegex = new RegExp('^/users/?$', 'i')
 let userUpdatePathRegex = new RegExp('^/users/?$', 'i')
 
-router.post(
-  userCreationPathRegex,
-  signatureValidationMiddleware.generateProcessor({
-    name: 'user',
-    required: ['emailAddress', 'publicKey', 'passwordEncryptedPrivateKey'],
-    signee: 'publicKey',
-  })
-)
 router.put(
   userUpdatePathRegex,
   signatureValidationMiddleware.generateProcessor({
