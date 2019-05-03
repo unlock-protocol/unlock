@@ -2,6 +2,7 @@ import Web3 from 'web3'
 import { providers as ethersProviders } from 'ethers'
 import UnlockService from './unlockService'
 import { GAS_AMOUNTS } from './constants'
+import * as utils from './utils.ethers'
 
 /**
  * This service interacts with the user's wallet.
@@ -67,6 +68,7 @@ export default class WalletService extends UnlockService {
       this.emit('network.changed', networkId)
     }
   }
+
   /**
    * Checks if the contract has been deployed at the address.
    * Invokes the callback with the result.
@@ -83,10 +85,43 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * Checks if the contract has been deployed at the address.
+   * Invokes the callback with the result.
+   * Addresses which do not have a contract attached will return 0x
+   */
+  async ethers_isUnlockContractDeployed(callback) {
+    let opCode = '0x' // Default
+    try {
+      opCode = await this.provider.getCode(this.unlockContractAddress)
+    } catch (error) {
+      return callback(error)
+    }
+    return callback(null, opCode !== '0x')
+  }
+
+  /**
    * Function which yields the address of the account on the provider
    */
   async getAccount() {
     const accounts = await this.web3.eth.getAccounts()
+
+    if (!accounts.length) {
+      // We do not have an account, can't do anything until we have one.
+      return (this.ready = false)
+    }
+
+    let address = accounts[0]
+
+    this.emit('account.changed', address)
+    this.emit('ready')
+    return Promise.resolve(address)
+  }
+
+  /**
+   * Function which yields the address of the account on the provider
+   */
+  async ethers_getAccount() {
+    const accounts = await this.provider.listAccounts()
 
     if (!accounts.length) {
       // We do not have an account, can't do anything until we have one.
@@ -342,10 +377,59 @@ export default class WalletService extends UnlockService {
     )
   }
 
+  /**
+   * Signs data for the given account.
+   * We favor eth_signTypedData which provides a better UI
+   * In Metamask, it is called eth_signTypedData_v3
+   *
+   * @param {*} account
+   * @param {*} data
+   * @param {*} callback
+   */
+  async ethers_signData(account, data, callback) {
+    let method
+
+    if (this.web3Provider && this.web3Provider.isMetaMask) {
+      method = 'eth_signTypedData_v3'
+      data = JSON.stringify(data)
+    } else {
+      method = 'eth_signTypedData'
+    }
+
+    try {
+      const result = await this.provider.send(method, [account, data])
+
+      // signature failure on the node
+      if (result.error) {
+        return callback(result.error, null)
+      }
+
+      callback(null, Buffer.from(result.result).toString('base64'))
+    } catch (err) {
+      return callback(err, null)
+    }
+  }
+
   async signDataPersonal(account, data, callback) {
     try {
       let dataHash = this.web3.utils.sha3(data)
       let signature = await this.web3.eth.personal.sign(dataHash, account)
+
+      callback(null, Buffer.from(signature).toString('base64'))
+    } catch (error) {
+      return callback(error, null)
+    }
+  }
+
+  async ethers_signDataPersonal(account, data, callback) {
+    try {
+      const dataHash = utils.sha3(utils.utf8ToHex(data))
+      const signer = this.provider.getSigner()
+      const addr = await signer.getAddress()
+      const signature = await this.provider.send('personal_sign', [
+        utils.hexlify(dataHash),
+        addr.toLowerCase(),
+      ])
 
       callback(null, Buffer.from(signature).toString('base64'))
     } catch (error) {
