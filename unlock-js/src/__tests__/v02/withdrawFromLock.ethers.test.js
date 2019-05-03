@@ -1,5 +1,4 @@
 import * as UnlockV02 from 'unlock-abi-0-2'
-import withdrawFromLock from '../../v02/withdrawFromLock.ethers'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
@@ -30,7 +29,6 @@ describe('v02 (ethers)', () => {
         endpoint,
         nock
       )
-      walletService.updateKeyPrice = withdrawFromLock.bind(walletService)
 
       const callMethodData = prepContract({
         contract: UnlockV02.PublicLock,
@@ -63,7 +61,7 @@ describe('v02 (ethers)', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.withdrawFromLock(lockAddress, account)
+      await walletService.ethers_withdrawFromLock(lockAddress, account)
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -87,7 +85,7 @@ describe('v02 (ethers)', () => {
       walletService.on('error', error => {
         expect(error.message).toBe(FAILED_TO_WITHDRAW_FROM_LOCK)
       })
-      await walletService.withdrawFromLock(lockAddress, account)
+      await walletService.ethers_withdrawFromLock(lockAddress, account)
       await nock.resolveWhenAllNocksUsed()
     })
   })
