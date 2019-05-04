@@ -333,17 +333,20 @@ describe('Wallet middleware', () => {
       publicKey: account.address,
       eventAddress: address,
     })
-    mockWalletService.signData = jest.fn((_, address, cb) =>
+    mockWalletService.signDataPersonal = jest.fn((_, address, cb) =>
       cb(null, `ENCRYPTED: ${JSON.stringify(address)}`)
     )
     invoke(action)
-    expect(mockWalletService.signData).toHaveBeenCalledWith(
+    expect(mockWalletService.signDataPersonal).toHaveBeenCalledWith(
       getState().account.address,
-      data,
+      JSON.stringify(data),
       expect.any(Function)
     )
     expect(dispatch).toHaveBeenCalledWith(
-      gotSignedAddress(address, `ENCRYPTED: ${JSON.stringify(data)}`)
+      gotSignedAddress(
+        address,
+        `ENCRYPTED: ${JSON.stringify(JSON.stringify(data))}`
+      )
     )
     expect(next).toHaveBeenCalledWith(action)
   })
