@@ -147,6 +147,7 @@ export default class Web3Service extends UnlockService {
       this.emit('account.updated', account, {
         balance,
       })
+      return balance
     })
   }
 
@@ -591,24 +592,16 @@ export default class Web3Service extends UnlockService {
 
   _genKeyOwnersFromLockContract(lock, lockContract, page, byPage) {
     return new Promise((resolve, reject) => {
-      try {
-        lockContract.functions
-          .getOwnersByPage(page, byPage)
-          .then(ownerAddresses => {
-            const keyPromises = ownerAddresses.map(ownerAddress => {
-              return this._packageKeyholderInfo(
-                lock,
-                lockContract,
-                ownerAddress
-              )
-            })
-
-            resolve(keyPromises)
+      lockContract.functions
+        .getOwnersByPage(page, byPage)
+        .then(ownerAddresses => {
+          const keyPromises = ownerAddresses.map(ownerAddress => {
+            return this._packageKeyholderInfo(lock, lockContract, ownerAddress)
           })
-          .catch(error => reject(error))
-      } catch (e) {
-        reject(e)
-      }
+
+          resolve(keyPromises)
+        })
+        .catch(error => reject(error))
     })
   }
 
