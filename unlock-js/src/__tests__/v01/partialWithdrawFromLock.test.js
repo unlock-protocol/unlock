@@ -1,11 +1,9 @@
 import * as UnlockV01 from 'unlock-abi-0-1'
+import * as utils from '../../utils.ethers'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
-import {
-  prepWalletService,
-  prepContract,
-} from '../helpers/walletServiceHelper.ethers'
+import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 
 const { FAILED_TO_WITHDRAW_FROM_LOCK } = Errors
 const endpoint = 'http://127.0.0.1:8545'
@@ -18,9 +16,10 @@ let setupSuccess
 let setupFail
 
 describe('v01', () => {
-  describe('withdrawFromLock', () => {
-    const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
+  describe('partialWithdrawFromLock', () => {
+    const lock = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
     const account = '0xdeadbeef'
+    const amount = '3'
 
     async function nockBeforeEach() {
       nock.cleanAll()
@@ -32,8 +31,8 @@ describe('v01', () => {
 
       const callMethodData = prepContract({
         contract: UnlockV01.PublicLock,
-        functionName: 'withdraw',
-        signature: '',
+        functionName: 'partialWithdraw',
+        signature: 'uint256',
         nock,
       })
 
@@ -42,7 +41,7 @@ describe('v01', () => {
         testTransactionResult,
         success,
         fail,
-      } = callMethodData()
+      } = callMethodData(utils.toWei(amount, 'ether'))
 
       transaction = testTransaction
       transactionResult = testTransactionResult
@@ -52,6 +51,7 @@ describe('v01', () => {
 
     it('should invoke _handleMethodCall with the right params', async () => {
       expect.assertions(2)
+      const callback = jest.fn()
 
       await nockBeforeEach()
       setupSuccess()
@@ -61,7 +61,12 @@ describe('v01', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.withdrawFromLock(lockAddress, account)
+      await walletService.partialWithdrawFromLock(
+        lock,
+        account,
+        amount,
+        callback
+      )
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -75,8 +80,9 @@ describe('v01', () => {
       await nock.resolveWhenAllNocksUsed()
     })
 
-    it('should emit an error if the transaction could not be sent', async () => {
+    it('should emit an error if the transaction cannot be sent', async () => {
       expect.assertions(1)
+      const callback = jest.fn()
 
       const error = { code: 404, data: 'oops' }
       await nockBeforeEach()
@@ -85,8 +91,36 @@ describe('v01', () => {
       walletService.on('error', error => {
         expect(error.message).toBe(FAILED_TO_WITHDRAW_FROM_LOCK)
       })
-      await walletService.withdrawFromLock(lockAddress, account)
+
+      await walletService.partialWithdrawFromLock(
+        lock,
+        account,
+        amount,
+        callback
+      )
       await nock.resolveWhenAllNocksUsed()
+    })
+
+    it('should not emit an error when `error` is falsy', async () => {
+      expect.assertions(1)
+      const callback = jest.fn()
+
+      await nockBeforeEach()
+      setupSuccess()
+
+      walletService._handleMethodCall = jest.fn(() =>
+        Promise.resolve(transaction.hash)
+      )
+
+      await walletService.partialWithdrawFromLock(
+        lock,
+        account,
+        amount,
+        callback
+      )
+
+      await nock.resolveWhenAllNocksUsed()
+      expect(callback).toHaveBeenCalled()
     })
   })
 })

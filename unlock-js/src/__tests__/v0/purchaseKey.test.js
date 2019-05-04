@@ -1,14 +1,11 @@
-import * as UnlockV02 from 'unlock-abi-0-2'
+import * as UnlockV0 from 'unlock-abi-0'
 import * as utils from '../../utils.ethers'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
-import {
-  prepWalletService,
-  prepContract,
-} from '../helpers/walletServiceHelper.ethers'
+import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 
-const { FAILED_TO_WITHDRAW_FROM_LOCK } = Errors
+const { FAILED_TO_PURCHASE_KEY } = Errors
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
 
@@ -18,25 +15,28 @@ let transactionResult
 let setupSuccess
 let setupFail
 
-describe('v02', () => {
-  describe('partialWithdrawFromLock', () => {
-    const lock = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
+describe('v0', () => {
+  describe('purchaseKey', () => {
+    const keyPrice = '0.01'
+    const owner = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
+    const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
     const account = '0xdeadbeef'
-    const amount = '3'
+    const data = 'key data'
 
     async function nockBeforeEach() {
       nock.cleanAll()
       walletService = await prepWalletService(
-        UnlockV02.PublicLock,
+        UnlockV0.PublicLock,
         endpoint,
         nock
       )
 
       const callMethodData = prepContract({
-        contract: UnlockV02.PublicLock,
-        functionName: 'partialWithdraw',
-        signature: 'uint256',
+        contract: UnlockV0.PublicLock,
+        functionName: 'purchaseFor',
+        signature: 'address,bytes',
         nock,
+        value: keyPrice,
       })
 
       const {
@@ -44,7 +44,7 @@ describe('v02', () => {
         testTransactionResult,
         success,
         fail,
-      } = callMethodData(utils.toWei(amount, 'ether'))
+      } = callMethodData(owner, utils.utf8ToHex(data))
 
       transaction = testTransaction
       transactionResult = testTransactionResult
@@ -54,7 +54,6 @@ describe('v02', () => {
 
     it('should invoke _handleMethodCall with the right params', async () => {
       expect.assertions(2)
-      const callback = jest.fn()
 
       await nockBeforeEach()
       setupSuccess()
@@ -64,16 +63,17 @@ describe('v02', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.partialWithdrawFromLock(
-        lock,
+      await walletService.purchaseKey(
+        lockAddress,
+        owner,
+        keyPrice,
         account,
-        amount,
-        callback
+        data
       )
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
-        TransactionTypes.WITHDRAWAL
+        TransactionTypes.KEY_PURCHASE
       )
 
       // verify that the promise passed to _handleMethodCall actually resolves
@@ -83,47 +83,25 @@ describe('v02', () => {
       await nock.resolveWhenAllNocksUsed()
     })
 
-    it('should emit an error if the transaction cannot be sent', async () => {
+    it('should emit an error if the transaction could not be sent', async () => {
       expect.assertions(1)
-      const callback = jest.fn()
 
       const error = { code: 404, data: 'oops' }
       await nockBeforeEach()
       setupFail(error)
 
       walletService.on('error', error => {
-        expect(error.message).toBe(FAILED_TO_WITHDRAW_FROM_LOCK)
+        expect(error.message).toBe(FAILED_TO_PURCHASE_KEY)
       })
 
-      await walletService.partialWithdrawFromLock(
-        lock,
+      await walletService.purchaseKey(
+        lockAddress,
+        owner,
+        keyPrice,
         account,
-        amount,
-        callback
+        data
       )
       await nock.resolveWhenAllNocksUsed()
-    })
-
-    it('should not emit an error when `error` is falsy', async () => {
-      expect.assertions(1)
-      const callback = jest.fn()
-
-      await nockBeforeEach()
-      setupSuccess()
-
-      walletService._handleMethodCall = jest.fn(() =>
-        Promise.resolve(transaction.hash)
-      )
-
-      await walletService.partialWithdrawFromLock(
-        lock,
-        account,
-        amount,
-        callback
-      )
-
-      await nock.resolveWhenAllNocksUsed()
-      expect(callback).toHaveBeenCalled()
     })
   })
 })

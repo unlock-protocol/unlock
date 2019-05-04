@@ -1,14 +1,10 @@
-import * as UnlockV01 from 'unlock-abi-0-1'
-import * as utils from '../../utils.ethers'
+import * as UnlockV02 from 'unlock-abi-0-2'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
-import {
-  prepWalletService,
-  prepContract,
-} from '../helpers/walletServiceHelper.ethers'
+import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 
-const { FAILED_TO_UPDATE_KEY_PRICE } = Errors
+const { FAILED_TO_PURCHASE_KEY } = Errors
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
 
@@ -18,25 +14,26 @@ let transactionResult
 let setupSuccess
 let setupFail
 
-describe('v01', () => {
-  describe('updateKeyPrice', () => {
+describe('v02', () => {
+  describe('purchaseKey', () => {
+    const keyPrice = '0.01'
+    const owner = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
-    const account = '0xdeadbeef'
-    const price = '100000000'
 
     async function nockBeforeEach() {
       nock.cleanAll()
       walletService = await prepWalletService(
-        UnlockV01.PublicLock,
+        UnlockV02.PublicLock,
         endpoint,
         nock
       )
 
       const callMethodData = prepContract({
-        contract: UnlockV01.PublicLock,
-        functionName: 'updateKeyPrice',
-        signature: 'uint256',
+        contract: UnlockV02.PublicLock,
+        functionName: 'purchaseFor',
+        signature: 'address',
         nock,
+        value: keyPrice,
       })
 
       const {
@@ -44,7 +41,7 @@ describe('v01', () => {
         testTransactionResult,
         success,
         fail,
-      } = callMethodData(utils.toWei(price, 'ether'))
+      } = callMethodData(owner)
 
       transaction = testTransaction
       transactionResult = testTransactionResult
@@ -63,11 +60,11 @@ describe('v01', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.updateKeyPrice(lockAddress, account, price)
+      await walletService.purchaseKey(lockAddress, owner, keyPrice)
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
-        TransactionTypes.UPDATE_KEY_PRICE
+        TransactionTypes.KEY_PURCHASE
       )
 
       // verify that the promise passed to _handleMethodCall actually resolves
@@ -85,10 +82,10 @@ describe('v01', () => {
       setupFail(error)
 
       walletService.on('error', error => {
-        expect(error.message).toBe(FAILED_TO_UPDATE_KEY_PRICE)
+        expect(error.message).toBe(FAILED_TO_PURCHASE_KEY)
       })
 
-      await walletService.updateKeyPrice(lockAddress, account, price)
+      await walletService.purchaseKey(lockAddress, owner, keyPrice)
       await nock.resolveWhenAllNocksUsed()
     })
   })

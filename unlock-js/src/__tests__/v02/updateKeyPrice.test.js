@@ -1,13 +1,11 @@
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV02 from 'unlock-abi-0-2'
+import * as utils from '../../utils.ethers'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
-import {
-  prepWalletService,
-  prepContract,
-} from '../helpers/walletServiceHelper.ethers'
+import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 
-const { FAILED_TO_WITHDRAW_FROM_LOCK } = Errors
+const { FAILED_TO_UPDATE_KEY_PRICE } = Errors
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
 
@@ -17,23 +15,24 @@ let transactionResult
 let setupSuccess
 let setupFail
 
-describe('v0', () => {
-  describe('withdrawFromLock', () => {
+describe('v02', () => {
+  describe('updateKeyPrice', () => {
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
     const account = '0xdeadbeef'
+    const price = '100000000'
 
     async function nockBeforeEach() {
       nock.cleanAll()
       walletService = await prepWalletService(
-        UnlockV0.PublicLock,
+        UnlockV02.PublicLock,
         endpoint,
         nock
       )
 
       const callMethodData = prepContract({
-        contract: UnlockV0.PublicLock,
-        functionName: 'withdraw',
-        signature: '',
+        contract: UnlockV02.PublicLock,
+        functionName: 'updateKeyPrice',
+        signature: 'uint256',
         nock,
       })
 
@@ -42,7 +41,7 @@ describe('v0', () => {
         testTransactionResult,
         success,
         fail,
-      } = callMethodData()
+      } = callMethodData(utils.toWei(price, 'ether'))
 
       transaction = testTransaction
       transactionResult = testTransactionResult
@@ -61,11 +60,11 @@ describe('v0', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.withdrawFromLock(lockAddress, account)
+      await walletService.updateKeyPrice(lockAddress, account, price)
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
-        TransactionTypes.WITHDRAWAL
+        TransactionTypes.UPDATE_KEY_PRICE
       )
 
       // verify that the promise passed to _handleMethodCall actually resolves
@@ -83,9 +82,10 @@ describe('v0', () => {
       setupFail(error)
 
       walletService.on('error', error => {
-        expect(error.message).toBe(FAILED_TO_WITHDRAW_FROM_LOCK)
+        expect(error.message).toBe(FAILED_TO_UPDATE_KEY_PRICE)
       })
-      await walletService.withdrawFromLock(lockAddress, account)
+
+      await walletService.updateKeyPrice(lockAddress, account, price)
       await nock.resolveWhenAllNocksUsed()
     })
   })
