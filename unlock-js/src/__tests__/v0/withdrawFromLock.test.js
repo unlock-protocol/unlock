@@ -1,11 +1,8 @@
-import * as UnlockV02 from 'unlock-abi-0-2'
+import * as UnlockV0 from 'unlock-abi-0'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
-import {
-  prepWalletService,
-  prepContract,
-} from '../helpers/walletServiceHelper.ethers'
+import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 
 const { FAILED_TO_WITHDRAW_FROM_LOCK } = Errors
 const endpoint = 'http://127.0.0.1:8545'
@@ -17,7 +14,7 @@ let transactionResult
 let setupSuccess
 let setupFail
 
-describe('v02', () => {
+describe('v0', () => {
   describe('withdrawFromLock', () => {
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
     const account = '0xdeadbeef'
@@ -25,13 +22,13 @@ describe('v02', () => {
     async function nockBeforeEach() {
       nock.cleanAll()
       walletService = await prepWalletService(
-        UnlockV02.PublicLock,
+        UnlockV0.PublicLock,
         endpoint,
         nock
       )
 
       const callMethodData = prepContract({
-        contract: UnlockV02.PublicLock,
+        contract: UnlockV0.PublicLock,
         functionName: 'withdraw',
         signature: '',
         nock,
