@@ -33,7 +33,6 @@ describe('v0', () => {
         unlockAddress,
         blockTime,
         requiredConfirmations,
-        useEthers: true,
       })
       await nock.resolveWhenAllNocksUsed()
     }
@@ -114,7 +113,7 @@ describe('v0', () => {
         })
       })
 
-      await web3Service.ethers_getLock(lockAddress)
+      await web3Service.getLock(lockAddress)
     })
 
     it('should successfully yield a lock with an unlimited number of keys', async () => {
@@ -132,7 +131,7 @@ describe('v0', () => {
         })
       })
 
-      return web3Service.ethers_getLock(lockAddress)
+      return web3Service.getLock(lockAddress)
     })
   })
 })

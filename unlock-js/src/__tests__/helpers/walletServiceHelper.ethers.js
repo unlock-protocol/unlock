@@ -50,8 +50,7 @@ export const prepWalletService = async (
 
   nock.netVersionAndYield(netVersion)
 
-  // TODO: when we kill off web3, use connect() instead
-  await walletService.ethers_connect(provider)
+  await walletService.connect(provider)
 
   nock.ethGetCodeAndYield(contractAddress, contract.deployedBytecode)
   if (isUnlock) {
