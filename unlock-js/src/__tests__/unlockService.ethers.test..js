@@ -28,32 +28,32 @@ describe('UnlockService', () => {
   }
 
   describe('errors', () => {
-    it('ethers_unlockContractAbiVersion throws if provider is not set', async () => {
+    it('unlockContractAbiVersion throws if provider is not set', async () => {
       expect.assertions(1)
       await nockBeforeEach()
       unlockService.provider = null
 
       try {
-        await unlockService.ethers_unlockContractAbiVersion()
+        await unlockService.unlockContractAbiVersion()
       } catch (e) {
         expect(e.message).toBe(Errors.MISSING_WEB3)
       }
     })
 
-    it('ethers_lockContractAbiVersion throws if provider is not set', async () => {
+    it('lockContractAbiVersion throws if provider is not set', async () => {
       expect.assertions(1)
       await nockBeforeEach()
       unlockService.provider = null
 
       try {
-        await unlockService.ethers_lockContractAbiVersion(1)
+        await unlockService.lockContractAbiVersion(1)
       } catch (e) {
         expect(e.message).toBe(Errors.MISSING_WEB3)
       }
     })
   })
 
-  describe('_ethers_getPublicLockVersionFromContract', () => {
+  describe('_getPublicLockVersionFromContract', () => {
     it('returns 0 for v0, which does not have publicLockVersion', async () => {
       expect.assertions(1)
       await nockBeforeEach()
@@ -66,7 +66,7 @@ describe('UnlockService', () => {
         { code: 404 }
       )
 
-      const result = await unlockService._ethers_getPublicLockVersionFromContract(
+      const result = await unlockService._getPublicLockVersionFromContract(
         unlockAddress
       )
 
@@ -89,7 +89,7 @@ describe('UnlockService', () => {
       )
       nock.ethGetCodeAndYield(unlockAddress, v01.PublicLock.deployedBytecode)
 
-      const result = await unlockService._ethers_getPublicLockVersionFromContract(
+      const result = await unlockService._getPublicLockVersionFromContract(
         unlockAddress
       )
 
@@ -111,7 +111,7 @@ describe('UnlockService', () => {
         coder.encode(['uint256'], [ethers.utils.bigNumberify(2)])
       )
 
-      const result = await unlockService._ethers_getPublicLockVersionFromContract(
+      const result = await unlockService._getPublicLockVersionFromContract(
         unlockAddress
       )
 
@@ -121,7 +121,7 @@ describe('UnlockService', () => {
     })
   })
 
-  describe('_ethers_getVersionFromContract', () => {
+  describe('_getVersionFromContract', () => {
     it('calls publicLockVersion', async () => {
       expect.assertions(1)
       await nockBeforeEach()
@@ -135,9 +135,7 @@ describe('UnlockService', () => {
         coder.encode(['uint256'], [ethers.utils.bigNumberify(1)])
       )
 
-      const result = await unlockService._ethers_getVersionFromContract(
-        unlockAddress
-      )
+      const result = await unlockService._getVersionFromContract(unlockAddress)
 
       // this test fails if the call does not occur
       await nock.resolveWhenAllNocksUsed()
@@ -145,63 +143,61 @@ describe('UnlockService', () => {
     })
   })
 
-  describe('ethers_unlockContractAbiVersion', () => {
+  describe('unlockContractAbiVersion', () => {
     it('should return the v2 implementation when the opCode matches', async () => {
       expect.assertions(3)
       await nockBeforeEach()
-      unlockService._ethers_getVersionFromContract = jest.fn(() => {
+      unlockService._getVersionFromContract = jest.fn(() => {
         return Promise.resolve(2)
       })
-      const version = await unlockService.ethers_unlockContractAbiVersion()
+      const version = await unlockService.unlockContractAbiVersion()
 
-      expect(unlockService._ethers_getVersionFromContract).toHaveBeenCalledWith(
+      expect(unlockService._getVersionFromContract).toHaveBeenCalledWith(
         unlockAddress
       )
       expect(version).toEqual(v02)
-      expect(unlockService.ethers_versionForAddress[unlockAddress]).toEqual(2)
+      expect(unlockService.versionForAddress[unlockAddress]).toEqual(2)
     })
 
     it('should return v0 by default', async () => {
       expect.assertions(3)
       await nockBeforeEach()
-      unlockService._ethers_getVersionFromContract = jest.fn(() => {
+      unlockService._getVersionFromContract = jest.fn(() => {
         return Promise.resolve(0)
       })
 
-      const version = await unlockService.ethers_unlockContractAbiVersion()
+      const version = await unlockService.unlockContractAbiVersion()
 
-      expect(unlockService._ethers_getVersionFromContract).toHaveBeenCalledWith(
+      expect(unlockService._getVersionFromContract).toHaveBeenCalledWith(
         unlockAddress
       )
       expect(version).toEqual(v0)
-      expect(unlockService.ethers_versionForAddress[unlockAddress]).toEqual(0)
+      expect(unlockService.versionForAddress[unlockAddress]).toEqual(0)
     })
 
     it('should return v01 if version is 1', async () => {
       expect.assertions(3)
       await nockBeforeEach()
-      unlockService._ethers_getVersionFromContract = jest.fn(() => {
+      unlockService._getVersionFromContract = jest.fn(() => {
         return Promise.resolve(1)
       })
 
-      const version = await unlockService.ethers_unlockContractAbiVersion()
+      const version = await unlockService.unlockContractAbiVersion()
 
-      expect(unlockService._ethers_getVersionFromContract).toHaveBeenCalledWith(
+      expect(unlockService._getVersionFromContract).toHaveBeenCalledWith(
         unlockAddress
       )
       expect(version).toEqual(v01)
-      expect(unlockService.ethers_versionForAddress[unlockAddress]).toEqual(1)
+      expect(unlockService.versionForAddress[unlockAddress]).toEqual(1)
     })
 
     it('should used the memoized the result', async () => {
       expect.assertions(2)
       await nockBeforeEach()
-      unlockService._ethers_getVersionFromContract = jest.fn(() => {})
-      unlockService.ethers_versionForAddress[unlockAddress] = 2
-      const version = await unlockService.ethers_unlockContractAbiVersion()
-      expect(
-        unlockService._ethers_getVersionFromContract
-      ).not.toHaveBeenCalled()
+      unlockService._getVersionFromContract = jest.fn(() => {})
+      unlockService.versionForAddress[unlockAddress] = 2
+      const version = await unlockService.unlockContractAbiVersion()
+      expect(unlockService._getVersionFromContract).not.toHaveBeenCalled()
       expect(version).toEqual(v02)
     })
   })
@@ -210,68 +206,68 @@ describe('UnlockService', () => {
     it('should return UnlockV0 when the version matches', async () => {
       expect.assertions(3)
       await nockBeforeEach()
-      unlockService._ethers_getPublicLockVersionFromContract = jest.fn(() => {
+      unlockService._getPublicLockVersionFromContract = jest.fn(() => {
         return Promise.resolve(0)
       })
 
       const address = '0xabc'
-      const version = await unlockService.ethers_lockContractAbiVersion(address)
+      const version = await unlockService.lockContractAbiVersion(address)
 
       expect(
-        unlockService._ethers_getPublicLockVersionFromContract
+        unlockService._getPublicLockVersionFromContract
       ).toHaveBeenCalledWith(address)
       expect(version).toEqual(v0)
-      expect(unlockService.ethers_versionForAddress[address]).toEqual(0)
+      expect(unlockService.versionForAddress[address]).toEqual(0)
     })
 
     it('should return UnlockV01 when the version matches', async () => {
       expect.assertions(3)
       await nockBeforeEach()
-      unlockService._ethers_getPublicLockVersionFromContract = jest.fn(() => {
+      unlockService._getPublicLockVersionFromContract = jest.fn(() => {
         return Promise.resolve(1) // See code for explaination
       })
 
       const address = '0xabc'
-      const version = await unlockService.ethers_lockContractAbiVersion(address)
+      const version = await unlockService.lockContractAbiVersion(address)
 
       expect(
-        unlockService._ethers_getPublicLockVersionFromContract
+        unlockService._getPublicLockVersionFromContract
       ).toHaveBeenCalledWith(address)
       expect(version).toEqual(v01)
-      expect(unlockService.ethers_versionForAddress[address]).toEqual(1)
+      expect(unlockService.versionForAddress[address]).toEqual(1)
     })
 
     it('should return UnlockV02 when the version matches', async () => {
       expect.assertions(3)
       await nockBeforeEach()
-      unlockService._ethers_getPublicLockVersionFromContract = jest.fn(() => {
+      unlockService._getPublicLockVersionFromContract = jest.fn(() => {
         return Promise.resolve(2) // See code for explaination
       })
 
       const address = '0xabc'
-      const version = await unlockService.ethers_lockContractAbiVersion(address)
+      const version = await unlockService.lockContractAbiVersion(address)
 
       expect(
-        unlockService._ethers_getPublicLockVersionFromContract
+        unlockService._getPublicLockVersionFromContract
       ).toHaveBeenCalledWith(address)
       expect(version).toEqual(v02)
-      expect(unlockService.ethers_versionForAddress[address]).toEqual(2)
+      expect(unlockService.versionForAddress[address]).toEqual(2)
     })
 
     it('should memoize the result', async () => {
       expect.assertions(3)
       await nockBeforeEach()
-      unlockService._ethers_getPublicLockVersionFromContract = jest.fn(() => {})
+      unlockService._getPublicLockVersionFromContract = jest.fn(() => {})
 
       const address = '0xabc'
-      unlockService.ethers_versionForAddress[address] = 2
-      const version = await unlockService.ethers_lockContractAbiVersion(address)
+      unlockService.versionForAddress[address] = 2
+      const version = await unlockService.lockContractAbiVersion(address)
 
       expect(
-        unlockService._ethers_getPublicLockVersionFromContract
+        unlockService._getPublicLockVersionFromContract
       ).not.toHaveBeenCalled()
       expect(version).toEqual(v02)
-      expect(unlockService.ethers_versionForAddress[address]).toEqual(2)
+      expect(unlockService.versionForAddress[address]).toEqual(2)
     })
   })
 
@@ -330,7 +326,7 @@ describe('UnlockService', () => {
       await nockBeforeEach()
       const lockAddress = '0x1234567890123456789012345678901234567890'
 
-      unlockService.ethers_lockContractAbiVersion = jest.fn(() => v02)
+      unlockService.lockContractAbiVersion = jest.fn(() => v02)
 
       const contract = await unlockService.getLockContract(lockAddress)
 
@@ -346,14 +342,14 @@ describe('UnlockService', () => {
       await nockBeforeEach()
       const lockAddress = '0x1234567890123456789012345678901234567890'
 
-      unlockService.ethers_lockContractAbiVersion = jest.fn(() => v02)
+      unlockService.lockContractAbiVersion = jest.fn(() => v02)
       unlockService.lockContracts = {
         [lockAddress]: 'hi',
       }
 
       const contract = await unlockService.getLockContract(lockAddress)
 
-      expect(unlockService.ethers_lockContractAbiVersion).not.toHaveBeenCalled()
+      expect(unlockService.lockContractAbiVersion).not.toHaveBeenCalled()
       expect(contract).toBe('hi')
     })
   })
@@ -363,7 +359,7 @@ describe('UnlockService', () => {
       expect.assertions(3)
       await nockBeforeEach()
 
-      unlockService.ethers_unlockContractAbiVersion = jest.fn(() => v02)
+      unlockService.unlockContractAbiVersion = jest.fn(() => v02)
 
       const contract = await unlockService.getUnlockContract()
 
@@ -376,15 +372,13 @@ describe('UnlockService', () => {
       expect.assertions(2)
       await nockBeforeEach()
 
-      unlockService.ethers_unlockContractAbiVersion = jest.fn(() => v02)
+      unlockService.unlockContractAbiVersion = jest.fn(() => v02)
 
       unlockService.unlockContract = 'hi'
 
       const contract = await unlockService.getUnlockContract()
 
-      expect(
-        unlockService.ethers_unlockContractAbiVersion
-      ).not.toHaveBeenCalled()
+      expect(unlockService.unlockContractAbiVersion).not.toHaveBeenCalled()
       expect(contract).toBe('hi')
     })
   })

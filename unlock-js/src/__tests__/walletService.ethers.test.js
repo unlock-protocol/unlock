@@ -29,11 +29,11 @@ describe('WalletService (ethers)', () => {
     })
     nock.netVersionAndYield(netVersion)
 
-    await walletService.ethers_connect(provider)
+    await walletService.connect(provider)
     await nock.resolveWhenAllNocksUsed()
   }
 
-  describe('ethers_connect', () => {
+  describe('connect', () => {
     beforeEach(() => {
       resetTests()
     })
@@ -86,13 +86,13 @@ describe('WalletService (ethers)', () => {
   })
 
   describe('once connected', () => {
-    describe('ethers_isUnlockContractDeployed', () => {
+    describe('isUnlockContractDeployed', () => {
       it('should yield true if the opCode is not 0x', async done => {
         expect.assertions(2)
         await resetTestsAndConnect()
         nock.ethGetCodeAndYield(unlockAddress, '0xdeadbeef')
 
-        walletService.ethers_isUnlockContractDeployed((error, isDeployed) => {
+        walletService.isUnlockContractDeployed((error, isDeployed) => {
           expect(error).toBe(null)
           expect(isDeployed).toBe(true)
           done()
@@ -104,7 +104,7 @@ describe('WalletService (ethers)', () => {
         await resetTestsAndConnect()
         nock.ethGetCodeAndYield(unlockAddress, '0x')
 
-        walletService.ethers_isUnlockContractDeployed((error, isDeployed) => {
+        walletService.isUnlockContractDeployed((error, isDeployed) => {
           expect(error).toBe(null)
           expect(isDeployed).toBe(false)
           done()
@@ -117,7 +117,7 @@ describe('WalletService (ethers)', () => {
         const err = new Error('getCode failed')
 
         nock.ethGetCodeAndYield(unlockAddress, '0x', err)
-        walletService.ethers_isUnlockContractDeployed((error, isDeployed) => {
+        walletService.isUnlockContractDeployed((error, isDeployed) => {
           expect(error).toBeInstanceOf(Error)
           expect(isDeployed).toBe(undefined)
           done()
@@ -125,7 +125,7 @@ describe('WalletService (ethers)', () => {
       })
     })
 
-    describe('ethers_getAccount', () => {
+    describe('getAccount', () => {
       describe('when the node has an unlocked account', () => {
         it('should load a local account and emit the ready event', async done => {
           expect.assertions(2)
@@ -147,7 +147,7 @@ describe('WalletService (ethers)', () => {
             )
           })
 
-          walletService.ethers_getAccount()
+          walletService.getAccount()
         })
       })
 
@@ -160,7 +160,7 @@ describe('WalletService (ethers)', () => {
           // returns no accounts, and so the accountsAndYield call must return []
           nock.accountsAndYield([])
 
-          walletService.ethers_getAccount()
+          walletService.getAccount()
           expect(walletService.ready).toBe(false)
         })
       })
@@ -242,7 +242,7 @@ describe('WalletService (ethers)', () => {
       })
     })
 
-    describe('ethers_signData', () => {
+    describe('signData', () => {
       const account = '0x123'
       const result = 'RESULT'
       let data = 'please sign me'
@@ -278,7 +278,7 @@ describe('WalletService (ethers)', () => {
               })
             ),
           }
-          await walletService.ethers_signData(account, data, () => {})
+          await walletService.signData(account, data, () => {})
 
           expect(walletService.provider.send).toHaveBeenCalledWith(
             'eth_signTypedData_v3',
@@ -301,7 +301,7 @@ describe('WalletService (ethers)', () => {
             })
           ),
         }
-        await walletService.ethers_signData(account, data, () => {})
+        await walletService.signData(account, data, () => {})
 
         expect(walletService.provider.send).toHaveBeenCalledWith(
           'eth_signTypedData',
@@ -326,7 +326,7 @@ describe('WalletService (ethers)', () => {
             })
           ),
         }
-        await walletService.ethers_signData(account, data, () => {})
+        await walletService.signData(account, data, () => {})
 
         expect(walletService.provider.send).toHaveBeenCalledWith(
           'eth_signTypedData',
@@ -347,7 +347,7 @@ describe('WalletService (ethers)', () => {
           ),
         }
         let signature
-        await walletService.ethers_signData(account, data, (error, output) => {
+        await walletService.signData(account, data, (error, output) => {
           signature = output
         })
 
@@ -363,7 +363,7 @@ describe('WalletService (ethers)', () => {
           send: jest.fn(() => Promise.reject(networkError)),
         }
         let error
-        await walletService.ethers_signData(account, data, e => {
+        await walletService.signData(account, data, e => {
           error = e
         })
         expect(error).toBe(networkError)
@@ -382,7 +382,7 @@ describe('WalletService (ethers)', () => {
           ),
         }
         let error
-        await walletService.ethers_signData(account, data, err => {
+        await walletService.signData(account, data, err => {
           error = err
         })
 
@@ -390,7 +390,7 @@ describe('WalletService (ethers)', () => {
       })
     })
 
-    describe('ethers_signDataPersonal', () => {
+    describe('signDataPersonal', () => {
       it('dispatches the request to personally sign the data to the corresponding web3 method', async done => {
         expect.assertions(2)
         await resetTestsAndConnect()
@@ -403,15 +403,11 @@ describe('WalletService (ethers)', () => {
         nock.accountsAndYield([account])
         nock.personalSignAndYield(hash, account, 'stuff')
 
-        walletService.ethers_signDataPersonal(
-          account,
-          data,
-          (error, result) => {
-            expect(result).toBe(returned)
-            expect(error).toBe(null)
-            done()
-          }
-        )
+        walletService.signDataPersonal(account, data, (error, result) => {
+          expect(result).toBe(returned)
+          expect(error).toBe(null)
+          done()
+        })
       })
     })
   })
@@ -432,8 +428,8 @@ describe('WalletService (ethers)', () => {
             return result
           },
         }
-        walletService.ethers_unlockContractAbiVersion = jest.fn(() => version)
-        const r = await walletService[`ethers_${method}`](...args)
+        walletService.unlockContractAbiVersion = jest.fn(() => version)
+        const r = await walletService[method](...args)
         expect(r).toBe(result)
       }
     )
@@ -458,8 +454,8 @@ describe('WalletService (ethers)', () => {
             return result
           },
         }
-        walletService.ethers_lockContractAbiVersion = jest.fn(() => version)
-        const r = await walletService[`ethers_${method}`](...args)
+        walletService.lockContractAbiVersion = jest.fn(() => version)
+        const r = await walletService[method](...args)
         expect(r).toBe(result)
       }
     )
