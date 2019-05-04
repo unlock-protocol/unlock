@@ -160,9 +160,9 @@ const walletMiddleware = config => {
             eventAddress: address,
           })
 
-          walletService.signData(
+          walletService.signDataPersonal(
             account.address,
-            data,
+            JSON.stringify(data),
             (error, signedAddress) => {
               if (error) {
                 // TODO: Does this need to be handled in the error consumer?
