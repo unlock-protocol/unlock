@@ -1,15 +1,11 @@
-import { ethers } from 'ethers'
-import * as UnlockV02 from 'unlock-abi-0-2'
+import * as UnlockV0 from 'unlock-abi-0'
 import * as utils from '../../utils.ethers'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
-import {
-  prepWalletService,
-  prepContract,
-} from '../helpers/walletServiceHelper.ethers'
+import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 
-const { FAILED_TO_CREATE_LOCK } = Errors
+const { FAILED_TO_UPDATE_KEY_PRICE } = Errors
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
 
@@ -18,29 +14,25 @@ let transaction
 let transactionResult
 let setupSuccess
 let setupFail
-const lock = {
-  address: '0x0987654321098765432109876543210987654321',
-  expirationDuration: 86400, // 1 day
-  keyPrice: '0.1', // 0.1 Eth
-  maxNumberOfKeys: 100,
-}
-const owner = '0xdeadfeed'
 
-describe('v02', () => {
-  describe('createLock', () => {
+describe('v0', () => {
+  describe('updateKeyPrice', () => {
+    const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
+    const account = '0xdeadbeef'
+    const price = '100000000'
+
     async function nockBeforeEach() {
       nock.cleanAll()
       walletService = await prepWalletService(
-        UnlockV02.Unlock,
+        UnlockV0.PublicLock,
         endpoint,
-        nock,
-        true // this is the Unlock contract, not PublicLock
+        nock
       )
 
       const callMethodData = prepContract({
-        contract: UnlockV02.Unlock,
-        functionName: 'createLock',
-        signature: 'uint256,address,uint256,uint256',
+        contract: UnlockV0.PublicLock,
+        functionName: 'updateKeyPrice',
+        signature: 'uint256',
         nock,
       })
 
@@ -49,12 +41,7 @@ describe('v02', () => {
         testTransactionResult,
         success,
         fail,
-      } = callMethodData(
-        lock.expirationDuration,
-        ethers.constants.AddressZero,
-        utils.toWei(lock.keyPrice, 'ether'),
-        lock.maxNumberOfKeys
-      )
+      } = callMethodData(utils.toWei(price, 'ether'))
 
       transaction = testTransaction
       transactionResult = testTransactionResult
@@ -73,40 +60,17 @@ describe('v02', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.createLock(lock, owner)
+      await walletService.updateKeyPrice(lockAddress, account, price)
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
-        TransactionTypes.LOCK_CREATION
+        TransactionTypes.UPDATE_KEY_PRICE
       )
 
       // verify that the promise passed to _handleMethodCall actually resolves
       // to the result the chain returns from a sendTransaction call to createLock
       const result = await mock.mock.calls[0][0]
       expect(result).toEqual(transactionResult)
-      await nock.resolveWhenAllNocksUsed()
-    })
-
-    it('should emit lock.updated with the transaction', async () => {
-      expect.assertions(2)
-
-      await nockBeforeEach()
-      setupSuccess()
-
-      walletService.on('lock.updated', (lockAddress, update) => {
-        expect(lockAddress).toBe(lock.address)
-        expect(update).toEqual({
-          transaction: transaction.hash,
-          balance: '0',
-          expirationDuration: lock.expirationDuration,
-          keyPrice: lock.keyPrice,
-          maxNumberOfKeys: lock.maxNumberOfKeys,
-          outstandingKeys: 0,
-          owner,
-        })
-      })
-
-      await walletService.createLock(lock, owner)
       await nock.resolveWhenAllNocksUsed()
     })
 
@@ -118,10 +82,10 @@ describe('v02', () => {
       setupFail(error)
 
       walletService.on('error', error => {
-        expect(error.message).toBe(FAILED_TO_CREATE_LOCK)
+        expect(error.message).toBe(FAILED_TO_UPDATE_KEY_PRICE)
       })
 
-      await walletService.createLock(lock, owner)
+      await walletService.updateKeyPrice(lockAddress, account, price)
       await nock.resolveWhenAllNocksUsed()
     })
   })

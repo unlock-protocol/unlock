@@ -2,12 +2,9 @@ import * as UnlockV01 from 'unlock-abi-0-1'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
-import {
-  prepWalletService,
-  prepContract,
-} from '../helpers/walletServiceHelper.ethers'
+import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 
-const { FAILED_TO_PURCHASE_KEY } = Errors
+const { FAILED_TO_WITHDRAW_FROM_LOCK } = Errors
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
 
@@ -18,10 +15,9 @@ let setupSuccess
 let setupFail
 
 describe('v01', () => {
-  describe('purchaseKey', () => {
-    const keyPrice = '0.01'
-    const owner = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
+  describe('withdrawFromLock', () => {
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
+    const account = '0xdeadbeef'
 
     async function nockBeforeEach() {
       nock.cleanAll()
@@ -33,10 +29,9 @@ describe('v01', () => {
 
       const callMethodData = prepContract({
         contract: UnlockV01.PublicLock,
-        functionName: 'purchaseFor',
-        signature: 'address',
+        functionName: 'withdraw',
+        signature: '',
         nock,
-        value: keyPrice,
       })
 
       const {
@@ -44,7 +39,7 @@ describe('v01', () => {
         testTransactionResult,
         success,
         fail,
-      } = callMethodData(owner)
+      } = callMethodData()
 
       transaction = testTransaction
       transactionResult = testTransactionResult
@@ -63,11 +58,11 @@ describe('v01', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.purchaseKey(lockAddress, owner, keyPrice)
+      await walletService.withdrawFromLock(lockAddress, account)
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
-        TransactionTypes.KEY_PURCHASE
+        TransactionTypes.WITHDRAWAL
       )
 
       // verify that the promise passed to _handleMethodCall actually resolves
@@ -85,10 +80,9 @@ describe('v01', () => {
       setupFail(error)
 
       walletService.on('error', error => {
-        expect(error.message).toBe(FAILED_TO_PURCHASE_KEY)
+        expect(error.message).toBe(FAILED_TO_WITHDRAW_FROM_LOCK)
       })
-
-      await walletService.purchaseKey(lockAddress, owner, keyPrice)
+      await walletService.withdrawFromLock(lockAddress, account)
       await nock.resolveWhenAllNocksUsed()
     })
   })
