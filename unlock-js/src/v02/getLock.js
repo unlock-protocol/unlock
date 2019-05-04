@@ -45,6 +45,7 @@ export default async function(address) {
   // totalSupply was previously called outstandingKeys. In order to keep compatibility
   // we also assign it. This behavior will eventually be deprecated
   update.outstandingKeys = update.totalSupply
+  delete update.totalSupply
 
   // Once all lock attributes have been fetched
   this.emit('lock.updated', address, update)
