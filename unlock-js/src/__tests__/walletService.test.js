@@ -421,7 +421,7 @@ describe('WalletService (ethers)', () => {
         const args = []
         const result = {}
         const version = {
-          [`ethers_${method}`]: function(_args) {
+          [method]: function(_args) {
             // Needs to be a function because it is bound to walletService
             expect(this).toBe(walletService)
             expect(_args).toBe(...args)
@@ -447,7 +447,7 @@ describe('WalletService (ethers)', () => {
         const args = []
         const result = {}
         const version = {
-          [`ethers_${method}`]: function(_args) {
+          [method]: function(_args) {
             // Needs to be a function because it is bound to walletService
             expect(this).toBe(walletService)
             expect(_args).toBe(...args)
@@ -466,10 +466,10 @@ describe('WalletService (ethers)', () => {
       'should implement all the required methods',
       version => {
         versionSpecificUnlockMethods.forEach(method => {
-          expect(version[`ethers_${method}`]).toBeInstanceOf(Function)
+          expect(version[method]).toBeInstanceOf(Function)
         })
         versionSpecificLockMethods.forEach(method => {
-          expect(version[`ethers_${method}`]).toBeInstanceOf(Function)
+          expect(version[method]).toBeInstanceOf(Function)
         })
       }
     )
