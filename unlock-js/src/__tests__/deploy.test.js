@@ -210,12 +210,14 @@ describe('contract deployer', () => {
     })
 
     it('passes the new contract instance to onNewContractInstance', async () => {
-      expect.assertions(1)
+      expect.assertions(2)
 
       // const contractAddress = deployed.mock.calls[0][0].options.address // web3
       const sentAddress = deployed.mock.calls[0][0].address // ethers.js
+      const compatibilityAddress = deployed.mock.calls[0][0].options.address // ethers.js
 
       expect(sentAddress).toBe(contractAddress)
+      expect(compatibilityAddress).toBe(contractAddress)
     })
   })
 

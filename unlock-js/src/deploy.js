@@ -27,6 +27,7 @@ export default async function deploy(
   const result = await writableUnlockContract.initialize(accounts[0], {
     gasLimit: 1000000,
   })
+  unlockContract.options = { address: unlockContract.address } // compatibility with the web3 way
   onNewContractInstance(unlockContract)
   return result
 }
