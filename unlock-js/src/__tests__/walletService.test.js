@@ -447,6 +447,7 @@ describe('WalletService (ethers)', () => {
     it.each(versionSpecificUnlockMethods)(
       'should invoke the implementation of the corresponding version of %s',
       async method => {
+        await resetTestsAndConnect()
         const args = []
         const result = {}
         const version = {

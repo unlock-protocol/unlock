@@ -5,6 +5,7 @@ import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
 import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
+import { UNLIMITED_KEYS_COUNT, ETHERS_MAX_UINT } from '../../../lib/constants'
 
 const { FAILED_TO_CREATE_LOCK } = Errors
 const endpoint = 'http://127.0.0.1:8545'
@@ -25,7 +26,7 @@ const owner = '0xdeadfeed'
 
 describe('v02', () => {
   describe('createLock', () => {
-    async function nockBeforeEach() {
+    async function nockBeforeEach(maxNumberOfKeys = lock.maxNumberOfKeys) {
       nock.cleanAll()
       walletService = await prepWalletService(
         UnlockV02.Unlock,
@@ -50,7 +51,7 @@ describe('v02', () => {
         lock.expirationDuration,
         ethers.constants.AddressZero,
         utils.toWei(lock.keyPrice, 'ether'),
-        lock.maxNumberOfKeys
+        maxNumberOfKeys
       )
 
       transaction = testTransaction
@@ -104,6 +105,38 @@ describe('v02', () => {
       })
 
       await walletService.createLock(lock, owner)
+      await nock.resolveWhenAllNocksUsed()
+    })
+
+    it('should convert unlimited keys from UNLIMITED_KEYS_COUNT to ETHERS_MAX_UINT for the function call', async () => {
+      expect.assertions(2)
+
+      // this param tells the call to createLock to pass in this value instead of the lock's value
+      // for maxNumberOfKeys. The test will fail if the function call does not convert
+      await nockBeforeEach(ETHERS_MAX_UINT)
+      setupSuccess()
+
+      walletService.on('lock.updated', (lockAddress, update) => {
+        expect(lockAddress).toBe(lock.address)
+        expect(update).toEqual({
+          transaction: transaction.hash,
+          balance: '0',
+          expirationDuration: lock.expirationDuration,
+          keyPrice: lock.keyPrice,
+          maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+          outstandingKeys: 0,
+          owner,
+        })
+      })
+
+      await walletService.createLock(
+        {
+          ...lock,
+          maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+        },
+        owner
+      )
+
       await nock.resolveWhenAllNocksUsed()
     })
 

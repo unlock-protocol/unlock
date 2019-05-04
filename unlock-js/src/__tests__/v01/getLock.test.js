@@ -128,7 +128,7 @@ describe('v01', () => {
     })
 
     it('should successfully yield a lock with an unlimited number of keys', async () => {
-      expect.assertions(2)
+      expect.assertions(3)
       await nockBeforeEach()
       callReadOnlyFunction({
         maxKeys:
@@ -142,7 +142,16 @@ describe('v01', () => {
         })
       })
 
-      return web3Service.getLock(lockAddress)
+      const lock = await web3Service.getLock(lockAddress)
+      expect(lock).toEqual({
+        asOf: 1337,
+        balance: '0.000000003735944941',
+        expirationDuration: 2592000,
+        keyPrice: '0.01',
+        maxNumberOfKeys: -1,
+        outstandingKeys: 17,
+        owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
+      })
     })
   })
 })
