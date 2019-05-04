@@ -1,4 +1,4 @@
-import Web3Utils from '../utils.ethers'
+import Web3Utils from '../utils'
 import { GAS_AMOUNTS } from '../constants'
 import TransactionTypes from '../transactionTypes'
 import Errors from '../errors'

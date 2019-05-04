@@ -1,5 +1,5 @@
 import { utils } from 'ethers'
-import ethersUtils from '../utils.ethers'
+import ethersUtils from '../utils'
 
 describe('ethers utils', () => {
   it('toWei', () => {

@@ -1,7 +1,7 @@
 import { providers as ethersProviders } from 'ethers'
 import UnlockService from './unlockService'
 import { GAS_AMOUNTS } from './constants'
-import * as utils from './utils.ethers'
+import * as utils from './utils'
 
 /**
  * This service interacts with the user's wallet.

@@ -1,4 +1,4 @@
-import utils from '../utils.ethers'
+import utils from '../utils'
 import { GAS_AMOUNTS } from '../constants'
 import TransactionTypes from '../transactionTypes'
 import Errors from '../errors'

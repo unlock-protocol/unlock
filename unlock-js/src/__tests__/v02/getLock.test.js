@@ -2,7 +2,7 @@ import * as UnlockV02 from 'unlock-abi-0-2'
 import { ethers } from 'ethers'
 import Web3Service from '../../web3Service'
 import NockHelper from '../helpers/nockHelper'
-import * as utils from '../../utils.ethers'
+import * as utils from '../../utils'
 
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)

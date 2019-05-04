@@ -1,4 +1,4 @@
-import ethersUtils from '../utils.ethers'
+import ethersUtils from '../utils'
 import { GAS_AMOUNTS } from '../constants'
 import TransactionTypes from '../transactionTypes'
 

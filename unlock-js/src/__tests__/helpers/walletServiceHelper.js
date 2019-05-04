@@ -3,7 +3,7 @@ import * as UnlockV01 from 'unlock-abi-0-1'
 import * as UnlockV02 from 'unlock-abi-0-2'
 import { ethers } from 'ethers'
 
-import * as utils from '../../utils.ethers'
+import * as utils from '../../utils'
 import { GAS_AMOUNTS } from '../../constants'
 
 import WalletService from '../../walletService'

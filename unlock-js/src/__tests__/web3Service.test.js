@@ -8,7 +8,7 @@ import * as UnlockV02 from 'unlock-abi-0-2'
 import NockHelper from './helpers/nockHelper'
 import Web3Service from '../web3Service'
 import TransactionTypes from '../transactionTypes'
-import utils from '../utils.ethers'
+import utils from '../utils'
 
 import v0 from '../v0'
 import v01 from '../v01'
