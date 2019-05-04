@@ -1,11 +1,8 @@
-import * as UnlockV02 from 'unlock-abi-0-2'
+import * as UnlockV01 from 'unlock-abi-0-1'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
-import {
-  prepWalletService,
-  prepContract,
-} from '../helpers/walletServiceHelper.ethers'
+import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 
 const { FAILED_TO_PURCHASE_KEY } = Errors
 const endpoint = 'http://127.0.0.1:8545'
@@ -17,7 +14,7 @@ let transactionResult
 let setupSuccess
 let setupFail
 
-describe('v02', () => {
+describe('v01', () => {
   describe('purchaseKey', () => {
     const keyPrice = '0.01'
     const owner = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
@@ -26,13 +23,13 @@ describe('v02', () => {
     async function nockBeforeEach() {
       nock.cleanAll()
       walletService = await prepWalletService(
-        UnlockV02.PublicLock,
+        UnlockV01.PublicLock,
         endpoint,
         nock
       )
 
       const callMethodData = prepContract({
-        contract: UnlockV02.PublicLock,
+        contract: UnlockV01.PublicLock,
         functionName: 'purchaseFor',
         signature: 'address',
         nock,
