@@ -1,5 +1,5 @@
 import * as UnlockV02 from 'unlock-abi-0-2'
-import * as utils from '../../utils.ethers'
+import * as utils from '../../utils'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
