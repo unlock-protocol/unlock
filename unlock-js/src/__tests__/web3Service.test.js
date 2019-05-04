@@ -1680,7 +1680,7 @@ describe('Web3Service', () => {
         const args = []
         const result = {}
         const version = {
-          [`ethers_${method}`]: function(_args) {
+          [method]: function(_args) {
             // Needs to be a function because it is bound to web3Service
             expect(this).toBe(web3Service)
             expect(_args).toBe(...args)
@@ -1698,7 +1698,7 @@ describe('Web3Service', () => {
       'should implement all the required methods',
       version => {
         versionSpecificLockMethods.forEach(method => {
-          expect(version[`ethers_${method}`]).toBeInstanceOf(Function)
+          expect(version[method]).toBeInstanceOf(Function)
         })
       }
     )

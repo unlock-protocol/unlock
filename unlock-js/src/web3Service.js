@@ -503,7 +503,7 @@ export default class Web3Service extends UnlockService {
    */
   async getLock(address) {
     const version = await this.lockContractAbiVersion(address)
-    return version.ethers_getLock.bind(this)(address)
+    return version.getLock.bind(this)(address)
   }
 
   /**
