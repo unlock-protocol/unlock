@@ -26,7 +26,7 @@ const lock = {
 }
 const owner = '0xdeadfeed'
 
-describe('v02 (ethers)', () => {
+describe('v02', () => {
   describe('createLock', () => {
     async function nockBeforeEach() {
       nock.cleanAll()
@@ -73,7 +73,7 @@ describe('v02 (ethers)', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.ethers_createLock(lock, owner)
+      await walletService.createLock(lock, owner)
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -106,7 +106,7 @@ describe('v02 (ethers)', () => {
         })
       })
 
-      await walletService.ethers_createLock(lock, owner)
+      await walletService.createLock(lock, owner)
       await nock.resolveWhenAllNocksUsed()
     })
 
@@ -121,7 +121,7 @@ describe('v02 (ethers)', () => {
         expect(error.message).toBe(FAILED_TO_CREATE_LOCK)
       })
 
-      await walletService.ethers_createLock(lock, owner)
+      await walletService.createLock(lock, owner)
       await nock.resolveWhenAllNocksUsed()
     })
   })

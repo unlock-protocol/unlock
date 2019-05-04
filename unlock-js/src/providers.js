@@ -39,6 +39,5 @@ export function getCurrentProvider(environment) {
 }
 
 export function getWeb3Provider(url) {
-  // TODO: use websocket provider
   return new Web3.providers.HttpProvider(url)
 }

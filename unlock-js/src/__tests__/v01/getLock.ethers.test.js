@@ -16,7 +16,7 @@ const lockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
 const checksumLockAddress = utils.toChecksumAddress(lockAddress)
 const owner = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 
-describe('v0', () => {
+describe('v01', () => {
   describe('getLock', () => {
     const metadata = new ethers.utils.Interface(UnlockV01.PublicLock.abi)
     const contractMethods = metadata.functions
@@ -124,7 +124,7 @@ describe('v0', () => {
         })
       })
 
-      await web3Service.ethers_getLock(lockAddress)
+      await web3Service.getLock(lockAddress)
     })
 
     it('should successfully yield a lock with an unlimited number of keys', async () => {
@@ -142,7 +142,7 @@ describe('v0', () => {
         })
       })
 
-      return web3Service.ethers_getLock(lockAddress)
+      return web3Service.getLock(lockAddress)
     })
   })
 })

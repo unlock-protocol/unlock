@@ -18,7 +18,7 @@ let transactionResult
 let setupSuccess
 let setupFail
 
-describe('v0 (ethers)', () => {
+describe('v0', () => {
   describe('purchaseKey', () => {
     const keyPrice = '0.01'
     const owner = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
@@ -66,7 +66,7 @@ describe('v0 (ethers)', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.ethers_purchaseKey(
+      await walletService.purchaseKey(
         lockAddress,
         owner,
         keyPrice,
@@ -97,7 +97,7 @@ describe('v0 (ethers)', () => {
         expect(error.message).toBe(FAILED_TO_PURCHASE_KEY)
       })
 
-      await walletService.ethers_purchaseKey(
+      await walletService.purchaseKey(
         lockAddress,
         owner,
         keyPrice,

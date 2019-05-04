@@ -23,7 +23,7 @@ export default async function(address) {
 
   // Let's load its balance
   const getBalance = async () => {
-    const balance = await this.ethers_getAddressBalance(address)
+    const balance = await this.getAddressBalance(address)
     update.balance = balance
   }
 
