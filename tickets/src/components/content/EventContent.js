@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Head from 'next/head'
 import PropTypes from 'prop-types'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
-
+import { googleCalendarLinkBuilder } from '../../utils/links.ts'
 import { Field, Label } from './CreateContent'
 import { MONTH_NAMES, pageTitle, TRANSACTION_TYPES } from '../../constants'
 import UnlockPropTypes from '../../propTypes'
@@ -58,7 +58,7 @@ export class EventContent extends Component {
 
     if (!lock.address || !event.name) return null // Wait for the lock and event to load
 
-    const { name, description, location, date, links, image } = event
+    const { name, description, location, date, links = [], image } = event
     let dateString =
       MONTH_NAMES[date.getMonth()] +
       ' ' +
@@ -66,13 +66,24 @@ export class EventContent extends Component {
       ', ' +
       date.getFullYear()
 
-    const externalLinks = (links || []).map(({ href, title }) => {
+    const externalLinks = links.map(({ href, title }) => {
       return (
         <li key={href}>
-          <a href={href}>{title}</a>
+          <a target="_blank" rel="noopener noreferrer" href={href}>
+            {title}
+          </a>
         </li>
       )
     })
+
+    const details = `For details, click here ${window.location.href}`
+
+    let googleCalendarLink = googleCalendarLinkBuilder(
+      name,
+      details,
+      date,
+      location
+    )
 
     return (
       <GlobalErrorConsumer>
@@ -82,12 +93,23 @@ export class EventContent extends Component {
               <title>{pageTitle(name)}</title>
             </Head>
             <Title>{name}</Title>
+            <Header>{image && <Image src={image} />}</Header>
+
             <Row>
-              <PayButton
-                transaction={transaction}
-                keyStatus={keyStatus}
-                purchaseKey={() => purchaseKey(lockKey)}
-              />
+              <div>
+                <PayButton
+                  transaction={transaction}
+                  keyStatus={keyStatus}
+                  purchaseKey={() => purchaseKey(lockKey)}
+                />
+                {['confirming', 'confirmed'].indexOf(keyStatus) > -1 && (
+                  <small>
+                    The transaction may take a couple minutes to go through...
+                    You can close this page safely and come back later to see
+                    your ticket!
+                  </small>
+                )}
+              </div>
               <Field>
                 <NoPhone>
                   <Label>Ticket Price</Label>
@@ -106,12 +128,19 @@ export class EventContent extends Component {
             <Row>
               <DetailsField>
                 <DisplayDate>{dateString}</DisplayDate>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={googleCalendarLink}
+                >
+                  Add to your Calendar!
+                </a>
+
                 <Description>
                   {description.split('\n\n').map(line => {
                     return <p key={line}>{line}</p>
                   })}
                 </Description>
-                {image && <Image src={image} />}
                 <Location>{location}</Location>
                 <Links>{externalLinks}</Links>
               </DetailsField>
@@ -191,7 +220,16 @@ export const mapStateToProps = (
     // TEMPORARY: HARD CODE VALUES FOR NFT EVENT
     if (lockAddress === '0x5865Ff2CBd045Ef1cfE19739df19E83B32b783b4') {
       event.name = 'NFT Dev Meetup - NYC Blockchain Week 2019'
-      event.description = `The NFT Dev Meetup brought to you by Dapper Labs, OpenSea, SuperRare, QuantStamp and Unlock: please join us for an evening of lessons, insights and fun around non fungible tokens!
+
+      event.location = 'Bushwick Generator, 215 Moore St, Brooklyn'
+      event.description = `HEYOOOO!
+
+We’re doing something different! By now you’ve probably been to a few too many after parties. Let's not even talk about Consensus, did you see how packed the hallways get? Geez Louise!
+
+Instead, we’re going to have an informal gameshow party where we pit eight blockchain fanatics against each other to debate fiery topics from within the industry. All in good fun and all for laughs!
+
+Meet us at 630PM on May 16th, at the Bushwick Generator
+
 
         If you need any help (or Eth) to purchase your ticket, please get in touch with us on the Telegram group below.`
       event.image =
@@ -201,10 +239,11 @@ export const mapStateToProps = (
           title: '💬 Telegram Group',
           href: 'https://t.me/joinchat/GzMTuRZfLMHZ1n2EMmF0UQ',
         },
-        {
-          title: 'ℹ️ Meetup Page',
-          href: 'TK',
-        },
+        // {
+        //   title: 'ℹ️ Eventtrite Page',
+        //   href:
+        //     'https://www.eventbrite.com/e/nft-dev-meetup-x-dapper-labs-opensea-quantstamp-superrare-unlock-tickets-61273128577',
+        // },
       ]
     }
   }
@@ -244,6 +283,18 @@ const Row = styled.section`
     display: grid;
     grid-gap: 30px;
     grid-template-columns: repeat(2, minmax(250px, 1fr));
+    align-items: top;
+  `}
+`
+
+const Header = styled.section`
+  padding: 0px 20px;
+  border: none;
+  max-width: 800px;
+
+  ${Media.nophone`
+    display: grid;
+    grid-gap: 30px;
     align-items: top;
   `}
 `
