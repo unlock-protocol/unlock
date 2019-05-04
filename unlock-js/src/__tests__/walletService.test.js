@@ -7,6 +7,7 @@ import v01 from '../v01'
 import v02 from '../v02'
 
 import WalletService from '../walletService'
+import { GAS_AMOUNTS } from '../constants'
 
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
@@ -32,6 +33,14 @@ describe('WalletService (ethers)', () => {
     await walletService.connect(provider)
     await nock.resolveWhenAllNocksUsed()
   }
+
+  describe('gasAmountConstants', () => {
+    it('returns GAS_AMOUNTS', () => {
+      expect.assertions(1)
+
+      expect(WalletService.gasAmountConstants()).toBe(GAS_AMOUNTS)
+    })
+  })
 
   describe('connect', () => {
     beforeEach(() => {
@@ -406,6 +415,26 @@ describe('WalletService (ethers)', () => {
         walletService.signDataPersonal(account, data, (error, result) => {
           expect(result).toBe(returned)
           expect(error).toBe(null)
+          done()
+        })
+      })
+
+      it('calls the callback with any error', async done => {
+        expect.assertions(2)
+        await resetTestsAndConnect()
+
+        const data = 'data to be signed'
+        const account = '0xd4bb4b501ac12f35db35d60c845c8625b5f28fd1'
+        const hash =
+          '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
+        const error = { code: 404, message: 'oops' }
+
+        nock.accountsAndYield([account])
+        nock.personalSignAndYield(hash, account, 'stuff', error)
+
+        walletService.signDataPersonal(account, data, (error, result) => {
+          expect(result).toBeNull()
+          expect(error).toBeInstanceOf(Error)
           done()
         })
       })

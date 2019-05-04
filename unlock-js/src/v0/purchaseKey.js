@@ -15,13 +15,7 @@ import Errors from '../errors'
  * @param {string} data
  * @param {string} account
  */
-export default async function(
-  lockAddress,
-  owner,
-  keyPrice,
-  account,
-  data = ''
-) {
+export default async function(lockAddress, owner, keyPrice, account, data) {
   const lockContract = await this.getLockContract(lockAddress)
   let transactionPromise
   try {
