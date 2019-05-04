@@ -19,7 +19,7 @@ describe('TicketCode', () => {
       />
     )
 
-    expect(wrapper.container.querySelector('svg')).not.toBeNull()
+    expect(wrapper.container.querySelector('canvas')).not.toBeNull()
   })
 
   it('should not display a QR code when a signed address and public key are not supplied', () => {
