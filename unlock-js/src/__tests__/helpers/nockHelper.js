@@ -2,14 +2,13 @@
 import nock from 'nock'
 
 export class NockHelper {
-  constructor(endpoint, debug = false, isEthers = false) {
+  constructor(endpoint, debug = false) {
     this.nockScope = nock(endpoint, { encodedQueryParams: true })
 
     this.anyRequestSetUp = false
     this.debug = debug
-    this._rpcRequestId = isEthers ? 42 : 0
+    this._rpcRequestId = 42
     this._noMatches = []
-    this._isEthers = isEthers
 
     // In order to monitor traffic without intercepting it (so that mocks can be built). uncomment the line below
     // nock.recorder.rec()
@@ -117,7 +116,6 @@ export class NockHelper {
   // Generic call
   _jsonRpcRequest(method, params, result, error) {
     this.anyRequestSetUp = true // detect http calls made before any mocks setup
-    if (!this._isEthers) this._rpcRequestId += 1 // web3 only, ethers uses 42
     const cb = (...args) => this.logNock(args)
     return this.nockScope
       .post('/', { jsonrpc: '2.0', id: this._rpcRequestId, method, params })
