@@ -2,7 +2,7 @@ import {
   providers as ethersProviders,
   utils as ethersMetadataHandling,
 } from 'ethers'
-import utils from './utils.ethers'
+import utils from './utils'
 import TransactionTypes from './transactionTypes'
 import UnlockService from './unlockService'
 import { UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
