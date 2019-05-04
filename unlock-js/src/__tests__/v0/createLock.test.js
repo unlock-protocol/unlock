@@ -4,7 +4,7 @@ import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
 import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
-import { UNLIMITED_KEYS_COUNT } from '../../../lib/constants'
+import { UNLIMITED_KEYS_COUNT, ETHERS_MAX_UINT } from '../../../lib/constants'
 
 const { FAILED_TO_CREATE_LOCK } = Errors
 const endpoint = 'http://127.0.0.1:8545'
@@ -25,7 +25,7 @@ const owner = '0xdeadfeed'
 
 describe('v0', () => {
   describe('createLock', () => {
-    async function nockBeforeEach() {
+    async function nockBeforeEach(maxNumberOfKeys = lock.maxNumberOfKeys) {
       nock.cleanAll()
       walletService = await prepWalletService(
         UnlockV0.Unlock,
@@ -49,7 +49,7 @@ describe('v0', () => {
       } = callMethodData(
         lock.expirationDuration,
         utils.toWei(lock.keyPrice, 'ether'),
-        lock.maxNumberOfKeys
+        maxNumberOfKeys
       )
 
       transaction = testTransaction
@@ -107,9 +107,11 @@ describe('v0', () => {
     })
 
     it('should convert unlimited keys from UNLIMITED_KEYS_COUNT to ETHERS_MAX_UINT for the function call', async () => {
-      expect.assertions(3)
+      expect.assertions(2)
 
-      await nockBeforeEach()
+      // this param tells the call to createLock to pass in this value instead of the lock's value
+      // for maxNumberOfKeys. The test will fail if the function call does not convert
+      await nockBeforeEach(ETHERS_MAX_UINT)
       setupSuccess()
 
       walletService.on('lock.updated', (lockAddress, update) => {
