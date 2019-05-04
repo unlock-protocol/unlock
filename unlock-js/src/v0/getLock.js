@@ -1,4 +1,4 @@
-import utils from '../utils.ethers'
+import utils from '../utils'
 import { UNLIMITED_KEYS_COUNT } from '../constants'
 
 /**
