@@ -1,4 +1,4 @@
-import ethersUtils from '../utils.ethers'
+import ethersUtils from '../utils'
 import { GAS_AMOUNTS, ETHERS_MAX_UINT } from '../constants'
 import TransactionTypes from '../transactionTypes'
 import { UNLIMITED_KEYS_COUNT } from '../../lib/constants'
