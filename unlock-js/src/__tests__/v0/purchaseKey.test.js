@@ -23,7 +23,7 @@ describe('v0', () => {
     const account = '0xdeadbeef'
     const data = 'key data'
 
-    async function nockBeforeEach() {
+    async function nockBeforeEach(sendData = true) {
       nock.cleanAll()
       walletService = await prepWalletService(
         UnlockV0.PublicLock,
@@ -39,12 +39,13 @@ describe('v0', () => {
         value: keyPrice,
       })
 
-      const {
-        testTransaction,
-        testTransactionResult,
-        success,
-        fail,
-      } = callMethodData(owner, utils.utf8ToHex(data))
+      let result
+      if (sendData) {
+        result = callMethodData(owner, utils.utf8ToHex(data))
+      } else {
+        result = callMethodData(owner, utils.utf8ToHex(''))
+      }
+      const { testTransaction, testTransactionResult, success, fail } = result
 
       transaction = testTransaction
       transactionResult = testTransactionResult
@@ -102,6 +103,22 @@ describe('v0', () => {
         data
       )
       await nock.resolveWhenAllNocksUsed()
+    })
+
+    it('should work even with empty data', async () => {
+      expect.assertions(1)
+
+      await nockBeforeEach(false)
+      setupSuccess()
+
+      const result = await walletService.purchaseKey(
+        lockAddress,
+        owner,
+        keyPrice,
+        account
+      )
+      await nock.resolveWhenAllNocksUsed()
+      expect(result).toBe(transaction.hash)
     })
   })
 })
