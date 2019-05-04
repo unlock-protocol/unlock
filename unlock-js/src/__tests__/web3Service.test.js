@@ -132,6 +132,37 @@ describe('Web3Service', () => {
     })
   })
 
+  describe('refreshAccountBalance', () => {
+    it("refreshes balance and emits 'account.updated'", async () => {
+      expect.assertions(3)
+      await nockBeforeEach()
+      const balance = '0xdeadbeef'
+      const inWei = utils.hexToNumberString(balance)
+      const expectedBalance = utils.fromWei(inWei, 'ether')
+      const address = '0x1df62f291b2e969fb0849d99d9ce41e2f137006e'
+      const account = {
+        address,
+        fromLocalStorage: true,
+      }
+
+      nock.getBalanceForAccountAndYieldBalance(address, '0xdeadbeef')
+
+      web3Service.on('account.updated', (sentAccount, info) => {
+        expect(sentAccount).toBe(account)
+        expect(info).toEqual({
+          balance: expectedBalance,
+        })
+      })
+
+      web3Service.on('error', err => {
+        throw err // this is the only way we will see test failures!
+      })
+
+      let addressBalance = await web3Service.refreshAccountBalance(account)
+      expect(addressBalance).toEqual(expectedBalance)
+    })
+  })
+
   describe('_getPastTransactionsForContract', () => {
     it("should getPastEvents on the contract and emit 'transaction.new' for each event", async () => {
       expect.assertions(3)
@@ -1477,11 +1508,11 @@ describe('Web3Service', () => {
     })
 
     describe('_genKeyOwnersFromLockContract', () => {
+      const encoder = ethers.utils.defaultAbiCoder
       it('retrieves key owners via the API', async () => {
         expect.assertions(2)
         await versionedNockBeforeEach()
         const metadata = new ethers.utils.Interface(LockVersion.PublicLock.abi)
-        const encoder = ethers.utils.defaultAbiCoder
 
         nock.ethGetCodeAndYield(
           lockAddress,
@@ -1563,6 +1594,64 @@ describe('Web3Service', () => {
           ethers.utils.getAddress(lockAddress),
           { code: 200, message: 'NO_USER_KEYS' }
         )
+
+        try {
+          await web3Service._genKeyOwnersFromLockContract(
+            lockAddress,
+            lockContract,
+            2 /* page */,
+            2 /* byPage */
+          )
+        } catch (e) {
+          expect(e).toBeInstanceOf(Error)
+        }
+      })
+
+      it('throws on internal failure', async () => {
+        expect.assertions(1)
+        await versionedNockBeforeEach()
+        const metadata = new ethers.utils.Interface(LockVersion.PublicLock.abi)
+
+        nock.ethGetCodeAndYield(
+          lockAddress,
+          LockVersion.PublicLock.deployedBytecode
+        )
+
+        const lockContract = await web3Service.getLockContract(lockAddress)
+
+        nock.ethCallAndYield(
+          metadata.functions['getOwnersByPage(uint256,uint256)'].encode([2, 2]),
+          ethers.utils.getAddress(lockAddress),
+          encoder.encode(
+            [
+              metadata.functions['getOwnersByPage(uint256,uint256)'].outputs[0]
+                .type,
+            ],
+            [[account, unlockAddress]]
+          )
+        )
+
+        nock.ethCallAndYield(
+          metadata.functions['keyExpirationTimestampFor(address)'].encode([
+            account,
+          ]),
+          ethers.utils.getAddress(lockAddress),
+          encoder.encode(['uint256'], [ethers.utils.bigNumberify(12345)])
+        )
+
+        nock.ethCallAndFail(
+          metadata.functions['keyExpirationTimestampFor(address)'].encode([
+            unlockAddress,
+          ]),
+          ethers.utils.getAddress(lockAddress),
+          encoder.encode(
+            ['bytes'],
+            [ethers.utils.hexlify(ethers.utils.toUtf8Bytes('NO_SUCH_KEY'))]
+          )
+        )
+        web3Service._packageKeyholderInfo = jest.fn(() => {
+          throw new Error('oops')
+        })
 
         try {
           await web3Service._genKeyOwnersFromLockContract(
