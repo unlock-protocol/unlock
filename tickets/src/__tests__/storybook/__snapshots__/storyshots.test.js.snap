@@ -5025,14 +5025,14 @@ exports[`Storyshots Event RSVP page Event RSVP page with confirmed key 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c20 {
+    .c23 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c20 > svg {
+.c23 > svg {
   fill: white;
 }
 
@@ -5051,7 +5051,7 @@ Object {
   height: 24px;
 }
 
-.c19 {
+.c22 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -5127,8 +5127,43 @@ Object {
   background-color: var(--white);
 }
 
+.c19 {
+  display: grid;
+  grid-gap: 10px;
+}
+
+.c21 {
+  background-color: var(--grey);
+  border: none;
+  font-size: 16px;
+  color: var(--white);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  height: 60px;
+}
+
+.c21:hover {
+  background-color: var(--grey);
+}
+
 .c18 {
   display: grid;
+  grid-gap: 20px;
+}
+
+.c20 {
+  height: 60px;
+  border: none;
+  background-color: var(--offwhite);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  color: var(--darkgrey);
 }
 
 .c6 {
@@ -5211,7 +5246,7 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c20 {
+  .c23 {
     height: 16px;
     width: 16px;
   }
@@ -5235,13 +5270,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c21 {
+  .c24 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c19 {
+  .c22 {
     display: none;
   }
 }
@@ -5261,6 +5296,12 @@ Object {
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c7 {
     margin-bottom: 20px;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c21 {
+    width: 100%;
   }
 }
 
@@ -5387,14 +5428,31 @@ Object {
             >
               <div
                 class="c18"
-              />
+              >
+                <form
+                  class="c19"
+                >
+                  <input
+                    class="c20"
+                    placeholder="Enter your email address"
+                    type="email"
+                    value=""
+                  />
+                  <input
+                    class="c21"
+                    disabled=""
+                    type="submit"
+                    value="Send"
+                  />
+                </form>
+              </div>
             </div>
           </section>
           <div
-            class="c19"
+            class="c22"
           >
             <div
-              class="c20"
+              class="c23"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -5411,7 +5469,7 @@ Object {
           </div>
         </div>
         <div
-          class="c21"
+          class="c24"
         />
       </div>
     </div>
@@ -5517,8 +5575,25 @@ Object {
             class="sc-1fq9sck-7 dkDhlO"
           >
             <div
-              class="sc-1fqykqp-0 bdFJPs"
-            />
+              class="sc-1fqykqp-2 grXdRD"
+            >
+              <form
+                class="sc-1fqykqp-0 jdvlGS"
+              >
+                <input
+                  class="sc-1fqykqp-3 fwEAhV"
+                  placeholder="Enter your email address"
+                  type="email"
+                  value=""
+                />
+                <input
+                  class="sc-1fqykqp-1 cKtfMx"
+                  disabled=""
+                  type="submit"
+                  value="Send"
+                />
+              </form>
+            </div>
           </div>
         </section>
         <div
@@ -5612,14 +5687,14 @@ exports[`Storyshots Event RSVP page Event RSVP page with confirmed key and QR co
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c20 {
+    .c23 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c20 > svg {
+.c23 > svg {
   fill: white;
 }
 
@@ -5638,7 +5713,7 @@ Object {
   height: 24px;
 }
 
-.c19 {
+.c22 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -5714,8 +5789,43 @@ Object {
   background-color: var(--white);
 }
 
+.c19 {
+  display: grid;
+  grid-gap: 10px;
+}
+
+.c21 {
+  background-color: var(--grey);
+  border: none;
+  font-size: 16px;
+  color: var(--white);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  height: 60px;
+}
+
+.c21:hover {
+  background-color: var(--grey);
+}
+
 .c18 {
   display: grid;
+  grid-gap: 20px;
+}
+
+.c20 {
+  height: 60px;
+  border: none;
+  background-color: var(--offwhite);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  color: var(--darkgrey);
 }
 
 .c6 {
@@ -5798,7 +5908,7 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c20 {
+  .c23 {
     height: 16px;
     width: 16px;
   }
@@ -5822,13 +5932,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c21 {
+  .c24 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c19 {
+  .c22 {
     display: none;
   }
 }
@@ -5848,6 +5958,12 @@ Object {
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c7 {
     margin-bottom: 20px;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c21 {
+    width: 100%;
   }
 }
 
@@ -5974,14 +6090,31 @@ Object {
             >
               <div
                 class="c18"
-              />
+              >
+                <form
+                  class="c19"
+                >
+                  <input
+                    class="c20"
+                    placeholder="Enter your email address"
+                    type="email"
+                    value=""
+                  />
+                  <input
+                    class="c21"
+                    disabled=""
+                    type="submit"
+                    value="Send"
+                  />
+                </form>
+              </div>
             </div>
           </section>
           <div
-            class="c19"
+            class="c22"
           >
             <div
-              class="c20"
+              class="c23"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -5998,7 +6131,7 @@ Object {
           </div>
         </div>
         <div
-          class="c21"
+          class="c24"
         />
       </div>
     </div>
@@ -6104,8 +6237,25 @@ Object {
             class="sc-1fq9sck-7 dkDhlO"
           >
             <div
-              class="sc-1fqykqp-0 bdFJPs"
-            />
+              class="sc-1fqykqp-2 grXdRD"
+            >
+              <form
+                class="sc-1fqykqp-0 jdvlGS"
+              >
+                <input
+                  class="sc-1fqykqp-3 fwEAhV"
+                  placeholder="Enter your email address"
+                  type="email"
+                  value=""
+                />
+                <input
+                  class="sc-1fqykqp-1 cKtfMx"
+                  disabled=""
+                  type="submit"
+                  value="Send"
+                />
+              </form>
+            </div>
           </div>
         </section>
         <div

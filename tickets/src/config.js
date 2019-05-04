@@ -22,6 +22,7 @@ export default function configure(
   const env = runtimeConfig.unlockEnv
 
   const locksmithUri = runtimeConfig.locksmithUri || 'http://0.0.0.0:8080'
+  const wedlocksUri = runtimeConfig.wedlocksUri || 'http://0.0.0.0:1337'
   const httpProvider = runtimeConfig.httpProvider || '127.0.0.1'
   const unlockTicketsUrl =
     runtimeConfig.unlockTicketsUrl || 'http://0.0.0.0:3003'
@@ -37,6 +38,9 @@ export default function configure(
   let services = {
     storage: {
       host: locksmithUri,
+    },
+    wedlocks: {
+      uri: wedlocksUri,
     },
     currencyPriceLookup: 'https://api.coinbase.com/v2/prices/ETH-USD/buy',
   }

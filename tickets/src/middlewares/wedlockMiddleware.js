@@ -6,7 +6,7 @@ import { SEND_CONFIRMATION } from '../actions/email'
 const wedlockMiddleware = config => {
   const { services } = config
   return () => {
-    const wedlockService = new WedlockService(services.storage.host)
+    const wedlockService = new WedlockService(services.wedlocks.uri)
 
     return next => {
       return action => {
