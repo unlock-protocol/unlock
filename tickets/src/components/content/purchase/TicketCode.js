@@ -22,7 +22,14 @@ export const TicketCode = ({
     publicKey +
     '/' +
     signedAddress
-  return <StyledQRCode value={validateUri} size={200} renderAs="svg" />
+  return (
+    <StyledQRCode
+      value={validateUri}
+      size={200}
+      renderAs="canvas"
+      includeMargin="true"
+    />
+  )
 }
 
 TicketCode.propTypes = {
@@ -43,4 +50,5 @@ export default withConfig(TicketCode)
 const StyledQRCode = styled(QRCode)`
   width: 200px;
   height: 200px;
+  border: 1px solid black;
 `
