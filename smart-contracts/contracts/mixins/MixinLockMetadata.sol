@@ -31,6 +31,10 @@ contract MixinLockMetadata is
 
   IUnlock unlock = IUnlock(unlockProtocol);
 
+  event NewLockSymbol(
+    string symbol
+  );
+
   constructor(
     string memory _lockName
   ) internal
@@ -69,6 +73,7 @@ contract MixinLockMetadata is
     onlyOwner
   {
     lockSymbol = _lockSymbol;
+    emit NewLockSymbol(_lockSymbol);
   }
 
   /**
