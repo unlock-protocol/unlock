@@ -208,25 +208,23 @@ export default class WalletService extends UnlockService {
     }
   }
 
-  async personalSign(signer, dataHash) {
+  async signMessage(data, method) {
+    const dataHash = utils.hexlify(utils.sha3(utils.utf8ToHex(data)))
+    const signer = this.provider.getSigner()
     const addr = await signer.getAddress()
-    return await this.provider.send('personal_sign', [
-      utils.hexlify(dataHash),
-      addr.toLowerCase(),
-    ])
+    let firstParam = dataHash
+    let secondParam = addr.toLowerCase()
+    if (method === 'eth_sign') {
+      ;[firstParam, secondParam] = [secondParam, firstParam] // swap the parameter order
+    }
+    return await this.provider.send(method, [firstParam, secondParam])
   }
 
   async signDataPersonal(account, data, callback) {
     try {
-      const dataHash = utils.sha3(utils.utf8ToHex(data))
-      const signer = this.provider.getSigner()
-      if (this.web3Provider) {
-        const signature = await this.personalSign(signer, dataHash)
-        callback(null, Buffer.from(signature).toString('base64'))
-      } else {
-        const signature = await signer.signMessage(dataHash)
-        callback(null, Buffer.from(signature).toString('base64'))
-      }
+      const method = this.web3Provider ? 'personal_sign' : 'eth_sign'
+      const signature = await this.signMessage(data, method)
+      callback(null, Buffer.from(signature).toString('base64'))
     } catch (error) {
       return callback(error, null)
     }

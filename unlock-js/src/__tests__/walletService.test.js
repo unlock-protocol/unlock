@@ -426,7 +426,7 @@ describe('WalletService (ethers)', () => {
         const data = 'data to be signed'
         const account = '0xd4bb4b501ac12f35db35d60c845c8625b5f28fd1'
         const hash =
-          '0x307864633837323762623834376165626231396534623265666139353562396232633539313932666434363536623666653634626436316330396438656462366431'
+          '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
         const returned = Buffer.from('stuff').toString('base64')
 
         nock.accountsAndYield([account])
