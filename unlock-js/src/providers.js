@@ -1,5 +1,3 @@
-import Web3 from 'web3'
-
 // There is no standard way to detect the provider name...
 // TODO: remove? this convenience function is unused
 export function getCurrentProvider(environment) {
@@ -39,5 +37,5 @@ export function getCurrentProvider(environment) {
 }
 
 export function getWeb3Provider(url) {
-  return new Web3.providers.HttpProvider(url)
+  return url // we will simply return the URL, walletService will construct its own ethers provider!
 }
