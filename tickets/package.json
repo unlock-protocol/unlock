@@ -8,7 +8,7 @@
     "start-ganache": "run-script-os",
     "start-ganache:darwin:freebsd:linux:sunos": "cd .. && (npm run start-ganache -- -b 3 &) ",
     "start-ganache:win32": "cd .. && (START /b npm run start-ganache -- -b 3 ) ",
-    "start-clean-locksmith": "cd ../locksmith && rm development.sqlite3 && npm run dev &",
+    "start-clean-locksmith": "cd ../locksmith && (rm development.sqlite3; npm run dev &)",
     "deploy-contracts": "node scripts/deploy-unlock.js",
     "build": "next build src",
     "deploy": "next export src -o out",
