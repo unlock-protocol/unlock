@@ -27,7 +27,7 @@ export const TicketCode = ({
       value={validateUri}
       size={200}
       renderAs="canvas"
-      includeMargin="true"
+      includeMargin
     />
   )
 }
