@@ -218,6 +218,24 @@ export class NockHelper {
     return this._jsonRpcRequest('eth_sign', [account, hash], result, error)
   }
 
+  ethSignTypedDataAndYield(account, data, result, error) {
+    return this._jsonRpcRequest(
+      'eth_signTypedData',
+      [account, JSON.stringify(data)],
+      result,
+      error
+    )
+  }
+
+  ethSignTypedDatav3AndYield(account, data, result, error) {
+    return this._jsonRpcRequest(
+      'eth_signTypedData_v3',
+      [account, JSON.stringify(data)],
+      result,
+      error
+    )
+  }
+
   getTransactionCount(address, count) {
     return this._jsonRpcRequest(
       'eth_getTransactionCount',
