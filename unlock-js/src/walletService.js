@@ -208,17 +208,25 @@ export default class WalletService extends UnlockService {
     }
   }
 
+  async personalSign(signer, dataHash) {
+    const addr = await signer.getAddress()
+    return await this.provider.send('personal_sign', [
+      utils.hexlify(dataHash),
+      addr.toLowerCase(),
+    ])
+  }
+
   async signDataPersonal(account, data, callback) {
     try {
       const dataHash = utils.sha3(utils.utf8ToHex(data))
       const signer = this.provider.getSigner()
-      const addr = await signer.getAddress()
-      const signature = await this.provider.send('personal_sign', [
-        utils.hexlify(dataHash),
-        addr.toLowerCase(),
-      ])
-
-      callback(null, Buffer.from(signature).toString('base64'))
+      if (this.web3Provider) {
+        const signature = await this.personalSign(signer, dataHash)
+        callback(null, Buffer.from(signature).toString('base64'))
+      } else {
+        const signature = await signer.signMessage(dataHash)
+        callback(null, Buffer.from(signature).toString('base64'))
+      }
     } catch (error) {
       return callback(error, null)
     }

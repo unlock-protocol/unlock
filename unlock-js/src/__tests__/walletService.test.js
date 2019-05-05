@@ -400,7 +400,7 @@ describe('WalletService (ethers)', () => {
     })
 
     describe('signDataPersonal', () => {
-      it('dispatches the request to personally sign the data to the corresponding web3 method', async done => {
+      it('dispatches the request to personally sign the data for non-http providers', async done => {
         expect.assertions(2)
         await resetTestsAndConnect()
         const data = 'data to be signed'
@@ -408,13 +408,33 @@ describe('WalletService (ethers)', () => {
         const hash =
           '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
         const returned = Buffer.from('stuff').toString('base64')
+        walletService.web3Provider = true // trigger the call to personalSign
 
         nock.accountsAndYield([account])
         nock.personalSignAndYield(hash, account, 'stuff')
 
         walletService.signDataPersonal(account, data, (error, result) => {
+          expect(error).toBeNull()
           expect(result).toBe(returned)
-          expect(error).toBe(null)
+          done()
+        })
+      })
+
+      it('calls eth_sign for http providers', async done => {
+        expect.assertions(2)
+        await resetTestsAndConnect()
+        const data = 'data to be signed'
+        const account = '0xd4bb4b501ac12f35db35d60c845c8625b5f28fd1'
+        const hash =
+          '0x307864633837323762623834376165626231396534623265666139353562396232633539313932666434363536623666653634626436316330396438656462366431'
+        const returned = Buffer.from('stuff').toString('base64')
+
+        nock.accountsAndYield([account])
+        nock.ethSignAndYield(hash, account, 'stuff')
+
+        walletService.signDataPersonal(account, data, (error, result) => {
+          expect(error).toBeNull()
+          expect(result).toBe(returned)
           done()
         })
       })
