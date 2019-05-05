@@ -187,10 +187,9 @@ export default class WalletService extends UnlockService {
   async signData(account, data, callback) {
     const isMetaMask = this.web3Provider && this.web3Provider.isMetaMask
     const method = isMetaMask ? 'eth_signTypedData_v3' : 'eth_signTypedData'
-    const sendData = JSON.stringify(data)
 
     try {
-      const result = await this.provider.send(method, [account, sendData])
+      const result = await this.provider.send(method, [account, data])
 
       callback(null, Buffer.from(result).toString('base64'))
     } catch (err) {

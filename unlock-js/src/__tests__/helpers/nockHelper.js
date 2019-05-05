@@ -221,7 +221,7 @@ export class NockHelper {
   ethSignTypedDataAndYield(account, data, result, error) {
     return this._jsonRpcRequest(
       'eth_signTypedData',
-      [account, JSON.stringify(data)],
+      [account, data],
       result,
       error
     )
@@ -230,7 +230,7 @@ export class NockHelper {
   ethSignTypedDatav3AndYield(account, data, result, error) {
     return this._jsonRpcRequest(
       'eth_signTypedData_v3',
-      [account, JSON.stringify(data)],
+      [account, data],
       result,
       error
     )
