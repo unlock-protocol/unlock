@@ -3,7 +3,9 @@ pragma solidity 0.5.7;
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import '../interfaces/IERC721.sol';
 import '../UnlockUtils.sol';
-
+import './MixinKeys.sol';
+import '../interfaces/IUnlock.sol';
+import './MixinLockCore.sol';
 
 /**
  * @title Mixin for metadata about the Lock.
@@ -14,7 +16,9 @@ import '../UnlockUtils.sol';
 contract MixinLockMetadata is
   IERC721,
   Ownable,
-  UnlockUtils
+  MixinLockCore,
+  UnlockUtils,
+  MixinKeys
 {
   /// A descriptive name for a collection of NFTs in this contract.Defaults to "Unlock-Protocol" but is settable by lock owner
   string private lockName;
@@ -24,6 +28,8 @@ contract MixinLockMetadata is
 
   // the base Token URI for this Lock. If not set by lock owner, the global URI stored in Unlock is used.
   string private baseTokenURI;
+
+  IUnlock unlock = IUnlock(unlockProtocol);
 
   constructor(
     string memory _lockName
@@ -51,13 +57,7 @@ contract MixinLockMetadata is
   ) external view
     returns (string memory)
   {
-    string memory name;
-    if(lockName == '') {
-      name = unlockProtocol.getGlobalLockName;
-    } else {
-      name = lockName;
-    }
-    return name;
+    return lockName;
   }
 
   /**
@@ -80,8 +80,8 @@ contract MixinLockMetadata is
     returns(string memory)
   {
     string memory symbol;
-    if(lockSymbol == '') {
-      symbol = unlockProtocol.getGlobalLockSymbol;
+    if(bytes(lockSymbol).length == 0) {
+      symbol = unlock.getGlobalTokenSymbol();
     } else {
       symbol = lockSymbol;
     }
@@ -113,14 +113,14 @@ contract MixinLockMetadata is
     returns(string memory)
   {
     string memory URI;
-    if(baseTokenURI == '') {
-      URI = unlockProtocol.getGlobalBaseURI;
+    if(bytes(baseTokenURI).length == 0) {
+      URI = unlock.getGlobalBaseTokenURI();
     } else {
       URI = baseTokenURI;
     }
     return UnlockUtils.strConcat(URI, UnlockUtils.strConcat(
       UnlockUtils.address2Str(address(this)),
-      UnlockUtils.uint2str(_tokenId))
+      UnlockUtils.uint2Str(_tokenId))
     );
   }
 }
