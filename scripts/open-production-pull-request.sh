@@ -86,7 +86,14 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 * [ ] Wait 5 minutes (the key should expire) and reload the page
 * [ ] Purchase another key
 
-Feel free to test the dashboard and paywal using a mobile browser.
+## Tickets
+* [ ] Go to https://tickets-staging.unlock-protocol.com/ and create or update a existing event
+* [ ] Once saved, click on the event link and make sure it shows the right information
+* [ ] Go to https://tickets-staging.unlock-protocol.com/event/0x3745FaFb818018dC9b4AE33Da2C1d169cfcd2D1A and purchase a ticket for this event
+* [ ] Once purchased, the UI should show a QR code, along with a form to receive it by enail
+* [ ] Send yourself an email and make sure the QR code is attached
+
+Feel free to test the dashboard, paywal and tickets app using a mobile browser.
 "
 
 DOY=$(date +%j)
