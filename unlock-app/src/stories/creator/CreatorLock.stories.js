@@ -5,13 +5,14 @@ import { action } from '@storybook/addon-actions'
 import CreatorLock from '../../components/creator/CreatorLock'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
+import { TransactionType } from '../../unlockTypes'
 
 const lockWith = params => {
   const standardLock = {
     address: '0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B',
     asOf: 31337,
     balance: '0.045',
-    expirationDuration: '2592000',
+    expirationDuration: 2592000,
     keyPrice: '0.01',
     maxNumberOfKeys: 42,
     name: 'Lock Robster',
@@ -32,30 +33,30 @@ const store = createUnlockStore({
     deployedid: {
       status: 'mined',
       confirmations: 24,
+      lock: '0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B',
     },
     confirmingid: {
       status: 'mined',
       confirmations: 4,
+      lock: '0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B',
     },
     submittedid: {
       status: 'submitted',
       confirmations: 0,
+      type: TransactionType.LOCK_CREATION,
+      lock: '0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B',
     },
     withdrawalconfirmingid: {
       status: 'mined',
       confirmations: 2,
       withdrawal: withdrawalConfirmingAddress,
+      lock: '0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B',
     },
     withdrawalsubmittedid: {
       status: 'submitted',
       confirmations: 0,
       withdrawal: withdrawalSubmittedAddress,
-    },
-  },
-  keysForLockByPage: {
-    '0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B': {
-      keys: {},
-      page: '',
+      lock: '0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B',
     },
   },
   keys: {
