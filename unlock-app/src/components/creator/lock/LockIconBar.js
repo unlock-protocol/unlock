@@ -58,7 +58,7 @@ export function LockIconBar({
         {withdrawalTransaction && !withdrawalTransaction.confirmations && (
           <React.Fragment>Submitted to Network...</React.Fragment>
         )}
-        {withdrawalTransaction && withdrawalTransaction.confirmations && (
+        {withdrawalTransaction && !!withdrawalTransaction.confirmations && (
           <React.Fragment>
             Confirming Withdrawal {withdrawalTransaction.confirmations}/
             {config.requiredConfirmations}
