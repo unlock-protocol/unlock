@@ -20,7 +20,7 @@ interface IUnlock {
     string tokenURI
   );
 
-  event NewTokenSymbol(
+  event NewGlobalTokenSymbol(
     string tokenSymbol
   );
 
