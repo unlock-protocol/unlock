@@ -236,54 +236,6 @@ storiesOf('LockIconBar', module)
   })
   .add('LockIconBar, mined withdrawal transaction', () => {
     const lock = {
-      address: '0xminedPriceChange',
-    }
-    return (
-      <LockIconBar
-        lock={lock}
-        toggleCode={action('toggleCode')}
-        edit={action('edit')}
-      />
-    )
-  })
-  .add('LockIconBar, pending withdrawal transaction', () => {
-    const lock = {
-      address: '0xpendingWithdrawalLock',
-    }
-    return (
-      <LockIconBar
-        lock={lock}
-        toggleCode={action('toggleCode')}
-        edit={action('edit')}
-      />
-    )
-  })
-  .add('LockIconBar, submitted withdrawal transaction', () => {
-    const lock = {
-      address: '0xsubmittedWithdrawalLock',
-    }
-    return (
-      <LockIconBar
-        lock={lock}
-        toggleCode={action('toggleCode')}
-        edit={action('edit')}
-      />
-    )
-  })
-  .add('LockIconBar, confirming withdrawal transaction', () => {
-    const lock = {
-      address: '0xconfirmingWithdrawalLock',
-    }
-    return (
-      <LockIconBar
-        lock={lock}
-        toggleCode={action('toggleCode')}
-        edit={action('edit')}
-      />
-    )
-  })
-  .add('LockIconBar, mined withdrawal transaction', () => {
-    const lock = {
       address: '0xminedWithdrawal',
     }
     return (

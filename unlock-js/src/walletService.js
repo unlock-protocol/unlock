@@ -1,6 +1,7 @@
-import Web3 from 'web3'
+import { providers as ethersProviders } from 'ethers'
 import UnlockService from './unlockService'
 import { GAS_AMOUNTS } from './constants'
+import * as utils from './utils'
 
 /**
  * This service interacts with the user's wallet.
@@ -10,7 +11,7 @@ import { GAS_AMOUNTS } from './constants'
  */
 export default class WalletService extends UnlockService {
   constructor({ unlockAddress }) {
-    super({ unlockAddress })
+    super({ unlockAddress, writable: true })
     this.ready = false
 
     this.on('ready', () => {
@@ -27,16 +28,21 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * This connects to the web3 service and listens to new blocks
-   * @param {string} providerName
-   * @return
+   * Temporary function that allows us to use ethers functionality
+   * without interfering with web3
    */
   async connect(provider) {
     // Reset the connection
     this.ready = false
 
-    this.web3 = new Web3(provider)
-    const networkId = await this.web3.eth.net.getId()
+    if (typeof provider === 'string') {
+      this.provider = new ethersProviders.JsonRpcProvider(provider)
+      this.web3Provider = false
+    } else {
+      this.provider = new ethersProviders.Web3Provider(provider)
+      this.web3Provider = provider
+    }
+    const { chainId: networkId } = await this.provider.getNetwork()
 
     if (this.networkId !== networkId) {
       this.networkId = networkId
@@ -52,7 +58,7 @@ export default class WalletService extends UnlockService {
   async isUnlockContractDeployed(callback) {
     let opCode = '0x' // Default
     try {
-      opCode = await this.web3.eth.getCode(this.unlockContractAddress)
+      opCode = await this.provider.getCode(this.unlockContractAddress)
     } catch (error) {
       return callback(error)
     }
@@ -60,24 +66,17 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * Function which yields the address of the account on the provider or creates a key pair.
+   * Function which yields the address of the account on the provider
    */
-  async getAccount(createIfNone = false) {
-    const accounts = await this.web3.eth.getAccounts()
-    let address
+  async getAccount() {
+    const accounts = await this.provider.listAccounts()
 
-    if (!accounts.length && !createIfNone) {
-      // We do not have an account and were not asked to create one!
-      // Not sure how that could happen?
+    if (!accounts.length) {
+      // We do not have an account, can't do anything until we have one.
       return (this.ready = false)
     }
 
-    if (accounts.length) {
-      address = accounts[0] // We have an account.
-    } else if (createIfNone) {
-      let newAccount = await this.web3.eth.accounts.create()
-      address = newAccount.address
-    }
+    let address = accounts[0]
 
     this.emit('account.changed', address)
     this.emit('ready')
@@ -85,39 +84,28 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * This function submits a web3Transaction and will trigger an event as soon as it receives its
-   * hash. We then use the web3Service to handle the ongoing transaction (watch for conformation
+   * This function submits a web3 transaction and will trigger an event as soon as it receives its
+   * hash. We then use the web3Service to handle the ongoing transaction (watch for confirmation
    * receipt... etc)
    * @private
+   * @param {Promise} the result of calling a contract method (ethersjs contract)
+   * @param {string} the Unlock protocol transaction type
+   * @param {Function} a standard node callback that accepts the transaction hash
    */
-  _sendTransaction({ to, from, data, value, gas }, transactionType, callback) {
-    const web3TransactionPromise = this.web3.eth.sendTransaction({
-      to,
-      from,
-      value,
-      data,
-      gas,
-    })
-
+  async _handleMethodCall(methodCall, transactionType) {
     this.emit('transaction.pending', transactionType)
-
-    return web3TransactionPromise
-      .once('transactionHash', hash => {
-        callback(null, hash)
-        // TODO: consider an object instead of all the fields independently.
-        this.emit(
-          'transaction.new',
-          hash,
-          from,
-          to,
-          data,
-          transactionType,
-          'submitted'
-        )
-      })
-      .on('error', error => {
-        callback(error)
-      })
+    const transaction = await methodCall
+    this.emit(
+      'transaction.new',
+      transaction.hash,
+      transaction.from,
+      transaction.to,
+      transaction.data,
+      transactionType,
+      'submitted'
+    )
+    return transaction.hash
+    // errors fall through
   }
 
   /**
@@ -189,42 +177,50 @@ export default class WalletService extends UnlockService {
 
   /**
    * Signs data for the given account.
-   * We favor web3.eth.personal.sign which provides a better UI but is not implemented
-   * everywhere. If it's failing we use web3.eth.sign
+   * We favor eth_signTypedData which provides a better UI
+   * In Metamask, it is called eth_signTypedData_v3
    *
    * @param {*} account
    * @param {*} data
    * @param {*} callback
    */
-  signData(account, data, callback) {
+  async signData(account, data, callback) {
     let method
 
-    if (this.web3.currentProvider.isMetaMask) {
+    if (this.web3Provider && this.web3Provider.isMetaMask) {
       method = 'eth_signTypedData_v3'
       data = JSON.stringify(data)
     } else {
       method = 'eth_signTypedData'
     }
 
-    return this.web3.currentProvider.send(
-      {
-        method: method,
-        params: [account, data],
-        from: account,
-      },
-      (err, result) => {
-        // network failure
-        if (err) {
-          return callback(err, null)
-        }
+    try {
+      const result = await this.provider.send(method, [account, data])
 
-        // signature failure on the node
-        if (result.error) {
-          return callback(result.error, null)
-        }
-
-        callback(null, Buffer.from(result.result).toString('base64'))
+      // signature failure on the node
+      if (result.error) {
+        return callback(result.error, null)
       }
-    )
+
+      callback(null, Buffer.from(result.result).toString('base64'))
+    } catch (err) {
+      return callback(err, null)
+    }
+  }
+
+  async signDataPersonal(account, data, callback) {
+    try {
+      const dataHash = utils.sha3(utils.utf8ToHex(data))
+      const signer = this.provider.getSigner()
+      const addr = await signer.getAddress()
+      const signature = await this.provider.send('personal_sign', [
+        utils.hexlify(dataHash),
+        addr.toLowerCase(),
+      ])
+
+      callback(null, Buffer.from(signature).toString('base64'))
+    } catch (error) {
+      return callback(error, null)
+    }
   }
 }

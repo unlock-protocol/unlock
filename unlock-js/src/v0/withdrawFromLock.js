@@ -1,34 +1,26 @@
-import * as UnlockV0 from 'unlock-abi-0'
-import Errors from '../errors'
-import TransactionTypes from '../transactionTypes'
 import { GAS_AMOUNTS } from '../constants'
+import TransactionTypes from '../transactionTypes'
+import Errors from '../errors'
 
 /**
  * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
  * @param {PropTypes.address} lock
- * @param {PropTypes.address} account
+ * @param {PropTypes.address} account (unused in ethers)
  * @param {Function} callback TODO: implement...
  */
-export default function(lock, account) {
-  const lockContract = new this.web3.eth.Contract(UnlockV0.PublicLock.abi, lock)
-  const data = lockContract.methods.withdraw().encodeABI()
-
-  return this._sendTransaction(
-    {
-      to: lock,
-      from: account,
-      data,
-      gas: GAS_AMOUNTS.withdrawFromLock,
-      contract: UnlockV0.PublicLock,
-    },
-    TransactionTypes.WITHDRAWAL,
-    error => {
-      if (error) {
-        return this.emit(
-          'error',
-          new Error(Errors.FAILED_TO_WITHDRAW_FROM_LOCK)
-        )
-      }
-    }
-  )
+export default async function(lockAddress) {
+  const lockContract = await this.getLockContract(lockAddress)
+  let transactionPromise
+  try {
+    transactionPromise = lockContract['withdraw()']({
+      gasLimit: GAS_AMOUNTS.withdraw, // overrides default value for transaction gas price
+    })
+    const ret = await this._handleMethodCall(
+      transactionPromise,
+      TransactionTypes.WITHDRAWAL
+    )
+    return ret
+  } catch (error) {
+    this.emit('error', new Error(Errors.FAILED_TO_WITHDRAW_FROM_LOCK))
+  }
 }

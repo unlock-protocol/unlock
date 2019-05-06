@@ -1,116 +1,126 @@
-import Web3 from 'web3'
 import * as UnlockV0 from 'unlock-abi-0'
-import partialWithdrawFromLock from '../../v0/partialWithdrawFromLock'
+import * as utils from '../../utils'
 import Errors from '../../errors'
-import { GAS_AMOUNTS } from '../../constants'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
-import { prepWalletService } from '../helpers/walletServiceHelper'
+import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 
 const { FAILED_TO_WITHDRAW_FROM_LOCK } = Errors
 const endpoint = 'http://127.0.0.1:8545'
-const provider = new Web3.providers.HttpProvider(endpoint)
-const nock = new NockHelper(endpoint, false /** debug */)
-let unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
+const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
 
 let walletService
+let transaction
+let transactionResult
+let setupSuccess
+let setupFail
 
 describe('v0', () => {
-  beforeEach(done => {
-    nock.cleanAll()
-    prepWalletService(
-      unlockAddress,
-      UnlockV0.Unlock,
-      provider,
-      nock,
-      _walletService => {
-        walletService = _walletService
-        // bind the partialWithdrawFromLock into walletService
-        walletService.partialWithdrawFromLock = partialWithdrawFromLock.bind(
-          walletService
-        )
-        return done()
-      }
-    )
-  })
-
   describe('partialWithdrawFromLock', () => {
-    let lock
-    let account
+    const lock = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
+    const account = '0xdeadbeef'
+    const amount = '3'
 
-    beforeEach(() => {
-      lock = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
-      account = '0xdeadbeef'
-    })
-
-    it('should invoke sendTransaction with the right params', done => {
-      expect.assertions(3)
-      const data = '' // mock abi data for partialWithdraw
-
-      walletService._sendTransaction = jest.fn(() => {
-        done()
-      })
-
-      const MockContractClass = class {
-        constructor(abi, address) {
-          expect(abi).toBe(UnlockV0.PublicLock.abi)
-          expect(address).toBe(lock)
-          this.methods = {
-            partialWithdraw: () => this,
-          }
-          this.encodeABI = jest.fn(() => data)
-        }
-      }
-
-      walletService.web3.eth.Contract = MockContractClass
-
-      walletService.partialWithdrawFromLock(lock, account, '3', () => {
-        done()
-      })
-
-      expect(walletService._sendTransaction).toHaveBeenCalledWith(
-        {
-          to: lock,
-          from: account,
-          data,
-          gas: GAS_AMOUNTS.partialWithdrawFromLock,
-          contract: UnlockV0.PublicLock,
-        },
-        TransactionTypes.WITHDRAWAL,
-        expect.any(Function)
+    async function nockBeforeEach() {
+      nock.cleanAll()
+      walletService = await prepWalletService(
+        UnlockV0.PublicLock,
+        endpoint,
+        nock
       )
+
+      const callMethodData = prepContract({
+        contract: UnlockV0.PublicLock,
+        functionName: 'partialWithdraw',
+        signature: 'uint256',
+        nock,
+      })
+
+      const {
+        testTransaction,
+        testTransactionResult,
+        success,
+        fail,
+      } = callMethodData(utils.toWei(amount, 'ether'))
+
+      transaction = testTransaction
+      transactionResult = testTransactionResult
+      setupSuccess = success
+      setupFail = fail
+    }
+
+    it('should invoke _handleMethodCall with the right params', async () => {
+      expect.assertions(2)
+      const callback = jest.fn()
+
+      await nockBeforeEach()
+      setupSuccess()
+
+      walletService._handleMethodCall = jest.fn(() =>
+        Promise.resolve(transaction.hash)
+      )
+      const mock = walletService._handleMethodCall
+
+      await walletService.partialWithdrawFromLock(
+        lock,
+        account,
+        amount,
+        callback
+      )
+
+      expect(mock).toHaveBeenCalledWith(
+        expect.any(Promise),
+        TransactionTypes.WITHDRAWAL
+      )
+
+      // verify that the promise passed to _handleMethodCall actually resolves
+      // to the result the chain returns from a sendTransaction call to createLock
+      const result = await mock.mock.calls[0][0]
+      expect(result).toEqual(transactionResult)
+      await nock.resolveWhenAllNocksUsed()
     })
 
-    it('should emit an error if the transaction cannot be sent', done => {
+    it('should emit an error if the transaction cannot be sent', async () => {
       expect.assertions(1)
-      const error = {}
+      const callback = jest.fn()
 
-      walletService._sendTransaction = jest.fn((args, type, cb) => {
-        return cb(error)
-      })
+      const error = { code: 404, data: 'oops' }
+      await nockBeforeEach()
+      setupFail(error)
 
       walletService.on('error', error => {
         expect(error.message).toBe(FAILED_TO_WITHDRAW_FROM_LOCK)
-        done()
       })
 
-      walletService.partialWithdrawFromLock(lock, account, '3', () => {})
+      await walletService.partialWithdrawFromLock(
+        lock,
+        account,
+        amount,
+        callback
+      )
+      await nock.resolveWhenAllNocksUsed()
     })
 
-    it('should not emit an error when `error` is falsy', done => {
+    it('should not emit an error when `error` is falsy', async () => {
       expect.assertions(1)
-      const error = undefined
+      const callback = jest.fn()
 
-      walletService._sendTransaction = jest.fn((args, type, cb) => {
-        return cb(error)
-      })
+      await nockBeforeEach()
+      setupSuccess()
 
-      walletService.emit = jest.fn()
+      walletService._handleMethodCall = jest.fn(() =>
+        Promise.resolve(transaction.hash)
+      )
 
-      walletService.partialWithdrawFromLock(lock, account, '3', () => {
-        expect(walletService.emit).not.toHaveBeenCalled()
-        done()
-      })
+      await walletService.partialWithdrawFromLock(
+        lock,
+        account,
+        amount,
+        callback
+      )
+
+      await nock.resolveWhenAllNocksUsed()
+      expect(callback).toHaveBeenCalled()
     })
   })
 })

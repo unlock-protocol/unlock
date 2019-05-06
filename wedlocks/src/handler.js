@@ -1,6 +1,7 @@
 /* eslint no-console: 0 */
 /* eslint import/prefer-default-export: 0 */
 import { route } from './route'
+import logger from '../logger'
 
 const headers = {
   'Access-Control-Allow-Origin': '*',
@@ -8,7 +9,12 @@ const headers = {
 }
 
 export const handler = (event, context, responseCallback) => {
-  const callback = (err, response) => {
+  const callback = (err /** alway null! */, response) => {
+    if (response.statusCode >= 400) {
+      logger.error(response)
+    } else {
+      logger.info(response)
+    }
     return responseCallback(err, {
       ...response,
       headers: {
@@ -53,19 +59,21 @@ export const handler = (event, context, responseCallback) => {
       if (error) {
         return callback(null, {
           statusCode: 400,
-          body: JSON.stringify(error),
+          body: 'Client Error',
+          details: error,
         })
       }
+
       return callback(null, {
-        statusCode: 200,
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(response),
+        statusCode: 204,
+        details: response,
       })
     })
-  } catch (e) {
+  } catch (error) {
     return callback(null, {
       statusCode: 500,
-      body: e.message,
+      body: 'Server Error',
+      details: error,
     })
   }
 }

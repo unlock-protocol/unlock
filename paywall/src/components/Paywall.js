@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { setAccount } from '../actions/accounts'
 import UnlockPropTypes from '../propTypes'
 import Overlay from './lock/Overlay'
 import DeveloperOverlay from './developer/DeveloperOverlay'
@@ -14,8 +15,11 @@ import usePostMessage from '../hooks/browser/usePostMessage'
 import {
   POST_MESSAGE_LOCKED,
   POST_MESSAGE_UNLOCKED,
+  POST_MESSAGE_ACCOUNT,
+  POST_MESSAGE_SCROLL_POSITION,
+  POST_MESSAGE_READY,
 } from '../paywall-builder/constants'
-import { isPositiveNumber } from '../utils/validators'
+import { isPositiveNumber, isAccount } from '../utils/validators'
 import useWindow from '../hooks/browser/useWindow'
 import useOptimism from '../hooks/useOptimism'
 import withConfig from '../utils/withConfig'
@@ -29,18 +33,28 @@ export function Paywall({
   locked,
   redirect,
   config: { requiredConfirmations },
-  account,
+  account: fullAccount,
   transaction,
   keyStatus,
   lockKey,
   expiration,
+  setAccount,
 }) {
+  const account = fullAccount && fullAccount.address
   const optimism = useOptimism(transaction)
   const window = useWindow()
+  useEffect(() => {
+    postMessage(POST_MESSAGE_READY)
+  }, []) // only send this once, on startup
   const scrollPosition = useListenForPostMessage({
-    type: 'scrollPosition',
+    type: POST_MESSAGE_SCROLL_POSITION,
     defaultValue: 0,
     validator: isPositiveNumber,
+  })
+  const mainWindowAccount = useListenForPostMessage({
+    type: POST_MESSAGE_ACCOUNT,
+    defaultValue: false,
+    validator: isAccount,
   })
   const { postMessage } = usePostMessage()
   const smallBody = body => {
@@ -49,6 +63,19 @@ export function Paywall({
   const bigBody = body => {
     body.className = 'big'
   }
+  useEffect(() => {
+    if (!fullAccount || fullAccount.fromLocalStorage) {
+      if (mainWindowAccount) {
+        if (!fullAccount || mainWindowAccount !== fullAccount.address) {
+          setAccount({
+            address: mainWindowAccount,
+            fromLocalStorage: true,
+            fromMainWindow: true,
+          })
+        }
+      }
+    }
+  }, [fullAccount, mainWindowAccount])
   useEffect(() => {
     if (locked) {
       postMessage(POST_MESSAGE_LOCKED)
@@ -104,7 +131,8 @@ Paywall.propTypes = {
   config: UnlockPropTypes.configuration.isRequired,
   redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   transaction: UnlockPropTypes.transaction,
-  account: PropTypes.string,
+  account: UnlockPropTypes.account,
+  setAccount: PropTypes.func.isRequired,
   keyStatus: PropTypes.string.isRequired,
   lockKey: UnlockPropTypes.key.isRequired,
   expiration: PropTypes.string.isRequired,
@@ -115,6 +143,8 @@ Paywall.defaultProps = {
   account: null,
   transaction: null,
 }
+
+export const mapDispatchToProps = { setAccount }
 
 export const mapStateToProps = (
   { locks, keys, modals, router, account },
@@ -163,11 +193,16 @@ export const mapStateToProps = (
     locks: lock ? [lock] : [],
     redirect,
     transaction,
-    account: accountAddress,
+    account: account,
     keyStatus: currentKeyStatus,
     lockKey,
     expiration,
   }
 }
 
-export default withConfig(connect(mapStateToProps)(Paywall))
+export default withConfig(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Paywall)
+)

@@ -1,8 +1,7 @@
-import * as UnlockV0 from 'unlock-abi-0'
-import Web3Utils from '../utils'
+import utils from '../utils'
 import { GAS_AMOUNTS } from '../constants'
-import Errors from '../errors'
 import TransactionTypes from '../transactionTypes'
+import Errors from '../errors'
 
 /**
  *
@@ -10,25 +9,22 @@ import TransactionTypes from '../transactionTypes'
  * @param {PropTypes.address} account: account who owns the lock
  * @param {string} price : new price for the lock
  */
-export default function(lock, account, price) {
-  const lockContract = new this.web3.eth.Contract(UnlockV0.PublicLock.abi, lock)
-  const data = lockContract.methods
-    .updateKeyPrice(Web3Utils.toWei(price, 'ether'))
-    .encodeABI()
-
-  return this._sendTransaction(
-    {
-      to: lock,
-      from: account,
-      data,
-      gas: GAS_AMOUNTS.updateKeyPrice,
-      contract: UnlockV0.PublicLock,
-    },
-    TransactionTypes.UPDATE_KEY_PRICE,
-    error => {
-      if (error) {
-        return this.emit('error', new Error(Errors.FAILED_TO_UPDATE_KEY_PRICE))
+export default async function(lockAddress, account, price) {
+  const lockContract = await this.getLockContract(lockAddress)
+  let transactionPromise
+  try {
+    transactionPromise = lockContract['updateKeyPrice(uint256)'](
+      utils.toWei(price, 'ether'),
+      {
+        gasLimit: GAS_AMOUNTS.updateKeyPrice, // overrides default value for transaction gas price
       }
-    }
-  )
+    )
+    const ret = await this._handleMethodCall(
+      transactionPromise,
+      TransactionTypes.UPDATE_KEY_PRICE
+    )
+    return ret
+  } catch (error) {
+    this.emit('error', new Error(Errors.FAILED_TO_UPDATE_KEY_PRICE))
+  }
 }

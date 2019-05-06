@@ -15,7 +15,7 @@ let rinkebyMnemonic = {
   accountIndex: 0,
 }
 if (rinkebyProviderUrl) {
-  rinkebyMnemonic = require('./mnemonic.rinkeby')
+  rinkebyMnemonic = require('./mnemonic.rinkeby') // eslint-disable-line import/no-unresolved
 }
 
 /**
@@ -27,7 +27,7 @@ let mainnetMnemonic = {
   accountIndex: 0,
 }
 if (mainnetProviderUrl) {
-  mainnetMnemonic = require('./mnemonic.mainnet')
+  mainnetMnemonic = require('./mnemonic.mainnet') // eslint-disable-line import/no-unresolved
 }
 
 // When running CI, we connect to the 'ganache' container
@@ -61,13 +61,13 @@ module.exports = {
       provider: rinkebyProvider,
       network_id: '4', // Network Id for Rinkeby
       gas: 5000000,
-      gasPrice: 35000000000,
+      gasPrice: 5000000000, // 5GWEI
     },
     mainnet: {
       provider: mainnetProvider,
       network_id: 1,
-      gas: 7000000,
-      gasPrice: 35000000000,
+      gas: 6000000,
+      gasPrice: 5000000000, // 5GWEI
     },
   },
   compilers: {

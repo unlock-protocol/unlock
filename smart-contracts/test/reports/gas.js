@@ -51,6 +51,7 @@ contract('reports / gas', accounts => {
         Web3Utils.padLeft(0, 40),
         Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
         100, // maxNumberOfKeys
+        'Gas Test Lock',
         {
           from: accounts[0],
         }
@@ -166,7 +167,7 @@ contract('reports / gas', accounts => {
     await lockErc20.disableLock()
 
     const destroyLockEth = await getGasFor(lock.destroyLock())
-    const destroyLockErc20 = await getGasFor(lockErc20.destroyLock())
+    const destroyLockErc20 = await getGasFor(lockApi.destroyLock(accounts[0]))
 
     const transferOwnership = await getGasFor(
       locks['SECOND'].transferOwnership(accounts[2])

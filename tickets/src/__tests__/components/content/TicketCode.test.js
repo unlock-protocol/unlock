@@ -14,11 +14,12 @@ describe('TicketCode', () => {
       <TicketCode
         signedAddress="this-is-a-signed-address"
         publicKey="12345"
+        lockAddress="0x1234"
         config={config}
       />
     )
 
-    expect(wrapper.container.querySelector('svg')).not.toBeNull()
+    expect(wrapper.container.querySelector('canvas')).not.toBeNull()
   })
 
   it('should not display a QR code when a signed address and public key are not supplied', () => {

@@ -12,9 +12,10 @@
     "babel-loader": "^8.0.5",
     "netlify-cli": "^2.8.3",
     "nodemailer": "^6.1.0",
-    "nodemon": "^1.18.10",
+    "nodemon": "^1.19.0",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0"
+    "webpack-cli": "^3.3.0",
+    "winston": "^3.2.1"
   },
   "lint-staged": {
     "linters": {

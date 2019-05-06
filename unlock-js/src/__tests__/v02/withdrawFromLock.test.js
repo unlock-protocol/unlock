@@ -1,96 +1,89 @@
-import Web3 from 'web3'
 import * as UnlockV02 from 'unlock-abi-0-2'
-import withdrawFromLock from '../../v02/withdrawFromLock'
 import Errors from '../../errors'
-import { GAS_AMOUNTS } from '../../constants'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
-import { prepWalletService } from '../helpers/walletServiceHelper'
+import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 
 const { FAILED_TO_WITHDRAW_FROM_LOCK } = Errors
 const endpoint = 'http://127.0.0.1:8545'
-const provider = new Web3.providers.HttpProvider(endpoint)
-const nock = new NockHelper(endpoint, false /** debug */)
-let unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
+const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
 
 let walletService
+let transaction
+let transactionResult
+let setupSuccess
+let setupFail
 
 describe('v02', () => {
-  beforeEach(done => {
-    nock.cleanAll()
-    prepWalletService(
-      unlockAddress,
-      UnlockV02.Unlock,
-      provider,
-      nock,
-      _walletService => {
-        walletService = _walletService
-        // bind the withdrawFromLock into walletService
-        walletService.withdrawFromLock = withdrawFromLock.bind(walletService)
-        return done()
-      }
-    )
-  })
-
   describe('withdrawFromLock', () => {
-    let lock
-    let account
+    const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
+    const account = '0xdeadbeef'
 
-    beforeEach(() => {
-      lock = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
-      account = '0xdeadbeef'
-    })
-
-    it('should invoke sendTransaction with the right params', () => {
-      expect.assertions(3)
-      const data = '' // mock abi data for purchaseKey
-
-      walletService._sendTransaction = jest.fn()
-
-      const ContractClass = class {
-        constructor(abi, address) {
-          expect(abi).toBe(UnlockV02.PublicLock.abi)
-          expect(address).toBe(lock)
-          this.methods = {
-            withdraw: () => {
-              return this
-            },
-          }
-          this.encodeABI = jest.fn(() => data)
-        }
-      }
-
-      walletService.web3.eth.Contract = ContractClass
-
-      walletService.withdrawFromLock(lock, account)
-
-      expect(walletService._sendTransaction).toHaveBeenCalledWith(
-        {
-          to: lock,
-          from: account,
-          data,
-          gas: GAS_AMOUNTS.withdrawFromLock,
-          contract: UnlockV02.PublicLock,
-        },
-        TransactionTypes.WITHDRAWAL,
-        expect.any(Function)
+    async function nockBeforeEach() {
+      nock.cleanAll()
+      walletService = await prepWalletService(
+        UnlockV02.PublicLock,
+        endpoint,
+        nock
       )
+
+      const callMethodData = prepContract({
+        contract: UnlockV02.PublicLock,
+        functionName: 'withdraw',
+        signature: '',
+        nock,
+      })
+
+      const {
+        testTransaction,
+        testTransactionResult,
+        success,
+        fail,
+      } = callMethodData()
+
+      transaction = testTransaction
+      transactionResult = testTransactionResult
+      setupSuccess = success
+      setupFail = fail
+    }
+
+    it('should invoke _handleMethodCall with the right params', async () => {
+      expect.assertions(2)
+
+      await nockBeforeEach()
+      setupSuccess()
+
+      walletService._handleMethodCall = jest.fn(() =>
+        Promise.resolve(transaction.hash)
+      )
+      const mock = walletService._handleMethodCall
+
+      await walletService.withdrawFromLock(lockAddress, account)
+
+      expect(mock).toHaveBeenCalledWith(
+        expect.any(Promise),
+        TransactionTypes.WITHDRAWAL
+      )
+
+      // verify that the promise passed to _handleMethodCall actually resolves
+      // to the result the chain returns from a sendTransaction call to createLock
+      const result = await mock.mock.calls[0][0]
+      expect(result).toEqual(transactionResult)
+      await nock.resolveWhenAllNocksUsed()
     })
 
-    it('should emit an error if the transaction could not be sent', done => {
+    it('should emit an error if the transaction could not be sent', async () => {
       expect.assertions(1)
-      const error = {}
 
-      walletService._sendTransaction = jest.fn((args, type, cb) => {
-        return cb(error)
-      })
+      const error = { code: 404, data: 'oops' }
+      await nockBeforeEach()
+      setupFail(error)
 
       walletService.on('error', error => {
         expect(error.message).toBe(FAILED_TO_WITHDRAW_FROM_LOCK)
-        done()
       })
-
-      walletService.withdrawFromLock(lock, account)
+      await walletService.withdrawFromLock(lockAddress, account)
+      await nock.resolveWhenAllNocksUsed()
     })
   })
 })

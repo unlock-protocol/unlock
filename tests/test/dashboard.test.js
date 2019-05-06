@@ -99,24 +99,28 @@ describe('The Unlock Dashboard', () => {
     // This test requires the test above
     it('should be confirming after having been submitted', async () => {
       expect.assertions(1)
-      await wait.untilIsFalse(address => {
+      // Given that we do not control the point at which the transaction
+      // has been mined, we do not know its exact state (and we do not know the state of the lock
+      // as a consequence), but we know that it should eventually be in the 'Confirming' for a
+      // few blocks...
+      await wait.untilIsTrue(address => {
         return document
           .querySelector(`[data-address="${address}"]`)
-          .innerText.includes('Submitted')
+          .innerText.includes('Confirming')
       }, newLock)
 
-      // The lock should now be "confirming"
-      const lockText = await page.evaluate(address => {
-        return document.querySelector(`[data-address="${address}"]`).innerText
-      }, newLock)
-
-      await expect(lockText).toMatch('Confirming')
-
+      // Once it starts to be confirmed, we wait for it to be fully confirmed
       await wait.untilIsFalse(address => {
         return document
           .querySelector(`[data-address="${address}"]`)
           .innerText.includes('Confirming')
       }, newLock)
+
+      const lockText = await page.evaluate(address => {
+        return document.querySelector(`[data-address="${address}"]`).innerText
+      }, newLock)
+
+      expect(lockText).not.toMatch('Confirming')
     })
   })
 

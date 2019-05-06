@@ -42,6 +42,62 @@ describe('interWindowCommunicationMiddleware', () => {
           window.top = {}
         })
 
+        describe('an account is passed in via postMessage to the main window', () => {
+          beforeEach(() => {
+            state = {
+              account: {
+                address: 'mine',
+                fromLocalStorage: true,
+              },
+              router: {
+                location: {
+                  pathname: `/${lock}`,
+                  hash: '',
+                },
+              },
+            }
+            store.dispatch = jest.fn()
+            window = {
+              localStorage: {
+                setItem: jest.fn(),
+                getItem: jest.fn(() => null),
+              },
+            }
+            window.self = window
+            window.top = {}
+          })
+          it('account is the same as what we have', () => {
+            expect.assertions(1)
+
+            const middleware = interWindowCommunicationMiddleware(window)
+            middleware(store)(() => {})(
+              setAccount({
+                address: 'mine',
+                fromLocalStorage: true,
+                fromMainWindow: true,
+              })
+            )
+
+            expect(window.localStorage.setItem).not.toHaveBeenCalled()
+          })
+          it('account is different from what we have', () => {
+            expect.assertions(1)
+
+            const middleware = interWindowCommunicationMiddleware(window)
+            middleware(store)(() => {})(
+              setAccount({
+                address: 'theirs',
+                fromLocalStorage: true,
+                fromMainWindow: true,
+              })
+            )
+
+            expect(window.localStorage.setItem).toHaveBeenCalledWith(
+              '__unlock__account__',
+              'theirs'
+            )
+          })
+        })
         describe('a transaction is passed in the URL hash', () => {
           beforeEach(() => {
             state = {

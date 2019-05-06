@@ -1,9 +1,11 @@
-import Web3 from 'web3'
-import { bufferToHex, generateAddress } from 'ethereumjs-util'
-import Web3Utils from './utils'
+import {
+  providers as ethersProviders,
+  utils as ethersMetadataHandling,
+} from 'ethers'
+import utils from './utils'
 import TransactionTypes from './transactionTypes'
 import UnlockService from './unlockService'
-import { MAX_UINT, UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
+import { UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -18,7 +20,7 @@ export default class Web3Service extends UnlockService {
   }) {
     super({ unlockAddress })
 
-    this.web3 = new Web3(readOnlyProvider)
+    this.setup(readOnlyProvider)
     this.blockTime = blockTime
     this.requiredConfirmations = requiredConfirmations
 
@@ -58,7 +60,7 @@ export default class Web3Service extends UnlockService {
         })
         return this.emit('lock.updated', contractAddress, {
           asOf: blockNumber,
-          keyPrice: Web3Utils.fromWei(keyPrice, 'ether'),
+          keyPrice: utils.fromWei(keyPrice, 'ether'),
         })
       },
       Withdrawal: (transactionHash, contractAddress) => {
@@ -69,8 +71,6 @@ export default class Web3Service extends UnlockService {
       },
     }
 
-    // Pending transactions may still update the state
-    // TODO we should ensure that the contracts invoking the methods are the right ones
     this.inputsHandlers = {
       createLock: async (transactionHash, contractAddress, params) => {
         // The annoying part here is that we do not have the lock address...
@@ -83,7 +83,7 @@ export default class Web3Service extends UnlockService {
           lock: newLockAddress,
         })
 
-        if (params._maxNumberOfKeys === MAX_UINT) {
+        if (utils.isInfiniteKeys(params._maxNumberOfKeys)) {
           params._maxNumberOfKeys = UNLIMITED_KEYS_COUNT
         }
 
@@ -91,7 +91,7 @@ export default class Web3Service extends UnlockService {
           transaction: transactionHash,
           address: newLockAddress,
           expirationDuration: +params._expirationDuration,
-          keyPrice: Web3Utils.fromWei(params._keyPrice, 'ether'), // Must be expressed in Eth!
+          keyPrice: utils.fromWei(params._keyPrice, 'ether'), // Must be expressed in Eth!
           maxNumberOfKeys: +params._maxNumberOfKeys,
           outstandingKeys: 0,
           balance: '0', // Must be expressed in Eth!
@@ -112,15 +112,30 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
+   * Temporary function that allows us to use ethers functionality
+   * without interfering with web3. This will be moved to the constructor when
+   * we remove web3
+   */
+  setup(readOnlyProvider) {
+    if (typeof readOnlyProvider === 'string') {
+      this.provider = new ethersProviders.JsonRpcProvider(readOnlyProvider)
+    } else if (readOnlyProvider.send) {
+      this.provider = new ethersProviders.Web3Provider(readOnlyProvider)
+    }
+  }
+
+  /**
    * "Guesses" what the next Lock's address is going to be
    */
   async generateLockAddress() {
-    let transactionCount = await this.web3.eth.getTransactionCount(
+    let transactionCount = await this.provider.getTransactionCount(
       this.unlockContractAddress
     )
-    return Web3Utils.toChecksumAddress(
-      bufferToHex(generateAddress(this.unlockContractAddress, transactionCount))
-    )
+
+    return ethersMetadataHandling.getContractAddress({
+      from: this.unlockContractAddress,
+      nonce: transactionCount,
+    })
   }
 
   /**
@@ -132,6 +147,7 @@ export default class Web3Service extends UnlockService {
       this.emit('account.updated', account, {
         balance,
       })
+      return balance
     })
   }
 
@@ -141,45 +157,39 @@ export default class Web3Service extends UnlockService {
    * @param {*} data
    */
   _getTransactionType(contract, data) {
-    const method = contract.abi.find(binaryInterface => {
-      if (binaryInterface.type !== 'function') {
-        return false
-      }
-      const signature = this.web3.eth.abi.encodeFunctionSignature(
-        binaryInterface
-      )
-      return data.startsWith(signature)
-    })
-
-    // If there is no matching method, return null
-    if (!method) {
+    const contractName = contract.contractName
+    if (!['PublicLock', 'Unlock'].includes(contractName)) {
+      // Unknown contract!
       return null
     }
 
-    if (contract.contractName === 'Unlock' && method.name === 'createLock') {
+    const metadata = new ethersMetadataHandling.Interface(contract.abi)
+    const transactionInfo = metadata.parseTransaction({ data })
+
+    // If there is no matching method, return null
+    if (!transactionInfo) {
+      return null
+    }
+
+    const method = transactionInfo.name
+
+    if (contractName === 'Unlock') {
+      if (method !== 'createLock') return null
       return TransactionTypes.LOCK_CREATION
     }
 
-    if (
-      contract.contractName === 'PublicLock' &&
-      method.name === 'purchaseFor'
-    ) {
-      return TransactionTypes.KEY_PURCHASE
+    // if we reach here, the contract is PublicLock
+    switch (method) {
+      case 'purchaseFor':
+        return TransactionTypes.KEY_PURCHASE
+      case 'withdraw':
+        return TransactionTypes.WITHDRAWAL
+      case 'updateKeyPrice':
+        return TransactionTypes.UPDATE_KEY_PRICE
+      default:
+        // Unknown transaction
+        return null
     }
-
-    if (contract.contractName === 'PublicLock' && method.name === 'withdraw') {
-      return TransactionTypes.WITHDRAWAL
-    }
-
-    if (
-      contract.contractName === 'PublicLock' &&
-      method.name === 'updateKeyPrice'
-    ) {
-      return TransactionTypes.UPDATE_KEY_PRICE
-    }
-
-    // Unknown transaction
-    return null
   }
 
   /**
@@ -188,14 +198,10 @@ export default class Web3Service extends UnlockService {
    * @param {*} address
    */
   async getPastLockCreationsTransactionsForUser(address) {
-    const version = await this.unlockContractAbiVersion()
-    const unlock = new this.web3.eth.Contract(
-      version.Unlock.abi,
-      this.unlockContractAddress
-    )
-    return this._getPastTransactionsForContract(unlock, 'NewLock', {
-      lockOwner: address,
-    })
+    const unlock = await this.getUnlockContract()
+    // only retrieve NewLock events
+    const filter = unlock.filters.NewLock(address)
+    return this._getPastTransactionsForContract(filter)
   }
 
   /**
@@ -204,35 +210,24 @@ export default class Web3Service extends UnlockService {
    * @param {*} lockAddress
    */
   async getPastLockTransactions(lockAddress) {
-    const version = await this.lockContractAbiVersion(lockAddress)
-    const lockContract = new this.web3.eth.Contract(
-      version.PublicLock.abi,
-      lockAddress
-    )
-    return this._getPastTransactionsForContract(lockContract, 'allevents')
+    return this._getPastTransactionsForContract(lockAddress)
   }
 
   /**
    * This function retrieves past transactions from events on a given contract
-   * @param {*} contract
-   * @param {*} events
    * @param {*} filter
    * @private
    */
-  _getPastTransactionsForContract(contract, eventNames, filter) {
-    return contract.getPastEvents(
-      eventNames,
-      {
-        fromBlock: 0, // TODO start only when the smart contract was deployed?
-        toBlock: 'latest',
-        filter,
-      },
-      (error, events = []) => {
-        events.forEach(event => {
-          this.emit('transaction.new', event.transactionHash)
-        })
-      }
-    )
+  async _getPastTransactionsForContract(filter) {
+    const events = await this.provider.getLogs({
+      fromBlock: 0, // TODO start only when the smart contract was deployed?
+      toBlock: 'latest',
+      ...filter,
+    })
+    events.forEach(event => {
+      this.emit('transaction.new', event.transactionHash)
+    })
+    return events
   }
 
   /**
@@ -240,15 +235,13 @@ export default class Web3Service extends UnlockService {
    * and formats it to a string of ether.
    * Returns a promise with the balance
    */
-  getAddressBalance(address) {
-    return this.web3.eth
-      .getBalance(address)
-      .then(balance => {
-        return Web3Utils.fromWei(balance, 'ether')
-      })
-      .catch(error => {
-        this.emit('error', error)
-      })
+  async getAddressBalance(address) {
+    try {
+      const balance = await this.provider.getBalance(address)
+      return utils.fromWei(balance, 'ether')
+    } catch (error) {
+      this.emit('error', error)
+    }
   }
 
   /**
@@ -282,49 +275,29 @@ export default class Web3Service extends UnlockService {
    * @param {*} transactionReceipt
    */
   _parseTransactionLogsFromReceipt(
-    version,
     transactionHash,
     contract,
     transactionReceipt
   ) {
-    // Home made event handling since this is not handled correctly by web3 :/
-    const abiEvents = contract.abi.filter(item => {
-      return item.type === 'event'
-    })
+    const metadata = new ethersMetadataHandling.Interface(contract.abi)
 
     transactionReceipt.logs.forEach(log => {
       // For each log, let's find which event it is
-      abiEvents.forEach(event => {
-        const encodedEvent = this.web3.eth.abi.encodeEventSignature(event)
-        let topics = log.topics
+      const logInfo = metadata.parseLog(log)
 
-        if (encodedEvent !== topics[0]) return
-
-        const decoded = this.web3.eth.abi.decodeLog(
-          event.inputs,
-          log.data,
-          log.topics.slice(1)
-        )
-
-        const args = event.inputs.reduce((args, input) => {
-          args[input.name] = decoded[input.name]
-          return args
-        }, {})
-
-        this.emitContractEvent(
-          transactionHash,
-          log.address,
-          transactionReceipt.blockNumber,
-          event.name,
-          args
-        )
-      })
+      this.emitContractEvent(
+        transactionHash,
+        log.address,
+        transactionReceipt.blockNumber,
+        logInfo.name,
+        logInfo.values
+      )
     })
   }
 
   /**
    * This is used to identify data which should be changed by a pending transaction
-   * WEIRD: WE SHOULD NOT NEED TO GET THE VERSION SINCE WE HAVE THE CONTRACT!
+   * with ethers, the version is unnecessary
    * @param {*} transactionHash
    * @param {*} contract
    * @param {*} input
@@ -334,10 +307,10 @@ export default class Web3Service extends UnlockService {
     version,
     transactionHash,
     contract,
-    input,
+    data,
     contractAddress
   ) {
-    const transactionType = this._getTransactionType(contract, input)
+    const transactionType = this._getTransactionType(contract, data)
 
     this.emit('transaction.updated', transactionHash, {
       status: 'pending',
@@ -346,24 +319,22 @@ export default class Web3Service extends UnlockService {
       blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
     })
 
-    // Let's parse the transaction's input
-    const method = contract.abi.find(binaryInterface => {
-      return input.startsWith(binaryInterface.signature)
-    })
+    const metadata = new ethersMetadataHandling.Interface(contract.abi)
 
-    if (!method) {
+    const transactionInfo = metadata.parseTransaction({ data })
+
+    if (!transactionInfo) {
       // The invoked function is not part of the ABI... this is an unknown transaction
       return
     }
-
-    // The input actually includes the method signature, which should be removed
-    // for parsing of the actual input values.
-    input = input.replace(method.signature, '')
-    const params = this.web3.eth.abi.decodeParameters(method.inputs, input)
-    const handler = this.inputsHandlers[method.name]
+    const handler = this.inputsHandlers[transactionInfo.name]
+    const functionInputs = metadata.functions[transactionInfo.name].inputs
+    const args = transactionInfo.args.reduce((args, arg, i) => {
+      return Object.assign(args, { [functionInputs[i].name]: arg })
+    }, {})
 
     if (handler) {
-      return handler(transactionHash, contractAddress, params)
+      return handler(transactionHash, contractAddress, args)
     }
   }
 
@@ -391,8 +362,10 @@ export default class Web3Service extends UnlockService {
 
     // If we have default values for the transaction (passed by the walletService)
     if (defaults) {
+      // const contractAddress = Web3Utils.toChecksumAddress(to) // web3 does not format addresses properly
+      const contractAddress = defaults.to // ethers.js does format addresses in checksum format
       const contract =
-        this.unlockContractAddress === Web3Utils.toChecksumAddress(defaults.to)
+        this.unlockContractAddress === contractAddress
           ? version.Unlock
           : version.PublicLock
 
@@ -422,9 +395,10 @@ export default class Web3Service extends UnlockService {
   _getPendingTransaction(version, blockTransaction) {
     this._watchTransaction(blockTransaction.hash)
 
+    // const contractAddress = Web3Utils.toChecksumAddress(to) // web3 does not format addresses properly
+    const contractAddress = blockTransaction.to // ethers.js does format addresses in checksum format
     const contract =
-      this.unlockContractAddress ===
-      Web3Utils.toChecksumAddress(blockTransaction.to)
+      this.unlockContractAddress === contractAddress
         ? version.Unlock
         : version.PublicLock
 
@@ -432,7 +406,7 @@ export default class Web3Service extends UnlockService {
       version,
       blockTransaction.hash,
       contract,
-      blockTransaction.input,
+      blockTransaction.data,
       blockTransaction.to
     )
   }
@@ -445,13 +419,15 @@ export default class Web3Service extends UnlockService {
    */
   async getTransaction(transactionHash, defaults) {
     return Promise.all([
-      this.web3.eth.getBlockNumber(),
-      this.web3.eth.getTransaction(transactionHash),
+      this.provider.getBlockNumber(),
+      this.provider.getTransaction(transactionHash),
     ]).then(async ([blockNumber, blockTransaction]) => {
       // Let's find the type of contract before we can get its version
       const to = blockTransaction ? blockTransaction.to : defaults.to
       let version
-      if (this.unlockContractAddress === Web3Utils.toChecksumAddress(to)) {
+      // const contractAddress = Web3Utils.toChecksumAddress(to) // web3 does not format addresses properly
+      const contractAddress = to // ethers.js does format addresses in checksum format
+      if (this.unlockContractAddress === contractAddress) {
         version = await this.unlockContractAbiVersion()
       } else {
         version = await this.lockContractAbiVersion(to)
@@ -477,14 +453,13 @@ export default class Web3Service extends UnlockService {
       // The transaction has been mined :
 
       const contract =
-        this.unlockContractAddress ===
-        Web3Utils.toChecksumAddress(blockTransaction.to)
+        this.unlockContractAddress === contractAddress
           ? version.Unlock
           : version.PublicLock
 
       const transactionType = this._getTransactionType(
         contract,
-        blockTransaction.input
+        blockTransaction.data
       )
       // Let's watch for more confirmations if needed
       if (
@@ -502,7 +477,7 @@ export default class Web3Service extends UnlockService {
         blockNumber: blockTransaction.blockNumber,
       })
 
-      const transactionReceipt = await this.web3.eth.getTransactionReceipt(
+      const transactionReceipt = await this.provider.getTransactionReceipt(
         transactionHash
       )
 
@@ -514,7 +489,6 @@ export default class Web3Service extends UnlockService {
           })
         }
         return this._parseTransactionLogsFromReceipt(
-          version,
           transactionHash,
           contract,
           transactionReceipt
@@ -539,11 +513,7 @@ export default class Web3Service extends UnlockService {
    * @param {PropTypes.string} owner
    */
   async getKeyByLockForOwner(lock, owner) {
-    const version = await this.lockContractAbiVersion(lock)
-    const lockContract = new this.web3.eth.Contract(
-      version.PublicLock.abi,
-      lock
-    )
+    const lockContract = await this.getLockContract(lock)
     return this._getKeyByLockForOwner(lockContract, owner).then(expiration => {
       this.emit('key.updated', KEY_ID(lock, owner), {
         lock,
@@ -562,15 +532,13 @@ export default class Web3Service extends UnlockService {
    */
   async _getKeyByLockForOwner(lockContract, owner) {
     try {
-      const expiration = await lockContract.methods
-        .keyExpirationTimestampFor(owner)
-        .call()
-      // Handling NO_SUCH_KEY
-      // TODO find a more robust approach (apparently the call above should throw, but it does not!)
+      const expiration = await lockContract.keyExpirationTimestampFor(owner)
       if (
         expiration ==
         '3963877391197344453575983046348115674221700746820753546331534351508065746944'
       ) {
+        // Handling NO_SUCH_KEY
+        // this portion is probably unnecessary, will need to test against the app to be sure
         return 0
       }
       return parseInt(expiration, 10)
@@ -608,9 +576,8 @@ export default class Web3Service extends UnlockService {
     const startIndex = page * byPage
     return new Promise(resolve => {
       let keyPromises = Array.from(Array(byPage).keys()).map(n => {
-        return lockContract.methods
+        return lockContract.functions
           .owners(n + startIndex)
-          .call()
           .then(ownerAddress => {
             return this._packageKeyholderInfo(lock, lockContract, ownerAddress)
           })
@@ -625,11 +592,10 @@ export default class Web3Service extends UnlockService {
 
   _genKeyOwnersFromLockContract(lock, lockContract, page, byPage) {
     return new Promise((resolve, reject) => {
-      lockContract.methods
+      lockContract.functions
         .getOwnersByPage(page, byPage)
-        .call()
         .then(ownerAddresses => {
-          let keyPromises = ownerAddresses.map(ownerAddress => {
+          const keyPromises = ownerAddresses.map(ownerAddress => {
             return this._packageKeyholderInfo(lock, lockContract, ownerAddress)
           })
 
@@ -651,14 +617,10 @@ export default class Web3Service extends UnlockService {
    * @param {PropTypes.integer}
    */
   async getKeysForLockOnPage(lock, page, byPage) {
-    const version = await this.lockContractAbiVersion(lock)
-    const lockContract = new this.web3.eth.Contract(
-      version.PublicLock.abi,
-      lock
-    )
+    const lockContract = await this.getLockContract(lock)
 
-    this._genKeyOwnersFromLockContract(lock, lockContract, page, byPage).then(
-      keyPromises => {
+    this._genKeyOwnersFromLockContract(lock, lockContract, page, byPage)
+      .then(keyPromises => {
         if (keyPromises.length == 0) {
           this._genKeyOwnersFromLockContractIterative(
             lock,
@@ -669,7 +631,14 @@ export default class Web3Service extends UnlockService {
         } else {
           this._emitKeyOwners(lock, page, keyPromises)
         }
-      }
-    )
+      })
+      .catch(() => {
+        this._genKeyOwnersFromLockContractIterative(
+          lock,
+          lockContract,
+          page,
+          byPage
+        ).then(keyPromises => this._emitKeyOwners(lock, page, keyPromises))
+      })
   }
 }
