@@ -10,8 +10,6 @@ import {
 import { ADD_LOCK, UPDATE_LOCK } from '../../actions/lock'
 import { SET_ERROR } from '../../actions/error'
 import configure from '../../config'
-import { SET_PROVIDER, setProvider } from '../../actions/provider'
-import { SET_NETWORK, setNetwork } from '../../actions/network'
 import { TRANSACTION_TYPES } from '../../constants'
 import { ADD_KEY, addKey, updateKey } from '../../actions/key'
 
@@ -447,21 +445,4 @@ describe('Web3 middleware', () => {
     )
     expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
   })
-
-  it.each([[SET_PROVIDER, setProvider], [SET_NETWORK, setNetwork]])(
-    'should refresh the lock if %s is called',
-    async (key, action) => {
-      expect.assertions(1)
-      mockWeb3Service.getLock = jest.fn()
-
-      const lock = '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9'
-      state.router.location.pathname = `/${lock}/`
-
-      const { invoke } = create()
-
-      invoke(action('hi'))
-
-      expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock)
-    }
-  )
 })

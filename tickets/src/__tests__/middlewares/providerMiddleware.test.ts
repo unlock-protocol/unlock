@@ -1,7 +1,5 @@
 import providerMiddleware from '../../middlewares/providerMiddleware'
 import { SET_PROVIDER } from '../../actions/provider'
-import { setError } from '../../actions/error'
-import { FATAL_MISSING_PROVIDER } from '../../errors'
 
 const config = {
   providers: {
@@ -22,11 +20,6 @@ const getState = () => ({
 const unlockAction = {
   type: SET_PROVIDER,
   provider: 'UNLOCK',
-}
-
-const erroneousAction = {
-  type: SET_PROVIDER,
-  provider: 'HONLOCK',
 }
 
 const sameAction = {
@@ -56,18 +49,6 @@ describe('provider middleware', () => {
       }
 
       providerMiddleware(config)({ getState, dispatch })(next)(unlockAction)
-    })
-
-    it('should set an error and return if there is no matching provider', done => {
-      expect.assertions(3)
-      const next = () => {
-        expect(config.providers['UNLOCK'].enable).not.toHaveBeenCalled()
-        expect(config.providers['NUNLOCK'].enable).not.toHaveBeenCalled()
-        expect(dispatch).toHaveBeenCalledWith(setError(FATAL_MISSING_PROVIDER))
-        done()
-      }
-
-      providerMiddleware(config)({ getState, dispatch })(next)(erroneousAction)
     })
 
     it('should set an error and return if the call to enable fails', done => {

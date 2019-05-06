@@ -1,6 +1,8 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
 import UnlockJs from '@unlock-protocol/unlock-js'
+import { LOCATION_CHANGE } from 'connected-react-router'
+
 import { startLoading, doneLoading } from '../actions/loading'
 import { SET_ACCOUNT, updateAccount } from '../actions/accounts'
 import { updateLock, addLock } from '../actions/lock'
@@ -10,8 +12,6 @@ import {
   NEW_TRANSACTION,
   UPDATE_TRANSACTION,
 } from '../actions/transaction'
-import { SET_PROVIDER } from '../actions/provider'
-import { SET_NETWORK } from '../actions/network'
 import { setError } from '../actions/error'
 import { transactionTypeMapping } from '../utils/types'
 import { lockRoute } from '../utils/routes'
@@ -80,17 +80,24 @@ const web3Middleware = config => {
       }
     })
 
+    const {
+      account,
+      router: {
+        location: { pathname },
+      },
+    } = getState()
+    const { lockAddress } = lockRoute(pathname)
+
     return function(next) {
+      setTimeout(() => {
+        if (lockAddress) {
+          web3Service.getLock(lockAddress)
+        }
+      }, 0)
+
       return function(action) {
         next(action)
 
-        const {
-          account,
-          router: {
-            location: { pathname, hash },
-          },
-        } = getState()
-        const { lockAddress } = lockRoute(pathname + hash)
         const accountAddress = account && account.address
 
         // note: this needs to be after the reducer has seen it, because refreshAccountBalance
@@ -123,8 +130,8 @@ const web3Middleware = config => {
           }
         }
 
-        if (action.type === SET_PROVIDER || action.type === SET_NETWORK) {
-          // for both of these actions, the lock state is invalid, and must be refreshed.
+        if (action.type === LOCATION_CHANGE) {
+          // Location was changed, get the matching lock
           if (lockAddress) {
             web3Service.getLock(lockAddress)
           }
