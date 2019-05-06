@@ -7370,37 +7370,688 @@ exports[`Storyshots CreatorLock Confirming 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c15 {
-  background-color: white;
+    .c12 {
+  -webkit-align-self: stretch;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  display: grid;
+  text-transform: capitalize;
+  background-color: var(--lightgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: 200;
+  color: var(--grey);
+  border-radius: 0 4px 4px 0;
+}
+
+.c13 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  font-size: 13px;
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+}
+
+.c14 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  font-size: 10px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  margin-bottom: 15px;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+}
+
+.c6 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c6:before {
+  content: '三';
+}
+
+.c9 {
+  width: 1.3em;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.c9:before {
+  content: '$';
+}
+
+.c7 {
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.c8 {
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 5px;
+}
+
+.c0 {
+  font-family: 'IBM Plex Mono','Courier New',Serif;
+  font-weight: 200;
+  min-height: 48px;
+  padding-left: 8px;
+  color: var(--slate);
+  font-size: 14px;
+  box-shadow: 0 0 40px 0 rgba(0,0,0,0.08);
+  -webkit-transition: box-shadow 100ms ease;
+  transition: box-shadow 100ms ease;
+  border-radius: 4px;
+  display: grid;
+  grid-row-gap: 0;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
   cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
 }
 
-.c15 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
+.c0 > * {
+  padding-top: 16px;
 }
 
-.c15:hover {
-  background-color: white;
+.c0:hover {
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  -webkit-transition: box-shadow 100ms ease;
+  transition: box-shadow 100ms ease;
 }
 
-.c15:hover > svg {
-  fill: var(--lightgrey);
+.c1 {
+  grid-row: span 2;
 }
 
-.c15:focus {
-  outline: none;
+.c2 {
+  color: var(--link);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.c16 {
+.c3 {
+  color: var(--grey);
+  font-weight: 200;
+  white-space: nowrap;
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c10 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c11 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c0 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c2 {
+    grid-column: span 2;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="lock c0"
+        data-address="0x123456abc"
+      >
+        <div
+          class="c1"
+        >
+          <svg
+            viewBox="0 0 216 216"
+            width="100%"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <defs>
+              <circle
+                cx="108"
+                cy="108"
+                id="a"
+                r="108"
+              />
+              <circle
+                cx="108"
+                cy="108"
+                id="c"
+                r="60.75"
+              />
+            </defs>
+            <g>
+              <mask
+                fill="#fff"
+                id="b"
+              >
+                <use
+                  xlink:href="#a"
+                />
+              </mask>
+              <g
+                transform="rotate(0, 108, 108)"
+              >
+                <circle
+                  cx="195.75"
+                  cy="114.75"
+                  fill="#4d819a"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="33.75"
+                  cy="162"
+                  fill="#406b80"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="121.5"
+                  cy="0"
+                  fill="#cfdee6"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+              </g>
+              <mask
+                fill="#fff"
+                id="d"
+              >
+                <use
+                  xlink:href="#c"
+                />
+              </mask>
+              <use
+                fill="#FFF"
+                xlink:href="#c"
+              />
+              <path
+                d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                fill="#4d819a"
+                mask="url(#d)"
+              />
+            </g>
+          </svg>
+        </div>
+        <div
+          class="name c2"
+        >
+          Lock Robster
+          <div
+            class="address c3"
+          >
+            0x123456abc
+          </div>
+        </div>
+        <div
+          class="duration "
+        >
+          <span>
+            30 days
+          </span>
+        </div>
+        <div
+          class="keys "
+        >
+          0/42
+        </div>
+        <div
+          class="c4"
+        >
+          <span
+            class="currency c5"
+          >
+            <span
+              class="c6"
+            />
+            <span
+              class="c7"
+            >
+              0.01
+            </span>
+          </span>
+          <div
+            class="c8"
+          >
+            <span
+              class="currency c5"
+            >
+              <span
+                class="c9"
+              />
+              <span
+                class="c7"
+              >
+                1.96
+              </span>
+            </span>
+          </div>
+        </div>
+        <div
+          class=""
+        >
+          <div
+            class="c10"
+          >
+            <div
+              class="c4"
+            >
+              <span
+                class="currency c5"
+              >
+                <span
+                  class="c6"
+                />
+                <span
+                  class="c7"
+                >
+                  0
+                </span>
+              </span>
+              <div
+                class="c8"
+              >
+                <span
+                  class="currency c5"
+                >
+                  <span
+                    class="c9"
+                  />
+                  <span
+                    class="c7"
+                  >
+                    0
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="c11"
+          >
+            <div
+              class="c4"
+            >
+              <span
+                class="currency c5"
+              >
+                <span
+                  class="c6"
+                />
+                <span
+                  class="c7"
+                >
+                  0
+                </span>
+              </span>
+              
+            </div>
+          </div>
+        </div>
+        <div
+          class="c12"
+        >
+          <div
+            class="c13"
+          >
+            Confirming
+          </div>
+          <div
+            class="c14"
+          >
+            4
+             / 
+            12
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="lock mlglvd-0 jpUcBv"
+      data-address="0x123456abc"
+    >
+      <div
+        class="mlglvd-2 hfdYVl"
+      >
+        <svg
+          viewBox="0 0 216 216"
+          width="100%"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+          <defs>
+            <circle
+              cx="108"
+              cy="108"
+              id="a"
+              r="108"
+            />
+            <circle
+              cx="108"
+              cy="108"
+              id="c"
+              r="60.75"
+            />
+          </defs>
+          <g>
+            <mask
+              fill="#fff"
+              id="b"
+            >
+              <use
+                xlink:href="#a"
+              />
+            </mask>
+            <g
+              transform="rotate(0, 108, 108)"
+            >
+              <circle
+                cx="195.75"
+                cy="114.75"
+                fill="#4d819a"
+                mask="url(#b)"
+                r="114.75"
+              />
+              <circle
+                cx="33.75"
+                cy="162"
+                fill="#406b80"
+                mask="url(#b)"
+                r="114.75"
+              />
+              <circle
+                cx="121.5"
+                cy="0"
+                fill="#cfdee6"
+                mask="url(#b)"
+                r="114.75"
+              />
+            </g>
+            <mask
+              fill="#fff"
+              id="d"
+            >
+              <use
+                xlink:href="#c"
+              />
+            </mask>
+            <use
+              fill="#FFF"
+              xlink:href="#c"
+            />
+            <path
+              d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+              fill="#4d819a"
+              mask="url(#d)"
+            />
+          </g>
+        </svg>
+      </div>
+      <div
+        class="mlglvd-4 name kEFfnq"
+      >
+        Lock Robster
+        <div
+          class="mlglvd-5 address dUQSRx"
+        >
+          0x123456abc
+        </div>
+      </div>
+      <div
+        class="mlglvd-6 duration hNoahq"
+      >
+        <span>
+          30 days
+        </span>
+      </div>
+      <div
+        class="mlglvd-7 keys EehSr"
+      >
+        0/42
+      </div>
+      <div
+        class="buwkmd-0 bYclZI"
+      >
+        <span
+          class="buwkmd-1 currency jZYwNd"
+        >
+          <span
+            class="buwkmd-2 buwkmd-3 cwENmW"
+          />
+          <span
+            class="buwkmd-5 dKpFcq"
+          >
+            0.01
+          </span>
+        </span>
+        <div
+          class="buwkmd-6 iwxAFp"
+        >
+          <span
+            class="buwkmd-1 currency jZYwNd"
+          >
+            <span
+              class="buwkmd-2 buwkmd-4 rbRZi"
+            />
+            <span
+              class="buwkmd-5 dKpFcq"
+            >
+              1.96
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        class="mlglvd-3 VbhUE"
+      >
+        <div
+          class="sc-bdVaJa beefPf"
+        >
+          <div
+            class="buwkmd-0 bYclZI"
+          >
+            <span
+              class="buwkmd-1 currency jZYwNd"
+            >
+              <span
+                class="buwkmd-2 buwkmd-3 cwENmW"
+              />
+              <span
+                class="buwkmd-5 dKpFcq"
+              >
+                0
+              </span>
+            </span>
+            <div
+              class="buwkmd-6 iwxAFp"
+            >
+              <span
+                class="buwkmd-1 currency jZYwNd"
+              >
+                <span
+                  class="buwkmd-2 buwkmd-4 rbRZi"
+                />
+                <span
+                  class="buwkmd-5 dKpFcq"
+                >
+                  0
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="sc-bwzfXH fezIEM"
+        >
+          <div
+            class="buwkmd-0 bYclZI"
+          >
+            <span
+              class="buwkmd-1 currency jZYwNd"
+            >
+              <span
+                class="buwkmd-2 buwkmd-3 cwENmW"
+              />
+              <span
+                class="buwkmd-5 dKpFcq"
+              >
+                0
+              </span>
+            </span>
+            
+          </div>
+        </div>
+      </div>
+      <div
+        class="aicx7v-0 bdTBPS"
+      >
+        <div
+          class="aicx7v-1 kxSRDy"
+        >
+          Confirming
+        </div>
+        <div
+          class="aicx7v-2 niYxE"
+        >
+          4
+           / 
+          12
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots CreatorLock Deployed 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c15 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -7412,25 +8063,25 @@ Object {
   line-height: 15px;
 }
 
-.c16 > svg {
+.c15 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c16:hover {
+.c15:hover {
   background-color: var(--link);
 }
 
-.c16:hover > svg {
+.c15:hover > svg {
   fill: white;
 }
 
-.c16:focus {
+.c15:focus {
   outline: none;
 }
 
-.c17 {
+.c16 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -7445,7 +8096,7 @@ Object {
   color: var(--link);
 }
 
-.c14:hover .c17 {
+.c14:hover .c16 {
   display: inline-block;
 }
 
@@ -7461,7 +8112,7 @@ Object {
   grid-template-columns: repeat(3,24px);
 }
 
-.c18 {
+.c17 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -7620,7 +8271,7 @@ Object {
       />
       <div
         class="lock c0"
-        data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+        data-address="0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B"
       >
         <div
           class="c1"
@@ -7654,26 +8305,26 @@ Object {
                 />
               </mask>
               <g
-                transform="rotate(160, 108, 108)"
+                transform="rotate(200, 108, 108)"
               >
                 <circle
                   cx="108"
                   cy="108"
-                  fill="#e68273"
+                  fill="#e69573"
                   mask="url(#b)"
                   r="114.75"
                 />
                 <circle
-                  cx="64"
-                  cy="0"
-                  fill="#804840"
+                  cx="108"
+                  cy="-64"
+                  fill="#805340"
                   mask="url(#b)"
                   r="114.75"
                 />
                 <circle
-                  cx="64"
-                  cy="216"
-                  fill="#e6d2cf"
+                  cx="108"
+                  cy="280"
+                  fill="#e6d5cf"
                   mask="url(#b)"
                   r="114.75"
                 />
@@ -7692,7 +8343,7 @@ Object {
               />
               <path
                 d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-                fill="#e68273"
+                fill="#e69573"
                 mask="url(#d)"
               />
             </g>
@@ -7701,24 +8352,24 @@ Object {
         <div
           class="name c2"
         >
-          New Lock
+          Lock Robster
           <div
             class="address c3"
           >
-            0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
+            0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B
           </div>
         </div>
         <div
           class="duration "
         >
           <span>
-            2 days
+            30 days
           </span>
         </div>
         <div
           class="keys "
         >
-          3/240
+          5/42
         </div>
         <div
           class="c4"
@@ -7770,7 +8421,7 @@ Object {
                 <span
                   class="c7"
                 >
-                   - 
+                  0.045
                 </span>
               </span>
               <div
@@ -7785,7 +8436,7 @@ Object {
                   <span
                     class="c7"
                   >
-                     - 
+                    8.82
                   </span>
                 </span>
               </div>
@@ -7806,7 +8457,7 @@ Object {
                 <span
                   class="c7"
                 >
-                   - 
+                  0.045
                 </span>
               </span>
               
@@ -7824,6 +8475,7 @@ Object {
             >
               <button
                 class="c14 c15"
+                title="Withdraw"
               >
                 <svg
                   name="Withdraw"
@@ -7836,10 +8488,14 @@ Object {
                     fill-rule="evenodd"
                   />
                 </svg>
-                
+                <small
+                  class="c16"
+                >
+                  Withdraw
+                </small>
               </button>
               <button
-                class="c14 c16"
+                class="c14 c15"
                 title="Edit"
               >
                 <svg
@@ -7857,13 +8513,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c17"
+                  class="c16"
                 >
                   Edit
                 </small>
               </button>
               <button
-                class="c14 c16"
+                class="c14 c15"
                 title="Embed"
               >
                 <svg
@@ -7878,7 +8534,7 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c17"
+                  class="c16"
                 >
                   Embed
                 </small>
@@ -7886,7 +8542,7 @@ Object {
             </div>
           </div>
           <div
-            class="c18"
+            class="c17"
           />
         </div>
       </div>
@@ -7899,7 +8555,7 @@ Object {
     />
     <div
       class="lock mlglvd-0 jpUcBv"
-      data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+      data-address="0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B"
     >
       <div
         class="mlglvd-2 hfdYVl"
@@ -7933,26 +8589,26 @@ Object {
               />
             </mask>
             <g
-              transform="rotate(160, 108, 108)"
+              transform="rotate(200, 108, 108)"
             >
               <circle
                 cx="108"
                 cy="108"
-                fill="#e68273"
+                fill="#e69573"
                 mask="url(#b)"
                 r="114.75"
               />
               <circle
-                cx="64"
-                cy="0"
-                fill="#804840"
+                cx="108"
+                cy="-64"
+                fill="#805340"
                 mask="url(#b)"
                 r="114.75"
               />
               <circle
-                cx="64"
-                cy="216"
-                fill="#e6d2cf"
+                cx="108"
+                cy="280"
+                fill="#e6d5cf"
                 mask="url(#b)"
                 r="114.75"
               />
@@ -7971,7 +8627,7 @@ Object {
             />
             <path
               d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-              fill="#e68273"
+              fill="#e69573"
               mask="url(#d)"
             />
           </g>
@@ -7980,24 +8636,24 @@ Object {
       <div
         class="mlglvd-4 name kEFfnq"
       >
-        New Lock
+        Lock Robster
         <div
           class="mlglvd-5 address dUQSRx"
         >
-          0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
+          0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B
         </div>
       </div>
       <div
         class="mlglvd-6 duration hNoahq"
       >
         <span>
-          2 days
+          30 days
         </span>
       </div>
       <div
         class="mlglvd-7 keys EehSr"
       >
-        3/240
+        5/42
       </div>
       <div
         class="buwkmd-0 bYclZI"
@@ -8049,7 +8705,7 @@ Object {
               <span
                 class="buwkmd-5 dKpFcq"
               >
-                 - 
+                0.045
               </span>
             </span>
             <div
@@ -8064,7 +8720,7 @@ Object {
                 <span
                   class="buwkmd-5 dKpFcq"
                 >
-                   - 
+                  8.82
                 </span>
               </span>
             </div>
@@ -8085,7 +8741,7 @@ Object {
               <span
                 class="buwkmd-5 dKpFcq"
               >
-                 - 
+                0.045
               </span>
             </span>
             
@@ -8102,7 +8758,8 @@ Object {
             class="sc-1dp5gbn-1 hxNcaM"
           >
             <button
-              class="sc-850ddk-0 GBCms"
+              class="sc-850ddk-0 eZjxtV"
+              title="Withdraw"
             >
               <svg
                 name="Withdraw"
@@ -8115,873 +8772,11 @@ Object {
                   fill-rule="evenodd"
                 />
               </svg>
-              
-            </button>
-            <button
-              class="sc-850ddk-0 eZjxtV"
-              title="Edit"
-            >
-              <svg
-                name="Edit"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  d="M7.853 13.843l-.498 3.828 3.706-1.435L9.5 15l-1.647-1.157z"
-                />
-                <path
-                  clip-rule="evenodd"
-                  d="M17.295 7.9c.178.562.131 1.192-.303 1.733l-5.541 6.916a.5.5 0 0 1-.21.153l-3.705 1.435a.5.5 0 0 1-.677-.53l.498-3.829a.5.5 0 0 1 .106-.248l5.628-7.023c.434-.542 1.038-.724 1.625-.673.569.05 1.128.316 1.576.675.448.36.83.847 1.003 1.392zm-3.424-.768c.191-.239.446-.329.757-.302.33.03.707.193 1.039.46.332.266.575.599.674.913.095.298.062.566-.129.805l-5.23 6.527-1.172-.927a.52.52 0 0 0-.023-.017l-1.211-.851 5.295-6.608zm-5.629 7.595l.959.674.864.684-2.106.816.283-2.174z"
-                  fill-rule="evenodd"
-                />
-              </svg>
               <small
                 class="sc-850ddk-1 fnqGzL"
               >
-                Edit
+                Withdraw
               </small>
-            </button>
-            <button
-              class="sc-850ddk-0 eZjxtV"
-              title="Embed"
-            >
-              <svg
-                name="Code"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M9.697 17.808a.5.5 0 0 1-.27-.654l4.616-11.077a.5.5 0 1 1 .923.385l-4.615 11.076a.5.5 0 0 1-.654.27zm6.478-1.928a.5.5 0 0 1-.055-.705L18.841 12l-2.72-3.175a.5.5 0 1 1 .759-.65l3 3.5a.5.5 0 0 1 0 .65l-3 3.5a.5.5 0 0 1-.705.055zM7.88 8.825a.5.5 0 0 0-.76-.65l-3 3.5a.5.5 0 0 0 0 .65l3 3.5a.5.5 0 1 0 .76-.65L5.159 12l2.72-3.175z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 fnqGzL"
-              >
-                Embed
-              </small>
-            </button>
-          </div>
-        </div>
-        <div
-          class="sc-1dp5gbn-3 dpQaVY"
-        />
-      </div>
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getAllByValue": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getBySelectText": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "getByValue": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryBySelectText": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "queryByValue": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots CreatorLock Deployed 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": .c15 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c15 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c15:hover {
-  background-color: white;
-}
-
-.c15:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c15:focus {
-  outline: none;
-}
-
-.c16 {
-  background-color: var(--lightgrey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c16 > svg {
-  fill: var(--grey);
-  height: 24px;
-  width: 24px;
-}
-
-.c16:hover {
-  background-color: var(--link);
-}
-
-.c16:hover > svg {
-  fill: white;
-}
-
-.c16:focus {
-  outline: none;
-}
-
-.c17 {
-  display: none;
-  position: relative;
-  z-index: var(--alwaysontop);
-  white-space: nowrap;
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
-  color: var(--link);
-}
-
-.c14:hover .c17 {
-  display: inline-block;
-}
-
-.c12 {
-  display: grid;
-  justify-items: end;
-  padding-right: 24px;
-}
-
-.c13 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(3,24px);
-}
-
-.c18 {
-  margin-top: 13px;
-  font-size: 10px;
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: normal;
-  color: var(--green);
-  text-align: right;
-  padding-right: 24px;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c6 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c6:before {
-  content: '三';
-}
-
-.c9 {
-  width: 1.3em;
-  text-align: right;
-  padding-right: 0.5em;
-}
-
-.c9:before {
-  content: '$';
-}
-
-.c7 {
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.c8 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
-}
-
-.c0 {
-  font-family: 'IBM Plex Mono','Courier New',Serif;
-  font-weight: 200;
-  min-height: 48px;
-  padding-left: 8px;
-  color: var(--slate);
-  font-size: 14px;
-  box-shadow: 0 0 40px 0 rgba(0,0,0,0.08);
-  -webkit-transition: box-shadow 100ms ease;
-  transition: box-shadow 100ms ease;
-  border-radius: 4px;
-  display: grid;
-  grid-row-gap: 0;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  cursor: pointer;
-}
-
-.c0 > * {
-  padding-top: 16px;
-}
-
-.c0:hover {
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-  -webkit-transition: box-shadow 100ms ease;
-  transition: box-shadow 100ms ease;
-}
-
-.c1 {
-  grid-row: span 2;
-}
-
-.c2 {
-  color: var(--link);
-  font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c3 {
-  color: var(--grey);
-  font-weight: 200;
-  white-space: nowrap;
-  font-size: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c10 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c11 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c12 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c0 {
-    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
-    grid-template-rows: 84px;
-    grid-column-gap: 16px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c0 {
-    grid-column-gap: 4px;
-    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
-    grid-auto-flow: column;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c2 {
-    grid-column: span 2;
-  }
-}
-
-<body>
-    <div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div
-        class="lock c0"
-        data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
-      >
-        <div
-          class="c1"
-        >
-          <svg
-            viewBox="0 0 216 216"
-            width="100%"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-          >
-            <defs>
-              <circle
-                cx="108"
-                cy="108"
-                id="a"
-                r="108"
-              />
-              <circle
-                cx="108"
-                cy="108"
-                id="c"
-                r="60.75"
-              />
-            </defs>
-            <g>
-              <mask
-                fill="#fff"
-                id="b"
-              >
-                <use
-                  xlink:href="#a"
-                />
-              </mask>
-              <g
-                transform="rotate(160, 108, 108)"
-              >
-                <circle
-                  cx="108"
-                  cy="108"
-                  fill="#e68273"
-                  mask="url(#b)"
-                  r="114.75"
-                />
-                <circle
-                  cx="64"
-                  cy="0"
-                  fill="#804840"
-                  mask="url(#b)"
-                  r="114.75"
-                />
-                <circle
-                  cx="64"
-                  cy="216"
-                  fill="#e6d2cf"
-                  mask="url(#b)"
-                  r="114.75"
-                />
-              </g>
-              <mask
-                fill="#fff"
-                id="d"
-              >
-                <use
-                  xlink:href="#c"
-                />
-              </mask>
-              <use
-                fill="#FFF"
-                xlink:href="#c"
-              />
-              <path
-                d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-                fill="#e68273"
-                mask="url(#d)"
-              />
-            </g>
-          </svg>
-        </div>
-        <div
-          class="name c2"
-        >
-          New Lock
-          <div
-            class="address c3"
-          >
-            0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
-          </div>
-        </div>
-        <div
-          class="duration "
-        >
-          <span>
-            2 days
-          </span>
-        </div>
-        <div
-          class="keys "
-        >
-          3/240
-        </div>
-        <div
-          class="c4"
-        >
-          <span
-            class="currency c5"
-          >
-            <span
-              class="c6"
-            />
-            <span
-              class="c7"
-            >
-              0.01
-            </span>
-          </span>
-          <div
-            class="c8"
-          >
-            <span
-              class="currency c5"
-            >
-              <span
-                class="c9"
-              />
-              <span
-                class="c7"
-              >
-                1.96
-              </span>
-            </span>
-          </div>
-        </div>
-        <div
-          class=""
-        >
-          <div
-            class="c10"
-          >
-            <div
-              class="c4"
-            >
-              <span
-                class="currency c5"
-              >
-                <span
-                  class="c6"
-                />
-                <span
-                  class="c7"
-                >
-                   - 
-                </span>
-              </span>
-              <div
-                class="c8"
-              >
-                <span
-                  class="currency c5"
-                >
-                  <span
-                    class="c9"
-                  />
-                  <span
-                    class="c7"
-                  >
-                     - 
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div
-            class="c11"
-          >
-            <div
-              class="c4"
-            >
-              <span
-                class="currency c5"
-              >
-                <span
-                  class="c6"
-                />
-                <span
-                  class="c7"
-                >
-                   - 
-                </span>
-              </span>
-              
-            </div>
-          </div>
-        </div>
-        <div
-          class=""
-        >
-          <div
-            class="c12"
-          >
-            <div
-              class="c13"
-            >
-              <button
-                class="c14 c15"
-              >
-                <svg
-                  name="Withdraw"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M12 4.5a6.5 6.5 0 0 0-3 12.268v1.108A7.502 7.502 0 0 1 12 3.5a7.5 7.5 0 0 1 3 14.376v-1.108A6.5 6.5 0 0 0 12 4.5zm-.485 9.599c-.48-.036-.885-.147-1.215-.333-.33-.186-.6-.423-.81-.711l.649-.621c.204.246.42.438.648.576.227.132.486.213.773.243v-2.061l-.207-.036a2.732 2.732 0 0 1-.764-.243 1.648 1.648 0 0 1-.514-.396 1.504 1.504 0 0 1-.287-.513 2.04 2.04 0 0 1-.09-.612c0-.51.159-.915.476-1.215.319-.306.766-.489 1.341-.549v-.927h.756v.927c.396.042.738.141 1.026.297.288.156.537.369.747.639l-.657.594a1.792 1.792 0 0 0-.504-.45 1.604 1.604 0 0 0-.656-.216V10.4l.242.036c.3.054.556.135.766.243.21.108.38.24.513.396.138.15.237.321.296.513.06.192.09.396.09.612 0 .516-.162.939-.486 1.269-.317.33-.777.531-1.377.603v.945h-.756v-.918zm-.864-4.734c0 .252.07.45.207.594.144.138.378.243.702.315v-1.8c-.606.072-.909.369-.909.891zm2.53 2.88c0-.27-.075-.474-.225-.612-.144-.144-.387-.249-.73-.315v1.926c.313-.048.55-.156.711-.324.163-.168.244-.393.244-.675zM12 22.5a.5.5 0 0 1-.38-.175l-2-2.333a.5.5 0 0 1 .76-.65l1.12 1.306V16.5a.5.5 0 0 1 1 0v4.148l1.12-1.307a.5.5 0 1 1 .76.651l-2 2.333a.5.5 0 0 1-.38.175z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                
-              </button>
-              <button
-                class="c14 c16"
-                title="Edit"
-              >
-                <svg
-                  name="Edit"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    d="M7.853 13.843l-.498 3.828 3.706-1.435L9.5 15l-1.647-1.157z"
-                  />
-                  <path
-                    clip-rule="evenodd"
-                    d="M17.295 7.9c.178.562.131 1.192-.303 1.733l-5.541 6.916a.5.5 0 0 1-.21.153l-3.705 1.435a.5.5 0 0 1-.677-.53l.498-3.829a.5.5 0 0 1 .106-.248l5.628-7.023c.434-.542 1.038-.724 1.625-.673.569.05 1.128.316 1.576.675.448.36.83.847 1.003 1.392zm-3.424-.768c.191-.239.446-.329.757-.302.33.03.707.193 1.039.46.332.266.575.599.674.913.095.298.062.566-.129.805l-5.23 6.527-1.172-.927a.52.52 0 0 0-.023-.017l-1.211-.851 5.295-6.608zm-5.629 7.595l.959.674.864.684-2.106.816.283-2.174z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c17"
-                >
-                  Edit
-                </small>
-              </button>
-              <button
-                class="c14 c16"
-                title="Embed"
-              >
-                <svg
-                  name="Code"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M9.697 17.808a.5.5 0 0 1-.27-.654l4.616-11.077a.5.5 0 1 1 .923.385l-4.615 11.076a.5.5 0 0 1-.654.27zm6.478-1.928a.5.5 0 0 1-.055-.705L18.841 12l-2.72-3.175a.5.5 0 1 1 .759-.65l3 3.5a.5.5 0 0 1 0 .65l-3 3.5a.5.5 0 0 1-.705.055zM7.88 8.825a.5.5 0 0 0-.76-.65l-3 3.5a.5.5 0 0 0 0 .65l3 3.5a.5.5 0 1 0 .76-.65L5.159 12l2.72-3.175z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c17"
-                >
-                  Embed
-                </small>
-              </button>
-            </div>
-          </div>
-          <div
-            class="c18"
-          />
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="lock mlglvd-0 jpUcBv"
-      data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
-    >
-      <div
-        class="mlglvd-2 hfdYVl"
-      >
-        <svg
-          viewBox="0 0 216 216"
-          width="100%"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-        >
-          <defs>
-            <circle
-              cx="108"
-              cy="108"
-              id="a"
-              r="108"
-            />
-            <circle
-              cx="108"
-              cy="108"
-              id="c"
-              r="60.75"
-            />
-          </defs>
-          <g>
-            <mask
-              fill="#fff"
-              id="b"
-            >
-              <use
-                xlink:href="#a"
-              />
-            </mask>
-            <g
-              transform="rotate(160, 108, 108)"
-            >
-              <circle
-                cx="108"
-                cy="108"
-                fill="#e68273"
-                mask="url(#b)"
-                r="114.75"
-              />
-              <circle
-                cx="64"
-                cy="0"
-                fill="#804840"
-                mask="url(#b)"
-                r="114.75"
-              />
-              <circle
-                cx="64"
-                cy="216"
-                fill="#e6d2cf"
-                mask="url(#b)"
-                r="114.75"
-              />
-            </g>
-            <mask
-              fill="#fff"
-              id="d"
-            >
-              <use
-                xlink:href="#c"
-              />
-            </mask>
-            <use
-              fill="#FFF"
-              xlink:href="#c"
-            />
-            <path
-              d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-              fill="#e68273"
-              mask="url(#d)"
-            />
-          </g>
-        </svg>
-      </div>
-      <div
-        class="mlglvd-4 name kEFfnq"
-      >
-        New Lock
-        <div
-          class="mlglvd-5 address dUQSRx"
-        >
-          0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
-        </div>
-      </div>
-      <div
-        class="mlglvd-6 duration hNoahq"
-      >
-        <span>
-          2 days
-        </span>
-      </div>
-      <div
-        class="mlglvd-7 keys EehSr"
-      >
-        3/240
-      </div>
-      <div
-        class="buwkmd-0 bYclZI"
-      >
-        <span
-          class="buwkmd-1 currency jZYwNd"
-        >
-          <span
-            class="buwkmd-2 buwkmd-3 cwENmW"
-          />
-          <span
-            class="buwkmd-5 dKpFcq"
-          >
-            0.01
-          </span>
-        </span>
-        <div
-          class="buwkmd-6 iwxAFp"
-        >
-          <span
-            class="buwkmd-1 currency jZYwNd"
-          >
-            <span
-              class="buwkmd-2 buwkmd-4 rbRZi"
-            />
-            <span
-              class="buwkmd-5 dKpFcq"
-            >
-              1.96
-            </span>
-          </span>
-        </div>
-      </div>
-      <div
-        class="mlglvd-3 VbhUE"
-      >
-        <div
-          class="sc-bdVaJa beefPf"
-        >
-          <div
-            class="buwkmd-0 bYclZI"
-          >
-            <span
-              class="buwkmd-1 currency jZYwNd"
-            >
-              <span
-                class="buwkmd-2 buwkmd-3 cwENmW"
-              />
-              <span
-                class="buwkmd-5 dKpFcq"
-              >
-                 - 
-              </span>
-            </span>
-            <div
-              class="buwkmd-6 iwxAFp"
-            >
-              <span
-                class="buwkmd-1 currency jZYwNd"
-              >
-                <span
-                  class="buwkmd-2 buwkmd-4 rbRZi"
-                />
-                <span
-                  class="buwkmd-5 dKpFcq"
-                >
-                   - 
-                </span>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div
-          class="sc-bwzfXH fezIEM"
-        >
-          <div
-            class="buwkmd-0 bYclZI"
-          >
-            <span
-              class="buwkmd-1 currency jZYwNd"
-            >
-              <span
-                class="buwkmd-2 buwkmd-3 cwENmW"
-              />
-              <span
-                class="buwkmd-5 dKpFcq"
-              >
-                 - 
-              </span>
-            </span>
-            
-          </div>
-        </div>
-      </div>
-      <div
-        class="sc-1dp5gbn-2 fpHeqB"
-      >
-        <div
-          class="sc-1dp5gbn-0 JQpmR"
-        >
-          <div
-            class="sc-1dp5gbn-1 hxNcaM"
-          >
-            <button
-              class="sc-850ddk-0 GBCms"
-            >
-              <svg
-                name="Withdraw"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M12 4.5a6.5 6.5 0 0 0-3 12.268v1.108A7.502 7.502 0 0 1 12 3.5a7.5 7.5 0 0 1 3 14.376v-1.108A6.5 6.5 0 0 0 12 4.5zm-.485 9.599c-.48-.036-.885-.147-1.215-.333-.33-.186-.6-.423-.81-.711l.649-.621c.204.246.42.438.648.576.227.132.486.213.773.243v-2.061l-.207-.036a2.732 2.732 0 0 1-.764-.243 1.648 1.648 0 0 1-.514-.396 1.504 1.504 0 0 1-.287-.513 2.04 2.04 0 0 1-.09-.612c0-.51.159-.915.476-1.215.319-.306.766-.489 1.341-.549v-.927h.756v.927c.396.042.738.141 1.026.297.288.156.537.369.747.639l-.657.594a1.792 1.792 0 0 0-.504-.45 1.604 1.604 0 0 0-.656-.216V10.4l.242.036c.3.054.556.135.766.243.21.108.38.24.513.396.138.15.237.321.296.513.06.192.09.396.09.612 0 .516-.162.939-.486 1.269-.317.33-.777.531-1.377.603v.945h-.756v-.918zm-.864-4.734c0 .252.07.45.207.594.144.138.378.243.702.315v-1.8c-.606.072-.909.369-.909.891zm2.53 2.88c0-.27-.075-.474-.225-.612-.144-.144-.387-.249-.73-.315v1.926c.313-.048.55-.156.711-.324.163-.168.244-.393.244-.675zM12 22.5a.5.5 0 0 1-.38-.175l-2-2.333a.5.5 0 0 1 .76-.65l1.12 1.306V16.5a.5.5 0 0 1 1 0v4.148l1.12-1.307a.5.5 0 1 1 .76.651l-2 2.333a.5.5 0 0 1-.38.175z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              
             </button>
             <button
               class="sc-850ddk-0 eZjxtV"
@@ -9102,37 +8897,7 @@ exports[`Storyshots CreatorLock Not found 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c15 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c15 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c15:hover {
-  background-color: white;
-}
-
-.c15:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c15:focus {
-  outline: none;
-}
-
-.c16 {
+    .c16 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -9159,6 +8924,36 @@ Object {
 }
 
 .c16:focus {
+  outline: none;
+}
+
+.c15 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c15 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c15:hover {
+  background-color: white;
+}
+
+.c15:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c15:focus {
   outline: none;
 }
 
@@ -9967,106 +9762,46 @@ Object {
 exports[`Storyshots CreatorLock Submitted 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": <body>
-    .c15 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c15 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c15:hover {
-  background-color: white;
-}
-
-.c15:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c15:focus {
-  outline: none;
-}
-
-.c16 {
-  background-color: var(--lightgrey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c16 > svg {
-  fill: var(--grey);
-  height: 24px;
-  width: 24px;
-}
-
-.c16:hover {
-  background-color: var(--link);
-}
-
-.c16:hover > svg {
-  fill: white;
-}
-
-.c16:focus {
-  outline: none;
-}
-
-.c17 {
-  display: none;
-  position: relative;
-  z-index: var(--alwaysontop);
-  white-space: nowrap;
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
-  color: var(--link);
-}
-
-.c14:hover .c17 {
-  display: inline-block;
-}
-
-.c12 {
+  "baseElement": .c12 {
+  -webkit-align-self: stretch;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
   display: grid;
-  justify-items: end;
-  padding-right: 24px;
+  text-transform: capitalize;
+  background-color: var(--lightgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: 200;
+  color: var(--grey);
+  border-radius: 0 4px 4px 0;
 }
 
 .c13 {
   display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(3,24px);
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  font-size: 13px;
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
 }
 
-.c18 {
-  margin-top: 13px;
+.c14 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   font-size: 10px;
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: normal;
-  color: var(--green);
-  text-align: right;
-  padding-right: 24px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  margin-bottom: 15px;
 }
 
 .c4 {
@@ -10183,12 +9918,6 @@ Object {
   }
 }
 
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c12 {
-    display: none;
-  }
-}
-
 @media only screen and (min-width:736px) {
   .c0 {
     grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
@@ -10211,14 +9940,15 @@ Object {
   }
 }
 
-<div>
+<body>
+    <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
       />
       <div
         class="lock c0"
-        data-address="0x127c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+        data-address="0xabcdef123"
       >
         <div
           class="c1"
@@ -10252,26 +9982,26 @@ Object {
                 />
               </mask>
               <g
-                transform="rotate(40, 108, 108)"
+                transform="rotate(270, 108, 108)tranlate(216, 0) scale(-1, 1)"
               >
                 <circle
                   cx="108"
                   cy="108"
-                  fill="#468c8a"
+                  fill="#4d819a"
                   mask="url(#b)"
                   r="114.75"
                 />
                 <circle
-                  cx="64"
+                  cx="108"
                   cy="0"
-                  fill="#40807d"
+                  fill="#406b80"
                   mask="url(#b)"
                   r="114.75"
                 />
                 <circle
-                  cx="64"
+                  cx="108"
                   cy="216"
-                  fill="#cfe6e5"
+                  fill="#cfdee6"
                   mask="url(#b)"
                   r="114.75"
                 />
@@ -10290,7 +10020,7 @@ Object {
               />
               <path
                 d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-                fill="#468c8a"
+                fill="#4d819a"
                 mask="url(#d)"
               />
             </g>
@@ -10299,24 +10029,24 @@ Object {
         <div
           class="name c2"
         >
-          New Lock
+          Lock Robster
           <div
             class="address c3"
           >
-            0x127c74abc0c4d48d1bdad5dcb26153fc8780f83e
+            0xabcdef123
           </div>
         </div>
         <div
           class="duration "
         >
           <span>
-            2 days
+            30 days
           </span>
         </div>
         <div
           class="keys "
         >
-          3/240
+          0/42
         </div>
         <div
           class="c4"
@@ -10368,7 +10098,7 @@ Object {
                 <span
                   class="c7"
                 >
-                   - 
+                  0
                 </span>
               </span>
               <div
@@ -10383,7 +10113,7 @@ Object {
                   <span
                     class="c7"
                   >
-                     - 
+                    0
                   </span>
                 </span>
               </div>
@@ -10404,7 +10134,7 @@ Object {
                 <span
                   class="c7"
                 >
-                   - 
+                  0
                 </span>
               </span>
               
@@ -10412,79 +10142,15 @@ Object {
           </div>
         </div>
         <div
-          class=""
+          class="c12"
         >
           <div
-            class="c12"
+            class="c13"
           >
-            <div
-              class="c13"
-            >
-              <button
-                class="c14 c15"
-              >
-                <svg
-                  name="Withdraw"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M12 4.5a6.5 6.5 0 0 0-3 12.268v1.108A7.502 7.502 0 0 1 12 3.5a7.5 7.5 0 0 1 3 14.376v-1.108A6.5 6.5 0 0 0 12 4.5zm-.485 9.599c-.48-.036-.885-.147-1.215-.333-.33-.186-.6-.423-.81-.711l.649-.621c.204.246.42.438.648.576.227.132.486.213.773.243v-2.061l-.207-.036a2.732 2.732 0 0 1-.764-.243 1.648 1.648 0 0 1-.514-.396 1.504 1.504 0 0 1-.287-.513 2.04 2.04 0 0 1-.09-.612c0-.51.159-.915.476-1.215.319-.306.766-.489 1.341-.549v-.927h.756v.927c.396.042.738.141 1.026.297.288.156.537.369.747.639l-.657.594a1.792 1.792 0 0 0-.504-.45 1.604 1.604 0 0 0-.656-.216V10.4l.242.036c.3.054.556.135.766.243.21.108.38.24.513.396.138.15.237.321.296.513.06.192.09.396.09.612 0 .516-.162.939-.486 1.269-.317.33-.777.531-1.377.603v.945h-.756v-.918zm-.864-4.734c0 .252.07.45.207.594.144.138.378.243.702.315v-1.8c-.606.072-.909.369-.909.891zm2.53 2.88c0-.27-.075-.474-.225-.612-.144-.144-.387-.249-.73-.315v1.926c.313-.048.55-.156.711-.324.163-.168.244-.393.244-.675zM12 22.5a.5.5 0 0 1-.38-.175l-2-2.333a.5.5 0 0 1 .76-.65l1.12 1.306V16.5a.5.5 0 0 1 1 0v4.148l1.12-1.307a.5.5 0 1 1 .76.651l-2 2.333a.5.5 0 0 1-.38.175z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                
-              </button>
-              <button
-                class="c14 c16"
-                title="Edit"
-              >
-                <svg
-                  name="Edit"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    d="M7.853 13.843l-.498 3.828 3.706-1.435L9.5 15l-1.647-1.157z"
-                  />
-                  <path
-                    clip-rule="evenodd"
-                    d="M17.295 7.9c.178.562.131 1.192-.303 1.733l-5.541 6.916a.5.5 0 0 1-.21.153l-3.705 1.435a.5.5 0 0 1-.677-.53l.498-3.829a.5.5 0 0 1 .106-.248l5.628-7.023c.434-.542 1.038-.724 1.625-.673.569.05 1.128.316 1.576.675.448.36.83.847 1.003 1.392zm-3.424-.768c.191-.239.446-.329.757-.302.33.03.707.193 1.039.46.332.266.575.599.674.913.095.298.062.566-.129.805l-5.23 6.527-1.172-.927a.52.52 0 0 0-.023-.017l-1.211-.851 5.295-6.608zm-5.629 7.595l.959.674.864.684-2.106.816.283-2.174z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c17"
-                >
-                  Edit
-                </small>
-              </button>
-              <button
-                class="c14 c16"
-                title="Embed"
-              >
-                <svg
-                  name="Code"
-                  viewBox="0 0 24 24"
-                >
-                  <title />
-                  <path
-                    clip-rule="evenodd"
-                    d="M9.697 17.808a.5.5 0 0 1-.27-.654l4.616-11.077a.5.5 0 1 1 .923.385l-4.615 11.076a.5.5 0 0 1-.654.27zm6.478-1.928a.5.5 0 0 1-.055-.705L18.841 12l-2.72-3.175a.5.5 0 1 1 .759-.65l3 3.5a.5.5 0 0 1 0 .65l-3 3.5a.5.5 0 0 1-.705.055zM7.88 8.825a.5.5 0 0 0-.76-.65l-3 3.5a.5.5 0 0 0 0 .65l3 3.5a.5.5 0 1 0 .76-.65L5.159 12l2.72-3.175z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c17"
-                >
-                  Embed
-                </small>
-              </button>
-            </div>
+            Submitted
           </div>
           <div
-            class="c18"
+            class="c14"
           />
         </div>
       </div>
@@ -10497,7 +10163,7 @@ Object {
     />
     <div
       class="lock mlglvd-0 jpUcBv"
-      data-address="0x127c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+      data-address="0xabcdef123"
     >
       <div
         class="mlglvd-2 hfdYVl"
@@ -10531,26 +10197,26 @@ Object {
               />
             </mask>
             <g
-              transform="rotate(40, 108, 108)"
+              transform="rotate(270, 108, 108)tranlate(216, 0) scale(-1, 1)"
             >
               <circle
                 cx="108"
                 cy="108"
-                fill="#468c8a"
+                fill="#4d819a"
                 mask="url(#b)"
                 r="114.75"
               />
               <circle
-                cx="64"
+                cx="108"
                 cy="0"
-                fill="#40807d"
+                fill="#406b80"
                 mask="url(#b)"
                 r="114.75"
               />
               <circle
-                cx="64"
+                cx="108"
                 cy="216"
-                fill="#cfe6e5"
+                fill="#cfdee6"
                 mask="url(#b)"
                 r="114.75"
               />
@@ -10569,7 +10235,7 @@ Object {
             />
             <path
               d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-              fill="#468c8a"
+              fill="#4d819a"
               mask="url(#d)"
             />
           </g>
@@ -10578,24 +10244,24 @@ Object {
       <div
         class="mlglvd-4 name kEFfnq"
       >
-        New Lock
+        Lock Robster
         <div
           class="mlglvd-5 address dUQSRx"
         >
-          0x127c74abc0c4d48d1bdad5dcb26153fc8780f83e
+          0xabcdef123
         </div>
       </div>
       <div
         class="mlglvd-6 duration hNoahq"
       >
         <span>
-          2 days
+          30 days
         </span>
       </div>
       <div
         class="mlglvd-7 keys EehSr"
       >
-        3/240
+        0/42
       </div>
       <div
         class="buwkmd-0 bYclZI"
@@ -10647,7 +10313,7 @@ Object {
               <span
                 class="buwkmd-5 dKpFcq"
               >
-                 - 
+                0
               </span>
             </span>
             <div
@@ -10662,7 +10328,7 @@ Object {
                 <span
                   class="buwkmd-5 dKpFcq"
                 >
-                   - 
+                  0
                 </span>
               </span>
             </div>
@@ -10683,7 +10349,7 @@ Object {
               <span
                 class="buwkmd-5 dKpFcq"
               >
-                 - 
+                0
               </span>
             </span>
             
@@ -10691,79 +10357,15 @@ Object {
         </div>
       </div>
       <div
-        class="sc-1dp5gbn-2 fpHeqB"
+        class="aicx7v-0 bdTBPS"
       >
         <div
-          class="sc-1dp5gbn-0 JQpmR"
+          class="aicx7v-1 kxSRDy"
         >
-          <div
-            class="sc-1dp5gbn-1 hxNcaM"
-          >
-            <button
-              class="sc-850ddk-0 GBCms"
-            >
-              <svg
-                name="Withdraw"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M12 4.5a6.5 6.5 0 0 0-3 12.268v1.108A7.502 7.502 0 0 1 12 3.5a7.5 7.5 0 0 1 3 14.376v-1.108A6.5 6.5 0 0 0 12 4.5zm-.485 9.599c-.48-.036-.885-.147-1.215-.333-.33-.186-.6-.423-.81-.711l.649-.621c.204.246.42.438.648.576.227.132.486.213.773.243v-2.061l-.207-.036a2.732 2.732 0 0 1-.764-.243 1.648 1.648 0 0 1-.514-.396 1.504 1.504 0 0 1-.287-.513 2.04 2.04 0 0 1-.09-.612c0-.51.159-.915.476-1.215.319-.306.766-.489 1.341-.549v-.927h.756v.927c.396.042.738.141 1.026.297.288.156.537.369.747.639l-.657.594a1.792 1.792 0 0 0-.504-.45 1.604 1.604 0 0 0-.656-.216V10.4l.242.036c.3.054.556.135.766.243.21.108.38.24.513.396.138.15.237.321.296.513.06.192.09.396.09.612 0 .516-.162.939-.486 1.269-.317.33-.777.531-1.377.603v.945h-.756v-.918zm-.864-4.734c0 .252.07.45.207.594.144.138.378.243.702.315v-1.8c-.606.072-.909.369-.909.891zm2.53 2.88c0-.27-.075-.474-.225-.612-.144-.144-.387-.249-.73-.315v1.926c.313-.048.55-.156.711-.324.163-.168.244-.393.244-.675zM12 22.5a.5.5 0 0 1-.38-.175l-2-2.333a.5.5 0 0 1 .76-.65l1.12 1.306V16.5a.5.5 0 0 1 1 0v4.148l1.12-1.307a.5.5 0 1 1 .76.651l-2 2.333a.5.5 0 0 1-.38.175z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              
-            </button>
-            <button
-              class="sc-850ddk-0 eZjxtV"
-              title="Edit"
-            >
-              <svg
-                name="Edit"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  d="M7.853 13.843l-.498 3.828 3.706-1.435L9.5 15l-1.647-1.157z"
-                />
-                <path
-                  clip-rule="evenodd"
-                  d="M17.295 7.9c.178.562.131 1.192-.303 1.733l-5.541 6.916a.5.5 0 0 1-.21.153l-3.705 1.435a.5.5 0 0 1-.677-.53l.498-3.829a.5.5 0 0 1 .106-.248l5.628-7.023c.434-.542 1.038-.724 1.625-.673.569.05 1.128.316 1.576.675.448.36.83.847 1.003 1.392zm-3.424-.768c.191-.239.446-.329.757-.302.33.03.707.193 1.039.46.332.266.575.599.674.913.095.298.062.566-.129.805l-5.23 6.527-1.172-.927a.52.52 0 0 0-.023-.017l-1.211-.851 5.295-6.608zm-5.629 7.595l.959.674.864.684-2.106.816.283-2.174z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 fnqGzL"
-              >
-                Edit
-              </small>
-            </button>
-            <button
-              class="sc-850ddk-0 eZjxtV"
-              title="Embed"
-            >
-              <svg
-                name="Code"
-                viewBox="0 0 24 24"
-              >
-                <title />
-                <path
-                  clip-rule="evenodd"
-                  d="M9.697 17.808a.5.5 0 0 1-.27-.654l4.616-11.077a.5.5 0 1 1 .923.385l-4.615 11.076a.5.5 0 0 1-.654.27zm6.478-1.928a.5.5 0 0 1-.055-.705L18.841 12l-2.72-3.175a.5.5 0 1 1 .759-.65l3 3.5a.5.5 0 0 1 0 .65l-3 3.5a.5.5 0 0 1-.705.055zM7.88 8.825a.5.5 0 0 0-.76-.65l-3 3.5a.5.5 0 0 0 0 .65l3 3.5a.5.5 0 1 0 .76-.65L5.159 12l2.72-3.175z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 fnqGzL"
-              >
-                Embed
-              </small>
-            </button>
-          </div>
+          Submitted
         </div>
         <div
-          class="sc-1dp5gbn-3 dpQaVY"
+          class="aicx7v-2 niYxE"
         />
       </div>
     </div>
@@ -10835,36 +10437,6 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c15 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c15 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c15:hover {
-  background-color: white;
-}
-
-.c15:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c15:focus {
-  outline: none;
-}
-
-.c16 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -10876,25 +10448,25 @@ Object {
   line-height: 15px;
 }
 
-.c16 > svg {
+.c15 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c16:hover {
+.c15:hover {
   background-color: var(--link);
 }
 
-.c16:hover > svg {
+.c15:hover > svg {
   fill: white;
 }
 
-.c16:focus {
+.c15:focus {
   outline: none;
 }
 
-.c17 {
+.c16 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -10909,7 +10481,7 @@ Object {
   color: var(--link);
 }
 
-.c14:hover .c17 {
+.c14:hover .c16 {
   display: inline-block;
 }
 
@@ -10925,7 +10497,7 @@ Object {
   grid-template-columns: repeat(3,24px);
 }
 
-.c18 {
+.c17 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -11084,7 +10656,7 @@ Object {
       />
       <div
         class="lock c0"
-        data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+        data-address="0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B"
       >
         <div
           class="c1"
@@ -11118,26 +10690,26 @@ Object {
                 />
               </mask>
               <g
-                transform="rotate(160, 108, 108)"
+                transform="rotate(200, 108, 108)"
               >
                 <circle
                   cx="108"
                   cy="108"
-                  fill="#e68273"
+                  fill="#e69573"
                   mask="url(#b)"
                   r="114.75"
                 />
                 <circle
-                  cx="64"
-                  cy="0"
-                  fill="#804840"
+                  cx="108"
+                  cy="-64"
+                  fill="#805340"
                   mask="url(#b)"
                   r="114.75"
                 />
                 <circle
-                  cx="64"
-                  cy="216"
-                  fill="#e6d2cf"
+                  cx="108"
+                  cy="280"
+                  fill="#e6d5cf"
                   mask="url(#b)"
                   r="114.75"
                 />
@@ -11156,7 +10728,7 @@ Object {
               />
               <path
                 d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-                fill="#e68273"
+                fill="#e69573"
                 mask="url(#d)"
               />
             </g>
@@ -11165,24 +10737,24 @@ Object {
         <div
           class="name c2"
         >
-          New Lock
+          Lock Robster
           <div
             class="address c3"
           >
-            0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
+            0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B
           </div>
         </div>
         <div
           class="duration "
         >
           <span>
-            2 days
+            30 days
           </span>
         </div>
         <div
           class="keys "
         >
-          3/240
+          3/42
         </div>
         <div
           class="c4"
@@ -11234,7 +10806,7 @@ Object {
                 <span
                   class="c7"
                 >
-                   - 
+                  0.045
                 </span>
               </span>
               <div
@@ -11249,7 +10821,7 @@ Object {
                   <span
                     class="c7"
                   >
-                     - 
+                    8.82
                   </span>
                 </span>
               </div>
@@ -11270,7 +10842,7 @@ Object {
                 <span
                   class="c7"
                 >
-                   - 
+                  0.045
                 </span>
               </span>
               
@@ -11288,6 +10860,7 @@ Object {
             >
               <button
                 class="c14 c15"
+                title="Withdraw"
               >
                 <svg
                   name="Withdraw"
@@ -11300,10 +10873,14 @@ Object {
                     fill-rule="evenodd"
                   />
                 </svg>
-                
+                <small
+                  class="c16"
+                >
+                  Withdraw
+                </small>
               </button>
               <button
-                class="c14 c16"
+                class="c14 c15"
                 title="Edit"
               >
                 <svg
@@ -11321,13 +10898,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c17"
+                  class="c16"
                 >
                   Edit
                 </small>
               </button>
               <button
-                class="c14 c16"
+                class="c14 c15"
                 title="Embed"
               >
                 <svg
@@ -11342,7 +10919,7 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c17"
+                  class="c16"
                 >
                   Embed
                 </small>
@@ -11350,7 +10927,7 @@ Object {
             </div>
           </div>
           <div
-            class="c18"
+            class="c17"
           />
         </div>
       </div>
@@ -11363,7 +10940,7 @@ Object {
     />
     <div
       class="lock mlglvd-0 jpUcBv"
-      data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+      data-address="0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B"
     >
       <div
         class="mlglvd-2 hfdYVl"
@@ -11397,26 +10974,26 @@ Object {
               />
             </mask>
             <g
-              transform="rotate(160, 108, 108)"
+              transform="rotate(200, 108, 108)"
             >
               <circle
                 cx="108"
                 cy="108"
-                fill="#e68273"
+                fill="#e69573"
                 mask="url(#b)"
                 r="114.75"
               />
               <circle
-                cx="64"
-                cy="0"
-                fill="#804840"
+                cx="108"
+                cy="-64"
+                fill="#805340"
                 mask="url(#b)"
                 r="114.75"
               />
               <circle
-                cx="64"
-                cy="216"
-                fill="#e6d2cf"
+                cx="108"
+                cy="280"
+                fill="#e6d5cf"
                 mask="url(#b)"
                 r="114.75"
               />
@@ -11435,7 +11012,7 @@ Object {
             />
             <path
               d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-              fill="#e68273"
+              fill="#e69573"
               mask="url(#d)"
             />
           </g>
@@ -11444,24 +11021,24 @@ Object {
       <div
         class="mlglvd-4 name kEFfnq"
       >
-        New Lock
+        Lock Robster
         <div
           class="mlglvd-5 address dUQSRx"
         >
-          0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
+          0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B
         </div>
       </div>
       <div
         class="mlglvd-6 duration hNoahq"
       >
         <span>
-          2 days
+          30 days
         </span>
       </div>
       <div
         class="mlglvd-7 keys EehSr"
       >
-        3/240
+        3/42
       </div>
       <div
         class="buwkmd-0 bYclZI"
@@ -11513,7 +11090,7 @@ Object {
               <span
                 class="buwkmd-5 dKpFcq"
               >
-                 - 
+                0.045
               </span>
             </span>
             <div
@@ -11528,7 +11105,7 @@ Object {
                 <span
                   class="buwkmd-5 dKpFcq"
                 >
-                   - 
+                  8.82
                 </span>
               </span>
             </div>
@@ -11549,7 +11126,7 @@ Object {
               <span
                 class="buwkmd-5 dKpFcq"
               >
-                 - 
+                0.045
               </span>
             </span>
             
@@ -11566,7 +11143,8 @@ Object {
             class="sc-1dp5gbn-1 hxNcaM"
           >
             <button
-              class="sc-850ddk-0 GBCms"
+              class="sc-850ddk-0 eZjxtV"
+              title="Withdraw"
             >
               <svg
                 name="Withdraw"
@@ -11579,7 +11157,11 @@ Object {
                   fill-rule="evenodd"
                 />
               </svg>
-              
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Withdraw
+              </small>
             </button>
             <button
               class="sc-850ddk-0 eZjxtV"
@@ -11700,37 +11282,7 @@ exports[`Storyshots CreatorLock Withdrawal submitted 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c15 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c15 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c15:hover {
-  background-color: white;
-}
-
-.c15:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c15:focus {
-  outline: none;
-}
-
-.c16 {
+    .c16 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -11757,6 +11309,36 @@ Object {
 }
 
 .c16:focus {
+  outline: none;
+}
+
+.c15 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c15 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c15:hover {
+  background-color: white;
+}
+
+.c15:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c15:focus {
   outline: none;
 }
 
@@ -11950,7 +11532,7 @@ Object {
       />
       <div
         class="lock c0"
-        data-address="0xbbbbbbbbbbbbbbbbbbbbbbbbbb73289473298"
+        data-address="0xdefcab445"
       >
         <div
           class="c1"
@@ -11984,26 +11566,26 @@ Object {
                 />
               </mask>
               <g
-                transform="rotate(40, 108, 108)"
+                transform="rotate(10, 108, 108)tranlate(216, 0) scale(-1, 1)"
               >
                 <circle
                   cx="108"
                   cy="108"
-                  fill="#e67373"
+                  fill="#c4e673"
                   mask="url(#b)"
                   r="114.75"
                 />
                 <circle
-                  cx="64"
-                  cy="0"
-                  fill="#804040"
+                  cx="146"
+                  cy="147"
+                  fill="#6d8040"
                   mask="url(#b)"
                   r="114.75"
                 />
                 <circle
-                  cx="64"
+                  cx="216"
                   cy="216"
-                  fill="#e6cfcf"
+                  fill="#dfe6cf"
                   mask="url(#b)"
                   r="114.75"
                 />
@@ -12022,7 +11604,7 @@ Object {
               />
               <path
                 d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-                fill="#e67373"
+                fill="#c4e673"
                 mask="url(#d)"
               />
             </g>
@@ -12031,24 +11613,24 @@ Object {
         <div
           class="name c2"
         >
-          New Lock
+          Lock Robster
           <div
             class="address c3"
           >
-            0xbbbbbbbbbbbbbbbbbbbbbbbbbb73289473298
+            0xdefcab445
           </div>
         </div>
         <div
           class="duration "
         >
           <span>
-            2 days
+            30 days
           </span>
         </div>
         <div
           class="keys "
         >
-          3/240
+          5/42
         </div>
         <div
           class="c4"
@@ -12100,7 +11682,7 @@ Object {
                 <span
                   class="c7"
                 >
-                   - 
+                  0.045
                 </span>
               </span>
               <div
@@ -12115,7 +11697,7 @@ Object {
                   <span
                     class="c7"
                   >
-                     - 
+                    8.82
                   </span>
                 </span>
               </div>
@@ -12136,7 +11718,7 @@ Object {
                 <span
                   class="c7"
                 >
-                   - 
+                  0.045
                 </span>
               </span>
               
@@ -12217,7 +11799,9 @@ Object {
           </div>
           <div
             class="c18"
-          />
+          >
+            Submitted to Network...
+          </div>
         </div>
       </div>
     </div>
@@ -12229,7 +11813,7 @@ Object {
     />
     <div
       class="lock mlglvd-0 jpUcBv"
-      data-address="0xbbbbbbbbbbbbbbbbbbbbbbbbbb73289473298"
+      data-address="0xdefcab445"
     >
       <div
         class="mlglvd-2 hfdYVl"
@@ -12263,26 +11847,26 @@ Object {
               />
             </mask>
             <g
-              transform="rotate(40, 108, 108)"
+              transform="rotate(10, 108, 108)tranlate(216, 0) scale(-1, 1)"
             >
               <circle
                 cx="108"
                 cy="108"
-                fill="#e67373"
+                fill="#c4e673"
                 mask="url(#b)"
                 r="114.75"
               />
               <circle
-                cx="64"
-                cy="0"
-                fill="#804040"
+                cx="146"
+                cy="147"
+                fill="#6d8040"
                 mask="url(#b)"
                 r="114.75"
               />
               <circle
-                cx="64"
+                cx="216"
                 cy="216"
-                fill="#e6cfcf"
+                fill="#dfe6cf"
                 mask="url(#b)"
                 r="114.75"
               />
@@ -12301,7 +11885,7 @@ Object {
             />
             <path
               d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-              fill="#e67373"
+              fill="#c4e673"
               mask="url(#d)"
             />
           </g>
@@ -12310,24 +11894,24 @@ Object {
       <div
         class="mlglvd-4 name kEFfnq"
       >
-        New Lock
+        Lock Robster
         <div
           class="mlglvd-5 address dUQSRx"
         >
-          0xbbbbbbbbbbbbbbbbbbbbbbbbbb73289473298
+          0xdefcab445
         </div>
       </div>
       <div
         class="mlglvd-6 duration hNoahq"
       >
         <span>
-          2 days
+          30 days
         </span>
       </div>
       <div
         class="mlglvd-7 keys EehSr"
       >
-        3/240
+        5/42
       </div>
       <div
         class="buwkmd-0 bYclZI"
@@ -12379,7 +11963,7 @@ Object {
               <span
                 class="buwkmd-5 dKpFcq"
               >
-                 - 
+                0.045
               </span>
             </span>
             <div
@@ -12394,7 +11978,7 @@ Object {
                 <span
                   class="buwkmd-5 dKpFcq"
                 >
-                   - 
+                  8.82
                 </span>
               </span>
             </div>
@@ -12415,7 +11999,7 @@ Object {
               <span
                 class="buwkmd-5 dKpFcq"
               >
-                 - 
+                0.045
               </span>
             </span>
             
@@ -12496,7 +12080,9 @@ Object {
         </div>
         <div
           class="sc-1dp5gbn-3 dpQaVY"
-        />
+        >
+          Submitted to Network...
+        </div>
       </div>
     </div>
   </div>,
@@ -12566,37 +12152,7 @@ exports[`Storyshots CreatorLock Withdrawing 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c15 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c15 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c15:hover {
-  background-color: white;
-}
-
-.c15:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c15:focus {
-  outline: none;
-}
-
-.c16 {
+    .c16 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -12623,6 +12179,36 @@ Object {
 }
 
 .c16:focus {
+  outline: none;
+}
+
+.c15 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c15 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c15:hover {
+  background-color: white;
+}
+
+.c15:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c15:focus {
   outline: none;
 }
 
@@ -12816,7 +12402,7 @@ Object {
       />
       <div
         class="lock c0"
-        data-address="0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298"
+        data-address="0xfeedbabe"
       >
         <div
           class="c1"
@@ -12850,26 +12436,26 @@ Object {
                 />
               </mask>
               <g
-                transform="rotate(0, 108, 108)"
+                transform="rotate(300, 108, 108)"
               >
                 <circle
                   cx="195.75"
                   cy="114.75"
-                  fill="#e67373"
+                  fill="#e6d773"
                   mask="url(#b)"
                   r="114.75"
                 />
                 <circle
                   cx="33.75"
                   cy="162"
-                  fill="#804040"
+                  fill="#807740"
                   mask="url(#b)"
                   r="114.75"
                 />
                 <circle
                   cx="121.5"
                   cy="0"
-                  fill="#e6cfcf"
+                  fill="#e6e3cf"
                   mask="url(#b)"
                   r="114.75"
                 />
@@ -12888,7 +12474,7 @@ Object {
               />
               <path
                 d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-                fill="#e67373"
+                fill="#e6d773"
                 mask="url(#d)"
               />
             </g>
@@ -12897,24 +12483,24 @@ Object {
         <div
           class="name c2"
         >
-          New Lock
+          Lock Robster
           <div
             class="address c3"
           >
-            0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298
+            0xfeedbabe
           </div>
         </div>
         <div
           class="duration "
         >
           <span>
-            2 days
+            30 days
           </span>
         </div>
         <div
           class="keys "
         >
-          3/240
+          5/42
         </div>
         <div
           class="c4"
@@ -12966,7 +12552,7 @@ Object {
                 <span
                   class="c7"
                 >
-                   - 
+                  0.045
                 </span>
               </span>
               <div
@@ -12981,7 +12567,7 @@ Object {
                   <span
                     class="c7"
                   >
-                     - 
+                    8.82
                   </span>
                 </span>
               </div>
@@ -13002,7 +12588,7 @@ Object {
                 <span
                   class="c7"
                 >
-                   - 
+                  0.045
                 </span>
               </span>
               
@@ -13083,7 +12669,12 @@ Object {
           </div>
           <div
             class="c18"
-          />
+          >
+            Confirming Withdrawal 
+            2
+            /
+            12
+          </div>
         </div>
       </div>
     </div>
@@ -13095,7 +12686,7 @@ Object {
     />
     <div
       class="lock mlglvd-0 jpUcBv"
-      data-address="0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298"
+      data-address="0xfeedbabe"
     >
       <div
         class="mlglvd-2 hfdYVl"
@@ -13129,26 +12720,26 @@ Object {
               />
             </mask>
             <g
-              transform="rotate(0, 108, 108)"
+              transform="rotate(300, 108, 108)"
             >
               <circle
                 cx="195.75"
                 cy="114.75"
-                fill="#e67373"
+                fill="#e6d773"
                 mask="url(#b)"
                 r="114.75"
               />
               <circle
                 cx="33.75"
                 cy="162"
-                fill="#804040"
+                fill="#807740"
                 mask="url(#b)"
                 r="114.75"
               />
               <circle
                 cx="121.5"
                 cy="0"
-                fill="#e6cfcf"
+                fill="#e6e3cf"
                 mask="url(#b)"
                 r="114.75"
               />
@@ -13167,7 +12758,7 @@ Object {
             />
             <path
               d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-              fill="#e67373"
+              fill="#e6d773"
               mask="url(#d)"
             />
           </g>
@@ -13176,24 +12767,24 @@ Object {
       <div
         class="mlglvd-4 name kEFfnq"
       >
-        New Lock
+        Lock Robster
         <div
           class="mlglvd-5 address dUQSRx"
         >
-          0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298
+          0xfeedbabe
         </div>
       </div>
       <div
         class="mlglvd-6 duration hNoahq"
       >
         <span>
-          2 days
+          30 days
         </span>
       </div>
       <div
         class="mlglvd-7 keys EehSr"
       >
-        3/240
+        5/42
       </div>
       <div
         class="buwkmd-0 bYclZI"
@@ -13245,7 +12836,7 @@ Object {
               <span
                 class="buwkmd-5 dKpFcq"
               >
-                 - 
+                0.045
               </span>
             </span>
             <div
@@ -13260,7 +12851,7 @@ Object {
                 <span
                   class="buwkmd-5 dKpFcq"
                 >
-                   - 
+                  8.82
                 </span>
               </span>
             </div>
@@ -13281,7 +12872,7 @@ Object {
               <span
                 class="buwkmd-5 dKpFcq"
               >
-                 - 
+                0.045
               </span>
             </span>
             
@@ -13362,7 +12953,12 @@ Object {
         </div>
         <div
           class="sc-1dp5gbn-3 dpQaVY"
-        />
+        >
+          Confirming Withdrawal 
+          2
+          /
+          12
+        </div>
       </div>
     </div>
   </div>,
@@ -16973,37 +16569,7 @@ exports[`Storyshots CreatorLocks loading with locks 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c20 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c20 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c20:hover {
-  background-color: white;
-}
-
-.c20:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c20:focus {
-  outline: none;
-}
-
-.c21 {
+    .c21 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -17030,6 +16596,36 @@ Object {
 }
 
 .c21:focus {
+  outline: none;
+}
+
+.c20 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c20 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c20:hover {
+  background-color: white;
+}
+
+.c20:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c20:focus {
   outline: none;
 }
 
@@ -19476,37 +19072,7 @@ exports[`Storyshots CreatorLocks multiple locks 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c20 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c20 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c20:hover {
-  background-color: white;
-}
-
-.c20:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c20:focus {
-  outline: none;
-}
-
-.c21 {
+    .c21 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -19533,6 +19099,36 @@ Object {
 }
 
 .c21:focus {
+  outline: none;
+}
+
+.c20 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c20 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c20:hover {
+  background-color: white;
+}
+
+.c20:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c20:focus {
   outline: none;
 }
 
@@ -22205,37 +21801,7 @@ exports[`Storyshots CreatorLocks single lock 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c20 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c20 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c20:hover {
-  background-color: white;
-}
-
-.c20:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c20:focus {
-  outline: none;
-}
-
-.c21 {
+    .c21 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -22262,6 +21828,36 @@ Object {
 }
 
 .c21:focus {
+  outline: none;
+}
+
+.c20 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c20 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c20:hover {
+  background-color: white;
+}
+
+.c20:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c20:focus {
   outline: none;
 }
 
@@ -25814,37 +25410,7 @@ exports[`Storyshots DashboardContent the dashboard 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c45 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c45 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c45:hover {
-  background-color: white;
-}
-
-.c45:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c45:focus {
-  outline: none;
-}
-
-.c12 {
+    .c12 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -25871,6 +25437,36 @@ Object {
 }
 
 .c12:focus {
+  outline: none;
+}
+
+.c45 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c45 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c45:hover {
+  background-color: white;
+}
+
+.c45:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c45:focus {
   outline: none;
 }
 
@@ -29135,37 +28731,7 @@ exports[`Storyshots DashboardContent the dashboard, waiting for wallet 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c48 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c48 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c48:hover {
-  background-color: white;
-}
-
-.c48:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c48:focus {
-  outline: none;
-}
-
-.c15 {
+    .c15 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -29192,6 +28758,36 @@ Object {
 }
 
 .c15:focus {
+  outline: none;
+}
+
+.c48 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c48 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c48:hover {
+  background-color: white;
+}
+
+.c48:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c48:focus {
   outline: none;
 }
 
@@ -45851,37 +45447,7 @@ exports[`Storyshots LockIconBar LockIconBar, confirming withdrawal transaction 1
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c3 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c3 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c3:hover {
-  background-color: white;
-}
-
-.c3:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c3:focus {
-  outline: none;
-}
-
-.c4 {
+    .c4 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -45908,6 +45474,36 @@ Object {
 }
 
 .c4:focus {
+  outline: none;
+}
+
+.c3 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c3 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c3:hover {
+  background-color: white;
+}
+
+.c3:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c3:focus {
   outline: none;
 }
 
@@ -46240,37 +45836,7 @@ exports[`Storyshots LockIconBar LockIconBar, mined price change transaction 1`] 
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c3 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c3 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c3:hover {
-  background-color: white;
-}
-
-.c3:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c3:focus {
-  outline: none;
-}
-
-.c4 {
+    .c4 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -46297,6 +45863,36 @@ Object {
 }
 
 .c4:focus {
+  outline: none;
+}
+
+.c3 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c3 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c3:hover {
+  background-color: white;
+}
+
+.c3:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c3:focus {
   outline: none;
 }
 
@@ -46619,37 +46215,7 @@ exports[`Storyshots LockIconBar LockIconBar, mined transaction 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c3 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c3 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c3:hover {
-  background-color: white;
-}
-
-.c3:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c3:focus {
-  outline: none;
-}
-
-.c4 {
+    .c4 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -46676,6 +46242,36 @@ Object {
 }
 
 .c4:focus {
+  outline: none;
+}
+
+.c3 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c3 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c3:hover {
+  background-color: white;
+}
+
+.c3:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c3:focus {
   outline: none;
 }
 
@@ -46998,37 +46594,7 @@ exports[`Storyshots LockIconBar LockIconBar, mined withdrawal transaction 1`] = 
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c3 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c3 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c3:hover {
-  background-color: white;
-}
-
-.c3:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c3:focus {
-  outline: none;
-}
-
-.c4 {
+    .c4 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -47055,6 +46621,36 @@ Object {
 }
 
 .c4:focus {
+  outline: none;
+}
+
+.c3 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c3 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c3:hover {
+  background-color: white;
+}
+
+.c3:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c3:focus {
   outline: none;
 }
 
@@ -47377,37 +46973,7 @@ exports[`Storyshots LockIconBar LockIconBar, no blocking transaction 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c3 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c3 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c3:hover {
-  background-color: white;
-}
-
-.c3:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c3:focus {
-  outline: none;
-}
-
-.c4 {
+    .c4 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -47434,6 +47000,36 @@ Object {
 }
 
 .c4:focus {
+  outline: none;
+}
+
+.c3 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c3 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c3:hover {
+  background-color: white;
+}
+
+.c3:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c3:focus {
   outline: none;
 }
 
@@ -48046,37 +47642,7 @@ exports[`Storyshots LockIconBar LockIconBar, pending withdrawal transaction 1`] 
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c3 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c3 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c3:hover {
-  background-color: white;
-}
-
-.c3:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c3:focus {
-  outline: none;
-}
-
-.c4 {
+    .c4 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -48103,6 +47669,36 @@ Object {
 }
 
 .c4:focus {
+  outline: none;
+}
+
+.c3 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c3 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c3:hover {
+  background-color: white;
+}
+
+.c3:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c3:focus {
   outline: none;
 }
 
@@ -48719,37 +48315,7 @@ exports[`Storyshots LockIconBar LockIconBar, submitted withdrawal transaction 1`
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c3 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: 15px;
-}
-
-.c3 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c3:hover {
-  background-color: white;
-}
-
-.c3:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c3:focus {
-  outline: none;
-}
-
-.c4 {
+    .c4 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -48776,6 +48342,36 @@ Object {
 }
 
 .c4:focus {
+  outline: none;
+}
+
+.c3 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c3 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c3:hover {
+  background-color: white;
+}
+
+.c3:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c3:focus {
   outline: none;
 }
 
