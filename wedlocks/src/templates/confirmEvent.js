@@ -15,6 +15,6 @@ You can also show the QR code attached to this email.
 
 Enjoy!
 
-- The Unlock team
+The Unlock team
 `,
 }
