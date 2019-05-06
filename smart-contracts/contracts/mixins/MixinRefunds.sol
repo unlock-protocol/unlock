@@ -59,15 +59,6 @@ contract MixinRefunds is
   {
     require(
       ECDSA.recover(
-        //ECDSA.toEthSignedMessageHash(
-          getCancelAndRefundApprovalHash(_keyOwner, msg.sender)
-        //)
-        ,
-        _signature
-      ) != address(0), 'BAD_SIGNATURE_DATA' // TODO remove(?)
-    );
-    require(
-      ECDSA.recover(
         ECDSA.toEthSignedMessageHash(
           getCancelAndRefundApprovalHash(_keyOwner, msg.sender)
         ),
