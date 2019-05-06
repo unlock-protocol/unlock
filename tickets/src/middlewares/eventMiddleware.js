@@ -9,13 +9,37 @@ import {
 } from '../actions/event'
 import { signData, SIGNED_DATA } from '../actions/signature'
 import UnlockEvent from '../structured_data/unlockEvent'
+import { lockRoute } from '../utils/routes'
 
 const eventMiddleware = config => {
   const { services } = config
-  return ({ dispatch }) => {
+  return ({ dispatch, getState }) => {
     const eventService = new EventService(services.storage.host)
 
+    const {
+      router: {
+        location: { pathname },
+      },
+    } = getState()
+    const { lockAddress } = lockRoute(pathname)
+
     return next => {
+      setTimeout(() => {
+        if (lockAddress) {
+          eventService.getEvent(lockAddress).then(res => {
+            const { name, date, lockAddress, description, location } = res.data
+            const event = {
+              name,
+              date: new Date(date),
+              lockAddress,
+              description,
+              location,
+            }
+            dispatch(updateEvent(event))
+          })
+        }
+      }, 0)
+
       return action => {
         // Initial event to add a new ticketed event: here we process data and send for signing
         if (action.type === ADD_EVENT) {
