@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import Head from 'next/head'
@@ -22,145 +22,120 @@ import withConfig from '../../utils/withConfig'
 import DeveloperOverlay from '../developer/DeveloperOverlay'
 import Ticket from './purchase/Ticket'
 
-export class EventContent extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      loaded: false,
-    }
+export const EventContent = ({
+  lock,
+  lockKey,
+  purchaseKey,
+  transaction,
+  event,
+  keyStatus,
+  account,
+}) => {
+  if (!lock.address || !event.name) return null // Wait for the lock and event to load
 
-    this.setAsLoaded.bind(this)
-  }
+  const { name, description, location, date, links = [], image } = event
+  let dateString =
+    MONTH_NAMES[date.getMonth()] +
+    ' ' +
+    date.getDate() +
+    ', ' +
+    date.getFullYear()
 
-  componentDidUpdate() {
-    const { lock, loadEvent, event } = this.props
-    const { loaded } = this.state
-    if (lock.address && !event.lockAddress && !loaded) {
-      loadEvent(lock.address)
-      this.setAsLoaded() // To prevent multiple loads
-    }
-  }
-
-  setAsLoaded() {
-    this.setState({ loaded: true })
-  }
-
-  render() {
-    const {
-      lock,
-      lockKey,
-      purchaseKey,
-      transaction,
-      event,
-      keyStatus,
-      account,
-    } = this.props
-
-    if (!lock.address || !event.name) return null // Wait for the lock and event to load
-
-    const { name, description, location, date, links = [], image } = event
-    let dateString =
-      MONTH_NAMES[date.getMonth()] +
-      ' ' +
-      date.getDate() +
-      ', ' +
-      date.getFullYear()
-
-    const externalLinks = links.map(({ href, title }) => {
-      return (
-        <li key={href}>
-          <a target="_blank" rel="noopener noreferrer" href={href}>
-            {title}
-          </a>
-        </li>
-      )
-    })
-
-    const details = `For details, click here ${window.location.href}`
-
-    let googleCalendarLink = googleCalendarLinkBuilder(
-      name,
-      details,
-      date,
-      location
-    )
-
+  const externalLinks = links.map(({ href, title }) => {
     return (
-      <GlobalErrorConsumer>
-        <BrowserOnly>
-          <Layout forContent>
-            <Head>
-              <title>{pageTitle(name)}</title>
-            </Head>
-            <Title>{name}</Title>
-            <Header>{image && <Image src={image} />}</Header>
-
-            <Row>
-              <div>
-                <PayButton
-                  transaction={transaction}
-                  keyStatus={keyStatus}
-                  purchaseKey={() => purchaseKey(lockKey)}
-                />
-                {['confirming', 'confirmed'].indexOf(keyStatus) > -1 && (
-                  <small>
-                    The transaction may take a couple minutes to go through...
-                    You can close this page safely and come back later to see
-                    your ticket!
-                  </small>
-                )}
-              </div>
-              <Field>
-                <NoPhone>
-                  <Label>Ticket Price</Label>
-                </NoPhone>
-                <BalanceProvider
-                  amount={lock.keyPrice}
-                  render={(ethWithPresentation, convertedUSDValue) => (
-                    <Price>
-                      <Eth>{ethWithPresentation} ETH</Eth>
-                      <Fiat>${convertedUSDValue}</Fiat>
-                    </Price>
-                  )}
-                />
-              </Field>
-            </Row>
-            <Row>
-              <DetailsField>
-                <DisplayDate>{dateString}</DisplayDate>
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={googleCalendarLink}
-                >
-                  Add to your Calendar!
-                </a>
-
-                <Description>
-                  {description.split('\n\n').map(line => {
-                    return <p key={line}>{line}</p>
-                  })}
-                </Description>
-                <Location>{location}</Location>
-                <Links>{externalLinks}</Links>
-              </DetailsField>
-              <DetailsField>
-                <Ticket account={account} lock={lock} keyStatus={keyStatus} />
-              </DetailsField>
-            </Row>
-          </Layout>
-          <DeveloperOverlay />
-        </BrowserOnly>
-      </GlobalErrorConsumer>
+      <li key={href}>
+        <a target="_blank" rel="noopener noreferrer" href={href}>
+          {title}
+        </a>
+      </li>
     )
-  }
+  })
+
+  const details = `For details, click here ${window.location.href}`
+
+  let googleCalendarLink = googleCalendarLinkBuilder(
+    name,
+    details,
+    date,
+    location
+  )
+
+  return (
+    <GlobalErrorConsumer>
+      <BrowserOnly>
+        <Layout forContent>
+          <Head>
+            <title>{pageTitle(name)}</title>
+          </Head>
+          <Title>{name}</Title>
+          <Header>{image && <Image src={image} />}</Header>
+
+          <Row>
+            <div>
+              <PayButton
+                transaction={transaction}
+                keyStatus={keyStatus}
+                purchaseKey={() => purchaseKey(lockKey)}
+              />
+              {['confirming', 'confirmed'].indexOf(keyStatus) > -1 && (
+                <small>
+                  The transaction may take a couple minutes to go through... You
+                  can close this page safely and come back later to see your
+                  ticket!
+                </small>
+              )}
+            </div>
+            <Field>
+              <NoPhone>
+                <Label>Ticket Price</Label>
+              </NoPhone>
+              <BalanceProvider
+                amount={lock.keyPrice}
+                render={(ethWithPresentation, convertedUSDValue) => (
+                  <Price>
+                    <Eth>{ethWithPresentation} ETH</Eth>
+                    <Fiat>${convertedUSDValue}</Fiat>
+                  </Price>
+                )}
+              />
+            </Field>
+          </Row>
+          <Row>
+            <DetailsField>
+              <DisplayDate>{dateString}</DisplayDate>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={googleCalendarLink}
+              >
+                Add to your Calendar!
+              </a>
+
+              <Description>
+                {description.split('\n\n').map(line => {
+                  return <p key={line}>{line}</p>
+                })}
+              </Description>
+              <Location>{location}</Location>
+              <Links>{externalLinks}</Links>
+            </DetailsField>
+            <DetailsField>
+              {account && (
+                <Ticket account={account} lock={lock} keyStatus={keyStatus} />
+              )}
+            </DetailsField>
+          </Row>
+        </Layout>
+        <DeveloperOverlay />
+      </BrowserOnly>
+    </GlobalErrorConsumer>
+  )
 }
 
 EventContent.propTypes = {
   lock: UnlockPropTypes.lock,
   transaction: UnlockPropTypes.transaction,
   purchaseKey: PropTypes.func.isRequired,
-  loadEvent: PropTypes.func.isRequired,
   lockKey: UnlockPropTypes.key,
   event: UnlockPropTypes.ticketedEvent,
   keyStatus: PropTypes.string,
@@ -189,10 +164,6 @@ export const mapStateToProps = (
   { router, locks, keys, account, transactions, event },
   { config: { requiredConfirmations } }
 ) => {
-  if (!account) {
-    return {}
-  }
-
   const { lockAddress } = lockRoute(router.location.pathname)
 
   const lock = Object.values(locks).find(
