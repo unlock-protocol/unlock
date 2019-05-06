@@ -279,7 +279,12 @@ describe('WalletService (ethers)', () => {
         await metamaskBeforeEach()
         await resetTestsAndConnect(metamask)
         data = []
-        nock.ethSignTypedDatav3AndYield(unlockAddress, data, hash)
+        // eth_signTypedData_v3 expects the data to be a JSON string
+        nock.ethSignTypedDatav3AndYield(
+          unlockAddress,
+          JSON.stringify(data),
+          hash
+        )
 
         await walletService.signData(unlockAddress, data, (error, result) => {
           expect(error).toBeNull()

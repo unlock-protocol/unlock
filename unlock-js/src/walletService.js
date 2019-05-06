@@ -187,9 +187,11 @@ export default class WalletService extends UnlockService {
   async signData(account, data, callback) {
     const isMetaMask = this.web3Provider && this.web3Provider.isMetaMask
     const method = isMetaMask ? 'eth_signTypedData_v3' : 'eth_signTypedData'
+    // see https://github.com/MetaMask/metamask-extension/blob/c4caba131776ff7397d3a4071d7cc84907ac9a43/app/scripts/metamask-controller.js#L997
+    const sendData = isMetaMask ? JSON.stringify(data) : data
 
     try {
-      const result = await this.provider.send(method, [account, data])
+      const result = await this.provider.send(method, [account, sendData])
 
       callback(null, Buffer.from(result).toString('base64'))
     } catch (err) {
