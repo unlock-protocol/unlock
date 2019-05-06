@@ -33,13 +33,25 @@ export const EventContent = ({
 }) => {
   if (!lock.address || !event.name) return null // Wait for the lock and event to load
 
-  const { name, description, location, date, links = [], image } = event
+  const {
+    name,
+    description,
+    location,
+    date,
+    duration,
+    links = [],
+    image,
+  } = event
   let dateString =
     MONTH_NAMES[date.getMonth()] +
     ' ' +
     date.getDate() +
     ', ' +
     date.getFullYear()
+
+  if (duration) {
+    dateString += ' at ' + date.toLocaleTimeString()
+  }
 
   const externalLinks = links.map(({ href, title }) => {
     return (
@@ -57,6 +69,7 @@ export const EventContent = ({
     name,
     details,
     date,
+    duration,
     location
   )
 
@@ -191,7 +204,8 @@ export const mapStateToProps = (
     // TEMPORARY: HARD CODE VALUES FOR NFT EVENT
     if (lockAddress === '0x5865Ff2CBd045Ef1cfE19739df19E83B32b783b4') {
       event.name = 'NFT Dev Meetup - NYC Blockchain Week 2019'
-
+      event.date = new Date(Date.UTC(2019, 4, 16, 22, 30, 0))
+      event.duration = 60 * 60 * 3
       event.location = 'Bushwick Generator, 215 Moore St, Brooklyn'
       event.description = `HEYOOOO!
 
