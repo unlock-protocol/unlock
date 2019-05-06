@@ -47,7 +47,11 @@ describe('CreateContent', () => {
 
     const form = rtl.render(
       <Provider store={store}>
-        <CreateContent config={config} locks={['abc123', 'def456']} />
+        <CreateContent
+          config={config}
+          locks={['abc123', 'def456']}
+          loadEvent={jest.fn()}
+        />
       </Provider>
     )
     expect(form.container.querySelector('option[value="abc123"]').text).toEqual(
@@ -65,7 +69,7 @@ describe('CreateContent', () => {
 
     const form = rtl.render(
       <Provider store={store}>
-        <CreateContent config={config} locks={[]} />
+        <CreateContent config={config} locks={[]} loadEvent={jest.fn()} />
       </Provider>
     )
     const select = form.container.querySelector('select') // Get first select on the page
@@ -92,6 +96,7 @@ describe('CreateContent', () => {
           locks={['abc123', 'def456']}
           addEvent={addEvent}
           now={now}
+          loadEvent={jest.fn()}
         />
       </Provider>
     )
@@ -124,6 +129,80 @@ describe('CreateContent', () => {
       date,
     })
   })
+
+  it('should load an event on address selection', () => {
+    expect.assertions(1)
+
+    const store = createUnlockStore({
+      account: { address: 'ben' },
+      locks: inputLocks,
+    })
+
+    const addEvent = jest.fn()
+    const loadEvent = jest.fn()
+
+    const now = new Date('2022-03-02T00:00:00.000') // March 2nd, 2022
+
+    const form = rtl.render(
+      <Provider store={store}>
+        <CreateContent
+          config={config}
+          account={{ address: 'ben' }}
+          locks={['abc123', 'def456']}
+          addEvent={addEvent}
+          loadEvent={loadEvent}
+          now={now}
+        />
+      </Provider>
+    )
+
+    rtl.fireEvent.change(form.getByTestId('Choose a lock'), {
+      target: { value: 'abc123' }, // Selected abc123 lock
+    })
+
+    expect(loadEvent).toHaveBeenCalledWith('abc123')
+  })
+
+  it('should load an event from props', () => {
+    expect.assertions(3)
+
+    let date = new Date('2020-11-23T00:00:00.000')
+    const store = createUnlockStore({
+      account: { address: 'ben' },
+      locks: inputLocks,
+    })
+
+    const event = {
+      lockAddress: 'abc123',
+      name: 'Test Event',
+      description: 'This is my test event',
+      location: 'Testville',
+      owner: 'ben',
+      logo: '',
+      date,
+    }
+    const addEvent = jest.fn()
+    const loadEvent = jest.fn()
+    const now = new Date('2022-03-02T00:00:00.000') // March 2nd, 2022
+
+    const form = rtl.render(
+      <Provider store={store}>
+        <CreateContent
+          config={config}
+          account={{ address: 'ben' }}
+          locks={['abc123', 'def456']}
+          addEvent={addEvent}
+          loadEvent={loadEvent}
+          now={now}
+          event={event}
+        />
+      </Provider>
+    )
+
+    expect(form.getByDisplayValue('Test Event')).not.toBeNull()
+    expect(form.getByDisplayValue('This is my test event')).not.toBeNull()
+    expect(form.getByDisplayValue('Testville')).not.toBeNull()
+  })
 })
 
 describe('mapStateToProps', () => {
@@ -135,5 +214,15 @@ describe('mapStateToProps', () => {
     expect(props.locks[0]).toEqual('abc123')
     expect(props.locks[1]).toEqual('def456')
     expect(props.now).toBeInstanceOf(Date)
+  })
+
+  it('should pass through an event to props when given one in state', () => {
+    expect.assertions(1)
+    const props = mapStateToProps(
+      { locks: inputLocks, event: 'foo' },
+      { now: null }
+    )
+
+    expect(props.event).toEqual('foo')
   })
 })
