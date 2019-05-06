@@ -9671,14 +9671,14 @@ exports[`Storyshots Home landing page Home page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c11 {
+    .c13 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c11 > svg {
+.c13 > svg {
   fill: white;
 }
 
@@ -9697,7 +9697,7 @@ Object {
   height: 24px;
 }
 
-.c10 {
+.c12 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -9724,7 +9724,7 @@ Object {
   height: 100%;
 }
 
-.c8 {
+.c10 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -9744,7 +9744,7 @@ Object {
   width: 75%;
 }
 
-.c8:hover {
+.c10:hover {
   background-color: var(--activegreen);
 }
 
@@ -9762,6 +9762,7 @@ Object {
 
 .c9 {
   background-color: #e5e5e5;
+  max-width: 100%;
 }
 
 .c4 {
@@ -9791,6 +9792,18 @@ Object {
 
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c11 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:135px) and (max-width:736px) {
+  .c13 {
     height: 16px;
     width: 16px;
   }
@@ -9814,13 +9827,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c12 {
+  .c14 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c10 {
+  .c12 {
     display: none;
   }
 }
@@ -9832,7 +9845,7 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c8 {
+  .c10 {
     width: 100%;
   }
 }
@@ -9886,21 +9899,34 @@ Object {
               <p>
                 Tickets is built on top of Unlock, which is an easy to use access control protocol on the Ethereum blockchain.
               </p>
-              <button
+              <div
                 class="c8"
+              >
+                <img
+                  class="c9"
+                  src="/static/images/jpg/tickets.jpg"
+                />
+              </div>
+              <button
+                class="c10"
               >
                 Create an event
               </button>
             </div>
             <div
-              class="c9"
-            />
+              class="c11"
+            >
+              <img
+                class="c9"
+                src="/static/images/jpg/tickets.jpg"
+              />
+            </div>
           </section>
           <div
-            class="c10"
+            class="c12"
           >
             <div
-              class="c11"
+              class="c13"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -9917,7 +9943,7 @@ Object {
           </div>
         </div>
         <div
-          class="c12"
+          class="c14"
         />
       </div>
     </div>
@@ -9958,6 +9984,14 @@ Object {
             <p>
               Tickets is built on top of Unlock, which is an easy to use access control protocol on the Ethereum blockchain.
             </p>
+            <div
+              class="sc-8fuwpj-1 dvKjGx"
+            >
+              <img
+                class="sc-1y0aw8d-3 cSiwIW"
+                src="/static/images/jpg/tickets.jpg"
+              />
+            </div>
             <button
               class="sc-1y0aw8d-0 grbKB"
             >
@@ -9965,8 +9999,13 @@ Object {
             </button>
           </div>
           <div
-            class="sc-1y0aw8d-3 jAVvUg"
-          />
+            class="sc-8fuwpj-0 btHddm"
+          >
+            <img
+              class="sc-1y0aw8d-3 cSiwIW"
+              src="/static/images/jpg/tickets.jpg"
+            />
+          </div>
         </section>
         <div
           class="b9ke0k-3 cuDZYN"
