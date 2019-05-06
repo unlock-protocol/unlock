@@ -26,7 +26,7 @@ export interface EventCreation {
   date: number
   logo: string
   owner: string
-  duration: number
+  duration?: number
 }
 
 export interface ItemizedKeyPrice {
