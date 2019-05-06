@@ -24,6 +24,9 @@ export class Event extends Model<Event> {
   @Column
   owner!: string
 
+  @Column
+  duration!: number
+
   @HasMany(() => EventLink)
   eventLinks!: EventLink[]
 }
