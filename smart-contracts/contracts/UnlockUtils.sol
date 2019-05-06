@@ -6,7 +6,7 @@ pragma solidity 0.5.7;
 
 contract UnlockUtils {
 
-  function strConcat(string memory _a, string memory _b, string memory _c, string memory _d) internal pure returns (string memory _concatenatedString) {
+  function strConcat(string memory _a, string memory _b, string memory _c, string memory _d) public pure returns (string memory _concatenatedString) {
         bytes memory _ba = bytes(_a);
         bytes memory _bb = bytes(_b);
         bytes memory _bc = bytes(_c);
