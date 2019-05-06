@@ -8,35 +8,41 @@ import UnlockPropTypes from '../../../propTypes'
 export const TicketCode = ({
   signedAddress,
   publicKey,
-  eventAddress,
+  lockAddress,
   config,
 }) => {
-  if (!signedAddress || !publicKey) {
-    return null // If we don't have a signed address or public key, we can't return a QR code
-  } else {
-    const validateUri =
-      config.unlockTicketsUrl +
-      '/checkin/' +
-      eventAddress +
-      '/' +
-      publicKey +
-      '/' +
-      signedAddress
-    return <StyledQRCode value={validateUri} size={350} renderAs="svg" />
+  if (!lockAddress || !signedAddress || !publicKey) {
+    return null
   }
+  const validateUri =
+    config.unlockTicketsUrl +
+    '/checkin/' +
+    lockAddress +
+    '/' +
+    publicKey +
+    '/' +
+    signedAddress
+  return (
+    <StyledQRCode
+      value={validateUri}
+      size={200}
+      renderAs="canvas"
+      includeMargin
+    />
+  )
 }
 
 TicketCode.propTypes = {
   config: UnlockPropTypes.configuration.isRequired,
   signedAddress: PropTypes.string,
   publicKey: PropTypes.string,
-  eventAddress: PropTypes.string,
+  lockAddress: PropTypes.string,
 }
 
 TicketCode.defaultProps = {
   signedAddress: null,
   publicKey: null,
-  eventAddress: null,
+  lockAddress: null,
 }
 
 export default withConfig(TicketCode)
@@ -44,8 +50,5 @@ export default withConfig(TicketCode)
 const StyledQRCode = styled(QRCode)`
   width: 200px;
   height: 200px;
-  max-width: 100%;
-  margin: auto;
-  margin-bottom: 25px;
-  margin-top: 25px;
+  border: 1px solid black;
 `

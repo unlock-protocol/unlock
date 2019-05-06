@@ -146,7 +146,8 @@ contract('Unlock / upgrades', accounts => {
             60 * 60 * 24, // expirationDuration 1 day
             Web3Utils.padLeft(0, 40),
             keyPrice,
-            5 // maxNumberOfKeys
+            5, // maxNumberOfKeys
+            'After-Upgrade Lock'
           )
           .send({
             from: lockOwner,

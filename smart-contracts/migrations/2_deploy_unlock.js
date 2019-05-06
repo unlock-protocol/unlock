@@ -3,6 +3,7 @@ const { scripts, ConfigVariablesInitializer } = require('zos')
 
 const { add, push } = scripts
 const Unlock = artifacts.require('Unlock')
+const PublicLock = artifacts.require('PublicLock')
 
 async function zosDeploy(options) {
   // Register Unlock in the zos.json
@@ -22,16 +23,25 @@ module.exports = function deployUnlock(deployer, networkName, accounts) {
       network: networkName,
       from: proxyAdmin,
     })
-    txParams.gas = 5000000
     const options = { network, txParams }
 
     await zosDeploy(options)
 
     // eslint-disable-next-line no-console
     console.log(
-      `Deployed bytes4(keccak256(Unlock.bytecode))==${this.web3.utils
-        .keccak256(Unlock.bytecode)
-        .substring(0, 10)}`
+      `Deployed bytes4(keccak256(bytecode))
+  Unlock.bytecode: ${this.web3.utils
+    .keccak256(Unlock.bytecode)
+    .substring(0, 10)}
+  Unlock.deployedBytecode: ${this.web3.utils
+    .keccak256(Unlock.deployedBytecode)
+    .substring(0, 10)}
+  PublicLock.bytecode: ${this.web3.utils
+    .keccak256(PublicLock.bytecode)
+    .substring(0, 10)}
+  PublicLock.deployedBytecode: ${this.web3.utils
+    .keccak256(PublicLock.deployedBytecode)
+    .substring(0, 10)}`
     )
   })
 }

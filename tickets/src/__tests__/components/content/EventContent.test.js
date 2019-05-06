@@ -20,7 +20,7 @@ const event = {
   date: new Date(2063, 10, 23),
   name: 'My Doctor Who party',
   description: `Unbelievably, it's been 100 years since it first came to our screens.
-    
+
 Join us for an hour or two of fine entertainment.`,
   location: 'Totters Lane, London',
   lockAddress: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
@@ -77,8 +77,8 @@ describe('mapStateToProps', () => {
         locks: {
           abc123: { address: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9' },
         },
+        event,
         tickets: {
-          event,
           '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9': 'foobar',
         },
         keys: {
@@ -152,7 +152,6 @@ describe('mapStateToProps', () => {
         status: 'mined',
       },
       keyStatus: KeyStatus.CONFIRMING,
-      signedEventAddress: 'foobar',
     }
 
     expect(props).toEqual(expectedProps)

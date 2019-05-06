@@ -1,4 +1,4 @@
-import { UserCreationInput } from '../types' // eslint-disable-line no-unused-vars
+import { ethereumAddress, UserCreationInput } from '../types' // eslint-disable-line no-unused-vars, import/named
 import * as Normalizer from '../utils/normalizer'
 import { PaymentProcessor } from '../payment/paymentProcessor'
 // eslint-disable-line no-unused-vars
@@ -91,6 +91,22 @@ namespace UserOperations {
   ): Promise<boolean> => {
     let paymentProcessor = new PaymentProcessor(config.stripeSecret)
     return await paymentProcessor.updateUserPaymentDetails(token, publicKey)
+  }
+
+  export const updatePasswordEncryptedPrivateKey = async (
+    publicKey: ethereumAddress,
+    passwordEncryptedPrivateKey: string
+  ) => {
+    return User.update(
+      { passwordEncryptedPrivateKey: passwordEncryptedPrivateKey },
+      {
+        where: {
+          publicKey: {
+            [Op.eq]: Normalizer.ethereumAddress(publicKey),
+          },
+        },
+      }
+    )
   }
 }
 

@@ -1,102 +1,92 @@
-import Web3 from 'web3'
 import * as UnlockV02 from 'unlock-abi-0-2'
-import purchaseKey from '../../v02/purchaseKey'
 import Errors from '../../errors'
-import { GAS_AMOUNTS } from '../../constants'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
-import { prepWalletService } from '../helpers/walletServiceHelper'
+import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 
 const { FAILED_TO_PURCHASE_KEY } = Errors
 const endpoint = 'http://127.0.0.1:8545'
-const provider = new Web3.providers.HttpProvider(endpoint)
-const nock = new NockHelper(endpoint, false /** debug */)
-let unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
+const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
 
 let walletService
+let transaction
+let transactionResult
+let setupSuccess
+let setupFail
 
 describe('v02', () => {
-  beforeEach(done => {
-    nock.cleanAll()
-    prepWalletService(
-      unlockAddress,
-      UnlockV02.Unlock,
-      provider,
-      nock,
-      _walletService => {
-        walletService = _walletService
-        // bind the purchaseKey into walletService
-        walletService.purchaseKey = purchaseKey.bind(walletService)
-        return done()
-      }
-    )
-  })
-
   describe('purchaseKey', () => {
-    let keyPrice
-    let lock
-    let owner
-    let account
+    const keyPrice = '0.01'
+    const owner = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
+    const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
 
-    beforeEach(() => {
-      lock = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
-      owner = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
-      keyPrice = '100000000'
-      account = '0xdeadbeef'
-    })
-
-    it('should invoke sendTransaction with the right params', () => {
-      expect.assertions(4)
-      const data = '' // mock abi data for purchaseKey
-
-      walletService._sendTransaction = jest.fn()
-
-      const ContractClass = class {
-        constructor(abi, address) {
-          expect(abi).toBe(UnlockV02.PublicLock.abi)
-          expect(address).toBe(lock)
-          this.methods = {
-            purchaseFor: customer => {
-              expect(customer).toEqual(owner)
-              return this
-            },
-          }
-          this.encodeABI = jest.fn(() => data)
-        }
-      }
-
-      walletService.web3.eth.Contract = ContractClass
-
-      walletService.purchaseKey(lock, owner, keyPrice, account)
-
-      expect(walletService._sendTransaction).toHaveBeenCalledWith(
-        {
-          to: lock,
-          from: account,
-          data,
-          gas: GAS_AMOUNTS.purchaseKey,
-          contract: UnlockV02.PublicLock,
-          value: '100000000000000000000000000', // Web3Utils.toWei(keyPrice, 'ether')
-        },
-        TransactionTypes.KEY_PURCHASE,
-        expect.any(Function)
+    async function nockBeforeEach() {
+      nock.cleanAll()
+      walletService = await prepWalletService(
+        UnlockV02.PublicLock,
+        endpoint,
+        nock
       )
+
+      const callMethodData = prepContract({
+        contract: UnlockV02.PublicLock,
+        functionName: 'purchaseFor',
+        signature: 'address',
+        nock,
+        value: keyPrice,
+      })
+
+      const {
+        testTransaction,
+        testTransactionResult,
+        success,
+        fail,
+      } = callMethodData(owner)
+
+      transaction = testTransaction
+      transactionResult = testTransactionResult
+      setupSuccess = success
+      setupFail = fail
+    }
+
+    it('should invoke _handleMethodCall with the right params', async () => {
+      expect.assertions(2)
+
+      await nockBeforeEach()
+      setupSuccess()
+
+      walletService._handleMethodCall = jest.fn(() =>
+        Promise.resolve(transaction.hash)
+      )
+      const mock = walletService._handleMethodCall
+
+      await walletService.purchaseKey(lockAddress, owner, keyPrice)
+
+      expect(mock).toHaveBeenCalledWith(
+        expect.any(Promise),
+        TransactionTypes.KEY_PURCHASE
+      )
+
+      // verify that the promise passed to _handleMethodCall actually resolves
+      // to the result the chain returns from a sendTransaction call to createLock
+      const result = await mock.mock.calls[0][0]
+      expect(result).toEqual(transactionResult)
+      await nock.resolveWhenAllNocksUsed()
     })
 
-    it('should emit an error if the transaction could not be sent', done => {
+    it('should emit an error if the transaction could not be sent', async () => {
       expect.assertions(1)
-      const error = {}
 
-      walletService._sendTransaction = jest.fn((args, type, cb) => {
-        return cb(error)
-      })
+      const error = { code: 404, data: 'oops' }
+      await nockBeforeEach()
+      setupFail(error)
 
       walletService.on('error', error => {
         expect(error.message).toBe(FAILED_TO_PURCHASE_KEY)
-        done()
       })
 
-      walletService.purchaseKey(lock, owner, keyPrice, account)
+      await walletService.purchaseKey(lockAddress, owner, keyPrice)
+      await nock.resolveWhenAllNocksUsed()
     })
   })
 })

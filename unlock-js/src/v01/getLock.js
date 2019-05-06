@@ -1,58 +1,53 @@
-import * as UnlockV01 from 'unlock-abi-0-1'
-import Web3Utils from '../utils'
-import { MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
+import utils from '../utils'
+import { UNLIMITED_KEYS_COUNT } from '../constants'
 
 /**
  * Refresh the lock's data.
  * We use the block version
  * @return Promise<Lock>
  */
-export default function(address) {
-  const contract = new this.web3.eth.Contract(UnlockV01.PublicLock.abi, address)
-
+export default async function(address) {
+  const contract = await this.getLockContract(address)
   const attributes = {
-    keyPrice: x => Web3Utils.fromWei(x, 'ether'),
+    keyPrice: x => utils.fromWei(x, 'ether'),
     expirationDuration: parseInt,
     maxNumberOfKeys: value => {
-      if (value === MAX_UINT) {
+      if (utils.isInfiniteKeys(value)) {
         return UNLIMITED_KEYS_COUNT
       }
-      return parseInt(value)
+      return utils.toNumber(value)
     },
     owner: x => x,
     totalSupply: parseInt,
   }
 
-  const update = {}
-
-  const constantPromises = Object.keys(attributes).map(attribute => {
-    return contract.methods[attribute]()
-      .call()
-      .then(result => {
-        update[attribute] = attributes[attribute](result) // We cast the value
-      })
-  })
-
   // Let's load its balance
-  constantPromises.push(
-    this.getAddressBalance(address).then(balance => {
-      update.balance = balance
-    })
-  )
+  const getBalance = async () => {
+    const balance = await this.getAddressBalance(address)
+    update.balance = balance
+  }
 
   // Let's load the current block to use to compare versions
-  constantPromises.push(
-    this.web3.eth.getBlockNumber().then(blockNumber => {
-      update.asOf = blockNumber
-    })
-  )
+  const getBlockNumber = async () => {
+    const blockNumber = await this.provider.getBlockNumber()
+    update.asOf = blockNumber
+  }
+
+  const update = {}
+
+  const constantPromises = Object.keys(attributes).map(async attribute => {
+    const result = await contract.functions[`${attribute}()`]()
+    update[attribute] = attributes[attribute](result) // We cast the value
+  })
+  constantPromises.push(getBalance(), getBlockNumber())
+
+  await Promise.all(constantPromises)
+  // totalSupply was previously called outstandingKeys. In order to keep compatibility
+  // we also assign it. This behavior will eventually be deprecated
+  update.outstandingKeys = update.totalSupply
+  delete update.totalSupply
 
   // Once all lock attributes have been fetched
-  return Promise.all(constantPromises).then(() => {
-    // totalSupply was previously called outstandingKeys. In order to keep compatibility
-    // we also assign it. This behavior will eventually be deprecated
-    update.outstandingKeys = update.totalSupply
-    this.emit('lock.updated', address, update)
-    return update
-  })
+  this.emit('lock.updated', address, update)
+  return update
 }

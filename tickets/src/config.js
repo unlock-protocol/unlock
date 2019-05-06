@@ -22,6 +22,7 @@ export default function configure(
   const env = runtimeConfig.unlockEnv
 
   const locksmithUri = runtimeConfig.locksmithUri || 'http://0.0.0.0:8080'
+  const wedlocksUri = runtimeConfig.wedlocksUri || 'http://0.0.0.0:1337'
   const httpProvider = runtimeConfig.httpProvider || '127.0.0.1'
   const unlockTicketsUrl =
     runtimeConfig.unlockTicketsUrl || 'http://0.0.0.0:3003'
@@ -38,9 +39,11 @@ export default function configure(
     storage: {
       host: locksmithUri,
     },
+    wedlocks: {
+      uri: wedlocksUri,
+    },
     currencyPriceLookup: 'https://api.coinbase.com/v2/prices/ETH-USD/buy',
   }
-  let supportedProviders = []
   let blockTime = 8000 // in mseconds.
   const readOnlyProviderUrl =
     runtimeConfig.readOnlyProvider || `http://${httpProvider}:8545`
@@ -49,7 +52,6 @@ export default function configure(
     // In test, we fake the HTTP provider
     providers['HTTP'] = getWeb3Provider(`http://${httpProvider}:8545`)
     blockTime = 10 // in mseconds.
-    supportedProviders = ['HTTP']
     isRequiredNetwork = networkId => networkId === 1984
   }
 
@@ -63,8 +65,6 @@ export default function configure(
       providers[getCurrentProvider(environment)] =
         environment.web3.currentProvider
     }
-
-    supportedProviders = ['HTTP']
 
     // In dev, we only require 6 confirmation because we only mine when there are pending transactions
     requiredConfirmations = 6
@@ -84,7 +84,6 @@ export default function configure(
     // In staging, the network can only be rinkeby
     isRequiredNetwork = networkId => networkId === 4
     requiredNetworkId = 4
-    supportedProviders = ['Metamask', 'Opera']
 
     // Address for the Unlock smart contract
     unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
@@ -105,8 +104,6 @@ export default function configure(
     // In prod, the network can only be mainnet
     isRequiredNetwork = networkId => networkId === 1
     requiredNetworkId = 1
-
-    supportedProviders = ['Metamask', 'Opera']
 
     // Address for the Unlock smart contract
     unlockAddress = '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
@@ -140,7 +137,6 @@ export default function configure(
     unlockAddress,
     unlockTicketsUrl,
     services,
-    supportedProviders,
     unlockAppUrl,
   }
 }

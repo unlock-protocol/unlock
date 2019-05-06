@@ -1,13 +1,12 @@
-const Web3 = require('web3')
+const Wallet = require('ethers').Wallet
 
-export function createAccountAndPasswordEncryptKey(password) {
-  const web3 = new Web3()
-  const { address, privateKey } = web3.eth.accounts.create()
-
-  const passwordEncryptedPrivateKey = web3.eth.accounts.encrypt(
-    privateKey,
-    password
+export async function createAccountAndPasswordEncryptKey(password) {
+  const newWallet = Wallet.createRandom()
+  const address = await newWallet.getAddress()
+  const passwordEncryptedPrivateKey = JSON.parse(
+    await newWallet.encrypt(password)
   )
+
   return {
     address,
     passwordEncryptedPrivateKey,
@@ -21,8 +20,10 @@ export function createAccountAndPasswordEncryptKey(password) {
  * @param {string} password
  * @throws Throws an error if password does not decrypt private key.
  */
-export function getAccountFromPrivateKey(encryptedPrivateKey, password) {
-  const web3 = new Web3()
-
-  return web3.eth.accounts.decrypt(encryptedPrivateKey, password)
+export async function getAccountFromPrivateKey(encryptedPrivateKey, password) {
+  const wallet = await Wallet.fromEncryptedJson(
+    JSON.stringify(encryptedPrivateKey),
+    password
+  )
+  return wallet.signingKey
 }

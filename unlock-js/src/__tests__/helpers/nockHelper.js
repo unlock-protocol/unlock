@@ -5,8 +5,10 @@ export class NockHelper {
   constructor(endpoint, debug = false) {
     this.nockScope = nock(endpoint, { encodedQueryParams: true })
 
+    this.anyRequestSetUp = false
     this.debug = debug
-    this._rpcRequestId = 0
+    // ethers hard-codes this value, see https://github.com/ethers-io/ethers.js/issues/489
+    this._rpcRequestId = 42
     this._noMatches = []
 
     // In order to monitor traffic without intercepting it (so that mocks can be built). uncomment the line below
@@ -15,6 +17,19 @@ export class NockHelper {
     nock.emitter.on('no match', (clientRequestObject, options, body) => {
       this._noMatches.push(body)
       if (debug) {
+        if (!this.anyRequestSetUp) {
+          console.log(
+            new Error('No mocks have been set up, but a request was made!')
+          )
+        }
+        if (!body) {
+          console.log(
+            new Error(
+              'no body? (is there a jest.fakeTimers call? you must reset mocks' +
+                ', see https://github.com/sapegin/jest-cheat-sheet#clearing-and-restoring-mocks'
+            )
+          )
+        }
         console.log(`NO HTTP MOCK EXISTS FOR THAT REQUEST\n${body}`)
       }
     })
@@ -37,31 +52,61 @@ export class NockHelper {
     this._noMatches = []
   }
 
+  resolveWhenAllNocksUsed() {
+    return new Promise((resolve, reject) => {
+      let counter = 0
+      setTimeout(() => {
+        if (nock.isDone()) {
+          resolve()
+        }
+        if (counter++ > 100) {
+          try {
+            this.ensureAllNocksUsed()
+          } catch (e) {
+            reject(e)
+          }
+        }
+      }, 10)
+    })
+  }
+
+  getUnusedNocks() {
+    if (nock.isDone()) return []
+    const unused = Object.values(this.nockScope.keyedInterceptors).map(
+      interceptors =>
+        interceptors
+          .map(interceptor => {
+            return (
+              interceptor.interceptionCounter === 0 && {
+                api: interceptor._requestBody,
+                reply: interceptor.body,
+              }
+            )
+          })
+          .filter(a => a)
+    )
+    unused.sort((a, b) => {
+      return a.api.id < b.api.id ? -1 : 1
+    })
+    return unused[0]
+  }
+
+  displayUnusedNocks() {
+    const unused = this.getUnusedNocks()
+    console.log(`${unused.length} Unused nocks:`)
+    unused.forEach(info => {
+      console.log('API call', info.api)
+      console.log('return', info.reply)
+    })
+  }
+
+  nockCount() {
+    console.log(`${this.getUnusedNocks().length} Unused nocks`)
+  }
+
   ensureAllNocksUsed() {
     if (!nock.isDone()) {
-      const unused = Object.values(this.nockScope.keyedInterceptors).map(
-        interceptors =>
-          interceptors
-            .map(interceptor => {
-              return (
-                interceptor.interceptionCounter === 0 && {
-                  api: interceptor._requestBody,
-                  reply: interceptor.body,
-                }
-              )
-            })
-            .filter(a => a)
-      )
-      unused.sort((a, b) => {
-        return a.api.id < b.api.id ? -1 : 1
-      })
-      console.log('Unused nocks:')
-      unused.forEach(infos => {
-        infos.forEach(info => {
-          console.log('API call', info.api)
-          console.log('return', info.reply)
-        })
-      })
+      this.displayUnusedNocks()
       throw new Error('Not all JSON-RPC call mocks were used!')
     }
     if (this._noMatches.length) {
@@ -71,7 +116,7 @@ export class NockHelper {
 
   // Generic call
   _jsonRpcRequest(method, params, result, error) {
-    this._rpcRequestId += 1
+    this.anyRequestSetUp = true // detect http calls made before any mocks setup
     const cb = (...args) => this.logNock(args)
     return this.nockScope
       .post('/', { jsonrpc: '2.0', id: this._rpcRequestId, method, params })
@@ -90,11 +135,12 @@ export class NockHelper {
   }
 
   // eth_getBalance
-  getBalanceForAccountAndYieldBalance(account, balance) {
+  getBalanceForAccountAndYieldBalance(account, balance, error) {
     return this._jsonRpcRequest(
       'eth_getBalance',
       [account.toLowerCase(), 'latest'],
-      balance
+      balance,
+      error
     )
   }
 
@@ -109,8 +155,13 @@ export class NockHelper {
   }
 
   // eth_getTransactionReceipt
-  ethGetTransactionReceipt(hash, result) {
-    return this._jsonRpcRequest('eth_getTransactionReceipt', [hash], result)
+  ethGetTransactionReceipt(hash, result, error) {
+    return this._jsonRpcRequest(
+      'eth_getTransactionReceipt',
+      [hash],
+      result,
+      error
+    )
   }
 
   // eth_call
@@ -138,8 +189,8 @@ export class NockHelper {
     )
   }
 
-  // eth_getGasPrice
-  ethGetGasPriceAndYield(price) {
+  // eth_gasPrice
+  ethGasPriceAndYield(price) {
     return this._jsonRpcRequest('eth_gasPrice', [], price)
   }
 
@@ -150,11 +201,23 @@ export class NockHelper {
       [
         {
           ...transaction,
-          gasPrice,
+          ...(gasPrice ? { gasPrice } : {}),
         },
       ],
       result,
       error
+    )
+  }
+
+  personalSignAndYield(hash, account, result, error) {
+    return this._jsonRpcRequest('personal_sign', [hash, account], result, error)
+  }
+
+  getTransactionCount(address, count) {
+    return this._jsonRpcRequest(
+      'eth_getTransactionCount',
+      [address, 'latest'],
+      count
     )
   }
 }

@@ -2,6 +2,7 @@ import { sendConfig, setupReadyListener } from '../../paywall-builder/config'
 import {
   POST_MESSAGE_CONFIG,
   POST_MESSAGE_READY,
+  POST_MESSAGE_ACCOUNT,
 } from '../../paywall-builder/constants'
 
 describe('paywall configuration inter-window communication', () => {
@@ -51,6 +52,7 @@ describe('paywall configuration inter-window communication', () => {
     }
     beforeEach(() => {
       window = {
+        Promise: global.Promise,
         addEventListener: jest.fn(),
       }
       iframe = {
@@ -82,6 +84,126 @@ describe('paywall configuration inter-window communication', () => {
         }),
         'origin'
       )
+    })
+
+    describe('sending ethereum account', () => {
+      it('should enable the ethereum provider', done => {
+        expect.assertions(1)
+
+        window.web3 = {
+          currentProvider: {
+            enable: jest.fn(() => ({
+              then() {
+                done()
+              },
+            })),
+          },
+        }
+
+        const event = {
+          origin: 'origin',
+          source: iframe.contentWindow,
+          data: POST_MESSAGE_READY,
+        }
+        setupReadyListener(window, iframe, 'origin')
+
+        const listener = getListener()
+
+        listener(event)
+
+        expect(window.web3.currentProvider.enable).toHaveBeenCalled()
+      })
+
+      it('should request accounts once enabled', done => {
+        expect.assertions(1)
+
+        window.web3 = {
+          currentProvider: {
+            enable: () => Promise.resolve(),
+            send: jest.fn(content => {
+              expect(content).toEqual(
+                expect.objectContaining({
+                  method: 'eth_accounts',
+                  params: [],
+                  jsonrpc: '2.0',
+                  id: expect.any(Number),
+                })
+              )
+              done()
+            }),
+          },
+        }
+
+        const event = {
+          origin: 'origin',
+          source: iframe.contentWindow,
+          data: POST_MESSAGE_READY,
+        }
+        setupReadyListener(window, iframe, 'origin')
+
+        const listener = getListener()
+
+        listener(event)
+      })
+      it('should not post anything on error', done => {
+        expect.assertions(1)
+
+        window.web3 = {
+          currentProvider: {
+            enable: () => Promise.resolve(),
+            send: (content, callbackFunc) => {
+              callbackFunc(true, false)
+
+              expect(iframe.contentWindow.postMessage).not.toHaveBeenCalled()
+              done()
+            },
+          },
+        }
+
+        const event = {
+          origin: 'origin',
+          source: iframe.contentWindow,
+          data: POST_MESSAGE_READY,
+        }
+        setupReadyListener(window, iframe, 'origin')
+
+        const listener = getListener()
+
+        listener(event)
+      })
+
+      it('should post the first account retrieved to the parent window', done => {
+        expect.assertions(1)
+
+        window.web3 = {
+          currentProvider: {
+            enable: () => Promise.resolve(),
+            send: (content, callbackFunc) => {
+              callbackFunc(null, { result: ['hi'] })
+
+              expect(iframe.contentWindow.postMessage).toHaveBeenCalledWith(
+                expect.objectContaining({
+                  type: POST_MESSAGE_ACCOUNT,
+                  payload: 'hi',
+                }),
+                'origin'
+              )
+              done()
+            },
+          },
+        }
+
+        const event = {
+          origin: 'origin',
+          source: iframe.contentWindow,
+          data: POST_MESSAGE_READY,
+        }
+        setupReadyListener(window, iframe, 'origin')
+
+        const listener = getListener()
+
+        listener(event)
+      })
     })
 
     describe('failures', () => {

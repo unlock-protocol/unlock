@@ -8,7 +8,7 @@ import DeveloperOverlay from '../developer/DeveloperOverlay'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
-import AuthenticationPrompt from '../interface/AuthenticationPrompt'
+import LogIn from '../interface/LogIn'
 import SignUp from '../interface/SignUp'
 import FinishSignup from '../interface/FinishSignup'
 
@@ -16,16 +16,23 @@ export class KeyChainContent extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      // TODO: Add method to toggle signUp and pass it to subcomponents, so that
+      // TODO: Add method to toggle signup and pass it to subcomponents, so that
       // we can switch back and forth between views for logging in and signing
       // up.
-      signUp: true,
+      signup: true,
     }
+  }
+
+  toggleSignup = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      signup: !prevState.signup,
+    }))
   }
 
   render() {
     const { account, network, router } = this.props
-    const { signUp } = this.state
+    const { signup } = this.state
     const { hash } = router.location
     const emailAddress = hash.slice(1) // trim off leading '#'
 
@@ -41,17 +48,17 @@ export class KeyChainContent extends React.Component {
               <DeveloperOverlay />
             </BrowserOnly>
           )}
-          {!account && !signUp && (
+          {!account && !signup && (
             <BrowserOnly>
-              <AuthenticationPrompt />
+              <LogIn toggleSignup={this.toggleSignup} />
             </BrowserOnly>
           )}
-          {!account && signUp && !emailAddress && (
+          {!account && signup && !emailAddress && (
             <BrowserOnly>
-              <SignUp />
+              <SignUp toggleSignup={this.toggleSignup} />
             </BrowserOnly>
           )}
-          {!account && signUp && emailAddress && (
+          {!account && signup && emailAddress && (
             <BrowserOnly>
               <FinishSignup emailAddress={emailAddress} />
             </BrowserOnly>

@@ -18,7 +18,6 @@ const copyFile = promisify(fs.copyFile)
 const requiredConfigVariables = {
   unlockEnv: process.env.UNLOCK_ENV || 'dev',
   readOnlyProvider: process.env.READ_ONLY_PROVIDER,
-  paywallUrl: process.env.PAYWALL_URL,
   locksmithUri: process.env.LOCKSMITH_URI,
 }
 

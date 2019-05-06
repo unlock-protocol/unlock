@@ -3,10 +3,8 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
 
-import UnlockPropTypes from '../../propTypes'
 import DemoComponent from '../interface/Demo'
 import { lockRoute } from '../../utils/routes'
-import withConfig from '../../utils/withConfig'
 import { pageTitle } from '../../constants'
 
 /**
@@ -14,7 +12,7 @@ import { pageTitle } from '../../constants'
  * @param {*} lock
  * @param {*} domain
  */
-const DemoContent = ({ lock, config: { paywallUrl, paywallScriptPath } }) => {
+const DemoContent = ({ lock, paywallUrl }) => {
   return (
     <Fragment>
       <Head>
@@ -22,7 +20,7 @@ const DemoContent = ({ lock, config: { paywallUrl, paywallScriptPath } }) => {
       </Head>
       <DemoComponent>
         <script
-          src={paywallUrl + paywallScriptPath}
+          src={paywallUrl + '/static/paywall.min.js'}
           data-unlock-url={paywallUrl}
         />
         {lock && <meta name="lock" content={lock} />}
@@ -33,7 +31,7 @@ const DemoContent = ({ lock, config: { paywallUrl, paywallScriptPath } }) => {
 
 DemoContent.propTypes = {
   lock: PropTypes.string,
-  config: UnlockPropTypes.configuration.isRequired,
+  paywallUrl: PropTypes.string.isRequired,
 }
 
 DemoContent.defaultProps = {
@@ -42,9 +40,22 @@ DemoContent.defaultProps = {
 
 export const mapStateToProps = ({ router }) => {
   const { lockAddress } = lockRoute(router.location.pathname)
+
+  // note: the choice of 127.0.0.1 instead of localhost is deliberate, as it will
+  // allow us to test cross-origin requests from localhost/demo
+  let paywallUrl
+  if (global.window && window.origin === 'http://localhost:3001') {
+    paywallUrl = 'http://127.0.0.1:3001'
+  } else if (global.window) {
+    paywallUrl = window.origin
+  } else {
+    // server-side, it doesn't matter what we render
+    paywallUrl = ''
+  }
   return {
     lock: lockAddress,
+    paywallUrl,
   }
 }
 
-export default withConfig(connect(mapStateToProps)(DemoContent))
+export default connect(mapStateToProps)(DemoContent)
