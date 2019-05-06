@@ -17,7 +17,7 @@ let message = {
     date: 1744487946000,
     logo: 'http://example.com/a_logo',
     owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-    duration: '42',
+    duration: 42,
   },
 }
 
