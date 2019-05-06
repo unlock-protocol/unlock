@@ -4,7 +4,6 @@ import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import '../interfaces/IERC721.sol';
 import '../UnlockUtils.sol';
 import './MixinKeys.sol';
-import '../interfaces/IUnlock.sol';
 import './MixinLockCore.sol';
 
 /**
@@ -28,8 +27,6 @@ contract MixinLockMetadata is
 
   // the base Token URI for this Lock. If not set by lock owner, the global URI stored in Unlock is used.
   string private baseTokenURI;
-
-  IUnlock unlock = IUnlock(unlockProtocol);
 
   event NewLockSymbol(
     string symbol
@@ -86,7 +83,7 @@ contract MixinLockMetadata is
   {
     string memory symbol;
     if(bytes(lockSymbol).length == 0) {
-      symbol = unlock.getGlobalTokenSymbol();
+      symbol = unlockProtocol.getGlobalTokenSymbol();
     } else {
       symbol = lockSymbol;
     }
@@ -119,7 +116,7 @@ contract MixinLockMetadata is
   {
     string memory URI;
     if(bytes(baseTokenURI).length == 0) {
-      URI = unlock.getGlobalBaseTokenURI();
+      URI = unlockProtocol.getGlobalBaseTokenURI();
     } else {
       URI = baseTokenURI;
     }
