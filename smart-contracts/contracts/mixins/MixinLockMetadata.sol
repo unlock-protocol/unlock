@@ -123,9 +123,13 @@ contract MixinLockMetadata is
     } else {
       URI = baseTokenURI;
     }
-    return UnlockUtils.strConcat(URI, UnlockUtils.strConcat(
+    string memory slash = '/';
+
+    return UnlockUtils.strConcat(
+      URI,
       UnlockUtils.address2Str(address(this)),
-      UnlockUtils.uint2Str(_tokenId))
+      string('/'),
+      UnlockUtils.uint2Str(_tokenId)
     );
   }
 }

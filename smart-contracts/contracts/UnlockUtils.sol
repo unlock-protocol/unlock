@@ -6,26 +6,29 @@ pragma solidity 0.5.7;
 
 contract UnlockUtils {
 
-  function strConcat(
-    string memory _a,
-    string memory _b
-  ) public
-    pure
-    returns(string memory)
- {
-    bytes memory _ba = bytes(_a);
-    bytes memory _bb = bytes(_b);
-    string memory ab = new string(_ba.length + _bb.length);
-    bytes memory bab = bytes(ab);
-    uint k = 0;
-    for(uint i = 0; i < _ba.length; i++) {
-      bab[k++] = _ba[i];
+  function strConcat(string memory _a, string memory _b, string memory _c, string memory _d) internal pure returns (string memory _concatenatedString) {
+        bytes memory _ba = bytes(_a);
+        bytes memory _bb = bytes(_b);
+        bytes memory _bc = bytes(_c);
+        bytes memory _bd = bytes(_d);
+        string memory abcd = new string(_ba.length + _bb.length + _bc.length + _bd.length);
+        bytes memory babcd = bytes(abcd);
+        uint k = 0;
+        uint i = 0;
+        for (i = 0; i < _ba.length; i++) {
+            babcd[k++] = _ba[i];
+        }
+        for (i = 0; i < _bb.length; i++) {
+            babcd[k++] = _bb[i];
+        }
+        for (i = 0; i < _bc.length; i++) {
+            babcd[k++] = _bc[i];
+        }
+        for (i = 0; i < _bd.length; i++) {
+            babcd[k++] = _bd[i];
+        }
+        return string(babcd);
     }
-    for(uint i = 0; i < _bb.length; i++) {
-      bab[k++] = _bb[i];
-    }
-    return string(bab);
-  }
 
   function uint2Str(
     uint _i
