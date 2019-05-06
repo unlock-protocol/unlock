@@ -15,6 +15,6 @@ Your funds are yours and you will be able to transfer them via a third-party too
 
 If you have any questions, you can always email us at hello@unlock-protocol.com.
 
-- The Unlock team
+The Unlock team
 `,
 }

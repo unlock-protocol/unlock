@@ -9,6 +9,6 @@ If you did not make this request, please disregard this email. Otherwise, please
 
 If you have any questions, you can always email us at hello@unlock-protocol.com.
 
-- The Unlock team
+The Unlock team
 `,
 }
