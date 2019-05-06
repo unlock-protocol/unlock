@@ -1,9 +1,6 @@
 import { SET_PROVIDER, providerReady } from '../actions/provider'
 import { setError } from '../actions/error'
-import {
-  FATAL_MISSING_PROVIDER,
-  FATAL_NOT_ENABLED_IN_PROVIDER,
-} from '../errors'
+import { FATAL_NOT_ENABLED_IN_PROVIDER } from '../errors'
 
 interface Action {
   type: string
@@ -12,7 +9,6 @@ interface Action {
 
 function initializeProvider(provider: { enable?: () => any }, dispatch: any) {
   if (!provider) {
-    dispatch(setError(FATAL_MISSING_PROVIDER))
     return
   }
 
