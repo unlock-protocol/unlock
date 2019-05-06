@@ -11,7 +11,7 @@ image: https://s3.amazonaws.com/assets.unlock-protocol.com/NFTEventLogos.png
 
 We are mission driven: we strongly believe that the [web's business model is broken](https://unlock-protocol.com/blog/ad-supported-web/), but more importantly, that it can be replaced with a [much healthier one](https://unlock-protocol.com/blog/its-time-to-unlock-the-web/), and we're building it, key after key, lock after lock.
 
-As technologist, we also know that _dogfooding_ is important: it's by using the technology we build that we can understand it better. We are building new mental models as we actually experience these new products and protocols.
+As technologists, we also know that _dogfooding_ is important: it's by using the technology we build that we can understand it better. We are building new mental models as we actually experience these new products and protocols.
 
 For example, we strongly believe that the Unlock Protocol can be used to **sell tickets** to concerts, conferences, or parties. To test that hypothesis, we are co-organizing an event here, in NYC during blockchain week, with our friends at [Dapper Labs](https://www.dapperlabs.com/), [OpenSea](https://opensea.io/), [SuperRare](https://superrare.co/) or [Quantstamp](https://quantstamp.com/).
 
