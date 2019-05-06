@@ -12,7 +12,7 @@ import BrowserOnly from '../helpers/BrowserOnly'
 import EventUrl from '../helpers/EventUrl'
 import { pageTitle } from '../../constants'
 import UnlockPropTypes from '../../propTypes'
-import { addEvent } from '../../actions/event'
+import { addEvent, loadEvent } from '../../actions/event'
 import CreateEventButton from './create/CreateEventButton'
 import withConfig from '../../utils/withConfig'
 
@@ -30,26 +30,28 @@ export const formValuesToEvent = formValues => {
 export class CreateContent extends Component {
   constructor(props) {
     super(props)
-    const { now, locks, submitted } = props
+    const { now, locks, submitted, event } = props
 
     this.state = {
-      lockAddress: locks[0] || '',
-      name: '',
-      description: '',
-      location: '',
-      date: now,
+      lockAddress: locks[0] || event.lockAddress || '',
+      name: event.name || '',
+      description: event.description || '',
+      location: event.location || '',
+      date: event.date || now,
       submitted,
     }
 
     this.onChange = this.onChange.bind(this)
     this.dateChanged = this.dateChanged.bind(this)
+    this.addressChanged = this.addressChanged.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
+    this.updateStateFromEvent = this.updateStateFromEvent.bind(this)
   }
 
-  onSubmit(e) {
-    e.preventDefault()
-    this.saveEvent()
-    return
+  componentDidUpdate(prevProps) {
+    const { event } = this.props
+    const { event: prevEvent } = prevProps
+    if (event !== prevEvent) this.updateStateFromEvent(event)
   }
 
   onChange(field) {
@@ -59,10 +61,35 @@ export class CreateContent extends Component {
     }
   }
 
+  onSubmit(e) {
+    e.preventDefault()
+    this.saveEvent()
+    return
+  }
+
+  updateStateFromEvent(event) {
+    this.setState(state => {
+      return {
+        ...state,
+        name: event.name,
+        lockAddress: event.lockAddress,
+        description: event.description,
+        date: event.date,
+        location: event.location,
+      }
+    })
+  }
+
   changeField(field, value) {
     this.setState(state => {
-      return { ...state, [field]: value }
+      return { ...state, submitted: false, [field]: value }
     })
+  }
+
+  addressChanged(address) {
+    const { loadEvent } = this.props
+    this.changeField('lockAddress', address)
+    loadEvent(address)
   }
 
   dateChanged(date) {
@@ -120,7 +147,7 @@ export class CreateContent extends Component {
                       }))}
                       onChange={selectedOption => {
                         if (selectedOption.value)
-                          this.changeField('lockAddress', selectedOption.value)
+                          this.addressChanged(selectedOption.value)
                       }}
                     />
                     <Text>
@@ -187,6 +214,8 @@ CreateContent.propTypes = {
   now: PropTypes.instanceOf(Date).isRequired,
   account: UnlockPropTypes.account,
   addEvent: PropTypes.func.isRequired,
+  loadEvent: PropTypes.func.isRequired,
+  event: UnlockPropTypes.ticketedEvent,
   locks: PropTypes.arrayOf(PropTypes.string),
   submitted: PropTypes.bool,
   config: UnlockPropTypes.configuration.isRequired,
@@ -194,22 +223,25 @@ CreateContent.propTypes = {
 
 CreateContent.defaultProps = {
   locks: [],
+  event: {},
   account: null,
   submitted: false,
 }
 
-export const mapStateToProps = ({ locks, account }, { now }) => {
+export const mapStateToProps = ({ locks, account, event }, { now }) => {
   let selectLocks = []
   Object.values(locks).map(lock => selectLocks.push(lock.address))
   return {
     locks: selectLocks,
     account,
     now: now || new Date(),
+    event,
   }
 }
 
 export const mapDispatchToProps = dispatch => ({
   addEvent: event => dispatch(addEvent(event)),
+  loadEvent: address => dispatch(loadEvent(address)),
 })
 
 export default withConfig(
