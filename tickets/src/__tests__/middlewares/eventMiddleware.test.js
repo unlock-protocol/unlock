@@ -7,6 +7,11 @@ import configure from '../../config'
  * Taken from https://redux.js.org/recipes/writing-tests#middleware
  */
 
+let router = {
+  location: {
+    pathname: '',
+  },
+}
 let state = {}
 let account = {
   address: '0xabc',
@@ -35,6 +40,7 @@ describe('Event middleware', () => {
   beforeEach(() => {
     state = {
       account,
+      router,
     }
     // reset the mock
     mockeventService = {}
