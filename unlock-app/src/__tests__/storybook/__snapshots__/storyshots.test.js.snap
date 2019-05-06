@@ -34598,15 +34598,25 @@ Object {
   font-size: 16px;
 }
 
-.c4 {
+.c5 {
   height: 60px;
   width: 385px;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
-  margin-top: 25px;
   font-size: 16px;
   cursor: pointer;
+}
+
+.c5[disabled] {
+  background-color: var(--grey);
+  cursor: not-allowed;
+  color: black;
+}
+
+.c4 {
+  height: 30px;
+  line-height: 30px;
 }
 
 <div>
@@ -34656,8 +34666,13 @@ Object {
             type="password"
           />
           <br />
-          <input
+          <span
             class="c4"
+          />
+          <br />
+          <input
+            class="c5"
+            disabled=""
             type="submit"
             value="Submit"
           />
@@ -34712,8 +34727,13 @@ Object {
           type="password"
         />
         <br />
+        <span
+          class="sc-eNQAEJ gbiKRA"
+        />
+        <br />
         <input
-          class="sc-jKJlTe cpBmDe"
+          class="sc-jKJlTe frVzdg"
+          disabled=""
           type="submit"
           value="Submit"
         />
@@ -40085,22 +40105,22 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-eHgmQL ethFFU"
+            class="sc-cvbbAY hqEYNQ"
           >
             Pay For Content Seamlessly
           </h1>
           <h2
-            class="sc-cvbbAY euurOB"
+            class="sc-jWBwVP jKTDHG"
           >
             Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
           </h2>
           <p
-            class="sc-jWBwVP fPZrbX"
+            class="sc-brqgnP kLeLPN"
           >
             At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
           </p>
           <p
-            class="sc-jWBwVP fPZrbX"
+            class="sc-brqgnP kLeLPN"
           >
             If you want to know more about Unlock's decentralized payment protocol, check out our
              
@@ -40110,26 +40130,26 @@ Object {
             .
           </p>
           <form
-            class="sc-brqgnP hOrYDl"
+            class="sc-cMljjf jvExFn"
           >
             <input
-              class="sc-cMljjf iyuKqB"
+              class="sc-jAaTju eNdXfl"
               name="emailAddress"
               placeholder="Enter your email to get started"
               type="email"
             />
             <input
-              class="sc-jAaTju fnaAyu"
+              class="sc-jDwBTQ jPhpnd"
               type="submit"
               value="Sign Up"
             />
             <p
-              class="sc-jWBwVP fPZrbX"
+              class="sc-brqgnP kLeLPN"
             >
               Already have an account?
                
               <a
-                class="sc-gPEVay eKpZDv"
+                class="sc-iRbamj bpwFyB"
               >
                 Log in here.
               </a>
@@ -49218,19 +49238,19 @@ Object {
     />
     <div>
       <h1
-        class="sc-eNQAEJ etVbOu"
+        class="sc-hMqMXs gKGisj"
       >
         Log In to Your Account
       </h1>
       <form>
         <label
-          class="sc-iAyFgw gDFXaf"
+          class="sc-hSdWYo hUejMB"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-kEYyzF lhIYuq"
+          class="sc-kkGfuU ghCGYh"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -49238,13 +49258,13 @@ Object {
         />
         <br />
         <label
-          class="sc-iAyFgw gDFXaf"
+          class="sc-hSdWYo hUejMB"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-kEYyzF lhIYuq"
+          class="sc-kkGfuU ghCGYh"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -49252,18 +49272,18 @@ Object {
         />
         <br />
         <input
-          class="sc-kkGfuU fQSzZx"
+          class="sc-iAyFgw cnGVmw"
           type="submit"
           value="Submit"
         />
       </form>
       <p
-        class="sc-hMqMXs jhndXf"
+        class="sc-kEYyzF cdKEmV"
       >
         Don't have an account?
          
         <a
-          class="sc-hSdWYo LCBib"
+          class="sc-eHgmQL eGUkTu"
         >
           Sign up here.
         </a>
@@ -53626,22 +53646,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-eHgmQL ethFFU"
+        class="sc-cvbbAY hqEYNQ"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-cvbbAY euurOB"
+        class="sc-jWBwVP jKTDHG"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-jWBwVP fPZrbX"
+        class="sc-brqgnP kLeLPN"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-jWBwVP fPZrbX"
+        class="sc-brqgnP kLeLPN"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out our
          
@@ -53651,26 +53671,26 @@ Object {
         .
       </p>
       <form
-        class="sc-brqgnP hOrYDl"
+        class="sc-cMljjf jvExFn"
       >
         <input
-          class="sc-cMljjf iyuKqB"
+          class="sc-jAaTju eNdXfl"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-jAaTju fnaAyu"
+          class="sc-jDwBTQ jPhpnd"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-jWBwVP fPZrbX"
+          class="sc-brqgnP kLeLPN"
         >
           Already have an account?
            
           <a
-            class="sc-gPEVay eKpZDv"
+            class="sc-iRbamj bpwFyB"
           >
             Log in here.
           </a>
