@@ -293,6 +293,7 @@ describe('WalletService (ethers)', () => {
         })
       })
 
+      // rebasing sucks
       it('should use eth_signTypedData and stringify the data for non-MetaMask wallets', async done => {
         expect.assertions(2)
         const hash =
