@@ -6,29 +6,37 @@ pragma solidity 0.5.7;
 
 contract UnlockUtils {
 
-  function strConcat(string memory _a, string memory _b, string memory _c, string memory _d) public pure returns (string memory _concatenatedString) {
-        bytes memory _ba = bytes(_a);
-        bytes memory _bb = bytes(_b);
-        bytes memory _bc = bytes(_c);
-        bytes memory _bd = bytes(_d);
-        string memory abcd = new string(_ba.length + _bb.length + _bc.length + _bd.length);
-        bytes memory babcd = bytes(abcd);
-        uint k = 0;
-        uint i = 0;
-        for (i = 0; i < _ba.length; i++) {
-            babcd[k++] = _ba[i];
-        }
-        for (i = 0; i < _bb.length; i++) {
-            babcd[k++] = _bb[i];
-        }
-        for (i = 0; i < _bc.length; i++) {
-            babcd[k++] = _bc[i];
-        }
-        for (i = 0; i < _bd.length; i++) {
-            babcd[k++] = _bd[i];
-        }
-        return string(babcd);
+  function strConcat(
+    string memory _a,
+    string memory _b,
+    string memory _c,
+    string memory _d
+  ) public
+    pure
+    returns (string memory _concatenatedString)
+  {
+    bytes memory _ba = bytes(_a);
+    bytes memory _bb = bytes(_b);
+    bytes memory _bc = bytes(_c);
+    bytes memory _bd = bytes(_d);
+    string memory abcd = new string(_ba.length + _bb.length + _bc.length + _bd.length);
+    bytes memory babcd = bytes(abcd);
+    uint k = 0;
+    uint i = 0;
+    for (i = 0; i < _ba.length; i++) {
+      babcd[k++] = _ba[i];
     }
+    for (i = 0; i < _bb.length; i++) {
+      babcd[k++] = _bb[i];
+    }
+    for (i = 0; i < _bc.length; i++) {
+      babcd[k++] = _bc[i];
+    }
+    for (i = 0; i < _bd.length; i++) {
+      babcd[k++] = _bd[i];
+    }
+    return string(babcd);
+  }
 
   function uint2Str(
     uint _i
