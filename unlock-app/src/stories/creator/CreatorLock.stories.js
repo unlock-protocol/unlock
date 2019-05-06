@@ -9,7 +9,7 @@ import { TransactionType } from '../../unlockTypes'
 
 const lockWith = params => {
   const standardLock = {
-    address: '0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B',
+    address: '0xabcdef123',
     asOf: 31337,
     balance: '0.045',
     expirationDuration: 2592000,
@@ -38,13 +38,14 @@ const store = createUnlockStore({
     confirmingid: {
       status: 'mined',
       confirmations: 4,
-      lock: '0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B',
+      type: TransactionType.LOCK_CREATION,
+      lock: '0x123456abc',
     },
     submittedid: {
       status: 'submitted',
       confirmations: 0,
       type: TransactionType.LOCK_CREATION,
-      lock: '0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B',
+      lock: '0xabcdef123',
     },
     withdrawalconfirmingid: {
       status: 'mined',
@@ -56,9 +57,11 @@ const store = createUnlockStore({
       status: 'submitted',
       confirmations: 0,
       withdrawal: withdrawalSubmittedAddress,
-      lock: '0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B',
+      lock: '0xdefcab445',
+      type: TransactionType.WITHDRAWAL,
     },
   },
+  keysForLockByPage: {},
   keys: {
     keyid: {
       transaction: 'deployedid',
@@ -93,6 +96,7 @@ storiesOf('CreatorLock', module)
   })
   .add('Confirming', () => {
     const lock = lockWith({
+      address: '0x123456abc',
       transaction: 'confirmingid',
       balance: '0',
       outstandingKeys: 0,
@@ -100,10 +104,14 @@ storiesOf('CreatorLock', module)
     return <CreatorLock lock={lock} edit={action('edit')} />
   })
   .add('Deployed', () => {
-    const lock = lockWith({ transaction: 'deployedid' })
+    const lock = lockWith({
+      address: '0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B',
+      transaction: 'deployedid',
+    })
     return <CreatorLock lock={lock} edit={action('edit')} />
   })
   .add('Not found', () => {
+    // TODO: what is this actually supposed to test?
     const lock = {
       keyPrice: '0.01',
       expirationDuration: 172800,
@@ -115,36 +123,19 @@ storiesOf('CreatorLock', module)
     return <CreatorLock lock={lock} transaction={null} edit={action('edit')} />
   })
   .add('With key', () => {
-    const lock = {
+    // TODO: not sure how to force this to have a key...
+    const lock = lockWith({
       keyPrice: '0.01',
-      expirationDuration: 172800,
-      maxNumberOfKeys: 240,
       outstandingKeys: 3,
-      address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
+      address: '0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B',
       transaction: 'deployedid',
-    }
-    const transaction = {
-      status: 'mined',
-      confirmations: 14,
-    }
-    return (
-      <CreatorLock
-        lock={lock}
-        transaction={transaction}
-        edit={action('edit')}
-      />
-    )
+    })
+    return <CreatorLock lock={lock} edit={action('edit')} />
   })
   .add('Withdrawal submitted', () => {
-    const lock = {
-      id: 'lockwithdrawalsubmittedid',
-      keyPrice: '0.01',
-      expirationDuration: 172800,
-      maxNumberOfKeys: 240,
-      outstandingKeys: 3,
-      address: withdrawalSubmittedAddress,
-      transaction: 'deployedid',
-    }
+    const lock = lockWith({
+      address: '0xdefcab445',
+    })
     return <CreatorLock lock={lock} edit={action('edit')} />
   })
   .add('Withdrawing', () => {
