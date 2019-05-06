@@ -13,6 +13,6 @@ If you have any questions, you can always email us at hello@unlock-protocol.com.
 
 And again, welcome!
 
-- The Unlock team
+The Unlock team
 `,
 }

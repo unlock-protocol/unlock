@@ -11,6 +11,6 @@ We recommend that you make sure you've saved this key somewhere safe where you'l
 
 If you have any questions, you can always email us at hello@unlock-protocol.com.
 
-- The Unlock team
+The Unlock team
 `,
 }
