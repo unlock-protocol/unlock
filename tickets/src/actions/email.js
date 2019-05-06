@@ -5,12 +5,12 @@ export const sendConfirmation = (
   ticket,
   eventName,
   eventDate,
-  confirmLink
+  ticketLink
 ) => ({
   type: SEND_CONFIRMATION,
   recipient,
   ticket,
   eventName,
   eventDate,
-  confirmLink,
+  ticketLink,
 })
