@@ -83,7 +83,7 @@ contract Unlock is
     string tokenURI
   );
 
-  event NewTokenSymbol(
+  event NewGlobalTokenSymbol(
     string tokenSymbol
   );
 
@@ -240,6 +240,6 @@ contract Unlock is
     onlyOwner
   {
     globalTokenSymbol = _symbol;
-    emit NewTokenSymbol(_symbol);
+    emit NewGlobalTokenSymbol(_symbol);
   }
 }
