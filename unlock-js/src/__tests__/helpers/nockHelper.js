@@ -7,6 +7,7 @@ export class NockHelper {
 
     this.anyRequestSetUp = false
     this.debug = debug
+    // ethers hard-codes this value, see https://github.com/ethers-io/ethers.js/issues/489
     this._rpcRequestId = 42
     this._noMatches = []
 
