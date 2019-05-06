@@ -47,7 +47,7 @@ export default class WedlockService {
     ticket: string,
     eventName: string,
     eventDate: string,
-    confirmLink: string
+    ticketLink: string
   ) => {
     return this.sendEmail(
       emailTemplate.confirmEvent,
@@ -55,7 +55,7 @@ export default class WedlockService {
       {
         eventName,
         eventDate,
-        confirmLink,
+        ticketLink,
       },
       [{ path: ticket }]
     )

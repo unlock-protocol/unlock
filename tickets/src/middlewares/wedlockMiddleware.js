@@ -11,20 +11,14 @@ const wedlockMiddleware = config => {
     return next => {
       return action => {
         if (action.type === SEND_CONFIRMATION) {
-          const {
-            recipient,
-            ticket,
-            eventName,
-            eventDate,
-            confirmLink,
-          } = action
+          const { recipient, ticket, eventName, eventDate, ticketLink } = action
 
           wedlockService.confirmEvent(
             recipient,
             ticket,
             eventName,
             eventDate,
-            confirmLink
+            ticketLink
           )
         }
 
