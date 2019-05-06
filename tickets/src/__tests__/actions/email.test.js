@@ -7,7 +7,7 @@ describe('email actions', () => {
     const ticket = 'data-uri'
     const eventName = 'The party'
     const eventDate = 'June 26th 2019'
-    const confirmLink = 'https://tickets....'
+    const ticketLink = 'https://tickets....'
 
     const expectedAction = {
       type: SEND_CONFIRMATION,
@@ -15,10 +15,10 @@ describe('email actions', () => {
       ticket,
       eventName,
       eventDate,
-      confirmLink,
+      ticketLink,
     }
     expect(
-      sendConfirmation(recipient, ticket, eventName, eventDate, confirmLink)
+      sendConfirmation(recipient, ticket, eventName, eventDate, ticketLink)
     ).toEqual(expectedAction)
   })
 })

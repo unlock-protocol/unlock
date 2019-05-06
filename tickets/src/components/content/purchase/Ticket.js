@@ -119,9 +119,9 @@ export const mapDispatchToProps = dispatch => ({
   signAddress: address => {
     dispatch(signAddress(address))
   },
-  sendConfirmation: (recipient, ticket, eventName, eventDate, confirmLink) => {
+  sendConfirmation: (recipient, ticket, eventName, eventDate, ticketLink) => {
     dispatch(
-      sendConfirmation(recipient, ticket, eventName, eventDate, confirmLink)
+      sendConfirmation(recipient, ticket, eventName, eventDate, ticketLink)
     )
   },
 })

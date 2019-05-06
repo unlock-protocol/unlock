@@ -16,7 +16,7 @@ describe('Wedlocks Service', () => {
       const ticket = 'ticket-as-data-uri'
       const eventName = 'My party'
       const eventDate = 'December 26th 2019'
-      const confirmLink = 'http://tickets.unlock-protocol.com/0x...'
+      const ticketLink = 'http://tickets.unlock-protocol.com/0x...'
 
       const expectedPayload = {
         template: emailTemplate.confirmEvent,
@@ -29,11 +29,11 @@ describe('Wedlocks Service', () => {
         params: {
           eventName,
           eventDate,
-          confirmLink,
+          ticketLink,
         },
       }
       axios.post.mockReturnValue()
-      await w.confirmEvent(recipient, ticket, eventName, eventDate, confirmLink)
+      await w.confirmEvent(recipient, ticket, eventName, eventDate, ticketLink)
 
       expect(axios.post).toHaveBeenCalledWith(
         'http://notareal.host',

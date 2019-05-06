@@ -49,7 +49,7 @@ describe('Wedlock middleware', () => {
       const ticket = 'data-uri'
       const eventName = 'The launch party!'
       const eventDate = 'Monday June 3rd, 2019'
-      const confirmLink = 'http://tickets.unlock-protocol.com/0x123'
+      const ticketLink = 'http://tickets.unlock-protocol.com/0x123'
 
       const action = {
         type: SEND_CONFIRMATION,
@@ -57,7 +57,7 @@ describe('Wedlock middleware', () => {
         ticket,
         eventName,
         eventDate,
-        confirmLink,
+        ticketLink,
       }
       mockWedlockService.confirmEvent = jest.fn(() => {
         return Promise.resolve()
@@ -69,7 +69,7 @@ describe('Wedlock middleware', () => {
         ticket,
         eventName,
         eventDate,
-        confirmLink
+        ticketLink
       )
       expect(next).toHaveBeenCalledTimes(1)
     })
