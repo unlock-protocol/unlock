@@ -252,8 +252,6 @@ describe('WalletService (ethers)', () => {
     })
 
     describe('signData', () => {
-      const account = '0x123'
-      const result = 'RESULT'
       let data = 'please sign me'
       let metamask
       async function metamaskBeforeEach() {
@@ -272,135 +270,85 @@ describe('WalletService (ethers)', () => {
         await nock.resolveWhenAllNocksUsed()
       }
 
-      describe('if the provider is metamask', () => {
-        it('should use eth_signTypedData_v3 and stringify the data for MetaMask', async () => {
-          expect.assertions(1)
-          await metamaskBeforeEach()
-          await resetTestsAndConnect(metamask)
-          data = []
-          walletService.provider = {
-            send: jest.fn(() =>
-              Promise.resolve({
-                result: {
-                  result,
-                },
-              })
-            ),
-          }
-          await walletService.signData(account, data, () => {})
-
-          expect(walletService.provider.send).toHaveBeenCalledWith(
-            'eth_signTypedData_v3',
-            expect.arrayContaining([account, JSON.stringify(data)])
-          )
-        })
-      })
-
-      it('should use eth_signTypedData and stringify the data for json-rpc wallets', async () => {
-        expect.assertions(1)
-
-        await resetTestsAndConnect()
-        data = []
-        walletService.provider = {
-          send: jest.fn(() =>
-            Promise.resolve({
-              result: {
-                result,
-              },
-            })
-          ),
-        }
-        await walletService.signData(account, data, () => {})
-
-        expect(walletService.provider.send).toHaveBeenCalledWith(
-          'eth_signTypedData',
-          expect.arrayContaining([account, data])
-        )
-      })
-
-      it('should use eth_signTypedData and stringify the data for non-MetaMask wallets', async () => {
-        expect.assertions(1)
+      it('should use eth_signTypedData_v3 and stringify for Metamask wallets', async done => {
+        expect.assertions(2)
+        const hash =
+          '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
+        const returned = Buffer.from(hash).toString('base64')
 
         await metamaskBeforeEach()
         await resetTestsAndConnect(metamask)
-
-        walletService.web3Provider.isMetaMask = false
         data = []
-        walletService.provider = {
-          send: jest.fn(() =>
-            Promise.resolve({
-              result: {
-                result,
-              },
-            })
-          ),
-        }
-        await walletService.signData(account, data, () => {})
-
-        expect(walletService.provider.send).toHaveBeenCalledWith(
-          'eth_signTypedData',
-          expect.arrayContaining([account, data])
+        // eth_signTypedData_v3 expects the data to be a JSON string
+        nock.ethSignTypedDatav3AndYield(
+          unlockAddress,
+          JSON.stringify(data),
+          hash
         )
+
+        await walletService.signData(unlockAddress, data, (error, result) => {
+          expect(error).toBeNull()
+          expect(result).toBe(returned)
+          done()
+        })
       })
 
-      it('should return the signature', async () => {
-        expect.assertions(1)
+      it('should use eth_signTypedData and stringify the data for non-MetaMask wallets', async done => {
+        expect.assertions(2)
+        const hash =
+          '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
+        const returned = Buffer.from(hash).toString('base64')
 
         await resetTestsAndConnect()
         data = []
-        walletService.provider = {
-          send: jest.fn(() =>
-            Promise.resolve({
-              result,
-            })
-          ),
-        }
-        let signature
-        await walletService.signData(account, data, (error, output) => {
-          signature = output
-        })
+        nock.ethSignTypedDataAndYield(unlockAddress, data, hash)
 
-        expect(signature).toBe(Buffer.from(result).toString('base64'))
+        await walletService.signData(unlockAddress, data, (error, result) => {
+          expect(error).toBeNull()
+          expect(result).toBe(returned)
+          done()
+        })
       })
 
-      it('should yield an error if there was a network error', async () => {
+      it('should yield an error if there was a network error', async done => {
         expect.assertions(1)
+        const hash =
+          '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
+        const error = { code: 404, message: 'oops' }
+
         await resetTestsAndConnect()
         data = []
-        const networkError = new Error('network')
-        walletService.provider = {
-          send: jest.fn(() => Promise.reject(networkError)),
-        }
-        let error
-        await walletService.signData(account, data, e => {
-          error = e
-        })
-        expect(error).toBe(networkError)
-      })
+        nock.ethSignTypedDataAndYield(unlockAddress, data, hash, error)
 
-      it('should yield an error if there was a signature error', async () => {
-        expect.assertions(1)
-        await resetTestsAndConnect()
-        data = []
-        const signatureError = new Error('signature')
-        walletService.provider = {
-          send: jest.fn(() =>
-            Promise.resolve({
-              error: signatureError,
-            })
-          ),
-        }
-        let error
-        await walletService.signData(account, data, err => {
-          error = err
+        await walletService.signData(unlockAddress, data, error => {
+          expect(error).toBeInstanceOf(Error)
+          done()
         })
-
-        expect(error).toBe(signatureError)
       })
     })
 
     describe('signDataPersonal', () => {
-      it('dispatches the request to personally sign the data to the corresponding web3 method', async done => {
+      it('dispatches the request to personally sign the data for non-http providers', async done => {
+        expect.assertions(2)
+        await resetTestsAndConnect()
+        const data = 'data to be signed'
+        const account = '0xd4bb4b501ac12f35db35d60c845c8625b5f28fd1'
+        const hash =
+          '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
+        const returned = Buffer.from('stuff').toString('base64')
+        walletService.web3Provider = true // trigger the call to personalSign
+
+        nock.accountsAndYield([account])
+        nock.personalSignAndYield(hash, account, 'stuff')
+
+        walletService.signDataPersonal(account, data, (error, result) => {
+          expect(error).toBeNull()
+          expect(result).toBe(returned)
+          done()
+        })
+      })
+
+      it('calls eth_sign for http providers', async done => {
         expect.assertions(2)
         await resetTestsAndConnect()
         const data = 'data to be signed'
@@ -410,11 +358,11 @@ describe('WalletService (ethers)', () => {
         const returned = Buffer.from('stuff').toString('base64')
 
         nock.accountsAndYield([account])
-        nock.personalSignAndYield(hash, account, 'stuff')
+        nock.ethSignAndYield(hash, account, 'stuff')
 
         walletService.signDataPersonal(account, data, (error, result) => {
+          expect(error).toBeNull()
           expect(result).toBe(returned)
-          expect(error).toBe(null)
           done()
         })
       })

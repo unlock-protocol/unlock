@@ -185,39 +185,36 @@ export default class WalletService extends UnlockService {
    * @param {*} callback
    */
   async signData(account, data, callback) {
-    let method
-
-    if (this.web3Provider && this.web3Provider.isMetaMask) {
-      method = 'eth_signTypedData_v3'
-      data = JSON.stringify(data)
-    } else {
-      method = 'eth_signTypedData'
-    }
+    const isMetaMask = this.web3Provider && this.web3Provider.isMetaMask
+    const method = isMetaMask ? 'eth_signTypedData_v3' : 'eth_signTypedData'
+    // see https://github.com/MetaMask/metamask-extension/blob/c4caba131776ff7397d3a4071d7cc84907ac9a43/app/scripts/metamask-controller.js#L997
+    const sendData = isMetaMask ? JSON.stringify(data) : data
 
     try {
-      const result = await this.provider.send(method, [account, data])
+      const result = await this.provider.send(method, [account, sendData])
 
-      // signature failure on the node
-      if (result.error) {
-        return callback(result.error, null)
-      }
-
-      callback(null, Buffer.from(result.result).toString('base64'))
+      callback(null, Buffer.from(result).toString('base64'))
     } catch (err) {
       return callback(err, null)
     }
   }
 
+  async signMessage(data, method) {
+    const dataHash = utils.hexlify(utils.sha3(utils.utf8ToHex(data)))
+    const signer = this.provider.getSigner()
+    const addr = await signer.getAddress()
+    let firstParam = dataHash
+    let secondParam = addr.toLowerCase()
+    if (method === 'eth_sign') {
+      ;[firstParam, secondParam] = [secondParam, firstParam] // swap the parameter order
+    }
+    return await this.provider.send(method, [firstParam, secondParam])
+  }
+
   async signDataPersonal(account, data, callback) {
     try {
-      const dataHash = utils.sha3(utils.utf8ToHex(data))
-      const signer = this.provider.getSigner()
-      const addr = await signer.getAddress()
-      const signature = await this.provider.send('personal_sign', [
-        utils.hexlify(dataHash),
-        addr.toLowerCase(),
-      ])
-
+      const method = this.web3Provider ? 'personal_sign' : 'eth_sign'
+      const signature = await this.signMessage(data, method)
       callback(null, Buffer.from(signature).toString('base64'))
     } catch (error) {
       return callback(error, null)
