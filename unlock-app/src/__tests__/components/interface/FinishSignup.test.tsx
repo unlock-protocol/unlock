@@ -19,7 +19,7 @@ describe('FinishSignup', () => {
     expect.assertions(1)
 
     const emailAddress = 'geoff@bitconnect.gov'
-    const password = 'guest'
+    const password = 'password1'
 
     const { getByLabelText, getByDisplayValue } = rtl.render(
       <FinishSignup
@@ -35,7 +35,7 @@ describe('FinishSignup', () => {
     const submit = getByDisplayValue('Submit')
 
     inputs.forEach(input => {
-      rtl.fireEvent.change(input, { target: { value: 'guest' } })
+      rtl.fireEvent.change(input, { target: { value: password } })
     })
 
     rtl.fireEvent.click(submit)
@@ -51,7 +51,7 @@ describe('FinishSignup', () => {
     expect.assertions(1)
 
     const emailAddress = 'geoff@bitconnect.gov'
-    const password = 'guest'
+    const password = 'AVeryGoodPassword'
 
     const { getByLabelText, getByDisplayValue } = rtl.render(
       <FinishSignup
@@ -77,14 +77,17 @@ describe('FinishSignup', () => {
   describe('validatePassword', () => {
     it('should not allow blank passwords', () => {
       expect.assertions(1)
-      expect(validatePassword('', '')).toEqual([passwordErrors.EMPTY])
+      expect(validatePassword('', '')).toEqual([
+        passwordErrors.EMPTY,
+        passwordErrors.MID_LENGTH,
+      ])
     })
 
     it('should not allow passwords that are different from their confirmations', () => {
       expect.assertions(1)
-      expect(validatePassword('guest', 'ghost')).toEqual([
-        passwordErrors.NO_MATCH,
-      ])
+      expect(
+        validatePassword('AVeryGoodPassword', 'PGeryVoodAassword')
+      ).toEqual([passwordErrors.NO_MATCH])
     })
   })
 

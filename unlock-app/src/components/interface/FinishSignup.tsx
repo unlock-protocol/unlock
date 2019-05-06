@@ -23,6 +23,8 @@ interface State {
 export const passwordErrors = {
   EMPTY: 'Password must not be empty.',
   NO_MATCH: 'Password and confirmation must match.',
+  MID_LENGTH:
+    'We recommend using a more complex password (8 characters at the absolute minimum).',
 }
 
 export const validatePassword = (
@@ -34,6 +36,13 @@ export const validatePassword = (
   if (password.length < 1) {
     errors.push(passwordErrors.EMPTY)
   }
+
+  if (password.length < 8) {
+    errors.push(passwordErrors.MID_LENGTH)
+  }
+
+  // TODO: better calculation of best-case password complexity.
+  // TODO: augment complexity calculation with calls to HaveIBeenPwned API.
 
   if (password !== passwordConfirmation) {
     errors.push(passwordErrors.NO_MATCH)
