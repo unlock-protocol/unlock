@@ -114,8 +114,8 @@ describe('handler', () => {
             'Access-Control-Allow-Origin': '*',
           })
         )
-        expect(response.statusCode).toBe(200)
-        expect(response.body).toBe(JSON.stringify(responseBody))
+        expect(response.statusCode).toBe(204)
+        expect(response.body).toBe(undefined)
         done()
       }
     )
@@ -145,7 +145,7 @@ describe('handler', () => {
       {},
       (_error, response) => {
         expect(response.statusCode).toBe(400)
-        expect(response.body).toBe(JSON.stringify(error))
+        expect(response.body).toBe('Client Error')
         done()
       }
     )
@@ -175,7 +175,7 @@ describe('handler', () => {
       {},
       (_error, response) => {
         expect(response.statusCode).toBe(500)
-        expect(response.body).toBe(error.message)
+        expect(response.body).toBe('Server Error') // We do not show the actual error to users
         done()
       }
     )
