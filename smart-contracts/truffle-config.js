@@ -19,6 +19,18 @@ if (rinkebyProviderUrl) {
 }
 
 /**
+ * Used for ropsten deployments
+ */
+const ropstenProviderUrl = process.env.ROPSTEN_PROVIDER_URL
+let ropstenMnemonic = {
+  seed: '',
+  accountIndex: 0,
+}
+if (ropstenProviderUrl) {
+  ropstenMnemonic = require('./mnemonic.ropsten') // eslint-disable-line import/no-unresolved
+}
+
+/**
  * Used for mainnet deployments
  */
 const mainnetProviderUrl = process.env.MAINNET_PROVIDER_URL
@@ -49,6 +61,14 @@ const rinkebyProvider = function() {
   )
 }
 
+const ropstenProvider = function() {
+  return new HDWalletProvider(
+    ropstenMnemonic.seed,
+    ropstenProviderUrl,
+    ropstenMnemonic.accountIndex
+  )
+}
+
 module.exports = {
   networks: {
     development: {
@@ -60,6 +80,12 @@ module.exports = {
     rinkeby: {
       provider: rinkebyProvider,
       network_id: '4', // Network Id for Rinkeby
+      gas: 5000000,
+      gasPrice: 5000000000, // 5GWEI
+    },
+    ropsten: {
+      provider: ropstenProvider,
+      network_id: '3', // Network Id for Rinkeby
       gas: 5000000,
       gasPrice: 5000000000, // 5GWEI
     },
