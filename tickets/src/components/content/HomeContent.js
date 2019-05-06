@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import Head from 'next/head'
-import Media from '../../theme/media'
+import Media, { Phone, NoPhone } from '../../theme/media'
 import Layout from '../interface/Layout'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { pageTitle } from '../../constants'
@@ -22,11 +22,16 @@ export default function HomeContent() {
               Tickets is built on top of Unlock, which is an easy to use access
               control protocol on the Ethereum blockchain.
             </p>
+            <Phone>
+              <Illustration src="/static/images/jpg/tickets.jpg" />
+            </Phone>
             <Link href="/create">
               <CreateButton>Create an event</CreateButton>
             </Link>
           </Description>
-          <Illustration />
+          <NoPhone>
+            <Illustration src="/static/images/jpg/tickets.jpg" />
+          </NoPhone>
         </Grid>
       </Layout>
     </GlobalErrorConsumer>
@@ -72,8 +77,9 @@ const Description = styled.div`
     font-weight: 100;
   }
 `
-const Illustration = styled.div`
+const Illustration = styled.img`
   background-color: #e5e5e5;
+  max-width: 100%;
 `
 
 const Title = styled.h1`
