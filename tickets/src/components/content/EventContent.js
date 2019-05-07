@@ -205,7 +205,7 @@ We’re doing something different! By now you’ve probably been to a few too ma
 
 Instead, we’re going to have an informal gameshow party where we pit eight blockchain fanatics against each other to debate fiery topics from within the industry. All in good fun and all for laughs!
 
-Meet us at 630PM on May 16th, at the Bushwick Generator
+Meet us at 630PM on May 16th, at the Bushwick Generator.
 
 
         If you need any help (or Eth) to purchase your ticket, please get in touch with us on the Telegram group below.`
@@ -338,7 +338,7 @@ const Description = styled.div`
   font-size: 24px;
   font-family: 'IBM Plex Sans', sans-serif;
   p {
-    padding: 0px;
+    padding: 0.5em 0;
     margin: 0px;
   }
 `
