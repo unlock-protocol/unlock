@@ -1,9 +1,10 @@
 pragma solidity 0.5.7;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
+import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
+import 'openzeppelin-solidity/contracts/cryptography/ECDSA.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
-import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 import './MixinFunds.sol';
 
 
@@ -20,9 +21,13 @@ contract MixinRefunds is
   uint public refundPenaltyNumerator = 1;
   uint public refundPenaltyDenominator = 10;
 
+  // Stores a nonce per user to use for signed messages
+  mapping(address => uint) public keyOwnerToNonce;
+
   event CancelKey(
     uint indexed tokenId,
     address indexed owner,
+    address indexed sendTo,
     uint refund
   );
 
@@ -39,19 +44,40 @@ contract MixinRefunds is
   function cancelAndRefund()
     external
   {
-    Key storage key = _getKeyFor(msg.sender);
+    _cancelAndRefund(msg.sender);
+  }
 
-    uint refund = _getCancelAndRefundValue(msg.sender);
+  /**
+   * @dev Cancels a key owned by a different user and sends the funds to the msg.sender.
+   * @param _keyOwner this user's key will be canceled
+   * @param _signature getCancelAndRefundApprovalHash signed by the _keyOwner
+   */
+  function cancelAndRefundFor(
+    address _keyOwner,
+    bytes calldata _signature
+  ) external
+  {
+    require(
+      ECDSA.recover(
+        ECDSA.toEthSignedMessageHash(
+          getCancelAndRefundApprovalHash(_keyOwner, msg.sender)
+        ),
+        _signature
+      ) == _keyOwner, 'INVALID_SIGNATURE'
+    );
 
-    emit CancelKey(key.tokenId, msg.sender, refund);
-    // expirationTimestamp is a proxy for hasKey, setting this to `block.timestamp` instead
-    // of 0 so that we can still differentiate hasKey from hasValidKey.
-    key.expirationTimestamp = block.timestamp;
+    keyOwnerToNonce[_keyOwner]++;
+    _cancelAndRefund(_keyOwner);
+  }
 
-    if (refund > 0) {
-      // Security: doing this last to avoid re-entrancy concerns
-      _transfer(msg.sender, refund);
-    }
+  /**
+   * @dev Increments the current nonce for the msg.sender.
+   * This can be used to invalidate a previously signed message.
+   */
+  function incrementNonce(
+  ) external
+  {
+    keyOwnerToNonce[msg.sender]++;
   }
 
   /**
@@ -85,11 +111,53 @@ contract MixinRefunds is
   function getCancelAndRefundValueFor(
     address _owner
   )
-    external
-    view
+    external view
     returns (uint refund)
   {
     return _getCancelAndRefundValue(_owner);
+  }
+
+  /**
+   * @dev returns the hash to sign in order to allow another user to cancel on your behalf.
+   */
+  function getCancelAndRefundApprovalHash(
+    address _keyOwner,
+    address _txSender
+  ) public view
+    returns (bytes32 approvalHash)
+  {
+    return keccak256(
+      abi.encodePacked(
+        // Approval is specific to this Lock
+        address(this),
+        // Approval enables only one cancel call
+        keyOwnerToNonce[_keyOwner],
+        // Approval allows only one account to broadcast the tx
+        _txSender
+      )
+    );
+  }
+
+  /**
+   * @dev cancels the key for the given keyOwner and sends the refund to the msg.sender.
+   */
+  function _cancelAndRefund(
+    address _keyOwner
+  ) internal
+  {
+    Key storage key = _getKeyFor(_keyOwner);
+
+    uint refund = _getCancelAndRefundValue(_keyOwner);
+
+    emit CancelKey(key.tokenId, _keyOwner, msg.sender, refund);
+    // expirationTimestamp is a proxy for hasKey, setting this to `block.timestamp` instead
+    // of 0 so that we can still differentiate hasKey from hasValidKey.
+    key.expirationTimestamp = block.timestamp;
+
+    if (refund > 0) {
+      // Security: doing this last to avoid re-entrancy concerns
+      _transfer(msg.sender, refund);
+    }
   }
 
   /**
@@ -100,8 +168,7 @@ contract MixinRefunds is
   function _getCancelAndRefundValue(
     address _owner
   )
-    private
-    view
+    private view
     hasValidKey(_owner)
     returns (uint refund)
   {
