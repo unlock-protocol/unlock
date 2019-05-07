@@ -1,1 +1,3 @@
 src # we only publish lib to npm
+coverage
+*.tgz
