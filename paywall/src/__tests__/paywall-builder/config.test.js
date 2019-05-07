@@ -65,7 +65,7 @@ describe('paywall configuration inter-window communication', () => {
     it('should post a message when ready', () => {
       expect.assertions(1)
 
-      window.unlockConfig = 'hi'
+      window.unlockProtocolConfig = 'hi'
       const event = {
         origin: 'origin',
         source: iframe.contentWindow,
@@ -210,7 +210,7 @@ describe('paywall configuration inter-window communication', () => {
       it('should not post if origin does not match', () => {
         expect.assertions(1)
 
-        window.unlockConfig = 'hi'
+        window.unlockProtocolConfig = 'hi'
         const event = {
           origin: 'origin',
           source: iframe.contentWindow,
@@ -228,7 +228,7 @@ describe('paywall configuration inter-window communication', () => {
       it('should not post if source does not match', () => {
         expect.assertions(1)
 
-        window.unlockConfig = 'hi'
+        window.unlockProtocolConfig = 'hi'
         const event = {
           origin: 'origin',
           source: window,
@@ -246,7 +246,7 @@ describe('paywall configuration inter-window communication', () => {
       it('should not post if message is not POST_MESSAGE_READY', () => {
         expect.assertions(1)
 
-        window.unlockConfig = 'hi'
+        window.unlockProtocolConfig = 'hi'
         const event = {
           origin: 'origin',
           source: iframe.contentWindow,
