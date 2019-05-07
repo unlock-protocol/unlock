@@ -53,9 +53,9 @@ export function setupReadyListener(window, iframe, origin) {
     if (event.data === POST_MESSAGE_READY) {
       // we were ready first, send the paywall configuration now
       // this script assumes that the metadata is set in a script tag like:
-      // <script type="text/javascript">window.unlockConfig = {...}</script>
+      // <script type="text/javascript">window.unlockProtocolConfig = {...}</script>
       // immediately before paywall.min.js is loaded
-      sendConfig(window.unlockConfig, iframe, origin)
+      sendConfig(window.unlockProtocolConfig, iframe, origin)
       enable(window)
         .then(() => getAccount(window, iframe, origin))
         .catch(() => {}) // no web3, don't retrieve account
