@@ -34229,11 +34229,24 @@ Object {
         <p
           class="c1"
         >
-          Create a password for your account: 
-          geoff@bitconnect.gov
-          .
+          Create a password for your account.
         </p>
         <form>
+          <label
+            class="c2"
+            for="emailPlaceholder"
+          >
+            Email
+          </label>
+          <input
+            class="c3"
+            disabled=""
+            id="emailPlaceholder"
+            name="emailPlaceholder"
+            type="email"
+            value="geoff@bitconnect.gov"
+          />
+          <br />
           <label
             class="c2"
             for="passwordInput"
@@ -34290,11 +34303,24 @@ Object {
       <p
         class="sc-kpOJdX wegZY"
       >
-        Create a password for your account: 
-        geoff@bitconnect.gov
-        .
+        Create a password for your account.
       </p>
       <form>
+        <label
+          class="sc-dxgOiQ kuSlwR"
+          for="emailPlaceholder"
+        >
+          Email
+        </label>
+        <input
+          class="sc-ckVGcZ kVQLNc"
+          disabled=""
+          id="emailPlaceholder"
+          name="emailPlaceholder"
+          type="email"
+          value="geoff@bitconnect.gov"
+        />
+        <br />
         <label
           class="sc-dxgOiQ kuSlwR"
           for="passwordInput"
