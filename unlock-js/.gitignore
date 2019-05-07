@@ -1,3 +1,4 @@
 # Builds are in:
 /lib
 coverage/
+*.tgz

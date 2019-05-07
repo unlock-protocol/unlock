@@ -87,7 +87,7 @@ export const EventContent = ({
             <Column>
               <Description>
                 {description.split('\n\n').map(line => {
-                  return <p key={line}>{line}</p>
+                  return <DescriptionPara key={line}>{line}</DescriptionPara>
                 })}
               </Description>
               <Location>{location}</Location>
@@ -201,14 +201,13 @@ export const mapStateToProps = (
       event.location = 'Bushwick Generator, 215 Moore St, Brooklyn'
       event.description = `HEYOOOO!
 
-We’re doing something different! By now you’ve probably been to a few too many after parties. Let's not even talk about Consensus, did you see how packed the hallways get? Geez Louise!
+We’re doing something different! By now you’ve probably been to a few too many after-parties. Let's not even talk about Consensys - did you see how packed the hallways were?
 
 Instead, we’re going to have an informal gameshow party where we pit eight blockchain fanatics against each other to debate fiery topics from within the industry. All in good fun and all for laughs!
 
-Meet us at 630PM on May 16th, at the Bushwick Generator
+Meet us at 6:30PM on May 16th, at the Bushwick Generator.
 
-
-        If you need any help (or Eth) to purchase your ticket, please get in touch with us on the Telegram group below.`
+        If you need any help (or Eth) to purchase your ticket, please get in touch with us via the Telegram group below.`
       event.image =
         'https://s3.amazonaws.com/assets.unlock-protocol.com/NFTEventLogos.png'
       event.links = [
@@ -258,6 +257,7 @@ const Columns = styled.section`
     grid-gap: 40px;
     grid-template-columns: repeat(${props => props.count || 2}, 1fr);
     align-items: start;
+    padding-left: 20px;
   `}
 `
 
@@ -302,6 +302,9 @@ const Title = styled.h1`
   font-size: 40px;
   line-height: normal;
   margin-bottom: 0px;
+  ${Media.nophone`
+    padding-left: 20px;
+  `}
 `
 
 const Price = styled.div`
@@ -332,13 +335,16 @@ const DisplayDate = styled.h2`
   color: var(--red);
   margin-top: 0px;
   margin-bottom: 0px;
+  ${Media.nophone`
+    padding-left: 20px;
+  `}
 `
 
 const Description = styled.div`
   font-size: 24px;
   font-family: 'IBM Plex Sans', sans-serif;
   p {
-    padding: 0px;
+    padding: 0.5em 0;
     margin: 0px;
   }
 `
@@ -347,4 +353,8 @@ const Location = styled.p`
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 16px;
   margin-top: 30px;
+`
+
+const DescriptionPara = styled.p`
+  margin-bottom: 1em;
 `

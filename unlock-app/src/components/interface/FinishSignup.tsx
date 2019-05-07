@@ -16,6 +16,39 @@ interface Props {
 interface State {
   password: string
   passwordConfirmation: string
+  errors: string[]
+  isValid: boolean
+}
+
+export const passwordErrors = {
+  EMPTY: 'Password must not be empty.',
+  NO_MATCH: 'Password and confirmation must match.',
+  MID_LENGTH:
+    'We recommend using a more complex password (8 characters at the absolute minimum).',
+}
+
+export const validatePassword = (
+  password: string,
+  passwordConfirmation: string
+) => {
+  let errors: string[] = []
+
+  if (password.length < 1) {
+    errors.push(passwordErrors.EMPTY)
+  }
+
+  if (password.length < 8) {
+    errors.push(passwordErrors.MID_LENGTH)
+  }
+
+  // TODO: better calculation of best-case password complexity.
+  // TODO: augment complexity calculation with calls to HaveIBeenPwned API.
+
+  if (password !== passwordConfirmation) {
+    errors.push(passwordErrors.NO_MATCH)
+  }
+
+  return errors
 }
 
 export class FinishSignup extends React.Component<Props, State> {
@@ -24,35 +57,61 @@ export class FinishSignup extends React.Component<Props, State> {
     this.state = {
       password: '',
       passwordConfirmation: '',
+      errors: [],
+      isValid: false,
     }
   }
 
   handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target
 
-    this.setState(prevState => ({
-      ...prevState,
-      [name]: value,
-    }))
+    this.setState(prevState => {
+      const newState = {
+        ...prevState,
+        [name]: value,
+      }
+      const { password, passwordConfirmation } = newState
+      const errors = validatePassword(password, passwordConfirmation)
+
+      return {
+        ...newState,
+        errors,
+        isValid: !errors.length,
+      }
+    })
   }
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const { emailAddress, signupCredentials } = this.props
-    const { password } = this.state
-    // TODO: Actually validate this before submitting.
-    signupCredentials({ emailAddress, password })
+    const { password, passwordConfirmation } = this.state
+    const errors = validatePassword(password, passwordConfirmation)
+
+    // Last sanity check to make sure nobody messed with the DOM attr
+    const isValid = !errors.length
+    if (isValid) {
+      signupCredentials({ emailAddress, password })
+    }
   }
 
   render = () => {
     const { emailAddress } = this.props
+    const { isValid, errors } = this.state
+
     return (
       <div>
         <Heading>Create Your Unlock Wallet</Heading>
-        <Instructions>
-          Create a password for your account: {emailAddress}.
-        </Instructions>
+        <Instructions>Create a password for your account.</Instructions>
         <form onSubmit={this.handleSubmit}>
+          <Label htmlFor="emailPlaceholder">Email</Label>
+          <Input
+            name="emailPlaceholder"
+            type="email"
+            id="emailPlaceholder"
+            value={emailAddress}
+            disabled
+          />
+          <br />
           <Label htmlFor="passwordInput">Password</Label>
           <Input
             name="password"
@@ -71,14 +130,16 @@ export class FinishSignup extends React.Component<Props, State> {
             onChange={this.handleInputChange}
           />
           <br />
-          <SubmitButton type="submit" value="Submit" />
+          <PasswordError>{errors.length ? errors[0] : ''}</PasswordError>
+          <br />
+          <SubmitButton type="submit" value="Submit" disabled={!isValid} />
         </form>
       </div>
     )
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
+export const mapDispatchToProps = (dispatch: any) => ({
   signupCredentials: (credentials: Credentials) =>
     dispatch(signupCredentials(credentials)),
 })
@@ -128,7 +189,16 @@ const SubmitButton = styled.input`
   border: none;
   background-color: var(--green);
   border-radius: 4px;
-  margin-top: 25px;
   font-size: 16px;
   cursor: pointer;
+  &[disabled] {
+    background-color: var(--grey);
+    cursor: not-allowed;
+    color: black;
+  }
+`
+
+const PasswordError = styled.span`
+  height: 30px;
+  line-height: 30px;
 `

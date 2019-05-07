@@ -1,5 +1,4 @@
 const deployLocks = require('../helpers/deployLocks')
-// const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getUnlockProxy = require('../helpers/proxy')
@@ -24,28 +23,11 @@ contract('Lock / erc721 / unlockUtils', accounts => {
   })
 
   describe('function strConcat', () => {
-    let resultingStr1, resultingStr2, resultingStr3, moreThan2Str
-    it('should concatenate 2 strings', async () => {
-      resultingStr1 = await lock.strConcat.call('hello', ' unlock')
-      resultingStr2 = await lock.strConcat.call('4', '2')
-      resultingStr3 = await lock.strConcat.call(
-        'https://locksmith.unlock-protocol.com/api/key/',
-        '11'
-      )
-      assert.equal(resultingStr1, 'hello unlock')
-      assert.equal(resultingStr2, '42')
-      assert.equal(
-        resultingStr3,
-        'https://locksmith.unlock-protocol.com/api/key/11'
-      )
-    })
+    let resultingStr
 
-    it('should concatenate more than 2 strings', async () => {
-      moreThan2Str = await lock.strConcat.call(
-        await lock.strConcat.call('1', '2'),
-        '3'
-      )
-      assert.equal(moreThan2Str, '123')
+    it('should concatenate 4 strings', async () => {
+      resultingStr = await lock.strConcat.call('hello', '-unlock', '/', '42')
+      assert.equal(resultingStr, 'hello-unlock/42')
     })
   })
 
