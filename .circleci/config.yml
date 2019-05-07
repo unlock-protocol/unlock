@@ -178,9 +178,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Set ENV_TARGET
-          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
-      - run:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
@@ -188,7 +185,7 @@ jobs:
           command: scripts/build-image.sh unlock-protocol-com
       - run:
           name: Deploy to Netlify
-          command: scripts/deploy.sh "$ENV_TARGET" unlock-protocol-com netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
+          command: scripts/deploy.sh prod unlock-protocol-com netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-paywall-netlify:
     machine: true
