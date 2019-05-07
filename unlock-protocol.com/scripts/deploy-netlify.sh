@@ -12,12 +12,15 @@ COMMIT=$3
 PUBLISH=$4
 BUILD_PATH="out/";
 
+# unlock-protocol.com is always deployed to production
+DEPLOY_ENV="prod"
+
 if [ "$PUBLISH" = "true" ]; then
-  # This is a build on master, we deploy to staging as a published build
+  # This is a build on master, we deploy as a published build
   PROD="--prod";
   MESSAGE="Deploying $COMMIT to production. See logs below.";
 else
-  # we deploy as a draft on staging
+  # we deploy as a draft
   PROD="";
   MESSAGE="Deploying $COMMIT to draft. See draft URL and logs below.";
 fi
