@@ -101,10 +101,17 @@ export class FinishSignup extends React.Component<Props, State> {
     return (
       <div>
         <Heading>Create Your Unlock Wallet</Heading>
-        <Instructions>
-          Create a password for your account: {emailAddress}.
-        </Instructions>
+        <Instructions>Create a password for your account.</Instructions>
         <form onSubmit={this.handleSubmit}>
+          <Label htmlFor="emailPlaceholder">Email</Label>
+          <Input
+            name="emailPlaceholder"
+            type="email"
+            id="emailPlaceholder"
+            value={emailAddress}
+            disabled
+          />
+          <br />
           <Label htmlFor="passwordInput">Password</Label>
           <Input
             name="password"
