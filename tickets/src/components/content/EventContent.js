@@ -5,7 +5,7 @@ import Head from 'next/head'
 import PropTypes from 'prop-types'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { googleCalendarLinkBuilder } from '../../utils/links.ts'
-import { Field, Label } from './CreateContent'
+import { Label } from './CreateContent'
 import { MONTH_NAMES, pageTitle, TRANSACTION_TYPES } from '../../constants'
 import UnlockPropTypes from '../../propTypes'
 import BalanceProvider from '../helpers/BalanceProvider'
@@ -33,13 +33,25 @@ export const EventContent = ({
 }) => {
   if (!lock.address || !event.name) return null // Wait for the lock and event to load
 
-  const { name, description, location, date, links = [], image } = event
+  const {
+    name,
+    description,
+    location,
+    date,
+    duration,
+    links = [],
+    image,
+  } = event
   let dateString =
     MONTH_NAMES[date.getMonth()] +
     ' ' +
     date.getDate() +
     ', ' +
     date.getFullYear()
+
+  if (duration) {
+    dateString += ' at ' + date.toLocaleTimeString()
+  }
 
   const externalLinks = links.map(({ href, title }) => {
     return (
@@ -57,6 +69,7 @@ export const EventContent = ({
     name,
     details,
     date,
+    duration,
     location
   )
 
@@ -67,11 +80,39 @@ export const EventContent = ({
           <Head>
             <title>{pageTitle(name)}</title>
           </Head>
-          <Title>{name}</Title>
           <Header>{image && <Image src={image} />}</Header>
-
-          <Row>
-            <div>
+          <Title>{name}</Title>
+          <DisplayDate>{dateString}</DisplayDate>
+          <Columns count={2}>
+            <Column>
+              <Description>
+                {description.split('\n\n').map(line => {
+                  return <p key={line}>{line}</p>
+                })}
+              </Description>
+              <Location>{location}</Location>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={googleCalendarLink}
+              >
+                Add to your Calendar!
+              </a>
+              <Links>{externalLinks}</Links>
+            </Column>
+            <Column>
+              <NoPhone>
+                <Label>Tickets</Label>
+              </NoPhone>
+              <BalanceProvider
+                amount={lock.keyPrice}
+                render={(ethWithPresentation, convertedUSDValue) => (
+                  <Price>
+                    <Eth>{ethWithPresentation} ETH</Eth>
+                    <Fiat>${convertedUSDValue}</Fiat>
+                  </Price>
+                )}
+              />
               <PayButton
                 transaction={transaction}
                 keyStatus={keyStatus}
@@ -84,47 +125,11 @@ export const EventContent = ({
                   ticket!
                 </small>
               )}
-            </div>
-            <Field>
-              <NoPhone>
-                <Label>Ticket Price</Label>
-              </NoPhone>
-              <BalanceProvider
-                amount={lock.keyPrice}
-                render={(ethWithPresentation, convertedUSDValue) => (
-                  <Price>
-                    <Eth>{ethWithPresentation} ETH</Eth>
-                    <Fiat>${convertedUSDValue}</Fiat>
-                  </Price>
-                )}
-              />
-            </Field>
-          </Row>
-          <Row>
-            <DetailsField>
-              <DisplayDate>{dateString}</DisplayDate>
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={googleCalendarLink}
-              >
-                Add to your Calendar!
-              </a>
-
-              <Description>
-                {description.split('\n\n').map(line => {
-                  return <p key={line}>{line}</p>
-                })}
-              </Description>
-              <Location>{location}</Location>
-              <Links>{externalLinks}</Links>
-            </DetailsField>
-            <DetailsField>
               {account && (
                 <Ticket account={account} lock={lock} keyStatus={keyStatus} />
               )}
-            </DetailsField>
-          </Row>
+            </Column>
+          </Columns>
         </Layout>
         <DeveloperOverlay />
       </BrowserOnly>
@@ -191,7 +196,8 @@ export const mapStateToProps = (
     // TEMPORARY: HARD CODE VALUES FOR NFT EVENT
     if (lockAddress === '0x5865Ff2CBd045Ef1cfE19739df19E83B32b783b4') {
       event.name = 'NFT Dev Meetup - NYC Blockchain Week 2019'
-
+      event.date = new Date(Date.UTC(2019, 4, 16, 22, 30, 0))
+      event.duration = 60 * 60 * 3
       event.location = 'Bushwick Generator, 215 Moore St, Brooklyn'
       event.description = `HEYOOOO!
 
@@ -246,16 +252,19 @@ export default withConfig(
   )(EventContent)
 )
 
-const Row = styled.section`
-  padding: 0px 20px;
-  border: none;
-
+const Columns = styled.section`
   ${Media.nophone`
     display: grid;
-    grid-gap: 30px;
-    grid-template-columns: repeat(2, minmax(250px, 1fr));
-    align-items: top;
+    grid-gap: 40px;
+    grid-template-columns: repeat(${props => props.count || 2}, 1fr);
+    align-items: start;
   `}
+`
+
+const Column = styled.div`
+  display: grid;
+  align-items: start;
+  grid-gap: 10px;
 `
 
 const Header = styled.section`
@@ -266,7 +275,7 @@ const Header = styled.section`
   ${Media.nophone`
     display: grid;
     grid-gap: 30px;
-    align-items: top;
+    align-items: start;
   `}
 `
 
@@ -287,20 +296,17 @@ const Links = styled.ul`
 `
 
 const Title = styled.h1`
-  font-family: 'IBM Plex Serif', serif;
+  font-family: 'IBM Plex Sans', sans-serif;
   font-style: normal;
-  font-weight: normal;
-  font-size: 30px;
+  font-weight: bold;
+  font-size: 40px;
   line-height: normal;
-  color: var(--dimgrey);
-  padding-left: 20px;
-  padding-right: 20px;
+  margin-bottom: 0px;
 `
 
 const Price = styled.div`
   display: grid;
-  grid-template-columns: 200px 1fr;
-  grid-gap: 10px;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
 `
 
@@ -318,20 +324,23 @@ const Fiat = styled.div`
   color: var(--grey);
 `
 
-const DetailsField = styled.div``
-
 const DisplayDate = styled.h2`
   font-family: 'IBM Plex Sans', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
   color: var(--red);
-  margin-bottom: 2px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 `
 
 const Description = styled.div`
-  font-size: 20px;
-  font-family: 'IBM Plex Serif', serif;
+  font-size: 24px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  p {
+    padding: 0px;
+    margin: 0px;
+  }
 `
 
 const Location = styled.p`

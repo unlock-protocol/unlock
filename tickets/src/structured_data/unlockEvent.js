@@ -16,6 +16,7 @@ export default class UnlockEvent {
       { name: 'location', type: 'string' },
       { name: 'date', type: 'uint64' },
       { name: 'logo', type: 'string' },
+      { name: 'duration', type: 'uint64' },
     ]
 
     let domainData = {
