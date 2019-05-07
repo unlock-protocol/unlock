@@ -124,6 +124,15 @@ export class NockHelper {
       .log(cb)
   }
 
+  do404(method, params) {
+    this.anyRequestSetUp = true // detect http calls made before any mocks setup
+    const cb = (...args) => this.logNock(args)
+    return this.nockScope
+      .post('/', { jsonrpc: '2.0', id: this._rpcRequestId, method, params })
+      .reply(404, '404 Not Found')
+      .log(cb)
+  }
+
   // net_version
   netVersionAndYield(netVersion) {
     return this._jsonRpcRequest('net_version', [], netVersion)
