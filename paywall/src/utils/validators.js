@@ -26,15 +26,15 @@ export const isAccount = val => {
  *
  * var unlockProtocolConfig = {
  * locks: {
- *	  '0xabc...': {
- *  		name: 'One Week',
- *	  },
- *	  '0xdef...': {
- *  		name: 'One Month',
- *  	},
- *  	'0xghi...': {
- *  		name: 'One Year',
- *   	},
+ *   '0xabc...': {
+ *  	  name: 'One Week',
+ *    },
+ *    '0xdef...': {
+ *      name: 'One Month',
+ *    },
+ *    '0xghi...': {
+ *      name: 'One Year',
+ *    },
  *  },
  *  icon: 'https://...',
  *  callToAction: {
