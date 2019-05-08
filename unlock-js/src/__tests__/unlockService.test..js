@@ -85,7 +85,7 @@ describe('UnlockService', () => {
       nock.ethCallAndYield(
         metadata.functions['publicLockVersion()'].encode([]),
         ethers.utils.getAddress(unlockAddress),
-        coder.encode(['uint256'], [ethers.utils.bigNumberify(0)])
+        coder.encode(['uint256'], [ethers.utils.bigNumberify(1)])
       )
       nock.ethGetCodeAndYield(unlockAddress, v01.PublicLock.deployedBytecode)
 
@@ -108,8 +108,9 @@ describe('UnlockService', () => {
       nock.ethCallAndYield(
         metadata.functions['publicLockVersion()'].encode([]),
         ethers.utils.getAddress(unlockAddress),
-        coder.encode(['uint256'], [ethers.utils.bigNumberify(2)])
+        coder.encode(['uint256'], [ethers.utils.bigNumberify(1)])
       )
+      nock.ethGetCodeAndYield(unlockAddress, v02.PublicLock.deployedBytecode)
 
       const result = await unlockService._getPublicLockVersionFromContract(
         unlockAddress
