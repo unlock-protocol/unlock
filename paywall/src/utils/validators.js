@@ -1,3 +1,5 @@
+import isURL from 'validator/lib/isURL'
+
 import { ACCOUNT_REGEXP } from '../constants'
 
 // tests whether a field's value was not entered by the user
@@ -58,7 +60,19 @@ export const isValidPaywallConfig = config => {
   const testKeys = ['callToAction', 'icon', 'locks']
   if (keys.filter((key, index) => testKeys[index] !== key).length) return false
   // allow false for icon
-  if (config.icon && typeof config.icon !== 'string') return false
+  if (config.icon) {
+    if (typeof config.icon !== 'string') return false
+    if (
+      config.icon &&
+      !isURL(config.icon, {
+        allow_underscores: true,
+        allow_protocol_relative_urls: true,
+        disallow_auth: true,
+      })
+    ) {
+      return false
+    }
+  }
   if (!config.callToAction || typeof config.callToAction !== 'object')
     return false
   const callsToAction = ['default', 'expired', 'pending', 'confirmed']
