@@ -5,10 +5,11 @@ jest.mock('axios')
 
 describe('StorageService', () => {
   const serviceHost = 'http://127.0.0.1:8080'
-  const storageService = new StorageService(serviceHost)
+  let storageService
 
   beforeEach(() => {
     jest.clearAllMocks()
+    storageService = new StorageService(serviceHost)
   })
 
   describe('lockLookUp', () => {
@@ -26,6 +27,24 @@ describe('StorageService', () => {
         storageService.on(success.lockLookUp, ({ address, name }) => {
           expect(address).toBe('0x42')
           expect(name).toBe('hello')
+          done()
+        })
+
+        expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/lock/0x42`)
+      })
+    })
+
+    describe('when the requested lock exists but does not have a name', () => {
+      it('emits a failure', done => {
+        expect.assertions(2)
+        axios.get.mockReturnValue({
+          data: {},
+        })
+
+        storageService.lockLookUp('0x42')
+
+        storageService.on(failure.lockLookUp, error => {
+          expect(error).toBe('No name for this lock.')
           done()
         })
 
