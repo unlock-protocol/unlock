@@ -6,6 +6,7 @@ export const success = {
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.success',
   lockLookUp: 'lockLookUp.success',
   storeLockDetails: 'storeLockDetails.success',
+  updateLockDetails: 'updateLockDetails.success',
 }
 
 export const failure = {
@@ -13,6 +14,7 @@ export const failure = {
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.failure',
   lockLookUp: 'lockLookUp.failure',
   storeLockDetails: 'storeLockDetails.failure',
+  updateLockDetails: 'updateLockDetails.failure',
 }
 
 export default class StorageService extends EventEmitter {
@@ -138,9 +140,10 @@ export default class StorageService extends EventEmitter {
       opts.headers = this.genAuthorizationHeader(token)
     }
     try {
-      return await axios.put(`${this.host}/lock/${address}`, update, opts)
+      await axios.put(`${this.host}/lock/${address}`, update, opts)
+      this.emit(success.updateLockDetails, address)
     } catch (error) {
-      return Promise.reject(error)
+      this.emit(failure.updateLockDetails, { address, error })
     }
   }
 
